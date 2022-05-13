@@ -58,5 +58,17 @@ namespace TwainControl.Properties {
                 this["Adf"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-1")]
+        public int DefaultScanFormat {
+            get {
+                return ((int)(this["DefaultScanFormat"]));
+            }
+            set {
+                this["DefaultScanFormat"] = value;
+            }
+        }
     }
 }

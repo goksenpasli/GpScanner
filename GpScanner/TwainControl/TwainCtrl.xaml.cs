@@ -8,14 +8,12 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Extensions;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
-using Microsoft.Win32;
 using TwainControl.Properties;
 using TwainWpf;
 using TwainWpf.Wpf;
@@ -23,7 +21,7 @@ using static Extensions.ExtensionMethods;
 
 namespace TwainControl
 {
-    public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposable
+    public partial class TwainCtrl : System.Windows.Controls.UserControl, INotifyPropertyChanged, IDisposable
     {
         private ScanSettings _settings;
 
@@ -78,9 +76,11 @@ namespace TwainControl
                     ShowProgressIndicatorUi = ShowProgress,
                     UseDuplex = Duplex,
                     ShouldTransferAllPages = true,
-                    Resolution = new ResolutionSettings { ColourSetting = Bw ?? false ? ColourSetting.BlackAndWhite : ColourSetting.Colour, Dpi = (int)Settings.Default.Çözünürlük },
-                    Rotation = new RotationSettings { AutomaticDeskew = Deskew, AutomaticRotate = AutoRotate, AutomaticBorderDetection = BorderDetect }
+                    Resolution = new ResolutionSettings()
                 };
+                _settings.Resolution.ColourSetting = Bw ?? false ? ColourSetting.BlackAndWhite : ColourSetting.Colour;
+                _settings.Resolution.Dpi = (int)Settings.Default.Çözünürlük;
+                _settings.Rotation = new RotationSettings { AutomaticDeskew = Deskew, AutomaticRotate = AutoRotate, AutomaticBorderDetection = BorderDetect };
                 if (Tarayıcılar.Count > 0)
                 {
                     twain.SelectSource(SeçiliTarayıcı);
@@ -88,13 +88,62 @@ namespace TwainControl
                 }
             }, parameter => !Environment.Is64BitProcess);
 
+            FastScanImage = new RelayCommand<object>(parameter =>
+            {
+                ArayüzEtkin = false;
+                _settings = new ScanSettings
+                {
+                    UseDocumentFeeder = Settings.Default.Adf,
+                    ShowTwainUi = ShowUi,
+                    ShowProgressIndicatorUi = ShowProgress,
+                    UseDuplex = Duplex,
+                    ShouldTransferAllPages = true,
+                    Resolution = new ResolutionSettings()
+                };
+                _settings.Resolution.ColourSetting = Settings.Default.DefaultScanFormat is 2
+                    ? ColourSetting.BlackAndWhite
+                    : ColourSetting.Colour;
+                _settings.Resolution.Dpi = (int)Settings.Default.Çözünürlük;
+                _settings.Rotation = new RotationSettings { AutomaticDeskew = Deskew, AutomaticRotate = AutoRotate, AutomaticBorderDetection = BorderDetect };
+                if (Tarayıcılar.Count > 0)
+                {
+                    twain.SelectSource(SeçiliTarayıcı);
+                    twain.StartScanning(_settings);
+                }
+                twain.ScanningComplete += delegate
+                {
+                    ArayüzEtkin = true;
+                    if (Settings.Default.DefaultScanFormat == 2)
+                    {
+                        string file = Settings.Default.AutoFolder.SetUniqueFile($"{DateTime.Now.ToShortDateString()}Tarama", "pdf");
+                        PdfKaydet(Resimler, file, Format.Tiff);
+                        ExploreFile.Execute(file);
+                    }
+                    if (Settings.Default.DefaultScanFormat == 0)
+                    {
+                        foreach (BitmapFrame item in Resimler)
+                        {
+                            File.WriteAllBytes(Settings.Default.AutoFolder.SetUniqueFile($"{DateTime.Now.ToShortDateString()}Tarama", "jpg"), item.ToTiffJpegByteArray(Format.Jpg));
+                        }
+                    }
+                    if (Settings.Default.DefaultScanFormat == 1)
+                    {
+                        string file = Settings.Default.AutoFolder.SetUniqueFile($"{DateTime.Now.ToShortDateString()}Tarama", "jpg");
+                        PdfKaydet(Resimler, file, Format.Jpg);
+                        ExploreFile.Execute(file);
+                    }
+                };
+            }, parameter => !Environment.Is64BitProcess && Settings.Default.DefaultScanFormat != -1 && AutoSave);
+
             ResimSil = new RelayCommand<object>(parameter => Resimler?.Remove(parameter as BitmapFrame), parameter => true);
+
+            ExploreFile = new RelayCommand<object>(parameter => ExtensionMethods.OpenFolderAndSelectItem(Path.GetDirectoryName(parameter as string), Path.GetFileName(parameter as string)), parameter => true);
 
             Kaydet = new RelayCommand<object>(parameter =>
             {
                 if (parameter is BitmapFrame resim)
                 {
-                    SaveFileDialog saveFileDialog = new() { Filter = "Tif Resmi (*.tif)|*.tif|Jpg Resmi(*.jpg)|*.jpg|Pdf Dosyası(*.pdf)|*.pdf" };
+                    Microsoft.Win32.SaveFileDialog saveFileDialog = new() { Filter = "Tif Resmi (*.tif)|*.tif|Jpg Resmi(*.jpg)|*.jpg|Pdf Dosyası(*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası(*.pdf)|*.pdf" };
                     if (saveFileDialog.ShowDialog() == true)
                     {
                         switch (saveFileDialog.FilterIndex)
@@ -120,6 +169,10 @@ namespace TwainControl
                             case 3:
                                 PdfKaydet(resim, saveFileDialog.FileName, Format.Jpg);
                                 break;
+
+                            case 4:
+                                PdfKaydet(resim, saveFileDialog.FileName, Format.Tiff);
+                                break;
                         }
                     }
                 }
@@ -127,10 +180,17 @@ namespace TwainControl
 
             Tümünükaydet = new RelayCommand<object>(parameter =>
             {
-                SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası(*.pdf)|*.pdf" };
+                Microsoft.Win32.SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası(*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası(*.pdf)|*.pdf" };
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    TopluPdfKaydet(Resimler, saveFileDialog.FileName, Format.Jpg);
+                    if (saveFileDialog.FilterIndex == 2)
+                    {
+                        PdfKaydet(Resimler, saveFileDialog.FileName, Format.Tiff);
+                    }
+                    else
+                    {
+                        PdfKaydet(Resimler, saveFileDialog.FileName, Format.Jpg);
+                    }
                 }
             }, parameter => Resimler?.Count > 0);
 
@@ -141,21 +201,31 @@ namespace TwainControl
                     Description = "Otomatik Kayıt Klasörünü Belirtin."
                 };
                 System.Windows.Forms.DialogResult result = dialog.ShowDialog();
-                Settings.Default.AutoFolder = dialog.SelectedPath;
+                if (result == System.Windows.Forms.DialogResult.OK)
+                {
+                    Settings.Default.AutoFolder = dialog.SelectedPath;
+                }
             }, parameter => true);
 
             Seçilikaydet = new RelayCommand<object>(parameter =>
             {
-                SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası(*.pdf)|*.pdf" };
+                Microsoft.Win32.SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası(*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası(*.pdf)|*.pdf" };
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    TopluPdfKaydet(SeçiliResimler as IList<BitmapFrame>, saveFileDialog.FileName, Format.Jpg);
+                    if (saveFileDialog.FilterIndex == 2)
+                    {
+                        PdfKaydet(SeçiliResimler as IList<BitmapFrame>, saveFileDialog.FileName, Format.Tiff);
+                    }
+                    else
+                    {
+                        PdfKaydet(SeçiliResimler as IList<BitmapFrame>, saveFileDialog.FileName, Format.Jpg);
+                    }
                 }
             }, parameter => SeçiliResimler?.Count > 0);
 
             ListeTemizle = new RelayCommand<object>(parameter =>
             {
-                if (MessageBox.Show("Tüm Taranan Evrak Silinecek Devam Etmek İstiyor Musun?", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                if (System.Windows.MessageBox.Show("Tüm Taranan Evrak Silinecek Devam Etmek İstiyor Musun?", System.Windows.Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     Resimler?.Clear();
                 }
@@ -280,6 +350,10 @@ namespace TwainControl
                 }
             }
         }
+
+        public RelayCommand<object> ExploreFile { get; }
+
+        public RelayCommand<object> FastScanImage { get; }
 
         public ICommand Kaydet { get; }
 
@@ -444,7 +518,7 @@ namespace TwainControl
 
         private void PdfKaydet(ImageSource bitmapframe, string dosyayolu, Format format)
         {
-            Document doc = new(new iTextSharp.text.Rectangle(((BitmapSource)bitmapframe).PixelWidth, ((BitmapSource)bitmapframe).PixelHeight), 0, 0, 0, 0);
+            Document doc = new(new Rectangle(((BitmapSource)bitmapframe).PixelWidth, ((BitmapSource)bitmapframe).PixelHeight), 0, 0, 0, 0);
             using FileStream fs = new(dosyayolu, FileMode.Create);
             using PdfWriter writer = PdfWriter.GetInstance(doc, fs);
             writer.SetPdfVersion(PdfWriter.PDF_VERSION_1_5);
@@ -457,9 +531,9 @@ namespace TwainControl
             doc.Dispose();
         }
 
-        private void TopluPdfKaydet(IList<BitmapFrame> bitmapFrames, string dosyayolu, Format format)
+        private void PdfKaydet(IList<BitmapFrame> bitmapFrames, string dosyayolu, Format format)
         {
-            Document doc = new(new iTextSharp.text.Rectangle((float)bitmapFrames.FirstOrDefault()?.PixelWidth, (float)bitmapFrames.FirstOrDefault()?.PixelHeight), 0, 0, 0, 0);
+            Document doc = new(new Rectangle((float)bitmapFrames.FirstOrDefault()?.PixelWidth, (float)bitmapFrames.FirstOrDefault()?.PixelHeight), 0, 0, 0, 0);
             using FileStream fs = new(dosyayolu, FileMode.Create);
             using PdfWriter writer = PdfWriter.GetInstance(doc, fs);
             writer.SetPdfVersion(PdfWriter.PDF_VERSION_1_5);
@@ -512,7 +586,7 @@ namespace TwainControl
                         switch (Bw)
                         {
                             case true:
-                                evrak = bmp.ConvertBlackAndWhite(Eşik).ToBitmapImage(ImageFormat.Tiff, SystemParameters.PrimaryScreenHeight).Resize(210 / mmpi * dpi, 297 / mmpi * dpi);
+                                evrak = bmp.ConvertBlackAndWhite(Eşik).ToBitmapImage(ImageFormat.Tiff, SystemParameters.PrimaryScreenHeight);
                                 break;
 
                             case null:
@@ -545,7 +619,10 @@ namespace TwainControl
                         önizleme = null;
                     }
                 };
-                twain.ScanningComplete += delegate { ArayüzEtkin = true; };
+                twain.ScanningComplete += delegate
+                {
+                    ArayüzEtkin = true;
+                };
             }
             catch (Exception)
             {
