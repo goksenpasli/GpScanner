@@ -110,29 +110,7 @@ namespace TwainControl
                     twain.SelectSource(SeçiliTarayıcı);
                     twain.StartScanning(_settings);
                 }
-                twain.ScanningComplete += delegate
-                {
-                    ArayüzEtkin = true;
-                    if (Settings.Default.DefaultScanFormat == 2)
-                    {
-                        string file = Settings.Default.AutoFolder.SetUniqueFile($"{DateTime.Now.ToShortDateString()}Tarama", "pdf");
-                        PdfKaydet(Resimler, file, Format.Tiff);
-                        ExploreFile.Execute(file);
-                    }
-                    if (Settings.Default.DefaultScanFormat == 0)
-                    {
-                        foreach (BitmapFrame item in Resimler)
-                        {
-                            File.WriteAllBytes(Settings.Default.AutoFolder.SetUniqueFile($"{DateTime.Now.ToShortDateString()}Tarama", "jpg"), item.ToTiffJpegByteArray(Format.Jpg));
-                        }
-                    }
-                    if (Settings.Default.DefaultScanFormat == 1)
-                    {
-                        string file = Settings.Default.AutoFolder.SetUniqueFile($"{DateTime.Now.ToShortDateString()}Tarama", "jpg");
-                        PdfKaydet(Resimler, file, Format.Jpg);
-                        ExploreFile.Execute(file);
-                    }
-                };
+                twain.ScanningComplete += fastscan;
             }, parameter => !Environment.Is64BitProcess && Settings.Default.DefaultScanFormat != -1 && AutoSave);
 
             ResimSil = new RelayCommand<object>(parameter => Resimler?.Remove(parameter as BitmapFrame), parameter => true);
@@ -514,6 +492,31 @@ namespace TwainControl
                 AutoSave = Directory.Exists(Settings.Default.AutoFolder);
             }
             Settings.Default.Save();
+        }
+
+        private void fastscan(object sender, ScanningCompleteEventArgs e)
+        {
+            ArayüzEtkin = true;
+            if (Settings.Default.DefaultScanFormat == 2)
+            {
+                string file = Settings.Default.AutoFolder.SetUniqueFile($"{DateTime.Now.ToShortDateString()}Tarama", "pdf");
+                PdfKaydet(Resimler, file, Format.Tiff);
+                ExploreFile.Execute(file);
+            }
+            if (Settings.Default.DefaultScanFormat == 0)
+            {
+                foreach (BitmapFrame item in Resimler)
+                {
+                    File.WriteAllBytes(Settings.Default.AutoFolder.SetUniqueFile($"{DateTime.Now.ToShortDateString()}Tarama", "jpg"), item.ToTiffJpegByteArray(Format.Jpg));
+                }
+            }
+            if (Settings.Default.DefaultScanFormat == 1)
+            {
+                string file = Settings.Default.AutoFolder.SetUniqueFile($"{DateTime.Now.ToShortDateString()}Tarama", "jpg");
+                PdfKaydet(Resimler, file, Format.Jpg);
+                ExploreFile.Execute(file);
+            }
+            twain.ScanningComplete -= fastscan;
         }
 
         private void PdfKaydet(ImageSource bitmapframe, string dosyayolu, Format format)
