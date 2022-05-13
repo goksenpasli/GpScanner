@@ -110,7 +110,7 @@ namespace TwainControl
                     twain.SelectSource(SeçiliTarayıcı);
                     twain.StartScanning(_settings);
                 }
-                twain.ScanningComplete += fastscan;
+                twain.ScanningComplete += Fastscan;
             }, parameter => !Environment.Is64BitProcess && Settings.Default.DefaultScanFormat != -1 && AutoSave);
 
             ResimSil = new RelayCommand<object>(parameter => Resimler?.Remove(parameter as BitmapFrame), parameter => true);
@@ -494,7 +494,7 @@ namespace TwainControl
             Settings.Default.Save();
         }
 
-        private void fastscan(object sender, ScanningCompleteEventArgs e)
+        private void Fastscan(object sender, ScanningCompleteEventArgs e)
         {
             ArayüzEtkin = true;
             if (Settings.Default.DefaultScanFormat == 2)
@@ -512,11 +512,11 @@ namespace TwainControl
             }
             if (Settings.Default.DefaultScanFormat == 1)
             {
-                string file = Settings.Default.AutoFolder.SetUniqueFile($"{DateTime.Now.ToShortDateString()}Tarama", "jpg");
+                string file = Settings.Default.AutoFolder.SetUniqueFile($"{DateTime.Now.ToShortDateString()}Tarama", "pdf");
                 PdfKaydet(Resimler, file, Format.Jpg);
                 ExploreFile.Execute(file);
             }
-            twain.ScanningComplete -= fastscan;
+            twain.ScanningComplete -= Fastscan;
         }
 
         private void PdfKaydet(ImageSource bitmapframe, string dosyayolu, Format format)
