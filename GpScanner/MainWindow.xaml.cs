@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -31,7 +31,7 @@ namespace GpScanner
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ObservableCollection<string> Dosyalar { get; set; } = new ObservableCollection<string>();
+        public IEnumerable<string> Dosyalar { get; set; }
 
         public DateTime? SeçiliGün
         {
@@ -55,7 +55,7 @@ namespace GpScanner
         {
             if (Directory.Exists(Twainsettings.Settings.Default.AutoFolder))
             {
-                Dosyalar = new ObservableCollection<string>(Directory.EnumerateFiles(Twainsettings.Settings.Default.AutoFolder, "*.*").Where(s => (new string[] { ".pdf", ".tif", ".jpg" }).Any(ext => ext == Path.GetExtension(s))));
+                Dosyalar = Directory.EnumerateFiles(Twainsettings.Settings.Default.AutoFolder, "*.*").Where(s => (new string[] { ".pdf", ".tif", ".jpg" }).Any(ext => ext == Path.GetExtension(s)));
             }
         }
 

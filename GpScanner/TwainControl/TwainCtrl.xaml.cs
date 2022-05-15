@@ -75,8 +75,6 @@ namespace TwainControl
                 ArayüzEtkin = false;
                 _settings = DefaultScanSettings();
                 _settings.Resolution.ColourSetting = Bw ?? false ? ColourSetting.BlackAndWhite : ColourSetting.Colour;
-                _settings.Resolution.Dpi = (int)Settings.Default.Çözünürlük;
-                _settings.Rotation = new RotationSettings { AutomaticDeskew = Deskew, AutomaticRotate = AutoRotate, AutomaticBorderDetection = BorderDetect };
                 if (Tarayıcılar.Count > 0)
                 {
                     twain.SelectSource(SeçiliTarayıcı);
@@ -91,8 +89,6 @@ namespace TwainControl
                 _settings.Resolution.ColourSetting = Settings.Default.DefaultScanFormat is 2
                     ? ColourSetting.BlackAndWhite
                     : ColourSetting.Colour;
-                _settings.Resolution.Dpi = (int)Settings.Default.Çözünürlük;
-                _settings.Rotation = new RotationSettings { AutomaticDeskew = Deskew, AutomaticRotate = AutoRotate, AutomaticBorderDetection = BorderDetect };
                 if (Tarayıcılar.Count > 0)
                 {
                     twain.SelectSource(SeçiliTarayıcı);
@@ -505,12 +501,16 @@ namespace TwainControl
             {
                 AutoSave = Directory.Exists(Settings.Default.AutoFolder);
             }
+            if (e.PropertyName is "DefaultScanFormat" && Settings.Default.DefaultScanFormat == 0)
+            {
+                Settings.Default.ShowFile = false;
+            }
             Settings.Default.Save();
         }
 
         private ScanSettings DefaultScanSettings()
         {
-            return new ScanSettings
+            ScanSettings settings = new()
             {
                 UseDocumentFeeder = Settings.Default.Adf,
                 ShowTwainUi = ShowUi,
@@ -519,6 +519,9 @@ namespace TwainControl
                 ShouldTransferAllPages = true,
                 Resolution = new ResolutionSettings()
             };
+            settings.Resolution.Dpi = (int)Settings.Default.Çözünürlük;
+            settings.Rotation = new RotationSettings { AutomaticDeskew = Deskew, AutomaticRotate = AutoRotate, AutomaticBorderDetection = BorderDetect };
+            return settings;
         }
 
         private void Fastscan(object sender, ScanningCompleteEventArgs e)
@@ -530,10 +533,7 @@ namespace TwainControl
             }
             if (Settings.Default.DefaultScanFormat == 0)
             {
-                foreach (BitmapFrame item in Resimler)
-                {
-                    File.WriteAllBytes(Settings.Default.AutoFolder.SetUniqueFile($"{DateTime.Now.ToShortDateString()}Tarama", "jpg"), item.ToTiffJpegByteArray(Format.Jpg));
-                }
+                File.WriteAllBytes(Settings.Default.AutoFolder.SetUniqueFile($"{DateTime.Now.ToShortDateString()}Tarama", "jpg"), Resimler[Resimler.Count - 1].ToTiffJpegByteArray(Format.Jpg));
             }
             if (Settings.Default.DefaultScanFormat == 1)
             {
