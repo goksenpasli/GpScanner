@@ -43,6 +43,8 @@ namespace TwainControl
 
         private int eşik = 160;
 
+        private ICommand fastScanImage;
+
         private ObservableCollection<BitmapFrame> resimler = new();
 
         private ImageSource seçiliResim;
@@ -57,6 +59,8 @@ namespace TwainControl
 
         private bool showUi;
 
+        private bool tarandı;
+
         private IList<string> tarayıcılar;
 
         private Twain twain;
@@ -69,15 +73,7 @@ namespace TwainControl
             ScanImage = new RelayCommand<object>(parameter =>
             {
                 ArayüzEtkin = false;
-                _settings = new ScanSettings
-                {
-                    UseDocumentFeeder = Settings.Default.Adf,
-                    ShowTwainUi = ShowUi,
-                    ShowProgressIndicatorUi = ShowProgress,
-                    UseDuplex = Duplex,
-                    ShouldTransferAllPages = true,
-                    Resolution = new ResolutionSettings()
-                };
+                _settings = DefaultScanSettings();
                 _settings.Resolution.ColourSetting = Bw ?? false ? ColourSetting.BlackAndWhite : ColourSetting.Colour;
                 _settings.Resolution.Dpi = (int)Settings.Default.Çözünürlük;
                 _settings.Rotation = new RotationSettings { AutomaticDeskew = Deskew, AutomaticRotate = AutoRotate, AutomaticBorderDetection = BorderDetect };
@@ -91,15 +87,7 @@ namespace TwainControl
             FastScanImage = new RelayCommand<object>(parameter =>
             {
                 ArayüzEtkin = false;
-                _settings = new ScanSettings
-                {
-                    UseDocumentFeeder = Settings.Default.Adf,
-                    ShowTwainUi = ShowUi,
-                    ShowProgressIndicatorUi = ShowProgress,
-                    UseDuplex = Duplex,
-                    ShouldTransferAllPages = true,
-                    Resolution = new ResolutionSettings()
-                };
+                _settings = DefaultScanSettings();
                 _settings.Resolution.ColourSetting = Settings.Default.DefaultScanFormat is 2
                     ? ColourSetting.BlackAndWhite
                     : ColourSetting.Colour;
@@ -115,7 +103,7 @@ namespace TwainControl
 
             ResimSil = new RelayCommand<object>(parameter => Resimler?.Remove(parameter as BitmapFrame), parameter => true);
 
-            ExploreFile = new RelayCommand<object>(parameter => ExtensionMethods.OpenFolderAndSelectItem(Path.GetDirectoryName(parameter as string), Path.GetFileName(parameter as string)), parameter => true);
+            ExploreFile = new RelayCommand<object>(parameter => OpenFolderAndSelectItem(Path.GetDirectoryName(parameter as string), Path.GetFileName(parameter as string)), parameter => true);
 
             Kaydet = new RelayCommand<object>(parameter =>
             {
@@ -203,7 +191,7 @@ namespace TwainControl
 
             ListeTemizle = new RelayCommand<object>(parameter =>
             {
-                if (System.Windows.MessageBox.Show("Tüm Taranan Evrak Silinecek Devam Etmek İstiyor Musun?", System.Windows.Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                if (MessageBox.Show("Tüm Taranan Evrak Silinecek Devam Etmek İstiyor Musun?", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     Resimler?.Clear();
                 }
@@ -329,9 +317,21 @@ namespace TwainControl
             }
         }
 
-        public RelayCommand<object> ExploreFile { get; }
+        public ICommand ExploreFile { get; }
 
-        public RelayCommand<object> FastScanImage { get; }
+        public ICommand FastScanImage
+        {
+            get => fastScanImage;
+
+            set
+            {
+                if (fastScanImage != value)
+                {
+                    fastScanImage = value;
+                    OnPropertyChanged(nameof(FastScanImage));
+                }
+            }
+        }
 
         public ICommand Kaydet { get; }
 
@@ -443,6 +443,20 @@ namespace TwainControl
             }
         }
 
+        public bool Tarandı
+        {
+            get => tarandı;
+
+            set
+            {
+                if (tarandı != value)
+                {
+                    tarandı = value;
+                    OnPropertyChanged(nameof(Tarandı));
+                }
+            }
+        }
+
         public IList<string> Tarayıcılar
         {
             get => tarayıcılar;
@@ -494,14 +508,25 @@ namespace TwainControl
             Settings.Default.Save();
         }
 
+        private ScanSettings DefaultScanSettings()
+        {
+            return new ScanSettings
+            {
+                UseDocumentFeeder = Settings.Default.Adf,
+                ShowTwainUi = ShowUi,
+                ShowProgressIndicatorUi = ShowProgress,
+                UseDuplex = Duplex,
+                ShouldTransferAllPages = true,
+                Resolution = new ResolutionSettings()
+            };
+        }
+
         private void Fastscan(object sender, ScanningCompleteEventArgs e)
         {
-            ArayüzEtkin = true;
+            string pdffile = Settings.Default.AutoFolder.SetUniqueFile($"{DateTime.Now.ToShortDateString()}Tarama", "pdf");
             if (Settings.Default.DefaultScanFormat == 2)
             {
-                string file = Settings.Default.AutoFolder.SetUniqueFile($"{DateTime.Now.ToShortDateString()}Tarama", "pdf");
-                PdfKaydet(Resimler, file, Format.Tiff);
-                ExploreFile.Execute(file);
+                PdfKaydet(Resimler, pdffile, Format.Tiff);
             }
             if (Settings.Default.DefaultScanFormat == 0)
             {
@@ -512,11 +537,14 @@ namespace TwainControl
             }
             if (Settings.Default.DefaultScanFormat == 1)
             {
-                string file = Settings.Default.AutoFolder.SetUniqueFile($"{DateTime.Now.ToShortDateString()}Tarama", "pdf");
-                PdfKaydet(Resimler, file, Format.Jpg);
-                ExploreFile.Execute(file);
+                PdfKaydet(Resimler, pdffile, Format.Jpg);
+            }
+            if (Settings.Default.ShowFile)
+            {
+                ExploreFile.Execute(pdffile);
             }
             twain.ScanningComplete -= Fastscan;
+            OnPropertyChanged(nameof(Tarandı));
         }
 
         private void PdfKaydet(ImageSource bitmapframe, string dosyayolu, Format format)
@@ -528,7 +556,7 @@ namespace TwainControl
             writer.CompressionLevel = PdfStream.BEST_COMPRESSION;
             writer.SetFullCompression();
             doc.Open();
-            iTextSharp.text.Image pdfImage = iTextSharp.text.Image.GetInstance(((BitmapSource)bitmapframe).ToTiffJpegByteArray(format));
+            Image pdfImage = Image.GetInstance(((BitmapSource)bitmapframe).ToTiffJpegByteArray(format));
             _ = doc.Add(pdfImage);
             doc.Close();
             doc.Dispose();
@@ -545,7 +573,7 @@ namespace TwainControl
             doc.Open();
             for (int i = 0; i < bitmapFrames.Count; i++)
             {
-                _ = doc.Add(iTextSharp.text.Image.GetInstance(bitmapFrames[i].ToTiffJpegByteArray(format)));
+                _ = doc.Add(Image.GetInstance(bitmapFrames[i].ToTiffJpegByteArray(format)));
             }
 
             doc.Close();
@@ -610,11 +638,13 @@ namespace TwainControl
                         if (SeperateSave && Bw == true)
                         {
                             File.WriteAllBytes(Settings.Default.AutoFolder.SetUniqueFile($"{DateTime.Now.ToShortDateString()}Tarama", "tif"), bitmapFrame.ToTiffJpegByteArray(Format.Tiff));
+                            OnPropertyChanged(nameof(Tarandı));
                         }
 
                         if (SeperateSave && (Bw == false || Bw == null))
                         {
                             File.WriteAllBytes(Settings.Default.AutoFolder.SetUniqueFile($"{DateTime.Now.ToShortDateString()}Tarama", "jpg"), bitmapFrame.ToTiffJpegByteArray(Format.Jpg));
+                            OnPropertyChanged(nameof(Tarandı));
                         }
 
                         evrak = null;

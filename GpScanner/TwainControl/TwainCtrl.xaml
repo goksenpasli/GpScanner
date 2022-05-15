@@ -66,6 +66,7 @@
                         <CheckBox Content="YÜZDE GÖSTER" IsChecked="{Binding ShowProgress}" />
                         <CheckBox Content="OTOMATİK DÖNDÜR" IsChecked="{Binding AutoRotate}" />
                         <CheckBox Content="HER SAYFAYI AYRI TARA" IsChecked="{Binding SeperateSave}" IsEnabled="{Binding AutoSave}" ToolTip="Her Sayfayı Ayrı Dosyaya Kaydet Dosyalar Aşağıda Belirtilen Klasöre Kaydedilir." />
+                        <CheckBox Content="HIZLI TARAMA SONRASI DOSYAYI GÖSTER" IsChecked="{Binding Path=ShowFile, Source={x:Static properties:Settings.Default}}" />
                         <TextBlock FontWeight="Bold" Foreground="Red" Text="{Binding Path=AutoFolder, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
                         <Button Command="{Binding KayıtYoluBelirle}" Content="OTOMATİK KAYIT YOLU BELİRLE" />
                         <Button Command="{Binding ScanImage}">
