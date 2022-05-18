@@ -221,7 +221,7 @@ namespace TwainControl
                         PdfKaydet(CroppedImage, saveFileDialog.FileName, Format.Jpg);
                     }
                 }
-            }, parameter => SeçiliResim is not null);
+            }, parameter => CroppedImage is not null);
 
             WebAdreseGit = new RelayCommand<object>(parameter => Process.Start(parameter as string), parameter => true);
 
