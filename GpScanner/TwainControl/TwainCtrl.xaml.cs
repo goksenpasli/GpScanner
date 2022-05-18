@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Extensions;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,9 +14,6 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Extensions;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
 using TwainControl.Properties;
 using TwainWpf;
 using TwainWpf.Wpf;
@@ -34,6 +34,16 @@ namespace TwainControl
         private bool borderDetect;
 
         private bool? bw = false;
+
+        private double cropBottom;
+
+        private double cropLeft;
+
+        private ImageSource croppedImage;
+
+        private double cropRight;
+
+        private double cropTop;
 
         private bool deskew;
 
@@ -75,6 +85,8 @@ namespace TwainControl
                 ArayüzEtkin = false;
                 _settings = DefaultScanSettings();
                 _settings.Resolution.ColourSetting = Bw ?? false ? ColourSetting.BlackAndWhite : ColourSetting.Colour;
+                _settings.Resolution.Dpi = (int)Settings.Default.Çözünürlük;
+                _settings.Rotation = new RotationSettings { AutomaticDeskew = Deskew, AutomaticRotate = AutoRotate, AutomaticBorderDetection = BorderDetect };
                 if (Tarayıcılar.Count > 0)
                 {
                     twain.SelectSource(SeçiliTarayıcı);
@@ -89,8 +101,11 @@ namespace TwainControl
                 _settings.Resolution.ColourSetting = Settings.Default.DefaultScanFormat is 2
                     ? ColourSetting.BlackAndWhite
                     : ColourSetting.Colour;
+                _settings.Resolution.Dpi = (int)Settings.Default.Çözünürlük;
+                _settings.Rotation = new RotationSettings { AutomaticDeskew = Deskew, AutomaticRotate = AutoRotate, AutomaticBorderDetection = BorderDetect };
                 if (Tarayıcılar.Count > 0)
                 {
+                    Resimler = new ObservableCollection<BitmapFrame>();
                     twain.SelectSource(SeçiliTarayıcı);
                     twain.StartScanning(_settings);
                 }
@@ -162,8 +177,7 @@ namespace TwainControl
                 {
                     Description = "Otomatik Kayıt Klasörünü Belirtin."
                 };
-                System.Windows.Forms.DialogResult result = dialog.ShowDialog();
-                if (result == System.Windows.Forms.DialogResult.OK)
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     Settings.Default.AutoFolder = dialog.SelectedPath;
                 }
@@ -192,6 +206,22 @@ namespace TwainControl
                     Resimler?.Clear();
                 }
             }, parameter => Resimler?.Count > 0);
+
+            SaveCroppedImage = new RelayCommand<object>(parameter =>
+            {
+                Microsoft.Win32.SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası(*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası(*.pdf)|*.pdf" };
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    if (saveFileDialog.FilterIndex == 2)
+                    {
+                        PdfKaydet(CroppedImage, saveFileDialog.FileName, Format.Tiff);
+                    }
+                    else
+                    {
+                        PdfKaydet(CroppedImage, saveFileDialog.FileName, Format.Jpg);
+                    }
+                }
+            }, parameter => SeçiliResim is not null);
 
             WebAdreseGit = new RelayCommand<object>(parameter => Process.Start(parameter as string), parameter => true);
 
@@ -267,6 +297,73 @@ namespace TwainControl
                 {
                     bw = value;
                     OnPropertyChanged(nameof(Bw));
+                }
+            }
+        }
+
+        public double CropBottom
+        {
+            get => cropBottom; set
+
+            {
+                if (cropBottom != value)
+                {
+                    cropBottom = value;
+                    OnPropertyChanged(nameof(CropBottom));
+                }
+            }
+        }
+
+        public double CropLeft
+        {
+            get => cropLeft; set
+
+            {
+                if (cropLeft != value)
+                {
+                    cropLeft = value;
+                    OnPropertyChanged(nameof(CropLeft));
+                }
+            }
+        }
+
+        public ImageSource CroppedImage
+        {
+            get => croppedImage;
+
+            set
+            {
+                if (croppedImage != value)
+                {
+                    croppedImage = value;
+                    OnPropertyChanged(nameof(CroppedImage));
+                }
+            }
+        }
+
+        public double CropRight
+        {
+            get => cropRight; set
+
+            {
+                if (cropRight != value)
+                {
+                    cropRight = value;
+                    OnPropertyChanged(nameof(CropRight));
+                }
+            }
+        }
+
+        public double CropTop
+        {
+            get => cropTop;
+
+            set
+            {
+                if (cropTop != value)
+                {
+                    cropTop = value;
+                    OnPropertyChanged(nameof(CropTop));
                 }
             }
         }
@@ -350,6 +447,8 @@ namespace TwainControl
         }
 
         public ICommand ResimSil { get; }
+
+        public ICommand SaveCroppedImage { get; }
 
         public ICommand ScanImage { get; }
 
@@ -510,7 +609,7 @@ namespace TwainControl
 
         private ScanSettings DefaultScanSettings()
         {
-            ScanSettings settings = new()
+            return new()
             {
                 UseDocumentFeeder = Settings.Default.Adf,
                 ShowTwainUi = ShowUi,
@@ -519,9 +618,6 @@ namespace TwainControl
                 ShouldTransferAllPages = true,
                 Resolution = new ResolutionSettings()
             };
-            settings.Resolution.Dpi = (int)Settings.Default.Çözünürlük;
-            settings.Rotation = new RotationSettings { AutomaticDeskew = Deskew, AutomaticRotate = AutoRotate, AutomaticBorderDetection = BorderDetect };
-            return settings;
         }
 
         private void Fastscan(object sender, ScanningCompleteEventArgs e)
@@ -591,6 +687,16 @@ namespace TwainControl
                 if (SeperateSave && !AutoSave)
                 {
                     AutoSave = false;
+                }
+            }
+            if (e.PropertyName is "CropLeft" or "CropTop" or "CropRight" or "CropBottom" && SeçiliResim != null)
+            {
+                int height = Math.Abs(((BitmapSource)SeçiliResim).PixelHeight - (int)CropBottom - (int)CropTop);
+                int width = Math.Abs(((BitmapSource)SeçiliResim).PixelWidth - (int)CropRight - (int)CropLeft);
+                Int32Rect sourceRect = new((int)CropLeft, (int)CropTop, width, height);
+                if (sourceRect.HasArea)
+                {
+                    CroppedImage = new CroppedBitmap((BitmapSource)SeçiliResim, sourceRect);
                 }
             }
         }

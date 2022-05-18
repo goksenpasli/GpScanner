@@ -151,7 +151,26 @@
             </Grid>
         </GroupBox>
         <GroupBox Grid.Column="1" Margin="1,0,0,0" Header="EVRAK">
-            <Extensions:ImageViewer Grid.Column="1" OrijinalResimDosyaAçButtonVisibility="Collapsed" Source="{Binding SeçiliResim, Mode=TwoWay}" ToolBarVisibility="Visible" />
+            <Grid>
+                <DockPanel>
+                    <Slider DockPanel.Dock="Left" IsDirectionReversed="True"
+                        Maximum="{Binding SeçiliResim.PixelHeight}"
+                        Orientation="Vertical"
+                        Value="{Binding CropTop}" />
+                    <Slider DockPanel.Dock="Right" Maximum="{Binding SeçiliResim.PixelHeight}" Orientation="Vertical" Value="{Binding CropBottom}" />
+                    <Slider DockPanel.Dock="Top" Maximum="{Binding SeçiliResim.PixelWidth}" Value="{Binding CropLeft}" />
+                    <Slider DockPanel.Dock="Bottom" IsDirectionReversed="True" Maximum="{Binding SeçiliResim.PixelWidth}" Value="{Binding CropRight}" />
+                    <Extensions:ImageViewer Grid.Column="1" Margin="0,0,0,4" OrijinalResimDosyaAçButtonVisibility="Collapsed"
+                        Source="{Binding SeçiliResim}"
+                        ToolBarVisibility="Visible" />
+                </DockPanel>
+                <Expander HorizontalAlignment="Left" VerticalAlignment="Bottom" ExpandDirection="Up">
+                    <StackPanel Width="105">
+                        <Image Width="105" Height="149" Source="{Binding CroppedImage}" />
+                        <Button Command="{Binding SaveCroppedImage}" Content="RESMİ KIRP" />
+                    </StackPanel>
+                </Expander>
+            </Grid>
         </GroupBox>
     </Grid>
 </UserControl>
