@@ -236,8 +236,16 @@ namespace TwainControl
                 {
                     for (int j = 0; j < BoyAdet; j++)
                     {
-                        CroppedBitmap croppedBitmap = new(image, new Int32Rect(j * image.PixelWidth / EnAdet, i * image.PixelHeight / BoyAdet, image.PixelWidth / EnAdet, image.PixelHeight / BoyAdet));
-                        File.WriteAllBytes(Settings.Default.AutoFolder.SetUniqueFile($"{DateTime.Now.ToShortDateString()}Parçalanmış", "jpg"), croppedBitmap.ToTiffJpegByteArray(Format.Jpg));
+                        int x = i * image.PixelWidth / EnAdet;
+                        int y = j * image.PixelHeight / BoyAdet;
+                        int width = image.PixelWidth / EnAdet;
+                        int height = image.PixelHeight / BoyAdet;
+                        Int32Rect sourceRect = new(x, y, width, height);
+                        if (sourceRect.HasArea)
+                        {
+                            CroppedBitmap croppedBitmap = new(image, sourceRect);
+                            File.WriteAllBytes(Settings.Default.AutoFolder.SetUniqueFile($"{DateTime.Now.ToShortDateString()}Parçalanmış", "jpg"), croppedBitmap.ToTiffJpegByteArray(Format.Jpg));
+                        }
                     }
                 }
             }, parameter => CroppedImage is not null && EnAdet > 0 && BoyAdet > 0);

@@ -179,9 +179,9 @@
                             <UniformGrid Margin="1" Columns="2" Rows="4">
                                 <Button Command="{Binding SaveCroppedImage}" Content="RESMİ KIRP" />
                                 <Button Command="{Binding ResetCroppedImage}" Content="SIFIRLA" />
-                                <TextBlock Text="EN ADETİ" VerticalAlignment="Center"/>
+                                <TextBlock VerticalAlignment="Center" Text="EN ADETİ" />
                                 <Extensions:NumericUpDownControl Maximum="{Binding SeçiliResim.PixelWidth}" Minimum="1" SmallChange="1" Value="{Binding EnAdet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <TextBlock Text="BOY ADETİ" VerticalAlignment="Center"/>
+                                <TextBlock VerticalAlignment="Center" Text="BOY ADETİ" />
                                 <Extensions:NumericUpDownControl Maximum="{Binding SeçiliResim.PixelHeight}" Minimum="1" SmallChange="1" Value="{Binding BoyAdet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 <Button Command="{Binding SplitImage}" Content="PARÇALA" />
                             </UniformGrid>
