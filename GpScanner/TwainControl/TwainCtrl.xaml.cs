@@ -232,6 +232,7 @@ namespace TwainControl
             SplitImage = new RelayCommand<object>(parameter =>
             {
                 BitmapSource image = (BitmapSource)CroppedImage;
+                _ = Directory.CreateDirectory($@"{Settings.Default.AutoFolder}\Parçalanmış");
                 for (int i = 0; i < EnAdet; i++)
                 {
                     for (int j = 0; j < BoyAdet; j++)
@@ -244,11 +245,12 @@ namespace TwainControl
                         if (sourceRect.HasArea)
                         {
                             CroppedBitmap croppedBitmap = new(image, sourceRect);
-                            File.WriteAllBytes(Settings.Default.AutoFolder.SetUniqueFile($"{DateTime.Now.ToShortDateString()}Parçalanmış", "jpg"), croppedBitmap.ToTiffJpegByteArray(Format.Jpg));
+                            File.WriteAllBytes($@"{Settings.Default.AutoFolder}\Parçalanmış".SetUniqueFile("Parçalanmış", "jpg"), croppedBitmap.ToTiffJpegByteArray(Format.Jpg));
                         }
                     }
                 }
-            }, parameter => CroppedImage is not null && EnAdet > 0 && BoyAdet > 0);
+                WebAdreseGit.Execute(Settings.Default.AutoFolder);
+            }, parameter => AutoSave && CroppedImage is not null && EnAdet > 0 && BoyAdet > 0);
 
             ResetCroppedImage = new RelayCommand<object>(parameter => ResetCropMargin(), parameter => CroppedImage is not null);
 
