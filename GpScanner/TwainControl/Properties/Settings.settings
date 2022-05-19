@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="Çözünürlük" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">72</Value>
+      <Value Profile="(Default)">150</Value>
     </Setting>
     <Setting Name="AutoFolder" Type="System.String" Scope="User">
       <Value Profile="(Default)" />

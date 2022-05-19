@@ -25,7 +25,7 @@ namespace TwainControl.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("72")]
+        [global::System.Configuration.DefaultSettingValueAttribute("150")]
         public double Çözünürlük {
             get {
                 return ((double)(this["Çözünürlük"]));

@@ -33,6 +33,8 @@ namespace TwainControl
 
         private bool borderDetect;
 
+        private int boyAdet = 1;
+
         private bool? bw = false;
 
         private double cropBottom;
@@ -51,9 +53,9 @@ namespace TwainControl
 
         private bool duplex;
 
-        private int eşik = 160;
+        private int enAdet = 1;
 
-        private ICommand fastScanImage;
+        private int eşik = 160;
 
         private ObservableCollection<BitmapFrame> resimler = new();
 
@@ -209,19 +211,38 @@ namespace TwainControl
 
             SaveCroppedImage = new RelayCommand<object>(parameter =>
             {
-                Microsoft.Win32.SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası(*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası(*.pdf)|*.pdf" };
+                Microsoft.Win32.SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası(*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası(*.pdf)|*.pdf|Jpg Dosyası(*.jpg)|*.jpg" };
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     if (saveFileDialog.FilterIndex == 2)
                     {
                         PdfKaydet(CroppedImage, saveFileDialog.FileName, Format.Tiff);
                     }
-                    else
+                    if (saveFileDialog.FilterIndex == 1)
                     {
                         PdfKaydet(CroppedImage, saveFileDialog.FileName, Format.Jpg);
                     }
+                    if (saveFileDialog.FilterIndex == 3)
+                    {
+                        File.WriteAllBytes(saveFileDialog.FileName, CroppedImage.ToTiffJpegByteArray(Format.Jpg));
+                    }
                 }
             }, parameter => CroppedImage is not null);
+
+            SplitImage = new RelayCommand<object>(parameter =>
+            {
+                BitmapSource image = (BitmapSource)CroppedImage;
+                for (int i = 0; i < EnAdet; i++)
+                {
+                    for (int j = 0; j < BoyAdet; j++)
+                    {
+                        CroppedBitmap croppedBitmap = new(image, new Int32Rect(j * image.PixelWidth / EnAdet, i * image.PixelHeight / BoyAdet, image.PixelWidth / EnAdet, image.PixelHeight / BoyAdet));
+                        File.WriteAllBytes(Settings.Default.AutoFolder.SetUniqueFile($"{DateTime.Now.ToShortDateString()}Parçalanmış", "jpg"), croppedBitmap.ToTiffJpegByteArray(Format.Jpg));
+                    }
+                }
+            }, parameter => CroppedImage is not null && EnAdet > 0 && BoyAdet > 0);
+
+            ResetCroppedImage = new RelayCommand<object>(parameter => ResetCropMargin(), parameter => CroppedImage is not null);
 
             WebAdreseGit = new RelayCommand<object>(parameter => Process.Start(parameter as string), parameter => true);
 
@@ -283,6 +304,21 @@ namespace TwainControl
                 {
                     borderDetect = value;
                     OnPropertyChanged(nameof(BorderDetect));
+                }
+            }
+        }
+
+        public int BoyAdet
+        {
+            get => boyAdet;
+
+            set
+
+            {
+                if (boyAdet != value)
+                {
+                    boyAdet = value;
+                    OnPropertyChanged(nameof(BoyAdet));
                 }
             }
         }
@@ -396,6 +432,20 @@ namespace TwainControl
             }
         }
 
+        public int EnAdet
+        {
+            get => enAdet;
+
+            set
+            {
+                if (enAdet != value)
+                {
+                    enAdet = value;
+                    OnPropertyChanged(nameof(EnAdet));
+                }
+            }
+        }
+
         public int Eşik
         {
             get => eşik;
@@ -412,25 +462,15 @@ namespace TwainControl
 
         public ICommand ExploreFile { get; }
 
-        public ICommand FastScanImage
-        {
-            get => fastScanImage;
-
-            set
-            {
-                if (fastScanImage != value)
-                {
-                    fastScanImage = value;
-                    OnPropertyChanged(nameof(FastScanImage));
-                }
-            }
-        }
+        public ICommand FastScanImage { get; }
 
         public ICommand Kaydet { get; }
 
         public ICommand KayıtYoluBelirle { get; }
 
         public ICommand ListeTemizle { get; }
+
+        public ICommand ResetCroppedImage { get; }
 
         public ObservableCollection<BitmapFrame> Resimler
         {
@@ -537,6 +577,8 @@ namespace TwainControl
                 }
             }
         }
+
+        public ICommand SplitImage { get; }
 
         public bool Tarandı
         {
@@ -676,6 +718,16 @@ namespace TwainControl
             doc.Dispose();
         }
 
+        private void ResetCropMargin()
+        {
+            CropBottom = 0;
+            CropLeft = 0;
+            CropTop = 0;
+            CropRight = 0;
+            EnAdet = 1;
+            BoyAdet = 1;
+        }
+
         private void TwainCtrl_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName is "SeperateSave")
@@ -689,7 +741,7 @@ namespace TwainControl
                     AutoSave = false;
                 }
             }
-            if (e.PropertyName is "CropLeft" or "CropTop" or "CropRight" or "CropBottom" && SeçiliResim != null)
+            if (e.PropertyName is "SeçiliResim" or "CropLeft" or "CropTop" or "CropRight" or "CropBottom" && SeçiliResim != null)
             {
                 int height = Math.Abs(((BitmapSource)SeçiliResim).PixelHeight - (int)CropBottom - (int)CropTop);
                 int width = Math.Abs(((BitmapSource)SeçiliResim).PixelWidth - (int)CropRight - (int)CropLeft);
@@ -697,6 +749,7 @@ namespace TwainControl
                 if (sourceRect.HasArea)
                 {
                     CroppedImage = new CroppedBitmap((BitmapSource)SeçiliResim, sourceRect);
+                    CroppedImage.Freeze();
                 }
             }
         }

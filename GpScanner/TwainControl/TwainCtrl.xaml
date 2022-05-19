@@ -14,7 +14,7 @@
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="330" />
+            <ColumnDefinition Width="290" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <GroupBox Grid.Column="0" Header="KAYNAK SEÇ">
@@ -67,7 +67,11 @@
                         <CheckBox Content="OTOMATİK DÖNDÜR" IsChecked="{Binding AutoRotate}" />
                         <CheckBox Content="HER SAYFAYI AYRI TARA" IsChecked="{Binding SeperateSave}" IsEnabled="{Binding AutoSave}" ToolTip="Her Sayfayı Ayrı Dosyaya Kaydet Dosyalar Aşağıda Belirtilen Klasöre Kaydedilir." />
                         <CheckBox Content="HIZLI TARAMA SONRASI DOSYAYI GÖSTER" IsChecked="{Binding Path=ShowFile, Source={x:Static properties:Settings.Default}}" />
-                        <TextBlock FontWeight="Bold" Foreground="Red" Text="{Binding Path=AutoFolder, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
+                        <TextBlock d:Text="AutoFolder" FontWeight="Bold">
+                            <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="{Binding Path=AutoFolder, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
+                                <Run Text="{Binding Path=AutoFolder, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
+                            </Hyperlink>
+                        </TextBlock>
                         <Button Command="{Binding KayıtYoluBelirle}" Content="OTOMATİK KAYIT YOLU BELİRLE" />
                         <Button Command="{Binding ScanImage}">
                             <StackPanel Orientation="Horizontal">
@@ -145,7 +149,7 @@
                 <UniformGrid Grid.Row="3" Columns="2" Rows="2">
                     <Button Command="{Binding Tümünükaydet}" Content="TÜMÜNÜ PDF KAYDET" />
                     <Button Command="{Binding Seçilikaydet}" Content="SEÇİLİLERİ PDF KAYDET" />
-                    <Button Background="Red" Command="{Binding ListeTemizle}" Content="TÜM TARANANLARI TEMİZLE" />
+                    <Button Background="Red" Command="{Binding ListeTemizle}" Content="TARANANLARI TEMİZLE" />
                     <Button Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/goksenpasli" Content="HAKKINDA" />
                 </UniformGrid>
             </Grid>
@@ -153,22 +157,36 @@
         <GroupBox Grid.Column="1" Margin="1,0,0,0" Header="EVRAK">
             <Grid>
                 <DockPanel>
-                    <Slider DockPanel.Dock="Left" IsDirectionReversed="True"
+                    <Slider Margin="0,23,0,23" DockPanel.Dock="Left" IsDirectionReversed="True"
                         Maximum="{Binding SeçiliResim.PixelHeight}"
-                        Orientation="Vertical"
+                        Orientation="Vertical" TickPlacement="BottomRight"
                         Value="{Binding CropTop}" />
-                    <Slider DockPanel.Dock="Right" Maximum="{Binding SeçiliResim.PixelHeight}" Orientation="Vertical" Value="{Binding CropBottom}" />
-                    <Slider DockPanel.Dock="Top" Maximum="{Binding SeçiliResim.PixelWidth}" Value="{Binding CropLeft}" />
-                    <Slider DockPanel.Dock="Bottom" IsDirectionReversed="True" Maximum="{Binding SeçiliResim.PixelWidth}" Value="{Binding CropRight}" />
-                    <Extensions:ImageViewer Grid.Column="1" Margin="0,0,0,4" OrijinalResimDosyaAçButtonVisibility="Collapsed"
-                        Source="{Binding SeçiliResim}"
-                        ToolBarVisibility="Visible" />
+                    <Slider Margin="0,0,0,23" DockPanel.Dock="Right"
+                        Maximum="{Binding SeçiliResim.PixelHeight}"
+                        Orientation="Vertical" TickPlacement="TopLeft"
+                        Value="{Binding CropBottom}" />
+                    <Slider DockPanel.Dock="Top" Maximum="{Binding SeçiliResim.PixelWidth}" TickPlacement="BottomRight" Value="{Binding CropLeft}" />
+                    <Slider Margin="0,0,0,0" DockPanel.Dock="Bottom" IsDirectionReversed="True"
+                        Maximum="{Binding SeçiliResim.PixelWidth}"
+                        TickPlacement="TopLeft"
+                        Value="{Binding CropRight}" />
+                    <Extensions:ImageViewer Grid.Column="1" OrijinalResimDosyaAçButtonVisibility="Collapsed" Source="{Binding SeçiliResim}" ToolBarVisibility="Visible" />
                 </DockPanel>
                 <Expander HorizontalAlignment="Left" VerticalAlignment="Bottom" ExpandDirection="Up">
-                    <StackPanel Width="105">
-                        <Image Width="105" Height="149" Source="{Binding CroppedImage}" />
-                        <Button Command="{Binding SaveCroppedImage}" Content="RESMİ KIRP" />
-                    </StackPanel>
+                    <Border Background="White" BorderBrush="Black" BorderThickness="1" CornerRadius="1">
+                        <StackPanel Width="140">
+                            <Image Width="140" Height="198" Source="{Binding CroppedImage}" />
+                            <UniformGrid Margin="1" Columns="2" Rows="4">
+                                <Button Command="{Binding SaveCroppedImage}" Content="RESMİ KIRP" />
+                                <Button Command="{Binding ResetCroppedImage}" Content="SIFIRLA" />
+                                <TextBlock Text="EN ADETİ" VerticalAlignment="Center"/>
+                                <Extensions:NumericUpDownControl Maximum="{Binding SeçiliResim.PixelWidth}" Minimum="1" SmallChange="1" Value="{Binding EnAdet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock Text="BOY ADETİ" VerticalAlignment="Center"/>
+                                <Extensions:NumericUpDownControl Maximum="{Binding SeçiliResim.PixelHeight}" Minimum="1" SmallChange="1" Value="{Binding BoyAdet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <Button Command="{Binding SplitImage}" Content="PARÇALA" />
+                            </UniformGrid>
+                        </StackPanel>
+                    </Border>
                 </Expander>
             </Grid>
         </GroupBox>
