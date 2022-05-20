@@ -18,14 +18,14 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <GroupBox Grid.Column="0" Header="KAYNAK SEÇ">
-            <Grid IsEnabled="{Binding ArayüzEtkin}">
+            <Grid IsEnabled="{Binding Scanner.ArayüzEtkin}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <ComboBox Grid.Row="0" ItemsSource="{Binding Tarayıcılar}" SelectedItem="{Binding SeçiliTarayıcı, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <ComboBox Grid.Row="0" ItemsSource="{Binding Scanner.Tarayıcılar}" SelectedItem="{Binding Scanner.SeçiliTarayıcı, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
@@ -56,16 +56,44 @@
                             Value="{Binding Path=Çözünürlük, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                         <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="255"
                             Minimum="1" SmallChange="1" ToolTip="SİYAH BEYAZ EŞİK DEĞERİ"
-                            Value="{Binding Eşik, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            Value="{Binding Scanner.Eşik, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <CheckBox Content="BESLEYİCİ" IsChecked="{Binding Path=Adf, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                        <CheckBox Content="SİYAH BEYAZ TARA" IsChecked="{Binding Bw}" IsThreeState="True" ToolTip="İşaretli: Siyah Beyaz(En Az Boyut)&#xA;İşaretsiz: Renkli(En Çok Boyut)&#xA;Yarısı İşaretli: Gri(Orta Boyut)" />
-                        <CheckBox Content="İKİ YÖNLÜ TARAMA" IsChecked="{Binding Duplex}" />
-                        <CheckBox Content="EĞRİLİK DÜZELT" IsChecked="{Binding Deskew}" />
-                        <CheckBox Content="ARAYÜZ GÖSTER" IsChecked="{Binding ShowUi}" />
-                        <CheckBox Content="OTOMATİK KENAR TESPİTİ" IsChecked="{Binding BorderDetect}" />
-                        <CheckBox Content="YÜZDE GÖSTER" IsChecked="{Binding ShowProgress}" />
-                        <CheckBox Content="OTOMATİK DÖNDÜR" IsChecked="{Binding AutoRotate}" />
-                        <CheckBox Content="HER SAYFAYI AYRI TARA" IsChecked="{Binding SeperateSave}" IsEnabled="{Binding AutoSave}" ToolTip="Her Sayfayı Ayrı Dosyaya Kaydet Dosyalar Aşağıda Belirtilen Klasöre Kaydedilir." />
+                        <ListBox Background="{x:Null}" BorderBrush="{x:Null}" SelectedIndex="{Binding Path=Mode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                            <ListBox.Resources>
+                                <Style TargetType="{x:Type ListBoxItem}">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate>
+                                                <RadioButton VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                                    Content="{TemplateBinding ContentPresenter.Content}"
+                                                    IsChecked="{Binding Path=IsSelected, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListBox.Resources>
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Columns="3" />
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                            <ListBoxItem HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                Content="SİYAH BEYAZ" />
+                            <ListBoxItem HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                Content="GRİ" />
+                            <ListBoxItem HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                Content="RENKLİ" />
+                        </ListBox>
+                        <CheckBox Content="İKİ YÖNLÜ TARAMA" IsChecked="{Binding Scanner.Duplex}" />
+                        <CheckBox Content="EĞRİLİK DÜZELT" IsChecked="{Binding Scanner.Deskew}" />
+                        <CheckBox Content="ARAYÜZ GÖSTER" IsChecked="{Binding Scanner.ShowUi}" />
+                        <CheckBox Content="OTOMATİK KENAR TESPİTİ" IsChecked="{Binding Scanner.BorderDetect}" />
+                        <CheckBox Content="YÜZDE GÖSTER" IsChecked="{Binding Scanner.ShowProgress}" />
+                        <CheckBox Content="OTOMATİK DÖNDÜR" IsChecked="{Binding Scanner.AutoRotate}" />
+                        <CheckBox Content="HER SAYFAYI AYRI TARA"
+                            IsChecked="{Binding Scanner.SeperateSave}"
+                            IsEnabled="{Binding Scanner.AutoSave}"
+                            ToolTip="Her Sayfayı Ayrı Dosyaya Kaydet Dosyalar Aşağıda Belirtilen Klasöre Kaydedilir." />
                         <CheckBox Content="HIZLI TARAMA SONRASI DOSYAYI GÖSTER" IsChecked="{Binding Path=ShowFile, Source={x:Static properties:Settings.Default}}" />
                         <TextBlock d:Text="AutoFolder" FontWeight="Bold">
                             <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="{Binding Path=AutoFolder, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
@@ -86,34 +114,27 @@
                                 <TextBlock VerticalAlignment="Center" Text="TARA" />
                             </StackPanel>
                         </Button>
-                        <UniformGrid Columns="2">
-                            <ComboBox SelectedIndex="{Binding DefaultScanFormat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
-                                <ComboBoxItem Content="JPG" />
-                                <ComboBoxItem Content="PDF RENKLİ" />
-                                <ComboBoxItem Content="PDF SİYAH BEYAZ" />
-                            </ComboBox>
-                            <Button Command="{Binding FastScanImage}">
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Imageres.dll" />
-                                                <Binding Source="90" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                    <TextBlock VerticalAlignment="Center" Text="HIZLI TARA" />
-                                </StackPanel>
-                            </Button>
-                        </UniformGrid>
+                        <Button Command="{Binding FastScanImage}">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Imageres.dll" />
+                                            <Binding Source="90" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock VerticalAlignment="Center" Text="HIZLI TARA" />
+                            </StackPanel>
+                        </Button>
                     </UniformGrid>
                 </GroupBox>
                 <ListBox x:Name="LbResimler"
                     Grid.Row="2"
-                    Extensions:ListBoxHelper.SelectedItems="{Binding SeçiliResimler}"
+                    Extensions:ListBoxHelper.SelectedItems="{Binding Scanner.SeçiliResimler}"
                     d:ItemsSource="{d:SampleData ItemCount=5}"
-                    ItemsSource="{Binding Resimler, Mode=OneWay}"
-                    SelectedItem="{Binding SeçiliResim}"
+                    ItemsSource="{Binding Scanner.Resimler, Mode=OneWay}"
+                    SelectedItem="{Binding Scanner.SeçiliResim}"
                     SelectionMode="Extended">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -129,7 +150,8 @@
                                         </Hyperlink>
                                     </TextBlock>
                                 </StackPanel>
-                                <Image Width="63" Height="89" RenderOptions.BitmapScalingMode="NearestNeighbor" Source="{Binding Thumbnail, Mode=OneWay}" />
+                                <Image Width="63" Height="89" RenderOptions.BitmapScalingMode="NearestNeighbor"
+                                    Source="{Binding Thumbnail, Mode=OneWay}" />
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -158,31 +180,41 @@
             <Grid>
                 <DockPanel>
                     <Slider Margin="0,23,0,23" DockPanel.Dock="Left" IsDirectionReversed="True"
-                        Maximum="{Binding SeçiliResim.PixelHeight}"
+                        Maximum="{Binding Scanner.SeçiliResim.PixelHeight}"
                         Orientation="Vertical" TickPlacement="BottomRight"
-                        Value="{Binding CropTop}" />
+                        Value="{Binding Scanner.CropTop}" />
                     <Slider Margin="0,0,0,23" DockPanel.Dock="Right"
-                        Maximum="{Binding SeçiliResim.PixelHeight}"
+                        Maximum="{Binding Scanner.SeçiliResim.PixelHeight}"
                         Orientation="Vertical" TickPlacement="TopLeft"
-                        Value="{Binding CropBottom}" />
-                    <Slider DockPanel.Dock="Top" Maximum="{Binding SeçiliResim.PixelWidth}" TickPlacement="BottomRight" Value="{Binding CropLeft}" />
+                        Value="{Binding Scanner.CropBottom}" />
+                    <Slider DockPanel.Dock="Top"
+                        Maximum="{Binding Scanner.SeçiliResim.PixelWidth}"
+                        TickPlacement="BottomRight"
+                        Value="{Binding Scanner.CropLeft}" />
                     <Slider Margin="0,0,0,0" DockPanel.Dock="Bottom" IsDirectionReversed="True"
-                        Maximum="{Binding SeçiliResim.PixelWidth}"
+                        Maximum="{Binding Scanner.SeçiliResim.PixelWidth}"
                         TickPlacement="TopLeft"
-                        Value="{Binding CropRight}" />
-                    <Extensions:ImageViewer Grid.Column="1" OrijinalResimDosyaAçButtonVisibility="Collapsed" Source="{Binding SeçiliResim}" ToolBarVisibility="Visible" />
+                        Value="{Binding Scanner.CropRight}" />
+                    <Extensions:ImageViewer Grid.Column="1" OrijinalResimDosyaAçButtonVisibility="Collapsed"
+                        Source="{Binding Scanner.SeçiliResim}"
+                        ToolBarVisibility="Visible" />
                 </DockPanel>
                 <Expander HorizontalAlignment="Left" VerticalAlignment="Bottom" ExpandDirection="Up">
-                    <Border Background="White" BorderBrush="Black" BorderThickness="1" CornerRadius="1">
+                    <Border Background="White" BorderBrush="Black" BorderThickness="1"
+                        CornerRadius="1">
                         <StackPanel Width="140">
-                            <Image Width="140" Height="198" Source="{Binding CroppedImage}" />
+                            <Image Width="140" Height="198" Source="{Binding Scanner.CroppedImage}" />
                             <UniformGrid Margin="1" Columns="2" Rows="4">
                                 <Button Command="{Binding SaveCroppedImage}" Content="RESMİ KIRP" />
                                 <Button Command="{Binding ResetCroppedImage}" Content="SIFIRLA" />
                                 <TextBlock VerticalAlignment="Center" Text="EN ADETİ" />
-                                <Extensions:NumericUpDownControl Maximum="{Binding SeçiliResim.PixelWidth}" Minimum="1" SmallChange="1" Value="{Binding EnAdet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <Extensions:NumericUpDownControl Maximum="{Binding Scanner.SeçiliResim.PixelWidth}"
+                                    Minimum="1" SmallChange="1"
+                                    Value="{Binding Scanner.EnAdet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 <TextBlock VerticalAlignment="Center" Text="BOY ADETİ" />
-                                <Extensions:NumericUpDownControl Maximum="{Binding SeçiliResim.PixelHeight}" Minimum="1" SmallChange="1" Value="{Binding BoyAdet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <Extensions:NumericUpDownControl Maximum="{Binding Scanner.SeçiliResim.PixelHeight}"
+                                    Minimum="1" SmallChange="1"
+                                    Value="{Binding Scanner.BoyAdet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 <Button Command="{Binding SplitImage}" Content="PARÇALA" />
                             </UniformGrid>
                         </StackPanel>

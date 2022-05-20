@@ -25,7 +25,10 @@
                 <Viewbox Stretch="Fill">
                     <Calendar SelectedDate="{Binding SeçiliGün}" />
                 </Viewbox>
-                <ListBox Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" IsSynchronizedWithCurrentItem="False" ItemsSource="{Binding Mode=OneWay, Source={StaticResource Veriler}}">
+                <ListBox Grid.Row="1"
+                    d:ItemsSource="{d:SampleData ItemCount=5}"
+                    IsSynchronizedWithCurrentItem="False"
+                    ItemsSource="{Binding Mode=OneWay, Source={StaticResource Veriler}}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock>

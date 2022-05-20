@@ -73,6 +73,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="Scanner.cs" />
     <Compile Include="TwainCtrl.xaml.cs">
       <DependentUpon>TwainCtrl.xaml</DependentUpon>
       <SubType>Code</SubType>
