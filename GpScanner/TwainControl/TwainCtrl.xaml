@@ -10,6 +10,7 @@
     d:DesignHeight="600" d:DesignWidth="800" Loaded="UserControl_Loaded"
     UseLayoutRounding="True" mc:Ignorable="d">
     <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
     </UserControl.Resources>
     <Grid>
@@ -29,7 +30,7 @@
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <Image Width="16" Height="16">
+                                <Image Width="32" Height="32">
                                     <Image.Source>
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                             <Binding Source="Imageres.dll" />
@@ -43,13 +44,13 @@
                     </ComboBox.ItemTemplate>
                 </ComboBox>
                 <GroupBox Grid.Row="1" Header="AYARLAR">
-                    <UniformGrid Columns="1">
-                        <UniformGrid.Resources>
+                    <StackPanel>
+                        <StackPanel.Resources>
                             <Style BasedOn="{StaticResource {x:Type CheckBox}}" TargetType="CheckBox">
                                 <Setter Property="VerticalAlignment" Value="Center" />
                                 <Setter Property="VerticalContentAlignment" Value="Center" />
                             </Style>
-                        </UniformGrid.Resources>
+                        </StackPanel.Resources>
                         <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="600"
                             Minimum="72" SmallChange="1" Ticks="72,96,120,150,200,300,450,600"
                             ToolTip="ÇÖZÜNÜRLÜK"
@@ -57,7 +58,14 @@
                         <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="255"
                             Minimum="1" SmallChange="1" ToolTip="SİYAH BEYAZ EŞİK DEĞERİ"
                             Value="{Binding Scanner.Eşik, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <CheckBox Content="BESLEYİCİ" IsChecked="{Binding Path=Adf, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                        <CheckBox IsChecked="{Binding Path=Adf, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                            <CheckBox.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" Text="BESLEYİCİ" />
+                                    <Image Source="/TwainControl;component/adf.png" Visibility="{Binding Path=Adf, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                                </StackPanel>
+                            </CheckBox.Content>
+                        </CheckBox>
                         <ListBox Background="{x:Null}" BorderBrush="{x:Null}" SelectedIndex="{Binding Path=Mode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                             <ListBox.Resources>
                                 <Style TargetType="{x:Type ListBoxItem}">
@@ -77,57 +85,87 @@
                                     <UniformGrid Columns="3" />
                                 </ItemsPanelTemplate>
                             </ListBox.ItemsPanel>
-                            <ListBoxItem HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                Content="SİYAH BEYAZ" />
-                            <ListBoxItem HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                Content="GRİ" />
-                            <ListBoxItem HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                Content="RENKLİ" />
+                            <ListBoxItem HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center">
+                                <StackPanel>
+                                    <TextBlock Text="SİYAH BEYAZ" />
+                                    <Image Width="48" Height="48" Source="/TwainControl;component/bw.png" />
+                                </StackPanel>
+                            </ListBoxItem>
+                            <ListBoxItem HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center">
+                                <StackPanel>
+                                    <TextBlock HorizontalAlignment="Center" Text="GRİ" />
+                                    <Image Width="48" Height="48" Source="/TwainControl;component/gray.png" />
+                                </StackPanel>
+                            </ListBoxItem>
+                            <ListBoxItem HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center">
+                                <StackPanel>
+                                    <TextBlock HorizontalAlignment="Center" Text="RENKLİ" />
+                                    <Image Width="48" Height="48" Source="/TwainControl;component/color.png" />
+                                </StackPanel>
+                            </ListBoxItem>
                         </ListBox>
                         <CheckBox Content="İKİ YÖNLÜ TARAMA" IsChecked="{Binding Scanner.Duplex}" />
-                        <CheckBox Content="EĞRİLİK DÜZELT" IsChecked="{Binding Scanner.Deskew}" />
                         <CheckBox Content="ARAYÜZ GÖSTER" IsChecked="{Binding Scanner.ShowUi}" />
-                        <CheckBox Content="OTOMATİK KENAR TESPİTİ" IsChecked="{Binding Scanner.BorderDetect}" />
-                        <CheckBox Content="YÜZDE GÖSTER" IsChecked="{Binding Scanner.ShowProgress}" />
-                        <CheckBox Content="OTOMATİK DÖNDÜR" IsChecked="{Binding Scanner.AutoRotate}" />
                         <CheckBox Content="HER SAYFAYI AYRI TARA"
                             IsChecked="{Binding Scanner.SeperateSave}"
                             IsEnabled="{Binding Scanner.AutoSave}"
                             ToolTip="Her Sayfayı Ayrı Dosyaya Kaydet Dosyalar Aşağıda Belirtilen Klasöre Kaydedilir." />
                         <CheckBox Content="HIZLI TARAMA SONRASI DOSYAYI GÖSTER" IsChecked="{Binding Path=ShowFile, Source={x:Static properties:Settings.Default}}" />
+                        <Expander Header="DİĞER AYARLAR">
+                            <StackPanel>
+                                <CheckBox Content="EĞRİLİK DÜZELT" IsChecked="{Binding Scanner.Deskew}" />
+                                <CheckBox Content="OTOMATİK KENAR TESPİTİ" IsChecked="{Binding Scanner.BorderDetect}" />
+                                <CheckBox Content="YÜZDE GÖSTER" IsChecked="{Binding Scanner.ShowProgress}" />
+                                <CheckBox Content="OTOMATİK DÖNDÜR" IsChecked="{Binding Scanner.AutoRotate}" />
+                            </StackPanel>
+                        </Expander>
                         <TextBlock d:Text="AutoFolder" FontWeight="Bold">
                             <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="{Binding Path=AutoFolder, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
                                 <Run Text="{Binding Path=AutoFolder, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
                             </Hyperlink>
                         </TextBlock>
-                        <Button Command="{Binding KayıtYoluBelirle}" Content="OTOMATİK KAYIT YOLU BELİRLE" />
-                        <Button Command="{Binding ScanImage}">
+                        <Button Command="{Binding KayıtYoluBelirle}">
                             <StackPanel Orientation="Horizontal">
-                                <Image Width="16" Height="16">
+                                <Image Width="32" Height="32">
                                     <Image.Source>
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Imageres.dll" />
-                                            <Binding Source="90" />
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="4" />
                                         </MultiBinding>
                                     </Image.Source>
                                 </Image>
-                                <TextBlock VerticalAlignment="Center" Text="TARA" />
+                                <TextBlock VerticalAlignment="Center" Text="OTOMATİK KAYIT YOLU BELİRLE" />
                             </StackPanel>
                         </Button>
-                        <Button Command="{Binding FastScanImage}">
-                            <StackPanel Orientation="Horizontal">
-                                <Image Width="16" Height="16">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Imageres.dll" />
-                                            <Binding Source="90" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                                <TextBlock VerticalAlignment="Center" Text="HIZLI TARA" />
-                            </StackPanel>
-                        </Button>
-                    </UniformGrid>
+                        <UniformGrid Columns="2">
+                            <Button Command="{Binding ScanImage}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="32" Height="32">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Imageres.dll" />
+                                                <Binding Source="90" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock VerticalAlignment="Center" Text="TARA" />
+                                </StackPanel>
+                            </Button>
+                            <Button Command="{Binding FastScanImage}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="32" Height="32">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Imageres.dll" />
+                                                <Binding Source="90" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock VerticalAlignment="Center" Text="HIZLI TARA" />
+                                </StackPanel>
+                            </Button>
+                        </UniformGrid>
+                    </StackPanel>
                 </GroupBox>
                 <ListBox x:Name="LbResimler"
                     Grid.Row="2"

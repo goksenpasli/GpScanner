@@ -1,6 +1,7 @@
 ﻿using Extensions;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
+using PdfSharp;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,10 +9,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using TwainControl.Properties;
 using TwainWpf;
@@ -69,33 +68,28 @@ namespace TwainControl
                     Microsoft.Win32.SaveFileDialog saveFileDialog = new() { Filter = "Tif Resmi (*.tif)|*.tif|Jpg Resmi(*.jpg)|*.jpg|Pdf Dosyası(*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası(*.pdf)|*.pdf" };
                     if (saveFileDialog.ShowDialog() == true)
                     {
-                        switch (saveFileDialog.FilterIndex)
+                        if (saveFileDialog.FilterIndex == 1)
                         {
-                            case 1:
-                                switch ((ColourSetting)Settings.Default.Mode)
-                                {
-                                    case ColourSetting.BlackAndWhite:
-                                        File.WriteAllBytes(saveFileDialog.FileName, resim.ToTiffJpegByteArray(Format.Tiff));
-                                        break;
-
-                                    case ColourSetting.Colour:
-                                    case ColourSetting.GreyScale:
-                                        File.WriteAllBytes(saveFileDialog.FileName, resim.ToTiffJpegByteArray(Format.TiffRenkli));
-                                        break;
-                                }
-                                break;
-
-                            case 2:
-                                File.WriteAllBytes(saveFileDialog.FileName, resim.ToTiffJpegByteArray(Format.Jpg));
-                                break;
-
-                            case 3:
-                                PdfKaydet(resim, saveFileDialog.FileName, Format.Jpg);
-                                break;
-
-                            case 4:
-                                PdfKaydet(resim, saveFileDialog.FileName, Format.Tiff);
-                                break;
+                            if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
+                            {
+                                File.WriteAllBytes(saveFileDialog.FileName, resim.ToTiffJpegByteArray(Format.Tiff));
+                            }
+                            else if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
+                            {
+                                File.WriteAllBytes(saveFileDialog.FileName, resim.ToTiffJpegByteArray(Format.TiffRenkli));
+                            }
+                        }
+                        else if (saveFileDialog.FilterIndex == 2)
+                        {
+                            File.WriteAllBytes(saveFileDialog.FileName, resim.ToTiffJpegByteArray(Format.Jpg));
+                        }
+                        else if (saveFileDialog.FilterIndex == 3)
+                        {
+                            PdfKaydet(resim, saveFileDialog.FileName, Format.Jpg);
+                        }
+                        else if (saveFileDialog.FilterIndex == 4)
+                        {
+                            PdfKaydet(resim, saveFileDialog.FileName, Format.Tiff);
                         }
                     }
                 }
@@ -160,11 +154,11 @@ namespace TwainControl
                 {
                     if (saveFileDialog.FilterIndex == 2)
                     {
-                        PdfKaydet(Scanner.CroppedImage, saveFileDialog.FileName, Format.Tiff);
+                        PdfKaydet((BitmapSource)Scanner.CroppedImage, saveFileDialog.FileName, Format.Tiff);
                     }
                     if (saveFileDialog.FilterIndex == 1)
                     {
-                        PdfKaydet(Scanner.CroppedImage, saveFileDialog.FileName, Format.Jpg);
+                        PdfKaydet((BitmapSource)Scanner.CroppedImage, saveFileDialog.FileName, Format.Jpg);
                     }
                     if (saveFileDialog.FilterIndex == 3)
                     {
@@ -193,8 +187,8 @@ namespace TwainControl
                         }
                     }
                 }
-                WebAdreseGit.Execute(Settings.Default.AutoFolder);
-            }, parameter => Scanner.AutoSave && Scanner.CroppedImage is not null && Scanner.EnAdet > 0 && Scanner.BoyAdet > 0);
+                WebAdreseGit.Execute($@"{Settings.Default.AutoFolder}\Parçalanmış");
+            }, parameter => Scanner.AutoSave && Scanner.CroppedImage is not null && (Scanner.EnAdet > 1 || Scanner.BoyAdet > 1));
 
             ResetCroppedImage = new RelayCommand<object>(parameter => ResetCropMargin(), parameter => Scanner.CroppedImage is not null);
 
@@ -271,6 +265,15 @@ namespace TwainControl
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        private static void DefaultPdfCompression(PdfDocument doc)
+        {
+            doc.Options.FlateEncodeMode = PdfFlateEncodeMode.BestCompression;
+            doc.Options.CompressContentStreams = true;
+            doc.Options.UseFlateDecoderForJpegImages = PdfUseFlateDecoderForJpegImages.Automatic;
+            doc.Options.NoCompression = false;
+            doc.Options.EnableCcittCompressionForBilevelImages = true;
+        }
+
         private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName is "AutoFolder")
@@ -300,7 +303,7 @@ namespace TwainControl
             {
                 PdfKaydet(Scanner.Resimler, pdffile, Format.Tiff);
             }
-            if ((ColourSetting)Settings.Default.Mode == ColourSetting.Colour || (ColourSetting)Settings.Default.Mode == ColourSetting.GreyScale)
+            if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
             {
                 PdfKaydet(Scanner.Resimler, pdffile, Format.Jpg);
             }
@@ -312,37 +315,49 @@ namespace TwainControl
             OnPropertyChanged(nameof(Scanner.Tarandı));
         }
 
-        private void PdfKaydet(ImageSource bitmapframe, string dosyayolu, Format format)
+        private void PdfKaydet(BitmapSource bitmapframe, string dosyayolu, Format format)
         {
-            Document doc = new(new Rectangle(((BitmapSource)bitmapframe).PixelWidth, ((BitmapSource)bitmapframe).PixelHeight), 0, 0, 0, 0);
-            using FileStream fs = new(dosyayolu, FileMode.Create);
-            using PdfWriter writer = PdfWriter.GetInstance(doc, fs);
-            writer.SetPdfVersion(PdfWriter.PDF_VERSION_1_5);
-            writer.CompressionLevel = PdfStream.BEST_COMPRESSION;
-            writer.SetFullCompression();
-            doc.Open();
-            Image pdfImage = Image.GetInstance(((BitmapSource)bitmapframe).ToTiffJpegByteArray(format));
-            _ = doc.Add(pdfImage);
-            doc.Close();
-            doc.Dispose();
+            using (PdfDocument document = new())
+            {
+                PdfPage page = document.AddPage();
+                using (XGraphics gfx = XGraphics.FromPdfPage(page))
+                {
+                    using (MemoryStream ms = new(bitmapframe.ToTiffJpegByteArray(format)))
+                    {
+                        using (XImage xImage = XImage.FromStream(ms))
+                        {
+                            XSize size = PageSizeConverter.ToSize(PageSize.A4);
+                            gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
+                        }
+                    }
+                }
+                DefaultPdfCompression(document);
+                document.Save(dosyayolu);
+            }
         }
 
         private void PdfKaydet(IList<BitmapFrame> bitmapFrames, string dosyayolu, Format format)
         {
-            Document doc = new(new Rectangle((float)bitmapFrames.FirstOrDefault()?.PixelWidth, (float)bitmapFrames.FirstOrDefault()?.PixelHeight), 0, 0, 0, 0);
-            using FileStream fs = new(dosyayolu, FileMode.Create);
-            using PdfWriter writer = PdfWriter.GetInstance(doc, fs);
-            writer.SetPdfVersion(PdfWriter.PDF_VERSION_1_5);
-            writer.CompressionLevel = PdfStream.BEST_COMPRESSION;
-            writer.SetFullCompression();
-            doc.Open();
-            for (int i = 0; i < bitmapFrames.Count; i++)
+            using (PdfDocument document = new())
             {
-                _ = doc.Add(Image.GetInstance(bitmapFrames[i].ToTiffJpegByteArray(format)));
+                for (int i = 0; i < bitmapFrames.Count; i++)
+                {
+                    PdfPage page = document.AddPage();
+                    using (XGraphics gfx = XGraphics.FromPdfPage(page))
+                    {
+                        using (MemoryStream ms = new(bitmapFrames[i].ToTiffJpegByteArray(format)))
+                        {
+                            using (XImage xImage = XImage.FromStream(ms))
+                            {
+                                XSize size = PageSizeConverter.ToSize(PageSize.A4);
+                                gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
+                            }
+                        }
+                    }
+                }
+                DefaultPdfCompression(document);
+                document.Save(dosyayolu);
             }
-
-            doc.Close();
-            doc.Dispose();
         }
 
         private void ResetCropMargin()
@@ -409,19 +424,17 @@ namespace TwainControl
                         BitmapSource evrak = null;
                         const float mmpi = 25.4f;
                         double dpi = Settings.Default.Çözünürlük;
-                        switch ((ColourSetting)Settings.Default.Mode)
+                        if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
                         {
-                            case ColourSetting.BlackAndWhite:
-                                evrak = bmp.ConvertBlackAndWhite(Scanner.Eşik).ToBitmapImage(ImageFormat.Tiff, SystemParameters.PrimaryScreenHeight).Resize(210 / mmpi * dpi, 297 / mmpi * dpi);
-                                break;
-
-                            case ColourSetting.GreyScale:
-                                evrak = bmp.ConvertBlackAndWhite(Scanner.Eşik, true).ToBitmapImage(ImageFormat.Jpeg, SystemParameters.PrimaryScreenHeight).Resize(210 / mmpi * dpi, 297 / mmpi * dpi);
-                                break;
-
-                            case ColourSetting.Colour:
-                                evrak = bmp.ToBitmapImage(ImageFormat.Jpeg, SystemParameters.PrimaryScreenHeight).Resize(210 / mmpi * dpi, 297 / mmpi * dpi);
-                                break;
+                            evrak = bmp.ConvertBlackAndWhite(Scanner.Eşik).ToBitmapImage(ImageFormat.Tiff, SystemParameters.PrimaryScreenHeight).Resize(210 / mmpi * dpi, 297 / mmpi * dpi);
+                        }
+                        else if ((ColourSetting)Settings.Default.Mode == ColourSetting.GreyScale)
+                        {
+                            evrak = bmp.ConvertBlackAndWhite(Scanner.Eşik, true).ToBitmapImage(ImageFormat.Jpeg, SystemParameters.PrimaryScreenHeight).Resize(210 / mmpi * dpi, 297 / mmpi * dpi);
+                        }
+                        else if ((ColourSetting)Settings.Default.Mode == ColourSetting.Colour)
+                        {
+                            evrak = bmp.ToBitmapImage(ImageFormat.Jpeg, SystemParameters.PrimaryScreenHeight).Resize(210 / mmpi * dpi, 297 / mmpi * dpi);
                         }
 
                         evrak.Freeze();
