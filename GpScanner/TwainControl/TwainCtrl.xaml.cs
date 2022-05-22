@@ -1,4 +1,5 @@
 ﻿using Extensions;
+using Microsoft.Win32;
 using PdfSharp;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
@@ -7,10 +8,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using TwainControl.Properties;
 using TwainWpf;
@@ -65,7 +68,7 @@ namespace TwainControl
             {
                 if (parameter is BitmapFrame resim)
                 {
-                    Microsoft.Win32.SaveFileDialog saveFileDialog = new() { Filter = "Tif Resmi (*.tif)|*.tif|Jpg Resmi(*.jpg)|*.jpg|Pdf Dosyası(*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası(*.pdf)|*.pdf" };
+                    SaveFileDialog saveFileDialog = new() { Filter = "Tif Resmi (*.tif)|*.tif|Jpg Resmi(*.jpg)|*.jpg|Pdf Dosyası(*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası(*.pdf)|*.pdf" };
                     if (saveFileDialog.ShowDialog() == true)
                     {
                         if (saveFileDialog.FilterIndex == 1)
@@ -97,7 +100,7 @@ namespace TwainControl
 
             Tümünükaydet = new RelayCommand<object>(parameter =>
             {
-                Microsoft.Win32.SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası(*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası(*.pdf)|*.pdf" };
+                SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası(*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası(*.pdf)|*.pdf" };
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     if (saveFileDialog.FilterIndex == 2)
@@ -125,7 +128,7 @@ namespace TwainControl
 
             Seçilikaydet = new RelayCommand<object>(parameter =>
             {
-                Microsoft.Win32.SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası(*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası(*.pdf)|*.pdf" };
+                SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası(*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası(*.pdf)|*.pdf" };
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     if (saveFileDialog.FilterIndex == 2)
@@ -149,23 +152,23 @@ namespace TwainControl
 
             SaveCroppedImage = new RelayCommand<object>(parameter =>
             {
-                Microsoft.Win32.SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası(*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası(*.pdf)|*.pdf|Jpg Dosyası(*.jpg)|*.jpg" };
+                SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası(*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası(*.pdf)|*.pdf|Jpg Dosyası(*.jpg)|*.jpg" };
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    if (saveFileDialog.FilterIndex == 2)
-                    {
-                        PdfKaydet((BitmapSource)Scanner.CroppedImage, saveFileDialog.FileName, Format.Tiff);
-                    }
                     if (saveFileDialog.FilterIndex == 1)
                     {
                         PdfKaydet((BitmapSource)Scanner.CroppedImage, saveFileDialog.FileName, Format.Jpg);
+                    }
+                    if (saveFileDialog.FilterIndex == 2)
+                    {
+                        PdfKaydet((BitmapSource)Scanner.CroppedImage, saveFileDialog.FileName, Format.Tiff);
                     }
                     if (saveFileDialog.FilterIndex == 3)
                     {
                         File.WriteAllBytes(saveFileDialog.FileName, Scanner.CroppedImage.ToTiffJpegByteArray(Format.Jpg));
                     }
                 }
-            }, parameter => Scanner.CroppedImage is not null);
+            }, parameter => Scanner.CroppedImage is not null && (Scanner.CropRight != 0 || Scanner.CropTop != 0 || Scanner.CropBottom != 0 || Scanner.CropLeft != 0));
 
             SplitImage = new RelayCommand<object>(parameter =>
             {
@@ -192,7 +195,17 @@ namespace TwainControl
 
             ResetCroppedImage = new RelayCommand<object>(parameter => ResetCropMargin(), parameter => Scanner.CroppedImage is not null);
 
-            WebAdreseGit = new RelayCommand<object>(parameter => Process.Start(parameter as string), parameter => true);
+            WebAdreseGit = new RelayCommand<object>(parameter =>
+            {
+                try
+                {
+                    _ = Process.Start(parameter as string);
+                }
+                catch (Exception ex)
+                {
+                    _ = MessageBox.Show(ex.Message);
+                }
+            }, parameter => true);
 
             Scanner.PropertyChanged += Scanner_PropertyChanged;
 
@@ -274,6 +287,13 @@ namespace TwainControl
             doc.Options.EnableCcittCompressionForBilevelImages = true;
         }
 
+        private Int32Rect CropImageRect(ImageSource ımageSource)
+        {
+            int height = Math.Abs(((BitmapSource)ımageSource).PixelHeight - (int)Scanner.CropBottom - (int)Scanner.CropTop);
+            int width = Math.Abs(((BitmapSource)ımageSource).PixelWidth - (int)Scanner.CropRight - (int)Scanner.CropLeft);
+            return new((int)Scanner.CropLeft, (int)Scanner.CropTop, width, height);
+        }
+
         private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName is "AutoFolder")
@@ -296,68 +316,82 @@ namespace TwainControl
             };
         }
 
+        private BitmapSource EvrakOluştur(Bitmap bitmap)
+        {
+            const float mmpi = 25.4f;
+            double dpi = Settings.Default.Çözünürlük;
+            return (ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite
+                ? bitmap.ConvertBlackAndWhite(Scanner.Eşik).ToBitmapImage(ImageFormat.Tiff, SystemParameters.PrimaryScreenHeight).Resize(210 / mmpi * dpi, 297 / mmpi * dpi)
+                : (ColourSetting)Settings.Default.Mode == ColourSetting.GreyScale
+                ? bitmap.ConvertBlackAndWhite(Scanner.Eşik, true).ToBitmapImage(ImageFormat.Jpeg, SystemParameters.PrimaryScreenHeight).Resize(210 / mmpi * dpi, 297 / mmpi * dpi)
+                : (ColourSetting)Settings.Default.Mode == ColourSetting.Colour
+                ? bitmap.ToBitmapImage(ImageFormat.Jpeg, SystemParameters.PrimaryScreenHeight).Resize(210 / mmpi * dpi, 297 / mmpi * dpi)
+                : null;
+        }
+
         private void Fastscan(object sender, ScanningCompleteEventArgs e)
         {
-            string pdffile = Settings.Default.AutoFolder.SetUniqueFile($"{DateTime.Now.ToShortDateString()}Tarama", "pdf");
+            string pdffilepath = GetPdfScanPath();
+
             if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
             {
-                PdfKaydet(Scanner.Resimler, pdffile, Format.Tiff);
+                PdfKaydet(Scanner.Resimler, pdffilepath, Format.Tiff);
             }
             if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
             {
-                PdfKaydet(Scanner.Resimler, pdffile, Format.Jpg);
+                PdfKaydet(Scanner.Resimler, pdffilepath, Format.Jpg);
             }
             if (Settings.Default.ShowFile)
             {
-                ExploreFile.Execute(pdffile);
+                ExploreFile.Execute(pdffilepath);
             }
             twain.ScanningComplete -= Fastscan;
             OnPropertyChanged(nameof(Scanner.Tarandı));
         }
 
+        private string GetPdfScanPath()
+        {
+            string today = DateTime.Today.ToShortDateString();
+            if (Settings.Default.DateGroupFolder)
+            {
+                string datefolder = $@"{Settings.Default.AutoFolder}\{today}";
+                if (!Directory.Exists(datefolder))
+                {
+                    _ = Directory.CreateDirectory(datefolder);
+                }
+                return datefolder.SetUniqueFile($"{today}Tarama", "pdf");
+            }
+            return Settings.Default.AutoFolder.SetUniqueFile($"{today}Tarama", "pdf");
+        }
+
         private void PdfKaydet(BitmapSource bitmapframe, string dosyayolu, Format format)
         {
-            using (PdfDocument document = new())
-            {
-                PdfPage page = document.AddPage();
-                using (XGraphics gfx = XGraphics.FromPdfPage(page))
-                {
-                    using (MemoryStream ms = new(bitmapframe.ToTiffJpegByteArray(format)))
-                    {
-                        using (XImage xImage = XImage.FromStream(ms))
-                        {
-                            XSize size = PageSizeConverter.ToSize(PageSize.A4);
-                            gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
-                        }
-                    }
-                }
-                DefaultPdfCompression(document);
-                document.Save(dosyayolu);
-            }
+            using PdfDocument document = new();
+            PdfPage page = document.AddPage();
+            using XGraphics gfx = XGraphics.FromPdfPage(page);
+            using MemoryStream ms = new(bitmapframe.ToTiffJpegByteArray(format));
+            using XImage xImage = XImage.FromStream(ms);
+            XSize size = PageSizeConverter.ToSize(PageSize.A4);
+            gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
+
+            DefaultPdfCompression(document);
+            document.Save(dosyayolu);
         }
 
         private void PdfKaydet(IList<BitmapFrame> bitmapFrames, string dosyayolu, Format format)
         {
-            using (PdfDocument document = new())
+            using PdfDocument document = new();
+            for (int i = 0; i < bitmapFrames.Count; i++)
             {
-                for (int i = 0; i < bitmapFrames.Count; i++)
-                {
-                    PdfPage page = document.AddPage();
-                    using (XGraphics gfx = XGraphics.FromPdfPage(page))
-                    {
-                        using (MemoryStream ms = new(bitmapFrames[i].ToTiffJpegByteArray(format)))
-                        {
-                            using (XImage xImage = XImage.FromStream(ms))
-                            {
-                                XSize size = PageSizeConverter.ToSize(PageSize.A4);
-                                gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
-                            }
-                        }
-                    }
-                }
-                DefaultPdfCompression(document);
-                document.Save(dosyayolu);
+                PdfPage page = document.AddPage();
+                using XGraphics gfx = XGraphics.FromPdfPage(page);
+                using MemoryStream ms = new(bitmapFrames[i].ToTiffJpegByteArray(format));
+                using XImage xImage = XImage.FromStream(ms);
+                XSize size = PageSizeConverter.ToSize(PageSize.A4);
+                gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
             }
+            DefaultPdfCompression(document);
+            document.Save(dosyayolu);
         }
 
         private void ResetCropMargin()
@@ -394,9 +428,7 @@ namespace TwainControl
             }
             if (e.PropertyName is "SeçiliResim" or "CropLeft" or "CropTop" or "CropRight" or "CropBottom" && Scanner.SeçiliResim != null)
             {
-                int height = Math.Abs(((BitmapSource)Scanner.SeçiliResim).PixelHeight - (int)Scanner.CropBottom - (int)Scanner.CropTop);
-                int width = Math.Abs(((BitmapSource)Scanner.SeçiliResim).PixelWidth - (int)Scanner.CropRight - (int)Scanner.CropLeft);
-                Int32Rect sourceRect = new((int)Scanner.CropLeft, (int)Scanner.CropTop, width, height);
+                Int32Rect sourceRect = CropImageRect(Scanner.SeçiliResim);
                 if (sourceRect.HasArea)
                 {
                     Scanner.CroppedImage = new CroppedBitmap((BitmapSource)Scanner.SeçiliResim, sourceRect);
@@ -420,23 +452,8 @@ namespace TwainControl
                 {
                     if (args.Image != null)
                     {
-                        using System.Drawing.Bitmap bmp = args.Image;
-                        BitmapSource evrak = null;
-                        const float mmpi = 25.4f;
-                        double dpi = Settings.Default.Çözünürlük;
-                        if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
-                        {
-                            evrak = bmp.ConvertBlackAndWhite(Scanner.Eşik).ToBitmapImage(ImageFormat.Tiff, SystemParameters.PrimaryScreenHeight).Resize(210 / mmpi * dpi, 297 / mmpi * dpi);
-                        }
-                        else if ((ColourSetting)Settings.Default.Mode == ColourSetting.GreyScale)
-                        {
-                            evrak = bmp.ConvertBlackAndWhite(Scanner.Eşik, true).ToBitmapImage(ImageFormat.Jpeg, SystemParameters.PrimaryScreenHeight).Resize(210 / mmpi * dpi, 297 / mmpi * dpi);
-                        }
-                        else if ((ColourSetting)Settings.Default.Mode == ColourSetting.Colour)
-                        {
-                            evrak = bmp.ToBitmapImage(ImageFormat.Jpeg, SystemParameters.PrimaryScreenHeight).Resize(210 / mmpi * dpi, 297 / mmpi * dpi);
-                        }
-
+                        using Bitmap bitmap = args.Image;
+                        BitmapSource evrak = EvrakOluştur(bitmap);
                         evrak.Freeze();
                         BitmapSource önizleme = evrak.Resize(63, 89);
                         önizleme.Freeze();

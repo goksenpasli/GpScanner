@@ -55,7 +55,7 @@ namespace GpScanner
         {
             if (Directory.Exists(Twainsettings.Settings.Default.AutoFolder))
             {
-                Dosyalar = Directory.EnumerateFiles(Twainsettings.Settings.Default.AutoFolder, "*.*").Where(s => (new string[] { ".pdf", ".tif", ".jpg" }).Any(ext => ext == Path.GetExtension(s)));
+                Dosyalar = Directory.EnumerateFiles(Twainsettings.Settings.Default.AutoFolder, "*.*", SearchOption.AllDirectories).Where(s => (new string[] { ".pdf", ".tif", ".jpg" }).Any(ext => ext == Path.GetExtension(s)));
             }
         }
 

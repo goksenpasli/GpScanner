@@ -15,7 +15,7 @@
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="290" />
+            <ColumnDefinition Width="320" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <GroupBox Grid.Column="0" Header="KAYNAK SEÇ">
@@ -111,6 +111,7 @@
                             IsEnabled="{Binding Scanner.AutoSave}"
                             ToolTip="Her Sayfayı Ayrı Dosyaya Kaydet Dosyalar Aşağıda Belirtilen Klasöre Kaydedilir." />
                         <CheckBox Content="HIZLI TARAMA SONRASI DOSYAYI GÖSTER" IsChecked="{Binding Path=ShowFile, Source={x:Static properties:Settings.Default}}" />
+                        <CheckBox Content="HIZLI TARAMADA KLASÖRÜ TARİHE GÖRE GRUPLA" IsChecked="{Binding Path=DateGroupFolder, Source={x:Static properties:Settings.Default}}" />
                         <Expander Header="DİĞER AYARLAR">
                             <StackPanel>
                                 <CheckBox Content="EĞRİLİK DÜZELT" IsChecked="{Binding Scanner.Deskew}" />
@@ -177,19 +178,18 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" />
-                                    <TextBlock>
-                                        <Hyperlink Command="{Binding ElementName=UserControl, Path=DataContext.Kaydet}" CommandParameter="{Binding Mode=OneWay}">
-                                            <Run Text="KAYDET" />
-                                        </Hyperlink>
-                                        <Hyperlink Command="{Binding ElementName=UserControl, Path=DataContext.ResimSil}" CommandParameter="{Binding Mode=OneWay}" FontFamily="Segoe UI Black">
-                                            <Run Text="X" />
-                                        </Hyperlink>
-                                    </TextBlock>
-                                </StackPanel>
-                                <Image Width="63" Height="89" RenderOptions.BitmapScalingMode="NearestNeighbor"
-                                    Source="{Binding Thumbnail, Mode=OneWay}" />
+                                <TextBlock HorizontalAlignment="Right">
+                                    <Hyperlink Command="{Binding ElementName=UserControl, Path=DataContext.Kaydet}" CommandParameter="{Binding Mode=OneWay}">
+                                        <Run Text="KAYDET" />
+                                    </Hyperlink>
+                                    <Hyperlink Command="{Binding ElementName=UserControl, Path=DataContext.ResimSil}" CommandParameter="{Binding Mode=OneWay}" FontFamily="Segoe UI Black">
+                                        <Run Text="X" />
+                                    </Hyperlink>
+                                </TextBlock>
+                                <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center" IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}">
+                                    <Image Width="63" Height="89" RenderOptions.BitmapScalingMode="NearestNeighbor"
+                                        Source="{Binding Thumbnail, Mode=OneWay}" />
+                                </CheckBox>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -217,31 +217,53 @@
         <GroupBox Grid.Column="1" Margin="1,0,0,0" Header="EVRAK">
             <Grid>
                 <DockPanel>
-                    <Slider Margin="0,23,0,23" DockPanel.Dock="Left" IsDirectionReversed="True"
-                        Maximum="{Binding Scanner.SeçiliResim.PixelHeight}"
-                        Orientation="Vertical" TickPlacement="BottomRight"
-                        Value="{Binding Scanner.CropTop}" />
-                    <Slider Margin="0,0,0,23" DockPanel.Dock="Right"
-                        Maximum="{Binding Scanner.SeçiliResim.PixelHeight}"
-                        Orientation="Vertical" TickPlacement="TopLeft"
-                        Value="{Binding Scanner.CropBottom}" />
-                    <Slider DockPanel.Dock="Top"
+                    <Slider Margin="23,0,23,0" DockPanel.Dock="Top" IsSnapToTickEnabled="True"
                         Maximum="{Binding Scanner.SeçiliResim.PixelWidth}"
                         TickPlacement="BottomRight"
                         Value="{Binding Scanner.CropLeft}" />
-                    <Slider Margin="0,0,0,0" DockPanel.Dock="Bottom" IsDirectionReversed="True"
+                    <Slider Margin="23,0,23,0" DockPanel.Dock="Bottom" IsDirectionReversed="True"
+                        IsSnapToTickEnabled="True"
                         Maximum="{Binding Scanner.SeçiliResim.PixelWidth}"
                         TickPlacement="TopLeft"
                         Value="{Binding Scanner.CropRight}" />
+                    <Slider DockPanel.Dock="Left" IsDirectionReversed="True" IsSnapToTickEnabled="True"
+                        Maximum="{Binding Scanner.SeçiliResim.PixelHeight}"
+                        Orientation="Vertical" TickPlacement="BottomRight"
+                        Value="{Binding Scanner.CropTop}" />
+                    <Slider DockPanel.Dock="Right" IsSnapToTickEnabled="True"
+                        Maximum="{Binding Scanner.SeçiliResim.PixelHeight}"
+                        Orientation="Vertical" TickPlacement="TopLeft"
+                        Value="{Binding Scanner.CropBottom}" />
                     <Extensions:ImageViewer Grid.Column="1" OrijinalResimDosyaAçButtonVisibility="Collapsed"
                         Source="{Binding Scanner.SeçiliResim}"
                         ToolBarVisibility="Visible" />
                 </DockPanel>
                 <Expander HorizontalAlignment="Left" VerticalAlignment="Bottom" ExpandDirection="Up">
-                    <Border Background="White" BorderBrush="Black" BorderThickness="1"
-                        CornerRadius="1">
-                        <StackPanel Width="140">
-                            <Image Width="140" Height="198" Source="{Binding Scanner.CroppedImage}" />
+                    <Border Background="{StaticResource BorderBackground}"
+                        BorderBrush="{StaticResource GroupBoxBackGround}"
+                        BorderThickness="1" CornerRadius="1">
+                        <StackPanel>
+                            <DockPanel>
+                                <Extensions:NumericUpDownControl HorizontalAlignment="Center" DockPanel.Dock="Top" IsReadOnly="True"
+                                    Maximum="{Binding Scanner.SeçiliResim.PixelWidth}"
+                                    Minimum="0" SmallChange="1"
+                                    Value="{Binding Scanner.CropTop}" />
+                                <Extensions:NumericUpDownControl HorizontalAlignment="Center" DockPanel.Dock="Bottom" IsReadOnly="True"
+                                    Maximum="{Binding Scanner.SeçiliResim.PixelWidth}"
+                                    Minimum="0" SmallChange="1"
+                                    Value="{Binding Scanner.CropBottom}" />
+                                <Extensions:NumericUpDownControl VerticalAlignment="Center" DockPanel.Dock="Left" IsReadOnly="True"
+                                    Maximum="{Binding Scanner.SeçiliResim.PixelHeight}"
+                                    Minimum="0" SmallChange="1"
+                                    Value="{Binding Scanner.CropLeft}" />
+                                <Extensions:NumericUpDownControl VerticalAlignment="Center" DockPanel.Dock="Right" IsReadOnly="True"
+                                    Maximum="{Binding Scanner.SeçiliResim.PixelHeight}"
+                                    Minimum="0" SmallChange="1"
+                                    Value="{Binding Scanner.CropRight}" />
+                                <Border BorderBrush="Black" BorderThickness="1">
+                                    <Image Width="140" Height="198" Source="{Binding Scanner.CroppedImage}" />
+                                </Border>
+                            </DockPanel>
                             <UniformGrid Margin="1" Columns="2" Rows="4">
                                 <Button Command="{Binding SaveCroppedImage}" Content="RESMİ KIRP" />
                                 <Button Command="{Binding ResetCroppedImage}" Content="SIFIRLA" />
