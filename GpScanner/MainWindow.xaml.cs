@@ -14,10 +14,6 @@ namespace GpScanner
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        private readonly CollectionViewSource cvs;
-
-        private DateTime? seçiliGün;
-
         public MainWindow()
         {
             InitializeComponent();
@@ -50,6 +46,10 @@ namespace GpScanner
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        private readonly CollectionViewSource cvs;
+
+        private DateTime? seçiliGün;
 
         private void LoadData()
         {

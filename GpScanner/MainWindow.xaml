@@ -2,6 +2,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl" Title="Tarayıcı" d:Height="600"
     d:Width="800" UseLayoutRounding="True" WindowStartupLocation="CenterScreen"
     WindowState="Maximized" mc:Ignorable="d">
@@ -23,7 +24,7 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <Viewbox Stretch="Fill">
-                    <Calendar SelectedDate="{Binding SeçiliGün}" />
+                    <Calendar DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}" SelectedDate="{Binding SeçiliGün}" />
                 </Viewbox>
                 <ListBox Grid.Row="1"
                     d:ItemsSource="{d:SampleData ItemCount=5}"

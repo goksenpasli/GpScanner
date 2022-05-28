@@ -12,6 +12,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -24,14 +25,6 @@ namespace TwainControl
 {
     public partial class TwainCtrl : System.Windows.Controls.UserControl, INotifyPropertyChanged, IDisposable
     {
-        private ScanSettings _settings;
-
-        private bool disposedValue;
-
-        private Scanner scanner;
-
-        private Twain twain;
-
         public TwainCtrl()
         {
             InitializeComponent();
@@ -195,6 +188,12 @@ namespace TwainControl
 
             ResetCroppedImage = new RelayCommand<object>(parameter => ResetCropMargin(), parameter => Scanner.CroppedImage is not null);
 
+            GetImageIndex = new RelayCommand<object>(parameter =>
+            {
+                CheckBox cb = parameter as CheckBox;
+                cb.Tag = (cb.IsChecked == true) ? Scanner.SeçiliResimler.IndexOf(cb.DataContext as BitmapFrame) + 1 : null;
+            }, parameter => true);
+
             WebAdreseGit = new RelayCommand<object>(parameter =>
             {
                 try
@@ -217,6 +216,8 @@ namespace TwainControl
         public ICommand ExploreFile { get; }
 
         public ICommand FastScanImage { get; }
+
+        public ICommand GetImageIndex { get; }
 
         public ICommand Kaydet { get; }
 
@@ -278,6 +279,14 @@ namespace TwainControl
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        private ScanSettings _settings;
+
+        private bool disposedValue;
+
+        private Scanner scanner;
+
+        private Twain twain;
+
         private static void DefaultPdfCompression(PdfDocument doc)
         {
             doc.Options.FlateEncodeMode = PdfFlateEncodeMode.BestCompression;
@@ -289,9 +298,9 @@ namespace TwainControl
 
         private Int32Rect CropImageRect(ImageSource ımageSource)
         {
-            int height = Math.Abs(((BitmapSource)ımageSource).PixelHeight - (int)Scanner.CropBottom - (int)Scanner.CropTop);
-            int width = Math.Abs(((BitmapSource)ımageSource).PixelWidth - (int)Scanner.CropRight - (int)Scanner.CropLeft);
-            return new((int)Scanner.CropLeft, (int)Scanner.CropTop, width, height);
+            int height = ((BitmapSource)ımageSource).PixelHeight - (int)Scanner.CropBottom - (int)Scanner.CropTop;
+            int width = ((BitmapSource)ımageSource).PixelWidth - (int)Scanner.CropRight - (int)Scanner.CropLeft;
+            return (width < 0 || height < 0) ? default : new((int)Scanner.CropLeft, (int)Scanner.CropTop, width, height);
         }
 
         private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -359,9 +368,9 @@ namespace TwainControl
                 {
                     _ = Directory.CreateDirectory(datefolder);
                 }
-                return datefolder.SetUniqueFile($"{today}Tarama", "pdf");
+                return datefolder.SetUniqueFile($"{today}{Scanner.FileName}", "pdf");
             }
-            return Settings.Default.AutoFolder.SetUniqueFile($"{today}Tarama", "pdf");
+            return Settings.Default.AutoFolder.SetUniqueFile($"{today}{Scanner.FileName}", "pdf");
         }
 
         private void PdfKaydet(BitmapSource bitmapframe, string dosyayolu, Format format)
@@ -435,6 +444,22 @@ namespace TwainControl
                     Scanner.CroppedImage.Freeze();
                 }
             }
+            if (e.PropertyName is "EnAdet")
+            {
+                LineGrid.ColumnDefinitions.Clear();
+                for (int i = 0; i < Scanner.EnAdet; i++)
+                {
+                    LineGrid.ColumnDefinitions.Add(new ColumnDefinition());
+                }
+            }
+            if (e.PropertyName is "BoyAdet")
+            {
+                LineGrid.RowDefinitions.Clear();
+                for (int i = 0; i < Scanner.BoyAdet; i++)
+                {
+                    LineGrid.RowDefinitions.Add(new RowDefinition());
+                }
+            }
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -462,13 +487,13 @@ namespace TwainControl
                         Scanner.Resimler.Add(bitmapFrame);
                         if (Scanner.SeperateSave && (ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
                         {
-                            File.WriteAllBytes(Settings.Default.AutoFolder.SetUniqueFile($"{DateTime.Now.ToShortDateString()}Tarama", "tif"), bitmapFrame.ToTiffJpegByteArray(Format.Tiff));
+                            File.WriteAllBytes(Settings.Default.AutoFolder.SetUniqueFile($"{DateTime.Now.ToShortDateString()}{Scanner.FileName}", "tif"), bitmapFrame.ToTiffJpegByteArray(Format.Tiff));
                             OnPropertyChanged(nameof(Scanner.Tarandı));
                         }
 
                         if (Scanner.SeperateSave && ((ColourSetting)Settings.Default.Mode == ColourSetting.GreyScale || (ColourSetting)Settings.Default.Mode == ColourSetting.Colour))
                         {
-                            File.WriteAllBytes(Settings.Default.AutoFolder.SetUniqueFile($"{DateTime.Now.ToShortDateString()}Tarama", "jpg"), bitmapFrame.ToTiffJpegByteArray(Format.Jpg));
+                            File.WriteAllBytes(Settings.Default.AutoFolder.SetUniqueFile($"{DateTime.Now.ToShortDateString()}{Scanner.FileName}", "jpg"), bitmapFrame.ToTiffJpegByteArray(Format.Jpg));
                             OnPropertyChanged(nameof(Scanner.Tarandı));
                         }
 

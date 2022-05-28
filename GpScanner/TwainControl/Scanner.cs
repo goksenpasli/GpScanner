@@ -10,54 +10,8 @@ using TwainControl.Properties;
 
 namespace TwainControl
 {
-    public class Scanner : INotifyPropertyChanged
+    public class Scanner : INotifyPropertyChanged, IDataErrorInfo
     {
-        private bool arayüzetkin = true;
-
-        private bool autoRotate;
-
-        private bool autoSave = Directory.Exists(Settings.Default.AutoFolder);
-
-        private bool borderDetect;
-
-        private int boyAdet = 1;
-
-        private double cropBottom;
-
-        private double cropLeft;
-
-        private ImageSource croppedImage;
-
-        private double cropRight;
-
-        private double cropTop;
-
-        private bool deskew;
-
-        private bool duplex;
-
-        private int enAdet = 1;
-
-        private int eşik = 160;
-
-        private ObservableCollection<BitmapFrame> resimler = new();
-
-        private ImageSource seçiliResim;
-
-        private IList seçiliresimler = new ObservableCollection<BitmapFrame>();
-
-        private string seçiliTarayıcı;
-
-        private bool seperateSave;
-
-        private bool showProgress;
-
-        private bool showUi;
-
-        private bool tarandı;
-
-        private IList<string> tarayıcılar;
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         public bool ArayüzEtkin
@@ -240,6 +194,8 @@ namespace TwainControl
             }
         }
 
+        public string Error => string.Empty;
+
         public int Eşik
         {
             get => eşik;
@@ -257,6 +213,20 @@ namespace TwainControl
         public ICommand ExploreFile { get; }
 
         public ICommand FastScanImage { get; }
+
+        public string FileName
+        {
+            get => fileName;
+
+            set
+            {
+                if (fileName != value)
+                {
+                    fileName = value;
+                    OnPropertyChanged(nameof(FileName));
+                }
+            }
+        }
 
         public ICommand Kaydet { get; }
 
@@ -402,9 +372,63 @@ namespace TwainControl
             }
         }
 
+        public string this[string columnName] => columnName switch
+        {
+            "FileName" when string.IsNullOrWhiteSpace(FileName) => "Dosya Adını Boş Geçmeyin.",
+            _ => null
+        };
+
         protected virtual void OnPropertyChanged(string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        private bool arayüzetkin = true;
+
+        private bool autoRotate;
+
+        private bool autoSave = Directory.Exists(Settings.Default.AutoFolder);
+
+        private bool borderDetect;
+
+        private int boyAdet = 1;
+
+        private double cropBottom;
+
+        private double cropLeft;
+
+        private ImageSource croppedImage;
+
+        private double cropRight;
+
+        private double cropTop;
+
+        private bool deskew;
+
+        private bool duplex;
+
+        private int enAdet = 1;
+
+        private int eşik = 160;
+
+        private string fileName = "Tarama";
+
+        private ObservableCollection<BitmapFrame> resimler = new();
+
+        private ImageSource seçiliResim;
+
+        private IList seçiliresimler = new ObservableCollection<BitmapFrame>();
+
+        private string seçiliTarayıcı;
+
+        private bool seperateSave;
+
+        private bool showProgress;
+
+        private bool showUi;
+
+        private bool tarandı;
+
+        private IList<string> tarayıcılar;
     }
 }

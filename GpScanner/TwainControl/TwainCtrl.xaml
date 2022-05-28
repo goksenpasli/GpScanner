@@ -125,6 +125,11 @@
                                 <Run Text="{Binding Path=AutoFolder, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
                             </Hyperlink>
                         </TextBlock>
+                        <HeaderedContentControl Header="DOSYA ADI">
+                            <Extensions:ButtonedTextBox d:Text="FileName" MaxLength="255"
+                                Text="{Binding Scanner.FileName, ValidatesOnDataErrors=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}" />
+                        </HeaderedContentControl>
                         <Button Command="{Binding KayıtYoluBelirle}">
                             <StackPanel Orientation="Horizontal">
                                 <Image Width="32" Height="32">
@@ -168,8 +173,7 @@
                         </UniformGrid>
                     </StackPanel>
                 </GroupBox>
-                <ListBox x:Name="LbResimler"
-                    Grid.Row="2"
+                <ListBox Grid.Row="2"
                     Extensions:ListBoxHelper.SelectedItems="{Binding Scanner.SeçiliResimler}"
                     d:ItemsSource="{d:SampleData ItemCount=5}"
                     ItemsSource="{Binding Scanner.Resimler, Mode=OneWay}"
@@ -186,10 +190,19 @@
                                         <Run Text="X" />
                                     </Hyperlink>
                                 </TextBlock>
-                                <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center" IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}">
-                                    <Image Width="63" Height="89" RenderOptions.BitmapScalingMode="NearestNeighbor"
-                                        Source="{Binding Thumbnail, Mode=OneWay}" />
-                                </CheckBox>
+                                <Grid>
+                                    <CheckBox x:Name="Cb"
+                                        VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                        Command="{Binding ElementName=UserControl, Path=DataContext.GetImageIndex}"
+                                        CommandParameter="{Binding Mode=OneWay, RelativeSource={RelativeSource Mode=Self}}"
+                                        IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}">
+                                        <Image Width="63" Height="89" RenderOptions.BitmapScalingMode="NearestNeighbor"
+                                            Source="{Binding Thumbnail, Mode=OneWay}" />
+                                    </CheckBox>
+                                    <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="16"
+                                        FontWeight="Bold" Foreground="Red"
+                                        Text="{Binding ElementName=Cb, Path=Tag}" />
+                                </Grid>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -245,23 +258,31 @@
                         <StackPanel>
                             <DockPanel>
                                 <Extensions:NumericUpDownControl HorizontalAlignment="Center" DockPanel.Dock="Top" IsReadOnly="True"
-                                    Maximum="{Binding Scanner.SeçiliResim.PixelWidth}"
+                                    Maximum="{Binding Scanner.SeçiliResim.PixelHeight}"
                                     Minimum="0" SmallChange="1"
                                     Value="{Binding Scanner.CropTop}" />
                                 <Extensions:NumericUpDownControl HorizontalAlignment="Center" DockPanel.Dock="Bottom" IsReadOnly="True"
-                                    Maximum="{Binding Scanner.SeçiliResim.PixelWidth}"
+                                    Maximum="{Binding Scanner.SeçiliResim.PixelHeight}"
                                     Minimum="0" SmallChange="1"
                                     Value="{Binding Scanner.CropBottom}" />
                                 <Extensions:NumericUpDownControl VerticalAlignment="Center" DockPanel.Dock="Left" IsReadOnly="True"
-                                    Maximum="{Binding Scanner.SeçiliResim.PixelHeight}"
+                                    Maximum="{Binding Scanner.SeçiliResim.PixelWidth}"
                                     Minimum="0" SmallChange="1"
                                     Value="{Binding Scanner.CropLeft}" />
                                 <Extensions:NumericUpDownControl VerticalAlignment="Center" DockPanel.Dock="Right" IsReadOnly="True"
-                                    Maximum="{Binding Scanner.SeçiliResim.PixelHeight}"
+                                    Maximum="{Binding Scanner.SeçiliResim.PixelWidth}"
                                     Minimum="0" SmallChange="1"
                                     Value="{Binding Scanner.CropRight}" />
-                                <Border BorderBrush="Black" BorderThickness="1">
-                                    <Image Width="140" Height="198" Source="{Binding Scanner.CroppedImage}" />
+                                <Border BorderBrush="{StaticResource GroupBoxBackGround}" BorderThickness="1">
+                                    <Grid x:Name="LineGrid"
+                                        Width="140" Height="198" ShowGridLines="True">
+                                        <Grid.Effect>
+                                            <local:ColorEffect x:Name="Color" />
+                                        </Grid.Effect>
+                                        <Grid.Background>
+                                            <ImageBrush ImageSource="{Binding Scanner.CroppedImage}" />
+                                        </Grid.Background>
+                                    </Grid>
                                 </Border>
                             </DockPanel>
                             <UniformGrid Margin="1" Columns="2" Rows="4">
@@ -276,6 +297,43 @@
                                     Minimum="1" SmallChange="1"
                                     Value="{Binding Scanner.BoyAdet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 <Button Command="{Binding SplitImage}" Content="PARÇALA" />
+                                <Extensions:ContentToggleButton Grid.Column="11" FontFamily="Webdings" FontSize="20"
+                                    OverContent="·" PlacementMode="Top">
+                                    <Extensions:ContentToggleButton.Content>
+                                        <GroupBox>
+                                            <StackPanel Orientation="Horizontal">
+                                                <StackPanel.Resources>
+                                                    <Style TargetType="Slider">
+                                                        <Setter Property="Height" Value="64" />
+                                                        <Setter Property="Orientation" Value="Vertical" />
+                                                        <Setter Property="Maximum" Value="1" />
+                                                        <Setter Property="Minimum" Value="0" />
+                                                        <Setter Property="BorderThickness" Value="3" />
+                                                    </Style>
+                                                </StackPanel.Resources>
+                                                <Slider BorderBrush="Red" Value="{Binding ElementName=Color, Path=Red}" />
+                                                <Slider BorderBrush="Green" Value="{Binding ElementName=Color, Path=Green}" />
+                                                <Slider BorderBrush="Blue" Value="{Binding ElementName=Color, Path=Blue}" />
+                                                <Slider Value="{Binding ElementName=Color, Path=Brightness}">
+                                                    <Slider.BorderBrush>
+                                                        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                                            <GradientStop Color="Black" />
+                                                            <GradientStop Offset="1" Color="White" />
+                                                        </LinearGradientBrush>
+                                                    </Slider.BorderBrush>
+                                                </Slider>
+                                                <Slider Value="{Binding ElementName=Color, Path=Contrast}">
+                                                    <Slider.BorderBrush>
+                                                        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                                            <GradientStop Color="White" />
+                                                            <GradientStop Offset="1" Color="Black" />
+                                                        </LinearGradientBrush>
+                                                    </Slider.BorderBrush>
+                                                </Slider>
+                                            </StackPanel>
+                                        </GroupBox>
+                                    </Extensions:ContentToggleButton.Content>
+                                </Extensions:ContentToggleButton>
                             </UniformGrid>
                         </StackPanel>
                     </Border>
