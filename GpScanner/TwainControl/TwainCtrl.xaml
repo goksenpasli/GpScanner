@@ -118,6 +118,7 @@
                                 <CheckBox Content="OTOMATİK KENAR TESPİTİ" IsChecked="{Binding Scanner.BorderDetect}" />
                                 <CheckBox Content="YÜZDE GÖSTER" IsChecked="{Binding Scanner.ShowProgress}" />
                                 <CheckBox Content="OTOMATİK DÖNDÜR" IsChecked="{Binding Scanner.AutoRotate}" />
+                                <CheckBox Content="PDF KAYITTA DÖNDÜRME UYGULA" IsChecked="{Binding Scanner.ApplyRotate}" />
                             </StackPanel>
                         </Expander>
                         <TextBlock d:Text="AutoFolder" FontWeight="Bold">
@@ -247,7 +248,8 @@
                         Maximum="{Binding Scanner.SeçiliResim.PixelHeight}"
                         Orientation="Vertical" TickPlacement="TopLeft"
                         Value="{Binding Scanner.CropBottom}" />
-                    <Extensions:ImageViewer Grid.Column="1" OrijinalResimDosyaAçButtonVisibility="Collapsed"
+                    <Extensions:ImageViewer x:Name="Viewer"
+                        Grid.Column="1" OrijinalResimDosyaAçButtonVisibility="Collapsed" SnapTick="True"
                         Source="{Binding Scanner.SeçiliResim}"
                         ToolBarVisibility="Visible" />
                 </DockPanel>

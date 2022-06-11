@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.IO.Compression;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -20,10 +21,11 @@ using TwainControl.Properties;
 using TwainWpf;
 using TwainWpf.Wpf;
 using static Extensions.ExtensionMethods;
+using Path = System.IO.Path;
 
 namespace TwainControl
 {
-    public partial class TwainCtrl : System.Windows.Controls.UserControl, INotifyPropertyChanged, IDisposable
+    public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposable
     {
         public TwainCtrl()
         {
@@ -121,16 +123,24 @@ namespace TwainControl
 
             Seçilikaydet = new RelayCommand<object>(parameter =>
             {
-                SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası(*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası(*.pdf)|*.pdf" };
+                SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası(*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası(*.pdf)|*.pdf|Zip Dosyası(*.zip)|*.zip" };
                 if (saveFileDialog.ShowDialog() == true)
                 {
+                    if (saveFileDialog.FilterIndex == 1)
+                    {
+                        PdfKaydet(Scanner.SeçiliResimler as IList<BitmapFrame>, saveFileDialog.FileName, Format.Jpg);
+                    }
                     if (saveFileDialog.FilterIndex == 2)
                     {
                         PdfKaydet(Scanner.SeçiliResimler as IList<BitmapFrame>, saveFileDialog.FileName, Format.Tiff);
                     }
-                    else
+                    if (saveFileDialog.FilterIndex == 3)
                     {
-                        PdfKaydet(Scanner.SeçiliResimler as IList<BitmapFrame>, saveFileDialog.FileName, Format.Jpg);
+                        string dosyayolu = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
+                        PdfKaydet(Scanner.SeçiliResimler as IList<BitmapFrame>, dosyayolu, Format.Jpg);
+                        using ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Create);
+                        _ = archive.CreateEntryFromFile(dosyayolu, $"{Scanner.FileName}.pdf", CompressionLevel.Optimal);
+                        File.Delete(dosyayolu);
                     }
                 }
             }, parameter => Scanner.SeçiliResimler?.Count > 0);
@@ -377,6 +387,10 @@ namespace TwainControl
         {
             using PdfDocument document = new();
             PdfPage page = document.AddPage();
+            if (Scanner.ApplyRotate)
+            {
+                page.Rotate = (int)Viewer.Angle;
+            }
             using XGraphics gfx = XGraphics.FromPdfPage(page);
             using MemoryStream ms = new(bitmapframe.ToTiffJpegByteArray(format));
             using XImage xImage = XImage.FromStream(ms);
@@ -393,6 +407,10 @@ namespace TwainControl
             for (int i = 0; i < bitmapFrames.Count; i++)
             {
                 PdfPage page = document.AddPage();
+                if (Scanner.ApplyRotate)
+                {
+                    page.Rotate = (int)Viewer.Angle;
+                }
                 using XGraphics gfx = XGraphics.FromPdfPage(page);
                 using MemoryStream ms = new(bitmapFrames[i].ToTiffJpegByteArray(format));
                 using XImage xImage = XImage.FromStream(ms);
@@ -509,7 +527,7 @@ namespace TwainControl
             }
             catch (Exception)
             {
-                Scanner.ArayüzEtkin = false;
+                //Scanner.ArayüzEtkin = false;
             }
         }
     }
