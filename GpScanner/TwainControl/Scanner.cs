@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
@@ -10,6 +9,48 @@ using TwainControl.Properties;
 
 namespace TwainControl
 {
+    public class ScannedImage : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public BitmapFrame Resim
+        {
+            get => resim;
+
+            set
+            {
+                if (resim != value)
+                {
+                    resim = value;
+                    OnPropertyChanged(nameof(Resim));
+                }
+            }
+        }
+
+        public bool Seçili
+        {
+            get => seçili;
+
+            set
+            {
+                if (seçili != value)
+                {
+                    seçili = value;
+                    OnPropertyChanged(nameof(Seçili));
+                }
+            }
+        }
+
+        protected virtual void OnPropertyChanged(string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private BitmapFrame resim;
+
+        private bool seçili;
+    }
+
     public class Scanner : INotifyPropertyChanged, IDataErrorInfo
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -248,9 +289,23 @@ namespace TwainControl
 
         public ICommand ListeTemizle { get; }
 
+        public string LocalizedPath
+        {
+            get => TwainCtrl.GetDisplayName(Settings.Default.AutoFolder);
+
+            set
+            {
+                if (localizedPath != value)
+                {
+                    localizedPath = value;
+                    OnPropertyChanged(nameof(LocalizedPath));
+                }
+            }
+        }
+
         public ICommand ResetCroppedImage { get; }
 
-        public ObservableCollection<BitmapFrame> Resimler
+        public ObservableCollection<ScannedImage> Resimler
         {
             get => resimler;
 
@@ -272,7 +327,7 @@ namespace TwainControl
 
         public ICommand Seçilikaydet { get; }
 
-        public ImageSource SeçiliResim
+        public ScannedImage SeçiliResim
         {
             get => seçiliResim;
 
@@ -282,20 +337,6 @@ namespace TwainControl
                 {
                     seçiliResim = value;
                     OnPropertyChanged(nameof(SeçiliResim));
-                }
-            }
-        }
-
-        public IList SeçiliResimler
-        {
-            get => seçiliresimler;
-
-            set
-            {
-                if (seçiliresimler != value)
-                {
-                    seçiliresimler = value;
-                    OnPropertyChanged(nameof(SeçiliResimler));
                 }
             }
         }
@@ -429,11 +470,11 @@ namespace TwainControl
 
         private string fileName = "Tarama";
 
-        private ObservableCollection<BitmapFrame> resimler = new();
+        private string localizedPath;
 
-        private ImageSource seçiliResim;
+        private ObservableCollection<ScannedImage> resimler = new();
 
-        private IList seçiliresimler = new ObservableCollection<BitmapFrame>();
+        private ScannedImage seçiliResim;
 
         private string seçiliTarayıcı;
 

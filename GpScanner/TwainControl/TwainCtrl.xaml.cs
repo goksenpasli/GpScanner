@@ -12,6 +12,8 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -48,20 +50,20 @@ namespace TwainControl
                 ScanCommonSettings();
                 if (Scanner.Tarayıcılar.Count > 0)
                 {
-                    Scanner.Resimler = new ObservableCollection<BitmapFrame>();
+                    Scanner.Resimler = new ObservableCollection<ScannedImage>();
                     twain.SelectSource(Scanner.SeçiliTarayıcı);
                     twain.StartScanning(_settings);
                 }
                 twain.ScanningComplete += Fastscan;
             }, parameter => !Environment.Is64BitProcess && Scanner.AutoSave);
 
-            ResimSil = new RelayCommand<object>(parameter => Scanner.Resimler?.Remove(parameter as BitmapFrame), parameter => true);
+            ResimSil = new RelayCommand<object>(parameter => Scanner.Resimler?.Remove(parameter as ScannedImage), parameter => true);
 
             ExploreFile = new RelayCommand<object>(parameter => OpenFolderAndSelectItem(Path.GetDirectoryName(parameter as string), Path.GetFileName(parameter as string)), parameter => true);
 
             Kaydet = new RelayCommand<object>(parameter =>
             {
-                if (parameter is BitmapFrame resim)
+                if (parameter is ScannedImage scannedImage)
                 {
                     SaveFileDialog saveFileDialog = new() { Filter = "Tif Resmi (*.tif)|*.tif|Jpg Resmi(*.jpg)|*.jpg|Pdf Dosyası(*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası(*.pdf)|*.pdf" };
                     if (saveFileDialog.ShowDialog() == true)
@@ -70,24 +72,24 @@ namespace TwainControl
                         {
                             if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
                             {
-                                File.WriteAllBytes(saveFileDialog.FileName, resim.ToTiffJpegByteArray(Format.Tiff));
+                                File.WriteAllBytes(saveFileDialog.FileName, scannedImage.Resim.ToTiffJpegByteArray(Format.Tiff));
                             }
                             else if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
                             {
-                                File.WriteAllBytes(saveFileDialog.FileName, resim.ToTiffJpegByteArray(Format.TiffRenkli));
+                                File.WriteAllBytes(saveFileDialog.FileName, scannedImage.Resim.ToTiffJpegByteArray(Format.TiffRenkli));
                             }
                         }
                         else if (saveFileDialog.FilterIndex == 2)
                         {
-                            File.WriteAllBytes(saveFileDialog.FileName, resim.ToTiffJpegByteArray(Format.Jpg));
+                            File.WriteAllBytes(saveFileDialog.FileName, scannedImage.Resim.ToTiffJpegByteArray(Format.Jpg));
                         }
                         else if (saveFileDialog.FilterIndex == 3)
                         {
-                            PdfKaydet(resim, saveFileDialog.FileName, Format.Jpg);
+                            PdfKaydet(scannedImage.Resim, saveFileDialog.FileName, Format.Jpg);
                         }
                         else if (saveFileDialog.FilterIndex == 4)
                         {
-                            PdfKaydet(resim, saveFileDialog.FileName, Format.Tiff);
+                            PdfKaydet(scannedImage.Resim, saveFileDialog.FileName, Format.Tiff);
                         }
                     }
                 }
@@ -118,6 +120,7 @@ namespace TwainControl
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     Settings.Default.AutoFolder = dialog.SelectedPath;
+                    Scanner.LocalizedPath = GetDisplayName(dialog.SelectedPath);
                 }
             }, parameter => true);
 
@@ -128,22 +131,22 @@ namespace TwainControl
                 {
                     if (saveFileDialog.FilterIndex == 1)
                     {
-                        PdfKaydet(Scanner.SeçiliResimler as IList<BitmapFrame>, saveFileDialog.FileName, Format.Jpg);
+                        PdfKaydet(Scanner.Resimler.Where(z => z.Seçili).ToArray(), saveFileDialog.FileName, Format.Jpg);
                     }
                     if (saveFileDialog.FilterIndex == 2)
                     {
-                        PdfKaydet(Scanner.SeçiliResimler as IList<BitmapFrame>, saveFileDialog.FileName, Format.Tiff);
+                        PdfKaydet(Scanner.Resimler.Where(z => z.Seçili).ToArray(), saveFileDialog.FileName, Format.Tiff);
                     }
                     if (saveFileDialog.FilterIndex == 3)
                     {
                         string dosyayolu = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
-                        PdfKaydet(Scanner.SeçiliResimler as IList<BitmapFrame>, dosyayolu, Format.Jpg);
+                        PdfKaydet(Scanner.Resimler.Where(z => z.Seçili).ToArray(), dosyayolu, Format.Jpg);
                         using ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Create);
                         _ = archive.CreateEntryFromFile(dosyayolu, $"{Scanner.FileName}.pdf", CompressionLevel.Optimal);
                         File.Delete(dosyayolu);
                     }
                 }
-            }, parameter => Scanner.SeçiliResimler?.Count > 0);
+            }, parameter => Scanner.Resimler.Count(z => z.Seçili) > 0);
 
             ListeTemizle = new RelayCommand<object>(parameter =>
             {
@@ -198,12 +201,6 @@ namespace TwainControl
 
             ResetCroppedImage = new RelayCommand<object>(parameter => ResetCropMargin(), parameter => Scanner.CroppedImage is not null);
 
-            GetImageIndex = new RelayCommand<object>(parameter =>
-            {
-                CheckBox cb = parameter as CheckBox;
-                cb.Tag = (cb.IsChecked == true) ? Scanner.SeçiliResimler.IndexOf(cb.DataContext as BitmapFrame) + 1 : null;
-            }, parameter => true);
-
             WebAdreseGit = new RelayCommand<object>(parameter =>
             {
                 try
@@ -226,8 +223,6 @@ namespace TwainControl
         public ICommand ExploreFile { get; }
 
         public ICommand FastScanImage { get; }
-
-        public ICommand GetImageIndex { get; }
 
         public ICommand Kaydet { get; }
 
@@ -265,6 +260,12 @@ namespace TwainControl
 
         public ICommand WebAdreseGit { get; }
 
+        public static string GetDisplayName(string path)
+        {
+            SHFILEINFO shfi = new SHFILEINFO();
+            return (SHGetFileInfo(path, FILE_ATTRIBUTE_NORMAL, out shfi, (uint)Marshal.SizeOf(typeof(SHFILEINFO)), SHGFI_DISPLAYNAME) != 0) ? shfi.szDisplayName : null;
+        }
+
         public void Dispose()
         {
             Dispose(true);
@@ -289,6 +290,10 @@ namespace TwainControl
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        private const uint FILE_ATTRIBUTE_NORMAL = 0x00000080;
+
+        private const uint SHGFI_DISPLAYNAME = 0x000000200;
+
         private ScanSettings _settings;
 
         private bool disposedValue;
@@ -305,6 +310,9 @@ namespace TwainControl
             doc.Options.NoCompression = false;
             doc.Options.EnableCcittCompressionForBilevelImages = true;
         }
+
+        [DllImport("shell32")]
+        private static extern int SHGetFileInfo(string pszPath, uint dwFileAttributes, out SHFILEINFO psfi, uint cbFileInfo, uint flags);
 
         private Int32Rect CropImageRect(ImageSource ımageSource)
         {
@@ -401,7 +409,7 @@ namespace TwainControl
             document.Save(dosyayolu);
         }
 
-        private void PdfKaydet(IList<BitmapFrame> bitmapFrames, string dosyayolu, Format format)
+        private void PdfKaydet(IList<ScannedImage> bitmapFrames, string dosyayolu, Format format)
         {
             using PdfDocument document = new();
             for (int i = 0; i < bitmapFrames.Count; i++)
@@ -412,7 +420,7 @@ namespace TwainControl
                     page.Rotate = (int)Viewer.Angle;
                 }
                 using XGraphics gfx = XGraphics.FromPdfPage(page);
-                using MemoryStream ms = new(bitmapFrames[i].ToTiffJpegByteArray(format));
+                using MemoryStream ms = new(bitmapFrames[i].Resim.ToTiffJpegByteArray(format));
                 using XImage xImage = XImage.FromStream(ms);
                 XSize size = PageSizeConverter.ToSize(PageSize.A4);
                 gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
@@ -455,10 +463,10 @@ namespace TwainControl
             }
             if (e.PropertyName is "SeçiliResim" or "CropLeft" or "CropTop" or "CropRight" or "CropBottom" && Scanner.SeçiliResim != null)
             {
-                Int32Rect sourceRect = CropImageRect(Scanner.SeçiliResim);
+                Int32Rect sourceRect = CropImageRect(Scanner.SeçiliResim.Resim);
                 if (sourceRect.HasArea)
                 {
-                    Scanner.CroppedImage = new CroppedBitmap((BitmapSource)Scanner.SeçiliResim, sourceRect);
+                    Scanner.CroppedImage = new CroppedBitmap(Scanner.SeçiliResim.Resim, sourceRect);
                     Scanner.CroppedImage.Freeze();
                 }
             }
@@ -498,11 +506,11 @@ namespace TwainControl
                         using Bitmap bitmap = args.Image;
                         BitmapSource evrak = EvrakOluştur(bitmap);
                         evrak.Freeze();
-                        BitmapSource önizleme = evrak.Resize(63, 89);
+                        BitmapSource önizleme = evrak.Resize(126, 178);
                         önizleme.Freeze();
                         BitmapFrame bitmapFrame = BitmapFrame.Create(evrak, önizleme);
                         bitmapFrame.Freeze();
-                        Scanner.Resimler.Add(bitmapFrame);
+                        Scanner.Resimler.Add(new ScannedImage() { Resim = bitmapFrame });
                         if (Scanner.SeperateSave && (ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
                         {
                             File.WriteAllBytes(Settings.Default.AutoFolder.SetUniqueFile($"{DateTime.Now.ToShortDateString()}{Scanner.FileName}", "tif"), bitmapFrame.ToTiffJpegByteArray(Format.Tiff));
@@ -525,10 +533,26 @@ namespace TwainControl
                     Scanner.ArayüzEtkin = true;
                 };
             }
-            catch (Exception)
+            catch (Exception Ex)
             {
-                //Scanner.ArayüzEtkin = false;
+                Scanner.ArayüzEtkin = false;
             }
         }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct SHFILEINFO
+        {
+            public IntPtr hIcon;
+
+            public IntPtr iIcon;
+
+            public uint dwAttributes;
+
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
+            public string szDisplayName;
+
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)]
+            public string szTypeName;
+        };
     }
 }
