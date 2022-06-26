@@ -155,7 +155,7 @@ namespace GpScanner.ViewModel
 
         private static void PdfStreamChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is PdfViewer pdfViewer)
+            if (d is PdfViewer pdfViewer && string.Equals(Path.GetExtension(pdfViewer.DataContext as string), ".pdf", StringComparison.OrdinalIgnoreCase))
             {
                 pdfViewer.ToplamSayfa = Pdf2Png.ConvertAllPages(pdfViewer.PdfFileStream, 0).Count;
                 pdfViewer.TifNavigasyonButtonEtkin = pdfViewer.ToplamSayfa > 1 ? Visibility.Visible : Visibility.Collapsed;

@@ -33,6 +33,11 @@
                     d:ItemsSource="{d:SampleData ItemCount=5}"
                     IsSynchronizedWithCurrentItem="False"
                     ItemsSource="{Binding Mode=OneWay, Source={StaticResource Veriler}}">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Extensions:VirtualizingWrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
                             <Setter Property="Template">
@@ -44,9 +49,12 @@
                                                 CommandParameter="{Binding}"
                                                 Content="{Binding Mode=OneWay, Converter={StaticResource FileNameExtractConverter}}">
                                                 <Extensions:SplitButton.InternalContent>
-                                                    <GroupBox Width="480" Height="360">
-                                                        <ContentControl Content="{Binding}" ContentTemplate="{DynamicResource PdfViewerTemplate}" />
-                                                    </GroupBox>
+                                                    <Extensions:ResizablePanel Width="480" Height="360" MinWidth="480"
+                                                        MinHeight="360">
+                                                        <GroupBox>
+                                                            <ContentControl Content="{Binding}" ContentTemplate="{DynamicResource PdfViewerTemplate}" />
+                                                        </GroupBox>
+                                                    </Extensions:ResizablePanel>
                                                 </Extensions:SplitButton.InternalContent>
                                             </Extensions:SplitButton>
                                             <TextBlock>
