@@ -94,5 +94,17 @@ namespace TwainControl.Properties {
                 this["DateGroupFolder"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("126")]
+        public double PreviewWidth {
+            get {
+                return ((double)(this["PreviewWidth"]));
+            }
+            set {
+                this["PreviewWidth"] = value;
+            }
+        }
     }
 }

@@ -65,7 +65,11 @@ namespace TwainControl
             {
                 if (parameter is ScannedImage scannedImage)
                 {
-                    SaveFileDialog saveFileDialog = new() { Filter = "Tif Resmi (*.tif)|*.tif|Jpg Resmi(*.jpg)|*.jpg|Pdf Dosyası(*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası(*.pdf)|*.pdf" };
+                    SaveFileDialog saveFileDialog = new()
+                    {
+                        Filter = "Tif Resmi (*.tif)|*.tif|Jpg Resmi(*.jpg)|*.jpg|Pdf Dosyası(*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası(*.pdf)|*.pdf",
+                        FileName = Scanner.FileName
+                    };
                     if (saveFileDialog.ShowDialog() == true)
                     {
                         if (saveFileDialog.FilterIndex == 1)
@@ -95,19 +99,27 @@ namespace TwainControl
                 }
             }, parameter => true);
 
-            Tümünükaydet = new RelayCommand<object>(parameter =>
+            Tümünüİşaretle = new RelayCommand<object>(parameter =>
             {
-                SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası(*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası(*.pdf)|*.pdf" };
-                if (saveFileDialog.ShowDialog() == true)
+                foreach (ScannedImage item in Scanner.Resimler.ToList())
                 {
-                    if (saveFileDialog.FilterIndex == 2)
-                    {
-                        PdfKaydet(Scanner.Resimler, saveFileDialog.FileName, Format.Tiff);
-                    }
-                    else
-                    {
-                        PdfKaydet(Scanner.Resimler, saveFileDialog.FileName, Format.Jpg);
-                    }
+                    item.Seçili = true;
+                }
+            }, parameter => Scanner.Resimler?.Count > 0);
+
+            TümününİşaretiniKaldır = new RelayCommand<object>(parameter =>
+            {
+                foreach (ScannedImage item in Scanner.Resimler.ToList())
+                {
+                    item.Seçili = false;
+                }
+            }, parameter => Scanner.Resimler?.Count > 0);
+
+            Tersiniİşaretle = new RelayCommand<object>(parameter =>
+            {
+                foreach (ScannedImage item in Scanner.Resimler.ToList())
+                {
+                    item.Seçili = !item.Seçili;
                 }
             }, parameter => Scanner.Resimler?.Count > 0);
 
@@ -126,7 +138,11 @@ namespace TwainControl
 
             Seçilikaydet = new RelayCommand<object>(parameter =>
             {
-                SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası(*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası(*.pdf)|*.pdf|Zip Dosyası(*.zip)|*.zip" };
+                SaveFileDialog saveFileDialog = new()
+                {
+                    Filter = "Pdf Dosyası(*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası(*.pdf)|*.pdf|Zip Dosyası(*.zip)|*.zip",
+                    FileName = Scanner.FileName
+                };
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     if (saveFileDialog.FilterIndex == 1)
@@ -158,7 +174,11 @@ namespace TwainControl
 
             SaveCroppedImage = new RelayCommand<object>(parameter =>
             {
-                SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası(*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası(*.pdf)|*.pdf|Jpg Dosyası(*.jpg)|*.jpg" };
+                SaveFileDialog saveFileDialog = new()
+                {
+                    Filter = "Pdf Dosyası(*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası(*.pdf)|*.pdf|Jpg Dosyası(*.jpg)|*.jpg",
+                    FileName = Scanner.FileName
+                };
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     if (saveFileDialog.FilterIndex == 1)
@@ -256,14 +276,18 @@ namespace TwainControl
 
         public ICommand SplitImage { get; }
 
-        public ICommand Tümünükaydet { get; }
+        public ICommand Tersiniİşaretle { get; }
+
+        public ICommand Tümünüİşaretle { get; }
+
+        public ICommand TümününİşaretiniKaldır { get; }
 
         public ICommand WebAdreseGit { get; }
 
         public static string GetDisplayName(string path)
         {
-            SHFILEINFO shfi = new SHFILEINFO();
-            return (SHGetFileInfo(path, FILE_ATTRIBUTE_NORMAL, out shfi, (uint)Marshal.SizeOf(typeof(SHFILEINFO)), SHGFI_DISPLAYNAME) != 0) ? shfi.szDisplayName : null;
+            _ = new SHFILEINFO();
+            return (SHGetFileInfo(path, FILE_ATTRIBUTE_NORMAL, out SHFILEINFO shfi, (uint)Marshal.SizeOf(typeof(SHFILEINFO)), SHGFI_DISPLAYNAME) != 0) ? shfi.szDisplayName : null;
         }
 
         public void Dispose()
@@ -506,7 +530,7 @@ namespace TwainControl
                         using Bitmap bitmap = args.Image;
                         BitmapSource evrak = EvrakOluştur(bitmap);
                         evrak.Freeze();
-                        BitmapSource önizleme = evrak.Resize(126, 178);
+                        BitmapSource önizleme = evrak.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 21 * 29.7);
                         önizleme.Freeze();
                         BitmapFrame bitmapFrame = BitmapFrame.Create(evrak, önizleme);
                         bitmapFrame.Freeze();
@@ -533,7 +557,7 @@ namespace TwainControl
                     Scanner.ArayüzEtkin = true;
                 };
             }
-            catch (Exception Ex)
+            catch (Exception)
             {
                 Scanner.ArayüzEtkin = false;
             }

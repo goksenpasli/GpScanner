@@ -1,6 +1,7 @@
 ﻿<Window x:Class="GpScanner.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
+    xmlns:ViewModel="clr-namespace:GpScanner.ViewModel"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
@@ -38,11 +39,16 @@
                                 <Setter.Value>
                                     <ControlTemplate>
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock VerticalAlignment="Center">
-                                                <Hyperlink Command="{Binding DataContext.WebAdreseGit, ElementName=TwainCtrl, Mode=OneWay}" CommandParameter="{Binding}">
-                                                    <Run Text="{Binding Mode=OneWay}" />
-                                                </Hyperlink>
-                                            </TextBlock>
+                                            <Extensions:SplitButton d:Content="Dosya"
+                                                Command="{Binding DataContext.WebAdreseGit, ElementName=TwainCtrl, Mode=OneWay}"
+                                                CommandParameter="{Binding}"
+                                                Content="{Binding Mode=OneWay, Converter={StaticResource FileNameExtractConverter}}">
+                                                <Extensions:SplitButton.InternalContent>
+                                                    <GroupBox Width="480" Height="360">
+                                                        <ContentControl Content="{Binding}" ContentTemplate="{DynamicResource PdfViewerTemplate}" />
+                                                    </GroupBox>
+                                                </Extensions:SplitButton.InternalContent>
+                                            </Extensions:SplitButton>
                                             <TextBlock>
                                                 <Hyperlink Command="{Binding DataContext.ExploreFile, ElementName=TwainCtrl, Mode=OneWay}" CommandParameter="{Binding}" TextDecorations="None">
                                                     <Image Width="32" Height="32">

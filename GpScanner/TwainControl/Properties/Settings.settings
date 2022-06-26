@@ -20,5 +20,8 @@
     <Setting Name="DateGroupFolder" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="PreviewWidth" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">126</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

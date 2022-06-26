@@ -186,58 +186,72 @@
                         </UniformGrid>
                     </StackPanel>
                 </GroupBox>
-                <ListBox Grid.Row="2"
-                    d:ItemsSource="{d:SampleData ItemCount=5}"
-                    ItemsSource="{Binding Scanner.Resimler, Mode=OneWay}"
-                    SelectedItem="{Binding Scanner.SeçiliResim}"
-                    SelectionMode="Extended">
-                    <ListBox.ItemContainerStyle>
-                        <Style TargetType="ListBoxItem">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate>
-                                        <Border Margin="2" BorderThickness="5">
-                                            <Border.Style>
-                                                <Style TargetType="Border">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Seçili}" Value="true">
-                                                            <Setter Property="BorderBrush" Value="MediumSeaGreen" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Border.Style>
-                                            <StackPanel>
-                                                <TextBlock HorizontalAlignment="Right">
-                                                    <Hyperlink Command="{Binding ElementName=UserControl, Path=DataContext.Kaydet}" CommandParameter="{Binding Mode=OneWay}">
-                                                        <Run Text="KAYDET" />
-                                                    </Hyperlink>
-                                                    <Hyperlink Command="{Binding ElementName=UserControl, Path=DataContext.ResimSil}" CommandParameter="{Binding Mode=OneWay}" FontFamily="Segoe UI Black">
-                                                        <Run Text="X" />
-                                                    </Hyperlink>
-                                                </TextBlock>
-                                                <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center" IsChecked="{Binding Seçili}">
-                                                    <Image Width="126" Height="178" d:RenderOptions.BitmapScalingMode="HighQuality"
-                                                        d:Source="/TwainControl;component/bw.png" RenderOptions.BitmapScalingMode="NearestNeighbor"
-                                                        Source="{Binding Resim.Thumbnail, Mode=OneWay}" />
-                                                </CheckBox>
-                                            </StackPanel>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                            <Setter Property="IsSelected" Value="{Binding Seçili}" />
-                        </Style>
-                    </ListBox.ItemContainerStyle>
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <Extensions:VirtualizingWrapPanel />
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                </ListBox>
-                <UniformGrid Grid.Row="3" Columns="2" Rows="2">
-                    <Button Command="{Binding Tümünükaydet}" Content="TÜMÜNÜ PDF KAYDET" />
+                <GroupBox Grid.Row="2">
+                    <GroupBox.Header>
+                        <UniformGrid Columns="4">
+                            <Button Command="{Binding Tümünüİşaretle}" Content="TÜMÜNÜ SEÇ" />
+                            <Button Command="{Binding TümününİşaretiniKaldır}" Content="SEÇİMİ KALDIR" />
+                            <Button Command="{Binding Tersiniİşaretle}" Content="DİĞERLERİNİ SEÇ" />
+                            <Slider AutoToolTipPlacement="TopLeft" Maximum="300" Minimum="85"
+                                SmallChange="1" ToolTip="RESİM ÖNİZLEME BOYUTU"
+                                Value="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}" />
+                        </UniformGrid>
+                    </GroupBox.Header>
+                    <ListBox d:ItemsSource="{d:SampleData ItemCount=5}"
+                        ItemsSource="{Binding Scanner.Resimler, Mode=OneWay}"
+                        SelectedItem="{Binding Scanner.SeçiliResim}"
+                        SelectionMode="Extended">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <Border Margin="2" BorderThickness="5">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Seçili}" Value="true">
+                                                                <Setter Property="BorderBrush" Value="MediumSeaGreen" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <StackPanel>
+                                                    <TextBlock HorizontalAlignment="Right">
+                                                        <Hyperlink Command="{Binding ElementName=UserControl, Path=DataContext.Kaydet}" CommandParameter="{Binding Mode=OneWay}" TextDecorations="None">
+                                                            <Run BaselineAlignment="Baseline" FontSize="16" Foreground="Green"
+                                                                Text="KAYDET" />
+                                                        </Hyperlink>
+                                                        <Hyperlink Command="{Binding ElementName=UserControl, Path=DataContext.ResimSil}"
+                                                            CommandParameter="{Binding Mode=OneWay}"
+                                                            FontFamily="Segoe UI Black" TextDecorations="None">
+                                                            <Run FontSize="32" Foreground="Red" Text="X" />
+                                                        </Hyperlink>
+                                                    </TextBlock>
+                                                    <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center" IsChecked="{Binding Seçili}">
+                                                        <Image Width="{Binding Resim.Thumbnail.PixelWidth, Mode=OneWay}"
+                                                            Height="{Binding Resim.Thumbnail.PixelHeight, Mode=OneWay}"
+                                                            d:Source="/TwainControl;component/bw.png" RenderOptions.BitmapScalingMode="NearestNeighbor"
+                                                            Source="{Binding Resim.Thumbnail, Mode=OneWay}" />
+                                                    </CheckBox>
+                                                </StackPanel>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="IsSelected" Value="{Binding Seçili}" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Extensions:VirtualizingWrapPanel />
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                    </ListBox>
+                </GroupBox>
+                <UniformGrid Grid.Row="3" Columns="3">
                     <Button Command="{Binding Seçilikaydet}" Content="SEÇİLİLERİ PDF KAYDET" />
-                    <Button Background="Red" Command="{Binding ListeTemizle}" Content="TARANANLARI TEMİZLE" />
+                    <Button Background="Red" Command="{Binding ListeTemizle}" Content="LİSTEYİ TEMİZLE" />
                     <Button Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/goksenpasli" Content="HAKKINDA" />
                 </UniformGrid>
             </Grid>
