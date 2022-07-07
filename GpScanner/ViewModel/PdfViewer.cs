@@ -22,9 +22,9 @@ namespace GpScanner.ViewModel
 
         public PdfViewer()
         {
-            OpenFileDialog openFileDialog = null;
             DosyaAç = new RelayCommand<object>(parameter =>
             {
+                OpenFileDialog openFileDialog = default;
                 openFileDialog = new() { Multiselect = false, Filter = "Pdf Dosyaları (*.pdf)|*.pdf" };
                 if (openFileDialog.ShowDialog() == true)
                 {

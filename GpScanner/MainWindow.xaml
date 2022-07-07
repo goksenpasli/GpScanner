@@ -24,18 +24,20 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="300" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <Viewbox Stretch="Fill">
-                    <Calendar DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}" SelectedDate="{Binding SeçiliGün}" />
+                    <Calendar PreviewMouseUp="Calendar_PreviewMouseUp" DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}" SelectedDate="{Binding SeçiliGün}" />
                 </Viewbox>
-                <ListBox Grid.Row="1"
+                <Button Grid.Row="1" Command="{Binding ResetFilter}" Content="TÜMÜNÜ GÖR" />
+                <ListBox Grid.Row="2"
                     d:ItemsSource="{d:SampleData ItemCount=5}"
                     IsSynchronizedWithCurrentItem="False"
                     ItemsSource="{Binding Mode=OneWay, Source={StaticResource Veriler}}">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <Extensions:VirtualizingWrapPanel/>
+                            <Extensions:VirtualizingWrapPanel />
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
                     <ListBox.ItemContainerStyle>

@@ -55,20 +55,6 @@ namespace TwainControl
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public bool ApplyRotate
-        {
-            get => applyRotate;
-
-            set
-            {
-                if (applyRotate != value)
-                {
-                    applyRotate = value;
-                    OnPropertyChanged(nameof(ApplyRotate));
-                }
-            }
-        }
-
         public bool ArayüzEtkin
         {
             get => arayüzetkin;
@@ -437,8 +423,6 @@ namespace TwainControl
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        private bool applyRotate;
 
         private bool arayüzetkin = true;
 

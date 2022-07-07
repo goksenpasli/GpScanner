@@ -15,7 +15,7 @@
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="380" />
+            <ColumnDefinition Width="390" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <GroupBox Grid.Column="0" Header="KAYNAK SEÇ">
@@ -127,9 +127,6 @@
                                 <CheckBox Content="OTOMATİK KENAR TESPİTİ" IsChecked="{Binding Scanner.BorderDetect}" />
                                 <CheckBox Content="YÜZDE GÖSTER" IsChecked="{Binding Scanner.ShowProgress}" />
                                 <CheckBox Content="OTOMATİK DÖNDÜR" IsChecked="{Binding Scanner.AutoRotate}" />
-                                <CheckBox IsChecked="{Binding Scanner.ApplyRotate}">
-                                    <TextBlock Text="PDF KAYITTA DÖNDÜRME UYGULA" TextTrimming="CharacterEllipsis" ToolTip="PDF KAYITTA DÖNDÜRME UYGULA" />
-                                </CheckBox>
                             </UniformGrid>
                         </Expander>
                         <Separator />

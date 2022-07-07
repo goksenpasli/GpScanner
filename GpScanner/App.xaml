@@ -200,8 +200,10 @@
                             Style="{DynamicResource Slider}"
                             Value="{Binding Zoom, RelativeSource={RelativeSource TemplatedParent}}" />
                         <Slider Grid.Column="5" Margin="2" AutoToolTipPlacement="TopLeft"
-                            IsSnapToTickEnabled="False" Maximum="360" SmallChange="1"
+                            IsSnapToTickEnabled="{Binding SnapTick, RelativeSource={RelativeSource TemplatedParent}}"
+                            Maximum="360" SmallChange="1"
                             Style="{DynamicResource Slider}"
+                            Ticks="0, 90, 180, 270, 360"
                             Value="{Binding Angle, RelativeSource={RelativeSource TemplatedParent}}" />
                         <ComboBox Grid.Column="6" ItemStringFormat="{}{0} Dpi"
                             ItemsSource="{Binding DpiList, RelativeSource={RelativeSource TemplatedParent}}"
@@ -215,7 +217,9 @@
                 </ControlTemplate.Triggers>
             </ControlTemplate>
             <DataTemplate x:Key="PdfViewerTemplate">
-                <ViewModel:PdfViewer PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" PrintButtonVisibility="Visible" Template="{StaticResource PdfViewerControlTemplate}" />
+                <ViewModel:PdfViewer PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                    PrintButtonVisibility="Visible" SnapTick="True"
+                    Template="{StaticResource PdfViewerControlTemplate}" />
             </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>

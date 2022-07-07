@@ -89,10 +89,28 @@ namespace TwainControl
                         }
                         else if (saveFileDialog.FilterIndex == 3)
                         {
+                            if (Viewer is { Angle: not 0, Angle: not 360 })
+                            {
+                                if (MessageBox.Show("Döndürme Uygulanarak Kaydedilsin mi?", Application.Current?.MainWindow?.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                                {
+                                    PdfKaydet(scannedImage.Resim, saveFileDialog.FileName, Format.Jpg, true);
+                                    return;
+                                }
+                                PdfKaydet(scannedImage.Resim, saveFileDialog.FileName, Format.Jpg);
+                            }
                             PdfKaydet(scannedImage.Resim, saveFileDialog.FileName, Format.Jpg);
                         }
                         else if (saveFileDialog.FilterIndex == 4)
                         {
+                            if (Viewer is { Angle: not 0, Angle: not 360 })
+                            {
+                                if (MessageBox.Show("Döndürme Uygulanarak Kaydedilsin mi?", Application.Current?.MainWindow?.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                                {
+                                    PdfKaydet(scannedImage.Resim, saveFileDialog.FileName, Format.Tiff, true);
+                                    return;
+                                }
+                                PdfKaydet(scannedImage.Resim, saveFileDialog.FileName, Format.Tiff);
+                            }
                             PdfKaydet(scannedImage.Resim, saveFileDialog.FileName, Format.Tiff);
                         }
                     }
@@ -415,11 +433,11 @@ namespace TwainControl
             return Settings.Default.AutoFolder.SetUniqueFile($"{today}{Scanner.FileName}", "pdf");
         }
 
-        private void PdfKaydet(BitmapSource bitmapframe, string dosyayolu, Format format)
+        private void PdfKaydet(BitmapSource bitmapframe, string dosyayolu, Format format, bool rotate = false)
         {
             using PdfDocument document = new();
             PdfPage page = document.AddPage();
-            if (Scanner.ApplyRotate)
+            if (rotate)
             {
                 page.Rotate = (int)Viewer.Angle;
             }
@@ -433,13 +451,13 @@ namespace TwainControl
             document.Save(dosyayolu);
         }
 
-        private void PdfKaydet(IList<ScannedImage> bitmapFrames, string dosyayolu, Format format)
+        private void PdfKaydet(IList<ScannedImage> bitmapFrames, string dosyayolu, Format format, bool rotate = false)
         {
             using PdfDocument document = new();
             for (int i = 0; i < bitmapFrames.Count; i++)
             {
                 PdfPage page = document.AddPage();
-                if (Scanner.ApplyRotate)
+                if (rotate)
                 {
                     page.Rotate = (int)Viewer.Angle;
                 }

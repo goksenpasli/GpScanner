@@ -1,10 +1,13 @@
-﻿using System;
+﻿using Extensions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
+using System.Windows.Input;
 using Twainsettings = TwainControl.Properties;
 
 namespace GpScanner
@@ -21,6 +24,9 @@ namespace GpScanner
             LoadData();
             cvs = TryFindResource("Veriler") as CollectionViewSource;
             SeçiliGün = DateTime.Today;
+
+            ResetFilter = new RelayCommand<object>(parameter => cvs.View.Filter = null, parameter => cvs is not null);
+
             PropertyChanged += MainWindow_PropertyChanged;
             TwainCtrl.PropertyChanged += TwainCtrl_PropertyChanged;
         }
@@ -28,6 +34,8 @@ namespace GpScanner
         public event PropertyChangedEventHandler PropertyChanged;
 
         public IEnumerable<string> Dosyalar { get; set; }
+
+        public ICommand ResetFilter { get; }
 
         public DateTime? SeçiliGün
         {
@@ -72,6 +80,14 @@ namespace GpScanner
             if (e.PropertyName is "Tarandı")
             {
                 LoadData();
+            }
+        }
+
+        private void Calendar_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (Mouse.Captured is CalendarItem)
+            {
+                _ = Mouse.Capture(null);
             }
         }
     }
