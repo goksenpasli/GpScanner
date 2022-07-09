@@ -14,7 +14,7 @@ namespace GpScanner.Converter
         {
             return !DesignerProperties.GetIsInDesignMode(new DependencyObject()) && value is string filename && !string.IsNullOrEmpty(filename)
                 ? Path.GetFileName(filename)
-                : (object)null;
+                : null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

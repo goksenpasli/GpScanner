@@ -311,6 +311,20 @@ namespace TwainControl
 
         public ICommand ScanImage { get; }
 
+        public bool Seçili
+        {
+            get => seçili;
+
+            set
+            {
+                if (seçili != value)
+                {
+                    seçili = value;
+                    OnPropertyChanged(nameof(Seçili));
+                }
+            }
+        }
+
         public ICommand Seçilikaydet { get; }
 
         public ScannedImage SeçiliResim
@@ -323,6 +337,20 @@ namespace TwainControl
                 {
                     seçiliResim = value;
                     OnPropertyChanged(nameof(SeçiliResim));
+                }
+            }
+        }
+
+        public int SeçiliResimSayısı
+        {
+            get => seçiliResimSayısı;
+
+            set
+            {
+                if (seçiliResimSayısı != value)
+                {
+                    seçiliResimSayısı = value;
+                    OnPropertyChanged(nameof(SeçiliResimSayısı));
                 }
             }
         }
@@ -458,7 +486,11 @@ namespace TwainControl
 
         private ObservableCollection<ScannedImage> resimler = new();
 
+        private bool seçili;
+
         private ScannedImage seçiliResim;
+
+        private int seçiliResimSayısı;
 
         private string seçiliTarayıcı;
 

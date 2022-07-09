@@ -26,6 +26,7 @@
                     <RowDefinition Height="300" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Viewbox Stretch="Fill">
                     <Calendar PreviewMouseUp="Calendar_PreviewMouseUp" DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}" SelectedDate="{Binding SeçiliGün}" />
@@ -46,21 +47,22 @@
                                 <Setter.Value>
                                     <ControlTemplate>
                                         <StackPanel Orientation="Horizontal">
-                                            <Extensions:SplitButton d:Content="Dosya"
+                                            <CheckBox IsChecked="{Binding Seçili}" IsEnabled="{Binding FileName, Mode=OneWay, Converter={StaticResource FileNamePdfCheckConverter}}"  VerticalAlignment="Center" />
+                                            <Extensions:SplitButton d:Content="Dosya" 
                                                 Command="{Binding DataContext.WebAdreseGit, ElementName=TwainCtrl, Mode=OneWay}"
-                                                CommandParameter="{Binding}"
-                                                Content="{Binding Mode=OneWay, Converter={StaticResource FileNameExtractConverter}}">
+                                                CommandParameter="{Binding Path=FileName}" SplitContentPartIsEnabled="{Binding FileName, Mode=OneWay, Converter={StaticResource FileNamePdfCheckConverter}}"
+                                                Content="{Binding Mode=OneWay, Path=FileName, Converter={StaticResource FileNameExtractConverter}}">
                                                 <Extensions:SplitButton.InternalContent>
                                                     <Extensions:ResizablePanel Width="480" Height="360" MinWidth="480"
                                                         MinHeight="360">
                                                         <GroupBox>
-                                                            <ContentControl Content="{Binding}" ContentTemplate="{DynamicResource PdfViewerTemplate}" />
+                                                            <ContentControl Content="{Binding Path=FileName}" ContentTemplate="{DynamicResource PdfViewerTemplate}" />
                                                         </GroupBox>
                                                     </Extensions:ResizablePanel>
                                                 </Extensions:SplitButton.InternalContent>
                                             </Extensions:SplitButton>
                                             <TextBlock>
-                                                <Hyperlink Command="{Binding DataContext.ExploreFile, ElementName=TwainCtrl, Mode=OneWay}" CommandParameter="{Binding}" TextDecorations="None">
+                                                <Hyperlink Command="{Binding DataContext.ExploreFile, ElementName=TwainCtrl, Mode=OneWay}" CommandParameter="{Binding Path=FileName}" TextDecorations="None">
                                                     <Image Width="32" Height="32">
                                                         <Image.Source>
                                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -78,6 +80,7 @@
                         </Style>
                     </ListBox.ItemContainerStyle>
                 </ListBox>
+                <Button Grid.Row="3" Command="{Binding PdfBirleştir}" Content="İŞARETLİ PDFLERİ BİRLEŞTİR" />
             </Grid>
         </GroupBox>
     </Grid>

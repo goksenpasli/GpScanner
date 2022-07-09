@@ -3,6 +3,7 @@ using Microsoft.Win32;
 using PdfSharp;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
+using PdfSharp.Pdf.IO;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -145,7 +146,8 @@ namespace TwainControl
             {
                 System.Windows.Forms.FolderBrowserDialog dialog = new()
                 {
-                    Description = "Otomatik Kayıt Klasörünü Belirtin."
+                    Description = "Otomatik Kayıt Klasörünü Belirtin.",
+                    SelectedPath = Settings.Default.AutoFolder
                 };
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
@@ -180,7 +182,11 @@ namespace TwainControl
                         File.Delete(dosyayolu);
                     }
                 }
-            }, parameter => Scanner.Resimler.Count(z => z.Seçili) > 0);
+            }, parameter =>
+            {
+                Scanner.SeçiliResimSayısı = Scanner.Resimler.Count(z => z.Seçili);
+                return Scanner.SeçiliResimSayısı > 0;
+            });
 
             ListeTemizle = new RelayCommand<object>(parameter =>
             {
@@ -251,6 +257,38 @@ namespace TwainControl
                 }
             }, parameter => true);
 
+            PdfBirleştir = new RelayCommand<object>(parameter =>
+            {
+                OpenFileDialog openFileDialog = new()
+                {
+                    Filter = "Pdf Dosyası(*.pdf)|*.pdf",
+                    Multiselect = true
+                };
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    string[] files = openFileDialog.FileNames;
+                    if (files.Length > 0)
+                    {
+                        SaveFileDialog saveFileDialog = new()
+                        {
+                            Filter = "Pdf Dosyası(*.pdf)|*.pdf",
+                            FileName = "Birleştirilmiş"
+                        };
+                        if (saveFileDialog.ShowDialog() == true)
+                        {
+                            try
+                            {
+                                MergePdf(files).Save(saveFileDialog.FileName);
+                            }
+                            catch (Exception ex)
+                            {
+                                _ = MessageBox.Show(ex.Message);
+                            }
+                        }
+                    }
+                }
+            }, parameter => true);
+
             Scanner.PropertyChanged += Scanner_PropertyChanged;
 
             Settings.Default.PropertyChanged += Default_PropertyChanged;
@@ -267,6 +305,8 @@ namespace TwainControl
         public ICommand KayıtYoluBelirle { get; }
 
         public ICommand ListeTemizle { get; }
+
+        public ICommand PdfBirleştir { get; }
 
         public ICommand ResetCroppedImage { get; }
 
@@ -313,6 +353,22 @@ namespace TwainControl
             Dispose(true);
         }
 
+        public PdfDocument MergePdf(string[] pdffiles)
+        {
+            using PdfDocument outputDocument = new();
+            foreach (string file in pdffiles)
+            {
+                PdfDocument inputDocument = PdfReader.Open(file, PdfDocumentOpenMode.Import);
+                int count = inputDocument.PageCount;
+                for (int idx = 0; idx < count; idx++)
+                {
+                    PdfPage page = inputDocument.Pages[idx];
+                    _ = outputDocument.AddPage(page);
+                }
+            }
+            return outputDocument;
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -344,15 +400,6 @@ namespace TwainControl
 
         private Twain twain;
 
-        private static void DefaultPdfCompression(PdfDocument doc)
-        {
-            doc.Options.FlateEncodeMode = PdfFlateEncodeMode.BestCompression;
-            doc.Options.CompressContentStreams = true;
-            doc.Options.UseFlateDecoderForJpegImages = PdfUseFlateDecoderForJpegImages.Automatic;
-            doc.Options.NoCompression = false;
-            doc.Options.EnableCcittCompressionForBilevelImages = true;
-        }
-
         [DllImport("shell32")]
         private static extern int SHGetFileInfo(string pszPath, uint dwFileAttributes, out SHFILEINFO psfi, uint cbFileInfo, uint flags);
 
@@ -370,6 +417,15 @@ namespace TwainControl
                 Scanner.AutoSave = Directory.Exists(Settings.Default.AutoFolder);
             }
             Settings.Default.Save();
+        }
+
+        private void DefaultPdfCompression(PdfDocument doc)
+        {
+            doc.Options.FlateEncodeMode = PdfFlateEncodeMode.BestCompression;
+            doc.Options.CompressContentStreams = true;
+            doc.Options.UseFlateDecoderForJpegImages = PdfUseFlateDecoderForJpegImages.Automatic;
+            doc.Options.NoCompression = false;
+            doc.Options.EnableCcittCompressionForBilevelImages = true;
         }
 
         private ScanSettings DefaultScanSettings()
