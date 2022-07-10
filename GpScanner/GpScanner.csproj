@@ -47,10 +47,6 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Extensions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Autobus\Autobus\bin\Debug\Extensions.dll</HintPath>
-    </Reference>
     <Reference Include="Freeware.Pdf2Png, Version=1.0.1.0, Culture=neutral, PublicKeyToken=0b93ff91d4be458d, processorArchitecture=MSIL">
       <HintPath>..\packages\Freeware.Pdf2Png.1.0.1\lib\net45\Freeware.Pdf2Png.dll</HintPath>
     </Reference>
@@ -124,6 +120,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Extensions\Extensions.csproj">
+      <Project>{22b9a127-5e74-4534-bfc4-a3349544c52c}</Project>
+      <Name>Extensions</Name>
+    </ProjectReference>
     <ProjectReference Include="TwainControl\TwainControl.csproj">
       <Project>{e18bdb1b-1d7c-4f60-85b1-53eae13074c4}</Project>
       <Name>TwainControl</Name>

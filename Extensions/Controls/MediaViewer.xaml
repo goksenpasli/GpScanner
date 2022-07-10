@@ -1,0 +1,178 @@
+﻿<UserControl x:Class="Extensions.Controls.MediaViewer"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:Extensions"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="384" d:DesignWidth="512" UseLayoutRounding="True"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Extensions;component/Themes/Generic.xaml" />
+            </ResourceDictionary.MergedDictionaries>      
+        <local:TimespanToSecondsConverter x:Key="TimespanToSecondsConverter" />
+        <local:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="24" />
+        </Grid.RowDefinitions>
+        <MediaElement x:Name="Player"
+            Grid.Row="0"
+            MinWidth="352" MinHeight="288"
+            LoadedBehavior="Manual" UnloadedBehavior="Close"
+            Volume="{Binding MediaVolume, UpdateSourceTrigger=PropertyChanged}">
+            <MediaElement.Effect>
+                <local:ColorEffect x:Name="Color" />
+            </MediaElement.Effect>
+        </MediaElement>
+        <Slider x:Name="Sld"
+            Grid.Row="1"
+            VerticalAlignment="Center"
+            IsMoveToPointEnabled="True"
+            Maximum="{Binding EndTimeSpan, Mode=OneWay, Converter={StaticResource TimespanToSecondsConverter}}"
+            MouseLeave="Sld_MouseLeave" MouseMove="Sld_MouseMove"
+            Style="{StaticResource Slider}"
+            Thumb.DragCompleted="Sld_DragCompleted" Thumb.DragStarted="Sld_DragStarted"
+            Value="{Binding MediaPosition, Converter={StaticResource TimespanToSecondsConverter}, Mode=TwoWay}" />
+        <Grid Grid.Row="2" Background="Transparent">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Button x:Name="Play"
+                Content="4"
+                Grid.Column="0"
+                Width="24" Height="24"
+                Click="Play_Click" FontFamily="Webdings" FontSize="18" Foreground="Blue" />
+            <Button x:Name="Pause"
+                Content=";"
+                Grid.Column="1"
+                Width="24" Height="24"
+                Click="Pause_Click" FontFamily="Webdings" FontSize="18" Foreground="Blue" />
+            <Button x:Name="Stop"
+                Content="&lt;"
+                Grid.Column="2"
+                Width="24" Height="24"
+                Click="Stop_Click" FontFamily="Webdings" FontSize="18" Foreground="Blue" />
+            <Button x:Name="Back"
+                Content="7"
+                Grid.Column="3"
+                Width="24" Height="24"
+                Click="Back_Click" FontFamily="Webdings" FontSize="18" Foreground="Blue" />
+            <Button x:Name="Forward"
+                Content="8"
+                Grid.Column="4"
+                Width="24" Height="24"
+                Click="Forward_Click" FontFamily="Webdings" FontSize="18" Foreground="Blue" />
+            <Button x:Name="SlowBackward"
+                Content="9"
+                Grid.Column="5"
+                Width="24" Height="24"
+                Click="SlowBackward_Click" FontFamily="Webdings" FontSize="18" Foreground="Blue" />
+            <Button x:Name="SlowForward"
+                Content=":"
+                Grid.Column="6"
+                Width="24" Height="24"
+                Click="SlowForward_Click" FontFamily="Webdings" FontSize="18" Foreground="Blue" />
+            <ToggleButton x:Name="Mute"
+                Grid.Column="7"
+                Width="24" Height="24"
+                Margin="1,0,1,0"
+                Checked="Mute_Checked" FontSize="18" Foreground="Blue" IsThreeState="False"
+                Unchecked="Mute_Unchecked">
+                <ToggleButton.Style>
+                    <Style TargetType="ToggleButton">
+                        <Style.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Content">
+                                    <Setter.Value>
+                                        <TextBlock Text="V" FontFamily="Webdings" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="False">
+                                <Setter Property="Content">
+                                    <Setter.Value>
+                                        <TextBlock Text="U" FontFamily="Webdings" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ToggleButton.Style>
+            </ToggleButton>
+            <Slider x:Name="Volume"
+                Grid.Column="8"
+                Width="60"
+                VerticalAlignment="Center"
+                IsMoveToPointEnabled="True" Maximum="1"
+                Style="{StaticResource Slider}"
+                Value="{Binding MediaVolume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBlock Grid.Column="9"
+                Margin="1,0,1,0" VerticalAlignment="Center"
+                Foreground="Black">
+                <Run Text="{Binding MediaPosition, Mode=OneWay, Converter={StaticResource TimeSpanToStringConverter}}" />
+                <Run Text="{Binding EndTimeSpan, Mode=OneWay, Converter={StaticResource TimeSpanToStringConverter}}" />
+            </TextBlock>
+            <Button x:Name="Capture"
+                Content="N"
+                Grid.Column="10"
+                Width="24" Height="24"
+                VerticalContentAlignment="Center"
+                Click="Capture_Click" FontFamily="Webdings" FontSize="20" Foreground="Blue"
+                ToolTip="Ekran Yakala Resimlerim Klasörüne Kaydedilir." />
+            <local:ContentToggleButton Grid.Column="11"
+                FontFamily="Webdings" FontSize="20" Foreground="Blue" OverContent="·"
+                PlacementMode="Top">
+                <local:ContentToggleButton.Content>
+                    <GroupBox>
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel.Resources>
+                                <Style TargetType="Slider">
+                                    <Setter Property="Height" Value="64" />
+                                    <Setter Property="Orientation" Value="Vertical" />
+                                    <Setter Property="Maximum" Value="1" />
+                                    <Setter Property="Minimum" Value="0" />
+                                    <Setter Property="BorderThickness" Value="3" />
+                                </Style>
+                            </StackPanel.Resources>
+                            <Slider BorderBrush="Red" Value="{Binding ElementName=Color, Path=Red}" />
+                            <Slider BorderBrush="Green" Value="{Binding ElementName=Color, Path=Green}" />
+                            <Slider BorderBrush="Blue" Value="{Binding ElementName=Color, Path=Blue}" />
+                            <Slider Value="{Binding ElementName=Color, Path=Brightness}">
+                                <Slider.BorderBrush>
+                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                        <GradientStop Color="Black" />
+                                        <GradientStop Offset="1" Color="White" />
+                                    </LinearGradientBrush>
+                                </Slider.BorderBrush>
+                            </Slider>
+                            <Slider Value="{Binding ElementName=Color, Path=Contrast}">
+                                <Slider.BorderBrush>
+                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                        <GradientStop Color="White" />
+                                        <GradientStop Offset="1" Color="Black" />
+                                    </LinearGradientBrush>
+                                </Slider.BorderBrush>
+                            </Slider>
+                        </StackPanel>
+                    </GroupBox>
+                </local:ContentToggleButton.Content>
+            </local:ContentToggleButton>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -41,10 +41,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Extensions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Autobus\Extensions\bin\Debug\Extensions.dll</HintPath>
-    </Reference>
     <Reference Include="PdfSharp-wpf, Version=1.51.5185.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
       <HintPath>..\..\packages\PDFsharp-wpf.1.51.5185-beta\lib\net30\PdfSharp-wpf.dll</HintPath>
     </Reference>
@@ -126,6 +122,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="gray.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Extensions\Extensions.csproj">
+      <Project>{22b9a127-5e74-4534-bfc4-a3349544c52c}</Project>
+      <Name>Extensions</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
