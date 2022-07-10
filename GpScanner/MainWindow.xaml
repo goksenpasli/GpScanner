@@ -31,14 +31,17 @@
                 <Viewbox Stretch="Fill">
                     <Calendar PreviewMouseUp="Calendar_PreviewMouseUp" DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}" SelectedDate="{Binding SeçiliGün}" />
                 </Viewbox>
-                <Button Grid.Row="1" Command="{Binding ResetFilter}" Content="TÜMÜNÜ GÖR" />
-                <ListBox Grid.Row="2"
+                <UniformGrid Grid.Row="1" Columns="2">
+                    <Button Command="{Binding ResetFilter}" Content="TÜMÜNÜ GÖR" />
+                    <ToggleButton IsChecked="{Binding Path=ShowPdfPreview}" Content="PDF DOSYA ÖNİZLEME" />
+                </UniformGrid>
+                <ListBox Grid.Row="2" VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.CacheLength="2,2" VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.VirtualizationMode="Recycling"
                     d:ItemsSource="{d:SampleData ItemCount=5}"
                     IsSynchronizedWithCurrentItem="False"
                     ItemsSource="{Binding Mode=OneWay, Source={StaticResource Veriler}}">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <Extensions:VirtualizingWrapPanel />
+                            <VirtualizingStackPanel />
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
                     <ListBox.ItemContainerStyle>
@@ -47,8 +50,28 @@
                                 <Setter.Value>
                                     <ControlTemplate>
                                         <StackPanel Orientation="Horizontal">
-                                            <CheckBox IsChecked="{Binding Seçili}" IsEnabled="{Binding FileName, Mode=OneWay, Converter={StaticResource FileNamePdfCheckConverter}}"  VerticalAlignment="Center" />
-                                            <Extensions:SplitButton d:Content="Dosya" 
+                                            <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding Seçili}" IsEnabled="{Binding FileName, Mode=OneWay, Converter={StaticResource FileNamePdfCheckConverter}}"  VerticalAlignment="Center">
+                                                <CheckBox.Style>
+                                                    <Style TargetType="CheckBox">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Path=DataContext.ShowPdfPreview, RelativeSource={RelativeSource AncestorType=Window}}" Value="true">
+                                                                <Setter Property="Content">
+                                                                    <Setter.Value>
+                                                                        <ContentControl Width="84" Height="117" Content="{Binding Path=FileName}">
+                                                                            <ContentControl.ContentTemplate>
+                                                                                <DataTemplate>
+                                                                                    <ViewModel:PdfViewer PdfFilePath="{Binding DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"  Template="{StaticResource PdfViewerControlTemplate}" FirstPageThumbnail="True" ToolBarVisibility="Collapsed" />
+                                                                                </DataTemplate>
+                                                                            </ContentControl.ContentTemplate>
+                                                                        </ContentControl>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </CheckBox.Style>
+                                            </CheckBox>
+                                            <Extensions:SplitButton d:Content="Dosya"
                                                 Command="{Binding DataContext.WebAdreseGit, ElementName=TwainCtrl, Mode=OneWay}"
                                                 CommandParameter="{Binding Path=FileName}" SplitContentPartIsEnabled="{Binding FileName, Mode=OneWay, Converter={StaticResource FileNamePdfCheckConverter}}"
                                                 Content="{Binding Mode=OneWay, Path=FileName, Converter={StaticResource FileNameExtractConverter}}">
@@ -61,7 +84,7 @@
                                                     </Extensions:ResizablePanel>
                                                 </Extensions:SplitButton.InternalContent>
                                             </Extensions:SplitButton>
-                                            <TextBlock>
+                                            <TextBlock VerticalAlignment="Center">
                                                 <Hyperlink Command="{Binding DataContext.ExploreFile, ElementName=TwainCtrl, Mode=OneWay}" CommandParameter="{Binding Path=FileName}" TextDecorations="None">
                                                     <Image Width="32" Height="32">
                                                         <Image.Source>

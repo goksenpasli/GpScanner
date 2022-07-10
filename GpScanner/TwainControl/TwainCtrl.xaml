@@ -11,8 +11,13 @@
     d:DesignHeight="600" d:DesignWidth="800" Loaded="UserControl_Loaded"
     UseLayoutRounding="True" mc:Ignorable="d">
     <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="/TwainControl;component/Slider.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+			<BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+			<Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
+		</ResourceDictionary>
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -271,26 +276,26 @@
         <GroupBox Grid.Column="1" Margin="1,0,0,0" Header="EVRAK">
             <Grid IsEnabled="{Binding Scanner.SeçiliResim, Converter={StaticResource NullableToBooleanConverter}}">
                 <DockPanel>
-                    <Slider Margin="23,0,23,0" DockPanel.Dock="Top" IsSnapToTickEnabled="True"
+                    <Slider Style="{StaticResource SliderStyle}" Margin="20,0,20,0" DockPanel.Dock="Top" IsSnapToTickEnabled="True"
                         Maximum="{Binding Scanner.SeçiliResim.Resim.PixelWidth}"
                         TickPlacement="BottomRight"
                         Value="{Binding Scanner.CropLeft}" />
-                    <Slider Margin="23,0,23,0" DockPanel.Dock="Bottom" IsDirectionReversed="True"
+                    <Slider Style="{StaticResource SliderStyle}" Margin="20,0,20,0" DockPanel.Dock="Bottom" IsDirectionReversed="True"
                         IsSnapToTickEnabled="True"
                         Maximum="{Binding Scanner.SeçiliResim.Resim.PixelWidth}"
                         TickPlacement="TopLeft"
                         Value="{Binding Scanner.CropRight}" />
-                    <Slider DockPanel.Dock="Left" IsDirectionReversed="True" IsSnapToTickEnabled="True"
+                    <Slider Style="{StaticResource SliderStyle}" DockPanel.Dock="Left" IsDirectionReversed="True" IsSnapToTickEnabled="True"
                         Maximum="{Binding Scanner.SeçiliResim.Resim.PixelHeight}"
                         Orientation="Vertical" TickPlacement="BottomRight"
-                        Value="{Binding Scanner.CropTop}" />
-                    <Slider DockPanel.Dock="Right" IsSnapToTickEnabled="True"
+                        Value="{Binding Scanner.CropTop}" Margin="0,-6,0,0" />
+                    <Slider Style="{StaticResource SliderStyle}" DockPanel.Dock="Right" IsSnapToTickEnabled="True"
                         Maximum="{Binding Scanner.SeçiliResim.Resim.PixelHeight}"
                         Orientation="Vertical" TickPlacement="TopLeft"
-                        Value="{Binding Scanner.CropBottom}" />
-                    <Extensions:ImageViewer x:Name="Viewer"
-                        Grid.Column="1" OrijinalResimDosyaAçButtonVisibility="Collapsed" SnapTick="True"
-                        Source="{Binding Scanner.SeçiliResim.Resim}"  />
+                        Value="{Binding Scanner.CropBottom}" Margin="0,0,0,-6" />
+                    <Extensions:ImageViewer x:Name="Viewer"  DockPanel.ZIndex="-1"
+                         OrijinalResimDosyaAçButtonVisibility="Collapsed" SnapTick="True"
+                        Source="{Binding Scanner.SeçiliResim.Resim}" FitImageOrientation="Height" />
                 </DockPanel>
                 <Expander HorizontalAlignment="Left" VerticalAlignment="Bottom" ExpandDirection="Up">
                     <Border Background="{StaticResource BorderBackground}"

@@ -86,6 +86,20 @@ namespace GpScanner
             }
         }
 
+        public bool ShowPdfPreview
+        {
+            get => showPdfPreview;
+
+            set
+            {
+                if (showPdfPreview != value)
+                {
+                    showPdfPreview = value;
+                    OnPropertyChanged(nameof(ShowPdfPreview));
+                }
+            }
+        }
+
         protected virtual void OnPropertyChanged(string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -96,6 +110,8 @@ namespace GpScanner
         private ObservableCollection<Scanner> dosyalar;
 
         private DateTime? seçiliGün;
+
+        private bool showPdfPreview;
 
         private void Calendar_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {

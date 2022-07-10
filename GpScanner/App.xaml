@@ -120,7 +120,7 @@
                             </Image.LayoutTransform>
                         </Image>
                     </ScrollViewer>
-                    <Grid Grid.Row="1" IsEnabled="{Binding Source, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource NullableToBooleanConverter}}">
+                    <Grid Visibility="{Binding ToolBarVisibility, RelativeSource={RelativeSource TemplatedParent}}" Grid.Row="1" IsEnabled="{Binding Source, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource NullableToBooleanConverter}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
