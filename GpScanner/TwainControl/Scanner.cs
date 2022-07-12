@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Extensions;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
@@ -83,17 +84,6 @@ namespace TwainControl
             }
         }
 
-        public string SelectedProfile { get => selectedProfile;
-            set
-            {
-                if (selectedProfile != value)
-                {
-                    selectedProfile = value;
-                    OnPropertyChanged(nameof(SelectedProfile));
-                }
-            }
-        }
-
         public bool AutoSave
         {
             get => autoSave;
@@ -146,6 +136,20 @@ namespace TwainControl
                 {
                     cropBottom = value;
                     OnPropertyChanged(nameof(CropBottom));
+                }
+            }
+        }
+
+        public bool CropDialogExpanded
+        {
+            get => cropDialogExpanded;
+
+            set
+            {
+                if (cropDialogExpanded != value)
+                {
+                    cropDialogExpanded = value;
+                    OnPropertyChanged(nameof(CropDialogExpanded));
                 }
             }
         }
@@ -288,7 +292,7 @@ namespace TwainControl
 
         public string LocalizedPath
         {
-            get => TwainCtrl.GetDisplayName(Settings.Default.AutoFolder);
+            get => ExtensionMethods.GetDisplayName(Settings.Default.AutoFolder);
 
             set
             {
@@ -394,6 +398,20 @@ namespace TwainControl
             }
         }
 
+        public string SelectedProfile
+        {
+            get => selectedProfile;
+
+            set
+            {
+                if (selectedProfile != value)
+                {
+                    selectedProfile = value;
+                    OnPropertyChanged(nameof(SelectedProfile));
+                }
+            }
+        }
+
         public bool SeperateSave
         {
             get => seperateSave;
@@ -469,6 +487,7 @@ namespace TwainControl
         public string this[string columnName] => columnName switch
         {
             "FileName" when string.IsNullOrWhiteSpace(FileName) => "Dosya Adını Boş Geçmeyin.",
+            "ProfileName" when string.IsNullOrWhiteSpace(ProfileName) => "Profil Adını Boş Geçmeyin.",
             _ => null
         };
 
@@ -488,6 +507,8 @@ namespace TwainControl
         private int boyAdet = 1;
 
         private double cropBottom;
+
+        private bool cropDialogExpanded;
 
         private double cropLeft;
 
@@ -509,7 +530,7 @@ namespace TwainControl
 
         private string localizedPath;
 
-        private string profileName = "Profil";
+        private string profileName;
 
         private ObservableCollection<ScannedImage> resimler = new();
 
@@ -521,6 +542,8 @@ namespace TwainControl
 
         private string seçiliTarayıcı;
 
+        private string selectedProfile;
+
         private bool seperateSave;
 
         private bool showProgress;
@@ -530,6 +553,5 @@ namespace TwainControl
         private bool tarandı;
 
         private IList<string> tarayıcılar;
-        private string selectedProfile;
     }
 }

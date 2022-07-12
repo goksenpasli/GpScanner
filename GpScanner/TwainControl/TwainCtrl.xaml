@@ -153,11 +153,32 @@
                         </HeaderedContentControl>
                         <UniformGrid Columns="3">
                             <TextBox VerticalContentAlignment="Center" Text="{Binding Scanner.ProfileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <Button Command="{Binding SaveProfile}" Content="TARAMA AYARI SAKLA" />
-                            <ComboBox ItemsSource="{Binding Profile, Source={x:Static properties:Settings.Default}}" SelectedItem="{Binding Scanner.SelectedProfile}">
+                            <Button Command="{Binding SaveProfile}">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="6" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <TextBlock Text="PROFİL SAKLA" />
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                            <ComboBox HorizontalContentAlignment="Stretch"
+                                ItemsSource="{Binding Profile, Source={x:Static properties:Settings.Default}}"
+                                SelectedItem="{Binding Scanner.SelectedProfile}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding Mode=OneWay, Converter={StaticResource SplitConverter}}" />
+                                        <UniformGrid Columns="2">
+                                            <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay, Converter={StaticResource SplitConverter}}" />
+                                            <Button Command="{Binding DataContext.RemoveProfile, ElementName=UserControl}"
+                                                CommandParameter="{Binding Mode=OneWay}"
+                                                Content="SİL" />
+                                        </UniformGrid>
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
@@ -422,7 +443,8 @@
                         OrijinalResimDosyaAçButtonVisibility="Collapsed" SnapTick="True"
                         Source="{Binding Scanner.SeçiliResim.Resim}" />
                 </DockPanel>
-                <Expander HorizontalAlignment="Left" VerticalAlignment="Bottom" ExpandDirection="Up">
+                <Expander HorizontalAlignment="Left" VerticalAlignment="Bottom" ExpandDirection="Up"
+                    IsExpanded="{Binding Scanner.CropDialogExpanded}">
                     <Border Background="{StaticResource BorderBackground}"
                         BorderBrush="{StaticResource GroupBoxBackGround}"
                         BorderThickness="1" CornerRadius="1">

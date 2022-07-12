@@ -14,7 +14,6 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -153,7 +152,7 @@ namespace TwainControl
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     Settings.Default.AutoFolder = dialog.SelectedPath;
-                    Scanner.LocalizedPath = GetDisplayName(dialog.SelectedPath);
+                    Scanner.LocalizedPath = ExtensionMethods.GetDisplayName(dialog.SelectedPath);
                 }
             }, parameter => true);
 
@@ -224,7 +223,15 @@ namespace TwainControl
                 _ = Settings.Default.Profile.Add(profile);
                 Settings.Default.Save();
                 Settings.Default.Reload();
-            }, parameter => !string.IsNullOrWhiteSpace(Scanner?.ProfileName));
+                Scanner.ProfileName = "";
+            }, parameter => !string.IsNullOrWhiteSpace(Scanner?.ProfileName) && !Settings.Default.Profile.Cast<string>().Select(z => z.Split(',')[0]).Contains(Scanner?.ProfileName));
+
+            RemoveProfile = new RelayCommand<object>(parameter =>
+            {
+                Settings.Default.Profile.Remove(parameter as string);
+                Settings.Default.Save();
+                Settings.Default.Reload();
+            }, parameter => true);
 
             SaveCroppedImage = new RelayCommand<object>(parameter =>
             {
@@ -338,6 +345,8 @@ namespace TwainControl
 
         public ICommand PdfBirleştir { get; }
 
+        public ICommand RemoveProfile { get; }
+
         public ICommand ResetCroppedImage { get; }
 
         public ICommand ResimSil { get; }
@@ -373,12 +382,6 @@ namespace TwainControl
         public ICommand TümününİşaretiniKaldır { get; }
 
         public ICommand WebAdreseGit { get; }
-
-        public static string GetDisplayName(string path)
-        {
-            _ = new SHFILEINFO();
-            return (SHGetFileInfo(path, FILE_ATTRIBUTE_NORMAL, out SHFILEINFO shfi, (uint)Marshal.SizeOf(typeof(SHFILEINFO)), SHGFI_DISPLAYNAME) != 0) ? shfi.szDisplayName : null;
-        }
 
         public static PdfDocument MergePdf(string[] pdffiles)
         {
@@ -420,10 +423,6 @@ namespace TwainControl
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private const uint FILE_ATTRIBUTE_NORMAL = 0x00000080;
-
-        private const uint SHGFI_DISPLAYNAME = 0x000000200;
-
         private ScanSettings _settings;
 
         private bool disposedValue;
@@ -431,9 +430,6 @@ namespace TwainControl
         private Scanner scanner;
 
         private Twain twain;
-
-        [DllImport("shell32")]
-        private static extern int SHGetFileInfo(string pszPath, uint dwFileAttributes, out SHFILEINFO psfi, uint cbFileInfo, uint flags);
 
         private Int32Rect CropImageRect(ImageSource ımageSource)
         {
@@ -591,13 +587,14 @@ namespace TwainControl
                     Scanner.AutoSave = false;
                 }
             }
-            if (e.PropertyName is "SeçiliResim" or "CropLeft" or "CropTop" or "CropRight" or "CropBottom" && Scanner.SeçiliResim != null)
+            if (e.PropertyName is "CropLeft" or "CropTop" or "CropRight" or "CropBottom" && Scanner.SeçiliResim != null)
             {
                 Int32Rect sourceRect = CropImageRect(Scanner.SeçiliResim.Resim);
                 if (sourceRect.HasArea)
                 {
                     Scanner.CroppedImage = new CroppedBitmap(Scanner.SeçiliResim.Resim, sourceRect);
                     Scanner.CroppedImage.Freeze();
+                    Scanner.CropDialogExpanded = true;
                 }
             }
             if (e.PropertyName is "EnAdet")
@@ -616,7 +613,7 @@ namespace TwainControl
                     LineGrid.RowDefinitions.Add(new RowDefinition());
                 }
             }
-            if (e.PropertyName is "SelectedProfile")
+            if (e.PropertyName is "SelectedProfile" && Scanner.SelectedProfile is not null)
             {
                 string[] selectedprofile = Scanner.SelectedProfile.Split(',');
                 Settings.Default.Çözünürlük = double.Parse(selectedprofile[1]);
@@ -626,7 +623,8 @@ namespace TwainControl
                 Scanner.ShowUi = bool.Parse(selectedprofile[5]);
                 Scanner.SeperateSave = bool.Parse(selectedprofile[6]);
                 Settings.Default.ShowFile = bool.Parse(selectedprofile[7]);
-                Scanner.FileName = selectedprofile[8];
+                Settings.Default.DateGroupFolder = bool.Parse(selectedprofile[8]);
+                Scanner.FileName = selectedprofile[9];
             }
         }
 
@@ -680,21 +678,5 @@ namespace TwainControl
                 Scanner.ArayüzEtkin = false;
             }
         }
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct SHFILEINFO
-        {
-            public IntPtr hIcon;
-
-            public IntPtr iIcon;
-
-            public uint dwAttributes;
-
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
-            public string szDisplayName;
-
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)]
-            public string szTypeName;
-        };
     }
 }

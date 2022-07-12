@@ -20,6 +20,8 @@ namespace Extensions
     {
         public const uint FILE_ATTRIBUTE_NORMAL = 0x00000080;
 
+        public const uint SHGFI_DISPLAYNAME = 0x000000200;
+
         public const uint SHGFI_ICON = 0x000000100;
 
         public const uint SHGFI_LARGEICON = 0x000000000;
@@ -139,9 +141,15 @@ namespace Extensions
 
         public static IEnumerable<string> FilterFiles(this string path, params string[] exts) => exts.Select(x => x).SelectMany(x => Directory.EnumerateFiles(path, x, SearchOption.TopDirectoryOnly));
 
+        public static string GetDisplayName(string path)
+        {
+            _ = new SHFILEINFO();
+            return (SHGetFileInfo(path, FILE_ATTRIBUTE_NORMAL, out SHFILEINFO shfi, (uint)Marshal.SizeOf(typeof(SHFILEINFO)), SHGFI_DISPLAYNAME) != IntPtr.Zero) ? shfi.szDisplayName : null;
+        }
+
         public static string GetFileType(this string filename)
         {
-            SHFILEINFO shinfo = new();
+            SHFILEINFO shinfo = new SHFILEINFO();
             _ = SHGetFileInfo
                 (
                         filename,
@@ -168,7 +176,7 @@ namespace Extensions
                 {
                     flags += SHGFI_LARGEICON;
                 }
-                SHFILEINFO shfi = new();
+                SHFILEINFO shfi = new SHFILEINFO();
 
                 IntPtr res = SHGetFileInfo(path, FILE_ATTRIBUTE_NORMAL, out shfi, (uint)Marshal.SizeOf(shfi), flags);
 
