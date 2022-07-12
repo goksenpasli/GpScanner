@@ -77,6 +77,7 @@
     <Compile Include="Converter\FileNameExtractConverter.cs" />
     <Compile Include="Converter\FileNamePdfCheckConverter.cs" />
     <Compile Include="Converter\FilePathMergeConverter.cs" />
+    <Compile Include="ViewModel\GpScannerViewModel.cs" />
     <Compile Include="ViewModel\PdfViewer.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

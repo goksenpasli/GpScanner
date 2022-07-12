@@ -45,6 +45,19 @@ namespace GpScanner.ViewModel
                 Source = BitmapSourceFromByteArray(Pdf2Png.Convert(PdfFileStream, Sayfa, Dpi));
             }, parameter => Source is not null && Sayfa >= 1 && Sayfa < ToplamSayfa);
 
+            SaveImage = new RelayCommand<object>(parameter =>
+            {
+                SaveFileDialog saveFileDialog = new()
+                {
+                    Filter = "Jpg Dosyası(*.jpg)|*.jpg",
+                    FileName = "Resim"
+                };
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    File.WriteAllBytes(saveFileDialog.FileName, Source.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg));
+                }
+            }, parameter => Source is not null);
+
             Resize = new RelayCommand<object>(delegate
             {
                 Zoom = (FitImageOrientation != 0) ? (double.IsNaN(Height) ? ((ActualHeight == 0.0) ? 1.0 : (ActualHeight / Source.Height)) : ((Height == 0.0) ? 1.0 : (Height / Source.Height))) : (double.IsNaN(Width) ? ((ActualWidth == 0.0) ? 1.0 : (ActualWidth / Source.Width)) : ((Width == 0.0) ? 1.0 : (Width / Source.Width)));
@@ -94,6 +107,8 @@ namespace GpScanner.ViewModel
         }
 
         public new ICommand Resize { get; }
+
+        public ICommand SaveImage { get; }
 
         public int ToplamSayfa
         {

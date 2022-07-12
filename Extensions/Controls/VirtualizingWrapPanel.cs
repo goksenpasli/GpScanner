@@ -259,10 +259,7 @@ namespace Extensions
                 _generator = owner.ItemContainerGenerator;
             }
 
-            public void Dispose()
-            {
-                _generatorTracker?.Dispose();
-            }
+            public void Dispose() => _generatorTracker?.Dispose();
 
             ~ChildGenerator()
             {
@@ -435,109 +432,73 @@ namespace Extensions
 
         #region LineUp
 
-        public void LineUp()
-        {
-            SetVerticalOffset(VerticalOffset - SystemParameters.ScrollHeight);
-        }
+        public void LineUp() => SetVerticalOffset(VerticalOffset - SystemParameters.ScrollHeight);
 
         #endregion LineUp
 
         #region LineDown
 
-        public void LineDown()
-        {
-            SetVerticalOffset(VerticalOffset + SystemParameters.ScrollHeight);
-        }
+        public void LineDown() => SetVerticalOffset(VerticalOffset + SystemParameters.ScrollHeight);
 
         #endregion LineDown
 
         #region LineLeft
 
-        public void LineLeft()
-        {
-            SetHorizontalOffset(HorizontalOffset - SystemParameters.ScrollWidth);
-        }
+        public void LineLeft() => SetHorizontalOffset(HorizontalOffset - SystemParameters.ScrollWidth);
 
         #endregion LineLeft
 
         #region LineRight
 
-        public void LineRight()
-        {
-            SetHorizontalOffset(HorizontalOffset + SystemParameters.ScrollWidth);
-        }
+        public void LineRight() => SetHorizontalOffset(HorizontalOffset + SystemParameters.ScrollWidth);
 
         #endregion LineRight
 
         #region PageUp
 
-        public void PageUp()
-        {
-            SetVerticalOffset(VerticalOffset - _viewport.Height);
-        }
+        public void PageUp() => SetVerticalOffset(VerticalOffset - _viewport.Height);
 
         #endregion PageUp
 
         #region PageDown
 
-        public void PageDown()
-        {
-            SetVerticalOffset(VerticalOffset + _viewport.Height);
-        }
+        public void PageDown() => SetVerticalOffset(VerticalOffset + _viewport.Height);
 
         #endregion PageDown
 
         #region PageLeft
 
-        public void PageLeft()
-        {
-            SetHorizontalOffset(HorizontalOffset - _viewport.Width);
-        }
+        public void PageLeft() => SetHorizontalOffset(HorizontalOffset - _viewport.Width);
 
         #endregion PageLeft
 
         #region PageRight
 
-        public void PageRight()
-        {
-            SetHorizontalOffset(HorizontalOffset + _viewport.Width);
-        }
+        public void PageRight() => SetHorizontalOffset(HorizontalOffset + _viewport.Width);
 
         #endregion PageRight
 
         #region MouseWheelUp
 
-        public void MouseWheelUp()
-        {
-            SetVerticalOffset(VerticalOffset - (SystemParameters.ScrollHeight * SystemParameters.WheelScrollLines));
-        }
+        public void MouseWheelUp() => SetVerticalOffset(VerticalOffset - (SystemParameters.ScrollHeight * SystemParameters.WheelScrollLines));
 
         #endregion MouseWheelUp
 
         #region MouseWheelDown
 
-        public void MouseWheelDown()
-        {
-            SetVerticalOffset(VerticalOffset + (SystemParameters.ScrollHeight * SystemParameters.WheelScrollLines));
-        }
+        public void MouseWheelDown() => SetVerticalOffset(VerticalOffset + (SystemParameters.ScrollHeight * SystemParameters.WheelScrollLines));
 
         #endregion MouseWheelDown
 
         #region MouseWheelLeft
 
-        public void MouseWheelLeft()
-        {
-            SetHorizontalOffset(HorizontalOffset - (SystemParameters.ScrollWidth * SystemParameters.WheelScrollLines));
-        }
+        public void MouseWheelLeft() => SetHorizontalOffset(HorizontalOffset - (SystemParameters.ScrollWidth * SystemParameters.WheelScrollLines));
 
         #endregion MouseWheelLeft
 
         #region MouseWheelRight
 
-        public void MouseWheelRight()
-        {
-            SetHorizontalOffset(HorizontalOffset + (SystemParameters.ScrollWidth * SystemParameters.WheelScrollLines));
-        }
+        public void MouseWheelRight() => SetHorizontalOffset(HorizontalOffset + (SystemParameters.ScrollWidth * SystemParameters.WheelScrollLines));
 
         #endregion MouseWheelRight
 

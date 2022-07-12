@@ -15,6 +15,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -196,6 +197,35 @@ namespace TwainControl
                 }
             }, parameter => Scanner.Resimler?.Count > 0);
 
+            SaveProfile = new RelayCommand<object>(parameter =>
+            {
+                StringBuilder sb = new();
+                string profile = sb
+                    .Append(Scanner.ProfileName)
+                    .Append(",")
+                    .Append(Settings.Default.Çözünürlük)
+                    .Append(",")
+                    .Append(Settings.Default.Adf)
+                    .Append(",")
+                    .Append(Settings.Default.Mode)
+                    .Append(",")
+                    .Append(Scanner.Duplex)
+                    .Append(",")
+                    .Append(Scanner.ShowUi)
+                    .Append(",")
+                    .Append(Scanner.SeperateSave)
+                    .Append(",")
+                    .Append(Settings.Default.ShowFile)
+                    .Append(",")
+                    .Append(Settings.Default.DateGroupFolder)
+                    .Append(",")
+                    .Append(Scanner.FileName)
+                    .ToString();
+                _ = Settings.Default.Profile.Add(profile);
+                Settings.Default.Save();
+                Settings.Default.Reload();
+            }, parameter => !string.IsNullOrWhiteSpace(Scanner?.ProfileName));
+
             SaveCroppedImage = new RelayCommand<object>(parameter =>
             {
                 SaveFileDialog saveFileDialog = new()
@@ -314,6 +344,8 @@ namespace TwainControl
 
         public ICommand SaveCroppedImage { get; }
 
+        public ICommand SaveProfile { get; }
+
         public ICommand ScanImage { get; }
 
         public Scanner Scanner
@@ -348,12 +380,7 @@ namespace TwainControl
             return (SHGetFileInfo(path, FILE_ATTRIBUTE_NORMAL, out SHFILEINFO shfi, (uint)Marshal.SizeOf(typeof(SHFILEINFO)), SHGFI_DISPLAYNAME) != 0) ? shfi.szDisplayName : null;
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-
-        public PdfDocument MergePdf(string[] pdffiles)
+        public static PdfDocument MergePdf(string[] pdffiles)
         {
             using PdfDocument outputDocument = new();
             foreach (string file in pdffiles)
@@ -367,6 +394,11 @@ namespace TwainControl
                 }
             }
             return outputDocument;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
         }
 
         protected virtual void Dispose(bool disposing)
@@ -583,6 +615,18 @@ namespace TwainControl
                 {
                     LineGrid.RowDefinitions.Add(new RowDefinition());
                 }
+            }
+            if (e.PropertyName is "SelectedProfile")
+            {
+                string[] selectedprofile = Scanner.SelectedProfile.Split(',');
+                Settings.Default.Çözünürlük = double.Parse(selectedprofile[1]);
+                Settings.Default.Adf = bool.Parse(selectedprofile[2]);
+                Settings.Default.Mode = int.Parse(selectedprofile[3]);
+                Scanner.Duplex = bool.Parse(selectedprofile[4]);
+                Scanner.ShowUi = bool.Parse(selectedprofile[5]);
+                Scanner.SeperateSave = bool.Parse(selectedprofile[6]);
+                Settings.Default.ShowFile = bool.Parse(selectedprofile[7]);
+                Scanner.FileName = selectedprofile[8];
             }
         }
 

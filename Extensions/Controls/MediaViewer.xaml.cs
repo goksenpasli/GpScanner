@@ -130,10 +130,7 @@ namespace Extensions.Controls
             }
         }
 
-        private void Back_Click(object sender, RoutedEventArgs e)
-        {
-            Player.Position = Player.Position.Subtract(new TimeSpan(0, 0, 30));
-        }
+        private void Back_Click(object sender, RoutedEventArgs e) => Player.Position = Player.Position.Subtract(new TimeSpan(0, 0, 30));
 
         private void Capture_Click(object sender, RoutedEventArgs e)
         {
@@ -145,20 +142,11 @@ namespace Extensions.Controls
             }
         }
 
-        private void Forward_Click(object sender, RoutedEventArgs e)
-        {
-            Player.Position = Player.Position.Add(new TimeSpan(0, 0, 30));
-        }
+        private void Forward_Click(object sender, RoutedEventArgs e) => Player.Position = Player.Position.Add(new TimeSpan(0, 0, 30));
 
-        private void Mute_Checked(object sender, RoutedEventArgs e)
-        {
-            MediaVolume = 0;
-        }
+        private void Mute_Checked(object sender, RoutedEventArgs e) => MediaVolume = 0;
 
-        private void Mute_Unchecked(object sender, RoutedEventArgs e)
-        {
-            MediaVolume = 1;
-        }
+        private void Mute_Unchecked(object sender, RoutedEventArgs e) => MediaVolume = 1;
 
         private void Pause_Click(object sender, RoutedEventArgs e)
         {

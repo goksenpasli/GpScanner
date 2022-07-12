@@ -76,65 +76,29 @@ namespace Extensions
 
         public static readonly DependencyProperty SortGlyphDescendingProperty = DependencyProperty.RegisterAttached("SortGlyphDescending", typeof(ImageSource), typeof(GridViewSort), new UIPropertyMetadata(null));
 
-        public static bool GetAutoSort(DependencyObject obj)
-        {
-            return (bool)obj.GetValue(AutoSortProperty);
-        }
+        public static bool GetAutoSort(DependencyObject obj) => (bool)obj.GetValue(AutoSortProperty);
 
-        public static ICommand GetCommand(DependencyObject obj)
-        {
-            return (ICommand)obj.GetValue(CommandProperty);
-        }
+        public static ICommand GetCommand(DependencyObject obj) => (ICommand)obj.GetValue(CommandProperty);
 
-        public static string GetPropertyName(DependencyObject obj)
-        {
-            return (string)obj.GetValue(PropertyNameProperty);
-        }
+        public static string GetPropertyName(DependencyObject obj) => (string)obj.GetValue(PropertyNameProperty);
 
-        public static bool GetShowSortGlyph(DependencyObject obj)
-        {
-            return (bool)obj.GetValue(ShowSortGlyphProperty);
-        }
+        public static bool GetShowSortGlyph(DependencyObject obj) => (bool)obj.GetValue(ShowSortGlyphProperty);
 
-        public static ImageSource GetSortGlyphAscending(DependencyObject obj)
-        {
-            return (ImageSource)obj.GetValue(SortGlyphAscendingProperty);
-        }
+        public static ImageSource GetSortGlyphAscending(DependencyObject obj) => (ImageSource)obj.GetValue(SortGlyphAscendingProperty);
 
-        public static ImageSource GetSortGlyphDescending(DependencyObject obj)
-        {
-            return (ImageSource)obj.GetValue(SortGlyphDescendingProperty);
-        }
+        public static ImageSource GetSortGlyphDescending(DependencyObject obj) => (ImageSource)obj.GetValue(SortGlyphDescendingProperty);
 
-        public static void SetAutoSort(DependencyObject obj, bool value)
-        {
-            obj.SetValue(AutoSortProperty, value);
-        }
+        public static void SetAutoSort(DependencyObject obj, bool value) => obj.SetValue(AutoSortProperty, value);
 
-        public static void SetCommand(DependencyObject obj, ICommand value)
-        {
-            obj.SetValue(CommandProperty, value);
-        }
+        public static void SetCommand(DependencyObject obj, ICommand value) => obj.SetValue(CommandProperty, value);
 
-        public static void SetPropertyName(DependencyObject obj, string value)
-        {
-            obj.SetValue(PropertyNameProperty, value);
-        }
+        public static void SetPropertyName(DependencyObject obj, string value) => obj.SetValue(PropertyNameProperty, value);
 
-        public static void SetShowSortGlyph(DependencyObject obj, bool value)
-        {
-            obj.SetValue(ShowSortGlyphProperty, value);
-        }
+        public static void SetShowSortGlyph(DependencyObject obj, bool value) => obj.SetValue(ShowSortGlyphProperty, value);
 
-        public static void SetSortGlyphAscending(DependencyObject obj, ImageSource value)
-        {
-            obj.SetValue(SortGlyphAscendingProperty, value);
-        }
+        public static void SetSortGlyphAscending(DependencyObject obj, ImageSource value) => obj.SetValue(SortGlyphAscendingProperty, value);
 
-        public static void SetSortGlyphDescending(DependencyObject obj, ImageSource value)
-        {
-            obj.SetValue(SortGlyphDescendingProperty, value);
-        }
+        public static void SetSortGlyphDescending(DependencyObject obj, ImageSource value) => obj.SetValue(SortGlyphDescendingProperty, value);
 
         #endregion Public attached properties
 
@@ -142,15 +106,9 @@ namespace Extensions
 
         private static readonly DependencyProperty SortedColumnHeaderProperty = DependencyProperty.RegisterAttached("SortedColumnHeader", typeof(GridViewColumnHeader), typeof(GridViewSort), new UIPropertyMetadata(null));
 
-        private static GridViewColumnHeader GetSortedColumnHeader(DependencyObject obj)
-        {
-            return (GridViewColumnHeader)obj.GetValue(SortedColumnHeaderProperty);
-        }
+        private static GridViewColumnHeader GetSortedColumnHeader(DependencyObject obj) => (GridViewColumnHeader)obj.GetValue(SortedColumnHeaderProperty);
 
-        private static void SetSortedColumnHeader(DependencyObject obj, GridViewColumnHeader value)
-        {
-            obj.SetValue(SortedColumnHeaderProperty, value);
-        }
+        private static void SetSortedColumnHeader(DependencyObject obj, GridViewColumnHeader value) => obj.SetValue(SortedColumnHeaderProperty, value);
 
         #endregion Private attached properties
 

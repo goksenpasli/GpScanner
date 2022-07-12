@@ -57,15 +57,9 @@ namespace Extensions
             Small = 1
         }
 
-        public static Bitmap BitmapChangeFormat(this Bitmap bitmap, System.Drawing.Imaging.PixelFormat format)
-        {
-            return bitmap.Clone(new Rectangle(0, 0, bitmap.Width, bitmap.Height), format);
-        }
+        public static Bitmap BitmapChangeFormat(this Bitmap bitmap, System.Drawing.Imaging.PixelFormat format) => bitmap.Clone(new Rectangle(0, 0, bitmap.Width, bitmap.Height), format);
 
-        public static bool Contains(this string source, string toCheck, StringComparison comp)
-        {
-            return source?.IndexOf(toCheck, comp) >= 0;
-        }
+        public static bool Contains(this string source, string toCheck, StringComparison comp) => source?.IndexOf(toCheck, comp) >= 0;
 
         public static Bitmap ConvertBlackAndWhite(this Bitmap bitmap, int bWthreshold, bool grayscale = false)
         {
@@ -102,10 +96,7 @@ namespace Extensions
             return bitmap;
         }
 
-        public static System.Windows.Media.Brush ConvertToBrush(this System.Drawing.Color color)
-        {
-            return new SolidColorBrush(System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B));
-        }
+        public static System.Windows.Media.Brush ConvertToBrush(this System.Drawing.Color color) => new SolidColorBrush(System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B));
 
         public static System.Drawing.Color ConvertToColor(this System.Windows.Media.Brush color)
         {
@@ -146,10 +137,7 @@ namespace Extensions
         [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
         public static extern IntPtr ExtractIcon(this IntPtr hInst, string lpszExeFileName, int nIconIndex);
 
-        public static IEnumerable<string> FilterFiles(this string path, params string[] exts)
-        {
-            return exts.Select(x => x).SelectMany(x => Directory.EnumerateFiles(path, x, SearchOption.TopDirectoryOnly));
-        }
+        public static IEnumerable<string> FilterFiles(this string path, params string[] exts) => exts.Select(x => x).SelectMany(x => Directory.EnumerateFiles(path, x, SearchOption.TopDirectoryOnly));
 
         public static string GetFileType(this string filename)
         {

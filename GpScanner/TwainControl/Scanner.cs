@@ -83,6 +83,17 @@ namespace TwainControl
             }
         }
 
+        public string SelectedProfile { get => selectedProfile;
+            set
+            {
+                if (selectedProfile != value)
+                {
+                    selectedProfile = value;
+                    OnPropertyChanged(nameof(SelectedProfile));
+                }
+            }
+        }
+
         public bool AutoSave
         {
             get => autoSave;
@@ -289,6 +300,20 @@ namespace TwainControl
             }
         }
 
+        public string ProfileName
+        {
+            get => profileName;
+
+            set
+            {
+                if (profileName != value)
+                {
+                    profileName = value;
+                    OnPropertyChanged(nameof(ProfileName));
+                }
+            }
+        }
+
         public ICommand ResetCroppedImage { get; }
 
         public ObservableCollection<ScannedImage> Resimler
@@ -484,6 +509,8 @@ namespace TwainControl
 
         private string localizedPath;
 
+        private string profileName = "Profil";
+
         private ObservableCollection<ScannedImage> resimler = new();
 
         private bool seçili;
@@ -503,5 +530,6 @@ namespace TwainControl
         private bool tarandı;
 
         private IList<string> tarayıcılar;
+        private string selectedProfile;
     }
 }

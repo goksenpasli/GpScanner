@@ -287,10 +287,7 @@ namespace Extensions
         /// </summary>
         /// <param name="availableSize">The total layout size available.</param>
         /// <returns>The width of each tile.</returns>
-        private double CalculateChildWidth(Size availableSize)
-        {
-            return availableSize.Width / Columns;
-        }
+        private double CalculateChildWidth(Size availableSize) => availableSize.Width / Columns;
 
         /// <summary>
         /// Calculate the extent of the view based on the available size
@@ -471,115 +468,76 @@ namespace Extensions
         /// <summary>
         /// Scroll the content down by one line.
         /// </summary>
-        public void LineDown()
-        {
-            SetVerticalOffset(VerticalOffset + 10);
-        }
+        public void LineDown() => SetVerticalOffset(VerticalOffset + 10);
 
         /// <summary>
         /// Scroll the content left by 1 line.
         /// This method is not implemented and
         /// will throw an exception if called.
         /// </summary>
-        public void LineLeft()
-        {
-            throw new InvalidOperationException();
-        }
+        public void LineLeft() => throw new InvalidOperationException();
 
         /// <summary>
         /// Scroll the content right by 1 line.
         /// This method is not implemented and
         /// will throw an exception if called.
         /// </summary>
-        public void LineRight()
-        {
-            throw new InvalidOperationException();
-        }
+        public void LineRight() => throw new InvalidOperationException();
 
         /// <summary>
         /// Scroll the content up by one line.
         /// </summary>
-        public void LineUp()
-        {
-            SetVerticalOffset(VerticalOffset - 10);
-        }
+        public void LineUp() => SetVerticalOffset(VerticalOffset - 10);
 
-        public Rect MakeVisible(Visual visual, Rect rectangle)
-        {
-            return new Rect();
-        }
+        public Rect MakeVisible(Visual visual, Rect rectangle) => new Rect();
 
         /// <summary>
         /// Scroll the content down by 10 pixels.
         /// </summary>
-        public void MouseWheelDown()
-        {
-            SetVerticalOffset(VerticalOffset + 10);
-        }
+        public void MouseWheelDown() => SetVerticalOffset(VerticalOffset + 10);
 
         /// <summary>
         /// Scroll the content left by 10 pixels.
         /// This method is not implemented and
         /// will throw an exception if called.
         /// </summary>
-        public void MouseWheelLeft()
-        {
-            throw new InvalidOperationException();
-        }
+        public void MouseWheelLeft() => throw new InvalidOperationException();
 
         /// <summary>
         /// Scroll the content right by 10 pixels.
         /// This method is not implemented and
         /// will throw an exception if called.
         /// </summary>
-        public void MouseWheelRight()
-        {
-            throw new InvalidOperationException();
-        }
+        public void MouseWheelRight() => throw new InvalidOperationException();
 
         /// <summary>
         /// Scroll the content up by 10 pixels.
         /// </summary>
-        public void MouseWheelUp()
-        {
-            SetVerticalOffset(VerticalOffset - 10);
-        }
+        public void MouseWheelUp() => SetVerticalOffset(VerticalOffset - 10);
 
         /// <summary>
         /// Scroll the content down one viewable partition.
         /// </summary>
-        public void PageDown()
-        {
-            SetVerticalOffset(VerticalOffset + _viewport.Height);
-        }
+        public void PageDown() => SetVerticalOffset(VerticalOffset + _viewport.Height);
 
         /// <summary>
         /// Scroll the content left by 1 viewable.
         /// partition. This method is not implemented
         /// and will throw an exception if called.
         /// </summary>
-        public void PageLeft()
-        {
-            throw new InvalidOperationException();
-        }
+        public void PageLeft() => throw new InvalidOperationException();
 
         /// <summary>
         /// Scroll the content right by 1 viewable.
         /// partition. This method is not implemented
         /// and will throw an exception if called.
         /// </summary>
-        public void PageRight()
-        {
-            throw new InvalidOperationException();
-        }
+        public void PageRight() => throw new InvalidOperationException();
 
         /// <summary>
         /// Scroll the content up one viewable partition.
         /// </summary>
-        public void PageUp()
-        {
-            SetVerticalOffset(VerticalOffset - _viewport.Height);
-        }
+        public void PageUp() => SetVerticalOffset(VerticalOffset - _viewport.Height);
 
         /// <summary>
         /// Set the horizontal offset value of the viewer.
@@ -587,10 +545,7 @@ namespace Extensions
         /// and exception if called.
         /// </summary>
         /// <param name="offset">The new horizontal offset value.</param>
-        public void SetHorizontalOffset(double offset)
-        {
-            throw new InvalidOperationException();
-        }
+        public void SetHorizontalOffset(double offset) => throw new InvalidOperationException();
 
         /// <summary>
         /// Set the vertical offset value of the viewer.
@@ -622,15 +577,9 @@ namespace Extensions
             InvalidateMeasure();
         }
 
-        protected override void BringIndexIntoView(int index)
-        {
-            SetVerticalOffset(GetOffsetForFirstVisibleIndex(index).Height);
-        }
+        protected override void BringIndexIntoView(int index) => SetVerticalOffset(GetOffsetForFirstVisibleIndex(index).Height);
 
-        private Size GetOffsetForFirstVisibleIndex(int index)
-        {
-            return new Size(_offset.X, index * ChildHeight / CalculateChildrenPerRow(_extent));
-        }
+        private Size GetOffsetForFirstVisibleIndex(int index) => new Size(_offset.X, index * ChildHeight / CalculateChildrenPerRow(_extent));
 
         #endregion Methods
 

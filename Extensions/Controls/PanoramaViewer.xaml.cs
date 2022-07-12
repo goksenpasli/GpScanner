@@ -172,10 +172,7 @@ namespace Extensions.Controls
             }
         }
 
-        private static Vector3D GetNormal(double t, double y)
-        {
-            return (Vector3D)GetPosition(t, y);
-        }
+        private static Vector3D GetNormal(double t, double y) => (Vector3D)GetPosition(t, y);
 
         private static System.Windows.Point GetTextureCoordinate(double t, double y)
         {
@@ -240,9 +237,6 @@ namespace Extensions.Controls
             }
         }
 
-        private void Viewport3D_MouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            Fov -= e.Delta / 100;
-        }
+        private void Viewport3D_MouseWheel(object sender, MouseWheelEventArgs e) => Fov -= e.Delta / 100;
     }
 }

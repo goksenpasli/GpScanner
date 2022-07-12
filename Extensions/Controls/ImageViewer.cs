@@ -285,6 +285,20 @@ namespace Extensions
             }
         }
 
+        public bool ToolBarIsEnabled
+        {
+            get => toolBarIsEnabled;
+
+            set
+            {
+                if (toolBarIsEnabled != value)
+                {
+                    toolBarIsEnabled = value;
+                    OnPropertyChanged(nameof(ToolBarIsEnabled));
+                }
+            }
+        }
+
         public Visibility ToolBarVisibility
         {
             get => toolBarVisibility;
@@ -311,10 +325,7 @@ namespace Extensions
             set => SetValue(ZoomProperty, value);
         }
 
-        protected virtual void OnPropertyChanged(string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         private TiffBitmapDecoder decoder;
 
@@ -331,6 +342,8 @@ namespace Extensions
         private int sayfa = 1;
 
         private Visibility tifNavigasyonButtonEtkin = Visibility.Collapsed;
+
+        private bool toolBarIsEnabled = true;
 
         private Visibility toolBarVisibility;
 
@@ -420,7 +433,7 @@ namespace Extensions
                     else
                     {
                         ScrollViewer scrollViewer = (imageViewer.GetVisualChild(0) as Grid)?.Children[0] as ScrollViewer;
-                        imageViewer.Zoom = scrollViewer.ActualWidth / imageViewer.Source.Width;
+                        imageViewer.Zoom = Math.Round(scrollViewer.ActualWidth / imageViewer.Source.Width, 2);
                     }
                 }
                 else if (!double.IsNaN(imageViewer.Height))
@@ -434,7 +447,7 @@ namespace Extensions
                 else
                 {
                     ScrollViewer scrollViewer = (imageViewer.GetVisualChild(0) as Grid)?.Children[0] as ScrollViewer;
-                    imageViewer.Zoom = scrollViewer.ActualHeight / imageViewer.Source.Height;
+                    imageViewer.Zoom = Math.Round(scrollViewer.ActualHeight / imageViewer.Source.Height, 2);
                 }
             }
         }

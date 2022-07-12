@@ -9,16 +9,10 @@ namespace GpScanner.Converter
 {
     public sealed class FilePathMergeConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return !DesignerProperties.GetIsInDesignMode(new DependencyObject()) && value is string filename && !string.IsNullOrEmpty(filename)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => !DesignerProperties.GetIsInDesignMode(new DependencyObject()) && value is string filename && !string.IsNullOrEmpty(filename)
                 ? filename
                 : (object)null;
-        }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return value as BitmapSource;
-        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => value as BitmapSource;
     }
 }

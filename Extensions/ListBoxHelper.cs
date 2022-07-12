@@ -10,25 +10,13 @@ namespace Extensions
 
         public static readonly DependencyProperty SelectedItemsProperty = DependencyProperty.RegisterAttached("SelectedItems", typeof(IList), typeof(ListBoxHelper), new FrameworkPropertyMetadata(default(IList), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnSelectedItemsChanged));
 
-        public static IList GetSelectedItems(DependencyObject d)
-        {
-            return (IList)d.GetValue(SelectedItemsProperty);
-        }
+        public static IList GetSelectedItems(DependencyObject d) => (IList)d.GetValue(SelectedItemsProperty);
 
-        public static int GetSelectedItemsMaxCount(DependencyObject obj)
-        {
-            return (int)obj.GetValue(SelectedItemsMaxCountProperty);
-        }
+        public static int GetSelectedItemsMaxCount(DependencyObject obj) => (int)obj.GetValue(SelectedItemsMaxCountProperty);
 
-        public static void SetSelectedItems(DependencyObject d, IList value)
-        {
-            d.SetValue(SelectedItemsProperty, value);
-        }
+        public static void SetSelectedItems(DependencyObject d, IList value) => d.SetValue(SelectedItemsProperty, value);
 
-        public static void SetSelectedItemsMaxCount(DependencyObject obj, int value)
-        {
-            obj.SetValue(SelectedItemsMaxCountProperty, value);
-        }
+        public static void SetSelectedItemsMaxCount(DependencyObject obj, int value) => obj.SetValue(SelectedItemsMaxCountProperty, value);
 
         private static void OnSelectedItemsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

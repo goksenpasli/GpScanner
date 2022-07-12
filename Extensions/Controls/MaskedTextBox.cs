@@ -87,15 +87,9 @@ namespace Extensions
             base.OnGotKeyboardFocus(e);
         }
 
-        protected virtual void OnIncludeLiteralsChanged(bool oldValue, bool newValue)
-        {
-            UpdateMaskProvider(Mask);
-        }
+        protected virtual void OnIncludeLiteralsChanged(bool oldValue, bool newValue) => UpdateMaskProvider(Mask);
 
-        protected virtual void OnIncludePromptChanged(bool oldValue, bool newValue)
-        {
-            UpdateMaskProvider(Mask);
-        }
+        protected virtual void OnIncludePromptChanged(bool oldValue, bool newValue) => UpdateMaskProvider(Mask);
 
         protected override void OnInitialized(EventArgs e)
         {
@@ -133,10 +127,7 @@ namespace Extensions
             base.OnPreviewTextInput(e);
         }
 
-        protected virtual void OnPromptCharChanged(char oldValue, char newValue)
-        {
-            UpdateMaskProvider(Mask);
-        }
+        protected virtual void OnPromptCharChanged(char oldValue, char newValue) => UpdateMaskProvider(Mask);
 
         protected virtual void OnTextChanged(string oldValue, string newValue)
         {
@@ -504,20 +495,11 @@ namespace Extensions
             _ = MaskProvider.RemoveAt(position, position + length - 1);
         }
 
-        private void RemoveTextFromStart(int endPosition)
-        {
-            RemoveText(0, endPosition);
-        }
+        private void RemoveTextFromStart(int endPosition) => RemoveText(0, endPosition);
 
-        private void RemoveTextToEnd(int startPosition)
-        {
-            RemoveText(startPosition, Text.Length - startPosition);
-        }
+        private void RemoveTextToEnd(int startPosition) => RemoveText(startPosition, Text.Length - startPosition);
 
-        private void ResetCommand(object sender, ExecutedRoutedEventArgs e)
-        {
-            Value = null;
-        }
+        private void ResetCommand(object sender, ExecutedRoutedEventArgs e) => Value = null;
 
         private void SyncTextAndValueProperties(DependencyProperty p, object newValue)
         {
@@ -557,10 +539,7 @@ namespace Extensions
             };
         }
 
-        private void UpdateText()
-        {
-            UpdateText(SelectionStart);
-        }
+        private void UpdateText() => UpdateText(SelectionStart);
 
         private void UpdateText(int position)
         {
