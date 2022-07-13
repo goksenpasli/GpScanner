@@ -127,7 +127,7 @@
                                 <TextBlock Text="HIZLI TARAMA SONRASI DOSYAYI GÖSTER" TextTrimming="CharacterEllipsis"
                                     ToolTip="HIZLI TARAMA SONRASI DOSYAYI GÖSTER" />
                             </CheckBox>
-                            <CheckBox IsChecked="{Binding Path=DateGroupFolder, Source={x:Static properties:Settings.Default}}">
+                            <CheckBox IsChecked="True" IsEnabled="False">
                                 <TextBlock Text="HIZLI TARAMADA KLASÖRÜ TARİHE GÖRE GRUPLA" TextTrimming="CharacterEllipsis"
                                     ToolTip="HIZLI TARAMADA KLASÖRÜ TARİHE GÖRE GRUPLA" />
                             </CheckBox>
@@ -147,9 +147,26 @@
                             </Hyperlink>
                         </TextBlock>
                         <HeaderedContentControl Header="DOSYA ADI">
-                            <Extensions:ButtonedTextBox d:Text="FileName" MaxLength="255"
+                            <Extensions:ButtonedTextBox d:Text="FileName" GotKeyboardFocus="ButtonedTextBox_GotKeyboardFocus" MaxLength="255"
                                 Text="{Binding Scanner.FileName, ValidatesOnDataErrors=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}" />
+                                Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
+                                <Extensions:ButtonedTextBox.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
+                                            CommandParameter="[GÜN]" Header="[GÜN]" />
+                                        <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
+                                            CommandParameter="[AY]" Header="[AY]" />
+                                        <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
+                                            CommandParameter="[YIL]" Header="[YIL]" />
+                                        <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
+                                            CommandParameter="[SAAT]" Header="[SAAT]" />
+                                        <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
+                                            CommandParameter="[DAKİKA]" Header="[DAKİKA]" />
+                                        <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
+                                            CommandParameter="[SANİYE]" Header="[SANİYE]" />
+                                    </ContextMenu>
+                                </Extensions:ButtonedTextBox.ContextMenu>
+                            </Extensions:ButtonedTextBox>
                         </HeaderedContentControl>
                         <UniformGrid Columns="3">
                             <TextBox VerticalContentAlignment="Center" Text="{Binding Scanner.ProfileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

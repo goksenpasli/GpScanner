@@ -152,7 +152,7 @@ namespace TwainControl
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     Settings.Default.AutoFolder = dialog.SelectedPath;
-                    Scanner.LocalizedPath = ExtensionMethods.GetDisplayName(dialog.SelectedPath);
+                    Scanner.LocalizedPath = GetDisplayName(dialog.SelectedPath);
                 }
             }, parameter => true);
 
@@ -178,7 +178,7 @@ namespace TwainControl
                         string dosyayolu = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
                         PdfKaydet(Scanner.Resimler.Where(z => z.Seçili).ToArray(), dosyayolu, Format.Jpg);
                         using ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Create);
-                        _ = archive.CreateEntryFromFile(dosyayolu, $"{Scanner.FileName}.pdf", CompressionLevel.Optimal);
+                        _ = archive.CreateEntryFromFile(dosyayolu, $"{Scanner.SaveFileName}.pdf", CompressionLevel.Optimal);
                         File.Delete(dosyayolu);
                     }
                 }
@@ -216,7 +216,7 @@ namespace TwainControl
                     .Append(",")
                     .Append(Settings.Default.ShowFile)
                     .Append(",")
-                    .Append(Settings.Default.DateGroupFolder)
+                    .Append(true)//Settings.Default.DateGroupFolder
                     .Append(",")
                     .Append(Scanner.FileName)
                     .ToString();
@@ -231,6 +231,12 @@ namespace TwainControl
                 Settings.Default.Profile.Remove(parameter as string);
                 Settings.Default.Save();
                 Settings.Default.Reload();
+            }, parameter => true);
+
+            InsertFileNamePlaceHolder = new RelayCommand<object>(parameter =>
+            {
+                string placeholder = parameter as string;
+                Scanner.FileName = $"{Scanner.FileName.Substring(0, Scanner.CaretPosition)}{placeholder}{Scanner.FileName.Substring(Scanner.CaretPosition, Scanner.FileName.Length - Scanner.CaretPosition)}";
             }, parameter => true);
 
             SaveCroppedImage = new RelayCommand<object>(parameter =>
@@ -337,6 +343,8 @@ namespace TwainControl
 
         public ICommand FastScanImage { get; }
 
+        public ICommand InsertFileNamePlaceHolder { get; }
+
         public ICommand Kaydet { get; }
 
         public ICommand KayıtYoluBelirle { get; }
@@ -431,6 +439,11 @@ namespace TwainControl
 
         private Twain twain;
 
+        private void ButtonedTextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            Scanner.CaretPosition = (sender as ButtonedTextBox)?.CaretIndex ?? 0;
+        }
+
         private Int32Rect CropImageRect(ImageSource ımageSource)
         {
             int height = ((BitmapSource)ımageSource).PixelHeight - (int)Scanner.CropBottom - (int)Scanner.CropTop;
@@ -504,17 +517,17 @@ namespace TwainControl
 
         private string GetPdfScanPath()
         {
-            string today = DateTime.Today.ToShortDateString();
-            if (Settings.Default.DateGroupFolder)
+            return GetSaveFolder().SetUniqueFile(Scanner.SaveFileName, "pdf");
+        }
+
+        private string GetSaveFolder()
+        {
+            string datefolder = $@"{Settings.Default.AutoFolder}\{DateTime.Today.ToShortDateString()}";
+            if (!Directory.Exists(datefolder))
             {
-                string datefolder = $@"{Settings.Default.AutoFolder}\{today}";
-                if (!Directory.Exists(datefolder))
-                {
-                    _ = Directory.CreateDirectory(datefolder);
-                }
-                return datefolder.SetUniqueFile($"{today}{Scanner.FileName}", "pdf");
+                _ = Directory.CreateDirectory(datefolder);
             }
-            return Settings.Default.AutoFolder.SetUniqueFile($"{today}{Scanner.FileName}", "pdf");
+            return datefolder;
         }
 
         private void PdfKaydet(BitmapSource bitmapframe, string dosyayolu, Format format, bool rotate = false)
@@ -623,7 +636,7 @@ namespace TwainControl
                 Scanner.ShowUi = bool.Parse(selectedprofile[5]);
                 Scanner.SeperateSave = bool.Parse(selectedprofile[6]);
                 Settings.Default.ShowFile = bool.Parse(selectedprofile[7]);
-                Settings.Default.DateGroupFolder = bool.Parse(selectedprofile[8]);
+                Settings.Default.DateGroupFolder = true;//bool.Parse(selectedprofile[8])
                 Scanner.FileName = selectedprofile[9];
             }
         }
@@ -653,13 +666,13 @@ namespace TwainControl
                         Scanner.Resimler.Add(new ScannedImage() { Resim = bitmapFrame });
                         if (Scanner.SeperateSave && (ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
                         {
-                            File.WriteAllBytes(Settings.Default.AutoFolder.SetUniqueFile($"{DateTime.Now.ToShortDateString()}{Scanner.FileName}", "tif"), bitmapFrame.ToTiffJpegByteArray(Format.Tiff));
+                            File.WriteAllBytes(GetSaveFolder().SetUniqueFile(Scanner.SaveFileName, "tif"), bitmapFrame.ToTiffJpegByteArray(Format.Tiff));
                             OnPropertyChanged(nameof(Scanner.Tarandı));
                         }
 
                         if (Scanner.SeperateSave && ((ColourSetting)Settings.Default.Mode == ColourSetting.GreyScale || (ColourSetting)Settings.Default.Mode == ColourSetting.Colour))
                         {
-                            File.WriteAllBytes(Settings.Default.AutoFolder.SetUniqueFile($"{DateTime.Now.ToShortDateString()}{Scanner.FileName}", "jpg"), bitmapFrame.ToTiffJpegByteArray(Format.Jpg));
+                            File.WriteAllBytes(GetSaveFolder().SetUniqueFile(Scanner.SaveFileName, "jpg"), bitmapFrame.ToTiffJpegByteArray(Format.Jpg));
                             OnPropertyChanged(nameof(Scanner.Tarandı));
                         }
 

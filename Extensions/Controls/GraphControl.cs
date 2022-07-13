@@ -59,7 +59,10 @@ namespace Extensions
             }
         }
 
-        protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        protected virtual void OnPropertyChanged(string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         protected override void OnRender(DrawingContext drawingContext)
         {
@@ -67,16 +70,18 @@ namespace Extensions
             {
                 if (Series?.Any() == true)
                 {
-                    DrawGraph(drawingContext, Series);
+                    _ = DrawGraph(drawingContext, Series);
                 }
             }
             else
             {
-                MockData = new();
-                MockData.Add(new Chart() { ChartBrush = Brushes.Blue, ChartValue = 100, Description = "Sample Item 1" });
-                MockData.Add(new Chart() { ChartBrush = Brushes.Red, ChartValue = 40, Description = "Sample Item 2" });
-                MockData.Add(new Chart() { ChartBrush = Brushes.Yellow, ChartValue = 60, Description = "Sample Item 3" });
-                DrawGraph(drawingContext, MockData);
+                MockData = new()
+                {
+                    new Chart() { ChartBrush = Brushes.Blue, ChartValue = 100, Description = "Sample Item 1" },
+                    new Chart() { ChartBrush = Brushes.Red, ChartValue = 40, Description = "Sample Item 2" },
+                    new Chart() { ChartBrush = Brushes.Yellow, ChartValue = 60, Description = "Sample Item 3" }
+                };
+                _ = DrawGraph(drawingContext, MockData);
             }
         }
 

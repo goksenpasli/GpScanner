@@ -77,7 +77,10 @@ namespace Extensions.Controls
 
         public ICommand ArşivTekDosyaÇıkar { get; }
 
-        protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         private static double toplamOran;
 

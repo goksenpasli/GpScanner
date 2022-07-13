@@ -1,9 +1,10 @@
 ﻿using Extensions;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
-using System.Windows.Input;
+using System.Linq;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using TwainControl.Properties;
@@ -123,6 +124,20 @@ namespace TwainControl
                 {
                     boyAdet = value;
                     OnPropertyChanged(nameof(BoyAdet));
+                }
+            }
+        }
+
+        public int CaretPosition
+        {
+            get => caretPosition;
+
+            set
+            {
+                if (caretPosition != value)
+                {
+                    caretPosition = value;
+                    OnPropertyChanged(nameof(CaretPosition));
                 }
             }
         }
@@ -266,10 +281,6 @@ namespace TwainControl
             }
         }
 
-        public ICommand ExploreFile { get; }
-
-        public ICommand FastScanImage { get; }
-
         public string FileName
         {
             get => fileName;
@@ -283,12 +294,6 @@ namespace TwainControl
                 }
             }
         }
-
-        public ICommand Kaydet { get; }
-
-        public ICommand KayıtYoluBelirle { get; }
-
-        public ICommand ListeTemizle { get; }
 
         public string LocalizedPath
         {
@@ -318,8 +323,6 @@ namespace TwainControl
             }
         }
 
-        public ICommand ResetCroppedImage { get; }
-
         public ObservableCollection<ScannedImage> Resimler
         {
             get => resimler;
@@ -334,11 +337,31 @@ namespace TwainControl
             }
         }
 
-        public ICommand ResimSil { get; }
+        public string SaveFileName
+        {
+            get
+            {
+                saveFileName = new string[] { "[", "]" }.Any(FileName.Contains)
+                    ? FileName.
+                       Replace("[GÜN]", DateTime.Now.Day.ToString()).
+                       Replace("[AY]", DateTime.Now.Month.ToString()).
+                       Replace("[YIL]", DateTime.Now.Year.ToString()).
+                       Replace("[SAAT]", DateTime.Now.Hour.ToString()).
+                       Replace("[DAKİKA]", DateTime.Now.Minute.ToString()).
+                       Replace("[SANİYE]", DateTime.Now.Second.ToString())
+                    : FileName;
+                return saveFileName;
+            }
 
-        public ICommand SaveCroppedImage { get; }
-
-        public ICommand ScanImage { get; }
+            set
+            {
+                if (saveFileName != value)
+                {
+                    saveFileName = value;
+                    OnPropertyChanged(nameof(SaveFileName));
+                }
+            }
+        }
 
         public bool Seçili
         {
@@ -353,8 +376,6 @@ namespace TwainControl
                 }
             }
         }
-
-        public ICommand Seçilikaydet { get; }
 
         public ScannedImage SeçiliResim
         {
@@ -454,8 +475,6 @@ namespace TwainControl
             }
         }
 
-        public ICommand SplitImage { get; }
-
         public bool Tarandı
         {
             get => tarandı;
@@ -506,6 +525,8 @@ namespace TwainControl
 
         private int boyAdet = 1;
 
+        private int caretPosition;
+
         private double cropBottom;
 
         private bool cropDialogExpanded;
@@ -533,6 +554,8 @@ namespace TwainControl
         private string profileName;
 
         private ObservableCollection<ScannedImage> resimler = new();
+
+        private string saveFileName;
 
         private bool seçili;
 

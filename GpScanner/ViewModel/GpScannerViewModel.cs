@@ -102,7 +102,10 @@ namespace GpScanner.ViewModel
             }
         }
 
-        protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        protected virtual void OnPropertyChanged(string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         private ObservableCollection<Scanner> dosyalar;
 
@@ -114,7 +117,7 @@ namespace GpScanner.ViewModel
         {
             if (e.PropertyName is "SeçiliGün")
             {
-                MainWindow.cvs.Filter += (s, x) => x.Accepted = Path.GetFileName((x.Item as Scanner)?.FileName).StartsWith(SeçiliGün.Value.ToShortDateString()) == true;
+                MainWindow.cvs.Filter += (s, x) => x.Accepted = Directory.GetParent((x.Item as Scanner)?.FileName).Name.StartsWith(SeçiliGün.Value.ToShortDateString());
             }
         }
     }

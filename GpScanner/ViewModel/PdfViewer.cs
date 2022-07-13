@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
@@ -18,7 +19,7 @@ namespace GpScanner.ViewModel
 
         public static readonly DependencyProperty PdfFilePathProperty = DependencyProperty.Register("PdfFilePath", typeof(string), typeof(PdfViewer), new PropertyMetadata(null, PdfFilePathChanged));
 
-        public static readonly DependencyProperty PdfFileStreamProperty = DependencyProperty.Register("PdfFileStream", typeof(FileStream), typeof(PdfViewer), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.NotDataBindable, PdfStreamChanged));
+        public static readonly DependencyProperty PdfFileStreamProperty = DependencyProperty.Register("PdfFileStream", typeof(FileStream), typeof(PdfViewer), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.NotDataBindable, async (o, e) => await PdfStreamChangedAsync(o, e)));
 
         public new static readonly DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(PdfViewer), new PropertyMetadata(1.0));
 
@@ -202,16 +203,19 @@ namespace GpScanner.ViewModel
             }
         }
 
-        private static void PdfStreamChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static async Task PdfStreamChangedAsync(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is PdfViewer pdfViewer && string.Equals(Path.GetExtension(pdfViewer.DataContext as string), ".pdf", StringComparison.OrdinalIgnoreCase))
             {
                 pdfViewer.ToplamSayfa = Pdf2Png.ConvertAllPages(pdfViewer.PdfFileStream, 0).Count;
                 pdfViewer.TifNavigasyonButtonEtkin = pdfViewer.ToplamSayfa > 1 ? Visibility.Visible : Visibility.Collapsed;
                 pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
+                FileStream fileStream = pdfViewer.PdfFileStream;
+                int sayfa = pdfViewer.Sayfa;
+                int dpi = pdfViewer.Dpi;
                 pdfViewer.Source = pdfViewer.FirstPageThumbnail
-                    ? BitmapSourceFromByteArray(Pdf2Png.Convert(pdfViewer.PdfFileStream, 1, 108), true)
-                    : BitmapSourceFromByteArray(Pdf2Png.Convert(pdfViewer.PdfFileStream, pdfViewer.Sayfa, pdfViewer.Dpi));
+                    ? await Task.Run(() => BitmapSourceFromByteArray(Pdf2Png.Convert(fileStream, 1, 108), true))
+                    : await Task.Run(() => BitmapSourceFromByteArray(Pdf2Png.Convert(fileStream, sayfa, dpi)));
             }
         }
 

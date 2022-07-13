@@ -9,16 +9,14 @@ namespace Extensions
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
-            {
-                return (parameter == null) ? Visibility.Collapsed : Visibility.Visible;
-            }
-            else
-            {
-                return (parameter == null) ? Visibility.Visible : Visibility.Collapsed;
-            }
+            return value == null
+                ? (parameter == null) ? Visibility.Collapsed : Visibility.Visible
+                : (object)((parameter == null) ? Visibility.Visible : Visibility.Collapsed);
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

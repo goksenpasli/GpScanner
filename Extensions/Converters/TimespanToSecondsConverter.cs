@@ -12,6 +12,9 @@ namespace Extensions
             return timeSpan.TotalSeconds;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => TimeSpan.FromSeconds((double)value);
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return TimeSpan.FromSeconds((double)value);
+        }
     }
 }

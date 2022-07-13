@@ -42,8 +42,10 @@ namespace Extensions
 
         public ColorEffect()
         {
-            PixelShader pixelShader = new();
-            pixelShader.UriSource = new Uri("/Extensions;component/Shader/ColorEffect.ps", UriKind.Relative);
+            PixelShader pixelShader = new()
+            {
+                UriSource = new Uri("/Extensions;component/Shader/ColorEffect.ps", UriKind.Relative)
+            };
             PixelShader = pixelShader;
 
             UpdateShaderValue(InputProperty);

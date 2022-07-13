@@ -18,6 +18,9 @@ namespace Extensions
 
         public ICommand Reset { get; } = new RoutedCommand();
 
-        private void ResetCommand(object sender, ExecutedRoutedEventArgs e) => Text = string.Empty;
+        private void ResetCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            Text = string.Empty;
+        }
     }
 }

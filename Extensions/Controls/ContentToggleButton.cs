@@ -42,6 +42,9 @@ namespace Extensions
             set => SetValue(StaysOpenProperty, value);
         }
 
-        public override string ToString() => OverContent.ToString();
+        public override string ToString()
+        {
+            return OverContent.ToString();
+        }
     }
 }

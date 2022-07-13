@@ -10,10 +10,16 @@ namespace GpScanner.Converter
 {
     public sealed class FileNameExtractConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => !DesignerProperties.GetIsInDesignMode(new DependencyObject()) && value is string filename && !string.IsNullOrEmpty(filename)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return !DesignerProperties.GetIsInDesignMode(new DependencyObject()) && value is string filename && !string.IsNullOrEmpty(filename)
                 ? Path.GetFileName(filename)
                 : null;
+        }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => value as BitmapSource;
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value as BitmapSource;
+        }
     }
 }

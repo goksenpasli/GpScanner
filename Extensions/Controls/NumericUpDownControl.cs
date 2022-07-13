@@ -58,8 +58,8 @@ namespace Extensions
 
         public Visibility NumericUpdownTextBoxVisibility
         {
-            get { return (Visibility)GetValue(NumericUpdownTextBoxVisibilityProperty); }
-            set { SetValue(NumericUpdownTextBoxVisibilityProperty, value); }
+            get => (Visibility)GetValue(NumericUpdownTextBoxVisibilityProperty);
+            set => SetValue(NumericUpdownTextBoxVisibilityProperty, value);
         }
 
         public Mode ShowMode

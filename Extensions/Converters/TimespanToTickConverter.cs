@@ -12,6 +12,9 @@ namespace Extensions
             return timeSpan.Ticks;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => TimeSpan.FromTicks((long)value);
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return TimeSpan.FromTicks((long)value);
+        }
     }
 }
