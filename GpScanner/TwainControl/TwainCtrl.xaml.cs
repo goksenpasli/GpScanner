@@ -56,7 +56,7 @@ namespace TwainControl
                     twain.StartScanning(_settings);
                 }
                 twain.ScanningComplete += Fastscan;
-            }, parameter => !Environment.Is64BitProcess && Scanner.AutoSave);
+            }, parameter => !Environment.Is64BitProcess && Scanner.AutoSave && Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0);
 
             ResimSil = new RelayCommand<object>(parameter => Scanner.Resimler?.Remove(parameter as ScannedImage), parameter => true);
 
@@ -69,54 +69,53 @@ namespace TwainControl
                     SaveFileDialog saveFileDialog = new()
                     {
                         Filter = "Tif Resmi (*.tif)|*.tif|Jpg Resmi(*.jpg)|*.jpg|Pdf Dosyası(*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası(*.pdf)|*.pdf",
-                        FileName = Scanner.FileName
+                        FileName = Scanner.SaveFileName
                     };
                     if (saveFileDialog.ShowDialog() == true)
                     {
-                        if (saveFileDialog.FilterIndex == 1)
+                        switch (saveFileDialog.FilterIndex)
                         {
-                            if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
-                            {
-                                File.WriteAllBytes(saveFileDialog.FileName, scannedImage.Resim.ToTiffJpegByteArray(Format.Tiff));
-                            }
-                            else if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
-                            {
-                                File.WriteAllBytes(saveFileDialog.FileName, scannedImage.Resim.ToTiffJpegByteArray(Format.TiffRenkli));
-                            }
-                        }
-                        else if (saveFileDialog.FilterIndex == 2)
-                        {
-                            File.WriteAllBytes(saveFileDialog.FileName, scannedImage.Resim.ToTiffJpegByteArray(Format.Jpg));
-                        }
-                        else if (saveFileDialog.FilterIndex == 3)
-                        {
-                            if (Viewer is { Angle: not 0, Angle: not 360 })
-                            {
-                                if (MessageBox.Show("Döndürme Uygulanarak Kaydedilsin mi?", Application.Current?.MainWindow?.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                            case 1:
+                                if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
                                 {
-                                    PdfKaydet(scannedImage.Resim, saveFileDialog.FileName, Format.Jpg, true);
-                                    return;
+                                    File.WriteAllBytes(saveFileDialog.FileName, scannedImage.Resim.ToTiffJpegByteArray(Format.Tiff));
+                                }
+                                else if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
+                                {
+                                    File.WriteAllBytes(saveFileDialog.FileName, scannedImage.Resim.ToTiffJpegByteArray(Format.TiffRenkli));
+                                }
+                                break;
+                            case 2:
+                                File.WriteAllBytes(saveFileDialog.FileName, scannedImage.Resim.ToTiffJpegByteArray(Format.Jpg));
+                                break;
+                            case 3:
+                                if (Viewer is { Angle: not 0, Angle: not 360 })
+                                {
+                                    if (MessageBox.Show("Döndürme Uygulanarak Kaydedilsin mi?", Application.Current?.MainWindow?.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                                    {
+                                        PdfKaydet(scannedImage.Resim, saveFileDialog.FileName, Format.Jpg, true);
+                                        return;
+                                    }
+                                    PdfKaydet(scannedImage.Resim, saveFileDialog.FileName, Format.Jpg);
                                 }
                                 PdfKaydet(scannedImage.Resim, saveFileDialog.FileName, Format.Jpg);
-                            }
-                            PdfKaydet(scannedImage.Resim, saveFileDialog.FileName, Format.Jpg);
-                        }
-                        else if (saveFileDialog.FilterIndex == 4)
-                        {
-                            if (Viewer is { Angle: not 0, Angle: not 360 })
-                            {
-                                if (MessageBox.Show("Döndürme Uygulanarak Kaydedilsin mi?", Application.Current?.MainWindow?.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                                break;
+                            case 4:
+                                if (Viewer is { Angle: not 0, Angle: not 360 })
                                 {
-                                    PdfKaydet(scannedImage.Resim, saveFileDialog.FileName, Format.Tiff, true);
-                                    return;
+                                    if (MessageBox.Show("Döndürme Uygulanarak Kaydedilsin mi?", Application.Current?.MainWindow?.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                                    {
+                                        PdfKaydet(scannedImage.Resim, saveFileDialog.FileName, Format.Tiff, true);
+                                        return;
+                                    }
+                                    PdfKaydet(scannedImage.Resim, saveFileDialog.FileName, Format.Tiff);
                                 }
                                 PdfKaydet(scannedImage.Resim, saveFileDialog.FileName, Format.Tiff);
-                            }
-                            PdfKaydet(scannedImage.Resim, saveFileDialog.FileName, Format.Tiff);
+                                break;
                         }
                     }
                 }
-            }, parameter => true);
+            }, parameter => Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0);
 
             Tümünüİşaretle = new RelayCommand<object>(parameter =>
             {
@@ -161,7 +160,7 @@ namespace TwainControl
                 SaveFileDialog saveFileDialog = new()
                 {
                     Filter = "Pdf Dosyası(*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası(*.pdf)|*.pdf|Zip Dosyası(*.zip)|*.zip",
-                    FileName = Scanner.FileName
+                    FileName = Scanner.SaveFileName
                 };
                 if (saveFileDialog.ShowDialog() == true)
                 {
@@ -185,7 +184,7 @@ namespace TwainControl
             }, parameter =>
             {
                 Scanner.SeçiliResimSayısı = Scanner.Resimler.Count(z => z.Seçili);
-                return Scanner.SeçiliResimSayısı > 0;
+                return Scanner.SeçiliResimSayısı > 0 && Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0;
             });
 
             ListeTemizle = new RelayCommand<object>(parameter =>
@@ -201,30 +200,30 @@ namespace TwainControl
                 StringBuilder sb = new();
                 string profile = sb
                     .Append(Scanner.ProfileName)
-                    .Append(",")
+                    .Append("|")
                     .Append(Settings.Default.Çözünürlük)
-                    .Append(",")
+                    .Append("|")
                     .Append(Settings.Default.Adf)
-                    .Append(",")
+                    .Append("|")
                     .Append(Settings.Default.Mode)
-                    .Append(",")
+                    .Append("|")
                     .Append(Scanner.Duplex)
-                    .Append(",")
+                    .Append("|")
                     .Append(Scanner.ShowUi)
-                    .Append(",")
+                    .Append("|")
                     .Append(Scanner.SeperateSave)
-                    .Append(",")
+                    .Append("|")
                     .Append(Settings.Default.ShowFile)
-                    .Append(",")
+                    .Append("|")
                     .Append(true)//Settings.Default.DateGroupFolder
-                    .Append(",")
+                    .Append("|")
                     .Append(Scanner.FileName)
                     .ToString();
                 _ = Settings.Default.Profile.Add(profile);
                 Settings.Default.Save();
                 Settings.Default.Reload();
                 Scanner.ProfileName = "";
-            }, parameter => !string.IsNullOrWhiteSpace(Scanner?.ProfileName) && !Settings.Default.Profile.Cast<string>().Select(z => z.Split(',')[0]).Contains(Scanner?.ProfileName));
+            }, parameter => !string.IsNullOrWhiteSpace(Scanner?.ProfileName) && !Settings.Default.Profile.Cast<string>().Select(z => z.Split('|')[0]).Contains(Scanner?.ProfileName) && Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0 && Scanner?.ProfileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0);
 
             RemoveProfile = new RelayCommand<object>(parameter =>
             {
@@ -628,7 +627,7 @@ namespace TwainControl
             }
             if (e.PropertyName is "SelectedProfile" && Scanner.SelectedProfile is not null)
             {
-                string[] selectedprofile = Scanner.SelectedProfile.Split(',');
+                string[] selectedprofile = Scanner.SelectedProfile.Split('|');
                 Settings.Default.Çözünürlük = double.Parse(selectedprofile[1]);
                 Settings.Default.Adf = bool.Parse(selectedprofile[2]);
                 Settings.Default.Mode = int.Parse(selectedprofile[3]);

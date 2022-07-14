@@ -24,6 +24,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="300" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
@@ -64,13 +65,14 @@
                         </ToggleButton.Content>
                     </ToggleButton>
                 </UniformGrid>
-                <ListBox Grid.Row="2"
+                <TextBox Grid.Row="2" Text="{Binding AramaMetni, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <ListBox Grid.Row="3"
                     d:ItemsSource="{d:SampleData ItemCount=5}"
                     IsSynchronizedWithCurrentItem="False"
                     ItemsSource="{Binding Mode=OneWay, Source={StaticResource Veriler}}"
                     VirtualizingPanel.CacheLength="2,2" VirtualizingPanel.CacheLengthUnit="Item"
                     VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.ScrollUnit="Pixel"
-                    VirtualizingPanel.VirtualizationMode="Recycling">
+                    VirtualizingPanel.VirtualizationMode="Standard">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <VirtualizingStackPanel />
@@ -149,7 +151,7 @@
                         </Style>
                     </ListBox.ItemContainerStyle>
                 </ListBox>
-                <Button Grid.Row="3" Command="{Binding PdfBirleştir}">
+                <Button Grid.Row="4" Command="{Binding PdfBirleştir}">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
                             <Image Width="24" Height="24">

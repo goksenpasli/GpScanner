@@ -77,7 +77,7 @@ namespace GpScanner.ViewModel
             set => SetValue(DpiProperty, value);
         }
 
-        public int[] DpiList { get; set; } = new int[] { 96, 150, 225, 300, 600 };
+        public int[] DpiList { get; } = new int[] { 96, 150, 225, 300, 600 };
 
         public bool FirstPageThumbnail
         {
@@ -216,6 +216,7 @@ namespace GpScanner.ViewModel
                 pdfViewer.Source = pdfViewer.FirstPageThumbnail
                     ? await Task.Run(() => BitmapSourceFromByteArray(Pdf2Png.Convert(fileStream, 1, 108), true))
                     : await Task.Run(() => BitmapSourceFromByteArray(Pdf2Png.Convert(fileStream, sayfa, dpi)));
+                fileStream = null;
             }
         }
 

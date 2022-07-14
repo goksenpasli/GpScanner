@@ -45,6 +45,20 @@ namespace GpScanner.ViewModel
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public string AramaMetni
+        {
+            get => aramaMetni;
+
+            set
+            {
+                if (aramaMetni != value)
+                {
+                    aramaMetni = value;
+                    OnPropertyChanged(nameof(AramaMetni));
+                }
+            }
+        }
+
         public ObservableCollection<Scanner> Dosyalar
         {
             get => dosyalar;
@@ -107,6 +121,8 @@ namespace GpScanner.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        private string aramaMetni;
+
         private ObservableCollection<Scanner> dosyalar;
 
         private DateTime? seçiliGün;
@@ -118,6 +134,10 @@ namespace GpScanner.ViewModel
             if (e.PropertyName is "SeçiliGün")
             {
                 MainWindow.cvs.Filter += (s, x) => x.Accepted = Directory.GetParent((x.Item as Scanner)?.FileName).Name.StartsWith(SeçiliGün.Value.ToShortDateString());
+            }
+            if (e.PropertyName is "AramaMetni")
+            {
+                MainWindow.cvs.Filter += (s, x) => x.Accepted = (x.Item as Scanner)?.FileName.Contains(AramaMetni) == true;
             }
         }
     }

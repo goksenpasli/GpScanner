@@ -127,7 +127,8 @@
                                 <TextBlock Text="HIZLI TARAMA SONRASI DOSYAYI GÖSTER" TextTrimming="CharacterEllipsis"
                                     ToolTip="HIZLI TARAMA SONRASI DOSYAYI GÖSTER" />
                             </CheckBox>
-                            <CheckBox IsChecked="True" IsEnabled="False">
+                            <CheckBox d:Visibility="Visible" IsChecked="True" IsEnabled="False"
+                                Visibility="Collapsed">
                                 <TextBlock Text="HIZLI TARAMADA KLASÖRÜ TARİHE GÖRE GRUPLA" TextTrimming="CharacterEllipsis"
                                     ToolTip="HIZLI TARAMADA KLASÖRÜ TARİHE GÖRE GRUPLA" />
                             </CheckBox>
@@ -146,7 +147,13 @@
                                 <Run Text="{Binding Path=Scanner.LocalizedPath, Mode=OneWay}" />
                             </Hyperlink>
                         </TextBlock>
-                        <HeaderedContentControl Header="DOSYA ADI">
+                        <HeaderedContentControl>
+                            <HeaderedContentControl.Header>
+                                <TextBlock>
+                                    <Run Text="DOSYA ADI:" />
+                                    <Run FontWeight="Bold" Text="{Binding Scanner.SaveFileName}" />
+                                </TextBlock>
+                            </HeaderedContentControl.Header>
                             <Extensions:ButtonedTextBox d:Text="FileName" GotKeyboardFocus="ButtonedTextBox_GotKeyboardFocus" MaxLength="255"
                                 Text="{Binding Scanner.FileName, ValidatesOnDataErrors=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
@@ -164,6 +171,10 @@
                                             CommandParameter="[DAKİKA]" Header="[DAKİKA]" />
                                         <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
                                             CommandParameter="[SANİYE]" Header="[SANİYE]" />
+                                        <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
+                                            CommandParameter="[GUID]" Header="[GUID]" />  
+                                        <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
+                                            CommandParameter="[USERNAME]" Header="[USERNAME]" />
                                     </ContextMenu>
                                 </Extensions:ButtonedTextBox.ContextMenu>
                             </Extensions:ButtonedTextBox>

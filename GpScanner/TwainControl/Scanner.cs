@@ -291,6 +291,7 @@ namespace TwainControl
                 {
                     fileName = value;
                     OnPropertyChanged(nameof(FileName));
+                    OnPropertyChanged(nameof(SaveFileName));
                 }
             }
         }
@@ -348,7 +349,9 @@ namespace TwainControl
                        Replace("[YIL]", DateTime.Now.Year.ToString()).
                        Replace("[SAAT]", DateTime.Now.Hour.ToString()).
                        Replace("[DAKİKA]", DateTime.Now.Minute.ToString()).
-                       Replace("[SANİYE]", DateTime.Now.Second.ToString())
+                       Replace("[SANİYE]", DateTime.Now.Second.ToString()).
+                       Replace("[GUID]", Guid.NewGuid().ToString()).
+                       Replace("[USERNAME]", Environment.UserName)
                     : FileName;
                 return saveFileName;
             }
@@ -506,6 +509,7 @@ namespace TwainControl
         public string this[string columnName] => columnName switch
         {
             "FileName" when string.IsNullOrWhiteSpace(FileName) => "Dosya Adını Boş Geçmeyin.",
+            "FileName" when FileName.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0 => "Dosya Adında Hatalı Karakter Var Düzeltin.",
             "ProfileName" when string.IsNullOrWhiteSpace(ProfileName) => "Profil Adını Boş Geçmeyin.",
             _ => null
         };
