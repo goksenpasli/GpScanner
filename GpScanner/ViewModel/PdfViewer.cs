@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using TwainControl;
+using TwainControl.Properties;
 
 namespace GpScanner.ViewModel
 {
@@ -21,7 +23,7 @@ namespace GpScanner.ViewModel
 
         public static readonly DependencyProperty PdfFileStreamProperty = DependencyProperty.Register("PdfFileStream", typeof(FileStream), typeof(PdfViewer), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.NotDataBindable, async (o, e) => await PdfStreamChangedAsync(o, e)));
 
-        public new static readonly DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(PdfViewer), new PropertyMetadata(1.0));
+        public static new readonly DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(PdfViewer), new PropertyMetadata(1.0));
 
         public PdfViewer()
         {
@@ -56,6 +58,17 @@ namespace GpScanner.ViewModel
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     File.WriteAllBytes(saveFileDialog.FileName, Source.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg));
+                }
+            }, parameter => Source is not null);
+
+            TransferImage = new RelayCommand<object>(parameter =>
+            {
+                if (parameter is MainWindow mainWindow)
+                {
+                    BitmapSource thumbnail = ((BitmapSource)Source).Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 21 * 29.7);
+                    ScannedImage scannedImage = new() { Seçili = true, Resim = BitmapFrame.Create((BitmapSource)Source, thumbnail) };
+                    mainWindow.TwainCtrl.Scanner.Resimler.Add(scannedImage);
+
                 }
             }, parameter => Source is not null);
 
@@ -124,6 +137,8 @@ namespace GpScanner.ViewModel
                 }
             }
         }
+
+        public ICommand TransferImage { get; }
 
         public new ICommand ViewerBack { get; }
 
@@ -210,13 +225,12 @@ namespace GpScanner.ViewModel
                 pdfViewer.ToplamSayfa = Pdf2Png.ConvertAllPages(pdfViewer.PdfFileStream, 0).Count;
                 pdfViewer.TifNavigasyonButtonEtkin = pdfViewer.ToplamSayfa > 1 ? Visibility.Visible : Visibility.Collapsed;
                 pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
-                FileStream fileStream = pdfViewer.PdfFileStream;
+                using FileStream fileStream = pdfViewer.PdfFileStream;
                 int sayfa = pdfViewer.Sayfa;
                 int dpi = pdfViewer.Dpi;
                 pdfViewer.Source = pdfViewer.FirstPageThumbnail
                     ? await Task.Run(() => BitmapSourceFromByteArray(Pdf2Png.Convert(fileStream, 1, 108), true))
                     : await Task.Run(() => BitmapSourceFromByteArray(Pdf2Png.Convert(fileStream, sayfa, dpi)));
-                fileStream = null;
             }
         }
 

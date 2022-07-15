@@ -125,7 +125,7 @@
                                                     <Extensions:ResizablePanel Width="480" Height="360" MinWidth="480"
                                                         MinHeight="360">
                                                         <GroupBox>
-                                                            <ContentControl Content="{Binding Path=FileName}" ContentTemplate="{DynamicResource PdfViewerTemplate}" />
+                                                            <ContentControl Content="{Binding Path=FileName}" ContentTemplate="{StaticResource PdfViewerTemplate}" />
                                                         </GroupBox>
                                                     </Extensions:ResizablePanel>
                                                 </Extensions:SplitButton.InternalContent>

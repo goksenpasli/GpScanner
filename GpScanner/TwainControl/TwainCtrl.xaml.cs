@@ -4,6 +4,7 @@ using PdfSharp;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
+using PdfSharp.Pdf.Security;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -85,11 +86,13 @@ namespace TwainControl
                                     File.WriteAllBytes(saveFileDialog.FileName, scannedImage.Resim.ToTiffJpegByteArray(Format.TiffRenkli));
                                 }
                                 break;
+
                             case 2:
                                 File.WriteAllBytes(saveFileDialog.FileName, scannedImage.Resim.ToTiffJpegByteArray(Format.Jpg));
                                 break;
+
                             case 3:
-                                if (Viewer is { Angle: not 0, Angle: not 360 })
+                                if (Scanner.RotateAngle is not 0 or 360)
                                 {
                                     if (MessageBox.Show("Döndürme Uygulanarak Kaydedilsin mi?", Application.Current?.MainWindow?.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                                     {
@@ -100,8 +103,9 @@ namespace TwainControl
                                 }
                                 PdfKaydet(scannedImage.Resim, saveFileDialog.FileName, Format.Jpg);
                                 break;
+
                             case 4:
-                                if (Viewer is { Angle: not 0, Angle: not 360 })
+                                if (Scanner.RotateAngle is not 0 or 360)
                                 {
                                     if (MessageBox.Show("Döndürme Uygulanarak Kaydedilsin mi?", Application.Current?.MainWindow?.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                                     {
@@ -438,6 +442,18 @@ namespace TwainControl
 
         private Twain twain;
 
+        private void ApplyPdfSecurity(PdfDocument document)
+        {
+            PdfSecuritySettings securitySettings = document.SecuritySettings;
+            if (Scanner.PdfPassword is not null)
+            {
+                securitySettings.OwnerPassword = Scanner.PdfPassword.ToString();
+                securitySettings.PermitModifyDocument = Scanner.AllowEdit;
+                securitySettings.PermitPrint = Scanner.AllowPrint;
+                securitySettings.PermitExtractContent = Scanner.AllowCopy;
+            }
+        }
+
         private void ButtonedTextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             Scanner.CaretPosition = (sender as ButtonedTextBox)?.CaretIndex ?? 0;
@@ -510,6 +526,14 @@ namespace TwainControl
             {
                 ExploreFile.Execute(pdffilepath);
             }
+            if (Scanner.ShutDownMode == 1)
+            {
+                Shutdown.DoExitWin(Shutdown.EWX_SHUTDOWN);
+            }
+            if (Scanner.ShutDownMode == 2)
+            {
+                Shutdown.DoExitWin(Shutdown.EWX_REBOOT);
+            }
             twain.ScanningComplete -= Fastscan;
             OnPropertyChanged(nameof(Scanner.Tarandı));
         }
@@ -529,13 +553,22 @@ namespace TwainControl
             return datefolder;
         }
 
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            Scanner.PdfPassword = ((PasswordBox)sender).SecurePassword;
+        }
+
         private void PdfKaydet(BitmapSource bitmapframe, string dosyayolu, Format format, bool rotate = false)
         {
             using PdfDocument document = new();
             PdfPage page = document.AddPage();
             if (rotate)
             {
-                page.Rotate = (int)Viewer.Angle;
+                page.Rotate = (int)Scanner.RotateAngle;
+            }
+            if (Scanner.PasswordProtect)
+            {
+                ApplyPdfSecurity(document);
             }
             using XGraphics gfx = XGraphics.FromPdfPage(page);
             using MemoryStream ms = new(bitmapframe.ToTiffJpegByteArray(format));
@@ -555,7 +588,11 @@ namespace TwainControl
                 PdfPage page = document.AddPage();
                 if (rotate)
                 {
-                    page.Rotate = (int)Viewer.Angle;
+                    page.Rotate = (int)Scanner.RotateAngle;
+                }
+                if (Scanner.PasswordProtect)
+                {
+                    ApplyPdfSecurity(document);
                 }
                 using XGraphics gfx = XGraphics.FromPdfPage(page);
                 using MemoryStream ms = new(bitmapFrames[i].Resim.ToTiffJpegByteArray(format));

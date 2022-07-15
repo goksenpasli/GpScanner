@@ -137,7 +137,7 @@ namespace GpScanner.ViewModel
             }
             if (e.PropertyName is "AramaMetni")
             {
-                MainWindow.cvs.Filter += (s, x) => x.Accepted = (x.Item as Scanner)?.FileName.Contains(AramaMetni) == true;
+                MainWindow.cvs.Filter += (s, x) => x.Accepted = Path.GetFileNameWithoutExtension((x.Item as Scanner)?.FileName).Contains(AramaMetni, StringComparison.OrdinalIgnoreCase);
             }
         }
     }

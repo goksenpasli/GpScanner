@@ -1,7 +1,8 @@
 ﻿<Application x:Class="GpScanner.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Converter="clr-namespace:GpScanner.Converter"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions" xmlns:ViewModel="clr-namespace:GpScanner.ViewModel"
-    xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options" StartupUri="MainWindow.xaml" Startup="Application_Startup">
+    xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options" Startup="Application_Startup"
+    StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
@@ -138,6 +139,7 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <Button Command="{Binding DosyaAç, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Visibility="{Binding OpenButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                             <Button.Content>
@@ -227,6 +229,20 @@
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                             <Binding Source="Shell32.dll" />
                                             <Binding Source="6" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                            </Button.Content>
+                        </Button>
+                        <Button Grid.Column="8"
+                            Command="{Binding TransferImage, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
+                            <Button.Content>
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="45" />
                                         </MultiBinding>
                                     </Image.Source>
                                 </Image>

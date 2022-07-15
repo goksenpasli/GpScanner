@@ -81,6 +81,7 @@
     <Compile Include="ColorEffect.cs" />
     <Compile Include="Converter\SplitConverter.cs" />
     <Compile Include="Scanner.cs" />
+    <Compile Include="Shutdown.cs" />
     <Compile Include="TwainCtrl.xaml.cs">
       <DependentUpon>TwainCtrl.xaml</DependentUpon>
       <SubType>Code</SubType>

@@ -6,7 +6,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Extensions;component/Themes/Generic.xaml" />
+				<ResourceDictionary Source="/Extensions;component/Themes/Skin.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <local:TimespanToSecondsConverter x:Key="TimespanToSecondsConverter" />
             <local:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter" />

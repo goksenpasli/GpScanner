@@ -11,6 +11,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/TwainControl;component/Slider.xaml" />
+                <ResourceDictionary Source="/Extensions;component/Themes/Skin.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <Converter:SplitConverter x:Key="SplitConverter" />
@@ -58,14 +59,18 @@
                                 <Setter Property="VerticalContentAlignment" Value="Center" />
                             </Style>
                         </StackPanel.Resources>
-                        <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="600"
-                            Minimum="72" SmallChange="1" Ticks="72,96,120,150,200,300,450,600"
-                            ToolTip="ÇÖZÜNÜRLÜK"
-                            Value="{Binding Path=Çözünürlük, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                         <!--<Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="255"
                             Minimum="1" SmallChange="1" ToolTip="SİYAH BEYAZ EŞİK DEĞERİ"
                             Value="{Binding Scanner.Eşik, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />-->
                         <StackPanel Orientation="Horizontal">
+                            <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="600"
+                                Minimum="72" Orientation="Vertical" SmallChange="1"
+                                Style="{StaticResource Slider}"
+                                Ticks="72,96,120,150,200,300,450,600" ToolTip="ÇÖZÜNÜRLÜK"
+                                Value="{Binding Path=Çözünürlük, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                            <StackPanel Orientation="Horizontal">
+                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                            </StackPanel>
                             <CheckBox IsChecked="{Binding Path=Adf, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                                 <CheckBox.Content>
                                     <Grid>
@@ -127,19 +132,49 @@
                                 <TextBlock Text="HIZLI TARAMA SONRASI DOSYAYI GÖSTER" TextTrimming="CharacterEllipsis"
                                     ToolTip="HIZLI TARAMA SONRASI DOSYAYI GÖSTER" />
                             </CheckBox>
-                            <CheckBox d:Visibility="Visible" IsChecked="True" IsEnabled="False"
-                                Visibility="Collapsed">
+                            <!--<CheckBox IsChecked="True" IsEnabled="False">
                                 <TextBlock Text="HIZLI TARAMADA KLASÖRÜ TARİHE GÖRE GRUPLA" TextTrimming="CharacterEllipsis"
                                     ToolTip="HIZLI TARAMADA KLASÖRÜ TARİHE GÖRE GRUPLA" />
-                            </CheckBox>
+                            </CheckBox>-->
                         </UniformGrid>
                         <Expander Header="DİĞER AYARLAR">
-                            <UniformGrid Columns="2">
-                                <CheckBox Content="EĞRİLİK DÜZELT" IsChecked="{Binding Scanner.Deskew}" />
-                                <CheckBox Content="OTOMATİK KENAR TESPİTİ" IsChecked="{Binding Scanner.BorderDetect}" />
-                                <CheckBox Content="YÜZDE GÖSTER" IsChecked="{Binding Scanner.ShowProgress}" />
-                                <CheckBox Content="OTOMATİK DÖNDÜR" IsChecked="{Binding Scanner.AutoRotate}" />
-                            </UniformGrid>
+                            <StackPanel>
+                                <UniformGrid Columns="2">
+                                    <CheckBox Content="EĞRİLİK DÜZELT" IsChecked="{Binding Scanner.Deskew}" />
+                                    <CheckBox Content="OTOMATİK KENAR TESPİTİ" IsChecked="{Binding Scanner.BorderDetect}" />
+                                    <CheckBox Content="YÜZDE GÖSTER" IsChecked="{Binding Scanner.ShowProgress}" />
+                                    <CheckBox Content="OTOMATİK DÖNDÜR" IsChecked="{Binding Scanner.AutoRotate}" />
+                                </UniformGrid>
+                                <ComboBox SelectedIndex="{Binding Path=Scanner.ShutDownMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="Hızlı Tarama Bitince Yapılacak İşlem">
+                                    <ComboBoxItem Content="İŞLEM YOK" />
+                                    <ComboBoxItem>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="16" Height="16">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="27" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                            <TextBlock VerticalAlignment="Center" Text="BİLGİSAYARI KAPAT" />
+                                        </StackPanel>
+                                    </ComboBoxItem>
+                                    <ComboBoxItem>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="16" Height="16">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="44" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                            <TextBlock VerticalAlignment="Center" Text="BİLGİSAYARI YENİDEN BAŞLAT" />
+                                        </StackPanel>
+                                    </ComboBoxItem>
+                                </ComboBox>
+                            </StackPanel>
                         </Expander>
                         <Separator />
                         <TextBlock d:Text="AutoFolder" FontWeight="Bold">
@@ -172,7 +207,7 @@
                                         <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
                                             CommandParameter="[SANİYE]" Header="[SANİYE]" />
                                         <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
-                                            CommandParameter="[GUID]" Header="[GUID]" />  
+                                            CommandParameter="[GUID]" Header="[GUID]" />
                                         <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
                                             CommandParameter="[USERNAME]" Header="[USERNAME]" />
                                     </ContextMenu>
@@ -203,9 +238,10 @@
                                     <DataTemplate>
                                         <UniformGrid Columns="2">
                                             <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay, Converter={StaticResource SplitConverter}}" />
-                                            <Button Command="{Binding DataContext.RemoveProfile, ElementName=UserControl}"
+                                            <Button Background="Transparent" BorderBrush="Transparent"
+                                                Command="{Binding DataContext.RemoveProfile, ElementName=UserControl}"
                                                 CommandParameter="{Binding Mode=OneWay}"
-                                                Content="SİL" />
+                                                Content="SİL" FontWeight="Bold" Foreground="Red" />
                                         </UniformGrid>
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
@@ -228,6 +264,23 @@
                             </Button>
                             <Button Background="Green" Command="{Binding FastScanImage}">
                                 <StackPanel Orientation="Horizontal">
+                                    <Image Width="32" Height="32" ToolTip="Kapatma Veya Yeniden Başlatma Ayarlanmış.">
+                                        <Image.Style>
+                                            <Style TargetType="Image">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Scanner.ShutDownMode}" Value="0">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Image.Style>
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="77" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
                                     <Image Width="32" Height="32">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -257,11 +310,11 @@
                 </GroupBox>
                 <GroupBox Grid.Row="2">
                     <GroupBox.Header>
-                        <UniformGrid Columns="4">
+                        <UniformGrid Columns="5">
                             <Button Command="{Binding Tümünüİşaretle}">
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal">
-                                        <Image Width="24" Height="24">
+                                        <Image Width="16" Height="16">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                     <Binding Source="Imageres.dll" />
@@ -276,7 +329,7 @@
                             <Button Command="{Binding TümününİşaretiniKaldır}">
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal">
-                                        <Image Width="24" Height="24">
+                                        <Image Width="16" Height="16">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                     <Binding Source="Imageres.dll" />
@@ -291,7 +344,7 @@
                             <Button Command="{Binding Tersiniİşaretle}">
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal">
-                                        <Image Width="24" Height="24">
+                                        <Image Width="16" Height="16">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                     <Binding Source="Imageres.dll" />
@@ -304,8 +357,56 @@
                                 </Button.Content>
                             </Button>
                             <Slider VerticalAlignment="Center" AutoToolTipPlacement="TopLeft" Maximum="300"
-                                Minimum="85" SmallChange="1" ToolTip="RESİM ÖNİZLEME BOYUTU"
+                                Minimum="85" SmallChange="1"
+                                Style="{StaticResource Slider}"
+                                ToolTip="RESİM ÖNİZLEME BOYUTU"
                                 Value="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}" />
+                            <Extensions:ContentToggleButton>
+                                <Extensions:ContentToggleButton.OverContent>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="47" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <TextBlock VerticalAlignment="Center" Text="PDF KORU" />
+                                    </StackPanel>
+                                </Extensions:ContentToggleButton.OverContent>
+                                <GroupBox>
+                                    <GroupBox.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <CheckBox VerticalAlignment="Center" Content="ŞİFRELE"
+                                                IsChecked="{Binding Scanner.PasswordProtect}" />
+                                            <Image Width="32" Height="32" ToolTip="Kapatma Veya Yeniden Başlatma Ayarlanmış.">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="77" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                            <TextBlock VerticalAlignment="Center" FontSize="14" Text="BURDA YAPILAN AYARLAR TÜM&#x0a;PDF KAYITLARINI ETKİLER" />
+                                        </StackPanel>
+                                    </GroupBox.Header>
+                                    <StackPanel IsEnabled="{Binding Scanner.PasswordProtect}">
+                                        <HeaderedContentControl Header="ŞİFRE">
+                                            <PasswordBox PasswordChanged="PasswordBox_PasswordChanged" />
+                                        </HeaderedContentControl>
+                                        <CheckBox Content="YAZDIRMAYA İZİN VER"
+                                            IsChecked="{Binding Scanner.AllowPrint}"
+                                            IsEnabled="{Binding Scanner.PdfPassword, Converter={StaticResource NullableToBooleanConverter}}" />
+                                        <CheckBox Content="İÇERİK KOPYALAMAYA İZİN VER"
+                                            IsChecked="{Binding Scanner.AllowCopy}"
+                                            IsEnabled="{Binding Scanner.PdfPassword, Converter={StaticResource NullableToBooleanConverter}}" />
+                                        <CheckBox Content="BELGE DÜZENLEMEYE İZİN VER"
+                                            IsChecked="{Binding Scanner.AllowEdit}"
+                                            IsEnabled="{Binding Scanner.PdfPassword, Converter={StaticResource NullableToBooleanConverter}}" />
+                                    </StackPanel>
+                                </GroupBox>
+                            </Extensions:ContentToggleButton>
                         </UniformGrid>
                     </GroupBox.Header>
                     <ListBox d:ItemsSource="{d:SampleData ItemCount=5}"
@@ -388,7 +489,7 @@
                                         </MultiBinding>
                                     </Image.Source>
                                 </Image>
-                                <TextBlock Text="SEÇİLİLERİ&#x0a;PDF KAYDET" />
+                                <TextBlock VerticalAlignment="Center" Text="SEÇİLİLERİ&#x0a;PDF KAYDET" />
                             </StackPanel>
                         </Button.Content>
                     </Button>
@@ -403,7 +504,7 @@
                                         </MultiBinding>
                                     </Image.Source>
                                 </Image>
-                                <TextBlock Text="LİSTEYİ&#x0a;TEMİZLE" />
+                                <TextBlock VerticalAlignment="Center" Text="LİSTEYİ&#x0a;TEMİZLE" />
                             </StackPanel>
                         </Button.Content>
                     </Button>
@@ -418,7 +519,7 @@
                                         </MultiBinding>
                                     </Image.Source>
                                 </Image>
-                                <TextBlock Text="PDF&#x0a;BİRLEŞTİR" />
+                                <TextBlock VerticalAlignment="Center" Text="PDF&#x0a;BİRLEŞTİR" />
                             </StackPanel>
                         </Button.Content>
                     </Button>
@@ -467,8 +568,9 @@
                         Style="{StaticResource SliderStyle}"
                         TickPlacement="TopLeft"
                         Value="{Binding Scanner.CropBottom}" />
-                    <Extensions:ImageViewer x:Name="Viewer" DockPanel.ZIndex="-1" FitImageOrientation="Height"
-                        OrijinalResimDosyaAçButtonVisibility="Collapsed" SnapTick="True"
+                    <Extensions:ImageViewer Angle="{Binding Scanner.RotateAngle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        DockPanel.ZIndex="-1" FitImageOrientation="Height" OrijinalResimDosyaAçButtonVisibility="Collapsed"
+                        SnapTick="True"
                         Source="{Binding Scanner.SeçiliResim.Resim}" />
                 </DockPanel>
                 <Expander HorizontalAlignment="Left" VerticalAlignment="Bottom" ExpandDirection="Up"

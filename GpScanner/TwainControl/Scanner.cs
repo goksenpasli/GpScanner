@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Security;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using TwainControl.Properties;
@@ -56,6 +57,46 @@ namespace TwainControl
     public class Scanner : INotifyPropertyChanged, IDataErrorInfo
     {
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public bool AllowCopy
+        {
+            get => allowCopy; set
+
+            {
+                if (allowCopy != value)
+                {
+                    allowCopy = value;
+                    OnPropertyChanged(nameof(AllowCopy));
+                }
+            }
+        }
+
+        public bool AllowEdit
+        {
+            get => allowEdit; set
+
+            {
+                if (allowEdit != value)
+                {
+                    allowEdit = value;
+                    OnPropertyChanged(nameof(AllowEdit));
+                }
+            }
+        }
+
+        public bool AllowPrint
+        {
+            get => allowPrint;
+
+            set
+            {
+                if (allowPrint != value)
+                {
+                    allowPrint = value;
+                    OnPropertyChanged(nameof(AllowPrint));
+                }
+            }
+        }
 
         public bool ArayüzEtkin
         {
@@ -310,6 +351,34 @@ namespace TwainControl
             }
         }
 
+        public bool PasswordProtect
+        {
+            get => passwordProtect;
+
+            set
+            {
+                if (passwordProtect != value)
+                {
+                    passwordProtect = value;
+                    OnPropertyChanged(nameof(PasswordProtect));
+                }
+            }
+        }
+
+        public SecureString PdfPassword
+        {
+            get => pdfPassword;
+
+            set
+            {
+                if (pdfPassword != value)
+                {
+                    pdfPassword = value;
+                    OnPropertyChanged(nameof(PdfPassword));
+                }
+            }
+        }
+
         public string ProfileName
         {
             get => profileName;
@@ -334,6 +403,20 @@ namespace TwainControl
                 {
                     resimler = value;
                     OnPropertyChanged(nameof(Resimler));
+                }
+            }
+        }
+
+        public double RotateAngle
+        {
+            get => rotateAngle;
+
+            set
+            {
+                if (rotateAngle != value)
+                {
+                    rotateAngle = value;
+                    OnPropertyChanged(nameof(RotateAngle));
                 }
             }
         }
@@ -478,6 +561,20 @@ namespace TwainControl
             }
         }
 
+        public int ShutDownMode
+        {
+            get => shutDownMode;
+
+            set
+            {
+                if (shutDownMode != value)
+                {
+                    shutDownMode = value;
+                    OnPropertyChanged(nameof(ShutDownMode));
+                }
+            }
+        }
+
         public bool Tarandı
         {
             get => tarandı;
@@ -519,6 +616,12 @@ namespace TwainControl
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        private bool allowCopy = true;
+
+        private bool allowEdit = true;
+
+        private bool allowPrint = true;
+
         private bool arayüzetkin = true;
 
         private bool autoRotate;
@@ -555,9 +658,15 @@ namespace TwainControl
 
         private string localizedPath;
 
+        private bool passwordProtect;
+
+        private SecureString pdfPassword;
+
         private string profileName;
 
         private ObservableCollection<ScannedImage> resimler = new();
+
+        private double rotateAngle;
 
         private string saveFileName;
 
@@ -576,6 +685,8 @@ namespace TwainControl
         private bool showProgress;
 
         private bool showUi;
+
+        private int shutDownMode;
 
         private bool tarandı;
 
