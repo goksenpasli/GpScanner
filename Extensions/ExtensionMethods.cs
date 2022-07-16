@@ -8,6 +8,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
@@ -331,15 +332,19 @@ namespace Extensions
             return tb;
         }
 
-        public static string SetUniqueFile(this string path, string file, string extension)
+        public static string SetUniqueFile(this string path, string file, string extension, string seperator="_")
         {
+            if (seperator.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
+            {
+                seperator = "_";
+            }
             int i;
-            for (i = 0; File.Exists($"{path}\\{file}_{i}.{extension}"); i++)
+            for (i = 0; File.Exists($@"{path}\{file}{seperator}{i}.{extension}"); i++)
             {
                 _ = i + 1;
             }
 
-            return $"{path}\\{file}_{i}.{extension}";
+            return $@"{path}\{file}{seperator}{i}.{extension}";
         }
 
         [DllImport("shell32.dll", CharSet = CharSet.Auto)]

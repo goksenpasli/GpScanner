@@ -20,7 +20,7 @@
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="390" />
+            <ColumnDefinition Width="396" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <GroupBox Grid.Column="0" Header="KAYNAK SEÇ">
@@ -380,7 +380,7 @@
                                         <StackPanel Orientation="Horizontal">
                                             <CheckBox VerticalAlignment="Center" Content="ŞİFRELE"
                                                 IsChecked="{Binding Scanner.PasswordProtect}" />
-                                            <Image Width="32" Height="32" ToolTip="Kapatma Veya Yeniden Başlatma Ayarlanmış.">
+                                            <Image Width="32" Height="32">
                                                 <Image.Source>
                                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                         <Binding Source="Shell32.dll" />
@@ -395,15 +395,11 @@
                                         <HeaderedContentControl Header="ŞİFRE">
                                             <PasswordBox PasswordChanged="PasswordBox_PasswordChanged" />
                                         </HeaderedContentControl>
-                                        <CheckBox Content="YAZDIRMAYA İZİN VER"
-                                            IsChecked="{Binding Scanner.AllowPrint}"
-                                            IsEnabled="{Binding Scanner.PdfPassword, Converter={StaticResource NullableToBooleanConverter}}" />
-                                        <CheckBox Content="İÇERİK KOPYALAMAYA İZİN VER"
-                                            IsChecked="{Binding Scanner.AllowCopy}"
-                                            IsEnabled="{Binding Scanner.PdfPassword, Converter={StaticResource NullableToBooleanConverter}}" />
-                                        <CheckBox Content="BELGE DÜZENLEMEYE İZİN VER"
-                                            IsChecked="{Binding Scanner.AllowEdit}"
-                                            IsEnabled="{Binding Scanner.PdfPassword, Converter={StaticResource NullableToBooleanConverter}}" />
+                                        <StackPanel IsEnabled="{Binding Scanner.PdfPassword, Converter={StaticResource NullableToBooleanConverter}}">
+                                            <CheckBox Content="YAZDIRMAYA İZİN VER" IsChecked="{Binding Scanner.AllowPrint}" />
+                                            <CheckBox Content="İÇERİK KOPYALAMAYA İZİN VER" IsChecked="{Binding Scanner.AllowCopy}" />
+                                            <CheckBox Content="BELGE DÜZENLEMEYE İZİN VER" IsChecked="{Binding Scanner.AllowEdit}" />
+                                        </StackPanel>
                                     </StackPanel>
                                 </GroupBox>
                             </Extensions:ContentToggleButton>
@@ -608,7 +604,7 @@
                                     </Grid>
                                 </Border>
                             </DockPanel>
-                            <UniformGrid Margin="1" Columns="2" Rows="4">
+                            <UniformGrid Margin="1" Columns="2" Rows="9">
                                 <Button Command="{Binding SaveCroppedImage}" Content="RESMİ KIRP" />
                                 <Button Command="{Binding ResetCroppedImage}" Content="SIFIRLA" />
                                 <TextBlock VerticalAlignment="Center" Text="EN ADETİ" />
@@ -657,6 +653,28 @@
                                         </GroupBox>
                                     </Extensions:ContentToggleButton.Content>
                                 </Extensions:ContentToggleButton>
+                                <TextBlock VerticalAlignment="Center" Text="METİN" />
+                                <TextBox Text="{Binding Scanner.Watermark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock VerticalAlignment="Center" Text="METİN BOYUT" />
+                                <Slider AutoToolTipPlacement="TopLeft" Maximum="1024" Minimum="12"
+                                    SmallChange="1"
+                                    Style="{StaticResource Slider}"
+                                    Value="{Binding Scanner.WatermarkTextSize}" />
+                                <TextBlock VerticalAlignment="Center" Text="METİN AÇI" />
+                                <Slider AutoToolTipPlacement="TopLeft" Maximum="360" Minimum="0"
+                                    SmallChange="1"
+                                    Style="{StaticResource Slider}"
+                                    Value="{Binding Scanner.WatermarkAngle}" />
+                                <TextBlock Text="YAZI TİPİ" VerticalAlignment="Center"/>
+                                <ComboBox SelectedItem="{Binding Scanner.WatermarkFont}" ItemsSource="{Binding Source={x:Static Fonts.SystemFontFamilies}}">
+                                    <ComboBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <VirtualizingStackPanel/>
+                                        </ItemsPanelTemplate>
+                                    </ComboBox.ItemsPanel>
+                                </ComboBox>
+                                <Button Command="{Binding SetWatermark}" Content="METİN ÇİZ" />
+                                <Button Command="{Binding SaveWatermarkedPdf}" Content="PDF KAYDET" />
                             </UniformGrid>
                         </StackPanel>
                     </Border>

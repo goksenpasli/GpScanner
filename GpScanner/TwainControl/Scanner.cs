@@ -603,6 +603,62 @@ namespace TwainControl
             }
         }
 
+        public string Watermark
+        {
+            get => watermark;
+
+            set
+            {
+                if (watermark != value)
+                {
+                    watermark = value;
+                    OnPropertyChanged(nameof(Watermark));
+                }
+            }
+        }
+
+        public double WatermarkAngle
+        {
+            get => watermarkAngle;
+
+            set
+            {
+                if (watermarkAngle != value)
+                {
+                    watermarkAngle = value;
+                    OnPropertyChanged(nameof(WatermarkAngle));
+                }
+            }
+        }
+
+        public string WatermarkFont
+        {
+            get => watermarkFont;
+
+            set
+            {
+                if (watermarkFont != value)
+                {
+                    watermarkFont = value;
+                    OnPropertyChanged(nameof(WatermarkFont));
+                }
+            }
+        }
+
+        public double WatermarkTextSize
+        {
+            get => watermarkTextSize;
+
+            set
+            {
+                if (watermarkTextSize != value)
+                {
+                    watermarkTextSize = value;
+                    OnPropertyChanged(nameof(WatermarkTextSize));
+                }
+            }
+        }
+
         public string this[string columnName] => columnName switch
         {
             "FileName" when string.IsNullOrWhiteSpace(FileName) => "Dosya Adını Boş Geçmeyin.",
@@ -691,5 +747,13 @@ namespace TwainControl
         private bool tarandı;
 
         private IList<string> tarayıcılar;
+
+        private string watermark;
+
+        private double watermarkAngle = 315;
+
+        private string watermarkFont = "Arial";
+
+        private double watermarkTextSize = 64;
     }
 }

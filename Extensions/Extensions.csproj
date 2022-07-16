@@ -84,7 +84,6 @@
     <Compile Include="Controls\ContentToggleButton.cs" />
     <Compile Include="Converters\FilePathToFileDescriptionConverter.cs" />
     <Compile Include="Converters\FilePathToIconConverter.cs" />
-    <Compile Include="Controls\HorizontalListBox.cs" />
     <Compile Include="Controls\MaskedTextBox.cs" />
     <Compile Include="Converters\NullableToBooleanConverter.cs" />
     <Compile Include="Controls\NumericUpDownControl.cs" />
