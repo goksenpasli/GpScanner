@@ -72,7 +72,7 @@
                     ItemsSource="{Binding Mode=OneWay, Source={StaticResource Veriler}}"
                     VirtualizingPanel.CacheLength="2,2" VirtualizingPanel.CacheLengthUnit="Item"
                     VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.ScrollUnit="Pixel"
-                    VirtualizingPanel.VirtualizationMode="Standard">
+                    VirtualizingPanel.VirtualizationMode="Recycling">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <VirtualizingStackPanel />

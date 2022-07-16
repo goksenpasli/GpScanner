@@ -203,7 +203,7 @@ namespace GpScanner.ViewModel
 
         private static void PdfFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is PdfViewer pdfViewer && string.Equals(Path.GetExtension(pdfViewer.DataContext as string), ".pdf", StringComparison.OrdinalIgnoreCase))
+            if (d is PdfViewer pdfViewer && File.Exists(e.NewValue as string) && string.Equals(Path.GetExtension(e.NewValue as string), ".pdf", StringComparison.OrdinalIgnoreCase))
             {
                 if (e.NewValue is not null)
                 {
@@ -224,19 +224,25 @@ namespace GpScanner.ViewModel
                 try
                 {
                     byte[] pdfdata = e.NewValue as byte[];
-                    pdfViewer.ToplamSayfa = Pdf2Png.ConvertAllPages(pdfdata, 0).Count;
                     int sayfa = pdfViewer.Sayfa;
                     int dpi = pdfViewer.Dpi;
-                    pdfViewer.Source = pdfViewer.FirstPageThumbnail
-                        ? await Task.Run(() => BitmapSourceFromByteArray(Pdf2Png.Convert(pdfdata, 1, 108), true))
-                        : await Task.Run(() => BitmapSourceFromByteArray(Pdf2Png.Convert(pdfdata, sayfa, dpi)));
+                    if (pdfViewer.FirstPageThumbnail)
+                    {
+                        pdfViewer.Source = await Task.Run(() => BitmapSourceFromByteArray(Pdf2Png.Convert(pdfdata, 1, 108), true));
+                    }
+                    else
+                    {
+                        pdfViewer.ToplamSayfa = Pdf2Png.ConvertAllPages(pdfdata, 0).Count;
+                        pdfViewer.Source = await Task.Run(() => BitmapSourceFromByteArray(Pdf2Png.Convert(pdfdata, sayfa, dpi)));
+                        pdfViewer.TifNavigasyonButtonEtkin = pdfViewer.ToplamSayfa > 1 ? Visibility.Visible : Visibility.Collapsed;
+                        pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
+                    }
+                    pdfdata = null;
                 }
                 catch (Exception ex)
                 {
                     _ = MessageBox.Show(ex.Message);
                 }
-                pdfViewer.TifNavigasyonButtonEtkin = pdfViewer.ToplamSayfa > 1 ? Visibility.Visible : Visibility.Collapsed;
-                pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
             }
         }
 

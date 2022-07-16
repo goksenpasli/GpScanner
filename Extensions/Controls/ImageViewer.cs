@@ -388,6 +388,7 @@ namespace Extensions
                         imageViewer.Source = imageViewer.Decoder.Frames[0];
                         imageViewer.Pages = Enumerable.Range(1, imageViewer.Decoder.Frames.Count);
                         return;
+
                     case ".png" or ".jpg" or ".jpeg":
                         {
                             imageViewer.TifNavigasyonButtonEtkin = Visibility.Collapsed;
@@ -426,7 +427,7 @@ namespace Extensions
 
         private static void SourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is ImageViewer imageViewer && imageViewer.Source is not null)
+            if (d is ImageViewer imageViewer && e.NewValue is not null)
             {
                 ScrollViewer scrollViewer = (imageViewer.GetVisualChild(0) as Grid)?.Children[0] as ScrollViewer;
                 switch (imageViewer.FitImageOrientation)
