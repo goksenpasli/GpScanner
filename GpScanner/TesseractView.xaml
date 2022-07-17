@@ -2,7 +2,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:GpScanner" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:properties="clr-namespace:GpScanner.Properties" xmlns:viewmodel="clr-namespace:GpScanner.ViewModel"
-    d:DataContext="{d:DesignInstance Type=viewmodel:GpScannerViewModel}"
+    d:DataContext="{d:DesignInstance Type=viewmodel:TesseractViewModel}"
     d:DesignHeight="350" d:DesignWidth="500" UseLayoutRounding="True"
     mc:Ignorable="d">
     <GroupBox Header="TESSERACT">
@@ -15,22 +15,21 @@
                 <ColumnDefinition Width="249*" />
                 <ColumnDefinition Width="248*" />
             </Grid.ColumnDefinitions>
-            <StackPanel>
-                <Button Command="{Binding TesseractDownload}"
-                    CommandParameter="tur.traineddata" Content="TÜRKÇE TESSERACT İNDİR" />
-                <Button Command="{Binding TesseractDownload}"
-                    CommandParameter="eng.traineddata" Content="İNGİLİZCE TESSERACT İNDİR" />
-                <Button Command="{Binding TesseractDownload}"
-                    CommandParameter="ara.traineddata" Content="ARAPÇA TESSERACT İNDİR" />
-                <Button Command="{Binding TesseractDownload}"
-                    CommandParameter="deu.traineddata" Content="ALMANCA TESSERACT İNDİR" />
-                <Button Command="{Binding TesseractDownload}"
-                    CommandParameter="ita.traineddata" Content="İTALYANCA TESSERACT İNDİR" />
-                <Button Command="{Binding TesseractDownload}"
-                    CommandParameter="fra.traineddata" Content="FRANSIZCA TESSERACT İNDİR" />
-                <ProgressBar Height="45" Maximum="100" Minimum="0"
-                    Value="{Binding ProgressValue}" />
-            </StackPanel>
+            <ItemsControl d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding OcrDatas}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button HorizontalContentAlignment="Stretch" Command="{Binding DataContext.TesseractDownload, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding Mode=OneWay}">
+                            <Button.Content>
+                                <Grid>
+                                    <ProgressBar Maximum="100" Minimum="0"
+                                        Value="{Binding ProgressValue}" />
+                                    <TextBlock Text="{Binding DisplayName}" HorizontalAlignment="Center" />
+                                </Grid>
+                            </Button.Content>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
             <ListBox Grid.Column="1"
                 d:ItemsSource="{d:SampleData ItemCount=5}"
                 ItemsSource="{Binding TesseractFiles}"
@@ -47,10 +46,10 @@
                     <Paragraph>
                         <Span>
                             <Hyperlink Command="{Binding TesseractDataFilesDownloadLink}" CommandParameter="https://github.com/tesseract-ocr/tessdata">
-                                <Run Text="Other Tesseract language data" />
+                                <Run Text="Other tesseract language data" />
                             </Hyperlink>
                         </Span>
-                        Ayrıca tesseract 4.1.0 için diğer dil veri dosyalarını tesseract-ocr'den indirmeniz gerekecektir. tessdata klasörüne koyun.</Paragraph>
+                        Ayrıca tesseract 4.1.0 için diğer dil veri dosyalarını gerekirse tesseract-ocr'den indirin. Tessdata klasörüne koyun.</Paragraph>
                 </FlowDocument>
             </FlowDocumentScrollViewer>
         </Grid>

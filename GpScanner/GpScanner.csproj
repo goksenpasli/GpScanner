@@ -85,7 +85,9 @@
     </Compile>
     <Compile Include="ViewModel\GpScannerViewModel.cs" />
     <Compile Include="ViewModel\Ocr.cs" />
+    <Compile Include="ViewModel\OcrData.cs" />
     <Compile Include="ViewModel\PdfViewer.cs" />
+    <Compile Include="ViewModel\TesseractViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -12,10 +12,8 @@ using TwainControl.Properties;
 
 namespace TwainControl
 {
-    public class ScannedImage : INotifyPropertyChanged
+    public class ScannedImage : InpcBase
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public BitmapFrame Resim
         {
             get => resim;
@@ -44,20 +42,13 @@ namespace TwainControl
             }
         }
 
-        protected virtual void OnPropertyChanged(string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         private BitmapFrame resim;
 
         private bool seçili;
     }
 
-    public class Scanner : INotifyPropertyChanged, IDataErrorInfo
+    public class Scanner : InpcBase, IDataErrorInfo
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public bool AllowCopy
         {
             get => allowCopy; set
@@ -666,11 +657,6 @@ namespace TwainControl
             "ProfileName" when string.IsNullOrWhiteSpace(ProfileName) => "Profil Adını Boş Geçmeyin.",
             _ => null
         };
-
-        protected virtual void OnPropertyChanged(string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
 
         private bool allowCopy = true;
 

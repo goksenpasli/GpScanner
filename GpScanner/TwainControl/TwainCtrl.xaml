@@ -604,7 +604,7 @@
                                     </Grid>
                                 </Border>
                             </DockPanel>
-                            <UniformGrid Margin="1" Columns="2" Rows="9">
+                            <UniformGrid Margin="1" Columns="2" Rows="10">
                                 <Button Command="{Binding SaveCroppedImage}" Content="RESMİ KIRP" />
                                 <Button Command="{Binding ResetCroppedImage}" Content="SIFIRLA" />
                                 <TextBlock VerticalAlignment="Center" Text="EN ADETİ" />
@@ -665,16 +665,17 @@
                                     SmallChange="1"
                                     Style="{StaticResource Slider}"
                                     Value="{Binding Scanner.WatermarkAngle}" />
-                                <TextBlock Text="YAZI TİPİ" VerticalAlignment="Center"/>
-                                <ComboBox SelectedItem="{Binding Scanner.WatermarkFont}" ItemsSource="{Binding Source={x:Static Fonts.SystemFontFamilies}}">
+                                <TextBlock VerticalAlignment="Center" Text="YAZI TİPİ" />
+                                <ComboBox ItemsSource="{Binding Source={x:Static Fonts.SystemFontFamilies}}" SelectedItem="{Binding Scanner.WatermarkFont}">
                                     <ComboBox.ItemsPanel>
                                         <ItemsPanelTemplate>
-                                            <VirtualizingStackPanel/>
+                                            <VirtualizingStackPanel />
                                         </ItemsPanelTemplate>
                                     </ComboBox.ItemsPanel>
                                 </ComboBox>
                                 <Button Command="{Binding SetWatermark}" Content="METİN ÇİZ" />
                                 <Button Command="{Binding SaveWatermarkedPdf}" Content="PDF KAYDET" />
+                                <Button Command="{Binding DeskewImage}" Content="EĞRİLİK DÜZELT" />
                             </UniformGrid>
                         </StackPanel>
                     </Border>

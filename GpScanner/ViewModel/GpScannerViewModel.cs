@@ -4,10 +4,8 @@ using Microsoft.Win32;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Windows;
 using System.Windows.Input;
 using TwainControl;
@@ -15,37 +13,15 @@ using Twainsettings = TwainControl.Properties;
 
 namespace GpScanner.ViewModel
 {
-    public class GpScannerViewModel : INotifyPropertyChanged
+    public class GpScannerViewModel : InpcBase
     {
         public GpScannerViewModel()
         {
             LoadData();
             SeçiliGün = DateTime.Today;
-            string tessdatafolder = Path.GetDirectoryName(Process.GetCurrentProcess()?.MainModule?.FileName) + @"\tessdata";
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-
-            TesseractFiles = GetTesseractFiles(tessdatafolder);
+            TesseractViewModel = new TesseractViewModel();
 
             ResetFilter = new RelayCommand<object>(parameter => MainWindow.cvs.View.Filter = null, parameter => MainWindow.cvs.View is not null);
-
-            TesseractDataFilesDownloadLink = new RelayCommand<object>(parameter => _ = Process.Start(parameter as string), parameter => true);
-
-            TesseractDownload = new RelayCommand<object>(async parameter =>
-            {
-                string filename = parameter as string;
-                using WebClient client = new();
-                client.DownloadProgressChanged += (s, e) => ProgressValue = e.ProgressPercentage;
-                client.DownloadFileCompleted += (s, e) => TesseractFiles = GetTesseractFiles(tessdatafolder);
-                await client.DownloadFileTaskAsync(new Uri($"https://github.com/tesseract-ocr/tessdata/raw/main/{filename}"), $@"{tessdatafolder}\{filename}");
-            }, parameter => true);
-
-            OcrPage = new RelayCommand<object>(parameter =>
-            {
-                if (parameter is Scanner scanner)
-                {
-                    ScannedText = scanner.SeçiliResim.Resim.ToTiffJpegByteArray(ExtensionMethods.Format.Png).OcrYap(Settings.Default.DefaultTtsLang);
-                }
-            }, parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && parameter is Scanner scanner && scanner.SeçiliResim is not null);
 
             PdfBirleştir = new RelayCommand<object>(parameter =>
             {
@@ -70,8 +46,6 @@ namespace GpScanner.ViewModel
             Settings.Default.PropertyChanged += Default_PropertyChanged;
             PropertyChanged += GpScannerViewModel_PropertyChanged;
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public string AramaMetni
         {
@@ -101,39 +75,9 @@ namespace GpScanner.ViewModel
             }
         }
 
-        public ICommand OcrPage { get; }
-
         public ICommand PdfBirleştir { get; }
 
-        public double ProgressValue
-        {
-            get => progressValue;
-
-            set
-            {
-                if (progressValue != value)
-                {
-                    progressValue = value;
-                    OnPropertyChanged(nameof(ProgressValue));
-                }
-            }
-        }
-
         public ICommand ResetFilter { get; }
-
-        public string ScannedText
-        {
-            get => scannedText;
-
-            set
-            {
-                if (scannedText != value)
-                {
-                    scannedText = value;
-                    OnPropertyChanged(nameof(ScannedText));
-                }
-            }
-        }
 
         public DateTime? SeçiliGün
         {
@@ -162,20 +106,16 @@ namespace GpScanner.ViewModel
             }
         }
 
-        public ICommand TesseractDataFilesDownloadLink { get; }
-
-        public ICommand TesseractDownload { get; }
-
-        public ObservableCollection<string> TesseractFiles
+        public TesseractViewModel TesseractViewModel
         {
-            get => tesseractFiles;
+            get => tesseractViewModel;
 
             set
             {
-                if (tesseractFiles != value)
+                if (tesseractViewModel != value)
                 {
-                    tesseractFiles = value;
-                    OnPropertyChanged(nameof(TesseractFiles));
+                    tesseractViewModel = value;
+                    OnPropertyChanged(nameof(TesseractViewModel));
                 }
             }
         }
@@ -192,33 +132,19 @@ namespace GpScanner.ViewModel
             }
         }
 
-        protected virtual void OnPropertyChanged(string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         private string aramaMetni;
 
         private ObservableCollection<Scanner> dosyalar;
-
-        private double progressValue;
-
-        private string scannedText;
 
         private DateTime? seçiliGün;
 
         private bool showPdfPreview;
 
-        private ObservableCollection<string> tesseractFiles = new();
+        private TesseractViewModel tesseractViewModel;
 
         private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             Settings.Default.Save();
-        }
-
-        private ObservableCollection<string> GetTesseractFiles(string tesseractfolder)
-        {
-            return Directory.Exists(tesseractfolder) ? new ObservableCollection<string>(Directory.EnumerateFiles(tesseractfolder, "*.traineddata").Select(Path.GetFileNameWithoutExtension)) : null;
         }
 
         private void GpScannerViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)

@@ -319,6 +319,13 @@ namespace TwainControl
 
             SetWatermark = new RelayCommand<object>(parameter => Scanner.CroppedImage = ÜstüneResimÇiz(Scanner.SeçiliResim.Resim, new System.Windows.Point(Scanner.SeçiliResim.Resim.PixelWidth / 2, Scanner.SeçiliResim.Resim.PixelHeight / 2), System.Windows.Media.Brushes.Red, Scanner.WatermarkTextSize, Scanner.Watermark, Scanner.WatermarkAngle, Scanner.WatermarkFont), parameter => Scanner.CroppedImage is not null && !string.IsNullOrWhiteSpace(Scanner?.Watermark));
 
+            DeskewImage = new RelayCommand<object>(parameter =>
+            {
+                Deskew sk = new(Scanner.SeçiliResim.Resim);
+                double skewAngle = -1 * sk.GetSkewAngle();
+                Scanner.CroppedImage = RotateImage(Scanner.CroppedImage, skewAngle);
+            }, parameter => Scanner.CroppedImage is not null);
+
             SaveWatermarkedPdf = new RelayCommand<object>(parameter => SaveCroppedImage.Execute(null), parameter => Scanner.CroppedImage is not null && !string.IsNullOrWhiteSpace(Scanner?.Watermark));
 
             PdfBirleştir = new RelayCommand<object>(parameter =>
@@ -359,6 +366,8 @@ namespace TwainControl
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public ICommand DeskewImage { get; }
 
         public ICommand ExploreFile { get; }
 
@@ -558,6 +567,7 @@ namespace TwainControl
                 case 1:
                     Shutdown.DoExitWin(Shutdown.EWX_SHUTDOWN);
                     break;
+
                 case 2:
                     Shutdown.DoExitWin(Shutdown.EWX_REBOOT);
                     break;
@@ -640,6 +650,20 @@ namespace TwainControl
             Scanner.CropRight = 0;
             Scanner.EnAdet = 1;
             Scanner.BoyAdet = 1;
+        }
+
+        private RenderTargetBitmap RotateImage(ImageSource Source, double angle)
+        {
+            DrawingVisual dv = new();
+            using (DrawingContext dc = dv.RenderOpen())
+            {
+                dc.PushTransform(new RotateTransform(angle));
+                dc.DrawImage(Scanner.CroppedImage, new Rect(0, 0, ((BitmapSource)Source).PixelWidth, ((BitmapSource)Source).PixelHeight));
+            }
+            RenderTargetBitmap rtb = new(((BitmapSource)Source).PixelWidth, ((BitmapSource)Source).PixelHeight, 96, 96, PixelFormats.Default);
+            rtb.Render(dv);
+            rtb.Freeze();
+            return rtb;
         }
 
         private void ScanCommonSettings()

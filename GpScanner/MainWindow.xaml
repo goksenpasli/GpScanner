@@ -83,7 +83,7 @@
                         </Extensions:ContentToggleButton.Content>
                     </Extensions:ContentToggleButton>
                 </UniformGrid>
-                <TextBox Grid.Row="2" Text="{Binding AramaMetni, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <Extensions:ButtonedTextBox Grid.Row="2" Text="{Binding AramaMetni, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <ListBox Grid.Row="3"
                     d:ItemsSource="{d:SampleData ItemCount=5}"
                     IsSynchronizedWithCurrentItem="False"
@@ -183,7 +183,7 @@
                             <TextBlock VerticalAlignment="Center" Text="İŞARETLİ PDFLERİ BİRLEŞTİR" />
                         </StackPanel>
                     </Button>
-                    <Extensions:SplitButton Command="{Binding OcrPage}" CommandParameter="{Binding ElementName=TwainCtrl, Path=DataContext.Scanner}">
+                    <Extensions:SplitButton Command="{Binding TesseractViewModel.OcrPage, Mode=OneWay}" CommandParameter="{Binding ElementName=TwainCtrl, Path=DataContext.Scanner}">
                         <Extensions:SplitButton.Content>
                             <StackPanel Orientation="Horizontal">
                                 <Image Width="32" Height="32">
@@ -200,7 +200,7 @@
                         <Extensions:SplitButton.InternalContent>
                             <TextBox Width="320" Height="240" AcceptsReturn="True"
                                 IsReadOnly="True"
-                                Text="{Binding ScannedText}"
+                                Text="{Binding TesseractViewModel.ScannedText}"
                                 TextWrapping="Wrap" />
                         </Extensions:SplitButton.InternalContent>
                     </Extensions:SplitButton>

@@ -80,6 +80,7 @@
     </Page>
     <Compile Include="ColorEffect.cs" />
     <Compile Include="Converter\SplitConverter.cs" />
+    <Compile Include="Deskew.cs" />
     <Compile Include="Scanner.cs" />
     <Compile Include="Shutdown.cs" />
     <Compile Include="TwainCtrl.xaml.cs">
