@@ -22,5 +22,17 @@ namespace GpScanner.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DefaultTtsLang {
+            get {
+                return ((string)(this["DefaultTtsLang"]));
+            }
+            set {
+                this["DefaultTtsLang"] = value;
+            }
+        }
     }
 }

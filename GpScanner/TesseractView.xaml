@@ -1,0 +1,58 @@
+﻿<UserControl x:Class="GpScanner.TesseractView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:GpScanner" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:properties="clr-namespace:GpScanner.Properties" xmlns:viewmodel="clr-namespace:GpScanner.ViewModel"
+    d:DataContext="{d:DesignInstance Type=viewmodel:GpScannerViewModel}"
+    d:DesignHeight="350" d:DesignWidth="500" UseLayoutRounding="True"
+    mc:Ignorable="d">
+    <GroupBox Header="TESSERACT">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="249*" />
+                <ColumnDefinition Width="248*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+                <Button Command="{Binding TesseractDownload}"
+                    CommandParameter="tur.traineddata" Content="TÜRKÇE TESSERACT İNDİR" />
+                <Button Command="{Binding TesseractDownload}"
+                    CommandParameter="eng.traineddata" Content="İNGİLİZCE TESSERACT İNDİR" />
+                <Button Command="{Binding TesseractDownload}"
+                    CommandParameter="ara.traineddata" Content="ARAPÇA TESSERACT İNDİR" />
+                <Button Command="{Binding TesseractDownload}"
+                    CommandParameter="deu.traineddata" Content="ALMANCA TESSERACT İNDİR" />
+                <Button Command="{Binding TesseractDownload}"
+                    CommandParameter="ita.traineddata" Content="İTALYANCA TESSERACT İNDİR" />
+                <Button Command="{Binding TesseractDownload}"
+                    CommandParameter="fra.traineddata" Content="FRANSIZCA TESSERACT İNDİR" />
+                <ProgressBar Height="45" Maximum="100" Minimum="0"
+                    Value="{Binding ProgressValue}" />
+            </StackPanel>
+            <ListBox Grid.Column="1"
+                d:ItemsSource="{d:SampleData ItemCount=5}"
+                ItemsSource="{Binding TesseractFiles}"
+                SelectedItem="{Binding DefaultTtsLang, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+            <FlowDocumentScrollViewer Grid.Row="1" Grid.ColumnSpan="2">
+                <FlowDocument>
+                    <Paragraph>
+                        <Span>
+                            <Hyperlink Command="{Binding TesseractDataFilesDownloadLink}" CommandParameter="https://docs.microsoft.com/tr-tr/cpp/windows/latest-supported-vc-redist?view=msvc-170">
+                                <Run Text="Visual Studio 2019 x86 and x64 Runtimes" />
+                            </Hyperlink>
+                        </Span>
+                        Tesseract ve leptonica ikili dosyaları Visual Studio 2019 ile derlendiğinden, Visual Studio 2019 Runtime'ın kurulu olduğundan emin olmanız gerekir.</Paragraph>
+                    <Paragraph>
+                        <Span>
+                            <Hyperlink Command="{Binding TesseractDataFilesDownloadLink}" CommandParameter="https://github.com/tesseract-ocr/tessdata">
+                                <Run Text="Other Tesseract language data" />
+                            </Hyperlink>
+                        </Span>
+                        Ayrıca tesseract 4.1.0 için diğer dil veri dosyalarını tesseract-ocr'den indirmeniz gerekecektir. tessdata klasörüne koyun.</Paragraph>
+                </FlowDocument>
+            </FlowDocumentScrollViewer>
+        </Grid>
+    </GroupBox>
+</UserControl>

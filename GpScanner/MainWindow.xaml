@@ -1,7 +1,7 @@
 ﻿<Window x:Class="GpScanner.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
     xmlns:ViewModel="clr-namespace:GpScanner.ViewModel" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:GpScanner" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
     Title="Tarayıcı"
     d:DataContext="{d:DesignInstance Type=ViewModel:GpScannerViewModel}"
@@ -33,11 +33,11 @@
                         PreviewMouseUp="Calendar_PreviewMouseUp"
                         SelectedDate="{Binding SeçiliGün}" />
                 </Viewbox>
-                <UniformGrid Grid.Row="1" Columns="2">
+                <UniformGrid Grid.Row="1" Columns="3">
                     <Button Command="{Binding ResetFilter}">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
-                                <Image Width="24" Height="24">
+                                <Image Width="32" Height="32">
                                     <Image.Source>
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                             <Binding Source="Shell32.dll" />
@@ -45,14 +45,14 @@
                                         </MultiBinding>
                                     </Image.Source>
                                 </Image>
-                                <TextBlock VerticalAlignment="Center" Text="TÜMÜNÜ GÖR" />
+                                <TextBlock VerticalAlignment="Center" Text="TÜMÜNÜ&#x0a;GÖR" />
                             </StackPanel>
                         </Button.Content>
                     </Button>
                     <ToggleButton IsChecked="{Binding Path=ShowPdfPreview}">
                         <ToggleButton.Content>
                             <StackPanel Orientation="Horizontal">
-                                <Image Width="24" Height="24">
+                                <Image Width="32" Height="32">
                                     <Image.Source>
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                             <Binding Source="Shell32.dll" />
@@ -60,10 +60,28 @@
                                         </MultiBinding>
                                     </Image.Source>
                                 </Image>
-                                <TextBlock VerticalAlignment="Center" Text="PDF DOSYA ÖNİZLEME" />
+                                <TextBlock VerticalAlignment="Center" Text="PDF DOSYA&#x0a;ÖNİZLEME" />
                             </StackPanel>
                         </ToggleButton.Content>
                     </ToggleButton>
+                    <Extensions:ContentToggleButton>
+                        <Extensions:ContentToggleButton.OverContent>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="32" Height="32">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="70" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock VerticalAlignment="Center" Text="TESSERACT" />
+                            </StackPanel>
+                        </Extensions:ContentToggleButton.OverContent>
+                        <Extensions:ContentToggleButton.Content>
+                            <local:TesseractView Width="500" Height="350" />
+                        </Extensions:ContentToggleButton.Content>
+                    </Extensions:ContentToggleButton>
                 </UniformGrid>
                 <TextBox Grid.Row="2" Text="{Binding AramaMetni, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <ListBox Grid.Row="3"
@@ -151,10 +169,10 @@
                         </Style>
                     </ListBox.ItemContainerStyle>
                 </ListBox>
-                <Button Grid.Row="4" Command="{Binding PdfBirleştir}">
-                    <Button.Content>
+                <UniformGrid Grid.Row="4" Columns="2">
+                    <Button Command="{Binding PdfBirleştir}">
                         <StackPanel Orientation="Horizontal">
-                            <Image Width="24" Height="24">
+                            <Image Width="32" Height="32">
                                 <Image.Source>
                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                         <Binding Source="Shell32.dll" />
@@ -164,8 +182,29 @@
                             </Image>
                             <TextBlock VerticalAlignment="Center" Text="İŞARETLİ PDFLERİ BİRLEŞTİR" />
                         </StackPanel>
-                    </Button.Content>
-                </Button>
+                    </Button>
+                    <Extensions:SplitButton Command="{Binding OcrPage}" CommandParameter="{Binding ElementName=TwainCtrl, Path=DataContext.Scanner}">
+                        <Extensions:SplitButton.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="32" Height="32">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="20" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock VerticalAlignment="Center" Text="AKTİF SAYFAYI OKU" />
+                            </StackPanel>
+                        </Extensions:SplitButton.Content>
+                        <Extensions:SplitButton.InternalContent>
+                            <TextBox Width="320" Height="240" AcceptsReturn="True"
+                                IsReadOnly="True"
+                                Text="{Binding ScannedText}"
+                                TextWrapping="Wrap" />
+                        </Extensions:SplitButton.InternalContent>
+                    </Extensions:SplitButton>
+                </UniformGrid>
             </Grid>
         </GroupBox>
     </Grid>
