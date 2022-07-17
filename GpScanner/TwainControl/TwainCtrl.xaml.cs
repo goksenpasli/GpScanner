@@ -658,7 +658,7 @@ namespace TwainControl
             using (DrawingContext dc = dv.RenderOpen())
             {
                 dc.PushTransform(new RotateTransform(angle));
-                dc.DrawImage(Scanner.CroppedImage, new Rect(0, 0, ((BitmapSource)Source).PixelWidth, ((BitmapSource)Source).PixelHeight));
+                dc.DrawImage(Source, new Rect(0, 0, ((BitmapSource)Source).PixelWidth, ((BitmapSource)Source).PixelHeight));
             }
             RenderTargetBitmap rtb = new(((BitmapSource)Source).PixelWidth, ((BitmapSource)Source).PixelHeight, 96, 96, PixelFormats.Default);
             rtb.Render(dv);
