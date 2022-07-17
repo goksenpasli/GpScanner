@@ -60,7 +60,11 @@ namespace TwainControl
                 twain.ScanningComplete += Fastscan;
             }, parameter => !Environment.Is64BitProcess && Scanner.AutoSave && Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0);
 
-            ResimSil = new RelayCommand<object>(parameter => Scanner.Resimler?.Remove(parameter as ScannedImage), parameter => true);
+            ResimSil = new RelayCommand<object>(parameter =>
+            {
+                _ = (Scanner.Resimler?.Remove(parameter as ScannedImage));
+                Scanner.CroppedImage = null;
+            }, parameter => true);
 
             ExploreFile = new RelayCommand<object>(parameter => OpenFolderAndSelectItem(Path.GetDirectoryName(parameter as string), Path.GetFileName(parameter as string)), parameter => true);
 
@@ -208,6 +212,7 @@ namespace TwainControl
                 if (MessageBox.Show("Tüm Taranan Evrak Silinecek Devam Etmek İstiyor Musun?", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     Scanner.Resimler?.Clear();
+                    Scanner.CroppedImage = null;
                 }
             }, parameter => Scanner.Resimler?.Count > 0);
 
@@ -321,8 +326,8 @@ namespace TwainControl
 
             DeskewImage = new RelayCommand<object>(parameter =>
             {
-                Deskew sk = new(Scanner.SeçiliResim.Resim);
-                double skewAngle = -1 * sk.GetSkewAngle();
+                Deskew sk = new((BitmapSource)Scanner.CroppedImage);
+                double skewAngle = -1 * sk.GetSkewAngle(true);
                 Scanner.CroppedImage = RotateImage(Scanner.CroppedImage, skewAngle);
             }, parameter => Scanner.CroppedImage is not null);
 
@@ -650,6 +655,7 @@ namespace TwainControl
             Scanner.CropRight = 0;
             Scanner.EnAdet = 1;
             Scanner.BoyAdet = 1;
+            Scanner.CroppedImage = null;
         }
 
         private RenderTargetBitmap RotateImage(ImageSource Source, double angle)
@@ -681,14 +687,13 @@ namespace TwainControl
             {
                 Scanner.AutoSave = CheckAutoSave();
             }
-            if (e.PropertyName is "CropLeft" or "CropTop" or "CropRight" or "CropBottom" && Scanner.SeçiliResim != null)
+            if (e.PropertyName is "SeçiliResim" or "CropLeft" or "CropTop" or "CropRight" or "CropBottom" && Scanner.SeçiliResim != null)
             {
                 Int32Rect sourceRect = CropImageRect(Scanner.SeçiliResim.Resim);
-                if (sourceRect.HasArea)
+                if (sourceRect.HasArea && Scanner.CroppedImage is null)
                 {
                     Scanner.CroppedImage = new CroppedBitmap(Scanner.SeçiliResim.Resim, sourceRect);
                     Scanner.CroppedImage.Freeze();
-                    Scanner.CropDialogExpanded = true;
                 }
             }
             if (e.PropertyName is "EnAdet")

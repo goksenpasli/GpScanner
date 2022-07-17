@@ -27,12 +27,12 @@ namespace TwainControl
             return System.Windows.Media.Color.FromRgb(pixel.R, pixel.G, pixel.B);
         }
 
-        public double GetSkewAngle()
+        public double GetSkewAngle(bool fast = false)
         {
             double sum = 0;
             int count = 0;
 
-            Calc();
+            Calc(fast);
 
             HougLine[] hl = GetTop(20);
             int i;
@@ -92,24 +92,22 @@ namespace TwainControl
 
         private double[] cSinA;
 
-        private void Calc()
+        private void Calc(bool fast = false)
         {
             int hMin = cBmp.PixelHeight / 4;
             int hMax = cBmp.PixelHeight * 3 / 4;
+            int pixelwidth = fast ? (int)cBmp.Width : cBmp.PixelWidth;
             WriteableBitmap wb = new(cBmp);
             Init();
             int y;
             for (y = hMin; y <= hMax; y++)
             {
                 int x;
-                for (x = 1; x <= cBmp.PixelWidth - 2; x++)
+                for (x = 1; x <= pixelwidth - 2; x++)
                 {
-                    if (IsBlack(x, y, wb))
+                    if (IsBlack(x, y, wb) && !IsBlack(x, y + 1, wb))
                     {
-                        if (!IsBlack(x, y + 1, wb))
-                        {
-                            Calc(x, y);
-                        }
+                        Calc(x, y);
                     }
                 }
             }
