@@ -18,12 +18,15 @@
             <ItemsControl d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding OcrDatas}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Button HorizontalContentAlignment="Stretch" Command="{Binding DataContext.TesseractDownload, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding Mode=OneWay}">
+                        <Button HorizontalContentAlignment="Stretch"
+                            Command="{Binding DataContext.TesseractDownload, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            CommandParameter="{Binding Mode=OneWay}"
+                            IsEnabled="{Binding IsEnabled}">
                             <Button.Content>
                                 <Grid>
                                     <ProgressBar Maximum="100" Minimum="0"
                                         Value="{Binding ProgressValue}" />
-                                    <TextBlock Text="{Binding DisplayName}" HorizontalAlignment="Center" />
+                                    <TextBlock HorizontalAlignment="Center" Text="{Binding DisplayName}" />
                                 </Grid>
                             </Button.Content>
                         </Button>

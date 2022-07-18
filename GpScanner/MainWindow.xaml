@@ -90,7 +90,7 @@
                     ItemsSource="{Binding Mode=OneWay, Source={StaticResource Veriler}}"
                     VirtualizingPanel.CacheLength="2,2" VirtualizingPanel.CacheLengthUnit="Item"
                     VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.ScrollUnit="Pixel"
-                    VirtualizingPanel.VirtualizationMode="Recycling">
+                    VirtualizingPanel.VirtualizationMode="Standard">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <VirtualizingStackPanel />
@@ -183,19 +183,24 @@
                             <TextBlock VerticalAlignment="Center" Text="İŞARETLİ PDFLERİ BİRLEŞTİR" />
                         </StackPanel>
                     </Button>
-                    <Extensions:SplitButton Command="{Binding TesseractViewModel.OcrPage, Mode=OneWay}" CommandParameter="{Binding ElementName=TwainCtrl, Path=DataContext.Scanner}">
+                    <Extensions:SplitButton HorizontalContentAlignment="Stretch"
+                        Command="{Binding TesseractViewModel.OcrPage, Mode=OneWay}"
+                        CommandParameter="{Binding ElementName=TwainCtrl, Path=DataContext.Scanner}">
                         <Extensions:SplitButton.Content>
-                            <StackPanel Orientation="Horizontal">
-                                <Image Width="32" Height="32">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="20" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                                <TextBlock VerticalAlignment="Center" Text="AKTİF SAYFAYI OKU" />
-                            </StackPanel>
+                            <Grid>
+                                <ProgressBar IsIndeterminate="{Binding TesseractViewModel.IsBusy}" />
+                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                    <Image Width="32" Height="32">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="20" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock VerticalAlignment="Center" Text="AKTİF SAYFAYI OKU" />
+                                </StackPanel>
+                            </Grid>
                         </Extensions:SplitButton.Content>
                         <Extensions:SplitButton.InternalContent>
                             <TextBox Width="320" Height="240" AcceptsReturn="True"

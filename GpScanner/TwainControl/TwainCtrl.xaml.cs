@@ -63,7 +63,7 @@ namespace TwainControl
             ResimSil = new RelayCommand<object>(parameter =>
             {
                 _ = (Scanner.Resimler?.Remove(parameter as ScannedImage));
-                Scanner.CroppedImage = null;
+                ResetCropMargin();
             }, parameter => true);
 
             ExploreFile = new RelayCommand<object>(parameter => OpenFolderAndSelectItem(Path.GetDirectoryName(parameter as string), Path.GetFileName(parameter as string)), parameter => true);
@@ -212,7 +212,7 @@ namespace TwainControl
                 if (MessageBox.Show("Tüm Taranan Evrak Silinecek Devam Etmek İstiyor Musun?", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     Scanner.Resimler?.Clear();
-                    Scanner.CroppedImage = null;
+                    ResetCropMargin();
                 }
             }, parameter => Scanner.Resimler?.Count > 0);
 
@@ -322,7 +322,7 @@ namespace TwainControl
                 }
             }, parameter => true);
 
-            SetWatermark = new RelayCommand<object>(parameter => Scanner.CroppedImage = ÜstüneResimÇiz(Scanner.SeçiliResim.Resim, new System.Windows.Point(Scanner.SeçiliResim.Resim.PixelWidth / 2, Scanner.SeçiliResim.Resim.PixelHeight / 2), System.Windows.Media.Brushes.Red, Scanner.WatermarkTextSize, Scanner.Watermark, Scanner.WatermarkAngle, Scanner.WatermarkFont), parameter => Scanner.CroppedImage is not null && !string.IsNullOrWhiteSpace(Scanner?.Watermark));
+            SetWatermark = new RelayCommand<object>(parameter => Scanner.CroppedImage = ÜstüneResimÇiz(Scanner.CroppedImage, new System.Windows.Point(Scanner.CroppedImage.Width / 2, Scanner.CroppedImage.Height / 2), System.Windows.Media.Brushes.Red, Scanner.WatermarkTextSize, Scanner.Watermark, Scanner.WatermarkAngle, Scanner.WatermarkFont), parameter => Scanner.CroppedImage is not null && !string.IsNullOrWhiteSpace(Scanner?.Watermark));
 
             DeskewImage = new RelayCommand<object>(parameter =>
             {
@@ -687,13 +687,14 @@ namespace TwainControl
             {
                 Scanner.AutoSave = CheckAutoSave();
             }
-            if (e.PropertyName is "SeçiliResim" or "CropLeft" or "CropTop" or "CropRight" or "CropBottom" && Scanner.SeçiliResim != null)
+            if (e.PropertyName is "CropLeft" or "CropTop" or "CropRight" or "CropBottom" && Scanner.SeçiliResim != null)
             {
                 Int32Rect sourceRect = CropImageRect(Scanner.SeçiliResim.Resim);
-                if (sourceRect.HasArea && Scanner.CroppedImage is null)
+                if (sourceRect.HasArea)
                 {
                     Scanner.CroppedImage = new CroppedBitmap(Scanner.SeçiliResim.Resim, sourceRect);
                     Scanner.CroppedImage.Freeze();
+                    Scanner.CropDialogExpanded = true;
                 }
             }
             if (e.PropertyName is "EnAdet")
@@ -784,12 +785,12 @@ namespace TwainControl
             DrawingVisual dv = new();
             using (DrawingContext dc = dv.RenderOpen())
             {
-                dc.DrawImage(Source, new Rect(0, 0, ((BitmapSource)Source).PixelWidth, ((BitmapSource)Source).PixelHeight));
+                dc.DrawImage(Source, new Rect(0, 0, ((BitmapSource)Source).Width, ((BitmapSource)Source).Height));
                 dc.PushTransform(new RotateTransform(angle, konum.X, konum.Y));
                 dc.DrawText(formattedText, new System.Windows.Point(konum.X, konum.Y - (formattedText.Height / 2)));
             }
 
-            RenderTargetBitmap rtb = new(((BitmapSource)Source).PixelWidth, ((BitmapSource)Source).PixelHeight, 96, 96, PixelFormats.Default);
+            RenderTargetBitmap rtb = new((int)((BitmapSource)Source).Width, (int)((BitmapSource)Source).Height, 96, 96, PixelFormats.Default);
             rtb.Render(dv);
             rtb.Freeze();
             return rtb;

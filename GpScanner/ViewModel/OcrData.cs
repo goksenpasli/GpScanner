@@ -18,6 +18,20 @@ namespace GpScanner.ViewModel
             }
         }
 
+        public bool IsEnabled
+        {
+            get => ısEnabled;
+
+            set
+            {
+                if (ısEnabled != value)
+                {
+                    ısEnabled = value;
+                    OnPropertyChanged(nameof(IsEnabled));
+                }
+            }
+        }
+
         public string OcrName
         {
             get => ocrName; set
@@ -46,6 +60,8 @@ namespace GpScanner.ViewModel
         }
 
         private string displayName;
+
+        private bool ısEnabled = true;
 
         private string ocrName;
 

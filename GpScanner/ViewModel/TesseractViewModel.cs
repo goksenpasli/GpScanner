@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using TwainControl;
@@ -31,7 +32,11 @@ namespace GpScanner.ViewModel
                 {
                     OcrData ocrData = parameter as OcrData;
                     using WebClient client = new();
-                    client.DownloadProgressChanged += (s, e) => ocrData.ProgressValue = e.ProgressPercentage;
+                    client.DownloadProgressChanged += (s, e) =>
+                    {
+                        ocrData.ProgressValue = e.ProgressPercentage;
+                        ocrData.IsEnabled = ocrData.ProgressValue == 100;
+                    };
                     client.DownloadFileCompleted += (s, e) => TesseractFiles = GetTesseractFiles(tessdatafolder);
                     await client.DownloadFileTaskAsync(new Uri($"https://github.com/tesseract-ocr/tessdata/raw/main/{ocrData.OcrName}"), $@"{tessdatafolder}\{ocrData.OcrName}");
                 }
@@ -45,9 +50,28 @@ namespace GpScanner.ViewModel
             {
                 if (parameter is Scanner scanner)
                 {
-                    ScannedText = scanner.SeçiliResim.Resim.ToTiffJpegByteArray(ExtensionMethods.Format.Png).OcrYap(Settings.Default.DefaultTtsLang);
+                    _ = Task.Run(() =>
+                    {
+                        IsBusy = true;
+                        ScannedText = scanner.SeçiliResim.Resim.ToTiffJpegByteArray(ExtensionMethods.Format.Png).OcrYap(Settings.Default.DefaultTtsLang);
+                        IsBusy = false;
+                    });
                 }
             }, parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && parameter is Scanner scanner && scanner.SeçiliResim is not null);
+        }
+
+        public bool IsBusy
+        {
+            get => ısBusy;
+
+            set
+            {
+                if (ısBusy != value)
+                {
+                    ısBusy = value;
+                    OnPropertyChanged(nameof(IsBusy));
+                }
+            }
         }
 
         public List<OcrData> OcrDatas { get; set; }
@@ -85,6 +109,8 @@ namespace GpScanner.ViewModel
                 }
             }
         }
+
+        private bool ısBusy;
 
         private string scannedText;
 
