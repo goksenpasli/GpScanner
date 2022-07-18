@@ -50,10 +50,11 @@ namespace GpScanner.ViewModel
             {
                 if (parameter is Scanner scanner)
                 {
+                    byte[] imgdata = scanner.SeçiliResim.Resim.ToTiffJpegByteArray(ExtensionMethods.Format.Png);
                     _ = Task.Run(() =>
                     {
                         IsBusy = true;
-                        ScannedText = scanner.SeçiliResim.Resim.ToTiffJpegByteArray(ExtensionMethods.Format.Png).OcrYap(Settings.Default.DefaultTtsLang);
+                        ScannedText = imgdata.OcrYap(Settings.Default.DefaultTtsLang);
                         IsBusy = false;
                     });
                 }
