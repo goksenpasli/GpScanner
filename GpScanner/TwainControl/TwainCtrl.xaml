@@ -564,10 +564,14 @@
                         Style="{StaticResource SliderStyle}"
                         TickPlacement="TopLeft"
                         Value="{Binding Scanner.CropBottom}" />
-                    <Extensions:ImageViewer Angle="{Binding Scanner.RotateAngle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        DockPanel.ZIndex="-1" FitImageOrientation="Height" OrijinalResimDosyaAçButtonVisibility="Collapsed"
-                        SnapTick="True"
-                        Source="{Binding Scanner.SeçiliResim.Resim}" />
+                    <Grid>
+                        <Extensions:ImageViewer x:Name="ImgViewer"
+                            Angle="{Binding Scanner.RotateAngle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            DockPanel.ZIndex="-1" FitImageOrientation="Height" OrijinalResimDosyaAçButtonVisibility="Collapsed"
+                            PreviewMouseDown="ImgViewer_MouseDown" PreviewMouseMove="ImgViewer_MouseMove" SnapTick="True"
+                            Source="{Binding Scanner.SeçiliResim.Resim}" />
+                        <Canvas x:Name="cnv" />
+                    </Grid>
                 </DockPanel>
                 <Expander HorizontalAlignment="Left" VerticalAlignment="Bottom" ExpandDirection="Up"
                     IsExpanded="{Binding Scanner.CropDialogExpanded}">
@@ -676,6 +680,9 @@
                                 <Button Command="{Binding SetWatermark}" Content="METİN ÇİZ" />
                                 <Button Command="{Binding SaveWatermarkedPdf}" Content="PDF KAYDET" />
                                 <Button Command="{Binding DeskewImage}" Content="EĞRİLİK DÜZELT" />
+                                <Button Command="{Binding DataContext.TesseractViewModel.OcrPage, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    CommandParameter="{Binding Scanner.CroppedImage}"
+                                    Content="OCR YAP" />
                             </UniformGrid>
                         </StackPanel>
                     </Border>

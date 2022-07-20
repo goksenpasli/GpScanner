@@ -216,6 +216,7 @@
                             Content="{TemplateBinding Content}"
                             IsTabStop="{TemplateBinding IsTabStop}" />
                         <ToggleButton x:Name="Tb" Grid.Column="1"
+                            IsChecked="{TemplateBinding IsSplitPartOpen}"
                             IsEnabled="{TemplateBinding SplitContentPartIsEnabled}"
                             IsTabStop="{TemplateBinding IsTabStop}">
                             <Path x:Name="path" HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -235,7 +236,7 @@
                         </ToggleButton>
                         <Popup x:Name="PART_Popup" Grid.ColumnSpan="2" AllowsTransparency="True"
                             Focusable="False"
-                            IsOpen="{Binding IsChecked, ElementName=Tb}"
+                            IsOpen="{TemplateBinding IsSplitPartOpen}"
                             Placement="{TemplateBinding PlacementMode}"
                             PopupAnimation="Slide"
                             StaysOpen="{TemplateBinding StayOpen}">
@@ -245,9 +246,13 @@
                         </Popup>
                     </Grid>
                     <ControlTemplate.Triggers>
+                        <Trigger SourceName="Tb" Property="IsChecked" Value="True">
+                            <Setter TargetName="PART_Popup" Property="IsOpen" Value="true" />
+                        </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="btn" Property="Background" Value="#F4F4F4" />
                             <Setter TargetName="btn" Property="BorderBrush" Value="#ADB2B5" />
+                            <Setter Property="TextElement.Foreground" Value="#838383" />
                         </Trigger>
                         <Trigger SourceName="PART_Popup" Property="IsOpen" Value="true">
                             <Setter Property="IsEnabled" Value="False" />
@@ -344,6 +349,7 @@
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Foreground" Value="#ADADAD" />
                             <Setter Property="Background" Value="#F4F4F4" />
+                            <Setter Property="TextElement.Foreground" Value="#838383" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

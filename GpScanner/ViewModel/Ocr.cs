@@ -29,10 +29,14 @@ namespace GpScanner.ViewModel
 
         private static string GetText(byte[] dosya, string lang)
         {
-            using TesseractEngine engine = new("./tessdata", lang, EngineMode.TesseractAndLstm);
-            using Pix pixImage = Pix.LoadFromMemory(dosya);
-            using Page page = engine.Process(pixImage);
-            return page.GetText();
+            if (!string.IsNullOrWhiteSpace(lang) && dosya is not null)
+            {
+                using TesseractEngine engine = new("./tessdata", lang, EngineMode.TesseractAndLstm);
+                using Pix pixImage = Pix.LoadFromMemory(dosya);
+                using Page page = engine.Process(pixImage);
+                return page.GetText();
+            }
+            return string.Empty;
         }
     }
 }

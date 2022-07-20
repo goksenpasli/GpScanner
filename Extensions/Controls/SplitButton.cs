@@ -8,6 +8,8 @@ namespace Extensions
     {
         public static readonly DependencyProperty InternalContentProperty = DependencyProperty.Register("InternalContent", typeof(object), typeof(SplitButton), new PropertyMetadata(null));
 
+        public static readonly DependencyProperty IsSplitPartOpenProperty = DependencyProperty.Register("IsSplitPartOpen", typeof(bool), typeof(SplitButton), new PropertyMetadata(false));
+
         public static readonly DependencyProperty PlacementModeProperty = DependencyProperty.Register("PlacementMode", typeof(PlacementMode), typeof(SplitButton), new PropertyMetadata(PlacementMode.Bottom));
 
         public static readonly DependencyProperty SplitContentPartIsEnabledProperty = DependencyProperty.Register("SplitContentPartIsEnabled", typeof(bool), typeof(SplitButton), new PropertyMetadata(true));
@@ -23,6 +25,12 @@ namespace Extensions
         {
             get => GetValue(InternalContentProperty);
             set => SetValue(InternalContentProperty, value);
+        }
+
+        public bool IsSplitPartOpen
+        {
+            get => (bool)GetValue(IsSplitPartOpenProperty);
+            set => SetValue(IsSplitPartOpenProperty, value);
         }
 
         public PlacementMode PlacementMode

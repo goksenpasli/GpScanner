@@ -67,14 +67,8 @@
                     <Extensions:ContentToggleButton>
                         <Extensions:ContentToggleButton.OverContent>
                             <StackPanel Orientation="Horizontal">
-                                <Image Width="32" Height="32">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="70" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
+                                <Canvas Width="32" Height="32" HorizontalAlignment="Left"
+                                    Background="{StaticResource Tesseract}" />
                                 <TextBlock VerticalAlignment="Center" Text="TESSERACT" />
                             </StackPanel>
                         </Extensions:ContentToggleButton.OverContent>
@@ -101,7 +95,7 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate>
-                                        <StackPanel Orientation="Horizontal">
+                                        <StackPanel>
                                             <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
                                                 IsChecked="{Binding Seçili}"
                                                 IsEnabled="{Binding FileName, Mode=OneWay, Converter={StaticResource FileNamePdfCheckConverter}}">
@@ -111,7 +105,7 @@
                                                             <DataTrigger Binding="{Binding Path=DataContext.ShowPdfPreview, RelativeSource={RelativeSource AncestorType=Window}}" Value="true">
                                                                 <Setter Property="Content">
                                                                     <Setter.Value>
-                                                                        <ContentControl Width="84" Height="117"
+                                                                        <ContentControl Width="105" Height="149"
                                                                             Content="{Binding Path=FileName}">
                                                                             <ContentControl.ContentTemplate>
                                                                                 <DataTemplate>
@@ -129,39 +123,41 @@
                                                     </Style>
                                                 </CheckBox.Style>
                                             </CheckBox>
-                                            <Extensions:SplitButton Command="{Binding DataContext.WebAdreseGit, ElementName=TwainCtrl, Mode=OneWay}"
-                                                CommandParameter="{Binding Path=FileName}"
-                                                SplitContentPartIsEnabled="{Binding FileName, Mode=OneWay, Converter={StaticResource FileNamePdfCheckConverter}}">
-                                                <Extensions:SplitButton.Content>
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <Image Width="32" Height="32"
-                                                            Source="{Binding FileName, Converter={StaticResource FilePathToIconConverter}}" />
-                                                        <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay, Path=FileName, Converter={StaticResource FileNameExtractConverter}}" />
-                                                    </StackPanel>
-                                                </Extensions:SplitButton.Content>
-                                                <Extensions:SplitButton.InternalContent>
-                                                    <Extensions:ResizablePanel Width="480" Height="360" MinWidth="480"
-                                                        MinHeight="360">
-                                                        <GroupBox>
-                                                            <ContentControl Content="{Binding Path=FileName}" ContentTemplate="{StaticResource PdfViewerTemplate}" />
-                                                        </GroupBox>
-                                                    </Extensions:ResizablePanel>
-                                                </Extensions:SplitButton.InternalContent>
-                                            </Extensions:SplitButton>
-                                            <TextBlock VerticalAlignment="Center">
-                                                <Hyperlink Command="{Binding DataContext.ExploreFile, ElementName=TwainCtrl, Mode=OneWay}"
+                                            <StackPanel Orientation="Horizontal">
+                                                <Extensions:SplitButton Command="{Binding DataContext.WebAdreseGit, ElementName=TwainCtrl, Mode=OneWay}"
                                                     CommandParameter="{Binding Path=FileName}"
-                                                    TextDecorations="None">
-                                                    <Image Width="32" Height="32">
-                                                        <Image.Source>
-                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                <Binding Source="Shell32.dll" />
-                                                                <Binding Source="4" />
-                                                            </MultiBinding>
-                                                        </Image.Source>
-                                                    </Image>
-                                                </Hyperlink>
-                                            </TextBlock>
+                                                    SplitContentPartIsEnabled="{Binding FileName, Mode=OneWay, Converter={StaticResource FileNamePdfCheckConverter}}">
+                                                    <Extensions:SplitButton.Content>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Image Width="32" Height="32"
+                                                                Source="{Binding FileName, Converter={StaticResource FilePathToIconConverter}}" />
+                                                            <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay, Path=FileName, Converter={StaticResource FileNameExtractConverter}}" />
+                                                        </StackPanel>
+                                                    </Extensions:SplitButton.Content>
+                                                    <Extensions:SplitButton.InternalContent>
+                                                        <Extensions:ResizablePanel Width="480" Height="360" MinWidth="480"
+                                                            MinHeight="360">
+                                                            <GroupBox>
+                                                                <ContentControl Content="{Binding Path=FileName}" ContentTemplate="{StaticResource PdfViewerTemplate}" />
+                                                            </GroupBox>
+                                                        </Extensions:ResizablePanel>
+                                                    </Extensions:SplitButton.InternalContent>
+                                                </Extensions:SplitButton>
+                                                <TextBlock VerticalAlignment="Center" ToolTip="KLASÖRDE GÖSTER">
+                                                    <Hyperlink Command="{Binding DataContext.ExploreFile, ElementName=TwainCtrl, Mode=OneWay}"
+                                                        CommandParameter="{Binding Path=FileName}"
+                                                        TextDecorations="None">
+                                                        <Image Width="32" Height="32">
+                                                            <Image.Source>
+                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                    <Binding Source="Shell32.dll" />
+                                                                    <Binding Source="4" />
+                                                                </MultiBinding>
+                                                            </Image.Source>
+                                                        </Image>
+                                                    </Hyperlink>
+                                                </TextBlock>
+                                            </StackPanel>
                                         </StackPanel>
                                     </ControlTemplate>
                                 </Setter.Value>
@@ -185,7 +181,8 @@
                     </Button>
                     <Extensions:SplitButton HorizontalContentAlignment="Stretch"
                         Command="{Binding TesseractViewModel.OcrPage, Mode=OneWay}"
-                        CommandParameter="{Binding ElementName=TwainCtrl, Path=DataContext.Scanner}">
+                        CommandParameter="{Binding ElementName=TwainCtrl, Path=DataContext.Scanner}"
+                        IsSplitPartOpen="{Binding TesseractViewModel.ScannedTextWindowOpen}">
                         <Extensions:SplitButton.Content>
                             <Grid>
                                 <ProgressBar IsIndeterminate="{Binding TesseractViewModel.IsBusy}" />
@@ -194,7 +191,7 @@
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                 <Binding Source="Shell32.dll" />
-                                                <Binding Source="20" />
+                                                <Binding Source="70" />
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
@@ -203,10 +200,12 @@
                             </Grid>
                         </Extensions:SplitButton.Content>
                         <Extensions:SplitButton.InternalContent>
-                            <TextBox Width="320" Height="240" AcceptsReturn="True"
-                                IsReadOnly="True"
-                                Text="{Binding TesseractViewModel.ScannedText}"
-                                TextWrapping="Wrap" />
+                            <GroupBox Header="OKUNAN İÇERİK">
+                                <TextBox Width="420" Height="594" AcceptsReturn="True"
+                                    IsReadOnly="True"
+                                    Text="{Binding TesseractViewModel.ScannedText}"
+                                    TextWrapping="Wrap" />
+                            </GroupBox>
                         </Extensions:SplitButton.InternalContent>
                     </Extensions:SplitButton>
                 </UniformGrid>

@@ -10,6 +10,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using TwainControl;
 
 namespace GpScanner.ViewModel
@@ -48,17 +49,27 @@ namespace GpScanner.ViewModel
 
             OcrPage = new RelayCommand<object>(parameter =>
             {
-                if (parameter is Scanner scanner)
+                switch (parameter)
                 {
-                    byte[] imgdata = scanner.SeçiliResim.Resim.ToTiffJpegByteArray(ExtensionMethods.Format.Png);
-                    _ = Task.Run(() =>
-                    {
-                        IsBusy = true;
-                        ScannedText = imgdata.OcrYap(Settings.Default.DefaultTtsLang);
-                        IsBusy = false;
-                    });
+                    case Scanner scanner:
+                        {
+                            byte[] imgdata = scanner.SeçiliResim.Resim.ToTiffJpegByteArray(ExtensionMethods.Format.Png);
+                            Ocr(imgdata);
+                            return;
+                        }
+
+                    case ImageSource croppedimage:
+                        {
+                            byte[] imgdata = croppedimage.ToTiffJpegByteArray(ExtensionMethods.Format.Png);
+                            Ocr(imgdata);
+                            return;
+                        }
                 }
-            }, parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && parameter is Scanner scanner && scanner.SeçiliResim is not null);
+            }, parameter => (!string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang)
+                && parameter is Scanner scanner
+                && scanner.SeçiliResim is not null)
+                || (parameter is ImageSource ımageSource
+                && ımageSource is not null));
         }
 
         public bool IsBusy
@@ -93,6 +104,20 @@ namespace GpScanner.ViewModel
             }
         }
 
+        public bool ScannedTextWindowOpen
+        {
+            get => scannedTextWindowOpen;
+
+            set
+            {
+                if (scannedTextWindowOpen != value)
+                {
+                    scannedTextWindowOpen = value;
+                    OnPropertyChanged(nameof(ScannedTextWindowOpen));
+                }
+            }
+        }
+
         public ICommand TesseractDataFilesDownloadLink { get; }
 
         public ICommand TesseractDownload { get; }
@@ -111,9 +136,26 @@ namespace GpScanner.ViewModel
             }
         }
 
+        public void Ocr(byte[] imgdata)
+        {
+            if (imgdata is not null)
+            {
+                _ = Task.Run(() =>
+                {
+                    ScannedTextWindowOpen = false;
+                    IsBusy = true;
+                    ScannedText = imgdata.OcrYap(Settings.Default.DefaultTtsLang);
+                    IsBusy = false;
+                    ScannedTextWindowOpen = true;
+                });
+            }
+        }
+
         private bool ısBusy;
 
         private string scannedText;
+
+        private bool scannedTextWindowOpen;
 
         private ObservableCollection<string> tesseractFiles;
 

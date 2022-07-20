@@ -35,7 +35,15 @@ namespace GpScanner
         {
             if (e.PropertyName is "Tarandı")
             {
-                (DataContext as GpScannerViewModel)?.LoadData();
+                GpScannerViewModel gpScannerViewModel = DataContext as GpScannerViewModel;
+                gpScannerViewModel.LoadData();
+            }
+
+            if (e.PropertyName is "ImgData")
+            {
+                TesseractViewModel tesseractViewModel = (DataContext as GpScannerViewModel)?.TesseractViewModel;
+                tesseractViewModel.Ocr(TwainCtrl.ImgData);
+                TwainCtrl.ImgData = null;
             }
         }
     }

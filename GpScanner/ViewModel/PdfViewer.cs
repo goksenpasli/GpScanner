@@ -23,7 +23,7 @@ namespace GpScanner.ViewModel
 
         public static readonly DependencyProperty PdfFileStreamProperty = DependencyProperty.Register("PdfFileStream", typeof(byte[]), typeof(PdfViewer), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.NotDataBindable, async (o, e) => await PdfStreamChangedAsync(o, e)));
 
-        public static new readonly DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(PdfViewer), new PropertyMetadata(1.0));
+        public new static readonly DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(PdfViewer), new PropertyMetadata(1.0));
 
         public PdfViewer()
         {
@@ -123,6 +123,20 @@ namespace GpScanner.ViewModel
 
         public ICommand SaveImage { get; }
 
+        public int ThumbnailDpi
+        {
+            get => thumbnailDpi;
+
+            set
+            {
+                if (thumbnailDpi != value)
+                {
+                    thumbnailDpi = value;
+                    OnPropertyChanged(nameof(ThumbnailDpi));
+                }
+            }
+        }
+
         public int ToplamSayfa
         {
             get => toplamSayfa;
@@ -149,7 +163,7 @@ namespace GpScanner.ViewModel
             set => SetValue(ZoomProperty, value);
         }
 
-        public static BitmapImage BitmapSourceFromByteArray(byte[] buffer, bool fasterimage = false)
+        public static BitmapImage BitmapSourceFromByteArray(byte[] buffer, bool fasterimage = false, int thumbdpi = 120)
         {
             if (buffer != null)
             {
@@ -158,7 +172,7 @@ namespace GpScanner.ViewModel
                 bitmap.BeginInit();
                 if (fasterimage)
                 {
-                    bitmap.DecodePixelWidth = 72;
+                    bitmap.DecodePixelWidth = thumbdpi;
                 }
                 bitmap.CacheOption = BitmapCacheOption.OnLoad;
                 bitmap.StreamSource = stream;
@@ -190,6 +204,8 @@ namespace GpScanner.ViewModel
         private bool disposedValue;
 
         private bool firstPageThumbnail;
+
+        private int thumbnailDpi = 120;
 
         private int toplamSayfa;
 
@@ -226,9 +242,10 @@ namespace GpScanner.ViewModel
                     byte[] pdfdata = e.NewValue as byte[];
                     int sayfa = pdfViewer.Sayfa;
                     int dpi = pdfViewer.Dpi;
+                    int thumbdpi = pdfViewer.ThumbnailDpi;
                     if (pdfViewer.FirstPageThumbnail)
                     {
-                        pdfViewer.Source = await Task.Run(() => BitmapSourceFromByteArray(Pdf2Png.Convert(pdfdata, 1, 108), true));
+                        pdfViewer.Source = await Task.Run(() => BitmapSourceFromByteArray(Pdf2Png.Convert(pdfdata, 1, thumbdpi), true, thumbdpi));
                     }
                     else
                     {

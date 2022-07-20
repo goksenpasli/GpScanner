@@ -372,11 +372,39 @@ namespace TwainControl
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public CroppedBitmap CroppedOcrBitmap
+        {
+            get => croppedOcrBitmap;
+
+            set
+            {
+                if (croppedOcrBitmap != value)
+                {
+                    croppedOcrBitmap = value;
+                    OnPropertyChanged(nameof(CroppedOcrBitmap));
+                }
+            }
+        }
+
         public ICommand DeskewImage { get; }
 
         public ICommand ExploreFile { get; }
 
         public ICommand FastScanImage { get; }
+
+        public byte[] ImgData
+        {
+            get => ımgData;
+
+            set
+            {
+                if (ımgData != value)
+                {
+                    ımgData = value;
+                    OnPropertyChanged(nameof(ImgData));
+                }
+            }
+        }
 
         public ICommand InsertFileNamePlaceHolder { get; }
 
@@ -472,11 +500,25 @@ namespace TwainControl
 
         private ScanSettings _settings;
 
+        private CroppedBitmap croppedOcrBitmap;
+
         private bool disposedValue;
+
+        private double height;
+
+        private byte[] ımgData;
+
+        private bool isMouseDown;
 
         private Scanner scanner;
 
         private Twain twain;
+
+        private double width;
+
+        private double x;
+
+        private double y;
 
         private void ApplyPdfSecurity(PdfDocument document)
         {
@@ -493,6 +535,23 @@ namespace TwainControl
         private void ButtonedTextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             Scanner.CaretPosition = (sender as ButtonedTextBox)?.CaretIndex ?? 0;
+        }
+
+        private byte[] CaptureScreen(double x, double y, double width, double height)
+        {
+            try
+            {
+                double widthmultiply = Scanner.SeçiliResim.Resim.PixelWidth / ImgViewer.RenderSize.Width;
+                double heightmultiply = Scanner.SeçiliResim.Resim.PixelHeight / ImgViewer.RenderSize.Height;
+                Int32Rect ınt32Rect = new((int)(x * widthmultiply), (int)(y * heightmultiply), (int)(width * widthmultiply), (int)(height * heightmultiply));
+                CroppedOcrBitmap = new CroppedBitmap(Scanner.SeçiliResim.Resim, ınt32Rect);
+                return CroppedOcrBitmap.ToTiffJpegByteArray(Format.Png);
+            }
+            catch (Exception)
+            {
+                CroppedOcrBitmap = null;
+                return null;
+            }
         }
 
         private bool CheckAutoSave()
@@ -594,6 +653,47 @@ namespace TwainControl
                 _ = Directory.CreateDirectory(datefolder);
             }
             return datefolder;
+        }
+
+        private void ImgViewer_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            isMouseDown = true;
+            x = e.GetPosition(ImgViewer).X;
+            y = e.GetPosition(ImgViewer).Y;
+        }
+
+        private void ImgViewer_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (isMouseDown)
+            {
+                double curx = e.GetPosition(ImgViewer).X;
+                double cury = e.GetPosition(ImgViewer).Y;
+
+                System.Windows.Shapes.Rectangle r = new()
+                {
+                    Stroke = new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#33FF0000")),
+                    Fill = new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#3300FF00")),
+                    StrokeThickness = 2,
+                    StrokeDashArray = new DoubleCollection(new double[] { 4, 2 }),
+                    Width = Math.Abs(curx - x),
+                    Height = Math.Abs(cury - y)
+                };
+                cnv.Children.Clear();
+                _ = cnv.Children.Add(r);
+                Canvas.SetLeft(r, x);
+                Canvas.SetTop(r, y);
+                if (e.LeftButton == MouseButtonState.Released)
+                {
+                    cnv.Children.Clear();
+                    width = e.GetPosition(ImgViewer).X - x;
+                    height = e.GetPosition(ImgViewer).Y - y;
+                    ImgData = CaptureScreen(x, y, width, height);
+                    x = y = 0;
+                    isMouseDown = false;
+                    Cursor = Cursors.Arrow;
+                    OnPropertyChanged(nameof(ImgData));
+                }
+            }
         }
 
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
