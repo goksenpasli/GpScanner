@@ -429,7 +429,6 @@ namespace Extensions
         {
             if (d is ImageViewer imageViewer && e.NewValue is not null)
             {
-                ScrollViewer scrollViewer = (imageViewer.GetVisualChild(0) as Grid)?.Children[0] as ScrollViewer;
                 switch (imageViewer.FitImageOrientation)
                 {
                     case FitImageOrientation.Width:
@@ -444,7 +443,7 @@ namespace Extensions
                                 imageViewer.Zoom = 1;
                                 return;
                             }
-                            imageViewer.Zoom = Math.Round(scrollViewer.ActualWidth / imageViewer.Source.Width, 2);
+                            imageViewer.Zoom = Math.Round(imageViewer.ActualWidth / imageViewer.Source.Width, 2);
                             return;
                         }
 
@@ -459,7 +458,7 @@ namespace Extensions
                             imageViewer.Zoom = 1;
                             return;
                         }
-                        imageViewer.Zoom = Math.Round(scrollViewer.ActualHeight / imageViewer.Source.Height, 2);
+                        imageViewer.Zoom = Math.Round(imageViewer.ActualHeight / imageViewer.Source.Height, 2);
                         return;
                 }
             }

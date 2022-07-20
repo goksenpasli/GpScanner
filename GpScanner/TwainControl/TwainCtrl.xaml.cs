@@ -27,6 +27,7 @@ using TwainWpf;
 using TwainWpf.Wpf;
 using static Extensions.ExtensionMethods;
 using Path = System.IO.Path;
+using Rectangle = System.Windows.Shapes.Rectangle;
 
 namespace TwainControl
 {
@@ -657,19 +658,23 @@ namespace TwainControl
 
         private void ImgViewer_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            isMouseDown = true;
-            x = e.GetPosition(ImgViewer).X;
-            y = e.GetPosition(ImgViewer).Y;
+            if (e.OriginalSource is System.Windows.Controls.Image)
+            {
+                isMouseDown = true;
+                Cursor = Cursors.Cross;
+                x = e.GetPosition(ImgViewer).X;
+                y = e.GetPosition(ImgViewer).Y;
+            }
         }
 
         private void ImgViewer_MouseMove(object sender, MouseEventArgs e)
         {
-            if (isMouseDown)
+            if (isMouseDown && e.OriginalSource is System.Windows.Controls.Image)
             {
                 double curx = e.GetPosition(ImgViewer).X;
                 double cury = e.GetPosition(ImgViewer).Y;
 
-                System.Windows.Shapes.Rectangle r = new()
+                Rectangle r = new()
                 {
                     Stroke = new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#33FF0000")),
                     Fill = new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#3300FF00")),
@@ -680,14 +685,23 @@ namespace TwainControl
                 };
                 cnv.Children.Clear();
                 _ = cnv.Children.Add(r);
-                Canvas.SetLeft(r, x);
-                Canvas.SetTop(r, y);
+                if (x < curx && y < cury)
+                {
+                    Canvas.SetLeft(r, x);
+                    Canvas.SetTop(r, y);
+                }
+                else
+                {
+                    Canvas.SetLeft(r, curx);
+                    Canvas.SetTop(r, cury);
+                }
+
                 if (e.LeftButton == MouseButtonState.Released)
                 {
                     cnv.Children.Clear();
-                    width = e.GetPosition(ImgViewer).X - x;
-                    height = e.GetPosition(ImgViewer).Y - y;
-                    ImgData = CaptureScreen(x, y, width, height);
+                    width = Math.Abs(e.GetPosition(ImgViewer).X - x);
+                    height = Math.Abs(e.GetPosition(ImgViewer).Y - y);
+                    ImgData = (x < curx && y < cury) ? CaptureScreen(x, y, width, height) : CaptureScreen(curx, cury, width, height);
                     x = y = 0;
                     isMouseDown = false;
                     Cursor = Cursors.Arrow;

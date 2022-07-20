@@ -142,11 +142,16 @@ namespace GpScanner.ViewModel
             {
                 _ = Task.Run(() =>
                 {
-                    ScannedTextWindowOpen = false;
+                    ScannedText = null;
                     IsBusy = true;
                     ScannedText = imgdata.OcrYap(Settings.Default.DefaultTtsLang);
                     IsBusy = false;
-                    ScannedTextWindowOpen = true;
+                    if (!string.IsNullOrWhiteSpace(ScannedText))
+                    {
+                        ScannedTextWindowOpen = false;
+                        ScannedTextWindowOpen = true;
+                        imgdata = null;
+                    }
                 });
             }
         }
