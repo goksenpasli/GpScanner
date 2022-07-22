@@ -244,9 +244,7 @@
                                 </Image>
                             </Button.Content>
                         </Button>
-                        <Button Grid.Column="8"
-                            Command="{Binding TransferImage, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
+                        <Button Grid.Column="8" Command="{Binding TransferImage, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
                             <Button.Content>
                                 <Image Width="16" Height="16">
                                     <Image.Source>

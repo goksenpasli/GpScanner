@@ -356,8 +356,8 @@
                                     </StackPanel>
                                 </Button.Content>
                             </Button>
-                            <Slider VerticalAlignment="Center" AutoToolTipPlacement="TopLeft" Maximum="300"
-                                Minimum="85" SmallChange="1"
+                            <Slider Margin="2,0,2,0" VerticalAlignment="Center" AutoToolTipPlacement="TopLeft"
+                                Maximum="300" Minimum="85" SmallChange="1"
                                 Style="{StaticResource Slider}"
                                 ToolTip="RESİM ÖNİZLEME BOYUTU"
                                 Value="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}" />
@@ -388,7 +388,8 @@
                                                     </MultiBinding>
                                                 </Image.Source>
                                             </Image>
-                                            <TextBlock VerticalAlignment="Center" FontSize="14" Text="BURDA YAPILAN AYARLAR TÜM&#x0a;PDF KAYITLARINI ETKİLER" />
+                                            <TextBlock VerticalAlignment="Center" FontSize="14"
+                                                Text="BURDA YAPILAN AYARLAR TÜM PDF KAYITLARINI ETKİLER.&#x0a;AYRICA PDF KORUMASI 3.PARTİ UYGULAMALAR TARAFINDAN KIRILABİLİR." />
                                         </StackPanel>
                                     </GroupBox.Header>
                                     <StackPanel IsEnabled="{Binding Scanner.PasswordProtect}">
@@ -477,7 +478,7 @@
                     <Button Command="{Binding Seçilikaydet}">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
-                                <Image Width="24" Height="24">
+                                <Image Width="32" Height="32">
                                     <Image.Source>
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                             <Binding Source="Shell32.dll" />
@@ -485,14 +486,14 @@
                                         </MultiBinding>
                                     </Image.Source>
                                 </Image>
-                                <TextBlock VerticalAlignment="Center" Text="SEÇİLİLERİ&#x0a;PDF KAYDET" />
+                                <TextBlock VerticalAlignment="Center" Text="SEÇİLİLERİ&#x0a;KAYDET" />
                             </StackPanel>
                         </Button.Content>
                     </Button>
                     <Button Background="Red" Command="{Binding ListeTemizle}">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
-                                <Image Width="24" Height="24">
+                                <Image Width="32" Height="32">
                                     <Image.Source>
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                             <Binding Source="Shell32.dll" />
@@ -507,7 +508,7 @@
                     <Button Command="{Binding PdfBirleştir}">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
-                                <Image Width="24" Height="24">
+                                <Image Width="32" Height="32">
                                     <Image.Source>
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                             <Binding Source="Shell32.dll" />
@@ -522,7 +523,7 @@
                     <Button Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/goksenpasli">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
-                                <Image Width="24" Height="24">
+                                <Image Width="32" Height="32">
                                     <Image.Source>
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                             <Binding Source="Shell32.dll" />

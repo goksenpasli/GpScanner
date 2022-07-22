@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using TwainControl;
 using TwainControl.Properties;
+using static Extensions.ExtensionMethods;
 
 namespace GpScanner.ViewModel
 {
@@ -23,7 +24,7 @@ namespace GpScanner.ViewModel
 
         public static readonly DependencyProperty PdfFileStreamProperty = DependencyProperty.Register("PdfFileStream", typeof(byte[]), typeof(PdfViewer), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.NotDataBindable, async (o, e) => await PdfStreamChangedAsync(o, e)));
 
-        public new static readonly DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(PdfViewer), new PropertyMetadata(1.0));
+        public static new readonly DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(PdfViewer), new PropertyMetadata(1.0));
 
         public PdfViewer()
         {
@@ -52,23 +53,36 @@ namespace GpScanner.ViewModel
             {
                 SaveFileDialog saveFileDialog = new()
                 {
-                    Filter = "Jpg Dosyası(*.jpg)|*.jpg",
+                    Filter = "Jpg Dosyası(*.jpg)|*.jpg|Pdf Dosyası(*.pdf)|*.pdf",
                     FileName = "Resim"
                 };
+
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    File.WriteAllBytes(saveFileDialog.FileName, Source.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg));
+                    MainWindow mainWindow = Application.Current?.MainWindow as MainWindow;
+                    switch (saveFileDialog.FilterIndex)
+                    {
+                        case 1:
+                            {
+                                File.WriteAllBytes(saveFileDialog.FileName, Source.ToTiffJpegByteArray(Format.Jpg));
+                                return;
+                            }
+
+                        case 2:
+                            {
+                                mainWindow.TwainCtrl.PdfKaydet((BitmapSource)Source, saveFileDialog.FileName, Format.Jpg);
+                                return;
+                            }
+                    }
                 }
             }, parameter => Source is not null);
 
             TransferImage = new RelayCommand<object>(parameter =>
             {
-                if (parameter is MainWindow mainWindow)
-                {
-                    BitmapSource thumbnail = ((BitmapSource)Source).Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 21 * 29.7);
-                    ScannedImage scannedImage = new() { Seçili = true, Resim = BitmapFrame.Create((BitmapSource)Source, thumbnail) };
-                    mainWindow.TwainCtrl.Scanner.Resimler.Add(scannedImage);
-                }
+                BitmapSource thumbnail = ((BitmapSource)Source).Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 21 * 29.7);
+                ScannedImage scannedImage = new() { Seçili = true, Resim = BitmapFrame.Create((BitmapSource)Source, thumbnail) };
+                MainWindow mainWindow = Application.Current?.MainWindow as MainWindow;
+                mainWindow.TwainCtrl.Scanner.Resimler.Add(scannedImage);
             }, parameter => Source is not null);
 
             Resize = new RelayCommand<object>(delegate

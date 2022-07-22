@@ -49,18 +49,19 @@ namespace GpScanner.ViewModel
 
             OcrPage = new RelayCommand<object>(parameter =>
             {
+                byte[] imgdata;
                 switch (parameter)
                 {
                     case Scanner scanner:
                         {
-                            byte[] imgdata = scanner.SeçiliResim.Resim.ToTiffJpegByteArray(ExtensionMethods.Format.Png);
+                            imgdata = scanner.SeçiliResim.Resim.ToTiffJpegByteArray(ExtensionMethods.Format.Png);
                             Ocr(imgdata);
                             return;
                         }
 
                     case ImageSource croppedimage:
                         {
-                            byte[] imgdata = croppedimage.ToTiffJpegByteArray(ExtensionMethods.Format.Png);
+                            imgdata = croppedimage.ToTiffJpegByteArray(ExtensionMethods.Format.Png);
                             Ocr(imgdata);
                             return;
                         }

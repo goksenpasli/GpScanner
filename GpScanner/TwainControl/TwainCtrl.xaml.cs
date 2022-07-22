@@ -59,7 +59,7 @@ namespace TwainControl
                     twain.StartScanning(_settings);
                 }
                 twain.ScanningComplete += Fastscan;
-            }, parameter => !Environment.Is64BitProcess && Scanner.AutoSave && Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0);
+            }, parameter => !Environment.Is64BitProcess && (Scanner.AutoSave && !Scanner.SeperateSave) && Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0);
 
             ResimSil = new RelayCommand<object>(parameter =>
             {
@@ -210,7 +210,7 @@ namespace TwainControl
 
             ListeTemizle = new RelayCommand<object>(parameter =>
             {
-                if (MessageBox.Show("Tüm Taranan Evrak Silinecek Devam Etmek İstiyor Musun?", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                if (MessageBox.Show("Üstteki Listede Bulunan Tüm Taranan Evrak Silinecek Devam Etmek İstiyor Musun?", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     Scanner.Resimler?.Clear();
                     ResetCropMargin();
@@ -480,6 +480,28 @@ namespace TwainControl
             Dispose(true);
         }
 
+        public void PdfKaydet(BitmapSource bitmapframe, string dosyayolu, Format format, bool rotate = false)
+        {
+            using PdfDocument document = new();
+            PdfPage page = document.AddPage();
+            if (rotate)
+            {
+                page.Rotate = (int)Scanner.RotateAngle;
+            }
+            if (Scanner.PasswordProtect)
+            {
+                ApplyPdfSecurity(document);
+            }
+            using XGraphics gfx = XGraphics.FromPdfPage(page);
+            using MemoryStream ms = new(bitmapframe.ToTiffJpegByteArray(format));
+            using XImage xImage = XImage.FromStream(ms);
+            XSize size = PageSizeConverter.ToSize(PageSize.A4);
+            gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
+
+            DefaultPdfCompression(document);
+            document.Save(dosyayolu);
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -553,11 +575,6 @@ namespace TwainControl
                 CroppedOcrBitmap = null;
                 return null;
             }
-        }
-
-        private bool CheckAutoSave()
-        {
-            return Scanner.SeperateSave && Scanner.AutoSave;
         }
 
         private Int32Rect CropImageRect(ImageSource ımageSource)
@@ -715,28 +732,6 @@ namespace TwainControl
             Scanner.PdfPassword = ((PasswordBox)sender).SecurePassword;
         }
 
-        private void PdfKaydet(BitmapSource bitmapframe, string dosyayolu, Format format, bool rotate = false)
-        {
-            using PdfDocument document = new();
-            PdfPage page = document.AddPage();
-            if (rotate)
-            {
-                page.Rotate = (int)Scanner.RotateAngle;
-            }
-            if (Scanner.PasswordProtect)
-            {
-                ApplyPdfSecurity(document);
-            }
-            using XGraphics gfx = XGraphics.FromPdfPage(page);
-            using MemoryStream ms = new(bitmapframe.ToTiffJpegByteArray(format));
-            using XImage xImage = XImage.FromStream(ms);
-            XSize size = PageSizeConverter.ToSize(PageSize.A4);
-            gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
-
-            DefaultPdfCompression(document);
-            document.Save(dosyayolu);
-        }
-
         private void PdfKaydet(IList<ScannedImage> bitmapFrames, string dosyayolu, Format format, bool rotate = false)
         {
             using PdfDocument document = new();
@@ -797,10 +792,6 @@ namespace TwainControl
 
         private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName is "SeperateSave")
-            {
-                Scanner.AutoSave = CheckAutoSave();
-            }
             if (e.PropertyName is "CropLeft" or "CropTop" or "CropRight" or "CropBottom" && Scanner.SeçiliResim != null)
             {
                 Int32Rect sourceRect = CropImageRect(Scanner.SeçiliResim.Resim);
@@ -867,13 +858,13 @@ namespace TwainControl
                         Scanner.Resimler.Add(new ScannedImage() { Resim = bitmapFrame });
                         if (Scanner.SeperateSave && (ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
                         {
-                            File.WriteAllBytes(GetSaveFolder().SetUniqueFile(Scanner.SaveFileName, "tif"), bitmapFrame.ToTiffJpegByteArray(Format.Tiff));
+                            PdfKaydet(bitmapFrame, GetSaveFolder().SetUniqueFile(Scanner.SaveFileName, "pdf"), Format.Tiff);
                             OnPropertyChanged(nameof(Scanner.Tarandı));
                         }
 
                         if (Scanner.SeperateSave && ((ColourSetting)Settings.Default.Mode == ColourSetting.GreyScale || (ColourSetting)Settings.Default.Mode == ColourSetting.Colour))
                         {
-                            File.WriteAllBytes(GetSaveFolder().SetUniqueFile(Scanner.SaveFileName, "jpg"), bitmapFrame.ToTiffJpegByteArray(Format.Jpg));
+                            PdfKaydet(bitmapFrame, GetSaveFolder().SetUniqueFile(Scanner.SaveFileName, "pdf"), Format.Jpg);
                             OnPropertyChanged(nameof(Scanner.Tarandı));
                         }
 
