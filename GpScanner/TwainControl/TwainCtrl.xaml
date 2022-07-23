@@ -478,14 +478,18 @@
                     <Button Command="{Binding Seçilikaydet}">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
-                                <Image Width="32" Height="32">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="6" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
+                                <Canvas Width="32" Height="32">
+                                    <Image Width="32" Height="32">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="6" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock FontSize="9" Foreground="Red"
+                                        Text="{Binding Scanner.SeçiliResimSayısı}" />
+                                </Canvas>
                                 <TextBlock VerticalAlignment="Center" Text="SEÇİLİLERİ&#x0a;KAYDET" />
                             </StackPanel>
                         </Button.Content>

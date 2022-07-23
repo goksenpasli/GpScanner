@@ -41,7 +41,11 @@ namespace GpScanner.ViewModel
                         _ = MessageBox.Show(ex.Message);
                     }
                 }
-            }, parameter => Dosyalar?.Count(z => z.Seçili) > 0);
+            }, parameter =>
+            {
+                CheckedPdfCount = Dosyalar?.Count(z => z.Seçili);
+                return CheckedPdfCount > 1;
+            });
 
             Settings.Default.PropertyChanged += Default_PropertyChanged;
             PropertyChanged += GpScannerViewModel_PropertyChanged;
@@ -57,6 +61,20 @@ namespace GpScanner.ViewModel
                 {
                     aramaMetni = value;
                     OnPropertyChanged(nameof(AramaMetni));
+                }
+            }
+        }
+
+        public int? CheckedPdfCount
+        {
+            get => checkedPdfCount;
+
+            set
+            {
+                if (checkedPdfCount != value)
+                {
+                    checkedPdfCount = value;
+                    OnPropertyChanged(nameof(CheckedPdfCount));
                 }
             }
         }
@@ -133,6 +151,8 @@ namespace GpScanner.ViewModel
         }
 
         private string aramaMetni;
+
+        private int? checkedPdfCount = 0;
 
         private ObservableCollection<Scanner> dosyalar;
 

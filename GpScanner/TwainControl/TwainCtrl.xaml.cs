@@ -59,7 +59,7 @@ namespace TwainControl
                     twain.StartScanning(_settings);
                 }
                 twain.ScanningComplete += Fastscan;
-            }, parameter => !Environment.Is64BitProcess && (Scanner.AutoSave && !Scanner.SeperateSave) && Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0);
+            }, parameter => !Environment.Is64BitProcess && Scanner.AutoSave && !Scanner.SeperateSave && Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0);
 
             ResimSil = new RelayCommand<object>(parameter =>
             {
@@ -103,13 +103,13 @@ namespace TwainControl
                                 {
                                     if (MessageBox.Show("Döndürme Uygulanarak Kaydedilsin mi?", Application.Current?.MainWindow?.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                                     {
-                                        PdfKaydet(scannedImage.Resim, saveFileDialog.FileName, Format.Jpg, true);
+                                        GeneratePdf(scannedImage.Resim, Format.Jpg, true).Save(saveFileDialog.FileName);
                                         return;
                                     }
-                                    PdfKaydet(scannedImage.Resim, saveFileDialog.FileName, Format.Jpg);
+                                    GeneratePdf(scannedImage.Resim, Format.Jpg).Save(saveFileDialog.FileName);
                                     return;
                                 }
-                                PdfKaydet(scannedImage.Resim, saveFileDialog.FileName, Format.Jpg);
+                                GeneratePdf(scannedImage.Resim, Format.Jpg).Save(saveFileDialog.FileName);
                                 return;
 
                             case 4:
@@ -117,13 +117,13 @@ namespace TwainControl
                                 {
                                     if (MessageBox.Show("Döndürme Uygulanarak Kaydedilsin mi?", Application.Current?.MainWindow?.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                                     {
-                                        PdfKaydet(scannedImage.Resim, saveFileDialog.FileName, Format.Tiff, true);
+                                        GeneratePdf(scannedImage.Resim, Format.Tiff, true).Save(saveFileDialog.FileName);
                                         return;
                                     }
-                                    PdfKaydet(scannedImage.Resim, saveFileDialog.FileName, Format.Tiff);
+                                    GeneratePdf(scannedImage.Resim, Format.Tiff).Save(saveFileDialog.FileName);
                                     return;
                                 }
-                                PdfKaydet(scannedImage.Resim, saveFileDialog.FileName, Format.Tiff);
+                                GeneratePdf(scannedImage.Resim, Format.Tiff).Save(saveFileDialog.FileName);
                                 return;
                         }
                     }
@@ -181,20 +181,20 @@ namespace TwainControl
                     {
                         case 1:
                             {
-                                PdfKaydet(Scanner.Resimler.Where(z => z.Seçili).ToArray(), saveFileDialog.FileName, Format.Jpg);
+                                GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToArray(), Format.Jpg).Save(saveFileDialog.FileName);
                                 return;
                             }
 
                         case 2:
                             {
-                                PdfKaydet(Scanner.Resimler.Where(z => z.Seçili).ToArray(), saveFileDialog.FileName, Format.Tiff);
+                                GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToArray(), Format.Tiff).Save(saveFileDialog.FileName);
                                 return;
                             }
 
                         case 3:
                             {
                                 string dosyayolu = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
-                                PdfKaydet(Scanner.Resimler.Where(z => z.Seçili).ToArray(), dosyayolu, Format.Jpg);
+                                GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToArray(), Format.Jpg).Save(dosyayolu);
                                 using ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Create);
                                 _ = archive.CreateEntryFromFile(dosyayolu, $"{Scanner.SaveFileName}.pdf", CompressionLevel.Optimal);
                                 File.Delete(dosyayolu);
@@ -250,6 +250,7 @@ namespace TwainControl
             RemoveProfile = new RelayCommand<object>(parameter =>
             {
                 Settings.Default.Profile.Remove(parameter as string);
+                Settings.Default.DefaultProfile = null;
                 Settings.Default.Save();
                 Settings.Default.Reload();
             }, parameter => true);
@@ -272,11 +273,11 @@ namespace TwainControl
                     switch (saveFileDialog.FilterIndex)
                     {
                         case 1:
-                            PdfKaydet((BitmapSource)Scanner.CroppedImage, saveFileDialog.FileName, Format.Jpg);
+                            GeneratePdf((BitmapSource)Scanner.CroppedImage, Format.Jpg).Save(saveFileDialog.FileName);
                             return;
 
                         case 2:
-                            PdfKaydet((BitmapSource)Scanner.CroppedImage, saveFileDialog.FileName, Format.Tiff);
+                            GeneratePdf((BitmapSource)Scanner.CroppedImage, Format.Tiff).Save(saveFileDialog.FileName);
                             return;
 
                         case 3:
@@ -369,6 +370,8 @@ namespace TwainControl
             Scanner.PropertyChanged += Scanner_PropertyChanged;
 
             Settings.Default.PropertyChanged += Default_PropertyChanged;
+
+            Scanner.SelectedProfile = Settings.Default.DefaultProfile;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -480,7 +483,7 @@ namespace TwainControl
             Dispose(true);
         }
 
-        public void PdfKaydet(BitmapSource bitmapframe, string dosyayolu, Format format, bool rotate = false)
+        public PdfDocument GeneratePdf(BitmapSource bitmapframe, Format format, bool rotate = false)
         {
             using PdfDocument document = new();
             PdfPage page = document.AddPage();
@@ -497,9 +500,8 @@ namespace TwainControl
             using XImage xImage = XImage.FromStream(ms);
             XSize size = PageSizeConverter.ToSize(PageSize.A4);
             gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
-
             DefaultPdfCompression(document);
-            document.Save(dosyayolu);
+            return document;
         }
 
         protected virtual void Dispose(bool disposing)
@@ -568,6 +570,7 @@ namespace TwainControl
                 double heightmultiply = Scanner.SeçiliResim.Resim.PixelHeight / ImgViewer.RenderSize.Height;
                 Int32Rect ınt32Rect = new((int)(x * widthmultiply), (int)(y * heightmultiply), (int)(width * widthmultiply), (int)(height * heightmultiply));
                 CroppedOcrBitmap = new CroppedBitmap(Scanner.SeçiliResim.Resim, ınt32Rect);
+                CroppedOcrBitmap.Freeze();
                 return CroppedOcrBitmap.ToTiffJpegByteArray(Format.Png);
             }
             catch (Exception)
@@ -634,11 +637,11 @@ namespace TwainControl
 
             if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
             {
-                PdfKaydet(Scanner.Resimler, pdffilepath, Format.Tiff);
+                GeneratePdf(Scanner.Resimler, Format.Tiff).Save(pdffilepath);
             }
             if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
             {
-                PdfKaydet(Scanner.Resimler, pdffilepath, Format.Jpg);
+                GeneratePdf(Scanner.Resimler, Format.Jpg).Save(pdffilepath);
             }
             if (Settings.Default.ShowFile)
             {
@@ -656,6 +659,30 @@ namespace TwainControl
             }
             twain.ScanningComplete -= Fastscan;
             OnPropertyChanged(nameof(Scanner.Tarandı));
+        }
+
+        private PdfDocument GeneratePdf(IList<ScannedImage> bitmapFrames, Format format, bool rotate = false)
+        {
+            using PdfDocument document = new();
+            for (int i = 0; i < bitmapFrames.Count; i++)
+            {
+                PdfPage page = document.AddPage();
+                if (rotate)
+                {
+                    page.Rotate = (int)Scanner.RotateAngle;
+                }
+                if (Scanner.PasswordProtect)
+                {
+                    ApplyPdfSecurity(document);
+                }
+                using XGraphics gfx = XGraphics.FromPdfPage(page);
+                using MemoryStream ms = new(bitmapFrames[i].Resim.ToTiffJpegByteArray(format));
+                using XImage xImage = XImage.FromStream(ms);
+                XSize size = PageSizeConverter.ToSize(PageSize.A4);
+                gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
+            }
+            DefaultPdfCompression(document);
+            return document;
         }
 
         private string GetPdfScanPath()
@@ -707,18 +734,42 @@ namespace TwainControl
                     Canvas.SetLeft(r, x);
                     Canvas.SetTop(r, y);
                 }
-                else
+                if (x > curx && y > cury)
                 {
                     Canvas.SetLeft(r, curx);
                     Canvas.SetTop(r, cury);
                 }
-
+                if (x < curx && y > cury)
+                {
+                    Canvas.SetLeft(r, x);
+                    Canvas.SetTop(r, cury);
+                }
+                if (x > curx && y < cury)
+                {
+                    Canvas.SetLeft(r, curx);
+                    Canvas.SetTop(r, y);
+                }
                 if (e.LeftButton == MouseButtonState.Released)
                 {
                     cnv.Children.Clear();
                     width = Math.Abs(e.GetPosition(ImgViewer).X - x);
                     height = Math.Abs(e.GetPosition(ImgViewer).Y - y);
-                    ImgData = (x < curx && y < cury) ? CaptureScreen(x, y, width, height) : CaptureScreen(curx, cury, width, height);
+                    if (x < curx && y < cury)
+                    {
+                        ImgData = CaptureScreen(x, y, width, height);
+                    }
+                    if (x > curx && y > cury)
+                    {
+                        ImgData = CaptureScreen(curx, cury, width, height);
+                    }
+                    if (x < curx && y > cury)
+                    {
+                        ImgData = CaptureScreen(x, cury, width, height);
+                    }
+                    if (x > curx && y < cury)
+                    {
+                        ImgData = CaptureScreen(curx, y, width, height);
+                    }
                     x = y = 0;
                     isMouseDown = false;
                     Cursor = Cursors.Arrow;
@@ -730,30 +781,6 @@ namespace TwainControl
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
             Scanner.PdfPassword = ((PasswordBox)sender).SecurePassword;
-        }
-
-        private void PdfKaydet(IList<ScannedImage> bitmapFrames, string dosyayolu, Format format, bool rotate = false)
-        {
-            using PdfDocument document = new();
-            for (int i = 0; i < bitmapFrames.Count; i++)
-            {
-                PdfPage page = document.AddPage();
-                if (rotate)
-                {
-                    page.Rotate = (int)Scanner.RotateAngle;
-                }
-                if (Scanner.PasswordProtect)
-                {
-                    ApplyPdfSecurity(document);
-                }
-                using XGraphics gfx = XGraphics.FromPdfPage(page);
-                using MemoryStream ms = new(bitmapFrames[i].Resim.ToTiffJpegByteArray(format));
-                using XImage xImage = XImage.FromStream(ms);
-                XSize size = PageSizeConverter.ToSize(PageSize.A4);
-                gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
-            }
-            DefaultPdfCompression(document);
-            document.Save(dosyayolu);
         }
 
         private void ResetCropMargin()
@@ -818,7 +845,7 @@ namespace TwainControl
                     LineGrid.RowDefinitions.Add(new RowDefinition());
                 }
             }
-            if (e.PropertyName is "SelectedProfile" && Scanner.SelectedProfile is not null)
+            if (e.PropertyName is "SelectedProfile" && !string.IsNullOrWhiteSpace(Scanner.SelectedProfile))
             {
                 string[] selectedprofile = Scanner.SelectedProfile.Split('|');
                 Settings.Default.Çözünürlük = double.Parse(selectedprofile[1]);
@@ -830,6 +857,8 @@ namespace TwainControl
                 Settings.Default.ShowFile = bool.Parse(selectedprofile[7]);
                 Settings.Default.DateGroupFolder = true;//bool.Parse(selectedprofile[8])
                 Scanner.FileName = selectedprofile[9];
+                Settings.Default.DefaultProfile = Scanner.SelectedProfile;
+                Settings.Default.Save();
             }
         }
 
@@ -858,13 +887,13 @@ namespace TwainControl
                         Scanner.Resimler.Add(new ScannedImage() { Resim = bitmapFrame });
                         if (Scanner.SeperateSave && (ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
                         {
-                            PdfKaydet(bitmapFrame, GetSaveFolder().SetUniqueFile(Scanner.SaveFileName, "pdf"), Format.Tiff);
+                            GeneratePdf(bitmapFrame, Format.Tiff).Save(GetSaveFolder().SetUniqueFile(Scanner.SaveFileName, "pdf"));
                             OnPropertyChanged(nameof(Scanner.Tarandı));
                         }
 
                         if (Scanner.SeperateSave && ((ColourSetting)Settings.Default.Mode == ColourSetting.GreyScale || (ColourSetting)Settings.Default.Mode == ColourSetting.Colour))
                         {
-                            PdfKaydet(bitmapFrame, GetSaveFolder().SetUniqueFile(Scanner.SaveFileName, "pdf"), Format.Jpg);
+                            GeneratePdf(bitmapFrame, Format.Jpg).Save(GetSaveFolder().SetUniqueFile(Scanner.SaveFileName, "pdf"));
                             OnPropertyChanged(nameof(Scanner.Tarandı));
                         }
 

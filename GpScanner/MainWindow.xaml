@@ -176,7 +176,21 @@
                                     </MultiBinding>
                                 </Image.Source>
                             </Image>
-                            <TextBlock VerticalAlignment="Center" Text="İŞARETLİ PDFLERİ BİRLEŞTİR" />
+                            <TextBlock VerticalAlignment="Center">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Text" Value="BİRLEŞTİR"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding CheckedPdfCount}" Value="0">
+                                                <Setter Property="Text" Value="İŞARETLİ PDFLERİ BİRLEŞTİR" />
+                                            </DataTrigger> 
+                                            <DataTrigger Binding="{Binding CheckedPdfCount}" Value="1">
+                                                <Setter Property="Text" Value="EN AZ İKİ DOSYA SEÇİN" />
+                                            </DataTrigger>                                            
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
                         </StackPanel>
                     </Button>
                     <Extensions:SplitButton HorizontalContentAlignment="Stretch"

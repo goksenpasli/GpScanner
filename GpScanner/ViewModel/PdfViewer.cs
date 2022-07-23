@@ -24,7 +24,7 @@ namespace GpScanner.ViewModel
 
         public static readonly DependencyProperty PdfFileStreamProperty = DependencyProperty.Register("PdfFileStream", typeof(byte[]), typeof(PdfViewer), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.NotDataBindable, async (o, e) => await PdfStreamChangedAsync(o, e)));
 
-        public static new readonly DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(PdfViewer), new PropertyMetadata(1.0));
+        public new static readonly DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(PdfViewer), new PropertyMetadata(1.0));
 
         public PdfViewer()
         {
@@ -70,7 +70,7 @@ namespace GpScanner.ViewModel
 
                         case 2:
                             {
-                                mainWindow.TwainCtrl.PdfKaydet((BitmapSource)Source, saveFileDialog.FileName, Format.Jpg);
+                                mainWindow.TwainCtrl.GeneratePdf((BitmapSource)Source, Format.Jpg).Save(saveFileDialog.FileName);
                                 return;
                             }
                     }
