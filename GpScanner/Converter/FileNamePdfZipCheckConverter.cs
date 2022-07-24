@@ -5,11 +5,11 @@ using System.Windows.Data;
 
 namespace GpScanner.Converter
 {
-    public sealed class FileNamePdfCheckConverter : IValueConverter
+    public sealed class FileNamePdfZipCheckConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value is string filename && string.Equals(Path.GetExtension(filename), ".pdf", StringComparison.OrdinalIgnoreCase);
+            return value is string filename && (string.Equals(Path.GetExtension(filename), ".pdf", StringComparison.OrdinalIgnoreCase) || string.Equals(Path.GetExtension(filename), ".zip", StringComparison.OrdinalIgnoreCase));
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -253,22 +253,24 @@ namespace GpScanner.ViewModel
             {
                 try
                 {
-                    byte[] pdfdata = e.NewValue as byte[];
-                    int sayfa = pdfViewer.Sayfa;
-                    int dpi = pdfViewer.Dpi;
-                    int thumbdpi = pdfViewer.ThumbnailDpi;
-                    if (pdfViewer.FirstPageThumbnail)
+                    if (e.NewValue is byte[] pdfdata && pdfdata.Length > 0)
                     {
-                        pdfViewer.Source = await Task.Run(() => BitmapSourceFromByteArray(Pdf2Png.Convert(pdfdata, 1, thumbdpi), true, thumbdpi));
+                        int sayfa = pdfViewer.Sayfa;
+                        int dpi = pdfViewer.Dpi;
+                        int thumbdpi = pdfViewer.ThumbnailDpi;
+                        if (pdfViewer.FirstPageThumbnail)
+                        {
+                            pdfViewer.Source = await Task.Run(() => BitmapSourceFromByteArray(Pdf2Png.Convert(pdfdata, 1, thumbdpi), true, thumbdpi));
+                        }
+                        else
+                        {
+                            pdfViewer.ToplamSayfa = Pdf2Png.ConvertAllPages(pdfdata, 0).Count;
+                            pdfViewer.Source = await Task.Run(() => BitmapSourceFromByteArray(Pdf2Png.Convert(pdfdata, sayfa, dpi)));
+                            pdfViewer.TifNavigasyonButtonEtkin = pdfViewer.ToplamSayfa > 1 ? Visibility.Visible : Visibility.Collapsed;
+                            pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
+                        }
+                        pdfdata = null;
                     }
-                    else
-                    {
-                        pdfViewer.ToplamSayfa = Pdf2Png.ConvertAllPages(pdfdata, 0).Count;
-                        pdfViewer.Source = await Task.Run(() => BitmapSourceFromByteArray(Pdf2Png.Convert(pdfdata, sayfa, dpi)));
-                        pdfViewer.TifNavigasyonButtonEtkin = pdfViewer.ToplamSayfa > 1 ? Visibility.Visible : Visibility.Collapsed;
-                        pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
-                    }
-                    pdfdata = null;
                 }
                 catch (Exception ex)
                 {

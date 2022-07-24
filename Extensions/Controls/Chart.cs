@@ -52,7 +52,7 @@ namespace Extensions
 
             private double chartValue;
 
-            private string description;
+            private string description = string.Empty;
         }
     }
 }

@@ -29,7 +29,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="35.2" />
                 </Grid.RowDefinitions>
                 <ComboBox Grid.Row="0"
                     ItemsSource="{Binding Scanner.Tarayıcılar}"
@@ -59,9 +59,6 @@
                                 <Setter Property="VerticalContentAlignment" Value="Center" />
                             </Style>
                         </StackPanel.Resources>
-                        <!--<Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="255"
-                            Minimum="1" SmallChange="1" ToolTip="SİYAH BEYAZ EŞİK DEĞERİ"
-                            Value="{Binding Scanner.Eşik, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />-->
                         <StackPanel Orientation="Horizontal">
                             <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="600"
                                 Minimum="72" Orientation="Vertical" SmallChange="1"
@@ -132,10 +129,6 @@
                                 <TextBlock Text="HIZLI TARAMA SONRASI DOSYAYI GÖSTER" TextTrimming="CharacterEllipsis"
                                     ToolTip="HIZLI TARAMA SONRASI DOSYAYI GÖSTER" />
                             </CheckBox>
-                            <!--<CheckBox IsChecked="True" IsEnabled="False">
-                                <TextBlock Text="HIZLI TARAMADA KLASÖRÜ TARİHE GÖRE GRUPLA" TextTrimming="CharacterEllipsis"
-                                    ToolTip="HIZLI TARAMADA KLASÖRÜ TARİHE GÖRE GRUPLA" />
-                            </CheckBox>-->
                         </UniformGrid>
                         <Expander Header="DİĞER AYARLAR">
                             <StackPanel>

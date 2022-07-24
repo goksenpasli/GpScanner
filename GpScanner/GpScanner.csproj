@@ -74,7 +74,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converter\FileNameExtractConverter.cs" />
-    <Compile Include="Converter\FileNamePdfCheckConverter.cs" />
+    <Compile Include="Converter\FileNamePdfZipCheckConverter.cs" />
     <Compile Include="Converter\FilePathMergeConverter.cs" />
     <Compile Include="TesseractView.xaml.cs">
       <DependentUpon>TesseractView.xaml</DependentUpon>
@@ -84,6 +84,7 @@
     <Compile Include="ViewModel\OcrData.cs" />
     <Compile Include="ViewModel\PdfViewer.cs" />
     <Compile Include="ViewModel\TesseractViewModel.cs" />
+    <Compile Include="ViewModel\ViewerTemplateSelector.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

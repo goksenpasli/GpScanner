@@ -161,10 +161,15 @@ namespace TwainControl
                     Description = "Otomatik Kayıt Klasörünü Belirtin.",
                     SelectedPath = Settings.Default.AutoFolder
                 };
+                string oldpath = Settings.Default.AutoFolder;
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     Settings.Default.AutoFolder = dialog.SelectedPath;
                     Scanner.LocalizedPath = GetDisplayName(dialog.SelectedPath);
+                }
+                if (!string.IsNullOrWhiteSpace(oldpath) && oldpath != Settings.Default.AutoFolder)
+                {
+                    _ = MessageBox.Show("Otomatik Kayıt Yolu Değişti. Eski Dosyalar Yeni Belirlenen Klasöre Taşınmayacaktır.", Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 }
             }, parameter => true);
 
@@ -182,13 +187,13 @@ namespace TwainControl
                         case 1:
                             {
                                 GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToArray(), Format.Jpg).Save(saveFileDialog.FileName);
-                                return;
+                                break;
                             }
 
                         case 2:
                             {
                                 GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToArray(), Format.Tiff).Save(saveFileDialog.FileName);
-                                return;
+                                break;
                             }
 
                         case 3:
@@ -198,8 +203,12 @@ namespace TwainControl
                                 using ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Create);
                                 _ = archive.CreateEntryFromFile(dosyayolu, $"{Scanner.SaveFileName}.pdf", CompressionLevel.Optimal);
                                 File.Delete(dosyayolu);
-                                return;
+                                break;
                             }
+                    }
+                    if (Path.GetDirectoryName(saveFileDialog.FileName).Contains(Settings.Default.AutoFolder))
+                    {
+                        OnPropertyChanged(nameof(Scanner.Tarandı));
                     }
                 }
             }, parameter =>

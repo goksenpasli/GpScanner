@@ -149,10 +149,9 @@ namespace GpScanner.ViewModel
                     IsBusy = false;
                     if (!string.IsNullOrWhiteSpace(ScannedText))
                     {
-                        ScannedTextWindowOpen = false;
                         ScannedTextWindowOpen = true;
-                        imgdata = null;
                     }
+                    imgdata = null;
                 });
             }
         }

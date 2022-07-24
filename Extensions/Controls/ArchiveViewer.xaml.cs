@@ -40,20 +40,7 @@ namespace Extensions.Controls
             }, parameter => !string.IsNullOrWhiteSpace(ArchivePath));
         }
 
-        public static event EventHandler<PropertyChangedEventArgs> StaticPropertyChanged;
-
         public event PropertyChangedEventHandler PropertyChanged;
-
-        public static double ToplamOran
-        {
-            get => toplamOran;
-
-            set
-            {
-                toplamOran = value;
-                StaticPropertyChanged?.Invoke(null, new(nameof(ToplamOran)));
-            }
-        }
 
         public string ArchivePath
         {
@@ -76,6 +63,17 @@ namespace Extensions.Controls
         }
 
         public ICommand ArşivTekDosyaÇıkar { get; }
+
+        public double ToplamOran
+        {
+            get => toplamOran;
+
+            set
+            {
+                toplamOran = value;
+                OnPropertyChanged(nameof(ToplamOran));
+            }
+        }
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
@@ -107,7 +105,7 @@ namespace Extensions.Controls
                         archiveViewer.Arşivİçerik.Add(archiveData);
                     }
                 }
-                ToplamOran = (double)archiveViewer.Arşivİçerik.Sum(z => z.SıkıştırılmışBoyut) / archiveViewer.Arşivİçerik.Sum(z => z.Boyut) * 100;
+                archiveViewer.ToplamOran = (double)archiveViewer.Arşivİçerik.Sum(z => z.SıkıştırılmışBoyut) / archiveViewer.Arşivİçerik.Sum(z => z.Boyut) * 100;
             }
         }
     }

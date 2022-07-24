@@ -36,7 +36,8 @@ namespace GpScanner
             if (e.PropertyName is "Tarandı")
             {
                 GpScannerViewModel gpScannerViewModel = DataContext as GpScannerViewModel;
-                gpScannerViewModel.LoadData();
+                gpScannerViewModel.Dosyalar = gpScannerViewModel.GetScannerFileData();
+                gpScannerViewModel.ChartData = gpScannerViewModel.GetChartsData();
             }
 
             if (e.PropertyName is "ImgData")

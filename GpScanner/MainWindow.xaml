@@ -19,7 +19,7 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <twainctrl:TwainCtrl x:Name="TwainCtrl" />
-        <GroupBox Grid.Column="1" Header="DOSYA">
+        <GroupBox Grid.Column="1" Margin="1,0,0,0" Header="DOSYA">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="300" />
@@ -28,11 +28,18 @@
                     <RowDefinition />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Viewbox Stretch="Fill">
-                    <Calendar DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}"
-                        PreviewMouseUp="Calendar_PreviewMouseUp"
-                        SelectedDate="{Binding SeçiliGün}" />
-                </Viewbox>
+                <TabControl>
+                    <TabItem Header="TAKVİM">
+                        <Viewbox Stretch="Fill">
+                            <Calendar DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}"
+                                PreviewMouseUp="Calendar_PreviewMouseUp"
+                                SelectedDate="{Binding SeçiliGün}" />
+                        </Viewbox>
+                    </TabItem>
+                    <TabItem Header="GRAFİK">
+                        <Extensions:GraphControl Series="{Binding ChartData}" />
+                    </TabItem>
+                </TabControl>
                 <UniformGrid Grid.Row="1" Columns="3">
                     <Button Command="{Binding ResetFilter}">
                         <Button.Content>
@@ -60,7 +67,7 @@
                                         </MultiBinding>
                                     </Image.Source>
                                 </Image>
-                                <TextBlock VerticalAlignment="Center" Text="PDF DOSYA&#x0a;ÖNİZLEME" />
+                                <TextBlock VerticalAlignment="Center" Text="PDF ZİP DOSYA&#x0a;ÖNİZLEME" />
                             </StackPanel>
                         </ToggleButton.Content>
                     </ToggleButton>
@@ -95,70 +102,71 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate>
-                                        <StackPanel>
-                                            <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                                IsChecked="{Binding Seçili}"
-                                                IsEnabled="{Binding FileName, Mode=OneWay, Converter={StaticResource FileNamePdfCheckConverter}}">
-                                                <CheckBox.Style>
-                                                    <Style TargetType="CheckBox">
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding Path=DataContext.ShowPdfPreview, RelativeSource={RelativeSource AncestorType=Window}}" Value="true">
-                                                                <Setter Property="Content">
-                                                                    <Setter.Value>
-                                                                        <ContentControl Width="105" Height="149"
-                                                                            Content="{Binding Path=FileName}">
-                                                                            <ContentControl.ContentTemplate>
-                                                                                <DataTemplate>
-                                                                                    <ViewModel:PdfViewer FirstPageThumbnail="True"
-                                                                                        PdfFilePath="{Binding DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                                                                        Template="{StaticResource PdfViewerControlTemplate}"
-                                                                                        ToolBarVisibility="Collapsed" />
-                                                                                </DataTemplate>
-                                                                            </ContentControl.ContentTemplate>
-                                                                        </ContentControl>
-                                                                    </Setter.Value>
-                                                                </Setter>
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </CheckBox.Style>
-                                            </CheckBox>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Extensions:SplitButton Command="{Binding DataContext.WebAdreseGit, ElementName=TwainCtrl, Mode=OneWay}"
-                                                    CommandParameter="{Binding Path=FileName}"
-                                                    SplitContentPartIsEnabled="{Binding FileName, Mode=OneWay, Converter={StaticResource FileNamePdfCheckConverter}}">
-                                                    <Extensions:SplitButton.Content>
-                                                        <StackPanel Orientation="Horizontal">
-                                                            <Image Width="32" Height="32"
-                                                                Source="{Binding FileName, Converter={StaticResource FilePathToIconConverter}}" />
-                                                            <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay, Path=FileName, Converter={StaticResource FileNameExtractConverter}}" />
-                                                        </StackPanel>
-                                                    </Extensions:SplitButton.Content>
-                                                    <Extensions:SplitButton.InternalContent>
-                                                        <Extensions:ResizablePanel Width="480" Height="360" MinWidth="480"
-                                                            MinHeight="360">
-                                                            <GroupBox>
-                                                                <ContentControl Content="{Binding Path=FileName}" ContentTemplate="{StaticResource PdfViewerTemplate}" />
-                                                            </GroupBox>
-                                                        </Extensions:ResizablePanel>
-                                                    </Extensions:SplitButton.InternalContent>
-                                                </Extensions:SplitButton>
-                                                <TextBlock VerticalAlignment="Center" ToolTip="KLASÖRDE GÖSTER">
-                                                    <Hyperlink Command="{Binding DataContext.ExploreFile, ElementName=TwainCtrl, Mode=OneWay}"
+                                        <Border BorderThickness="5">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Seçili}" Value="true">
+                                                            <Setter Property="BorderBrush" Value="MediumSeaGreen" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <StackPanel>
+                                                <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                                    IsChecked="{Binding Seçili}"
+                                                    IsEnabled="{Binding FileName, Mode=OneWay, Converter={StaticResource FileNamePdfZipCheckConverter}}">
+                                                    <CheckBox.Style>
+                                                        <Style TargetType="CheckBox">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Path=DataContext.ShowPdfPreview, RelativeSource={RelativeSource AncestorType=Window}}" Value="true">
+                                                                    <Setter Property="Content">
+                                                                        <Setter.Value>
+                                                                            <ContentControl Content="{Binding Path=FileName}" ContentTemplateSelector="{StaticResource ViewerSelector}" />
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </CheckBox.Style>
+                                                </CheckBox>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Extensions:SplitButton Command="{Binding DataContext.WebAdreseGit, ElementName=TwainCtrl, Mode=OneWay}"
                                                         CommandParameter="{Binding Path=FileName}"
-                                                        TextDecorations="None">
-                                                        <Image Width="32" Height="32">
-                                                            <Image.Source>
-                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                    <Binding Source="Shell32.dll" />
-                                                                    <Binding Source="4" />
-                                                                </MultiBinding>
-                                                            </Image.Source>
-                                                        </Image>
-                                                    </Hyperlink>
-                                                </TextBlock>
+                                                        SplitContentPartIsEnabled="{Binding FileName, Mode=OneWay, Converter={StaticResource FileNamePdfZipCheckConverter}}">
+                                                        <Extensions:SplitButton.Content>
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <Image Width="32" Height="32"
+                                                                    Source="{Binding FileName, Converter={StaticResource FilePathToIconConverter}}" />
+                                                                <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay, Path=FileName, Converter={StaticResource FileNameExtractConverter}}" />
+                                                            </StackPanel>
+                                                        </Extensions:SplitButton.Content>
+                                                        <Extensions:SplitButton.InternalContent>
+                                                            <Extensions:ResizablePanel Width="480" Height="360" MinWidth="480"
+                                                                MinHeight="360">
+                                                                <GroupBox>
+                                                                    <ContentControl Content="{Binding Path=FileName}" ContentTemplate="{StaticResource PdfViewerTemplateFull}" />
+                                                                </GroupBox>
+                                                            </Extensions:ResizablePanel>
+                                                        </Extensions:SplitButton.InternalContent>
+                                                    </Extensions:SplitButton>
+                                                    <TextBlock VerticalAlignment="Center" ToolTip="KLASÖRDE GÖSTER">
+                                                        <Hyperlink Command="{Binding DataContext.ExploreFile, ElementName=TwainCtrl, Mode=OneWay}"
+                                                            CommandParameter="{Binding Path=FileName}"
+                                                            TextDecorations="None">
+                                                            <Image Width="32" Height="32">
+                                                                <Image.Source>
+                                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                        <Binding Source="Shell32.dll" />
+                                                                        <Binding Source="4" />
+                                                                    </MultiBinding>
+                                                                </Image.Source>
+                                                            </Image>
+                                                        </Hyperlink>
+                                                    </TextBlock>
+                                                </StackPanel>
                                             </StackPanel>
-                                        </StackPanel>
+                                        </Border>
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>
@@ -179,14 +187,14 @@
                             <TextBlock VerticalAlignment="Center">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
-                                        <Setter Property="Text" Value="BİRLEŞTİR"/>
+                                        <Setter Property="Text" Value="BİRLEŞTİR" />
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding CheckedPdfCount}" Value="0">
                                                 <Setter Property="Text" Value="İŞARETLİ PDFLERİ BİRLEŞTİR" />
-                                            </DataTrigger> 
+                                            </DataTrigger>
                                             <DataTrigger Binding="{Binding CheckedPdfCount}" Value="1">
-                                                <Setter Property="Text" Value="EN AZ İKİ DOSYA SEÇİN" />
-                                            </DataTrigger>                                            
+                                                <Setter Property="Text" Value="EN AZ İKİ PDF DOSYASI SEÇİN" />
+                                            </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
                                 </TextBlock.Style>
