@@ -1,12 +1,17 @@
 ﻿<Window x:Class="GpScanner.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
-    xmlns:ViewModel="clr-namespace:GpScanner.ViewModel" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:GpScanner" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
-    Title="Tarayıcı"
+    xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:ViewModel="clr-namespace:GpScanner.ViewModel"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:GpScanner"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:properties="clr-namespace:GpScanner.Properties" xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
+    xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
+    Title="{twainctrl:Loc SCANNER}"
     d:DataContext="{d:DesignInstance Type=ViewModel:GpScannerViewModel}"
-    d:Height="600" d:Width="1280" UseLayoutRounding="True"
-    WindowStartupLocation="CenterScreen" WindowState="Maximized" mc:Ignorable="d">
+    d:Height="600" d:Width="1280"
+    twainctrl:Translation.ResourceManager="{x:Static twainproperties:Resources.ResourceManager}"
+    UseLayoutRounding="True" WindowStartupLocation="CenterScreen" WindowState="Maximized"
+    mc:Ignorable="d">
     <Window.Resources>
         <CollectionViewSource x:Key="Veriler" Source="{Binding Dosyalar}">
             <CollectionViewSource.SortDescriptions />
@@ -19,7 +24,8 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <twainctrl:TwainCtrl x:Name="TwainCtrl" />
-        <GroupBox Grid.Column="1" Margin="1,0,0,0" Header="DOSYA">
+        <GroupBox Grid.Column="1" Margin="1,0,0,0"
+            Header="{twainctrl:Loc FILE}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="300" />
@@ -29,14 +35,14 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <TabControl>
-                    <TabItem Header="TAKVİM">
+                    <TabItem Header="{twainctrl:Loc CALENDAR}">
                         <Viewbox Stretch="Fill">
                             <Calendar DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}"
                                 PreviewMouseUp="Calendar_PreviewMouseUp"
                                 SelectedDate="{Binding SeçiliGün}" />
                         </Viewbox>
                     </TabItem>
-                    <TabItem Header="GRAFİK">
+                    <TabItem Header="{twainctrl:Loc GRAPH}">
                         <Extensions:GraphControl Series="{Binding ChartData}" />
                     </TabItem>
                 </TabControl>
@@ -52,7 +58,7 @@
                                         </MultiBinding>
                                     </Image.Source>
                                 </Image>
-                                <TextBlock VerticalAlignment="Center" Text="TÜMÜNÜ&#x0a;GÖR" />
+                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc VIEWALL}" />
                             </StackPanel>
                         </Button.Content>
                     </Button>
@@ -67,7 +73,7 @@
                                         </MultiBinding>
                                     </Image.Source>
                                 </Image>
-                                <TextBlock VerticalAlignment="Center" Text="PDF ZİP DOSYA&#x0a;ÖNİZLEME" />
+                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PREVIEWFILE}" />
                             </StackPanel>
                         </ToggleButton.Content>
                     </ToggleButton>
@@ -76,7 +82,7 @@
                             <StackPanel Orientation="Horizontal">
                                 <Canvas Width="32" Height="32" HorizontalAlignment="Left"
                                     Background="{StaticResource Tesseract}" />
-                                <TextBlock VerticalAlignment="Center" Text="TESSERACT" />
+                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc TESSERACT}" />
                             </StackPanel>
                         </Extensions:ContentToggleButton.OverContent>
                         <Extensions:ContentToggleButton.Content>
@@ -150,7 +156,7 @@
                                                             </Extensions:ResizablePanel>
                                                         </Extensions:SplitButton.InternalContent>
                                                     </Extensions:SplitButton>
-                                                    <TextBlock VerticalAlignment="Center" ToolTip="KLASÖRDE GÖSTER">
+                                                    <TextBlock VerticalAlignment="Center" ToolTip="{twainctrl:Loc SHOWFOLDER}">
                                                         <Hyperlink Command="{Binding DataContext.ExploreFile, ElementName=TwainCtrl, Mode=OneWay}"
                                                             CommandParameter="{Binding Path=FileName}"
                                                             TextDecorations="None">
@@ -173,7 +179,7 @@
                         </Style>
                     </ListBox.ItemContainerStyle>
                 </ListBox>
-                <UniformGrid Grid.Row="4" Columns="2">
+                <UniformGrid Grid.Row="4" Columns="3">
                     <Button Command="{Binding PdfBirleştir}">
                         <StackPanel Orientation="Horizontal">
                             <Image Width="32" Height="32">
@@ -187,13 +193,13 @@
                             <TextBlock VerticalAlignment="Center">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
-                                        <Setter Property="Text" Value="BİRLEŞTİR" />
+                                        <Setter Property="Text" Value="{twainctrl:Loc MERGE}" />
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding CheckedPdfCount}" Value="0">
-                                                <Setter Property="Text" Value="İŞARETLİ PDFLERİ BİRLEŞTİR" />
+                                                <Setter Property="Text" Value="{twainctrl:Loc MERGESELECTED}" />
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding CheckedPdfCount}" Value="1">
-                                                <Setter Property="Text" Value="EN AZ İKİ PDF DOSYASI SEÇİN" />
+                                                <Setter Property="Text" Value="{twainctrl:Loc SELECTTWOPDF}" />
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -202,12 +208,12 @@
                         </StackPanel>
                     </Button>
                     <Extensions:SplitButton HorizontalContentAlignment="Stretch"
-                        Command="{Binding TesseractViewModel.OcrPage, Mode=OneWay}"
+                        Command="{Binding OcrPage, Mode=OneWay}"
                         CommandParameter="{Binding ElementName=TwainCtrl, Path=DataContext.Scanner}"
-                        IsSplitPartOpen="{Binding TesseractViewModel.ScannedTextWindowOpen}">
+                        IsSplitPartOpen="{Binding ScannedTextWindowOpen}">
                         <Extensions:SplitButton.Content>
                             <Grid>
-                                <ProgressBar IsIndeterminate="{Binding TesseractViewModel.IsBusy}" />
+                                <ProgressBar IsIndeterminate="{Binding IsBusy}" />
                                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                     <Image Width="32" Height="32">
                                         <Image.Source>
@@ -217,19 +223,41 @@
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
-                                    <TextBlock VerticalAlignment="Center" Text="AKTİF SAYFAYI OKU" />
+                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc READACTIVEPAGE}" />
                                 </StackPanel>
                             </Grid>
                         </Extensions:SplitButton.Content>
                         <Extensions:SplitButton.InternalContent>
-                            <GroupBox Header="OKUNAN İÇERİK">
+                            <GroupBox Header="{twainctrl:Loc CONTENT}">
                                 <TextBox Width="420" Height="594" AcceptsReturn="True"
                                     IsReadOnly="True"
-                                    Text="{Binding TesseractViewModel.ScannedText}"
+                                    Text="{Binding ScannedText}"
                                     TextWrapping="Wrap" />
                             </GroupBox>
                         </Extensions:SplitButton.InternalContent>
                     </Extensions:SplitButton>
+                    <ComboBox VerticalContentAlignment="Center"
+                        SelectedValue="{Binding SeçiliDil}"
+                        SelectedValuePath="Tag">
+                        <ComboBoxItem Tag="TÜRKÇE">
+                            <ComboBoxItem.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="51" Height="30" RenderOptions.BitmapScalingMode="Fant"
+                                        Source="/Resources/flag-of-Turkey.png" />
+                                    <TextBlock VerticalAlignment="Center" Text="TÜRKÇE" />
+                                </StackPanel>
+                            </ComboBoxItem.Content>
+                        </ComboBoxItem>
+                        <ComboBoxItem Tag="ENGLISH">
+                            <ComboBoxItem.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="51" Height="30" RenderOptions.BitmapScalingMode="Fant"
+                                        Source="/Resources/flag-of-United-States-of-America.png" />
+                                    <TextBlock VerticalAlignment="Center" Text="ENGLISH" />
+                                </StackPanel>
+                            </ComboBoxItem.Content>
+                        </ComboBoxItem>
+                    </ComboBox>
                 </UniformGrid>
             </Grid>
         </GroupBox>

@@ -76,6 +76,7 @@
     <Compile Include="Converter\FileNameExtractConverter.cs" />
     <Compile Include="Converter\FileNamePdfZipCheckConverter.cs" />
     <Compile Include="Converter\FilePathMergeConverter.cs" />
+    <Compile Include="Converter\NullableToBooleanConverter.cs" />
     <Compile Include="TesseractView.xaml.cs">
       <DependentUpon>TesseractView.xaml</DependentUpon>
     </Compile>
@@ -146,7 +147,10 @@
   <ItemGroup>
     <SplashScreen Include="splash.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\flag-of-Turkey.png" />
+    <Resource Include="Resources\flag-of-United-States-of-America.png" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="tessdata\placeholder.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

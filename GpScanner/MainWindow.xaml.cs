@@ -42,8 +42,7 @@ namespace GpScanner
 
             if (e.PropertyName is "ImgData")
             {
-                TesseractViewModel tesseractViewModel = (DataContext as GpScannerViewModel)?.TesseractViewModel;
-                tesseractViewModel.Ocr(TwainCtrl.ImgData);
+                (DataContext as GpScannerViewModel)?.Ocr(TwainCtrl.ImgData);
                 TwainCtrl.ImgData = null;
             }
         }

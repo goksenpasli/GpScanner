@@ -5,5 +5,8 @@
     <Setting Name="DefaultTtsLang" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="DefaultLang" Type="System.String" Scope="User">
+      <Value Profile="(Default)">TÜRKÇE</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

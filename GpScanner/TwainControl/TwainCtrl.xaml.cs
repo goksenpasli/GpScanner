@@ -158,7 +158,7 @@ namespace TwainControl
             {
                 System.Windows.Forms.FolderBrowserDialog dialog = new()
                 {
-                    Description = "Otomatik Kayıt Klasörünü Belirtin.",
+                    Description = Translation.GetResStringValue("AUTOFOLDER"),
                     SelectedPath = Settings.Default.AutoFolder
                 };
                 string oldpath = Settings.Default.AutoFolder;
@@ -169,7 +169,7 @@ namespace TwainControl
                 }
                 if (!string.IsNullOrWhiteSpace(oldpath) && oldpath != Settings.Default.AutoFolder)
                 {
-                    _ = MessageBox.Show("Otomatik Kayıt Yolu Değişti. Eski Dosyalar Yeni Belirlenen Klasöre Taşınmayacaktır.", Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    _ = MessageBox.Show(Translation.GetResStringValue("AUTOFOLDERCHANGE"), Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 }
             }, parameter => true);
 
@@ -219,7 +219,7 @@ namespace TwainControl
 
             ListeTemizle = new RelayCommand<object>(parameter =>
             {
-                if (MessageBox.Show("Üstteki Listede Bulunan Tüm Taranan Evrak Silinecek Devam Etmek İstiyor Musun?", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                if (MessageBox.Show(Translation.GetResStringValue("LISTREMOVEWARN"), Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     Scanner.Resimler?.Clear();
                     ResetCropMargin();

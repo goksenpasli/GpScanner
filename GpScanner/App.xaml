@@ -1,9 +1,11 @@
 ﻿<Application x:Class="GpScanner.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:Controls="clr-namespace:Extensions.Controls;assembly=Extensions"
-    xmlns:Converter="clr-namespace:GpScanner.Converter" xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
-    xmlns:ViewModel="clr-namespace:GpScanner.ViewModel"
-    xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options" Startup="Application_Startup"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+             xmlns:Controls="clr-namespace:Extensions.Controls;assembly=Extensions"
+             xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
+             xmlns:Converter="clr-namespace:GpScanner.Converter"
+             xmlns:ViewModel="clr-namespace:GpScanner.ViewModel"
+             Startup="Application_Startup"
     StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>

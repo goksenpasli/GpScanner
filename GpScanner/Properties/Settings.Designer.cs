@@ -34,5 +34,17 @@ namespace GpScanner.Properties {
                 this["DefaultTtsLang"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("TÜRKÇE")]
+        public string DefaultLang {
+            get {
+                return ((string)(this["DefaultLang"]));
+            }
+            set {
+                this["DefaultLang"] = value;
+            }
+        }
     }
 }

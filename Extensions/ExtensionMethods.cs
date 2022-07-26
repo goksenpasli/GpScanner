@@ -8,7 +8,6 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
@@ -162,7 +161,7 @@ namespace Extensions
 
         public static string GetFileType(this string filename)
         {
-            SHFILEINFO shinfo =new SHFILEINFO();
+            SHFILEINFO shinfo = new SHFILEINFO();
             _ = SHGetFileInfo
                 (
                         filename,
@@ -332,7 +331,7 @@ namespace Extensions
             return tb;
         }
 
-        public static string SetUniqueFile(this string path, string file, string extension, string seperator="_")
+        public static string SetUniqueFile(this string path, string file, string extension, string seperator = "_")
         {
             if (seperator.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
             {

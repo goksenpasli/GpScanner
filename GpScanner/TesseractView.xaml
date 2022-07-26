@@ -1,10 +1,13 @@
 ﻿<UserControl x:Class="GpScanner.TesseractView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:GpScanner" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:properties="clr-namespace:GpScanner.Properties" xmlns:viewmodel="clr-namespace:GpScanner.ViewModel"
+    xmlns:properties="clr-namespace:GpScanner.Properties" xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
+    xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
+    xmlns:viewmodel="clr-namespace:GpScanner.ViewModel"
     d:DataContext="{d:DesignInstance Type=viewmodel:TesseractViewModel}"
-    d:DesignHeight="350" d:DesignWidth="500" UseLayoutRounding="True"
-    mc:Ignorable="d">
+    d:DesignHeight="350" d:DesignWidth="500"
+    twainctrl:Translation.ResourceManager="{x:Static twainproperties:Resources.ResourceManager}"
+    UseLayoutRounding="True" mc:Ignorable="d">
     <GroupBox Header="TESSERACT">
         <Grid>
             <Grid.RowDefinitions>
@@ -42,17 +45,19 @@
                     <Paragraph>
                         <Span>
                             <Hyperlink Command="{Binding TesseractDataFilesDownloadLink}" CommandParameter="https://docs.microsoft.com/tr-tr/cpp/windows/latest-supported-vc-redist?view=msvc-170">
-                                <Run Text="Visual Studio 2019 x86 and x64 Runtimes" />
+                                <Run Text="{twainctrl:Loc VC}" />
                             </Hyperlink>
                         </Span>
-                        Tesseract ve leptonica ikili dosyaları Visual Studio 2019 ile derlendiğinden, Visual Studio 2019 Runtime'ın kurulu olduğundan emin olmanız gerekir.</Paragraph>
+                        <Run Text="{twainctrl:Loc CRUNTIME}" />
+                    </Paragraph>
                     <Paragraph>
                         <Span>
                             <Hyperlink Command="{Binding TesseractDataFilesDownloadLink}" CommandParameter="https://github.com/tesseract-ocr/tessdata">
-                                <Run Text="Other tesseract language data" />
+                                <Run Text="{twainctrl:Loc OTHERTESSERACTLINK}" />
                             </Hyperlink>
                         </Span>
-                        Ayrıca tesseract 4.1.0 için diğer dil veri dosyalarını gerekirse tesseract-ocr'den indirin. Tessdata klasörüne koyun.</Paragraph>
+                        <Run Text="{twainctrl:Loc OTHERTESSERACT}" />
+                    </Paragraph>
                 </FlowDocument>
             </FlowDocumentScrollViewer>
         </Grid>

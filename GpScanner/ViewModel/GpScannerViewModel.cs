@@ -4,8 +4,10 @@ using Microsoft.Win32;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -22,6 +24,8 @@ namespace GpScanner.ViewModel
             Dosyalar = GetScannerFileData();
             ChartData = GetChartsData();
             SeçiliGün = DateTime.Today;
+            SeçiliDil = Settings.Default.DefaultLang;
+
             TesseractViewModel = new TesseractViewModel();
 
             ResetFilter = new RelayCommand<object>(parameter => MainWindow.cvs.View.Filter = null, parameter => MainWindow.cvs.View is not null);
@@ -50,8 +54,30 @@ namespace GpScanner.ViewModel
                 return CheckedPdfCount > 1;
             });
 
+            OcrPage = new RelayCommand<object>(parameter =>
+            {
+                byte[] imgdata;
+                switch (parameter)
+                {
+                    case Scanner scanner:
+                        {
+                            imgdata = scanner.SeçiliResim.Resim.ToTiffJpegByteArray(ExtensionMethods.Format.Png);
+                            Ocr(imgdata);
+                            return;
+                        }
+
+                    case ImageSource croppedimage:
+                        {
+                            imgdata = croppedimage.ToTiffJpegByteArray(ExtensionMethods.Format.Png);
+                            Ocr(imgdata);
+                            return;
+                        }
+                }
+            }, parameter => (!string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && parameter is Scanner scanner && scanner.SeçiliResim is not null) || (parameter is ImageSource ımageSource && ımageSource is not null));
+
             Settings.Default.PropertyChanged += Default_PropertyChanged;
             PropertyChanged += GpScannerViewModel_PropertyChanged;
+            OnPropertyChanged(nameof(SeçiliDil));
         }
 
         public string AramaMetni
@@ -110,9 +136,67 @@ namespace GpScanner.ViewModel
             }
         }
 
+        public bool IsBusy
+        {
+            get => ısBusy;
+
+            set
+            {
+                if (ısBusy != value)
+                {
+                    ısBusy = value;
+                    OnPropertyChanged(nameof(IsBusy));
+                }
+            }
+        }
+
+        public ICommand OcrPage { get; }
+
         public ICommand PdfBirleştir { get; }
 
         public ICommand ResetFilter { get; }
+
+        public string ScannedText
+        {
+            get => scannedText;
+
+            set
+            {
+                if (scannedText != value)
+                {
+                    scannedText = value;
+                    OnPropertyChanged(nameof(ScannedText));
+                }
+            }
+        }
+
+        public bool ScannedTextWindowOpen
+        {
+            get => scannedTextWindowOpen;
+
+            set
+            {
+                if (scannedTextWindowOpen != value)
+                {
+                    scannedTextWindowOpen = value;
+                    OnPropertyChanged(nameof(ScannedTextWindowOpen));
+                }
+            }
+        }
+
+        public string SeçiliDil
+        {
+            get => seçiliDil;
+
+            set
+            {
+                if (seçiliDil != value)
+                {
+                    seçiliDil = value;
+                    OnPropertyChanged(nameof(SeçiliDil));
+                }
+            }
+        }
 
         public DateTime? SeçiliGün
         {
@@ -168,8 +252,7 @@ namespace GpScanner.ViewModel
             }
             catch (Exception)
             {
-                list.Add(new Chart() { Description = "DİKKAT KLASÖR TARİHLERİNDE GEÇERSİZ TARİH VAR. GRAFİK GÖSTERİLEMİYOR.", ChartBrush = Brushes.Transparent, ChartValue = 1 });
-                return list;
+                return null;
             }
         }
 
@@ -187,6 +270,25 @@ namespace GpScanner.ViewModel
             return null;
         }
 
+        public void Ocr(byte[] imgdata)
+        {
+            if (imgdata is not null)
+            {
+                _ = Task.Run(() =>
+                {
+                    ScannedText = null;
+                    IsBusy = true;
+                    ScannedText = imgdata.OcrYap(Settings.Default.DefaultTtsLang);
+                    IsBusy = false;
+                    if (!string.IsNullOrWhiteSpace(ScannedText))
+                    {
+                        ScannedTextWindowOpen = true;
+                    }
+                    imgdata = null;
+                });
+            }
+        }
+
         private string aramaMetni;
 
         private ObservableCollection<Chart> chartData;
@@ -194,6 +296,14 @@ namespace GpScanner.ViewModel
         private int? checkedPdfCount = 0;
 
         private ObservableCollection<Scanner> dosyalar;
+
+        private bool ısBusy;
+
+        private string scannedText;
+
+        private bool scannedTextWindowOpen;
+
+        private string seçiliDil;
 
         private DateTime? seçiliGün;
 
@@ -215,6 +325,20 @@ namespace GpScanner.ViewModel
             if (e.PropertyName is "AramaMetni")
             {
                 MainWindow.cvs.Filter += (s, x) => x.Accepted = Path.GetFileNameWithoutExtension((x.Item as Scanner)?.FileName).Contains(AramaMetni, StringComparison.OrdinalIgnoreCase);
+            }
+            if (e.PropertyName is "SeçiliDil")
+            {
+                switch (SeçiliDil)
+                {
+                    case "TÜRKÇE":
+                        TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("tr-TR");
+                        break;
+
+                    case "ENGLISH":
+                        TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("en-EN");
+                        break;
+                }
+                Settings.Default.DefaultLang = SeçiliDil;
             }
         }
 
