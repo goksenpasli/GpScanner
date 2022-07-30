@@ -24,7 +24,7 @@ namespace GpScanner.ViewModel
 
         public static readonly DependencyProperty PdfFileStreamProperty = DependencyProperty.Register("PdfFileStream", typeof(byte[]), typeof(PdfViewer), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.NotDataBindable, async (o, e) => await PdfStreamChangedAsync(o, e)));
 
-        public static new readonly DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(PdfViewer), new PropertyMetadata(1.0));
+        public new static readonly DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(PdfViewer), new PropertyMetadata(1.0));
 
         public PdfViewer()
         {
@@ -249,28 +249,25 @@ namespace GpScanner.ViewModel
 
         private static async Task PdfStreamChangedAsync(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is PdfViewer pdfViewer)
+            if (d is PdfViewer pdfViewer && e.NewValue is byte[] pdfdata && pdfdata.Length > 0)
             {
                 try
                 {
-                    if (e.NewValue is byte[] pdfdata && pdfdata.Length > 0)
+                    int sayfa = pdfViewer.Sayfa;
+                    int dpi = pdfViewer.Dpi;
+                    int thumbdpi = pdfViewer.ThumbnailDpi;
+                    if (pdfViewer.FirstPageThumbnail)
                     {
-                        int sayfa = pdfViewer.Sayfa;
-                        int dpi = pdfViewer.Dpi;
-                        int thumbdpi = pdfViewer.ThumbnailDpi;
-                        if (pdfViewer.FirstPageThumbnail)
-                        {
-                            pdfViewer.Source = await Task.Run(() => BitmapSourceFromByteArray(Pdf2Png.Convert(pdfdata, 1, thumbdpi), true, thumbdpi));
-                        }
-                        else
-                        {
-                            pdfViewer.ToplamSayfa = Pdf2Png.ConvertAllPages(pdfdata, 0).Count;
-                            pdfViewer.Source = await Task.Run(() => BitmapSourceFromByteArray(Pdf2Png.Convert(pdfdata, sayfa, dpi)));
-                            pdfViewer.TifNavigasyonButtonEtkin = pdfViewer.ToplamSayfa > 1 ? Visibility.Visible : Visibility.Collapsed;
-                            pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
-                        }
-                        pdfdata = null;
+                        pdfViewer.Source = await Task.Run(() => BitmapSourceFromByteArray(Pdf2Png.Convert(pdfdata, 1, thumbdpi), true, thumbdpi));
                     }
+                    else
+                    {
+                        pdfViewer.ToplamSayfa = Pdf2Png.ConvertAllPages(pdfdata, 0).Count;
+                        pdfViewer.Source = await Task.Run(() => BitmapSourceFromByteArray(Pdf2Png.Convert(pdfdata, sayfa, dpi)));
+                        pdfViewer.TifNavigasyonButtonEtkin = pdfViewer.ToplamSayfa > 1 ? Visibility.Visible : Visibility.Collapsed;
+                        pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
+                    }
+                    pdfdata = null;
                 }
                 catch (Exception ex)
                 {

@@ -263,28 +263,27 @@ namespace Extensions
         {
             if (value != null)
             {
-                RegistryKey keyForExt = Registry.ClassesRoot.OpenSubKey(value);
+                using RegistryKey keyForExt = Registry.ClassesRoot.OpenSubKey(value);
                 if (keyForExt == null)
                 {
                     return null;
                 }
 
                 string className = Convert.ToString(keyForExt.GetValue(null));
-                RegistryKey keyForClass = Registry.ClassesRoot.OpenSubKey(className);
+                using RegistryKey keyForClass = Registry.ClassesRoot.OpenSubKey(className);
                 if (keyForClass == null)
                 {
                     return null;
                 }
 
-                RegistryKey keyForIcon = keyForClass.OpenSubKey("DefaultIcon");
+                using RegistryKey keyForIcon = keyForClass.OpenSubKey("DefaultIcon");
                 if (keyForIcon == null)
                 {
-                    RegistryKey keyForCLSID = keyForClass.OpenSubKey("CLSID");
+                    using RegistryKey keyForCLSID = keyForClass.OpenSubKey("CLSID");
                     if (keyForCLSID != null)
                     {
                         string clsid = $"CLSID\\{Convert.ToString(keyForCLSID.GetValue(null))}\\DefaultIcon";
-                        keyForIcon = Registry.ClassesRoot.OpenSubKey(clsid);
-                        if (keyForIcon == null)
+                        if (Registry.ClassesRoot.OpenSubKey(clsid) == null)
                         {
                             return null;
                         }

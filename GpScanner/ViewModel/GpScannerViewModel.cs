@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using TwainControl;
 using static Extensions.GraphControl;
@@ -90,6 +91,20 @@ namespace GpScanner.ViewModel
                 {
                     aramaMetni = value;
                     OnPropertyChanged(nameof(AramaMetni));
+                }
+            }
+        }
+
+        public XmlLanguage CalendarLang
+        {
+            get => calendarLang;
+
+            set
+            {
+                if (calendarLang != value)
+                {
+                    calendarLang = value;
+                    OnPropertyChanged(nameof(CalendarLang));
                 }
             }
         }
@@ -241,9 +256,9 @@ namespace GpScanner.ViewModel
 
         public ObservableCollection<Chart> GetChartsData()
         {
-            ObservableCollection<Chart> list = new();
             try
             {
+                ObservableCollection<Chart> list = new();
                 foreach (IGrouping<int, Scanner> chart in Dosyalar.GroupBy(z => DateTime.Parse(Directory.GetParent(z.FileName).Name).Day))
                 {
                     list.Add(new Chart() { Description = chart.Key.ToString(), ChartBrush = RandomColor(), ChartValue = chart.Count() });
@@ -291,6 +306,8 @@ namespace GpScanner.ViewModel
 
         private string aramaMetni;
 
+        private XmlLanguage calendarLang;
+
         private ObservableCollection<Chart> chartData;
 
         private int? checkedPdfCount = 0;
@@ -332,10 +349,12 @@ namespace GpScanner.ViewModel
                 {
                     case "TÜRKÇE":
                         TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("tr-TR");
+                        CalendarLang = XmlLanguage.GetLanguage("tr-TR");
                         break;
 
                     case "ENGLISH":
                         TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("en-EN");
+                        CalendarLang = XmlLanguage.GetLanguage("en-EN");
                         break;
                 }
                 Settings.Default.DefaultLang = SeçiliDil;

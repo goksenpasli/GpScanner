@@ -588,11 +588,11 @@
                         Style="{StaticResource SliderStyle}"
                         TickPlacement="TopLeft"
                         Value="{Binding Scanner.CropBottom}" />
-                    <Grid>
+                    <Grid DockPanel.ZIndex="-1">
                         <Extensions:ImageViewer x:Name="ImgViewer"
                             Angle="{Binding Scanner.RotateAngle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            DockPanel.ZIndex="-1" FitImageOrientation="Height" OrijinalResimDosyaAçButtonVisibility="Collapsed"
-                            PreviewMouseDown="ImgViewer_MouseDown" PreviewMouseMove="ImgViewer_MouseMove" SnapTick="True"
+                            FitImageOrientation="Height" OrijinalResimDosyaAçButtonVisibility="Collapsed" PreviewMouseDown="ImgViewer_MouseDown"
+                            PreviewMouseMove="ImgViewer_MouseMove" SnapTick="True"
                             Source="{Binding Scanner.SeçiliResim.Resim}" />
                         <Canvas x:Name="cnv" />
                     </Grid>

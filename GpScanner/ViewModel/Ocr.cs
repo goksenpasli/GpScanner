@@ -13,15 +13,7 @@ namespace GpScanner.ViewModel
         {
             if (Directory.Exists(Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + @"\tessdata"))
             {
-                try
-                {
-                    return GetText(dosya, lang);
-                }
-                catch (Exception ex)
-                {
-                    _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                    return string.Empty;
-                }
+                return GetText(dosya, lang);
             }
             _ = MessageBox.Show("Tesseract Engine Klasörünü Kontrol Edin.", Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
             return string.Empty;
@@ -29,14 +21,18 @@ namespace GpScanner.ViewModel
 
         private static string GetText(byte[] dosya, string lang)
         {
-            if (!string.IsNullOrWhiteSpace(lang) && dosya is not null)
+            try
             {
                 using TesseractEngine engine = new("./tessdata", lang, EngineMode.TesseractAndLstm);
                 using Pix pixImage = Pix.LoadFromMemory(dosya);
                 using Page page = engine.Process(pixImage);
                 return page.GetText();
             }
-            return string.Empty;
+            catch (Exception ex)
+            {
+                _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return string.Empty;
+            }
         }
     }
 }

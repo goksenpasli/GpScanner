@@ -38,12 +38,9 @@ namespace TwainControl
                 baseName = GetResourceManager(rootObject)?.BaseName ?? string.Empty;
             }
 
-            if (string.IsNullOrEmpty(baseName)) // template re-binding
+            if (string.IsNullOrEmpty(baseName) && targetObject is FrameworkElement frameworkElement) // template re-binding
             {
-                if (targetObject is FrameworkElement frameworkElement)
-                {
-                    baseName = GetResourceManager(frameworkElement.TemplatedParent)?.BaseName ?? string.Empty;
-                }
+                baseName = GetResourceManager(frameworkElement.TemplatedParent)?.BaseName ?? string.Empty;
             }
 
             Binding binding = new()
@@ -64,14 +61,11 @@ namespace TwainControl
                 object localValue = dependencyObject.ReadLocalValue(Translation.ResourceManagerProperty);
 
                 // does this control have a "Translation.ResourceManager" attached property with a set value?
-                if (localValue != DependencyProperty.UnsetValue)
+                if (localValue != DependencyProperty.UnsetValue && localValue is ResourceManager resourceManager)
                 {
-                    if (localValue is ResourceManager resourceManager)
-                    {
-                        TranslationSource.Instance.AddResourceManager(resourceManager);
+                    TranslationSource.Instance.AddResourceManager(resourceManager);
 
-                        return resourceManager;
-                    }
+                    return resourceManager;
                 }
             }
 
@@ -81,8 +75,7 @@ namespace TwainControl
 
     public class Translation : DependencyObject
     {
-        public static readonly DependencyProperty ResourceManagerProperty =
-            DependencyProperty.RegisterAttached("ResourceManager", typeof(ResourceManager), typeof(Translation));
+        public static readonly DependencyProperty ResourceManagerProperty = DependencyProperty.RegisterAttached("ResourceManager", typeof(ResourceManager), typeof(Translation));
 
         public static ResourceManager GetResourceManager(DependencyObject dependencyObject)
         {

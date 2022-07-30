@@ -1,10 +1,8 @@
 ﻿<Window x:Class="GpScanner.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
-    xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:ViewModel="clr-namespace:GpScanner.ViewModel"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:GpScanner"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:properties="clr-namespace:GpScanner.Properties" xmlns:sys="clr-namespace:System;assembly=mscorlib"
-    xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
+    xmlns:ViewModel="clr-namespace:GpScanner.ViewModel" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:GpScanner" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
     xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
     Title="{twainctrl:Loc SCANNER}"
     d:DataContext="{d:DesignInstance Type=ViewModel:GpScannerViewModel}"
@@ -38,6 +36,7 @@
                     <TabItem Header="{twainctrl:Loc CALENDAR}">
                         <Viewbox Stretch="Fill">
                             <Calendar DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}"
+                                Language="{Binding CalendarLang}"
                                 PreviewMouseUp="Calendar_PreviewMouseUp"
                                 SelectedDate="{Binding SeçiliGün}" />
                         </Viewbox>

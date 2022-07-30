@@ -42,24 +42,19 @@ namespace TwainControl
             ScanImage = new RelayCommand<object>(parameter =>
             {
                 ScanCommonSettings();
-                if (Scanner.Tarayıcılar.Count > 0)
-                {
-                    twain.SelectSource(Scanner.SeçiliTarayıcı);
-                    twain.StartScanning(_settings);
-                }
-            }, parameter => !Environment.Is64BitProcess);
+                twain.SelectSource(Scanner.SeçiliTarayıcı);
+                twain.StartScanning(_settings);
+            }, parameter => !Environment.Is64BitProcess && Scanner?.Tarayıcılar?.Count > 0);
 
             FastScanImage = new RelayCommand<object>(parameter =>
             {
                 ScanCommonSettings();
-                if (Scanner.Tarayıcılar.Count > 0)
-                {
-                    Scanner.Resimler = new ObservableCollection<ScannedImage>();
-                    twain.SelectSource(Scanner.SeçiliTarayıcı);
-                    twain.StartScanning(_settings);
-                }
+                Scanner.Resimler = new ObservableCollection<ScannedImage>();
+                twain.SelectSource(Scanner.SeçiliTarayıcı);
+                twain.StartScanning(_settings);
+
                 twain.ScanningComplete += Fastscan;
-            }, parameter => !Environment.Is64BitProcess && Scanner.AutoSave && !Scanner.SeperateSave && Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0);
+            }, parameter => !Environment.Is64BitProcess && Scanner.AutoSave && !Scanner.SeperateSave && Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0 && Scanner?.Tarayıcılar?.Count > 0);
 
             ResimSil = new RelayCommand<object>(parameter =>
             {
@@ -136,7 +131,7 @@ namespace TwainControl
                 {
                     item.Seçili = true;
                 }
-            }, parameter => Scanner.Resimler?.Count > 0);
+            }, parameter => Scanner?.Resimler?.Count > 0);
 
             TümününİşaretiniKaldır = new RelayCommand<object>(parameter =>
             {
@@ -144,7 +139,7 @@ namespace TwainControl
                 {
                     item.Seçili = false;
                 }
-            }, parameter => Scanner.Resimler?.Count > 0);
+            }, parameter => Scanner?.Resimler?.Count > 0);
 
             Tersiniİşaretle = new RelayCommand<object>(parameter =>
             {
@@ -152,7 +147,7 @@ namespace TwainControl
                 {
                     item.Seçili = !item.Seçili;
                 }
-            }, parameter => Scanner.Resimler?.Count > 0);
+            }, parameter => Scanner?.Resimler?.Count > 0);
 
             KayıtYoluBelirle = new RelayCommand<object>(parameter =>
             {
@@ -224,7 +219,7 @@ namespace TwainControl
                     Scanner.Resimler?.Clear();
                     ResetCropMargin();
                 }
-            }, parameter => Scanner.Resimler?.Count > 0);
+            }, parameter => Scanner?.Resimler?.Count > 0);
 
             SaveProfile = new RelayCommand<object>(parameter =>
             {
@@ -824,6 +819,8 @@ namespace TwainControl
             _settings.Resolution.ColourSetting = (ColourSetting)Settings.Default.Mode;
             _settings.Resolution.Dpi = (int)Settings.Default.Çözünürlük;
             _settings.Rotation = new RotationSettings { AutomaticDeskew = Scanner.Deskew, AutomaticRotate = Scanner.AutoRotate, AutomaticBorderDetection = Scanner.BorderDetect };
+            twain.TransferImage += Twain_TransferImage;
+            twain.ScanningComplete += Twain_ScanningComplete;
         }
 
         private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -871,50 +868,53 @@ namespace TwainControl
             }
         }
 
+        private void Twain_ScanningComplete(object sender, ScanningCompleteEventArgs e)
+        {
+            Scanner.ArayüzEtkin = true;
+            twain.ScanningComplete -= Twain_ScanningComplete;
+        }
+
+        private void Twain_TransferImage(object sender, TransferImageEventArgs e)
+        {
+            if (e.Image != null)
+            {
+                using Bitmap bitmap = e.Image;
+                BitmapSource evrak = EvrakOluştur(bitmap);
+                evrak.Freeze();
+                BitmapSource önizleme = evrak.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 21 * 29.7);
+                önizleme.Freeze();
+                BitmapFrame bitmapFrame = BitmapFrame.Create(evrak, önizleme);
+                bitmapFrame.Freeze();
+                Scanner.Resimler.Add(new ScannedImage() { Resim = bitmapFrame });
+                if (Scanner.SeperateSave && (ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
+                {
+                    GeneratePdf(bitmapFrame, Format.Tiff).Save(GetSaveFolder().SetUniqueFile(Scanner.SaveFileName, "pdf"));
+                    OnPropertyChanged(nameof(Scanner.Tarandı));
+                }
+
+                if (Scanner.SeperateSave && ((ColourSetting)Settings.Default.Mode == ColourSetting.GreyScale || (ColourSetting)Settings.Default.Mode == ColourSetting.Colour))
+                {
+                    GeneratePdf(bitmapFrame, Format.Jpg).Save(GetSaveFolder().SetUniqueFile(Scanner.SaveFileName, "pdf"));
+                    OnPropertyChanged(nameof(Scanner.Tarandı));
+                }
+
+                evrak = null;
+                bitmapFrame = null;
+                önizleme = null;
+                twain.TransferImage -= Twain_TransferImage;
+            }
+        }
+
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
                 twain = new Twain(new WindowMessageHook(Window.GetWindow(Parent)));
                 Scanner.Tarayıcılar = twain.SourceNames;
-                if (twain.SourceNames?.Count > 0)
+                if (Scanner.Tarayıcılar?.Count > 0)
                 {
-                    Scanner.SeçiliTarayıcı = twain.SourceNames[0];
+                    Scanner.SeçiliTarayıcı = Scanner.Tarayıcılar[0];
                 }
-
-                twain.TransferImage += (s, args) =>
-                {
-                    if (args.Image != null)
-                    {
-                        using Bitmap bitmap = args.Image;
-                        BitmapSource evrak = EvrakOluştur(bitmap);
-                        evrak.Freeze();
-                        BitmapSource önizleme = evrak.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 21 * 29.7);
-                        önizleme.Freeze();
-                        BitmapFrame bitmapFrame = BitmapFrame.Create(evrak, önizleme);
-                        bitmapFrame.Freeze();
-                        Scanner.Resimler.Add(new ScannedImage() { Resim = bitmapFrame });
-                        if (Scanner.SeperateSave && (ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
-                        {
-                            GeneratePdf(bitmapFrame, Format.Tiff).Save(GetSaveFolder().SetUniqueFile(Scanner.SaveFileName, "pdf"));
-                            OnPropertyChanged(nameof(Scanner.Tarandı));
-                        }
-
-                        if (Scanner.SeperateSave && ((ColourSetting)Settings.Default.Mode == ColourSetting.GreyScale || (ColourSetting)Settings.Default.Mode == ColourSetting.Colour))
-                        {
-                            GeneratePdf(bitmapFrame, Format.Jpg).Save(GetSaveFolder().SetUniqueFile(Scanner.SaveFileName, "pdf"));
-                            OnPropertyChanged(nameof(Scanner.Tarandı));
-                        }
-
-                        evrak = null;
-                        bitmapFrame = null;
-                        önizleme = null;
-                    }
-                };
-                twain.ScanningComplete += delegate
-                {
-                    Scanner.ArayüzEtkin = true;
-                };
             }
             catch (Exception)
             {

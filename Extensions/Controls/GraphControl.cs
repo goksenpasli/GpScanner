@@ -68,10 +68,7 @@ namespace Extensions
         {
             if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
             {
-                if (Series?.Any() == true)
-                {
-                    _ = DrawGraph(drawingContext, Series);
-                }
+                _ = DrawGraph(drawingContext, Series);
             }
             else
             {
@@ -91,8 +88,23 @@ namespace Extensions
 
         private Visibility seriesTextVisibility;
 
+        private static void RenderFormattedText(Pen pen, Chart item, DrawingContext graph, Point point1)
+        {
+            FormattedText formattedText = new(item.Description, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), 12, Brushes.Black)
+            {
+                MaxTextWidth = pen.Thickness
+            };
+            Point textpoint = new(point1.X - (pen.Thickness / 2), point1.Y - 16);
+            graph.DrawText(formattedText, textpoint);
+        }
+
         private DrawingContext DrawGraph(DrawingContext drawingContext, ObservableCollection<Chart> Series)
         {
+            if (Series?.Any() == false)
+            {
+                return null;
+            }
+
             double max = Series.Max(z => z.ChartValue);
             Pen pen = null;
             DrawingGroup dg = null;
@@ -110,11 +122,7 @@ namespace Extensions
                     graph.DrawLine(pen, point0, point1);
                     if (SeriesTextVisibility == Visibility.Visible)
                     {
-                        FormattedText formattedText = new(item.Description, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), 12, Brushes.Black)
-                        {
-                            MaxTextWidth = pen.Thickness
-                        };
-                        graph.DrawText(formattedText, new Point(point1.X - (pen.Thickness / 2), point1.Y - 16));
+                        RenderFormattedText(pen, item, graph, point1);
                     }
                     drawingContext.DrawDrawing(dg);
                 }

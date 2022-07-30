@@ -101,7 +101,7 @@
     <value>SELECT SOURCE</value>
   </data>
   <data name="SETTİNGS" xml:space="preserve">
-    <value>SETTİNGS</value>
+    <value>SETTINGS</value>
   </data>
   <data name="RES" xml:space="preserve">
     <value>RESOLUTİON</value>
@@ -110,7 +110,7 @@
     <value>ADF</value>
   </data>
   <data name="BW" xml:space="preserve">
-    <value>BLACK / WHİTE</value>
+    <value>BLACK / WHITE</value>
   </data>
   <data name="GRAY" xml:space="preserve">
     <value>GRAY</value>
