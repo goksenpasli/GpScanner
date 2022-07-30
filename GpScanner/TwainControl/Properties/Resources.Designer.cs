@@ -117,6 +117,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string APPRUNNING {
+            get {
+                return ResourceManager.GetString("APPRUNNING", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string AUTOFOLDER {
             get {
                 return ResourceManager.GetString("AUTOFOLDER", resourceCulture);
@@ -549,6 +558,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string REGSTI {
+            get {
+                return ResourceManager.GetString("REGSTI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string RES {
             get {
                 return ResourceManager.GetString("RES", resourceCulture);
@@ -579,6 +597,15 @@ namespace TwainControl.Properties {
         public static string REVERSE {
             get {
                 return ResourceManager.GetString("REVERSE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ROTSAVE {
+            get {
+                return ResourceManager.GetString("ROTSAVE", resourceCulture);
             }
         }
         

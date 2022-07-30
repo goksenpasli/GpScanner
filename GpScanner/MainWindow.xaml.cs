@@ -1,4 +1,5 @@
 ﻿using GpScanner.ViewModel;
+using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls.Primitives;
@@ -28,6 +29,14 @@ namespace GpScanner
             if (Mouse.Captured is CalendarItem)
             {
                 _ = Mouse.Capture(null);
+            }
+        }
+
+        private void MW_ContentRendered(object sender, EventArgs e)
+        {
+            if (StillImageHelper.ShouldScan)
+            {
+                TwainCtrl.ScanImage.Execute(null);
             }
         }
 

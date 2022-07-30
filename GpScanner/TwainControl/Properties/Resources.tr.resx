@@ -353,4 +353,13 @@
   <data name="DEFAULTSCANNAME" xml:space="preserve">
     <value>Tarama</value>
   </data>
+  <data name="ROTSAVE" xml:space="preserve">
+    <value>Döndürme Uygulanarak Kaydedilsin mi?</value>
+  </data>
+  <data name="APPRUNNING" xml:space="preserve">
+    <value>Uygulama Zaten Çalışıyor.</value>
+  </data>
+  <data name="REGSTI" xml:space="preserve">
+    <value>TARAYICI MENÜSÜNE EKLE</value>
+  </data>
 </root>

@@ -96,7 +96,7 @@ namespace TwainControl
                             case 3:
                                 if (Scanner.RotateAngle is not 0 or 360)
                                 {
-                                    if (MessageBox.Show("Döndürme Uygulanarak Kaydedilsin mi?", Application.Current?.MainWindow?.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                                    if (MessageBox.Show(Translation.GetResStringValue("ROTSAVE"), Application.Current?.MainWindow?.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                                     {
                                         GeneratePdf(scannedImage.Resim, Format.Jpg, true).Save(saveFileDialog.FileName);
                                         return;
@@ -110,7 +110,7 @@ namespace TwainControl
                             case 4:
                                 if (Scanner.RotateAngle is not 0 or 360)
                                 {
-                                    if (MessageBox.Show("Döndürme Uygulanarak Kaydedilsin mi?", Application.Current?.MainWindow?.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                                    if (MessageBox.Show(Translation.GetResStringValue("ROTSAVE"), Application.Current?.MainWindow?.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                                     {
                                         GeneratePdf(scannedImage.Resim, Format.Tiff, true).Save(saveFileDialog.FileName);
                                         return;

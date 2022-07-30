@@ -31,6 +31,8 @@ namespace GpScanner.ViewModel
 
             ResetFilter = new RelayCommand<object>(parameter => MainWindow.cvs.View.Filter = null, parameter => MainWindow.cvs.View is not null);
 
+            RegisterSti = new RelayCommand<object>(parameter => StillImageHelper.Register(), parameter => true);
+
             PdfBirleştir = new RelayCommand<object>(parameter =>
             {
                 SaveFileDialog saveFileDialog = new()
@@ -168,6 +170,8 @@ namespace GpScanner.ViewModel
         public ICommand OcrPage { get; }
 
         public ICommand PdfBirleştir { get; }
+
+        public ICommand RegisterSti { get; }
 
         public ICommand ResetFilter { get; }
 

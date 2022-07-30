@@ -84,6 +84,7 @@
     <Compile Include="ViewModel\Ocr.cs" />
     <Compile Include="ViewModel\OcrData.cs" />
     <Compile Include="ViewModel\PdfViewer.cs" />
+    <Compile Include="ViewModel\StillImageHelper.cs" />
     <Compile Include="ViewModel\TesseractViewModel.cs" />
     <Compile Include="ViewModel\ViewerTemplateSelector.cs" />
     <Page Include="MainWindow.xaml">

@@ -370,4 +370,13 @@
   <data name="DEFAULTSCANNAME" xml:space="preserve">
     <value></value>
   </data>
+  <data name="ROTSAVE" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="APPRUNNING" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="REGSTI" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

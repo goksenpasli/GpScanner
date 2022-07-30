@@ -1,5 +1,8 @@
-﻿using System.Threading;
+﻿using GpScanner.ViewModel;
+using System;
+using System.Threading;
 using System.Windows;
+using TwainControl;
 
 namespace GpScanner
 {
@@ -15,8 +18,16 @@ namespace GpScanner
             scannermutex = new Mutex(true, "GpScannerApplication", out bool aIsNewInstance);
             if (!aIsNewInstance)
             {
-                _ = MessageBox.Show("Uygulama Zaten Çalışıyor.", "Tarayıcı", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                var result = MessageBox.Show(Translation.GetResStringValue("APPRUNNING"), Translation.GetResStringValue("SCANNER"), MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 Current.Shutdown();
+            }
+
+            foreach (string arg in e.Args)
+            {
+                if (arg.StartsWith(StillImageHelper.DEVICE_PREFIX, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    StillImageHelper.ShouldScan = true;
+                }
             }
         }
     }

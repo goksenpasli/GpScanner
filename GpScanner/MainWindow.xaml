@@ -3,13 +3,13 @@
     xmlns:ViewModel="clr-namespace:GpScanner.ViewModel" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:GpScanner" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
-    xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
+    xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl" x:Name="MW"
     Title="{twainctrl:Loc SCANNER}"
     d:DataContext="{d:DesignInstance Type=ViewModel:GpScannerViewModel}"
     d:Height="600" d:Width="1280"
     twainctrl:Translation.ResourceManager="{x:Static twainproperties:Resources.ResourceManager}"
-    UseLayoutRounding="True" WindowStartupLocation="CenterScreen" WindowState="Maximized"
-    mc:Ignorable="d">
+    ContentRendered="MW_ContentRendered" UseLayoutRounding="True" WindowStartupLocation="CenterScreen"
+    WindowState="Maximized" mc:Ignorable="d">
     <Window.Resources>
         <CollectionViewSource x:Key="Veriler" Source="{Binding Dosyalar}">
             <CollectionViewSource.SortDescriptions />
@@ -178,7 +178,7 @@
                         </Style>
                     </ListBox.ItemContainerStyle>
                 </ListBox>
-                <UniformGrid Grid.Row="4" Columns="3">
+                <UniformGrid Grid.Row="4" Columns="2" Rows="2">
                     <Button Command="{Binding PdfBirleştir}">
                         <StackPanel Orientation="Horizontal">
                             <Image Width="32" Height="32">
@@ -257,6 +257,21 @@
                             </ComboBoxItem.Content>
                         </ComboBoxItem>
                     </ComboBox>
+                    <Button Command="{Binding RegisterSti, Mode=OneWay}">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="User32.dll" />
+                                            <Binding Source="6" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc REGSTI}" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
                 </UniformGrid>
             </Grid>
         </GroupBox>

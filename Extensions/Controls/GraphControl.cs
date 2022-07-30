@@ -100,35 +100,34 @@ namespace Extensions
 
         private DrawingContext DrawGraph(DrawingContext drawingContext, ObservableCollection<Chart> Series)
         {
-            if (Series?.Any() == false)
+            if (Series is not null && Series.Any())
             {
-                return null;
-            }
+                double max = Series.Max(z => z.ChartValue);
+                Pen pen = null;
+                DrawingGroup dg = null;
 
-            double max = Series.Max(z => z.ChartValue);
-            Pen pen = null;
-            DrawingGroup dg = null;
-
-            for (int i = 1; i <= Series.Count; i++)
-            {
-                Chart item = Series[i - 1];
-                pen = new Pen(item.ChartBrush, ActualWidth / Series.Count);
-                pen.Freeze();
-                dg = new();
-                using (DrawingContext graph = dg.Open())
+                for (int i = 1; i <= Series.Count; i++)
                 {
-                    Point point0 = new((pen.Thickness * i) - (pen.Thickness / 2), ActualHeight);
-                    Point point1 = new((pen.Thickness * i) - (pen.Thickness / 2), ActualHeight - (item.ChartValue / max * ActualHeight));
-                    graph.DrawLine(pen, point0, point1);
-                    if (SeriesTextVisibility == Visibility.Visible)
+                    Chart item = Series[i - 1];
+                    pen = new Pen(item.ChartBrush, ActualWidth / Series.Count);
+                    pen.Freeze();
+                    dg = new();
+                    using (DrawingContext graph = dg.Open())
                     {
-                        RenderFormattedText(pen, item, graph, point1);
+                        Point point0 = new((pen.Thickness * i) - (pen.Thickness / 2), ActualHeight);
+                        Point point1 = new((pen.Thickness * i) - (pen.Thickness / 2), ActualHeight - (item.ChartValue / max * ActualHeight));
+                        graph.DrawLine(pen, point0, point1);
+                        if (SeriesTextVisibility == Visibility.Visible)
+                        {
+                            RenderFormattedText(pen, item, graph, point1);
+                        }
+                        drawingContext.DrawDrawing(dg);
                     }
-                    drawingContext.DrawDrawing(dg);
+                    dg.Freeze();
                 }
-                dg.Freeze();
+                return drawingContext;
             }
-            return drawingContext;
+            return null;
         }
 
         private void GraphControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
