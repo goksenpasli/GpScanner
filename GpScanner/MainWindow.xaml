@@ -99,7 +99,7 @@
                     VirtualizingPanel.VirtualizationMode="Standard">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <VirtualizingStackPanel />
+                            <Extensions:VirtualizingTilePanel CanHorizontallyScroll="False" Columns="3" Tile="False" />
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
                     <ListBox.ItemContainerStyle>
@@ -118,25 +118,9 @@
                                                 </Style>
                                             </Border.Style>
                                             <StackPanel>
-                                                <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                                    IsChecked="{Binding Seçili}"
-                                                    IsEnabled="{Binding FileName, Mode=OneWay, Converter={StaticResource FileNamePdfZipCheckConverter}}">
-                                                    <CheckBox.Style>
-                                                        <Style TargetType="CheckBox">
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding Path=DataContext.ShowPdfPreview, RelativeSource={RelativeSource AncestorType=Window}}" Value="true">
-                                                                    <Setter Property="Content">
-                                                                        <Setter.Value>
-                                                                            <ContentControl Content="{Binding Path=FileName}" ContentTemplateSelector="{StaticResource ViewerSelector}" />
-                                                                        </Setter.Value>
-                                                                    </Setter>
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </CheckBox.Style>
-                                                </CheckBox>
                                                 <StackPanel Orientation="Horizontal">
-                                                    <Extensions:SplitButton Command="{Binding DataContext.WebAdreseGit, ElementName=TwainCtrl, Mode=OneWay}"
+                                                    <Extensions:SplitButton Width="120"
+                                                        Command="{Binding DataContext.WebAdreseGit, ElementName=TwainCtrl, Mode=OneWay}"
                                                         CommandParameter="{Binding Path=FileName}"
                                                         SplitContentPartIsEnabled="{Binding FileName, Mode=OneWay, Converter={StaticResource FileNamePdfZipCheckConverter}}">
                                                         <Extensions:SplitButton.Content>
@@ -170,6 +154,23 @@
                                                         </Hyperlink>
                                                     </TextBlock>
                                                 </StackPanel>
+                                                <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                                    IsChecked="{Binding Seçili}"
+                                                    IsEnabled="{Binding FileName, Mode=OneWay, Converter={StaticResource FileNamePdfZipCheckConverter}}">
+                                                    <CheckBox.Style>
+                                                        <Style TargetType="CheckBox">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Path=DataContext.ShowPdfPreview, RelativeSource={RelativeSource AncestorType=Window}}" Value="true">
+                                                                    <Setter Property="Content">
+                                                                        <Setter.Value>
+                                                                            <ContentControl Content="{Binding Path=FileName}" ContentTemplateSelector="{StaticResource ViewerSelector}" />
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </CheckBox.Style>
+                                                </CheckBox>
                                             </StackPanel>
                                         </Border>
                                     </ControlTemplate>
@@ -227,14 +228,45 @@
                             </Grid>
                         </Extensions:SplitButton.Content>
                         <Extensions:SplitButton.InternalContent>
-                            <GroupBox Header="{twainctrl:Loc CONTENT}">
-                                <TextBox Width="420" Height="594" AcceptsReturn="True"
-                                    IsReadOnly="True"
-                                    Text="{Binding ScannedText}"
-                                    TextWrapping="Wrap" />
+                            <GroupBox Width="420" Height="594">
+                                <TabControl>
+                                    <TabItem Header="{twainctrl:Loc CONTENT}">
+                                        <TextBox AcceptsReturn="True" IsReadOnly="True"
+                                            Text="{Binding ScannedText}"
+                                            TextWrapping="Wrap" />
+                                    </TabItem>
+                                    <TabItem Header="{twainctrl:Loc TRANSLATE}">
+                                        <local:TranslateView />
+                                    </TabItem>
+                                </TabControl>
                             </GroupBox>
                         </Extensions:SplitButton.InternalContent>
                     </Extensions:SplitButton>
+                    <Button Command="{Binding RegisterSti, Mode=OneWay}">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Canvas Width="32" Height="32">
+                                    <Image Width="32" Height="32">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="sti.dll" />
+                                                <Binding Source="0" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <Image Canvas.Bottom="0" Width="16" Height="16">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="User32.dll" />
+                                                <Binding Source="6" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                </Canvas>
+                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc REGSTI}" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
                     <ComboBox VerticalContentAlignment="Center"
                         SelectedValue="{Binding SeçiliDil}"
                         SelectedValuePath="Tag">
@@ -257,21 +289,6 @@
                             </ComboBoxItem.Content>
                         </ComboBoxItem>
                     </ComboBox>
-                    <Button Command="{Binding RegisterSti, Mode=OneWay}">
-                        <Button.Content>
-                            <StackPanel Orientation="Horizontal">
-                                <Image Width="16" Height="16">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="User32.dll" />
-                                            <Binding Source="6" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc REGSTI}" />
-                            </StackPanel>
-                        </Button.Content>
-                    </Button>
                 </UniformGrid>
             </Grid>
         </GroupBox>

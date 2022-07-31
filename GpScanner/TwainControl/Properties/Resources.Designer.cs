@@ -270,6 +270,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string DESTLANG {
+            get {
+                return ResourceManager.GetString("DESTLANG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string DOCUMENT {
             get {
                 return ResourceManager.GetString("DOCUMENT", resourceCulture);
@@ -729,6 +738,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string SOURCELANG {
+            get {
+                return ResourceManager.GetString("SOURCELANG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string SRC {
             get {
                 return ResourceManager.GetString("SRC", resourceCulture);
@@ -777,6 +795,15 @@ namespace TwainControl.Properties {
         public static string TIME {
             get {
                 return ResourceManager.GetString("TIME", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string TRANSLATE {
+            get {
+                return ResourceManager.GetString("TRANSLATE", resourceCulture);
             }
         }
         

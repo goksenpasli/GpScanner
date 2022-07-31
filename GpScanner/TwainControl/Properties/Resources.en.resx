@@ -362,4 +362,13 @@
   <data name="REGSTI" xml:space="preserve">
     <value>REGISTER STI DEVICE</value>
   </data>
+  <data name="TRANSLATE" xml:space="preserve">
+    <value>TRANSLATE</value>
+  </data>
+  <data name="SOURCELANG" xml:space="preserve">
+    <value>SOURCE LANGUAGE</value>
+  </data>
+  <data name="DESTLANG" xml:space="preserve">
+    <value>DESTINATION LANGUAGE</value>
+  </data>
 </root>

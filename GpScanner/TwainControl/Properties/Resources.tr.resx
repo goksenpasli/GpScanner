@@ -362,4 +362,13 @@
   <data name="REGSTI" xml:space="preserve">
     <value>TARAYICI MENÜSÜNE EKLE</value>
   </data>
+  <data name="TRANSLATE" xml:space="preserve">
+    <value>ÇEVİRİ</value>
+  </data>
+  <data name="SOURCELANG" xml:space="preserve">
+    <value>KAYNAK DİL</value>
+  </data>
+  <data name="DESTLANG" xml:space="preserve">
+    <value>HEDEF DİL</value>
+  </data>
 </root>

@@ -41,19 +41,26 @@ namespace GpScanner.ViewModel
 
         public static void Unregister()
         {
-            Registry.LocalMachine.DeleteSubKey(REGKEY_AUTOPLAY_HANDLER_GPSCANNER, false);
-            using RegistryKey key2 = Registry.LocalMachine.OpenSubKey(REGKEY_STI_APP, true);
-            key2?.DeleteValue("GpScanner", false);
-
-            Registry.LocalMachine.DeleteSubKey(REGKEY_STI_EVENT_GPSCANNER, false);
-
-            RegistryKey events = Registry.LocalMachine.OpenSubKey(REGKEY_IMAGE_EVENTS, true);
-            if (events != null)
+            try
             {
-                foreach (string eventType in events.GetSubKeyNames())
+                Registry.LocalMachine.DeleteSubKey(REGKEY_AUTOPLAY_HANDLER_GPSCANNER, false);
+                using RegistryKey key2 = Registry.LocalMachine.OpenSubKey(REGKEY_STI_APP, true);
+                key2?.DeleteValue("GpScanner", false);
+
+                Registry.LocalMachine.DeleteSubKey(REGKEY_STI_EVENT_GPSCANNER, false);
+
+                RegistryKey events = Registry.LocalMachine.OpenSubKey(REGKEY_IMAGE_EVENTS, true);
+                if (events != null)
                 {
-                    events.DeleteSubKey(eventType + @"\{1C3A7177-F3A7-439E-BE47-E304A185F932}", false);
+                    foreach (string eventType in events.GetSubKeyNames())
+                    {
+                        events.DeleteSubKey(eventType + @"\{1C3A7177-F3A7-439E-BE47-E304A185F932}", false);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                _ = MessageBox.Show(ex.Message);
             }
         }
 

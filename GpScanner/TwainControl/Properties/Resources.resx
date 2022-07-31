@@ -379,4 +379,13 @@
   <data name="REGSTI" xml:space="preserve">
     <value></value>
   </data>
+  <data name="TRANSLATE" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="SOURCELANG" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="DESTLANG" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

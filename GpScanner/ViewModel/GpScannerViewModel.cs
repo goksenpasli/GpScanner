@@ -28,6 +28,7 @@ namespace GpScanner.ViewModel
             SeçiliDil = Settings.Default.DefaultLang;
 
             TesseractViewModel = new TesseractViewModel();
+            TranslateViewModel = new TranslateViewModel();
 
             ResetFilter = new RelayCommand<object>(parameter => MainWindow.cvs.View.Filter = null, parameter => MainWindow.cvs.View is not null);
 
@@ -258,6 +259,20 @@ namespace GpScanner.ViewModel
             }
         }
 
+        public TranslateViewModel TranslateViewModel
+        {
+            get => translateViewModel;
+
+            set
+            {
+                if (translateViewModel != value)
+                {
+                    translateViewModel = value;
+                    OnPropertyChanged(nameof(TranslateViewModel));
+                }
+            }
+        }
+
         public ObservableCollection<Chart> GetChartsData()
         {
             try
@@ -298,6 +313,7 @@ namespace GpScanner.ViewModel
                     ScannedText = null;
                     IsBusy = true;
                     ScannedText = imgdata.OcrYap(Settings.Default.DefaultTtsLang);
+                    TranslateViewModel.Metin = ScannedText;
                     IsBusy = false;
                     if (!string.IsNullOrWhiteSpace(ScannedText))
                     {
@@ -331,6 +347,8 @@ namespace GpScanner.ViewModel
         private bool showPdfPreview;
 
         private TesseractViewModel tesseractViewModel;
+
+        private TranslateViewModel translateViewModel;
 
         private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {

@@ -18,7 +18,7 @@ namespace GpScanner
             scannermutex = new Mutex(true, "GpScannerApplication", out bool aIsNewInstance);
             if (!aIsNewInstance)
             {
-                var result = MessageBox.Show(Translation.GetResStringValue("APPRUNNING"), Translation.GetResStringValue("SCANNER"), MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                _ = MessageBox.Show(Translation.GetResStringValue("APPRUNNING"), Translation.GetResStringValue("SCANNER"), MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 Current.Shutdown();
             }
 

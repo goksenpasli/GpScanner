@@ -819,8 +819,6 @@ namespace TwainControl
             _settings.Resolution.ColourSetting = (ColourSetting)Settings.Default.Mode;
             _settings.Resolution.Dpi = (int)Settings.Default.Çözünürlük;
             _settings.Rotation = new RotationSettings { AutomaticDeskew = Scanner.Deskew, AutomaticRotate = Scanner.AutoRotate, AutomaticBorderDetection = Scanner.BorderDetect };
-            twain.TransferImage += Twain_TransferImage;
-            twain.ScanningComplete += Twain_ScanningComplete;
         }
 
         private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -871,7 +869,6 @@ namespace TwainControl
         private void Twain_ScanningComplete(object sender, ScanningCompleteEventArgs e)
         {
             Scanner.ArayüzEtkin = true;
-            twain.ScanningComplete -= Twain_ScanningComplete;
         }
 
         private void Twain_TransferImage(object sender, TransferImageEventArgs e)
@@ -901,7 +898,6 @@ namespace TwainControl
                 evrak = null;
                 bitmapFrame = null;
                 önizleme = null;
-                twain.TransferImage -= Twain_TransferImage;
             }
         }
 
@@ -915,6 +911,8 @@ namespace TwainControl
                 {
                     Scanner.SeçiliTarayıcı = Scanner.Tarayıcılar[0];
                 }
+                twain.TransferImage += Twain_TransferImage;
+                twain.ScanningComplete += Twain_ScanningComplete;
             }
             catch (Exception)
             {
