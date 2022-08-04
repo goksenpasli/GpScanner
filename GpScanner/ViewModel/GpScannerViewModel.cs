@@ -34,12 +34,14 @@ namespace GpScanner.ViewModel
 
             RegisterSti = new RelayCommand<object>(parameter => StillImageHelper.Register(), parameter => true);
 
+            UnRegisterSti = new RelayCommand<object>(parameter => StillImageHelper.Unregister(), parameter => true);
+
             PdfBirleştir = new RelayCommand<object>(parameter =>
             {
                 SaveFileDialog saveFileDialog = new()
                 {
                     Filter = "Pdf Dosyası(*.pdf)|*.pdf",
-                    FileName = "Birleştirilmiş"
+                    FileName = Translation.GetResStringValue("MERGE")
                 };
                 if (saveFileDialog.ShowDialog() == true)
                 {
@@ -78,6 +80,30 @@ namespace GpScanner.ViewModel
                         }
                 }
             }, parameter => (!string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && parameter is Scanner scanner && scanner.SeçiliResim is not null) || (parameter is ImageSource ımageSource && ımageSource is not null));
+
+            Tümünüİşaretle = new RelayCommand<object>(parameter =>
+            {
+                foreach (var item in Dosyalar.ToList())
+                {
+                    item.Seçili = true;
+                }
+            }, parameter => Dosyalar?.Count > 0);
+
+            TümününİşaretiniKaldır = new RelayCommand<object>(parameter =>
+            {
+                foreach (var item in Dosyalar.ToList())
+                {
+                    item.Seçili = false;
+                }
+            }, parameter => Dosyalar?.Count > 0);
+
+            Tersiniİşaretle = new RelayCommand<object>(parameter =>
+            {
+                foreach (var item in Dosyalar.ToList())
+                {
+                    item.Seçili = !item.Seçili;
+                }
+            }, parameter => Dosyalar?.Count > 0);
 
             Settings.Default.PropertyChanged += Default_PropertyChanged;
             PropertyChanged += GpScannerViewModel_PropertyChanged;
@@ -245,6 +271,8 @@ namespace GpScanner.ViewModel
             }
         }
 
+        public ICommand Tersiniİşaretle { get; }
+
         public TesseractViewModel TesseractViewModel
         {
             get => tesseractViewModel;
@@ -273,12 +301,18 @@ namespace GpScanner.ViewModel
             }
         }
 
+        public ICommand Tümünüİşaretle { get; }
+
+        public ICommand TümününİşaretiniKaldır { get; }
+
+        public ICommand UnRegisterSti { get; }
+
         public ObservableCollection<Chart> GetChartsData()
         {
             try
             {
                 ObservableCollection<Chart> list = new();
-                foreach (IGrouping<int, Scanner> chart in Dosyalar.GroupBy(z => DateTime.Parse(Directory.GetParent(z.FileName).Name).Day))
+                foreach (IGrouping<int, Scanner> chart in Dosyalar.GroupBy(z => DateTime.Parse(Directory.GetParent(z.FileName).Name).Day).OrderBy(z=>z.Key))
                 {
                     list.Add(new Chart() { Description = chart.Key.ToString(), ChartBrush = RandomColor(), ChartValue = chart.Count() });
                 }

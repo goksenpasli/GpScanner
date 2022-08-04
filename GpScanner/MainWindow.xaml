@@ -6,7 +6,7 @@
     xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl" x:Name="MW"
     Title="{twainctrl:Loc SCANNER}"
     d:DataContext="{d:DesignInstance Type=ViewModel:GpScannerViewModel}"
-    d:Height="600" d:Width="1280"
+    d:Height="600" d:Width="800"
     twainctrl:Translation.ResourceManager="{x:Static twainproperties:Resources.ResourceManager}"
     ContentRendered="MW_ContentRendered" UseLayoutRounding="True" WindowStartupLocation="CenterScreen"
     WindowState="Maximized" mc:Ignorable="d">
@@ -27,6 +27,7 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="300" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
@@ -90,7 +91,54 @@
                     </Extensions:ContentToggleButton>
                 </UniformGrid>
                 <Extensions:ButtonedTextBox Grid.Row="2" Text="{Binding AramaMetni, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                <ListBox Grid.Row="3"
+                <UniformGrid Grid.Row="3" Columns="3">
+                    <Button Command="{Binding Tümünüİşaretle}">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Imageres.dll" />
+                                            <Binding Source="248" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc ALL}" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Button Command="{Binding TümününİşaretiniKaldır}">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Imageres.dll" />
+                                            <Binding Source="249" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc NONE}" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Button Command="{Binding Tersiniİşaretle}">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Imageres.dll" />
+                                            <Binding Source="250" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc REVERSE}" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                </UniformGrid>
+                <ListBox Grid.Row="4"
                     d:ItemsSource="{d:SampleData ItemCount=5}"
                     IsSynchronizedWithCurrentItem="False"
                     ItemsSource="{Binding Mode=OneWay, Source={StaticResource Veriler}}"
@@ -179,7 +227,7 @@
                         </Style>
                     </ListBox.ItemContainerStyle>
                 </ListBox>
-                <UniformGrid Grid.Row="4" Columns="2" Rows="2">
+                <UniformGrid Grid.Row="5" Columns="2" Rows="2">
                     <Button Command="{Binding PdfBirleştir}">
                         <StackPanel Orientation="Horizontal">
                             <Image Width="32" Height="32">
@@ -266,6 +314,22 @@
                                 <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc REGSTI}" />
                             </StackPanel>
                         </Button.Content>
+                        <Button.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Command="{Binding UnRegisterSti, Mode=OneWay}" Header="{twainctrl:Loc UNREGSTI}">
+                                    <MenuItem.Icon>
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="131" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </ContextMenu>
+                        </Button.ContextMenu>
                     </Button>
                     <ComboBox VerticalContentAlignment="Center"
                         SelectedValue="{Binding SeçiliDil}"

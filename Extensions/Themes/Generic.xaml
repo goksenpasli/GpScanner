@@ -284,6 +284,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="16" />
+                            <ColumnDefinition Width="16" />
                         </Grid.ColumnDefinitions>
                         <Border Name="border"
                             Background="{TemplateBinding Panel.Background}"
@@ -293,7 +294,17 @@
                             <ScrollViewer Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden"
                                 VerticalScrollBarVisibility="Hidden" />
                         </Border>
-                        <Border Name="clearborder" Grid.Column="1"
+                        <Border Name="copyborder" Grid.Column="1"
+                            Background="{TemplateBinding Panel.Background}"
+                            BorderBrush="{TemplateBinding Border.BorderBrush}"
+                            BorderThickness="0,1,1,1" SnapsToDevicePixels="True">
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Hyperlink Command="{Binding Copy, RelativeSource={RelativeSource TemplatedParent}}" TextDecorations="None">
+                                    <Run FontWeight="Bold" Text="1" FontFamily="Wingdings 2" />
+                                </Hyperlink>
+                            </TextBlock>
+                        </Border>
+                        <Border Name="clearborder" Grid.Column="2"
                             Background="{TemplateBinding Panel.Background}"
                             BorderBrush="{TemplateBinding Border.BorderBrush}"
                             BorderThickness="0,1,1,1" SnapsToDevicePixels="True">
@@ -302,20 +313,23 @@
                                     <Run FontWeight="Bold" Text="X" />
                                 </Hyperlink>
                             </TextBlock>
-                        </Border>
+                        </Border>                        
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="UIElement.IsEnabled" Value="False">
                             <Setter TargetName="border" Property="UIElement.Opacity" Value="0.56" />
                             <Setter TargetName="clearborder" Property="UIElement.Opacity" Value="0.56" />
+                            <Setter TargetName="copyborder" Property="UIElement.Opacity" Value="0.56" />
                         </Trigger>
                         <Trigger Property="UIElement.IsMouseOver" Value="True">
                             <Setter TargetName="border" Property="Border.BorderBrush" Value="#7EB4EA" />
                             <Setter TargetName="clearborder" Property="Border.BorderBrush" Value="#7EB4EA" />
+                            <Setter TargetName="copyborder" Property="Border.BorderBrush" Value="#7EB4EA" />
                         </Trigger>
                         <Trigger Property="UIElement.IsKeyboardFocused" Value="True">
                             <Setter TargetName="border" Property="Border.BorderBrush" Value="#569DE5" />
                             <Setter TargetName="clearborder" Property="Border.BorderBrush" Value="#569DE5" />
+                            <Setter TargetName="copyborder" Property="Border.BorderBrush" Value="#569DE5" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

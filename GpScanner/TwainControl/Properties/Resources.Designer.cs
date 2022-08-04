@@ -693,6 +693,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string SEPERATESCANTOOLTIP {
+            get {
+                return ResourceManager.GetString("SEPERATESCANTOOLTIP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string SETTİNGS {
             get {
                 return ResourceManager.GetString("SETTİNGS", resourceCulture);
@@ -822,6 +831,15 @@ namespace TwainControl.Properties {
         public static string TWOSIDE {
             get {
                 return ResourceManager.GetString("TWOSIDE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string UNREGSTI {
+            get {
+                return ResourceManager.GetString("UNREGSTI", resourceCulture);
             }
         }
         

@@ -23,10 +23,14 @@ namespace GpScanner.ViewModel
         {
             try
             {
-                using TesseractEngine engine = new("./tessdata", lang, EngineMode.TesseractAndLstm);
-                using Pix pixImage = Pix.LoadFromMemory(dosya);
-                using Page page = engine.Process(pixImage);
-                return page.GetText();
+                if (!string.IsNullOrWhiteSpace(lang))
+                {
+                    using TesseractEngine engine = new("./tessdata", lang, EngineMode.TesseractAndLstm);
+                    using Pix pixImage = Pix.LoadFromMemory(dosya);
+                    using Page page = engine.Process(pixImage);
+                    return page.GetText();
+                }
+                return string.Empty;
             }
             catch (Exception ex)
             {

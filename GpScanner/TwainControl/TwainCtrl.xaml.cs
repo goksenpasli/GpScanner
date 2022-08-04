@@ -75,55 +75,56 @@ namespace TwainControl
                     };
                     if (saveFileDialog.ShowDialog() == true)
                     {
-                        switch (saveFileDialog.FilterIndex)
+                        if (saveFileDialog.FilterIndex == 1)
                         {
-                            case 1:
-                                if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
-                                {
-                                    File.WriteAllBytes(saveFileDialog.FileName, scannedImage.Resim.ToTiffJpegByteArray(Format.Tiff));
-                                    return;
-                                }
-                                if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
-                                {
-                                    File.WriteAllBytes(saveFileDialog.FileName, scannedImage.Resim.ToTiffJpegByteArray(Format.TiffRenkli));
-                                }
+                            if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
+                            {
+                                File.WriteAllBytes(saveFileDialog.FileName, scannedImage.Resim.ToTiffJpegByteArray(Format.Tiff));
                                 return;
-
-                            case 2:
-                                File.WriteAllBytes(saveFileDialog.FileName, scannedImage.Resim.ToTiffJpegByteArray(Format.Jpg));
+                            }
+                            if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
+                            {
+                                File.WriteAllBytes(saveFileDialog.FileName, scannedImage.Resim.ToTiffJpegByteArray(Format.TiffRenkli));
                                 return;
-
-                            case 3:
-                                if (Scanner.RotateAngle is not 0 or 360)
+                            }
+                        }
+                        if (saveFileDialog.FilterIndex == 2)
+                        {
+                            File.WriteAllBytes(saveFileDialog.FileName, scannedImage.Resim.ToTiffJpegByteArray(Format.Jpg));
+                            return;
+                        }
+                        if (saveFileDialog.FilterIndex == 3)
+                        {
+                            if (Scanner.RotateAngle is not 0 or 360)
+                            {
+                                if (MessageBox.Show(Translation.GetResStringValue("ROTSAVE"), Application.Current?.MainWindow?.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                                 {
-                                    if (MessageBox.Show(Translation.GetResStringValue("ROTSAVE"), Application.Current?.MainWindow?.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
-                                    {
-                                        GeneratePdf(scannedImage.Resim, Format.Jpg, true).Save(saveFileDialog.FileName);
-                                        return;
-                                    }
-                                    GeneratePdf(scannedImage.Resim, Format.Jpg).Save(saveFileDialog.FileName);
+                                    GeneratePdf(scannedImage.Resim, Format.Jpg, true).Save(saveFileDialog.FileName);
                                     return;
                                 }
                                 GeneratePdf(scannedImage.Resim, Format.Jpg).Save(saveFileDialog.FileName);
                                 return;
-
-                            case 4:
-                                if (Scanner.RotateAngle is not 0 or 360)
+                            }
+                            GeneratePdf(scannedImage.Resim, Format.Jpg).Save(saveFileDialog.FileName);
+                            return;
+                        }
+                        if (saveFileDialog.FilterIndex == 4)
+                        {
+                            if (Scanner.RotateAngle is not 0 or 360)
+                            {
+                                if (MessageBox.Show(Translation.GetResStringValue("ROTSAVE"), Application.Current?.MainWindow?.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                                 {
-                                    if (MessageBox.Show(Translation.GetResStringValue("ROTSAVE"), Application.Current?.MainWindow?.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
-                                    {
-                                        GeneratePdf(scannedImage.Resim, Format.Tiff, true).Save(saveFileDialog.FileName);
-                                        return;
-                                    }
-                                    GeneratePdf(scannedImage.Resim, Format.Tiff).Save(saveFileDialog.FileName);
+                                    GeneratePdf(scannedImage.Resim, Format.Tiff, true).Save(saveFileDialog.FileName);
                                     return;
                                 }
                                 GeneratePdf(scannedImage.Resim, Format.Tiff).Save(saveFileDialog.FileName);
                                 return;
+                            }
+                            GeneratePdf(scannedImage.Resim, Format.Tiff).Save(saveFileDialog.FileName);
                         }
                     }
                 }
-            }, parameter => Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0);
+            }, parameter => !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0);
 
             Tümünüİşaretle = new RelayCommand<object>(parameter =>
             {
@@ -177,29 +178,21 @@ namespace TwainControl
                 };
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    switch (saveFileDialog.FilterIndex)
+                    if (saveFileDialog.FilterIndex == 1)
                     {
-                        case 1:
-                            {
-                                GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToArray(), Format.Jpg).Save(saveFileDialog.FileName);
-                                break;
-                            }
-
-                        case 2:
-                            {
-                                GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToArray(), Format.Tiff).Save(saveFileDialog.FileName);
-                                break;
-                            }
-
-                        case 3:
-                            {
-                                string dosyayolu = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
-                                GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToArray(), Format.Jpg).Save(dosyayolu);
-                                using ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Create);
-                                _ = archive.CreateEntryFromFile(dosyayolu, $"{Scanner.SaveFileName}.pdf", CompressionLevel.Optimal);
-                                File.Delete(dosyayolu);
-                                break;
-                            }
+                        GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToArray(), Format.Jpg).Save(saveFileDialog.FileName);
+                    }
+                    if (saveFileDialog.FilterIndex == 2)
+                    {
+                        GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToArray(), Format.Tiff).Save(saveFileDialog.FileName);
+                    }
+                    if (saveFileDialog.FilterIndex == 3)
+                    {
+                        string dosyayolu = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
+                        GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToArray(), Format.Jpg).Save(dosyayolu);
+                        using ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Create);
+                        _ = archive.CreateEntryFromFile(dosyayolu, $"{Scanner.SaveFileName}.pdf", CompressionLevel.Optimal);
+                        File.Delete(dosyayolu);
                     }
                     if (Path.GetDirectoryName(saveFileDialog.FileName).Contains(Settings.Default.AutoFolder))
                     {
@@ -209,7 +202,7 @@ namespace TwainControl
             }, parameter =>
             {
                 Scanner.SeçiliResimSayısı = Scanner.Resimler.Count(z => z.Seçili);
-                return Scanner.SeçiliResimSayısı > 0 && Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0;
+                return !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner.SeçiliResimSayısı > 0 && Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0;
             });
 
             ListeTemizle = new RelayCommand<object>(parameter =>
@@ -274,19 +267,19 @@ namespace TwainControl
                 };
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    switch (saveFileDialog.FilterIndex)
+                    if (saveFileDialog.FilterIndex == 1)
                     {
-                        case 1:
-                            GeneratePdf((BitmapSource)Scanner.CroppedImage, Format.Jpg).Save(saveFileDialog.FileName);
-                            return;
-
-                        case 2:
-                            GeneratePdf((BitmapSource)Scanner.CroppedImage, Format.Tiff).Save(saveFileDialog.FileName);
-                            return;
-
-                        case 3:
-                            File.WriteAllBytes(saveFileDialog.FileName, Scanner.CroppedImage.ToTiffJpegByteArray(Format.Jpg));
-                            return;
+                        GeneratePdf((BitmapSource)Scanner.CroppedImage, Format.Jpg).Save(saveFileDialog.FileName);
+                        return;
+                    }
+                    if (saveFileDialog.FilterIndex == 2)
+                    {
+                        GeneratePdf((BitmapSource)Scanner.CroppedImage, Format.Tiff).Save(saveFileDialog.FileName);
+                        return;
+                    }
+                    if (saveFileDialog.FilterIndex == 3)
+                    {
+                        File.WriteAllBytes(saveFileDialog.FileName, Scanner.CroppedImage.ToTiffJpegByteArray(Format.Jpg));
                     }
                 }
             }, parameter => Scanner.CroppedImage is not null && (Scanner.CropRight != 0 || Scanner.CropTop != 0 || Scanner.CropBottom != 0 || Scanner.CropLeft != 0));
@@ -351,22 +344,7 @@ namespace TwainControl
                     string[] files = openFileDialog.FileNames;
                     if (files.Length > 0)
                     {
-                        SaveFileDialog saveFileDialog = new()
-                        {
-                            Filter = "Pdf Dosyası(*.pdf)|*.pdf",
-                            FileName = "Birleştirilmiş"
-                        };
-                        if (saveFileDialog.ShowDialog() == true)
-                        {
-                            try
-                            {
-                                MergePdf(files).Save(saveFileDialog.FileName);
-                            }
-                            catch (Exception ex)
-                            {
-                                _ = MessageBox.Show(ex.Message);
-                            }
-                        }
+                        SavePdfFiles(files);
                     }
                 }
             }, parameter => true);
@@ -395,6 +373,20 @@ namespace TwainControl
         }
 
         public ICommand DeskewImage { get; }
+
+        public bool DocumentPreviewIsExpanded
+        {
+            get => documentPreviewIsExpanded;
+
+            set
+            {
+                if (documentPreviewIsExpanded != value)
+                {
+                    documentPreviewIsExpanded = value;
+                    OnPropertyChanged(nameof(DocumentPreviewIsExpanded));
+                }
+            }
+        }
 
         public ICommand ExploreFile { get; }
 
@@ -532,6 +524,8 @@ namespace TwainControl
         private CroppedBitmap croppedOcrBitmap;
 
         private bool disposedValue;
+
+        private bool documentPreviewIsExpanded = true;
 
         private double height;
 
@@ -810,6 +804,26 @@ namespace TwainControl
             rtb.Render(dv);
             rtb.Freeze();
             return rtb;
+        }
+
+        private void SavePdfFiles(string[] files)
+        {
+            SaveFileDialog saveFileDialog = new()
+            {
+                Filter = "Pdf Dosyası(*.pdf)|*.pdf",
+                FileName = Translation.GetResStringValue("MERGE")
+            };
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    MergePdf(files).Save(saveFileDialog.FileName);
+                }
+                catch (Exception ex)
+                {
+                    _ = MessageBox.Show(ex.Message);
+                }
+            }
         }
 
         private void ScanCommonSettings()

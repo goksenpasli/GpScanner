@@ -13,10 +13,26 @@ namespace Extensions
 
         public ButtonedTextBox()
         {
-            _ = CommandBindings.Add(new CommandBinding(Reset, ResetCommand)); //handle reset
+            _ = CommandBindings.Add(new CommandBinding(Reset, ResetCommand, CanExecute)); //handle reset
+            _ = CommandBindings.Add(new CommandBinding(Copy, CopyCommand, CanExecute)); //handle copy
         }
 
+        public new ICommand Copy { get; } = new RoutedCommand();
+
         public ICommand Reset { get; } = new RoutedCommand();
+
+        private void CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(Text))
+            {
+                e.CanExecute = true;
+            }
+        }
+
+        private void CopyCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            Clipboard.SetText(Text);
+        }
 
         private void ResetCommand(object sender, ExecutedRoutedEventArgs e)
         {

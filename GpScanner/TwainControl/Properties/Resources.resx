@@ -388,4 +388,10 @@
   <data name="DESTLANG" xml:space="preserve">
     <value></value>
   </data>
+  <data name="UNREGSTI" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="SEPERATESCANTOOLTIP" xml:space="preserve">
+    <value></value>
+  </data>
 </root>
