@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:properties="clr-namespace:TwainControl.Properties" x:Name="UserControl"
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
-    d:DesignHeight="800" d:DesignWidth="600"
+    d:DesignHeight="800" d:DesignWidth="1024"
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
     Loaded="UserControl_Loaded" UseLayoutRounding="True" mc:Ignorable="d">
     <UserControl.Resources>
@@ -31,8 +31,9 @@
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition MinWidth="420" d:Width="420" />
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="4*"  />
+            <ColumnDefinition Width="3" />
+            <ColumnDefinition Width="5*" />
         </Grid.ColumnDefinitions>
         <GroupBox Grid.Column="0" Header="{local:Loc SRC}">
             <Grid>
@@ -549,11 +550,8 @@
                 </UniformGrid>
             </Grid>
         </GroupBox>
-        <Expander Grid.Column="1" Margin="1,0,0,0" Panel.ZIndex="-1"
-            Background="{StaticResource BorderBackground}"
-            ExpandDirection="Up"
-            IsExpanded="{Binding DocumentPreviewIsExpanded}">
-            <GroupBox Header="{local:Loc DOCUMENT}">
+        <GridSplitter Grid.Column="1" Width="3" HorizontalAlignment="Stretch" Background="{StaticResource GroupBoxBackGround}" />  
+            <GroupBox  Grid.Column="2" Margin="1,0,0,0" Panel.ZIndex="-1" Header="{local:Loc DOCUMENT}">
                 <Grid IsEnabled="{Binding Scanner.SeçiliResim, Converter={StaticResource NullableToBooleanConverter}}">
                     <DockPanel>
                         <Slider Margin="20,0,20,0" DockPanel.Dock="Top" IsSnapToTickEnabled="True"
@@ -703,6 +701,5 @@
                     </Expander>
                 </Grid>
             </GroupBox>
-        </Expander>
     </Grid>
 </UserControl>

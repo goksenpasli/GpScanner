@@ -283,8 +283,8 @@
                     <Grid SnapsToDevicePixels="True">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="16" />
-                            <ColumnDefinition Width="16" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <Border Name="border"
                             Background="{TemplateBinding Panel.Background}"
@@ -294,7 +294,7 @@
                             <ScrollViewer Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden"
                                 VerticalScrollBarVisibility="Hidden" />
                         </Border>
-                        <Border Name="copyborder" Grid.Column="1"
+                        <Border Width="16" Name="copyborder" Grid.Column="1" Visibility="{Binding CopyButtonVisibility,RelativeSource={RelativeSource TemplatedParent}}"
                             Background="{TemplateBinding Panel.Background}"
                             BorderBrush="{TemplateBinding Border.BorderBrush}"
                             BorderThickness="0,1,1,1" SnapsToDevicePixels="True">
@@ -304,7 +304,7 @@
                                 </Hyperlink>
                             </TextBlock>
                         </Border>
-                        <Border Name="clearborder" Grid.Column="2"
+                        <Border Width="16" Name="clearborder" Grid.Column="2" Visibility="{Binding ResetButtonVisibility,RelativeSource={RelativeSource TemplatedParent}}"
                             Background="{TemplateBinding Panel.Background}"
                             BorderBrush="{TemplateBinding Border.BorderBrush}"
                             BorderThickness="0,1,1,1" SnapsToDevicePixels="True">
@@ -353,7 +353,7 @@
                                 IsOpen="{Binding IsChecked, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}"
                                 Placement="{TemplateBinding PlacementMode}"
                                 PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}"
-                                PopupAnimation="Slide"
+                                PopupAnimation="Slide" 
                                 StaysOpen="{Binding StaysOpen, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}">
                                 <ContentPresenter Content="{TemplateBinding Content}" />
                             </Popup>
@@ -574,51 +574,6 @@
                         <ContentPresenter Grid.Row="1" Grid.Column="1"
                             Margin="{TemplateBinding Padding}"
                             Content="{TemplateBinding Content}" />
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    <Style TargetType="local:GraphControl">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="local:GraphControl">
-                    <Grid>
-                        <local:ContentToggleButton Width="16" Height="16" HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Background="{x:Null}"
-                            Visibility="{Binding SeriesListVisibility, RelativeSource={RelativeSource TemplatedParent}}">
-                            <local:ContentToggleButton.OverContent>
-                                <TextBlock FontFamily="Webdings" Text="N" />
-                            </local:ContentToggleButton.OverContent>
-                            <local:ContentToggleButton.Content>
-                                <ItemsControl Width="250" Height="250"
-                                    ItemsSource="{TemplateBinding Series}"
-                                    ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                    VirtualizingStackPanel.IsVirtualizing="True">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Background="Black">
-                                                <Run Foreground="{Binding ChartBrush, Mode=OneWay}" Text="{Binding Description, Mode=OneWay}" />
-                                                <Run Foreground="White" Text="{Binding ChartValue, Mode=OneWay}" />
-                                            </TextBlock>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <VirtualizingStackPanel />
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                    <ItemsControl.Template>
-                                        <ControlTemplate TargetType="ItemsControl">
-                                            <ScrollViewer Padding="{TemplateBinding Padding}">
-                                                <ItemsPresenter />
-                                            </ScrollViewer>
-                                        </ControlTemplate>
-                                    </ItemsControl.Template>
-                                </ItemsControl>
-                            </local:ContentToggleButton.Content>
-                        </local:ContentToggleButton>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

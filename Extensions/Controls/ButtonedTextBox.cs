@@ -1,10 +1,11 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Extensions
 {
-    public class ButtonedTextBox : TextBox
+    public class ButtonedTextBox : TextBox, INotifyPropertyChanged
     {
         static ButtonedTextBox()
         {
@@ -17,9 +18,47 @@ namespace Extensions
             _ = CommandBindings.Add(new CommandBinding(Copy, CopyCommand, CanExecute)); //handle copy
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public new ICommand Copy { get; } = new RoutedCommand();
 
+        public Visibility CopyButtonVisibility
+        {
+            get => copyButtonVisibility;
+
+            set
+            {
+                if (copyButtonVisibility != value)
+                {
+                    copyButtonVisibility = value;
+                    OnPropertyChanged(nameof(CopyButtonVisibility));
+                }
+            }
+        }
+
         public ICommand Reset { get; } = new RoutedCommand();
+
+        public Visibility ResetButtonVisibility
+        {
+            get => resetButtonVisibility; set
+
+            {
+                if (resetButtonVisibility != value)
+                {
+                    resetButtonVisibility = value;
+                    OnPropertyChanged(nameof(ResetButtonVisibility));
+                }
+            }
+        }
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private Visibility copyButtonVisibility = Visibility.Visible;
+
+        private Visibility resetButtonVisibility = Visibility.Visible;
 
         private void CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {

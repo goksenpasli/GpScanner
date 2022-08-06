@@ -1,7 +1,4 @@
-﻿using Extensions;
-using Freeware;
-using Microsoft.Win32;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -10,6 +7,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using Extensions;
+using Freeware;
+using Microsoft.Win32;
 using TwainControl;
 using TwainControl.Properties;
 using static Extensions.ExtensionMethods;
@@ -37,17 +37,9 @@ namespace GpScanner.ViewModel
                 }
             });
 
-            ViewerBack = new RelayCommand<object>(parameter =>
-            {
-                Sayfa--;
-                Source = BitmapSourceFromByteArray(Pdf2Png.Convert(PdfFileStream, Sayfa, Dpi));
-            }, parameter => Source is not null && Sayfa > 1 && Sayfa <= ToplamSayfa);
+            ViewerBack = new RelayCommand<object>(parameter => Sayfa--, parameter => Source is not null && Sayfa > 1 && Sayfa <= ToplamSayfa);
 
-            ViewerNext = new RelayCommand<object>(parameter =>
-            {
-                Sayfa++;
-                Source = BitmapSourceFromByteArray(Pdf2Png.Convert(PdfFileStream, Sayfa, Dpi));
-            }, parameter => Source is not null && Sayfa >= 1 && Sayfa < ToplamSayfa);
+            ViewerNext = new RelayCommand<object>(parameter => Sayfa++, parameter => Source is not null && Sayfa >= 1 && Sayfa < ToplamSayfa);
 
             SaveImage = new RelayCommand<object>(parameter =>
             {

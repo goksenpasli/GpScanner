@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -11,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Microsoft.Win32;
 
 namespace Extensions
 {
@@ -51,17 +51,9 @@ namespace Extensions
                 }
             });
 
-            ViewerBack = new RelayCommand<object>(parameter =>
-            {
-                Sayfa--;
-                Source = Decoder.Frames[Sayfa - 1];
-            }, parameter => Decoder != null && Sayfa > 1 && Sayfa <= Decoder.Frames.Count);
+            ViewerBack = new RelayCommand<object>(parameter => Sayfa--, parameter => Decoder != null && Sayfa > 1 && Sayfa <= Decoder.Frames.Count);
 
-            ViewerNext = new RelayCommand<object>(parameter =>
-            {
-                Sayfa++;
-                Source = Decoder.Frames[Sayfa - 1];
-            }, parameter => Decoder != null && Sayfa >= 1 && Sayfa < Decoder.Frames.Count);
+            ViewerNext = new RelayCommand<object>(parameter => Sayfa++, parameter => Decoder != null && Sayfa >= 1 && Sayfa < Decoder.Frames.Count);
 
             Resize = new RelayCommand<object>(parameter =>
             {

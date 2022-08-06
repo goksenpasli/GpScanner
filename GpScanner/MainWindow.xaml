@@ -6,7 +6,7 @@
     xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl" x:Name="MW"
     Title="{twainctrl:Loc SCANNER}"
     d:DataContext="{d:DesignInstance Type=ViewModel:GpScannerViewModel}"
-    d:Height="600" d:Width="800"
+    d:Height="600" d:Width="1280"
     twainctrl:Translation.ResourceManager="{x:Static twainproperties:Resources.ResourceManager}"
     ContentRendered="MW_ContentRendered" UseLayoutRounding="True" WindowStartupLocation="CenterScreen"
     WindowState="Maximized" mc:Ignorable="d">
@@ -19,7 +19,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" />
-            <ColumnDefinition />
+            <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
         <twainctrl:TwainCtrl x:Name="TwainCtrl" />
         <GroupBox Grid.Column="1" Margin="1,0,0,0"
@@ -90,7 +90,7 @@
                         </Extensions:ContentToggleButton.Content>
                     </Extensions:ContentToggleButton>
                 </UniformGrid>
-                <Extensions:ButtonedTextBox Grid.Row="2" Text="{Binding AramaMetni, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <Extensions:ButtonedTextBox Grid.Row="2" Text="{Binding AramaMetni, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" CopyButtonVisibility="Collapsed" />
                 <UniformGrid Grid.Row="3" Columns="3">
                     <Button Command="{Binding Tümünüİşaretle}">
                         <Button.Content>

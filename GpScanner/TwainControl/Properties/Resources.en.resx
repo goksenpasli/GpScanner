@@ -237,7 +237,8 @@ PATH</value>
     <value>ENCRYPT</value>
   </data>
   <data name="PDFWARN" xml:space="preserve">
-    <value>THE SETTINGS MADE HERE AFFECT ALL PDF RECORDINGS. ALSO PDF PROTECTION CAN BE BROKEN BY 3rd PARTY APPLICATIONS.</value>
+    <value>THE SETTINGS MADE HERE AFFECT ALL PDF RECORDINGS. 
+ALSO PDF PROTECTION CAN BE BROKEN BY 3rd PARTY APPLICATIONS.</value>
   </data>
   <data name="ALLOWPRINT" xml:space="preserve">
     <value>ALLOW PRINT</value>
