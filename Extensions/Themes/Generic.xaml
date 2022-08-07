@@ -132,7 +132,7 @@
                                 Ticks="0, 90, 180, 270, 360"
                                 Value="{Binding Angle, RelativeSource={RelativeSource TemplatedParent}}" />
                             <Button Grid.Column="6"
-                                Command="{Binding OrijinalResimDosyaAç, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                Command="{Binding OrijinalDosyaAç, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
                                 CommandParameter="{Binding ImageFilePath, RelativeSource={RelativeSource TemplatedParent}}"
                                 Visibility="{Binding OrijinalResimDosyaAçButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                                 <Button.Content>

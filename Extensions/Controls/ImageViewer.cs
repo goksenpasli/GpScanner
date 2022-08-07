@@ -62,7 +62,7 @@ namespace Extensions
                     : !double.IsNaN(Height) ? Height == 0 ? 1 : Height / Source.Height : ActualHeight == 0 ? 1 : ActualHeight / Source.Height;
             }, parameter => Source is not null);
 
-            OrijinalResimDosyaAç = new RelayCommand<object>(parameter => _ = Process.Start(parameter as string), parameter => !DesignerProperties.GetIsInDesignMode(new DependencyObject()) && File.Exists(parameter as string));
+            OrijinalDosyaAç = new RelayCommand<object>(parameter => _ = Process.Start(parameter as string), parameter => !DesignerProperties.GetIsInDesignMode(new DependencyObject()) && File.Exists(parameter as string));
 
             Yazdır = new RelayCommand<object>(parameter =>
             {
@@ -154,7 +154,7 @@ namespace Extensions
             }
         }
 
-        public ICommand DosyaAç { get; }
+        public virtual ICommand DosyaAç { get; set; }
 
         public FitImageOrientation FitImageOrientation
         {
@@ -190,7 +190,7 @@ namespace Extensions
             }
         }
 
-        public ICommand OrijinalResimDosyaAç { get; }
+        public virtual ICommand OrijinalDosyaAç { get; set; }
 
         public Visibility OrijinalResimDosyaAçButtonVisibility
         {
@@ -235,7 +235,7 @@ namespace Extensions
             }
         }
 
-        public ICommand Resize { get; }
+        public virtual ICommand Resize { get; set; }
 
         public int Sayfa
         {
@@ -305,9 +305,9 @@ namespace Extensions
             }
         }
 
-        public ICommand ViewerBack { get; }
+        public virtual ICommand ViewerBack { get; set; }
 
-        public ICommand ViewerNext { get; }
+        public virtual ICommand ViewerNext { get; set; }
 
         public ICommand Yazdır { get; }
 

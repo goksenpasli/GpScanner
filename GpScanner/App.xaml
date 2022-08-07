@@ -234,7 +234,7 @@
                         <ComboBox Grid.Column="6" ItemStringFormat="{}{0} Dpi"
                             ItemsSource="{Binding DpiList, RelativeSource={RelativeSource TemplatedParent}}"
                             SelectedItem="{Binding Dpi, StringFormat=Dpi, RelativeSource={RelativeSource TemplatedParent}}" />
-                        <Button Grid.Column="7" Command="{Binding SaveImage, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
+                        <Button Grid.Column="7" CommandParameter="{Binding ElementName=TwainCtrl, Path=DataContext}" Command="{Binding SaveImage, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
                             <Button.Content>
                                 <Image Width="16" Height="16">
                                     <Image.Source>
@@ -246,7 +246,7 @@
                                 </Image>
                             </Button.Content>
                         </Button>
-                        <Button Grid.Column="8" Command="{Binding TransferImage, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
+                        <Button Grid.Column="8" CommandParameter="{Binding ElementName=TwainCtrl, Path=DataContext.Scanner}" Command="{Binding TransferImage, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
                             <Button.Content>
                                 <Image Width="16" Height="16">
                                     <Image.Source>

@@ -24,7 +24,7 @@ namespace GpScanner.ViewModel
 
         public static readonly DependencyProperty PdfFileStreamProperty = DependencyProperty.Register("PdfFileStream", typeof(byte[]), typeof(PdfViewer), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.NotDataBindable, async (o, e) => await PdfStreamChangedAsync(o, e)));
 
-        public new static readonly DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(PdfViewer), new PropertyMetadata(1.0));
+        public static new readonly DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(PdfViewer), new PropertyMetadata(1.0));
 
         public PdfViewer()
         {
@@ -51,7 +51,6 @@ namespace GpScanner.ViewModel
 
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    MainWindow mainWindow = Application.Current?.MainWindow as MainWindow;
                     switch (saveFileDialog.FilterIndex)
                     {
                         case 1:
@@ -62,7 +61,10 @@ namespace GpScanner.ViewModel
 
                         case 2:
                             {
-                                mainWindow.TwainCtrl.GeneratePdf((BitmapSource)Source, Format.Jpg).Save(saveFileDialog.FileName);
+                                if (parameter is TwainCtrl twainCtrl)
+                                {
+                                    twainCtrl.GeneratePdf((BitmapSource)Source, Format.Jpg).Save(saveFileDialog.FileName);
+                                }
                                 return;
                             }
                     }
@@ -71,10 +73,12 @@ namespace GpScanner.ViewModel
 
             TransferImage = new RelayCommand<object>(parameter =>
             {
-                BitmapSource thumbnail = ((BitmapSource)Source).Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 21 * 29.7);
-                ScannedImage scannedImage = new() { Seçili = true, Resim = BitmapFrame.Create((BitmapSource)Source, thumbnail) };
-                MainWindow mainWindow = Application.Current?.MainWindow as MainWindow;
-                mainWindow.TwainCtrl.Scanner.Resimler.Add(scannedImage);
+                if (parameter is Scanner scanner)
+                {
+                    BitmapSource thumbnail = ((BitmapSource)Source).Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 21 * 29.7);
+                    ScannedImage scannedImage = new() { Seçili = true, Resim = BitmapFrame.Create((BitmapSource)Source, thumbnail) };
+                    scanner.Resimler.Add(scannedImage);
+                }
             }, parameter => Source is not null);
 
             Resize = new RelayCommand<object>(delegate
@@ -82,12 +86,10 @@ namespace GpScanner.ViewModel
                 Zoom = (FitImageOrientation != 0) ? (double.IsNaN(Height) ? ((ActualHeight == 0.0) ? 1.0 : (ActualHeight / Source.Height)) : ((Height == 0.0) ? 1.0 : (Height / Source.Height))) : (double.IsNaN(Width) ? ((ActualWidth == 0.0) ? 1.0 : (ActualWidth / Source.Width)) : ((Width == 0.0) ? 1.0 : (Width / Source.Width)));
             }, (object parameter) => Source != null);
 
-            OrijinalPdfDosyaAç = new RelayCommand<object>(parameter => _ = Process.Start(parameter as string), parameter => !DesignerProperties.GetIsInDesignMode(new DependencyObject()) && File.Exists(parameter as string));
+            OrijinalDosyaAç = new RelayCommand<object>(parameter => _ = Process.Start(parameter as string), parameter => !DesignerProperties.GetIsInDesignMode(new DependencyObject()) && File.Exists(parameter as string));
 
             PropertyChanged += PdfViewer_PropertyChanged;
         }
-
-        public new ICommand DosyaAç { get; }
 
         public int Dpi
         {
@@ -111,8 +113,6 @@ namespace GpScanner.ViewModel
             }
         }
 
-        public ICommand OrijinalPdfDosyaAç { get; }
-
         public string PdfFilePath
         {
             get => (string)GetValue(PdfFilePathProperty);
@@ -124,8 +124,6 @@ namespace GpScanner.ViewModel
             get => (byte[])GetValue(PdfFileStreamProperty);
             set => SetValue(PdfFileStreamProperty, value);
         }
-
-        public new ICommand Resize { get; }
 
         public ICommand SaveImage { get; }
 
@@ -158,10 +156,6 @@ namespace GpScanner.ViewModel
         }
 
         public ICommand TransferImage { get; }
-
-        public new ICommand ViewerBack { get; }
-
-        public new ICommand ViewerNext { get; }
 
         public new double Zoom
         {

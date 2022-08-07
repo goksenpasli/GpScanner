@@ -3,7 +3,7 @@
     xmlns:ViewModel="clr-namespace:GpScanner.ViewModel" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:GpScanner" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
-    xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl" x:Name="MW"
+    xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
     Title="{twainctrl:Loc SCANNER}" xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=PresentationFramework"
     d:DataContext="{d:DesignInstance Type=ViewModel:GpScannerViewModel}"
     d:Height="600" d:Width="1280"
@@ -195,7 +195,7 @@
                                                             <Extensions:ResizablePanel Width="480" Height="360" MinWidth="480"
                                                                 MinHeight="360">
                                                                 <GroupBox>
-                                                                    <ContentControl Content="{Binding Path=FileName}" ContentTemplate="{StaticResource PdfViewerTemplateFull}" />
+                                                                    <ContentPresenter Content="{Binding Path=FileName}" ContentTemplate="{StaticResource PdfViewerTemplateFull}" />
                                                                 </GroupBox>
                                                             </Extensions:ResizablePanel>
                                                         </Extensions:SplitButton.InternalContent>
