@@ -14,6 +14,7 @@ using Extensions;
 using GpScanner.Properties;
 using Microsoft.Win32;
 using TwainControl;
+using static Extensions.ExtensionMethods;
 using Twainsettings = TwainControl.Properties;
 
 namespace GpScanner.ViewModel
@@ -27,7 +28,7 @@ namespace GpScanner.ViewModel
             SeçiliGün = DateTime.Today;
             SeçiliDil = Settings.Default.DefaultLang;
             GenerateFoldTimer();
-            
+
             TesseractViewModel = new TesseractViewModel();
             TranslateViewModel = new TranslateViewModel();
 
@@ -63,24 +64,12 @@ namespace GpScanner.ViewModel
 
             OcrPage = new RelayCommand<object>(parameter =>
             {
-                byte[] imgdata;
-                switch (parameter)
+                if (parameter is Scanner scanner)
                 {
-                    case Scanner scanner:
-                        {
-                            imgdata = scanner.SeçiliResim.Resim.ToTiffJpegByteArray(ExtensionMethods.Format.Png);
-                            Ocr(imgdata);
-                            return;
-                        }
-
-                    case ImageSource croppedimage:
-                        {
-                            imgdata = croppedimage.ToTiffJpegByteArray(ExtensionMethods.Format.Png);
-                            Ocr(imgdata);
-                            return;
-                        }
+                    byte[] imgdata = scanner.SeçiliResim.Resim.ToTiffJpegByteArray(Format.Png);
+                    Ocr(imgdata);
                 }
-            }, parameter => (!string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && parameter is Scanner scanner && scanner.SeçiliResim is not null) || (parameter is ImageSource ımageSource && ımageSource is not null));
+            }, parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && parameter is Scanner scanner && scanner.SeçiliResim is not null);
 
             Tümünüİşaretle = new RelayCommand<object>(parameter =>
             {

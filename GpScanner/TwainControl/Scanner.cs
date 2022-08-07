@@ -1,5 +1,4 @@
-﻿using Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -8,6 +7,7 @@ using System.Linq;
 using System.Security;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Extensions;
 using TwainControl.Properties;
 
 namespace TwainControl

@@ -1,7 +1,7 @@
-﻿using GpScanner.ViewModel;
-using System;
+﻿using System;
 using System.Threading;
 using System.Windows;
+using GpScanner.ViewModel;
 using TwainControl;
 
 namespace GpScanner

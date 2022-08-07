@@ -1,10 +1,10 @@
-﻿using GpScanner.ViewModel;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
+using GpScanner.ViewModel;
 using TwainControl;
 
 namespace GpScanner
@@ -51,7 +51,8 @@ namespace GpScanner
 
             if (e.PropertyName is "ImgData")
             {
-                (DataContext as GpScannerViewModel)?.Ocr(TwainCtrl.ImgData);
+                GpScannerViewModel gpScannerViewModel = DataContext as GpScannerViewModel;
+                gpScannerViewModel?.Ocr(TwainCtrl.ImgData);
                 TwainCtrl.ImgData = null;
             }
         }

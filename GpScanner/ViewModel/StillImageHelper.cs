@@ -1,7 +1,7 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Reflection;
 using System.Windows;
+using Microsoft.Win32;
 
 namespace GpScanner.ViewModel
 {

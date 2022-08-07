@@ -330,6 +330,12 @@ namespace TwainControl
                 Scanner.CroppedImage = RotateImage(Scanner.CroppedImage, skewAngle);
             }, parameter => Scanner.CroppedImage is not null);
 
+            OcrPage = new RelayCommand<object>(parameter =>
+            {
+                ImgData = Scanner.CroppedImage.ToTiffJpegByteArray(Format.Png);
+                OnPropertyChanged(nameof(ImgData));
+            }, parameter => Scanner.CroppedImage is not null);
+
             SaveWatermarkedPdf = new RelayCommand<object>(parameter => SaveCroppedImage.Execute(null), parameter => Scanner.CroppedImage is not null && !string.IsNullOrWhiteSpace(Scanner?.Watermark));
 
             PdfBirleştir = new RelayCommand<object>(parameter =>
@@ -427,6 +433,8 @@ namespace TwainControl
         public ICommand KayıtYoluBelirle { get; }
 
         public ICommand ListeTemizle { get; }
+
+        public virtual ICommand OcrPage { get; set; }
 
         public ICommand PdfBirleştir { get; }
 

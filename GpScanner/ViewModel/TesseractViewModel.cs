@@ -1,5 +1,4 @@
-﻿using Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -8,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Windows;
 using System.Windows.Input;
+using Extensions;
 
 namespace GpScanner.ViewModel
 {

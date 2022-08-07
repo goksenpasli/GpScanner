@@ -58,13 +58,13 @@ namespace GpScanner.ViewModel
 
         public double FoldAmount
         {
-            get => (double)(GetValue(FoldAmountProperty));
+            get => (double)GetValue(FoldAmountProperty);
             set => SetValue(FoldAmountProperty, value);
         }
 
         public Brush Input
         {
-            get => (Brush)(GetValue(InputProperty));
+            get => (Brush)GetValue(InputProperty);
             set => SetValue(InputProperty, value);
         }
     }

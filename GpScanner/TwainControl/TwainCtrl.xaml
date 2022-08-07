@@ -692,7 +692,7 @@
                                     <Button Command="{Binding SetWatermark}" Content="{local:Loc DRAWTEXT}" />
                                     <Button Command="{Binding SaveWatermarkedPdf}" Content="{local:Loc SAVEPDF}" />
                                     <Button Command="{Binding DeskewImage}" Content="{local:Loc FIX}" />
-                                    <Button Command="{Binding DataContext.OcrPage, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                    <Button Command="{Binding OcrPage}"
                                         CommandParameter="{Binding Scanner.CroppedImage}"
                                         Content="{local:Loc OCR}" />
                                 </UniformGrid>

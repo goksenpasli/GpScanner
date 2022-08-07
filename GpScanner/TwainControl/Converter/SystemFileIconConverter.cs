@@ -1,5 +1,4 @@
-﻿using Extensions;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -7,6 +6,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
+using Extensions;
 
 namespace TwainControl.Converter
 {
