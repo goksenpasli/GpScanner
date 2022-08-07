@@ -84,6 +84,7 @@
     <Compile Include="TranslateView.xaml.cs">
       <DependentUpon>TranslateView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\FoldEffect.cs" />
     <Compile Include="ViewModel\GpScannerViewModel.cs" />
     <Compile Include="ViewModel\Ocr.cs" />
     <Compile Include="ViewModel\OcrData.cs" />
@@ -162,6 +163,7 @@
     <Resource Include="Resources\flag-of-United-States-of-America.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\FoldEffect.ps" />
     <None Include="tessdata\placeholder.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

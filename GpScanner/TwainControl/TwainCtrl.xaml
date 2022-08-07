@@ -31,9 +31,9 @@
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="4*"  />
+            <ColumnDefinition d:Width="4*"  Width="{Binding TwainGuiControlLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <ColumnDefinition Width="3" />
-            <ColumnDefinition Width="5*" />
+            <ColumnDefinition d:Width="5*"  Width="{Binding DocumentGridLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </Grid.ColumnDefinitions>
         <GroupBox Grid.Column="0" Header="{local:Loc SRC}">
             <Grid>
@@ -550,7 +550,7 @@
                 </UniformGrid>
             </Grid>
         </GroupBox>
-        <GridSplitter Grid.Column="1" Width="3" HorizontalAlignment="Stretch" Background="{StaticResource GroupBoxBackGround}" />  
+        <GridSplitter Grid.Column="1" Width="3" HorizontalAlignment="Stretch" Background="{StaticResource GroupBoxBackGround}" MouseDoubleClick="GridSplitter_MouseDoubleClick" />  
             <GroupBox  Grid.Column="2" Margin="1,0,0,0" Panel.ZIndex="-1" Header="{local:Loc DOCUMENT}">
                 <Grid IsEnabled="{Binding Scanner.SeçiliResim, Converter={StaticResource NullableToBooleanConverter}}">
                     <DockPanel>

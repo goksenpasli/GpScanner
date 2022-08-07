@@ -1,7 +1,4 @@
-﻿using Extensions;
-using GpScanner.Properties;
-using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
@@ -12,8 +9,11 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
+using System.Windows.Threading;
+using Extensions;
+using GpScanner.Properties;
+using Microsoft.Win32;
 using TwainControl;
-using static Extensions.GraphControl;
 using Twainsettings = TwainControl.Properties;
 
 namespace GpScanner.ViewModel
@@ -26,7 +26,8 @@ namespace GpScanner.ViewModel
             ChartData = GetChartsData();
             SeçiliGün = DateTime.Today;
             SeçiliDil = Settings.Default.DefaultLang;
-
+            GenerateFoldTimer();
+            
             TesseractViewModel = new TesseractViewModel();
             TranslateViewModel = new TranslateViewModel();
 
@@ -83,7 +84,7 @@ namespace GpScanner.ViewModel
 
             Tümünüİşaretle = new RelayCommand<object>(parameter =>
             {
-                foreach (var item in Dosyalar.ToList())
+                foreach (Scanner item in Dosyalar.ToList())
                 {
                     item.Seçili = true;
                 }
@@ -91,7 +92,7 @@ namespace GpScanner.ViewModel
 
             TümününİşaretiniKaldır = new RelayCommand<object>(parameter =>
             {
-                foreach (var item in Dosyalar.ToList())
+                foreach (Scanner item in Dosyalar.ToList())
                 {
                     item.Seçili = false;
                 }
@@ -99,7 +100,7 @@ namespace GpScanner.ViewModel
 
             Tersiniİşaretle = new RelayCommand<object>(parameter =>
             {
-                foreach (var item in Dosyalar.ToList())
+                foreach (Scanner item in Dosyalar.ToList())
                 {
                     item.Seçili = !item.Seçili;
                 }
@@ -176,6 +177,20 @@ namespace GpScanner.ViewModel
                 {
                     dosyalar = value;
                     OnPropertyChanged(nameof(Dosyalar));
+                }
+            }
+        }
+
+        public double Fold
+        {
+            get => fold;
+
+            set
+            {
+                if (fold != value)
+                {
+                    fold = value;
+                    OnPropertyChanged(nameof(Fold));
                 }
             }
         }
@@ -312,7 +327,7 @@ namespace GpScanner.ViewModel
             try
             {
                 ObservableCollection<Chart> list = new();
-                foreach (IGrouping<int, Scanner> chart in Dosyalar.GroupBy(z => DateTime.Parse(Directory.GetParent(z.FileName).Name).Day).OrderBy(z=>z.Key))
+                foreach (IGrouping<int, Scanner> chart in Dosyalar.GroupBy(z => DateTime.Parse(Directory.GetParent(z.FileName).Name).Day).OrderBy(z => z.Key))
                 {
                     list.Add(new Chart() { Description = chart.Key.ToString(), ChartBrush = RandomColor(), ChartValue = chart.Count() });
                 }
@@ -358,6 +373,8 @@ namespace GpScanner.ViewModel
             }
         }
 
+        private static DispatcherTimer timer;
+
         private string aramaMetni;
 
         private XmlLanguage calendarLang;
@@ -367,6 +384,8 @@ namespace GpScanner.ViewModel
         private int? checkedPdfCount = 0;
 
         private ObservableCollection<Scanner> dosyalar;
+
+        private double fold = 0.3;
 
         private bool ısBusy;
 
@@ -387,6 +406,13 @@ namespace GpScanner.ViewModel
         private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             Settings.Default.Save();
+        }
+
+        private void GenerateFoldTimer()
+        {
+            timer = new(DispatcherPriority.Normal) { Interval = TimeSpan.FromMilliseconds(15) };
+            timer.Tick += OnTick;
+            timer.Start();
         }
 
         private void GpScannerViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -414,6 +440,17 @@ namespace GpScanner.ViewModel
                         break;
                 }
                 Settings.Default.DefaultLang = SeçiliDil;
+            }
+        }
+
+        private void OnTick(object sender, EventArgs e)
+        {
+            Fold -= 0.01;
+            if (Fold <= 0)
+            {
+                Fold = 0;
+                timer.Stop();
+                timer.Tick -= OnTick;
             }
         }
 

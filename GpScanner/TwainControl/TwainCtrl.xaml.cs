@@ -1,11 +1,4 @@
-﻿using Extensions;
-using Microsoft.Win32;
-using PdfSharp;
-using PdfSharp.Drawing;
-using PdfSharp.Pdf;
-using PdfSharp.Pdf.IO;
-using PdfSharp.Pdf.Security;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -22,6 +15,13 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Extensions;
+using Microsoft.Win32;
+using PdfSharp;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
+using PdfSharp.Pdf.IO;
+using PdfSharp.Pdf.Security;
 using TwainControl.Properties;
 using TwainWpf;
 using TwainWpf.Wpf;
@@ -374,6 +374,20 @@ namespace TwainControl
 
         public ICommand DeskewImage { get; }
 
+        public GridLength DocumentGridLength
+        {
+            get => documentGridLength;
+
+            set
+            {
+                if (documentGridLength != value)
+                {
+                    documentGridLength = value;
+                    OnPropertyChanged(nameof(DocumentGridLength));
+                }
+            }
+        }
+
         public bool DocumentPreviewIsExpanded
         {
             get => documentPreviewIsExpanded;
@@ -456,6 +470,20 @@ namespace TwainControl
 
         public ICommand TümününİşaretiniKaldır { get; }
 
+        public GridLength TwainGuiControlLength
+        {
+            get => twainGuiControlLength;
+
+            set
+            {
+                if (twainGuiControlLength != value)
+                {
+                    twainGuiControlLength = value;
+                    OnPropertyChanged(nameof(TwainGuiControlLength));
+                }
+            }
+        }
+
         public ICommand WebAdreseGit { get; }
 
         public static PdfDocument MergePdf(string[] pdffiles)
@@ -525,6 +553,8 @@ namespace TwainControl
 
         private bool disposedValue;
 
+        private GridLength documentGridLength = new(5, GridUnitType.Star);
+
         private bool documentPreviewIsExpanded = true;
 
         private double height;
@@ -536,6 +566,8 @@ namespace TwainControl
         private Scanner scanner;
 
         private Twain twain;
+
+        private GridLength twainGuiControlLength = new(4, GridUnitType.Star);
 
         private double width;
 
@@ -696,6 +728,12 @@ namespace TwainControl
                 _ = Directory.CreateDirectory(datefolder);
             }
             return datefolder;
+        }
+
+        private void GridSplitter_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            TwainGuiControlLength = new(4, GridUnitType.Star);
+            DocumentGridLength = new(5, GridUnitType.Star);
         }
 
         private void ImgViewer_MouseDown(object sender, MouseButtonEventArgs e)

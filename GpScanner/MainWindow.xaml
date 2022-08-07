@@ -4,7 +4,7 @@
     xmlns:local="clr-namespace:GpScanner" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
     xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl" x:Name="MW"
-    Title="{twainctrl:Loc SCANNER}"
+    Title="{twainctrl:Loc SCANNER}" xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=PresentationFramework"
     d:DataContext="{d:DesignInstance Type=ViewModel:GpScannerViewModel}"
     d:Height="600" d:Width="1280"
     twainctrl:Translation.ResourceManager="{x:Static twainproperties:Resources.ResourceManager}"
@@ -17,6 +17,19 @@
         <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
     </Window.Resources>
     <Grid>
+        <Grid.Style>
+            <Style TargetType="Grid">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(componentModel:DesignerProperties.IsInDesignMode)}" Value="False">
+                        <Setter Property="Effect">
+                            <Setter.Value>
+                                <ViewModel:FoldEffect FoldAmount="{Binding Fold}"/>
+                            </Setter.Value>
+                        </Setter>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Style>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="1*" />
@@ -43,7 +56,7 @@
                         </Viewbox>
                     </TabItem>
                     <TabItem Header="{twainctrl:Loc GRAPH}">
-                        <Extensions:GraphControl Series="{Binding ChartData}" />
+                        <Extensions:GraphControl Series="{Binding ChartData}" LineGraphVisibility="Collapsed"/>
                     </TabItem>
                 </TabControl>
                 <UniformGrid Grid.Row="1" Columns="3">
