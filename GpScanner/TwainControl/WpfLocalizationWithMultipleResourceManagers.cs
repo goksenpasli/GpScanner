@@ -122,21 +122,20 @@ namespace TwainControl
         {
             get
             {
-                (string baseName, string stringName) = SplitName(key);
                 string translation = null;
-                if (resourceManagerDictionary.ContainsKey(baseName))
+                if (resourceManagerDictionary.ContainsKey(SplitName(key).Item1))
                 {
-                    translation = resourceManagerDictionary[baseName].GetString(stringName, currentCulture);
+                    translation = resourceManagerDictionary[SplitName(key).Item1].GetString(SplitName(key).Item2, currentCulture);
                 }
 
                 return translation ?? key;
             }
         }
 
-        public static (string baseName, string stringName) SplitName(string name)
+        public static Tuple<string, string> SplitName(string name)
         {
             int idx = name.LastIndexOf('.');
-            return (name.Substring(0, idx), name.Substring(idx + 1));
+            return Tuple.Create(name.Substring(0, idx), name.Substring(idx + 1));
         }
 
         public void AddResourceManager(ResourceManager resourceManager)

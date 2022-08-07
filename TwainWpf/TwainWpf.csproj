@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8304C254-E3D2-4553-B596-F028B8D9B740}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TwainWpf</RootNamespace>
+    <AssemblyName>TwainWpf</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AreaSettings.cs" />
+    <Compile Include="Capability.cs" />
+    <Compile Include="CapabilityResult.cs" />
+    <Compile Include="DataSource.cs" />
+    <Compile Include="DataSourceManager.cs" />
+    <Compile Include="Diagnostics.cs" />
+    <Compile Include="FeederEmptyException.cs" />
+    <Compile Include="IWindowsMessageHook.cs" />
+    <Compile Include="PageSettings.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResolutionSettings.cs" />
+    <Compile Include="RotationSettings.cs" />
+    <Compile Include="ScanningCompleteEventArgs.cs" />
+    <Compile Include="ScanSettings.cs" />
+    <Compile Include="TransferImageEventArgs.cs" />
+    <Compile Include="Twain.cs" />
+    <Compile Include="TwainException.cs" />
+    <Compile Include="TwainNative\AutoSize.cs" />
+    <Compile Include="TwainNative\Capabilities.cs" />
+    <Compile Include="TwainNative\CapabilityArrayValue.cs" />
+    <Compile Include="TwainNative\CapabilityEnumValue.cs" />
+    <Compile Include="TwainNative\CapabilityOneValue.cs" />
+    <Compile Include="TwainNative\Command.cs" />
+    <Compile Include="TwainNative\Compression.cs" />
+    <Compile Include="TwainNative\ConditionCode.cs" />
+    <Compile Include="TwainNative\ContainerType.cs" />
+    <Compile Include="TwainNative\Country.cs" />
+    <Compile Include="TwainNative\DataArgumentType.cs" />
+    <Compile Include="TwainNative\DataGroup.cs" />
+    <Compile Include="TwainNative\Duplex.cs" />
+    <Compile Include="TwainNative\Event.cs" />
+    <Compile Include="TwainNative\Fix32.cs" />
+    <Compile Include="TwainNative\FlipRotation.cs" />
+    <Compile Include="TwainNative\Frame.cs" />
+    <Compile Include="TwainNative\Identity.cs" />
+    <Compile Include="TwainNative\ImageFileFormat.cs" />
+    <Compile Include="TwainNative\ImageInfo.cs" />
+    <Compile Include="TwainNative\ImageLayout.cs" />
+    <Compile Include="TwainNative\Language.cs" />
+    <Compile Include="TwainNative\Lightpath.cs" />
+    <Compile Include="TwainNative\Message.cs" />
+    <Compile Include="TwainNative\Orientation.cs" />
+    <Compile Include="TwainNative\PageType.cs" />
+    <Compile Include="TwainNative\PendingXfers.cs" />
+    <Compile Include="TwainNative\PixelType.cs" />
+    <Compile Include="TwainNative\Status.cs" />
+    <Compile Include="TwainNative\TransferMechanism.cs" />
+    <Compile Include="TwainNative\Twain32Native.cs" />
+    <Compile Include="TwainNative\TwainCapability.cs" />
+    <Compile Include="TwainNative\TwainConstants.cs" />
+    <Compile Include="TwainNative\TwainResult.cs" />
+    <Compile Include="TwainNative\TwainType.cs" />
+    <Compile Include="TwainNative\TwainVersion.cs" />
+    <Compile Include="TwainNative\Units.cs" />
+    <Compile Include="TwainNative\UserInterface.cs" />
+    <Compile Include="Win32\BitmapInfoHeader.cs" />
+    <Compile Include="Win32\BitmapRenderer.cs" />
+    <Compile Include="Win32\Gdi32Native.cs" />
+    <Compile Include="Win32\GlobalAllocFlags.cs" />
+    <Compile Include="Win32\Kernel32Native.cs" />
+    <Compile Include="Win32\User32Native.cs" />
+    <Compile Include="Win32\WindowsMessage.cs" />
+    <Compile Include="Wpf\WindowMessageHook.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

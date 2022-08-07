@@ -154,7 +154,9 @@ namespace TwainControl
                     int j = Count - 1;
                     while (j > 0 && hl[j].Count > hl[j - 1].Count)
                     {
-                        (hl[j - 1], hl[j]) = (hl[j], hl[j - 1]);
+                        HougLine tmp = hl[j];
+                        hl[j] = hl[j - 1];
+                        hl[j - 1] = tmp;
                         j--;
                     }
                 }
