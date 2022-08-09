@@ -34,7 +34,7 @@ namespace GpScanner.ViewModel
             }
             catch (Exception ex)
             {
-                _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                _ = Application.Current.Dispatcher.BeginInvoke(() => MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Exclamation));
                 return string.Empty;
             }
         }

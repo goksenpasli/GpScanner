@@ -1,9 +1,14 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using Microsoft.Win32;
+using static Extensions.ExtensionMethods;
 
 namespace Extensions
 {
@@ -14,6 +19,11 @@ namespace Extensions
         static GraphControl()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(GraphControl), new FrameworkPropertyMetadata(typeof(GraphControl)));
+        }
+
+        public GraphControl()
+        {
+            Kaydet = new RelayCommand<object>(parameter => SaveFile(RenderVisual(this).ToTiffJpegByteArray(Format.Png)));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -45,6 +55,8 @@ namespace Extensions
                 }
             }
         }
+
+        public ICommand Kaydet { get; }
 
         public Brush LineColor
         {
@@ -286,6 +298,27 @@ namespace Extensions
             {
                 MaxTextWidth = pen.Thickness
             };
+        }
+
+        private RenderTargetBitmap RenderVisual(FrameworkElement frameworkElement)
+        {
+            RenderTargetBitmap rtb = new((int)frameworkElement.ActualWidth, (int)frameworkElement.ActualHeight, 96, 96, PixelFormats.Default);
+            rtb.Render(frameworkElement);
+            rtb.Freeze();
+            return rtb;
+        }
+
+        private void SaveFile(byte[] imgdata)
+        {
+            SaveFileDialog saveFileDialog = new()
+            {
+                FileName = "Resim.png",
+                Filter = "Png Dosyası (*.png)|*.png"
+            };
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                File.WriteAllBytes(saveFileDialog.FileName, imgdata);
+            }
         }
     }
 }

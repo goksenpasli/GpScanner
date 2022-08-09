@@ -257,7 +257,7 @@ namespace GpScanner.ViewModel
                 }
                 catch (Exception ex)
                 {
-                    _ = MessageBox.Show(ex.Message);
+                    _ = MessageBox.Show(ex.StackTrace, ex.Message);
                 }
             }
         }

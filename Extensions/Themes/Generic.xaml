@@ -18,6 +18,15 @@
             </DataTrigger>
         </Style.Triggers>
     </Style>
+    <Style TargetType="local:GraphControl">
+        <Setter Property="ContextMenu">
+            <Setter.Value>
+                <ContextMenu DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">                    
+                    <MenuItem Header="Resim Olarak Kaydet" Command="{Binding Kaydet}"/>
+                </ContextMenu>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style TargetType="local:ImageViewer">
         <Setter Property="Template">
             <Setter.Value>
