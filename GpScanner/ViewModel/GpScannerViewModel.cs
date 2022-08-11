@@ -64,12 +64,12 @@ namespace GpScanner.ViewModel
 
             OcrPage = new RelayCommand<object>(parameter =>
             {
-                if (parameter is Scanner scanner)
+                if (parameter is TwainCtrl twainCtrl)
                 {
-                    byte[] imgdata = scanner.SeçiliResim.Resim.ToTiffJpegByteArray(Format.Png);
+                    byte[] imgdata = twainCtrl.SeçiliResim.Resim.ToTiffJpegByteArray(Format.Png);
                     Ocr(imgdata);
                 }
-            }, parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && parameter is Scanner scanner && scanner.SeçiliResim is not null);
+            }, parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && parameter is TwainCtrl twainCtrl && twainCtrl.SeçiliResim is not null);
 
             Tümünüİşaretle = new RelayCommand<object>(parameter =>
             {

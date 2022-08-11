@@ -226,11 +226,6 @@ namespace Extensions
             {
                 double max = Series.Max(z => z.ChartValue);
                 double thickness = ActualWidth / Series.Count;
-                if (ValueTextVisibility == Visibility.Visible)
-                {
-                    Margin = new Thickness(0, 12, 0, 0);
-                }
-
                 StreamGeometry geometry = new();
                 using (StreamGeometryContext gc = geometry.Open())
                 {
@@ -246,7 +241,7 @@ namespace Extensions
                             linepen.Freeze();
                             pen.Freeze();
                             Point point0 = new((pen.Thickness * i) - (pen.Thickness / 2), ActualHeight);
-                            Point point1 = new((pen.Thickness * i) - (pen.Thickness / 2), ActualHeight - (item.ChartValue / max * ActualHeight));
+                            Point point1 = new((pen.Thickness * i) - (pen.Thickness / 2), ActualHeight - (item.ChartValue / max * ActualHeight * 9 / 10));
                             if (GraphContentVisibility == Visibility.Visible)
                             {
                                 graph.DrawLine(pen, point0, point1);
@@ -260,7 +255,7 @@ namespace Extensions
                             if (ValueTextVisibility == Visibility.Visible)
                             {
                                 FormattedText formattedValueText = GenerateFormattedValueText(item, pen);
-                                Point textpointValue = new(point1.X - (formattedValueText.WidthIncludingTrailingWhitespace / 2), -16);
+                                Point textpointValue = new(point1.X - (formattedValueText.WidthIncludingTrailingWhitespace / 2), 0);
                                 graph.DrawText(formattedValueText, textpointValue);
                             }
                             if (LineGraphVisibility == Visibility.Visible)

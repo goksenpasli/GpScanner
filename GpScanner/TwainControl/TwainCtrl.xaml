@@ -414,9 +414,9 @@
                             </Extensions:ContentToggleButton>
                         </UniformGrid>
                     </GroupBox.Header>
-                    <ListBox d:ItemsSource="{d:SampleData ItemCount=5}"
+                    <ListBox 
                         ItemsSource="{Binding Scanner.Resimler, Mode=OneWay}"
-                        SelectedItem="{Binding Scanner.SeçiliResim}"
+                        SelectedItem="{Binding SeçiliResim}"
                         SelectionMode="Extended">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
@@ -434,7 +434,7 @@
                                                     </Style>
                                                 </Border.Style>
                                                 <StackPanel>
-                                                    <TextBlock HorizontalAlignment="Right">
+                                                    <TextBlock HorizontalAlignment="Center">
                                                         <Hyperlink Command="{Binding ElementName=UserControl, Path=DataContext.Kaydet}"
                                                             CommandParameter="{Binding Mode=OneWay}"
                                                             TextDecorations="None">
@@ -477,7 +477,7 @@
                         </ListBox.ItemContainerStyle>
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <Extensions:VirtualizingWrapPanel />
+                                <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"   />
                             </ItemsPanelTemplate>
                         </ListBox.ItemsPanel>
                     </ListBox>
@@ -552,28 +552,28 @@
         </GroupBox>
         <GridSplitter Grid.Column="1" Width="3" HorizontalAlignment="Stretch" Background="{StaticResource GroupBoxBackGround}" MouseDoubleClick="GridSplitter_MouseDoubleClick" />  
             <GroupBox  Grid.Column="2" Margin="1,0,0,0" Panel.ZIndex="-1" Header="{local:Loc DOCUMENT}">
-                <Grid IsEnabled="{Binding Scanner.SeçiliResim, Converter={StaticResource NullableToBooleanConverter}}">
+                <Grid IsEnabled="{Binding SeçiliResim, Converter={StaticResource NullableToBooleanConverter}}">
                     <DockPanel>
                         <Slider Margin="20,0,20,0" DockPanel.Dock="Top" IsSnapToTickEnabled="True"
-                            Maximum="{Binding Scanner.SeçiliResim.Resim.PixelWidth}"
+                            Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
                             Style="{StaticResource SliderStyle}"
                             TickPlacement="BottomRight"
                             Value="{Binding Scanner.CropLeft}" />
                         <Slider Margin="20,0,20,0" DockPanel.Dock="Bottom" IsDirectionReversed="True"
                             IsSnapToTickEnabled="True"
-                            Maximum="{Binding Scanner.SeçiliResim.Resim.PixelWidth}"
+                            Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
                             Style="{StaticResource SliderStyle}"
                             TickPlacement="TopLeft"
                             Value="{Binding Scanner.CropRight}" />
                         <Slider Margin="0,-6,0,20" DockPanel.Dock="Left" IsDirectionReversed="True"
                             IsSnapToTickEnabled="True"
-                            Maximum="{Binding Scanner.SeçiliResim.Resim.PixelHeight}"
+                            Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
                             Orientation="Vertical"
                             Style="{StaticResource SliderStyle}"
                             TickPlacement="BottomRight"
                             Value="{Binding Scanner.CropTop}" />
                         <Slider Margin="0,0,0,20" DockPanel.Dock="Right" IsSnapToTickEnabled="True"
-                            Maximum="{Binding Scanner.SeçiliResim.Resim.PixelHeight}"
+                            Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
                             Orientation="Vertical"
                             Style="{StaticResource SliderStyle}"
                             TickPlacement="TopLeft"
@@ -583,7 +583,7 @@
                                 Angle="{Binding Scanner.RotateAngle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 FitImageOrientation="Height" OrijinalResimDosyaAçButtonVisibility="Collapsed" PreviewMouseDown="ImgViewer_MouseDown"
                                 PreviewMouseMove="ImgViewer_MouseMove" SnapTick="True"
-                                Source="{Binding Scanner.SeçiliResim.Resim}" />
+                                Source="{Binding SeçiliResim.Resim}" />
                             <Canvas x:Name="cnv" />
                         </Grid>
                     </DockPanel>
@@ -595,19 +595,19 @@
                             <StackPanel>
                                 <DockPanel>
                                     <Extensions:NumericUpDownControl HorizontalAlignment="Center" DockPanel.Dock="Top" IsReadOnly="True"
-                                        Maximum="{Binding Scanner.SeçiliResim.Resim.PixelHeight}"
+                                        Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
                                         Minimum="0" SmallChange="1"
                                         Value="{Binding Scanner.CropTop}" />
                                     <Extensions:NumericUpDownControl HorizontalAlignment="Center" DockPanel.Dock="Bottom" IsReadOnly="True"
-                                        Maximum="{Binding Scanner.SeçiliResim.Resim.PixelHeight}"
+                                        Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
                                         Minimum="0" SmallChange="1"
                                         Value="{Binding Scanner.CropBottom}" />
                                     <Extensions:NumericUpDownControl VerticalAlignment="Center" DockPanel.Dock="Left" IsReadOnly="True"
-                                        Maximum="{Binding Scanner.SeçiliResim.Resim.PixelWidth}"
+                                        Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
                                         Minimum="0" SmallChange="1"
                                         Value="{Binding Scanner.CropLeft}" />
                                     <Extensions:NumericUpDownControl VerticalAlignment="Center" DockPanel.Dock="Right" IsReadOnly="True"
-                                        Maximum="{Binding Scanner.SeçiliResim.Resim.PixelWidth}"
+                                        Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
                                         Minimum="0" SmallChange="1"
                                         Value="{Binding Scanner.CropRight}" />
                                     <Border BorderBrush="{StaticResource GroupBoxBackGround}" BorderThickness="1">
@@ -626,11 +626,11 @@
                                     <Button Command="{Binding SaveCroppedImage}" Content="{local:Loc TRIMIMAGE}" />
                                     <Button Command="{Binding ResetCroppedImage}" Content="{local:Loc RESET}" />
                                     <TextBlock VerticalAlignment="Center" Text="{local:Loc WIDTHCOUNT}" />
-                                    <Extensions:NumericUpDownControl Maximum="{Binding Scanner.SeçiliResim.Resim.PixelWidth}"
+                                    <Extensions:NumericUpDownControl Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
                                         Minimum="1" SmallChange="1"
                                         Value="{Binding Scanner.EnAdet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <TextBlock VerticalAlignment="Center" Text="{local:Loc HEIGHTCOUNT}" />
-                                    <Extensions:NumericUpDownControl Maximum="{Binding Scanner.SeçiliResim.Resim.PixelHeight}"
+                                    <Extensions:NumericUpDownControl Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
                                         Minimum="1" SmallChange="1"
                                         Value="{Binding Scanner.BoyAdet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <Button Command="{Binding SplitImage}" Content="{local:Loc SLICE}" />

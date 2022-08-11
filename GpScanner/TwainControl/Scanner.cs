@@ -454,20 +454,6 @@ namespace TwainControl
             }
         }
 
-        public ScannedImage SeçiliResim
-        {
-            get => seçiliResim;
-
-            set
-            {
-                if (seçiliResim != value)
-                {
-                    seçiliResim = value;
-                    OnPropertyChanged(nameof(SeçiliResim));
-                }
-            }
-        }
-
         public int SeçiliResimSayısı
         {
             get => seçiliResimSayısı;
@@ -713,8 +699,6 @@ namespace TwainControl
         private string saveFileName;
 
         private bool seçili;
-
-        private ScannedImage seçiliResim;
 
         private int seçiliResimSayısı;
 

@@ -152,15 +152,14 @@
                     </Button>
                 </UniformGrid>
                 <ListBox Grid.Row="4"
-                    d:ItemsSource="{d:SampleData ItemCount=5}"
                     IsSynchronizedWithCurrentItem="False"
                     ItemsSource="{Binding Mode=OneWay, Source={StaticResource Veriler}}"
                     VirtualizingPanel.CacheLength="2,2" VirtualizingPanel.CacheLengthUnit="Item"
                     VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.ScrollUnit="Pixel"
-                    VirtualizingPanel.VirtualizationMode="Standard">
+                    VirtualizingPanel.VirtualizationMode="Standard" d:ItemsSource="{d:SampleData ItemCount=5}">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <Extensions:VirtualizingTilePanel CanHorizontallyScroll="False" Columns="3" Tile="False" />
+                            <Extensions:VirtualizingWrapPanel SpacingEnabled="False" ChildrenSize="150,190"/>
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
                     <ListBox.ItemContainerStyle>
@@ -270,7 +269,7 @@
                     </Button>
                     <Extensions:SplitButton HorizontalContentAlignment="Stretch"
                         Command="{Binding OcrPage, Mode=OneWay}"
-                        CommandParameter="{Binding ElementName=TwainCtrl, Path=DataContext.Scanner}"
+                        CommandParameter="{Binding ElementName=TwainCtrl, Path=DataContext}"
                         IsSplitPartOpen="{Binding ScannedTextWindowOpen}">
                         <Extensions:SplitButton.Content>
                             <Grid>

@@ -468,6 +468,20 @@ namespace TwainControl
 
         public ICommand Seçilikaydet { get; }
 
+        public ScannedImage SeçiliResim
+        {
+            get => seçiliResim;
+
+            set
+            {
+                if (seçiliResim != value)
+                {
+                    seçiliResim = value;
+                    OnPropertyChanged(nameof(SeçiliResim));
+                }
+            }
+        }
+
         public ICommand SetWatermark { get; }
 
         public ICommand SplitImage { get; }
@@ -573,6 +587,8 @@ namespace TwainControl
 
         private Scanner scanner;
 
+        private ScannedImage seçiliResim;
+
         private Twain twain;
 
         private GridLength twainGuiControlLength = new(4, GridUnitType.Star);
@@ -604,10 +620,10 @@ namespace TwainControl
         {
             try
             {
-                double widthmultiply = Scanner.SeçiliResim.Resim.PixelWidth / ImgViewer.RenderSize.Width;
-                double heightmultiply = Scanner.SeçiliResim.Resim.PixelHeight / ImgViewer.RenderSize.Height;
+                double widthmultiply = SeçiliResim.Resim.PixelWidth / ImgViewer.RenderSize.Width;
+                double heightmultiply = SeçiliResim.Resim.PixelHeight / ImgViewer.RenderSize.Height;
                 Int32Rect ınt32Rect = new((int)(x * widthmultiply), (int)(y * heightmultiply), (int)(width * widthmultiply), (int)(height * heightmultiply));
-                CroppedOcrBitmap = new CroppedBitmap(Scanner.SeçiliResim.Resim, ınt32Rect);
+                CroppedOcrBitmap = new CroppedBitmap(SeçiliResim.Resim, ınt32Rect);
                 CroppedOcrBitmap.Freeze();
                 return CroppedOcrBitmap.ToTiffJpegByteArray(Format.Png);
             }
@@ -883,12 +899,12 @@ namespace TwainControl
 
         private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName is "CropLeft" or "CropTop" or "CropRight" or "CropBottom" && Scanner.SeçiliResim != null)
+            if (e.PropertyName is "CropLeft" or "CropTop" or "CropRight" or "CropBottom" && SeçiliResim != null)
             {
-                Int32Rect sourceRect = CropImageRect(Scanner.SeçiliResim.Resim);
+                Int32Rect sourceRect = CropImageRect(SeçiliResim.Resim);
                 if (sourceRect.HasArea)
                 {
-                    Scanner.CroppedImage = new CroppedBitmap(Scanner.SeçiliResim.Resim, sourceRect);
+                    Scanner.CroppedImage = new CroppedBitmap(SeçiliResim.Resim, sourceRect);
                     Scanner.CroppedImage.Freeze();
                     Scanner.CropDialogExpanded = true;
                 }

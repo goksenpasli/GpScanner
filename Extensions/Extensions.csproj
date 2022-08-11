@@ -60,7 +60,7 @@
     <Compile Include="Controls\ButtonedTextBox.cs" />
     <Compile Include="Controls\Chart.cs" />
     <Compile Include="Controls\HourControl.cs" />
-    <Compile Include="Controls\VirtualizingTilePanel.cs" />
+    <Compile Include="Controls\VirtualizingWrapPanel.cs" />
     <Compile Include="Converters\TimespanToTickConverter.cs" />
     <Compile Include="Shader\ColorEffect.cs" />
     <Compile Include="Controls\ImageViewer.cs" />
@@ -88,7 +88,6 @@
     <Compile Include="Converters\NullableToBooleanConverter.cs" />
     <Compile Include="Controls\NumericUpDownControl.cs" />
     <Compile Include="Controls\SplitButton.cs" />
-    <Compile Include="Controls\VirtualizingWrapPanel.cs" />
     <Compile Include="Converters\SystemFileIconConverter.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="InpcBase.cs" />
