@@ -62,6 +62,7 @@
     <Compile Include="Controls\HourControl.cs" />
     <Compile Include="Controls\VirtualizingWrapPanel.cs" />
     <Compile Include="Converters\TimespanToTickConverter.cs" />
+    <Compile Include="Converters\VisibilityToBooleanConverter.cs" />
     <Compile Include="Shader\ColorEffect.cs" />
     <Compile Include="Controls\ImageViewer.cs" />
     <Compile Include="Controls\MaskedTextBlock.cs" />

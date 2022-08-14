@@ -56,7 +56,7 @@
                         </Viewbox>
                     </TabItem>
                     <TabItem Header="{twainctrl:Loc GRAPH}">
-                        <Extensions:GraphControl Series="{Binding ChartData}" LineGraphVisibility="Collapsed"/>
+                        <Extensions:GraphControl x:Name="Grp" Grid.Row="1"  Series="{Binding ChartData}"/>
                     </TabItem>
                 </TabControl>
                 <UniformGrid Grid.Row="1" Columns="3">
@@ -159,7 +159,7 @@
                     VirtualizingPanel.VirtualizationMode="Standard" d:ItemsSource="{d:SampleData ItemCount=5}">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <Extensions:VirtualizingWrapPanel SpacingEnabled="False" ChildrenSize="150,190"/>
+                            <Extensions:VirtualizingWrapPanel ChildrenSize="160,195" StretchItems="True" CanHorizontallyScroll="False" />
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
                     <ListBox.ItemContainerStyle>

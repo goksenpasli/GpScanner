@@ -535,24 +535,6 @@ namespace Extensions
         private IRecyclingItemContainerGenerator _itemContainerGenerator;
 
         private DependencyObject _itemsOwner;
-
-        private static T GetVisualChild<T>(DependencyObject parent) where T : Visual
-        {
-            T child = default;
-
-            int numVisuals = VisualTreeHelper.GetChildrenCount(parent);
-            for (int i = 0; i < numVisuals; i++)
-            {
-                Visual v = (Visual)VisualTreeHelper.GetChild(parent, i);
-                child = v as T;
-                child ??= GetVisualChild<T>(v);
-                if (child != null)
-                {
-                    break;
-                }
-            }
-            return child;
-        }
     }
 
     public class VirtualizingWrapPanel : VirtualizingPanelBase
@@ -585,7 +567,7 @@ namespace Extensions
 
         public static readonly DependencyProperty ItemSizeProperty = DependencyProperty.Register(nameof(ItemSize), typeof(Size), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(Size.Empty, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
-        public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(nameof(Orientation), typeof(Orientation), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(Orientation.Vertical, FrameworkPropertyMetadataOptions.AffectsMeasure, (obj, args) => ((VirtualizingWrapPanel)obj).Orientation_Changed()));
+        public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(nameof(Orientation), typeof(Orientation), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(Orientation.Vertical, FrameworkPropertyMetadataOptions.AffectsMeasure, (obj, _) => ((VirtualizingWrapPanel)obj).Orientation_Changed()));
 
         public static readonly DependencyProperty SpacingModeProperty = DependencyProperty.Register(nameof(SpacingMode), typeof(SpacingMode), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(SpacingMode.Uniform, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
@@ -877,9 +859,6 @@ namespace Extensions
                 double offsetInPixel;
 
                 int rowCountInViewport;
-                int rowCountInCacheBefore = 0;
-                int rowCountInCacheAfter = 0;
-
                 if (ScrollUnit == ScrollUnit.Item)
                 {
                     offsetRowIndex = GetY(Offset) >= 1 ? (int)GetY(Offset) - 1 : 0; // ignore header
@@ -902,8 +881,8 @@ namespace Extensions
                 {
                     double cacheBeforeInPixel = Math.Min(CacheLength.CacheBeforeViewport, offsetInPixel);
                     double cacheAfterInPixel = Math.Min(CacheLength.CacheAfterViewport, GetHeight(Extent) - viewportHeight - offsetInPixel);
-                    rowCountInCacheBefore = (int)(cacheBeforeInPixel / GetHeight(childSize));
-                    rowCountInCacheAfter = ((int)Math.Ceiling((offsetInPixel + viewportHeight + cacheAfterInPixel) / GetHeight(childSize))) - (int)Math.Ceiling((offsetInPixel + viewportHeight) / GetHeight(childSize));
+                    int rowCountInCacheBefore = (int)(cacheBeforeInPixel / GetHeight(childSize));
+                    int rowCountInCacheAfter = ((int)Math.Ceiling((offsetInPixel + viewportHeight + cacheAfterInPixel) / GetHeight(childSize))) - (int)Math.Ceiling((offsetInPixel + viewportHeight) / GetHeight(childSize));
                     startIndex = Math.Max(startIndex - (rowCountInCacheBefore * itemsPerRowCount), 0);
                     endIndex = Math.Min(endIndex + (rowCountInCacheAfter * itemsPerRowCount), Items.Count - 1);
                 }

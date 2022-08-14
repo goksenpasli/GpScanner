@@ -14,7 +14,47 @@ namespace Extensions
 {
     public class GraphControl : FrameworkElement, INotifyPropertyChanged
     {
+        // Using a DependencyProperty as the backing store for FontSize.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty FontSizeProperty =
+            DependencyProperty.Register("FontSize", typeof(double), typeof(GraphControl), new FrameworkPropertyMetadata(12.0d, FrameworkPropertyMetadataOptions.AffectsRender));
+
+        // Using a DependencyProperty as the backing store for GraphContentVisibility.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty GraphContentVisibilityProperty =
+            DependencyProperty.Register("GraphContentVisibility", typeof(Visibility), typeof(GraphControl), new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.AffectsRender));
+
+        // Using a DependencyProperty as the backing store for LineColor.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty LineColorProperty =
+            DependencyProperty.Register("LineColor", typeof(Brush), typeof(GraphControl), new FrameworkPropertyMetadata(Brushes.Blue, FrameworkPropertyMetadataOptions.AffectsRender));
+
+        // Using a DependencyProperty as the backing store for LineDotVisibility.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty LineDotVisibilityProperty =
+            DependencyProperty.Register("LineDotVisibility", typeof(Visibility), typeof(GraphControl), new FrameworkPropertyMetadata(Visibility.Collapsed, FrameworkPropertyMetadataOptions.AffectsRender));
+
+        // Using a DependencyProperty as the backing store for LineGraphVisibility.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty LineGraphVisibilityProperty =
+            DependencyProperty.Register("LineGraphVisibility", typeof(Visibility), typeof(GraphControl), new FrameworkPropertyMetadata(Visibility.Collapsed, FrameworkPropertyMetadataOptions.AffectsRender));
+
+        // Using a DependencyProperty as the backing store for LineThickness.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty LineThicknessProperty =
+            DependencyProperty.Register("LineThickness", typeof(double), typeof(GraphControl), new FrameworkPropertyMetadata(2.0d, FrameworkPropertyMetadataOptions.AffectsRender));
+
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register("Series", typeof(ObservableCollection<Chart>), typeof(GraphControl), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
+
+        // Using a DependencyProperty as the backing store for SeriesTextVisibility.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SeriesTextVisibilityProperty =
+            DependencyProperty.Register("SeriesTextVisibility", typeof(Visibility), typeof(GraphControl), new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.AffectsRender));
+
+        // Using a DependencyProperty as the backing store for TextColor.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty TextColorProperty =
+            DependencyProperty.Register("TextColor", typeof(Brush), typeof(GraphControl), new FrameworkPropertyMetadata(Brushes.Black, FrameworkPropertyMetadataOptions.AffectsRender));
+
+        // Using a DependencyProperty as the backing store for ValueColor.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ValueColorProperty =
+            DependencyProperty.Register("ValueColor", typeof(Brush), typeof(GraphControl), new FrameworkPropertyMetadata(Brushes.Red, FrameworkPropertyMetadataOptions.AffectsRender));
+
+        // Using a DependencyProperty as the backing store for ValueTextVisibility.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ValueTextVisibilityProperty =
+            DependencyProperty.Register("ValueTextVisibility", typeof(Visibility), typeof(GraphControl), new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.AffectsRender));
 
         static GraphControl()
         {
@@ -30,88 +70,40 @@ namespace Extensions
 
         public double FontSize
         {
-            get => fontSize;
-
-            set
-            {
-                if (fontSize != value)
-                {
-                    fontSize = value;
-                    OnPropertyChanged(nameof(FontSize));
-                }
-            }
+            get => (double)GetValue(FontSizeProperty);
+            set => SetValue(FontSizeProperty, value);
         }
 
         public Visibility GraphContentVisibility
         {
-            get => graphcontentVisibility;
-
-            set
-            {
-                if (graphcontentVisibility != value)
-                {
-                    graphcontentVisibility = value;
-                    OnPropertyChanged(nameof(GraphContentVisibility));
-                }
-            }
+            get => (Visibility)GetValue(GraphContentVisibilityProperty);
+            set => SetValue(GraphContentVisibilityProperty, value);
         }
 
         public ICommand Kaydet { get; }
 
         public Brush LineColor
         {
-            get => lineColor;
-
-            set
-            {
-                if (lineColor != value)
-                {
-                    lineColor = value;
-                    OnPropertyChanged(nameof(LineColor));
-                }
-            }
+            get => (Brush)GetValue(LineColorProperty);
+            set => SetValue(LineColorProperty, value);
         }
 
         public Visibility LineDotVisibility
         {
-            get => lineDotVisibility;
-
-            set
-            {
-                if (lineDotVisibility != value)
-                {
-                    lineDotVisibility = value;
-                    OnPropertyChanged(nameof(LineDotVisibility));
-                }
-            }
+            get => (Visibility)GetValue(LineDotVisibilityProperty);
+            set => SetValue(LineDotVisibilityProperty, value);
         }
 
         public Visibility LineGraphVisibility
         {
-            get => lineGraphVisibility;
-
-            set
-            {
-                if (lineGraphVisibility != value)
-                {
-                    lineGraphVisibility = value;
-                    OnPropertyChanged(nameof(LineGraphVisibility));
-                }
-            }
+            get => (Visibility)GetValue(LineGraphVisibilityProperty);
+            set => SetValue(LineGraphVisibilityProperty, value);
         }
 
         public double LineThickness
         {
-            get => lineThickness;
-
-            set
-            {
-                if (lineThickness != value)
-                {
-                    lineThickness = value;
-                    OnPropertyChanged(nameof(LineThickness));
-                }
-            }
+            get => (double)GetValue(LineThicknessProperty);
+            set => SetValue(LineThicknessProperty, value);
         }
 
         public ObservableCollection<Chart> Series
@@ -122,57 +114,26 @@ namespace Extensions
 
         public Visibility SeriesTextVisibility
         {
-            get => seriesTextVisibility;
-
-            set
-            {
-                if (seriesTextVisibility != value)
-                {
-                    seriesTextVisibility = value;
-                    OnPropertyChanged(nameof(SeriesTextVisibility));
-                }
-            }
+            get => (Visibility)GetValue(SeriesTextVisibilityProperty);
+            set => SetValue(SeriesTextVisibilityProperty, value);
         }
 
         public Brush TextColor
         {
-            get => textColor; set
-
-            {
-                if (textColor != value)
-                {
-                    textColor = value;
-                    OnPropertyChanged(nameof(TextColor));
-                }
-            }
+            get => (Brush)GetValue(TextColorProperty);
+            set => SetValue(TextColorProperty, value);
         }
 
         public Brush ValueColor
         {
-            get => valueColor;
-
-            set
-            {
-                if (valueColor != value)
-                {
-                    valueColor = value;
-                    OnPropertyChanged(nameof(ValueColor));
-                }
-            }
+            get => (Brush)GetValue(ValueColorProperty);
+            set => SetValue(ValueColorProperty, value);
         }
 
         public Visibility ValueTextVisibility
         {
-            get => valueTextVisibility;
-
-            set
-            {
-                if (valueTextVisibility != value)
-                {
-                    valueTextVisibility = value;
-                    OnPropertyChanged(nameof(ValueTextVisibility));
-                }
-            }
+            get => (Visibility)GetValue(ValueTextVisibilityProperty);
+            set => SetValue(ValueTextVisibilityProperty, value);
         }
 
         protected virtual void OnPropertyChanged(string propertyName = null)
@@ -200,26 +161,6 @@ namespace Extensions
 
         private static ObservableCollection<Chart> MockData;
 
-        private double fontSize = 12;
-
-        private Visibility graphcontentVisibility;
-
-        private Brush lineColor = Brushes.Blue;
-
-        private Visibility lineDotVisibility;
-
-        private Visibility lineGraphVisibility;
-
-        private double lineThickness = 2;
-
-        private Visibility seriesTextVisibility;
-
-        private Brush textColor = Brushes.Black;
-
-        private Brush valueColor = Brushes.Red;
-
-        private Visibility valueTextVisibility;
-
         private DrawingContext DrawGraph(DrawingContext drawingContext, ObservableCollection<Chart> Series)
         {
             if (Series is not null && Series.Any())
@@ -246,12 +187,6 @@ namespace Extensions
                             {
                                 graph.DrawLine(pen, point0, point1);
                             }
-                            if (SeriesTextVisibility == Visibility.Visible)
-                            {
-                                FormattedText formattedText = GenerateFormattedText(item, pen);
-                                Point textpoint = new(point1.X - (formattedText.WidthIncludingTrailingWhitespace / 2), point1.Y);
-                                graph.DrawText(formattedText, textpoint);
-                            }
                             if (ValueTextVisibility == Visibility.Visible)
                             {
                                 FormattedText formattedValueText = GenerateFormattedValueText(item, pen);
@@ -264,8 +199,14 @@ namespace Extensions
                                 graph.DrawGeometry(null, linepen, geometry);
                                 if (LineDotVisibility == Visibility.Visible)
                                 {
-                                    graph.DrawEllipse(null, linepen, point1, linepen.Thickness, linepen.Thickness);
+                                    graph.DrawEllipse(linepen.Brush, linepen, point1, linepen.Thickness, linepen.Thickness);
                                 }
+                            }
+                            if (SeriesTextVisibility == Visibility.Visible)
+                            {
+                                FormattedText formattedText = GenerateFormattedText(item, pen);
+                                Point textpoint = new(point1.X - (formattedText.WidthIncludingTrailingWhitespace / 2), point1.Y);
+                                graph.DrawText(formattedText, textpoint);
                             }
                         }
                         graphdrawinggroup.Freeze();

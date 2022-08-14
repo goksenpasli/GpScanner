@@ -7,6 +7,7 @@
     <local:SystemFileIconConverter x:Key="SystemFileIconConverter" />
     <local:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
     <local:FilePathToIconConverter x:Key="FilePathToIconConverter" />
+    <local:VisibilityToBooleanConverter x:Key="VisibilityToBooleanConverter"/>
     <Style x:Key="NumericUpDownTextBoxStyle" TargetType="{x:Type TextBox}">
         <Setter Property="Text" Value="{Binding Text, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
         <Style.Triggers>
@@ -22,7 +23,30 @@
         <Setter Property="ContextMenu">
             <Setter.Value>
                 <ContextMenu DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">                    
-                    <MenuItem Header="Resim Olarak Kaydet" Command="{Binding Kaydet}"/>
+                    <MenuItem Header="Seri Rakamlarını Göster" IsCheckable="True" IsChecked="{Binding SeriesTextVisibility, Converter={StaticResource VisibilityToBooleanConverter}}"/>
+                    <MenuItem Header="Değer Rakamlarını Göster" IsCheckable="True" IsChecked="{Binding ValueTextVisibility, Converter={StaticResource VisibilityToBooleanConverter}}"/>
+                    <MenuItem IsCheckable="True" IsChecked="{Binding LineGraphVisibility, Converter={StaticResource VisibilityToBooleanConverter}}">
+                        <MenuItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Çizgi Grafik Göster" VerticalAlignment="Center"/>
+                                <local:NumericUpDownControl IsEnabled="{Binding LineGraphVisibility, Converter={StaticResource VisibilityToBooleanConverter}}" Value="{Binding LineThickness}" Orientation="Horizontal" LargeChange="1" SmallChange="1" Minimum="1" Maximum="15" IsReadOnly="True"/>
+                            </StackPanel>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem Header="Çizgi Grafik Tepe Noktaları Göster" IsEnabled="{Binding LineGraphVisibility, Converter={StaticResource VisibilityToBooleanConverter}}" IsCheckable="True" IsChecked="{Binding LineDotVisibility, Converter={StaticResource VisibilityToBooleanConverter}}"/>
+                    <MenuItem Header="Grafik İçerik Göster" IsCheckable="True" IsChecked="{Binding GraphContentVisibility, Converter={StaticResource VisibilityToBooleanConverter}}"/>
+                    <MenuItem Header="Resim Olarak Kaydet" Command="{Binding Kaydet}">
+                        <MenuItem.Icon>
+                            <Image Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="6" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </ContextMenu>
             </Setter.Value>
         </Setter>
