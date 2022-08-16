@@ -10,6 +10,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -27,6 +28,7 @@ using TwainWpf;
 using TwainWpf.Wpf;
 using static Extensions.ExtensionMethods;
 using Path = System.IO.Path;
+using PixelFormat = System.Drawing.Imaging.PixelFormat;
 using Rectangle = System.Windows.Shapes.Rectangle;
 
 namespace TwainControl
@@ -355,6 +357,14 @@ namespace TwainControl
                 }
             }, parameter => true);
 
+            ApplyColorChange = new RelayCommand<object>(parameter =>
+            {
+                System.Windows.Media.Color source = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(SourceColor);
+                System.Windows.Media.Color target = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(TargetColor);
+                using Bitmap bmp = BitmapSourceToBitmap((BitmapSource)Scanner.CroppedImage);
+                Scanner.CroppedImage = ReplaceColor(bmp, source, target, (int)Threshold).ToBitmapImage(ImageFormat.Png);
+            }, parameter => Scanner.CroppedImage is not null);
+
             Scanner.PropertyChanged += Scanner_PropertyChanged;
 
             Settings.Default.PropertyChanged += Default_PropertyChanged;
@@ -363,6 +373,8 @@ namespace TwainControl
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public ICommand ApplyColorChange { get; }
 
         public CroppedBitmap CroppedOcrBitmap
         {
@@ -484,9 +496,49 @@ namespace TwainControl
 
         public ICommand SetWatermark { get; }
 
+        public string SourceColor
+        {
+            get => sourceColor;
+
+            set
+            {
+                if (sourceColor != value)
+                {
+                    sourceColor = value;
+                    OnPropertyChanged(nameof(SourceColor));
+                }
+            }
+        }
+
         public ICommand SplitImage { get; }
 
+        public string TargetColor
+        {
+            get => targetColor; set
+
+            {
+                if (targetColor != value)
+                {
+                    targetColor = value;
+                    OnPropertyChanged(nameof(TargetColor));
+                }
+            }
+        }
+
         public ICommand Tersiniİşaretle { get; }
+
+        public double Threshold
+        {
+            get => threshold; set
+
+            {
+                if (threshold != value)
+                {
+                    threshold = value;
+                    OnPropertyChanged(nameof(Threshold));
+                }
+            }
+        }
 
         public ICommand Tümünüİşaretle { get; }
 
@@ -589,6 +641,12 @@ namespace TwainControl
 
         private ScannedImage seçiliResim;
 
+        private string sourceColor = "Transparent";
+
+        private string targetColor = "Transparent";
+
+        private double threshold = 1;
+
         private Twain twain;
 
         private GridLength twainGuiControlLength = new(4, GridUnitType.Star);
@@ -609,6 +667,21 @@ namespace TwainControl
                 securitySettings.PermitPrint = Scanner.AllowPrint;
                 securitySettings.PermitExtractContent = Scanner.AllowCopy;
             }
+        }
+
+        private Bitmap BitmapSourceToBitmap(BitmapSource bitmapsource)
+        {
+            FormatConvertedBitmap src = new();
+            src.BeginInit();
+            src.Source = bitmapsource;
+            src.DestinationFormat = PixelFormats.Bgra32;
+            src.EndInit();
+            Bitmap bitmap = new(src.PixelWidth, src.PixelHeight, PixelFormat.Format32bppArgb);
+            BitmapData data = bitmap.LockBits(new System.Drawing.Rectangle(System.Drawing.Point.Empty, bitmap.Size), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+            src.CopyPixels(Int32Rect.Empty, data.Scan0, data.Height * data.Stride, data.Stride);
+            bitmap.UnlockBits(data);
+
+            return bitmap;
         }
 
         private void ButtonedTextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
@@ -768,6 +841,12 @@ namespace TwainControl
                 Cursor = Cursors.Cross;
                 x = e.GetPosition(ImgViewer).X;
                 y = e.GetPosition(ImgViewer).Y;
+
+                CroppedBitmap cb = new(ImgViewer.Source as BitmapSource, new Int32Rect((int)((int)x * SeçiliResim.Resim.PixelWidth / ImgViewer.ActualWidth), (int)((int)y * SeçiliResim.Resim.PixelHeight / ImgViewer.ActualHeight), 1, 1));
+                byte[] pixels = new byte[4];
+                cb.CopyPixels(pixels, 4, 0);
+                cb.Freeze();
+                SourceColor = System.Windows.Media.Color.FromRgb(pixels[2], pixels[1], pixels[0]).ToString();
             }
         }
 
@@ -841,6 +920,62 @@ namespace TwainControl
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
             Scanner.PdfPassword = ((PasswordBox)sender).SecurePassword;
+        }
+
+        private unsafe Bitmap ReplaceColor(Bitmap source, System.Windows.Media.Color toReplace, System.Windows.Media.Color replacement, int threshold)
+        {
+            const int pixelSize = 4; // 32 bits per pixel
+
+            Bitmap target = new(source.Width, source.Height, PixelFormat.Format32bppArgb);
+
+            BitmapData sourceData = null, targetData = null;
+
+            try
+            {
+                sourceData = source.LockBits(new System.Drawing.Rectangle(0, 0, source.Width, source.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+
+                targetData = target.LockBits(new System.Drawing.Rectangle(0, 0, target.Width, target.Height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+
+                for (int y = 0; y < source.Height; ++y)
+                {
+                    byte* sourceRow = (byte*)sourceData.Scan0 + (y * sourceData.Stride);
+                    byte* targetRow = (byte*)targetData.Scan0 + (y * targetData.Stride);
+
+                    _ = Parallel.For(0, source.Width, x =>
+                    {
+                        byte b = sourceRow[(x * pixelSize) + 0];
+                        byte g = sourceRow[(x * pixelSize) + 1];
+                        byte r = sourceRow[(x * pixelSize) + 2];
+                        byte a = sourceRow[(x * pixelSize) + 3];
+
+                        if (toReplace.R + threshold >= r && toReplace.R - threshold <= r && toReplace.G + threshold >= g && toReplace.G - threshold <= g && toReplace.B + threshold >= b && toReplace.B - threshold <= b)
+                        {
+                            r = replacement.R;
+                            g = replacement.G;
+                            b = replacement.B;
+                        }
+
+                        targetRow[(x * pixelSize) + 0] = b;
+                        targetRow[(x * pixelSize) + 1] = g;
+                        targetRow[(x * pixelSize) + 2] = r;
+                        targetRow[(x * pixelSize) + 3] = a;
+                    });
+                }
+            }
+            finally
+            {
+                if (sourceData != null)
+                {
+                    source.UnlockBits(sourceData);
+                }
+
+                if (targetData != null)
+                {
+                    target.UnlockBits(targetData);
+                }
+            }
+
+            return target;
         }
 
         private void ResetCropMargin()

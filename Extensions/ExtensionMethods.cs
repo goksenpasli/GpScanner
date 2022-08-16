@@ -259,58 +259,6 @@ namespace Extensions
             }
         }
 
-        public static BitmapSource RegistryIconCreate(this string value)
-        {
-            if (value != null)
-            {
-                using RegistryKey keyForExt = Registry.ClassesRoot.OpenSubKey(value);
-                if (keyForExt == null)
-                {
-                    return null;
-                }
-
-                string className = Convert.ToString(keyForExt.GetValue(null));
-                using RegistryKey keyForClass = Registry.ClassesRoot.OpenSubKey(className);
-                if (keyForClass == null)
-                {
-                    return null;
-                }
-
-                using RegistryKey keyForIcon = keyForClass.OpenSubKey("DefaultIcon");
-                if (keyForIcon == null)
-                {
-                    using RegistryKey keyForCLSID = keyForClass.OpenSubKey("CLSID");
-                    if (keyForCLSID != null)
-                    {
-                        string clsid = $"CLSID\\{Convert.ToString(keyForCLSID.GetValue(null))}\\DefaultIcon";
-                        if (Registry.ClassesRoot.OpenSubKey(clsid) == null)
-                        {
-                            return null;
-                        }
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                }
-
-                string[] defaultIcon = Convert.ToString(keyForIcon.GetValue(null)).Split(',');
-                int index = defaultIcon.Length > 1 ? int.Parse(defaultIcon[1]) : 0;
-                IntPtr hIcon = hwnd.ExtractIcon(defaultIcon[0], index);
-                if (hIcon != IntPtr.Zero)
-                {
-                    BitmapSource icon = Imaging.CreateBitmapSourceFromHIcon(hIcon, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-                    _ = hIcon.DestroyIcon();
-                    icon.Freeze();
-                    return icon;
-                }
-
-                _ = hIcon.DestroyIcon();
-            }
-
-            return null;
-        }
-
         public static BitmapSource Resize(this BitmapSource bfPhoto, double nWidth, double nHeight, double rotate = 0, int dpiX = 96, int dpiY = 96)
         {
             RotateTransform rotateTransform = new(rotate);

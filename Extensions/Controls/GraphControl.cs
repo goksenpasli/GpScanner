@@ -14,6 +14,10 @@ namespace Extensions
 {
     public class GraphControl : FrameworkElement, INotifyPropertyChanged
     {
+        // Using a DependencyProperty as the backing store for DotColor.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty DotColorProperty =
+            DependencyProperty.Register("DotColor", typeof(Brush), typeof(GraphControl), new FrameworkPropertyMetadata(Brushes.Blue, FrameworkPropertyMetadataOptions.AffectsRender));
+
         // Using a DependencyProperty as the backing store for FontSize.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty FontSizeProperty =
             DependencyProperty.Register("FontSize", typeof(double), typeof(GraphControl), new FrameworkPropertyMetadata(12.0d, FrameworkPropertyMetadataOptions.AffectsRender));
@@ -67,6 +71,12 @@ namespace Extensions
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public Brush DotColor
+        {
+            get => (Brush)GetValue(DotColorProperty);
+            set => SetValue(DotColorProperty, value);
+        }
 
         public double FontSize
         {
@@ -145,7 +155,7 @@ namespace Extensions
         {
             if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
             {
-                _ = DrawGraph(drawingContext, Series);
+                DrawGraph(drawingContext, Series);
             }
             else
             {
@@ -155,69 +165,60 @@ namespace Extensions
                     new Chart() { ChartBrush = Brushes.Red, ChartValue = 40, Description = "Sample Item 2" },
                     new Chart() { ChartBrush = Brushes.Yellow, ChartValue = 60, Description = "Sample Item 3" }
                 };
-                _ = DrawGraph(drawingContext, MockData);
+                DrawGraph(drawingContext, MockData);
             }
         }
 
         private static ObservableCollection<Chart> MockData;
 
-        private DrawingContext DrawGraph(DrawingContext drawingContext, ObservableCollection<Chart> Series)
+        private void DrawGraph(DrawingContext drawingContext, ObservableCollection<Chart> Series)
         {
             if (Series is not null && Series.Any())
             {
                 double max = Series.Max(z => z.ChartValue);
                 double thickness = ActualWidth / Series.Count;
                 StreamGeometry geometry = new();
-                using (StreamGeometryContext gc = geometry.Open())
+                using StreamGeometryContext gc = geometry.Open();
+                gc.BeginFigure(new Point(thickness / 2, ActualHeight - (Series[0].ChartValue / max * ActualHeight)), false, false);
+                for (int i = 1; i <= Series.Count; i++)
                 {
-                    gc.BeginFigure(new Point(thickness / 2, ActualHeight - (Series[0].ChartValue / max * ActualHeight)), false, false);
-                    for (int i = 1; i <= Series.Count; i++)
+                    DrawingGroup graphdrawinggroup = new();
+                    Chart item = Series[i - 1];
+                    Pen pen = new(item.ChartBrush, thickness);
+                    Pen linepen = new(LineColor, LineThickness);
+                    linepen.Freeze();
+                    pen.Freeze();
+                    Point point0 = new((pen.Thickness * i) - (pen.Thickness / 2), ActualHeight);
+                    Point point1 = new((pen.Thickness * i) - (pen.Thickness / 2), ActualHeight - (item.ChartValue / max * ActualHeight * 9 / 10));
+                    using DrawingContext graph = graphdrawinggroup.Open();
+                    if (GraphContentVisibility == Visibility.Visible)
                     {
-                        DrawingGroup graphdrawinggroup = new();
-                        using (DrawingContext graph = graphdrawinggroup.Open())
-                        {
-                            Chart item = Series[i - 1];
-                            Pen pen = new(item.ChartBrush, thickness);
-                            Pen linepen = new(LineColor, LineThickness);
-                            linepen.Freeze();
-                            pen.Freeze();
-                            Point point0 = new((pen.Thickness * i) - (pen.Thickness / 2), ActualHeight);
-                            Point point1 = new((pen.Thickness * i) - (pen.Thickness / 2), ActualHeight - (item.ChartValue / max * ActualHeight * 9 / 10));
-                            if (GraphContentVisibility == Visibility.Visible)
-                            {
-                                graph.DrawLine(pen, point0, point1);
-                            }
-                            if (ValueTextVisibility == Visibility.Visible)
-                            {
-                                FormattedText formattedValueText = GenerateFormattedValueText(item, pen);
-                                Point textpointValue = new(point1.X - (formattedValueText.WidthIncludingTrailingWhitespace / 2), 0);
-                                graph.DrawText(formattedValueText, textpointValue);
-                            }
-                            if (LineGraphVisibility == Visibility.Visible)
-                            {
-                                gc.LineTo(point1, true, true);
-                                graph.DrawGeometry(null, linepen, geometry);
-                                if (LineDotVisibility == Visibility.Visible)
-                                {
-                                    graph.DrawEllipse(linepen.Brush, linepen, point1, linepen.Thickness, linepen.Thickness);
-                                }
-                            }
-                            if (SeriesTextVisibility == Visibility.Visible)
-                            {
-                                FormattedText formattedText = GenerateFormattedText(item, pen);
-                                Point textpoint = new(point1.X - (formattedText.WidthIncludingTrailingWhitespace / 2), point1.Y);
-                                graph.DrawText(formattedText, textpoint);
-                            }
-                        }
-                        graphdrawinggroup.Freeze();
-                        geometry.Freeze();
-                        drawingContext.DrawDrawing(graphdrawinggroup);
+                        graph.DrawLine(pen, point0, point1);
                     }
+                    if (ValueTextVisibility == Visibility.Visible)
+                    {
+                        FormattedText formattedValueText = GenerateFormattedValueText(item, pen);
+                        Point textpointValue = new(point1.X - (formattedValueText.WidthIncludingTrailingWhitespace / 2), 0);
+                        graph.DrawText(formattedValueText, textpointValue);
+                    }
+                    if (LineGraphVisibility == Visibility.Visible)
+                    {
+                        gc.LineTo(point1, true, true);
+                        graph.DrawGeometry(null, linepen, geometry);
+                    }
+                    if (LineDotVisibility == Visibility.Visible)
+                    {
+                        graph.DrawEllipse(DotColor, linepen, point1, linepen.Thickness, linepen.Thickness);
+                    }
+                    if (SeriesTextVisibility == Visibility.Visible)
+                    {
+                        FormattedText formattedText = GenerateFormattedText(item, pen);
+                        Point textpoint = new(point1.X - (formattedText.WidthIncludingTrailingWhitespace / 2), point1.Y);
+                        graph.DrawText(formattedText, textpoint);
+                    }
+                    drawingContext.DrawDrawing(graphdrawinggroup);
                 }
-
-                return drawingContext;
             }
-            return null;
         }
 
         private FormattedText GenerateFormattedText(Chart item, Pen pen)

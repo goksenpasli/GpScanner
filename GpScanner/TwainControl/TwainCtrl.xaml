@@ -27,6 +27,22 @@
                 <GradientStop ice:Freeze="True" Offset="1" Color="#FE00B6E8" />
                 <GradientStop ice:Freeze="True" Color="#FF48F3CA" />
             </LinearGradientBrush>
+            <ObjectDataProvider x:Key="ColorList"
+                MethodName="GetProperties"
+                ObjectInstance="{x:Type Colors}" />
+            <DataTemplate x:Key="ColorItemTemplate">
+                <Canvas Width="100" Height="16">
+                    <Rectangle Width="100" Height="16"
+                        Fill="{Binding Name}" />
+                    <TextBlock Text="{Binding Name}"
+                        Width="100" Height="16"
+                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                        FontSize="10" TextWrapping="Wrap" />
+                </Canvas>
+            </DataTemplate>
+            <ItemsPanelTemplate x:Key="ColorPanelTemplate">
+                <UniformGrid Columns="5" />
+            </ItemsPanelTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -611,18 +627,15 @@
                                         Minimum="0" SmallChange="1"
                                         Value="{Binding Scanner.CropRight}" />
                                     <Border BorderBrush="{StaticResource GroupBoxBackGround}" BorderThickness="1">
-                                        <Grid x:Name="LineGrid" Width="140" Height="198"
+                                    <Grid x:Name="LineGrid" Width="140" Height="198"
                                             ShowGridLines="True">
-                                            <Grid.Effect>
-                                                <local:ColorEffect x:Name="Color" />
-                                            </Grid.Effect>
-                                            <Grid.Background>
+                                        <Grid.Background>
                                                 <ImageBrush ImageSource="{Binding Scanner.CroppedImage}" />
                                             </Grid.Background>
                                         </Grid>
                                     </Border>
                                 </DockPanel>
-                                <UniformGrid Margin="1" Columns="2" Rows="10">
+                                <UniformGrid Margin="1" Columns="2" Rows="13">
                                     <Button Command="{Binding SaveCroppedImage}" Content="{local:Loc TRIMIMAGE}" />
                                     <Button Command="{Binding ResetCroppedImage}" Content="{local:Loc RESET}" />
                                     <TextBlock VerticalAlignment="Center" Text="{local:Loc WIDTHCOUNT}" />
@@ -633,42 +646,8 @@
                                     <Extensions:NumericUpDownControl Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
                                         Minimum="1" SmallChange="1"
                                         Value="{Binding Scanner.BoyAdet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <Button Command="{Binding SplitImage}" Content="{local:Loc SLICE}" />
-                                    <Extensions:ContentToggleButton Grid.Column="11" FontFamily="Webdings" FontSize="20"
-                                        OverContent="·" PlacementMode="Top">
-                                        <GroupBox>
-                                            <StackPanel Orientation="Horizontal">
-                                                <StackPanel.Resources>
-                                                    <Style TargetType="{x:Type Slider}">
-                                                        <Setter Property="Height" Value="64" />
-                                                        <Setter Property="Orientation" Value="Vertical" />
-                                                        <Setter Property="Maximum" Value="1" />
-                                                        <Setter Property="Minimum" Value="0" />
-                                                        <Setter Property="BorderThickness" Value="3" />
-                                                    </Style>
-                                                </StackPanel.Resources>
-                                                <Slider BorderBrush="Red" Value="{Binding Red, ElementName=Color}" />
-                                                <Slider BorderBrush="Green" Value="{Binding Green, ElementName=Color}" />
-                                                <Slider BorderBrush="Blue" Value="{Binding Blue, ElementName=Color}" />
-                                                <Slider Value="{Binding Brightness, ElementName=Color}">
-                                                    <Slider.BorderBrush>
-                                                        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                                            <GradientStop Color="Black" />
-                                                            <GradientStop Offset="1" Color="White" />
-                                                        </LinearGradientBrush>
-                                                    </Slider.BorderBrush>
-                                                </Slider>
-                                                <Slider Value="{Binding Contrast, ElementName=Color}">
-                                                    <Slider.BorderBrush>
-                                                        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                                            <GradientStop Color="White" />
-                                                            <GradientStop Offset="1" Color="Black" />
-                                                        </LinearGradientBrush>
-                                                    </Slider.BorderBrush>
-                                                </Slider>
-                                            </StackPanel>
-                                        </GroupBox>
-                                    </Extensions:ContentToggleButton>
+                                <TextBlock/>
+                                <Button Command="{Binding SplitImage}" Content="{local:Loc SLICE}" />
                                     <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXT}" />
                                     <TextBox Text="{Binding Scanner.Watermark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXTSIZE}" />
@@ -695,7 +674,19 @@
                                     <Button Command="{Binding OcrPage}"
                                         CommandParameter="{Binding Scanner.CroppedImage}"
                                         Content="{local:Loc OCR}" />
-                                </UniformGrid>
+                                <TextBlock Text="{local:Loc SRCCOLOR}" VerticalAlignment="Center" />
+                                <Rectangle  Fill="{Binding SourceColor}" />
+                                <TextBlock Text="{local:Loc DSTCOLOR}" VerticalAlignment="Center"/>
+
+                                <ComboBox
+                                            ItemTemplate="{StaticResource ColorItemTemplate}"
+                                            ItemsPanel="{StaticResource ColorPanelTemplate}"
+                                            ItemsSource="{Binding Mode=OneWay, Source={StaticResource ColorList}}"
+                                            SelectedValue="{Binding TargetColor}"
+                                            SelectedValuePath="Name" />
+                                <Slider Value="{Binding Threshold}"  Maximum="255" Minimum="1"/>
+                                <Button Content="{local:Loc APPLYCOLOR}" Command="{Binding ApplyColorChange}"/>
+                            </UniformGrid>
                             </StackPanel>
                         </Border>
                     </Expander>

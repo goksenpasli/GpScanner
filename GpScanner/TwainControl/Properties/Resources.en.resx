@@ -402,4 +402,13 @@ DEVICE</value>
   <data name="SEPERATESCANTOOLTIP" xml:space="preserve">
     <value>Save Each Page to Separate File Files are Saved to the Folder Specified Below.</value>
   </data>
+  <data name="APPLYCOLOR" xml:space="preserve">
+    <value>CHANGE COLOR</value>
+  </data>
+  <data name="DSTCOLOR" xml:space="preserve">
+    <value>DESTINATION COLOR</value>
+  </data>
+  <data name="SRCCOLOR" xml:space="preserve">
+    <value>SOURCE COLOR</value>
+  </data>
 </root>

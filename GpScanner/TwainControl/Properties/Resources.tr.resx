@@ -406,4 +406,13 @@ EKLE</value>
   <data name="SEPERATESCANTOOLTIP" xml:space="preserve">
     <value>Her Sayfayı Ayrı Dosyaya Kaydet Dosyalar Aşağıda Belirtilen Klasöre Kaydedilir.</value>
   </data>
+  <data name="APPLYCOLOR" xml:space="preserve">
+    <value>RENK UYGULA</value>
+  </data>
+  <data name="DSTCOLOR" xml:space="preserve">
+    <value>HEDEF RENK</value>
+  </data>
+  <data name="SRCCOLOR" xml:space="preserve">
+    <value>KAYNAK RENK</value>
+  </data>
 </root>

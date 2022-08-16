@@ -33,7 +33,7 @@
                             </StackPanel>
                         </MenuItem.Header>
                     </MenuItem>
-                    <MenuItem Header="Çizgi Grafik Tepe Noktaları Göster" IsEnabled="{Binding LineGraphVisibility, Converter={StaticResource VisibilityToBooleanConverter}}" IsCheckable="True" IsChecked="{Binding LineDotVisibility, Converter={StaticResource VisibilityToBooleanConverter}}"/>
+                    <MenuItem Header="Çizgi Grafik Tepe Noktaları Göster" IsCheckable="True" IsChecked="{Binding LineDotVisibility, Converter={StaticResource VisibilityToBooleanConverter}}"/>
                     <MenuItem Header="Grafik İçerik Göster" IsCheckable="True" IsChecked="{Binding GraphContentVisibility, Converter={StaticResource VisibilityToBooleanConverter}}"/>
                     <MenuItem Header="Resim Olarak Kaydet" Command="{Binding Kaydet}">
                         <MenuItem.Icon>
