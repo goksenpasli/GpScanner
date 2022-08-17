@@ -73,7 +73,7 @@ namespace GpScanner.ViewModel
 
             Tümünüİşaretle = new RelayCommand<object>(parameter =>
             {
-                foreach (Scanner item in Dosyalar.ToList())
+                foreach (Scanner item in MainWindow.cvs.View)
                 {
                     item.Seçili = true;
                 }
@@ -81,7 +81,7 @@ namespace GpScanner.ViewModel
 
             TümününİşaretiniKaldır = new RelayCommand<object>(parameter =>
             {
-                foreach (Scanner item in Dosyalar.ToList())
+                foreach (Scanner item in MainWindow.cvs.View)
                 {
                     item.Seçili = false;
                 }
@@ -89,7 +89,7 @@ namespace GpScanner.ViewModel
 
             Tersiniİşaretle = new RelayCommand<object>(parameter =>
             {
-                foreach (Scanner item in Dosyalar.ToList())
+                foreach (Scanner item in MainWindow.cvs.View)
                 {
                     item.Seçili = !item.Seçili;
                 }

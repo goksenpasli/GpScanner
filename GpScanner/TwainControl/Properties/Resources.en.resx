@@ -411,4 +411,7 @@ DEVICE</value>
   <data name="SRCCOLOR" xml:space="preserve">
     <value>SOURCE COLOR</value>
   </data>
+  <data name="SRCCOLORTIP" xml:space="preserve">
+    <value>Right click to select source color.</value>
+  </data>
 </root>

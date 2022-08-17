@@ -415,4 +415,7 @@ EKLE</value>
   <data name="SRCCOLOR" xml:space="preserve">
     <value>KAYNAK RENK</value>
   </data>
+  <data name="SRCCOLORTIP" xml:space="preserve">
+    <value>Sağ Tıklayıp Renk Seçimi Yapın</value>
+  </data>
 </root>

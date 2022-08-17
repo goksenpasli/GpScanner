@@ -22,7 +22,7 @@
     <Style TargetType="local:GraphControl">
         <Setter Property="ContextMenu">
             <Setter.Value>
-                <ContextMenu DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">                    
+                <ContextMenu Visibility="{Binding ContextMenuVisibility}"  IsEnabled="{Binding IsContextMenuEnabled}" DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">                    
                     <MenuItem Header="Seri Rakamlarını Göster" IsCheckable="True" IsChecked="{Binding SeriesTextVisibility, Converter={StaticResource VisibilityToBooleanConverter}}"/>
                     <MenuItem Header="Değer Rakamlarını Göster" IsCheckable="True" IsChecked="{Binding ValueTextVisibility, Converter={StaticResource VisibilityToBooleanConverter}}"/>
                     <MenuItem IsCheckable="True" IsChecked="{Binding LineGraphVisibility, Converter={StaticResource VisibilityToBooleanConverter}}">

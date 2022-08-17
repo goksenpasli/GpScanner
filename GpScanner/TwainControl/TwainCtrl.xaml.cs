@@ -338,7 +338,7 @@ namespace TwainControl
                 OnPropertyChanged(nameof(ImgData));
             }, parameter => Scanner.CroppedImage is not null);
 
-            SaveWatermarkedPdf = new RelayCommand<object>(parameter => SaveCroppedImage.Execute(null), parameter => Scanner.CroppedImage is not null && !string.IsNullOrWhiteSpace(Scanner?.Watermark));
+            SaveWatermarkedPdf = new RelayCommand<object>(parameter => SaveCroppedImage.Execute(null), parameter => Scanner.CroppedImage is not null);
 
             PdfBirleştir = new RelayCommand<object>(parameter =>
             {
@@ -637,6 +637,8 @@ namespace TwainControl
 
         private bool isMouseDown;
 
+        private bool isRightMouseDown;
+
         private Scanner scanner;
 
         private ScannedImage seçiliResim;
@@ -837,26 +839,42 @@ namespace TwainControl
         {
             if (e.OriginalSource is System.Windows.Controls.Image)
             {
-                isMouseDown = true;
-                Cursor = Cursors.Cross;
+                if (e.LeftButton == MouseButtonState.Pressed)
+                {
+                    isMouseDown = true;
+                    Cursor = Cursors.Cross;
+                }
+                if (e.RightButton == MouseButtonState.Pressed)
+                {
+                    isRightMouseDown = true;
+                    Cursor = Cursors.Cross;
+                }
                 x = e.GetPosition(ImgViewer).X;
                 y = e.GetPosition(ImgViewer).Y;
-
-                CroppedBitmap cb = new(ImgViewer.Source as BitmapSource, new Int32Rect((int)((int)x * SeçiliResim.Resim.PixelWidth / ImgViewer.ActualWidth), (int)((int)y * SeçiliResim.Resim.PixelHeight / ImgViewer.ActualHeight), 1, 1));
-                byte[] pixels = new byte[4];
-                cb.CopyPixels(pixels, 4, 0);
-                cb.Freeze();
-                SourceColor = System.Windows.Media.Color.FromRgb(pixels[2], pixels[1], pixels[0]).ToString();
             }
         }
 
         private void ImgViewer_MouseMove(object sender, MouseEventArgs e)
         {
+            double curx = e.GetPosition(ImgViewer).X;
+            double cury = e.GetPosition(ImgViewer).Y;
+
+            if (isRightMouseDown && e.OriginalSource is System.Windows.Controls.Image)
+            {
+                CroppedBitmap cb = new(ImgViewer.Source as BitmapSource, new Int32Rect((int)((int)curx * SeçiliResim.Resim.PixelWidth / ImgViewer.ActualWidth), (int)((int)cury * SeçiliResim.Resim.PixelHeight / ImgViewer.ActualHeight), 1, 1));
+                byte[] pixels = new byte[4];
+                cb.CopyPixels(pixels, 4, 0);
+                cb.Freeze();
+                SourceColor = System.Windows.Media.Color.FromRgb(pixels[2], pixels[1], pixels[0]).ToString();
+                if (e.RightButton == MouseButtonState.Released)
+                {
+                    isRightMouseDown = false;
+                    Cursor = Cursors.Arrow;
+                }
+            }
+
             if (isMouseDown && e.OriginalSource is System.Windows.Controls.Image)
             {
-                double curx = e.GetPosition(ImgViewer).X;
-                double cury = e.GetPosition(ImgViewer).Y;
-
                 Rectangle r = new()
                 {
                     Stroke = new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#33FF0000")),

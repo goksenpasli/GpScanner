@@ -675,7 +675,7 @@
                                         CommandParameter="{Binding Scanner.CroppedImage}"
                                         Content="{local:Loc OCR}" />
                                 <TextBlock Text="{local:Loc SRCCOLOR}" VerticalAlignment="Center" />
-                                <Rectangle  Fill="{Binding SourceColor}" />
+                                <Rectangle ToolTip="{local:Loc SRCCOLORTIP}"  Fill="{Binding SourceColor}" />
                                 <TextBlock Text="{local:Loc DSTCOLOR}" VerticalAlignment="Center"/>
 
                                 <ComboBox
@@ -684,7 +684,7 @@
                                             ItemsSource="{Binding Mode=OneWay, Source={StaticResource ColorList}}"
                                             SelectedValue="{Binding TargetColor}"
                                             SelectedValuePath="Name" />
-                                <Slider Value="{Binding Threshold}"  Maximum="255" Minimum="1"/>
+                                <Slider Value="{Binding Threshold}"  Maximum="255" Minimum="1" VerticalAlignment="Center"/>
                                 <Button Content="{local:Loc APPLYCOLOR}" Command="{Binding ApplyColorChange}"/>
                             </UniformGrid>
                             </StackPanel>

@@ -14,6 +14,10 @@ namespace Extensions
 {
     public class GraphControl : FrameworkElement, INotifyPropertyChanged
     {
+        // Using a DependencyProperty as the backing store for ContextMenuVisibility.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ContextMenuVisibilityProperty =
+            DependencyProperty.Register("ContextMenuVisibility", typeof(Visibility), typeof(GraphControl), new PropertyMetadata(Visibility.Visible));
+
         // Using a DependencyProperty as the backing store for DotColor.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DotColorProperty =
             DependencyProperty.Register("DotColor", typeof(Brush), typeof(GraphControl), new FrameworkPropertyMetadata(Brushes.Blue, FrameworkPropertyMetadataOptions.AffectsRender));
@@ -25,6 +29,10 @@ namespace Extensions
         // Using a DependencyProperty as the backing store for GraphContentVisibility.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty GraphContentVisibilityProperty =
             DependencyProperty.Register("GraphContentVisibility", typeof(Visibility), typeof(GraphControl), new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.AffectsRender));
+
+        // Using a DependencyProperty as the backing store for IsContextMenuEnabled.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsContextMenuEnabledProperty =
+            DependencyProperty.Register("IsContextMenuEnabled", typeof(bool), typeof(GraphControl), new PropertyMetadata(true));
 
         // Using a DependencyProperty as the backing store for LineColor.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty LineColorProperty =
@@ -72,6 +80,12 @@ namespace Extensions
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public Visibility ContextMenuVisibility
+        {
+            get { return (Visibility)GetValue(ContextMenuVisibilityProperty); }
+            set { SetValue(ContextMenuVisibilityProperty, value); }
+        }
+
         public Brush DotColor
         {
             get => (Brush)GetValue(DotColorProperty);
@@ -88,6 +102,12 @@ namespace Extensions
         {
             get => (Visibility)GetValue(GraphContentVisibilityProperty);
             set => SetValue(GraphContentVisibilityProperty, value);
+        }
+
+        public bool IsContextMenuEnabled
+        {
+            get { return (bool)GetValue(IsContextMenuEnabledProperty); }
+            set { SetValue(IsContextMenuEnabledProperty, value); }
         }
 
         public ICommand Kaydet { get; }
