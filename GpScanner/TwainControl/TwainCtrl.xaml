@@ -636,7 +636,7 @@
                                     </Border>
                                 </DockPanel>
                                 <UniformGrid Margin="1" Columns="2" Rows="13">
-                                    <Button Command="{Binding SaveCroppedImage}" Content="{local:Loc TRIMIMAGE}" />
+                                    <Button Command="{Binding SaveCroppedImage}" CommandParameter="{Binding Scanner.CroppedImage}" Content="{local:Loc TRIMIMAGE}" />
                                     <Button Command="{Binding ResetCroppedImage}" Content="{local:Loc RESET}" />
                                     <TextBlock VerticalAlignment="Center" Text="{local:Loc WIDTHCOUNT}" />
                                     <Extensions:NumericUpDownControl Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
@@ -668,8 +668,8 @@
                                             </ItemsPanelTemplate>
                                         </ComboBox.ItemsPanel>
                                     </ComboBox>
+                                    <TextBlock/>
                                     <Button Command="{Binding SetWatermark}" Content="{local:Loc DRAWTEXT}" />
-                                    <Button Command="{Binding SaveWatermarkedPdf}" Content="{local:Loc SAVEPDF}" />
                                     <Button Command="{Binding DeskewImage}" Content="{local:Loc FIX}" />
                                     <Button Command="{Binding OcrPage}"
                                         CommandParameter="{Binding Scanner.CroppedImage}"
@@ -677,15 +677,14 @@
                                 <TextBlock Text="{local:Loc SRCCOLOR}" VerticalAlignment="Center" />
                                 <Rectangle ToolTip="{local:Loc SRCCOLORTIP}"  Fill="{Binding SourceColor}" />
                                 <TextBlock Text="{local:Loc DSTCOLOR}" VerticalAlignment="Center"/>
-
                                 <ComboBox
                                             ItemTemplate="{StaticResource ColorItemTemplate}"
                                             ItemsPanel="{StaticResource ColorPanelTemplate}"
                                             ItemsSource="{Binding Mode=OneWay, Source={StaticResource ColorList}}"
                                             SelectedValue="{Binding TargetColor}"
                                             SelectedValuePath="Name" />
-                                <Slider Value="{Binding Threshold}"  Maximum="255" Minimum="1" VerticalAlignment="Center"/>
-                                <Button Content="{local:Loc APPLYCOLOR}" Command="{Binding ApplyColorChange}"/>
+                                <Slider Value="{Binding Scanner.Threshold, Delay=300 }" Maximum="255" Minimum="1" VerticalAlignment="Center"/>
+                                <Button Command="{Binding SaveWatermarkedPdf}" CommandParameter="{Binding Scanner.CroppedImage}" Content="{local:Loc SAVEPDF}"/>
                             </UniformGrid>
                             </StackPanel>
                         </Border>

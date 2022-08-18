@@ -174,6 +174,19 @@ namespace TwainControl
             }
         }
 
+        public ImageSource CopyCroppedImage
+        {
+            get => copyCroppedImage; set
+
+            {
+                if (copyCroppedImage != value)
+                {
+                    copyCroppedImage = value;
+                    OnPropertyChanged(nameof(CopyCroppedImage));
+                }
+            }
+        }
+
         public double CropBottom
         {
             get => cropBottom; set
@@ -580,6 +593,19 @@ namespace TwainControl
             }
         }
 
+        public double Threshold
+        {
+            get => threshold; set
+
+            {
+                if (threshold != value)
+                {
+                    threshold = value;
+                    OnPropertyChanged(nameof(Threshold));
+                }
+            }
+        }
+
         public string Watermark
         {
             get => watermark;
@@ -662,6 +688,8 @@ namespace TwainControl
 
         private int caretPosition;
 
+        private ImageSource copyCroppedImage;
+
         private double cropBottom;
 
         private bool cropDialogExpanded;
@@ -717,6 +745,8 @@ namespace TwainControl
         private bool tarandı;
 
         private IList<string> tarayıcılar;
+
+        private double threshold = 1;
 
         private string watermark;
 

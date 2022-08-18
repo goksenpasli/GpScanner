@@ -264,24 +264,28 @@ namespace TwainControl
             {
                 SaveFileDialog saveFileDialog = new()
                 {
-                    Filter = "Pdf Dosyası(*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası(*.pdf)|*.pdf|Jpg Dosyası(*.jpg)|*.jpg",
+                    Filter = "Pdf Dosyası(*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası(*.pdf)|*.pdf|Jpg Dosyası(*.jpg)|*.jpg|Png Dosyası(*.png)|*.png",
                     FileName = Scanner.FileName
                 };
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     if (saveFileDialog.FilterIndex == 1)
                     {
-                        GeneratePdf((BitmapSource)Scanner.CroppedImage, Format.Jpg).Save(saveFileDialog.FileName);
+                        GeneratePdf((BitmapSource)parameter, Format.Jpg).Save(saveFileDialog.FileName);
                         return;
                     }
                     if (saveFileDialog.FilterIndex == 2)
                     {
-                        GeneratePdf((BitmapSource)Scanner.CroppedImage, Format.Tiff).Save(saveFileDialog.FileName);
+                        GeneratePdf((BitmapSource)parameter, Format.Tiff).Save(saveFileDialog.FileName);
                         return;
                     }
                     if (saveFileDialog.FilterIndex == 3)
                     {
-                        File.WriteAllBytes(saveFileDialog.FileName, Scanner.CroppedImage.ToTiffJpegByteArray(Format.Jpg));
+                        File.WriteAllBytes(saveFileDialog.FileName, ((BitmapSource)parameter).ToTiffJpegByteArray(Format.Jpg));
+                    }
+                    if (saveFileDialog.FilterIndex == 4)
+                    {
+                        File.WriteAllBytes(saveFileDialog.FileName, ((BitmapSource)parameter).ToTiffJpegByteArray(Format.Png));
                     }
                 }
             }, parameter => Scanner.CroppedImage is not null && (Scanner.CropRight != 0 || Scanner.CropTop != 0 || Scanner.CropBottom != 0 || Scanner.CropLeft != 0));
@@ -338,7 +342,7 @@ namespace TwainControl
                 OnPropertyChanged(nameof(ImgData));
             }, parameter => Scanner.CroppedImage is not null);
 
-            SaveWatermarkedPdf = new RelayCommand<object>(parameter => SaveCroppedImage.Execute(null), parameter => Scanner.CroppedImage is not null);
+            SaveWatermarkedPdf = new RelayCommand<object>(parameter => SaveCroppedImage.Execute((BitmapSource)parameter), parameter => Scanner.CroppedImage is not null);
 
             PdfBirleştir = new RelayCommand<object>(parameter =>
             {
@@ -357,14 +361,6 @@ namespace TwainControl
                 }
             }, parameter => true);
 
-            ApplyColorChange = new RelayCommand<object>(parameter =>
-            {
-                System.Windows.Media.Color source = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(SourceColor);
-                System.Windows.Media.Color target = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(TargetColor);
-                using Bitmap bmp = BitmapSourceToBitmap((BitmapSource)Scanner.CroppedImage);
-                Scanner.CroppedImage = ReplaceColor(bmp, source, target, (int)Threshold).ToBitmapImage(ImageFormat.Png);
-            }, parameter => Scanner.CroppedImage is not null);
-
             Scanner.PropertyChanged += Scanner_PropertyChanged;
 
             Settings.Default.PropertyChanged += Default_PropertyChanged;
@@ -373,8 +369,6 @@ namespace TwainControl
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
-        public ICommand ApplyColorChange { get; }
 
         public CroppedBitmap CroppedOcrBitmap
         {
@@ -527,19 +521,6 @@ namespace TwainControl
 
         public ICommand Tersiniİşaretle { get; }
 
-        public double Threshold
-        {
-            get => threshold; set
-
-            {
-                if (threshold != value)
-                {
-                    threshold = value;
-                    OnPropertyChanged(nameof(Threshold));
-                }
-            }
-        }
-
         public ICommand Tümünüİşaretle { get; }
 
         public ICommand TümününİşaretiniKaldır { get; }
@@ -610,6 +591,8 @@ namespace TwainControl
                 {
                     Scanner.Resimler = null;
                     twain = null;
+                    Scanner.CroppedImage = null;
+                    Scanner.CopyCroppedImage = null;
                 }
 
                 disposedValue = true;
@@ -646,8 +629,6 @@ namespace TwainControl
         private string sourceColor = "Transparent";
 
         private string targetColor = "Transparent";
-
-        private double threshold = 1;
 
         private Twain twain;
 
@@ -1059,6 +1040,7 @@ namespace TwainControl
                 {
                     Scanner.CroppedImage = new CroppedBitmap(SeçiliResim.Resim, sourceRect);
                     Scanner.CroppedImage.Freeze();
+                    Scanner.CopyCroppedImage = Scanner.CroppedImage;
                     Scanner.CropDialogExpanded = true;
                 }
             }
@@ -1092,6 +1074,13 @@ namespace TwainControl
                 Scanner.FileName = selectedprofile[9];
                 Settings.Default.DefaultProfile = Scanner.SelectedProfile;
                 Settings.Default.Save();
+            }
+            if (e.PropertyName is "Threshold" && Scanner.CopyCroppedImage is not null)
+            {
+                System.Windows.Media.Color source = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(SourceColor);
+                System.Windows.Media.Color target = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(TargetColor);
+                using Bitmap bmp = BitmapSourceToBitmap((BitmapSource)Scanner.CopyCroppedImage);
+                Scanner.CroppedImage = ReplaceColor(bmp, source, target, (int)Scanner.Threshold).ToBitmapImage(ImageFormat.Png);
             }
         }
 
