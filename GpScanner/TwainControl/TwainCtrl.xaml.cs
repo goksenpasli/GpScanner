@@ -260,7 +260,7 @@ namespace TwainControl
                 Scanner.FileName = $"{Scanner.FileName.Substring(0, Scanner.CaretPosition)}{placeholder}{Scanner.FileName.Substring(Scanner.CaretPosition, Scanner.FileName.Length - Scanner.CaretPosition)}";
             }, parameter => true);
 
-            SaveCroppedImage = new RelayCommand<object>(parameter =>
+            SaveImage = new RelayCommand<object>(parameter =>
             {
                 SaveFileDialog saveFileDialog = new()
                 {
@@ -288,7 +288,7 @@ namespace TwainControl
                         File.WriteAllBytes(saveFileDialog.FileName, ((BitmapSource)parameter).ToTiffJpegByteArray(Format.Png));
                     }
                 }
-            }, parameter => Scanner.CroppedImage is not null && (Scanner.CropRight != 0 || Scanner.CropTop != 0 || Scanner.CropBottom != 0 || Scanner.CropLeft != 0));
+            }, parameter => Scanner.CroppedImage is not null);
 
             SplitImage = new RelayCommand<object>(parameter =>
             {
@@ -341,8 +341,6 @@ namespace TwainControl
                 ImgData = Scanner.CroppedImage.ToTiffJpegByteArray(Format.Png);
                 OnPropertyChanged(nameof(ImgData));
             }, parameter => Scanner.CroppedImage is not null);
-
-            SaveWatermarkedPdf = new RelayCommand<object>(parameter => SaveCroppedImage.Execute((BitmapSource)parameter), parameter => Scanner.CroppedImage is not null);
 
             PdfBirleştir = new RelayCommand<object>(parameter =>
             {
@@ -450,11 +448,9 @@ namespace TwainControl
 
         public ICommand ResimSil { get; }
 
-        public ICommand SaveCroppedImage { get; }
+        public ICommand SaveImage { get; }
 
         public ICommand SaveProfile { get; }
-
-        public ICommand SaveWatermarkedPdf { get; }
 
         public ICommand ScanImage { get; }
 

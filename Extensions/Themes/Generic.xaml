@@ -4,6 +4,16 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Extensions;component/Themes/Skin.xaml" />
     </ResourceDictionary.MergedDictionaries>
+    <ObjectDataProvider x:Key="ColorList"
+                MethodName="GetProperties"
+                ObjectInstance="{x:Type Colors}" />
+    <DataTemplate x:Key="ColorItemTemplate">
+        <Rectangle Width="16" Height="16"
+                        Fill="{Binding Name}" />
+    </DataTemplate>
+    <ItemsPanelTemplate x:Key="ColorPanelTemplate">
+        <UniformGrid Columns="8" />
+    </ItemsPanelTemplate>
     <local:SystemFileIconConverter x:Key="SystemFileIconConverter" />
     <local:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
     <local:FilePathToIconConverter x:Key="FilePathToIconConverter" />
@@ -48,6 +58,48 @@
                         </MenuItem.Icon>
                     </MenuItem>
                 </ContextMenu>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="local:ColorPicker">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:ColorPicker">
+                    <Grid >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="{Binding SelectorLength, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="5*"/>
+                            <RowDefinition Height="2*"/>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Rectangle Grid.Row="0" Grid.Column="0" Name="RgbGrid" >
+                            <Rectangle.Fill>
+                                <LinearGradientBrush EndPoint="1,0" StartPoint="0.0,0">
+                                    <GradientStop Color="Black"/>
+                                    <GradientStop Color="White"  Offset="1"/>
+                                    <GradientStop Color="{Binding MiddleStopColor, RelativeSource={RelativeSource TemplatedParent}}" Offset="0.5"/>
+                                </LinearGradientBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <Rectangle Grid.Row="1" Grid.Column="0" Name="SpectrumGrid" Fill="{Binding SpectrumGridBackground, RelativeSource={RelativeSource TemplatedParent}}" Opacity="1"  >
+                        </Rectangle>
+                        <TextBox Grid.Column="0" BorderBrush="Transparent" IsReadOnly="True" Visibility="{Binding HexCodeVisibility, RelativeSource={RelativeSource TemplatedParent}}" Grid.Row="2" Background="{Binding HexCode, RelativeSource={RelativeSource TemplatedParent}}" Text="{Binding HexCode, RelativeSource={RelativeSource TemplatedParent}}"/>
+                        <ListBox Visibility="{Binding PredefinedColorVisibility, RelativeSource={RelativeSource TemplatedParent}}" Grid.Column="1" Grid.RowSpan="3" ItemTemplate="{StaticResource ColorItemTemplate}"
+                                            ItemsPanel="{StaticResource ColorPanelTemplate}"
+                                            ItemsSource="{Binding Mode=OneWay, Source={StaticResource ColorList}}"
+                                            SelectedValue="{Binding HexCode, RelativeSource={RelativeSource TemplatedParent}}"
+                                            SelectedValuePath="Name">
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Setter Property="Padding" Value="0"/>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                        </ListBox>
+                    </Grid>
+                </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>

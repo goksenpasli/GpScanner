@@ -12,7 +12,7 @@ using static Extensions.ExtensionMethods;
 
 namespace Extensions
 {
-    public class GraphControl : FrameworkElement, INotifyPropertyChanged
+    public class GraphControl : FrameworkElement
     {
         // Using a DependencyProperty as the backing store for ContextMenuVisibility.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ContextMenuVisibilityProperty =
@@ -77,8 +77,6 @@ namespace Extensions
         {
             Kaydet = new RelayCommand<object>(parameter => SaveFile(RenderVisual(this).ToTiffJpegByteArray(Format.Png)));
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public Visibility ContextMenuVisibility
         {
@@ -164,11 +162,6 @@ namespace Extensions
         {
             get => (Visibility)GetValue(ValueTextVisibilityProperty);
             set => SetValue(ValueTextVisibilityProperty, value);
-        }
-
-        protected virtual void OnPropertyChanged(string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         protected override void OnRender(DrawingContext drawingContext)
