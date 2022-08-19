@@ -2,8 +2,6 @@
 using System.ComponentModel;
 using System.IO;
 using System.Reflection;
-using System.Runtime.ExceptionServices;
-using System.Security;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -99,8 +97,6 @@ namespace Extensions.Controls
 
         private IDocumentPaginatorSource document;
 
-        [HandleProcessCorruptedStateExceptions]
-        [SecurityCritical]
         private static void XpsDataFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is XpsViewer xpsViewer && e.NewValue != null)

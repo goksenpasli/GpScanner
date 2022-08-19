@@ -80,8 +80,8 @@ namespace Extensions
 
         public Visibility ContextMenuVisibility
         {
-            get { return (Visibility)GetValue(ContextMenuVisibilityProperty); }
-            set { SetValue(ContextMenuVisibilityProperty, value); }
+            get => (Visibility)GetValue(ContextMenuVisibilityProperty);
+            set => SetValue(ContextMenuVisibilityProperty, value);
         }
 
         public Brush DotColor
@@ -104,8 +104,8 @@ namespace Extensions
 
         public bool IsContextMenuEnabled
         {
-            get { return (bool)GetValue(IsContextMenuEnabledProperty); }
-            set { SetValue(IsContextMenuEnabledProperty, value); }
+            get => (bool)GetValue(IsContextMenuEnabledProperty);
+            set => SetValue(IsContextMenuEnabledProperty, value);
         }
 
         public ICommand Kaydet { get; }

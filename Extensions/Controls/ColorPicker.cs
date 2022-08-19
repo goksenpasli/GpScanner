@@ -244,14 +244,13 @@ namespace Extensions
 
         public Color Color()
         {
-            Color color = new()
+            return new()
             {
                 R = R,
                 G = G,
                 B = B,
                 A = 255
             };
-            return color;
         }
 
         public string Hex()

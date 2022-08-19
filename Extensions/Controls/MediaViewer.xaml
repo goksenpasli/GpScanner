@@ -10,6 +10,7 @@
             </ResourceDictionary.MergedDictionaries>
             <local:TimespanToSecondsConverter x:Key="TimespanToSecondsConverter" />
             <local:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter" />
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -18,13 +19,70 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="24" />
         </Grid.RowDefinitions>
-        <MediaElement x:Name="Player" Grid.Row="0" MinWidth="352"
-            MinHeight="288" LoadedBehavior="Manual" UnloadedBehavior="Close"
-            Volume="{Binding MediaVolume, UpdateSourceTrigger=PropertyChanged}">
-            <MediaElement.Effect>
-                <local:ColorEffect x:Name="Color" />
-            </MediaElement.Effect>
-        </MediaElement>
+        <StackPanel>
+            <MediaElement x:Name="Player" Grid.Row="0" RenderTransformOrigin="0.5,0.5"
+             LoadedBehavior="Manual" UnloadedBehavior="Close"
+            Volume="{Binding MediaVolume, UpdateSourceTrigger=PropertyChanged}">               
+                <MediaElement.Effect>
+                    <local:ColorEffect x:Name="Color" />
+                </MediaElement.Effect>
+                <MediaElement.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="{Binding FlipX}"/>
+                        <ScaleTransform ScaleY="{Binding FlipY}"/>
+                        <RotateTransform Angle="{Binding Angle}"/>
+                    </TransformGroup>
+                </MediaElement.RenderTransform>
+            </MediaElement>
+            <StackPanel.Style>
+                <Style TargetType="StackPanel">                    
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding InvertColor}" Value="true">
+                            <Setter Property="Effect">
+                                <Setter.Value>
+                                    <local:InvertColorEffect/>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>                         
+                        <DataTrigger Binding="{Binding ApplySharpen}" Value="true">
+                            <Setter Property="Effect">
+                                <Setter.Value>
+                                    <local:SharpenEffect Amount="{Binding SharpenAmount}"/>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ApplyEmboss}" Value="true">
+                            <Setter Property="Effect">
+                                <Setter.Value>
+                                    <local:EmbossedEffect/>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ApplyPixelate}" Value="true">
+                            <Setter Property="Effect">
+                                <Setter.Value>
+                                    <local:PixelateEffect PixelCounts="{Binding PixelateSize}"/>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger> 
+                        <DataTrigger Binding="{Binding ApplyBw}" Value="true">
+                            <Setter Property="Effect">
+                                <Setter.Value>
+                                    <local:BlackWhiteEffect Threshold="{Binding BwAmount}"/>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ApplyGrayscale}" Value="true">
+                            <Setter Property="Effect">
+                                <Setter.Value>
+                                    <local:GrayScaleEffect/>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Style>
+        </StackPanel>
         <Slider x:Name="Sld" Grid.Row="1" VerticalAlignment="Center"
             IsMoveToPointEnabled="True"
             Maximum="{Binding EndTimeSpan, Mode=OneWay, Converter={StaticResource TimespanToSecondsConverter}}"
@@ -34,6 +92,9 @@
             Value="{Binding MediaPosition, Converter={StaticResource TimespanToSecondsConverter}, Mode=TwoWay}" />
         <Grid Grid.Row="2" Background="Transparent">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
@@ -109,8 +170,7 @@
             <local:ContentToggleButton Grid.Column="11" FontFamily="Webdings" FontSize="20"
                 Foreground="Blue" OverContent="·" PlacementMode="Top">
                 <local:ContentToggleButton.Content>
-                    <GroupBox Header="Renk Ayarla" FontFamily="Segoe UI" Background="White">
-                        <StackPanel Orientation="Horizontal">
+                    <StackPanel Background="White" Orientation="Horizontal">
                             <StackPanel.Resources>
                                 <Style TargetType="Slider">
                                     <Setter Property="Height" Value="64" />
@@ -131,18 +191,38 @@
                                     </LinearGradientBrush>
                                 </Slider.BorderBrush>
                             </Slider>
-                            <Slider Value="{Binding ElementName=Color, Path=Contrast}">
-                                <Slider.BorderBrush>
-                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                        <GradientStop Color="White" />
-                                        <GradientStop Offset="1" Color="Black" />
-                                    </LinearGradientBrush>
-                                </Slider.BorderBrush>
-                            </Slider>
-                        </StackPanel>
-                    </GroupBox>
+                        <Slider Value="{Binding ElementName=Color, Path=Contrast}">
+                            <Slider.BorderBrush>
+                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                    <GradientStop Color="White" />
+                                    <GradientStop Offset="1" Color="Black" />
+                                </LinearGradientBrush>
+                            </Slider.BorderBrush>
+                        </Slider>
+                        <UniformGrid Columns="3" Rows="2">
+                            <ToggleButton FontFamily="Segoe UI" ToolTip="Ters Renk" Content="T" IsChecked="{Binding InvertColor}"/>
+                            <ToggleButton FontFamily="Segoe UI" ToolTip="Keskinlik" Content="K" IsChecked="{Binding ApplySharpen}"/>
+                            <ToggleButton FontFamily="Segoe UI" ToolTip="Emboss" Content="E" IsChecked="{Binding ApplyEmboss}"/>
+                            <ToggleButton FontFamily="Segoe UI" ToolTip="Pikselleştir" Content="P" IsChecked="{Binding ApplyPixelate}"/>
+                            <ToggleButton FontFamily="Segoe UI" ToolTip="Siyah Beyaz" Content="SB" IsChecked="{Binding ApplyBw}"/>
+                            <ToggleButton FontFamily="Segoe UI" ToolTip="Gri" Content="G" IsChecked="{Binding ApplyGrayscale}"/>
+                        </UniformGrid>
+                        <Slider Visibility="{Binding ApplySharpen, Converter={StaticResource BooleanToVisibilityConverter}}" Value="{Binding SharpenAmount}" Minimum="0" Maximum="10" Style="{StaticResource Slider}" Orientation="Vertical"/>
+                        <Slider Visibility="{Binding ApplyBw, Converter={StaticResource BooleanToVisibilityConverter}}" Value="{Binding BwAmount}" Minimum="0" Maximum="1"  Style="{StaticResource Slider}" Orientation="Vertical"/>
+                        <Slider Visibility="{Binding ApplyPixelate, Converter={StaticResource BooleanToVisibilityConverter}}" Value="60"  Minimum="1" Maximum="250"  Style="{StaticResource Slider}" Orientation="Vertical"  ValueChanged="Slider_WidthValueChanged"/>
+                        <Slider Visibility="{Binding ApplyPixelate, Converter={StaticResource BooleanToVisibilityConverter}}" Value="40" Minimum="1" Maximum="250"  Style="{StaticResource Slider}" Orientation="Vertical" ValueChanged="Slider_HeightValueChanged"/>
+                    </StackPanel>
                 </local:ContentToggleButton.Content>
             </local:ContentToggleButton>
+            <Button x:Name="FlipVer" Click="FlipVer_Click" Grid.Column="12" Width="24"
+                Height="24"  Content="E"
+                FontFamily="Wingdings 3" FontSize="18" Foreground="Blue" />  
+            <Button x:Name="FlipHor" Click="FlipHor_Click" Grid.Column="13" Width="24"
+                Height="24"  Content="D"
+                FontFamily="Wingdings 3" FontSize="18" Foreground="Blue" /> 
+            <Button x:Name="Rotate"  Click="Rotate_Click" Grid.Column="14" Width="24"
+                Height="24"  Content="P"
+                FontFamily="Wingdings 3" FontSize="18" Foreground="Blue" />
         </Grid>
     </Grid>
 </UserControl>

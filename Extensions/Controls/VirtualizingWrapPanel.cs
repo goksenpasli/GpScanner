@@ -714,9 +714,7 @@ namespace Extensions
             double totalItemsWidth = Math.Min(GetWidth(childSize) * itemsPerRowCount, finalWidth);
             double unusedWidth = finalWidth - totalItemsWidth;
 
-            SpacingMode spacingMode = IsSpacingEnabled ? SpacingMode : SpacingMode.None;
-
-            switch (spacingMode)
+            switch (IsSpacingEnabled ? SpacingMode : SpacingMode.None)
             {
                 case SpacingMode.Uniform:
                     innerSpacing = outerSpacing = unusedWidth / (itemsPerRowCount + 1);
@@ -980,14 +978,9 @@ namespace Extensions
                 }
             }
 
-            if (ItemSize != Size.Empty)
-            {
-                childSize = ItemSize;
-            }
-            else
-            {
-                childSize = InternalChildren.Count != 0 ? InternalChildren[0].DesiredSize : CalculateChildSize(availableSize);
-            }
+            childSize = ItemSize != Size.Empty
+                ? ItemSize
+                : InternalChildren.Count != 0 ? InternalChildren[0].DesiredSize : CalculateChildSize(availableSize);
 
             itemsPerRowCount = double.IsInfinity(GetWidth(availableSize))
                 ? Items.Count
