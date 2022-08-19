@@ -1,10 +1,13 @@
-﻿<UserControl x:Class="TwainControl.TwainCtrl" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Converter="clr-namespace:TwainControl.Converter"
-    xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options" xmlns:local="clr-namespace:TwainControl"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:properties="clr-namespace:TwainControl.Properties" x:Name="UserControl"
+﻿<UserControl x:Class="TwainControl.TwainCtrl"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:Converter="clr-namespace:TwainControl.Converter"
+	xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+	xmlns:local="clr-namespace:TwainControl"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:properties="clr-namespace:TwainControl.Properties" x:Name="UserControl"
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
     d:DesignHeight="800" d:DesignWidth="1024"
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
@@ -197,12 +200,17 @@
                                 </StackPanel>
                             </Expander>
                             <Separator />
-                            <TextBlock d:Text="AutoFolder" FontWeight="Bold"><Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="{Binding AutoFolder, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
-                                    <Run Text="{Binding Scanner.LocalizedPath, Mode=OneWay}" />
-                                </Hyperlink></TextBlock>
+                            <TextBlock d:Text="AutoFolder" FontWeight="Bold">
+								<Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="{Binding AutoFolder, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
+									<Run Text="{Binding Scanner.LocalizedPath, Mode=OneWay}" />
+								</Hyperlink>
+                            </TextBlock>
                             <HeaderedContentControl>
                                 <HeaderedContentControl.Header>
-                                    <TextBlock><Run Text="{local:Loc FILENAME}" /><Run FontWeight="Bold" Text="{Binding Scanner.SaveFileName}" /></TextBlock>
+                                    <TextBlock>
+										<Run Text="{local:Loc FILENAME}" />
+										<Run FontWeight="Bold" Text="{Binding Scanner.SaveFileName}" />
+                                    </TextBlock>
                                 </HeaderedContentControl.Header>
                                 <Extensions:ButtonedTextBox d:Text="FileName" GotKeyboardFocus="ButtonedTextBox_GotKeyboardFocus" MaxLength="255"
                                     Text="{Binding Scanner.FileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
@@ -451,30 +459,30 @@
                                                 </Border.Style>
                                                 <StackPanel>
                                                     <TextBlock HorizontalAlignment="Center">
-                                                        <Hyperlink Command="{Binding ElementName=UserControl, Path=DataContext.Kaydet}"
+														<Hyperlink Command="{Binding ElementName=UserControl, Path=DataContext.Kaydet}"
                                                             CommandParameter="{Binding Mode=OneWay}"
                                                             TextDecorations="None">
-                                                            <Image Width="32" Height="32">
-                                                                <Image.Source>
-                                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                        <Binding Source="Shell32.dll" />
-                                                                        <Binding Source="6" />
-                                                                    </MultiBinding>
-                                                                </Image.Source>
-                                                            </Image>
-                                                        </Hyperlink>
-                                                        <Hyperlink Command="{Binding ElementName=UserControl, Path=DataContext.ResimSil}"
+															<Image Width="32" Height="32">
+																<Image.Source>
+																	<MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+																		<Binding Source="Shell32.dll" />
+																		<Binding Source="6" />
+																	</MultiBinding>
+																</Image.Source>
+															</Image>
+														</Hyperlink>
+														<Hyperlink Command="{Binding ElementName=UserControl, Path=DataContext.ResimSil}"
                                                             CommandParameter="{Binding Mode=OneWay}"
                                                             FontFamily="Segoe UI Black" TextDecorations="None">
-                                                            <Image Width="32" Height="32">
-                                                                <Image.Source>
-                                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                        <Binding Source="Shell32.dll" />
-                                                                        <Binding Source="131" />
-                                                                    </MultiBinding>
-                                                                </Image.Source>
-                                                            </Image>
-                                                        </Hyperlink>
+															<Image Width="32" Height="32">
+																<Image.Source>
+																	<MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+																		<Binding Source="Shell32.dll" />
+																		<Binding Source="131" />
+																	</MultiBinding>
+																</Image.Source>
+															</Image>
+														</Hyperlink>
                                                     </TextBlock>
                                                     <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
                                                         IsChecked="{Binding Seçili}">
@@ -566,114 +574,119 @@
                 </UniformGrid>
             </Grid>
         </GroupBox>
-        <GridSplitter Grid.Column="1" Width="3" HorizontalAlignment="Stretch" Background="{StaticResource GroupBoxBackGround}" MouseDoubleClick="GridSplitter_MouseDoubleClick" />  
-            <GroupBox  Grid.Column="2" Margin="1,0,0,0" Panel.ZIndex="-1" Header="{local:Loc DOCUMENT}">
-                <Grid IsEnabled="{Binding SeçiliResim, Converter={StaticResource NullableToBooleanConverter}}">
-                    <DockPanel>
-                        <Slider Margin="20,0,20,0" DockPanel.Dock="Top" IsSnapToTickEnabled="True"
+        <GridSplitter Grid.Column="1" Width="3" HorizontalAlignment="Stretch" Background="{StaticResource GroupBoxBackGround}" MouseDoubleClick="GridSplitter_MouseDoubleClick" />
+        <GroupBox  Grid.Column="2" Margin="1,0,0,0" Panel.ZIndex="-1" Header="{local:Loc DOCUMENT}">
+            <Grid IsEnabled="{Binding SeçiliResim, Converter={StaticResource NullableToBooleanConverter}}">
+                <DockPanel>
+                    <Slider Margin="20,0,20,0" DockPanel.Dock="Top" IsSnapToTickEnabled="True"
                             Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
                             Style="{StaticResource SliderStyle}"
                             TickPlacement="BottomRight"
                             Value="{Binding Scanner.CropLeft}" />
-                        <Slider Margin="20,0,20,0" DockPanel.Dock="Bottom" IsDirectionReversed="True"
+                    <Slider Margin="20,0,20,0" DockPanel.Dock="Bottom" IsDirectionReversed="True"
                             IsSnapToTickEnabled="True"
                             Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
                             Style="{StaticResource SliderStyle}"
                             TickPlacement="TopLeft"
                             Value="{Binding Scanner.CropRight}" />
-                        <Slider Margin="0,-6,0,20" DockPanel.Dock="Left" IsDirectionReversed="True"
+                    <Slider Margin="0,-6,0,20" DockPanel.Dock="Left" IsDirectionReversed="True"
                             IsSnapToTickEnabled="True"
                             Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
                             Orientation="Vertical"
                             Style="{StaticResource SliderStyle}"
                             TickPlacement="BottomRight"
                             Value="{Binding Scanner.CropTop}" />
-                        <Slider Margin="0,0,0,20" DockPanel.Dock="Right" IsSnapToTickEnabled="True"
+                    <Slider Margin="0,0,0,20" DockPanel.Dock="Right" IsSnapToTickEnabled="True"
                             Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
                             Orientation="Vertical"
                             Style="{StaticResource SliderStyle}"
                             TickPlacement="TopLeft"
                             Value="{Binding Scanner.CropBottom}" />
-                        <Grid Panel.ZIndex="-1">
-                            <Extensions:ImageViewer x:Name="ImgViewer"
+                    <Grid Panel.ZIndex="-1">
+                        <Extensions:ImageViewer x:Name="ImgViewer"
                                 Angle="{Binding Scanner.RotateAngle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 FitImageOrientation="Height" OrijinalResimDosyaAçButtonVisibility="Collapsed" PreviewMouseDown="ImgViewer_MouseDown"
                                 PreviewMouseMove="ImgViewer_MouseMove" SnapTick="True"
                                 Source="{Binding SeçiliResim.Resim}" />
-                            <Canvas x:Name="cnv" />
-                        </Grid>
-                    </DockPanel>
-                    <Expander HorizontalAlignment="Left" VerticalAlignment="Bottom" ExpandDirection="Up"
+                        <Canvas x:Name="cnv" />
+                    </Grid>
+                </DockPanel>
+                <Expander HorizontalAlignment="Left" VerticalAlignment="Bottom" ExpandDirection="Up"
                         IsExpanded="{Binding Scanner.CropDialogExpanded}">
-                        <Border Background="{StaticResource BorderBackground}"
+                    <Border Background="{StaticResource BorderBackground}"
                             BorderBrush="{StaticResource GroupBoxBackGround}"
                             BorderThickness="1" CornerRadius="1">
-                            <StackPanel>
-                                <DockPanel>
-                                    <Extensions:NumericUpDownControl HorizontalAlignment="Center" DockPanel.Dock="Top" IsReadOnly="True"
+                        <StackPanel>
+                            <DockPanel>
+                                <Extensions:NumericUpDownControl HorizontalAlignment="Center" DockPanel.Dock="Top" IsReadOnly="True"
                                         Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
                                         Minimum="0" SmallChange="1"
                                         Value="{Binding Scanner.CropTop}" />
-                                    <Extensions:NumericUpDownControl HorizontalAlignment="Center" DockPanel.Dock="Bottom" IsReadOnly="True"
+                                <Extensions:NumericUpDownControl HorizontalAlignment="Center" DockPanel.Dock="Bottom" IsReadOnly="True"
                                         Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
                                         Minimum="0" SmallChange="1"
                                         Value="{Binding Scanner.CropBottom}" />
-                                    <Extensions:NumericUpDownControl VerticalAlignment="Center" DockPanel.Dock="Left" IsReadOnly="True"
+                                <Extensions:NumericUpDownControl VerticalAlignment="Center" DockPanel.Dock="Left" IsReadOnly="True"
                                         Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
                                         Minimum="0" SmallChange="1"
                                         Value="{Binding Scanner.CropLeft}" />
-                                    <Extensions:NumericUpDownControl VerticalAlignment="Center" DockPanel.Dock="Right" IsReadOnly="True"
+                                <Extensions:NumericUpDownControl VerticalAlignment="Center" DockPanel.Dock="Right" IsReadOnly="True"
                                         Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
                                         Minimum="0" SmallChange="1"
                                         Value="{Binding Scanner.CropRight}" />
-                                    <Border BorderBrush="{StaticResource GroupBoxBackGround}" BorderThickness="1">
+                                <Border BorderBrush="{StaticResource GroupBoxBackGround}" BorderThickness="1">
                                     <Grid x:Name="LineGrid" Width="140" Height="198"
                                             ShowGridLines="True">
                                         <Grid.Background>
-                                                <ImageBrush ImageSource="{Binding Scanner.CroppedImage}" />
-                                            </Grid.Background>
-                                        </Grid>
-                                    </Border>
-                                </DockPanel>
-                                <UniformGrid Margin="1" Columns="2" Rows="12">
-                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc WIDTHCOUNT}" />
-                                    <Extensions:NumericUpDownControl Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
+                                            <ImageBrush ImageSource="{Binding Scanner.CroppedImage}" />
+                                        </Grid.Background>
+                                    </Grid>
+                                </Border>
+                            </DockPanel>
+                            <UniformGrid Margin="1" Columns="2" Rows="12">
+                                <TextBlock VerticalAlignment="Center" Text="{local:Loc WIDTHCOUNT}" />
+                                <Extensions:NumericUpDownControl Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
                                         Minimum="1" SmallChange="1"
                                         Value="{Binding Scanner.EnAdet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc HEIGHTCOUNT}" />
-                                    <Extensions:NumericUpDownControl Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
+                                <TextBlock VerticalAlignment="Center" Text="{local:Loc HEIGHTCOUNT}" />
+                                <Extensions:NumericUpDownControl Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
                                         Minimum="1" SmallChange="1"
                                         Value="{Binding Scanner.BoyAdet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 <TextBlock/>
                                 <Button Command="{Binding SplitImage}" Content="{local:Loc SLICE}" />
-                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXT}" />
-                                    <TextBox Text="{Binding Scanner.Watermark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXTSIZE}" />
-                                    <Slider AutoToolTipPlacement="TopLeft" Maximum="1024" Minimum="12"
+                                <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXT}" />
+                                <TextBox Text="{Binding Scanner.Watermark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXTSIZE}" />
+                                <Slider AutoToolTipPlacement="TopLeft" Maximum="1024" Minimum="12"
                                         SmallChange="1"
                                         Style="{StaticResource Slider}"
                                         Value="{Binding Scanner.WatermarkTextSize}" />
-                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXTANGLE}" />
-                                    <Slider AutoToolTipPlacement="TopLeft" Maximum="360" Minimum="0"
+                                <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXTANGLE}" />
+                                <Slider AutoToolTipPlacement="TopLeft" Maximum="360" Minimum="0"
                                         SmallChange="1"
                                         Style="{StaticResource Slider}"
                                         Value="{Binding Scanner.WatermarkAngle}" />
-                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc FONT}" />
-                                    <ComboBox ItemsSource="{Binding Source={x:Static Fonts.SystemFontFamilies}}" SelectedItem="{Binding Scanner.WatermarkFont}">
-                                        <ComboBox.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <VirtualizingStackPanel />
-                                            </ItemsPanelTemplate>
-                                        </ComboBox.ItemsPanel>
-                                    </ComboBox>
+                                <TextBlock VerticalAlignment="Center" Text="{local:Loc FONT}" />
+                                <ComboBox ItemsSource="{Binding Source={x:Static Fonts.SystemFontFamilies}}" SelectedItem="{Binding Scanner.WatermarkFont}">
+                                    <ComboBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <VirtualizingStackPanel />
+                                        </ItemsPanelTemplate>
+                                    </ComboBox.ItemsPanel>
+                                </ComboBox>
                                 <Button Command="{Binding SetWatermark}" Content="{local:Loc DRAWTEXT}" />
-                                    <Button Command="{Binding DeskewImage}" Content="{local:Loc FIX}" />
-                                    <Button Command="{Binding OcrPage}"
+                                <Button Command="{Binding DeskewImage}" Content="{local:Loc FIX}" />
+                                <Button Command="{Binding OcrPage}"
                                         CommandParameter="{Binding Scanner.CroppedImage}"
                                         Content="{local:Loc OCR}" />
                                 <Button Command="{Binding ResetCroppedImage}" Content="{local:Loc RESET}" />
                                 <TextBlock Text="{local:Loc SRCCOLOR}" VerticalAlignment="Center" />
-                                <Extensions:ColorPicker HexCode="{Binding SourceColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Extensions:ContentToggleButton  Background="{Binding SourceColor, Mode=OneWay}" >
+                                    <Extensions:ContentToggleButton.OverContent>
+                                        <TextBlock Text="{Binding SourceColor, Mode=OneWay}"/>
+                                    </Extensions:ContentToggleButton.OverContent>
+                                    <Extensions:ColorPicker Width="350" Height="250" HexCode="{Binding SourceColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PredefinedColorVisibility="Visible" />
+                                </Extensions:ContentToggleButton>
                                 <TextBlock Text="{local:Loc DSTCOLOR}" VerticalAlignment="Center"/>
                                 <ComboBox
                                             ItemTemplate="{StaticResource ColorItemTemplate}"
@@ -684,10 +697,10 @@
                                 <Slider Value="{Binding Scanner.Threshold, Delay=300 }" Maximum="255" Minimum="1" VerticalAlignment="Center"/>
                                 <Button Command="{Binding SaveImage}" CommandParameter="{Binding Scanner.CroppedImage}" Content="{local:Loc SAVEPDF}"/>
                             </UniformGrid>
-                            </StackPanel>
-                        </Border>
-                    </Expander>
-                </Grid>
-            </GroupBox>
+                        </StackPanel>
+                    </Border>
+                </Expander>
+            </Grid>
+        </GroupBox>
     </Grid>
 </UserControl>

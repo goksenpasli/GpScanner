@@ -838,7 +838,7 @@ namespace TwainControl
 
             if (isRightMouseDown && e.OriginalSource is System.Windows.Controls.Image)
             {
-                CroppedBitmap cb = new(ImgViewer.Source as BitmapSource, new Int32Rect((int)((int)curx * SeçiliResim.Resim.PixelWidth / ImgViewer.ActualWidth), (int)((int)cury * SeçiliResim.Resim.PixelHeight / ImgViewer.ActualHeight), 1, 1));
+                CroppedBitmap cb = new(SeçiliResim.Resim, new Int32Rect((int)((int)curx * SeçiliResim.Resim.PixelWidth / ImgViewer.ActualWidth), (int)((int)cury * SeçiliResim.Resim.PixelHeight / ImgViewer.ActualHeight), 1, 1));
                 byte[] pixels = new byte[4];
                 cb.CopyPixels(pixels, 4, 0);
                 cb.Freeze();

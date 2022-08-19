@@ -50,7 +50,7 @@ namespace Extensions
         public static readonly DependencyProperty LineThicknessProperty =
             DependencyProperty.Register("LineThickness", typeof(double), typeof(GraphControl), new FrameworkPropertyMetadata(2.0d, FrameworkPropertyMetadataOptions.AffectsRender));
 
-        public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register("Series", typeof(ObservableCollection<Chart>), typeof(GraphControl), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
+        public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register("Series", typeof(ObservableCollection<Chart>), typeof(GraphControl), new FrameworkPropertyMetadata(new ObservableCollection<Chart>(), FrameworkPropertyMetadataOptions.AffectsRender));
 
         // Using a DependencyProperty as the backing store for SeriesTextVisibility.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SeriesTextVisibilityProperty =

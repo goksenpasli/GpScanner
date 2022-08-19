@@ -68,8 +68,7 @@
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <ListView x:Name="Lv"
-            d:ItemsSource="{d:SampleData ItemCount=5}"
+        <ListView x:Name="Lv"            
             local:GridViewSort.AutoSort="True" AlternationCount="2" Foreground="Black"
             IsSynchronizedWithCurrentItem="False"
             ItemsSource="{Binding Arşivİçerik}"

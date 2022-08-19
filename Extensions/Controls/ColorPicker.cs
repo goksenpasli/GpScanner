@@ -137,8 +137,8 @@ namespace Extensions
 
         public Visibility HexCodeVisibility
         {
-            get { return (Visibility)GetValue(HexCodeVisibilityProperty); }
-            set { SetValue(HexCodeVisibilityProperty, value); }
+            get => (Visibility)GetValue(HexCodeVisibilityProperty);
+            set => SetValue(HexCodeVisibilityProperty, value);
         }
 
         public Color MiddleStopColor
@@ -149,11 +149,11 @@ namespace Extensions
 
         public Visibility PredefinedColorVisibility
         {
-            get { return (Visibility)GetValue(PredefinedColorVisibilityProperty); }
-            set { SetValue(PredefinedColorVisibilityProperty, value); }
+            get => (Visibility)GetValue(PredefinedColorVisibilityProperty);
+            set => SetValue(PredefinedColorVisibilityProperty, value);
         }
 
-        public GridLength SelectorLength { get => selectorLength; set => selectorLength = value; }
+        public GridLength SelectorLength { get; set; } = new(1, GridUnitType.Star);
 
         public Brush SpectrumGridBackground
         {
@@ -167,12 +167,18 @@ namespace Extensions
             _spectrumgrid = GetTemplateChild("SpectrumGrid") as Rectangle;
             if (_spectrumgrid != null)
             {
+                _spectrumgrid.MouseMove -= Spectrumgrid_MouseMove;
                 _spectrumgrid.MouseMove += Spectrumgrid_MouseMove;
+                _spectrumgrid.MouseDown -= (sender, e) => e.Handled = true;
+                _spectrumgrid.MouseDown += (sender, e) => e.Handled = true;
             }
             _rgbgrid = GetTemplateChild("RgbGrid") as Rectangle;
             if (_rgbgrid != null)
             {
+                _rgbgrid.MouseMove -= Rgbgrid_MouseMove;
                 _rgbgrid.MouseMove += Rgbgrid_MouseMove;
+                _rgbgrid.MouseDown -= (sender, e) => e.Handled = true;
+                _rgbgrid.MouseDown += (sender, e) => e.Handled = true;
             }
         }
 
@@ -181,8 +187,6 @@ namespace Extensions
         private Rectangle _spectrumgrid;
 
         private double currH = 360;
-
-        private GridLength selectorLength = new(1, GridUnitType.Star);
 
         private void Rgbgrid_MouseMove(object sender, MouseEventArgs e)
         {

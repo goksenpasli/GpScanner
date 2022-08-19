@@ -109,7 +109,7 @@
             <local:ContentToggleButton Grid.Column="11" FontFamily="Webdings" FontSize="20"
                 Foreground="Blue" OverContent="·" PlacementMode="Top">
                 <local:ContentToggleButton.Content>
-                    <GroupBox>
+                    <GroupBox Header="Renk Ayarla" FontFamily="Segoe UI" Background="White">
                         <StackPanel Orientation="Horizontal">
                             <StackPanel.Resources>
                                 <Style TargetType="Slider">
