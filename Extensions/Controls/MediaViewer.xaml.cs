@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -239,7 +240,7 @@ namespace Extensions.Controls
             if (Player.NaturalVideoWidth > 0)
             {
                 string picturesfolder = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-                byte[] data = Player.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
+                byte[] data = grid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
                 File.WriteAllBytes(picturesfolder.SetUniqueFile("Resim", "jpg"), data);
             }
         }
@@ -257,6 +258,14 @@ namespace Extensions.Controls
         private void Forward_Click(object sender, RoutedEventArgs e)
         {
             Player.Position = Player.Position.Add(new TimeSpan(0, 0, 30));
+        }
+
+        private MediaState GetMediaState(MediaElement myMedia)
+        {
+            FieldInfo hlp = typeof(MediaElement).GetField("_helper", BindingFlags.NonPublic | BindingFlags.Instance);
+            object helperObject = hlp.GetValue(myMedia);
+            FieldInfo stateField = helperObject.GetType().GetField("_currentState", BindingFlags.NonPublic | BindingFlags.Instance);
+            return (MediaState)stateField.GetValue(helperObject);
         }
 
         private void Mute_Checked(object sender, RoutedEventArgs e)
@@ -292,6 +301,18 @@ namespace Extensions.Controls
                 {
                     Player.Stop();
                 }
+                Player.Play();
+            }
+        }
+
+        private void Player_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (GetMediaState(Player) == MediaState.Play)
+            {
+                Player.Pause();
+            }
+            else
+            {
                 Player.Play();
             }
         }
