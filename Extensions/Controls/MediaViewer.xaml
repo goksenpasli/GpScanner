@@ -1,6 +1,9 @@
-﻿<UserControl x:Class="Extensions.Controls.MediaViewer" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:Extensions" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+﻿<UserControl x:Class="Extensions.Controls.MediaViewer"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:local="clr-namespace:Extensions"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="clr-namespace:Extensions.Controls" d:DataContext="{d:DesignInstance Type=controls:MediaViewer}"
     d:DesignHeight="384" d:DesignWidth="512" UseLayoutRounding="True"
     mc:Ignorable="d">
     <UserControl.Resources>
@@ -17,7 +20,7 @@
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="24" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid x:Name="grid">
             <StackPanel>
@@ -117,6 +120,16 @@
                                                 <RotateTransform Angle="{Binding Angle}"/>
                                             </TransformGroup>
                                         </MediaElement.RenderTransform>
+                                        <MediaElement.ContextMenu>
+                                            <ContextMenu Visibility="{Binding ContextMenuVisibility}" >
+                                                <MenuItem FontFamily="Segoe UI" Header="Ters Renk"  IsCheckable="True" IsChecked="{Binding InvertColor}"/>
+                                                <MenuItem FontFamily="Segoe UI" Header="Keskinlik"  IsCheckable="True"  IsChecked="{Binding ApplySharpen}"/>
+                                                <MenuItem FontFamily="Segoe UI" Header="Emboss" IsCheckable="True"  IsChecked="{Binding ApplyEmboss}"/>
+                                                <MenuItem FontFamily="Segoe UI" Header="Pikselleştir"  IsCheckable="True"  IsChecked="{Binding ApplyPixelate}"/>
+                                                <MenuItem FontFamily="Segoe UI" Header="Siyah Beyaz" IsCheckable="True"  IsChecked="{Binding ApplyBw}"/>
+                                                <MenuItem FontFamily="Segoe UI" Header="Gri"  IsCheckable="True"  IsChecked="{Binding ApplyGrayscale}"/>
+                                            </ContextMenu>
+                                        </MediaElement.ContextMenu>
                                     </MediaElement>
                                 </StackPanel>
                             </StackPanel>
@@ -125,14 +138,14 @@
                 </StackPanel>
             </StackPanel>
         </Grid>
-        <Slider x:Name="Sld" Grid.Row="1" VerticalAlignment="Center"
+        <Slider Visibility="{Binding SliderControlVisible}" x:Name="Sld" Grid.Row="1" VerticalAlignment="Center"
             IsMoveToPointEnabled="True"
             Maximum="{Binding EndTimeSpan, Converter={StaticResource TimespanToSecondsConverter}, Mode=OneWay}"
             MouseLeave="Sld_MouseLeave" MouseMove="Sld_MouseMove"
             Style="{StaticResource Slider}"
             Thumb.DragCompleted="Sld_DragCompleted" Thumb.DragStarted="Sld_DragStarted"
             Value="{Binding MediaPosition, Converter={StaticResource TimespanToSecondsConverter}, Mode=TwoWay}" />
-        <Grid Grid.Row="2" Background="Transparent">
+        <Grid Visibility="{Binding ControlVisible}" Grid.Row="2" Background="Transparent">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
@@ -143,6 +156,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
@@ -198,15 +212,23 @@
             </ToggleButton>
             <Slider x:Name="Volume" Grid.Column="8" Width="60"
                 VerticalAlignment="Center" IsMoveToPointEnabled="True" Maximum="1"
+                Style="{StaticResource Slider}" 
+                Value="{Binding MediaVolume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" /> 
+            <Slider Grid.Column="9" Width="45"
+                VerticalAlignment="Center" IsMoveToPointEnabled="True" Minimum="-1" Maximum="1"
                 Style="{StaticResource Slider}"
-                Value="{Binding MediaVolume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <TextBlock Grid.Column="9" Margin="1,0,1,0" VerticalAlignment="Center"
-                Foreground="Black"><Run Text="{Binding MediaPosition, Converter={StaticResource TimeSpanToStringConverter}, Mode=OneWay}" /><Run Text=" "/><Run Text="{Binding EndTimeSpan, Converter={StaticResource TimeSpanToStringConverter}, Mode=OneWay}" /></TextBlock>
-            <Button x:Name="Capture" Grid.Column="10" Width="24"
+                Value="{Binding ElementName=Player, Path=Balance}" Margin="2,0,0,0" />
+            <TextBlock Grid.Column="10" Margin="1,0,1,0" VerticalAlignment="Center"
+                Foreground="Black">
+				<Run Text="{Binding MediaPosition, Converter={StaticResource TimeSpanToStringConverter}, Mode=OneWay}" />
+				<Run Text=" "/>
+				<Run Text="{Binding EndTimeSpan, Converter={StaticResource TimeSpanToStringConverter}, Mode=OneWay}" />
+            </TextBlock>
+            <Button x:Name="Capture" Grid.Column="11" Width="24"
                 Height="24" VerticalContentAlignment="Center" Click="Capture_Click"
                 Content="N" FontFamily="Webdings" FontSize="20"
                 Foreground="Blue" ToolTip="Ekran Yakala Resimlerim Klasörüne Kaydedilir." />
-            <local:ContentToggleButton Grid.Column="11" FontFamily="Webdings" FontSize="20"
+            <local:ContentToggleButton Grid.Column="12" FontFamily="Webdings" FontSize="20"
                 Foreground="Blue" OverContent="·" PlacementMode="Top">
                 <StackPanel Background="White" Orientation="Horizontal">
                     <StackPanel.Resources>
@@ -251,13 +273,13 @@
                     <Slider Visibility="{Binding ApplyPixelate, Converter={StaticResource BooleanToVisibilityConverter}}" Value="40" Minimum="1" Maximum="250"  Style="{StaticResource Slider}" Orientation="Vertical" ValueChanged="Slider_HeightValueChanged"/>
                 </StackPanel>
             </local:ContentToggleButton>
-            <Button x:Name="FlipVer" Click="FlipVer_Click" Grid.Column="12" Width="24"
+            <Button x:Name="FlipVer" Click="FlipVer_Click" Grid.Column="13" Width="24"
                 Height="24"  Content="E"
                 FontFamily="Wingdings 3" FontSize="18" Foreground="Blue" />
-            <Button x:Name="FlipHor" Click="FlipHor_Click" Grid.Column="13" Width="24"
+            <Button x:Name="FlipHor" Click="FlipHor_Click" Grid.Column="14" Width="24"
                 Height="24"  Content="D"
                 FontFamily="Wingdings 3" FontSize="18" Foreground="Blue" />
-            <Button x:Name="Rotate"  Click="Rotate_Click" Grid.Column="14" Width="24"
+            <Button x:Name="Rotate"  Click="Rotate_Click" Grid.Column="15" Width="24"
                 Height="24"  Content="P"
                 FontFamily="Wingdings 3" FontSize="18" Foreground="Blue" />
         </Grid>

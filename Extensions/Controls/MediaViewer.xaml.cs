@@ -30,6 +30,10 @@ namespace Extensions.Controls
 
         public static readonly DependencyProperty BwAmountProperty = DependencyProperty.Register("BwAmount", typeof(double), typeof(MediaViewer), new PropertyMetadata(0.6D));
 
+        public static readonly DependencyProperty ContextMenuVisibilityProperty = DependencyProperty.Register("ContextMenuVisibility", typeof(Visibility), typeof(MediaElement), new PropertyMetadata(Visibility.Collapsed));
+
+        public static readonly DependencyProperty ControlVisibleProperty = DependencyProperty.Register("ControlVisible", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Visible));
+
         public static readonly DependencyProperty EndTimeSpanProperty = DependencyProperty.Register("EndTimeSpan", typeof(TimeSpan), typeof(MediaViewer), new PropertyMetadata(TimeSpan.Zero));
 
         public static readonly DependencyProperty FlipXProperty = DependencyProperty.Register("FlipX", typeof(double), typeof(MediaViewer), new PropertyMetadata(1.0d));
@@ -47,6 +51,8 @@ namespace Extensions.Controls
         public static readonly DependencyProperty PixelateSizeProperty = DependencyProperty.Register("PixelateSize", typeof(Size), typeof(MediaViewer), new PropertyMetadata(new Size(60, 40)));
 
         public static readonly DependencyProperty SharpenAmountProperty = DependencyProperty.Register("SharpenAmount", typeof(double), typeof(MediaViewer), new PropertyMetadata(1.0d));
+
+        public static readonly DependencyProperty SliderControlVisibleProperty = DependencyProperty.Register("SliderControlVisible", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Visible));
 
         public static readonly DependencyProperty ThumbnailsVisibleProperty = DependencyProperty.Register("ThumbnailsVisible", typeof(bool), typeof(MediaViewer), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
@@ -134,6 +140,18 @@ namespace Extensions.Controls
             set => SetValue(BwAmountProperty, value);
         }
 
+        public Visibility ContextMenuVisibility
+        {
+            get => (Visibility)GetValue(ContextMenuVisibilityProperty);
+            set => SetValue(ContextMenuVisibilityProperty, value);
+        }
+
+        public Visibility ControlVisible
+        {
+            get { return (Visibility)GetValue(ControlVisibleProperty); }
+            set { SetValue(ControlVisibleProperty, value); }
+        }
+
         public TimeSpan EndTimeSpan { get => (TimeSpan)GetValue(EndTimeSpanProperty); set => SetValue(EndTimeSpanProperty, value); }
 
         public double FlipX
@@ -176,16 +194,19 @@ namespace Extensions.Controls
             set => SetValue(SharpenAmountProperty, value);
         }
 
+        public Visibility SliderControlVisible
+        {
+            get { return (Visibility)GetValue(SliderControlVisibleProperty); }
+            set { SetValue(SliderControlVisibleProperty, value); }
+        }
+
         public bool ThumbnailsVisible { get => (bool)GetValue(ThumbnailsVisibleProperty); set => SetValue(ThumbnailsVisibleProperty, value); }
 
         private static void AutoplayChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is MediaViewer viewer && (bool)e.NewValue)
+            if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is MediaViewer viewer && (bool)e.NewValue && viewer.Player.Source != null)
             {
-                if (viewer.Player.Source != null)
-                {
-                    viewer.Player.Play();
-                }
+                viewer.Player.Play();
             }
         }
 
