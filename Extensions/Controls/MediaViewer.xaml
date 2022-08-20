@@ -163,6 +163,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Button x:Name="Play" Grid.Column="0" Width="24"
                 Height="24" Click="Play_Click" Content="4"
@@ -213,7 +214,7 @@
             <Slider x:Name="Volume" Grid.Column="8" Width="60"
                 VerticalAlignment="Center" IsMoveToPointEnabled="True" Maximum="1"
                 Style="{StaticResource Slider}" 
-                Value="{Binding MediaVolume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" /> 
+                Value="{Binding MediaVolume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <Slider Grid.Column="9" Width="45"
                 VerticalAlignment="Center" IsMoveToPointEnabled="True" Minimum="-1" Maximum="1"
                 Style="{StaticResource Slider}"
@@ -224,6 +225,7 @@
 				<Run Text=" "/>
 				<Run Text="{Binding EndTimeSpan, Converter={StaticResource TimeSpanToStringConverter}, Mode=OneWay}" />
             </TextBlock>
+            <local:NumericUpDownControl Grid.Column="16" Value="{Binding ElementName=Player, Path=SpeedRatio}" Minimum="0.1" IsReadOnly="True"/>
             <Button x:Name="Capture" Grid.Column="11" Width="24"
                 Height="24" VerticalContentAlignment="Center" Click="Capture_Click"
                 Content="N" FontFamily="Webdings" FontSize="20"
