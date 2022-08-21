@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using System.Windows.Threading;
+using Microsoft.Win32;
 
 namespace Extensions.Controls
 {
@@ -65,6 +66,8 @@ namespace Extensions.Controls
         public static readonly DependencyProperty SliderControlVisibleProperty = DependencyProperty.Register("SliderControlVisible", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Visible));
 
         public static readonly DependencyProperty ThumbnailsVisibleProperty = DependencyProperty.Register("ThumbnailsVisible", typeof(bool), typeof(MediaViewer), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+        public static readonly DependencyProperty VideoStretchProperty = DependencyProperty.Register("VideoStretch", typeof(Stretch), typeof(MediaViewer), new PropertyMetadata(Stretch.Uniform));
 
         private static readonly Image image = new();
 
@@ -203,6 +206,8 @@ namespace Extensions.Controls
             set => SetValue(MediaVolumeProperty, value);
         }
 
+        public Visibility OpenButtonVisibility { get; set; } = Visibility.Collapsed;
+
         public bool PanoramaMode
         {
             get => (bool)GetValue(PanoramaModeProperty);
@@ -234,6 +239,12 @@ namespace Extensions.Controls
         public Geometry3D SphereModel { get; set; } = CreateGeometry();
 
         public bool ThumbnailsVisible { get => (bool)GetValue(ThumbnailsVisibleProperty); set => SetValue(ThumbnailsVisibleProperty, value); }
+
+        public Stretch VideoStretch
+        {
+            get => (Stretch)GetValue(VideoStretchProperty);
+            set => SetValue(VideoStretchProperty, value);
+        }
 
         internal static Point3D GetPosition(double t, double y)
         {
@@ -394,7 +405,9 @@ namespace Extensions.Controls
             {
                 string picturesfolder = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
                 byte[] data = grid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
-                File.WriteAllBytes(picturesfolder.SetUniqueFile("Resim", "jpg"), data);
+                string dosya = picturesfolder.SetUniqueFile("Resim", "jpg");
+                File.WriteAllBytes(dosya, data);
+                ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, dosya);
             }
         }
 
@@ -429,6 +442,16 @@ namespace Extensions.Controls
         private void Mute_Unchecked(object sender, RoutedEventArgs e)
         {
             MediaVolume = 1;
+        }
+
+        private void Open_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = "Video Dosyaları (*.*)|*.3g2;*.3gp;*.3gp2;*.3gpp;*.amr;*.amv;*.asf;*.avi;*.bdmv;*.bik;*.d2v;*.divx;*.drc;*.dsa;*.dsm;*.dss;*.dsv;*.evo;*.f4v;*.flc;*.fli;*.flic;*.flv;*.hdmov;*.ifo;*.ivf;*.m1v;*.m2p;*.m2t;*.m2ts;*.m2v;*.m4b;*.m4p;*.m4v;*.mkv;*.mp2v;*.mp4;*.mp4v;*.mpe;*.mpeg;*.mpg;*.mpls;*.mpv2;*.mpv4;*.mov;*.mts;*.ogm;*.ogv;*.pss;*.pva;*.qt;*.ram;*.ratdvd;*.rm;*.rmm;*.rmvb;*.roq;*.rpm;*.smil;*.smk;*.swf;*.tp;*.tpr;*.ts;*.vob;*.vp6;*.webm;*.wm;*.wmp;*.wmv" };
+            if (openFileDialog.ShowDialog() == true)
+            {
+                MediaDataFilePath = openFileDialog.FileName;
+                AutoPlay = true;
+            }
         }
 
         private void Pause_Click(object sender, RoutedEventArgs e)

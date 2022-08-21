@@ -1,11 +1,12 @@
 ﻿<UserControl x:Class="Extensions.Controls.MediaViewer"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:System="clr-namespace:System;assembly=mscorlib"
     xmlns:controls="clr-namespace:Extensions.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:Extensions"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance Type=controls:MediaViewer}"
-    d:DesignHeight="384" d:DesignWidth="512" UseLayoutRounding="True"
+    d:DesignHeight="384" d:DesignWidth="550" UseLayoutRounding="True"
     mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -111,7 +112,9 @@
                                     <Grid>
                                         <MediaElement x:Name="Player"
                                             LoadedBehavior="Manual" MouseLeftButtonDown="Player_MouseLeftButtonDown"
-                                            RenderTransformOrigin="0.5,0.5" UnloadedBehavior="Close"
+                                            RenderTransformOrigin="0.5,0.5"
+                                            Stretch="{Binding VideoStretch}"
+                                            UnloadedBehavior="Close"
                                             Volume="{Binding MediaVolume, UpdateSourceTrigger=PropertyChanged}">
                                             <MediaElement.Effect>
                                                 <local:ColorEffect x:Name="Color" />
@@ -137,6 +140,8 @@
                                                         IsChecked="{Binding ApplyBw}" />
                                                     <MenuItem FontFamily="Segoe UI" Header="Gri" IsCheckable="True"
                                                         IsChecked="{Binding ApplyGrayscale}" />
+                                                    <MenuItem FontFamily="Segoe UI" Header="360°" IsCheckable="True"
+                                                        IsChecked="{Binding PanoramaMode}" />
                                                 </ContextMenu>
                                             </MediaElement.ContextMenu>
                                         </MediaElement>
@@ -221,44 +226,55 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Button x:Name="Play"
+            <Button x:Name="Open"
                 Grid.Column="0"
+                Width="24" Height="24"
+                Click="Open_Click" Content="Ì" FontFamily="Webdings"
+                FontSize="18" Foreground="Blue"
+                Visibility="{Binding OpenButtonVisibility}" />
+            <Button x:Name="Play"
+                Grid.Column="1"
                 Width="24" Height="24"
                 Click="Play_Click" Content="4" FontFamily="Webdings"
                 FontSize="18" Foreground="Blue" />
             <Button x:Name="Pause"
-                Grid.Column="1"
+                Grid.Column="2"
                 Width="24" Height="24"
                 Click="Pause_Click" Content=";" FontFamily="Webdings"
                 FontSize="18" Foreground="Blue" />
             <Button x:Name="Stop"
-                Grid.Column="2"
+                Grid.Column="3"
                 Width="24" Height="24"
                 Click="Stop_Click" Content="&lt;" FontFamily="Webdings"
                 FontSize="18" Foreground="Blue" />
             <Button x:Name="Back"
-                Grid.Column="3"
+                Grid.Column="4"
                 Width="24" Height="24"
                 Click="Back_Click" Content="7" FontFamily="Webdings"
                 FontSize="18" Foreground="Blue" />
             <Button x:Name="Forward"
-                Grid.Column="4"
+                Grid.Column="5"
                 Width="24" Height="24"
                 Click="Forward_Click" Content="8" FontFamily="Webdings"
                 FontSize="18" Foreground="Blue" />
             <Button x:Name="SlowBackward"
-                Grid.Column="5"
+                Grid.Column="6"
                 Width="24" Height="24"
                 Click="SlowBackward_Click" Content="9" FontFamily="Webdings"
                 FontSize="18" Foreground="Blue" />
             <Button x:Name="SlowForward"
-                Grid.Column="6"
+                Grid.Column="7"
                 Width="24" Height="24"
                 Click="SlowForward_Click" Content=":" FontFamily="Webdings"
                 FontSize="18" Foreground="Blue" />
             <ToggleButton x:Name="Mute"
-                Grid.Column="7"
+                Grid.Column="8"
                 Width="24" Height="24"
                 Margin="1,0,1,0"
                 Checked="Mute_Checked" FontSize="18" Foreground="Blue"
@@ -285,38 +301,46 @@
                 </ToggleButton.Style>
             </ToggleButton>
             <Slider x:Name="Volume"
-                Grid.Column="8"
+                Grid.Column="9"
                 Width="60"
                 VerticalAlignment="Center"
                 IsMoveToPointEnabled="True" Maximum="1"
                 Style="{StaticResource Slider}"
                 Value="{Binding MediaVolume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <Slider Grid.Column="9"
+            <TextBlock Grid.Column="10"
+                VerticalAlignment="Center"
+                FontFamily="Webdings" FontSize="20" Foreground="Blue"
+                Text="W" />
+            <Slider Grid.Column="11"
                 Width="45"
-                Margin="2,0,0,0" VerticalAlignment="Center"
+                VerticalAlignment="Center"
                 IsMoveToPointEnabled="True" Maximum="1" Minimum="-1"
                 Style="{StaticResource Slider}"
                 Value="{Binding ElementName=Player, Path=Balance}" />
-            <TextBlock Grid.Column="10"
+            <TextBlock Grid.Column="12"
+                VerticalAlignment="Center"
+                FontFamily="Webdings" FontSize="20" Foreground="Blue"
+                Text="X" />
+            <TextBlock Grid.Column="13"
                 Margin="1,0,1,0" VerticalAlignment="Center"
                 Foreground="Black">
                 <Run Text="{Binding MediaPosition, Converter={StaticResource TimeSpanToStringConverter}, Mode=OneWay}" />
                 <Run Text=" " />
                 <Run Text="{Binding EndTimeSpan, Converter={StaticResource TimeSpanToStringConverter}, Mode=OneWay}" />
             </TextBlock>
-            <local:NumericUpDownControl Grid.Column="16"
+            <local:NumericUpDownControl Grid.Column="21"
                 IsReadOnly="True" Minimum="0.1"
                 Value="{Binding ElementName=Player, Path=SpeedRatio}" />
-            <ToggleButton Grid.Column="17"
+            <ToggleButton Grid.Column="20"
                 Content="360°"
                 IsChecked="{Binding PanoramaMode}" />
             <Button x:Name="Capture"
-                Grid.Column="11"
+                Grid.Column="14"
                 Width="24" Height="24"
                 VerticalContentAlignment="Center"
                 Click="Capture_Click" Content="N" FontFamily="Webdings"
-                FontSize="20" Foreground="Blue" ToolTip="Ekran Yakala Resimlerim Klasörüne Kaydedilir." />
-            <local:ContentToggleButton Grid.Column="12"
+                FontSize="20" Foreground="Blue" />
+            <local:ContentToggleButton Grid.Column="15"
                 FontFamily="Webdings" FontSize="20" Foreground="Blue"
                 OverContent="·" PlacementMode="Top">
                 <StackPanel Background="White" Orientation="Horizontal">
@@ -388,18 +412,30 @@
                         Value="40" />
                 </StackPanel>
             </local:ContentToggleButton>
+            <local:ContentToggleButton Grid.Column="16"
+                FontFamily="Wingdings 3" FontSize="18" Foreground="Blue"
+                OverContent="n">
+                <ListBox FontFamily="Segoe UI"
+                    SelectedValue="{Binding VideoStretch}"
+                    SelectedValuePath="Tag">
+                    <ListBoxItem Content="{x:Static Stretch.None}" Tag="0" />
+                    <ListBoxItem Content="{x:Static Stretch.Fill}" Tag="1" />
+                    <ListBoxItem Content="{x:Static Stretch.Uniform}" Tag="2" />
+                    <ListBoxItem Content="{x:Static Stretch.UniformToFill}" Tag="3" />
+                </ListBox>
+            </local:ContentToggleButton>
             <Button x:Name="FlipVer"
-                Grid.Column="13"
+                Grid.Column="17"
                 Width="24" Height="24"
                 Click="FlipVer_Click" Content="E" FontFamily="Wingdings 3"
                 FontSize="18" Foreground="Blue" />
             <Button x:Name="FlipHor"
-                Grid.Column="14"
+                Grid.Column="18"
                 Width="24" Height="24"
                 Click="FlipHor_Click" Content="D" FontFamily="Wingdings 3"
                 FontSize="18" Foreground="Blue" />
             <Button x:Name="Rotate"
-                Grid.Column="15"
+                Grid.Column="19"
                 Width="24" Height="24"
                 Click="Rotate_Click" Content="P" FontFamily="Wingdings 3"
                 FontSize="18" Foreground="Blue" />
