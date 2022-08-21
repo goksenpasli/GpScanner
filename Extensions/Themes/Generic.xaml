@@ -1,17 +1,17 @@
-﻿<ResourceDictionary
-	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-	xmlns:local="clr-namespace:Extensions"
-	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:Extensions"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Extensions;component/Themes/Skin.xaml" />
     </ResourceDictionary.MergedDictionaries>
     <ObjectDataProvider x:Key="ColorList"
-                MethodName="GetProperties"
-                ObjectInstance="{x:Type Colors}" />
+        MethodName="GetProperties"
+        ObjectInstance="{x:Type Colors}" />
     <DataTemplate x:Key="ColorItemTemplate">
-        <Rectangle Width="16" Height="16" Fill="{Binding Name}" />
+        <Rectangle Width="16" Height="16"
+            Fill="{Binding Name}" />
     </DataTemplate>
     <ItemsPanelTemplate x:Key="ColorPanelTemplate">
         <UniformGrid Columns="8" />
@@ -19,7 +19,7 @@
     <local:SystemFileIconConverter x:Key="SystemFileIconConverter" />
     <local:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
     <local:FilePathToIconConverter x:Key="FilePathToIconConverter" />
-    <local:VisibilityToBooleanConverter x:Key="VisibilityToBooleanConverter"/>
+    <local:VisibilityToBooleanConverter x:Key="VisibilityToBooleanConverter" />
     <Style x:Key="NumericUpDownTextBoxStyle" TargetType="{x:Type TextBox}">
         <Setter Property="Text" Value="{Binding Text, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
         <Style.Triggers>
@@ -34,20 +34,29 @@
     <Style TargetType="local:GraphControl">
         <Setter Property="ContextMenu">
             <Setter.Value>
-                <ContextMenu Visibility="{Binding ContextMenuVisibility}"  IsEnabled="{Binding IsContextMenuEnabled}" DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
-                    <MenuItem Header="Seri Rakamlarını Göster" IsCheckable="True" IsChecked="{Binding SeriesTextVisibility, Converter={StaticResource VisibilityToBooleanConverter}}"/>
-                    <MenuItem Header="Değer Rakamlarını Göster" IsCheckable="True" IsChecked="{Binding ValueTextVisibility, Converter={StaticResource VisibilityToBooleanConverter}}"/>
+                <ContextMenu DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}"
+                    IsEnabled="{Binding IsContextMenuEnabled}"
+                    Visibility="{Binding ContextMenuVisibility}">
+                    <MenuItem Header="Seri Rakamlarını Göster" IsCheckable="True"
+                        IsChecked="{Binding SeriesTextVisibility, Converter={StaticResource VisibilityToBooleanConverter}}" />
+                    <MenuItem Header="Değer Rakamlarını Göster" IsCheckable="True"
+                        IsChecked="{Binding ValueTextVisibility, Converter={StaticResource VisibilityToBooleanConverter}}" />
                     <MenuItem IsCheckable="True" IsChecked="{Binding LineGraphVisibility, Converter={StaticResource VisibilityToBooleanConverter}}">
                         <MenuItem.Header>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Çizgi Grafik Göster" VerticalAlignment="Center"/>
-                                <local:NumericUpDownControl IsEnabled="{Binding LineGraphVisibility, Converter={StaticResource VisibilityToBooleanConverter}}" Value="{Binding LineThickness}" Orientation="Horizontal" LargeChange="1" SmallChange="1" Minimum="1" Maximum="15" IsReadOnly="True"/>
+                                <TextBlock VerticalAlignment="Center" Text="Çizgi Grafik Göster" />
+                                <local:NumericUpDownControl IsEnabled="{Binding LineGraphVisibility, Converter={StaticResource VisibilityToBooleanConverter}}"
+                                    IsReadOnly="True" LargeChange="1" Maximum="15"
+                                    Minimum="1" Orientation="Horizontal" SmallChange="1"
+                                    Value="{Binding LineThickness}" />
                             </StackPanel>
                         </MenuItem.Header>
                     </MenuItem>
-                    <MenuItem Header="Çizgi Grafik Tepe Noktaları Göster" IsCheckable="True" IsChecked="{Binding LineDotVisibility, Converter={StaticResource VisibilityToBooleanConverter}}"/>
-                    <MenuItem Header="Grafik İçerik Göster" IsCheckable="True" IsChecked="{Binding GraphContentVisibility, Converter={StaticResource VisibilityToBooleanConverter}}"/>
-                    <MenuItem Header="Resim Olarak Kaydet" Command="{Binding Kaydet}">
+                    <MenuItem Header="Çizgi Grafik Tepe Noktaları Göster" IsCheckable="True"
+                        IsChecked="{Binding LineDotVisibility, Converter={StaticResource VisibilityToBooleanConverter}}" />
+                    <MenuItem Header="Grafik İçerik Göster" IsCheckable="True"
+                        IsChecked="{Binding GraphContentVisibility, Converter={StaticResource VisibilityToBooleanConverter}}" />
+                    <MenuItem Command="{Binding Kaydet}" Header="Resim Olarak Kaydet">
                         <MenuItem.Icon>
                             <Image Width="16" Height="16">
                                 <Image.Source>
@@ -69,33 +78,43 @@
                 <ControlTemplate TargetType="local:ColorPicker">
                     <Grid IsEnabled="{TemplateBinding IsEnabled}">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="{Binding SelectorLength, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            <ColumnDefinition Width="{Binding SelectorLength, RelativeSource={RelativeSource TemplatedParent}}" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="5*"/>
-                            <RowDefinition Height="2*"/>
+                            <RowDefinition Height="5*" />
+                            <RowDefinition Height="2*" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <Rectangle Grid.Row="0" Grid.Column="0" Name="RgbGrid" >
+                        <Rectangle Name="RgbGrid"
+                            Grid.Row="0" Grid.Column="0">
                             <Rectangle.Fill>
-                                <LinearGradientBrush EndPoint="1,0" StartPoint="0.0,0">
-                                    <GradientStop Color="Black"/>
-                                    <GradientStop Color="White"  Offset="1"/>
-                                    <GradientStop Color="{Binding MiddleStopColor, RelativeSource={RelativeSource TemplatedParent}}" Offset="0.5"/>
+                                <LinearGradientBrush StartPoint="0.0,0" EndPoint="1,0">
+                                    <GradientStop Color="Black" />
+                                    <GradientStop Offset="1" Color="White" />
+                                    <GradientStop Offset="0.5" Color="{Binding MiddleStopColor, RelativeSource={RelativeSource TemplatedParent}}" />
                                 </LinearGradientBrush>
                             </Rectangle.Fill>
                         </Rectangle>
-                        <Rectangle Grid.Row="1" Grid.Column="0" Name="SpectrumGrid" Fill="{Binding SpectrumGridBackground, RelativeSource={RelativeSource TemplatedParent}}" Opacity="1"  ></Rectangle>
-                        <TextBox TextBlock.Foreground="{Binding HexCode, RelativeSource={RelativeSource TemplatedParent}}" Grid.Column="0"  IsReadOnly="True" Visibility="{Binding HexCodeVisibility, RelativeSource={RelativeSource TemplatedParent}}" Grid.Row="2"  Text="{Binding HexCode, RelativeSource={RelativeSource TemplatedParent}}"/>
-                        <ListBox Visibility="{Binding PredefinedColorVisibility, RelativeSource={RelativeSource TemplatedParent}}" Grid.Column="1" Grid.RowSpan="3" ItemTemplate="{StaticResource ColorItemTemplate}"
-                                            ItemsPanel="{StaticResource ColorPanelTemplate}"
-                                            ItemsSource="{Binding Mode=OneWay, Source={StaticResource ColorList}}"
-                                            SelectedValue="{Binding HexCode, RelativeSource={RelativeSource TemplatedParent}}"
-                                            SelectedValuePath="Name">
+                        <Rectangle Name="SpectrumGrid"
+                            Grid.Row="1" Grid.Column="0"
+                            Fill="{Binding SpectrumGridBackground, RelativeSource={RelativeSource TemplatedParent}}"
+                            Opacity="1" />
+                        <TextBox Grid.Row="2" Grid.Column="0"
+                            IsReadOnly="True"
+                            Text="{Binding HexCode, RelativeSource={RelativeSource TemplatedParent}}"
+                            TextBlock.Foreground="{Binding HexCode, RelativeSource={RelativeSource TemplatedParent}}"
+                            Visibility="{Binding HexCodeVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <ListBox Grid.RowSpan="3" Grid.Column="1"
+                            ItemTemplate="{StaticResource ColorItemTemplate}"
+                            ItemsPanel="{StaticResource ColorPanelTemplate}"
+                            ItemsSource="{Binding Mode=OneWay, Source={StaticResource ColorList}}"
+                            SelectedValue="{Binding HexCode, RelativeSource={RelativeSource TemplatedParent}}"
+                            SelectedValuePath="Name"
+                            Visibility="{Binding PredefinedColorVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="ListBoxItem">
-                                    <Setter Property="Padding" Value="0"/>
+                                    <Setter Property="Padding" Value="0" />
                                 </Style>
                             </ListBox.ItemContainerStyle>
                         </ListBox>
@@ -166,7 +185,8 @@
                                     </Image>
                                 </Button.Content>
                             </Button>
-                            <StackPanel Grid.Column="2" Orientation="Horizontal"
+                            <StackPanel Grid.Column="2"
+                                Orientation="Horizontal"
                                 Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}">
                                 <RepeatButton Command="{Binding ViewerBack, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ToolTip="Önceki Sayfa">
                                     <Image Width="16" Height="16">
@@ -210,12 +230,16 @@
                                     </Image>
                                 </Button.Content>
                             </Button>
-                            <Slider Grid.Column="4" Margin="2" AutoToolTipPlacement="TopLeft"
+                            <Slider Grid.Column="4"
+                                Margin="2"
+                                AutoToolTipPlacement="TopLeft"
                                 IsEnabled="{Binding Source, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource NullableToBooleanConverter}}"
                                 Minimum="0.01" SmallChange="1"
                                 Style="{StaticResource Slider}"
                                 Value="{Binding Zoom, RelativeSource={RelativeSource TemplatedParent}}" />
-                            <Slider Grid.Column="5" Margin="2" AutoToolTipPlacement="TopLeft"
+                            <Slider Grid.Column="5"
+                                Margin="2"
+                                AutoToolTipPlacement="TopLeft"
                                 IsEnabled="{Binding Source, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource NullableToBooleanConverter}}"
                                 IsSnapToTickEnabled="{Binding SnapTick, RelativeSource={RelativeSource TemplatedParent}}"
                                 Maximum="360" SmallChange="1"
@@ -256,16 +280,16 @@
                                 <ColumnDefinition />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden"
-                                VerticalScrollBarVisibility="Hidden" />
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" />
                             <Border Grid.Column="1"
                                 Background="{TemplateBinding Background}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 Visibility="{Binding ClearButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                                 <TextBlock FontWeight="Bold">
-									<Hyperlink Command="{Binding Reset, RelativeSource={RelativeSource TemplatedParent}}">
-										<Run Text="X" />
-									</Hyperlink>
+                                    <Hyperlink Command="{Binding Reset, RelativeSource={RelativeSource TemplatedParent}}">
+                                        <Run Text="X" />
+                                    </Hyperlink>
                                 </TextBlock>
                             </Border>
                         </Grid>
@@ -286,9 +310,8 @@
         </Setter>
     </Style>
     <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="local:SplitButton">
-        <Setter Property="SnapsToDevicePixels" Value="true" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="SnapsToDevicePixels" Value="true" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:SplitButton">
@@ -297,7 +320,8 @@
                             <ColumnDefinition />
                             <ColumnDefinition Width="14" />
                         </Grid.ColumnDefinitions>
-                        <Button x:Name="btn" Grid.Column="0"
+                        <Button x:Name="btn"
+                            Grid.Column="0"
                             Padding="{TemplateBinding Padding}"
                             HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                             VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
@@ -308,11 +332,13 @@
                             CommandParameter="{TemplateBinding CommandParameter}"
                             Content="{TemplateBinding Content}"
                             IsTabStop="{TemplateBinding IsTabStop}" />
-                        <ToggleButton x:Name="Tb" Grid.Column="1"
+                        <ToggleButton x:Name="Tb"
+                            Grid.Column="1"
                             IsChecked="{TemplateBinding IsSplitPartOpen}"
                             IsEnabled="{TemplateBinding SplitContentPartIsEnabled}"
                             IsTabStop="{TemplateBinding IsTabStop}">
-                            <Path x:Name="path" HorizontalAlignment="Center" VerticalAlignment="Center"
+                            <Path x:Name="path"
+                                HorizontalAlignment="Center" VerticalAlignment="Center"
                                 Data="{StaticResource ArrowGeometry}"
                                 Focusable="False">
                                 <Path.Style>
@@ -327,8 +353,9 @@
                                 </Path.Style>
                             </Path>
                         </ToggleButton>
-                        <Popup x:Name="PART_Popup" Grid.ColumnSpan="2" AllowsTransparency="True"
-                            Focusable="False"
+                        <Popup x:Name="PART_Popup"
+                            Grid.ColumnSpan="2"
+                            AllowsTransparency="True" Focusable="False"
                             IsOpen="{TemplateBinding IsSplitPartOpen}"
                             Placement="{TemplateBinding PlacementMode}"
                             PopupAnimation="Slide"
@@ -343,9 +370,9 @@
                             <Setter TargetName="PART_Popup" Property="IsOpen" Value="true" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="TextElement.Foreground" Value="#838383" />
                             <Setter TargetName="btn" Property="Background" Value="#F4F4F4" />
                             <Setter TargetName="btn" Property="BorderBrush" Value="#ADB2B5" />
-                            <Setter Property="TextElement.Foreground" Value="#838383" />
                         </Trigger>
                         <Trigger SourceName="PART_Popup" Property="IsOpen" Value="true">
                             <Setter Property="IsEnabled" Value="False" />
@@ -354,22 +381,12 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
     <Style TargetType="local:ButtonedTextBox">
-        <Setter Property="Panel.Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
         <Setter Property="Border.BorderBrush" Value="#ABADB3" />
-        <Setter Property="TextElement.Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
         <Setter Property="Border.BorderThickness" Value="1" />
-        <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
         <Setter Property="Control.HorizontalContentAlignment" Value="Left" />
-        <Setter Property="FrameworkElement.FocusVisualStyle">
-            <Setter.Value>
-                <x:Null />
-            </Setter.Value>
-        </Setter>
-        <Setter Property="UIElement.AllowDrop" Value="True" />
-        <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst" />
-        <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
         <Setter Property="Control.Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TextBoxBase}">
@@ -384,27 +401,33 @@
                             BorderBrush="{TemplateBinding Border.BorderBrush}"
                             BorderThickness="{TemplateBinding Border.BorderThickness}"
                             SnapsToDevicePixels="True">
-                            <ScrollViewer Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden"
-                                VerticalScrollBarVisibility="Hidden" />
+                            <ScrollViewer Name="PART_ContentHost"
+                                Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" />
                         </Border>
-                        <Border Width="16" Name="copyborder" Grid.Column="1" Visibility="{Binding CopyButtonVisibility,RelativeSource={RelativeSource TemplatedParent}}"
+                        <Border Name="copyborder"
+                            Grid.Column="1"
+                            Width="16"
                             Background="{TemplateBinding Panel.Background}"
                             BorderBrush="{TemplateBinding Border.BorderBrush}"
-                            BorderThickness="0,1,1,1" SnapsToDevicePixels="True">
+                            BorderThickness="0,1,1,1" SnapsToDevicePixels="True"
+                            Visibility="{Binding CopyButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
-								<Hyperlink Command="{Binding Copy, RelativeSource={RelativeSource TemplatedParent}}" TextDecorations="None">
-									<Run FontWeight="Bold" Text="1" FontFamily="Wingdings 2" />
-								</Hyperlink>
+                                <Hyperlink Command="{Binding Copy, RelativeSource={RelativeSource TemplatedParent}}" TextDecorations="None">
+                                    <Run FontFamily="Wingdings 2" FontWeight="Bold" Text="1" />
+                                </Hyperlink>
                             </TextBlock>
                         </Border>
-                        <Border Width="16" Name="clearborder" Grid.Column="2" Visibility="{Binding ResetButtonVisibility,RelativeSource={RelativeSource TemplatedParent}}"
+                        <Border Name="clearborder"
+                            Grid.Column="2"
+                            Width="16"
                             Background="{TemplateBinding Panel.Background}"
                             BorderBrush="{TemplateBinding Border.BorderBrush}"
-                            BorderThickness="0,1,1,1" SnapsToDevicePixels="True">
+                            BorderThickness="0,1,1,1" SnapsToDevicePixels="True"
+                            Visibility="{Binding ResetButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
-								<Hyperlink Command="{Binding Reset, RelativeSource={RelativeSource TemplatedParent}}" TextDecorations="None">
-									<Run FontWeight="Bold" Text="X" />
-								</Hyperlink>
+                                <Hyperlink Command="{Binding Reset, RelativeSource={RelativeSource TemplatedParent}}" TextDecorations="None">
+                                    <Run FontWeight="Bold" Text="X" />
+                                </Hyperlink>
                             </TextBlock>
                         </Border>
                     </Grid>
@@ -428,6 +451,17 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Setter Property="FrameworkElement.FocusVisualStyle">
+            <Setter.Value>
+                <x:Null />
+            </Setter.Value>
+        </Setter>
+        <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
+        <Setter Property="Panel.Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
+        <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst" />
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
+        <Setter Property="TextElement.Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+        <Setter Property="UIElement.AllowDrop" Value="True" />
     </Style>
     <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="local:ContentToggleButton">
         <Setter Property="Template">
@@ -446,7 +480,7 @@
                                 IsOpen="{Binding IsChecked, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}"
                                 Placement="{TemplateBinding PlacementMode}"
                                 PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}"
-                                PopupAnimation="Slide" 
+                                PopupAnimation="Slide"
                                 StaysOpen="{Binding StaysOpen, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}">
                                 <ContentPresenter Content="{TemplateBinding Content}" />
                             </Popup>
@@ -454,8 +488,8 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Foreground" Value="#ADADAD" />
                             <Setter Property="Background" Value="#F4F4F4" />
+                            <Setter Property="Foreground" Value="#ADADAD" />
                             <Setter Property="TextElement.Foreground" Value="#838383" />
                         </Trigger>
                     </ControlTemplate.Triggers>
@@ -474,20 +508,23 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="9.5" />
             </Grid.ColumnDefinitions>
-            <TextBox Grid.Row="0" Grid.Column="1" VerticalContentAlignment="Center"
+            <TextBox Grid.Row="0" Grid.Column="1"
+                VerticalContentAlignment="Center"
                 Background="{TemplateBinding Background}"
                 BorderThickness="1"
                 IsReadOnly="{Binding IsReadOnly, RelativeSource={RelativeSource TemplatedParent}}"
                 Style="{StaticResource NumericUpDownTextBoxStyle}"
                 Visibility="{Binding NumericUpdownTextBoxVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
-            <RepeatButton x:Name="PART_LineUpButton" Grid.Row="0" Grid.Column="0"
+            <RepeatButton x:Name="PART_LineUpButton"
+                Grid.Row="0" Grid.Column="0"
                 Command="{x:Static ScrollBar.LineLeftCommand}"
                 Style="{StaticResource ScrollBarButton}"
                 Visibility="{Binding NumericUpDownButtonsVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                 <RepeatButton.Background>
                     <VisualBrush Stretch="Uniform">
                         <VisualBrush.Visual>
-                            <Path x:Name="Up" Width="9.5" MinHeight="8.5"
+                            <Path x:Name="Up"
+                                Width="9.5" MinHeight="8.5"
                                 Data="M0,0L5,5 10,0z" Fill="Black" RenderTransformOrigin="0.5,0.5"
                                 Stretch="Fill" StrokeLineJoin="Round">
                                 <Path.RenderTransform>
@@ -498,14 +535,16 @@
                     </VisualBrush>
                 </RepeatButton.Background>
             </RepeatButton>
-            <RepeatButton x:Name="PART_LineDownButton" Grid.Row="1" Grid.Column="2"
+            <RepeatButton x:Name="PART_LineDownButton"
+                Grid.Row="1" Grid.Column="2"
                 Command="{x:Static ScrollBar.LineRightCommand}"
                 Style="{StaticResource ScrollBarButton}"
                 Visibility="{Binding NumericUpDownButtonsVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                 <RepeatButton.Background>
                     <VisualBrush Stretch="Uniform">
                         <VisualBrush.Visual>
-                            <Path x:Name="Down" Width="9.5" MinHeight="8.5"
+                            <Path x:Name="Down"
+                                Width="9.5" MinHeight="8.5"
                                 Data="M0,0L5,5 10,0z" Fill="Black" RenderTransformOrigin="0.5,0.5"
                                 Stretch="Fill" StrokeLineJoin="Round">
                                 <Path.RenderTransform>
@@ -519,10 +558,10 @@
         </Grid>
         <ControlTemplate.Triggers>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter TargetName="Up" Property="Stroke" Value="Gray" />
+                <Setter TargetName="Down" Property="Fill" Value="Gray" />
                 <Setter TargetName="Down" Property="Stroke" Value="Gray" />
                 <Setter TargetName="Up" Property="Fill" Value="Gray" />
-                <Setter TargetName="Down" Property="Fill" Value="Gray" />
+                <Setter TargetName="Up" Property="Stroke" Value="Gray" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
@@ -543,7 +582,8 @@
                 IsReadOnly="{Binding IsReadOnly, RelativeSource={RelativeSource TemplatedParent}}"
                 Style="{StaticResource NumericUpDownTextBoxStyle}"
                 Visibility="{Binding NumericUpdownTextBoxVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
-            <RepeatButton x:Name="PART_LineUpButton" Grid.Row="0" Grid.Column="1"
+            <RepeatButton x:Name="PART_LineUpButton"
+                Grid.Row="0" Grid.Column="1"
                 MinHeight="8.5"
                 Command="{x:Static ScrollBar.LineDownCommand}"
                 Style="{StaticResource ScrollBarButton}"
@@ -551,7 +591,8 @@
                 <RepeatButton.Background>
                     <VisualBrush Stretch="Uniform">
                         <VisualBrush.Visual>
-                            <Path x:Name="Up" Width="9.5" Height="8.5"
+                            <Path x:Name="Up"
+                                Width="9.5" Height="8.5"
                                 Data="M0,0L5,5 10,0z" Fill="Black" RenderTransformOrigin="0.5,0.5"
                                 Stretch="Fill" StrokeLineJoin="Round">
                                 <Path.RenderTransform>
@@ -562,7 +603,8 @@
                     </VisualBrush>
                 </RepeatButton.Background>
             </RepeatButton>
-            <RepeatButton x:Name="PART_LineDownButton" Grid.Row="1" Grid.Column="1"
+            <RepeatButton x:Name="PART_LineDownButton"
+                Grid.Row="1" Grid.Column="1"
                 MinHeight="8.5"
                 Command="{x:Static ScrollBar.LineUpCommand}"
                 Style="{StaticResource ScrollBarButton}"
@@ -570,7 +612,8 @@
                 <RepeatButton.Background>
                     <VisualBrush Stretch="Uniform">
                         <VisualBrush.Visual>
-                            <Path x:Name="Down" Width="9.5" Height="8.5"
+                            <Path x:Name="Down"
+                                Width="9.5" Height="8.5"
                                 Data="M0,0L5,5 10,0z" Fill="Black" RenderTransformOrigin="0.5,0.5"
                                 Stretch="Fill" StrokeLineJoin="Round" />
                         </VisualBrush.Visual>
@@ -580,16 +623,16 @@
         </Grid>
         <ControlTemplate.Triggers>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter TargetName="Up" Property="Stroke" Value="Gray" />
+                <Setter TargetName="Down" Property="Fill" Value="Gray" />
                 <Setter TargetName="Down" Property="Stroke" Value="Gray" />
                 <Setter TargetName="Up" Property="Fill" Value="Gray" />
-                <Setter TargetName="Down" Property="Fill" Value="Gray" />
+                <Setter TargetName="Up" Property="Stroke" Value="Gray" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
     <Style TargetType="local:NumericUpDownControl">
-        <Setter Property="ContextMenuService.IsEnabled" Value="False" />
         <Setter Property="Background" Value="White" />
+        <Setter Property="ContextMenuService.IsEnabled" Value="False" />
         <Style.Triggers>
             <Trigger Property="Orientation" Value="Horizontal">
                 <Setter Property="Template" Value="{StaticResource HorizontalNumericUpDown}" />
@@ -612,7 +655,6 @@
         </Setter>
     </Style>
     <Style TargetType="local:ResizablePanel">
-        <Setter Property="IsTabStop" Value="False" />
         <Setter Property="Background">
             <Setter.Value>
                 <LinearGradientBrush MappingMode="RelativeToBoundingBox" StartPoint="0.5,0" EndPoint="0.5,1">
@@ -621,6 +663,7 @@
                 </LinearGradientBrush>
             </Setter.Value>
         </Setter>
+        <Setter Property="IsTabStop" Value="False" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:ResizablePanel">
@@ -635,21 +678,29 @@
                             <RowDefinition Height="*" />
                             <RowDefinition Height="3" />
                         </Grid.RowDefinitions>
-                        <local:Resizer Grid.Row="0" Grid.Column="0" Width="2"
-                            Height="2" Cursor="SizeNWSE" ThumbDirection="TopLeft" />
-                        <local:Resizer Grid.Row="1" Grid.Column="0" Width="2"
+                        <local:Resizer Grid.Row="0" Grid.Column="0"
+                            Width="2" Height="2"
+                            Cursor="SizeNWSE" ThumbDirection="TopLeft" />
+                        <local:Resizer Grid.Row="1" Grid.Column="0"
+                            Width="2"
                             Cursor="SizeWE" ThumbDirection="Left" />
-                        <local:Resizer Grid.Row="2" Grid.Column="0" Width="2"
-                            Height="2" Cursor="SizeNESW" ThumbDirection="BottomLeft" />
-                        <local:Resizer Grid.Row="2" Grid.Column="1" Height="2"
+                        <local:Resizer Grid.Row="2" Grid.Column="0"
+                            Width="2" Height="2"
+                            Cursor="SizeNESW" ThumbDirection="BottomLeft" />
+                        <local:Resizer Grid.Row="2" Grid.Column="1"
+                            Height="2"
                             Cursor="SizeNS" ThumbDirection="Bottom" />
-                        <local:Resizer Grid.Row="2" Grid.Column="2" Width="2"
-                            Height="2" Cursor="SizeNWSE" ThumbDirection="BottomRight" />
-                        <local:Resizer Grid.Row="1" Grid.Column="2" Width="2"
+                        <local:Resizer Grid.Row="2" Grid.Column="2"
+                            Width="2" Height="2"
+                            Cursor="SizeNWSE" ThumbDirection="BottomRight" />
+                        <local:Resizer Grid.Row="1" Grid.Column="2"
+                            Width="2"
                             Cursor="SizeWE" ThumbDirection="Right" />
-                        <local:Resizer Grid.Row="0" Grid.Column="2" Width="2"
-                            Height="2" Cursor="SizeNESW" ThumbDirection="TopRight" />
-                        <local:Resizer Grid.Row="0" Grid.Column="1" Height="2"
+                        <local:Resizer Grid.Row="0" Grid.Column="2"
+                            Width="2" Height="2"
+                            Cursor="SizeNESW" ThumbDirection="TopRight" />
+                        <local:Resizer Grid.Row="0" Grid.Column="1"
+                            Height="2"
                             Cursor="SizeNS" ThumbDirection="Top" />
                         <ContentPresenter Grid.Row="1" Grid.Column="1"
                             Margin="{TemplateBinding Padding}"

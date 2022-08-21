@@ -27,8 +27,9 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="RepeatButton">
-                    <Border Height="5" Background="Red" BorderBrush="Gray"
-                        BorderThickness="0,1,1,1" CornerRadius="0.5" />
+                    <Border Height="5"
+                        Background="Red" BorderBrush="Gray" BorderThickness="0,1,1,1"
+                        CornerRadius="0.5" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -41,8 +42,9 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="RepeatButton">
-                    <Border Width="5" Background="Red" BorderBrush="Gray"
-                        BorderThickness="0,1,1,1" CornerRadius="0.5" />
+                    <Border Width="5"
+                        Background="Red" BorderBrush="Gray" BorderThickness="0,1,1,1"
+                        CornerRadius="0.5" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -55,8 +57,9 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="RepeatButton">
-                    <Border Height="5" Background="Red" BorderBrush="Gray"
-                        BorderThickness="1,1,0,1" CornerRadius="0.5" />
+                    <Border Height="5"
+                        Background="Red" BorderBrush="Gray" BorderThickness="1,1,0,1"
+                        CornerRadius="0.5" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -69,8 +72,9 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="RepeatButton">
-                    <Border Width="5" Background="Red" BorderBrush="Gray"
-                        BorderThickness="1,1,0,1" CornerRadius="0.5" />
+                    <Border Width="5"
+                        Background="Red" BorderBrush="Gray" BorderThickness="1,1,0,1"
+                        CornerRadius="0.5" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -81,8 +85,8 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Thumb">
-                    <Ellipse Width="16" Height="16" Fill="Blue"
-                        Stroke="Gray" StrokeThickness="1" />
+                    <Ellipse Width="16" Height="16"
+                        Fill="Blue" Stroke="Gray" StrokeThickness="1" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

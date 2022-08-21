@@ -70,9 +70,6 @@
     <Compile Include="Controls\MediaViewer.xaml.cs">
       <DependentUpon>MediaViewer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\PanoramaViewer.xaml.cs">
-      <DependentUpon>PanoramaViewer.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\XpsViewer.xaml.cs">
       <DependentUpon>XpsViewer.xaml</DependentUpon>
     </Compile>
@@ -109,10 +106,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\MediaViewer.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\PanoramaViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -8,6 +8,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Media3D;
 using System.Windows.Threading;
 
 namespace Extensions.Controls
@@ -40,6 +42,8 @@ namespace Extensions.Controls
 
         public static readonly DependencyProperty FlipYProperty = DependencyProperty.Register("FlipY", typeof(double), typeof(MediaViewer), new PropertyMetadata(1.0d));
 
+        public static readonly DependencyProperty FovProperty = DependencyProperty.Register("Fov", typeof(double), typeof(MediaViewer), new PropertyMetadata(95d, FovChanged));
+
         public static readonly DependencyProperty InvertColorProperty = DependencyProperty.Register("InvertColor", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
 
         public static readonly DependencyProperty MediaDataFilePathProperty = DependencyProperty.Register("MediaDataFilePath", typeof(string), typeof(MediaViewer), new PropertyMetadata(null, MediaDataFilePathChanged));
@@ -48,7 +52,13 @@ namespace Extensions.Controls
 
         public static readonly DependencyProperty MediaVolumeProperty = DependencyProperty.Register("MediaVolume", typeof(double), typeof(MediaViewer), new PropertyMetadata(1d, MediaVolumeChanged));
 
+        public static readonly DependencyProperty PanoramaModeProperty = DependencyProperty.Register("PanoramaMode", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
+
         public static readonly DependencyProperty PixelateSizeProperty = DependencyProperty.Register("PixelateSize", typeof(Size), typeof(MediaViewer), new PropertyMetadata(new Size(60, 40)));
+
+        public static readonly DependencyProperty RotateXProperty = DependencyProperty.Register("RotateX", typeof(double), typeof(MediaViewer), new PropertyMetadata(0.0));
+
+        public static readonly DependencyProperty RotateYProperty = DependencyProperty.Register("RotateY", typeof(double), typeof(MediaViewer), new PropertyMetadata(0.0));
 
         public static readonly DependencyProperty SharpenAmountProperty = DependencyProperty.Register("SharpenAmount", typeof(double), typeof(MediaViewer), new PropertyMetadata(1.0d));
 
@@ -79,6 +89,14 @@ namespace Extensions.Controls
         private static bool dragging;
 
         private static DispatcherTimer timer;
+
+        private bool _isOnDrag;
+
+        private Point _startPoint;
+
+        private double _startRotateX;
+
+        private double _startRotateY;
 
         static MediaViewer()
         {
@@ -148,8 +166,8 @@ namespace Extensions.Controls
 
         public Visibility ControlVisible
         {
-            get { return (Visibility)GetValue(ControlVisibleProperty); }
-            set { SetValue(ControlVisibleProperty, value); }
+            get => (Visibility)GetValue(ControlVisibleProperty);
+            set => SetValue(ControlVisibleProperty, value);
         }
 
         public TimeSpan EndTimeSpan { get => (TimeSpan)GetValue(EndTimeSpanProperty); set => SetValue(EndTimeSpanProperty, value); }
@@ -165,6 +183,8 @@ namespace Extensions.Controls
             get => (double)GetValue(FlipYProperty);
             set => SetValue(FlipYProperty, value);
         }
+
+        public double Fov { get => (double)GetValue(FovProperty); set => SetValue(FovProperty, value); }
 
         public bool InvertColor
         {
@@ -182,11 +202,21 @@ namespace Extensions.Controls
             set => SetValue(MediaVolumeProperty, value);
         }
 
+        public bool PanoramaMode
+        {
+            get => (bool)GetValue(PanoramaModeProperty);
+            set => SetValue(PanoramaModeProperty, value);
+        }
+
         public Size PixelateSize
         {
             get => (Size)GetValue(PixelateSizeProperty);
             set => SetValue(PixelateSizeProperty, value);
         }
+
+        public double RotateX { get => (double)GetValue(RotateXProperty); set => SetValue(RotateXProperty, value); }
+
+        public double RotateY { get => (double)GetValue(RotateYProperty); set => SetValue(RotateYProperty, value); }
 
         public double SharpenAmount
         {
@@ -196,11 +226,21 @@ namespace Extensions.Controls
 
         public Visibility SliderControlVisible
         {
-            get { return (Visibility)GetValue(SliderControlVisibleProperty); }
-            set { SetValue(SliderControlVisibleProperty, value); }
+            get => (Visibility)GetValue(SliderControlVisibleProperty);
+            set => SetValue(SliderControlVisibleProperty, value);
         }
 
+        public Geometry3D SphereModel { get; set; } = CreateGeometry();
+
         public bool ThumbnailsVisible { get => (bool)GetValue(ThumbnailsVisibleProperty); set => SetValue(ThumbnailsVisibleProperty, value); }
+
+        internal static Point3D GetPosition(double t, double y)
+        {
+            double r = Math.Sqrt(1 - (y * y));
+            double x = r * Math.Cos(t);
+            double z = r * Math.Sin(t);
+            return new Point3D(x, y, z);
+        }
 
         private static void AutoplayChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -208,6 +248,79 @@ namespace Extensions.Controls
             {
                 viewer.Player.Play();
             }
+        }
+
+        private static Geometry3D CreateGeometry()
+        {
+            const int tDiv = 64;
+            const int yDiv = 64;
+            const double maxTheta = 360.0 / 180.0 * Math.PI;
+            const double minY = -1.0;
+            const double maxY = 1.0;
+            const double dt = maxTheta / tDiv;
+            const double dy = (maxY - minY) / yDiv;
+            MeshGeometry3D mesh = new();
+            for (int yi = 0; yi <= yDiv; yi++)
+            {
+                double y = minY + (yi * dy);
+                for (int ti = 0; ti <= tDiv; ti++)
+                {
+                    double t = ti * dt;
+                    mesh.Positions.Add(GetPosition(t, y));
+                    mesh.Normals.Add(GetNormal(t, y));
+                    mesh.TextureCoordinates.Add(GetTextureCoordinate(t, y));
+                }
+            }
+
+            for (int yi = 0; yi < yDiv; yi++)
+            {
+                for (int ti = 0; ti < tDiv; ti++)
+                {
+                    int x0 = ti;
+                    int x1 = ti + 1;
+                    int y0 = yi * (tDiv + 1);
+                    int y1 = (yi + 1) * (tDiv + 1);
+                    mesh.TriangleIndices.Add(x0 + y0);
+                    mesh.TriangleIndices.Add(x0 + y1);
+                    mesh.TriangleIndices.Add(x1 + y0);
+                    mesh.TriangleIndices.Add(x1 + y0);
+                    mesh.TriangleIndices.Add(x0 + y1);
+                    mesh.TriangleIndices.Add(x1 + y1);
+                }
+            }
+
+            mesh.Freeze();
+            return mesh;
+        }
+
+        private static void FovChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is MediaViewer viewer && e.NewValue != null)
+            {
+                if ((double)e.NewValue < 1)
+                {
+                    viewer.Fov = 1;
+                }
+
+                if ((double)e.NewValue > 140)
+                {
+                    viewer.Fov = 140;
+                }
+            }
+        }
+
+        private static Vector3D GetNormal(double t, double y)
+        {
+            return (Vector3D)GetPosition(t, y);
+        }
+
+        private static Point GetTextureCoordinate(double t, double y)
+        {
+            Matrix TYtoUV = new();
+            TYtoUV.Scale(1 / (2 * Math.PI), -0.5);
+            Point p = new(t, y);
+            p *= TYtoUV;
+            return p;
         }
 
         private static void MediaDataFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -218,6 +331,13 @@ namespace Extensions.Controls
                 {
                     string uriString = (string)e.NewValue;
                     viewer.Player.Source = new Uri(uriString);
+                    viewer.PanoramaViewPort.Visibility = Visibility.Collapsed;
+                    if (viewer.PanoramaMode)
+                    {
+                        viewer.PanoramaViewPort.Visibility = Visibility.Visible;
+                        viewer.panoramaBrush.Brush = new VisualBrush(viewer.Player);
+                    }
+
                     viewer.Player.MediaOpened += (f, g) =>
                     {
                         if (f is MediaElement mediaelement && mediaelement.NaturalDuration.HasTimeSpan)
@@ -449,6 +569,34 @@ namespace Extensions.Controls
             {
                 Player.Stop();
             }
+        }
+
+        private void Viewport3D_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            _isOnDrag = true;
+            _startPoint = e.GetPosition(this);
+            _startRotateX = RotateX;
+            _startRotateY = RotateY;
+        }
+
+        private void Viewport3D_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            _isOnDrag = false;
+        }
+
+        private void Viewport3D_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (_isOnDrag && e.LeftButton == MouseButtonState.Pressed)
+            {
+                Vector delta = _startPoint - e.GetPosition(this);
+                RotateX = _startRotateX + (delta.X / ActualWidth * 360);
+                RotateY = _startRotateY + (delta.Y / ActualHeight * 360);
+            }
+        }
+
+        private void Viewport3D_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            Fov -= e.Delta / 100;
         }
     }
 }

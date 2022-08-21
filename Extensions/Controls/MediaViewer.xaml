@@ -1,9 +1,10 @@
 ﻿<UserControl x:Class="Extensions.Controls.MediaViewer"
-	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-	xmlns:local="clr-namespace:Extensions"
-	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="clr-namespace:Extensions.Controls" d:DataContext="{d:DesignInstance Type=controls:MediaViewer}"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:Extensions.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:Extensions"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DataContext="{d:DesignInstance Type=controls:MediaViewer}"
     d:DesignHeight="384" d:DesignWidth="512" UseLayoutRounding="True"
     mc:Ignorable="d">
     <UserControl.Resources>
@@ -23,129 +24,183 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid x:Name="grid">
-            <StackPanel>
-                <StackPanel.Style>
-                    <Style TargetType="StackPanel">
+            <Grid>
+                <Grid.Style>
+                    <Style TargetType="Grid">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding InvertColor}" Value="true">
                                 <Setter Property="Effect">
                                     <Setter.Value>
-                                        <local:InvertColorEffect/>
+                                        <local:InvertColorEffect />
                                     </Setter.Value>
                                 </Setter>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
-                </StackPanel.Style>
-                <StackPanel>
-                    <StackPanel.Style>
-                        <Style TargetType="StackPanel">
+                </Grid.Style>
+                <Grid>
+                    <Grid.Style>
+                        <Style TargetType="Grid">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding ApplyGrayscale}" Value="true">
                                     <Setter Property="Effect">
                                         <Setter.Value>
-                                            <local:GrayScaleEffect/>
+                                            <local:GrayScaleEffect />
                                         </Setter.Value>
                                     </Setter>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </StackPanel.Style>
-                    <StackPanel>
-                        <StackPanel.Style>
-                            <Style TargetType="StackPanel">
+                    </Grid.Style>
+                    <Grid>
+                        <Grid.Style>
+                            <Style TargetType="Grid">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding ApplyBw}" Value="true">
                                         <Setter Property="Effect">
                                             <Setter.Value>
-                                                <local:BlackWhiteEffect Threshold="{Binding BwAmount}"/>
+                                                <local:BlackWhiteEffect Threshold="{Binding BwAmount}" />
                                             </Setter.Value>
                                         </Setter>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
-                        </StackPanel.Style>
-                        <StackPanel>
-                            <StackPanel.Style>
-                                <Style TargetType="StackPanel">
+                        </Grid.Style>
+                        <Grid>
+                            <Grid.Style>
+                                <Style TargetType="Grid">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ApplyPixelate}" Value="true">
                                             <Setter Property="Effect">
                                                 <Setter.Value>
-                                                    <local:PixelateEffect PixelCounts="{Binding PixelateSize}"/>
+                                                    <local:PixelateEffect PixelCounts="{Binding PixelateSize}" />
                                                 </Setter.Value>
                                             </Setter>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </StackPanel.Style>
-                            <StackPanel>
-                                <StackPanel.Style>
-                                    <Style TargetType="StackPanel">
+                            </Grid.Style>
+                            <Grid>
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding ApplyEmboss}" Value="true">
                                                 <Setter Property="Effect">
                                                     <Setter.Value>
-                                                        <local:EmbossedEffect/>
+                                                        <local:EmbossedEffect />
                                                     </Setter.Value>
                                                 </Setter>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
-                                </StackPanel.Style>
-                                <StackPanel>
-                                    <StackPanel.Style>
-                                        <Style TargetType="StackPanel">
+                                </Grid.Style>
+                                <Grid>
+                                    <Grid.Style>
+                                        <Style TargetType="Grid">
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding ApplySharpen}" Value="true">
                                                     <Setter Property="Effect">
                                                         <Setter.Value>
-                                                            <local:SharpenEffect Amount="{Binding SharpenAmount}"/>
+                                                            <local:SharpenEffect Amount="{Binding SharpenAmount}" />
                                                         </Setter.Value>
                                                     </Setter>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
-                                    </StackPanel.Style>
-                                    <MediaElement x:Name="Player" Grid.Row="0" RenderTransformOrigin="0.5,0.5"
-                                    LoadedBehavior="Manual" UnloadedBehavior="Close"
-                                    Volume="{Binding MediaVolume, UpdateSourceTrigger=PropertyChanged}" MouseLeftButtonDown="Player_MouseLeftButtonDown">
-                                        <MediaElement.Effect>
-                                            <local:ColorEffect x:Name="Color" />
-                                        </MediaElement.Effect>
-                                        <MediaElement.RenderTransform>
-                                            <TransformGroup>
-                                                <ScaleTransform ScaleX="{Binding FlipX}"/>
-                                                <ScaleTransform ScaleY="{Binding FlipY}"/>
-                                                <RotateTransform Angle="{Binding Angle}"/>
-                                            </TransformGroup>
-                                        </MediaElement.RenderTransform>
-                                        <MediaElement.ContextMenu>
-                                            <ContextMenu Visibility="{Binding ContextMenuVisibility}" >
-                                                <MenuItem FontFamily="Segoe UI" Header="Ters Renk"  IsCheckable="True" IsChecked="{Binding InvertColor}"/>
-                                                <MenuItem FontFamily="Segoe UI" Header="Keskinlik"  IsCheckable="True"  IsChecked="{Binding ApplySharpen}"/>
-                                                <MenuItem FontFamily="Segoe UI" Header="Emboss" IsCheckable="True"  IsChecked="{Binding ApplyEmboss}"/>
-                                                <MenuItem FontFamily="Segoe UI" Header="Pikselleştir"  IsCheckable="True"  IsChecked="{Binding ApplyPixelate}"/>
-                                                <MenuItem FontFamily="Segoe UI" Header="Siyah Beyaz" IsCheckable="True"  IsChecked="{Binding ApplyBw}"/>
-                                                <MenuItem FontFamily="Segoe UI" Header="Gri"  IsCheckable="True"  IsChecked="{Binding ApplyGrayscale}"/>
-                                            </ContextMenu>
-                                        </MediaElement.ContextMenu>
-                                    </MediaElement>
-                                </StackPanel>
-                            </StackPanel>
-                        </StackPanel>
-                    </StackPanel>
-                </StackPanel>
-            </StackPanel>
+                                    </Grid.Style>
+                                    <Grid>
+                                        <MediaElement x:Name="Player"
+                                            LoadedBehavior="Manual" MouseLeftButtonDown="Player_MouseLeftButtonDown"
+                                            RenderTransformOrigin="0.5,0.5" UnloadedBehavior="Close"
+                                            Volume="{Binding MediaVolume, UpdateSourceTrigger=PropertyChanged}">
+                                            <MediaElement.Effect>
+                                                <local:ColorEffect x:Name="Color" />
+                                            </MediaElement.Effect>
+                                            <MediaElement.RenderTransform>
+                                                <TransformGroup>
+                                                    <ScaleTransform ScaleX="{Binding FlipX}" />
+                                                    <ScaleTransform ScaleY="{Binding FlipY}" />
+                                                    <RotateTransform Angle="{Binding Angle}" />
+                                                </TransformGroup>
+                                            </MediaElement.RenderTransform>
+                                            <MediaElement.ContextMenu>
+                                                <ContextMenu Visibility="{Binding ContextMenuVisibility}">
+                                                    <MenuItem FontFamily="Segoe UI" Header="Ters Renk" IsCheckable="True"
+                                                        IsChecked="{Binding InvertColor}" />
+                                                    <MenuItem FontFamily="Segoe UI" Header="Keskinlik" IsCheckable="True"
+                                                        IsChecked="{Binding ApplySharpen}" />
+                                                    <MenuItem FontFamily="Segoe UI" Header="Emboss" IsCheckable="True"
+                                                        IsChecked="{Binding ApplyEmboss}" />
+                                                    <MenuItem FontFamily="Segoe UI" Header="Pikselleştir" IsCheckable="True"
+                                                        IsChecked="{Binding ApplyPixelate}" />
+                                                    <MenuItem FontFamily="Segoe UI" Header="Siyah Beyaz" IsCheckable="True"
+                                                        IsChecked="{Binding ApplyBw}" />
+                                                    <MenuItem FontFamily="Segoe UI" Header="Gri" IsCheckable="True"
+                                                        IsChecked="{Binding ApplyGrayscale}" />
+                                                </ContextMenu>
+                                            </MediaElement.ContextMenu>
+                                        </MediaElement>
+                                        <Viewport3D x:Name="PanoramaViewPort"
+                                            MouseLeftButtonDown="Viewport3D_MouseLeftButtonDown"
+                                            MouseLeftButtonUp="Viewport3D_MouseLeftButtonUp" MouseMove="Viewport3D_MouseMove"
+                                            MouseWheel="Viewport3D_MouseWheel">
+                                            <Viewport3D.Camera>
+                                                <PerspectiveCamera FieldOfView="{Binding Fov}"
+                                                    LookDirection="0,0,1" Position="0,0,0" UpDirection="0,1,0" />
+                                            </Viewport3D.Camera>
+                                            <ModelVisual3D>
+                                                <ModelVisual3D.Content>
+                                                    <Model3DGroup>
+                                                        <DirectionalLight Direction="0,0,1" Color="White" />
+                                                    </Model3DGroup>
+                                                </ModelVisual3D.Content>
+                                            </ModelVisual3D>
+                                            <ModelVisual3D x:Name="TextureRenderer">
+                                                <ModelVisual3D.Content>
+                                                    <GeometryModel3D Geometry="{Binding SphereModel}">
+                                                        <GeometryModel3D.BackMaterial>
+                                                            <DiffuseMaterial x:Name="panoramaBrush" />
+                                                        </GeometryModel3D.BackMaterial>
+                                                    </GeometryModel3D>
+                                                </ModelVisual3D.Content>
+                                                <ModelVisual3D.Transform>
+                                                    <Transform3DGroup>
+                                                        <ScaleTransform3D ScaleX="1" ScaleY="1.5" ScaleZ="1" />
+                                                        <RotateTransform3D>
+                                                            <RotateTransform3D.Rotation>
+                                                                <AxisAngleRotation3D Angle="{Binding RotateX, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Axis="0,1,0" />
+                                                            </RotateTransform3D.Rotation>
+                                                        </RotateTransform3D>
+                                                        <RotateTransform3D>
+                                                            <RotateTransform3D.Rotation>
+                                                                <AxisAngleRotation3D Angle="{Binding RotateY, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Axis="1,0,0" />
+                                                            </RotateTransform3D.Rotation>
+                                                        </RotateTransform3D>
+                                                    </Transform3DGroup>
+                                                </ModelVisual3D.Transform>
+                                            </ModelVisual3D>
+                                        </Viewport3D>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
         </Grid>
-        <Slider Visibility="{Binding SliderControlVisible}" x:Name="Sld" Grid.Row="1" VerticalAlignment="Center"
+        <Slider x:Name="Sld"
+            Grid.Row="1"
+            VerticalAlignment="Center"
             IsMoveToPointEnabled="True"
             Maximum="{Binding EndTimeSpan, Converter={StaticResource TimespanToSecondsConverter}, Mode=OneWay}"
             MouseLeave="Sld_MouseLeave" MouseMove="Sld_MouseMove"
             Style="{StaticResource Slider}"
             Thumb.DragCompleted="Sld_DragCompleted" Thumb.DragStarted="Sld_DragStarted"
+            Visibility="{Binding SliderControlVisible}"
             Value="{Binding MediaPosition, Converter={StaticResource TimespanToSecondsConverter}, Mode=TwoWay}" />
-        <Grid Visibility="{Binding ControlVisible}" Grid.Row="2" Background="Transparent">
+        <Grid Grid.Row="2"
+            Background="Transparent"
+            Visibility="{Binding ControlVisible}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
@@ -156,40 +211,56 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Button x:Name="Play" Grid.Column="0" Width="24"
-                Height="24" Click="Play_Click" Content="4"
-                FontFamily="Webdings" FontSize="18" Foreground="Blue" />
-            <Button x:Name="Pause" Grid.Column="1" Width="24"
-                Height="24" Click="Pause_Click" Content=";"
-                FontFamily="Webdings" FontSize="18" Foreground="Blue" />
-            <Button x:Name="Stop" Grid.Column="2" Width="24"
-                Height="24" Click="Stop_Click" Content="&lt;"
-                FontFamily="Webdings" FontSize="18" Foreground="Blue" />
-            <Button x:Name="Back" Grid.Column="3" Width="24"
-                Height="24" Click="Back_Click" Content="7"
-                FontFamily="Webdings" FontSize="18" Foreground="Blue" />
-            <Button x:Name="Forward" Grid.Column="4" Width="24"
-                Height="24" Click="Forward_Click" Content="8"
-                FontFamily="Webdings" FontSize="18" Foreground="Blue" />
-            <Button x:Name="SlowBackward" Grid.Column="5" Width="24"
-                Height="24" Click="SlowBackward_Click" Content="9"
-                FontFamily="Webdings" FontSize="18" Foreground="Blue" />
-            <Button x:Name="SlowForward" Grid.Column="6" Width="24"
-                Height="24" Click="SlowForward_Click" Content=":"
-                FontFamily="Webdings" FontSize="18" Foreground="Blue" />
-            <ToggleButton x:Name="Mute" Grid.Column="7" Width="24"
-                Height="24" Margin="1,0,1,0" Checked="Mute_Checked"
-                FontSize="18" Foreground="Blue" IsThreeState="False"
-                Unchecked="Mute_Unchecked">
+            <Button x:Name="Play"
+                Grid.Column="0"
+                Width="24" Height="24"
+                Click="Play_Click" Content="4" FontFamily="Webdings"
+                FontSize="18" Foreground="Blue" />
+            <Button x:Name="Pause"
+                Grid.Column="1"
+                Width="24" Height="24"
+                Click="Pause_Click" Content=";" FontFamily="Webdings"
+                FontSize="18" Foreground="Blue" />
+            <Button x:Name="Stop"
+                Grid.Column="2"
+                Width="24" Height="24"
+                Click="Stop_Click" Content="&lt;" FontFamily="Webdings"
+                FontSize="18" Foreground="Blue" />
+            <Button x:Name="Back"
+                Grid.Column="3"
+                Width="24" Height="24"
+                Click="Back_Click" Content="7" FontFamily="Webdings"
+                FontSize="18" Foreground="Blue" />
+            <Button x:Name="Forward"
+                Grid.Column="4"
+                Width="24" Height="24"
+                Click="Forward_Click" Content="8" FontFamily="Webdings"
+                FontSize="18" Foreground="Blue" />
+            <Button x:Name="SlowBackward"
+                Grid.Column="5"
+                Width="24" Height="24"
+                Click="SlowBackward_Click" Content="9" FontFamily="Webdings"
+                FontSize="18" Foreground="Blue" />
+            <Button x:Name="SlowForward"
+                Grid.Column="6"
+                Width="24" Height="24"
+                Click="SlowForward_Click" Content=":" FontFamily="Webdings"
+                FontSize="18" Foreground="Blue" />
+            <ToggleButton x:Name="Mute"
+                Grid.Column="7"
+                Width="24" Height="24"
+                Margin="1,0,1,0"
+                Checked="Mute_Checked" FontSize="18" Foreground="Blue"
+                IsThreeState="False" Unchecked="Mute_Unchecked">
                 <ToggleButton.Style>
                     <Style TargetType="{x:Type ToggleButton}">
                         <Style.Triggers>
@@ -211,35 +282,46 @@
                     </Style>
                 </ToggleButton.Style>
             </ToggleButton>
-            <Slider x:Name="Volume" Grid.Column="8" Width="60"
-                VerticalAlignment="Center" IsMoveToPointEnabled="True" Maximum="1"
-                Style="{StaticResource Slider}" 
-                Value="{Binding MediaVolume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <Slider Grid.Column="9" Width="45"
-                VerticalAlignment="Center" IsMoveToPointEnabled="True" Minimum="-1" Maximum="1"
+            <Slider x:Name="Volume"
+                Grid.Column="8"
+                Width="60"
+                VerticalAlignment="Center"
+                IsMoveToPointEnabled="True" Maximum="1"
                 Style="{StaticResource Slider}"
-                Value="{Binding ElementName=Player, Path=Balance}" Margin="2,0,0,0" />
-            <TextBlock Grid.Column="10" Margin="1,0,1,0" VerticalAlignment="Center"
+                Value="{Binding MediaVolume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Slider Grid.Column="9"
+                Width="45"
+                Margin="2,0,0,0" VerticalAlignment="Center"
+                IsMoveToPointEnabled="True" Maximum="1" Minimum="-1"
+                Style="{StaticResource Slider}"
+                Value="{Binding ElementName=Player, Path=Balance}" />
+            <TextBlock Grid.Column="10"
+                Margin="1,0,1,0" VerticalAlignment="Center"
                 Foreground="Black">
-				<Run Text="{Binding MediaPosition, Converter={StaticResource TimeSpanToStringConverter}, Mode=OneWay}" />
-				<Run Text=" "/>
-				<Run Text="{Binding EndTimeSpan, Converter={StaticResource TimeSpanToStringConverter}, Mode=OneWay}" />
+                <Run Text="{Binding MediaPosition, Converter={StaticResource TimeSpanToStringConverter}, Mode=OneWay}" />
+                <Run Text=" " />
+                <Run Text="{Binding EndTimeSpan, Converter={StaticResource TimeSpanToStringConverter}, Mode=OneWay}" />
             </TextBlock>
-            <local:NumericUpDownControl Grid.Column="16" Value="{Binding ElementName=Player, Path=SpeedRatio}" Minimum="0.1" IsReadOnly="True"/>
-            <Button x:Name="Capture" Grid.Column="11" Width="24"
-                Height="24" VerticalContentAlignment="Center" Click="Capture_Click"
-                Content="N" FontFamily="Webdings" FontSize="20"
-                Foreground="Blue" ToolTip="Ekran Yakala Resimlerim Klasörüne Kaydedilir." />
-            <local:ContentToggleButton Grid.Column="12" FontFamily="Webdings" FontSize="20"
-                Foreground="Blue" OverContent="·" PlacementMode="Top">
+            <local:NumericUpDownControl Grid.Column="16"
+                IsReadOnly="True" Minimum="0.1"
+                Value="{Binding ElementName=Player, Path=SpeedRatio}" />
+            <Button x:Name="Capture"
+                Grid.Column="11"
+                Width="24" Height="24"
+                VerticalContentAlignment="Center"
+                Click="Capture_Click" Content="N" FontFamily="Webdings"
+                FontSize="20" Foreground="Blue" ToolTip="Ekran Yakala Resimlerim Klasörüne Kaydedilir." />
+            <local:ContentToggleButton Grid.Column="12"
+                FontFamily="Webdings" FontSize="20" Foreground="Blue"
+                OverContent="·" PlacementMode="Top">
                 <StackPanel Background="White" Orientation="Horizontal">
                     <StackPanel.Resources>
                         <Style TargetType="{x:Type Slider}">
+                            <Setter Property="BorderThickness" Value="3" />
                             <Setter Property="Height" Value="64" />
-                            <Setter Property="Orientation" Value="Vertical" />
                             <Setter Property="Maximum" Value="1" />
                             <Setter Property="Minimum" Value="0" />
-                            <Setter Property="BorderThickness" Value="3" />
+                            <Setter Property="Orientation" Value="Vertical" />
                         </Style>
                     </StackPanel.Resources>
                     <Slider BorderBrush="Red" Value="{Binding Red, ElementName=Color}" />
@@ -262,28 +344,60 @@
                         </Slider.BorderBrush>
                     </Slider>
                     <UniformGrid Columns="3" Rows="2">
-                        <ToggleButton FontFamily="Segoe UI" ToolTip="Ters Renk" Content="T" IsChecked="{Binding InvertColor}"/>
-                        <ToggleButton FontFamily="Segoe UI" ToolTip="Keskinlik" Content="K" IsChecked="{Binding ApplySharpen}"/>
-                        <ToggleButton FontFamily="Segoe UI" ToolTip="Emboss" Content="E" IsChecked="{Binding ApplyEmboss}"/>
-                        <ToggleButton FontFamily="Segoe UI" ToolTip="Pikselleştir" Content="P" IsChecked="{Binding ApplyPixelate}"/>
-                        <ToggleButton FontFamily="Segoe UI" ToolTip="Siyah Beyaz" Content="SB" IsChecked="{Binding ApplyBw}"/>
-                        <ToggleButton FontFamily="Segoe UI" ToolTip="Gri" Content="G" IsChecked="{Binding ApplyGrayscale}"/>
+                        <ToggleButton Content="T" FontFamily="Segoe UI"
+                            IsChecked="{Binding InvertColor}"
+                            ToolTip="Ters Renk" />
+                        <ToggleButton Content="K" FontFamily="Segoe UI"
+                            IsChecked="{Binding ApplySharpen}"
+                            ToolTip="Keskinlik" />
+                        <ToggleButton Content="E" FontFamily="Segoe UI"
+                            IsChecked="{Binding ApplyEmboss}"
+                            ToolTip="Emboss" />
+                        <ToggleButton Content="P" FontFamily="Segoe UI"
+                            IsChecked="{Binding ApplyPixelate}"
+                            ToolTip="Pikselleştir" />
+                        <ToggleButton Content="SB" FontFamily="Segoe UI"
+                            IsChecked="{Binding ApplyBw}"
+                            ToolTip="Siyah Beyaz" />
+                        <ToggleButton Content="G" FontFamily="Segoe UI"
+                            IsChecked="{Binding ApplyGrayscale}"
+                            ToolTip="Gri" />
                     </UniformGrid>
-                    <Slider Visibility="{Binding ApplySharpen, Converter={StaticResource BooleanToVisibilityConverter}}" Value="{Binding SharpenAmount}" Minimum="0" Maximum="10" Style="{StaticResource Slider}" Orientation="Vertical"/>
-                    <Slider Visibility="{Binding ApplyBw, Converter={StaticResource BooleanToVisibilityConverter}}" Value="{Binding BwAmount}" Minimum="0" Maximum="1"  Style="{StaticResource Slider}" Orientation="Vertical"/>
-                    <Slider Visibility="{Binding ApplyPixelate, Converter={StaticResource BooleanToVisibilityConverter}}" Value="60"  Minimum="1" Maximum="250"  Style="{StaticResource Slider}" Orientation="Vertical"  ValueChanged="Slider_WidthValueChanged"/>
-                    <Slider Visibility="{Binding ApplyPixelate, Converter={StaticResource BooleanToVisibilityConverter}}" Value="40" Minimum="1" Maximum="250"  Style="{StaticResource Slider}" Orientation="Vertical" ValueChanged="Slider_HeightValueChanged"/>
+                    <Slider Maximum="10" Minimum="0" Orientation="Vertical"
+                        Style="{StaticResource Slider}"
+                        Visibility="{Binding ApplySharpen, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Value="{Binding SharpenAmount}" />
+                    <Slider Maximum="1" Minimum="0" Orientation="Vertical"
+                        Style="{StaticResource Slider}"
+                        Visibility="{Binding ApplyBw, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Value="{Binding BwAmount}" />
+                    <Slider Maximum="250" Minimum="1" Orientation="Vertical"
+                        Style="{StaticResource Slider}"
+                        ValueChanged="Slider_WidthValueChanged"
+                        Visibility="{Binding ApplyPixelate, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Value="60" />
+                    <Slider Maximum="250" Minimum="1" Orientation="Vertical"
+                        Style="{StaticResource Slider}"
+                        ValueChanged="Slider_HeightValueChanged"
+                        Visibility="{Binding ApplyPixelate, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Value="40" />
                 </StackPanel>
             </local:ContentToggleButton>
-            <Button x:Name="FlipVer" Click="FlipVer_Click" Grid.Column="13" Width="24"
-                Height="24"  Content="E"
-                FontFamily="Wingdings 3" FontSize="18" Foreground="Blue" />
-            <Button x:Name="FlipHor" Click="FlipHor_Click" Grid.Column="14" Width="24"
-                Height="24"  Content="D"
-                FontFamily="Wingdings 3" FontSize="18" Foreground="Blue" />
-            <Button x:Name="Rotate"  Click="Rotate_Click" Grid.Column="15" Width="24"
-                Height="24"  Content="P"
-                FontFamily="Wingdings 3" FontSize="18" Foreground="Blue" />
+            <Button x:Name="FlipVer"
+                Grid.Column="13"
+                Width="24" Height="24"
+                Click="FlipVer_Click" Content="E" FontFamily="Wingdings 3"
+                FontSize="18" Foreground="Blue" />
+            <Button x:Name="FlipHor"
+                Grid.Column="14"
+                Width="24" Height="24"
+                Click="FlipHor_Click" Content="D" FontFamily="Wingdings 3"
+                FontSize="18" Foreground="Blue" />
+            <Button x:Name="Rotate"
+                Grid.Column="15"
+                Width="24" Height="24"
+                Click="Rotate_Click" Content="P" FontFamily="Wingdings 3"
+                FontSize="18" Foreground="Blue" />
         </Grid>
     </Grid>
 </UserControl>
