@@ -52,7 +52,7 @@ namespace Extensions.Controls
 
         public static readonly DependencyProperty MediaVolumeProperty = DependencyProperty.Register("MediaVolume", typeof(double), typeof(MediaViewer), new PropertyMetadata(1d, MediaVolumeChanged));
 
-        public static readonly DependencyProperty PanoramaModeProperty = DependencyProperty.Register("PanoramaMode", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
+        public static readonly DependencyProperty PanoramaModeProperty = DependencyProperty.Register("PanoramaMode", typeof(bool), typeof(MediaViewer), new PropertyMetadata(PanoramaModeChanged));
 
         public static readonly DependencyProperty PixelateSizeProperty = DependencyProperty.Register("PixelateSize", typeof(Size), typeof(MediaViewer), new PropertyMetadata(new Size(60, 40)));
 
@@ -107,6 +107,7 @@ namespace Extensions.Controls
         {
             InitializeComponent();
             mediaElement.Pause();
+            PanoramaViewPort.Visibility = Visibility.Collapsed;
             DataContext = this;
         }
 
@@ -331,13 +332,6 @@ namespace Extensions.Controls
                 {
                     string uriString = (string)e.NewValue;
                     viewer.Player.Source = new Uri(uriString);
-                    viewer.PanoramaViewPort.Visibility = Visibility.Collapsed;
-                    if (viewer.PanoramaMode)
-                    {
-                        viewer.PanoramaViewPort.Visibility = Visibility.Visible;
-                        viewer.panoramaBrush.Brush = new VisualBrush(viewer.Player);
-                    }
-
                     viewer.Player.MediaOpened += (f, g) =>
                     {
                         if (f is MediaElement mediaelement && mediaelement.NaturalDuration.HasTimeSpan)
@@ -368,6 +362,24 @@ namespace Extensions.Controls
             if (d is MediaViewer viewer && e.NewValue != null)
             {
                 viewer.Player.Volume = (double)e.NewValue;
+            }
+        }
+
+        private static void PanoramaModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is MediaViewer viewer)
+            {
+                if ((bool)e.NewValue)
+                {
+                    viewer.PanoramaViewPort.Visibility = Visibility.Visible;
+                    viewer.panoramaBrush.Brush = null;
+                    viewer.panoramaBrush.Brush = new VisualBrush(viewer.Player);
+                }
+                else
+                {
+                    viewer.PanoramaViewPort.Visibility = Visibility.Collapsed;
+                    viewer.panoramaBrush.Brush = null;
+                }
             }
         }
 
@@ -493,9 +505,8 @@ namespace Extensions.Controls
                         mediaElement.Pause();
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
@@ -526,9 +537,8 @@ namespace Extensions.Controls
                            });
                        }, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }

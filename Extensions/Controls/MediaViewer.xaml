@@ -23,7 +23,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid x:Name="grid">
+        <Grid x:Name="grid" Background="Black">
             <Grid>
                 <Grid.Style>
                     <Style TargetType="Grid">
@@ -191,6 +191,7 @@
         <Slider x:Name="Sld"
             Grid.Row="1"
             VerticalAlignment="Center"
+            Background="{StaticResource PlayerBackGround}"
             IsMoveToPointEnabled="True"
             Maximum="{Binding EndTimeSpan, Converter={StaticResource TimespanToSecondsConverter}, Mode=OneWay}"
             MouseLeave="Sld_MouseLeave" MouseMove="Sld_MouseMove"
@@ -199,9 +200,10 @@
             Visibility="{Binding SliderControlVisible}"
             Value="{Binding MediaPosition, Converter={StaticResource TimespanToSecondsConverter}, Mode=TwoWay}" />
         <Grid Grid.Row="2"
-            Background="Transparent"
+            Background="{StaticResource PlayerBackGround}"
             Visibility="{Binding ControlVisible}">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
@@ -305,6 +307,9 @@
             <local:NumericUpDownControl Grid.Column="16"
                 IsReadOnly="True" Minimum="0.1"
                 Value="{Binding ElementName=Player, Path=SpeedRatio}" />
+            <ToggleButton Grid.Column="17"
+                Content="360°"
+                IsChecked="{Binding PanoramaMode}" />
             <Button x:Name="Capture"
                 Grid.Column="11"
                 Width="24" Height="24"
