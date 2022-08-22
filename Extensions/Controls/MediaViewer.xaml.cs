@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -71,7 +73,9 @@ namespace Extensions.Controls
 
         private static readonly Image image = new();
 
-        private static readonly MediaElement mediaElement = new()
+        private static readonly TaskFactory task;
+
+        private static readonly MediaElement thumbMediaElement = new()
         {
             UnloadedBehavior = MediaState.Manual,
             ScrubbingEnabled = true,
@@ -79,8 +83,6 @@ namespace Extensions.Controls
             Height = 96,
             Width = 96 * SystemParameters.PrimaryScreenWidth / SystemParameters.PrimaryScreenHeight,
         };
-
-        private static readonly TaskFactory task;
 
         private static readonly ToolTip tooltip = new()
         {
@@ -109,7 +111,8 @@ namespace Extensions.Controls
         public MediaViewer()
         {
             InitializeComponent();
-            mediaElement.Pause();
+            Player.Pause();
+            Player.MediaEnded += MediaElement_MediaEnded;
             PanoramaViewPort.Visibility = Visibility.Collapsed;
             DataContext = this;
         }
@@ -155,6 +158,8 @@ namespace Extensions.Controls
             get => (bool)GetValue(AutoPlayProperty);
             set => SetValue(AutoPlayProperty, value);
         }
+
+        public bool AutoSkipNextVideo { get; set; }
 
         public double BwAmount
         {
@@ -220,6 +225,8 @@ namespace Extensions.Controls
             set => SetValue(PixelateSizeProperty, value);
         }
 
+        public ObservableCollection<string> PlayList { get; set; } = new ObservableCollection<string>();
+
         public double RotateX { get => (double)GetValue(RotateXProperty); set => SetValue(RotateXProperty, value); }
 
         public double RotateY { get => (double)GetValue(RotateYProperty); set => SetValue(RotateYProperty, value); }
@@ -256,7 +263,7 @@ namespace Extensions.Controls
 
         private static void AutoplayChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is MediaViewer viewer && (bool)e.NewValue && viewer.Player.Source != null)
+            if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is MediaViewer viewer && (bool)e.NewValue && viewer.MediaDataFilePath != null)
             {
                 viewer.Player.Play();
             }
@@ -394,6 +401,21 @@ namespace Extensions.Controls
             }
         }
 
+        private void AddPlaylist_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new() { Multiselect = true, Filter = "Video Dosyaları (*.*)|*.3g2;*.3gp;*.3gp2;*.3gpp;*.amr;*.amv;*.asf;*.avi;*.bdmv;*.bik;*.d2v;*.divx;*.drc;*.dsa;*.dsm;*.dss;*.dsv;*.evo;*.f4v;*.flc;*.fli;*.flic;*.flv;*.hdmov;*.ifo;*.ivf;*.m1v;*.m2p;*.m2t;*.m2ts;*.m2v;*.m4b;*.m4p;*.m4v;*.mkv;*.mp2v;*.mp4;*.mp4v;*.mpe;*.mpeg;*.mpg;*.mpls;*.mpv2;*.mpv4;*.mov;*.mts;*.ogm;*.ogv;*.pss;*.pva;*.qt;*.ram;*.ratdvd;*.rm;*.rmm;*.rmvb;*.roq;*.rpm;*.smil;*.smk;*.swf;*.tp;*.tpr;*.ts;*.vob;*.vp6;*.webm;*.wm;*.wmp;*.wmv" };
+            if (openFileDialog.ShowDialog() == true)
+            {
+                foreach (string item in openFileDialog.FileNames)
+                {
+                    if (!PlayList.Contains(item))
+                    {
+                        PlayList.Add(item);
+                    }
+                }
+            }
+        }
+
         private void Back_Click(object sender, RoutedEventArgs e)
         {
             Player.Position = Player.Position.Subtract(new TimeSpan(0, 0, 30));
@@ -432,6 +454,18 @@ namespace Extensions.Controls
             object helperObject = hlp.GetValue(myMedia);
             FieldInfo stateField = helperObject.GetType().GetField("_currentState", BindingFlags.NonPublic | BindingFlags.Instance);
             return (MediaState)stateField.GetValue(helperObject);
+        }
+
+        private void MediaElement_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            if (PlayList.Any() && AutoSkipNextVideo)
+            {
+                int index = PlayList.IndexOf(MediaDataFilePath);
+                if (index < PlayList.Count() - 1)
+                {
+                    MediaDataFilePath = PlayList[index + 1];
+                }
+            }
         }
 
         private void Mute_Checked(object sender, RoutedEventArgs e)
@@ -523,9 +557,9 @@ namespace Extensions.Controls
                 {
                     tooltip.IsOpen = false;
                     image.Source = null;
-                    if (mediaElement.CanPause)
+                    if (Player.CanPause)
                     {
-                        mediaElement.Pause();
+                        Player.Pause();
                     }
                 }
                 catch (Exception)
@@ -544,10 +578,10 @@ namespace Extensions.Controls
                        {
                            _ = Dispatcher.BeginInvoke(() =>
                            {
-                               mediaElement.Source = Player.Source;
+                               thumbMediaElement.Source = Player.Source;
                                tooltip.PlacementTarget = Sld;
-                               mediaElement.Position = TimeSpan.FromSeconds(PixelsToValue(e.GetPosition(Sld).X, Sld.Minimum, Sld.Maximum, Sld.ActualWidth));
-                               image.Source = mediaElement.ToRenderTargetBitmap();
+                               thumbMediaElement.Position = TimeSpan.FromSeconds(PixelsToValue(e.GetPosition(Sld).X, Sld.Minimum, Sld.Maximum, Sld.ActualWidth));
+                               image.Source = thumbMediaElement.ToRenderTargetBitmap();
                                if (image.Source.CanFreeze)
                                {
                                    image.Source.Freeze();

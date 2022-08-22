@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:Extensions"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance Type=controls:MediaViewer}"
-    d:DesignHeight="384" d:DesignWidth="550" UseLayoutRounding="True"
+    d:DesignHeight="384" d:DesignWidth="580" UseLayoutRounding="True"
     mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -15,6 +15,7 @@
             </ResourceDictionary.MergedDictionaries>
             <local:TimespanToSecondsConverter x:Key="TimespanToSecondsConverter" />
             <local:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter" />
+            <local:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
@@ -231,6 +232,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Button x:Name="Open"
                 Grid.Column="0"
@@ -328,22 +330,42 @@
                 <Run Text=" " />
                 <Run Text="{Binding EndTimeSpan, Converter={StaticResource TimeSpanToStringConverter}, Mode=OneWay}" />
             </TextBlock>
-            <local:NumericUpDownControl Grid.Column="21"
-                IsReadOnly="True" Minimum="0.1"
-                Value="{Binding ElementName=Player, Path=SpeedRatio}" />
-            <ToggleButton Grid.Column="20"
-                Content="360°"
-                IsChecked="{Binding PanoramaMode}" />
+            <local:ContentToggleButton Grid.Column="14"
+                FontFamily="Webdings" FontSize="20" Foreground="Blue"
+                OverContent="">
+                <StackPanel>
+                    <StackPanel Background="{StaticResource PlayerBackGround}">
+                        <Button x:Name="AddPlaylist"
+                            Click="AddPlaylist_Click" Content="ÇALMA LİSTESİ OLUŞTUR" FontFamily="Segoe UI" />
+                        <ToggleButton Content="BİTİNCE DİĞER VİDEOYA GEÇ" FontFamily="Segoe UI"
+                            IsChecked="{Binding AutoSkipNextVideo}" />
+                    </StackPanel>
+                    <ListBox Width="350" Height="250"
+                        FontFamily="Segoe UI" FontSize="12"
+                        ItemsSource="{Binding PlayList}"
+                        SelectedItem="{Binding MediaDataFilePath}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="16" Height="16"
+                                        Source="{Binding Mode=OneWay, Converter={StaticResource FilePathToIconConverter}}" />
+                                    <TextBlock Text="{Binding Mode=OneWay}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </local:ContentToggleButton>
             <Button x:Name="Capture"
-                Grid.Column="14"
+                Grid.Column="15"
                 Width="24" Height="24"
                 VerticalContentAlignment="Center"
-                Click="Capture_Click" Content="N" FontFamily="Webdings"
+                Click="Capture_Click" Content="µ" FontFamily="Webdings"
                 FontSize="20" Foreground="Blue" />
-            <local:ContentToggleButton Grid.Column="15"
+            <local:ContentToggleButton Grid.Column="16"
                 FontFamily="Webdings" FontSize="20" Foreground="Blue"
                 OverContent="·" PlacementMode="Top">
-                <StackPanel Background="White" Orientation="Horizontal">
+                <StackPanel Background="{StaticResource PlayerBackGround}" Orientation="Horizontal">
                     <StackPanel.Resources>
                         <Style TargetType="{x:Type Slider}">
                             <Setter Property="BorderThickness" Value="3" />
@@ -412,33 +434,39 @@
                         Value="40" />
                 </StackPanel>
             </local:ContentToggleButton>
-            <local:ContentToggleButton Grid.Column="16"
+            <local:ContentToggleButton Grid.Column="17"
                 FontFamily="Wingdings 3" FontSize="18" Foreground="Blue"
                 OverContent="n">
                 <ListBox FontFamily="Segoe UI"
                     SelectedValue="{Binding VideoStretch}"
                     SelectedValuePath="Tag">
-                    <ListBoxItem Content="{x:Static Stretch.None}" Tag="0" />
-                    <ListBoxItem Content="{x:Static Stretch.Fill}" Tag="1" />
-                    <ListBoxItem Content="{x:Static Stretch.Uniform}" Tag="2" />
-                    <ListBoxItem Content="{x:Static Stretch.UniformToFill}" Tag="3" />
+                    <ListBoxItem Content="Orijinal Boyut" Tag="{x:Static Stretch.None}" />
+                    <ListBoxItem Content="Doldur" Tag="{x:Static Stretch.Fill}" />
+                    <ListBoxItem Content="En Boy" Tag="{x:Static Stretch.Uniform}" />
+                    <ListBoxItem Content="En Boy Doldur" Tag="{x:Static Stretch.UniformToFill}" />
                 </ListBox>
             </local:ContentToggleButton>
             <Button x:Name="FlipVer"
-                Grid.Column="17"
+                Grid.Column="18"
                 Width="24" Height="24"
                 Click="FlipVer_Click" Content="E" FontFamily="Wingdings 3"
                 FontSize="18" Foreground="Blue" />
             <Button x:Name="FlipHor"
-                Grid.Column="18"
+                Grid.Column="19"
                 Width="24" Height="24"
                 Click="FlipHor_Click" Content="D" FontFamily="Wingdings 3"
                 FontSize="18" Foreground="Blue" />
             <Button x:Name="Rotate"
-                Grid.Column="19"
+                Grid.Column="20"
                 Width="24" Height="24"
                 Click="Rotate_Click" Content="P" FontFamily="Wingdings 3"
                 FontSize="18" Foreground="Blue" />
+            <ToggleButton Grid.Column="21"
+                Content="360°"
+                IsChecked="{Binding PanoramaMode}" />
+            <local:NumericUpDownControl Grid.Column="22"
+                IsReadOnly="True" Minimum="0.1"
+                Value="{Binding SpeedRatio, ElementName=Player}" />
         </Grid>
     </Grid>
 </UserControl>
