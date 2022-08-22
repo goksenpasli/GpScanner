@@ -350,6 +350,10 @@ namespace Extensions.Controls
                 {
                     string uriString = (string)e.NewValue;
                     viewer.Player.Source = new Uri(uriString);
+                    if (viewer.AutoPlay)
+                    {
+                        viewer.Player.Play();
+                    }
                     viewer.Player.MediaOpened += (f, g) =>
                     {
                         if (f is MediaElement mediaelement && mediaelement.NaturalDuration.HasTimeSpan)
@@ -484,10 +488,6 @@ namespace Extensions.Controls
             if (openFileDialog.ShowDialog() == true)
             {
                 MediaDataFilePath = openFileDialog.FileName;
-                if (AutoPlay)
-                {
-                    Player.Play();
-                }
             }
         }
 
