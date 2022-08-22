@@ -484,7 +484,10 @@ namespace Extensions.Controls
             if (openFileDialog.ShowDialog() == true)
             {
                 MediaDataFilePath = openFileDialog.FileName;
-                AutoPlay = true;
+                if (AutoPlay)
+                {
+                    Player.Play();
+                }
             }
         }
 

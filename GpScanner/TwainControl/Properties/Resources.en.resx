@@ -417,4 +417,10 @@ DEVICE</value>
   <data name="THRESHOLD" xml:space="preserve">
     <value>THRESHOLD</value>
   </data>
+  <data name="APPLY" xml:space="preserve">
+    <value>APPLY</value>
+  </data>
+  <data name="COLORCHANGETIP" xml:space="preserve">
+    <value>If You Click This After Setting the Threshold Value, You Can Make a Second Color Selection.</value>
+  </data>
 </root>

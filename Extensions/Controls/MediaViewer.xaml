@@ -26,6 +26,26 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid x:Name="grid" Background="Black">
+            <Grid.ContextMenu>
+                <ContextMenu Visibility="{Binding ContextMenuVisibility}">
+                    <MenuItem Click="Open_Click" FontFamily="Segoe UI" Header="Dosya Aç"
+                        Visibility="{Binding OpenButtonVisibility}" />
+                    <MenuItem FontFamily="Segoe UI" Header="Ters Renk" IsCheckable="True"
+                        IsChecked="{Binding InvertColor}" />
+                    <MenuItem FontFamily="Segoe UI" Header="Keskinlik" IsCheckable="True"
+                        IsChecked="{Binding ApplySharpen}" />
+                    <MenuItem FontFamily="Segoe UI" Header="Emboss" IsCheckable="True"
+                        IsChecked="{Binding ApplyEmboss}" />
+                    <MenuItem FontFamily="Segoe UI" Header="Pikselleştir" IsCheckable="True"
+                        IsChecked="{Binding ApplyPixelate}" />
+                    <MenuItem FontFamily="Segoe UI" Header="Siyah Beyaz" IsCheckable="True"
+                        IsChecked="{Binding ApplyBw}" />
+                    <MenuItem FontFamily="Segoe UI" Header="Gri" IsCheckable="True"
+                        IsChecked="{Binding ApplyGrayscale}" />
+                    <MenuItem FontFamily="Segoe UI" Header="360°" IsCheckable="True"
+                        IsChecked="{Binding PanoramaMode}" />
+                </ContextMenu>
+            </Grid.ContextMenu>
             <Grid>
                 <Grid.Style>
                     <Style TargetType="Grid">
@@ -127,24 +147,6 @@
                                                     <RotateTransform Angle="{Binding Angle}" />
                                                 </TransformGroup>
                                             </MediaElement.RenderTransform>
-                                            <MediaElement.ContextMenu>
-                                                <ContextMenu Visibility="{Binding ContextMenuVisibility}">
-                                                    <MenuItem FontFamily="Segoe UI" Header="Ters Renk" IsCheckable="True"
-                                                        IsChecked="{Binding InvertColor}" />
-                                                    <MenuItem FontFamily="Segoe UI" Header="Keskinlik" IsCheckable="True"
-                                                        IsChecked="{Binding ApplySharpen}" />
-                                                    <MenuItem FontFamily="Segoe UI" Header="Emboss" IsCheckable="True"
-                                                        IsChecked="{Binding ApplyEmboss}" />
-                                                    <MenuItem FontFamily="Segoe UI" Header="Pikselleştir" IsCheckable="True"
-                                                        IsChecked="{Binding ApplyPixelate}" />
-                                                    <MenuItem FontFamily="Segoe UI" Header="Siyah Beyaz" IsCheckable="True"
-                                                        IsChecked="{Binding ApplyBw}" />
-                                                    <MenuItem FontFamily="Segoe UI" Header="Gri" IsCheckable="True"
-                                                        IsChecked="{Binding ApplyGrayscale}" />
-                                                    <MenuItem FontFamily="Segoe UI" Header="360°" IsCheckable="True"
-                                                        IsChecked="{Binding PanoramaMode}" />
-                                                </ContextMenu>
-                                            </MediaElement.ContextMenu>
                                         </MediaElement>
                                         <Viewport3D x:Name="PanoramaViewPort"
                                             MouseLeftButtonDown="Viewport3D_MouseLeftButtonDown"

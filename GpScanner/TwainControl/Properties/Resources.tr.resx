@@ -421,4 +421,10 @@ EKLE</value>
   <data name="THRESHOLD" xml:space="preserve">
     <value>EŞİK</value>
   </data>
+  <data name="APPLY" xml:space="preserve">
+    <value>UYGULA</value>
+  </data>
+  <data name="COLORCHANGETIP" xml:space="preserve">
+    <value>Eşik Değeri Ayarladıktan Sonra Buna Tıklarsanız İkinci Bir Renk Seçimi Yapabilirsiniz.</value>
+  </data>
 </root>

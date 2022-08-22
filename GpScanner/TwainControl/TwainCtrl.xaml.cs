@@ -328,6 +328,8 @@ namespace TwainControl
             }, parameter => true);
 
             SetWatermark = new RelayCommand<object>(parameter => Scanner.CroppedImage = ÜstüneResimÇiz(Scanner.CroppedImage, new System.Windows.Point(Scanner.CroppedImage.Width / 2, Scanner.CroppedImage.Height / 2), System.Windows.Media.Brushes.Red, Scanner.WatermarkTextSize, Scanner.Watermark, Scanner.WatermarkAngle, Scanner.WatermarkFont), parameter => Scanner.CroppedImage is not null && !string.IsNullOrWhiteSpace(Scanner?.Watermark));
+            
+            ApplyColorChange = new RelayCommand<object>(parameter => Scanner.CopyCroppedImage = Scanner.CroppedImage, parameter => Scanner.CroppedImage is not null);
 
             DeskewImage = new RelayCommand<object>(parameter =>
             {
@@ -435,6 +437,7 @@ namespace TwainControl
         public ICommand Kaydet { get; }
 
         public ICommand KayıtYoluBelirle { get; }
+        public ICommand ApplyColorChange { get; }
 
         public ICommand ListeTemizle { get; }
 
