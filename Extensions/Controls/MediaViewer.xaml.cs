@@ -193,6 +193,8 @@ namespace Extensions.Controls
             set => SetValue(FlipYProperty, value);
         }
 
+        public int ForwardBackwardSkipSecond { get; set; } = 30;
+
         public double Fov { get => (double)GetValue(FovProperty); set => SetValue(FovProperty, value); }
 
         public bool InvertColor
@@ -269,7 +271,7 @@ namespace Extensions.Controls
             }
         }
 
-        private static Geometry3D CreateGeometry()
+        public static Geometry3D CreateGeometry()
         {
             const int tDiv = 64;
             const int yDiv = 64;
@@ -422,7 +424,7 @@ namespace Extensions.Controls
 
         private void Back_Click(object sender, RoutedEventArgs e)
         {
-            Player.Position = Player.Position.Subtract(new TimeSpan(0, 0, 30));
+            Player.Position = Player.Position.Subtract(new TimeSpan(0, 0, ForwardBackwardSkipSecond));
         }
 
         private void Capture_Click(object sender, RoutedEventArgs e)
@@ -449,7 +451,7 @@ namespace Extensions.Controls
 
         private void Forward_Click(object sender, RoutedEventArgs e)
         {
-            Player.Position = Player.Position.Add(new TimeSpan(0, 0, 30));
+            Player.Position = Player.Position.Add(new TimeSpan(0, 0, ForwardBackwardSkipSecond));
         }
 
         private MediaState GetMediaState(MediaElement myMedia)

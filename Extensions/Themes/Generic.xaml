@@ -149,6 +149,43 @@
                                 </Image.LayoutTransform>
                             </Image>
                         </ScrollViewer>
+                        <Viewport3D x:Name="PanoramaViewPort" Visibility="Collapsed">
+                            <Viewport3D.Camera>
+                                <PerspectiveCamera FieldOfView="{Binding Fov, RelativeSource={RelativeSource TemplatedParent}}"
+                                    LookDirection="0,0,1" Position="0,0,0" UpDirection="0,1,0" />
+                            </Viewport3D.Camera>
+                            <ModelVisual3D>
+                                <ModelVisual3D.Content>
+                                    <Model3DGroup>
+                                        <DirectionalLight Direction="0,0,1" Color="White" />
+                                    </Model3DGroup>
+                                </ModelVisual3D.Content>
+                            </ModelVisual3D>
+                            <ModelVisual3D>
+                                <ModelVisual3D.Content>
+                                    <GeometryModel3D Geometry="{Binding SphereModel, RelativeSource={RelativeSource TemplatedParent}}">
+                                        <GeometryModel3D.BackMaterial>
+                                            <DiffuseMaterial x:Name="panoramaBrush" />
+                                        </GeometryModel3D.BackMaterial>
+                                    </GeometryModel3D>
+                                </ModelVisual3D.Content>
+                                <ModelVisual3D.Transform>
+                                    <Transform3DGroup>
+                                        <ScaleTransform3D ScaleX="1" ScaleY="1.5" ScaleZ="1" />
+                                        <RotateTransform3D>
+                                            <RotateTransform3D.Rotation>
+                                                <AxisAngleRotation3D Angle="{Binding RotateX, RelativeSource={RelativeSource TemplatedParent}}" Axis="0,1,0" />
+                                            </RotateTransform3D.Rotation>
+                                        </RotateTransform3D>
+                                        <RotateTransform3D>
+                                            <RotateTransform3D.Rotation>
+                                                <AxisAngleRotation3D Angle="{Binding RotateY, RelativeSource={RelativeSource TemplatedParent}}" Axis="1,0,0" />
+                                            </RotateTransform3D.Rotation>
+                                        </RotateTransform3D>
+                                    </Transform3DGroup>
+                                </ModelVisual3D.Transform>
+                            </ModelVisual3D>
+                        </Viewport3D>
                         <Grid Grid.Row="1"
                             IsEnabled="{Binding ToolBarIsEnabled, RelativeSource={RelativeSource TemplatedParent}}"
                             Visibility="{Binding ToolBarVisibility, RelativeSource={RelativeSource TemplatedParent}}">
@@ -159,6 +196,7 @@
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition />
                                 <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <Button Command="{Binding DosyaAç, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Visibility="{Binding OpenButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
@@ -255,6 +293,9 @@
                                         Source="{Binding ImageFilePath, Converter={StaticResource FilePathToIconConverter}, RelativeSource={RelativeSource TemplatedParent}}" />
                                 </Button.Content>
                             </Button>
+                            <ToggleButton Grid.Column="7"
+                                Content="360°"
+                                IsChecked="{Binding PanoramaMode, RelativeSource={RelativeSource TemplatedParent}}" />
                         </Grid>
                     </Grid>
                     <ControlTemplate.Triggers>

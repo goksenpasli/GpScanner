@@ -10,6 +10,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
+using Extensions.Controls;
 using Microsoft.Win32;
 
 namespace Extensions
@@ -21,19 +23,61 @@ namespace Extensions
         Height = 1
     }
 
+    [TemplatePart(Name = "PanoramaViewPort", Type = typeof(Viewport3D))]
+    [TemplatePart(Name = "panoramaBrush", Type = typeof(DiffuseMaterial))]
     public class ImageViewer : Control, INotifyPropertyChanged
     {
         public static readonly DependencyProperty AngleProperty = DependencyProperty.Register("Angle", typeof(double), typeof(ImageViewer), new PropertyMetadata(0.0));
 
         public static readonly DependencyProperty DecodeHeightProperty = DependencyProperty.Register("DecodeHeight", typeof(int), typeof(ImageViewer), new PropertyMetadata(300, DecodeHeightChanged));
 
+        public static readonly DependencyProperty FovProperty = DependencyProperty.Register("Fov", typeof(double), typeof(ImageViewer), new PropertyMetadata(95d, FovChanged));
+
         public static readonly DependencyProperty ImageFilePathProperty = DependencyProperty.Register("ImageFilePath", typeof(string), typeof(ImageViewer), new PropertyMetadata(null, ImageFilePathChanged));
+
+        public static readonly DependencyProperty PanoramaModeProperty = DependencyProperty.Register("PanoramaMode", typeof(bool), typeof(ImageViewer), new PropertyMetadata(PanoramaModeChanged));
+
+        public static readonly DependencyProperty RotateXProperty = DependencyProperty.Register("RotateX", typeof(double), typeof(ImageViewer), new PropertyMetadata(0.0));
+
+        public static readonly DependencyProperty RotateYProperty = DependencyProperty.Register("RotateY", typeof(double), typeof(ImageViewer), new PropertyMetadata(0.0));
 
         public static readonly DependencyProperty SnapTickProperty = DependencyProperty.Register("SnapTick", typeof(bool), typeof(ImageViewer), new PropertyMetadata(false));
 
         public static readonly DependencyProperty SourceProperty = DependencyProperty.Register("Source", typeof(ImageSource), typeof(ImageViewer), new PropertyMetadata(null, SourceChanged));
 
         public static readonly DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(ImageViewer), new PropertyMetadata(1.0));
+
+        private bool _isOnDrag;
+
+        private DiffuseMaterial _panoramaBrush;
+
+        private Point _startPoint;
+
+        private double _startRotateX;
+
+        private double _startRotateY;
+
+        private Viewport3D _viewport;
+
+        private TiffBitmapDecoder decoder;
+
+        private FitImageOrientation fitImageOrientation;
+
+        private Visibility openButtonVisibility = Visibility.Collapsed;
+
+        private Visibility orijinalResimDosyaAçButtonVisibility;
+
+        private IEnumerable<int> pages;
+
+        private Visibility printButtonVisibility = Visibility.Collapsed;
+
+        private int sayfa = 1;
+
+        private Visibility tifNavigasyonButtonEtkin = Visibility.Collapsed;
+
+        private bool toolBarIsEnabled = true;
+
+        private Visibility toolBarVisibility;
 
         static ImageViewer()
         {
@@ -48,6 +92,7 @@ namespace Extensions
                 if (openFileDialog.ShowDialog() == true)
                 {
                     ImageFilePath = openFileDialog.FileName;
+                    PanoramaMode = false;
                 }
             });
 
@@ -170,6 +215,8 @@ namespace Extensions
             }
         }
 
+        public double Fov { get => (double)GetValue(FovProperty); set => SetValue(FovProperty, value); }
+
         public string ImageFilePath
         {
             get => (string)GetValue(ImageFilePathProperty);
@@ -221,6 +268,12 @@ namespace Extensions
             }
         }
 
+        public bool PanoramaMode
+        {
+            get => (bool)GetValue(PanoramaModeProperty);
+            set => SetValue(PanoramaModeProperty, value);
+        }
+
         public Visibility PrintButtonVisibility
         {
             get => printButtonVisibility;
@@ -236,6 +289,10 @@ namespace Extensions
         }
 
         public virtual ICommand Resize { get; set; }
+
+        public double RotateX { get => (double)GetValue(RotateXProperty); set => SetValue(RotateXProperty, value); }
+
+        public double RotateY { get => (double)GetValue(RotateYProperty); set => SetValue(RotateYProperty, value); }
 
         public int Sayfa
         {
@@ -262,6 +319,8 @@ namespace Extensions
             get => (ImageSource)GetValue(SourceProperty);
             set => SetValue(SourceProperty, value);
         }
+
+        public Geometry3D SphereModel { get; set; } = MediaViewer.CreateGeometry();
 
         public Visibility TifNavigasyonButtonEtkin
         {
@@ -317,30 +376,36 @@ namespace Extensions
             set => SetValue(ZoomProperty, value);
         }
 
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            _viewport = GetTemplateChild("PanoramaViewPort") as Viewport3D;
+            _panoramaBrush = GetTemplateChild("panoramaBrush") as DiffuseMaterial;
+            if (_viewport != null)
+            {
+                _viewport.MouseLeftButtonDown -= Viewport3D_MouseLeftButtonDown;
+                _viewport.MouseLeftButtonDown += Viewport3D_MouseLeftButtonDown;
+                _viewport.MouseLeftButtonUp -= Viewport3D_MouseLeftButtonUp;
+                _viewport.MouseLeftButtonUp += Viewport3D_MouseLeftButtonUp;
+                _viewport.MouseMove -= Viewport3D_MouseMove;
+                _viewport.MouseMove += Viewport3D_MouseMove;
+                _viewport.MouseWheel -= Viewport3D_MouseWheel;
+                _viewport.MouseWheel += Viewport3D_MouseWheel;
+            }
+        }
+
+        internal static Point3D GetPosition(double t, double y)
+        {
+            double r = Math.Sqrt(1 - (y * y));
+            double x = r * Math.Cos(t);
+            double z = r * Math.Sin(t);
+            return new Point3D(x, y, z);
+        }
+
         protected virtual void OnPropertyChanged(string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        private TiffBitmapDecoder decoder;
-
-        private FitImageOrientation fitImageOrientation;
-
-        private Visibility openButtonVisibility = Visibility.Collapsed;
-
-        private Visibility orijinalResimDosyaAçButtonVisibility;
-
-        private IEnumerable<int> pages;
-
-        private Visibility printButtonVisibility = Visibility.Collapsed;
-
-        private int sayfa = 1;
-
-        private Visibility tifNavigasyonButtonEtkin = Visibility.Collapsed;
-
-        private bool toolBarIsEnabled = true;
-
-        private Visibility toolBarVisibility;
 
         private static void DecodeHeightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -349,6 +414,22 @@ namespace Extensions
                 string path = imageViewer.ImageFilePath;
                 imageViewer.DecodeHeight = (int)e.NewValue;
                 LoadImage(path, imageViewer);
+            }
+        }
+
+        private static void FovChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is ImageViewer viewer && e.NewValue != null)
+            {
+                if ((double)e.NewValue < 1)
+                {
+                    viewer.Fov = 1;
+                }
+
+                if ((double)e.NewValue > 140)
+                {
+                    viewer.Fov = 140;
+                }
             }
         }
 
@@ -417,6 +498,25 @@ namespace Extensions
             }
         }
 
+        private static void PanoramaModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is ImageViewer viewer)
+            {
+                if ((bool)e.NewValue)
+                {
+                    viewer._viewport.Visibility = Visibility.Visible;
+                    viewer._panoramaBrush.Brush = null;
+                    viewer._panoramaBrush.Brush = new ImageBrush(viewer.Source);
+                    viewer._panoramaBrush.Brush.Freeze();
+                }
+                else
+                {
+                    viewer._viewport.Visibility = Visibility.Collapsed;
+                    viewer._panoramaBrush.Brush = null;
+                }
+            }
+        }
+
         private static void SourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is ImageViewer imageViewer && e.NewValue is not null)
@@ -462,6 +562,34 @@ namespace Extensions
             {
                 Source = Decoder.Frames[Sayfa - 1];
             }
+        }
+
+        private void Viewport3D_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            _isOnDrag = true;
+            _startPoint = e.GetPosition(this);
+            _startRotateX = RotateX;
+            _startRotateY = RotateY;
+        }
+
+        private void Viewport3D_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            _isOnDrag = false;
+        }
+
+        private void Viewport3D_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (_isOnDrag && e.LeftButton == MouseButtonState.Pressed)
+            {
+                Vector delta = _startPoint - e.GetPosition(this);
+                RotateX = _startRotateX + (delta.X / ActualWidth * 360);
+                RotateY = _startRotateY + (delta.Y / ActualHeight * 360);
+            }
+        }
+
+        private void Viewport3D_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            Fov -= e.Delta / 100;
         }
     }
 }

@@ -163,7 +163,7 @@
                                                     </Model3DGroup>
                                                 </ModelVisual3D.Content>
                                             </ModelVisual3D>
-                                            <ModelVisual3D x:Name="TextureRenderer">
+                                            <ModelVisual3D>
                                                 <ModelVisual3D.Content>
                                                     <GeometryModel3D Geometry="{Binding SphereModel}">
                                                         <GeometryModel3D.BackMaterial>
