@@ -427,6 +427,21 @@ namespace GpScanner.ViewModel
                         TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("en-EN");
                         CalendarLang = XmlLanguage.GetLanguage("en-EN");
                         break;
+
+                    case "FRANÇAIS":
+                        TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("fr-FR");
+                        CalendarLang = XmlLanguage.GetLanguage("fr-FR");
+                        break;
+
+                    case "ITALIANO":
+                        TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("it-IT");
+                        CalendarLang = XmlLanguage.GetLanguage("it-IT");
+                        break;
+
+                    case "عربي":
+                        TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("ar-AR");
+                        CalendarLang = XmlLanguage.GetLanguage("ar-AR");
+                        break;
                 }
                 Settings.Default.DefaultLang = SeçiliDil;
             }

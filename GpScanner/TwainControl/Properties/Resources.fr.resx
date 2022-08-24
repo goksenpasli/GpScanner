@@ -1,0 +1,426 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ABOUT" xml:space="preserve">
+    <value>SUR</value>
+  </data>
+  <data name="ADF" xml:space="preserve">
+    <value>DOCUMENT
+ALIMENTATEUR</value>
+  </data>
+  <data name="ALL" xml:space="preserve">
+    <value>TOUT</value>
+  </data>
+  <data name="ALLOWCOPY" xml:space="preserve">
+    <value>AUTORISER LA COPIE DE CONTENU</value>
+  </data>
+  <data name="ALLOWEDIT" xml:space="preserve">
+    <value>AUTORISER LA MODIFICATION DU DOCUMENT</value>
+  </data>
+  <data name="ALLOWPRINT" xml:space="preserve">
+    <value>AUTORISER L'IMPRESSION</value>
+  </data>
+  <data name="APPLY" xml:space="preserve">
+    <value>APPLIQUER</value>
+  </data>
+  <data name="APPLYCOLOR" xml:space="preserve">
+    <value>APPLIQUER LA COULEUR</value>
+  </data>
+  <data name="APPRUNNING" xml:space="preserve">
+    <value>Application déjà en cours d'exécution.</value>
+  </data>
+  <data name="AUTOFOLDER" xml:space="preserve">
+    <value>Spécifiez le dossier d'enregistrement automatique.</value>
+  </data>
+  <data name="AUTOFOLDERCHANGE" xml:space="preserve">
+    <value>Chemin d'enregistrement automatique modifié. Les anciens fichiers ne seront pas déplacés vers le dossier nouvellement déterminé.</value>
+  </data>
+  <data name="AUTOPATH" xml:space="preserve">
+    <value>AUTOMATIQUE
+ENREGISTREMENT</value>
+  </data>
+  <data name="AUTOROTATE" xml:space="preserve">
+    <value>ROTATION AUTOMATIQUE</value>
+  </data>
+  <data name="BORDERDETECT" xml:space="preserve">
+    <value>DÉTECTION AUTOMATIQUE DES BORDS</value>
+  </data>
+  <data name="BW" xml:space="preserve">
+    <value>NOIR BLANC</value>
+  </data>
+  <data name="CALENDAR" xml:space="preserve">
+    <value>CALENDRIER</value>
+  </data>
+  <data name="CLEARLIST" xml:space="preserve">
+    <value>EFFACER LA LISTE</value>
+  </data>
+  <data name="CLOSECOMP" xml:space="preserve">
+    <value>ÉTEINDRE L'ORDINATEUR</value>
+  </data>
+  <data name="COLOR" xml:space="preserve">
+    <value>COLORÉ</value>
+  </data>
+  <data name="COLORCHANGETIP" xml:space="preserve">
+    <value>Si vous cliquez dessus après avoir défini la valeur seuil, vous pouvez effectuer une deuxième sélection de couleur.</value>
+  </data>
+  <data name="CONTENT" xml:space="preserve">
+    <value>CONTENU LU</value>
+  </data>
+  <data name="CRUNTIME" xml:space="preserve">
+    <value>Étant donné que les binaires tesseract et leptonica sont compilés avec Visual Studio 2019, vous devez vous assurer que le Runtime Visual Studio 2019 est installé.</value>
+  </data>
+  <data name="DAY" xml:space="preserve">
+    <value>[JOURNÉE]</value>
+  </data>
+  <data name="DEFAULTSCANNAME" xml:space="preserve">
+    <value>Balayage</value>
+  </data>
+  <data name="DELETE" xml:space="preserve">
+    <value>EFFACER</value>
+  </data>
+  <data name="DESKEW" xml:space="preserve">
+    <value>COURBE COURBE</value>
+  </data>
+  <data name="DESTLANG" xml:space="preserve">
+    <value>LANGUE CIBLE</value>
+  </data>
+  <data name="DOCUMENT" xml:space="preserve">
+    <value>DOCUMENT</value>
+  </data>
+  <data name="DRAWTEXT" xml:space="preserve">
+    <value>DESSINER DU TEXTE</value>
+  </data>
+  <data name="DSTCOLOR" xml:space="preserve">
+    <value>COULEUR CIBLE</value>
+  </data>
+  <data name="ENCRYPT" xml:space="preserve">
+    <value>CHIFFREMENT</value>
+  </data>
+  <data name="FASTSCAN" xml:space="preserve">
+    <value>VITE
+ANALYSE</value>
+  </data>
+  <data name="FASTSCANAFTER" xml:space="preserve">
+    <value>Action lorsque l'analyse rapide est terminée</value>
+  </data>
+  <data name="FILE" xml:space="preserve">
+    <value>DOSSIER</value>
+  </data>
+  <data name="FILENAME" xml:space="preserve">
+    <value>NOM DE FICHIER:</value>
+  </data>
+  <data name="FONT" xml:space="preserve">
+    <value>POLICE DE CARACTÈRE</value>
+  </data>
+  <data name="GRAPH" xml:space="preserve">
+    <value>GRAPHIQUE</value>
+  </data>
+  <data name="GRAY" xml:space="preserve">
+    <value>GRIS</value>
+  </data>
+  <data name="GUI" xml:space="preserve">
+    <value>AFFICHER L'INTERFACE</value>
+  </data>
+  <data name="GUID" xml:space="preserve">
+    <value>[GUID]</value>
+  </data>
+  <data name="HEIGHTCOUNT" xml:space="preserve">
+    <value>TAILLE QUANTITÉ</value>
+  </data>
+  <data name="LISTREMOVEWARN" xml:space="preserve">
+    <value>Tous les documents numérisés de la liste principale seront supprimés Voulez-vous continuer ?</value>
+  </data>
+  <data name="MERGE" xml:space="preserve">
+    <value>RELIER</value>
+  </data>
+  <data name="MERGEPDF" xml:space="preserve">
+    <value>PDF REJOINDRE</value>
+  </data>
+  <data name="MERGESELECTED" xml:space="preserve">
+    <value>PDF SIGNÉS
+RELIER</value>
+  </data>
+  <data name="MINUTE" xml:space="preserve">
+    <value>[MINUTE]</value>
+  </data>
+  <data name="MONTH" xml:space="preserve">
+    <value>[LUNE]</value>
+  </data>
+  <data name="NO ACTION" xml:space="preserve">
+    <value>PAS D'ACTION</value>
+  </data>
+  <data name="NONE" xml:space="preserve">
+    <value>RIEN</value>
+  </data>
+  <data name="OCR" xml:space="preserve">
+    <value>ROC</value>
+  </data>
+  <data name="OTHERSETTINGS" xml:space="preserve">
+    <value>AUTRES RÉGLAGES</value>
+  </data>
+  <data name="OTHERTESSERACT" xml:space="preserve">
+    <value>Téléchargez également d'autres fichiers de données de langue pour tesseract 4.1.0 à partir de tesseract-ocr si nécessaire. Mettez-le dans le dossier tessdata.</value>
+  </data>
+  <data name="OTHERTESSERACTLINK" xml:space="preserve">
+    <value>Autres données de langue tesseract</value>
+  </data>
+  <data name="PASSWORD" xml:space="preserve">
+    <value>LE MOT DE PASSE</value>
+  </data>
+  <data name="PDFPROTECT" xml:space="preserve">
+    <value>PDF PROTÉGER</value>
+  </data>
+  <data name="PDFWARN" xml:space="preserve">
+    <value>LES PARAMÈTRES RÉALISÉS ICI AFFECTENT TOUS LES ENREGISTREMENTS PDF.
+DE PLUS, LA PROTECTION DES PDF PEUT ÊTRE BRISÉE PAR DES APPLICATIONS TIERS.</value>
+  </data>
+  <data name="PREVIEWFILE" xml:space="preserve">
+    <value>DOSSIER
+APERÇU</value>
+  </data>
+  <data name="PREVIEWSIZE" xml:space="preserve">
+    <value>TAILLE DE L'APERÇU DE L'IMAGE</value>
+  </data>
+  <data name="READACTIVEPAGE" xml:space="preserve">
+    <value>PAGE ACTIVE
+LIS</value>
+  </data>
+  <data name="REGSTI" xml:space="preserve">
+    <value>AU MENU DU SCANNER
+AJOUTER</value>
+  </data>
+  <data name="RES" xml:space="preserve">
+    <value>RÉSOLUTION</value>
+  </data>
+  <data name="RESET" xml:space="preserve">
+    <value>RÉINITIALISER</value>
+  </data>
+  <data name="RESTARTCOMP" xml:space="preserve">
+    <value>REDÉMARRER LE PC</value>
+  </data>
+  <data name="REVERSE" xml:space="preserve">
+    <value>INVERSE</value>
+  </data>
+  <data name="ROTSAVE" xml:space="preserve">
+    <value>Enregistrer avec rotation ?</value>
+  </data>
+  <data name="SAVEPDF" xml:space="preserve">
+    <value>PDF ENREGISTRER</value>
+  </data>
+  <data name="SAVEPROFILE" xml:space="preserve">
+    <value>ENREGISTRER LE PROFIL</value>
+  </data>
+  <data name="SAVESELECTED" xml:space="preserve">
+    <value>ENREGISTRER LA SÉLECTION</value>
+  </data>
+  <data name="SCAN" xml:space="preserve">
+    <value>ANALYSE</value>
+  </data>
+  <data name="SCANNER" xml:space="preserve">
+    <value>SCANNER</value>
+  </data>
+  <data name="SECOND" xml:space="preserve">
+    <value>[DEUXIÈME]</value>
+  </data>
+  <data name="SELECTTWOPDF" xml:space="preserve">
+    <value>SÉLECTIONNEZ AU MOINS DEUX FICHIERS PDF</value>
+  </data>
+  <data name="SEPERATESCAN" xml:space="preserve">
+    <value>NUMÉRISEZ CHAQUE PAGE SÉPARÉMENT</value>
+  </data>
+  <data name="SEPERATESCANTOOLTIP" xml:space="preserve">
+    <value>Enregistrer chaque page dans un fichier séparé Les fichiers sont enregistrés dans le dossier spécifié ci-dessous.</value>
+  </data>
+  <data name="SETTİNGS" xml:space="preserve">
+    <value>RÉGLAGES</value>
+  </data>
+  <data name="SHOWFILE" xml:space="preserve">
+    <value>AFFICHER LE FICHIER APRÈS UNE ANALYSE RAPIDE</value>
+  </data>
+  <data name="SHOWFOLDER" xml:space="preserve">
+    <value>AFFICHER DANS LE DOSSIER</value>
+  </data>
+  <data name="SHOWPROGRESS" xml:space="preserve">
+    <value>AFFICHER LE POURCENTAGE</value>
+  </data>
+  <data name="SLICE" xml:space="preserve">
+    <value>TAIS-TOI</value>
+  </data>
+  <data name="SOURCELANG" xml:space="preserve">
+    <value>LANGUE ORIGINELLE</value>
+  </data>
+  <data name="SRC" xml:space="preserve">
+    <value>SÉLECTIONNER LA SOURCE</value>
+  </data>
+  <data name="SRCCOLOR" xml:space="preserve">
+    <value>COULEUR SOURCE</value>
+  </data>
+  <data name="SRCCOLORTIP" xml:space="preserve">
+    <value>Clic droit et choisir la couleur</value>
+  </data>
+  <data name="TESSERACT" xml:space="preserve">
+    <value>TESSERACT</value>
+  </data>
+  <data name="TEXT" xml:space="preserve">
+    <value>TEXTE</value>
+  </data>
+  <data name="TEXTANGLE" xml:space="preserve">
+    <value>ANGLE DU TEXTE</value>
+  </data>
+  <data name="TEXTSIZE" xml:space="preserve">
+    <value>TAILLE DU TEXTE</value>
+  </data>
+  <data name="THRESHOLD" xml:space="preserve">
+    <value>AU SEUIL</value>
+  </data>
+  <data name="TIME" xml:space="preserve">
+    <value>[HEURE]</value>
+  </data>
+  <data name="TRANSLATE" xml:space="preserve">
+    <value>TRADUCTION</value>
+  </data>
+  <data name="TRIMIMAGE" xml:space="preserve">
+    <value>GARNITURE OFFICIELLE</value>
+  </data>
+  <data name="TWOSIDE" xml:space="preserve">
+    <value>DOUBLE FACE</value>
+  </data>
+  <data name="UNREGSTI" xml:space="preserve">
+    <value>SUPPRIMER DU MENU DU NAVIGATEUR</value>
+  </data>
+  <data name="USERNAME" xml:space="preserve">
+    <value>[NOM D'UTILISATEUR]</value>
+  </data>
+  <data name="VC" xml:space="preserve">
+    <value>Exécutions Visual Studio 2019 x86 et x64</value>
+  </data>
+  <data name="VIEWALL" xml:space="preserve">
+    <value>TOUS
+VOIR</value>
+  </data>
+  <data name="WARNREBOOT" xml:space="preserve">
+    <value>L'arrêt ou le redémarrage est défini.</value>
+  </data>
+  <data name="WIDTHCOUNT" xml:space="preserve">
+    <value>LE PLUS</value>
+  </data>
+  <data name="YEAR" xml:space="preserve">
+    <value>[AN]</value>
+  </data>
+</root>

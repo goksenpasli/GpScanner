@@ -168,6 +168,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\flag-of-France.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\flag-of-Italy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\flag-of-Saudi-Arabia.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

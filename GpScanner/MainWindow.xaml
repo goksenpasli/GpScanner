@@ -376,6 +376,33 @@
                                 </StackPanel>
                             </ComboBoxItem.Content>
                         </ComboBoxItem>
+                        <ComboBoxItem Tag="FRANÇAIS">
+                            <ComboBoxItem.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="51" Height="30"
+                                        RenderOptions.BitmapScalingMode="Fant" Source="/Resources/flag-of-France.png" />
+                                    <TextBlock VerticalAlignment="Center" Text="FRANÇAIS" />
+                                </StackPanel>
+                            </ComboBoxItem.Content>
+                        </ComboBoxItem> 
+                        <ComboBoxItem Tag="ITALIANO">
+                            <ComboBoxItem.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="51" Height="30"
+                                        RenderOptions.BitmapScalingMode="Fant" Source="/Resources/flag-of-Italy.png" />
+                                    <TextBlock VerticalAlignment="Center" Text="ITALIANO" />
+                                </StackPanel>
+                            </ComboBoxItem.Content>
+                        </ComboBoxItem>
+                        <ComboBoxItem Tag="عربي">
+                            <ComboBoxItem.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="51" Height="30"
+                                        RenderOptions.BitmapScalingMode="Fant" Source="/Resources/flag-of-Saudi-Arabia.png" />
+                                    <TextBlock VerticalAlignment="Center" Text="عربي" />
+                                </StackPanel>
+                            </ComboBoxItem.Content>
+                        </ComboBoxItem>
                     </ComboBox>
                 </UniformGrid>
             </Grid>
