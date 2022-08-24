@@ -656,15 +656,24 @@
                                     Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
                                     Minimum="0" SmallChange="1"
                                     Value="{Binding Scanner.CropRight}" />
-                                <Border BorderBrush="{StaticResource GroupBoxBackGround}" BorderThickness="1">
-                                    <Grid x:Name="LineGrid"
-                                        Width="210" Height="297"
-                                        ShowGridLines="True">
-                                        <Grid.Background>
-                                            <ImageBrush ImageSource="{Binding Scanner.CroppedImage}" />
-                                        </Grid.Background>
-                                    </Grid>
-                                </Border>
+                                <Grid>
+                                    <Border BorderBrush="{StaticResource GroupBoxBackGround}" BorderThickness="1">
+                                        <Grid x:Name="LineGrid"
+                                            Width="210" Height="297"
+                                            ShowGridLines="True">
+                                            <Grid.Background>
+                                                <ImageBrush ImageSource="{Binding Scanner.CroppedImage}" />
+                                            </Grid.Background>
+                                        </Grid>
+                                    </Border>
+                                    <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                        FontFamily="Webdings" FontSize="16" Foreground="Red"
+                                        Text="N">
+                                        <TextBlock.ToolTip>
+                                            <Image Source="{Binding Scanner.CroppedImage}" />
+                                        </TextBlock.ToolTip>
+                                    </TextBlock>
+                                </Grid>
                             </DockPanel>
                             <UniformGrid Margin="1"
                                 Columns="2" Rows="12">
@@ -699,7 +708,7 @@
                                     </ComboBox.ItemsPanel>
                                 </ComboBox>
                                 <Button Command="{Binding SetWatermark}" Content="{local:Loc DRAWTEXT}" />
-                                <Button Command="{Binding DeskewImage}" Content="{local:Loc FIX}" />
+                                <Button Command="{Binding DeskewImage}" Content="{local:Loc DESKEW}" />
                                 <Button Command="{Binding OcrPage}"
                                     CommandParameter="{Binding Scanner.CroppedImage}"
                                     Content="{local:Loc OCR}" />
@@ -723,7 +732,9 @@
                                     <Slider VerticalAlignment="Center"
                                         Maximum="255" Minimum="1"
                                         Value="{Binding Scanner.Threshold, Delay=300}" />
-                                    <Button ToolTip="{local:Loc COLORCHANGETIP}" Command="{Binding ApplyColorChange}" Content="{local:Loc APPLY}" />
+                                    <Button Command="{Binding ApplyColorChange}"
+                                        Content="{local:Loc APPLY}"
+                                        ToolTip="{local:Loc COLORCHANGETIP}" />
                                 </UniformGrid>
                                 <Button Command="{Binding SaveImage}"
                                     CommandParameter="{Binding Scanner.CroppedImage}"

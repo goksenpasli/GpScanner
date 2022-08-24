@@ -73,7 +73,7 @@ namespace GpScanner.ViewModel
 
             Tümünüİşaretle = new RelayCommand<object>(parameter =>
             {
-                foreach (Scanner item in MainWindow.cvs.View)
+                foreach (Scanner item in MainWindow.cvs.View.OfType<Scanner>().Where(z => Path.GetExtension(z.FileName.ToLower()) == ".pdf"))
                 {
                     item.Seçili = true;
                 }
@@ -89,7 +89,7 @@ namespace GpScanner.ViewModel
 
             Tersiniİşaretle = new RelayCommand<object>(parameter =>
             {
-                foreach (Scanner item in MainWindow.cvs.View)
+                foreach (Scanner item in MainWindow.cvs.View.OfType<Scanner>().Where(z => Path.GetExtension(z.FileName.ToLower()) == ".pdf"))
                 {
                     item.Seçili = !item.Seçili;
                 }
@@ -333,7 +333,7 @@ namespace GpScanner.ViewModel
             if (Directory.Exists(Twainsettings.Settings.Default.AutoFolder))
             {
                 ObservableCollection<Scanner> list = new();
-                foreach (string dosya in Directory.EnumerateFiles(Twainsettings.Settings.Default.AutoFolder, "*.*", SearchOption.AllDirectories).Where(s => (new string[] { ".pdf", ".tif", ".jpg", ".zip" }).Any(ext => ext == Path.GetExtension(s).ToLower())))
+                foreach (string dosya in Directory.EnumerateFiles(Twainsettings.Settings.Default.AutoFolder, "*.*", SearchOption.AllDirectories).Where(s => (new string[] { ".pdf", ".tif", ".jpg", ".png", ".bmp", ".zip" }).Any(ext => ext == Path.GetExtension(s).ToLower())))
                 {
                     list.Add(new Scanner() { FileName = dosya, Seçili = false });
                 }

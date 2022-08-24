@@ -298,9 +298,6 @@ AYRICA PDF KORUMASI 3.PARTİ UYGULAMALAR TARAFINDAN KIRILABİLİR.</value>
   <data name="SAVEPDF" xml:space="preserve">
     <value>PDF KAYDET</value>
   </data>
-  <data name="FIX" xml:space="preserve">
-    <value>EĞRİLİK DÜZELT</value>
-  </data>
   <data name="OCR" xml:space="preserve">
     <value>OCR YAP</value>
   </data>

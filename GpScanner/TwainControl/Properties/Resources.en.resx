@@ -297,9 +297,6 @@ ALSO PDF PROTECTION CAN BE BROKEN BY 3rd PARTY APPLICATIONS.</value>
   <data name="SAVEPDF" xml:space="preserve">
     <value>SAVE PDF</value>
   </data>
-  <data name="FIX" xml:space="preserve">
-    <value>CURVE CORRECTION</value>
-  </data>
   <data name="OCR" xml:space="preserve">
     <value>OCR</value>
   </data>

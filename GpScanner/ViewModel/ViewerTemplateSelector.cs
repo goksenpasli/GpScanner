@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -6,6 +7,8 @@ namespace GpScanner.ViewModel
 {
     public class ViewerTemplateSelector : DataTemplateSelector
     {
+        public DataTemplate Img { get; set; }
+
         public DataTemplate Pdf { get; set; }
 
         public DataTemplate Zip { get; set; }
@@ -14,6 +17,7 @@ namespace GpScanner.ViewModel
         {
             if (item is string dosya)
             {
+                string[] imgext = new string[] { ".jpg", ".bmp", ".png", ".tif", ".tiff" };
                 string ext = new FileInfo(dosya).Extension.ToLower();
                 if (ext == ".pdf")
                 {
@@ -22,6 +26,10 @@ namespace GpScanner.ViewModel
                 if (ext == ".zip")
                 {
                     return Zip;
+                }
+                if (imgext.Contains(ext))
+                {
+                    return Img;
                 }
             }
             return null;

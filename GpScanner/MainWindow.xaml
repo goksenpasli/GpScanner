@@ -1,15 +1,21 @@
-﻿<Window x:Class="GpScanner.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
-    xmlns:ViewModel="clr-namespace:GpScanner.ViewModel" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:GpScanner" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
+﻿<Window x:Class="GpScanner.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
+    xmlns:ViewModel="clr-namespace:GpScanner.ViewModel"
+    xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=PresentationFramework"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:GpScanner"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
     xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
-    Title="{twainctrl:Loc SCANNER}" xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=PresentationFramework"
+    Title="{twainctrl:Loc SCANNER}"
     d:DataContext="{d:DesignInstance Type=ViewModel:GpScannerViewModel}"
     d:Height="600" d:Width="1280"
     twainctrl:Translation.ResourceManager="{x:Static twainproperties:Resources.ResourceManager}"
     ContentRendered="MW_ContentRendered" UseLayoutRounding="True" WindowStartupLocation="CenterScreen"
-    WindowState="Maximized" mc:Ignorable="d">
+    WindowState="Maximized"
+    mc:Ignorable="d">
     <Window.Resources>
         <CollectionViewSource x:Key="Veriler" Source="{Binding Dosyalar}">
             <CollectionViewSource.SortDescriptions />
@@ -23,7 +29,7 @@
                     <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(componentModel:DesignerProperties.IsInDesignMode)}" Value="False">
                         <Setter Property="Effect">
                             <Setter.Value>
-                                <ViewModel:FoldEffect FoldAmount="{Binding Fold}"/>
+                                <ViewModel:FoldEffect FoldAmount="{Binding Fold}" />
                             </Setter.Value>
                         </Setter>
                     </DataTrigger>
@@ -35,7 +41,8 @@
             <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
         <twainctrl:TwainCtrl x:Name="TwainCtrl" />
-        <GroupBox Grid.Column="1" Margin="1,0,0,0"
+        <GroupBox Grid.Column="1"
+            Margin="1,0,0,0"
             Header="{twainctrl:Loc FILE}">
             <Grid>
                 <Grid.RowDefinitions>
@@ -56,7 +63,7 @@
                         </Viewbox>
                     </TabItem>
                     <TabItem Header="{twainctrl:Loc GRAPH}">
-                        <Extensions:GraphControl Grid.Row="1"  Series="{Binding ChartData}" />
+                        <Extensions:GraphControl Grid.Row="1" Series="{Binding ChartData}" />
                     </TabItem>
                 </TabControl>
                 <UniformGrid Grid.Row="1" Columns="3">
@@ -93,7 +100,8 @@
                     <Extensions:ContentToggleButton>
                         <Extensions:ContentToggleButton.OverContent>
                             <StackPanel Orientation="Horizontal">
-                                <Canvas Width="32" Height="32" HorizontalAlignment="Left"
+                                <Canvas Width="32" Height="32"
+                                    HorizontalAlignment="Left"
                                     Background="{StaticResource Tesseract}" />
                                 <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc TESSERACT}" />
                             </StackPanel>
@@ -103,7 +111,9 @@
                         </Extensions:ContentToggleButton.Content>
                     </Extensions:ContentToggleButton>
                 </UniformGrid>
-                <Extensions:ButtonedTextBox Grid.Row="2" Text="{Binding AramaMetni, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" CopyButtonVisibility="Collapsed" />
+                <Extensions:ButtonedTextBox Grid.Row="2"
+                    CopyButtonVisibility="Collapsed"
+                    Text="{Binding AramaMetni, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <UniformGrid Grid.Row="3" Columns="3">
                     <Button Command="{Binding Tümünüİşaretle}">
                         <Button.Content>
@@ -152,14 +162,15 @@
                     </Button>
                 </UniformGrid>
                 <ListBox Grid.Row="4"
+                    d:ItemsSource="{d:SampleData ItemCount=5}"
                     IsSynchronizedWithCurrentItem="False"
                     ItemsSource="{Binding Mode=OneWay, Source={StaticResource Veriler}}"
                     VirtualizingPanel.CacheLength="2,2" VirtualizingPanel.CacheLengthUnit="Item"
                     VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.ScrollUnit="Pixel"
-                    VirtualizingPanel.VirtualizationMode="Standard" d:ItemsSource="{d:SampleData ItemCount=5}">
+                    VirtualizingPanel.VirtualizationMode="Standard">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <Extensions:VirtualizingWrapPanel ChildrenSize="160,195" StretchItems="True" CanHorizontallyScroll="False" />
+                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ChildrenSize="160,195" StretchItems="True" />
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
                     <ListBox.ItemContainerStyle>
@@ -181,8 +192,7 @@
                                                 <StackPanel Orientation="Horizontal">
                                                     <Extensions:SplitButton Width="120"
                                                         Command="{Binding DataContext.WebAdreseGit, ElementName=TwainCtrl, Mode=OneWay}"
-                                                        CommandParameter="{Binding Path=FileName}"
-                                                        SplitContentPartIsEnabled="{Binding FileName, Mode=OneWay, Converter={StaticResource FileNamePdfZipCheckConverter}}">
+                                                        CommandParameter="{Binding Path=FileName}">
                                                         <Extensions:SplitButton.Content>
                                                             <StackPanel Orientation="Horizontal">
                                                                 <Image Width="32" Height="32"
@@ -194,7 +204,7 @@
                                                             <Extensions:ResizablePanel Width="480" Height="360" MinWidth="480"
                                                                 MinHeight="360">
                                                                 <GroupBox>
-                                                                    <ContentPresenter Content="{Binding Path=FileName}" ContentTemplate="{StaticResource PdfViewerTemplateFull}" />
+                                                                    <ContentPresenter Content="{Binding Path=FileName}" ContentTemplateSelector="{StaticResource ViewerSelector}" />
                                                                 </GroupBox>
                                                             </Extensions:ResizablePanel>
                                                         </Extensions:SplitButton.InternalContent>
@@ -223,7 +233,7 @@
                                                                 <DataTrigger Binding="{Binding Path=DataContext.ShowPdfPreview, RelativeSource={RelativeSource AncestorType=Window}}" Value="true">
                                                                     <Setter Property="Content">
                                                                         <Setter.Value>
-                                                                            <ContentControl Content="{Binding Path=FileName}" ContentTemplateSelector="{StaticResource ViewerSelector}" />
+                                                                            <ContentControl Content="{Binding Path=FileName}" ContentTemplateSelector="{StaticResource ThumbViewerSelector}" />
                                                                         </Setter.Value>
                                                                     </Setter>
                                                                 </DataTrigger>
@@ -239,7 +249,8 @@
                         </Style>
                     </ListBox.ItemContainerStyle>
                 </ListBox>
-                <UniformGrid Grid.Row="5" Columns="2" Rows="2">
+                <UniformGrid Grid.Row="5"
+                    Columns="2" Rows="2">
                     <Button Command="{Binding PdfBirleştir}">
                         <StackPanel Orientation="Horizontal">
                             <Image Width="32" Height="32">
@@ -314,7 +325,8 @@
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
-                                    <Image Canvas.Bottom="0" Width="16" Height="16">
+                                    <Image Canvas.Bottom="0"
+                                        Width="16" Height="16">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                 <Binding Source="User32.dll" />
@@ -349,8 +361,8 @@
                         <ComboBoxItem Tag="TÜRKÇE">
                             <ComboBoxItem.Content>
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Width="51" Height="30" RenderOptions.BitmapScalingMode="Fant"
-                                        Source="/Resources/flag-of-Turkey.png" />
+                                    <Image Width="51" Height="30"
+                                        RenderOptions.BitmapScalingMode="Fant" Source="/Resources/flag-of-Turkey.png" />
                                     <TextBlock VerticalAlignment="Center" Text="TÜRKÇE" />
                                 </StackPanel>
                             </ComboBoxItem.Content>
@@ -358,8 +370,8 @@
                         <ComboBoxItem Tag="ENGLISH">
                             <ComboBoxItem.Content>
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Width="51" Height="30" RenderOptions.BitmapScalingMode="Fant"
-                                        Source="/Resources/flag-of-United-States-of-America.png" />
+                                    <Image Width="51" Height="30"
+                                        RenderOptions.BitmapScalingMode="Fant" Source="/Resources/flag-of-United-States-of-America.png" />
                                     <TextBlock VerticalAlignment="Center" Text="ENGLISH" />
                                 </StackPanel>
                             </ComboBoxItem.Content>
