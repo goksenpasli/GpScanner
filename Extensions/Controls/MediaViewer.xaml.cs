@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -67,6 +68,20 @@ namespace Extensions.Controls
 
         public static readonly DependencyProperty SliderControlVisibleProperty = DependencyProperty.Register("SliderControlVisible", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Visible));
 
+        public static readonly DependencyProperty SubTitleColorProperty = DependencyProperty.Register("SubTitleColor", typeof(Brush), typeof(MediaViewer), new PropertyMetadata(Brushes.White));
+
+        public static readonly DependencyProperty SubTitleHorizontalAlignmentProperty = DependencyProperty.Register("SubTitleHorizontalAlignment", typeof(HorizontalAlignment), typeof(MediaViewer), new PropertyMetadata(HorizontalAlignment.Center));
+
+        public static readonly DependencyProperty SubTitleMarginProperty = DependencyProperty.Register("SubTitleMargin", typeof(Thickness), typeof(MediaViewer), new PropertyMetadata(new Thickness(0d, 0d, 0d, 10d)));
+
+        public static readonly DependencyProperty SubTitleProperty = DependencyProperty.Register("SubTitle", typeof(string), typeof(MediaViewer), new PropertyMetadata(string.Empty));
+
+        public static readonly DependencyProperty SubTitleSizeProperty = DependencyProperty.Register("SubTitleSize", typeof(double), typeof(MediaViewer), new PropertyMetadata(32.0d));
+
+        public static readonly DependencyProperty SubTitleVerticalAlignmentProperty = DependencyProperty.Register("SubTitleVerticalAlignment", typeof(VerticalAlignment), typeof(MediaViewer), new PropertyMetadata(VerticalAlignment.Bottom));
+
+        public static readonly DependencyProperty SubTitleVisibilityProperty = DependencyProperty.Register("SubTitleVisibility", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Collapsed));
+
         public static readonly DependencyProperty ThumbnailsVisibleProperty = DependencyProperty.Register("ThumbnailsVisible", typeof(bool), typeof(MediaViewer), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         public static readonly DependencyProperty VideoStretchProperty = DependencyProperty.Register("VideoStretch", typeof(Stretch), typeof(MediaViewer), new PropertyMetadata(Stretch.Uniform));
@@ -102,6 +117,8 @@ namespace Extensions.Controls
         private double _startRotateX;
 
         private double _startRotateY;
+
+        private ObservableCollection<SrtContent> defaultsubtitle;
 
         static MediaViewer()
         {
@@ -247,28 +264,54 @@ namespace Extensions.Controls
 
         public Geometry3D SphereModel { get; set; } = CreateGeometry();
 
+        public string SubTitle
+        {
+            get => (string)GetValue(SubTitleProperty);
+            set => SetValue(SubTitleProperty, value);
+        }
+
+        public Brush SubTitleColor
+        {
+            get => (Brush)GetValue(SubTitleColorProperty);
+            set => SetValue(SubTitleColorProperty, value);
+        }
+
+        public HorizontalAlignment SubTitleHorizontalAlignment
+        {
+            get => (HorizontalAlignment)GetValue(SubTitleHorizontalAlignmentProperty);
+            set => SetValue(SubTitleHorizontalAlignmentProperty, value);
+        }
+
+        public Thickness SubTitleMargin
+        {
+            get => (Thickness)GetValue(SubTitleMarginProperty);
+            set => SetValue(SubTitleMarginProperty, value);
+        }
+
+        public double SubTitleSize
+        {
+            get => (double)GetValue(SubTitleSizeProperty);
+            set => SetValue(SubTitleSizeProperty, value);
+        }
+
+        public VerticalAlignment SubTitleVerticalAlignment
+        {
+            get => (VerticalAlignment)GetValue(SubTitleVerticalAlignmentProperty);
+            set => SetValue(SubTitleVerticalAlignmentProperty, value);
+        }
+
+        public Visibility SubTitleVisibility
+        {
+            get => (Visibility)GetValue(SubTitleVisibilityProperty);
+            set => SetValue(SubTitleVisibilityProperty, value);
+        }
+
         public bool ThumbnailsVisible { get => (bool)GetValue(ThumbnailsVisibleProperty); set => SetValue(ThumbnailsVisibleProperty, value); }
 
         public Stretch VideoStretch
         {
             get => (Stretch)GetValue(VideoStretchProperty);
             set => SetValue(VideoStretchProperty, value);
-        }
-
-        internal static Point3D GetPosition(double t, double y)
-        {
-            double r = Math.Sqrt(1 - (y * y));
-            double x = r * Math.Cos(t);
-            double z = r * Math.Sin(t);
-            return new Point3D(x, y, z);
-        }
-
-        private static void AutoplayChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is MediaViewer viewer && (bool)e.NewValue && viewer.MediaDataFilePath != null)
-            {
-                viewer.Player.Play();
-            }
         }
 
         public static Geometry3D CreateGeometry()
@@ -312,6 +355,22 @@ namespace Extensions.Controls
 
             mesh.Freeze();
             return mesh;
+        }
+
+        internal static Point3D GetPosition(double t, double y)
+        {
+            double r = Math.Sqrt(1 - (y * y));
+            double x = r * Math.Cos(t);
+            double z = r * Math.Sin(t);
+            return new Point3D(x, y, z);
+        }
+
+        private static void AutoplayChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is MediaViewer viewer && (bool)e.NewValue && viewer.MediaDataFilePath != null)
+            {
+                viewer.Player.Play();
+            }
         }
 
         private static void FovChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -377,7 +436,18 @@ namespace Extensions.Controls
         {
             if (d is MediaViewer viewer && e.NewValue != null && !dragging)
             {
-                viewer.Player.Position = (TimeSpan)e.NewValue;
+                TimeSpan position = (TimeSpan)e.NewValue;
+                viewer.Player.Position = position;
+                if (viewer.SubTitleVisibility == Visibility.Visible && viewer.defaultsubtitle is not null)
+                {
+                    foreach (SrtContent subtitle in viewer.defaultsubtitle)
+                    {
+                        if (position > subtitle.StartTime && position < subtitle.EndTime)
+                        {
+                            viewer.SubTitle = subtitle.Text;
+                        }
+                    }
+                }
             }
         }
 
@@ -490,6 +560,29 @@ namespace Extensions.Controls
             if (openFileDialog.ShowDialog() == true)
             {
                 MediaDataFilePath = openFileDialog.FileName;
+            }
+        }
+
+        private ObservableCollection<SrtContent> ParseSrtFile(string filepath)
+        {
+            try
+            {
+                ObservableCollection<SrtContent> content = new();
+                foreach (string element in File.ReadAllText(filepath, Encoding.UTF8).Split(new string[] { "\r\n\r\n" }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    content.Add(new SrtContent()
+                    {
+                        StartTime = TimeSpan.Parse(element.Split('\n')[1].Substring(0, element.Split('\n')[1].LastIndexOf("-->")).Trim()),
+                        EndTime = TimeSpan.Parse(element.Split('\n')[1].Substring(element.Split('\n')[1].LastIndexOf("-->") + 3).Trim()),
+                        Text = string.Concat(element.Split('\n').Skip(2).Take(element.Split('\n').Length - 2)),
+                        Segment = element.Split('\n')[0]
+                    });
+                }
+                return content;
+            }
+            catch (Exception)
+            {
+                return null;
             }
         }
 
@@ -643,6 +736,15 @@ namespace Extensions.Controls
             }
         }
 
+        private void Subtitle_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = "Srt Dosyası (*.srt)|*.srt" };
+            if (openFileDialog.ShowDialog() == true)
+            {
+                defaultsubtitle = ParseSrtFile(openFileDialog.FileName);
+            }
+        }
+
         private void Viewport3D_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             _isOnDrag = true;
@@ -670,5 +772,16 @@ namespace Extensions.Controls
         {
             Fov -= e.Delta / 100;
         }
+    }
+
+    public class SrtContent
+    {
+        public TimeSpan EndTime { get; set; }
+
+        public string Segment { get; set; }
+
+        public TimeSpan StartTime { get; set; }
+
+        public string Text { get; set; }
     }
 }
