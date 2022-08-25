@@ -328,7 +328,7 @@ namespace TwainControl
             }, parameter => true);
 
             SetWatermark = new RelayCommand<object>(parameter => Scanner.CroppedImage = ÜstüneResimÇiz(Scanner.CroppedImage, new System.Windows.Point(Scanner.CroppedImage.Width / 2, Scanner.CroppedImage.Height / 2), System.Windows.Media.Brushes.Red, Scanner.WatermarkTextSize, Scanner.Watermark, Scanner.WatermarkAngle, Scanner.WatermarkFont), parameter => Scanner.CroppedImage is not null && !string.IsNullOrWhiteSpace(Scanner?.Watermark));
-            
+
             ApplyColorChange = new RelayCommand<object>(parameter => Scanner.CopyCroppedImage = Scanner.CroppedImage, parameter => Scanner.CroppedImage is not null);
 
             DeskewImage = new RelayCommand<object>(parameter =>
@@ -361,6 +361,26 @@ namespace TwainControl
                 }
             }, parameter => true);
 
+            LoadImage = new RelayCommand<object>(parameter =>
+            {
+                OpenFileDialog openFileDialog = new()
+                {
+                    Filter = "Resim Dosyası(*.jpg;*.jpeg;*.png;*.gif;*.tif;*.bmp)|*.jpg;*.jpeg;*.png;*.gif;*.tif;*.bmp",
+                    Multiselect = true
+                };
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    foreach (string item in openFileDialog.FileNames)
+                    {
+                        BitmapImage bi = new(new Uri(item));
+                        bi.Freeze();
+                        BitmapFrame bitmapFrame = BitmapFrame.Create(bi, bi.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 21 * 29.7));
+                        bitmapFrame.Freeze();
+                        Scanner.Resimler.Add(new ScannedImage() { Seçili = true, Resim = bitmapFrame });
+                    }
+                }
+            }, parameter => true);
+
             Scanner.PropertyChanged += Scanner_PropertyChanged;
 
             Settings.Default.PropertyChanged += Default_PropertyChanged;
@@ -369,6 +389,8 @@ namespace TwainControl
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public ICommand ApplyColorChange { get; }
 
         public CroppedBitmap CroppedOcrBitmap
         {
@@ -437,9 +459,10 @@ namespace TwainControl
         public ICommand Kaydet { get; }
 
         public ICommand KayıtYoluBelirle { get; }
-        public ICommand ApplyColorChange { get; }
 
         public ICommand ListeTemizle { get; }
+
+        public ICommand LoadImage { get; }
 
         public virtual ICommand OcrPage { get; set; }
 

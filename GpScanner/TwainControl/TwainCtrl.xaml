@@ -63,7 +63,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
                     <RowDefinition />
-                    <RowDefinition Height="54.4" />
+                    <RowDefinition Height="81.6" />
                 </Grid.RowDefinitions>
                 <ComboBox Grid.Row="0"
                     ItemsSource="{Binding Scanner.Tarayıcılar}"
@@ -515,70 +515,75 @@
                     </ListBox>
                 </GroupBox>
                 <UniformGrid Grid.Row="3"
-                    Columns="2" Rows="2">
-                    <Button Command="{Binding Seçilikaydet}">
-                        <Button.Content>
-                            <StackPanel Orientation="Horizontal">
-                                <Canvas Width="24" Height="24">
-                                    <Image Width="24" Height="24">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="6" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                    <TextBlock d:Text="0" FontSize="9" Foreground="Red"
-                                        Text="{Binding Scanner.SeçiliResimSayısı}" />
-                                </Canvas>
-                                <TextBlock VerticalAlignment="Center" Text="{local:Loc SAVESELECTED}" />
-                            </StackPanel>
-                        </Button.Content>
+                    Columns="2" Rows="3" FirstColumn="1">
+                    <Button Command="{Binding LoadImage}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="24" Height="24">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="139" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                            <TextBlock VerticalAlignment="Center" Text="{local:Loc FILE}" />
+                        </StackPanel>
                     </Button>
-                    <Button Background="Red" Command="{Binding ListeTemizle}">
-                        <Button.Content>
-                            <StackPanel Orientation="Horizontal">
+                    <Button Command="{Binding Seçilikaydet}">
+                        <StackPanel Orientation="Horizontal">
+                            <Canvas Width="24" Height="24">
                                 <Image Width="24" Height="24">
                                     <Image.Source>
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                             <Binding Source="Shell32.dll" />
-                                            <Binding Source="131" />
+                                            <Binding Source="6" />
                                         </MultiBinding>
                                     </Image.Source>
                                 </Image>
-                                <TextBlock VerticalAlignment="Center" Text="{local:Loc CLEARLIST}" />
-                            </StackPanel>
-                        </Button.Content>
+                                <TextBlock d:Text="0" FontSize="9" Foreground="Red"
+                                        Text="{Binding Scanner.SeçiliResimSayısı}" />
+                            </Canvas>
+                            <TextBlock VerticalAlignment="Center" Text="{local:Loc SAVESELECTED}" />
+                        </StackPanel>
                     </Button>
                     <Button Command="{Binding PdfBirleştir}">
-                        <Button.Content>
-                            <StackPanel Orientation="Horizontal">
-                                <Image Width="24" Height="24">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="68" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                                <TextBlock VerticalAlignment="Center" Text="{local:Loc MERGEPDF}" />
-                            </StackPanel>
-                        </Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="24" Height="24">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="68" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                            <TextBlock VerticalAlignment="Center" Text="{local:Loc MERGEPDF}" />
+                        </StackPanel>
+                    </Button>
+                    <Button Background="Red" Command="{Binding ListeTemizle}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="24" Height="24">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="131" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                            <TextBlock VerticalAlignment="Center" Text="{local:Loc CLEARLIST}" />
+                        </StackPanel>
                     </Button>
                     <Button Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/goksenpasli">
-                        <Button.Content>
-                            <StackPanel Orientation="Horizontal">
-                                <Image Width="24" Height="24">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="14" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                                <TextBlock VerticalAlignment="Center" Text="{local:Loc ABOUT}" />
-                            </StackPanel>
-                        </Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="24" Height="24">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="14" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                            <TextBlock VerticalAlignment="Center" Text="{local:Loc ABOUT}" />
+                        </StackPanel>
                     </Button>
                 </UniformGrid>
             </Grid>
