@@ -44,6 +44,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -60,6 +61,9 @@
     <Compile Include="Controls\ButtonedTextBox.cs" />
     <Compile Include="Controls\Chart.cs" />
     <Compile Include="Controls\ColorPicker.cs" />
+    <Compile Include="Controls\TranslateView.xaml.cs">
+      <DependentUpon>TranslateView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\VirtualizingWrapPanel.cs" />
     <Compile Include="Converters\TimespanToTickConverter.cs" />
     <Compile Include="Converters\VisibilityToBooleanConverter.cs" />
@@ -99,6 +103,7 @@
     <Compile Include="Shader\InvertColorEffect.cs" />
     <Compile Include="Shader\PixelateEffect.cs" />
     <Compile Include="Shader\SharpenEffect.cs" />
+    <Compile Include="TranslateViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\ArchiveViewer.xaml">
@@ -106,6 +111,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\MediaViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TranslateView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

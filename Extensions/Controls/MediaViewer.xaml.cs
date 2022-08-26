@@ -34,6 +34,8 @@ namespace Extensions.Controls
 
         public static readonly DependencyProperty AutoPlayProperty = DependencyProperty.Register("AutoPlay", typeof(bool), typeof(MediaViewer), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, new PropertyChangedCallback(AutoplayChanged)));
 
+        public static readonly DependencyProperty AutoTranslateProperty = DependencyProperty.Register("AutoTranslate", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
+
         public static readonly DependencyProperty BwAmountProperty = DependencyProperty.Register("BwAmount", typeof(double), typeof(MediaViewer), new PropertyMetadata(0.6D));
 
         public static readonly DependencyProperty ContextMenuVisibilityProperty = DependencyProperty.Register("ContextMenuVisibility", typeof(Visibility), typeof(MediaElement), new PropertyMetadata(Visibility.Collapsed));
@@ -178,6 +180,12 @@ namespace Extensions.Controls
 
         public bool AutoSkipNextVideo { get; set; }
 
+        public bool AutoTranslate
+        {
+            get => (bool)GetValue(AutoTranslateProperty);
+            set => SetValue(AutoTranslateProperty, value);
+        }
+
         public double BwAmount
         {
             get => (double)GetValue(BwAmountProperty);
@@ -195,6 +203,8 @@ namespace Extensions.Controls
             get => (Visibility)GetValue(ControlVisibleProperty);
             set => SetValue(ControlVisibleProperty, value);
         }
+
+        public string ÇevrilenDil { get; set; } = "en";
 
         public TimeSpan EndTimeSpan { get => (TimeSpan)GetValue(EndTimeSpanProperty); set => SetValue(EndTimeSpanProperty, value); }
 
@@ -229,6 +239,8 @@ namespace Extensions.Controls
             get => (double)GetValue(MediaVolumeProperty);
             set => SetValue(MediaVolumeProperty, value);
         }
+
+        public string MevcutDil { get; set; } = "auto";
 
         public Visibility OpenButtonVisibility { get; set; } = Visibility.Collapsed;
 
@@ -454,7 +466,7 @@ namespace Extensions.Controls
                     {
                         if (position > subtitle.StartTime && position < subtitle.EndTime)
                         {
-                            viewer.SubTitle = subtitle.Text;
+                            viewer.SubTitle = viewer.AutoTranslate ? Task.Run(() => TranslateViewModel.DileÇevir(subtitle.Text, viewer.MevcutDil, viewer.ÇevrilenDil)).Result : subtitle.Text;
                         }
                         if (position > subtitle.EndTime)
                         {
@@ -590,7 +602,7 @@ namespace Extensions.Controls
             try
             {
                 ObservableCollection<SrtContent> content = new();
-                foreach (string element in File.ReadAllText(filepath, Encoding.UTF8).Split(new string[] { "\r\n\r\n" }, StringSplitOptions.RemoveEmptyEntries))
+                foreach (string element in File.ReadAllText(filepath, Encoding.GetEncoding("Windows-1254")).Split(new string[] { "\r\n\r\n" }, StringSplitOptions.RemoveEmptyEntries))
                 {
                     content.Add(new SrtContent()
                     {

@@ -127,7 +127,7 @@ namespace GpScanner.ViewModel
                     string çeviri = "";
                     object[] data = parsedObj as object[];
                     object firstnode = data.FirstOrDefault();
-                    for (int i = 0; i < (firstnode as object[]).Length; i++)
+                    for (int i = 0; i < (firstnode as object[])?.Length; i++)
                     {
                         çeviri += ((data.FirstOrDefault() as object[])?[i] as object[])?.ElementAt(0).ToString();
                     }
