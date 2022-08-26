@@ -70,6 +70,8 @@ namespace Extensions.Controls
 
         public static readonly DependencyProperty SubTitleColorProperty = DependencyProperty.Register("SubTitleColor", typeof(Brush), typeof(MediaViewer), new PropertyMetadata(Brushes.White));
 
+        public static readonly DependencyProperty SubtitleFilePathProperty = DependencyProperty.Register("SubtitleFilePath", typeof(string), typeof(MediaViewer), new PropertyMetadata(null, SubtitleFilePathChanged));
+
         public static readonly DependencyProperty SubTitleHorizontalAlignmentProperty = DependencyProperty.Register("SubTitleHorizontalAlignment", typeof(HorizontalAlignment), typeof(MediaViewer), new PropertyMetadata(HorizontalAlignment.Center));
 
         public static readonly DependencyProperty SubTitleMarginProperty = DependencyProperty.Register("SubTitleMargin", typeof(Thickness), typeof(MediaViewer), new PropertyMetadata(new Thickness(0d, 0d, 0d, 10d)));
@@ -117,8 +119,6 @@ namespace Extensions.Controls
         private double _startRotateX;
 
         private double _startRotateY;
-
-        private ObservableCollection<SrtContent> defaultsubtitle;
 
         static MediaViewer()
         {
@@ -238,13 +238,17 @@ namespace Extensions.Controls
             set => SetValue(PanoramaModeProperty, value);
         }
 
+        [Browsable(false)]
+        public ObservableCollection<SrtContent> ParsedSubtitle { get; set; }
+
         public Size PixelateSize
         {
             get => (Size)GetValue(PixelateSizeProperty);
             set => SetValue(PixelateSizeProperty, value);
         }
 
-        public ObservableCollection<string> PlayList { get; set; } = new ObservableCollection<string>();
+        [Browsable(false)]
+        public ObservableCollection<string> PlayList { get; set; } = new();
 
         public double RotateX { get => (double)GetValue(RotateXProperty); set => SetValue(RotateXProperty, value); }
 
@@ -274,6 +278,12 @@ namespace Extensions.Controls
         {
             get => (Brush)GetValue(SubTitleColorProperty);
             set => SetValue(SubTitleColorProperty, value);
+        }
+
+        public string SubtitleFilePath
+        {
+            get => (string)GetValue(SubtitleFilePathProperty);
+            set => SetValue(SubtitleFilePathProperty, value);
         }
 
         public HorizontalAlignment SubTitleHorizontalAlignment
@@ -438,13 +448,17 @@ namespace Extensions.Controls
             {
                 TimeSpan position = (TimeSpan)e.NewValue;
                 viewer.Player.Position = position;
-                if (viewer.SubTitleVisibility == Visibility.Visible && viewer.defaultsubtitle is not null)
+                if (viewer.SubTitleVisibility == Visibility.Visible && viewer.ParsedSubtitle is not null)
                 {
-                    foreach (SrtContent subtitle in viewer.defaultsubtitle)
+                    foreach (SrtContent subtitle in viewer.ParsedSubtitle)
                     {
                         if (position > subtitle.StartTime && position < subtitle.EndTime)
                         {
                             viewer.SubTitle = subtitle.Text;
+                        }
+                        if (position > subtitle.EndTime)
+                        {
+                            viewer.SubTitle = string.Empty;
                         }
                     }
                 }
@@ -474,6 +488,14 @@ namespace Extensions.Controls
                     viewer.PanoramaViewPort.Visibility = Visibility.Collapsed;
                     viewer.panoramaBrush.Brush = null;
                 }
+            }
+        }
+
+        private static void SubtitleFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is MediaViewer viewer && e.NewValue != null)
+            {
+                viewer.ParsedSubtitle = viewer.ParseSrtFile((string)e.NewValue);
             }
         }
 
@@ -741,7 +763,38 @@ namespace Extensions.Controls
             OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = "Srt Dosyası (*.srt)|*.srt" };
             if (openFileDialog.ShowDialog() == true)
             {
-                defaultsubtitle = ParseSrtFile(openFileDialog.FileName);
+                SubtitleFilePath = openFileDialog.FileName;
+                ParsedSubtitle = ParseSrtFile(SubtitleFilePath);
+            }
+        }
+
+        private void SubtitleMargin_Click(object sender, RoutedEventArgs e)
+        {
+            Thickness defaultsubtitlethickness = new(SubTitleMargin.Left, SubTitleMargin.Top, SubTitleMargin.Right, SubTitleMargin.Bottom);
+            if (sender is Button button)
+            {
+                switch (button.Content)
+                {
+                    case "6":
+                        defaultsubtitlethickness.Bottom -= 10;
+                        SubTitleMargin = defaultsubtitlethickness;
+                        return;
+
+                    case "5":
+                        defaultsubtitlethickness.Bottom += 10;
+                        SubTitleMargin = defaultsubtitlethickness;
+                        return;
+
+                    case "4":
+                        defaultsubtitlethickness.Left += 10;
+                        SubTitleMargin = defaultsubtitlethickness;
+                        return;
+
+                    case "3":
+                        defaultsubtitlethickness.Left -= 10;
+                        SubTitleMargin = defaultsubtitlethickness;
+                        return;
+                }
             }
         }
 

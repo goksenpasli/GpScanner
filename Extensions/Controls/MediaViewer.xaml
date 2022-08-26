@@ -346,6 +346,26 @@
                 FontFamily="Webdings" FontSize="18" Foreground="Blue"
                 OverContent="(">
                 <StackPanel Background="{StaticResource PlayerBackGround}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Button Grid.Column="1"
+                            Click="SubtitleMargin_Click" Content="5" FontFamily="Webdings" />
+                        <Button Grid.Row="2" Grid.Column="1"
+                            Click="SubtitleMargin_Click" Content="6" FontFamily="Webdings" />
+                        <Button Grid.Row="1"
+                            Click="SubtitleMargin_Click" Content="3" FontFamily="Webdings" />
+                        <Button Grid.Row="1" Grid.Column="2"
+                            Click="SubtitleMargin_Click" Content="4" FontFamily="Webdings" />
+                    </Grid>
                     <Button Click="Subtitle_Click" Content="ALT YAZI YÜKLE" FontFamily="Segoe UI" />
                     <ToggleButton VerticalContentAlignment="Center"
                         Content="ALT YAZI&#x0a;GÖRÜNÜR" FontFamily="Segoe UI"
@@ -356,6 +376,7 @@
                     <local:ColorPicker FontFamily="Segoe UI"
                         HexCode="{Binding SubTitleColor, Mode=TwoWay}"
                         HexCodeVisibility="Collapsed" PredefinedColorVisibility="Visible" SelectorLength="0" />
+
                 </StackPanel>
             </local:ContentToggleButton>
             <local:ContentToggleButton Grid.Column="15"
