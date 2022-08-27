@@ -5,18 +5,20 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:Extensions"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance Type=Controls:MediaViewer}"
-    d:DesignHeight="384" d:DesignWidth="600" UseLayoutRounding="True"
+    d:DesignHeight="384" d:DesignWidth="512" UseLayoutRounding="True"
     mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Extensions;component/Themes/Skin.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <local:FilePathToFileNameConverter x:Key="FilePathToFileNameConverter" />
             <local:TimespanToSecondsConverter x:Key="TimespanToSecondsConverter" />
             <local:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter" />
             <local:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <local:VisibilityToBooleanConverter x:Key="VisibilityToBooleanConverter" />
+            <Style BasedOn="{StaticResource Slider}" TargetType="Slider" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -231,9 +233,8 @@
             Background="{StaticResource PlayerBackGround}"
             IsMoveToPointEnabled="True"
             Maximum="{Binding EndTimeSpan, Converter={StaticResource TimespanToSecondsConverter}, Mode=OneWay}"
-            MouseLeave="Sld_MouseLeave" MouseMove="Sld_MouseMove"
-            Style="{StaticResource Slider}"
-            Thumb.DragCompleted="Sld_DragCompleted" Thumb.DragStarted="Sld_DragStarted"
+            MouseLeave="Sld_MouseLeave" MouseMove="Sld_MouseMove" Thumb.DragCompleted="Sld_DragCompleted"
+            Thumb.DragStarted="Sld_DragStarted"
             Visibility="{Binding SliderControlVisible}"
             Value="{Binding MediaPosition, Converter={StaticResource TimespanToSecondsConverter}, Mode=TwoWay}" />
         <Grid Grid.Row="2"
@@ -334,7 +335,6 @@
                 Width="60"
                 VerticalAlignment="Center"
                 IsMoveToPointEnabled="True" Maximum="1"
-                Style="{StaticResource Slider}"
                 Value="{Binding MediaVolume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <TextBlock Grid.Column="10"
                 VerticalAlignment="Center"
@@ -344,7 +344,6 @@
                 Width="45"
                 VerticalAlignment="Center"
                 IsMoveToPointEnabled="True" Maximum="1" Minimum="-1"
-                Style="{StaticResource Slider}"
                 Value="{Binding ElementName=Player, Path=Balance}" />
             <TextBlock Grid.Column="12"
                 VerticalAlignment="Center"
@@ -352,9 +351,10 @@
                 Text="X" />
             <TextBlock Grid.Column="13"
                 Margin="1,0,1,0" VerticalAlignment="Center"
-                Foreground="Black">
+                Foreground="Black"
+                Visibility="{Binding TimeDisplayVisibility}">
                 <Run Text="{Binding MediaPosition, Converter={StaticResource TimeSpanToStringConverter}, Mode=OneWay}" />
-                <Run Text=" " />
+                <Run Text="" />
                 <Run Text="{Binding EndTimeSpan, Converter={StaticResource TimeSpanToStringConverter}, Mode=OneWay}" />
             </TextBlock>
             <local:ContentToggleButton Grid.Column="14"
@@ -382,18 +382,17 @@
                         <Button Grid.Row="1" Grid.Column="2"
                             Click="SubtitleMargin_Click" Content="4" FontFamily="Webdings" />
                     </Grid>
-                    <Button Click="Subtitle_Click" Content="ALT YAZI YÜKLE" FontFamily="Segoe UI" />
+                    <Button Click="Subtitle_Click" Content="ALTYAZI YÜKLE" FontFamily="Segoe UI" />
                     <ToggleButton VerticalContentAlignment="Center"
-                        Content="ALT YAZI&#x0a;GÖRÜNÜR" FontFamily="Segoe UI"
+                        Content="ALTYAZI GÖRÜNÜR" FontFamily="Segoe UI"
                         IsChecked="{Binding SubTitleVisibility, Mode=TwoWay, Converter={StaticResource VisibilityToBooleanConverter}}" />
                     <Slider Maximum="128" Minimum="1"
-                        Style="{StaticResource Slider}"
                         Value="{Binding SubTitleSize}" />
-                    <local:ColorPicker FontFamily="Segoe UI"
+                    <local:ColorPicker ColorPickerColumnCount="16" FontFamily="Segoe UI"
                         HexCode="{Binding SubTitleColor, Mode=TwoWay}"
                         HexCodeVisibility="Collapsed" PredefinedColorVisibility="Visible" SelectorLength="0" />
                     <ToggleButton VerticalContentAlignment="Center"
-                        Content="OTOMATİK&#x0a;ÇEVİRİ" FontFamily="Segoe UI"
+                        Content="OTOMATİK ALTYAZI ÇEVİRİ" FontFamily="Segoe UI"
                         IsChecked="{Binding AutoTranslate}" />
                     <Controls:TranslateView FontFamily="Segoe UI" IsEnabled="{Binding AutoTranslate}" />
                 </StackPanel>
@@ -417,7 +416,7 @@
                                 <StackPanel Orientation="Horizontal">
                                     <Image Width="16" Height="16"
                                         Source="{Binding Mode=OneWay, Converter={StaticResource FilePathToIconConverter}}" />
-                                    <TextBlock Text="{Binding Mode=OneWay}" />
+                                    <TextBlock Text="{Binding Converter={StaticResource FilePathToFileNameConverter}, Mode=OneWay}" />
                                 </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -434,15 +433,6 @@
                 FontFamily="Webdings" FontSize="20" Foreground="Blue"
                 OverContent="·" PlacementMode="Top">
                 <StackPanel Background="{StaticResource PlayerBackGround}" Orientation="Horizontal">
-                    <StackPanel.Resources>
-                        <Style TargetType="{x:Type Slider}">
-                            <Setter Property="BorderThickness" Value="3" />
-                            <Setter Property="Height" Value="64" />
-                            <Setter Property="Maximum" Value="1" />
-                            <Setter Property="Minimum" Value="0" />
-                            <Setter Property="Orientation" Value="Vertical" />
-                        </Style>
-                    </StackPanel.Resources>
                     <UniformGrid Columns="2" Rows="2">
                         <local:ContentToggleButton FontFamily="Wingdings 3" Foreground="Blue" OverContent="n">
                             <ListBox FontFamily="Segoe UI"
@@ -454,35 +444,46 @@
                                 <ListBoxItem Content="En Boy Doldur" Tag="{x:Static Stretch.UniformToFill}" />
                             </ListBox>
                         </local:ContentToggleButton>
+                        <Button x:Name="Rotate"
+                            Click="Rotate_Click" Content="P" FontFamily="Wingdings 3"
+                            Foreground="Blue" />
                         <Button x:Name="FlipVer"
                             Click="FlipVer_Click" Content="E" FontFamily="Wingdings 3"
                             Foreground="Blue" />
                         <Button x:Name="FlipHor"
                             Click="FlipHor_Click" Content="D" FontFamily="Wingdings 3"
                             Foreground="Blue" />
-                        <Button x:Name="Rotate"
-                            Click="Rotate_Click" Content="P" FontFamily="Wingdings 3"
-                            Foreground="Blue" />
                     </UniformGrid>
-                    <Slider BorderBrush="Red" Value="{Binding Red, ElementName=Color}" />
-                    <Slider BorderBrush="Green" Value="{Binding Green, ElementName=Color}" />
-                    <Slider BorderBrush="Blue" Value="{Binding Blue, ElementName=Color}" />
-                    <Slider Value="{Binding Brightness, ElementName=Color}">
-                        <Slider.BorderBrush>
-                            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                <GradientStop Color="Black" />
-                                <GradientStop Offset="1" Color="White" />
-                            </LinearGradientBrush>
-                        </Slider.BorderBrush>
-                    </Slider>
-                    <Slider Value="{Binding Contrast, ElementName=Color}">
-                        <Slider.BorderBrush>
-                            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                <GradientStop Color="White" />
-                                <GradientStop Offset="1" Color="Black" />
-                            </LinearGradientBrush>
-                        </Slider.BorderBrush>
-                    </Slider>
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel.Resources>
+                            <Style TargetType="{x:Type Slider}">
+                                <Setter Property="BorderThickness" Value="3" />
+                                <Setter Property="Height" Value="64" />
+                                <Setter Property="Maximum" Value="1" />
+                                <Setter Property="Minimum" Value="0" />
+                                <Setter Property="Orientation" Value="Vertical" />
+                            </Style>
+                        </StackPanel.Resources>
+                        <Slider BorderBrush="Red" Value="{Binding Red, ElementName=Color}" />
+                        <Slider BorderBrush="Green" Value="{Binding Green, ElementName=Color}" />
+                        <Slider BorderBrush="Blue" Value="{Binding Blue, ElementName=Color}" />
+                        <Slider Value="{Binding Brightness, ElementName=Color}">
+                            <Slider.BorderBrush>
+                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                    <GradientStop Color="Black" />
+                                    <GradientStop Offset="1" Color="White" />
+                                </LinearGradientBrush>
+                            </Slider.BorderBrush>
+                        </Slider>
+                        <Slider Value="{Binding Contrast, ElementName=Color}">
+                            <Slider.BorderBrush>
+                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                    <GradientStop Color="White" />
+                                    <GradientStop Offset="1" Color="Black" />
+                                </LinearGradientBrush>
+                            </Slider.BorderBrush>
+                        </Slider>
+                    </StackPanel>
                     <UniformGrid Columns="4" Rows="2">
                         <ToggleButton Content="T" FontFamily="Segoe UI"
                             IsChecked="{Binding InvertColor}"
@@ -507,24 +508,19 @@
                             ToolTip="Blur" />
                     </UniformGrid>
                     <Slider Maximum="10" Minimum="0" Orientation="Vertical"
-                        Style="{StaticResource Slider}"
                         Visibility="{Binding ApplySharpen, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Value="{Binding SharpenAmount}" />
                     <Slider Maximum="1" Minimum="0" Orientation="Vertical"
-                        Style="{StaticResource Slider}"
                         Visibility="{Binding ApplyBw, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Value="{Binding BwAmount}" />
                     <Slider Maximum="10" Minimum="0" Orientation="Vertical"
-                        Style="{StaticResource Slider}"
                         Visibility="{Binding BlurColor, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Value="{Binding BlurAmount}" />
                     <Slider Maximum="250" Minimum="1" Orientation="Vertical"
-                        Style="{StaticResource Slider}"
                         ValueChanged="Slider_WidthValueChanged"
                         Visibility="{Binding ApplyPixelate, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Value="60" />
                     <Slider Maximum="250" Minimum="1" Orientation="Vertical"
-                        Style="{StaticResource Slider}"
                         ValueChanged="Slider_HeightValueChanged"
                         Visibility="{Binding ApplyPixelate, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Value="40" />

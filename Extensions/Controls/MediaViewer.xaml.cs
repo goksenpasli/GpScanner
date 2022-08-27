@@ -64,6 +64,8 @@ namespace Extensions.Controls
 
         public static readonly DependencyProperty MediaVolumeProperty = DependencyProperty.Register("MediaVolume", typeof(double), typeof(MediaViewer), new PropertyMetadata(1d, MediaVolumeChanged));
 
+        public static readonly DependencyProperty OpenButtonVisibilityProperty = DependencyProperty.Register("OpenButtonVisibility", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Collapsed));
+
         public static readonly DependencyProperty OsdTextProperty = DependencyProperty.Register("OsdText", typeof(string), typeof(MediaViewer), new PropertyMetadata(null, OsdTextChanged));
 
         public static readonly DependencyProperty OsdTextVisibilityProperty = DependencyProperty.Register("OsdTextVisibility", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Collapsed));
@@ -97,6 +99,8 @@ namespace Extensions.Controls
         public static readonly DependencyProperty SubTitleVisibilityProperty = DependencyProperty.Register("SubTitleVisibility", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Collapsed));
 
         public static readonly DependencyProperty ThumbnailsVisibleProperty = DependencyProperty.Register("ThumbnailsVisible", typeof(bool), typeof(MediaViewer), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+        public static readonly DependencyProperty TimeDisplayVisibilityProperty = DependencyProperty.Register("TimeDisplayVisibility", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Visible));
 
         public static readonly DependencyProperty VideoStretchProperty = DependencyProperty.Register("VideoStretch", typeof(Stretch), typeof(MediaViewer), new PropertyMetadata(Stretch.Uniform));
 
@@ -288,8 +292,13 @@ namespace Extensions.Controls
 
         public string MevcutDil { get; set; } = "auto";
 
-        public Visibility OpenButtonVisibility { get; set; } = Visibility.Collapsed;
+        public Visibility OpenButtonVisibility
+        {
+            get { return (Visibility)GetValue(OpenButtonVisibilityProperty); }
+            set { SetValue(OpenButtonVisibilityProperty, value); }
+        }
 
+        [Browsable(false)]
         public string OsdText
         {
             get => (string)GetValue(OsdTextProperty);
@@ -346,6 +355,7 @@ namespace Extensions.Controls
 
         public Geometry3D SphereModel { get; set; } = CreateGeometry();
 
+        [Browsable(false)]
         public string SubTitle
         {
             get => (string)GetValue(SubTitleProperty);
@@ -398,6 +408,12 @@ namespace Extensions.Controls
         {
             get => (bool)GetValue(ThumbnailsVisibleProperty);
             set => SetValue(ThumbnailsVisibleProperty, value);
+        }
+
+        public Visibility TimeDisplayVisibility
+        {
+            get { return (Visibility)GetValue(TimeDisplayVisibilityProperty); }
+            set { SetValue(TimeDisplayVisibilityProperty, value); }
         }
 
         public Stretch VideoStretch

@@ -83,6 +83,8 @@ namespace Extensions
     [TemplatePart(Name = "RgbGrid", Type = typeof(Rectangle))]
     public class ColorPicker : Control
     {
+        public static readonly DependencyProperty ColorPickerColumnCountProperty = DependencyProperty.Register("ColorPickerColumnCount", typeof(int), typeof(ColorPicker), new PropertyMetadata(8));
+
         public static readonly DependencyProperty HexCodeProperty = DependencyProperty.Register("HexCode", typeof(string), typeof(ColorPicker), new PropertyMetadata("#00000000"));
 
         public static readonly DependencyProperty HexCodeVisibilityProperty = DependencyProperty.Register("HexCodeVisibility", typeof(Visibility), typeof(ColorPicker), new PropertyMetadata(Visibility.Visible));
@@ -123,6 +125,12 @@ namespace Extensions
 
             SpectrumGridBackground = gradientBrush;
             MiddleStopColor = HSV.RGBFromHSV(0, 1f, 1f).Color();
+        }
+
+        public int ColorPickerColumnCount
+        {
+            get => (int)GetValue(ColorPickerColumnCountProperty);
+            set => SetValue(ColorPickerColumnCountProperty, value);
         }
 
         public string HexCode

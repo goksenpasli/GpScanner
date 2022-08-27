@@ -13,9 +13,6 @@
         <Rectangle Width="16" Height="16"
             Fill="{Binding Name}" />
     </DataTemplate>
-    <ItemsPanelTemplate x:Key="ColorPanelTemplate">
-        <UniformGrid Columns="8" />
-    </ItemsPanelTemplate>
     <local:SystemFileIconConverter x:Key="SystemFileIconConverter" />
     <local:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
     <local:FilePathToIconConverter x:Key="FilePathToIconConverter" />
@@ -107,11 +104,15 @@
                             Visibility="{Binding HexCodeVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
                         <ListBox Grid.RowSpan="3" Grid.Column="1"
                             ItemTemplate="{StaticResource ColorItemTemplate}"
-                            ItemsPanel="{StaticResource ColorPanelTemplate}"
                             ItemsSource="{Binding Mode=OneWay, Source={StaticResource ColorList}}"
                             SelectedValue="{Binding HexCode, RelativeSource={RelativeSource TemplatedParent}}"
                             SelectedValuePath="Name"
                             Visibility="{Binding PredefinedColorVisibility, RelativeSource={RelativeSource TemplatedParent}}">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Columns="{Binding ColorPickerColumnCount, RelativeSource={RelativeSource AncestorType=local:ColorPicker}}" />
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="ListBoxItem">
                                     <Setter Property="Padding" Value="0" />
