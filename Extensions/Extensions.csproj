@@ -100,6 +100,7 @@
     <Compile Include="Controls\Resizer.cs" />
     <Compile Include="Shader\EmbossedEffect.cs" />
     <Compile Include="Shader\GrayScaleEffect.cs" />
+    <Compile Include="Shader\GrowablePoissonDiskEffect.cs" />
     <Compile Include="Shader\InvertColorEffect.cs" />
     <Compile Include="Shader\PixelateEffect.cs" />
     <Compile Include="Shader\SharpenEffect.cs" />
@@ -151,6 +152,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Shader\GrayScaleEffect.ps" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Shader\GrowablePoissonDiskEffect.ps" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

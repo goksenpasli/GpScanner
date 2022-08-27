@@ -36,6 +36,10 @@ namespace Extensions.Controls
 
         public static readonly DependencyProperty AutoTranslateProperty = DependencyProperty.Register("AutoTranslate", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
 
+        public static readonly DependencyProperty BlurAmountProperty = DependencyProperty.Register("BlurAmount", typeof(double), typeof(MediaViewer), new PropertyMetadata(5.0d));
+
+        public static readonly DependencyProperty BlurColorProperty = DependencyProperty.Register("BlurColor", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
+
         public static readonly DependencyProperty BwAmountProperty = DependencyProperty.Register("BwAmount", typeof(double), typeof(MediaViewer), new PropertyMetadata(0.6D));
 
         public static readonly DependencyProperty ContextMenuVisibilityProperty = DependencyProperty.Register("ContextMenuVisibility", typeof(Visibility), typeof(MediaElement), new PropertyMetadata(Visibility.Collapsed));
@@ -184,6 +188,18 @@ namespace Extensions.Controls
         {
             get => (bool)GetValue(AutoTranslateProperty);
             set => SetValue(AutoTranslateProperty, value);
+        }
+
+        public double BlurAmount
+        {
+            get { return (double)GetValue(BlurAmountProperty); }
+            set { SetValue(BlurAmountProperty, value); }
+        }
+
+        public bool BlurColor
+        {
+            get { return (bool)GetValue(BlurColorProperty); }
+            set { SetValue(BlurColorProperty, value); }
         }
 
         public double BwAmount
