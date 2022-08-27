@@ -83,27 +83,23 @@ namespace Extensions
     [TemplatePart(Name = "RgbGrid", Type = typeof(Rectangle))]
     public class ColorPicker : Control
     {
-        // Using a DependencyProperty as the backing store for HexCode.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty HexCodeProperty =
-            DependencyProperty.Register("HexCode", typeof(string), typeof(ColorPicker), new PropertyMetadata("#00000000"));
+        public static readonly DependencyProperty HexCodeProperty = DependencyProperty.Register("HexCode", typeof(string), typeof(ColorPicker), new PropertyMetadata("#00000000"));
 
-        // Using a DependencyProperty as the backing store for HexCodeVisibility.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty HexCodeVisibilityProperty =
-            DependencyProperty.Register("HexCodeVisibility", typeof(Visibility), typeof(ColorPicker), new PropertyMetadata(Visibility.Visible));
+        public static readonly DependencyProperty HexCodeVisibilityProperty = DependencyProperty.Register("HexCodeVisibility", typeof(Visibility), typeof(ColorPicker), new PropertyMetadata(Visibility.Visible));
 
-        // Using a DependencyProperty as the backing store for MiddleStopColor.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty MiddleStopColorProperty =
-            DependencyProperty.Register("MiddleStopColor", typeof(Color), typeof(ColorPicker), new PropertyMetadata(Colors.Gray));
+        public static readonly DependencyProperty MiddleStopColorProperty = DependencyProperty.Register("MiddleStopColor", typeof(Color), typeof(ColorPicker), new PropertyMetadata(Colors.Gray));
 
-        // Using a DependencyProperty as the backing store for PredefinedColorVisibility.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty PredefinedColorVisibilityProperty =
-            DependencyProperty.Register("PredefinedColorVisibility", typeof(Visibility), typeof(ColorPicker), new PropertyMetadata(Visibility.Collapsed));
+        public static readonly DependencyProperty PredefinedColorVisibilityProperty = DependencyProperty.Register("PredefinedColorVisibility", typeof(Visibility), typeof(ColorPicker), new PropertyMetadata(Visibility.Collapsed));
 
-        // Using a DependencyProperty as the backing store for SpectrumGridBackground.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty SpectrumGridBackgroundProperty =
-            DependencyProperty.Register("SpectrumGridBackground", typeof(Brush), typeof(ColorPicker), new PropertyMetadata(Brushes.Transparent));
+        public static readonly DependencyProperty SpectrumGridBackgroundProperty = DependencyProperty.Register("SpectrumGridBackground", typeof(Brush), typeof(ColorPicker), new PropertyMetadata(Brushes.Transparent));
 
         public RGB Selected = new();
+
+        private Rectangle _rgbgrid;
+
+        private Rectangle _spectrumgrid;
+
+        private double currH = 360;
 
         static ColorPicker()
         {
@@ -182,12 +178,6 @@ namespace Extensions
             }
         }
 
-        private Rectangle _rgbgrid;
-
-        private Rectangle _spectrumgrid;
-
-        private double currH = 360;
-
         private void Rgbgrid_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
@@ -228,7 +218,7 @@ namespace Extensions
         {
             if (r > 255 || g > 255 || b > 255)
             {
-                throw new Exception("RGB must be under 255 (1byte)");
+                throw new ArgumentException("RGB must be under 255 (1byte)");
             }
 
             R = (byte)r;

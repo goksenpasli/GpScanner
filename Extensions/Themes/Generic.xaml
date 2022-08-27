@@ -21,7 +21,7 @@
     <local:FilePathToIconConverter x:Key="FilePathToIconConverter" />
     <local:VisibilityToBooleanConverter x:Key="VisibilityToBooleanConverter" />
     <Style x:Key="NumericUpDownTextBoxStyle" TargetType="{x:Type TextBox}">
-        <Setter Property="Text" Value="{Binding Text, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
+        <Setter Property="Text" Value="{Binding Value, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
         <Style.Triggers>
             <DataTrigger Binding="{Binding ShowMode, RelativeSource={RelativeSource TemplatedParent}}" Value="CurrencyMode">
                 <Setter Property="Text" Value="{Binding Value, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, StringFormat=\{0:C\}, UpdateSourceTrigger=PropertyChanged}" />
@@ -545,9 +545,9 @@
     <ControlTemplate x:Key="HorizontalNumericUpDown" TargetType="{x:Type ScrollBar}">
         <Grid SnapsToDevicePixels="true">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="9.5" />
+                <ColumnDefinition Width="13" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="9.5" />
+                <ColumnDefinition Width="13" />
             </Grid.ColumnDefinitions>
             <TextBox Grid.Row="0" Grid.Column="1"
                 VerticalContentAlignment="Center"
@@ -561,40 +561,32 @@
                 Command="{x:Static ScrollBar.LineLeftCommand}"
                 Style="{StaticResource ScrollBarButton}"
                 Visibility="{Binding NumericUpDownButtonsVisibility, RelativeSource={RelativeSource TemplatedParent}}">
-                <RepeatButton.Background>
-                    <VisualBrush Stretch="Uniform">
-                        <VisualBrush.Visual>
-                            <Path x:Name="Up"
-                                Width="9.5" MinHeight="8.5"
-                                Data="M0,0L5,5 10,0z" Fill="Black" RenderTransformOrigin="0.5,0.5"
-                                Stretch="Fill" StrokeLineJoin="Round">
-                                <Path.RenderTransform>
-                                    <RotateTransform Angle="90" />
-                                </Path.RenderTransform>
-                            </Path>
-                        </VisualBrush.Visual>
-                    </VisualBrush>
-                </RepeatButton.Background>
+                <RepeatButton.Content>
+                    <Path x:Name="Up"
+                        Width="9.5" MinHeight="8.5"
+                        Data="M0,0L5,5 10,0z" Fill="Black" RenderTransformOrigin="0.5,0.5"
+                        Stretch="Fill" StrokeLineJoin="Round">
+                        <Path.RenderTransform>
+                            <RotateTransform Angle="90" />
+                        </Path.RenderTransform>
+                    </Path>
+                </RepeatButton.Content>
             </RepeatButton>
             <RepeatButton x:Name="PART_LineDownButton"
                 Grid.Row="1" Grid.Column="2"
                 Command="{x:Static ScrollBar.LineRightCommand}"
                 Style="{StaticResource ScrollBarButton}"
                 Visibility="{Binding NumericUpDownButtonsVisibility, RelativeSource={RelativeSource TemplatedParent}}">
-                <RepeatButton.Background>
-                    <VisualBrush Stretch="Uniform">
-                        <VisualBrush.Visual>
-                            <Path x:Name="Down"
-                                Width="9.5" MinHeight="8.5"
-                                Data="M0,0L5,5 10,0z" Fill="Black" RenderTransformOrigin="0.5,0.5"
-                                Stretch="Fill" StrokeLineJoin="Round">
-                                <Path.RenderTransform>
-                                    <RotateTransform Angle="-90" />
-                                </Path.RenderTransform>
-                            </Path>
-                        </VisualBrush.Visual>
-                    </VisualBrush>
-                </RepeatButton.Background>
+                <RepeatButton.Content>
+                    <Path x:Name="Down"
+                        Width="9.5" MinHeight="8.5"
+                        Data="M0,0L5,5 10,0z" Fill="Black" RenderTransformOrigin="0.5,0.5"
+                        Stretch="Fill" StrokeLineJoin="Round">
+                        <Path.RenderTransform>
+                            <RotateTransform Angle="-90" />
+                        </Path.RenderTransform>
+                    </Path>
+                </RepeatButton.Content>
             </RepeatButton>
         </Grid>
         <ControlTemplate.Triggers>
@@ -610,7 +602,7 @@
         <Grid SnapsToDevicePixels="true">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="9.5" />
+                <ColumnDefinition Width="13" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition />
@@ -625,41 +617,33 @@
                 Visibility="{Binding NumericUpdownTextBoxVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
             <RepeatButton x:Name="PART_LineUpButton"
                 Grid.Row="0" Grid.Column="1"
-                MinHeight="8.5"
+                MinHeight="7"
                 Command="{x:Static ScrollBar.LineDownCommand}"
                 Style="{StaticResource ScrollBarButton}"
                 Visibility="{Binding NumericUpDownButtonsVisibility, RelativeSource={RelativeSource TemplatedParent}}">
-                <RepeatButton.Background>
-                    <VisualBrush Stretch="Uniform">
-                        <VisualBrush.Visual>
-                            <Path x:Name="Up"
-                                Width="9.5" Height="8.5"
-                                Data="M0,0L5,5 10,0z" Fill="Black" RenderTransformOrigin="0.5,0.5"
-                                Stretch="Fill" StrokeLineJoin="Round">
-                                <Path.RenderTransform>
-                                    <RotateTransform Angle="-180" />
-                                </Path.RenderTransform>
-                            </Path>
-                        </VisualBrush.Visual>
-                    </VisualBrush>
-                </RepeatButton.Background>
+                <RepeatButton.Content>
+                    <Path x:Name="Up"
+                        Width="9.5" Height="7"
+                        Data="M0,0L5,5 10,0z" Fill="Black" RenderTransformOrigin="0.5,0.5"
+                        Stretch="Fill" StrokeLineJoin="Round">
+                        <Path.RenderTransform>
+                            <RotateTransform Angle="-180" />
+                        </Path.RenderTransform>
+                    </Path>
+                </RepeatButton.Content>
             </RepeatButton>
             <RepeatButton x:Name="PART_LineDownButton"
                 Grid.Row="1" Grid.Column="1"
-                MinHeight="8.5"
+                MinHeight="7"
                 Command="{x:Static ScrollBar.LineUpCommand}"
                 Style="{StaticResource ScrollBarButton}"
                 Visibility="{Binding NumericUpDownButtonsVisibility, RelativeSource={RelativeSource TemplatedParent}}">
-                <RepeatButton.Background>
-                    <VisualBrush Stretch="Uniform">
-                        <VisualBrush.Visual>
-                            <Path x:Name="Down"
-                                Width="9.5" Height="8.5"
-                                Data="M0,0L5,5 10,0z" Fill="Black" RenderTransformOrigin="0.5,0.5"
-                                Stretch="Fill" StrokeLineJoin="Round" />
-                        </VisualBrush.Visual>
-                    </VisualBrush>
-                </RepeatButton.Background>
+                <RepeatButton.Content>
+                    <Path x:Name="Down"
+                        Width="9.5" Height="7"
+                        Data="M0,0L5,5 10,0z" Fill="Black" RenderTransformOrigin="0.5,0.5"
+                        Stretch="Fill" StrokeLineJoin="Round" />
+                </RepeatButton.Content>
             </RepeatButton>
         </Grid>
         <ControlTemplate.Triggers>

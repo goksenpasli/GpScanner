@@ -19,7 +19,7 @@ namespace Extensions
         public static readonly DependencyProperty ShowModeProperty = DependencyProperty.Register("ShowMode", typeof(Mode), typeof(NumericUpDownControl), new PropertyMetadata(Mode.NumberMode, ModeChanged));
 
         [Browsable(false)]
-        public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(double), typeof(NumericUpDownControl), new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, Changed));
+        public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(double), typeof(NumericUpDownControl), new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         static NumericUpDownControl()
         {
@@ -105,17 +105,17 @@ namespace Extensions
         {
             if (d is NumericUpDownControl numericUpDownControl)
             {
-                numericUpDownControl.Text = numericUpDownControl.Value = (double)e.NewValue;
-
-                if (numericUpDownControl.Text > numericUpDownControl.Maximum)
+                if ((double)e.NewValue >= numericUpDownControl.Maximum)
                 {
-                    numericUpDownControl.Text = numericUpDownControl.Value = numericUpDownControl.Maximum;
+                    numericUpDownControl.Value = numericUpDownControl.Maximum;
                 }
 
-                if (numericUpDownControl.Text < numericUpDownControl.Minimum)
+                if ((double)e.NewValue <= numericUpDownControl.Minimum)
                 {
-                    numericUpDownControl.Text = numericUpDownControl.Value = numericUpDownControl.Minimum;
+                    numericUpDownControl.Value = numericUpDownControl.Minimum;
                 }
+
+                numericUpDownControl.Value = (double)e.NewValue;
 
                 if (numericUpDownControl.ShowMode == Mode.DateTimeMode && numericUpDownControl.DateValue.HasValue)
                 {

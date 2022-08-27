@@ -14,59 +14,35 @@ namespace Extensions
 {
     public class GraphControl : FrameworkElement
     {
-        // Using a DependencyProperty as the backing store for ContextMenuVisibility.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ContextMenuVisibilityProperty =
-            DependencyProperty.Register("ContextMenuVisibility", typeof(Visibility), typeof(GraphControl), new PropertyMetadata(Visibility.Visible));
+        public static readonly DependencyProperty ContextMenuVisibilityProperty = DependencyProperty.Register("ContextMenuVisibility", typeof(Visibility), typeof(GraphControl), new PropertyMetadata(Visibility.Visible));
 
-        // Using a DependencyProperty as the backing store for DotColor.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty DotColorProperty =
-            DependencyProperty.Register("DotColor", typeof(Brush), typeof(GraphControl), new FrameworkPropertyMetadata(Brushes.Blue, FrameworkPropertyMetadataOptions.AffectsRender));
+        public static readonly DependencyProperty DotColorProperty = DependencyProperty.Register("DotColor", typeof(Brush), typeof(GraphControl), new FrameworkPropertyMetadata(Brushes.Blue, FrameworkPropertyMetadataOptions.AffectsRender));
 
-        // Using a DependencyProperty as the backing store for FontSize.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty FontSizeProperty =
-            DependencyProperty.Register("FontSize", typeof(double), typeof(GraphControl), new FrameworkPropertyMetadata(12.0d, FrameworkPropertyMetadataOptions.AffectsRender));
+        public static readonly DependencyProperty FontSizeProperty = DependencyProperty.Register("FontSize", typeof(double), typeof(GraphControl), new FrameworkPropertyMetadata(12.0d, FrameworkPropertyMetadataOptions.AffectsRender));
 
-        // Using a DependencyProperty as the backing store for GraphContentVisibility.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty GraphContentVisibilityProperty =
-            DependencyProperty.Register("GraphContentVisibility", typeof(Visibility), typeof(GraphControl), new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.AffectsRender));
+        public static readonly DependencyProperty GraphContentVisibilityProperty = DependencyProperty.Register("GraphContentVisibility", typeof(Visibility), typeof(GraphControl), new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.AffectsRender));
 
-        // Using a DependencyProperty as the backing store for IsContextMenuEnabled.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty IsContextMenuEnabledProperty =
-            DependencyProperty.Register("IsContextMenuEnabled", typeof(bool), typeof(GraphControl), new PropertyMetadata(true));
+        public static readonly DependencyProperty IsContextMenuEnabledProperty = DependencyProperty.Register("IsContextMenuEnabled", typeof(bool), typeof(GraphControl), new PropertyMetadata(true));
 
-        // Using a DependencyProperty as the backing store for LineColor.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty LineColorProperty =
-            DependencyProperty.Register("LineColor", typeof(Brush), typeof(GraphControl), new FrameworkPropertyMetadata(Brushes.Blue, FrameworkPropertyMetadataOptions.AffectsRender));
+        public static readonly DependencyProperty LineColorProperty = DependencyProperty.Register("LineColor", typeof(Brush), typeof(GraphControl), new FrameworkPropertyMetadata(Brushes.Blue, FrameworkPropertyMetadataOptions.AffectsRender));
 
-        // Using a DependencyProperty as the backing store for LineDotVisibility.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty LineDotVisibilityProperty =
-            DependencyProperty.Register("LineDotVisibility", typeof(Visibility), typeof(GraphControl), new FrameworkPropertyMetadata(Visibility.Collapsed, FrameworkPropertyMetadataOptions.AffectsRender));
+        public static readonly DependencyProperty LineDotVisibilityProperty = DependencyProperty.Register("LineDotVisibility", typeof(Visibility), typeof(GraphControl), new FrameworkPropertyMetadata(Visibility.Collapsed, FrameworkPropertyMetadataOptions.AffectsRender));
 
-        // Using a DependencyProperty as the backing store for LineGraphVisibility.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty LineGraphVisibilityProperty =
-            DependencyProperty.Register("LineGraphVisibility", typeof(Visibility), typeof(GraphControl), new FrameworkPropertyMetadata(Visibility.Collapsed, FrameworkPropertyMetadataOptions.AffectsRender));
+        public static readonly DependencyProperty LineGraphVisibilityProperty = DependencyProperty.Register("LineGraphVisibility", typeof(Visibility), typeof(GraphControl), new FrameworkPropertyMetadata(Visibility.Collapsed, FrameworkPropertyMetadataOptions.AffectsRender));
 
-        // Using a DependencyProperty as the backing store for LineThickness.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty LineThicknessProperty =
-            DependencyProperty.Register("LineThickness", typeof(double), typeof(GraphControl), new FrameworkPropertyMetadata(2.0d, FrameworkPropertyMetadataOptions.AffectsRender));
+        public static readonly DependencyProperty LineThicknessProperty = DependencyProperty.Register("LineThickness", typeof(double), typeof(GraphControl), new FrameworkPropertyMetadata(2.0d, FrameworkPropertyMetadataOptions.AffectsRender));
 
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register("Series", typeof(ObservableCollection<Chart>), typeof(GraphControl), new FrameworkPropertyMetadata(new ObservableCollection<Chart>(), FrameworkPropertyMetadataOptions.AffectsRender));
 
-        // Using a DependencyProperty as the backing store for SeriesTextVisibility.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty SeriesTextVisibilityProperty =
-            DependencyProperty.Register("SeriesTextVisibility", typeof(Visibility), typeof(GraphControl), new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.AffectsRender));
+        public static readonly DependencyProperty SeriesTextVisibilityProperty = DependencyProperty.Register("SeriesTextVisibility", typeof(Visibility), typeof(GraphControl), new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.AffectsRender));
 
-        // Using a DependencyProperty as the backing store for TextColor.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty TextColorProperty =
-            DependencyProperty.Register("TextColor", typeof(Brush), typeof(GraphControl), new FrameworkPropertyMetadata(Brushes.Black, FrameworkPropertyMetadataOptions.AffectsRender));
+        public static readonly DependencyProperty TextColorProperty = DependencyProperty.Register("TextColor", typeof(Brush), typeof(GraphControl), new FrameworkPropertyMetadata(Brushes.Black, FrameworkPropertyMetadataOptions.AffectsRender));
 
-        // Using a DependencyProperty as the backing store for ValueColor.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ValueColorProperty =
-            DependencyProperty.Register("ValueColor", typeof(Brush), typeof(GraphControl), new FrameworkPropertyMetadata(Brushes.Red, FrameworkPropertyMetadataOptions.AffectsRender));
+        public static readonly DependencyProperty ValueColorProperty = DependencyProperty.Register("ValueColor", typeof(Brush), typeof(GraphControl), new FrameworkPropertyMetadata(Brushes.Red, FrameworkPropertyMetadataOptions.AffectsRender));
 
-        // Using a DependencyProperty as the backing store for ValueTextVisibility.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ValueTextVisibilityProperty =
-            DependencyProperty.Register("ValueTextVisibility", typeof(Visibility), typeof(GraphControl), new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.AffectsRender));
+        public static readonly DependencyProperty ValueTextVisibilityProperty = DependencyProperty.Register("ValueTextVisibility", typeof(Visibility), typeof(GraphControl), new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.AffectsRender));
+
+        private static ObservableCollection<Chart> MockData;
 
         static GraphControl()
         {
@@ -181,8 +157,6 @@ namespace Extensions
                 DrawGraph(drawingContext, MockData);
             }
         }
-
-        private static ObservableCollection<Chart> MockData;
 
         private void DrawGraph(DrawingContext drawingContext, ObservableCollection<Chart> Series)
         {
