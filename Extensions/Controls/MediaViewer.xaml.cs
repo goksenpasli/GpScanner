@@ -32,6 +32,8 @@ namespace Extensions.Controls
 
         public static readonly DependencyProperty ApplySharpenProperty = DependencyProperty.Register("ApplySharpen", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
 
+        public static readonly DependencyProperty AutoLoadSameNameSubtitleFileProperty = DependencyProperty.Register("AutoLoadSameNameSubtitleFile", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
+
         public static readonly DependencyProperty AutoPlayProperty = DependencyProperty.Register("AutoPlay", typeof(bool), typeof(MediaViewer), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, new PropertyChangedCallback(AutoplayChanged)));
 
         public static readonly DependencyProperty AutoTranslateProperty = DependencyProperty.Register("AutoTranslate", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
@@ -100,6 +102,8 @@ namespace Extensions.Controls
 
         private static readonly Image image = new();
 
+        private static readonly DispatcherTimer osdtimer = new();
+
         private static readonly TaskFactory task;
 
         private static readonly MediaElement thumbMediaElement = new()
@@ -119,8 +123,6 @@ namespace Extensions.Controls
         };
 
         private static bool dragging;
-
-        private static DispatcherTimer osdtimer = new DispatcherTimer();
 
         private static DispatcherTimer timer;
 
@@ -182,6 +184,12 @@ namespace Extensions.Controls
             set => SetValue(ApplySharpenProperty, value);
         }
 
+        public bool AutoLoadSameNameSubtitleFile
+        {
+            get => (bool)GetValue(AutoLoadSameNameSubtitleFileProperty);
+            set => SetValue(AutoLoadSameNameSubtitleFileProperty, value);
+        }
+
         public bool AutoPlay
         {
             get => (bool)GetValue(AutoPlayProperty);
@@ -228,7 +236,11 @@ namespace Extensions.Controls
 
         public string ÇevrilenDil { get; set; } = "en";
 
-        public TimeSpan EndTimeSpan { get => (TimeSpan)GetValue(EndTimeSpanProperty); set => SetValue(EndTimeSpanProperty, value); }
+        public TimeSpan EndTimeSpan
+        {
+            get => (TimeSpan)GetValue(EndTimeSpanProperty);
+            set => SetValue(EndTimeSpanProperty, value);
+        }
 
         public double FlipX
         {
@@ -244,7 +256,11 @@ namespace Extensions.Controls
 
         public int ForwardBackwardSkipSecond { get; set; } = 30;
 
-        public double Fov { get => (double)GetValue(FovProperty); set => SetValue(FovProperty, value); }
+        public double Fov
+        {
+            get => (double)GetValue(FovProperty);
+            set => SetValue(FovProperty, value);
+        }
 
         public bool InvertColor
         {
@@ -252,9 +268,17 @@ namespace Extensions.Controls
             set => SetValue(InvertColorProperty, value);
         }
 
-        public string MediaDataFilePath { get => (string)GetValue(MediaDataFilePathProperty); set => SetValue(MediaDataFilePathProperty, value); }
+        public string MediaDataFilePath
+        {
+            get => (string)GetValue(MediaDataFilePathProperty);
+            set => SetValue(MediaDataFilePathProperty, value);
+        }
 
-        public TimeSpan MediaPosition { get => (TimeSpan)GetValue(MediaPositionProperty); set => SetValue(MediaPositionProperty, value); }
+        public TimeSpan MediaPosition
+        {
+            get => (TimeSpan)GetValue(MediaPositionProperty);
+            set => SetValue(MediaPositionProperty, value);
+        }
 
         public double MediaVolume
         {
@@ -296,9 +320,17 @@ namespace Extensions.Controls
         [Browsable(false)]
         public ObservableCollection<string> PlayList { get; set; } = new();
 
-        public double RotateX { get => (double)GetValue(RotateXProperty); set => SetValue(RotateXProperty, value); }
+        public double RotateX
+        {
+            get => (double)GetValue(RotateXProperty);
+            set => SetValue(RotateXProperty, value);
+        }
 
-        public double RotateY { get => (double)GetValue(RotateYProperty); set => SetValue(RotateYProperty, value); }
+        public double RotateY
+        {
+            get => (double)GetValue(RotateYProperty);
+            set => SetValue(RotateYProperty, value);
+        }
 
         public double SharpenAmount
         {
@@ -362,7 +394,11 @@ namespace Extensions.Controls
             set => SetValue(SubTitleVisibilityProperty, value);
         }
 
-        public bool ThumbnailsVisible { get => (bool)GetValue(ThumbnailsVisibleProperty); set => SetValue(ThumbnailsVisibleProperty, value); }
+        public bool ThumbnailsVisible
+        {
+            get => (bool)GetValue(ThumbnailsVisibleProperty);
+            set => SetValue(ThumbnailsVisibleProperty, value);
+        }
 
         public Stretch VideoStretch
         {
@@ -445,6 +481,12 @@ namespace Extensions.Controls
             }
         }
 
+        private static string GetAutoSubtitlePath(string uriString)
+        {
+            string autosrtfile = Path.ChangeExtension(uriString, ".srt");
+            return File.Exists(autosrtfile) ? autosrtfile : null;
+        }
+
         private static Vector3D GetNormal(double t, double y)
         {
             return (Vector3D)GetPosition(t, y);
@@ -467,6 +509,10 @@ namespace Extensions.Controls
                 {
                     string uriString = (string)e.NewValue;
                     viewer.Player.Source = new Uri(uriString);
+                    if (viewer.AutoLoadSameNameSubtitleFile)
+                    {
+                        viewer.SubtitleFilePath = GetAutoSubtitlePath(uriString);
+                    }
                     if (viewer.AutoPlay)
                     {
                         viewer.Player.Play();
@@ -477,7 +523,7 @@ namespace Extensions.Controls
                         if (f is MediaElement mediaelement && mediaelement.NaturalDuration.HasTimeSpan)
                         {
                             viewer.EndTimeSpan = mediaelement.NaturalDuration.TimeSpan;
-                            timer = new DispatcherTimer(TimeSpan.FromMilliseconds(1000), DispatcherPriority.Normal, (s, ee) => viewer.MediaPosition = mediaelement.Position, Dispatcher.CurrentDispatcher);
+                            timer = new DispatcherTimer(TimeSpan.FromMilliseconds(1000), DispatcherPriority.Normal, (s, _) => viewer.MediaPosition = mediaelement.Position, Dispatcher.CurrentDispatcher);
                             timer.Start();
                         }
                     };
@@ -625,15 +671,17 @@ namespace Extensions.Controls
             return (MediaState)stateField.GetValue(helperObject);
         }
 
+        private string GetNextPlayListFile()
+        {
+            int index = PlayList.IndexOf(MediaDataFilePath);
+            return index < PlayList.Count() - 1 ? PlayList[index + 1] : null;
+        }
+
         private void MediaElement_MediaEnded(object sender, RoutedEventArgs e)
         {
             if (PlayList.Any() && AutoSkipNextVideo)
             {
-                int index = PlayList.IndexOf(MediaDataFilePath);
-                if (index < PlayList.Count() - 1)
-                {
-                    MediaDataFilePath = PlayList[index + 1];
-                }
+                MediaDataFilePath = GetNextPlayListFile();
             }
         }
 
