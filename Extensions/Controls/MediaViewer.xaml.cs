@@ -62,6 +62,10 @@ namespace Extensions.Controls
 
         public static readonly DependencyProperty MediaVolumeProperty = DependencyProperty.Register("MediaVolume", typeof(double), typeof(MediaViewer), new PropertyMetadata(1d, MediaVolumeChanged));
 
+        public static readonly DependencyProperty OsdTextProperty = DependencyProperty.Register("OsdText", typeof(string), typeof(MediaViewer), new PropertyMetadata(null, OsdTextChanged));
+
+        public static readonly DependencyProperty OsdTextVisibilityProperty = DependencyProperty.Register("OsdTextVisibility", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Collapsed));
+
         public static readonly DependencyProperty PanoramaModeProperty = DependencyProperty.Register("PanoramaMode", typeof(bool), typeof(MediaViewer), new PropertyMetadata(PanoramaModeChanged));
 
         public static readonly DependencyProperty PixelateSizeProperty = DependencyProperty.Register("PixelateSize", typeof(Size), typeof(MediaViewer), new PropertyMetadata(new Size(60, 40)));
@@ -115,6 +119,8 @@ namespace Extensions.Controls
         };
 
         private static bool dragging;
+
+        private static DispatcherTimer osdtimer = new DispatcherTimer();
 
         private static DispatcherTimer timer;
 
@@ -192,14 +198,14 @@ namespace Extensions.Controls
 
         public double BlurAmount
         {
-            get { return (double)GetValue(BlurAmountProperty); }
-            set { SetValue(BlurAmountProperty, value); }
+            get => (double)GetValue(BlurAmountProperty);
+            set => SetValue(BlurAmountProperty, value);
         }
 
         public bool BlurColor
         {
-            get { return (bool)GetValue(BlurColorProperty); }
-            set { SetValue(BlurColorProperty, value); }
+            get => (bool)GetValue(BlurColorProperty);
+            set => SetValue(BlurColorProperty, value);
         }
 
         public double BwAmount
@@ -259,6 +265,18 @@ namespace Extensions.Controls
         public string MevcutDil { get; set; } = "auto";
 
         public Visibility OpenButtonVisibility { get; set; } = Visibility.Collapsed;
+
+        public string OsdText
+        {
+            get => (string)GetValue(OsdTextProperty);
+            set => SetValue(OsdTextProperty, value);
+        }
+
+        public Visibility OsdTextVisibility
+        {
+            get => (Visibility)GetValue(OsdTextVisibilityProperty);
+            set => SetValue(OsdTextVisibilityProperty, value);
+        }
 
         public bool PanoramaMode
         {
@@ -452,6 +470,7 @@ namespace Extensions.Controls
                     if (viewer.AutoPlay)
                     {
                         viewer.Player.Play();
+                        viewer.OsdText = "Çalıyor";
                     }
                     viewer.Player.MediaOpened += (f, g) =>
                     {
@@ -498,6 +517,21 @@ namespace Extensions.Controls
             if (d is MediaViewer viewer && e.NewValue != null)
             {
                 viewer.Player.Volume = (double)e.NewValue;
+                viewer.OsdText = $"Ses: {(int)(viewer.Player.Volume * 100)}";
+            }
+        }
+
+        private static void OsdTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is MediaViewer mediaViewer && e.NewValue is not null)
+            {
+                osdtimer.Interval = new TimeSpan(0, 0, 3);
+                osdtimer.Start();
+                osdtimer.Tick += (s, e) =>
+                {
+                    osdtimer.Stop();
+                    mediaViewer.OsdText = null;
+                };
             }
         }
 
@@ -544,7 +578,11 @@ namespace Extensions.Controls
 
         private void Back_Click(object sender, RoutedEventArgs e)
         {
-            Player.Position = Player.Position.Subtract(new TimeSpan(0, 0, ForwardBackwardSkipSecond));
+            if (MediaDataFilePath != null)
+            {
+                Player.Position = Player.Position.Subtract(new TimeSpan(0, 0, ForwardBackwardSkipSecond));
+                OsdText = "Geri";
+            }
         }
 
         private void Capture_Click(object sender, RoutedEventArgs e)
@@ -556,6 +594,7 @@ namespace Extensions.Controls
                 string dosya = picturesfolder.SetUniqueFile("Resim", "jpg");
                 File.WriteAllBytes(dosya, data);
                 ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, dosya);
+                OsdText = "Görüntü Yakalandı";
             }
         }
 
@@ -571,7 +610,11 @@ namespace Extensions.Controls
 
         private void Forward_Click(object sender, RoutedEventArgs e)
         {
-            Player.Position = Player.Position.Add(new TimeSpan(0, 0, ForwardBackwardSkipSecond));
+            if (MediaDataFilePath != null)
+            {
+                Player.Position = Player.Position.Add(new TimeSpan(0, 0, ForwardBackwardSkipSecond));
+                OsdText = "İleri";
+            }
         }
 
         private MediaState GetMediaState(MediaElement myMedia)
@@ -597,11 +640,13 @@ namespace Extensions.Controls
         private void Mute_Checked(object sender, RoutedEventArgs e)
         {
             MediaVolume = 0;
+            OsdText = "Ses Kısıldı";
         }
 
         private void Mute_Unchecked(object sender, RoutedEventArgs e)
         {
             MediaVolume = 1;
+            OsdText = "Ses Açıldı";
         }
 
         private void Open_Click(object sender, RoutedEventArgs e)
@@ -641,6 +686,7 @@ namespace Extensions.Controls
             if (Player.CanPause)
             {
                 Player.Pause();
+                OsdText = "Durduruldu";
             }
         }
 
@@ -660,6 +706,7 @@ namespace Extensions.Controls
                     Player.Stop();
                 }
                 Player.Play();
+                OsdText = "Çalıyor";
             }
         }
 
@@ -668,16 +715,19 @@ namespace Extensions.Controls
             if (GetMediaState(Player) == MediaState.Play)
             {
                 Player.Pause();
+                OsdText = "Durduruldu";
             }
             else
             {
                 Player.Play();
+                OsdText = "Çalıyor";
             }
         }
 
         private void Rotate_Click(object sender, RoutedEventArgs e)
         {
             Angle += 90;
+            OsdText = "Döndürüldü";
             if (Angle == 360)
             {
                 Angle = 0;
@@ -783,6 +833,7 @@ namespace Extensions.Controls
             if (Player.Source != null)
             {
                 Player.Stop();
+                OsdText = "Durdu";
             }
         }
 

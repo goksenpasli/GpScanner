@@ -204,6 +204,10 @@
                                                     </ModelVisual3D.Transform>
                                                 </ModelVisual3D>
                                             </Viewport3D>
+                                            <TextBlock Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                                Background="Transparent" FontSize="20" Foreground="White"
+                                                Text="{Binding OsdText}"
+                                                Visibility="{Binding OsdTextVisibility}" />
                                             <TextBlock Margin="{Binding SubTitleMargin}"
                                                 HorizontalAlignment="{Binding SubTitleHorizontalAlignment}"
                                                 VerticalAlignment="{Binding SubTitleVerticalAlignment}"
@@ -211,6 +215,7 @@
                                                 Foreground="{Binding SubTitleColor}"
                                                 Text="{Binding SubTitle}"
                                                 Visibility="{Binding SubTitleVisibility}" />
+
                                         </Grid>
                                     </Grid>
                                 </Grid>
