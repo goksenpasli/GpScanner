@@ -66,6 +66,8 @@ namespace Extensions.Controls
 
         public static readonly DependencyProperty OpenButtonVisibilityProperty = DependencyProperty.Register("OpenButtonVisibility", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Collapsed));
 
+        public static readonly DependencyProperty OsdDisplayTimeProperty = DependencyProperty.Register("OsdDisplayTime", typeof(int), typeof(MediaViewer), new PropertyMetadata(3));
+
         public static readonly DependencyProperty OsdTextProperty = DependencyProperty.Register("OsdText", typeof(string), typeof(MediaViewer), new PropertyMetadata(null, OsdTextChanged));
 
         public static readonly DependencyProperty OsdTextVisibilityProperty = DependencyProperty.Register("OsdTextVisibility", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Collapsed));
@@ -94,6 +96,8 @@ namespace Extensions.Controls
 
         public static readonly DependencyProperty SubTitleSizeProperty = DependencyProperty.Register("SubTitleSize", typeof(double), typeof(MediaViewer), new PropertyMetadata(32.0d));
 
+        public static readonly DependencyProperty SubtitleTooltipEnabledProperty = DependencyProperty.Register("SubtitleTooltipEnabled", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
+
         public static readonly DependencyProperty SubTitleVerticalAlignmentProperty = DependencyProperty.Register("SubTitleVerticalAlignment", typeof(VerticalAlignment), typeof(MediaViewer), new PropertyMetadata(VerticalAlignment.Bottom));
 
         public static readonly DependencyProperty SubTitleVisibilityProperty = DependencyProperty.Register("SubTitleVisibility", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Collapsed));
@@ -101,6 +105,8 @@ namespace Extensions.Controls
         public static readonly DependencyProperty ThumbnailsVisibleProperty = DependencyProperty.Register("ThumbnailsVisible", typeof(bool), typeof(MediaViewer), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         public static readonly DependencyProperty TimeDisplayVisibilityProperty = DependencyProperty.Register("TimeDisplayVisibility", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Visible));
+
+        public static readonly DependencyProperty TooltipOriginalSubtitleProperty = DependencyProperty.Register("TooltipOriginalSubtitle", typeof(string), typeof(MediaViewer), new PropertyMetadata(null));
 
         public static readonly DependencyProperty VideoStretchProperty = DependencyProperty.Register("VideoStretch", typeof(Stretch), typeof(MediaViewer), new PropertyMetadata(Stretch.Uniform));
 
@@ -321,8 +327,15 @@ namespace Extensions.Controls
         [Description("Video Controls"), Category("Controls")]
         public Visibility OpenButtonVisibility
         {
-            get { return (Visibility)GetValue(OpenButtonVisibilityProperty); }
-            set { SetValue(OpenButtonVisibilityProperty, value); }
+            get => (Visibility)GetValue(OpenButtonVisibilityProperty);
+            set => SetValue(OpenButtonVisibilityProperty, value);
+        }
+
+        [Description("Video Controls"), Category("Controls")]
+        public int OsdDisplayTime
+        {
+            get => (int)GetValue(OsdDisplayTimeProperty);
+            set => SetValue(OsdDisplayTimeProperty, value);
         }
 
         [Description("Video Controls"), Category("Controls")]
@@ -438,6 +451,13 @@ namespace Extensions.Controls
         }
 
         [Description("Subtitle Controls"), Category("Subtitle")]
+        public bool SubtitleTooltipEnabled
+        {
+            get => (bool)GetValue(SubtitleTooltipEnabledProperty);
+            set => SetValue(SubtitleTooltipEnabledProperty, value);
+        }
+
+        [Description("Subtitle Controls"), Category("Subtitle")]
         public VerticalAlignment SubTitleVerticalAlignment
         {
             get => (VerticalAlignment)GetValue(SubTitleVerticalAlignmentProperty);
@@ -461,8 +481,15 @@ namespace Extensions.Controls
         [Description("Video Controls"), Category("Controls")]
         public Visibility TimeDisplayVisibility
         {
-            get { return (Visibility)GetValue(TimeDisplayVisibilityProperty); }
-            set { SetValue(TimeDisplayVisibilityProperty, value); }
+            get => (Visibility)GetValue(TimeDisplayVisibilityProperty);
+            set => SetValue(TimeDisplayVisibilityProperty, value);
+        }
+
+        [Description("Subtitle Controls"), Category("Subtitle")]
+        public string TooltipOriginalSubtitle
+        {
+            get => (string)GetValue(TooltipOriginalSubtitleProperty);
+            set => SetValue(TooltipOriginalSubtitleProperty, value);
         }
 
         [Description("Video Controls"), Category("Controls")]
@@ -584,15 +611,19 @@ namespace Extensions.Controls
                         viewer.Player.Play();
                         viewer.OsdText = "Çalıyor";
                     }
-                    viewer.Player.MediaOpened += (f, g) =>
+
+                    viewer.Player.MediaOpened -= MediaOpened;
+                    viewer.Player.MediaOpened += MediaOpened;
+
+                    void MediaOpened(object f, RoutedEventArgs g)
                     {
                         if (f is MediaElement mediaelement && mediaelement.NaturalDuration.HasTimeSpan)
                         {
                             viewer.EndTimeSpan = mediaelement.NaturalDuration.TimeSpan;
-                            timer = new DispatcherTimer(TimeSpan.FromMilliseconds(1000), DispatcherPriority.Normal, (s, _) => viewer.MediaPosition = mediaelement.Position, Dispatcher.CurrentDispatcher);
+                            timer = new DispatcherTimer(TimeSpan.FromSeconds(1), DispatcherPriority.Normal, (s, _) => viewer.MediaPosition = mediaelement.Position, Dispatcher.CurrentDispatcher);
                             timer.Start();
                         }
-                    };
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -613,10 +644,19 @@ namespace Extensions.Controls
                     {
                         if (position > subtitle.StartTime && position < subtitle.EndTime)
                         {
-                            viewer.SubTitle = viewer.AutoTranslate ? Task.Run(() => TranslateViewModel.DileÇevir(subtitle.Text, viewer.MevcutDil, viewer.ÇevrilenDil)).Result : subtitle.Text;
+                            if (viewer.AutoTranslate)
+                            {
+                                viewer.TooltipOriginalSubtitle = subtitle.Text;
+                                viewer.SubTitle = Task.Run(() => TranslateViewModel.DileÇevir(subtitle.Text, viewer.MevcutDil, viewer.ÇevrilenDil)).Result;
+                            }
+                            else
+                            {
+                                viewer.SubTitle = subtitle.Text;
+                            }
                         }
                         if (position > subtitle.EndTime)
                         {
+                            viewer.TooltipOriginalSubtitle = string.Empty;
                             viewer.SubTitle = string.Empty;
                         }
                     }
@@ -637,13 +677,16 @@ namespace Extensions.Controls
         {
             if (d is MediaViewer mediaViewer && e.NewValue is not null)
             {
-                osdtimer.Interval = new TimeSpan(0, 0, 3);
+                osdtimer.Interval = new TimeSpan(0, 0, mediaViewer.OsdDisplayTime);
                 osdtimer.Start();
-                osdtimer.Tick += (s, e) =>
+                osdtimer.Tick -= OsdTextChange;
+                osdtimer.Tick += OsdTextChange;
+
+                void OsdTextChange(object s, EventArgs e)
                 {
                     osdtimer.Stop();
                     mediaViewer.OsdText = null;
-                };
+                }
             }
         }
 
@@ -865,17 +908,11 @@ namespace Extensions.Controls
         {
             if (ThumbnailsVisible)
             {
-                try
+                tooltip.IsOpen = false;
+                image.Source = null;
+                if (Player.CanPause)
                 {
-                    tooltip.IsOpen = false;
-                    image.Source = null;
-                    if (Player.CanPause)
-                    {
-                        Player.Pause();
-                    }
-                }
-                catch (Exception)
-                {
+                    Player.Pause();
                 }
             }
         }
@@ -884,31 +921,22 @@ namespace Extensions.Controls
         {
             if (ThumbnailsVisible && Player.HasVideo)
             {
-                try
-                {
-                    _ = task.StartNew(() =>
+                _ = task.StartNew(() =>
+                   {
+                       _ = Dispatcher.BeginInvoke(() =>
                        {
-                           _ = Dispatcher.BeginInvoke(() =>
+                           thumbMediaElement.Source = Player.Source;
+                           tooltip.PlacementTarget = Sld;
+                           thumbMediaElement.Position = TimeSpan.FromSeconds(PixelsToValue(e.GetPosition(Sld).X, Sld.Minimum, Sld.Maximum, Sld.ActualWidth));
+                           image.Source = thumbMediaElement.ToRenderTargetBitmap();
+                           image.Source.Freeze();
+                           tooltip.Content = image;
+                           if (!tooltip.IsOpen)
                            {
-                               thumbMediaElement.Source = Player.Source;
-                               tooltip.PlacementTarget = Sld;
-                               thumbMediaElement.Position = TimeSpan.FromSeconds(PixelsToValue(e.GetPosition(Sld).X, Sld.Minimum, Sld.Maximum, Sld.ActualWidth));
-                               image.Source = thumbMediaElement.ToRenderTargetBitmap();
-                               if (image.Source.CanFreeze)
-                               {
-                                   image.Source.Freeze();
-                               }
-                               tooltip.Content = image;
-                               if (!tooltip.IsOpen)
-                               {
-                                   tooltip.IsOpen = true;
-                               }
-                           });
-                       }, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default);
-                }
-                catch (Exception)
-                {
-                }
+                               tooltip.IsOpen = true;
+                           }
+                       });
+                   }, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default);
             }
         }
 
