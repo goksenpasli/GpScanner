@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -462,7 +461,7 @@ namespace Extensions
                         imageViewer.Pages = Enumerable.Range(1, imageViewer.Decoder.Frames.Count);
                         return;
 
-                    case ".png" or ".jpg" or ".jpeg":
+                    case ".png" or ".jpg" or ".jpeg" or ".bmp":
                         {
                             imageViewer.TifNavigasyonButtonEtkin = Visibility.Collapsed;
                             BitmapImage image = new();
@@ -477,21 +476,6 @@ namespace Extensions
                                 image.Freeze();
                             }
                             imageViewer.Source = image;
-                            return;
-                        }
-
-                    default:
-                        {
-                            FormattedText formattedText = new("ÖNİZLEME YOK EVRAKI DİREKT AÇIN", CultureInfo.GetCultureInfo("tr-TR"), FlowDirection.LeftToRight, new Typeface("Arial"), 15, Brushes.Red) { TextAlignment = TextAlignment.Left };
-                            DrawingVisual dv = new();
-                            using (DrawingContext dc = dv.RenderOpen())
-                            {
-                                dc.DrawText(formattedText, new Point(10, 200));
-                            }
-                            RenderTargetBitmap rtb = new(315, 445, 96, 96, PixelFormats.Default);
-                            rtb.Render(dv);
-                            rtb.Freeze();
-                            imageViewer.Source = rtb;
                             return;
                         }
                 }

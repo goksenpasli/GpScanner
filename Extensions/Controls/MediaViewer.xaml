@@ -48,6 +48,20 @@
                         IsChecked="{Binding BlurColor}" />
                     <MenuItem FontFamily="Segoe UI" Header="360°" IsCheckable="True"
                         IsChecked="{Binding PanoramaMode}" />
+                    <MenuItem>
+                        <MenuItem.Template>
+                            <ControlTemplate>
+                                <ListBox Margin="32,0,0,0"
+                                    SelectedValue="{Binding VideoStretch}"
+                                    SelectedValuePath="Tag">
+                                    <ListBoxItem Content="Orijinal Boyut" Tag="{x:Static Stretch.None}" />
+                                    <ListBoxItem Content="Doldur" Tag="{x:Static Stretch.Fill}" />
+                                    <ListBoxItem Content="En Boy" Tag="{x:Static Stretch.Uniform}" />
+                                    <ListBoxItem Content="En Boy Doldur" Tag="{x:Static Stretch.UniformToFill}" />
+                                </ListBox>
+                            </ControlTemplate>
+                        </MenuItem.Template>
+                    </MenuItem>
                 </ContextMenu>
             </Grid.ContextMenu>
             <Grid>

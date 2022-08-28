@@ -152,152 +152,180 @@ namespace Extensions.Controls
             DataContext = this;
         }
 
+        [Description("Video Controls"), Category("Controls")]
         public double Angle
         {
             get => (double)GetValue(AngleProperty);
             set => SetValue(AngleProperty, value);
         }
 
+        [Description("Video Effects"), Category("Effects")]
         public bool ApplyBw
         {
             get => (bool)GetValue(ApplyBwProperty);
             set => SetValue(ApplyBwProperty, value);
         }
 
+        [Description("Video Effects"), Category("Effects")]
         public bool ApplyEmboss
         {
             get => (bool)GetValue(ApplyEmbossProperty);
             set => SetValue(ApplyEmbossProperty, value);
         }
 
+        [Description("Video Effects"), Category("Effects")]
         public bool ApplyGrayscale
         {
             get => (bool)GetValue(ApplyGrayscaleProperty);
             set => SetValue(ApplyGrayscaleProperty, value);
         }
 
+        [Description("Video Effects"), Category("Effects")]
         public bool ApplyPixelate
         {
             get => (bool)GetValue(ApplyPixelateProperty);
             set => SetValue(ApplyPixelateProperty, value);
         }
 
+        [Description("Video Effects"), Category("Effects")]
         public bool ApplySharpen
         {
             get => (bool)GetValue(ApplySharpenProperty);
             set => SetValue(ApplySharpenProperty, value);
         }
 
+        [Description("Subtitle Controls"), Category("Subtitle")]
         public bool AutoLoadSameNameSubtitleFile
         {
             get => (bool)GetValue(AutoLoadSameNameSubtitleFileProperty);
             set => SetValue(AutoLoadSameNameSubtitleFileProperty, value);
         }
 
+        [Description("Video Controls"), Category("Controls")]
         public bool AutoPlay
         {
             get => (bool)GetValue(AutoPlayProperty);
             set => SetValue(AutoPlayProperty, value);
         }
 
+        [Description("Video Controls"), Category("Controls")]
         public bool AutoSkipNextVideo { get; set; }
 
+        [Description("Subtitle Translate"), Category("Translate")]
         public bool AutoTranslate
         {
             get => (bool)GetValue(AutoTranslateProperty);
             set => SetValue(AutoTranslateProperty, value);
         }
 
+        [Description("Video Effects"), Category("Effects")]
         public double BlurAmount
         {
             get => (double)GetValue(BlurAmountProperty);
             set => SetValue(BlurAmountProperty, value);
         }
 
+        [Description("Video Effects"), Category("Effects")]
         public bool BlurColor
         {
             get => (bool)GetValue(BlurColorProperty);
             set => SetValue(BlurColorProperty, value);
         }
 
+        [Description("Video Effects"), Category("Effects")]
         public double BwAmount
         {
             get => (double)GetValue(BwAmountProperty);
             set => SetValue(BwAmountProperty, value);
         }
 
+        [Description("Video Controls"), Category("Controls")]
         public Visibility ContextMenuVisibility
         {
             get => (Visibility)GetValue(ContextMenuVisibilityProperty);
             set => SetValue(ContextMenuVisibilityProperty, value);
         }
 
+        [Description("Video Controls"), Category("Controls")]
         public Visibility ControlVisible
         {
             get => (Visibility)GetValue(ControlVisibleProperty);
             set => SetValue(ControlVisibleProperty, value);
         }
 
+        [Description("Subtitle Translate"), Category("Translate")]
         public string ÇevrilenDil { get; set; } = "en";
 
+        [Description("Video Controls"), Category("Controls")]
         public TimeSpan EndTimeSpan
         {
             get => (TimeSpan)GetValue(EndTimeSpanProperty);
             set => SetValue(EndTimeSpanProperty, value);
         }
 
+        [Description("Video Controls"), Category("Controls")]
         public double FlipX
         {
             get => (double)GetValue(FlipXProperty);
             set => SetValue(FlipXProperty, value);
         }
 
+        [Description("Video Controls"), Category("Controls")]
         public double FlipY
         {
             get => (double)GetValue(FlipYProperty);
             set => SetValue(FlipYProperty, value);
         }
 
+        [Description("Video Controls"), Category("Controls")]
         public int ForwardBackwardSkipSecond { get; set; } = 30;
 
+        [Description("Video Controls"), Category("Controls")]
         public double Fov
         {
             get => (double)GetValue(FovProperty);
             set => SetValue(FovProperty, value);
         }
 
+        [Description("Video Effects"), Category("Effects")]
         public bool InvertColor
         {
             get => (bool)GetValue(InvertColorProperty);
             set => SetValue(InvertColorProperty, value);
         }
 
+        [Description("Video Controls"), Category("Controls")]
         public string MediaDataFilePath
         {
             get => (string)GetValue(MediaDataFilePathProperty);
             set => SetValue(MediaDataFilePathProperty, value);
         }
 
+        [Description("Video Controls"), Category("Controls")]
         public TimeSpan MediaPosition
         {
             get => (TimeSpan)GetValue(MediaPositionProperty);
             set => SetValue(MediaPositionProperty, value);
         }
 
+        [Description("Video Controls"), Category("Controls")]
         public double MediaVolume
         {
             get => (double)GetValue(MediaVolumeProperty);
             set => SetValue(MediaVolumeProperty, value);
         }
 
+        [Description("Subtitle Translate"), Category("Translate")]
         public string MevcutDil { get; set; } = "auto";
 
+        [Description("Video Controls"), Category("Controls")]
         public Visibility OpenButtonVisibility
         {
             get { return (Visibility)GetValue(OpenButtonVisibilityProperty); }
             set { SetValue(OpenButtonVisibilityProperty, value); }
         }
 
+        [Description("Video Controls"), Category("Controls")]
         [Browsable(false)]
         public string OsdText
         {
@@ -305,48 +333,59 @@ namespace Extensions.Controls
             set => SetValue(OsdTextProperty, value);
         }
 
+        [Description("Video Controls"), Category("Controls")]
         public Visibility OsdTextVisibility
         {
             get => (Visibility)GetValue(OsdTextVisibilityProperty);
             set => SetValue(OsdTextVisibilityProperty, value);
         }
 
+        [Description("Video Controls"), Category("Controls")]
         public bool PanoramaMode
         {
             get => (bool)GetValue(PanoramaModeProperty);
             set => SetValue(PanoramaModeProperty, value);
         }
 
+        [Description("Subtitle Controls"), Category("Subtitle")]
         [Browsable(false)]
         public ObservableCollection<SrtContent> ParsedSubtitle { get; set; }
 
+        [Description("Video Effects"), Category("Effects")]
         public Size PixelateSize
         {
             get => (Size)GetValue(PixelateSizeProperty);
             set => SetValue(PixelateSizeProperty, value);
         }
 
+        [Description("Video Controls"), Category("Controls")]
         [Browsable(false)]
         public ObservableCollection<string> PlayList { get; set; } = new();
 
+        [Description("Video Controls"), Category("Controls")]
+        [Browsable(false)]
         public double RotateX
         {
             get => (double)GetValue(RotateXProperty);
             set => SetValue(RotateXProperty, value);
         }
 
+        [Description("Video Controls"), Category("Controls")]
+        [Browsable(false)]
         public double RotateY
         {
             get => (double)GetValue(RotateYProperty);
             set => SetValue(RotateYProperty, value);
         }
 
+        [Description("Video Effects"), Category("Effects")]
         public double SharpenAmount
         {
             get => (double)GetValue(SharpenAmountProperty);
             set => SetValue(SharpenAmountProperty, value);
         }
 
+        [Description("Video Controls"), Category("Controls")]
         public Visibility SliderControlVisible
         {
             get => (Visibility)GetValue(SliderControlVisibleProperty);
@@ -355,6 +394,7 @@ namespace Extensions.Controls
 
         public Geometry3D SphereModel { get; set; } = CreateGeometry();
 
+        [Description("Subtitle Controls"), Category("Subtitle")]
         [Browsable(false)]
         public string SubTitle
         {
@@ -362,60 +402,70 @@ namespace Extensions.Controls
             set => SetValue(SubTitleProperty, value);
         }
 
+        [Description("Subtitle Controls"), Category("Subtitle")]
         public Brush SubTitleColor
         {
             get => (Brush)GetValue(SubTitleColorProperty);
             set => SetValue(SubTitleColorProperty, value);
         }
 
+        [Description("Subtitle Controls"), Category("Subtitle")]
         public string SubtitleFilePath
         {
             get => (string)GetValue(SubtitleFilePathProperty);
             set => SetValue(SubtitleFilePathProperty, value);
         }
 
+        [Description("Subtitle Controls"), Category("Subtitle")]
         public HorizontalAlignment SubTitleHorizontalAlignment
         {
             get => (HorizontalAlignment)GetValue(SubTitleHorizontalAlignmentProperty);
             set => SetValue(SubTitleHorizontalAlignmentProperty, value);
         }
 
+        [Description("Subtitle Controls"), Category("Subtitle")]
         public Thickness SubTitleMargin
         {
             get => (Thickness)GetValue(SubTitleMarginProperty);
             set => SetValue(SubTitleMarginProperty, value);
         }
 
+        [Description("Subtitle Controls"), Category("Subtitle")]
         public double SubTitleSize
         {
             get => (double)GetValue(SubTitleSizeProperty);
             set => SetValue(SubTitleSizeProperty, value);
         }
 
+        [Description("Subtitle Controls"), Category("Subtitle")]
         public VerticalAlignment SubTitleVerticalAlignment
         {
             get => (VerticalAlignment)GetValue(SubTitleVerticalAlignmentProperty);
             set => SetValue(SubTitleVerticalAlignmentProperty, value);
         }
 
+        [Description("Subtitle Controls"), Category("Subtitle")]
         public Visibility SubTitleVisibility
         {
             get => (Visibility)GetValue(SubTitleVisibilityProperty);
             set => SetValue(SubTitleVisibilityProperty, value);
         }
 
+        [Description("Video Controls"), Category("Controls")]
         public bool ThumbnailsVisible
         {
             get => (bool)GetValue(ThumbnailsVisibleProperty);
             set => SetValue(ThumbnailsVisibleProperty, value);
         }
 
+        [Description("Video Controls"), Category("Controls")]
         public Visibility TimeDisplayVisibility
         {
             get { return (Visibility)GetValue(TimeDisplayVisibilityProperty); }
             set { SetValue(TimeDisplayVisibilityProperty, value); }
         }
 
+        [Description("Video Controls"), Category("Controls")]
         public Stretch VideoStretch
         {
             get => (Stretch)GetValue(VideoStretchProperty);
