@@ -42,6 +42,8 @@ namespace Extensions
 
         public static readonly DependencyProperty ValueTextVisibilityProperty = DependencyProperty.Register("ValueTextVisibility", typeof(Visibility), typeof(GraphControl), new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.AffectsRender));
 
+        private static ObservableCollection<Chart> MockData;
+
         static GraphControl()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(GraphControl), new FrameworkPropertyMetadata(typeof(GraphControl)));
@@ -170,8 +172,6 @@ namespace Extensions
             }
         }
 
-        private static ObservableCollection<Chart> MockData;
-
         private void DrawGraph(DrawingContext drawingContext, ObservableCollection<Chart> Series)
         {
             if (Series is not null && Series.Any())
@@ -200,36 +200,60 @@ namespace Extensions
                     point0 = new((pen.Thickness * i) - (pen.Thickness / 2), ActualHeight);
                     point1 = new((pen.Thickness * i) - (pen.Thickness / 2), ActualHeight - (item.ChartValue / max * ActualHeight * 9 / 10));
                     using DrawingContext graph = graphdrawinggroup.Open();
-                    using DrawingContext geomertygraph = graphgeometrygroup.Open();
-                    if (GraphContentVisibility == Visibility.Visible)
-                    {
-                        graph.DrawLine(pen, point0, point1);
-                    }
-                    if (ValueTextVisibility == Visibility.Visible)
-                    {
-                        FormattedText formattedValueText = GenerateFormattedValueText(item, pen);
-                        Point textpointValue = new(point1.X - (formattedValueText.WidthIncludingTrailingWhitespace / 2), 0);
-                        graph.DrawText(formattedValueText, textpointValue);
-                    }
-                    if (LineGraphVisibility == Visibility.Visible)
-                    {
-                        gc.LineTo(point1, true, true);
-                        geometry.Freeze();
-                        geomertygraph.DrawGeometry(null, linepen, geometry);
-                    }
-                    if (LineDotVisibility == Visibility.Visible)
-                    {
-                        graph.DrawEllipse(DotColor, linepen, point1, linepen.Thickness, linepen.Thickness);
-                    }
-                    if (SeriesTextVisibility == Visibility.Visible)
-                    {
-                        FormattedText formattedText = GenerateFormattedText(item, pen);
-                        Point textpoint = new(point1.X - (formattedText.WidthIncludingTrailingWhitespace / 2), point1.Y);
-                        graph.DrawText(formattedText, textpoint);
-                    }
+                    using DrawingContext geometrygraph = graphgeometrygroup.Open();
+                    DrawMainContent(pen, point0, point1, graph);
+                    DrawValueText(pen, item, point1, graph);
+                    DrawLineGraph(linepen, point1, geometry, gc, geometrygraph);
+                    DrawLineDot(linepen, point1, graph);
+                    DrawSeriesText(pen, item, point1, graph);
                     drawingContext.DrawDrawing(graphdrawinggroup);
                 }
                 drawingContext.DrawDrawing(graphgeometrygroup);
+            }
+        }
+
+        private void DrawLineDot(Pen linepen, Point point1, DrawingContext graph)
+        {
+            if (LineDotVisibility == Visibility.Visible)
+            {
+                graph.DrawEllipse(DotColor, linepen, point1, linepen.Thickness, linepen.Thickness);
+            }
+        }
+
+        private void DrawLineGraph(Pen linepen, Point point1, StreamGeometry geometry, StreamGeometryContext gc, DrawingContext geometrygraph)
+        {
+            if (LineGraphVisibility == Visibility.Visible)
+            {
+                gc.LineTo(point1, true, true);
+                geometry.Freeze();
+                geometrygraph.DrawGeometry(null, linepen, geometry);
+            }
+        }
+
+        private void DrawMainContent(Pen pen, Point point0, Point point1, DrawingContext graph)
+        {
+            if (GraphContentVisibility == Visibility.Visible)
+            {
+                graph.DrawLine(pen, point0, point1);
+            }
+        }
+
+        private void DrawSeriesText(Pen pen, Chart item, Point point1, DrawingContext graph)
+        {
+            if (SeriesTextVisibility == Visibility.Visible)
+            {
+                FormattedText formattedText = GenerateFormattedText(item, pen);
+                Point textpoint = new(point1.X - (formattedText.WidthIncludingTrailingWhitespace / 2), point1.Y);
+                graph.DrawText(formattedText, textpoint);
+            }
+        }
+
+        private void DrawValueText(Pen pen, Chart item, Point point1, DrawingContext graph)
+        {
+            if (ValueTextVisibility == Visibility.Visible)
+            {
+                FormattedText formattedValueText = GenerateFormattedValueText(item, pen);
+                graph.DrawText(formattedValueText, new Point(point1.X - (formattedValueText.WidthIncludingTrailingWhitespace / 2), 0));
             }
         }
 
