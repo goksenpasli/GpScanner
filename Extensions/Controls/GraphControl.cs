@@ -178,20 +178,29 @@ namespace Extensions
             {
                 double max = Series.Max(z => z.ChartValue);
                 double thickness = ActualWidth / Series.Count;
+                DrawingGroup graphdrawinggroup = null;
+                DrawingGroup graphgeometrygroup = null;
+                Pen linepen = null;
+                Pen pen = null;
+                Chart item = null;
+                Point point0 = default;
+                Point point1 = default;
                 StreamGeometry geometry = new();
                 using StreamGeometryContext gc = geometry.Open();
                 gc.BeginFigure(new Point(thickness / 2, ActualHeight - (Series[0].ChartValue / max * ActualHeight)), false, false);
                 for (int i = 1; i <= Series.Count; i++)
                 {
-                    DrawingGroup graphdrawinggroup = new();
-                    Chart item = Series[i - 1];
-                    Pen pen = new(item.ChartBrush, thickness);
-                    Pen linepen = new(LineColor, LineThickness);
+                    graphdrawinggroup = new();
+                    graphgeometrygroup = new();
+                    item = Series[i - 1];
+                    pen = new(item.ChartBrush, thickness);
+                    linepen = new(LineColor, LineThickness);
                     linepen.Freeze();
                     pen.Freeze();
-                    Point point0 = new((pen.Thickness * i) - (pen.Thickness / 2), ActualHeight);
-                    Point point1 = new((pen.Thickness * i) - (pen.Thickness / 2), ActualHeight - (item.ChartValue / max * ActualHeight * 9 / 10));
+                    point0 = new((pen.Thickness * i) - (pen.Thickness / 2), ActualHeight);
+                    point1 = new((pen.Thickness * i) - (pen.Thickness / 2), ActualHeight - (item.ChartValue / max * ActualHeight * 9 / 10));
                     using DrawingContext graph = graphdrawinggroup.Open();
+                    using DrawingContext geomertygraph = graphgeometrygroup.Open();
                     if (GraphContentVisibility == Visibility.Visible)
                     {
                         graph.DrawLine(pen, point0, point1);
@@ -205,7 +214,8 @@ namespace Extensions
                     if (LineGraphVisibility == Visibility.Visible)
                     {
                         gc.LineTo(point1, true, true);
-                        graph.DrawGeometry(null, linepen, geometry);
+                        geometry.Freeze();
+                        geomertygraph.DrawGeometry(null, linepen, geometry);
                     }
                     if (LineDotVisibility == Visibility.Visible)
                     {
@@ -219,6 +229,7 @@ namespace Extensions
                     }
                     drawingContext.DrawDrawing(graphdrawinggroup);
                 }
+                drawingContext.DrawDrawing(graphgeometrygroup);
             }
         }
 
