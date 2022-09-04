@@ -449,7 +449,7 @@
                     </GroupBox.Header>
                     <ListBox ItemsSource="{Binding Scanner.Resimler, Mode=OneWay}"
                         SelectedItem="{Binding SeçiliResim}"
-                        SelectionMode="Extended">
+                        SelectionMode="Extended" d:ItemsSource="{d:SampleData ItemCount=5}">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
                                 <Setter Property="IsSelected" Value="{Binding Seçili}" />

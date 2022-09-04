@@ -602,6 +602,10 @@ namespace Extensions.Controls
                 {
                     string uriString = (string)e.NewValue;
                     viewer.Player.Source = new Uri(uriString);
+                    if (!File.Exists(uriString))
+                    {
+                        return;
+                    }
                     if (viewer.AutoLoadSameNameSubtitleFile)
                     {
                         viewer.SubtitleFilePath = GetAutoSubtitlePath(uriString);

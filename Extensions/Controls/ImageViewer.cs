@@ -449,7 +449,7 @@ namespace Extensions
 
         private static void LoadImage(string filepath, ImageViewer imageViewer)
         {
-            if (filepath is not null)
+            if (filepath is not null && File.Exists(filepath))
             {
                 switch (Path.GetExtension(filepath).ToLower())
                 {
