@@ -44,6 +44,8 @@ namespace Extensions
 
         public static readonly DependencyProperty SourceProperty = DependencyProperty.Register("Source", typeof(ImageSource), typeof(ImageViewer), new PropertyMetadata(null, SourceChanged));
 
+        public static readonly DependencyProperty ToolBarVisibilityProperty = DependencyProperty.Register("ToolBarVisibility", typeof(Visibility), typeof(ImageViewer), new PropertyMetadata(Visibility.Visible));
+
         public static readonly DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(ImageViewer), new PropertyMetadata(1.0));
 
         private bool _isOnDrag;
@@ -75,8 +77,6 @@ namespace Extensions
         private Visibility tifNavigasyonButtonEtkin = Visibility.Collapsed;
 
         private bool toolBarIsEnabled = true;
-
-        private Visibility toolBarVisibility;
 
         static ImageViewer()
         {
@@ -351,16 +351,8 @@ namespace Extensions
 
         public Visibility ToolBarVisibility
         {
-            get => toolBarVisibility;
-
-            set
-            {
-                if (toolBarVisibility != value)
-                {
-                    toolBarVisibility = value;
-                    OnPropertyChanged(nameof(ToolBarVisibility));
-                }
-            }
+            get { return (Visibility)GetValue(ToolBarVisibilityProperty); }
+            set { SetValue(ToolBarVisibilityProperty, value); }
         }
 
         public virtual ICommand ViewerBack { get; set; }

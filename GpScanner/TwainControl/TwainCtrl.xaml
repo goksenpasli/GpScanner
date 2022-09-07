@@ -449,7 +449,7 @@
                     </GroupBox.Header>
                     <ListBox ItemsSource="{Binding Scanner.Resimler, Mode=OneWay}"
                         SelectedItem="{Binding SeçiliResim}"
-                        SelectionMode="Extended" d:ItemsSource="{d:SampleData ItemCount=5}">
+                        SelectionMode="Extended">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
                                 <Setter Property="IsSelected" Value="{Binding Seçili}" />
@@ -515,7 +515,7 @@
                     </ListBox>
                 </GroupBox>
                 <UniformGrid Grid.Row="3"
-                    Columns="2" Rows="3" FirstColumn="1">
+                    Columns="2" FirstColumn="1" Rows="3">
                     <Button Command="{Binding LoadImage}">
                         <StackPanel Orientation="Horizontal">
                             <Image Width="24" Height="24">
@@ -541,7 +541,7 @@
                                     </Image.Source>
                                 </Image>
                                 <TextBlock d:Text="0" FontSize="9" Foreground="Red"
-                                        Text="{Binding Scanner.SeçiliResimSayısı}" />
+                                    Text="{Binding Scanner.SeçiliResimSayısı}" />
                             </Canvas>
                             <TextBlock VerticalAlignment="Center" Text="{local:Loc SAVESELECTED}" />
                         </StackPanel>
