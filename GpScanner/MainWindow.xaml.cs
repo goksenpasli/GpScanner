@@ -21,7 +21,7 @@ namespace GpScanner
             InitializeComponent();
             DataContext = new GpScannerViewModel();
             cvs = TryFindResource("Veriler") as CollectionViewSource;
-            TwainCtrl.PropertyChanged += TwainCtrl_PropertyChanged;
+            TwainCtrl.PropertyChanged += TwainCtrl_PropertyChanged;            
         }
 
         private void Calendar_PreviewMouseUp(object sender, MouseButtonEventArgs e)

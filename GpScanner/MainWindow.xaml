@@ -4,10 +4,10 @@
     xmlns:Control="clr-namespace:Extensions.Controls;assembly=Extensions"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
     xmlns:ViewModel="clr-namespace:GpScanner.ViewModel"
-        xmlns:pdf="clr-namespace:PdfViewer;assembly=PdfViewer"
     xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=PresentationFramework"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:GpScanner"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:pdf="clr-namespace:PdfViewer;assembly=PdfViewer"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
     xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
@@ -233,7 +233,7 @@
                                                     IsEnabled="{Binding FileName, Mode=OneWay, Converter={StaticResource FileNamePdfZipCheckConverter}}">
                                                     <ToggleButton.Style>
                                                         <Style TargetType="ToggleButton">
-                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                            <Setter Property="Visibility" Value="Collapsed" />
                                                             <Style.Triggers>
                                                                 <DataTrigger Binding="{Binding Path=DataContext.ShowPdfPreview, RelativeSource={RelativeSource AncestorType=Window}}" Value="true">
                                                                     <Setter Property="Content">
@@ -243,7 +243,7 @@
                                                                                 IsHitTestVisible="False" />
                                                                         </Setter.Value>
                                                                     </Setter>
-                                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                                    <Setter Property="Visibility" Value="Visible" />
                                                                 </DataTrigger>
                                                             </Style.Triggers>
                                                         </Style>

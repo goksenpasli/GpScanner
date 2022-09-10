@@ -123,8 +123,7 @@
                                     SelectedItem="{Binding Dpi, RelativeSource={RelativeSource TemplatedParent}, StringFormat=Dpi}" />
                                 <Button x:Name="BtnSave"
                                     Grid.Column="7"
-                                    Command="{Binding SaveImage, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                    CommandParameter="{Binding DataContext, ElementName=TwainCtrl}">
+                                    Command="{Binding SaveImage, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
                                     <Image Width="16" Height="16">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">

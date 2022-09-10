@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Extensions;
 using GpScanner.Properties;
@@ -94,6 +95,16 @@ namespace GpScanner.ViewModel
                     item.Seçili = !item.Seçili;
                 }
             }, parameter => Dosyalar?.Count > 0);
+
+            TransferImage = new RelayCommand<object>(parameter =>
+            {
+                if (parameter is object[] data && data[0] is not null)
+                {
+                    BitmapSource thumbnail = ((BitmapSource)data[0]).Resize(84, 117);
+                    ScannedImage scannedImage = new() { Seçili = true, Resim = BitmapFrame.Create((BitmapSource)data[0], thumbnail) };
+                    (data[1] as TwainCtrl)?.Scanner?.Resimler.Add(scannedImage);
+                }
+            }, parameter => true);
 
             Settings.Default.PropertyChanged += Default_PropertyChanged;
             PropertyChanged += GpScannerViewModel_PropertyChanged;
@@ -290,6 +301,8 @@ namespace GpScanner.ViewModel
                 }
             }
         }
+
+        public RelayCommand<object> TransferImage { get; }
 
         public TranslateViewModel TranslateViewModel
         {

@@ -66,6 +66,7 @@
       <DependentUpon>TranslateView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\VirtualizingWrapPanel.cs" />
+    <Compile Include="Converters\CloneConverter.cs" />
     <Compile Include="Converters\FilePathToFileNameConverter.cs" />
     <Compile Include="Converters\TimespanToTickConverter.cs" />
     <Compile Include="Converters\VisibilityToBooleanConverter.cs" />

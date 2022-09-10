@@ -322,8 +322,8 @@ namespace PdfViewer
 
         public Visibility ToolBarVisibility
         {
-            get { return (Visibility)GetValue(ToolBarVisibilityProperty); }
-            set { SetValue(ToolBarVisibilityProperty, value); }
+            get => (Visibility)GetValue(ToolBarVisibilityProperty);
+            set => SetValue(ToolBarVisibilityProperty, value);
         }
 
         public int ToplamSayfa

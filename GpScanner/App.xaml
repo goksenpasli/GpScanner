@@ -22,6 +22,7 @@
             </DrawingBrush>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
+            <Extensions:CloneConverter x:Key="CloneConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Converter:FilePathMergeConverter x:Key="FilePathMergeConverter" />
@@ -134,8 +135,24 @@
                     PrintButtonVisibility="Visible" SnapTick="True" ToolBarVisibility="Collapsed" />
             </DataTemplate>
             <DataTemplate x:Key="PdfViewerTemplateFull">
-                <PdfViewer:PdfViewer PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                    PrintButtonVisibility="Visible" SnapTick="True" />
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Button Command="{Binding DataContext.TransferImage, RelativeSource={RelativeSource AncestorType=Window}}" Content="AKTAR">
+                        <Button.CommandParameter>
+                            <MultiBinding Converter="{StaticResource CloneConverter}">
+                                <Binding ElementName="PdfVwr" Mode="OneWay" Path="Source" />
+                                <Binding ElementName="TwainCtrl" Mode="OneWay" Path="DataContext" />
+                            </MultiBinding>
+                        </Button.CommandParameter>
+                    </Button>
+                    <PdfViewer:PdfViewer x:Name="PdfVwr"
+                        Grid.Row="1"
+                        PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                        PrintButtonVisibility="Visible" SnapTick="True" />
+                </Grid>
             </DataTemplate>
             <DataTemplate x:Key="ZipViewerTemplate">
                 <Controls:ArchiveViewer Width="480" Height="240"
