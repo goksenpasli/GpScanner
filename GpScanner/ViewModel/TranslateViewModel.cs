@@ -56,7 +56,7 @@ namespace GpScanner.ViewModel
             {
                 if (!string.IsNullOrEmpty(metin))
                 {
-                    _ = Task.Factory.StartNew(() => Çeviri = DileÇevir(metin, MevcutDil, ÇevrilenDil), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default);
+                    _ = Task.Factory.StartNew(() => Çeviri =Extensions.TranslateViewModel.DileÇevir(metin, MevcutDil, ÇevrilenDil), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default);
                 }
                 return metin;
             }
@@ -97,48 +97,5 @@ namespace GpScanner.ViewModel
 
         private string mevcutDil = "auto";
 
-        private static bool BağlantıVarmı()
-        {
-            try
-            {
-                IPHostEntry i = Dns.GetHostEntry("www.google.com");
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        private static string DileÇevir(string text, string from = "auto", string to = "en")
-        {
-            try
-            {
-                if (BağlantıVarmı())
-                {
-                    WebClient wc = new();
-                    wc.Headers.Add(HttpRequestHeader.UserAgent, "Mozilla/5.0");
-                    wc.Headers.Add(HttpRequestHeader.AcceptCharset, "UTF-8");
-                    wc.Encoding = Encoding.UTF8;
-                    string url = $"https://translate.googleapis.com/translate_a/single?client=gtx&sl={from}&tl={to}&dt=t&q={Uri.EscapeUriString(text)}";
-                    string page = wc.DownloadString(url);
-                    JavaScriptSerializer JSS = new();
-                    object parsedObj = JSS.DeserializeObject(page);
-                    string çeviri = "";
-                    object[] data = parsedObj as object[];
-                    object firstnode = data.FirstOrDefault();
-                    for (int i = 0; i < (firstnode as object[])?.Length; i++)
-                    {
-                        çeviri += ((data.FirstOrDefault() as object[])?[i] as object[])?.ElementAt(0).ToString();
-                    }
-                    return çeviri;
-                }
-                return string.Empty;
-            }
-            catch (Exception)
-            {
-                return string.Empty;
-            }
-        }
     }
 }

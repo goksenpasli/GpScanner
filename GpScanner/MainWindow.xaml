@@ -4,6 +4,7 @@
     xmlns:Control="clr-namespace:Extensions.Controls;assembly=Extensions"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
     xmlns:ViewModel="clr-namespace:GpScanner.ViewModel"
+        xmlns:pdf="clr-namespace:PdfViewer;assembly=PdfViewer"
     xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=PresentationFramework"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:GpScanner"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -225,23 +226,29 @@
                                                         </Hyperlink>
                                                     </TextBlock>
                                                 </StackPanel>
-                                                <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                                <ToggleButton VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                                    d:Height="50" Background="Transparent"
+                                                    BorderBrush="{x:Null}"
                                                     IsChecked="{Binding Seçili}"
                                                     IsEnabled="{Binding FileName, Mode=OneWay, Converter={StaticResource FileNamePdfZipCheckConverter}}">
-                                                    <CheckBox.Style>
-                                                        <Style TargetType="CheckBox">
+                                                    <ToggleButton.Style>
+                                                        <Style TargetType="ToggleButton">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
                                                             <Style.Triggers>
                                                                 <DataTrigger Binding="{Binding Path=DataContext.ShowPdfPreview, RelativeSource={RelativeSource AncestorType=Window}}" Value="true">
                                                                     <Setter Property="Content">
                                                                         <Setter.Value>
-                                                                            <ContentControl Content="{Binding Path=FileName}" ContentTemplateSelector="{StaticResource ThumbViewerSelector}" />
+                                                                            <ContentControl Content="{Binding Path=FileName}"
+                                                                                ContentTemplateSelector="{StaticResource ThumbViewerSelector}"
+                                                                                IsHitTestVisible="False" />
                                                                         </Setter.Value>
                                                                     </Setter>
+                                                                    <Setter Property="Visibility" Value="Visible"/>
                                                                 </DataTrigger>
                                                             </Style.Triggers>
                                                         </Style>
-                                                    </CheckBox.Style>
-                                                </CheckBox>
+                                                    </ToggleButton.Style>
+                                                </ToggleButton>
                                             </StackPanel>
                                         </Border>
                                     </ControlTemplate>

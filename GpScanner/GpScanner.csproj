@@ -48,9 +48,6 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Freeware.Pdf2Png, Version=1.0.1.0, Culture=neutral, PublicKeyToken=0b93ff91d4be458d, processorArchitecture=MSIL">
-      <HintPath>..\packages\Freeware.Pdf2Png.1.0.1\lib\net45\Freeware.Pdf2Png.dll</HintPath>
-    </Reference>
     <Reference Include="PdfSharp-wpf, Version=1.51.5185.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -79,7 +76,6 @@
     <Compile Include="Converter\FileNameExtractConverter.cs" />
     <Compile Include="Converter\FileNamePdfZipCheckConverter.cs" />
     <Compile Include="Converter\FilePathMergeConverter.cs" />
-    <Compile Include="Converter\NullableToBooleanConverter.cs" />
     <Compile Include="TesseractView.xaml.cs">
       <DependentUpon>TesseractView.xaml</DependentUpon>
     </Compile>
@@ -90,7 +86,6 @@
     <Compile Include="ViewModel\GpScannerViewModel.cs" />
     <Compile Include="ViewModel\Ocr.cs" />
     <Compile Include="ViewModel\OcrData.cs" />
-    <Compile Include="ViewModel\PdfViewer.cs" />
     <Compile Include="ViewModel\StillImageHelper.cs" />
     <Compile Include="ViewModel\TesseractViewModel.cs" />
     <Compile Include="ViewModel\TranslateViewModel.cs" />
@@ -148,6 +143,10 @@
     <ProjectReference Include="..\Extensions\Extensions.csproj">
       <Project>{22b9a127-5e74-4534-bfc4-a3349544c52c}</Project>
       <Name>Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PdfViewer\PdfViewer.csproj">
+      <Project>{ea1285ba-203e-4d61-a869-7567966e5367}</Project>
+      <Name>PdfViewer</Name>
     </ProjectReference>
     <ProjectReference Include="TwainControl\TwainControl.csproj">
       <Project>{e18bdb1b-1d7c-4f60-85b1-53eae13074c4}</Project>
