@@ -271,6 +271,9 @@
   <data name="OCR" xml:space="preserve">
     <value>التعرف الضوئي على الحروف</value>
   </data>
+  <data name="OCRPDFSAVE" xml:space="preserve">
+    <value>احفظ Ocr Pdf</value>
+  </data>
   <data name="OTHERSETTINGS" xml:space="preserve">
     <value>اعدادات اخرى</value>
   </data>

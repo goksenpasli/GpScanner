@@ -424,4 +424,7 @@ EKLE</value>
   <data name="COLORCHANGETIP" xml:space="preserve">
     <value>Eşik Değeri Ayarladıktan Sonra Buna Tıklarsanız İkinci Bir Renk Seçimi Yapabilirsiniz.</value>
   </data>
+  <data name="OCRPDFSAVE" xml:space="preserve">
+    <value>OCR PDF SAKLA</value>
+  </data>
 </root>

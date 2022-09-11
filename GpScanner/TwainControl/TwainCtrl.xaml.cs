@@ -579,6 +579,15 @@ namespace TwainControl
             return outputDocument;
         }
 
+        public void DefaultPdfCompression(PdfDocument doc)
+        {
+            doc.Options.FlateEncodeMode = PdfFlateEncodeMode.BestCompression;
+            doc.Options.CompressContentStreams = true;
+            doc.Options.UseFlateDecoderForJpegImages = PdfUseFlateDecoderForJpegImages.Automatic;
+            doc.Options.NoCompression = false;
+            doc.Options.EnableCcittCompressionForBilevelImages = true;
+        }
+
         public void Dispose()
         {
             Dispose(true);
@@ -728,15 +737,6 @@ namespace TwainControl
             Settings.Default.Save();
         }
 
-        private void DefaultPdfCompression(PdfDocument doc)
-        {
-            doc.Options.FlateEncodeMode = PdfFlateEncodeMode.BestCompression;
-            doc.Options.CompressContentStreams = true;
-            doc.Options.UseFlateDecoderForJpegImages = PdfUseFlateDecoderForJpegImages.Automatic;
-            doc.Options.NoCompression = false;
-            doc.Options.EnableCcittCompressionForBilevelImages = true;
-        }
-
         private ScanSettings DefaultScanSettings()
         {
             return new()
@@ -745,6 +745,7 @@ namespace TwainControl
                 ShowTwainUi = Scanner.ShowUi,
                 ShowProgressIndicatorUi = Scanner.ShowProgress,
                 UseDuplex = Scanner.Duplex,
+                AbortWhenNoPaperDetectable = true,
                 ShouldTransferAllPages = true,
                 Resolution = new ResolutionSettings()
             };

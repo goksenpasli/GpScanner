@@ -21,7 +21,7 @@ namespace GpScanner
             InitializeComponent();
             DataContext = new GpScannerViewModel();
             cvs = TryFindResource("Veriler") as CollectionViewSource;
-            TwainCtrl.PropertyChanged += TwainCtrl_PropertyChanged;            
+            TwainCtrl.PropertyChanged += TwainCtrl_PropertyChanged;
         }
 
         private void Calendar_PreviewMouseUp(object sender, MouseButtonEventArgs e)
@@ -52,7 +52,7 @@ namespace GpScanner
             if (e.PropertyName is "ImgData")
             {
                 GpScannerViewModel gpScannerViewModel = DataContext as GpScannerViewModel;
-                gpScannerViewModel?.Ocr(TwainCtrl.ImgData);
+                _ = gpScannerViewModel.Ocr(TwainCtrl.ImgData);
                 TwainCtrl.ImgData = null;
             }
         }

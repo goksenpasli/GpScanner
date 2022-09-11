@@ -271,6 +271,9 @@ RELIER</value>
   <data name="OCR" xml:space="preserve">
     <value>ROC</value>
   </data>
+  <data name="OCRPDFSAVE" xml:space="preserve">
+    <value>ENREGISTRER OCR PDF</value>
+  </data>
   <data name="OTHERSETTINGS" xml:space="preserve">
     <value>AUTRES RÉGLAGES</value>
   </data>

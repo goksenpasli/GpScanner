@@ -140,7 +140,8 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <Button Command="{Binding DataContext.TransferImage, RelativeSource={RelativeSource AncestorType=Window}}" Content="AKTAR">
+                    <Button Command="{Binding DataContext.TransferImage, RelativeSource={RelativeSource AncestorType=Window}}"
+                        Content="ç" FontFamily="Wingdings" FontSize="16">
                         <Button.CommandParameter>
                             <MultiBinding Converter="{StaticResource CloneConverter}">
                                 <Binding ElementName="PdfVwr" Mode="OneWay" Path="Source" />

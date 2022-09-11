@@ -420,4 +420,7 @@ DEVICE</value>
   <data name="COLORCHANGETIP" xml:space="preserve">
     <value>If You Click This After Setting the Threshold Value, You Can Make a Second Color Selection.</value>
   </data>
+  <data name="OCRPDFSAVE" xml:space="preserve">
+    <value>SAVE OCR PDF</value>
+  </data>
 </root>

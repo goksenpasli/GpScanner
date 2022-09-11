@@ -476,15 +476,17 @@
                                                             </Image>
                                                         </Hyperlink>
                                                     </TextBlock>
-                                                    <ToggleButton VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                                        Background="Transparent"
-                                                        BorderBrush="{x:Null}"
-                                                        IsChecked="{Binding Seçili}">
-                                                        <Image Width="{Binding Resim.Thumbnail.Width, Mode=OneWay}"
-                                                            Height="{Binding Resim.Thumbnail.Height, Mode=OneWay}"
-                                                            d:Source="/TwainControl;component/bw.png" RenderOptions.BitmapScalingMode="NearestNeighbor"
-                                                            Source="{Binding Resim.Thumbnail, Mode=OneWay}" />
-                                                    </ToggleButton>
+                                                    <Viewbox Width="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}">
+                                                        <ToggleButton VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                                            Background="Transparent"
+                                                            BorderBrush="{x:Null}"
+                                                            IsChecked="{Binding Seçili}">
+                                                            <Image Width="{Binding Resim.Thumbnail.Width, Mode=OneWay}"
+                                                                Height="{Binding Resim.Thumbnail.Height, Mode=OneWay}"
+                                                                d:Source="/TwainControl;component/bw.png" RenderOptions.BitmapScalingMode="NearestNeighbor"
+                                                                Source="{Binding Resim.Thumbnail, Mode=OneWay}" />
+                                                        </ToggleButton>
+                                                    </Viewbox>
                                                 </StackPanel>
                                             </Border>
                                         </ControlTemplate>

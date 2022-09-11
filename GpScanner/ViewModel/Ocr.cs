@@ -1,41 +1,57 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using Tesseract;
-using Path = System.IO.Path;
 
 namespace GpScanner.ViewModel
 {
     public static class Ocr
     {
-        public static string OcrYap(this byte[] dosya, string lang)
+        public static ObservableCollection<OcrData> OcrYap(this byte[] dosya, string lang)
         {
+            if (string.IsNullOrWhiteSpace(lang))
+            {
+                _ = Application.Current.Dispatcher.BeginInvoke(() => MessageBox.Show("Dil Seçimini Kontrol Edin.", Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error));
+                return null;
+            }
             if (Directory.Exists(Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + @"\tessdata"))
             {
                 return GetText(dosya, lang);
             }
-            _ = MessageBox.Show("Tesseract Engine Klasörünü Kontrol Edin.", Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
-            return string.Empty;
+            _ = Application.Current.Dispatcher.BeginInvoke(() => MessageBox.Show("Tesseract Engine Klasörünü Kontrol Edin.", Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error));
+            return null;
         }
 
-        private static string GetText(byte[] dosya, string lang)
+        private static ObservableCollection<OcrData> GetText(byte[] dosya, string lang)
         {
             try
             {
-                if (!string.IsNullOrWhiteSpace(lang))
+                using TesseractEngine engine = new("./tessdata", lang, EngineMode.TesseractAndLstm);
+                using Pix pixImage = Pix.LoadFromMemory(dosya);
+                using Page page = engine.Process(pixImage);
+                using ResultIterator iterator = page.GetIterator();
+                iterator.Begin();
+                ObservableCollection<OcrData> ocrdata = new();
+                do
                 {
-                    using TesseractEngine engine = new("./tessdata", lang, EngineMode.TesseractAndLstm);
-                    using Pix pixImage = Pix.LoadFromMemory(dosya);
-                    using Page page = engine.Process(pixImage);
-                    return page.GetText();
-                }
-                return string.Empty;
+                    if (iterator.TryGetBoundingBox(PageIteratorLevel.Word, out Tesseract.Rect rect))
+                    {
+                        OcrData item = new() { DisplayName = iterator.GetText(PageIteratorLevel.Word), Rect = rect };
+                        if (!string.IsNullOrWhiteSpace(item.DisplayName))
+                        {
+                            ocrdata.Add(item);
+                        }
+                    }
+                } while (iterator.Next(PageIteratorLevel.Word));
+
+                return ocrdata;
             }
             catch (Exception ex)
             {
                 _ = Application.Current.Dispatcher.BeginInvoke(() => MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Exclamation));
-                return string.Empty;
+                return null;
             }
         }
     }

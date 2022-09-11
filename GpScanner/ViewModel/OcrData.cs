@@ -1,4 +1,5 @@
 ﻿using Extensions;
+using Tesseract;
 
 namespace GpScanner.ViewModel
 {
@@ -59,6 +60,20 @@ namespace GpScanner.ViewModel
             }
         }
 
+        public Rect Rect
+        {
+            get => rect;
+
+            set
+            {
+                if (rect != value)
+                {
+                    rect = value;
+                    OnPropertyChanged(nameof(Rect));
+                }
+            }
+        }
+
         private string displayName;
 
         private bool ısEnabled = true;
@@ -66,5 +81,7 @@ namespace GpScanner.ViewModel
         private string ocrName;
 
         private double progressValue;
+
+        private Rect rect;
     }
 }

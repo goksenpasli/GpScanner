@@ -271,6 +271,9 @@ COLLEGARE</value>
   <data name="OCR" xml:space="preserve">
     <value>OCR</value>
   </data>
+  <data name="OCRPDFSAVE" xml:space="preserve">
+    <value>SALVA OCR PDF</value>
+  </data>
   <data name="OTHERSETTINGS" xml:space="preserve">
     <value>ALTRE IMPOSTAZIONI</value>
   </data>
