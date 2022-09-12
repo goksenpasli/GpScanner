@@ -663,13 +663,13 @@ namespace TwainControl
 
         private Twain twain;
 
-        private GridLength twainGuiControlLength = new(4, GridUnitType.Star);
+        private GridLength twainGuiControlLength = new(3, GridUnitType.Star);
 
         private double width;
 
-        private double x;
+        private double startupcoordx;
 
-        private double y;
+        private double startupcoordy;
 
         private void ApplyPdfSecurity(PdfDocument document)
         {
@@ -703,13 +703,17 @@ namespace TwainControl
             Scanner.CaretPosition = (sender as ButtonedTextBox)?.CaretIndex ?? 0;
         }
 
-        private byte[] CaptureScreen(double x, double y, double width, double height)
+        private byte[] CaptureScreen(double coordx, double coordy, double selectionwidth, double selectionheight, ScrollViewer scrollviewer)
         {
             try
             {
-                double widthmultiply = SeçiliResim.Resim.PixelWidth / ImgViewer.RenderSize.Width;
-                double heightmultiply = SeçiliResim.Resim.PixelHeight / ImgViewer.RenderSize.Height;
-                Int32Rect ınt32Rect = new((int)(x * widthmultiply), (int)(y * heightmultiply), (int)(width * widthmultiply), (int)(height * heightmultiply));
+                coordx += scrollviewer.HorizontalOffset;
+                coordy += scrollviewer.VerticalOffset;
+
+                double widthmultiply = SeçiliResim.Resim.PixelWidth / (double)((scrollviewer.ExtentWidth < scrollviewer.ViewportWidth) ? scrollviewer.ViewportWidth : scrollviewer.ExtentWidth);
+                double heightmultiply = SeçiliResim.Resim.PixelHeight / (double)((scrollviewer.ExtentHeight < scrollviewer.ViewportHeight) ? scrollviewer.ViewportHeight : scrollviewer.ExtentHeight);
+
+                Int32Rect ınt32Rect = new((int)(coordx * widthmultiply), (int)(coordy * heightmultiply), (int)(selectionwidth * widthmultiply), (int)(selectionheight * heightmultiply));
                 CroppedOcrBitmap = new CroppedBitmap(SeçiliResim.Resim, ınt32Rect);
                 CroppedOcrBitmap.Freeze();
                 return CroppedOcrBitmap.ToTiffJpegByteArray(Format.Png);
@@ -721,7 +725,7 @@ namespace TwainControl
             }
         }
 
-        private Int32Rect CropImageRect(ImageSource ımageSource)
+        private Int32Rect CropPreviewImage(ImageSource ımageSource)
         {
             int height = ((BitmapSource)ımageSource).PixelHeight - (int)Scanner.CropBottom - (int)Scanner.CropTop;
             int width = ((BitmapSource)ımageSource).PixelWidth - (int)Scanner.CropRight - (int)Scanner.CropLeft;
@@ -835,13 +839,13 @@ namespace TwainControl
 
         private void GridSplitter_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            TwainGuiControlLength = new(4, GridUnitType.Star);
+            TwainGuiControlLength = new(3, GridUnitType.Star);
             DocumentGridLength = new(5, GridUnitType.Star);
         }
 
         private void ImgViewer_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.OriginalSource is System.Windows.Controls.Image)
+            if (e.OriginalSource is System.Windows.Controls.Image img && img.Parent is ScrollViewer scrollviewer)
             {
                 if (e.LeftButton == MouseButtonState.Pressed)
                 {
@@ -853,88 +857,97 @@ namespace TwainControl
                     isRightMouseDown = true;
                     Cursor = Cursors.Cross;
                 }
-                x = e.GetPosition(ImgViewer).X;
-                y = e.GetPosition(ImgViewer).Y;
+                startupcoordx = e.GetPosition(scrollviewer).X;
+                startupcoordy = e.GetPosition(scrollviewer).Y;
             }
         }
 
         private void ImgViewer_MouseMove(object sender, MouseEventArgs e)
         {
-            double curx = e.GetPosition(ImgViewer).X;
-            double cury = e.GetPosition(ImgViewer).Y;
-
-            if (isRightMouseDown && e.OriginalSource is System.Windows.Controls.Image)
+            if (e.OriginalSource is System.Windows.Controls.Image img && img.Parent is ScrollViewer scrollviewer)
             {
-                CroppedBitmap cb = new(SeçiliResim.Resim, new Int32Rect((int)((int)curx * SeçiliResim.Resim.PixelWidth / ImgViewer.ActualWidth), (int)((int)cury * SeçiliResim.Resim.PixelHeight / ImgViewer.ActualHeight), 1, 1));
-                byte[] pixels = new byte[4];
-                cb.CopyPixels(pixels, 4, 0);
-                cb.Freeze();
-                SourceColor = System.Windows.Media.Color.FromRgb(pixels[2], pixels[1], pixels[0]).ToString();
-                if (e.RightButton == MouseButtonState.Released)
-                {
-                    isRightMouseDown = false;
-                    Cursor = Cursors.Arrow;
-                }
-            }
+                double mousemovecoordx = e.GetPosition(scrollviewer).X;
+                double mousemovecoordy = e.GetPosition(scrollviewer).Y;
 
-            if (isMouseDown && e.OriginalSource is System.Windows.Controls.Image)
-            {
-                Rectangle r = new()
+                if (isRightMouseDown)
                 {
-                    Stroke = new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#33FF0000")),
-                    Fill = new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#3300FF00")),
-                    StrokeThickness = 2,
-                    StrokeDashArray = new DoubleCollection(new double[] { 4, 2 }),
-                    Width = Math.Abs(curx - x),
-                    Height = Math.Abs(cury - y)
-                };
-                cnv.Children.Clear();
-                _ = cnv.Children.Add(r);
-                if (x < curx && y < cury)
-                {
-                    Canvas.SetLeft(r, x);
-                    Canvas.SetTop(r, y);
+                    mousemovecoordx += scrollviewer.HorizontalOffset;
+                    mousemovecoordy += scrollviewer.VerticalOffset;
+                    double widthmultiply = SeçiliResim.Resim.PixelWidth / (double)((scrollviewer.ExtentWidth < scrollviewer.ViewportWidth) ? scrollviewer.ViewportWidth : scrollviewer.ExtentWidth);
+                    double heightmultiply = SeçiliResim.Resim.PixelHeight / (double)((scrollviewer.ExtentHeight < scrollviewer.ViewportHeight) ? scrollviewer.ViewportHeight : scrollviewer.ExtentHeight);
+
+                    CroppedBitmap cb = new(SeçiliResim.Resim, new Int32Rect((int)(mousemovecoordx * widthmultiply), (int)(mousemovecoordy * heightmultiply), 1, 1));
+                    byte[] pixels = new byte[4];
+                    cb.CopyPixels(pixels, 4, 0);
+                    cb.Freeze();
+                    SourceColor = System.Windows.Media.Color.FromRgb(pixels[2], pixels[1], pixels[0]).ToString();
+                    if (e.RightButton == MouseButtonState.Released)
+                    {
+                        isRightMouseDown = false;
+                        Cursor = Cursors.Arrow;
+                    }
                 }
-                if (x > curx && y > cury)
+
+                if (isMouseDown)
                 {
-                    Canvas.SetLeft(r, curx);
-                    Canvas.SetTop(r, cury);
-                }
-                if (x < curx && y > cury)
-                {
-                    Canvas.SetLeft(r, x);
-                    Canvas.SetTop(r, cury);
-                }
-                if (x > curx && y < cury)
-                {
-                    Canvas.SetLeft(r, curx);
-                    Canvas.SetTop(r, y);
-                }
-                if (e.LeftButton == MouseButtonState.Released)
-                {
+                    Rectangle r = new()
+                    {
+                        Stroke = new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#33FF0000")),
+                        Fill = new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#3300FF00")),
+                        StrokeThickness = 2,
+                        StrokeDashArray = new DoubleCollection(new double[] { 4, 2 }),
+                        Width = Math.Abs(mousemovecoordx - startupcoordx),
+                        Height = Math.Abs(mousemovecoordy - startupcoordy)
+                    };
                     cnv.Children.Clear();
-                    width = Math.Abs(e.GetPosition(ImgViewer).X - x);
-                    height = Math.Abs(e.GetPosition(ImgViewer).Y - y);
-                    if (x < curx && y < cury)
+                    _ = cnv.Children.Add(r);
+                    if (startupcoordx < mousemovecoordx && startupcoordy < mousemovecoordy)
                     {
-                        ImgData = CaptureScreen(x, y, width, height);
+                        Canvas.SetLeft(r, startupcoordx);
+                        Canvas.SetTop(r, startupcoordy);
                     }
-                    if (x > curx && y > cury)
+                    if (startupcoordx > mousemovecoordx && startupcoordy > mousemovecoordy)
                     {
-                        ImgData = CaptureScreen(curx, cury, width, height);
+                        Canvas.SetLeft(r, mousemovecoordx);
+                        Canvas.SetTop(r, mousemovecoordy);
                     }
-                    if (x < curx && y > cury)
+                    if (startupcoordx < mousemovecoordx && startupcoordy > mousemovecoordy)
                     {
-                        ImgData = CaptureScreen(x, cury, width, height);
+                        Canvas.SetLeft(r, startupcoordx);
+                        Canvas.SetTop(r, mousemovecoordy);
                     }
-                    if (x > curx && y < cury)
+                    if (startupcoordx > mousemovecoordx && startupcoordy < mousemovecoordy)
                     {
-                        ImgData = CaptureScreen(curx, y, width, height);
+                        Canvas.SetLeft(r, mousemovecoordx);
+                        Canvas.SetTop(r, startupcoordy);
                     }
-                    x = y = 0;
-                    isMouseDown = false;
-                    Cursor = Cursors.Arrow;
-                    OnPropertyChanged(nameof(ImgData));
+                    if (e.LeftButton == MouseButtonState.Released)
+                    {
+                        cnv.Children.Clear();
+                        width = Math.Abs(e.GetPosition(scrollviewer).X - startupcoordx);
+                        height = Math.Abs(e.GetPosition(scrollviewer).Y - startupcoordy);
+
+                        if (startupcoordx < mousemovecoordx && startupcoordy < mousemovecoordy)
+                        {
+                            ImgData = CaptureScreen(startupcoordx, startupcoordy, width, height, scrollviewer);
+                        }
+                        if (startupcoordx > mousemovecoordx && startupcoordy > mousemovecoordy)
+                        {
+                            ImgData = CaptureScreen(mousemovecoordx, mousemovecoordy, width, height, scrollviewer);
+                        }
+                        if (startupcoordx < mousemovecoordx && startupcoordy > mousemovecoordy)
+                        {
+                            ImgData = CaptureScreen(startupcoordx, mousemovecoordy, width, height, scrollviewer);
+                        }
+                        if (startupcoordx > mousemovecoordx && startupcoordy < mousemovecoordy)
+                        {
+                            ImgData = CaptureScreen(mousemovecoordx, startupcoordy, width, height, scrollviewer);
+                        }
+                        startupcoordx = startupcoordy = 0;
+                        isMouseDown = false;
+                        Cursor = Cursors.Arrow;
+                        OnPropertyChanged(nameof(ImgData));
+                    }
                 }
             }
         }
@@ -1058,7 +1071,7 @@ namespace TwainControl
         {
             if (e.PropertyName is "CropLeft" or "CropTop" or "CropRight" or "CropBottom" && SeçiliResim != null)
             {
-                Int32Rect sourceRect = CropImageRect(SeçiliResim.Resim);
+                Int32Rect sourceRect = CropPreviewImage(SeçiliResim.Resim);
                 if (sourceRect.HasArea)
                 {
                     Scanner.CroppedImage = new CroppedBitmap(SeçiliResim.Resim, sourceRect);

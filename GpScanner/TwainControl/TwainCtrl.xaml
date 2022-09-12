@@ -36,7 +36,7 @@
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="{Binding TwainGuiControlLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" d:Width="4*" />
+            <ColumnDefinition Width="{Binding TwainGuiControlLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" d:Width="3*" />
             <ColumnDefinition Width="3" />
             <ColumnDefinition Width="{Binding DocumentGridLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" d:Width="5*" />
         </Grid.ColumnDefinitions>
