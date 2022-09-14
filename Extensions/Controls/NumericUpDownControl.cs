@@ -26,7 +26,6 @@ namespace Extensions
             DefaultStyleKeyProperty.OverrideMetadata(typeof(NumericUpDownControl), new FrameworkPropertyMetadata(typeof(NumericUpDownControl)));
             MaximumProperty.OverrideMetadata(typeof(NumericUpDownControl), new FrameworkPropertyMetadata(double.MaxValue));
             MinimumProperty.OverrideMetadata(typeof(NumericUpDownControl), new FrameworkPropertyMetadata(double.MinValue));
-            ValueProperty.OverrideMetadata(typeof(NumericUpDownControl), new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, Changed));
         }
 
         public enum Mode
@@ -99,36 +98,6 @@ namespace Extensions
                 }
             }
             base.OnKeyDown(e);
-        }
-
-        private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is NumericUpDownControl numericUpDownControl)
-            {
-                if ((double)e.NewValue >= numericUpDownControl.Maximum)
-                {
-                    numericUpDownControl.Value = numericUpDownControl.Maximum;
-                }
-
-                if ((double)e.NewValue <= numericUpDownControl.Minimum)
-                {
-                    numericUpDownControl.Value = numericUpDownControl.Minimum;
-                }
-
-                numericUpDownControl.Value = (double)e.NewValue;
-
-                if (numericUpDownControl.ShowMode == Mode.DateTimeMode && numericUpDownControl.DateValue.HasValue)
-                {
-                    if ((double)e.NewValue > (double)e.OldValue && numericUpDownControl.DateValue < DateTime.MaxValue)
-                    {
-                        numericUpDownControl.DateValue = numericUpDownControl.DateValue.Value.AddDays(1);
-                    }
-                    else if ((double)e.NewValue < (double)e.OldValue && numericUpDownControl.DateValue > DateTime.MinValue)
-                    {
-                        numericUpDownControl.DateValue = numericUpDownControl.DateValue.Value.AddDays(-1);
-                    }
-                }
-            }
         }
 
         private static void ModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

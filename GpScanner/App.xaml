@@ -10,6 +10,9 @@
     Startup="Application_Startup" StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="/Extensions;component/Themes/Skin.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
             <DrawingBrush x:Key="Tesseract" Stretch="Uniform">
                 <DrawingBrush.Drawing>
                     <DrawingGroup>
@@ -28,6 +31,7 @@
             <Converter:FilePathMergeConverter x:Key="FilePathMergeConverter" />
             <Converter:FileNamePdfZipCheckConverter x:Key="FileNamePdfZipCheckConverter" />
             <Converter:FileNameExtractConverter x:Key="FileNameExtractConverter" />
+            <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
             <LinearGradientBrush x:Key="BorderBackground" ice:Freeze="True" StartPoint="0.5,0" EndPoint="0.5,1">
                 <GradientStop ice:Freeze="True" Offset="0" Color="#FFFDFEFF" />
                 <GradientStop ice:Freeze="True" Offset="1" Color="#FFC1D3EA" />
@@ -129,7 +133,7 @@
                 </ControlTemplate.Triggers>
             </ControlTemplate>
             <DataTemplate x:Key="PdfViewerTemplate">
-                <PdfViewer:PdfViewer Width="105" Height="149"
+                <PdfViewer:PdfViewer Width="126" Height="178"
                     FirstPageThumbnail="True"
                     PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                     PrintButtonVisibility="Visible" SnapTick="True" ToolBarVisibility="Collapsed" />
@@ -140,15 +144,35 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <Button Command="{Binding DataContext.TransferImage, RelativeSource={RelativeSource AncestorType=Window}}"
-                        Content="ç" FontFamily="Wingdings" FontSize="16">
-                        <Button.CommandParameter>
-                            <MultiBinding Converter="{StaticResource CloneConverter}">
-                                <Binding ElementName="PdfVwr" Mode="OneWay" Path="Source" />
-                                <Binding ElementName="TwainCtrl" Mode="OneWay" Path="DataContext" />
-                            </MultiBinding>
-                        </Button.CommandParameter>
-                    </Button>
+                    <UniformGrid Columns="2">
+                        <Button Command="{Binding DataContext.TransferImage, RelativeSource={RelativeSource AncestorType=Window}}"
+                            Content="ç" FontFamily="Wingdings" FontSize="16">
+                            <Button.CommandParameter>
+                                <MultiBinding Converter="{StaticResource CloneConverter}">
+                                    <Binding ElementName="PdfVwr" Mode="OneWay" Path="Source" />
+                                    <Binding ElementName="TwainCtrl" Mode="OneWay" Path="DataContext" />
+                                </MultiBinding>
+                            </Button.CommandParameter>
+                        </Button>
+                        <UniformGrid Columns="3" DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType=ListBox}}">
+                            <Extensions:NumericUpDownControl Maximum="{Binding ElementName=PdfVwr, Path=ToplamSayfa}"
+                                Minimum="1" SmallChange="1"
+                                Value="{Binding SayfaBaşlangıç, UpdateSourceTrigger=PropertyChanged}" />
+                            <Extensions:NumericUpDownControl Maximum="{Binding ElementName=PdfVwr, Path=ToplamSayfa}"
+                                Minimum="1" SmallChange="1"
+                                Value="{Binding SayfaBitiş, UpdateSourceTrigger=PropertyChanged}" />
+                            <Button Command="{Binding ExtractPdfFile}" CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid}}">
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="68" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                            </Button>
+                        </UniformGrid>
+                    </UniformGrid>
                     <PdfViewer:PdfViewer x:Name="PdfVwr"
                         Grid.Row="1"
                         PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"

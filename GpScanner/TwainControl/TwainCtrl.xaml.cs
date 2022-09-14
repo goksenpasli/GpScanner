@@ -370,11 +370,14 @@ namespace TwainControl
                 };
                 if (openFileDialog.ShowDialog() == true)
                 {
+                    const int A4Width = 21;
+                    const double A4Height = 29.7;
                     foreach (string item in openFileDialog.FileNames)
                     {
                         BitmapImage bi = new(new Uri(item));
                         bi.Freeze();
-                        BitmapFrame bitmapFrame = BitmapFrame.Create(bi, bi.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 21 * 29.7));
+                        double oran = A4Width / 2.54 * ImgLoadResolution / bi.PixelWidth;
+                        BitmapFrame bitmapFrame = BitmapFrame.Create(bi.Resize(oran), bi.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / A4Width * A4Height));
                         bitmapFrame.Freeze();
                         Scanner.Resimler.Add(new ScannedImage() { Seçili = true, Resim = bitmapFrame });
                     }
@@ -450,6 +453,20 @@ namespace TwainControl
                 {
                     ımgData = value;
                     OnPropertyChanged(nameof(ImgData));
+                }
+            }
+        }
+
+        public double ImgLoadResolution
+        {
+            get => ımgLoadResolution;
+
+            set
+            {
+                if (ımgLoadResolution != value)
+                {
+                    ımgLoadResolution = value;
+                    OnPropertyChanged(nameof(ImgLoadResolution));
                 }
             }
         }
@@ -563,6 +580,15 @@ namespace TwainControl
 
         public ICommand WebAdreseGit { get; }
 
+        public static void DefaultPdfCompression(PdfDocument doc)
+        {
+            doc.Options.FlateEncodeMode = PdfFlateEncodeMode.BestCompression;
+            doc.Options.CompressContentStreams = true;
+            doc.Options.UseFlateDecoderForJpegImages = PdfUseFlateDecoderForJpegImages.Automatic;
+            doc.Options.NoCompression = false;
+            doc.Options.EnableCcittCompressionForBilevelImages = true;
+        }
+
         public static PdfDocument MergePdf(string[] pdffiles)
         {
             using PdfDocument outputDocument = new();
@@ -577,15 +603,6 @@ namespace TwainControl
                 }
             }
             return outputDocument;
-        }
-
-        public void DefaultPdfCompression(PdfDocument doc)
-        {
-            doc.Options.FlateEncodeMode = PdfFlateEncodeMode.BestCompression;
-            doc.Options.CompressContentStreams = true;
-            doc.Options.UseFlateDecoderForJpegImages = PdfUseFlateDecoderForJpegImages.Automatic;
-            doc.Options.NoCompression = false;
-            doc.Options.EnableCcittCompressionForBilevelImages = true;
         }
 
         public void Dispose()
@@ -649,6 +666,8 @@ namespace TwainControl
 
         private byte[] ımgData;
 
+        private double ımgLoadResolution = 72;
+
         private bool isMouseDown;
 
         private bool isRightMouseDown;
@@ -659,6 +678,10 @@ namespace TwainControl
 
         private string sourceColor = "Transparent";
 
+        private double startupcoordx;
+
+        private double startupcoordy;
+
         private string targetColor = "Transparent";
 
         private Twain twain;
@@ -666,10 +689,6 @@ namespace TwainControl
         private GridLength twainGuiControlLength = new(3, GridUnitType.Star);
 
         private double width;
-
-        private double startupcoordx;
-
-        private double startupcoordy;
 
         private void ApplyPdfSecurity(PdfDocument document)
         {
@@ -749,7 +768,6 @@ namespace TwainControl
                 ShowTwainUi = Scanner.ShowUi,
                 ShowProgressIndicatorUi = Scanner.ShowProgress,
                 UseDuplex = Scanner.Duplex,
-                AbortWhenNoPaperDetectable = true,
                 ShouldTransferAllPages = true,
                 Resolution = new ResolutionSettings()
             };

@@ -503,7 +503,7 @@
                 </GroupBox>
                 <UniformGrid Grid.Row="3"
                     Columns="2" FirstColumn="1" Rows="3">
-                    <Button Command="{Binding LoadImage}">
+                    <Extensions:SplitButton Command="{Binding LoadImage}" PlacementMode="Top">
                         <StackPanel Orientation="Horizontal">
                             <Image Width="24" Height="24">
                                 <Image.Source>
@@ -515,7 +515,16 @@
                             </Image>
                             <TextBlock VerticalAlignment="Center" Text="{local:Loc FILE}" />
                         </StackPanel>
-                    </Button>
+                        <Extensions:SplitButton.InternalContent>
+                            <Slider Width="100"
+                                AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="600"
+                                Minimum="72" SmallChange="1"
+                                Style="{StaticResource Slider}"
+                                Ticks="72,96,120,150,200,300,450,600"
+                                ToolTip="{local:Loc RES}"
+                                Value="{Binding ImgLoadResolution, UpdateSourceTrigger=PropertyChanged}" />
+                        </Extensions:SplitButton.InternalContent>
+                    </Extensions:SplitButton>
                     <Button Command="{Binding Seçilikaydet}">
                         <StackPanel Orientation="Horizontal">
                             <Canvas Width="24" Height="24">

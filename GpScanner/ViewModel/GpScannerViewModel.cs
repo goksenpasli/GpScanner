@@ -18,6 +18,7 @@ using PdfSharp;
 using PdfSharp.Drawing;
 using PdfSharp.Drawing.Layout;
 using PdfSharp.Pdf;
+using PdfSharp.Pdf.IO;
 using TwainControl;
 using static Extensions.ExtensionMethods;
 using Twainsettings = TwainControl.Properties;
@@ -110,6 +111,28 @@ namespace GpScanner.ViewModel
                 }
             }, parameter => true);
 
+            ExtractPdfFile = new RelayCommand<object>(parameter =>
+            {
+                if (parameter is string filename)
+                {
+                    using PdfDocument inputDocument = PdfReader.Open(filename, PdfDocumentOpenMode.Import);
+                    using PdfDocument outputDocument = new();
+                    for (int i = SayfaBaşlangıç - 1; i <= SayfaBitiş - 1; i++)
+                    {
+                        _ = outputDocument.AddPage(inputDocument.Pages[i]);
+                    }
+                    SaveFileDialog saveFileDialog = new()
+                    {
+                        Filter = "Pdf Dosyası(*.pdf)|*.pdf",
+                    };
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        TwainCtrl.DefaultPdfCompression(outputDocument);
+                        outputDocument.Save(saveFileDialog.FileName);
+                    }
+                }
+            }, parameter => SayfaBaşlangıç <= SayfaBitiş);
+
             SaveOcrPdf = new RelayCommand<object>(parameter =>
             {
                 if (parameter is TwainCtrl twainCtrl)
@@ -125,7 +148,7 @@ namespace GpScanner.ViewModel
                     using XImage xImage = XImage.FromStream(ms);
                     XSize size = PageSizeConverter.ToSize(PageSize.A4);
                     gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
-                    twainCtrl.DefaultPdfCompression(document);
+                    TwainCtrl.DefaultPdfCompression(document);
 
                     XTextFormatter textformatter = new(gfx);
                     foreach (OcrData item in ScannedText)
@@ -222,6 +245,8 @@ namespace GpScanner.ViewModel
             }
         }
 
+        public RelayCommand<object> ExtractPdfFile { get; }
+
         public double Fold
         {
             get => fold;
@@ -259,6 +284,33 @@ namespace GpScanner.ViewModel
         public ICommand ResetFilter { get; }
 
         public RelayCommand<object> SaveOcrPdf { get; }
+
+        public int SayfaBaşlangıç
+        {
+            get => sayfaBaşlangıç;
+
+            set
+            {
+                if (sayfaBaşlangıç != value)
+                {
+                    sayfaBaşlangıç = value;
+                    OnPropertyChanged(nameof(SayfaBaşlangıç));
+                }
+            }
+        }
+
+        public int SayfaBitiş
+        {
+            get => sayfaBitiş; set
+
+            {
+                if (sayfaBitiş != value)
+                {
+                    sayfaBitiş = value;
+                    OnPropertyChanged(nameof(SayfaBitiş));
+                }
+            }
+        }
 
         public ObservableCollection<OcrData> ScannedText
         {
@@ -438,6 +490,10 @@ namespace GpScanner.ViewModel
         private double fold = 0.3;
 
         private bool ısBusy;
+
+        private int sayfaBaşlangıç = 1;
+
+        private int sayfaBitiş = 1;
 
         private ObservableCollection<OcrData> scannedText = new();
 

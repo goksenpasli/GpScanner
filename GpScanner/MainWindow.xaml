@@ -1,13 +1,11 @@
 ﻿<Window x:Class="GpScanner.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:Control="clr-namespace:Extensions.Controls;assembly=Extensions"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
     xmlns:ViewModel="clr-namespace:GpScanner.ViewModel"
     xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=PresentationFramework"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:GpScanner"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:pdf="clr-namespace:PdfViewer;assembly=PdfViewer"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
     xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
@@ -19,10 +17,7 @@
     WindowState="Maximized"
     mc:Ignorable="d">
     <Window.Resources>
-        <CollectionViewSource x:Key="Veriler" Source="{Binding Dosyalar}">
-            <CollectionViewSource.SortDescriptions />
-        </CollectionViewSource>
-        <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
+        <CollectionViewSource x:Key="Veriler" Source="{Binding Dosyalar}" />
     </Window.Resources>
     <Grid>
         <Grid.Style>
@@ -40,10 +35,15 @@
         </Grid.Style>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="7*" />
+            <ColumnDefinition Width="3" />
             <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
         <twainctrl:TwainCtrl x:Name="TwainCtrl" />
-        <GroupBox Grid.Column="1"
+        <GridSplitter Grid.Column="1"
+            Width="3"
+            HorizontalAlignment="Stretch"
+            Background="{StaticResource GroupBoxBackGround}" />
+        <GroupBox Grid.Column="2"
             Margin="1,0,0,0"
             Header="{twainctrl:Loc FILE}">
             <Grid>
@@ -172,7 +172,7 @@
                     VirtualizingPanel.VirtualizationMode="Standard">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ChildrenSize="160,195" StretchItems="True" />
+                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="145,230" StretchItems="True" />
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
                     <ListBox.ItemContainerStyle>
@@ -240,7 +240,11 @@
                                                                         <Setter.Value>
                                                                             <ContentControl Content="{Binding Path=FileName}"
                                                                                 ContentTemplateSelector="{StaticResource ThumbViewerSelector}"
-                                                                                IsHitTestVisible="False" />
+                                                                                IsHitTestVisible="False">
+                                                                                <ContentControl.CacheMode>
+                                                                                    <BitmapCache RenderAtScale="0.7" />
+                                                                                </ContentControl.CacheMode>
+                                                                            </ContentControl>
                                                                         </Setter.Value>
                                                                     </Setter>
                                                                     <Setter Property="Visibility" Value="Visible" />
@@ -289,6 +293,7 @@
                     <Extensions:SplitButton HorizontalContentAlignment="Stretch"
                         Command="{Binding OcrPage, Mode=OneWay}"
                         CommandParameter="{Binding ElementName=TwainCtrl, Path=DataContext}"
+                        IsEnabled="{Binding IsBusy, Converter={StaticResource ReverseBooleanConverter}}"
                         IsSplitPartOpen="{Binding ScannedTextWindowOpen}">
                         <Extensions:SplitButton.Content>
                             <Grid>
@@ -354,9 +359,21 @@
                             </ContextMenu>
                         </Button.ContextMenu>
                     </Button>
-                    <Button Command="{Binding SaveOcrPdf}"
-                        CommandParameter="{Binding ElementName=TwainCtrl}"
-                        Content="{twainctrl:Loc OCRPDFSAVE}" />
+                    <Button Command="{Binding SaveOcrPdf}" CommandParameter="{Binding ElementName=TwainCtrl}">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="32" Height="32">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="6" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc OCRPDFSAVE}" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
                     <ComboBox VerticalContentAlignment="Center"
                         SelectedValue="{Binding SeçiliDil}"
                         SelectedValuePath="Tag">
