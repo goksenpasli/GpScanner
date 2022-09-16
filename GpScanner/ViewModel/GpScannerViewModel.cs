@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -27,10 +28,13 @@ namespace GpScanner.ViewModel
 {
     public class GpScannerViewModel : InpcBase
     {
+        public static readonly string xmldatapath = Path.GetDirectoryName(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath) + @"\Data.xml";
+
         public GpScannerViewModel()
         {
             Dosyalar = GetScannerFileData();
             ChartData = GetChartsData();
+            ScannerData = new ScannerData() { Data = DataYükle() };
             SeçiliGün = DateTime.Today;
             SeçiliDil = Settings.Default.DefaultLang;
             GenerateFoldTimer();
@@ -72,7 +76,7 @@ namespace GpScanner.ViewModel
             {
                 if (parameter is TwainCtrl twainCtrl)
                 {
-                    byte[] imgdata = twainCtrl.SeçiliResim.Resim.ToTiffJpegByteArray(ExtensionMethods.Format.Png);
+                    byte[] imgdata = twainCtrl.SeçiliResim.Resim.ToTiffJpegByteArray(Format.Png);
                     _ = Ocr(imgdata);
                 }
             }, parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && parameter is TwainCtrl twainCtrl && twainCtrl.SeçiliResim is not null);
@@ -170,9 +174,26 @@ namespace GpScanner.ViewModel
                 }
             }, parameter => parameter is TwainCtrl twainCtrl && twainCtrl.SeçiliResim?.Resim is not null && ScannedText is not null);
 
+            DatabaseSave = new RelayCommand<object>(parameter => ScannerData.Serialize());
+
             Settings.Default.PropertyChanged += Default_PropertyChanged;
             PropertyChanged += GpScannerViewModel_PropertyChanged;
+            TranslateViewModel.PropertyChanged += TranslateViewModel_PropertyChanged;
             OnPropertyChanged(nameof(SeçiliDil));
+        }
+
+        public bool AddOcrToDataBase
+        {
+            get => addOcrToDataBase;
+
+            set
+            {
+                if (addOcrToDataBase != value)
+                {
+                    addOcrToDataBase = value;
+                    OnPropertyChanged(nameof(AddOcrToDataBase));
+                }
+            }
         }
 
         public string AramaMetni
@@ -230,6 +251,8 @@ namespace GpScanner.ViewModel
                 }
             }
         }
+
+        public RelayCommand<object> DatabaseSave { get; }
 
         public ObservableCollection<Scanner> Dosyalar
         {
@@ -340,6 +363,8 @@ namespace GpScanner.ViewModel
             }
         }
 
+        public ScannerData ScannerData { get; set; }
+
         public string SeçiliDil
         {
             get => seçiliDil;
@@ -363,6 +388,20 @@ namespace GpScanner.ViewModel
                 {
                     seçiliGün = value;
                     OnPropertyChanged(nameof(SeçiliGün));
+                }
+            }
+        }
+
+        public Scanner SelectedDocument
+        {
+            get => selectedDocument;
+
+            set
+            {
+                if (selectedDocument != value)
+                {
+                    selectedDocument = value;
+                    OnPropertyChanged(nameof(SelectedDocument));
                 }
             }
         }
@@ -418,6 +457,20 @@ namespace GpScanner.ViewModel
         public ICommand TümününİşaretiniKaldır { get; }
 
         public ICommand UnRegisterSti { get; }
+
+        public static ObservableCollection<Data> DataYükle()
+        {
+            if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+            {
+                return null;
+            }
+            if (File.Exists(xmldatapath))
+            {
+                return xmldatapath.DeSerialize<ScannerData>().Data;
+            }
+            _ = Directory.CreateDirectory(Path.GetDirectoryName(xmldatapath));
+            return new ObservableCollection<Data>();
+        }
 
         public ObservableCollection<Chart> GetChartsData()
         {
@@ -477,6 +530,8 @@ namespace GpScanner.ViewModel
 
         private static DispatcherTimer timer;
 
+        private bool addOcrToDataBase = true;
+
         private string aramaMetni;
 
         private XmlLanguage calendarLang;
@@ -502,6 +557,8 @@ namespace GpScanner.ViewModel
         private string seçiliDil;
 
         private DateTime? seçiliGün;
+
+        private Scanner selectedDocument;
 
         private bool showPdfPreview;
 
@@ -542,8 +599,20 @@ namespace GpScanner.ViewModel
             }
             if (e.PropertyName is "AramaMetni")
             {
-                MainWindow.cvs.Filter += (s, x) => x.Accepted = Path.GetFileNameWithoutExtension((x.Item as Scanner)?.FileName).Contains(AramaMetni, StringComparison.OrdinalIgnoreCase);
+                MainWindow.cvs.Filter += (s, x) =>
+                {
+                    Scanner scanner = x.Item as Scanner;
+                    x.Accepted = Path.GetFileNameWithoutExtension(scanner?.FileName).Contains(AramaMetni, StringComparison.OrdinalIgnoreCase) ||
+                    ScannerData.Data.Any(z => z.FileName == scanner.FileName && z.FileContent?.Contains(AramaMetni, StringComparison.OrdinalIgnoreCase) == true);
+                };
             }
+
+            if (e.PropertyName is "AddOcrToDataBase" && SelectedDocument?.Seçili == true)
+            {
+                ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = SelectedDocument?.FileName, FileContent = TranslateViewModel?.Metin });
+                DatabaseSave.Execute(null);
+            }
+
             if (e.PropertyName is "SeçiliDil")
             {
                 switch (SeçiliDil)
@@ -592,6 +661,14 @@ namespace GpScanner.ViewModel
         {
             Random rand = new(Guid.NewGuid().GetHashCode());
             return new SolidColorBrush(Color.FromRgb((byte)rand.Next(0, 256), (byte)rand.Next(0, 256), (byte)rand.Next(0, 256)));
+        }
+
+        private void TranslateViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName is "Metin")
+            {
+                OnPropertyChanged(nameof(AddOcrToDataBase));
+            }
         }
     }
 }

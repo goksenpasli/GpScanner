@@ -241,6 +241,20 @@ namespace TwainControl
             }
         }
 
+        public double CroppedImageAngle
+        {
+            get => croppedImageAngle;
+
+            set
+            {
+                if (croppedImageAngle != value)
+                {
+                    croppedImageAngle = value;
+                    OnPropertyChanged(nameof(CroppedImageAngle));
+                }
+            }
+        }
+
         public double CropRight
         {
             get => cropRight; set
@@ -697,6 +711,8 @@ namespace TwainControl
         private double cropLeft;
 
         private ImageSource croppedImage;
+
+        private double croppedImageAngle;
 
         private double cropRight;
 

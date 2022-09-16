@@ -236,7 +236,7 @@ namespace TwainControl
                     .Append("|")
                     .Append(Settings.Default.ShowFile)
                     .Append("|")
-                    .Append(true)//Settings.Default.DateGroupFolder
+                    .Append(true)
                     .Append("|")
                     .Append(Scanner.FileName)
                     .ToString();
@@ -253,6 +253,13 @@ namespace TwainControl
                 Settings.Default.Save();
                 Settings.Default.Reload();
             }, parameter => true);
+
+            LoadCroppedImage = new RelayCommand<object>(parameter =>
+            {
+                Scanner.CroppedImage = SeçiliResim.Resim;
+                Scanner.CroppedImage.Freeze();
+                Scanner.CopyCroppedImage = Scanner.CroppedImage;
+            }, parameter => SeçiliResim is not null);
 
             InsertFileNamePlaceHolder = new RelayCommand<object>(parameter =>
             {
@@ -479,9 +486,11 @@ namespace TwainControl
 
         public ICommand ListeTemizle { get; }
 
+        public ICommand LoadCroppedImage { get; }
+
         public ICommand LoadImage { get; }
 
-        public virtual ICommand OcrPage { get; set; }
+        public ICommand OcrPage { get; }
 
         public ICommand PdfBirleştir { get; }
 
@@ -1124,7 +1133,7 @@ namespace TwainControl
                 Scanner.ShowUi = bool.Parse(selectedprofile[5]);
                 Scanner.SeperateSave = bool.Parse(selectedprofile[6]);
                 Settings.Default.ShowFile = bool.Parse(selectedprofile[7]);
-                Settings.Default.DateGroupFolder = true;//bool.Parse(selectedprofile[8])
+                Settings.Default.DateGroupFolder = true;
                 Scanner.FileName = selectedprofile[9];
                 Settings.Default.DefaultProfile = Scanner.SelectedProfile;
                 Settings.Default.Save();
@@ -1135,6 +1144,13 @@ namespace TwainControl
                 System.Windows.Media.Color target = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(TargetColor);
                 using Bitmap bmp = BitmapSourceToBitmap((BitmapSource)Scanner.CopyCroppedImage);
                 Scanner.CroppedImage = ReplaceColor(bmp, source, target, (int)Scanner.Threshold).ToBitmapImage(ImageFormat.Png);
+            }
+            if (e.PropertyName is "CroppedImageAngle" && Scanner.CroppedImageAngle != 0)
+            {
+                TransformedBitmap transformedBitmap = new((BitmapSource)Scanner.CroppedImage, new RotateTransform(Scanner.CroppedImageAngle * 90));
+                transformedBitmap.Freeze();
+                Scanner.CroppedImage = transformedBitmap;
+                Scanner.CroppedImageAngle = 0;
             }
         }
 

@@ -164,97 +164,93 @@
                     </Button>
                 </UniformGrid>
                 <ListBox Grid.Row="4"
-                    d:ItemsSource="{d:SampleData ItemCount=5}"
                     IsSynchronizedWithCurrentItem="False"
                     ItemsSource="{Binding Mode=OneWay, Source={StaticResource Veriler}}"
-                    VirtualizingPanel.CacheLength="2,2" VirtualizingPanel.CacheLengthUnit="Item"
-                    VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.ScrollUnit="Pixel"
-                    VirtualizingPanel.VirtualizationMode="Standard">
+                    SelectedItem="{Binding SelectedDocument}"
+                    SelectionMode="Extended" VirtualizingPanel.CacheLength="2,2"
+                    VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                    VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Standard">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="145,230" StretchItems="True" />
+                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="155,230" SpacingMode="BetweenItemsOnly"
+                                StretchItems="True" />
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Seçili}" Value="true">
+                                    <Setter Property="Background" Value="MediumSeaGreen" />
+                                    <Setter Property="IsSelected" Value="True" />
+                                </DataTrigger>
+                            </Style.Triggers>
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate>
-                                        <Border BorderThickness="5">
-                                            <Border.Style>
-                                                <Style TargetType="Border">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Seçili}" Value="true">
-                                                            <Setter Property="BorderBrush" Value="MediumSeaGreen" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Border.Style>
-                                            <StackPanel>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Extensions:SplitButton Width="120"
-                                                        Command="{Binding DataContext.WebAdreseGit, ElementName=TwainCtrl, Mode=OneWay}"
-                                                        CommandParameter="{Binding Path=FileName}">
-                                                        <Extensions:SplitButton.Content>
-                                                            <StackPanel Orientation="Horizontal">
-                                                                <Image Width="32" Height="32"
-                                                                    Source="{Binding FileName, Converter={StaticResource FilePathToIconConverter}}" />
-                                                                <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay, Path=FileName, Converter={StaticResource FileNameExtractConverter}}" />
-                                                            </StackPanel>
-                                                        </Extensions:SplitButton.Content>
-                                                        <Extensions:SplitButton.InternalContent>
-                                                            <Extensions:ResizablePanel Width="480" Height="360" MinWidth="480"
-                                                                MinHeight="360">
-                                                                <GroupBox>
-                                                                    <ContentPresenter Content="{Binding Path=FileName}" ContentTemplateSelector="{StaticResource ViewerSelector}" />
-                                                                </GroupBox>
-                                                            </Extensions:ResizablePanel>
-                                                        </Extensions:SplitButton.InternalContent>
-                                                    </Extensions:SplitButton>
-                                                    <TextBlock VerticalAlignment="Center" ToolTip="{twainctrl:Loc SHOWFOLDER}">
-                                                        <Hyperlink Command="{Binding DataContext.ExploreFile, ElementName=TwainCtrl, Mode=OneWay}"
-                                                            CommandParameter="{Binding Path=FileName}"
-                                                            TextDecorations="None">
-                                                            <Image Width="32" Height="32">
-                                                                <Image.Source>
-                                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                        <Binding Source="Shell32.dll" />
-                                                                        <Binding Source="4" />
-                                                                    </MultiBinding>
-                                                                </Image.Source>
-                                                            </Image>
-                                                        </Hyperlink>
-                                                    </TextBlock>
-                                                </StackPanel>
-                                                <ToggleButton VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                                    d:Height="50" Background="Transparent"
-                                                    BorderBrush="{x:Null}"
-                                                    IsChecked="{Binding Seçili}"
-                                                    IsEnabled="{Binding FileName, Mode=OneWay, Converter={StaticResource FileNamePdfZipCheckConverter}}">
-                                                    <ToggleButton.Style>
-                                                        <Style TargetType="ToggleButton">
-                                                            <Setter Property="Visibility" Value="Collapsed" />
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding Path=DataContext.ShowPdfPreview, RelativeSource={RelativeSource AncestorType=Window}}" Value="true">
-                                                                    <Setter Property="Content">
-                                                                        <Setter.Value>
-                                                                            <ContentControl Content="{Binding Path=FileName}"
-                                                                                ContentTemplateSelector="{StaticResource ThumbViewerSelector}"
-                                                                                IsHitTestVisible="False">
-                                                                                <ContentControl.CacheMode>
-                                                                                    <BitmapCache RenderAtScale="0.7" />
-                                                                                </ContentControl.CacheMode>
-                                                                            </ContentControl>
-                                                                        </Setter.Value>
-                                                                    </Setter>
-                                                                    <Setter Property="Visibility" Value="Visible" />
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </ToggleButton.Style>
-                                                </ToggleButton>
+                                        <StackPanel Background="{TemplateBinding Background}">
+                                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                                <Extensions:SplitButton Width="120"
+                                                    Command="{Binding DataContext.WebAdreseGit, ElementName=TwainCtrl, Mode=OneWay}"
+                                                    CommandParameter="{Binding Path=FileName}">
+                                                    <Extensions:SplitButton.Content>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Image Width="32" Height="32"
+                                                                Source="{Binding FileName, Converter={StaticResource FilePathToIconConverter}}" />
+                                                            <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay, Path=FileName, Converter={StaticResource FileNameExtractConverter}}" />
+                                                        </StackPanel>
+                                                    </Extensions:SplitButton.Content>
+                                                    <Extensions:SplitButton.InternalContent>
+                                                        <Extensions:ResizablePanel Width="480" Height="360" MinWidth="480"
+                                                            MinHeight="360">
+                                                            <GroupBox>
+                                                                <ContentPresenter Content="{Binding Path=FileName}" ContentTemplateSelector="{StaticResource ViewerSelector}" />
+                                                            </GroupBox>
+                                                        </Extensions:ResizablePanel>
+                                                    </Extensions:SplitButton.InternalContent>
+                                                </Extensions:SplitButton>
+                                                <TextBlock VerticalAlignment="Center" ToolTip="{twainctrl:Loc SHOWFOLDER}">
+                                                    <Hyperlink Command="{Binding DataContext.ExploreFile, ElementName=TwainCtrl, Mode=OneWay}"
+                                                        CommandParameter="{Binding Path=FileName}"
+                                                        TextDecorations="None">
+                                                        <Image Width="32" Height="32">
+                                                            <Image.Source>
+                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                    <Binding Source="Shell32.dll" />
+                                                                    <Binding Source="4" />
+                                                                </MultiBinding>
+                                                            </Image.Source>
+                                                        </Image>
+                                                    </Hyperlink>
+                                                </TextBlock>
                                             </StackPanel>
-                                        </Border>
+                                            <ToggleButton VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                                d:Height="50" Background="Transparent"
+                                                BorderBrush="{x:Null}"
+                                                IsChecked="{Binding Seçili}"
+                                                IsEnabled="{Binding FileName, Mode=OneWay, Converter={StaticResource FileNamePdfZipCheckConverter}}">
+                                                <ToggleButton.Style>
+                                                    <Style TargetType="ToggleButton">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Path=DataContext.ShowPdfPreview, RelativeSource={RelativeSource AncestorType=Window}}" Value="true">
+                                                                <Setter Property="Content">
+                                                                    <Setter.Value>
+                                                                        <ContentControl Content="{Binding Path=FileName}"
+                                                                            ContentTemplateSelector="{StaticResource ThumbViewerSelector}"
+                                                                            IsHitTestVisible="False">
+                                                                            <ContentControl.CacheMode>
+                                                                                <BitmapCache RenderAtScale="0.7" />
+                                                                            </ContentControl.CacheMode>
+                                                                        </ContentControl>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                                <Setter Property="Visibility" Value="Visible" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </ToggleButton.Style>
+                                            </ToggleButton>
+                                        </StackPanel>
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>

@@ -435,60 +435,54 @@
                         SelectionMode="Extended">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
-                                <Setter Property="IsSelected" Value="{Binding Seçili}" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Seçili}" Value="true">
+                                        <Setter Property="Background" Value="MediumSeaGreen" />
+                                        <Setter Property="IsSelected" Value="True" />
+                                    </DataTrigger>
+                                </Style.Triggers>
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate>
-                                            <Border Margin="2" BorderThickness="5">
-                                                <Border.Style>
-                                                    <Style TargetType="Border">
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding Seçili}" Value="true">
-                                                                <Setter Property="BorderBrush" Value="MediumSeaGreen" />
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </Border.Style>
-                                                <StackPanel>
-                                                    <TextBlock HorizontalAlignment="Center">
-                                                        <Hyperlink Command="{Binding ElementName=UserControl, Path=DataContext.Kaydet}"
-                                                            CommandParameter="{Binding Mode=OneWay}"
-                                                            TextDecorations="None">
-                                                            <Image Width="32" Height="32">
-                                                                <Image.Source>
-                                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                        <Binding Source="Shell32.dll" />
-                                                                        <Binding Source="6" />
-                                                                    </MultiBinding>
-                                                                </Image.Source>
-                                                            </Image>
-                                                        </Hyperlink>
-                                                        <Hyperlink Command="{Binding ElementName=UserControl, Path=DataContext.ResimSil}"
-                                                            CommandParameter="{Binding Mode=OneWay}"
-                                                            FontFamily="Segoe UI Black" TextDecorations="None">
-                                                            <Image Width="32" Height="32">
-                                                                <Image.Source>
-                                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                        <Binding Source="Shell32.dll" />
-                                                                        <Binding Source="131" />
-                                                                    </MultiBinding>
-                                                                </Image.Source>
-                                                            </Image>
-                                                        </Hyperlink>
-                                                    </TextBlock>
-                                                    <Viewbox Width="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}">
-                                                        <ToggleButton VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                                            Background="Transparent"
-                                                            BorderBrush="{x:Null}"
-                                                            IsChecked="{Binding Seçili}">
-                                                            <Image Width="{Binding Resim.Thumbnail.Width, Mode=OneWay}"
-                                                                Height="{Binding Resim.Thumbnail.Height, Mode=OneWay}"
-                                                                d:Source="/TwainControl;component/bw.png" RenderOptions.BitmapScalingMode="NearestNeighbor"
-                                                                Source="{Binding Resim.Thumbnail, Mode=OneWay}" />
-                                                        </ToggleButton>
-                                                    </Viewbox>
-                                                </StackPanel>
-                                            </Border>
+                                            <StackPanel Background="{TemplateBinding Background}">
+                                                <TextBlock HorizontalAlignment="Center">
+                                                    <Hyperlink Command="{Binding ElementName=UserControl, Path=DataContext.Kaydet}"
+                                                        CommandParameter="{Binding Mode=OneWay}"
+                                                        TextDecorations="None">
+                                                        <Image Width="32" Height="32">
+                                                            <Image.Source>
+                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                    <Binding Source="Shell32.dll" />
+                                                                    <Binding Source="6" />
+                                                                </MultiBinding>
+                                                            </Image.Source>
+                                                        </Image>
+                                                    </Hyperlink>
+                                                    <Hyperlink Command="{Binding ElementName=UserControl, Path=DataContext.ResimSil}"
+                                                        CommandParameter="{Binding Mode=OneWay}"
+                                                        FontFamily="Segoe UI Black" TextDecorations="None">
+                                                        <Image Width="32" Height="32">
+                                                            <Image.Source>
+                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                    <Binding Source="Shell32.dll" />
+                                                                    <Binding Source="131" />
+                                                                </MultiBinding>
+                                                            </Image.Source>
+                                                        </Image>
+                                                    </Hyperlink>
+                                                </TextBlock>
+                                                <Viewbox Width="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}">
+                                                    <ToggleButton VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                                        Background="Transparent"
+                                                        BorderBrush="{x:Null}"
+                                                        IsChecked="{Binding Seçili}">
+                                                        <Image Width="{Binding Resim.Thumbnail.Width, Mode=OneWay}"
+                                                            Height="{Binding Resim.Thumbnail.Height, Mode=OneWay}"
+                                                            d:Source="/TwainControl;component/bw.png" RenderOptions.BitmapScalingMode="NearestNeighbor"
+                                                            Source="{Binding Resim.Thumbnail, Mode=OneWay}" />
+                                                    </ToggleButton>
+                                                </Viewbox>
+                                            </StackPanel>
                                         </ControlTemplate>
                                     </Setter.Value>
                                 </Setter>
@@ -516,13 +510,15 @@
                             <TextBlock VerticalAlignment="Center" Text="{local:Loc FILE}" />
                         </StackPanel>
                         <Extensions:SplitButton.InternalContent>
-                            <Slider Width="100"
-                                AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="600"
-                                Minimum="72" SmallChange="1"
-                                Style="{StaticResource Slider}"
-                                Ticks="72,96,120,150,200,300,450,600"
-                                ToolTip="{local:Loc RES}"
-                                Value="{Binding ImgLoadResolution, UpdateSourceTrigger=PropertyChanged}" />
+                            <GroupBox Header="{local:Loc RES}">
+                                <Slider Width="100"
+                                    AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="600"
+                                    Minimum="72" SmallChange="1"
+                                    Style="{StaticResource Slider}"
+                                    Ticks="72,96,120,150,200,300,450,600"
+                                    ToolTip="{local:Loc RES}"
+                                    Value="{Binding ImgLoadResolution, UpdateSourceTrigger=PropertyChanged}" />
+                            </GroupBox>
                         </Extensions:SplitButton.InternalContent>
                     </Extensions:SplitButton>
                     <Button Command="{Binding Seçilikaydet}">
@@ -629,7 +625,7 @@
                         <Canvas x:Name="cnv" />
                     </Grid>
                 </DockPanel>
-                <Expander Height="640"
+                <Expander Height="540"
                     HorizontalAlignment="Left" VerticalAlignment="Bottom"
                     ExpandDirection="Up"
                     IsExpanded="{Binding Scanner.CropDialogExpanded}">
@@ -662,7 +658,7 @@
                                     <Grid>
                                         <Border BorderBrush="{StaticResource GroupBoxBackGround}" BorderThickness="1">
                                             <Grid x:Name="LineGrid"
-                                                Width="210" Height="297"
+                                                Width="105" Height="149"
                                                 ShowGridLines="True">
                                                 <Grid.Background>
                                                     <ImageBrush ImageSource="{Binding Scanner.CroppedImage}" />
@@ -670,7 +666,7 @@
                                             </Grid>
                                         </Border>
                                         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                                            FontFamily="Webdings" FontSize="16" Foreground="Red"
+                                            FontFamily="Webdings" FontSize="20" Foreground="Red"
                                             Text="N">
                                             <TextBlock.ToolTip>
                                                 <Image Source="{Binding Scanner.CroppedImage}" />
@@ -678,6 +674,23 @@
                                         </TextBlock>
                                     </Grid>
                                 </DockPanel>
+                                <Extensions:NumericUpDownControl Margin="-16,0,0,0"
+                                    IsReadOnly="True" Maximum="1" Minimum="0"
+                                    NumericUpdownTextBoxVisibility="Collapsed" Orientation="Horizontal" SmallChange="1"
+                                    Value="{Binding Scanner.CroppedImageAngle}" />
+                                <Button Background="Green" Command="{Binding LoadCroppedImage}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Width="32" Height="32">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="1" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc PREVIEWFILE}" />
+                                    </StackPanel>
+                                </Button>
                                 <UniformGrid Margin="1"
                                     Columns="2" Rows="12">
                                     <TextBlock VerticalAlignment="Center" Text="{local:Loc WIDTHCOUNT}" />
@@ -741,9 +754,12 @@
                                     </Extensions:ContentToggleButton>
                                     <UniformGrid Columns="2">
                                         <Slider VerticalAlignment="Center"
+                                            IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"
                                             Maximum="255" Minimum="1"
+                                            Style="{StaticResource Slider}"
                                             Value="{Binding Scanner.Threshold, Delay=300}" />
-                                        <Button Command="{Binding ApplyColorChange}"
+                                        <Button x:Name="BtnApply"
+                                            Command="{Binding ApplyColorChange}"
                                             Content="{local:Loc APPLY}"
                                             ToolTip="{local:Loc COLORCHANGETIP}" />
                                     </UniformGrid>
