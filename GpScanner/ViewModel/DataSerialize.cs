@@ -41,11 +41,6 @@ namespace GpScanner.ViewModel
             return list;
         }
 
-        internal static string RandomColor()
-        {
-            return $"#{new Random(Guid.NewGuid().GetHashCode()).Next(0x1000000):X6}";
-        }
-
         internal static int RandomNumber()
         {
             return new Random(Guid.NewGuid().GetHashCode()).Next(1, int.MaxValue);

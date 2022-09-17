@@ -349,35 +349,44 @@ namespace Extensions
 
         public static byte[] ToTiffJpegByteArray(this ImageSource bitmapsource, Format format)
         {
-            using MemoryStream outStream = new();
-            switch (format)
+            try
             {
-                case Format.TiffRenkli:
-                    TiffBitmapEncoder tifzipencoder = new() { Compression = TiffCompressOption.Zip };
-                    tifzipencoder.Frames.Add(BitmapFrame.Create((BitmapSource)bitmapsource));
-                    tifzipencoder.Save(outStream);
-                    return outStream.ToArray();
+                using MemoryStream outStream = new();
+                switch (format)
+                {
+                    case Format.TiffRenkli:
+                        TiffBitmapEncoder tifzipencoder = new() { Compression = TiffCompressOption.Zip };
+                        tifzipencoder.Frames.Add(BitmapFrame.Create((BitmapSource)bitmapsource));
+                        tifzipencoder.Save(outStream);
+                        return outStream.ToArray();
 
-                case Format.Tiff:
-                    TiffBitmapEncoder tifccittencoder = new() { Compression = TiffCompressOption.Ccitt4 };
-                    tifccittencoder.Frames.Add(BitmapFrame.Create((BitmapSource)bitmapsource));
-                    tifccittencoder.Save(outStream);
-                    return outStream.ToArray();
+                    case Format.Tiff:
+                        TiffBitmapEncoder tifccittencoder = new() { Compression = TiffCompressOption.Ccitt4 };
+                        tifccittencoder.Frames.Add(BitmapFrame.Create((BitmapSource)bitmapsource));
+                        tifccittencoder.Save(outStream);
+                        return outStream.ToArray();
 
-                case Format.Jpg:
-                    JpegBitmapEncoder jpgencoder = new() { QualityLevel = 75 };
-                    jpgencoder.Frames.Add(BitmapFrame.Create((BitmapSource)bitmapsource));
-                    jpgencoder.Save(outStream);
-                    return outStream.ToArray();
+                    case Format.Jpg:
+                        JpegBitmapEncoder jpgencoder = new() { QualityLevel = 75 };
+                        BitmapFrame item = BitmapFrame.Create((BitmapSource)bitmapsource);
+                        jpgencoder.Frames.Add(item);
+                        jpgencoder.Save(outStream);
+                        return outStream.ToArray();
 
-                case Format.Png:
-                    PngBitmapEncoder pngencoder = new();
-                    pngencoder.Frames.Add(BitmapFrame.Create((BitmapSource)bitmapsource));
-                    pngencoder.Save(outStream);
-                    return outStream.ToArray();
+                    case Format.Png:
+                        PngBitmapEncoder pngencoder = new();
+                        pngencoder.Frames.Add(BitmapFrame.Create((BitmapSource)bitmapsource));
+                        pngencoder.Save(outStream);
+                        return outStream.ToArray();
 
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(format), format, null);
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(format), format, null);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return null;
             }
         }
 

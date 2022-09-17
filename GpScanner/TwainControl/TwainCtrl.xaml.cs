@@ -62,6 +62,7 @@ namespace TwainControl
             {
                 _ = (Scanner.Resimler?.Remove(parameter as ScannedImage));
                 ResetCropMargin();
+                GC.Collect();
             }, parameter => true);
 
             ExploreFile = new RelayCommand<object>(parameter => OpenFolderAndSelectItem(Path.GetDirectoryName(parameter as string), Path.GetFileName(parameter as string)), parameter => true);
@@ -182,16 +183,16 @@ namespace TwainControl
                 {
                     if (saveFileDialog.FilterIndex == 1)
                     {
-                        GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToArray(), Format.Jpg).Save(saveFileDialog.FileName);
+                        GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToList(), Format.Jpg).Save(saveFileDialog.FileName);
                     }
                     if (saveFileDialog.FilterIndex == 2)
                     {
-                        GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToArray(), Format.Tiff).Save(saveFileDialog.FileName);
+                        GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToList(), Format.Tiff).Save(saveFileDialog.FileName);
                     }
                     if (saveFileDialog.FilterIndex == 3)
                     {
                         string dosyayolu = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
-                        GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToArray(), Format.Jpg).Save(dosyayolu);
+                        GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToList(), Format.Jpg).Save(dosyayolu);
                         using ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Create);
                         _ = archive.CreateEntryFromFile(dosyayolu, $"{Scanner.SaveFileName}.pdf", CompressionLevel.Optimal);
                         File.Delete(dosyayolu);
@@ -213,6 +214,7 @@ namespace TwainControl
                 {
                     Scanner.Resimler?.Clear();
                     ResetCropMargin();
+                    GC.Collect();
                 }
             }, parameter => Scanner?.Resimler?.Count > 0);
 
@@ -375,10 +377,13 @@ namespace TwainControl
                     Filter = "Resim Dosyası(*.jpg;*.jpeg;*.png;*.gif;*.tif;*.bmp)|*.jpg;*.jpeg;*.png;*.gif;*.tif;*.bmp",
                     Multiselect = true
                 };
+                
                 if (openFileDialog.ShowDialog() == true)
                 {
                     const int A4Width = 21;
                     const double A4Height = 29.7;
+                    Scanner?.Resimler.Clear();
+                    GC.Collect();
                     foreach (string item in openFileDialog.FileNames)
                     {
                         BitmapImage bi = new(new Uri(item));
@@ -386,7 +391,7 @@ namespace TwainControl
                         double oran = A4Width / 2.54 * ImgLoadResolution / bi.PixelWidth;
                         BitmapFrame bitmapFrame = BitmapFrame.Create(bi.Resize(oran), bi.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / A4Width * A4Height));
                         bitmapFrame.Freeze();
-                        Scanner.Resimler.Add(new ScannedImage() { Seçili = true, Resim = bitmapFrame });
+                        Scanner?.Resimler.Add(new ScannedImage() { Seçili = true, Resim = bitmapFrame });
                     }
                 }
             }, parameter => true);
@@ -828,7 +833,7 @@ namespace TwainControl
         private PdfDocument GeneratePdf(IList<ScannedImage> bitmapFrames, Format format, bool rotate = false)
         {
             using PdfDocument document = new();
-            for (int i = 0; i < bitmapFrames.Count; i++)
+            foreach (ScannedImage scannedimage in bitmapFrames)
             {
                 PdfPage page = document.AddPage();
                 if (rotate)
@@ -840,7 +845,7 @@ namespace TwainControl
                     ApplyPdfSecurity(document);
                 }
                 using XGraphics gfx = XGraphics.FromPdfPage(page);
-                using MemoryStream ms = new(bitmapFrames[i].Resim.ToTiffJpegByteArray(format));
+                using MemoryStream ms = new(scannedimage.Resim.ToTiffJpegByteArray(format));
                 using XImage xImage = XImage.FromStream(ms);
                 XSize size = PageSizeConverter.ToSize(PageSize.A4);
                 gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);

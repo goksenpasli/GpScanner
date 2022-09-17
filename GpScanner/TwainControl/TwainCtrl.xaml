@@ -461,7 +461,7 @@
                                                     <Hyperlink Command="{Binding ElementName=UserControl, Path=DataContext.ResimSil}"
                                                         CommandParameter="{Binding Mode=OneWay}"
                                                         FontFamily="Segoe UI Black" TextDecorations="None">
-                                                        <Image Width="32" Height="32">
+                                                        <Image Width="32" Height="32" >
                                                             <Image.Source>
                                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                                     <Binding Source="Shell32.dll" />

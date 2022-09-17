@@ -90,7 +90,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="ColorEffect.cs" />
     <Compile Include="Converter\SplitConverter.cs" />
     <Compile Include="Deskew.cs" />
     <Compile Include="Properties\Resources.en.Designer.cs">
@@ -149,7 +148,6 @@
       <LastGenOutput>Resources.tr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
-    <Resource Include="ColorEffect.ps" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
