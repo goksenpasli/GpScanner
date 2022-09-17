@@ -611,7 +611,7 @@ namespace GpScanner.ViewModel
             {
                 ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = SelectedDocument?.FileName, FileContent = TranslateViewModel?.Metin });
                 DatabaseSave.Execute(null);
-                SelectedDocument = null;
+                SelectedDocument.Seçili = false;
             }
 
             if (e.PropertyName is "SeçiliDil")
