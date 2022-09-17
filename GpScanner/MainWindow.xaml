@@ -166,7 +166,7 @@
                 <ListBox Grid.Row="4"
                     IsSynchronizedWithCurrentItem="False"
                     ItemsSource="{Binding Mode=OneWay, Source={StaticResource Veriler}}"
-                    SelectedItem="{Binding SelectedDocument}"
+                    SelectedItem="{Binding SelectedDocument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     SelectionMode="Extended" VirtualizingPanel.CacheLength="2,2"
                     VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                     VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Standard">
