@@ -48,26 +48,28 @@
             Header="{twainctrl:Loc FILE}">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="300" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <TabControl>
-                    <TabItem Header="{twainctrl:Loc CALENDAR}">
-                        <Viewbox Stretch="Fill">
-                            <Calendar DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}"
-                                Language="{Binding CalendarLang}"
-                                PreviewMouseUp="Calendar_PreviewMouseUp"
-                                SelectedDate="{Binding SeçiliGün}" />
-                        </Viewbox>
-                    </TabItem>
-                    <TabItem Header="{twainctrl:Loc GRAPH}">
-                        <Extensions:GraphControl Grid.Row="1" Series="{Binding ChartData}" />
-                    </TabItem>
-                </TabControl>
+                <Expander Header="{twainctrl:Loc CALENDAR}">
+                    <TabControl Height="250">
+                        <TabItem Header="{twainctrl:Loc CALENDAR}">
+                            <Viewbox Stretch="Fill">
+                                <Calendar DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}"
+                                    Language="{Binding CalendarLang}"
+                                    PreviewMouseUp="Calendar_PreviewMouseUp"
+                                    SelectedDate="{Binding SeçiliGün}" />
+                            </Viewbox>
+                        </TabItem>
+                        <TabItem Header="{twainctrl:Loc GRAPH}">
+                            <Extensions:GraphControl Grid.Row="1" Series="{Binding ChartData}" />
+                        </TabItem>
+                    </TabControl>
+                </Expander>
                 <UniformGrid Grid.Row="1" Columns="3">
                     <Button Command="{Binding ResetFilter}">
                         <Button.Content>
@@ -164,12 +166,13 @@
                     </Button>
                 </UniformGrid>
                 <ListBox Grid.Row="4"
+                    Background="{StaticResource BorderBackground}"
                     IsSynchronizedWithCurrentItem="False"
                     ItemsSource="{Binding Mode=OneWay, Source={StaticResource Veriler}}"
                     SelectedItem="{Binding SelectedDocument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     SelectionMode="Extended" VirtualizingPanel.CacheLength="2,2"
                     VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                    VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Standard">
+                    VirtualizingPanel.ScrollUnit="Item" VirtualizingPanel.VirtualizationMode="Standard">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="155,230" SpacingMode="BetweenItemsOnly"

@@ -44,7 +44,7 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
-                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition />
                     <RowDefinition Height="81.6" />
                 </Grid.RowDefinitions>
@@ -141,15 +141,28 @@
                                 </ListBox>
                             </StackPanel>
                             <Separator />
-                            <StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
                                 <CheckBox Content="{local:Loc TWOSIDE}" IsChecked="{Binding Scanner.Duplex}" />
-                                <CheckBox Content="{local:Loc GUI}" IsChecked="{Binding Scanner.ShowUi}" />
-                                <CheckBox Content="{local:Loc SEPERATESCAN}"
+                                <CheckBox Grid.Column="1"
+                                    Content="{local:Loc GUI}"
+                                    IsChecked="{Binding Scanner.ShowUi}" />
+                                <CheckBox Grid.Row="1"
+                                    Content="{local:Loc SEPERATESCAN}"
                                     IsChecked="{Binding Scanner.SeperateSave}"
                                     IsEnabled="{Binding Scanner.AutoSave}"
                                     ToolTip="{local:Loc SEPERATESCANTOOLTIP}" />
-                                <CheckBox Content="{local:Loc SHOWFILE}" IsChecked="{Binding ShowFile, Source={x:Static properties:Settings.Default}}" />
-                            </StackPanel>
+                                <CheckBox Grid.Row="1" Grid.Column="1"
+                                    Content="{local:Loc SHOWFILE}"
+                                    IsChecked="{Binding ShowFile, Source={x:Static properties:Settings.Default}}" />
+                            </Grid>
                             <Expander Header="{local:Loc OTHERSETTINGS}">
                                 <StackPanel>
                                     <UniformGrid Columns="2">
@@ -190,50 +203,46 @@
                                 </StackPanel>
                             </Expander>
                             <Separator />
-                            <TextBlock d:Text="AutoFolder" FontWeight="Bold">
-                                <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="{Binding AutoFolder, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
-                                    <Run Text="{Binding Scanner.LocalizedPath, Mode=OneWay}" />
-                                </Hyperlink>
-                            </TextBlock>
-                            <HeaderedContentControl>
-                                <HeaderedContentControl.Header>
-                                    <TextBlock>
-                                        <Run Text="{local:Loc FILENAME}" />
-                                        <Run FontWeight="Bold" Text="{Binding Scanner.SaveFileName}" />
-                                    </TextBlock>
-                                </HeaderedContentControl.Header>
-                                <Extensions:ButtonedTextBox d:Text="FileName" GotKeyboardFocus="ButtonedTextBox_GotKeyboardFocus" MaxLength="255"
-                                    Text="{Binding Scanner.FileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
-                                    <Extensions:ButtonedTextBox.ContextMenu>
-                                        <ContextMenu>
-                                            <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
-                                                CommandParameter="[GÜN]"
-                                                Header="{local:Loc DAY}" />
-                                            <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
-                                                CommandParameter="[AY]"
-                                                Header="{local:Loc MONTH}" />
-                                            <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
-                                                CommandParameter="[YIL]"
-                                                Header="{local:Loc YEAR}" />
-                                            <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
-                                                CommandParameter="[SAAT]"
-                                                Header="{local:Loc TIME}" />
-                                            <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
-                                                CommandParameter="[DAKİKA]"
-                                                Header="{local:Loc MINUTE}" />
-                                            <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
-                                                CommandParameter="[SANİYE]"
-                                                Header="{local:Loc SECOND}" />
-                                            <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
-                                                CommandParameter="[GUID]"
-                                                Header="{local:Loc GUID}" />
-                                            <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
-                                                CommandParameter="[USERNAME]"
-                                                Header="{local:Loc USERNAME}" />
-                                        </ContextMenu>
-                                    </Extensions:ButtonedTextBox.ContextMenu>
-                                </Extensions:ButtonedTextBox>
-                            </HeaderedContentControl>
+                            <UniformGrid Columns="2">
+                                <TextBlock d:Text="AutoFolder" FontWeight="Bold">
+                                    <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="{Binding AutoFolder, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
+                                        <Run Text="{Binding Scanner.LocalizedPath, Mode=OneWay}" />
+                                    </Hyperlink>
+                                </TextBlock>
+                                <TextBlock d:Text="Tarama" FontWeight="Bold"
+                                    Text="{Binding Scanner.SaveFileName}" />
+                            </UniformGrid>
+                            <Extensions:ButtonedTextBox d:Text="FileName" GotKeyboardFocus="ButtonedTextBox_GotKeyboardFocus" MaxLength="255"
+                                Text="{Binding Scanner.FileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                                <Extensions:ButtonedTextBox.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
+                                            CommandParameter="[GÜN]"
+                                            Header="{local:Loc DAY}" />
+                                        <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
+                                            CommandParameter="[AY]"
+                                            Header="{local:Loc MONTH}" />
+                                        <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
+                                            CommandParameter="[YIL]"
+                                            Header="{local:Loc YEAR}" />
+                                        <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
+                                            CommandParameter="[SAAT]"
+                                            Header="{local:Loc TIME}" />
+                                        <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
+                                            CommandParameter="[DAKİKA]"
+                                            Header="{local:Loc MINUTE}" />
+                                        <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
+                                            CommandParameter="[SANİYE]"
+                                            Header="{local:Loc SECOND}" />
+                                        <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
+                                            CommandParameter="[GUID]"
+                                            Header="{local:Loc GUID}" />
+                                        <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
+                                            CommandParameter="[USERNAME]"
+                                            Header="{local:Loc USERNAME}" />
+                                    </ContextMenu>
+                                </Extensions:ButtonedTextBox.ContextMenu>
+                            </Extensions:ButtonedTextBox>
                             <UniformGrid Columns="3">
                                 <TextBox VerticalContentAlignment="Center" Text="{Binding Scanner.ProfileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 <Button Command="{Binding SaveProfile}">
@@ -430,11 +439,13 @@
                             </Extensions:ContentToggleButton>
                         </UniformGrid>
                     </GroupBox.Header>
-                    <ListBox ItemsSource="{Binding Scanner.Resimler, Mode=OneWay}"
+                    <ListBox Background="{StaticResource BorderBackground}"
+                        IsSynchronizedWithCurrentItem="False"
+                        ItemsSource="{Binding Scanner.Resimler, Mode=OneWay}"
                         SelectedItem="{Binding SeçiliResim}"
-                        SelectionMode="Extended" VirtualizingPanel.CacheLengthUnit="Item"
-                        VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.ScrollUnit="Pixel"
-                        VirtualizingPanel.VirtualizationMode="Recycling">
+                        SelectionMode="Extended" VirtualizingPanel.CacheLength="2,2"
+                        VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                        VirtualizingPanel.ScrollUnit="Item" VirtualizingPanel.VirtualizationMode="Standard">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
                                 <Style.Triggers>
@@ -473,17 +484,19 @@
                                                         </Image>
                                                     </Hyperlink>
                                                 </TextBlock>
-                                                <Viewbox Width="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}">
-                                                    <ToggleButton VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                                        Background="Transparent"
-                                                        BorderBrush="{x:Null}"
-                                                        IsChecked="{Binding Seçili}">
+                                                <ToggleButton Width="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}"
+                                                    Height="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}"
+                                                    VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                                    Background="Transparent"
+                                                    BorderBrush="{x:Null}"
+                                                    IsChecked="{Binding Seçili}">
+                                                    <Viewbox>
                                                         <Image Width="{Binding Resim.Thumbnail.Width, Mode=OneWay}"
                                                             Height="{Binding Resim.Thumbnail.Height, Mode=OneWay}"
-                                                            d:Source="/TwainControl;component/bw.png" RenderOptions.BitmapScalingMode="NearestNeighbor"
+                                                            d:Source="/TwainControl;component/bw.png"
                                                             Source="{Binding Resim.Thumbnail, Mode=OneWay}" />
-                                                    </ToggleButton>
-                                                </Viewbox>
+                                                    </Viewbox>
+                                                </ToggleButton>
                                             </StackPanel>
                                         </ControlTemplate>
                                     </Setter.Value>
@@ -492,7 +505,7 @@
                         </ListBox.ItemContainerStyle>
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" />
+                                <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" StretchItems="True" />
                             </ItemsPanelTemplate>
                         </ListBox.ItemsPanel>
                     </ListBox>

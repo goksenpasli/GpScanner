@@ -376,7 +376,7 @@ namespace TwainControl
                     Filter = "Resim Dosyası(*.jpg;*.jpeg;*.png;*.gif;*.tif;*.bmp)|*.jpg;*.jpeg;*.png;*.gif;*.tif;*.bmp",
                     Multiselect = true
                 };
-
+                int dpimultiplier = (int)PresentationSource.FromVisual(this).CompositionTarget.TransformToDevice.M11;
                 if (openFileDialog.ShowDialog() == true)
                 {
                     Scanner?.Resimler.Clear();
@@ -393,7 +393,7 @@ namespace TwainControl
 
                         BitmapImage thumbimage = new();
                         thumbimage.BeginInit();
-                        thumbimage.DecodePixelHeight = 96;
+                        thumbimage.DecodePixelHeight = 96 * dpimultiplier;
                         thumbimage.CacheOption = BitmapCacheOption.None;
                         thumbimage.UriSource = new Uri(item);
                         thumbimage.EndInit();
