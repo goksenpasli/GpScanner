@@ -10,9 +10,9 @@
     Startup="Application_Startup" StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
-			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="/Extensions;component/Themes/Skin.xaml"/>
-			</ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Extensions;component/Themes/Skin.xaml" />
+            </ResourceDictionary.MergedDictionaries>
             <DrawingBrush x:Key="Tesseract" Stretch="Uniform">
                 <DrawingBrush.Drawing>
                     <DrawingGroup>
@@ -136,7 +136,7 @@
                 <PdfViewer:PdfViewer Width="126" Height="178"
                     FirstPageThumbnail="True"
                     PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                    PrintButtonVisibility="Visible" SnapTick="True" ToolBarVisibility="Collapsed" />
+                    PrintButtonVisibility="Collapsed" SnapTick="True" ToolBarVisibility="Collapsed" />
             </DataTemplate>
             <DataTemplate x:Key="PdfViewerTemplateFull">
                 <Grid>

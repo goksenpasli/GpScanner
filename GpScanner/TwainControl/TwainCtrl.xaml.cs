@@ -40,7 +40,6 @@ namespace TwainControl
             InitializeComponent();
             DataContext = this;
             Scanner = new Scanner();
-
             ScanImage = new RelayCommand<object>(parameter =>
             {
                 ScanCommonSettings();
@@ -377,19 +376,30 @@ namespace TwainControl
                     Filter = "Resim Dosyası(*.jpg;*.jpeg;*.png;*.gif;*.tif;*.bmp)|*.jpg;*.jpeg;*.png;*.gif;*.tif;*.bmp",
                     Multiselect = true
                 };
-                
+
                 if (openFileDialog.ShowDialog() == true)
                 {
-                    const int A4Width = 21;
-                    const double A4Height = 29.7;
                     Scanner?.Resimler.Clear();
                     GC.Collect();
                     foreach (string item in openFileDialog.FileNames)
                     {
-                        BitmapImage bi = new(new Uri(item));
-                        bi.Freeze();
-                        double oran = A4Width / 2.54 * ImgLoadResolution / bi.PixelWidth;
-                        BitmapFrame bitmapFrame = BitmapFrame.Create(bi.Resize(oran), bi.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / A4Width * A4Height));
+                        BitmapImage image = new();
+                        image.BeginInit();
+                        image.DecodePixelHeight = (int)(A4Height / 2.54 * ImgLoadResolution);
+                        image.CacheOption = BitmapCacheOption.None;
+                        image.UriSource = new Uri(item);
+                        image.EndInit();
+                        image.Freeze();
+
+                        BitmapImage thumbimage = new();
+                        thumbimage.BeginInit();
+                        thumbimage.DecodePixelHeight = 96;
+                        thumbimage.CacheOption = BitmapCacheOption.None;
+                        thumbimage.UriSource = new Uri(item);
+                        thumbimage.EndInit();
+                        thumbimage.Freeze();
+
+                        BitmapFrame bitmapFrame = BitmapFrame.Create(image, thumbimage);
                         bitmapFrame.Freeze();
                         Scanner?.Resimler.Add(new ScannedImage() { Seçili = true, Resim = bitmapFrame });
                     }
@@ -626,23 +636,31 @@ namespace TwainControl
 
         public PdfDocument GeneratePdf(BitmapSource bitmapframe, Format format, bool rotate = false)
         {
-            using PdfDocument document = new();
-            PdfPage page = document.AddPage();
-            if (rotate)
+            try
             {
-                page.Rotate = (int)Scanner.RotateAngle;
+                using PdfDocument document = new();
+                PdfPage page = document.AddPage();
+                if (rotate)
+                {
+                    page.Rotate = (int)Scanner.RotateAngle;
+                }
+                if (Scanner.PasswordProtect)
+                {
+                    ApplyPdfSecurity(document);
+                }
+                using XGraphics gfx = XGraphics.FromPdfPage(page);
+                using MemoryStream ms = new(bitmapframe.ToTiffJpegByteArray(format));
+                using XImage xImage = XImage.FromStream(ms);
+                XSize size = PageSizeConverter.ToSize(PageSize.A4);
+                gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
+                DefaultPdfCompression(document);
+                return document;
             }
-            if (Scanner.PasswordProtect)
+            catch (Exception ex)
             {
-                ApplyPdfSecurity(document);
+                _ = MessageBox.Show(ex.Message);
+                return null;
             }
-            using XGraphics gfx = XGraphics.FromPdfPage(page);
-            using MemoryStream ms = new(bitmapframe.ToTiffJpegByteArray(format));
-            using XImage xImage = XImage.FromStream(ms);
-            XSize size = PageSizeConverter.ToSize(PageSize.A4);
-            gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
-            DefaultPdfCompression(document);
-            return document;
         }
 
         protected virtual void Dispose(bool disposing)
@@ -665,6 +683,8 @@ namespace TwainControl
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        private const double A4Height = 29.7;
 
         private ScanSettings _settings;
 
@@ -789,15 +809,10 @@ namespace TwainControl
 
         private BitmapSource EvrakOluştur(Bitmap bitmap)
         {
-            const float mmpi = 25.4f;
-            double dpi = Settings.Default.Çözünürlük;
-            return (ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite
-                ? bitmap.ConvertBlackAndWhite(Scanner.Eşik).ToBitmapImage(ImageFormat.Tiff, SystemParameters.PrimaryScreenHeight).Resize(210 / mmpi * dpi, 297 / mmpi * dpi)
-                : (ColourSetting)Settings.Default.Mode == ColourSetting.GreyScale
-                ? bitmap.ConvertBlackAndWhite(Scanner.Eşik, true).ToBitmapImage(ImageFormat.Jpeg, SystemParameters.PrimaryScreenHeight).Resize(210 / mmpi * dpi, 297 / mmpi * dpi)
-                : (ColourSetting)Settings.Default.Mode == ColourSetting.Colour
-                ? bitmap.ToBitmapImage(ImageFormat.Jpeg, SystemParameters.PrimaryScreenHeight).Resize(210 / mmpi * dpi, 297 / mmpi * dpi)
-                : null;
+            int decodepixelheight = (int)(A4Height / 2.54 * Settings.Default.Çözünürlük);
+            return ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite) ? bitmap.ConvertBlackAndWhite(Scanner.Eşik).ToBitmapImage(ImageFormat.Tiff, decodepixelheight) : ((ColourSetting)Settings.Default.Mode == ColourSetting.GreyScale) ? bitmap.ConvertBlackAndWhite(Scanner.Eşik, true).ToBitmapImage(ImageFormat.Jpeg, decodepixelheight) : (ColourSetting)Settings.Default.Mode == ColourSetting.Colour
+                ? bitmap.ToBitmapImage(ImageFormat.Jpeg, decodepixelheight)
+                : (BitmapSource)null;
         }
 
         private void Fastscan(object sender, ScanningCompleteEventArgs e)
@@ -833,22 +848,29 @@ namespace TwainControl
         private PdfDocument GeneratePdf(IList<ScannedImage> bitmapFrames, Format format, bool rotate = false)
         {
             using PdfDocument document = new();
-            foreach (ScannedImage scannedimage in bitmapFrames)
+            try
             {
-                PdfPage page = document.AddPage();
-                if (rotate)
+                foreach (ScannedImage scannedimage in bitmapFrames)
                 {
-                    page.Rotate = (int)Scanner.RotateAngle;
+                    PdfPage page = document.AddPage();
+                    if (rotate)
+                    {
+                        page.Rotate = (int)Scanner.RotateAngle;
+                    }
+                    if (Scanner.PasswordProtect)
+                    {
+                        ApplyPdfSecurity(document);
+                    }
+                    using XGraphics gfx = XGraphics.FromPdfPage(page);
+                    using MemoryStream ms = new(scannedimage.Resim.ToTiffJpegByteArray(format));
+                    using XImage xImage = XImage.FromStream(ms);
+                    XSize size = PageSizeConverter.ToSize(PageSize.A4);
+                    gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
                 }
-                if (Scanner.PasswordProtect)
-                {
-                    ApplyPdfSecurity(document);
-                }
-                using XGraphics gfx = XGraphics.FromPdfPage(page);
-                using MemoryStream ms = new(scannedimage.Resim.ToTiffJpegByteArray(format));
-                using XImage xImage = XImage.FromStream(ms);
-                XSize size = PageSizeConverter.ToSize(PageSize.A4);
-                gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
+            }
+            catch (Exception ex)
+            {
+                _ = MessageBox.Show(ex.Message);
             }
             DefaultPdfCompression(document);
             return document;

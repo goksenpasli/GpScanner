@@ -432,7 +432,9 @@
                     </GroupBox.Header>
                     <ListBox ItemsSource="{Binding Scanner.Resimler, Mode=OneWay}"
                         SelectedItem="{Binding SeçiliResim}"
-                        SelectionMode="Extended">
+                        SelectionMode="Extended" VirtualizingPanel.CacheLengthUnit="Item"
+                        VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.ScrollUnit="Pixel"
+                        VirtualizingPanel.VirtualizationMode="Recycling">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
                                 <Style.Triggers>
@@ -461,7 +463,7 @@
                                                     <Hyperlink Command="{Binding ElementName=UserControl, Path=DataContext.ResimSil}"
                                                         CommandParameter="{Binding Mode=OneWay}"
                                                         FontFamily="Segoe UI Black" TextDecorations="None">
-                                                        <Image Width="32" Height="32" >
+                                                        <Image Width="32" Height="32">
                                                             <Image.Source>
                                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                                     <Binding Source="Shell32.dll" />
