@@ -15,9 +15,7 @@ using System.Windows.Threading;
 using Extensions;
 using GpScanner.Properties;
 using Microsoft.Win32;
-using PdfSharp;
 using PdfSharp.Drawing;
-using PdfSharp.Drawing.Layout;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
 using TwainControl;
@@ -141,35 +139,13 @@ namespace GpScanner.ViewModel
             {
                 if (parameter is TwainCtrl twainCtrl)
                 {
-                    double dpiX = PresentationSource.FromVisual(twainCtrl).CompositionTarget.TransformToDevice.M11;
-                    double dpiY = PresentationSource.FromVisual(twainCtrl).CompositionTarget.TransformToDevice.M22;
-                    double ratio = SystemParameters.FullPrimaryScreenWidth / SystemParameters.FullPrimaryScreenHeight;
-
-                    using PdfDocument document = new();
-                    PdfPage page = document.AddPage();
-                    using XGraphics gfx = XGraphics.FromPdfPage(page);
-                    using MemoryStream ms = new(twainCtrl.SeçiliResim.Resim.ToTiffJpegByteArray(Format.Png));
-                    using XImage xImage = XImage.FromStream(ms);
-                    XSize size = PageSizeConverter.ToSize(PageSize.A4);
-                    gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
-                    PdfGeneration.DefaultPdfCompression(document);
-
-                    XTextFormatter textformatter = new(gfx);
-                    foreach (OcrData item in ScannedText)
-                    {
-                        XRect adjustedBounds = AdjustBounds(item.Rect, page.Width / twainCtrl.SeçiliResim.Resim.Width / ratio * dpiX, page.Height / twainCtrl.SeçiliResim.Resim.Height / ratio * dpiY);
-                        int adjustedFontSize = CalculateFontSize(item.DisplayName, adjustedBounds, gfx);
-                        XFont font = new("Segoe UI", adjustedFontSize, XFontStyle.Regular, new XPdfFontOptions(PdfFontEncoding.Unicode));
-                        textformatter.DrawString(item.DisplayName, font, XBrushes.Transparent, adjustedBounds);
-                    }
-
                     SaveFileDialog saveFileDialog = new()
                     {
                         Filter = "Pdf Dosyası(*.pdf)|*.pdf",
                     };
                     if (saveFileDialog.ShowDialog() == true)
                     {
-                        document.Save(saveFileDialog.FileName);
+                        PdfGeneration.GeneratePdf(twainCtrl.SeçiliResim.Resim, ScannedText).Save(saveFileDialog.FileName);
                     }
                 }
             }, parameter => parameter is TwainCtrl twainCtrl && twainCtrl.SeçiliResim?.Resim is not null && ScannedText is not null);
@@ -335,7 +311,7 @@ namespace GpScanner.ViewModel
             }
         }
 
-        public ObservableCollection<OcrData> ScannedText
+        public ObservableCollection<TwainControl.OcrData> ScannedText
         {
             get => scannedText;
 
@@ -503,7 +479,7 @@ namespace GpScanner.ViewModel
             return null;
         }
 
-        public async Task<ObservableCollection<OcrData>> Ocr(byte[] imgdata)
+        public async Task<ObservableCollection<TesseractOcrData>> Ocr(byte[] imgdata)
         {
             if (imgdata is not null)
             {
@@ -515,7 +491,7 @@ namespace GpScanner.ViewModel
                     if (ScannedText != null)
                     {
                         IsBusy = false;
-                        TranslateViewModel.Metin = string.Join(" ", ScannedText.Select(z => z.DisplayName));
+                        TranslateViewModel.Metin = string.Join(" ", ScannedText.Select(z => z.Text));
                         if (!string.IsNullOrWhiteSpace(TranslateViewModel.Metin))
                         {
                             ScannedTextWindowOpen = true;
@@ -550,7 +526,7 @@ namespace GpScanner.ViewModel
 
         private int sayfaBitiş = 1;
 
-        private ObservableCollection<OcrData> scannedText = new();
+        private ObservableCollection<TwainControl.OcrData> scannedText = new();
 
         private bool scannedTextWindowOpen;
 
@@ -566,17 +542,9 @@ namespace GpScanner.ViewModel
 
         private TranslateViewModel translateViewModel;
 
-        private static XRect AdjustBounds(Tesseract.Rect b, double hAdjust, double vAdjust)
+        private static XRect AdjustBounds(Rect rect, double hAdjust, double vAdjust)
         {
-            return new(b.X1 * hAdjust, b.Y1 * vAdjust, b.Width * hAdjust, b.Height * vAdjust);
-        }
-
-        private static int CalculateFontSize(string text, XRect adjustedBounds, XGraphics gfx)
-        {
-            int fontSizeGuess = Math.Max(1, (int)adjustedBounds.Height);
-            XSize measuredBoundsForGuess = gfx.MeasureString(text, new XFont("Times New Roman", fontSizeGuess, XFontStyle.Regular));
-            double adjustmentFactor = adjustedBounds.Width / measuredBoundsForGuess.Width;
-            return Math.Max(1, (int)Math.Floor(fontSizeGuess * adjustmentFactor));
+            return new(rect.X * hAdjust, rect.Y * vAdjust, rect.Width * hAdjust, rect.Height * vAdjust);
         }
 
         private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)

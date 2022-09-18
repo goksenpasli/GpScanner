@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using Tesseract;
+using TwainControl;
 
 namespace GpScanner.ViewModel
 {
@@ -38,8 +39,9 @@ namespace GpScanner.ViewModel
                 {
                     if (iterator.TryGetBoundingBox(PageIteratorLevel.Word, out Tesseract.Rect rect))
                     {
-                        OcrData item = new() { DisplayName = iterator.GetText(PageIteratorLevel.Word), Rect = rect };
-                        if (!string.IsNullOrWhiteSpace(item.DisplayName))
+                        System.Windows.Rect imgrect = new(rect.X1, rect.Y1, rect.Width, rect.Height);
+                        OcrData item = new() { Text = iterator.GetText(PageIteratorLevel.Word), Rect = imgrect };
+                        if (!string.IsNullOrWhiteSpace(item.Text))
                         {
                             ocrdata.Add(item);
                         }

@@ -1,10 +1,14 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Extensions;
+using static Extensions.ExtensionMethods;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
 namespace TwainControl
@@ -24,6 +28,25 @@ namespace TwainControl
             bitmap.UnlockBits(data);
 
             return bitmap;
+        }
+
+        public static byte[] CaptureScreen(double coordx, double coordy, double selectionwidth, double selectionheight, ScrollViewer scrollviewer, BitmapFrame bitmapFrame)
+        {
+            try
+            {
+                coordx += scrollviewer.HorizontalOffset;
+                coordy += scrollviewer.VerticalOffset;
+
+                double widthmultiply = bitmapFrame.PixelWidth / (double)((scrollviewer.ExtentWidth < scrollviewer.ViewportWidth) ? scrollviewer.ViewportWidth : scrollviewer.ExtentWidth);
+                double heightmultiply = bitmapFrame.PixelHeight / (double)((scrollviewer.ExtentHeight < scrollviewer.ViewportHeight) ? scrollviewer.ViewportHeight : scrollviewer.ExtentHeight);
+
+                Int32Rect ınt32Rect = new((int)(coordx * widthmultiply), (int)(coordy * heightmultiply), (int)(selectionwidth * widthmultiply), (int)(selectionheight * heightmultiply));
+                return new CroppedBitmap(bitmapFrame, ınt32Rect).ToTiffJpegByteArray(Format.Png);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public static unsafe Bitmap ReplaceColor(Bitmap source, System.Windows.Media.Color toReplace, System.Windows.Media.Color replacement, int threshold)

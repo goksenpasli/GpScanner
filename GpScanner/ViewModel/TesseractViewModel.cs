@@ -27,7 +27,7 @@ namespace GpScanner.ViewModel
             {
                 try
                 {
-                    OcrData ocrData = parameter as OcrData;
+                    TesseractOcrData ocrData = parameter as TesseractOcrData;
                     using WebClient client = new();
                     client.DownloadProgressChanged += (s, e) =>
                     {
@@ -44,7 +44,7 @@ namespace GpScanner.ViewModel
             }, parameter => true);
         }
 
-        public List<OcrData> OcrDatas { get; set; }
+        public List<TesseractOcrData> OcrDatas { get; set; }
 
         public ICommand TesseractDataFilesDownloadLink { get; }
 
@@ -71,16 +71,16 @@ namespace GpScanner.ViewModel
             return Directory.Exists(tesseractfolder) ? new ObservableCollection<string>(Directory.EnumerateFiles(tesseractfolder, "*.traineddata").Select(Path.GetFileNameWithoutExtension)) : null;
         }
 
-        private List<OcrData> TesseractDownloadData()
+        private List<TesseractOcrData> TesseractDownloadData()
         {
             return new()
             {
-                new OcrData(){OcrName = "tur.traineddata", ProgressValue = 0, DisplayName = "TÜRKÇE TESSERACT"},
-                new OcrData(){OcrName = "eng.traineddata", ProgressValue = 0, DisplayName = "ENGLISH TESSERACT"},
-                new OcrData(){OcrName = "ara.traineddata", ProgressValue = 0, DisplayName = "عربي TESSERACT"},
-                new OcrData(){OcrName = "deu.traineddata", ProgressValue = 0, DisplayName = "DEUTSCH TESSERACT"},
-                new OcrData(){OcrName = "ita.traineddata", ProgressValue = 0, DisplayName = "ITALIANO TESSERACT"},
-                new OcrData(){OcrName = "fra.traineddata", ProgressValue = 0, DisplayName = "FRANÇAIS TESSERACT"}
+                new TesseractOcrData(){OcrName = "tur.traineddata", ProgressValue = 0, DisplayName = "TÜRKÇE TESSERACT"},
+                new TesseractOcrData(){OcrName = "eng.traineddata", ProgressValue = 0, DisplayName = "ENGLISH TESSERACT"},
+                new TesseractOcrData(){OcrName = "ara.traineddata", ProgressValue = 0, DisplayName = "عربي TESSERACT"},
+                new TesseractOcrData(){OcrName = "deu.traineddata", ProgressValue = 0, DisplayName = "DEUTSCH TESSERACT"},
+                new TesseractOcrData(){OcrName = "ita.traineddata", ProgressValue = 0, DisplayName = "ITALIANO TESSERACT"},
+                new TesseractOcrData(){OcrName = "fra.traineddata", ProgressValue = 0, DisplayName = "FRANÇAIS TESSERACT"}
             };
         }
     }

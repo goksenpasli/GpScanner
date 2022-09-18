@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -7,6 +8,7 @@ using Extensions;
 using Microsoft.Win32;
 using PdfSharp;
 using PdfSharp.Drawing;
+using PdfSharp.Drawing.Layout;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
 using PdfSharp.Pdf.Security;
@@ -15,9 +17,52 @@ using static Extensions.ExtensionMethods;
 
 namespace TwainControl
 {
+    public class OcrData : InpcBase
+    {
+        public Rect Rect
+        {
+            get => rect;
+
+            set
+            {
+                if (rect != value)
+                {
+                    rect = value;
+                    OnPropertyChanged(nameof(Rect));
+                }
+            }
+        }
+
+        public string Text
+        {
+            get => text;
+
+            set
+            {
+                if (text != value)
+                {
+                    text = value;
+                    OnPropertyChanged(nameof(Text));
+                }
+            }
+        }
+
+        private Rect rect;
+
+        private string text;
+    }
+
     public abstract class PdfGeneration
     {
         public static Scanner Scanner { get; set; }
+
+        public static int CalculateFontSize(string text, XRect adjustedBounds, XGraphics gfx)
+        {
+            int fontSizeGuess = Math.Max(1, (int)adjustedBounds.Height);
+            XSize measuredBoundsForGuess = gfx.MeasureString(text, new XFont("Times New Roman", fontSizeGuess, XFontStyle.Regular));
+            double adjustmentFactor = adjustedBounds.Width / measuredBoundsForGuess.Width;
+            return Math.Max(1, (int)Math.Floor(fontSizeGuess * adjustmentFactor));
+        }
 
         public static void DefaultPdfCompression(PdfDocument doc)
         {
@@ -89,6 +134,40 @@ namespace TwainControl
             }
         }
 
+        public static PdfDocument GeneratePdf(BitmapFrame bitmapframe, ObservableCollection<OcrData> ScannedText)
+        {
+            try
+            {
+                using PdfDocument document = new();
+                PdfPage page = document.AddPage();
+                using XGraphics gfx = XGraphics.FromPdfPage(page);
+                using MemoryStream ms = new(bitmapframe.ToTiffJpegByteArray(Format.Png));
+                using XImage xImage = XImage.FromStream(ms);
+                XSize size = PageSizeConverter.ToSize(PageSize.A4);
+                gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
+                XTextFormatter textformatter = new(gfx);
+                foreach (OcrData item in ScannedText)
+                {
+                    XRect adjustedBounds = AdjustBounds(item.Rect, page.Width / bitmapframe.PixelWidth, page.Height / bitmapframe.PixelHeight);
+                    int adjustedFontSize = CalculateFontSize(item.Text, adjustedBounds, gfx);
+                    XFont font = new("Times New Roman", adjustedFontSize, XFontStyle.Regular, new XPdfFontOptions(PdfFontEncoding.Unicode));
+                    XSize adjustedTextSize = gfx.MeasureString(item.Text, font);
+                    double verticalOffset = (adjustedBounds.Height - adjustedTextSize.Height) / 2;
+                    double horizontalOffset = (adjustedBounds.Width - adjustedTextSize.Width) / 2;
+                    adjustedBounds.Offset(horizontalOffset, verticalOffset);
+                    textformatter.DrawString(item.Text, font, XBrushes.Transparent, adjustedBounds);
+                }
+
+                DefaultPdfCompression(document);
+                return document;
+            }
+            catch (Exception ex)
+            {
+                _ = MessageBox.Show(ex.Message);
+                return null;
+            }
+        }
+
         public static string GetPdfScanPath()
         {
             return GetSaveFolder().SetUniqueFile(Scanner.SaveFileName, "pdf");
@@ -143,6 +222,11 @@ namespace TwainControl
         protected PdfGeneration(Scanner scanner)
         {
             Scanner = scanner;
+        }
+
+        private static XRect AdjustBounds(Rect rect, double hAdjust, double vAdjust)
+        {
+            return new(rect.X * hAdjust, rect.Y * vAdjust, rect.Width * hAdjust, rect.Height * vAdjust);
         }
 
         private static void ApplyPdfSecurity(PdfDocument document)

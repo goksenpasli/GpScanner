@@ -65,7 +65,7 @@ namespace TwainControl
                 {
                     SaveFileDialog saveFileDialog = new()
                     {
-                        Filter = "Tif Resmi (*.tif)|*.tif|Jpg Resmi(*.jpg)|*.jpg|Pdf Dosyası(*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası(*.pdf)|*.pdf",
+                        Filter = "Tif Resmi (*.tif)|*.tif|Jpg Resmi (*.jpg)|*.jpg|Pdf Dosyası (*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf",
                         FileName = Scanner.SaveFileName
                     };
                     if (saveFileDialog.ShowDialog() == true)
@@ -710,28 +710,6 @@ namespace TwainControl
             Scanner.CaretPosition = (sender as ButtonedTextBox)?.CaretIndex ?? 0;
         }
 
-        private byte[] CaptureScreen(double coordx, double coordy, double selectionwidth, double selectionheight, ScrollViewer scrollviewer)
-        {
-            try
-            {
-                coordx += scrollviewer.HorizontalOffset;
-                coordy += scrollviewer.VerticalOffset;
-
-                double widthmultiply = SeçiliResim.Resim.PixelWidth / (double)((scrollviewer.ExtentWidth < scrollviewer.ViewportWidth) ? scrollviewer.ViewportWidth : scrollviewer.ExtentWidth);
-                double heightmultiply = SeçiliResim.Resim.PixelHeight / (double)((scrollviewer.ExtentHeight < scrollviewer.ViewportHeight) ? scrollviewer.ViewportHeight : scrollviewer.ExtentHeight);
-
-                Int32Rect ınt32Rect = new((int)(coordx * widthmultiply), (int)(coordy * heightmultiply), (int)(selectionwidth * widthmultiply), (int)(selectionheight * heightmultiply));
-                CroppedOcrBitmap = new CroppedBitmap(SeçiliResim.Resim, ınt32Rect);
-                CroppedOcrBitmap.Freeze();
-                return CroppedOcrBitmap.ToTiffJpegByteArray(Format.Png);
-            }
-            catch (Exception)
-            {
-                CroppedOcrBitmap = null;
-                return null;
-            }
-        }
-
         private Int32Rect CropPreviewImage(ImageSource ımageSource)
         {
             int height = ((BitmapSource)ımageSource).PixelHeight - (int)Scanner.CropBottom - (int)Scanner.CropTop;
@@ -891,19 +869,19 @@ namespace TwainControl
 
                         if (startupcoordx < mousemovecoordx && startupcoordy < mousemovecoordy)
                         {
-                            ImgData = CaptureScreen(startupcoordx, startupcoordy, width, height, scrollviewer);
+                            ImgData = BitmapMethods.CaptureScreen(startupcoordx, startupcoordy, width, height, scrollviewer, SeçiliResim.Resim);
                         }
                         if (startupcoordx > mousemovecoordx && startupcoordy > mousemovecoordy)
                         {
-                            ImgData = CaptureScreen(mousemovecoordx, mousemovecoordy, width, height, scrollviewer);
+                            ImgData = BitmapMethods.CaptureScreen(mousemovecoordx, mousemovecoordy, width, height, scrollviewer, SeçiliResim.Resim);
                         }
                         if (startupcoordx < mousemovecoordx && startupcoordy > mousemovecoordy)
                         {
-                            ImgData = CaptureScreen(startupcoordx, mousemovecoordy, width, height, scrollviewer);
+                            ImgData = BitmapMethods.CaptureScreen(startupcoordx, mousemovecoordy, width, height, scrollviewer, SeçiliResim.Resim);
                         }
                         if (startupcoordx > mousemovecoordx && startupcoordy < mousemovecoordy)
                         {
-                            ImgData = CaptureScreen(mousemovecoordx, startupcoordy, width, height, scrollviewer);
+                            ImgData = BitmapMethods.CaptureScreen(mousemovecoordx, startupcoordy, width, height, scrollviewer, SeçiliResim.Resim);
                         }
                         startupcoordx = startupcoordy = 0;
                         isMouseDown = false;
