@@ -526,7 +526,7 @@ namespace GpScanner.ViewModel
 
         private int sayfaBitiş = 1;
 
-        private ObservableCollection<TwainControl.OcrData> scannedText = new();
+        private ObservableCollection<OcrData> scannedText = new();
 
         private bool scannedTextWindowOpen;
 
@@ -541,11 +541,6 @@ namespace GpScanner.ViewModel
         private TesseractViewModel tesseractViewModel;
 
         private TranslateViewModel translateViewModel;
-
-        private static XRect AdjustBounds(Rect rect, double hAdjust, double vAdjust)
-        {
-            return new(rect.X * hAdjust, rect.Y * vAdjust, rect.Width * hAdjust, rect.Height * vAdjust);
-        }
 
         private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
