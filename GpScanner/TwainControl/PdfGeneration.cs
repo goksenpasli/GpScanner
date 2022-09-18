@@ -89,6 +89,21 @@ namespace TwainControl
             }
         }
 
+        public static string GetPdfScanPath()
+        {
+            return GetSaveFolder().SetUniqueFile(Scanner.SaveFileName, "pdf");
+        }
+
+        public static string GetSaveFolder()
+        {
+            string datefolder = $@"{Settings.Default.AutoFolder}\{DateTime.Today.ToShortDateString()}";
+            if (!Directory.Exists(datefolder))
+            {
+                _ = Directory.CreateDirectory(datefolder);
+            }
+            return datefolder;
+        }
+
         public static PdfDocument MergePdf(string[] pdffiles)
         {
             using PdfDocument outputDocument = new();
@@ -116,28 +131,13 @@ namespace TwainControl
             {
                 try
                 {
-                   MergePdf(files).Save(saveFileDialog.FileName);
+                    MergePdf(files).Save(saveFileDialog.FileName);
                 }
                 catch (Exception ex)
                 {
                     _ = MessageBox.Show(ex.Message);
                 }
             }
-        }
-
-        public static string GetSaveFolder()
-        {
-            string datefolder = $@"{Settings.Default.AutoFolder}\{DateTime.Today.ToShortDateString()}";
-            if (!Directory.Exists(datefolder))
-            {
-                _ = Directory.CreateDirectory(datefolder);
-            }
-            return datefolder;
-        }
-
-        public static string GetPdfScanPath()
-        {
-            return GetSaveFolder().SetUniqueFile(Scanner.SaveFileName, "pdf");
         }
 
         protected PdfGeneration(Scanner scanner)

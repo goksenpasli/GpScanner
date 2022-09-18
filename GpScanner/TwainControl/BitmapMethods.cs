@@ -2,18 +2,30 @@
 using System.Drawing.Imaging;
 using System.Globalization;
 using System.Threading.Tasks;
-using System.Windows.Media.Imaging;
-using System.Windows.Media;
 using System.Windows;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
-using Extensions;
-using TwainControl.Properties;
-using TwainWpf;
 
 namespace TwainControl
 {
     public static class BitmapMethods
     {
+        public static Bitmap BitmapSourceToBitmap(BitmapSource bitmapsource)
+        {
+            FormatConvertedBitmap src = new();
+            src.BeginInit();
+            src.Source = bitmapsource;
+            src.DestinationFormat = PixelFormats.Bgra32;
+            src.EndInit();
+            Bitmap bitmap = new(src.PixelWidth, src.PixelHeight, PixelFormat.Format32bppArgb);
+            BitmapData data = bitmap.LockBits(new System.Drawing.Rectangle(System.Drawing.Point.Empty, bitmap.Size), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+            src.CopyPixels(Int32Rect.Empty, data.Scan0, data.Height * data.Stride, data.Stride);
+            bitmap.UnlockBits(data);
+
+            return bitmap;
+        }
+
         public static unsafe Bitmap ReplaceColor(Bitmap source, System.Windows.Media.Color toReplace, System.Windows.Media.Color replacement, int threshold)
         {
             const int pixelSize = 4; // 32 bits per pixel
@@ -70,6 +82,20 @@ namespace TwainControl
             return target;
         }
 
+        public static RenderTargetBitmap RotateImage(ImageSource Source, double angle)
+        {
+            DrawingVisual dv = new();
+            using (DrawingContext dc = dv.RenderOpen())
+            {
+                dc.PushTransform(new RotateTransform(angle));
+                dc.DrawImage(Source, new Rect(0, 0, ((BitmapSource)Source).PixelWidth, ((BitmapSource)Source).PixelHeight));
+            }
+            RenderTargetBitmap rtb = new(((BitmapSource)Source).PixelWidth, ((BitmapSource)Source).PixelHeight, 96, 96, PixelFormats.Default);
+            rtb.Render(dv);
+            rtb.Freeze();
+            return rtb;
+        }
+
         public static RenderTargetBitmap ÜstüneResimÇiz(ImageSource Source, System.Windows.Point konum, System.Windows.Media.Brush brushes, double emSize = 64, string metin = null, double angle = 315, string font = "Arial")
         {
             FormattedText formattedText = new(metin, CultureInfo.GetCultureInfo("tr-TR"), FlowDirection.LeftToRight, new Typeface(font), emSize, brushes) { TextAlignment = TextAlignment.Center };
@@ -82,35 +108,6 @@ namespace TwainControl
             }
 
             RenderTargetBitmap rtb = new((int)((BitmapSource)Source).Width, (int)((BitmapSource)Source).Height, 96, 96, PixelFormats.Default);
-            rtb.Render(dv);
-            rtb.Freeze();
-            return rtb;
-        }
-  
-        public static Bitmap BitmapSourceToBitmap(BitmapSource bitmapsource)
-        {
-            FormatConvertedBitmap src = new();
-            src.BeginInit();
-            src.Source = bitmapsource;
-            src.DestinationFormat = PixelFormats.Bgra32;
-            src.EndInit();
-            Bitmap bitmap = new(src.PixelWidth, src.PixelHeight, PixelFormat.Format32bppArgb);
-            BitmapData data = bitmap.LockBits(new System.Drawing.Rectangle(System.Drawing.Point.Empty, bitmap.Size), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-            src.CopyPixels(Int32Rect.Empty, data.Scan0, data.Height * data.Stride, data.Stride);
-            bitmap.UnlockBits(data);
-
-            return bitmap;
-        }
-
-        public static RenderTargetBitmap RotateImage(ImageSource Source, double angle)
-        {
-            DrawingVisual dv = new();
-            using (DrawingContext dc = dv.RenderOpen())
-            {
-                dc.PushTransform(new RotateTransform(angle));
-                dc.DrawImage(Source, new Rect(0, 0, ((BitmapSource)Source).PixelWidth, ((BitmapSource)Source).PixelHeight));
-            }
-            RenderTargetBitmap rtb = new(((BitmapSource)Source).PixelWidth, ((BitmapSource)Source).PixelHeight, 96, 96, PixelFormats.Default);
             rtb.Render(dv);
             rtb.Freeze();
             return rtb;
