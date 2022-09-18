@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -18,17 +15,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Extensions;
 using Microsoft.Win32;
-using PdfSharp;
-using PdfSharp.Drawing;
-using PdfSharp.Pdf;
-using PdfSharp.Pdf.IO;
-using PdfSharp.Pdf.Security;
 using TwainControl.Properties;
 using TwainWpf;
 using TwainWpf.Wpf;
 using static Extensions.ExtensionMethods;
 using Path = System.IO.Path;
-using PixelFormat = System.Drawing.Imaging.PixelFormat;
 using Rectangle = System.Windows.Shapes.Rectangle;
 
 namespace TwainControl
@@ -40,6 +31,8 @@ namespace TwainControl
             InitializeComponent();
             DataContext = this;
             Scanner = new Scanner();
+            PdfGeneration.Scanner = Scanner;
+
             ScanImage = new RelayCommand<object>(parameter =>
             {
                 ScanCommonSettings();
@@ -101,13 +94,13 @@ namespace TwainControl
                             {
                                 if (MessageBox.Show(Translation.GetResStringValue("ROTSAVE"), Application.Current?.MainWindow?.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                                 {
-                                    GeneratePdf(scannedImage.Resim, Format.Jpg, true).Save(saveFileDialog.FileName);
+                                    PdfGeneration.GeneratePdf(scannedImage.Resim, Format.Jpg, true).Save(saveFileDialog.FileName);
                                     return;
                                 }
-                                GeneratePdf(scannedImage.Resim, Format.Jpg).Save(saveFileDialog.FileName);
+                                PdfGeneration.GeneratePdf(scannedImage.Resim, Format.Jpg).Save(saveFileDialog.FileName);
                                 return;
                             }
-                            GeneratePdf(scannedImage.Resim, Format.Jpg).Save(saveFileDialog.FileName);
+                            PdfGeneration.GeneratePdf(scannedImage.Resim, Format.Jpg).Save(saveFileDialog.FileName);
                             return;
                         }
                         if (saveFileDialog.FilterIndex == 4)
@@ -116,13 +109,13 @@ namespace TwainControl
                             {
                                 if (MessageBox.Show(Translation.GetResStringValue("ROTSAVE"), Application.Current?.MainWindow?.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                                 {
-                                    GeneratePdf(scannedImage.Resim, Format.Tiff, true).Save(saveFileDialog.FileName);
+                                    PdfGeneration.GeneratePdf(scannedImage.Resim, Format.Tiff, true).Save(saveFileDialog.FileName);
                                     return;
                                 }
-                                GeneratePdf(scannedImage.Resim, Format.Tiff).Save(saveFileDialog.FileName);
+                                PdfGeneration.GeneratePdf(scannedImage.Resim, Format.Tiff).Save(saveFileDialog.FileName);
                                 return;
                             }
-                            GeneratePdf(scannedImage.Resim, Format.Tiff).Save(saveFileDialog.FileName);
+                            PdfGeneration.GeneratePdf(scannedImage.Resim, Format.Tiff).Save(saveFileDialog.FileName);
                         }
                     }
                 }
@@ -182,16 +175,16 @@ namespace TwainControl
                 {
                     if (saveFileDialog.FilterIndex == 1)
                     {
-                        GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToList(), Format.Jpg).Save(saveFileDialog.FileName);
+                        PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToList(), Format.Jpg).Save(saveFileDialog.FileName);
                     }
                     if (saveFileDialog.FilterIndex == 2)
                     {
-                        GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToList(), Format.Tiff).Save(saveFileDialog.FileName);
+                        PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToList(), Format.Tiff).Save(saveFileDialog.FileName);
                     }
                     if (saveFileDialog.FilterIndex == 3)
                     {
                         string dosyayolu = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
-                        GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToList(), Format.Jpg).Save(dosyayolu);
+                        PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToList(), Format.Jpg).Save(dosyayolu);
                         using ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Create);
                         _ = archive.CreateEntryFromFile(dosyayolu, $"{Scanner.SaveFileName}.pdf", CompressionLevel.Optimal);
                         File.Delete(dosyayolu);
@@ -279,12 +272,12 @@ namespace TwainControl
                 {
                     if (saveFileDialog.FilterIndex == 1)
                     {
-                        GeneratePdf((BitmapSource)parameter, Format.Jpg).Save(saveFileDialog.FileName);
+                        PdfGeneration.GeneratePdf((BitmapSource)parameter, Format.Jpg).Save(saveFileDialog.FileName);
                         return;
                     }
                     if (saveFileDialog.FilterIndex == 2)
                     {
-                        GeneratePdf((BitmapSource)parameter, Format.Tiff).Save(saveFileDialog.FileName);
+                        PdfGeneration.GeneratePdf((BitmapSource)parameter, Format.Tiff).Save(saveFileDialog.FileName);
                         return;
                     }
                     if (saveFileDialog.FilterIndex == 3)
@@ -335,7 +328,7 @@ namespace TwainControl
                 }
             }, parameter => true);
 
-            SetWatermark = new RelayCommand<object>(parameter => Scanner.CroppedImage = ÜstüneResimÇiz(Scanner.CroppedImage, new System.Windows.Point(Scanner.CroppedImage.Width / 2, Scanner.CroppedImage.Height / 2), System.Windows.Media.Brushes.Red, Scanner.WatermarkTextSize, Scanner.Watermark, Scanner.WatermarkAngle, Scanner.WatermarkFont), parameter => Scanner.CroppedImage is not null && !string.IsNullOrWhiteSpace(Scanner?.Watermark));
+            SetWatermark = new RelayCommand<object>(parameter => Scanner.CroppedImage = BitmapMethods.ÜstüneResimÇiz(Scanner.CroppedImage, new System.Windows.Point(Scanner.CroppedImage.Width / 2, Scanner.CroppedImage.Height / 2), System.Windows.Media.Brushes.Red, Scanner.WatermarkTextSize, Scanner.Watermark, Scanner.WatermarkAngle, Scanner.WatermarkFont), parameter => Scanner.CroppedImage is not null && !string.IsNullOrWhiteSpace(Scanner?.Watermark));
 
             ApplyColorChange = new RelayCommand<object>(parameter => Scanner.CopyCroppedImage = Scanner.CroppedImage, parameter => Scanner.CroppedImage is not null);
 
@@ -343,7 +336,7 @@ namespace TwainControl
             {
                 Deskew sk = new((BitmapSource)Scanner.CroppedImage);
                 double skewAngle = -1 * sk.GetSkewAngle(true);
-                Scanner.CroppedImage = RotateImage(Scanner.CroppedImage, skewAngle);
+                Scanner.CroppedImage = BitmapMethods.RotateImage(Scanner.CroppedImage, skewAngle);
             }, parameter => Scanner.CroppedImage is not null);
 
             OcrPage = new RelayCommand<object>(parameter =>
@@ -364,7 +357,7 @@ namespace TwainControl
                     string[] files = openFileDialog.FileNames;
                     if (files.Length > 0)
                     {
-                        SavePdfFiles(files);
+                        PdfGeneration.SavePdfFiles(files);
                     }
                 }
             }, parameter => true);
@@ -373,36 +366,78 @@ namespace TwainControl
             {
                 OpenFileDialog openFileDialog = new()
                 {
-                    Filter = "Resim Dosyası(*.jpg;*.jpeg;*.png;*.gif;*.tif;*.bmp)|*.jpg;*.jpeg;*.png;*.gif;*.tif;*.bmp",
+                    Filter = "Resim Dosyası (*.jpg;*.jpeg;*.png;*.gif;*.tif;*.tiff;*.bmp)|*.jpg;*.jpeg;*.png;*.gif;*.tif;*.tiff;*.bmp|Pdf Dosyası (*.pdf)|*.pdf",
                     Multiselect = true
                 };
-                int dpimultiplier = (int)PresentationSource.FromVisual(this).CompositionTarget.TransformToDevice.M11;
+                GC.Collect();
                 if (openFileDialog.ShowDialog() == true)
                 {
-                    Scanner?.Resimler.Clear();
-                    GC.Collect();
+                    int decodeheight = (int)(A4Height / 2.54 * ImgLoadResolution);
                     foreach (string item in openFileDialog.FileNames)
                     {
-                        BitmapImage image = new();
-                        image.BeginInit();
-                        image.DecodePixelHeight = (int)(A4Height / 2.54 * ImgLoadResolution);
-                        image.CacheOption = BitmapCacheOption.None;
-                        image.UriSource = new Uri(item);
-                        image.EndInit();
-                        image.Freeze();
+                        switch (Path.GetExtension(item.ToLower()))
+                        {
+                            case ".pdf":
+                                {
+                                    byte[] filedata = File.ReadAllBytes(item);
+                                    for (int i = 1; i <= PdfViewer.PdfViewer.PdfPageCount(filedata); i++)
+                                    {
+                                        MemoryStream ms = PdfViewer.PdfViewer.ConvertToImgStream(filedata, i, (int)ImgLoadResolution);
+                                        BitmapImage image = new();
+                                        image.BeginInit();
+                                        image.DecodePixelHeight = decodeheight;
+                                        image.CacheOption = BitmapCacheOption.None;
+                                        image.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
+                                        image.StreamSource = ms;
+                                        image.EndInit();
+                                        image.Freeze();
 
-                        BitmapImage thumbimage = new();
-                        thumbimage.BeginInit();
-                        thumbimage.DecodePixelHeight = 96 * dpimultiplier;
-                        thumbimage.CacheOption = BitmapCacheOption.None;
-                        thumbimage.UriSource = new Uri(item);
-                        thumbimage.EndInit();
-                        thumbimage.Freeze();
+                                        Uri pdfthumbimageuri = new("pack://application:,,,/TwainControl;component/Pdf.png", UriKind.RelativeOrAbsolute);
+                                        BitmapFrame thumbpdf = BitmapFrame.Create(pdfthumbimageuri);
+                                        thumbpdf.Freeze();
 
-                        BitmapFrame bitmapFrame = BitmapFrame.Create(image, thumbimage);
-                        bitmapFrame.Freeze();
-                        Scanner?.Resimler.Add(new ScannedImage() { Seçili = true, Resim = bitmapFrame });
+                                        BitmapFrame bitmapFrame = BitmapFrame.Create(image, thumbpdf);
+                                        bitmapFrame.Freeze();
+                                        Scanner?.Resimler.Add(new ScannedImage() { Seçili = true, Resim = bitmapFrame });
+                                    }
+
+                                    break;
+                                }
+
+                            case ".jpg":
+                            case ".jpeg":
+                            case ".png":
+                            case ".gif":
+                            case ".tif":
+                            case ".tiff":
+                            case ".bmp":
+                                {
+                                    BitmapImage image = new();
+                                    image.BeginInit();
+                                    image.DecodePixelHeight = decodeheight;
+                                    image.CacheOption = BitmapCacheOption.None;
+                                    image.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
+                                    image.UriSource = new Uri(item);
+                                    image.EndInit();
+                                    image.Freeze();
+
+                                    BitmapImage thumbimage = new();
+                                    thumbimage.BeginInit();
+                                    thumbimage.DecodePixelHeight = 96;
+                                    thumbimage.CacheOption = BitmapCacheOption.None;
+                                    thumbimage.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
+                                    thumbimage.UriSource = new Uri(item);
+                                    thumbimage.EndInit();
+                                    thumbimage.Freeze();
+
+                                    BitmapFrame bitmapFrame = BitmapFrame.Create(image, thumbimage);
+                                    bitmapFrame.Freeze();
+                                    Scanner?.Resimler.Add(new ScannedImage() { Seçili = true, Resim = bitmapFrame });
+                                    break;
+                                }
+                        }
                     }
+                    GC.Collect();
                 }
             }, parameter => true);
 
@@ -604,63 +639,9 @@ namespace TwainControl
 
         public ICommand WebAdreseGit { get; }
 
-        public static void DefaultPdfCompression(PdfDocument doc)
-        {
-            doc.Options.FlateEncodeMode = PdfFlateEncodeMode.BestCompression;
-            doc.Options.CompressContentStreams = true;
-            doc.Options.UseFlateDecoderForJpegImages = PdfUseFlateDecoderForJpegImages.Automatic;
-            doc.Options.NoCompression = false;
-            doc.Options.EnableCcittCompressionForBilevelImages = true;
-        }
-
-        public static PdfDocument MergePdf(string[] pdffiles)
-        {
-            using PdfDocument outputDocument = new();
-            foreach (string file in pdffiles)
-            {
-                PdfDocument inputDocument = PdfReader.Open(file, PdfDocumentOpenMode.Import);
-                int count = inputDocument.PageCount;
-                for (int idx = 0; idx < count; idx++)
-                {
-                    PdfPage page = inputDocument.Pages[idx];
-                    _ = outputDocument.AddPage(page);
-                }
-            }
-            return outputDocument;
-        }
-
         public void Dispose()
         {
             Dispose(true);
-        }
-
-        public PdfDocument GeneratePdf(BitmapSource bitmapframe, Format format, bool rotate = false)
-        {
-            try
-            {
-                using PdfDocument document = new();
-                PdfPage page = document.AddPage();
-                if (rotate)
-                {
-                    page.Rotate = (int)Scanner.RotateAngle;
-                }
-                if (Scanner.PasswordProtect)
-                {
-                    ApplyPdfSecurity(document);
-                }
-                using XGraphics gfx = XGraphics.FromPdfPage(page);
-                using MemoryStream ms = new(bitmapframe.ToTiffJpegByteArray(format));
-                using XImage xImage = XImage.FromStream(ms);
-                XSize size = PageSizeConverter.ToSize(PageSize.A4);
-                gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
-                DefaultPdfCompression(document);
-                return document;
-            }
-            catch (Exception ex)
-            {
-                _ = MessageBox.Show(ex.Message);
-                return null;
-            }
         }
 
         protected virtual void Dispose(bool disposing)
@@ -723,33 +704,6 @@ namespace TwainControl
         private GridLength twainGuiControlLength = new(3, GridUnitType.Star);
 
         private double width;
-
-        private void ApplyPdfSecurity(PdfDocument document)
-        {
-            PdfSecuritySettings securitySettings = document.SecuritySettings;
-            if (Scanner.PdfPassword is not null)
-            {
-                securitySettings.OwnerPassword = Scanner.PdfPassword.ToString();
-                securitySettings.PermitModifyDocument = Scanner.AllowEdit;
-                securitySettings.PermitPrint = Scanner.AllowPrint;
-                securitySettings.PermitExtractContent = Scanner.AllowCopy;
-            }
-        }
-
-        private Bitmap BitmapSourceToBitmap(BitmapSource bitmapsource)
-        {
-            FormatConvertedBitmap src = new();
-            src.BeginInit();
-            src.Source = bitmapsource;
-            src.DestinationFormat = PixelFormats.Bgra32;
-            src.EndInit();
-            Bitmap bitmap = new(src.PixelWidth, src.PixelHeight, PixelFormat.Format32bppArgb);
-            BitmapData data = bitmap.LockBits(new System.Drawing.Rectangle(System.Drawing.Point.Empty, bitmap.Size), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-            src.CopyPixels(Int32Rect.Empty, data.Scan0, data.Height * data.Stride, data.Stride);
-            bitmap.UnlockBits(data);
-
-            return bitmap;
-        }
 
         private void ButtonedTextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
@@ -817,15 +771,15 @@ namespace TwainControl
 
         private void Fastscan(object sender, ScanningCompleteEventArgs e)
         {
-            string pdffilepath = GetPdfScanPath();
+            string pdffilepath = PdfGeneration.GetPdfScanPath();
 
             if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
             {
-                GeneratePdf(Scanner.Resimler, Format.Tiff).Save(pdffilepath);
+                PdfGeneration.GeneratePdf(Scanner.Resimler, Format.Tiff).Save(pdffilepath);
             }
             if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
             {
-                GeneratePdf(Scanner.Resimler, Format.Jpg).Save(pdffilepath);
+                PdfGeneration.GeneratePdf(Scanner.Resimler, Format.Jpg).Save(pdffilepath);
             }
             if (Settings.Default.ShowFile)
             {
@@ -843,52 +797,6 @@ namespace TwainControl
             }
             twain.ScanningComplete -= Fastscan;
             OnPropertyChanged(nameof(Scanner.Tarandı));
-        }
-
-        private PdfDocument GeneratePdf(IList<ScannedImage> bitmapFrames, Format format, bool rotate = false)
-        {
-            using PdfDocument document = new();
-            try
-            {
-                foreach (ScannedImage scannedimage in bitmapFrames)
-                {
-                    PdfPage page = document.AddPage();
-                    if (rotate)
-                    {
-                        page.Rotate = (int)Scanner.RotateAngle;
-                    }
-                    if (Scanner.PasswordProtect)
-                    {
-                        ApplyPdfSecurity(document);
-                    }
-                    using XGraphics gfx = XGraphics.FromPdfPage(page);
-                    using MemoryStream ms = new(scannedimage.Resim.ToTiffJpegByteArray(format));
-                    using XImage xImage = XImage.FromStream(ms);
-                    XSize size = PageSizeConverter.ToSize(PageSize.A4);
-                    gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
-                }
-            }
-            catch (Exception ex)
-            {
-                _ = MessageBox.Show(ex.Message);
-            }
-            DefaultPdfCompression(document);
-            return document;
-        }
-
-        private string GetPdfScanPath()
-        {
-            return GetSaveFolder().SetUniqueFile(Scanner.SaveFileName, "pdf");
-        }
-
-        private string GetSaveFolder()
-        {
-            string datefolder = $@"{Settings.Default.AutoFolder}\{DateTime.Today.ToShortDateString()}";
-            if (!Directory.Exists(datefolder))
-            {
-                _ = Directory.CreateDirectory(datefolder);
-            }
-            return datefolder;
         }
 
         private void GridSplitter_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -1011,62 +919,6 @@ namespace TwainControl
             Scanner.PdfPassword = ((PasswordBox)sender).SecurePassword;
         }
 
-        private unsafe Bitmap ReplaceColor(Bitmap source, System.Windows.Media.Color toReplace, System.Windows.Media.Color replacement, int threshold)
-        {
-            const int pixelSize = 4; // 32 bits per pixel
-
-            Bitmap target = new(source.Width, source.Height, PixelFormat.Format32bppArgb);
-
-            BitmapData sourceData = null, targetData = null;
-
-            try
-            {
-                sourceData = source.LockBits(new System.Drawing.Rectangle(0, 0, source.Width, source.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-
-                targetData = target.LockBits(new System.Drawing.Rectangle(0, 0, target.Width, target.Height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-
-                for (int y = 0; y < source.Height; ++y)
-                {
-                    byte* sourceRow = (byte*)sourceData.Scan0 + (y * sourceData.Stride);
-                    byte* targetRow = (byte*)targetData.Scan0 + (y * targetData.Stride);
-
-                    _ = Parallel.For(0, source.Width, x =>
-                    {
-                        byte b = sourceRow[(x * pixelSize) + 0];
-                        byte g = sourceRow[(x * pixelSize) + 1];
-                        byte r = sourceRow[(x * pixelSize) + 2];
-                        byte a = sourceRow[(x * pixelSize) + 3];
-
-                        if (toReplace.R + threshold >= r && toReplace.R - threshold <= r && toReplace.G + threshold >= g && toReplace.G - threshold <= g && toReplace.B + threshold >= b && toReplace.B - threshold <= b)
-                        {
-                            r = replacement.R;
-                            g = replacement.G;
-                            b = replacement.B;
-                        }
-
-                        targetRow[(x * pixelSize) + 0] = b;
-                        targetRow[(x * pixelSize) + 1] = g;
-                        targetRow[(x * pixelSize) + 2] = r;
-                        targetRow[(x * pixelSize) + 3] = a;
-                    });
-                }
-            }
-            finally
-            {
-                if (sourceData != null)
-                {
-                    source.UnlockBits(sourceData);
-                }
-
-                if (targetData != null)
-                {
-                    target.UnlockBits(targetData);
-                }
-            }
-
-            return target;
-        }
-
         private void ResetCropMargin()
         {
             Scanner.CropBottom = 0;
@@ -1076,40 +928,6 @@ namespace TwainControl
             Scanner.EnAdet = 1;
             Scanner.BoyAdet = 1;
             Scanner.CroppedImage = null;
-        }
-
-        private RenderTargetBitmap RotateImage(ImageSource Source, double angle)
-        {
-            DrawingVisual dv = new();
-            using (DrawingContext dc = dv.RenderOpen())
-            {
-                dc.PushTransform(new RotateTransform(angle));
-                dc.DrawImage(Source, new Rect(0, 0, ((BitmapSource)Source).PixelWidth, ((BitmapSource)Source).PixelHeight));
-            }
-            RenderTargetBitmap rtb = new(((BitmapSource)Source).PixelWidth, ((BitmapSource)Source).PixelHeight, 96, 96, PixelFormats.Default);
-            rtb.Render(dv);
-            rtb.Freeze();
-            return rtb;
-        }
-
-        private void SavePdfFiles(string[] files)
-        {
-            SaveFileDialog saveFileDialog = new()
-            {
-                Filter = "Pdf Dosyası(*.pdf)|*.pdf",
-                FileName = Translation.GetResStringValue("MERGE")
-            };
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                try
-                {
-                    MergePdf(files).Save(saveFileDialog.FileName);
-                }
-                catch (Exception ex)
-                {
-                    _ = MessageBox.Show(ex.Message);
-                }
-            }
         }
 
         private void ScanCommonSettings()
@@ -1169,8 +987,8 @@ namespace TwainControl
             {
                 System.Windows.Media.Color source = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(SourceColor);
                 System.Windows.Media.Color target = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(TargetColor);
-                using Bitmap bmp = BitmapSourceToBitmap((BitmapSource)Scanner.CopyCroppedImage);
-                Scanner.CroppedImage = ReplaceColor(bmp, source, target, (int)Scanner.Threshold).ToBitmapImage(ImageFormat.Png);
+                using Bitmap bmp = BitmapMethods.BitmapSourceToBitmap((BitmapSource)Scanner.CopyCroppedImage);
+                Scanner.CroppedImage = BitmapMethods.ReplaceColor(bmp, source, target, (int)Scanner.Threshold).ToBitmapImage(ImageFormat.Png);
             }
             if (e.PropertyName is "CroppedImageAngle" && Scanner.CroppedImageAngle != 0)
             {
@@ -1200,13 +1018,13 @@ namespace TwainControl
                 Scanner.Resimler.Add(new ScannedImage() { Resim = bitmapFrame });
                 if (Scanner.SeperateSave && (ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
                 {
-                    GeneratePdf(bitmapFrame, Format.Tiff).Save(GetSaveFolder().SetUniqueFile(Scanner.SaveFileName, "pdf"));
+                    PdfGeneration.GeneratePdf(bitmapFrame, Format.Tiff).Save(PdfGeneration.GetSaveFolder().SetUniqueFile(Scanner.SaveFileName, "pdf"));
                     OnPropertyChanged(nameof(Scanner.Tarandı));
                 }
 
                 if (Scanner.SeperateSave && ((ColourSetting)Settings.Default.Mode == ColourSetting.GreyScale || (ColourSetting)Settings.Default.Mode == ColourSetting.Colour))
                 {
-                    GeneratePdf(bitmapFrame, Format.Jpg).Save(GetSaveFolder().SetUniqueFile(Scanner.SaveFileName, "pdf"));
+                    PdfGeneration.GeneratePdf(bitmapFrame, Format.Jpg).Save(PdfGeneration.GetSaveFolder().SetUniqueFile(Scanner.SaveFileName, "pdf"));
                     OnPropertyChanged(nameof(Scanner.Tarandı));
                 }
 
@@ -1233,23 +1051,6 @@ namespace TwainControl
             {
                 Scanner.ArayüzEtkin = false;
             }
-        }
-
-        private RenderTargetBitmap ÜstüneResimÇiz(ImageSource Source, System.Windows.Point konum, System.Windows.Media.Brush brushes, double emSize = 64, string metin = null, double angle = 315, string font = "Arial")
-        {
-            FormattedText formattedText = new(metin, CultureInfo.GetCultureInfo("tr-TR"), FlowDirection.LeftToRight, new Typeface(font), emSize, brushes) { TextAlignment = TextAlignment.Center };
-            DrawingVisual dv = new();
-            using (DrawingContext dc = dv.RenderOpen())
-            {
-                dc.DrawImage(Source, new Rect(0, 0, ((BitmapSource)Source).Width, ((BitmapSource)Source).Height));
-                dc.PushTransform(new RotateTransform(angle, konum.X, konum.Y));
-                dc.DrawText(formattedText, new System.Windows.Point(konum.X, konum.Y - (formattedText.Height / 2)));
-            }
-
-            RenderTargetBitmap rtb = new((int)((BitmapSource)Source).Width, (int)((BitmapSource)Source).Height, 96, 96, PixelFormats.Default);
-            rtb.Render(dv);
-            rtb.Freeze();
-            return rtb;
         }
     }
 }

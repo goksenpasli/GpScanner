@@ -175,8 +175,7 @@
                     VirtualizingPanel.ScrollUnit="Item" VirtualizingPanel.VirtualizationMode="Standard">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="155,230" SpacingMode="BetweenItemsOnly"
-                                StretchItems="True" />
+                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="155,230" />
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
                     <ListBox.ItemContainerStyle>

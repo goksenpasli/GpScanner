@@ -136,7 +136,7 @@ namespace PdfViewer
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show(ex.Message);
+                        _ = MessageBox.Show(ex.Message);
                     }
                 }
             }, parameter => Source is not null);
@@ -379,6 +379,21 @@ namespace PdfViewer
             return null;
         }
 
+        public static BitmapImage ConvertToImg(byte[] stream, int page, int dpi)
+        {
+            return BitmapSourceFromByteArray(Pdf2Png.Convert(stream, page, dpi), false, dpi);
+        }
+
+        public static MemoryStream ConvertToImgStream(byte[] stream, int page, int dpi)
+        {
+            return new MemoryStream(Pdf2Png.Convert(stream, page, dpi));
+        }
+
+        public static int PdfPageCount(byte[] stream)
+        {
+            return Pdf2Png.ConvertAllPages(stream, 0).Count;
+        }
+
         public void Dispose()
         {
             Dispose(disposing: true);
@@ -463,7 +478,7 @@ namespace PdfViewer
                     }
                     else
                     {
-                        pdfViewer.ToplamSayfa = Pdf2Png.ConvertAllPages(pdfdata, 0).Count;
+                        pdfViewer.ToplamSayfa = PdfPageCount(pdfdata);
                         pdfViewer.Source = await Task.Run(() => BitmapSourceFromByteArray(Pdf2Png.Convert(pdfdata, sayfa, dpi)));
                         pdfViewer.TifNavigasyonButtonEtkin = pdfViewer.ToplamSayfa > 1 ? Visibility.Visible : Visibility.Collapsed;
                         pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
@@ -520,7 +535,7 @@ namespace PdfViewer
         {
             if (e.PropertyName is "Sayfa" && sender is PdfViewer pdfViewer && pdfViewer.PdfFileStream is not null)
             {
-                Source = BitmapSourceFromByteArray(Pdf2Png.Convert(pdfViewer.PdfFileStream, Sayfa, pdfViewer.Dpi));
+                Source = ConvertToImg(pdfViewer.PdfFileStream, Sayfa, pdfViewer.Dpi);
             }
         }
     }

@@ -505,7 +505,7 @@
                         </ListBox.ItemContainerStyle>
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" StretchItems="True" />
+                                <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" />
                             </ItemsPanelTemplate>
                         </ListBox.ItemsPanel>
                     </ListBox>
@@ -547,8 +547,8 @@
                                         </MultiBinding>
                                     </Image.Source>
                                 </Image>
-                                <TextBlock d:Text="0" FontSize="9" Foreground="Red"
-                                    Text="{Binding Scanner.SeçiliResimSayısı}" />
+                                <TextBlock d:Text="0" FontSize="10" Foreground="Red"
+                                    Text="{Binding Scanner.SeçiliResimSayısı}" FontWeight="Bold" />
                             </Canvas>
                             <TextBlock VerticalAlignment="Center" Text="{local:Loc SAVESELECTED}" />
                         </StackPanel>

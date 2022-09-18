@@ -66,6 +66,8 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BitmapMethods.cs" />
+    <Compile Include="PdfGeneration.cs" />
     <Compile Include="Properties\Resources.ar.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -171,10 +173,17 @@
       <Project>{22b9a127-5e74-4534-bfc4-a3349544c52c}</Project>
       <Name>Extensions</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\PdfViewer\PdfViewer.csproj">
+      <Project>{ea1285ba-203e-4d61-a869-7567966e5367}</Project>
+      <Name>PdfViewer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\TwainWpf\TwainWpf.csproj">
       <Project>{8304c254-e3d2-4553-b596-f028b8d9b740}</Project>
       <Name>TwainWpf</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Pdf.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

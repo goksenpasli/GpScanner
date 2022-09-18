@@ -59,7 +59,7 @@ namespace GpScanner.ViewModel
                 {
                     try
                     {
-                        TwainCtrl.MergePdf(Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName).ToArray()).Save(saveFileDialog.FileName);
+                        PdfGeneration.MergePdf(Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName).ToArray()).Save(saveFileDialog.FileName);
                     }
                     catch (Exception ex)
                     {
@@ -131,7 +131,7 @@ namespace GpScanner.ViewModel
                     };
                     if (saveFileDialog.ShowDialog() == true)
                     {
-                        TwainCtrl.DefaultPdfCompression(outputDocument);
+                        PdfGeneration.DefaultPdfCompression(outputDocument);
                         outputDocument.Save(saveFileDialog.FileName);
                     }
                 }
@@ -152,7 +152,7 @@ namespace GpScanner.ViewModel
                     using XImage xImage = XImage.FromStream(ms);
                     XSize size = PageSizeConverter.ToSize(PageSize.A4);
                     gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
-                    TwainCtrl.DefaultPdfCompression(document);
+                    PdfGeneration.DefaultPdfCompression(document);
 
                     XTextFormatter textformatter = new(gfx);
                     foreach (OcrData item in ScannedText)
