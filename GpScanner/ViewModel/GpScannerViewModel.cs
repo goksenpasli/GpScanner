@@ -479,7 +479,7 @@ namespace GpScanner.ViewModel
             return null;
         }
 
-        public async Task<ObservableCollection<TesseractOcrData>> Ocr(byte[] imgdata)
+        public async Task<ObservableCollection<OcrData>> Ocr(byte[] imgdata)
         {
             if (imgdata is not null)
             {
