@@ -1,23 +1,10 @@
-﻿using Extensions;
+﻿using System.Windows;
+using Extensions;
 
 namespace GpScanner.ViewModel
 {
     public class TesseractOcrData : InpcBase
     {
-        public string DisplayName
-        {
-            get => displayName;
-
-            set
-            {
-                if (displayName != value)
-                {
-                    displayName = value;
-                    OnPropertyChanged(nameof(DisplayName));
-                }
-            }
-        }
-
         public bool IsEnabled
         {
             get => ısEnabled;
@@ -28,6 +15,20 @@ namespace GpScanner.ViewModel
                 {
                     ısEnabled = value;
                     OnPropertyChanged(nameof(IsEnabled));
+                }
+            }
+        }
+
+        public Visibility IsVisible
+        {
+            get => ısVisible;
+
+            set
+            {
+                if (ısVisible != value)
+                {
+                    ısVisible = value;
+                    OnPropertyChanged(nameof(IsVisible));
                 }
             }
         }
@@ -59,9 +60,9 @@ namespace GpScanner.ViewModel
             }
         }
 
-        private string displayName;
-
         private bool ısEnabled = true;
+
+        private Visibility ısVisible = Visibility.Collapsed;
 
         private string ocrName;
 

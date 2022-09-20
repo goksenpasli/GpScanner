@@ -141,7 +141,7 @@ namespace TwainControl
                 using PdfDocument document = new();
                 PdfPage page = document.AddPage();
                 using XGraphics gfx = XGraphics.FromPdfPage(page);
-                using MemoryStream ms = new(bitmapframe.ToTiffJpegByteArray(Format.Png));
+                using MemoryStream ms = new(bitmapframe.ToTiffJpegByteArray(Format.Jpg));
                 using XImage xImage = XImage.FromStream(ms);
                 XSize size = PageSizeConverter.ToSize(PageSize.A4);
                 gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);

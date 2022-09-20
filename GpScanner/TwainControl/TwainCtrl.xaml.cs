@@ -265,7 +265,7 @@ namespace TwainControl
             {
                 SaveFileDialog saveFileDialog = new()
                 {
-                    Filter = "Pdf Dosyası(*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası(*.pdf)|*.pdf|Jpg Dosyası(*.jpg)|*.jpg|Png Dosyası(*.png)|*.png",
+                    Filter = "Pdf Dosyası (*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf|Jpg Dosyası (*.jpg)|*.jpg|Png Dosyası (*.png)|*.png",
                     FileName = Scanner.FileName
                 };
                 if (saveFileDialog.ShowDialog() == true)
@@ -328,7 +328,7 @@ namespace TwainControl
                 }
             }, parameter => true);
 
-            SetWatermark = new RelayCommand<object>(parameter => Scanner.CroppedImage = BitmapMethods.ÜstüneResimÇiz(Scanner.CroppedImage, new System.Windows.Point(Scanner.CroppedImage.Width / 2, Scanner.CroppedImage.Height / 2), System.Windows.Media.Brushes.Red, Scanner.WatermarkTextSize, Scanner.Watermark, Scanner.WatermarkAngle, Scanner.WatermarkFont), parameter => Scanner.CroppedImage is not null && !string.IsNullOrWhiteSpace(Scanner?.Watermark));
+            SetWatermark = new RelayCommand<object>(parameter => Scanner.CroppedImage = Scanner.CroppedImage.ÜstüneResimÇiz(new System.Windows.Point(Scanner.CroppedImage.Width / 2, Scanner.CroppedImage.Height / 2), System.Windows.Media.Brushes.Red, Scanner.WatermarkTextSize, Scanner.Watermark, Scanner.WatermarkAngle, Scanner.WatermarkFont), parameter => Scanner.CroppedImage is not null && !string.IsNullOrWhiteSpace(Scanner?.Watermark));
 
             ApplyColorChange = new RelayCommand<object>(parameter => Scanner.CopyCroppedImage = Scanner.CroppedImage, parameter => Scanner.CroppedImage is not null);
 
@@ -336,12 +336,12 @@ namespace TwainControl
             {
                 Deskew sk = new((BitmapSource)Scanner.CroppedImage);
                 double skewAngle = -1 * sk.GetSkewAngle(true);
-                Scanner.CroppedImage = BitmapMethods.RotateImage(Scanner.CroppedImage, skewAngle);
+                Scanner.CroppedImage = Scanner.CroppedImage.RotateImage(skewAngle);
             }, parameter => Scanner.CroppedImage is not null);
 
             OcrPage = new RelayCommand<object>(parameter =>
             {
-                ImgData = Scanner.CroppedImage.ToTiffJpegByteArray(Format.Png);
+                ImgData = Scanner.CroppedImage.ToTiffJpegByteArray(Format.Jpg);
                 OnPropertyChanged(nameof(ImgData));
             }, parameter => Scanner.CroppedImage is not null);
 
@@ -349,7 +349,7 @@ namespace TwainControl
             {
                 OpenFileDialog openFileDialog = new()
                 {
-                    Filter = "Pdf Dosyası(*.pdf)|*.pdf",
+                    Filter = "Pdf Dosyası (*.pdf)|*.pdf",
                     Multiselect = true
                 };
                 if (openFileDialog.ShowDialog() == true)
@@ -965,8 +965,8 @@ namespace TwainControl
             {
                 System.Windows.Media.Color source = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(SourceColor);
                 System.Windows.Media.Color target = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(TargetColor);
-                using Bitmap bmp = BitmapMethods.BitmapSourceToBitmap((BitmapSource)Scanner.CopyCroppedImage);
-                Scanner.CroppedImage = BitmapMethods.ReplaceColor(bmp, source, target, (int)Scanner.Threshold).ToBitmapImage(ImageFormat.Png);
+                using Bitmap bmp = ((BitmapSource)Scanner.CopyCroppedImage).BitmapSourceToBitmap();
+                Scanner.CroppedImage = bmp.ReplaceColor(source, target, (int)Scanner.Threshold).ToBitmapImage(ImageFormat.Png);
             }
             if (e.PropertyName is "CroppedImageAngle" && Scanner.CroppedImageAngle != 0)
             {

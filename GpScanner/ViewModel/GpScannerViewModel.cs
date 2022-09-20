@@ -15,7 +15,6 @@ using System.Windows.Threading;
 using Extensions;
 using GpScanner.Properties;
 using Microsoft.Win32;
-using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
 using TwainControl;
@@ -74,7 +73,7 @@ namespace GpScanner.ViewModel
             {
                 if (parameter is TwainCtrl twainCtrl)
                 {
-                    byte[] imgdata = twainCtrl.SeçiliResim.Resim.ToTiffJpegByteArray(Format.Png);
+                    byte[] imgdata = twainCtrl.SeçiliResim.Resim.ToTiffJpegByteArray(Format.Jpg);
                     _ = Ocr(imgdata);
                 }
             }, parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && parameter is TwainCtrl twainCtrl && twainCtrl.SeçiliResim is not null);
@@ -110,6 +109,7 @@ namespace GpScanner.ViewModel
                     BitmapSource thumbnail = ((BitmapSource)data[0]).Resize(84, 117);
                     ScannedImage scannedImage = new() { Seçili = true, Resim = BitmapFrame.Create((BitmapSource)data[0], thumbnail) };
                     (data[1] as TwainCtrl)?.Scanner?.Resimler.Add(scannedImage);
+                    (data[2] as Scanner).Seçili = true;
                 }
             }, parameter => true);
 
@@ -154,7 +154,6 @@ namespace GpScanner.ViewModel
 
             Settings.Default.PropertyChanged += Default_PropertyChanged;
             PropertyChanged += GpScannerViewModel_PropertyChanged;
-            TranslateViewModel.PropertyChanged += TranslateViewModel_PropertyChanged;
             OnPropertyChanged(nameof(SeçiliDil));
         }
 
@@ -260,16 +259,16 @@ namespace GpScanner.ViewModel
             }
         }
 
-        public bool IsBusy
+        public bool OcrIsBusy
         {
-            get => ısBusy;
+            get => ocrısBusy;
 
             set
             {
-                if (ısBusy != value)
+                if (ocrısBusy != value)
                 {
-                    ısBusy = value;
-                    OnPropertyChanged(nameof(IsBusy));
+                    ocrısBusy = value;
+                    OnPropertyChanged(nameof(OcrIsBusy));
                 }
             }
         }
@@ -311,7 +310,7 @@ namespace GpScanner.ViewModel
             }
         }
 
-        public ObservableCollection<TwainControl.OcrData> ScannedText
+        public ObservableCollection<OcrData> ScannedText
         {
             get => scannedText;
 
@@ -486,16 +485,12 @@ namespace GpScanner.ViewModel
                 _ = await Task.Run(() =>
                 {
                     ScannedText = null;
-                    IsBusy = true;
+                    OcrIsBusy = true;
                     ScannedText = imgdata.OcrYap(Settings.Default.DefaultTtsLang);
                     if (ScannedText != null)
                     {
-                        IsBusy = false;
+                        OcrIsBusy = false;
                         TranslateViewModel.Metin = string.Join(" ", ScannedText.Select(z => z.Text));
-                        if (!string.IsNullOrWhiteSpace(TranslateViewModel.Metin))
-                        {
-                            ScannedTextWindowOpen = true;
-                        }
                     }
                     imgdata = null;
                     return ScannedText;
@@ -520,7 +515,7 @@ namespace GpScanner.ViewModel
 
         private double fold = 0.3;
 
-        private bool ısBusy;
+        private bool ocrısBusy;
 
         private int sayfaBaşlangıç = 1;
 
@@ -570,11 +565,11 @@ namespace GpScanner.ViewModel
                 };
             }
 
-            if (e.PropertyName is "AddOcrToDataBase" && SelectedDocument?.Seçili == true)
+            if (e.PropertyName is "OcrIsBusy" && AddOcrToDataBase && SelectedDocument is not null)
             {
                 ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = SelectedDocument?.FileName, FileContent = TranslateViewModel?.Metin });
                 DatabaseSave.Execute(null);
-                SelectedDocument.Seçili = false;
+                Application.Current?.Dispatcher.Invoke(() => TümününİşaretiniKaldır.Execute(null));
             }
 
             if (e.PropertyName is "SeçiliDil")
@@ -625,14 +620,6 @@ namespace GpScanner.ViewModel
         {
             Random rand = new(Guid.NewGuid().GetHashCode());
             return new SolidColorBrush(Color.FromRgb((byte)rand.Next(0, 256), (byte)rand.Next(0, 256), (byte)rand.Next(0, 256)));
-        }
-
-        private void TranslateViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName is "Metin")
-            {
-                OnPropertyChanged(nameof(AddOcrToDataBase));
-            }
         }
     }
 }

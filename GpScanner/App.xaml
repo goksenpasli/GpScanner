@@ -151,6 +151,7 @@
                                 <MultiBinding Converter="{StaticResource CloneConverter}">
                                     <Binding ElementName="PdfVwr" Mode="OneWay" Path="Source" />
                                     <Binding ElementName="TwainCtrl" Mode="OneWay" Path="DataContext" />
+                                    <Binding Path="DataContext" RelativeSource="{RelativeSource AncestorType=GroupBox}" />
                                 </MultiBinding>
                             </Button.CommandParameter>
                         </Button>

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
-using System.Web.Script.Serialization;
 using System.Windows.Input;
 using Extensions;
 
@@ -56,7 +51,7 @@ namespace GpScanner.ViewModel
             {
                 if (!string.IsNullOrEmpty(metin))
                 {
-                    _ = Task.Factory.StartNew(() => Çeviri =Extensions.TranslateViewModel.DileÇevir(metin, MevcutDil, ÇevrilenDil), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default);
+                    _ = Task.Factory.StartNew(() => Çeviri = Extensions.TranslateViewModel.DileÇevir(metin, MevcutDil, ÇevrilenDil), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default);
                 }
                 return metin;
             }
@@ -96,6 +91,5 @@ namespace GpScanner.ViewModel
         private string metin;
 
         private string mevcutDil = "auto";
-
     }
 }

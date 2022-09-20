@@ -1,14 +1,21 @@
-﻿<UserControl x:Class="GpScanner.TesseractView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:GpScanner" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:properties="clr-namespace:GpScanner.Properties" xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
+﻿<UserControl x:Class="GpScanner.TesseractView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:GpScanner"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:properties="clr-namespace:GpScanner.Properties"
+    xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
     xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
     xmlns:viewmodel="clr-namespace:GpScanner.ViewModel"
     d:DataContext="{d:DesignInstance Type=viewmodel:TesseractViewModel}"
     d:DesignHeight="350" d:DesignWidth="500"
     twainctrl:Translation.ResourceManager="{x:Static twainproperties:Resources.ResourceManager}"
-    UseLayoutRounding="True" mc:Ignorable="d">
-    <GroupBox Header="TESSERACT">
+    UseLayoutRounding="True"
+    mc:Ignorable="d">
+    <GroupBox>
+        <GroupBox.Header>
+            <CheckBox Content="TESSERACT" IsChecked="{Binding ShowAllLanguages}" />
+        </GroupBox.Header>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition />
@@ -19,17 +26,25 @@
                 <ColumnDefinition Width="248*" />
             </Grid.ColumnDefinitions>
             <ItemsControl d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding OcrDatas}">
+                <ItemsControl.Template>
+                    <ControlTemplate>
+                        <ScrollViewer Padding="{TemplateBinding Padding}" VerticalScrollBarVisibility="Auto">
+                            <ItemsPresenter />
+                        </ScrollViewer>
+                    </ControlTemplate>
+                </ItemsControl.Template>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Button HorizontalContentAlignment="Stretch"
                             Command="{Binding DataContext.TesseractDownload, RelativeSource={RelativeSource AncestorType=UserControl}}"
                             CommandParameter="{Binding Mode=OneWay}"
-                            IsEnabled="{Binding IsEnabled}">
+                            IsEnabled="{Binding IsEnabled}"
+                            Visibility="{Binding IsVisible}">
                             <Button.Content>
                                 <Grid>
                                     <ProgressBar Maximum="100" Minimum="0"
                                         Value="{Binding ProgressValue}" />
-                                    <TextBlock HorizontalAlignment="Center" Text="{Binding DisplayName}" />
+                                    <TextBlock HorizontalAlignment="Center" Text="{Binding OcrName}" />
                                 </Grid>
                             </Button.Content>
                         </Button>

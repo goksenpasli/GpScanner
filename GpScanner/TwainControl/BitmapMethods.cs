@@ -15,7 +15,7 @@ namespace TwainControl
 {
     public static class BitmapMethods
     {
-        public static Bitmap BitmapSourceToBitmap(BitmapSource bitmapsource)
+        public static Bitmap BitmapSourceToBitmap(this BitmapSource bitmapsource)
         {
             FormatConvertedBitmap src = new();
             src.BeginInit();
@@ -49,7 +49,7 @@ namespace TwainControl
             }
         }
 
-        public static unsafe Bitmap ReplaceColor(Bitmap source, System.Windows.Media.Color toReplace, System.Windows.Media.Color replacement, int threshold)
+        public static unsafe Bitmap ReplaceColor(this Bitmap source, System.Windows.Media.Color toReplace, System.Windows.Media.Color replacement, int threshold)
         {
             const int pixelSize = 4; // 32 bits per pixel
 
@@ -105,7 +105,7 @@ namespace TwainControl
             return target;
         }
 
-        public static RenderTargetBitmap RotateImage(ImageSource Source, double angle)
+        public static RenderTargetBitmap RotateImage(this ImageSource Source, double angle)
         {
             DrawingVisual dv = new();
             using (DrawingContext dc = dv.RenderOpen())
@@ -119,7 +119,7 @@ namespace TwainControl
             return rtb;
         }
 
-        public static RenderTargetBitmap ÜstüneResimÇiz(ImageSource Source, System.Windows.Point konum, System.Windows.Media.Brush brushes, double emSize = 64, string metin = null, double angle = 315, string font = "Arial")
+        public static RenderTargetBitmap ÜstüneResimÇiz(this ImageSource Source, System.Windows.Point konum, System.Windows.Media.Brush brushes, double emSize = 64, string metin = null, double angle = 315, string font = "Arial")
         {
             FormattedText formattedText = new(metin, CultureInfo.GetCultureInfo("tr-TR"), FlowDirection.LeftToRight, new Typeface(font), emSize, brushes) { TextAlignment = TextAlignment.Center };
             DrawingVisual dv = new();
