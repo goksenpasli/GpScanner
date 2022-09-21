@@ -428,4 +428,10 @@ EKLE</value>
   <data name="OCRPDFSAVE" xml:space="preserve">
     <value>OCR PDF SAKLA</value>
   </data>
+  <data name="ADDOCRTODB" xml:space="preserve">
+    <value>OCR VERİSİNİ KAYDET</value>
+  </data>
+  <data name="ADDOCRTOOLTIP" xml:space="preserve">
+    <value>Bu İşaretliyse Aşağıda İşaretli Evraka Soldaki Aktif Evrakın İçerdiği Metin İçerik Olarak Veritabanına Kaydedilir.</value>
+  </data>
 </root>

@@ -120,6 +120,12 @@
   <data name="ABOUT" xml:space="preserve">
     <value>DI</value>
   </data>
+  <data name="ADDOCRTODB" xml:space="preserve">
+    <value>SALVA DATI OCR</value>
+  </data>
+  <data name="ADDOCRTOOLTIP" xml:space="preserve">
+    <value>Se questa opzione è selezionata, il documento contrassegnato di seguito viene salvato nel database come testo del documento attivo a sinistra.</value>
+  </data>
   <data name="ADF" xml:space="preserve">
     <value>DOCUMENTO
 ALIMENTATORE</value>

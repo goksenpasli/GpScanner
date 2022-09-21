@@ -423,4 +423,10 @@ DEVICE</value>
   <data name="OCRPDFSAVE" xml:space="preserve">
     <value>SAVE OCR PDF</value>
   </data>
+  <data name="ADDOCRTODB" xml:space="preserve">
+    <value>ADD OCR TO DATABASE</value>
+  </data>
+  <data name="ADDOCRTOOLTIP" xml:space="preserve">
+    <value>If this is checked, the document marked below is saved in the database as the text of the active document on the left.</value>
+  </data>
 </root>

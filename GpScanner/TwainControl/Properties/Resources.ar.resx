@@ -120,6 +120,12 @@
   <data name="ABOUT" xml:space="preserve">
     <value>حول</value>
   </data>
+  <data name="ADDOCRTODB" xml:space="preserve">
+    <value>احفظ بيانات التعرف الضوئي على الحروف</value>
+  </data>
+  <data name="ADDOCRTOOLTIP" xml:space="preserve">
+    <value>إذا تم تحديد هذا الخيار ، فسيتم حفظ المستند المحدد أدناه في قاعدة البيانات كنص المستند النشط على اليسار.</value>
+  </data>
   <data name="ADF" xml:space="preserve">
     <value>وثيقة
 التغذية</value>

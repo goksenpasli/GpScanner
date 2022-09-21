@@ -120,6 +120,12 @@
   <data name="ABOUT" xml:space="preserve">
     <value>SUR</value>
   </data>
+  <data name="ADDOCRTODB" xml:space="preserve">
+    <value>ENREGISTRER LES DONNÉES OCR</value>
+  </data>
+  <data name="ADDOCRTOOLTIP" xml:space="preserve">
+    <value>Si cette case est cochée, le document marqué ci-dessous est enregistré dans la base de données en tant que texte du document actif à gauche.</value>
+  </data>
   <data name="ADF" xml:space="preserve">
     <value>DOCUMENT
 ALIMENTATEUR</value>

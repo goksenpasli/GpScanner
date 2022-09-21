@@ -48,11 +48,11 @@ namespace TwainControl
                 twain.StartScanning(_settings);
 
                 twain.ScanningComplete += Fastscan;
-            }, parameter => !Environment.Is64BitProcess && Scanner.AutoSave && !Scanner.SeperateSave && Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0 && Scanner?.Tarayıcılar?.Count > 0);
+            }, parameter => !Environment.Is64BitProcess && Scanner.AutoSave && !Scanner.SeperateSave && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0 && Scanner?.Tarayıcılar?.Count > 0);
 
             ResimSil = new RelayCommand<object>(parameter =>
             {
-                _ = (Scanner.Resimler?.Remove(parameter as ScannedImage));
+                _ = Scanner.Resimler?.Remove(parameter as ScannedImage);
                 ResetCropMargin();
                 GC.Collect();
             }, parameter => true);

@@ -143,12 +143,16 @@ namespace GpScanner.ViewModel
                     {
                         Filter = "Pdf Dosyası(*.pdf)|*.pdf",
                     };
+                    if (ScannedText?.Any() == false)
+                    {
+                        _ = MessageBox.Show("Metin İçeriği Yok. Evrak Ocrsız Kaydedilecek.");
+                    }
                     if (saveFileDialog.ShowDialog() == true)
                     {
                         PdfGeneration.GeneratePdf(twainCtrl.SeçiliResim.Resim, ScannedText).Save(saveFileDialog.FileName);
                     }
                 }
-            }, parameter => parameter is TwainCtrl twainCtrl && twainCtrl.SeçiliResim?.Resim is not null && ScannedText is not null);
+            }, parameter => parameter is TwainCtrl twainCtrl && twainCtrl.SeçiliResim?.Resim is not null);
 
             DatabaseSave = new RelayCommand<object>(parameter => ScannerData.Serialize());
 
@@ -484,13 +488,14 @@ namespace GpScanner.ViewModel
             {
                 _ = await Task.Run(() =>
                 {
-                    ScannedText = null;
                     OcrIsBusy = true;
+                    ScannedTextWindowOpen = false;
                     ScannedText = imgdata.OcrYap(Settings.Default.DefaultTtsLang);
                     if (ScannedText != null)
                     {
-                        OcrIsBusy = false;
                         TranslateViewModel.Metin = string.Join(" ", ScannedText.Select(z => z.Text));
+                        OcrIsBusy = false;
+                        ScannedTextWindowOpen = true;
                     }
                     imgdata = null;
                     return ScannedText;
@@ -565,7 +570,7 @@ namespace GpScanner.ViewModel
                 };
             }
 
-            if (e.PropertyName is "OcrIsBusy" && AddOcrToDataBase && SelectedDocument is not null)
+            if (e.PropertyName is "OcrIsBusy" && !OcrIsBusy && AddOcrToDataBase && SelectedDocument is not null)
             {
                 ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = SelectedDocument?.FileName, FileContent = TranslateViewModel?.Metin });
                 DatabaseSave.Execute(null);
