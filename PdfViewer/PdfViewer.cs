@@ -30,7 +30,7 @@ namespace PdfViewer
 
         public static readonly DependencyProperty DpiProperty = DependencyProperty.Register("Dpi", typeof(int), typeof(PdfViewer), new PropertyMetadata(200, DpiChanged));
 
-        public static readonly DependencyProperty PdfFilePathProperty = DependencyProperty.Register("PdfFilePath", typeof(string), typeof(PdfViewer), new PropertyMetadata(null, PdfFilePathChanged));
+        public static readonly DependencyProperty PdfFilePathProperty = DependencyProperty.Register("PdfFilePath", typeof(string), typeof(PdfViewer), new PropertyMetadata(null, async (o, e) => await PdfFilePathChangedAsync(o, e)));
 
         public static readonly DependencyProperty PdfFileStreamProperty = DependencyProperty.Register("PdfFileStream", typeof(byte[]), typeof(PdfViewer), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.NotDataBindable, async (o, e) => await PdfStreamChangedAsync(o, e)));
 
@@ -447,13 +447,13 @@ namespace PdfViewer
             }
         }
 
-        private static void PdfFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static async Task PdfFilePathChangedAsync(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is PdfViewer pdfViewer && File.Exists(e.NewValue as string) && string.Equals(Path.GetExtension(e.NewValue as string), ".pdf", StringComparison.OrdinalIgnoreCase))
             {
                 if (e.NewValue is not null)
                 {
-                    pdfViewer.PdfFileStream = File.ReadAllBytes(e.NewValue as string);
+                    pdfViewer.PdfFileStream = await Task.Run(() => File.ReadAllBytes(e.NewValue as string));
                     pdfViewer.Sayfa = 1;
                 }
                 else

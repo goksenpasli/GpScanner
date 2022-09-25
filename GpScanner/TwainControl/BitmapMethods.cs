@@ -2,12 +2,14 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Extensions;
+using TwainControl.Properties;
 using static Extensions.ExtensionMethods;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
@@ -47,6 +49,47 @@ namespace TwainControl
             {
                 return null;
             }
+        }
+
+        public static BitmapFrame GenerateImageDocumentBitmapFrame(int decodeheight, Uri item)
+        {
+            BitmapImage image = new();
+            image.BeginInit();
+            image.DecodePixelHeight = decodeheight;
+            image.CacheOption = BitmapCacheOption.None;
+            image.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
+            image.UriSource = item;
+            image.EndInit();
+            image.Freeze();
+
+            BitmapImage thumbimage = new();
+            thumbimage.BeginInit();
+            thumbimage.DecodePixelHeight = 96;
+            thumbimage.CacheOption = BitmapCacheOption.None;
+            thumbimage.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
+            thumbimage.UriSource = item;
+            thumbimage.EndInit();
+            thumbimage.Freeze();
+
+            BitmapFrame bitmapFrame = BitmapFrame.Create(image, thumbimage);
+            bitmapFrame.Freeze();
+            return bitmapFrame;
+        }
+
+        public static BitmapFrame GenerateImageDocumentBitmapFrame(int decodeheight, MemoryStream ms)
+        {
+            BitmapImage image = new();
+            image.BeginInit();
+            image.DecodePixelHeight = decodeheight;
+            image.CacheOption = BitmapCacheOption.None;
+            image.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
+            image.StreamSource = ms;
+            image.EndInit();
+            image.Freeze();
+
+            BitmapFrame bitmapFrame = BitmapFrame.Create(image, image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 21 * 29.7));
+            bitmapFrame.Freeze();
+            return bitmapFrame;
         }
 
         public static unsafe Bitmap ReplaceColor(this Bitmap source, System.Windows.Media.Color toReplace, System.Windows.Media.Color replacement, int threshold)

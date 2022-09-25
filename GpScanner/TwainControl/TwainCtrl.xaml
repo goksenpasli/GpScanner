@@ -120,22 +120,60 @@
                                     <ListBoxItem HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center">
                                         <StackPanel>
                                             <TextBlock Text="{local:Loc BW}" />
-                                            <Image Width="48" Height="48"
-                                                Source="/TwainControl;component/bw.png" />
+                                            <Image Width="32" Height="32">
+                                                <Image.Effect>
+                                                    <Extensions:BlackWhiteEffect Threshold="0.95" />
+                                                </Image.Effect>
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Imageres.dll" />
+                                                        <Binding Source="14" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
                                         </StackPanel>
                                     </ListBoxItem>
                                     <ListBoxItem HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center">
                                         <StackPanel>
-                                            <TextBlock HorizontalAlignment="Center" Text="{local:Loc GRAY}" />
-                                            <Image Width="48" Height="48"
-                                                Source="/TwainControl;component/gray.png" />
+                                            <TextBlock HorizontalAlignment="Center"
+                                                Foreground="Gray"
+                                                Text="{local:Loc GRAY}" />
+                                            <Image Width="32" Height="32">
+                                                <Image.Effect>
+                                                    <Extensions:GrayScaleEffect />
+                                                </Image.Effect>
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Imageres.dll" />
+                                                        <Binding Source="14" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
                                         </StackPanel>
                                     </ListBoxItem>
                                     <ListBoxItem HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center">
                                         <StackPanel>
-                                            <TextBlock HorizontalAlignment="Center" Text="{local:Loc COLOR}" />
-                                            <Image Width="48" Height="48"
-                                                Source="/TwainControl;component/color.png" />
+                                            <TextBlock HorizontalAlignment="Center" Text="{local:Loc COLOR}">
+                                                <TextBlock.Foreground>
+                                                    <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                                        <GradientStop Offset="0.0" Color="Red" />
+                                                        <GradientStop Offset="0.17" Color="Orange" />
+                                                        <GradientStop Offset="0.33" Color="Yellow" />
+                                                        <GradientStop Offset="0.5" Color="Green" />
+                                                        <GradientStop Offset="0.67" Color="Blue" />
+                                                        <GradientStop Offset="0.83" Color="Indigo" />
+                                                        <GradientStop Offset="1.0" Color="Violet" />
+                                                    </LinearGradientBrush>
+                                                </TextBlock.Foreground>
+                                            </TextBlock>
+                                            <Image Width="32" Height="32">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Imageres.dll" />
+                                                        <Binding Source="14" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
                                         </StackPanel>
                                     </ListBoxItem>
                                 </ListBox>
@@ -512,20 +550,25 @@
                 </GroupBox>
                 <UniformGrid Grid.Row="3"
                     Columns="2" FirstColumn="1" Rows="3">
-                    <Extensions:SplitButton Command="{Binding LoadImage}" PlacementMode="Top">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Width="24" Height="24">
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Shell32.dll" />
-                                        <Binding Source="139" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
-                            <Image Width="24" Height="24"
-                                RenderOptions.BitmapScalingMode="NearestNeighbor" Source="/TwainControl;component/Pdf.png" />
-                            <TextBlock VerticalAlignment="Center" Text="{local:Loc FILE}" />
-                        </StackPanel>
+                    <Extensions:SplitButton HorizontalContentAlignment="Stretch"
+                        Command="{Binding LoadImage}"
+                        PlacementMode="Top">
+                        <Grid>
+                            <ProgressBar Maximum="1" Value="{Binding PdfLoadProgressValue}" />
+                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                <Image Width="24" Height="24">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="139" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                                <Image Width="24" Height="24"
+                                    Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
+                                <TextBlock VerticalAlignment="Center" Text="{local:Loc FILE}" />
+                            </StackPanel>
+                        </Grid>
                         <Extensions:SplitButton.InternalContent>
                             <GroupBox Header="{local:Loc RES}">
                                 <Slider Width="100"

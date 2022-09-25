@@ -160,15 +160,6 @@
     <Resource Include="adf.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="bw.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="color.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="gray.png" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\Extensions\Extensions.csproj">
       <Project>{22b9a127-5e74-4534-bfc4-a3349544c52c}</Project>
       <Name>Extensions</Name>
@@ -181,9 +172,6 @@
       <Project>{8304c254-e3d2-4553-b596-f028b8d9b740}</Project>
       <Name>TwainWpf</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Pdf.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

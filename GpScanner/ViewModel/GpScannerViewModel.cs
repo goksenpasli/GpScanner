@@ -78,6 +78,7 @@ namespace GpScanner.ViewModel
                 {
                     byte[] imgdata = twainCtrl.SeçiliResim.Resim.ToTiffJpegByteArray(Format.Jpg);
                     _ = Ocr(imgdata);
+                    imgdata = null;
                 }
             }, parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && parameter is TwainCtrl twainCtrl && twainCtrl.SeçiliResim is not null);
 

@@ -8,6 +8,8 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -366,6 +368,11 @@ namespace TwainControl
 
             LoadImage = new RelayCommand<object>(parameter =>
             {
+                if (pdfloadtask?.IsCompleted == false)
+                {
+                    _ = MessageBox.Show("Yükleme Devam Ediyor. Bitmesini Bekleyin.");
+                    return;
+                }
                 OpenFileDialog openFileDialog = new()
                 {
                     Filter = "Resim Dosyası (*.jpg;*.jpeg;*.png;*.gif;*.tif;*.tiff;*.bmp)|*.jpg;*.jpeg;*.png;*.gif;*.tif;*.tiff;*.bmp|Pdf Dosyası (*.pdf)|*.pdf",
@@ -381,28 +388,24 @@ namespace TwainControl
                         {
                             case ".pdf":
                                 {
-                                    byte[] filedata = File.ReadAllBytes(item);
-                                    for (int i = 1; i <= PdfViewer.PdfViewer.PdfPageCount(filedata); i++)
+                                    SynchronizationContext uiContext = SynchronizationContext.Current;
+                                    byte[] filedata = null;
+                                    pdfloadtask = Task.Run(() =>
                                     {
-                                        MemoryStream ms = PdfViewer.PdfViewer.ConvertToImgStream(filedata, i, (int)ImgLoadResolution);
-                                        BitmapImage image = new();
-                                        image.BeginInit();
-                                        image.DecodePixelHeight = decodeheight;
-                                        image.CacheOption = BitmapCacheOption.None;
-                                        image.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
-                                        image.StreamSource = ms;
-                                        image.EndInit();
-                                        image.Freeze();
-
-                                        Uri pdfthumbimageuri = new("pack://application:,,,/TwainControl;component/Pdf.png", UriKind.RelativeOrAbsolute);
-                                        BitmapFrame thumbpdf = BitmapFrame.Create(pdfthumbimageuri);
-                                        thumbpdf.Freeze();
-
-                                        BitmapFrame bitmapFrame = BitmapFrame.Create(image, thumbpdf);
-                                        bitmapFrame.Freeze();
-                                        Scanner?.Resimler.Add(new ScannedImage() { Seçili = true, Resim = bitmapFrame });
-                                    }
-
+                                        filedata = File.ReadAllBytes(item);
+                                        double totalpagecount = PdfViewer.PdfViewer.PdfPageCount(filedata);
+                                        for (int i = 1; i <= totalpagecount; i++)
+                                        {
+                                            MemoryStream ms = PdfViewer.PdfViewer.ConvertToImgStream(filedata, i, (int)ImgLoadResolution);
+                                            BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(decodeheight, ms);
+                                            uiContext.Send(_ =>
+                                            {
+                                                Scanner?.Resimler.Add(new ScannedImage() { Resim = bitmapFrame });
+                                                PdfLoadProgressValue = i / totalpagecount;
+                                            }, null);
+                                        }
+                                    });
+                                    filedata = null;
                                     break;
                                 }
 
@@ -414,7 +417,7 @@ namespace TwainControl
                             case ".tiff":
                             case ".bmp":
                                 {
-                                    BitmapFrame bitmapFrame = GenerateImageDocumentBitmapFrame(decodeheight, new Uri(item));
+                                    BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(decodeheight, new Uri(item));
                                     Scanner?.Resimler.Add(new ScannedImage() { Seçili = true, Resim = bitmapFrame });
                                     break;
                                 }
@@ -526,6 +529,20 @@ namespace TwainControl
         public ICommand OcrPage { get; }
 
         public ICommand PdfBirleştir { get; }
+
+        public double PdfLoadProgressValue
+        {
+            get => pdfLoadProgressValue;
+
+            set
+            {
+                if (pdfLoadProgressValue != value)
+                {
+                    pdfLoadProgressValue = value;
+                    OnPropertyChanged(nameof(PdfLoadProgressValue));
+                }
+            }
+        }
 
         public ICommand RemoveProfile { get; }
 
@@ -670,6 +687,10 @@ namespace TwainControl
 
         private bool isRightMouseDown;
 
+        private double pdfLoadProgressValue;
+
+        private Task pdfloadtask;
+
         private Scanner scanner;
 
         private ScannedImage seçiliResim;
@@ -687,31 +708,6 @@ namespace TwainControl
         private GridLength twainGuiControlLength = new(3, GridUnitType.Star);
 
         private double width;
-
-        private static BitmapFrame GenerateImageDocumentBitmapFrame(int decodeheight, Uri item)
-        {
-            BitmapImage image = new();
-            image.BeginInit();
-            image.DecodePixelHeight = decodeheight;
-            image.CacheOption = BitmapCacheOption.None;
-            image.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
-            image.UriSource = item;
-            image.EndInit();
-            image.Freeze();
-
-            BitmapImage thumbimage = new();
-            thumbimage.BeginInit();
-            thumbimage.DecodePixelHeight = 96;
-            thumbimage.CacheOption = BitmapCacheOption.None;
-            thumbimage.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
-            thumbimage.UriSource = item;
-            thumbimage.EndInit();
-            thumbimage.Freeze();
-
-            BitmapFrame bitmapFrame = BitmapFrame.Create(image, thumbimage);
-            bitmapFrame.Freeze();
-            return bitmapFrame;
-        }
 
         private void ButtonedTextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
