@@ -306,6 +306,9 @@
   <data name="PREVIEWSIZE" xml:space="preserve">
     <value>حجم معاينة الصورة</value>
   </data>
+  <data name="QRDETECT" xml:space="preserve">
+    <value>كشف QR</value>
+  </data>
   <data name="READACTIVEPAGE" xml:space="preserve">
     <value>الصفحة النشطة
 قرأ</value>
@@ -356,6 +359,9 @@
   <data name="SEPERATESCANTOOLTIP" xml:space="preserve">
     <value>يتم حفظ كل صفحة لفصل ملفات الملفات في المجلد المحدد أدناه.</value>
   </data>
+  <data name="SEPERATOR" xml:space="preserve">
+    <value>فاصل</value>
+  </data>
   <data name="SETTİNGS" xml:space="preserve">
     <value>الإعدادات</value>
   </data>
@@ -382,6 +388,9 @@
   </data>
   <data name="SRCCOLORTIP" xml:space="preserve">
     <value>انقر بزر الماوس الأيمن واختر اللون</value>
+  </data>
+  <data name="TAG" xml:space="preserve">
+    <value>بطاقة شعار</value>
   </data>
   <data name="TESSERACT" xml:space="preserve">
     <value>تسيراكت</value>

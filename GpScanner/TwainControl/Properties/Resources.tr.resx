@@ -434,4 +434,13 @@ EKLE</value>
   <data name="ADDOCRTOOLTIP" xml:space="preserve">
     <value>Bu İşaretliyse Aşağıda İşaretli Evraka Soldaki Aktif Evrakın İçerdiği Metin İçerik Olarak Veritabanına Kaydedilir.</value>
   </data>
+  <data name="QRDETECT" xml:space="preserve">
+    <value>QR ALGILA</value>
+  </data>
+  <data name="SEPERATOR" xml:space="preserve">
+    <value>AYRAÇ</value>
+  </data>
+  <data name="TAG" xml:space="preserve">
+    <value>ETİKET</value>
+  </data>
 </root>

@@ -154,12 +154,12 @@
                                 <CheckBox Grid.Column="1"
                                     Content="{local:Loc GUI}"
                                     IsChecked="{Binding Scanner.ShowUi}" />
-                                <CheckBox Grid.Row="1"
+                                <!--<CheckBox Grid.Row="1"
                                     Content="{local:Loc SEPERATESCAN}"
                                     IsChecked="{Binding Scanner.SeperateSave}"
                                     IsEnabled="{Binding Scanner.AutoSave}"
-                                    ToolTip="{local:Loc SEPERATESCANTOOLTIP}" />
-                                <CheckBox Grid.Row="1" Grid.Column="1"
+                                    ToolTip="{local:Loc SEPERATESCANTOOLTIP}" />-->
+                                <CheckBox Grid.Row="1" Grid.Column="0"
                                     Content="{local:Loc SHOWFILE}"
                                     IsChecked="{Binding ShowFile, Source={x:Static properties:Settings.Default}}" />
                             </Grid>
@@ -522,6 +522,8 @@
                                     </MultiBinding>
                                 </Image.Source>
                             </Image>
+                            <Image Width="24" Height="24"
+                                RenderOptions.BitmapScalingMode="NearestNeighbor" Source="/TwainControl;component/Pdf.png" />
                             <TextBlock VerticalAlignment="Center" Text="{local:Loc FILE}" />
                         </StackPanel>
                         <Extensions:SplitButton.InternalContent>
@@ -547,8 +549,9 @@
                                         </MultiBinding>
                                     </Image.Source>
                                 </Image>
-                                <TextBlock d:Text="0" FontSize="10" Foreground="Red"
-                                    Text="{Binding Scanner.SeçiliResimSayısı}" FontWeight="Bold" />
+                                <TextBlock d:Text="0" FontSize="10" FontWeight="Bold"
+                                    Foreground="Red"
+                                    Text="{Binding Scanner.SeçiliResimSayısı}" />
                             </Canvas>
                             <TextBlock VerticalAlignment="Center" Text="{local:Loc SAVESELECTED}" />
                         </StackPanel>

@@ -429,4 +429,13 @@ DEVICE</value>
   <data name="ADDOCRTOOLTIP" xml:space="preserve">
     <value>If this is checked, the document marked below is saved in the database as the text of the active document on the left.</value>
   </data>
+  <data name="QRDETECT" xml:space="preserve">
+    <value>DETECT QR</value>
+  </data>
+  <data name="SEPERATOR" xml:space="preserve">
+    <value>USE SEPERATOR</value>
+  </data>
+  <data name="TAG" xml:space="preserve">
+    <value>TAG</value>
+  </data>
 </root>

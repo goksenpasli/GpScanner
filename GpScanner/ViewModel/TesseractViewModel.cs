@@ -20,7 +20,23 @@ namespace GpScanner.ViewModel
 
             OcrDatas = TesseractDownloadData();
 
-            TesseractDataFilesDownloadLink = new RelayCommand<object>(parameter => _ = Process.Start(parameter as string), parameter => true);
+            TesseractDataFilesDownloadLink = new RelayCommand<object>(parameter =>
+            {
+                string path = parameter as string;
+                if (string.IsNullOrWhiteSpace(path))
+                {
+                    return;
+                }
+
+                try
+                {
+                    _ = Process.Start(path);
+                }
+                catch (Exception ex)
+                {
+                    _ = MessageBox.Show(ex.Message);
+                }
+            }, parameter => true);
 
             TesseractDownload = new RelayCommand<object>(async parameter =>
             {

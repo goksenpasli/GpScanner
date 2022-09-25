@@ -6,6 +6,7 @@
     xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=PresentationFramework"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:GpScanner"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:properties="clr-namespace:GpScanner.Properties"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
     xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
@@ -48,6 +49,7 @@
             Header="{twainctrl:Loc FILE}">
             <Grid>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -169,8 +171,41 @@
                         Content="{twainctrl:Loc ADDOCRTODB}"
                         IsChecked="{Binding AddOcrToDataBase}"
                         ToolTip="{twainctrl:Loc ADDOCRTOOLTIP}" />
+                    <CheckBox VerticalAlignment="Center"
+                        Content="{twainctrl:Loc QRDETECT}"
+                        IsChecked="{Binding DetectBarCode}" />
+                    <CheckBox VerticalAlignment="Center"
+                        Content="{twainctrl:Loc SEPERATOR}"
+                        IsChecked="{Binding DetectPageSeperator}"
+                        IsEnabled="{Binding DetectBarCode}" />
                 </UniformGrid>
-                <ListBox Grid.Row="4"
+                <UniformGrid Grid.Row="4"
+                    Columns="2"
+                    IsEnabled="{Binding DetectPageSeperator}"
+                    Rows="3">
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                        Text="{twainctrl:Loc FILENAME}" />
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                        Text="{twainctrl:Loc TAG}" />
+                    <TextBox Text="{Binding PatchFileName, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBox Text="{Binding PatchTag, UpdateSourceTrigger=PropertyChanged}" />
+                    <ComboBox ItemsSource="{Binding PatchCodes, Source={x:Static properties:Settings.Default}}" SelectedItem="{Binding PatchProfileName}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <UniformGrid Columns="2">
+                                    <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay}" />
+                                    <Button Background="Transparent" BorderBrush="Transparent"
+                                        Command="{Binding DataContext.RemovePatchProfile, RelativeSource={RelativeSource AncestorType=ComboBox}}"
+                                        CommandParameter="{Binding Mode=OneWay}"
+                                        Content="{twainctrl:Loc DELETE}"
+                                        FontWeight="Bold" Foreground="Red" />
+                                </UniformGrid>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Button Command="{Binding SavePatchProfile}" Content="{twainctrl:Loc SAVEPROFILE}" />
+                </UniformGrid>
+                <ListBox Grid.Row="5"
                     Background="{StaticResource BorderBackground}"
                     IsSynchronizedWithCurrentItem="False"
                     ItemsSource="{Binding Mode=OneWay, Source={StaticResource Veriler}}"
@@ -260,7 +295,7 @@
                         </Style>
                     </ListBox.ItemContainerStyle>
                 </ListBox>
-                <UniformGrid Grid.Row="5"
+                <UniformGrid Grid.Row="6"
                     Columns="3" Rows="2">
                     <Button Command="{Binding PdfBirleştir}">
                         <StackPanel Orientation="Horizontal">
@@ -314,7 +349,22 @@
                             <Extensions:ResizablePanel Width="420" Height="594" MinWidth="420"
                                 MinHeight="594">
                                 <GroupBox>
-                                    <local:TranslateView />
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock>
+                                            <Hyperlink Command="{Binding TesseractViewModel.TesseractDataFilesDownloadLink, Mode=OneWay}" CommandParameter="{Binding BarcodeContent}">
+                                                <Run Text="QRCODE" />
+                                            </Hyperlink>
+                                        </TextBlock>
+                                        <TextBox Grid.Row="1"
+                                            IsReadOnly="True"
+                                            Text="{Binding BarcodeContent, Mode=OneWay}" />
+                                        <local:TranslateView Grid.Row="2" />
+                                    </Grid>
                                 </GroupBox>
                             </Extensions:ResizablePanel>
                         </Extensions:SplitButton.InternalContent>

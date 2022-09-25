@@ -48,7 +48,7 @@ namespace TwainControl
                 twain.StartScanning(_settings);
 
                 twain.ScanningComplete += Fastscan;
-            }, parameter => !Environment.Is64BitProcess && Scanner.AutoSave && !Scanner.SeperateSave && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0 && Scanner?.Tarayıcılar?.Count > 0);
+            }, parameter => !Environment.Is64BitProcess && Scanner.AutoSave && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0 && Scanner?.Tarayıcılar?.Count > 0);
 
             ResimSil = new RelayCommand<object>(parameter =>
             {
@@ -168,7 +168,7 @@ namespace TwainControl
             {
                 SaveFileDialog saveFileDialog = new()
                 {
-                    Filter = "Pdf Dosyası(*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası(*.pdf)|*.pdf|Zip Dosyası(*.zip)|*.zip",
+                    Filter = "Pdf Dosyası (*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf|Zip Dosyası (*.zip)|*.zip",
                     FileName = Scanner.SaveFileName
                 };
                 if (saveFileDialog.ShowDialog() == true)
@@ -188,10 +188,6 @@ namespace TwainControl
                         using ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Create);
                         _ = archive.CreateEntryFromFile(dosyayolu, $"{Scanner.SaveFileName}.pdf", CompressionLevel.Optimal);
                         File.Delete(dosyayolu);
-                    }
-                    if (Path.GetDirectoryName(saveFileDialog.FileName).Contains(Settings.Default.AutoFolder))
-                    {
-                        OnPropertyChanged(nameof(Scanner.Tarandı));
                     }
                 }
             }, parameter =>
@@ -226,7 +222,7 @@ namespace TwainControl
                     .Append("|")
                     .Append(Scanner.ShowUi)
                     .Append("|")
-                    .Append(Scanner.SeperateSave)
+                    .Append(false)//Scanner.SeperateSave
                     .Append("|")
                     .Append(Settings.Default.ShowFile)
                     .Append("|")
@@ -318,9 +314,15 @@ namespace TwainControl
 
             WebAdreseGit = new RelayCommand<object>(parameter =>
             {
+                string path = parameter as string;
+                if (string.IsNullOrWhiteSpace(path))
+                {
+                    return;
+                }
+
                 try
                 {
-                    _ = Process.Start(parameter as string);
+                    _ = Process.Start(path);
                 }
                 catch (Exception ex)
                 {
@@ -412,26 +414,7 @@ namespace TwainControl
                             case ".tiff":
                             case ".bmp":
                                 {
-                                    BitmapImage image = new();
-                                    image.BeginInit();
-                                    image.DecodePixelHeight = decodeheight;
-                                    image.CacheOption = BitmapCacheOption.None;
-                                    image.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
-                                    image.UriSource = new Uri(item);
-                                    image.EndInit();
-                                    image.Freeze();
-
-                                    BitmapImage thumbimage = new();
-                                    thumbimage.BeginInit();
-                                    thumbimage.DecodePixelHeight = 96;
-                                    thumbimage.CacheOption = BitmapCacheOption.None;
-                                    thumbimage.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
-                                    thumbimage.UriSource = new Uri(item);
-                                    thumbimage.EndInit();
-                                    thumbimage.Freeze();
-
-                                    BitmapFrame bitmapFrame = BitmapFrame.Create(image, thumbimage);
-                                    bitmapFrame.Freeze();
+                                    BitmapFrame bitmapFrame = GenerateImageDocumentBitmapFrame(decodeheight, new Uri(item));
                                     Scanner?.Resimler.Add(new ScannedImage() { Seçili = true, Resim = bitmapFrame });
                                     break;
                                 }
@@ -705,6 +688,31 @@ namespace TwainControl
 
         private double width;
 
+        private static BitmapFrame GenerateImageDocumentBitmapFrame(int decodeheight, Uri item)
+        {
+            BitmapImage image = new();
+            image.BeginInit();
+            image.DecodePixelHeight = decodeheight;
+            image.CacheOption = BitmapCacheOption.None;
+            image.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
+            image.UriSource = item;
+            image.EndInit();
+            image.Freeze();
+
+            BitmapImage thumbimage = new();
+            thumbimage.BeginInit();
+            thumbimage.DecodePixelHeight = 96;
+            thumbimage.CacheOption = BitmapCacheOption.None;
+            thumbimage.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
+            thumbimage.UriSource = item;
+            thumbimage.EndInit();
+            thumbimage.Freeze();
+
+            BitmapFrame bitmapFrame = BitmapFrame.Create(image, thumbimage);
+            bitmapFrame.Freeze();
+            return bitmapFrame;
+        }
+
         private void ButtonedTextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             Scanner.CaretPosition = (sender as ButtonedTextBox)?.CaretIndex ?? 0;
@@ -749,6 +757,7 @@ namespace TwainControl
 
         private void Fastscan(object sender, ScanningCompleteEventArgs e)
         {
+            OnPropertyChanged(nameof(Scanner.DetectPageSeperator));
             string pdffilepath = PdfGeneration.GetPdfScanPath();
 
             if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
@@ -759,10 +768,13 @@ namespace TwainControl
             {
                 PdfGeneration.GeneratePdf(Scanner.Resimler, Format.Jpg).Save(pdffilepath);
             }
+            OnPropertyChanged(nameof(Scanner.Resimler));
+
             if (Settings.Default.ShowFile)
             {
                 ExploreFile.Execute(pdffilepath);
             }
+            twain.ScanningComplete -= Fastscan;
             switch (Scanner.ShutDownMode)
             {
                 case 1:
@@ -773,8 +785,6 @@ namespace TwainControl
                     Shutdown.DoExitWin(Shutdown.EWX_REBOOT);
                     break;
             }
-            twain.ScanningComplete -= Fastscan;
-            OnPropertyChanged(nameof(Scanner.Tarandı));
         }
 
         private void GridSplitter_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -954,7 +964,6 @@ namespace TwainControl
                 Settings.Default.Mode = int.Parse(selectedprofile[3]);
                 Scanner.Duplex = bool.Parse(selectedprofile[4]);
                 Scanner.ShowUi = bool.Parse(selectedprofile[5]);
-                Scanner.SeperateSave = bool.Parse(selectedprofile[6]);
                 Settings.Default.ShowFile = bool.Parse(selectedprofile[7]);
                 Settings.Default.DateGroupFolder = true;
                 Scanner.FileName = selectedprofile[9];
@@ -993,19 +1002,7 @@ namespace TwainControl
                 önizleme.Freeze();
                 BitmapFrame bitmapFrame = BitmapFrame.Create(evrak, önizleme);
                 bitmapFrame.Freeze();
-                Scanner.Resimler.Add(new ScannedImage() { Resim = bitmapFrame });
-                if (Scanner.SeperateSave && (ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
-                {
-                    PdfGeneration.GeneratePdf(bitmapFrame, Format.Tiff).Save(PdfGeneration.GetSaveFolder().SetUniqueFile(Scanner.SaveFileName, "pdf"));
-                    OnPropertyChanged(nameof(Scanner.Tarandı));
-                }
-
-                if (Scanner.SeperateSave && ((ColourSetting)Settings.Default.Mode == ColourSetting.GreyScale || (ColourSetting)Settings.Default.Mode == ColourSetting.Colour))
-                {
-                    PdfGeneration.GeneratePdf(bitmapFrame, Format.Jpg).Save(PdfGeneration.GetSaveFolder().SetUniqueFile(Scanner.SaveFileName, "pdf"));
-                    OnPropertyChanged(nameof(Scanner.Tarandı));
-                }
-
+                Scanner?.Resimler?.Add(new ScannedImage() { Resim = bitmapFrame });
                 evrak = null;
                 bitmapFrame = null;
                 önizleme = null;

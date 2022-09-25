@@ -306,6 +306,9 @@ ANTEPRIMA</value>
   <data name="PREVIEWSIZE" xml:space="preserve">
     <value>DIMENSIONE ANTEPRIMA IMMAGINE</value>
   </data>
+  <data name="QRDETECT" xml:space="preserve">
+    <value>RILEVAMENTO QR</value>
+  </data>
   <data name="READACTIVEPAGE" xml:space="preserve">
     <value>PAGINA ATTIVA
 LEGGERE</value>
@@ -356,6 +359,9 @@ INSERISCI</value>
   <data name="SEPERATESCANTOOLTIP" xml:space="preserve">
     <value>Salva ogni pagina in un file separato I file vengono salvati nella cartella specificata di seguito.</value>
   </data>
+  <data name="SEPERATOR" xml:space="preserve">
+    <value>SEPERATORE</value>
+  </data>
   <data name="SETTİNGS" xml:space="preserve">
     <value>IMPOSTAZIONI</value>
   </data>
@@ -382,6 +388,9 @@ INSERISCI</value>
   </data>
   <data name="SRCCOLORTIP" xml:space="preserve">
     <value>Fare clic con il tasto destro e scegliere colore</value>
+  </data>
+  <data name="TAG" xml:space="preserve">
+    <value>ETICHETTA</value>
   </data>
   <data name="TESSERACT" xml:space="preserve">
     <value>TESSERATTO</value>

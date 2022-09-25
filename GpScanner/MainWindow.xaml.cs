@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
@@ -42,17 +43,29 @@ namespace GpScanner
 
         private void TwainCtrl_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName is "Tarandı")
+            GpScannerViewModel ViewModel = DataContext as GpScannerViewModel;
+            if (e.PropertyName is "Resimler")
             {
-                GpScannerViewModel gpScannerViewModel = DataContext as GpScannerViewModel;
-                gpScannerViewModel.Dosyalar = gpScannerViewModel.GetScannerFileData();
-                gpScannerViewModel.ChartData = gpScannerViewModel.GetChartsData();
+                ViewModel.Dosyalar = ViewModel.GetScannerFileData();
+                ViewModel.ChartData = ViewModel.GetChartsData();
             }
 
-            if (e.PropertyName is "ImgData")
+            if (e.PropertyName is "DetectPageSeperator")
             {
-                GpScannerViewModel gpScannerViewModel = DataContext as GpScannerViewModel;
-                _ = gpScannerViewModel.Ocr(TwainCtrl.ImgData);
+                if (ViewModel.DetectBarCode)
+                {
+                    ViewModel.BarcodeContent = ViewModel.GetImageBarcodeResult(TwainCtrl.Scanner.Resimler.LastOrDefault().Resim.BitmapSourceToBitmap());
+                }
+                if (ViewModel.DetectBarCode && ViewModel.DetectPageSeperator)
+                {
+                    TwainCtrl.Scanner.FileName = ViewModel.GetPatchCodeResult(ViewModel.BarcodeContent);
+                }
+            }
+
+            if (e.PropertyName is "ImgData" && TwainCtrl.ImgData is not null)
+            {
+                ViewModel.BarcodeContent = ViewModel.GetImageBarcodeResult(TwainCtrl.ImgData);
+                _ = ViewModel.Ocr(TwainCtrl.ImgData);
                 TwainCtrl.ImgData = null;
             }
         }

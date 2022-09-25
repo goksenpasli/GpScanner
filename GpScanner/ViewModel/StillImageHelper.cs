@@ -44,8 +44,8 @@ namespace GpScanner.ViewModel
             try
             {
                 Registry.LocalMachine.DeleteSubKey(REGKEY_AUTOPLAY_HANDLER_GPSCANNER, false);
-                using RegistryKey key2 = Registry.LocalMachine.OpenSubKey(REGKEY_STI_APP, true);
-                key2?.DeleteValue("GpScanner", false);
+                using RegistryKey key = Registry.LocalMachine.OpenSubKey(REGKEY_STI_APP, true);
+                key?.DeleteValue("GpScanner", false);
 
                 Registry.LocalMachine.DeleteSubKey(REGKEY_STI_EVENT_GPSCANNER, false);
 

@@ -28,7 +28,7 @@ namespace PdfViewer
     {
         public static readonly DependencyProperty AngleProperty = DependencyProperty.Register("Angle", typeof(double), typeof(PdfViewer), new PropertyMetadata(0.0));
 
-        public static readonly DependencyProperty DpiProperty = DependencyProperty.Register("Dpi", typeof(int), typeof(PdfViewer), new PropertyMetadata(150, DpiChanged));
+        public static readonly DependencyProperty DpiProperty = DependencyProperty.Register("Dpi", typeof(int), typeof(PdfViewer), new PropertyMetadata(200, DpiChanged));
 
         public static readonly DependencyProperty PdfFilePathProperty = DependencyProperty.Register("PdfFilePath", typeof(string), typeof(PdfViewer), new PropertyMetadata(null, PdfFilePathChanged));
 
@@ -182,7 +182,7 @@ namespace PdfViewer
             set => SetValue(DpiProperty, value);
         }
 
-        public int[] DpiList { get; } = new int[] { 96, 150, 225, 300, 600 };
+        public int[] DpiList { get; } = new int[] { 72, 96, 120, 150, 200, 300, 400, 500, 600 };
 
         public bool FirstPageThumbnail
         {

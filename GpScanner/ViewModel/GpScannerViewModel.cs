@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -18,6 +20,7 @@ using Microsoft.Win32;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
 using TwainControl;
+using ZXing;
 using static Extensions.ExtensionMethods;
 using Twainsettings = TwainControl.Properties;
 
@@ -29,12 +32,12 @@ namespace GpScanner.ViewModel
 
         public GpScannerViewModel()
         {
+            GenerateFoldTimer();
             Dosyalar = GetScannerFileData();
             ChartData = GetChartsData();
             ScannerData = new ScannerData() { Data = DataYükle() };
             SeçiliGün = DateTime.Today;
             SeçiliDil = Settings.Default.DefaultLang;
-            GenerateFoldTimer();
 
             TesseractViewModel = new TesseractViewModel();
             TranslateViewModel = new TranslateViewModel();
@@ -154,6 +157,27 @@ namespace GpScanner.ViewModel
                 }
             }, parameter => parameter is TwainCtrl twainCtrl && twainCtrl.SeçiliResim?.Resim is not null);
 
+            SavePatchProfile = new RelayCommand<object>(parameter =>
+            {
+                StringBuilder sb = new();
+                string profile = sb
+                    .Append(PatchFileName)
+                    .Append("|")
+                    .Append(PatchTag)
+                    .ToString();
+                _ = Settings.Default.PatchCodes.Add(profile);
+                Settings.Default.Save();
+                Settings.Default.Reload();
+            }, parameter => !string.IsNullOrWhiteSpace(PatchFileName) && !string.IsNullOrWhiteSpace(PatchTag) && !Settings.Default.PatchCodes.Cast<string>().Select(z => z.Split('|')[1]).Contains(PatchTag) && PatchFileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0);
+
+            RemovePatchProfile = new RelayCommand<object>(parameter =>
+            {
+                Settings.Default.PatchCodes.Remove(parameter as string);
+                PatchProfileName = null;
+                Settings.Default.Save();
+                Settings.Default.Reload();
+            }, parameter => true);
+
             DatabaseSave = new RelayCommand<object>(parameter => ScannerData.Serialize());
 
             Settings.Default.PropertyChanged += Default_PropertyChanged;
@@ -185,6 +209,20 @@ namespace GpScanner.ViewModel
                 {
                     aramaMetni = value;
                     OnPropertyChanged(nameof(AramaMetni));
+                }
+            }
+        }
+
+        public string BarcodeContent
+        {
+            get => barcodeContent;
+
+            set
+            {
+                if (barcodeContent != value)
+                {
+                    barcodeContent = value;
+                    OnPropertyChanged(nameof(BarcodeContent));
                 }
             }
         }
@@ -233,6 +271,34 @@ namespace GpScanner.ViewModel
 
         public RelayCommand<object> DatabaseSave { get; }
 
+        public bool DetectBarCode
+        {
+            get => detectBarCode;
+
+            set
+            {
+                if (detectBarCode != value)
+                {
+                    detectBarCode = value;
+                    OnPropertyChanged(nameof(DetectBarCode));
+                }
+            }
+        }
+
+        public bool DetectPageSeperator
+        {
+            get => detectPageSeperator;
+
+            set
+            {
+                if (detectPageSeperator != value)
+                {
+                    detectPageSeperator = value;
+                    OnPropertyChanged(nameof(DetectPageSeperator));
+                }
+            }
+        }
+
         public ObservableCollection<Scanner> Dosyalar
         {
             get => dosyalar;
@@ -279,13 +345,58 @@ namespace GpScanner.ViewModel
 
         public ICommand OcrPage { get; }
 
+        public string PatchFileName
+        {
+            get => patchFileName; set
+
+            {
+                if (patchFileName != value)
+                {
+                    patchFileName = value;
+                    OnPropertyChanged(nameof(PatchFileName));
+                }
+            }
+        }
+
+        public string PatchProfileName
+        {
+            get => patchProfileName;
+
+            set
+            {
+                if (patchProfileName != value)
+                {
+                    patchProfileName = value;
+                    OnPropertyChanged(nameof(PatchProfileName));
+                }
+            }
+        }
+
+        public string PatchTag
+        {
+            get => patchTag;
+
+            set
+            {
+                if (patchTag != value)
+                {
+                    patchTag = value;
+                    OnPropertyChanged(nameof(PatchTag));
+                }
+            }
+        }
+
         public ICommand PdfBirleştir { get; }
 
         public ICommand RegisterSti { get; }
 
+        public RelayCommand<object> RemovePatchProfile { get; }
+
         public ICommand ResetFilter { get; }
 
         public RelayCommand<object> SaveOcrPdf { get; }
+
+        public RelayCommand<object> SavePatchProfile { get; }
 
         public int SayfaBaşlangıç
         {
@@ -468,6 +579,30 @@ namespace GpScanner.ViewModel
             }
         }
 
+        public string GetImageBarcodeResult(byte[] imgbyte)
+        {
+            using MemoryStream ms = new(imgbyte);
+            using System.Drawing.Bitmap bmp = new(ms);
+            IBarcodeReader reader = new BarcodeReader();
+            Result result = reader.Decode(bmp);
+            return result != null ? result.Text : string.Empty;
+        }
+
+        public string GetImageBarcodeResult(System.Drawing.Bitmap bitmap)
+        {
+            IBarcodeReader reader = new BarcodeReader();
+            Result result = reader.Decode(bitmap);
+            return result != null ? result.Text : string.Empty;
+        }
+
+        public string GetPatchCodeResult(string barcode)
+        {
+            IEnumerable<string> patchcodes = Settings.Default.PatchCodes.Cast<string>();
+            return patchcodes.Any(z => z.Split('|')[1] == barcode)
+                ? (patchcodes?.FirstOrDefault(z => z.Split('|')[1] == barcode)?.Split('|')[0])
+                : "Tarama";
+        }
+
         public ObservableCollection<Scanner> GetScannerFileData()
         {
             if (Directory.Exists(Twainsettings.Settings.Default.AutoFolder))
@@ -510,17 +645,29 @@ namespace GpScanner.ViewModel
 
         private string aramaMetni;
 
+        private string barcodeContent;
+
         private XmlLanguage calendarLang;
 
         private ObservableCollection<Chart> chartData;
 
         private int? checkedPdfCount = 0;
 
+        private bool detectBarCode;
+
+        private bool detectPageSeperator;
+
         private ObservableCollection<Scanner> dosyalar;
 
         private double fold = 0.3;
 
         private bool ocrısBusy;
+
+        private string patchFileName;
+
+        private string patchProfileName = string.Empty;
+
+        private string patchTag;
 
         private int sayfaBaşlangıç = 1;
 

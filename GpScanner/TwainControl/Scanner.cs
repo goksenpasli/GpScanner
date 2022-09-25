@@ -296,6 +296,20 @@ namespace TwainControl
             }
         }
 
+        public bool DetectPageSeperator
+        {
+            get { return detectPageSeperator; }
+
+            set
+            {
+                if (detectPageSeperator != value)
+                {
+                    detectPageSeperator = value;
+                    OnPropertyChanged(nameof(DetectPageSeperator));
+                }
+            }
+        }
+
         public bool Duplex
         {
             get => duplex;
@@ -523,20 +537,6 @@ namespace TwainControl
             }
         }
 
-        public bool SeperateSave
-        {
-            get => seperateSave;
-
-            set
-            {
-                if (seperateSave != value)
-                {
-                    seperateSave = value;
-                    OnPropertyChanged(nameof(SeperateSave));
-                }
-            }
-        }
-
         public bool ShowProgress
         {
             get => showProgress;
@@ -575,20 +575,6 @@ namespace TwainControl
                 {
                     shutDownMode = value;
                     OnPropertyChanged(nameof(ShutDownMode));
-                }
-            }
-        }
-
-        public bool Tarandı
-        {
-            get => tarandı;
-
-            set
-            {
-                if (tarandı != value)
-                {
-                    tarandı = value;
-                    OnPropertyChanged(nameof(Tarandı));
                 }
             }
         }
@@ -720,6 +706,8 @@ namespace TwainControl
 
         private bool deskew;
 
+        private bool detectPageSeperator;
+
         private bool duplex;
 
         private int enAdet = 1;
@@ -750,15 +738,11 @@ namespace TwainControl
 
         private string selectedProfile;
 
-        private bool seperateSave;
-
         private bool showProgress;
 
         private bool showUi;
 
         private int shutDownMode;
-
-        private bool tarandı;
 
         private IList<string> tarayıcılar;
 
