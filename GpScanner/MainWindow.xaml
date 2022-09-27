@@ -14,8 +14,8 @@
     d:DataContext="{d:DesignInstance Type=ViewModel:GpScannerViewModel}"
     d:Height="600" d:Width="1280"
     twainctrl:Translation.ResourceManager="{x:Static twainproperties:Resources.ResourceManager}"
-    ContentRendered="MW_ContentRendered" UseLayoutRounding="True" WindowStartupLocation="CenterScreen"
-    WindowState="Maximized"
+    Closing="Window_Closing" ContentRendered="MW_ContentRendered" UseLayoutRounding="True"
+    WindowStartupLocation="CenterScreen" WindowState="Maximized"
     mc:Ignorable="d">
     <Window.Resources>
         <CollectionViewSource x:Key="Veriler" Source="{Binding Dosyalar}" />
@@ -44,9 +44,71 @@
             Width="3"
             HorizontalAlignment="Stretch"
             Background="{StaticResource GroupBoxBackGround}" />
-        <GroupBox Grid.Column="2"
-            Margin="1,0,0,0"
-            Header="{twainctrl:Loc FILE}">
+        <GroupBox Grid.Column="2" Margin="1,0,0,0">
+            <GroupBox.Header>
+                <UniformGrid Columns="3">
+                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc FILE}" />
+                    <Button Command="{Binding ChangeDataFolder}">
+                        <Image Width="16" Height="16">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                    <Binding Source="Shell32.dll" />
+                                    <Binding Source="4" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                    </Button>
+                    <ComboBox VerticalContentAlignment="Center"
+                        SelectedValue="{Binding SeçiliDil}"
+                        SelectedValuePath="Tag">
+                        <ComboBoxItem Tag="TÜRKÇE">
+                            <ComboBoxItem.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="34" Height="20"
+                                        RenderOptions.BitmapScalingMode="Fant" Source="/Resources/flag-of-Turkey.png" />
+                                    <TextBlock VerticalAlignment="Center" Text="TÜRKÇE" />
+                                </StackPanel>
+                            </ComboBoxItem.Content>
+                        </ComboBoxItem>
+                        <ComboBoxItem Tag="ENGLISH">
+                            <ComboBoxItem.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="34" Height="20"
+                                        RenderOptions.BitmapScalingMode="Fant" Source="/Resources/flag-of-United-States-of-America.png" />
+                                    <TextBlock VerticalAlignment="Center" Text="ENGLISH" />
+                                </StackPanel>
+                            </ComboBoxItem.Content>
+                        </ComboBoxItem>
+                        <ComboBoxItem Tag="FRANÇAIS">
+                            <ComboBoxItem.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="34" Height="20"
+                                        RenderOptions.BitmapScalingMode="Fant" Source="/Resources/flag-of-France.png" />
+                                    <TextBlock VerticalAlignment="Center" Text="FRANÇAIS" />
+                                </StackPanel>
+                            </ComboBoxItem.Content>
+                        </ComboBoxItem>
+                        <ComboBoxItem Tag="ITALIANO">
+                            <ComboBoxItem.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="34" Height="20"
+                                        RenderOptions.BitmapScalingMode="Fant" Source="/Resources/flag-of-Italy.png" />
+                                    <TextBlock VerticalAlignment="Center" Text="ITALIANO" />
+                                </StackPanel>
+                            </ComboBoxItem.Content>
+                        </ComboBoxItem>
+                        <ComboBoxItem Tag="عربي">
+                            <ComboBoxItem.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="34" Height="20"
+                                        RenderOptions.BitmapScalingMode="Fant" Source="/Resources/flag-of-Saudi-Arabia.png" />
+                                    <TextBlock VerticalAlignment="Center" Text="عربي" />
+                                </StackPanel>
+                            </ComboBoxItem.Content>
+                        </ComboBoxItem>
+                    </ComboBox>
+                </UniformGrid>
+            </GroupBox.Header>
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -296,7 +358,7 @@
                     </ListBox.ItemContainerStyle>
                 </ListBox>
                 <UniformGrid Grid.Row="6"
-                    Columns="3" Rows="2">
+                    Columns="2" Rows="2">
                     <Button Command="{Binding PdfBirleştir}">
                         <StackPanel Orientation="Horizontal">
                             <Image Width="32" Height="32">
@@ -426,55 +488,6 @@
                             </StackPanel>
                         </Button.Content>
                     </Button>
-                    <ComboBox VerticalContentAlignment="Center"
-                        SelectedValue="{Binding SeçiliDil}"
-                        SelectedValuePath="Tag">
-                        <ComboBoxItem Tag="TÜRKÇE">
-                            <ComboBoxItem.Content>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Width="51" Height="30"
-                                        RenderOptions.BitmapScalingMode="Fant" Source="/Resources/flag-of-Turkey.png" />
-                                    <TextBlock VerticalAlignment="Center" Text="TÜRKÇE" />
-                                </StackPanel>
-                            </ComboBoxItem.Content>
-                        </ComboBoxItem>
-                        <ComboBoxItem Tag="ENGLISH">
-                            <ComboBoxItem.Content>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Width="51" Height="30"
-                                        RenderOptions.BitmapScalingMode="Fant" Source="/Resources/flag-of-United-States-of-America.png" />
-                                    <TextBlock VerticalAlignment="Center" Text="ENGLISH" />
-                                </StackPanel>
-                            </ComboBoxItem.Content>
-                        </ComboBoxItem>
-                        <ComboBoxItem Tag="FRANÇAIS">
-                            <ComboBoxItem.Content>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Width="51" Height="30"
-                                        RenderOptions.BitmapScalingMode="Fant" Source="/Resources/flag-of-France.png" />
-                                    <TextBlock VerticalAlignment="Center" Text="FRANÇAIS" />
-                                </StackPanel>
-                            </ComboBoxItem.Content>
-                        </ComboBoxItem>
-                        <ComboBoxItem Tag="ITALIANO">
-                            <ComboBoxItem.Content>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Width="51" Height="30"
-                                        RenderOptions.BitmapScalingMode="Fant" Source="/Resources/flag-of-Italy.png" />
-                                    <TextBlock VerticalAlignment="Center" Text="ITALIANO" />
-                                </StackPanel>
-                            </ComboBoxItem.Content>
-                        </ComboBoxItem>
-                        <ComboBoxItem Tag="عربي">
-                            <ComboBoxItem.Content>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Width="51" Height="30"
-                                        RenderOptions.BitmapScalingMode="Fant" Source="/Resources/flag-of-Saudi-Arabia.png" />
-                                    <TextBlock VerticalAlignment="Center" Text="عربي" />
-                                </StackPanel>
-                            </ComboBoxItem.Content>
-                        </ComboBoxItem>
-                    </ComboBox>
                 </UniformGrid>
             </Grid>
         </GroupBox>

@@ -374,6 +374,7 @@ namespace PdfViewer
                 bitmap.StreamSource = stream;
                 bitmap.EndInit();
                 bitmap.Freeze();
+                buffer = null;
                 return bitmap;
             }
             return null;
@@ -407,6 +408,7 @@ namespace PdfViewer
                 if (disposing)
                 {
                     PdfFileStream = null;
+                    Source = null;
                 }
                 disposedValue = true;
             }

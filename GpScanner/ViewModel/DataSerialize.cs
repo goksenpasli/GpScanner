@@ -49,7 +49,7 @@ namespace GpScanner.ViewModel
         internal static void Serialize<T>(this T dataToSerialize) where T : class
         {
             XmlSerializer serializer = new(typeof(T));
-            using TextWriter stream = new StreamWriter(GpScannerViewModel.xmldatapath);
+            using TextWriter stream = new StreamWriter(GpScannerViewModel.XmlDataPath);
             serializer.Serialize(stream, dataToSerialize);
         }
     }

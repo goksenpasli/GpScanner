@@ -28,10 +28,14 @@ namespace GpScanner.ViewModel
 {
     public class GpScannerViewModel : InpcBase
     {
-        public static readonly string xmldatapath = Path.GetDirectoryName(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath) + @"\Data.xml";
-
         public GpScannerViewModel()
         {
+            if (string.IsNullOrWhiteSpace(Settings.Default.DatabaseFile))
+            {
+                XmlDataPath = Settings.Default.DatabaseFile = Path.GetDirectoryName(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath) + @"\Data.xml";
+                Settings.Default.Save();
+            }
+
             GenerateFoldTimer();
             Dosyalar = GetScannerFileData();
             ChartData = GetChartsData();
@@ -42,7 +46,7 @@ namespace GpScanner.ViewModel
             TesseractViewModel = new TesseractViewModel();
             TranslateViewModel = new TranslateViewModel();
 
-            ResetFilter = new RelayCommand<object>(parameter => MainWindow.cvs.View.Filter = null, parameter => MainWindow.cvs.View is not null);
+            ResetFilter = new RelayCommand<object>(parameter => MainWindow.cvs.View.Filter = null, parameter => MainWindow.cvs.View is not null); ;
 
             RegisterSti = new RelayCommand<object>(parameter => StillImageHelper.Register(), parameter => true);
 
@@ -81,6 +85,20 @@ namespace GpScanner.ViewModel
                     imgdata = null;
                 }
             }, parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && parameter is TwainCtrl twainCtrl && twainCtrl.SeçiliResim is not null);
+
+            ChangeDataFolder = new RelayCommand<object>(parameter =>
+            {
+                OpenFileDialog openFileDialog = new()
+                {
+                    Filter = "Xml Dosyası(*.xml)|*.xml",
+                    FileName = "Data.xml"
+                };
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    XmlDataPath = Settings.Default.DatabaseFile = openFileDialog.FileName;
+                    Settings.Default.Save();
+                }
+            }, parameter => true);
 
             Tümünüİşaretle = new RelayCommand<object>(parameter =>
             {
@@ -186,6 +204,23 @@ namespace GpScanner.ViewModel
             OnPropertyChanged(nameof(SeçiliDil));
         }
 
+        public static event EventHandler<PropertyChangedEventArgs> StaticPropertyChanged;
+
+        public static string XmlDataPath
+        {
+            get => xmlDataPath;
+
+            set
+
+            {
+                if (xmlDataPath != value)
+                {
+                    xmlDataPath = value;
+                    StaticPropertyChanged?.Invoke(null, new(nameof(XmlDataPath)));
+                }
+            }
+        }
+
         public bool AddOcrToDataBase
         {
             get => addOcrToDataBase;
@@ -241,6 +276,8 @@ namespace GpScanner.ViewModel
                 }
             }
         }
+
+        public RelayCommand<object> ChangeDataFolder { get; }
 
         public ObservableCollection<Chart> ChartData
         {
@@ -555,11 +592,11 @@ namespace GpScanner.ViewModel
             {
                 return null;
             }
-            if (File.Exists(xmldatapath))
+            if (File.Exists(XmlDataPath))
             {
-                return xmldatapath.DeSerialize<ScannerData>().Data;
+                return XmlDataPath.DeSerialize<ScannerData>().Data;
             }
-            _ = Directory.CreateDirectory(Path.GetDirectoryName(xmldatapath));
+            _ = Directory.CreateDirectory(Path.GetDirectoryName(XmlDataPath));
             return new ObservableCollection<Data>();
         }
 
@@ -641,6 +678,8 @@ namespace GpScanner.ViewModel
         }
 
         private static DispatcherTimer timer;
+
+        private static string xmlDataPath = Settings.Default.DatabaseFile;
 
         private bool addOcrToDataBase = true;
 

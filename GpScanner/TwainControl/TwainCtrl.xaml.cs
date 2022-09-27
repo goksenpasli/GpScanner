@@ -28,6 +28,8 @@ namespace TwainControl
 {
     public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposable
     {
+        public static Task pdfsavetask;
+
         public TwainCtrl()
         {
             InitializeComponent();
@@ -168,6 +170,11 @@ namespace TwainControl
 
             Seçilikaydet = new RelayCommand<object>(parameter =>
             {
+                if (pdfsavetask?.IsCompleted == false)
+                {
+                    _ = MessageBox.Show("İşlem Devam Ediyor. Bitmesini Bekleyin.");
+                    return;
+                }
                 SaveFileDialog saveFileDialog = new()
                 {
                     Filter = "Pdf Dosyası (*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf|Zip Dosyası (*.zip)|*.zip",
@@ -175,22 +182,28 @@ namespace TwainControl
                 };
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    if (saveFileDialog.FilterIndex == 1)
-                    {
-                        PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToList(), Format.Jpg).Save(saveFileDialog.FileName);
-                    }
-                    if (saveFileDialog.FilterIndex == 2)
-                    {
-                        PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToList(), Format.Tiff).Save(saveFileDialog.FileName);
-                    }
-                    if (saveFileDialog.FilterIndex == 3)
-                    {
-                        string dosyayolu = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
-                        PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToList(), Format.Jpg).Save(dosyayolu);
-                        using ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Create);
-                        _ = archive.CreateEntryFromFile(dosyayolu, $"{Scanner.SaveFileName}.pdf", CompressionLevel.Optimal);
-                        File.Delete(dosyayolu);
-                    }
+                    pdfsavetask = Task.Run(() =>
+                       {
+                           if (saveFileDialog.FilterIndex == 1)
+                           {
+                               Dispatcher.BeginInvoke(() => PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToList(), Format.Jpg).Save(saveFileDialog.FileName));
+                           }
+                           if (saveFileDialog.FilterIndex == 2)
+                           {
+                               Dispatcher.BeginInvoke(() => PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToList(), Format.Tiff).Save(saveFileDialog.FileName));
+                           }
+                           if (saveFileDialog.FilterIndex == 3)
+                           {
+                               Dispatcher.BeginInvoke(() =>
+                               {
+                                   string dosyayolu = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
+                                   PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToList(), Format.Jpg).Save(dosyayolu);
+                                   using ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Create);
+                                   _ = archive.CreateEntryFromFile(dosyayolu, $"{Scanner.SaveFileName}.pdf", CompressionLevel.Optimal);
+                                   File.Delete(dosyayolu);
+                               });
+                           }
+                       });
                 }
             }, parameter =>
             {
@@ -370,7 +383,7 @@ namespace TwainControl
             {
                 if (pdfloadtask?.IsCompleted == false)
                 {
-                    _ = MessageBox.Show("Yükleme Devam Ediyor. Bitmesini Bekleyin.");
+                    _ = MessageBox.Show("İşlem Devam Ediyor. Bitmesini Bekleyin.");
                     return;
                 }
                 OpenFileDialog openFileDialog = new()
@@ -418,7 +431,7 @@ namespace TwainControl
                             case ".bmp":
                                 {
                                     BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(decodeheight, new Uri(item));
-                                    Scanner?.Resimler.Add(new ScannedImage() { Seçili = true, Resim = bitmapFrame });
+                                    Scanner?.Resimler.Add(new ScannedImage() { Resim = bitmapFrame });
                                     break;
                                 }
                         }

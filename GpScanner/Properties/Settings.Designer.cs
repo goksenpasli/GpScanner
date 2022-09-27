@@ -59,5 +59,17 @@ namespace GpScanner.Properties {
                 this["PatchCodes"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DatabaseFile {
+            get {
+                return ((string)(this["DatabaseFile"]));
+            }
+            set {
+                this["DatabaseFile"] = value;
+            }
+        }
     }
 }

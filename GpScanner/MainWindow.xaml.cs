@@ -69,5 +69,13 @@ namespace GpScanner
                 TwainCtrl.ImgData = null;
             }
         }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            if (TwainCtrl.pdfsavetask?.IsCompleted == false)
+            {
+                e.Cancel = true;
+            }
+        }
     }
 }
