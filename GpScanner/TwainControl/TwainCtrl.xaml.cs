@@ -186,22 +186,19 @@ namespace TwainControl
                        {
                            if (saveFileDialog.FilterIndex == 1)
                            {
-                               Dispatcher.BeginInvoke(() => PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToList(), Format.Jpg).Save(saveFileDialog.FileName));
+                               PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToList(), Format.Jpg).Save(saveFileDialog.FileName);
                            }
                            if (saveFileDialog.FilterIndex == 2)
                            {
-                               Dispatcher.BeginInvoke(() => PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToList(), Format.Tiff).Save(saveFileDialog.FileName));
+                               PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToList(), Format.Tiff).Save(saveFileDialog.FileName);
                            }
                            if (saveFileDialog.FilterIndex == 3)
                            {
-                               Dispatcher.BeginInvoke(() =>
-                               {
-                                   string dosyayolu = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
-                                   PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToList(), Format.Jpg).Save(dosyayolu);
-                                   using ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Create);
-                                   _ = archive.CreateEntryFromFile(dosyayolu, $"{Scanner.SaveFileName}.pdf", CompressionLevel.Optimal);
-                                   File.Delete(dosyayolu);
-                               });
+                               string dosyayolu = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
+                               PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToList(), Format.Jpg).Save(dosyayolu);
+                               using ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Create);
+                               _ = archive.CreateEntryFromFile(dosyayolu, $"{Scanner.SaveFileName}.pdf", CompressionLevel.Optimal);
+                               File.Delete(dosyayolu);
                            }
                        });
                 }

@@ -128,8 +128,14 @@ namespace GpScanner.ViewModel
             {
                 if (parameter is object[] data && data[0] is not null)
                 {
-                    BitmapSource thumbnail = ((BitmapSource)data[0]).Resize(84, 117);
-                    ScannedImage scannedImage = new() { Seçili = true, Resim = BitmapFrame.Create((BitmapSource)data[0], thumbnail) };
+                    BitmapSource resim = (BitmapSource)data[0];
+                    resim.Freeze();
+                    BitmapSource thumbnail = resim.Resize(84, 117);
+                    thumbnail.Freeze();
+                    BitmapFrame bitmapFrame = BitmapFrame.Create(resim, thumbnail);
+                    bitmapFrame.Freeze();
+                    ScannedImage scannedImage = new() { Seçili = true, Resim = bitmapFrame };
+
                     (data[1] as TwainCtrl)?.Scanner?.Resimler.Add(scannedImage);
                     (data[2] as Scanner).Seçili = true;
                 }
