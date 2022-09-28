@@ -47,7 +47,7 @@ namespace GpScanner.ViewModel
                         }
                     }
                 } while (iterator.Next(PageIteratorLevel.Word));
-
+                dosya = null;
                 return ocrdata;
             }
             catch (Exception ex)

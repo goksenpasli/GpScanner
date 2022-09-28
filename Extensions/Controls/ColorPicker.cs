@@ -97,12 +97,6 @@ namespace Extensions
 
         public RGB Selected = new();
 
-        private Rectangle _rgbgrid;
-
-        private Rectangle _spectrumgrid;
-
-        private double currH = 360;
-
         static ColorPicker()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(ColorPicker), new FrameworkPropertyMetadata(typeof(ColorPicker)));
@@ -185,6 +179,12 @@ namespace Extensions
                 _rgbgrid.MouseDown += (sender, e) => e.Handled = true;
             }
         }
+
+        private Rectangle _rgbgrid;
+
+        private Rectangle _spectrumgrid;
+
+        private double currH = 360;
 
         private void Rgbgrid_MouseMove(object sender, MouseEventArgs e)
         {

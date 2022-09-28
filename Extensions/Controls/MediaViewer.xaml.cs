@@ -110,40 +110,6 @@ namespace Extensions.Controls
 
         public static readonly DependencyProperty VideoStretchProperty = DependencyProperty.Register("VideoStretch", typeof(Stretch), typeof(MediaViewer), new PropertyMetadata(Stretch.Uniform));
 
-        private static readonly Image image = new();
-
-        private static readonly DispatcherTimer osdtimer = new();
-
-        private static readonly TaskFactory task;
-
-        private static readonly MediaElement thumbMediaElement = new()
-        {
-            UnloadedBehavior = MediaState.Manual,
-            ScrubbingEnabled = true,
-            IsMuted = true,
-            Height = 96,
-            Width = 96 * SystemParameters.PrimaryScreenWidth / SystemParameters.PrimaryScreenHeight,
-        };
-
-        private static readonly ToolTip tooltip = new()
-        {
-            Width = 96 * SystemParameters.PrimaryScreenWidth / SystemParameters.PrimaryScreenHeight,
-            Height = 96,
-            Placement = PlacementMode.Mouse
-        };
-
-        private static bool dragging;
-
-        private static DispatcherTimer timer;
-
-        private bool _isOnDrag;
-
-        private Point _startPoint;
-
-        private double _startRotateX;
-
-        private double _startRotateY;
-
         static MediaViewer()
         {
             task = new TaskFactory();
@@ -550,6 +516,40 @@ namespace Extensions.Controls
             return new Point3D(x, y, z);
         }
 
+        private static readonly Image image = new();
+
+        private static readonly DispatcherTimer osdtimer = new();
+
+        private static readonly TaskFactory task;
+
+        private static readonly MediaElement thumbMediaElement = new()
+        {
+            UnloadedBehavior = MediaState.Manual,
+            ScrubbingEnabled = true,
+            IsMuted = true,
+            Height = 96,
+            Width = 96 * SystemParameters.PrimaryScreenWidth / SystemParameters.PrimaryScreenHeight,
+        };
+
+        private static readonly ToolTip tooltip = new()
+        {
+            Width = 96 * SystemParameters.PrimaryScreenWidth / SystemParameters.PrimaryScreenHeight,
+            Height = 96,
+            Placement = PlacementMode.Mouse
+        };
+
+        private static bool dragging;
+
+        private static DispatcherTimer timer;
+
+        private bool _isOnDrag;
+
+        private Point _startPoint;
+
+        private double _startRotateX;
+
+        private double _startRotateY;
+
         private static void AutoplayChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is MediaViewer viewer && (bool)e.NewValue && viewer.MediaDataFilePath != null)
@@ -651,7 +651,7 @@ namespace Extensions.Controls
                             if (viewer.AutoTranslate)
                             {
                                 viewer.TooltipOriginalSubtitle = subtitle.Text;
-                                viewer.SubTitle = Task.Run(() => TranslateViewModel.DileÇevir(subtitle.Text, viewer.MevcutDil, viewer.ÇevrilenDil)).Result;
+                                viewer.SubTitle = TranslateViewModel.DileÇevir(subtitle.Text, viewer.MevcutDil, viewer.ÇevrilenDil);
                             }
                             else
                             {

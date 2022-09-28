@@ -42,8 +42,6 @@ namespace Extensions
 
         public static readonly DependencyProperty ValueTextVisibilityProperty = DependencyProperty.Register("ValueTextVisibility", typeof(Visibility), typeof(GraphControl), new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.AffectsRender));
 
-        private static ObservableCollection<Chart> MockData;
-
         static GraphControl()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(GraphControl), new FrameworkPropertyMetadata(typeof(GraphControl)));
@@ -171,6 +169,8 @@ namespace Extensions
                 DrawGraph(drawingContext, MockData);
             }
         }
+
+        private static ObservableCollection<Chart> MockData;
 
         private void DrawGraph(DrawingContext drawingContext, ObservableCollection<Chart> Series)
         {

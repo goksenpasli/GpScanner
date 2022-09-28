@@ -249,7 +249,6 @@
                                                     <TextBlock FontSize="{Binding SubTitleSize}" Text="{Binding TooltipOriginalSubtitle}" />
                                                 </TextBlock.ToolTip>
                                             </TextBlock>
-
                                         </Grid>
                                     </Grid>
                                 </Grid>

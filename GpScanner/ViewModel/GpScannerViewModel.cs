@@ -629,6 +629,7 @@ namespace GpScanner.ViewModel
             using System.Drawing.Bitmap bmp = new(ms);
             IBarcodeReader reader = new BarcodeReader();
             Result result = reader.Decode(bmp);
+            imgbyte = null;
             return result != null ? result.Text : string.Empty;
         }
 

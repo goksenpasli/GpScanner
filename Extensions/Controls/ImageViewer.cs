@@ -48,36 +48,6 @@ namespace Extensions
 
         public static readonly DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(ImageViewer), new PropertyMetadata(1.0));
 
-        private bool _isOnDrag;
-
-        private DiffuseMaterial _panoramaBrush;
-
-        private Point _startPoint;
-
-        private double _startRotateX;
-
-        private double _startRotateY;
-
-        private Viewport3D _viewport;
-
-        private TiffBitmapDecoder decoder;
-
-        private FitImageOrientation fitImageOrientation;
-
-        private Visibility openButtonVisibility = Visibility.Collapsed;
-
-        private Visibility orijinalResimDosyaAçButtonVisibility;
-
-        private IEnumerable<int> pages;
-
-        private Visibility printButtonVisibility = Visibility.Collapsed;
-
-        private int sayfa = 1;
-
-        private Visibility tifNavigasyonButtonEtkin = Visibility.Collapsed;
-
-        private bool toolBarIsEnabled = true;
-
         static ImageViewer()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(ImageViewer), new FrameworkPropertyMetadata(typeof(ImageViewer)));
@@ -397,6 +367,36 @@ namespace Extensions
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        private bool _isOnDrag;
+
+        private DiffuseMaterial _panoramaBrush;
+
+        private Point _startPoint;
+
+        private double _startRotateX;
+
+        private double _startRotateY;
+
+        private Viewport3D _viewport;
+
+        private TiffBitmapDecoder decoder;
+
+        private FitImageOrientation fitImageOrientation;
+
+        private Visibility openButtonVisibility = Visibility.Collapsed;
+
+        private Visibility orijinalResimDosyaAçButtonVisibility;
+
+        private IEnumerable<int> pages;
+
+        private Visibility printButtonVisibility = Visibility.Collapsed;
+
+        private int sayfa = 1;
+
+        private Visibility tifNavigasyonButtonEtkin = Visibility.Collapsed;
+
+        private bool toolBarIsEnabled = true;
 
         private static void DecodeHeightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

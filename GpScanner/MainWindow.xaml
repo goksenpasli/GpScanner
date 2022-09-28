@@ -10,7 +10,7 @@
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
     xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
-    Title="{twainctrl:Loc SCANNER}"
+    Title="GPSCANNER"
     d:DataContext="{d:DesignInstance Type=ViewModel:GpScannerViewModel}"
     d:Height="600" d:Width="1280"
     twainctrl:Translation.ResourceManager="{x:Static twainproperties:Resources.ResourceManager}"
@@ -46,17 +46,19 @@
             Background="{StaticResource GroupBoxBackGround}" />
         <GroupBox Grid.Column="2" Margin="1,0,0,0">
             <GroupBox.Header>
-                <UniformGrid Columns="3">
-                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc FILE}" />
+                <UniformGrid Columns="2">
                     <Button Command="{Binding ChangeDataFolder}">
-                        <Image Width="16" Height="16">
-                            <Image.Source>
-                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                    <Binding Source="Shell32.dll" />
-                                    <Binding Source="4" />
-                                </MultiBinding>
-                            </Image.Source>
-                        </Image>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc FILE}" />
+                            <Image Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="4" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                        </StackPanel>
                     </Button>
                     <ComboBox VerticalContentAlignment="Center"
                         SelectedValue="{Binding SeçiliDil}"
@@ -274,7 +276,7 @@
                     SelectedItem="{Binding SelectedDocument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     SelectionMode="Extended" VirtualizingPanel.CacheLength="2,2"
                     VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                    VirtualizingPanel.ScrollUnit="Item" VirtualizingPanel.VirtualizationMode="Standard">
+                    VirtualizingPanel.ScrollUnit="Item" VirtualizingPanel.VirtualizationMode="Standard" d:ItemsSource="{d:SampleData ItemCount=5}">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="160,220" />
@@ -303,9 +305,7 @@
                                                             <DataTrigger Binding="{Binding Path=DataContext.ShowPdfPreview, RelativeSource={RelativeSource AncestorType=Window}}" Value="true">
                                                                 <Setter Property="Content">
                                                                     <Setter.Value>
-                                                                        <ContentControl Content="{Binding Path=FileName}"
-                                                                            ContentTemplateSelector="{StaticResource ThumbViewerSelector}"
-                                                                            IsHitTestVisible="False" />
+                                                                        <ContentControl Content="{Binding Path=FileName}" ContentTemplateSelector="{StaticResource ThumbViewerSelector}" />
                                                                     </Setter.Value>
                                                                 </Setter>
                                                             </DataTrigger>
