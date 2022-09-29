@@ -1001,18 +1001,14 @@ namespace TwainControl
         {
             if (e.Image != null)
             {
-                SynchronizationContext uiContext = SynchronizationContext.Current;
-                _ = Task.Run(() =>
-                {
-                    using Bitmap bitmap = e.Image;
-                    BitmapSource evrak = EvrakOluştur(bitmap);
-                    evrak.Freeze();
-                    BitmapSource önizleme = evrak.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 21 * 29.7);
-                    önizleme.Freeze();
-                    BitmapFrame bitmapFrame = BitmapFrame.Create(evrak, önizleme);
-                    bitmapFrame.Freeze();
-                    uiContext.Send(_ => Scanner?.Resimler?.Add(new ScannedImage() { Resim = bitmapFrame }), null);
-                });
+                using Bitmap bitmap = e.Image;
+                BitmapSource evrak = EvrakOluştur(bitmap);
+                evrak.Freeze();
+                BitmapSource önizleme = evrak.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 21 * 29.7);
+                önizleme.Freeze();
+                BitmapFrame bitmapFrame = BitmapFrame.Create(evrak, önizleme);
+                bitmapFrame.Freeze();
+                Scanner?.Resimler?.Add(new ScannedImage() { Resim = bitmapFrame });
             }
         }
 
