@@ -86,8 +86,7 @@ namespace TwainControl
             image.StreamSource = ms;
             image.EndInit();
             image.Freeze();
-
-            BitmapFrame bitmapFrame = BitmapFrame.Create(image, image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 21 * 29.7));
+            BitmapFrame bitmapFrame = BitmapFrame.Create(image, image.PixelWidth < image.PixelHeight ? image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 21 * 29.7) : image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 29.7 * 21));
             bitmapFrame.Freeze();
             return bitmapFrame;
         }

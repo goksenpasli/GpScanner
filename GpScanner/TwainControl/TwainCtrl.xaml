@@ -686,7 +686,7 @@
                         <Canvas x:Name="cnv" />
                     </Grid>
                 </DockPanel>
-                <Expander Height="540"
+                <Expander Height="550"
                     HorizontalAlignment="Left" VerticalAlignment="Bottom"
                     ExpandDirection="Up"
                     IsExpanded="{Binding Scanner.CropDialogExpanded}">
@@ -735,9 +735,10 @@
                                         </TextBlock>
                                     </Grid>
                                 </DockPanel>
-                                <Extensions:NumericUpDownControl Margin="-16,0,0,0"
-                                    IsReadOnly="True" Maximum="1" Minimum="0"
-                                    NumericUpdownTextBoxVisibility="Collapsed" Orientation="Horizontal" SmallChange="1"
+                                <Slider IsSnapToTickEnabled="True" Maximum="360" Minimum="0"
+                                    Orientation="Horizontal" SmallChange="1"
+                                    Style="{StaticResource Slider}"
+                                    Ticks="0, 90, 180, 270, 360"
                                     Value="{Binding Scanner.CroppedImageAngle}" />
                                 <Button Background="Green" Command="{Binding LoadCroppedImage}">
                                     <StackPanel Orientation="Horizontal">

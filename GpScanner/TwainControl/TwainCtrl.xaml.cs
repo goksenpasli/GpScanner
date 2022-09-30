@@ -39,6 +39,7 @@ namespace TwainControl
 
             ScanImage = new RelayCommand<object>(parameter =>
             {
+                GC.Collect();
                 ScanCommonSettings();
                 twain.SelectSource(Scanner.SeçiliTarayıcı);
                 twain.StartScanning(_settings);
@@ -46,6 +47,7 @@ namespace TwainControl
 
             FastScanImage = new RelayCommand<object>(parameter =>
             {
+                GC.Collect();
                 ScanCommonSettings();
                 Scanner.Resimler = new ObservableCollection<ScannedImage>();
                 twain.SelectSource(Scanner.SeçiliTarayıcı);
@@ -94,31 +96,11 @@ namespace TwainControl
                         }
                         if (saveFileDialog.FilterIndex == 3)
                         {
-                            if (Scanner.RotateAngle is not 0 or 360)
-                            {
-                                if (MessageBox.Show(Translation.GetResStringValue("ROTSAVE"), Application.Current?.MainWindow?.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
-                                {
-                                    PdfGeneration.GeneratePdf(scannedImage.Resim, Format.Jpg, true).Save(saveFileDialog.FileName);
-                                    return;
-                                }
-                                PdfGeneration.GeneratePdf(scannedImage.Resim, Format.Jpg).Save(saveFileDialog.FileName);
-                                return;
-                            }
                             PdfGeneration.GeneratePdf(scannedImage.Resim, Format.Jpg).Save(saveFileDialog.FileName);
                             return;
                         }
                         if (saveFileDialog.FilterIndex == 4)
                         {
-                            if (Scanner.RotateAngle is not 0 or 360)
-                            {
-                                if (MessageBox.Show(Translation.GetResStringValue("ROTSAVE"), Application.Current?.MainWindow?.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
-                                {
-                                    PdfGeneration.GeneratePdf(scannedImage.Resim, Format.Tiff, true).Save(saveFileDialog.FileName);
-                                    return;
-                                }
-                                PdfGeneration.GeneratePdf(scannedImage.Resim, Format.Tiff).Save(saveFileDialog.FileName);
-                                return;
-                            }
                             PdfGeneration.GeneratePdf(scannedImage.Resim, Format.Tiff).Save(saveFileDialog.FileName);
                         }
                     }
@@ -388,7 +370,6 @@ namespace TwainControl
                     Filter = "Resim Dosyası (*.jpg;*.jpeg;*.png;*.gif;*.tif;*.tiff;*.bmp)|*.jpg;*.jpeg;*.png;*.gif;*.tif;*.tiff;*.bmp|Pdf Dosyası (*.pdf)|*.pdf",
                     Multiselect = true
                 };
-                GC.Collect();
                 if (openFileDialog.ShowDialog() == true)
                 {
                     int decodeheight = (int)(A4Height / 2.54 * ImgLoadResolution);
@@ -413,6 +394,7 @@ namespace TwainControl
                                                 Scanner?.Resimler.Add(new ScannedImage() { Resim = bitmapFrame });
                                                 PdfLoadProgressValue = i / totalpagecount;
                                             }, null);
+                                            bitmapFrame = null;
                                         }
                                     });
                                     filedata = null;
@@ -429,11 +411,11 @@ namespace TwainControl
                                 {
                                     BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(decodeheight, new Uri(item));
                                     Scanner?.Resimler.Add(new ScannedImage() { Resim = bitmapFrame });
+                                    bitmapFrame = null;
                                     break;
                                 }
                         }
                     }
-                    GC.Collect();
                 }
             }, parameter => true);
 
@@ -983,12 +965,11 @@ namespace TwainControl
                 using Bitmap bmp = ((BitmapSource)Scanner.CopyCroppedImage).BitmapSourceToBitmap();
                 Scanner.CroppedImage = bmp.ReplaceColor(source, target, (int)Scanner.Threshold).ToBitmapImage(ImageFormat.Png);
             }
-            if (e.PropertyName is "CroppedImageAngle" && Scanner.CroppedImageAngle != 0)
+            if (e.PropertyName is "CroppedImageAngle" && Scanner.CopyCroppedImage is not null)
             {
-                TransformedBitmap transformedBitmap = new((BitmapSource)Scanner.CroppedImage, new RotateTransform(Scanner.CroppedImageAngle * 90));
+                TransformedBitmap transformedBitmap = new((BitmapSource)Scanner.CopyCroppedImage, new RotateTransform(Scanner.CroppedImageAngle));
                 transformedBitmap.Freeze();
                 Scanner.CroppedImage = transformedBitmap;
-                Scanner.CroppedImageAngle = 0;
             }
         }
 
@@ -1009,6 +990,9 @@ namespace TwainControl
                 BitmapFrame bitmapFrame = BitmapFrame.Create(evrak, önizleme);
                 bitmapFrame.Freeze();
                 Scanner?.Resimler?.Add(new ScannedImage() { Resim = bitmapFrame });
+                evrak = null;
+                önizleme = null;
+                bitmapFrame = null;
             }
         }
 

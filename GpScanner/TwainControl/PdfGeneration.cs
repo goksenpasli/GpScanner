@@ -73,19 +73,14 @@ namespace TwainControl
             doc.Options.EnableCcittCompressionForBilevelImages = true;
         }
 
-        public static PdfDocument GeneratePdf(IList<ScannedImage> bitmapFrames, Format format, bool rotate = false)
+        public static PdfDocument GeneratePdf(IList<ScannedImage> bitmapFrames, Format format)
         {
             using PdfDocument document = new();
             try
             {
-                for (int i = 0; i < bitmapFrames.Count; i++)
+                foreach (ScannedImage scannedimage in bitmapFrames)
                 {
-                    ScannedImage scannedimage = bitmapFrames[i];
                     PdfPage page = document.AddPage();
-                    if (rotate)
-                    {
-                        page.Rotate = (int)Scanner.RotateAngle;
-                    }
                     if (Scanner.PasswordProtect)
                     {
                         ApplyPdfSecurity(document);
@@ -94,7 +89,15 @@ namespace TwainControl
                     using MemoryStream ms = new(scannedimage.Resim.ToTiffJpegByteArray(format));
                     using XImage xImage = XImage.FromStream(ms);
                     XSize size = PageSizeConverter.ToSize(PageSize.A4);
-                    gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
+                    if (scannedimage.Resim.PixelWidth < scannedimage.Resim.PixelHeight)
+                    {
+                        gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
+                    }
+                    else
+                    {
+                        page.Orientation = PageOrientation.Landscape;
+                        gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
+                    }
                 }
             }
             catch (Exception ex)
@@ -105,16 +108,12 @@ namespace TwainControl
             return document;
         }
 
-        public static PdfDocument GeneratePdf(BitmapSource bitmapframe, Format format, bool rotate = false)
+        public static PdfDocument GeneratePdf(BitmapSource bitmapframe, Format format)
         {
             try
             {
                 using PdfDocument document = new();
                 PdfPage page = document.AddPage();
-                if (rotate)
-                {
-                    page.Rotate = (int)Scanner.RotateAngle;
-                }
                 if (Scanner.PasswordProtect)
                 {
                     ApplyPdfSecurity(document);
@@ -123,7 +122,15 @@ namespace TwainControl
                 using MemoryStream ms = new(bitmapframe.ToTiffJpegByteArray(format));
                 using XImage xImage = XImage.FromStream(ms);
                 XSize size = PageSizeConverter.ToSize(PageSize.A4);
-                gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
+                if (bitmapframe.PixelWidth < bitmapframe.PixelHeight)
+                {
+                    gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
+                }
+                else
+                {
+                    page.Orientation = PageOrientation.Landscape;
+                    gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
+                }
                 DefaultPdfCompression(document);
                 return document;
             }
@@ -144,7 +151,15 @@ namespace TwainControl
                 using MemoryStream ms = new(bitmapframe.ToTiffJpegByteArray(Format.Jpg));
                 using XImage xImage = XImage.FromStream(ms);
                 XSize size = PageSizeConverter.ToSize(PageSize.A4);
-                gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
+                if (bitmapframe.PixelWidth < bitmapframe.PixelHeight)
+                {
+                    gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
+                }
+                else
+                {
+                    page.Orientation = PageOrientation.Landscape;
+                    gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
+                }
                 XTextFormatter textformatter = new(gfx);
                 foreach (OcrData item in ScannedText)
                 {
