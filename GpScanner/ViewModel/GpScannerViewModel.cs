@@ -269,6 +269,19 @@ namespace GpScanner.ViewModel
             }
         }
 
+        public ResultPoint[] BarcodePosition
+        {
+            get => barcodePosition; set
+
+            {
+                if (barcodePosition != value)
+                {
+                    barcodePosition = value;
+                    OnPropertyChanged(nameof(BarcodePosition));
+                }
+            }
+        }
+
         public XmlLanguage CalendarLang
         {
             get => calendarLang;
@@ -623,21 +636,20 @@ namespace GpScanner.ViewModel
             }
         }
 
-        public string GetImageBarcodeResult(byte[] imgbyte)
+        public Result GetImageBarcodeResult(byte[] imgbyte)
         {
             using MemoryStream ms = new(imgbyte);
             using System.Drawing.Bitmap bmp = new(ms);
             IBarcodeReader reader = new BarcodeReader();
             Result result = reader.Decode(bmp);
             imgbyte = null;
-            return result != null ? result.Text : string.Empty;
+            return result;
         }
 
-        public string GetImageBarcodeResult(System.Drawing.Bitmap bitmap)
+        public Result GetImageBarcodeResult(System.Drawing.Bitmap bitmap)
         {
             IBarcodeReader reader = new BarcodeReader();
-            Result result = reader.Decode(bitmap);
-            return result != null ? result.Text : string.Empty;
+            return reader.Decode(bitmap);
         }
 
         public string GetPatchCodeResult(string barcode)
@@ -693,6 +705,8 @@ namespace GpScanner.ViewModel
         private string aramaMetni;
 
         private string barcodeContent;
+
+        private ResultPoint[] barcodePosition;
 
         private XmlLanguage calendarLang;
 

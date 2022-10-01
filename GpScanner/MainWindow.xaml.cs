@@ -7,6 +7,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using GpScanner.ViewModel;
 using TwainControl;
+using ZXing;
 
 namespace GpScanner
 {
@@ -54,9 +55,11 @@ namespace GpScanner
             {
                 if (ViewModel.DetectBarCode)
                 {
-                    ViewModel.BarcodeContent = ViewModel.GetImageBarcodeResult(TwainCtrl.Scanner.Resimler.LastOrDefault().Resim.BitmapSourceToBitmap());
+                    Result result = ViewModel.GetImageBarcodeResult(TwainCtrl.Scanner.Resimler.LastOrDefault().Resim.BitmapSourceToBitmap());
+                    ViewModel.BarcodeContent = result?.Text;
+                    ViewModel.BarcodePosition = result?.ResultPoints;
                 }
-                if (ViewModel.DetectBarCode && ViewModel.DetectPageSeperator)
+                if (ViewModel.DetectBarCode && ViewModel.DetectPageSeperator && ViewModel.BarcodeContent is not null)
                 {
                     TwainCtrl.Scanner.FileName = ViewModel.GetPatchCodeResult(ViewModel.BarcodeContent);
                 }
@@ -64,7 +67,7 @@ namespace GpScanner
 
             if (e.PropertyName is "ImgData" && TwainCtrl.ImgData is not null)
             {
-                ViewModel.BarcodeContent = ViewModel.GetImageBarcodeResult(TwainCtrl.ImgData);
+                ViewModel.BarcodeContent = ViewModel.GetImageBarcodeResult(TwainCtrl.ImgData)?.Text;
                 _ = ViewModel.Ocr(TwainCtrl.ImgData);
                 TwainCtrl.ImgData = null;
             }

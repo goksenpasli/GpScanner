@@ -165,24 +165,24 @@ namespace TwainControl
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     pdfsavetask = Task.Run(() =>
-                       {
-                           if (saveFileDialog.FilterIndex == 1)
-                           {
-                               PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToList(), Format.Jpg).Save(saveFileDialog.FileName);
-                           }
-                           if (saveFileDialog.FilterIndex == 2)
-                           {
-                               PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToList(), Format.Tiff).Save(saveFileDialog.FileName);
-                           }
-                           if (saveFileDialog.FilterIndex == 3)
-                           {
-                               string dosyayolu = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
-                               PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToList(), Format.Jpg).Save(dosyayolu);
-                               using ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Create);
-                               _ = archive.CreateEntryFromFile(dosyayolu, $"{Scanner.SaveFileName}.pdf", CompressionLevel.Optimal);
-                               File.Delete(dosyayolu);
-                           }
-                       });
+                    {
+                        if (saveFileDialog.FilterIndex == 1)
+                        {
+                            PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToList(), Format.Jpg).Save(saveFileDialog.FileName);
+                        }
+                        if (saveFileDialog.FilterIndex == 2)
+                        {
+                            PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToList(), Format.Tiff).Save(saveFileDialog.FileName);
+                        }
+                        if (saveFileDialog.FilterIndex == 3)
+                        {
+                            string dosyayolu = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
+                            PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToList(), Format.Jpg).Save(dosyayolu);
+                            using ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Create);
+                            _ = archive.CreateEntryFromFile(dosyayolu, $"{Scanner.SaveFileName}.pdf", CompressionLevel.Optimal);
+                            File.Delete(dosyayolu);
+                        }
+                    });
                 }
             }, parameter =>
             {
@@ -381,14 +381,14 @@ namespace TwainControl
                                 {
                                     SynchronizationContext uiContext = SynchronizationContext.Current;
                                     byte[] filedata = null;
-                                    pdfloadtask = Task.Run(() =>
+                                    pdfloadtask = Task.Run(async () =>
                                     {
                                         filedata = File.ReadAllBytes(item);
                                         double totalpagecount = PdfViewer.PdfViewer.PdfPageCount(filedata);
                                         for (int i = 1; i <= totalpagecount; i++)
                                         {
-                                            MemoryStream ms = PdfViewer.PdfViewer.ConvertToImgStream(filedata, i, (int)ImgLoadResolution);
-                                            BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(decodeheight, ms);
+                                            BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(decodeheight, await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, (int)ImgLoadResolution));
+                                            bitmapFrame.Freeze();
                                             uiContext.Send(_ =>
                                             {
                                                 Scanner?.Resimler.Add(new ScannedImage() { Resim = bitmapFrame });
@@ -396,8 +396,8 @@ namespace TwainControl
                                             }, null);
                                             bitmapFrame = null;
                                         }
+                                        filedata = null;
                                     });
-                                    filedata = null;
                                     break;
                                 }
 
@@ -410,6 +410,7 @@ namespace TwainControl
                             case ".bmp":
                                 {
                                     BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(decodeheight, new Uri(item));
+                                    bitmapFrame.Freeze();
                                     Scanner?.Resimler.Add(new ScannedImage() { Resim = bitmapFrame });
                                     bitmapFrame = null;
                                     break;
