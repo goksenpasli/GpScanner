@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -740,22 +741,13 @@ namespace TwainControl
         private BitmapSource EvrakOluştur(Bitmap bitmap)
         {
             int decodepixelheight = (int)(A4Height / 2.54 * Settings.Default.Çözünürlük);
-            if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
-            {
-                return bitmap.ConvertBlackAndWhite(Scanner.Eşik).ToBitmapImage(ImageFormat.Tiff, decodepixelheight);
-            }
-            else if ((ColourSetting)Settings.Default.Mode == ColourSetting.GreyScale)
-            {
-                return bitmap.ConvertBlackAndWhite(Scanner.Eşik, true).ToBitmapImage(ImageFormat.Jpeg, decodepixelheight);
-            }
-            else if ((ColourSetting)Settings.Default.Mode == ColourSetting.Colour)
-            {
-                return bitmap.ToBitmapImage(ImageFormat.Jpeg, decodepixelheight);
-            }
-            else
-            {
-                return null;
-            }
+            return (ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite
+                ? bitmap.ConvertBlackAndWhite(Scanner.Eşik).ToBitmapImage(ImageFormat.Tiff, decodepixelheight)
+                : (ColourSetting)Settings.Default.Mode == ColourSetting.GreyScale
+                    ? bitmap.ConvertBlackAndWhite(Scanner.Eşik, true).ToBitmapImage(ImageFormat.Jpeg, decodepixelheight)
+                    : (ColourSetting)Settings.Default.Mode == ColourSetting.Colour
+                                    ? bitmap.ToBitmapImage(ImageFormat.Jpeg, decodepixelheight)
+                                    : null;
         }
 
         private void Fastscan(object sender, ScanningCompleteEventArgs e)
@@ -921,6 +913,41 @@ namespace TwainControl
             Scanner.CroppedImage = null;
         }
 
+        private void Run_Drop(object sender, DragEventArgs e)
+        {
+            if (sender is Run run)
+            {
+                ScannedImage droppedData = e.Data.GetData(typeof(ScannedImage)) as ScannedImage;
+                ScannedImage target = run.DataContext as ScannedImage;
+
+                int removedIdx = Scanner.Resimler.IndexOf(droppedData);
+                int targetIdx = Scanner.Resimler.IndexOf(target);
+
+                if (removedIdx < targetIdx)
+                {
+                    Scanner.Resimler.Insert(targetIdx + 1, droppedData);
+                    Scanner.Resimler.RemoveAt(removedIdx);
+                }
+                else
+                {
+                    int remIdx = removedIdx + 1;
+                    if (Scanner.Resimler.Count + 1 > remIdx)
+                    {
+                        Scanner.Resimler.Insert(targetIdx, droppedData);
+                        Scanner.Resimler.RemoveAt(remIdx);
+                    }
+                }
+            }
+        }
+
+        private void Run_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            if (sender is Run run && e.LeftButton == MouseButtonState.Pressed)
+            {
+                _ = DragDrop.DoDragDrop(run, run.DataContext, DragDropEffects.Move);
+            }
+        }
+
         private void ScanCommonSettings()
         {
             Scanner.ArayüzEtkin = false;
@@ -1005,7 +1032,8 @@ namespace TwainControl
                 önizleme.Freeze();
                 BitmapFrame bitmapFrame = BitmapFrame.Create(evrak, önizleme);
                 bitmapFrame.Freeze();
-                Scanner?.Resimler?.Add(new ScannedImage() { Resim = bitmapFrame });
+                ObservableCollection<ScannedImage> resimler = Scanner?.Resimler;
+                resimler?.Add(new ScannedImage() { Resim = bitmapFrame });
                 evrak = null;
                 önizleme = null;
                 bitmapFrame = null;

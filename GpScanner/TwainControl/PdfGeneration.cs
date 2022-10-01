@@ -73,6 +73,17 @@ namespace TwainControl
             doc.Options.EnableCcittCompressionForBilevelImages = true;
         }
 
+        public static PdfDocument ExtractPdfPages(string filename, int startpage, int endpage)
+        {
+            using PdfDocument inputDocument = PdfReader.Open(filename, PdfDocumentOpenMode.Import);
+            using PdfDocument outputDocument = new();
+            for (int i = startpage - 1; i <= endpage - 1; i++)
+            {
+                outputDocument.AddPage(inputDocument.Pages[i]);
+            }
+            return outputDocument;
+        }
+
         public static PdfDocument GeneratePdf(IList<ScannedImage> bitmapFrames, Format format)
         {
             using PdfDocument document = new();

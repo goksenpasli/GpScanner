@@ -49,15 +49,15 @@
                 <UniformGrid Columns="2">
                     <Button Command="{Binding ChangeDataFolder}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc FILE}" />
-                            <Image Width="16" Height="16">
+                            <Image Width="24" Height="24">
                                 <Image.Source>
                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Shell32.dll" />
-                                        <Binding Source="4" />
+                                        <Binding Source="Imageres.dll" />
+                                        <Binding Source="8" />
                                     </MultiBinding>
                                 </Image.Source>
                             </Image>
+                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc FILE}" />
                         </StackPanel>
                     </Button>
                     <ComboBox VerticalContentAlignment="Center"

@@ -11,14 +11,12 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Markup;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Extensions;
 using GpScanner.Properties;
 using Microsoft.Win32;
 using PdfSharp.Pdf;
-using PdfSharp.Pdf.IO;
 using TwainControl;
 using ZXing;
 using static Extensions.ExtensionMethods;
@@ -145,18 +143,14 @@ namespace GpScanner.ViewModel
             {
                 if (parameter is string filename)
                 {
-                    using PdfDocument inputDocument = PdfReader.Open(filename, PdfDocumentOpenMode.Import);
-                    using PdfDocument outputDocument = new();
-                    for (int i = SayfaBaşlangıç - 1; i <= SayfaBitiş - 1; i++)
-                    {
-                        _ = outputDocument.AddPage(inputDocument.Pages[i]);
-                    }
                     SaveFileDialog saveFileDialog = new()
                     {
                         Filter = "Pdf Dosyası(*.pdf)|*.pdf",
+                        FileName = $"{Path.GetFileNameWithoutExtension(filename)} {SayfaBaşlangıç}-{SayfaBitiş}.pdf"
                     };
                     if (saveFileDialog.ShowDialog() == true)
                     {
+                        using PdfDocument outputDocument = PdfGeneration.ExtractPdfPages(filename, SayfaBaşlangıç, SayfaBitiş);
                         PdfGeneration.DefaultPdfCompression(outputDocument);
                         outputDocument.Save(saveFileDialog.FileName);
                     }
@@ -171,10 +165,6 @@ namespace GpScanner.ViewModel
                     {
                         Filter = "Pdf Dosyası(*.pdf)|*.pdf",
                     };
-                    if (ScannedText?.Any() == false)
-                    {
-                        _ = MessageBox.Show("Metin İçeriği Yok. Evrak Ocrsız Kaydedilecek.");
-                    }
                     if (saveFileDialog.ShowDialog() == true)
                     {
                         PdfGeneration.GeneratePdf(twainCtrl.SeçiliResim.Resim, ScannedText).Save(saveFileDialog.FileName);
@@ -827,12 +817,6 @@ namespace GpScanner.ViewModel
                 timer.Stop();
                 timer.Tick -= OnTick;
             }
-        }
-
-        private Brush RandomColor()
-        {
-            Random rand = new(Guid.NewGuid().GetHashCode());
-            return new SolidColorBrush(Color.FromRgb((byte)rand.Next(0, 256), (byte)rand.Next(0, 256), (byte)rand.Next(0, 256)));
         }
     }
 }

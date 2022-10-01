@@ -497,10 +497,13 @@
                                         <ControlTemplate>
                                             <StackPanel Background="{TemplateBinding Background}">
                                                 <TextBlock HorizontalAlignment="Center">
+                                                    <Run AllowDrop="True" Drop="Run_Drop" FontFamily="Wingdings"
+                                                        FontSize="24" FontWeight="Bold" Foreground="Red"
+                                                        PreviewMouseMove="Run_PreviewMouseMove" Text="B" />
                                                     <Hyperlink Command="{Binding ElementName=UserControl, Path=DataContext.Kaydet}"
                                                         CommandParameter="{Binding Mode=OneWay}"
                                                         TextDecorations="None">
-                                                        <Image Width="32" Height="32">
+                                                        <Image Width="24" Height="24">
                                                             <Image.Source>
                                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                                     <Binding Source="Shell32.dll" />
@@ -512,7 +515,7 @@
                                                     <Hyperlink Command="{Binding ElementName=UserControl, Path=DataContext.ResimSil}"
                                                         CommandParameter="{Binding Mode=OneWay}"
                                                         FontFamily="Segoe UI Black" TextDecorations="None">
-                                                        <Image Width="32" Height="32">
+                                                        <Image Width="24" Height="24">
                                                             <Image.Source>
                                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                                     <Binding Source="Shell32.dll" />

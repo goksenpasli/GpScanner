@@ -259,6 +259,14 @@ namespace Extensions
             }
         }
 
+        public static System.Windows.Media.Brush RandomColor()
+        {
+            Random rand = new(Guid.NewGuid().GetHashCode());
+            SolidColorBrush brush = new(System.Windows.Media.Color.FromRgb((byte)rand.Next(0, 256), (byte)rand.Next(0, 256), (byte)rand.Next(0, 256)));
+            brush.Freeze();
+            return brush;
+        }
+
         public static BitmapSource Resize(this BitmapSource bfPhoto, double nWidth, double nHeight, double rotate = 0, int dpiX = 96, int dpiY = 96)
         {
             RotateTransform rotateTransform = new(rotate);
