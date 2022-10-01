@@ -35,9 +35,9 @@
             </Style>
         </Grid.Style>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="7*" />
+            <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="3" />
-            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
         <twainctrl:TwainCtrl x:Name="TwainCtrl" />
         <GridSplitter Grid.Column="1"
@@ -244,15 +244,13 @@
                         IsEnabled="{Binding DetectBarCode}" />
                 </UniformGrid>
                 <UniformGrid Grid.Row="4"
-                    Columns="2"
+                    Columns="3"
                     IsEnabled="{Binding DetectPageSeperator}"
-                    Rows="3">
+                    Rows="2">
                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
                         Text="{twainctrl:Loc FILENAME}" />
                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
                         Text="{twainctrl:Loc TAG}" />
-                    <TextBox Text="{Binding PatchFileName, UpdateSourceTrigger=PropertyChanged}" />
-                    <TextBox Text="{Binding PatchTag, UpdateSourceTrigger=PropertyChanged}" />
                     <ComboBox ItemsSource="{Binding PatchCodes, Source={x:Static properties:Settings.Default}}" SelectedItem="{Binding PatchProfileName}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
@@ -267,19 +265,34 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <Button Command="{Binding SavePatchProfile}" Content="{twainctrl:Loc SAVEPROFILE}" />
+                    <TextBox Text="{Binding PatchFileName, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBox Text="{Binding PatchTag, UpdateSourceTrigger=PropertyChanged}" />
+                    <Button Command="{Binding SavePatchProfile}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="6" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SAVEPROFILE}" />
+                        </StackPanel>
+                    </Button>
                 </UniformGrid>
                 <ListBox Grid.Row="5"
+                    d:ItemsSource="{d:SampleData ItemCount=5}"
                     Background="{StaticResource BorderBackground}"
                     IsSynchronizedWithCurrentItem="False"
                     ItemsSource="{Binding Mode=OneWay, Source={StaticResource Veriler}}"
                     SelectedItem="{Binding SelectedDocument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     SelectionMode="Extended" VirtualizingPanel.CacheLength="2,2"
                     VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                    VirtualizingPanel.ScrollUnit="Item" VirtualizingPanel.VirtualizationMode="Standard" d:ItemsSource="{d:SampleData ItemCount=5}">
+                    VirtualizingPanel.ScrollUnit="Item" VirtualizingPanel.VirtualizationMode="Standard">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="160,220" />
+                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="160,220" SpacingMode="None" />
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
                     <ListBox.ItemContainerStyle>

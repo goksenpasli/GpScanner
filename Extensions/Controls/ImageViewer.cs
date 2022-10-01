@@ -24,7 +24,7 @@ namespace Extensions
 
     [TemplatePart(Name = "PanoramaViewPort", Type = typeof(Viewport3D))]
     [TemplatePart(Name = "panoramaBrush", Type = typeof(DiffuseMaterial))]
-    public class ImageViewer : Control, INotifyPropertyChanged
+    public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
     {
         public static readonly DependencyProperty AngleProperty = DependencyProperty.Register("Angle", typeof(double), typeof(ImageViewer), new PropertyMetadata(0.0));
 
@@ -321,8 +321,8 @@ namespace Extensions
 
         public Visibility ToolBarVisibility
         {
-            get { return (Visibility)GetValue(ToolBarVisibilityProperty); }
-            set { SetValue(ToolBarVisibilityProperty, value); }
+            get => (Visibility)GetValue(ToolBarVisibilityProperty);
+            set => SetValue(ToolBarVisibilityProperty, value);
         }
 
         public virtual ICommand ViewerBack { get; set; }
@@ -335,6 +335,12 @@ namespace Extensions
         {
             get => (double)GetValue(ZoomProperty);
             set => SetValue(ZoomProperty, value);
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
 
         public override void OnApplyTemplate()
@@ -363,6 +369,18 @@ namespace Extensions
             return new Point3D(x, y, z);
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    ImageFilePath = null;
+                }
+                disposedValue = true;
+            }
+        }
+
         protected virtual void OnPropertyChanged(string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -381,6 +399,8 @@ namespace Extensions
         private Viewport3D _viewport;
 
         private TiffBitmapDecoder decoder;
+
+        private bool disposedValue;
 
         private FitImageOrientation fitImageOrientation;
 

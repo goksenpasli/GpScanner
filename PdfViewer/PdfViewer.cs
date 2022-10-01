@@ -34,6 +34,8 @@ namespace PdfViewer
 
         public static readonly DependencyProperty PdfFileStreamProperty = DependencyProperty.Register("PdfFileStream", typeof(byte[]), typeof(PdfViewer), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.NotDataBindable, async (o, e) => await PdfStreamChangedAsync(o, e)));
 
+        public static readonly DependencyProperty ScrollBarVisibleProperty = DependencyProperty.Register("ScrollBarVisible", typeof(ScrollBarVisibility), typeof(PdfViewer), new PropertyMetadata(ScrollBarVisibility.Auto));
+
         public static readonly DependencyProperty SnapTickProperty = DependencyProperty.Register("SnapTick", typeof(bool), typeof(PdfViewer), new PropertyMetadata(false));
 
         public static readonly DependencyProperty SourceProperty = DependencyProperty.Register("Source", typeof(ImageSource), typeof(PdfViewer), new PropertyMetadata(null, SourceChanged));
@@ -287,6 +289,12 @@ namespace PdfViewer
             }
         }
 
+        public ScrollBarVisibility ScrollBarVisible
+        {
+            get => (ScrollBarVisibility)GetValue(ScrollBarVisibleProperty);
+            set => SetValue(ScrollBarVisibleProperty, value);
+        }
+
         public bool SnapTick
         {
             get => (bool)GetValue(SnapTickProperty);
@@ -371,6 +379,7 @@ namespace PdfViewer
                     bitmap.DecodePixelWidth = thumbdpi;
                 }
                 bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
                 bitmap.StreamSource = stream;
                 bitmap.EndInit();
                 bitmap.Freeze();
@@ -382,7 +391,7 @@ namespace PdfViewer
 
         public static async Task<BitmapImage> ConvertToImg(byte[] stream, int page, int dpi, bool fasterimage = false)
         {
-            return stream.Length > 0 ? await Task.Run(() => BitmapSourceFromByteArray(Pdf2Png.Convert(stream, page, dpi), false, dpi)) : null;
+            return stream.Length > 0 ? await Task.Run(() => BitmapSourceFromByteArray(Pdf2Png.Convert(stream, page, dpi), fasterimage, dpi)) : null;
         }
 
         public static async Task<MemoryStream> ConvertToImgStreamAsync(byte[] stream, int page, int dpi)
@@ -407,8 +416,7 @@ namespace PdfViewer
             {
                 if (disposing)
                 {
-                    PdfFileStream = null;
-                    Source = null;
+                    PdfFilePath = null;
                 }
                 disposedValue = true;
             }
@@ -451,9 +459,9 @@ namespace PdfViewer
 
         private static async Task PdfFilePathChangedAsync(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is PdfViewer pdfViewer && File.Exists(e.NewValue as string) && string.Equals(Path.GetExtension(e.NewValue as string), ".pdf", StringComparison.OrdinalIgnoreCase))
+            if (d is PdfViewer pdfViewer)
             {
-                if (e.NewValue is not null)
+                if (e.NewValue is not null && File.Exists(e.NewValue as string) && string.Equals(Path.GetExtension(e.NewValue as string), ".pdf", StringComparison.OrdinalIgnoreCase))
                 {
                     pdfViewer.PdfFileStream = await Task.Run(() => File.ReadAllBytes(e.NewValue as string));
                     pdfViewer.Sayfa = 1;

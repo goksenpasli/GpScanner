@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
-                    xmlns:local="clr-namespace:PdfViewer">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
+    xmlns:local="clr-namespace:PdfViewer">
     <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
     <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
     <Style TargetType="{x:Type local:PdfViewer}">
@@ -13,7 +13,7 @@
                             <RowDefinition />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                        <ScrollViewer HorizontalScrollBarVisibility="{Binding ScrollBarVisible, RelativeSource={RelativeSource TemplatedParent}}" VerticalScrollBarVisibility="{Binding ScrollBarVisible, RelativeSource={RelativeSource TemplatedParent}}">
                             <Image RenderTransformOrigin="0.5,0.5" ScrollViewer.CanContentScroll="True"
                                 Source="{Binding Source, RelativeSource={RelativeSource TemplatedParent}}"
                                 Stretch="None">

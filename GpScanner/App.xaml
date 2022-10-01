@@ -136,7 +136,8 @@
                 <PdfViewer:PdfViewer Width="126" Height="178"
                     FirstPageThumbnail="True"
                     PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                    PrintButtonVisibility="Collapsed" SnapTick="True" ToolBarVisibility="Collapsed" />
+                    PrintButtonVisibility="Collapsed" ScrollBarVisible="Hidden" SnapTick="True"
+                    ToolBarVisibility="Collapsed" />
             </DataTemplate>
             <DataTemplate x:Key="PdfViewerTemplateFull">
                 <Grid>

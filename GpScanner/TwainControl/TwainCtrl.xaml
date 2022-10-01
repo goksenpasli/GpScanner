@@ -293,7 +293,7 @@
                                                 </MultiBinding>
                                             </Image.Source>
                                         </Image>
-                                        <TextBlock Text="{local:Loc SAVEPROFILE}" />
+                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc SAVEPROFILE}" />
                                     </StackPanel>
                                 </Button>
                                 <ComboBox HorizontalContentAlignment="Stretch"
@@ -543,7 +543,7 @@
                         </ListBox.ItemContainerStyle>
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" />
+                                <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" SpacingMode="None" />
                             </ItemsPanelTemplate>
                         </ListBox.ItemsPanel>
                     </ListBox>
