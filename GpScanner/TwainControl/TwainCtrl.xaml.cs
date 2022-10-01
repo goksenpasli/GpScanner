@@ -243,6 +243,7 @@ namespace TwainControl
                 Scanner.CroppedImage = SeçiliResim.Resim;
                 Scanner.CroppedImage.Freeze();
                 Scanner.CopyCroppedImage = Scanner.CroppedImage;
+                Scanner.CroppedImage.Freeze();
             }, parameter => SeçiliResim is not null);
 
             InsertFileNamePlaceHolder = new RelayCommand<object>(parameter =>
@@ -739,9 +740,22 @@ namespace TwainControl
         private BitmapSource EvrakOluştur(Bitmap bitmap)
         {
             int decodepixelheight = (int)(A4Height / 2.54 * Settings.Default.Çözünürlük);
-            return ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite) ? bitmap.ConvertBlackAndWhite(Scanner.Eşik).ToBitmapImage(ImageFormat.Tiff, decodepixelheight) : ((ColourSetting)Settings.Default.Mode == ColourSetting.GreyScale) ? bitmap.ConvertBlackAndWhite(Scanner.Eşik, true).ToBitmapImage(ImageFormat.Jpeg, decodepixelheight) : (ColourSetting)Settings.Default.Mode == ColourSetting.Colour
-                ? bitmap.ToBitmapImage(ImageFormat.Jpeg, decodepixelheight)
-                : (BitmapSource)null;
+            if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
+            {
+                return bitmap.ConvertBlackAndWhite(Scanner.Eşik).ToBitmapImage(ImageFormat.Tiff, decodepixelheight);
+            }
+            else if ((ColourSetting)Settings.Default.Mode == ColourSetting.GreyScale)
+            {
+                return bitmap.ConvertBlackAndWhite(Scanner.Eşik, true).ToBitmapImage(ImageFormat.Jpeg, decodepixelheight);
+            }
+            else if ((ColourSetting)Settings.Default.Mode == ColourSetting.Colour)
+            {
+                return bitmap.ToBitmapImage(ImageFormat.Jpeg, decodepixelheight);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         private void Fastscan(object sender, ScanningCompleteEventArgs e)
@@ -926,6 +940,7 @@ namespace TwainControl
                     Scanner.CroppedImage = new CroppedBitmap(SeçiliResim.Resim, sourceRect);
                     Scanner.CroppedImage.Freeze();
                     Scanner.CopyCroppedImage = Scanner.CroppedImage;
+                    Scanner.CopyCroppedImage.Freeze();
                     Scanner.CropDialogExpanded = true;
                 }
             }

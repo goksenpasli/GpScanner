@@ -483,7 +483,7 @@
                         SelectedItem="{Binding SeçiliResim}"
                         SelectionMode="Extended" VirtualizingPanel.CacheLength="2,2"
                         VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                        VirtualizingPanel.ScrollUnit="Item" VirtualizingPanel.VirtualizationMode="Standard">
+                        VirtualizingPanel.ScrollUnit="Item" VirtualizingPanel.VirtualizationMode="Recycling">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
                                 <Style.Triggers>
@@ -686,7 +686,7 @@
                         <Canvas x:Name="cnv" />
                     </Grid>
                 </DockPanel>
-                <Expander Height="550"
+                <Expander Height="575"
                     HorizontalAlignment="Left" VerticalAlignment="Bottom"
                     ExpandDirection="Up"
                     IsExpanded="{Binding Scanner.CropDialogExpanded}">
@@ -716,43 +716,46 @@
                                         Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
                                         Minimum="0" SmallChange="1"
                                         Value="{Binding Scanner.CropRight}" />
-                                    <Grid>
-                                        <Border BorderBrush="{StaticResource GroupBoxBackGround}" BorderThickness="1">
+                                    <Border Background="{StaticResource BorderBackground}"
+                                        BorderBrush="{StaticResource GroupBoxBackGround}"
+                                        BorderThickness="1">
+                                        <Grid Width="200" Height="200">
+                                            <Image x:Name="Img" Source="{Binding Scanner.CroppedImage}" />
                                             <Grid x:Name="LineGrid"
-                                                Width="105" Height="149"
-                                                ShowGridLines="True">
-                                                <Grid.Background>
-                                                    <ImageBrush ImageSource="{Binding Scanner.CroppedImage}" />
-                                                </Grid.Background>
-                                            </Grid>
-                                        </Border>
-                                        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                                            FontFamily="Webdings" FontSize="20" Foreground="Red"
-                                            Text="N">
-                                            <TextBlock.ToolTip>
-                                                <Image Source="{Binding Scanner.CroppedImage}" />
-                                            </TextBlock.ToolTip>
-                                        </TextBlock>
-                                    </Grid>
+                                                Width="{Binding ElementName=Img, Path=ActualWidth}"
+                                                Height="{Binding ElementName=Img, Path=ActualHeight}"
+                                                ShowGridLines="True" />
+                                            <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                                FontFamily="Webdings" FontSize="20" Foreground="Red"
+                                                Text="N">
+                                                <TextBlock.ToolTip>
+                                                    <Image Source="{Binding Scanner.CroppedImage}" />
+                                                </TextBlock.ToolTip>
+                                            </TextBlock>
+                                        </Grid>
+                                    </Border>
                                 </DockPanel>
-                                <Slider IsSnapToTickEnabled="True" Maximum="360" Minimum="0"
-                                    Orientation="Horizontal" SmallChange="1"
-                                    Style="{StaticResource Slider}"
-                                    Ticks="0, 90, 180, 270, 360"
-                                    Value="{Binding Scanner.CroppedImageAngle}" />
-                                <Button Background="Green" Command="{Binding LoadCroppedImage}">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Width="32" Height="32">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="1" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc PREVIEWFILE}" />
-                                    </StackPanel>
-                                </Button>
+                                <UniformGrid Columns="2">
+                                    <Slider VerticalAlignment="Center"
+                                        IsSnapToTickEnabled="True" Maximum="360" Minimum="0"
+                                        Orientation="Horizontal" SmallChange="1"
+                                        Style="{StaticResource Slider}"
+                                        Ticks="0, 90, 180, 270, 360"
+                                        Value="{Binding Scanner.CroppedImageAngle}" />
+                                    <Button Background="Green" Command="{Binding LoadCroppedImage}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="32" Height="32">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="1" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc PREVIEWFILE}" />
+                                        </StackPanel>
+                                    </Button>
+                                </UniformGrid>
                                 <UniformGrid Margin="1"
                                     Columns="2" Rows="12">
                                     <TextBlock VerticalAlignment="Center" Text="{local:Loc WIDTHCOUNT}" />

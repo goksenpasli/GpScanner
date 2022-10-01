@@ -98,6 +98,7 @@ namespace Extensions
                       }
                   });
                 bitmap.UnlockBits(bitmapData);
+                bitmapData = null;
             }
 
             return bitmap;
@@ -305,7 +306,7 @@ namespace Extensions
         {
             if (bitmap != null)
             {
-                using MemoryStream memoryStream = new();
+                MemoryStream memoryStream = new();
                 bitmap.Save(memoryStream, format);
                 memoryStream.Position = 0;
                 BitmapImage image = new();
@@ -315,7 +316,7 @@ namespace Extensions
                     image.DecodePixelHeight = bitmap.Height > (int)decodeheight ? (int)decodeheight : bitmap.Height;
                 }
 
-                image.CacheOption = BitmapCacheOption.OnLoad;
+                image.CacheOption = BitmapCacheOption.None;
                 image.StreamSource = memoryStream;
                 image.EndInit();
                 bitmap.Dispose();
