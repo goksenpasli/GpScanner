@@ -234,14 +234,15 @@ namespace Extensions
             double stdDev = 0;
             BitmapData bmData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, bitmap.PixelFormat);
             int stride = bmData.Stride;
-            IntPtr Scan0 = bmData.Scan0;
             unsafe
             {
-                byte* p = (byte*)(void*)Scan0;
+                int bytesPerPixel = Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
+                byte* p = (byte*)(void*)bmData.Scan0;
                 int nOffset = stride - (bitmap.Width * 3);
-                for (int y = 0; y < bitmap.Height; ++y)
+                int widthInBytes = bmData.Width * bytesPerPixel;
+                for (int y = 0; y < bmData.Height; ++y)
                 {
-                    for (int x = 0; x < bitmap.Width; ++x)
+                    for (int x = 0; x < widthInBytes; x += bytesPerPixel)
                     {
                         count++;
                         byte blue = p[0];
