@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BitmapMethods.cs" />
+    <Compile Include="OcrData.cs" />
     <Compile Include="PdfGeneration.cs" />
     <Compile Include="Properties\Resources.ar.Designer.cs">
       <AutoGen>True</AutoGen>

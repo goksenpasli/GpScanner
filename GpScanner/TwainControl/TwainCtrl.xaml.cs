@@ -262,23 +262,23 @@ namespace TwainControl
                 };
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    if (saveFileDialog.FilterIndex == 1)
+                    switch (saveFileDialog.FilterIndex)
                     {
-                        PdfGeneration.GeneratePdf((BitmapSource)parameter, Format.Jpg).Save(saveFileDialog.FileName);
-                        return;
-                    }
-                    if (saveFileDialog.FilterIndex == 2)
-                    {
-                        PdfGeneration.GeneratePdf((BitmapSource)parameter, Format.Tiff).Save(saveFileDialog.FileName);
-                        return;
-                    }
-                    if (saveFileDialog.FilterIndex == 3)
-                    {
-                        File.WriteAllBytes(saveFileDialog.FileName, ((BitmapSource)parameter).ToTiffJpegByteArray(Format.Jpg));
-                    }
-                    if (saveFileDialog.FilterIndex == 4)
-                    {
-                        File.WriteAllBytes(saveFileDialog.FileName, ((BitmapSource)parameter).ToTiffJpegByteArray(Format.Png));
+                        case 1:
+                            PdfGeneration.GeneratePdf((BitmapSource)parameter, Format.Jpg).Save(saveFileDialog.FileName);
+                            return;
+
+                        case 2:
+                            PdfGeneration.GeneratePdf((BitmapSource)parameter, Format.Tiff).Save(saveFileDialog.FileName);
+                            return;
+
+                        case 3:
+                            File.WriteAllBytes(saveFileDialog.FileName, ((BitmapSource)parameter).ToTiffJpegByteArray(Format.Jpg));
+                            return;
+
+                        case 4:
+                            File.WriteAllBytes(saveFileDialog.FileName, ((BitmapSource)parameter).ToTiffJpegByteArray(Format.Png));
+                            break;
                     }
                 }
             }, parameter => Scanner.CroppedImage is not null);
@@ -374,51 +374,7 @@ namespace TwainControl
                 };
                 if (openFileDialog.ShowDialog() == true)
                 {
-                    int decodeheight = (int)(A4Height / 2.54 * ImgLoadResolution);
-                    foreach (string item in openFileDialog.FileNames)
-                    {
-                        switch (Path.GetExtension(item.ToLower()))
-                        {
-                            case ".pdf":
-                                {
-                                    SynchronizationContext uiContext = SynchronizationContext.Current;
-                                    byte[] filedata = null;
-                                    pdfloadtask = Task.Run(async () =>
-                                    {
-                                        filedata = File.ReadAllBytes(item);
-                                        double totalpagecount = PdfViewer.PdfViewer.PdfPageCount(filedata);
-                                        for (int i = 1; i <= totalpagecount; i++)
-                                        {
-                                            BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(decodeheight, await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, (int)ImgLoadResolution));
-                                            bitmapFrame.Freeze();
-                                            uiContext.Send(_ =>
-                                            {
-                                                Scanner?.Resimler.Add(new ScannedImage() { Resim = bitmapFrame });
-                                                PdfLoadProgressValue = i / totalpagecount;
-                                            }, null);
-                                            bitmapFrame = null;
-                                        }
-                                        filedata = null;
-                                    });
-                                    break;
-                                }
-
-                            case ".jpg":
-                            case ".jpeg":
-                            case ".png":
-                            case ".gif":
-                            case ".tif":
-                            case ".tiff":
-                            case ".bmp":
-                                {
-                                    BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(decodeheight, new Uri(item));
-                                    bitmapFrame.Freeze();
-                                    Scanner?.Resimler.Add(new ScannedImage() { Resim = bitmapFrame });
-                                    bitmapFrame = null;
-                                    break;
-                                }
-                        }
-                    }
+                    AddFiles(openFileDialog.FileNames, DecodeHeight);
                 }
             }, parameter => true);
 
@@ -426,6 +382,7 @@ namespace TwainControl
 
             Settings.Default.PropertyChanged += Default_PropertyChanged;
 
+            DecodeHeight = (int)(A4Height / 2.54 * ImgLoadResolution);
             Scanner.SelectedProfile = Settings.Default.DefaultProfile;
         }
 
@@ -443,6 +400,20 @@ namespace TwainControl
                 {
                     croppedOcrBitmap = value;
                     OnPropertyChanged(nameof(CroppedOcrBitmap));
+                }
+            }
+        }
+
+        public int DecodeHeight
+        {
+            get => decodeHeight;
+
+            set
+            {
+                if (decodeHeight != value)
+                {
+                    decodeHeight = value;
+                    OnPropertyChanged(nameof(DecodeHeight));
                 }
             }
         }
@@ -504,7 +475,9 @@ namespace TwainControl
                 if (ımgLoadResolution != value)
                 {
                     ımgLoadResolution = value;
+                    DecodeHeight = (int)(A4Height / 2.54 * ImgLoadResolution);
                     OnPropertyChanged(nameof(ImgLoadResolution));
+                    OnPropertyChanged(nameof(DecodeHeight));
                 }
             }
         }
@@ -666,6 +639,8 @@ namespace TwainControl
 
         private CroppedBitmap croppedOcrBitmap;
 
+        private int decodeHeight;
+
         private bool disposedValue;
 
         private GridLength documentGridLength = new(5, GridUnitType.Star);
@@ -703,6 +678,54 @@ namespace TwainControl
         private GridLength twainGuiControlLength = new(3, GridUnitType.Star);
 
         private double width;
+
+        private void AddFiles(string[] filenames, int decodeheight)
+        {
+            foreach (string item in filenames)
+            {
+                switch (Path.GetExtension(item.ToLower()))
+                {
+                    case ".pdf":
+                        {
+                            SynchronizationContext uiContext = SynchronizationContext.Current;
+                            byte[] filedata = null;
+                            pdfloadtask = Task.Run(async () =>
+                            {
+                                filedata = File.ReadAllBytes(item);
+                                double totalpagecount = PdfViewer.PdfViewer.PdfPageCount(filedata);
+                                for (int i = 1; i <= totalpagecount; i++)
+                                {
+                                    BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(decodeheight, await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, (int)ImgLoadResolution));
+                                    bitmapFrame.Freeze();
+                                    uiContext.Send(_ =>
+                                    {
+                                        Scanner?.Resimler.Add(new ScannedImage() { Resim = bitmapFrame });
+                                        PdfLoadProgressValue = i / totalpagecount;
+                                    }, null);
+                                    bitmapFrame = null;
+                                }
+                                filedata = null;
+                            });
+                            break;
+                        }
+
+                    case ".jpg":
+                    case ".jpeg":
+                    case ".png":
+                    case ".gif":
+                    case ".tif":
+                    case ".tiff":
+                    case ".bmp":
+                        {
+                            BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(decodeheight, new Uri(item));
+                            bitmapFrame.Freeze();
+                            Scanner?.Resimler.Add(new ScannedImage() { Resim = bitmapFrame });
+                            bitmapFrame = null;
+                            break;
+                        }
+                }
+            }
+        }
 
         private void ButtonedTextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
@@ -894,6 +917,15 @@ namespace TwainControl
                         OnPropertyChanged(nameof(ImgData));
                     }
                 }
+            }
+        }
+
+        private void ListBox_Drop(object sender, DragEventArgs e)
+        {
+            string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
+            if (droppedfiles?.Length > 0)
+            {
+                AddFiles(droppedfiles, DecodeHeight);
             }
         }
 

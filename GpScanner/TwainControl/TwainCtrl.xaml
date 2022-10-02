@@ -46,7 +46,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
-                    <RowDefinition Height="81.6" />
+                    <RowDefinition Height="54.4" />
                 </Grid.RowDefinitions>
                 <ComboBox Grid.Row="0"
                     ItemsSource="{Binding Scanner.Tarayıcılar}"
@@ -477,8 +477,9 @@
                             </Extensions:ContentToggleButton>
                         </UniformGrid>
                     </GroupBox.Header>
-                    <ListBox Background="{StaticResource BorderBackground}"
-                        IsSynchronizedWithCurrentItem="False"
+                    <ListBox AllowDrop="True"
+                        Background="{StaticResource BorderBackground}"
+                        Drop="ListBox_Drop" IsSynchronizedWithCurrentItem="False"
                         ItemsSource="{Binding Scanner.Resimler, Mode=OneWay}"
                         SelectedItem="{Binding SeçiliResim}"
                         SelectionMode="Extended" VirtualizingPanel.CacheLength="2,2"
@@ -497,9 +498,9 @@
                                         <ControlTemplate>
                                             <StackPanel Background="{TemplateBinding Background}">
                                                 <TextBlock HorizontalAlignment="Center">
-                                                    <Run AllowDrop="True" Drop="Run_Drop" FontFamily="Wingdings"
-                                                        FontSize="24" FontWeight="Bold" Foreground="Red"
-                                                        PreviewMouseMove="Run_PreviewMouseMove" Text="B" />
+                                                    <Run AllowDrop="True" Cursor="SizeAll" Drop="Run_Drop"
+                                                        FontFamily="Wingdings" FontSize="24" FontWeight="Bold"
+                                                        Foreground="Red" PreviewMouseMove="Run_PreviewMouseMove" Text="B" />
                                                     <Hyperlink Command="{Binding ElementName=UserControl, Path=DataContext.Kaydet}"
                                                         CommandParameter="{Binding Mode=OneWay}"
                                                         TextDecorations="None">
@@ -552,7 +553,7 @@
                     </ListBox>
                 </GroupBox>
                 <UniformGrid Grid.Row="3"
-                    Columns="2" FirstColumn="1" Rows="3">
+                    Columns="3" FirstColumn="1" Rows="2">
                     <Extensions:SplitButton HorizontalContentAlignment="Stretch"
                         Command="{Binding LoadImage}"
                         PlacementMode="Top">
