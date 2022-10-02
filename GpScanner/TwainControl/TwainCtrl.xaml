@@ -47,7 +47,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
-                    <RowDefinition Height="54.4" />
+                    <RowDefinition Height="27.2" />
                 </Grid.RowDefinitions>
                 <ComboBox Grid.Row="0"
                     ItemsSource="{Binding Scanner.Tarayıcılar}"
@@ -382,104 +382,161 @@
                 </GroupBox>
                 <GroupBox Grid.Row="2">
                     <GroupBox.Header>
-                        <UniformGrid Columns="3" Rows="2">
-                            <Button Command="{Binding Tümünüİşaretle}">
-                                <Button.Content>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Width="16" Height="16">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Imageres.dll" />
-                                                    <Binding Source="248" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc ALL}" />
-                                    </StackPanel>
-                                </Button.Content>
-                            </Button>
-                            <Button Command="{Binding TümününİşaretiniKaldır}">
-                                <Button.Content>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Width="16" Height="16">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Imageres.dll" />
-                                                    <Binding Source="249" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc NONE}" />
-                                    </StackPanel>
-                                </Button.Content>
-                            </Button>
-                            <Button Command="{Binding Tersiniİşaretle}">
-                                <Button.Content>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Width="16" Height="16">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Imageres.dll" />
-                                                    <Binding Source="250" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc REVERSE}" />
-                                    </StackPanel>
-                                </Button.Content>
-                            </Button>
-                            <Slider Margin="2,0,2,0" VerticalAlignment="Center"
-                                AutoToolTipPlacement="TopLeft" Maximum="300" Minimum="85"
-                                SmallChange="1"
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Slider AutoToolTipPlacement="TopLeft" Maximum="300" Minimum="85"
+                                Orientation="Vertical" SmallChange="1"
                                 Style="{StaticResource Slider}"
                                 ToolTip="{local:Loc PREVIEWSIZE}"
                                 Value="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}" />
-                            <Extensions:ContentToggleButton>
-                                <Extensions:ContentToggleButton.OverContent>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Width="16" Height="16">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="47" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc PDFPROTECT}" />
-                                    </StackPanel>
-                                </Extensions:ContentToggleButton.OverContent>
-                                <GroupBox>
-                                    <GroupBox.Header>
+                            <DockPanel Grid.Column="1">
+                                <StackPanel DockPanel.Dock="Left">
+                                    <Extensions:ContentToggleButton Height="28.8">
+                                        <Extensions:ContentToggleButton.OverContent>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="24" Height="24">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="47" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                                <TextBlock VerticalAlignment="Center" Text="{local:Loc PDFPROTECT}" />
+                                            </StackPanel>
+                                        </Extensions:ContentToggleButton.OverContent>
+                                        <GroupBox>
+                                            <GroupBox.Header>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <CheckBox VerticalAlignment="Center"
+                                                        Content="{local:Loc ENCRYPT}"
+                                                        IsChecked="{Binding Scanner.PasswordProtect}" />
+                                                    <Image Width="32" Height="32">
+                                                        <Image.Source>
+                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                <Binding Source="Shell32.dll" />
+                                                                <Binding Source="77" />
+                                                            </MultiBinding>
+                                                        </Image.Source>
+                                                    </Image>
+                                                    <TextBlock VerticalAlignment="Center"
+                                                        FontSize="14"
+                                                        Text="{local:Loc PDFWARN}" />
+                                                </StackPanel>
+                                            </GroupBox.Header>
+                                            <StackPanel IsEnabled="{Binding Scanner.PasswordProtect}">
+                                                <HeaderedContentControl Header="{local:Loc PASSWORD}">
+                                                    <PasswordBox PasswordChanged="PasswordBox_PasswordChanged" />
+                                                </HeaderedContentControl>
+                                                <StackPanel IsEnabled="{Binding Scanner.PdfPassword, Converter={StaticResource NullableToBooleanConverter}}">
+                                                    <CheckBox Content="{local:Loc ALLOWPRINT}" IsChecked="{Binding Scanner.AllowPrint}" />
+                                                    <CheckBox Content="{local:Loc ALLOWCOPY}" IsChecked="{Binding Scanner.AllowCopy}" />
+                                                    <CheckBox Content="{local:Loc ALLOWEDIT}" IsChecked="{Binding Scanner.AllowEdit}" />
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </GroupBox>
+                                    </Extensions:ContentToggleButton>
+                                    <Button Height="28.8"
+                                        AllowDrop="True"
+                                        Command="{Binding PdfBirleştir}"
+                                        Drop="PdfMergeButton_Drop">
                                         <StackPanel Orientation="Horizontal">
-                                            <CheckBox VerticalAlignment="Center"
-                                                Content="{local:Loc ENCRYPT}"
-                                                IsChecked="{Binding Scanner.PasswordProtect}" />
-                                            <Image Width="32" Height="32">
+                                            <Image Width="24" Height="24">
                                                 <Image.Source>
                                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                         <Binding Source="Shell32.dll" />
-                                                        <Binding Source="77" />
+                                                        <Binding Source="68" />
                                                     </MultiBinding>
                                                 </Image.Source>
                                             </Image>
-                                            <TextBlock VerticalAlignment="Center"
-                                                FontSize="14"
-                                                Text="{local:Loc PDFWARN}" />
+                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc MERGEPDF}" />
                                         </StackPanel>
-                                    </GroupBox.Header>
-                                    <StackPanel IsEnabled="{Binding Scanner.PasswordProtect}">
-                                        <HeaderedContentControl Header="{local:Loc PASSWORD}">
-                                            <PasswordBox PasswordChanged="PasswordBox_PasswordChanged" />
-                                        </HeaderedContentControl>
-                                        <StackPanel IsEnabled="{Binding Scanner.PdfPassword, Converter={StaticResource NullableToBooleanConverter}}">
-                                            <CheckBox Content="{local:Loc ALLOWPRINT}" IsChecked="{Binding Scanner.AllowPrint}" />
-                                            <CheckBox Content="{local:Loc ALLOWCOPY}" IsChecked="{Binding Scanner.AllowCopy}" />
-                                            <CheckBox Content="{local:Loc ALLOWEDIT}" IsChecked="{Binding Scanner.AllowEdit}" />
+                                    </Button>
+                                </StackPanel>
+                                <StackPanel DockPanel.Dock="Right">
+                                    <Button Height="28.8"
+                                        Background="Yellow"
+                                        Command="{Binding SeçiliListeTemizle}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="24" Height="24">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="131" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc CLEARLIST}" />
                                         </StackPanel>
-                                    </StackPanel>
-                                </GroupBox>
-                            </Extensions:ContentToggleButton>
-                        </UniformGrid>
+                                    </Button>
+                                    <Button Height="28.8"
+                                        Background="Red"
+                                        Command="{Binding ListeTemizle}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="24" Height="24">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="131" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc CLEARLIST}" />
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                                <StackPanel>
+                                    <Button Command="{Binding Tümünüİşaretle}">
+                                        <Button.Content>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="16" Height="16">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Imageres.dll" />
+                                                            <Binding Source="248" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                                <TextBlock VerticalAlignment="Center" Text="{local:Loc ALL}" />
+                                            </StackPanel>
+                                        </Button.Content>
+                                    </Button>
+                                    <Button Command="{Binding TümününİşaretiniKaldır}">
+                                        <Button.Content>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="16" Height="16">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Imageres.dll" />
+                                                            <Binding Source="249" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                                <TextBlock VerticalAlignment="Center" Text="{local:Loc NONE}" />
+                                            </StackPanel>
+                                        </Button.Content>
+                                    </Button>
+                                    <Button Command="{Binding Tersiniİşaretle}">
+                                        <Button.Content>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="16" Height="16">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Imageres.dll" />
+                                                            <Binding Source="250" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                                <TextBlock VerticalAlignment="Center" Text="{local:Loc REVERSE}" />
+                                            </StackPanel>
+                                        </Button.Content>
+                                    </Button>
+                                </StackPanel>
+                            </DockPanel>
+                        </Grid>
                     </GroupBox.Header>
                     <ListBox AllowDrop="True"
                         Background="{StaticResource BorderBackground}"
@@ -556,8 +613,7 @@
                         </ListBox.ItemsPanel>
                     </ListBox>
                 </GroupBox>
-                <UniformGrid Grid.Row="3"
-                    Columns="3" FirstColumn="1" Rows="2">
+                <UniformGrid Grid.Row="3" Columns="3">
                     <Extensions:SplitButton HorizontalContentAlignment="Stretch"
                         Command="{Binding LoadImage}"
                         PlacementMode="Top">
@@ -605,34 +661,6 @@
                                     Text="{Binding Scanner.SeçiliResimSayısı}" />
                             </Canvas>
                             <TextBlock VerticalAlignment="Center" Text="{local:Loc SAVESELECTED}" />
-                        </StackPanel>
-                    </Button>
-                    <Button AllowDrop="True"
-                        Command="{Binding PdfBirleştir}"
-                        Drop="PdfMergeButton_Drop">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Width="24" Height="24">
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Shell32.dll" />
-                                        <Binding Source="68" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
-                            <TextBlock VerticalAlignment="Center" Text="{local:Loc MERGEPDF}" />
-                        </StackPanel>
-                    </Button>
-                    <Button Background="Red" Command="{Binding ListeTemizle}">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Width="24" Height="24">
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Shell32.dll" />
-                                        <Binding Source="131" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
-                            <TextBlock VerticalAlignment="Center" Text="{local:Loc CLEARLIST}" />
                         </StackPanel>
                     </Button>
                     <Button Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/goksenpasli">

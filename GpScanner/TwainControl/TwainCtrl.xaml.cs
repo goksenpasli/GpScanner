@@ -179,7 +179,7 @@ namespace TwainControl
                         {
                             string dosyayolu = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
                             PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToList(), Format.Jpg).Save(dosyayolu);
-                            using ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Create);
+                            using ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Update);
                             _ = archive.CreateEntryFromFile(dosyayolu, $"{Scanner.SaveFileName}.pdf", CompressionLevel.Optimal);
                             File.Delete(dosyayolu);
                         }
@@ -200,6 +200,16 @@ namespace TwainControl
                     GC.Collect();
                 }
             }, parameter => Scanner?.Resimler?.Count > 0);
+
+            SeçiliListeTemizle = new RelayCommand<object>(parameter =>
+            {
+                foreach (ScannedImage item in Scanner.Resimler.Where(z => z.Seçili).ToList())
+                {
+                    Scanner.Resimler?.Remove(item);
+                }
+                ResetCropMargin();
+                GC.Collect();
+            }, parameter => Scanner?.Resimler?.Any(z => z.Seçili) == true);
 
             SaveProfile = new RelayCommand<object>(parameter =>
             {
@@ -369,7 +379,7 @@ namespace TwainControl
                 }
                 OpenFileDialog openFileDialog = new()
                 {
-                    Filter = "Resim Dosyası (*.jpg;*.jpeg;*.png;*.gif;*.tif;*.tiff;*.bmp)|*.jpg;*.jpeg;*.png;*.gif;*.tif;*.tiff;*.bmp|Pdf Dosyası (*.pdf)|*.pdf",
+                    Filter = "Tüm Dosyalar (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf|Resim Dosyası (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle|Pdf Dosyası (*.pdf)|*.pdf",
                     Multiselect = true
                 };
                 if (openFileDialog.ShowDialog() == true)
@@ -539,6 +549,8 @@ namespace TwainControl
         }
 
         public ICommand Seçilikaydet { get; }
+
+        public ICommand SeçiliListeTemizle { get; }
 
         public ScannedImage SeçiliResim
         {
@@ -714,6 +726,8 @@ namespace TwainControl
 
                     case ".jpg":
                     case ".jpeg":
+                    case ".jfif":
+                    case ".jpe":
                     case ".png":
                     case ".gif":
                     case ".tif":
@@ -768,7 +782,7 @@ namespace TwainControl
         {
             int decodepixelheight = (int)(A4Height / 2.54 * Settings.Default.Çözünürlük);
             return (ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite
-                ? bitmap.ConvertBlackAndWhite(Scanner.Eşik).ToBitmapImage(ImageFormat.Tiff, decodepixelheight)
+                ? bitmap.ConvertBlackAndWhite(Scanner.Eşik).ToBitmapImage(ImageFormat.Jpeg, decodepixelheight)
                 : (ColourSetting)Settings.Default.Mode == ColourSetting.GreyScale
                     ? bitmap.ConvertBlackAndWhite(Scanner.Eşik, true).ToBitmapImage(ImageFormat.Jpeg, decodepixelheight)
                     : (ColourSetting)Settings.Default.Mode == ColourSetting.Colour
