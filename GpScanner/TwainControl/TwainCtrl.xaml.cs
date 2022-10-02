@@ -692,17 +692,20 @@ namespace TwainControl
                             pdfloadtask = Task.Run(async () =>
                             {
                                 filedata = File.ReadAllBytes(item);
-                                double totalpagecount = PdfViewer.PdfViewer.PdfPageCount(filedata);
-                                for (int i = 1; i <= totalpagecount; i++)
+                                if (PdfGeneration.IsValidPdfFile(filedata.Take(4)))
                                 {
-                                    BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(decodeheight, await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, (int)ImgLoadResolution));
-                                    bitmapFrame.Freeze();
-                                    uiContext.Send(_ =>
+                                    double totalpagecount = PdfViewer.PdfViewer.PdfPageCount(filedata);
+                                    for (int i = 1; i <= totalpagecount; i++)
                                     {
-                                        Scanner?.Resimler.Add(new ScannedImage() { Resim = bitmapFrame });
-                                        PdfLoadProgressValue = i / totalpagecount;
-                                    }, null);
-                                    bitmapFrame = null;
+                                        BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(decodeheight, await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, (int)ImgLoadResolution));
+                                        bitmapFrame.Freeze();
+                                        uiContext.Send(_ =>
+                                        {
+                                            Scanner?.Resimler.Add(new ScannedImage() { Resim = bitmapFrame });
+                                            PdfLoadProgressValue = i / totalpagecount;
+                                        }, null);
+                                        bitmapFrame = null;
+                                    }
                                 }
                                 filedata = null;
                             });
@@ -934,6 +937,15 @@ namespace TwainControl
             Scanner.PdfPassword = ((PasswordBox)sender).SecurePassword;
         }
 
+        private void PdfMergeButton_Drop(object sender, DragEventArgs e)
+        {
+            string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
+            if (droppedfiles?.Where(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase)).Any() == true)
+            {
+                PdfGeneration.SavePdfFiles(droppedfiles);
+            }
+        }
+
         private void ResetCropMargin()
         {
             Scanner.CropBottom = 0;
@@ -1058,6 +1070,10 @@ namespace TwainControl
             if (e.Image != null)
             {
                 using Bitmap bitmap = e.Image;
+                if (Scanner.DetectEmptyPage && bitmap.IsEmptyPage())
+                {
+                    return;
+                }
                 BitmapSource evrak = EvrakOluştur(bitmap);
                 evrak.Freeze();
                 BitmapSource önizleme = evrak.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 21 * 29.7);

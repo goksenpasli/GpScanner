@@ -72,7 +72,7 @@ namespace Extensions
         {
             unsafe
             {
-                BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, bitmap.PixelFormat);
+                BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, bitmap.PixelFormat);
                 int bytesPerPixel = Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
                 int heightInPixels = bitmapData.Height;
                 int widthInBytes = bitmapData.Width * bytesPerPixel;
@@ -225,6 +225,42 @@ namespace Extensions
             }
 
             return null;
+        }
+
+        public static bool IsEmptyPage(this Bitmap bitmap, double emptythreshold = 100)
+        {
+            double total = 0, totalVariance = 0;
+            int count = 0;
+            double stdDev = 0;
+            BitmapData bmData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, bitmap.PixelFormat);
+            int stride = bmData.Stride;
+            IntPtr Scan0 = bmData.Scan0;
+            unsafe
+            {
+                byte* p = (byte*)(void*)Scan0;
+                int nOffset = stride - (bitmap.Width * 3);
+                for (int y = 0; y < bitmap.Height; ++y)
+                {
+                    for (int x = 0; x < bitmap.Width; ++x)
+                    {
+                        count++;
+                        byte blue = p[0];
+                        byte green = p[1];
+                        byte red = p[2];
+
+                        int pixelValue = red + green + blue;
+                        total += pixelValue;
+                        double avg = total / count;
+                        totalVariance += Math.Pow(pixelValue - avg, 2);
+                        stdDev = Math.Sqrt(totalVariance / count);
+
+                        p += 3;
+                    }
+                    p += nOffset;
+                }
+            }
+            bitmap.UnlockBits(bmData);
+            return stdDev < emptythreshold;
         }
 
         public static void OpenFolderAndSelectItem(string folderPath, string file)

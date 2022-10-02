@@ -443,4 +443,7 @@ EKLE</value>
   <data name="TAG" xml:space="preserve">
     <value>ETİKET</value>
   </data>
+  <data name="EMPTYPAGE" xml:space="preserve">
+    <value>BOŞ SAYFALARI GEÇ</value>
+  </data>
 </root>

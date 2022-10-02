@@ -6,47 +6,11 @@ using System.IO;
 using System.Linq;
 using System.Security;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using Extensions;
 using TwainControl.Properties;
 
 namespace TwainControl
 {
-    public class ScannedImage : InpcBase
-    {
-        public BitmapFrame Resim
-        {
-            get => resim;
-
-            set
-            {
-                if (resim != value)
-                {
-                    resim = value;
-                    OnPropertyChanged(nameof(Resim));
-                }
-            }
-        }
-
-        public bool Seçili
-        {
-            get => seçili;
-
-            set
-            {
-                if (seçili != value)
-                {
-                    seçili = value;
-                    OnPropertyChanged(nameof(Seçili));
-                }
-            }
-        }
-
-        private BitmapFrame resim;
-
-        private bool seçili;
-    }
-
     public class Scanner : InpcBase, IDataErrorInfo
     {
         public bool AllowCopy
@@ -296,9 +260,22 @@ namespace TwainControl
             }
         }
 
+        public bool DetectEmptyPage
+        {
+            get => detectEmptyPage; set
+
+            {
+                if (detectEmptyPage != value)
+                {
+                    detectEmptyPage = value;
+                    OnPropertyChanged(nameof(DetectEmptyPage));
+                }
+            }
+        }
+
         public bool DetectPageSeperator
         {
-            get { return detectPageSeperator; }
+            get => detectPageSeperator;
 
             set
             {
@@ -705,6 +682,8 @@ namespace TwainControl
         private double cropTop;
 
         private bool deskew;
+
+        private bool detectEmptyPage;
 
         private bool detectPageSeperator;
 

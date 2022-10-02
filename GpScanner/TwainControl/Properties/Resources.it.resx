@@ -215,6 +215,9 @@ DISCO</value>
   <data name="DSTCOLOR" xml:space="preserve">
     <value>COLORE BERSAGLIO</value>
   </data>
+  <data name="EMPTYPAGE" xml:space="preserve">
+    <value>SALTA LA PAGINA VUOTA</value>
+  </data>
   <data name="ENCRYPT" xml:space="preserve">
     <value>CRITTOGRAFIA</value>
   </data>

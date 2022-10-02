@@ -23,6 +23,7 @@
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <Converter:SplitConverter x:Key="SplitConverter" />
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
+            <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
             <LinearGradientBrush x:Key="BorderBackground" ice:Freeze="True" StartPoint="0.5,0" EndPoint="0.5,1">
                 <GradientStop ice:Freeze="True" Offset="0" Color="#FFFDFEFF" />
@@ -200,6 +201,9 @@
                                 <CheckBox Grid.Row="1" Grid.Column="0"
                                     Content="{local:Loc SHOWFILE}"
                                     IsChecked="{Binding ShowFile, Source={x:Static properties:Settings.Default}}" />
+                                <CheckBox Grid.Row="1" Grid.Column="1"
+                                    Content="{local:Loc EMPTYPAGE}"
+                                    IsChecked="{Binding Scanner.DetectEmptyPage}" />
                             </Grid>
                             <Expander Header="{local:Loc OTHERSETTINGS}">
                                 <StackPanel>
@@ -603,7 +607,9 @@
                             <TextBlock VerticalAlignment="Center" Text="{local:Loc SAVESELECTED}" />
                         </StackPanel>
                     </Button>
-                    <Button Command="{Binding PdfBirleştir}">
+                    <Button AllowDrop="True"
+                        Command="{Binding PdfBirleştir}"
+                        Drop="PdfMergeButton_Drop">
                         <StackPanel Orientation="Horizontal">
                             <Image Width="24" Height="24">
                                 <Image.Source>

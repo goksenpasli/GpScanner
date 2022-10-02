@@ -438,4 +438,7 @@ DEVICE</value>
   <data name="TAG" xml:space="preserve">
     <value>TAG</value>
   </data>
+  <data name="EMPTYPAGE" xml:space="preserve">
+    <value>SKIP EMPTY PAGE</value>
+  </data>
 </root>

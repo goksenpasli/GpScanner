@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using Extensions;
@@ -176,6 +177,8 @@ namespace TwainControl
             }
             return datefolder;
         }
+
+        public static bool IsValidPdfFile(IEnumerable<byte> buffer) => buffer.SequenceEqual(new byte[] { 0x25, 0x50, 0x44, 0x46 });
 
         public static PdfDocument MergePdf(string[] pdffiles)
         {

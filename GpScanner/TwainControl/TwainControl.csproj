@@ -84,6 +84,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.it.resx</DependentUpon>
     </Compile>
+    <Compile Include="ScannedImage.cs" />
     <Compile Include="WpfLocalizationWithMultipleResourceManagers.cs" />
     <Page Include="Slider.xaml">
       <SubType>Designer</SubType>

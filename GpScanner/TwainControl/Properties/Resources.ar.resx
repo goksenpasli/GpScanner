@@ -215,6 +215,9 @@
   <data name="DSTCOLOR" xml:space="preserve">
     <value>اللون المستهدف</value>
   </data>
+  <data name="EMPTYPAGE" xml:space="preserve">
+    <value>تخطي الصفحة الفارغة</value>
+  </data>
   <data name="ENCRYPT" xml:space="preserve">
     <value>التشفير</value>
   </data>
