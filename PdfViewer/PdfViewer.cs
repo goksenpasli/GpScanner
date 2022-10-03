@@ -372,18 +372,17 @@ namespace PdfViewer
             if (buffer != null)
             {
                 BitmapImage bitmap = new();
-                using MemoryStream stream = new(buffer);
+                MemoryStream stream = new(buffer);
                 bitmap.BeginInit();
                 if (fasterimage)
                 {
                     bitmap.DecodePixelWidth = thumbdpi;
                 }
-                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.CacheOption = BitmapCacheOption.None;
                 bitmap.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
                 bitmap.StreamSource = stream;
                 bitmap.EndInit();
                 bitmap.Freeze();
-                buffer = null;
                 return bitmap;
             }
             return null;
@@ -443,7 +442,7 @@ namespace PdfViewer
 
         private int sayfa = 1;
 
-        private int thumbnailDpi = 120;
+        private int thumbnailDpi = 96;
 
         private Visibility tifNavigasyonButtonEtkin = Visibility.Collapsed;
 
@@ -484,7 +483,7 @@ namespace PdfViewer
                     int thumbdpi = pdfViewer.ThumbnailDpi;
                     if (pdfViewer.FirstPageThumbnail)
                     {
-                        pdfViewer.Source = await ConvertToImg(pdfdata, 1, 96, true);
+                        pdfViewer.Source = await ConvertToImg(pdfdata, 1, thumbdpi, true);
                     }
                     else
                     {
@@ -493,7 +492,9 @@ namespace PdfViewer
                         pdfViewer.TifNavigasyonButtonEtkin = pdfViewer.ToplamSayfa > 1 ? Visibility.Visible : Visibility.Collapsed;
                         pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
                     }
+                    pdfViewer.PdfFileStream = null;
                     pdfdata = null;
+                    GC.Collect();
                 }
                 catch (Exception ex)
                 {

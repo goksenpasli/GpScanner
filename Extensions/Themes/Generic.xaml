@@ -296,7 +296,8 @@
                                 </Button>
                                 <ToggleButton Grid.Column="7"
                                     Content="360°"
-                                    IsChecked="{Binding PanoramaMode, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    IsChecked="{Binding PanoramaMode, RelativeSource={RelativeSource TemplatedParent}}"
+                                    Visibility="{Binding PanoramaButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
                             </Grid>
                         </ContentControl>
                     </Grid>

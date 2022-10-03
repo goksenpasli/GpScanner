@@ -237,6 +237,20 @@ namespace Extensions
             }
         }
 
+        public Visibility PanoramaButtonVisibility
+        {
+            get => panoramaButtonVisibility;
+
+            set
+            {
+                if (panoramaButtonVisibility != value)
+                {
+                    panoramaButtonVisibility = value;
+                    OnPropertyChanged(nameof(PanoramaButtonVisibility));
+                }
+            }
+        }
+
         public bool PanoramaMode
         {
             get => (bool)GetValue(PanoramaModeProperty);
@@ -409,6 +423,8 @@ namespace Extensions
         private Visibility orijinalResimDosyaAçButtonVisibility;
 
         private IEnumerable<int> pages;
+
+        private Visibility panoramaButtonVisibility;
 
         private Visibility printButtonVisibility = Visibility.Collapsed;
 

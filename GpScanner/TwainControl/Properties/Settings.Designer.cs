@@ -131,5 +131,17 @@ namespace TwainControl.Properties {
                 this["DefaultProfile"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int EmptyThreshold {
+            get {
+                return ((int)(this["EmptyThreshold"]));
+            }
+            set {
+                this["EmptyThreshold"] = value;
+            }
+        }
     }
 }

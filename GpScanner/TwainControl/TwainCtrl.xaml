@@ -188,61 +188,77 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
                                     <RowDefinition />
+                                    <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <CheckBox Content="{local:Loc TWOSIDE}" IsChecked="{Binding Scanner.Duplex}" />
                                 <CheckBox Grid.Column="1"
                                     Content="{local:Loc GUI}"
                                     IsChecked="{Binding Scanner.ShowUi}" />
-                                <!--<CheckBox Grid.Row="1"
-                                    Content="{local:Loc SEPERATESCAN}"
-                                    IsChecked="{Binding Scanner.SeperateSave}"
-                                    IsEnabled="{Binding Scanner.AutoSave}"
-                                    ToolTip="{local:Loc SEPERATESCANTOOLTIP}" />-->
                                 <CheckBox Grid.Row="1" Grid.Column="0"
                                     Content="{local:Loc SHOWFILE}"
                                     IsChecked="{Binding ShowFile, Source={x:Static properties:Settings.Default}}" />
                                 <CheckBox Grid.Row="1" Grid.Column="1"
-                                    Content="{local:Loc EMPTYPAGE}"
-                                    IsChecked="{Binding Scanner.DetectEmptyPage}" />
+                                    IsChecked="{Binding Scanner.Deskew}">
+                                    <CheckBox.Content>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="16" Height="16"
+                                                Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
+                                            <TextBlock Text="{local:Loc DESKEW}" />
+                                        </StackPanel>
+                                    </CheckBox.Content>
+                                </CheckBox>
+                                <CheckBox Grid.Row="2" IsChecked="{Binding Scanner.DetectEmptyPage}">
+                                    <CheckBox.Content>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc EMPTYPAGE}" />
+                                            <Extensions:NumericUpDownControl IsEnabled="{Binding Scanner.DetectEmptyPage}"
+                                                IsReadOnly="True" Maximum="100" Minimum="1"
+                                                Orientation="Horizontal" SmallChange="1"
+                                                Value="{Binding EmptyThreshold, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                                <Extensions:NumericUpDownControl.Background>
+                                                    <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                                        <GradientStop Offset="1" Color="Black" />
+                                                        <GradientStop Offset="0" Color="White" />
+                                                    </LinearGradientBrush>
+                                                </Extensions:NumericUpDownControl.Background>
+                                            </Extensions:NumericUpDownControl>
+                                        </StackPanel>
+                                    </CheckBox.Content>
+                                </CheckBox>
+                                <CheckBox Grid.Row="2" Grid.Column="1"
+                                    Content="{local:Loc SHOWPROGRESS}"
+                                    IsChecked="{Binding Scanner.ShowProgress}" />
                             </Grid>
                             <Expander Header="{local:Loc OTHERSETTINGS}">
-                                <StackPanel>
-                                    <UniformGrid Columns="2">
-                                        <CheckBox Content="{local:Loc DESKEW}" IsChecked="{Binding Scanner.Deskew}" />
-                                        <CheckBox Content="{local:Loc BORDERDETECT}" IsChecked="{Binding Scanner.BorderDetect}" />
-                                        <CheckBox Content="{local:Loc SHOWPROGRESS}" IsChecked="{Binding Scanner.ShowProgress}" />
-                                        <CheckBox Content="{local:Loc AUTOROTATE}" IsChecked="{Binding Scanner.AutoRotate}" />
-                                    </UniformGrid>
-                                    <ComboBox SelectedIndex="{Binding Scanner.ShutDownMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="{local:Loc FASTSCANAFTER}">
-                                        <ComboBoxItem Content="{local:Loc NO ACTION}" />
-                                        <ComboBoxItem>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Image Width="16" Height="16">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Shell32.dll" />
-                                                            <Binding Source="27" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                                <TextBlock VerticalAlignment="Center" Text="{local:Loc CLOSECOMP}" />
-                                            </StackPanel>
-                                        </ComboBoxItem>
-                                        <ComboBoxItem>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Image Width="16" Height="16">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Shell32.dll" />
-                                                            <Binding Source="44" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                                <TextBlock VerticalAlignment="Center" Text="{local:Loc RESTARTCOMP}" />
-                                            </StackPanel>
-                                        </ComboBoxItem>
-                                    </ComboBox>
-                                </StackPanel>
+                                <ComboBox SelectedIndex="{Binding Scanner.ShutDownMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="{local:Loc FASTSCANAFTER}">
+                                    <ComboBoxItem Content="{local:Loc NO ACTION}" />
+                                    <ComboBoxItem>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="16" Height="16">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="27" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc CLOSECOMP}" />
+                                        </StackPanel>
+                                    </ComboBoxItem>
+                                    <ComboBoxItem>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="16" Height="16">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="44" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc RESTARTCOMP}" />
+                                        </StackPanel>
+                                    </ComboBoxItem>
+                                </ComboBox>
                             </Expander>
                             <Separator />
                             <UniformGrid Columns="2">
@@ -590,7 +606,7 @@
                                                 <ToggleButton Width="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}"
                                                     Height="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}"
                                                     VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                                    Background="Transparent"
+                                                    Background="{x:Null}"
                                                     BorderBrush="{x:Null}"
                                                     IsChecked="{Binding Seçili}">
                                                     <Viewbox>
@@ -719,7 +735,8 @@
                         <Extensions:ImageViewer x:Name="ImgViewer"
                             Angle="{Binding Scanner.RotateAngle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             FitImageOrientation="Height" OrijinalResimDosyaAçButtonVisibility="Collapsed"
-                            PreviewMouseDown="ImgViewer_MouseDown" PreviewMouseMove="ImgViewer_MouseMove" SnapTick="True"
+                            PanoramaButtonVisibility="Collapsed" PreviewMouseDown="ImgViewer_MouseDown"
+                            PreviewMouseMove="ImgViewer_MouseMove" SnapTick="True"
                             Source="{Binding SeçiliResim.Resim}" />
                         <Canvas x:Name="cnv" />
                     </Grid>

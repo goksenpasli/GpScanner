@@ -67,20 +67,6 @@ namespace TwainControl
             }
         }
 
-        public bool AutoRotate
-        {
-            get => autoRotate;
-
-            set
-            {
-                if (autoRotate != value)
-                {
-                    autoRotate = value;
-                    OnPropertyChanged(nameof(AutoRotate));
-                }
-            }
-        }
-
         public bool AutoSave
         {
             get => autoSave;
@@ -91,20 +77,6 @@ namespace TwainControl
                 {
                     autoSave = value;
                     OnPropertyChanged(nameof(AutoSave));
-                }
-            }
-        }
-
-        public bool BorderDetect
-        {
-            get => borderDetect;
-
-            set
-            {
-                if (borderDetect != value)
-                {
-                    borderDetect = value;
-                    OnPropertyChanged(nameof(BorderDetect));
                 }
             }
         }
@@ -655,11 +627,7 @@ namespace TwainControl
 
         private bool arayüzetkin = true;
 
-        private bool autoRotate;
-
         private bool autoSave = Directory.Exists(Settings.Default.AutoFolder);
-
-        private bool borderDetect;
 
         private int boyAdet = 1;
 

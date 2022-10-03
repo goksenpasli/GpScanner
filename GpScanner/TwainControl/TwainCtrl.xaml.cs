@@ -205,7 +205,7 @@ namespace TwainControl
             {
                 foreach (ScannedImage item in Scanner.Resimler.Where(z => z.Seçili).ToList())
                 {
-                    Scanner.Resimler?.Remove(item);
+                    _ = Scanner.Resimler?.Remove(item);
                 }
                 ResetCropMargin();
                 GC.Collect();
@@ -342,8 +342,7 @@ namespace TwainControl
 
             DeskewImage = new RelayCommand<object>(parameter =>
             {
-                Deskew sk = new((BitmapSource)Scanner.CroppedImage);
-                double skewAngle = -1 * sk.GetSkewAngle(true);
+                double skewAngle = GetDeskewAngle(Scanner.CroppedImage, true);
                 Scanner.CroppedImage = Scanner.CroppedImage.RotateImage(skewAngle);
             }, parameter => Scanner.CroppedImage is not null);
 
@@ -619,6 +618,12 @@ namespace TwainControl
 
         public ICommand WebAdreseGit { get; }
 
+        public static double GetDeskewAngle(ImageSource ımageSource, bool fast = false)
+        {
+            Deskew sk = new((BitmapSource)ımageSource);
+            return -1 * sk.GetSkewAngle(fast);
+        }
+
         public void Dispose()
         {
             Dispose(true);
@@ -709,7 +714,7 @@ namespace TwainControl
                                     double totalpagecount = PdfViewer.PdfViewer.PdfPageCount(filedata);
                                     for (int i = 1; i <= totalpagecount; i++)
                                     {
-                                        BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(decodeheight, await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, (int)ImgLoadResolution));
+                                        BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(decodeheight, await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, (int)ImgLoadResolution), Scanner.Deskew);
                                         bitmapFrame.Freeze();
                                         uiContext.Send(_ =>
                                         {
@@ -1012,7 +1017,7 @@ namespace TwainControl
             _settings = DefaultScanSettings();
             _settings.Resolution.ColourSetting = (ColourSetting)Settings.Default.Mode;
             _settings.Resolution.Dpi = (int)Settings.Default.Çözünürlük;
-            _settings.Rotation = new RotationSettings { AutomaticDeskew = Scanner.Deskew, AutomaticRotate = Scanner.AutoRotate, AutomaticBorderDetection = Scanner.BorderDetect };
+            _settings.Rotation = new RotationSettings { AutomaticDeskew = Scanner.Deskew };
         }
 
         private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -1084,7 +1089,7 @@ namespace TwainControl
             if (e.Image != null)
             {
                 using Bitmap bitmap = e.Image;
-                if (Scanner.DetectEmptyPage && bitmap.IsEmptyPage())
+                if (Scanner.DetectEmptyPage && bitmap.IsEmptyPage(Settings.Default.EmptyThreshold))
                 {
                     return;
                 }

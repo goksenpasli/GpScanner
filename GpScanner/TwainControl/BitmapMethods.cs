@@ -76,7 +76,7 @@ namespace TwainControl
             return bitmapFrame;
         }
 
-        public static BitmapFrame GenerateImageDocumentBitmapFrame(int decodeheight, MemoryStream ms)
+        public static BitmapFrame GenerateImageDocumentBitmapFrame(int decodeheight, MemoryStream ms, bool deskew = false)
         {
             BitmapImage image = new();
             image.BeginInit();
@@ -86,7 +86,18 @@ namespace TwainControl
             image.StreamSource = ms;
             image.EndInit();
             image.Freeze();
-            BitmapFrame bitmapFrame = BitmapFrame.Create(image, image.PixelWidth < image.PixelHeight ? image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 21 * 29.7) : image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 29.7 * 21));
+
+            BitmapFrame bitmapFrame;
+            if (deskew)
+            {
+                RenderTargetBitmap skewedimage = image.RotateImage((double)TwainCtrl.GetDeskewAngle(image, true));
+                skewedimage.Freeze();
+                bitmapFrame = BitmapFrame.Create(skewedimage, image.PixelWidth < image.PixelHeight ? image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 21 * 29.7) : image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 29.7 * 21));
+            }
+            else
+            {
+                bitmapFrame = BitmapFrame.Create(image, image.PixelWidth < image.PixelHeight ? image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 21 * 29.7) : image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 29.7 * 21));
+            }
             bitmapFrame.Freeze();
             return bitmapFrame;
         }
