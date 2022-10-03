@@ -97,12 +97,12 @@ namespace TwainControl
                         }
                         if (saveFileDialog.FilterIndex == 3)
                         {
-                            PdfGeneration.GeneratePdf(scannedImage.Resim, Format.Jpg).Save(saveFileDialog.FileName);
+                            PdfGeneration.GeneratePdf(scannedImage.Resim, null, Format.Jpg).Save(saveFileDialog.FileName);
                             return;
                         }
                         if (saveFileDialog.FilterIndex == 4)
                         {
-                            PdfGeneration.GeneratePdf(scannedImage.Resim, Format.Tiff).Save(saveFileDialog.FileName);
+                            PdfGeneration.GeneratePdf(scannedImage.Resim, null, Format.Tiff).Save(saveFileDialog.FileName);
                         }
                     }
                 }
@@ -275,11 +275,11 @@ namespace TwainControl
                     switch (saveFileDialog.FilterIndex)
                     {
                         case 1:
-                            PdfGeneration.GeneratePdf((BitmapSource)parameter, Format.Jpg).Save(saveFileDialog.FileName);
+                            PdfGeneration.GeneratePdf((BitmapSource)parameter, null, Format.Jpg).Save(saveFileDialog.FileName);
                             return;
 
                         case 2:
-                            PdfGeneration.GeneratePdf((BitmapSource)parameter, Format.Tiff).Save(saveFileDialog.FileName);
+                            PdfGeneration.GeneratePdf((BitmapSource)parameter, null, Format.Tiff).Save(saveFileDialog.FileName);
                             return;
 
                         case 3:
@@ -732,11 +732,15 @@ namespace TwainControl
                     case ".jpg":
                     case ".jpeg":
                     case ".jfif":
+                    case ".jfıf":
                     case ".jpe":
                     case ".png":
                     case ".gif":
+                    case ".gıf":
                     case ".tif":
+                    case ".tıf":
                     case ".tiff":
+                    case ".tıff":
                     case ".bmp":
                         {
                             BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(decodeheight, new Uri(item));

@@ -163,14 +163,24 @@ namespace GpScanner.ViewModel
                 {
                     SaveFileDialog saveFileDialog = new()
                     {
-                        Filter = "Pdf Dosyası(*.pdf)|*.pdf",
+                        Filter = "Pdf Dosyası (*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf",
                     };
+
                     if (saveFileDialog.ShowDialog() == true)
                     {
-                        PdfGeneration.GeneratePdf(twainCtrl.SeçiliResim.Resim, ScannedText).Save(saveFileDialog.FileName);
+                        switch (saveFileDialog.FilterIndex)
+                        {
+                            case 1:
+                                PdfGeneration.GeneratePdf(twainCtrl.SeçiliResim.Resim, ScannedText, Format.Jpg).Save(saveFileDialog.FileName);
+                                return;
+
+                            case 2:
+                                PdfGeneration.GeneratePdf(twainCtrl.SeçiliResim.Resim, ScannedText, Format.Tiff).Save(saveFileDialog.FileName);
+                                return;
+                        }
+                        }
                     }
-                }
-            }, parameter => parameter is TwainCtrl twainCtrl && twainCtrl.SeçiliResim?.Resim is not null);
+                }, parameter => parameter is TwainCtrl twainCtrl && twainCtrl.SeçiliResim?.Resim is not null);
 
             SavePatchProfile = new RelayCommand<object>(parameter =>
             {

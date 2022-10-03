@@ -88,7 +88,7 @@ namespace TwainControl
             return document;
         }
 
-        public static PdfDocument GeneratePdf(BitmapSource bitmapframe, Format format)
+        public static PdfDocument GeneratePdf(BitmapSource bitmapframe, ObservableCollection<OcrData> ScannedText, Format format)
         {
             try
             {
@@ -111,48 +111,21 @@ namespace TwainControl
                     page.Orientation = PageOrientation.Landscape;
                     gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
                 }
-                DefaultPdfCompression(document);
-                return document;
-            }
-            catch (Exception ex)
-            {
-                _ = MessageBox.Show(ex.Message);
-                return null;
-            }
-        }
-
-        public static PdfDocument GeneratePdf(BitmapFrame bitmapframe, ObservableCollection<OcrData> ScannedText)
-        {
-            try
-            {
-                using PdfDocument document = new();
-                PdfPage page = document.AddPage();
-                using XGraphics gfx = XGraphics.FromPdfPage(page);
-                using MemoryStream ms = new(bitmapframe.ToTiffJpegByteArray(Format.Jpg));
-                using XImage xImage = XImage.FromStream(ms);
-                XSize size = PageSizeConverter.ToSize(PageSize.A4);
-                if (bitmapframe.PixelWidth < bitmapframe.PixelHeight)
+                if (ScannedText is not null)
                 {
-                    gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
+                    XTextFormatter textformatter = new(gfx);
+                    foreach (OcrData item in ScannedText)
+                    {
+                        XRect adjustedBounds = AdjustBounds(item.Rect, page.Width / bitmapframe.PixelWidth, page.Height / bitmapframe.PixelHeight);
+                        int adjustedFontSize = CalculateFontSize(item.Text, adjustedBounds, gfx);
+                        XFont font = new("Times New Roman", adjustedFontSize, XFontStyle.Regular, new XPdfFontOptions(PdfFontEncoding.Unicode));
+                        XSize adjustedTextSize = gfx.MeasureString(item.Text, font);
+                        double verticalOffset = (adjustedBounds.Height - adjustedTextSize.Height) / 2;
+                        double horizontalOffset = (adjustedBounds.Width - adjustedTextSize.Width) / 2;
+                        adjustedBounds.Offset(horizontalOffset, verticalOffset);
+                        textformatter.DrawString(item.Text, font, XBrushes.Transparent, adjustedBounds);
+                    }
                 }
-                else
-                {
-                    page.Orientation = PageOrientation.Landscape;
-                    gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
-                }
-                XTextFormatter textformatter = new(gfx);
-                foreach (OcrData item in ScannedText)
-                {
-                    XRect adjustedBounds = AdjustBounds(item.Rect, page.Width / bitmapframe.PixelWidth, page.Height / bitmapframe.PixelHeight);
-                    int adjustedFontSize = CalculateFontSize(item.Text, adjustedBounds, gfx);
-                    XFont font = new("Times New Roman", adjustedFontSize, XFontStyle.Regular, new XPdfFontOptions(PdfFontEncoding.Unicode));
-                    XSize adjustedTextSize = gfx.MeasureString(item.Text, font);
-                    double verticalOffset = (adjustedBounds.Height - adjustedTextSize.Height) / 2;
-                    double horizontalOffset = (adjustedBounds.Width - adjustedTextSize.Width) / 2;
-                    adjustedBounds.Offset(horizontalOffset, verticalOffset);
-                    textformatter.DrawString(item.Text, font, XBrushes.Transparent, adjustedBounds);
-                }
-
                 DefaultPdfCompression(document);
                 return document;
             }
@@ -178,7 +151,10 @@ namespace TwainControl
             return datefolder;
         }
 
-        public static bool IsValidPdfFile(IEnumerable<byte> buffer) => buffer.SequenceEqual(new byte[] { 0x25, 0x50, 0x44, 0x46 });
+        public static bool IsValidPdfFile(IEnumerable<byte> buffer)
+        {
+            return buffer.SequenceEqual(new byte[] { 0x25, 0x50, 0x44, 0x46 });
+        }
 
         public static PdfDocument MergePdf(string[] pdffiles)
         {
