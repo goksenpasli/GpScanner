@@ -668,7 +668,7 @@ namespace TwainControl
 
         private byte[] ımgData;
 
-        private double ımgLoadResolution = 72;
+        private double ımgLoadResolution = 120;
 
         private bool isMouseDown;
 

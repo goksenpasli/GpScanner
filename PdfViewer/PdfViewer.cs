@@ -492,7 +492,6 @@ namespace PdfViewer
                         pdfViewer.TifNavigasyonButtonEtkin = pdfViewer.ToplamSayfa > 1 ? Visibility.Visible : Visibility.Collapsed;
                         pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
                     }
-                    pdfViewer.PdfFileStream = null;
                     pdfdata = null;
                     GC.Collect();
                 }
