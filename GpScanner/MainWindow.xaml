@@ -119,6 +119,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
+                    <RowDefinition Height="40" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Expander Header="{twainctrl:Loc CALENDAR}">
@@ -370,7 +371,20 @@
                         </Style>
                     </ListBox.ItemContainerStyle>
                 </ListBox>
-                <UniformGrid Grid.Row="6"
+                <ListBox Grid.Row="6"
+                    d:ItemsSource="{d:SampleData ItemCount=5}"
+                    ItemsSource="{Binding BarcodeList}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <Hyperlink Command="{Binding DataContext.TesseractViewModel.TesseractDataFilesDownloadLink, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding Mode=OneWay}">
+                                    <Run Text="{Binding Mode=OneWay}" />
+                                </Hyperlink>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <UniformGrid Grid.Row="7"
                     Columns="2" Rows="2">
                     <Button Command="{Binding PdfBirleştir}">
                         <StackPanel Orientation="Horizontal">
@@ -424,22 +438,7 @@
                             <Extensions:ResizablePanel Width="420" Height="594" MinWidth="420"
                                 MinHeight="594">
                                 <GroupBox>
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition />
-                                        </Grid.RowDefinitions>
-                                        <TextBlock>
-                                            <Hyperlink Command="{Binding TesseractViewModel.TesseractDataFilesDownloadLink, Mode=OneWay}" CommandParameter="{Binding BarcodeContent}">
-                                                <Run Text="QRCODE" />
-                                            </Hyperlink>
-                                        </TextBlock>
-                                        <TextBox Grid.Row="1"
-                                            IsReadOnly="True"
-                                            Text="{Binding BarcodeContent, Mode=OneWay}" />
-                                        <local:TranslateView Grid.Row="2" />
-                                    </Grid>
+                                    <local:TranslateView Grid.Row="2" />
                                 </GroupBox>
                             </Extensions:ResizablePanel>
                         </Extensions:SplitButton.InternalContent>

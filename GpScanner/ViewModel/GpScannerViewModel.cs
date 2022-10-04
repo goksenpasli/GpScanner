@@ -178,9 +178,9 @@ namespace GpScanner.ViewModel
                                 PdfGeneration.GeneratePdf(twainCtrl.SeçiliResim.Resim, ScannedText, Format.Tiff).Save(saveFileDialog.FileName);
                                 return;
                         }
-                        }
                     }
-                }, parameter => parameter is TwainCtrl twainCtrl && twainCtrl.SeçiliResim?.Resim is not null);
+                }
+            }, parameter => parameter is TwainCtrl twainCtrl && twainCtrl.SeçiliResim?.Resim is not null);
 
             SavePatchProfile = new RelayCommand<object>(parameter =>
             {
@@ -265,6 +265,20 @@ namespace GpScanner.ViewModel
                 {
                     barcodeContent = value;
                     OnPropertyChanged(nameof(BarcodeContent));
+                }
+            }
+        }
+
+        public ObservableCollection<string> BarcodeList
+        {
+            get => barcodeList;
+
+            set
+            {
+                if (barcodeList != value)
+                {
+                    barcodeList = value;
+                    OnPropertyChanged(nameof(BarcodeList));
                 }
             }
         }
@@ -705,6 +719,8 @@ namespace GpScanner.ViewModel
         private string aramaMetni;
 
         private string barcodeContent;
+
+        private ObservableCollection<string> barcodeList = new();
 
         private ResultPoint[] barcodePosition;
 

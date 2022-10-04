@@ -36,6 +36,7 @@ namespace GpScanner
 
         private void MW_ContentRendered(object sender, EventArgs e)
         {
+            WindowExtensions.SystemMenu(this);
             if (StillImageHelper.ShouldScan)
             {
                 TwainCtrl.ScanImage.Execute(null);
@@ -44,32 +45,42 @@ namespace GpScanner
 
         private void TwainCtrl_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            GpScannerViewModel ViewModel = DataContext as GpScannerViewModel;
-            if (e.PropertyName is "Resimler")
+            if (DataContext is GpScannerViewModel ViewModel)
             {
-                ViewModel.Dosyalar = ViewModel.GetScannerFileData();
-                ViewModel.ChartData = ViewModel.GetChartsData();
-            }
-
-            if (e.PropertyName is "DetectPageSeperator")
-            {
-                if (ViewModel.DetectBarCode)
+                if (e.PropertyName is "Resimler")
                 {
-                    Result result = ViewModel.GetImageBarcodeResult(TwainCtrl.Scanner.Resimler.LastOrDefault().Resim.BitmapSourceToBitmap());
-                    ViewModel.BarcodeContent = result?.Text;
-                    ViewModel.BarcodePosition = result?.ResultPoints;
+                    ViewModel.Dosyalar = ViewModel.GetScannerFileData();
+                    ViewModel.ChartData = ViewModel.GetChartsData();
                 }
-                if (ViewModel.DetectBarCode && ViewModel.DetectPageSeperator && ViewModel.BarcodeContent is not null)
-                {
-                    TwainCtrl.Scanner.FileName = ViewModel.GetPatchCodeResult(ViewModel.BarcodeContent);
-                }
-            }
 
-            if (e.PropertyName is "ImgData" && TwainCtrl.ImgData is not null)
-            {
-                ViewModel.BarcodeContent = ViewModel.GetImageBarcodeResult(TwainCtrl.ImgData)?.Text;
-                _ = ViewModel.Ocr(TwainCtrl.ImgData);
-                TwainCtrl.ImgData = null;
+                if (e.PropertyName is "DetectPageSeperator")
+                {
+                    if (ViewModel.DetectBarCode)
+                    {
+                        Result result = ViewModel.GetImageBarcodeResult(TwainCtrl.Scanner.Resimler.LastOrDefault().Resim.BitmapSourceToBitmap());
+                        ViewModel.BarcodeContent = result?.Text;
+                        ViewModel.BarcodePosition = result?.ResultPoints;
+                        if (ViewModel.BarcodeContent is not null)
+                        {
+                            ViewModel.BarcodeList.Add(ViewModel.BarcodeContent);
+                        }
+                    }
+                    if (ViewModel.DetectBarCode && ViewModel.DetectPageSeperator && ViewModel.BarcodeContent is not null)
+                    {
+                        TwainCtrl.Scanner.FileName = ViewModel.GetPatchCodeResult(ViewModel.BarcodeContent);
+                    }
+                }
+
+                if (e.PropertyName is "ImgData" && TwainCtrl.ImgData is not null)
+                {
+                    ViewModel.BarcodeContent = ViewModel.GetImageBarcodeResult(TwainCtrl.ImgData)?.Text;
+                    if (ViewModel.BarcodeContent is not null)
+                    {
+                        ViewModel.BarcodeList.Add(ViewModel.BarcodeContent);
+                    }
+                    _ = ViewModel.Ocr(TwainCtrl.ImgData);
+                    TwainCtrl.ImgData = null;
+                }
             }
         }
 
