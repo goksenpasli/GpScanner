@@ -53,9 +53,10 @@ namespace TwainControl
             return outputDocument;
         }
 
-        public static PdfDocument GeneratePdf(IList<ScannedImage> bitmapFrames, Format format)
+        public static PdfDocument GeneratePdf(IEnumerable<ScannedImage> bitmapFrames, Format format)
         {
             using PdfDocument document = new();
+            double index = 0;
             try
             {
                 foreach (ScannedImage scannedimage in bitmapFrames)
@@ -78,13 +79,15 @@ namespace TwainControl
                         page.Orientation = PageOrientation.Landscape;
                         gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
                     }
+                    index++;
+                    Scanner.PdfSaveProgressValue = index / bitmapFrames.Count();
                 }
+                DefaultPdfCompression(document);
             }
             catch (Exception ex)
             {
                 _ = MessageBox.Show(ex.Message);
             }
-            DefaultPdfCompression(document);
             return document;
         }
 

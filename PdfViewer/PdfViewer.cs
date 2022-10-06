@@ -62,61 +62,8 @@ namespace PdfViewer
 
             Yazdır = new RelayCommand<object>(parameter =>
             {
-                PrintDialog pd = new();
-                DrawingVisual dv = new();
-                if (Decoder == null)
-                {
-                    if (pd.ShowDialog() == true)
-                    {
-                        using (DrawingContext dc = dv.RenderOpen())
-                        {
-                            BitmapSource imagesource = Source.Width > Source.Height
-                                ? ((BitmapSource)Source)?.Resize((int)pd.PrintableAreaHeight, (int)pd.PrintableAreaWidth, 90, 300, 300)
-                                : ((BitmapSource)Source)?.Resize((int)pd.PrintableAreaWidth, (int)pd.PrintableAreaHeight, 0, 300, 300);
-                            imagesource.Freeze();
-                            dc.DrawImage(imagesource, new Rect(0, 0, pd.PrintableAreaWidth, pd.PrintableAreaHeight));
-                        }
-
-                        pd.PrintVisual(dv, "");
-                    }
-                }
-                else
-                {
-                    pd.PageRangeSelection = PageRangeSelection.AllPages;
-                    pd.UserPageRangeEnabled = true;
-                    pd.MaxPage = (uint)Decoder.Frames.Count;
-                    pd.MinPage = 1;
-                    if (pd.ShowDialog() == true)
-                    {
-                        int başlangıç;
-                        int bitiş;
-                        if (pd.PageRangeSelection == PageRangeSelection.AllPages)
-                        {
-                            başlangıç = 0;
-                            bitiş = Decoder.Frames.Count - 1;
-                        }
-                        else
-                        {
-                            başlangıç = pd.PageRange.PageFrom - 1;
-                            bitiş = pd.PageRange.PageTo - 1;
-                        }
-
-                        for (int i = başlangıç; i <= bitiş; i++)
-                        {
-                            using (DrawingContext dc = dv.RenderOpen())
-                            {
-                                BitmapSource imagesource = Source.Width > Source.Height
-                                    ? Decoder.Frames[i]?.Resize((int)pd.PrintableAreaHeight, (int)pd.PrintableAreaWidth, 90, 300, 300)
-                                    : Decoder.Frames[i]?.Resize((int)pd.PrintableAreaWidth, (int)pd.PrintableAreaHeight, 0, 300, 300);
-                                imagesource.Freeze();
-                                dc.DrawImage(imagesource, new Rect(0, 0, pd.PrintableAreaWidth, pd.PrintableAreaHeight));
-                            }
-
-                            pd.PrintVisual(dv, "");
-                        }
-                    }
-                }
-            }, parameter => Source is not null);
+                PrintPdfFile(PdfFileStream);
+            }, parameter => PdfFileStream is not null);
 
             ViewerBack = new RelayCommand<object>(parameter => Sayfa--, parameter => Source is not null && Sayfa > 1 && Sayfa <= ToplamSayfa);
 
@@ -159,21 +106,6 @@ namespace PdfViewer
         {
             get => (double)GetValue(AngleProperty);
             set => SetValue(AngleProperty, value);
-        }
-
-        [Browsable(false)]
-        public TiffBitmapDecoder Decoder
-        {
-            get => decoder;
-
-            set
-            {
-                if (decoder != value)
-                {
-                    decoder = value;
-                    OnPropertyChanged(nameof(Decoder));
-                }
-            }
         }
 
         public RelayCommand<object> DosyaAç { get; }
@@ -388,7 +320,7 @@ namespace PdfViewer
             return null;
         }
 
-        public static async Task<BitmapImage> ConvertToImg(byte[] stream, int page, int dpi, bool fasterimage = false)
+        public static async Task<BitmapImage> ConvertToImgAsync(byte[] stream, int page, int dpi, bool fasterimage = false)
         {
             return stream.Length > 0 ? await Task.Run(() => BitmapSourceFromByteArray(Pdf2Png.Convert(stream, page, dpi), fasterimage, dpi)) : null;
         }
@@ -401,6 +333,68 @@ namespace PdfViewer
         public static int PdfPageCount(byte[] stream)
         {
             return stream.Length > 0 ? Pdf2Png.ConvertAllPages(stream, 0).Count : 0;
+        }
+
+        public static void PrintImageSource(ImageSource Source, int Dpi = 300)
+        {
+            PrintDialog pd = new();
+            DrawingVisual dv = new();
+            if (pd.ShowDialog() == true)
+            {
+                using (DrawingContext dc = dv.RenderOpen())
+                {
+                    BitmapSource bs = Source.Width > Source.Height
+                        ? ((BitmapSource)Source)?.Resize((int)pd.PrintableAreaHeight, (int)pd.PrintableAreaWidth, 90, Dpi, Dpi)
+                        : ((BitmapSource)Source)?.Resize((int)pd.PrintableAreaWidth, (int)pd.PrintableAreaHeight, 0, Dpi, Dpi);
+                    bs.Freeze();
+                    dc.DrawImage(bs, new Rect(0, 0, pd.PrintableAreaWidth, pd.PrintableAreaHeight));
+                }
+                pd.PrintVisual(dv, "");
+            }
+        }
+
+        public static async void PrintPdfFile(byte[] stream, int Dpi = 300)
+        {
+            int pagecount = PdfPageCount(stream);
+            PrintDialog pd = new()
+            {
+                PageRangeSelection = PageRangeSelection.AllPages,
+                UserPageRangeEnabled = true,
+                MaxPage = (uint)pagecount,
+                MinPage = 1
+            };
+            DrawingVisual dv = new();
+            if (pd.ShowDialog() == true)
+            {
+                int başlangıç;
+                int bitiş;
+                if (pd.PageRangeSelection == PageRangeSelection.AllPages)
+                {
+                    başlangıç = 1;
+                    bitiş = pagecount;
+                }
+                else
+                {
+                    başlangıç = pd.PageRange.PageFrom;
+                    bitiş = pd.PageRange.PageTo;
+                }
+
+                for (int i = başlangıç; i <= bitiş; i++)
+                {
+                    using (DrawingContext dc = dv.RenderOpen())
+                    {
+                        BitmapImage bitmapimage = await ConvertToImgAsync(stream, i, Dpi);
+                        BitmapSource bs = bitmapimage.Width > bitmapimage.Height
+                        ? bitmapimage?.Resize((int)pd.PrintableAreaHeight, (int)pd.PrintableAreaWidth, 90, Dpi, Dpi)
+                        : bitmapimage?.Resize((int)pd.PrintableAreaWidth, (int)pd.PrintableAreaHeight, 0, Dpi, Dpi);
+                        bs.Freeze();
+                        dc.DrawImage(bs, new Rect(0, 0, pd.PrintableAreaWidth, pd.PrintableAreaHeight));
+                        bitmapimage = null;
+                        bs = null;
+                    }
+                    pd.PrintVisual(dv, "");
+                }
+            }
         }
 
         public void Dispose()
@@ -426,8 +420,6 @@ namespace PdfViewer
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private TiffBitmapDecoder decoder;
-
         private bool disposedValue;
 
         private bool firstPageThumbnail;
@@ -452,7 +444,7 @@ namespace PdfViewer
         {
             if (d is PdfViewer pdfViewer && pdfViewer.PdfFileStream is not null)
             {
-                pdfViewer.Source = await ConvertToImg(pdfViewer.PdfFileStream, pdfViewer.Sayfa, (int)e.NewValue);
+                pdfViewer.Source = await ConvertToImgAsync(pdfViewer.PdfFileStream, pdfViewer.Sayfa, (int)e.NewValue);
             }
         }
 
@@ -483,12 +475,12 @@ namespace PdfViewer
                     int thumbdpi = pdfViewer.ThumbnailDpi;
                     if (pdfViewer.FirstPageThumbnail)
                     {
-                        pdfViewer.Source = await ConvertToImg(pdfdata, 1, thumbdpi, true);
+                        pdfViewer.Source = await ConvertToImgAsync(pdfdata, 1, thumbdpi, true);
                     }
                     else
                     {
                         pdfViewer.ToplamSayfa = PdfPageCount(pdfdata);
-                        pdfViewer.Source = await ConvertToImg(pdfdata, sayfa, dpi);
+                        pdfViewer.Source = await ConvertToImgAsync(pdfdata, sayfa, dpi);
                         pdfViewer.TifNavigasyonButtonEtkin = pdfViewer.ToplamSayfa > 1 ? Visibility.Visible : Visibility.Collapsed;
                         pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
                     }
@@ -545,7 +537,7 @@ namespace PdfViewer
         {
             if (e.PropertyName is "Sayfa" && sender is PdfViewer pdfViewer && pdfViewer.PdfFileStream is not null)
             {
-                Source = await ConvertToImg(pdfViewer.PdfFileStream, Sayfa, pdfViewer.Dpi);
+                Source = await ConvertToImgAsync(pdfViewer.PdfFileStream, Sayfa, pdfViewer.Dpi);
             }
         }
     }

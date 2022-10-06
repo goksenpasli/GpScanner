@@ -360,6 +360,20 @@ namespace TwainControl
             }
         }
 
+        public double PdfSaveProgressValue
+        {
+            get => pdfSaveProgressValue;
+
+            set
+            {
+                if (pdfSaveProgressValue != value)
+                {
+                    pdfSaveProgressValue = value;
+                    OnPropertyChanged(nameof(PdfSaveProgressValue));
+                }
+            }
+        }
+
         public string ProfileName
         {
             get => profileName;
@@ -668,6 +682,8 @@ namespace TwainControl
         private bool passwordProtect;
 
         private SecureString pdfPassword;
+
+        private double pdfSaveProgressValue;
 
         private string profileName;
 

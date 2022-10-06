@@ -120,7 +120,7 @@
                                     </ListBox.ItemsPanel>
                                     <ListBoxItem HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center">
                                         <StackPanel>
-                                            <TextBlock Text="{local:Loc BW}" />
+                                            <TextBlock FontWeight="Bold" Text="{local:Loc BW}" />
                                             <Image Width="32" Height="32">
                                                 <Image.Effect>
                                                     <Extensions:BlackWhiteEffect Threshold="0.95" />
@@ -137,7 +137,7 @@
                                     <ListBoxItem HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center">
                                         <StackPanel>
                                             <TextBlock HorizontalAlignment="Center"
-                                                Foreground="Gray"
+                                                FontWeight="Bold" Foreground="Gray"
                                                 Text="{local:Loc GRAY}" />
                                             <Image Width="32" Height="32">
                                                 <Image.Effect>
@@ -154,7 +154,9 @@
                                     </ListBoxItem>
                                     <ListBoxItem HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center">
                                         <StackPanel>
-                                            <TextBlock HorizontalAlignment="Center" Text="{local:Loc COLOR}">
+                                            <TextBlock HorizontalAlignment="Center"
+                                                FontWeight="Bold"
+                                                Text="{local:Loc COLOR}">
                                                 <TextBlock.Foreground>
                                                     <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
                                                         <GradientStop Offset="0.0" Color="Red" />
@@ -661,23 +663,26 @@
                             </GroupBox>
                         </Extensions:SplitButton.InternalContent>
                     </Extensions:SplitButton>
-                    <Button Command="{Binding Seçilikaydet}">
-                        <StackPanel Orientation="Horizontal">
-                            <Canvas Width="24" Height="24">
-                                <Image Width="24" Height="24">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="6" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                                <TextBlock d:Text="0" FontSize="10" FontWeight="Bold"
-                                    Foreground="Red"
-                                    Text="{Binding Scanner.SeçiliResimSayısı}" />
-                            </Canvas>
-                            <TextBlock VerticalAlignment="Center" Text="{local:Loc SAVESELECTED}" />
-                        </StackPanel>
+                    <Button HorizontalContentAlignment="Stretch" Command="{Binding Seçilikaydet}">
+                        <Grid>
+                            <ProgressBar Maximum="1" Value="{Binding Scanner.PdfSaveProgressValue}" />
+                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                <Canvas Width="24" Height="24">
+                                    <Image Width="24" Height="24">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="6" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock d:Text="0" FontSize="10" FontWeight="Bold"
+                                        Foreground="Red"
+                                        Text="{Binding Scanner.SeçiliResimSayısı}" />
+                                </Canvas>
+                                <TextBlock VerticalAlignment="Center" Text="{local:Loc SAVESELECTED}" />
+                            </StackPanel>
+                        </Grid>
                     </Button>
                     <Button Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/goksenpasli">
                         <StackPanel Orientation="Horizontal">
@@ -786,6 +791,18 @@
                                                 <TextBlock.ToolTip>
                                                     <Image Source="{Binding Scanner.CroppedImage}" />
                                                 </TextBlock.ToolTip>
+                                            </TextBlock>
+                                            <TextBlock HorizontalAlignment="Right" VerticalAlignment="Top">
+                                                <Hyperlink Command="{Binding PrintCroppedImage}" CommandParameter="{Binding Scanner.CroppedImage}">
+                                                    <Image Width="16" Height="16">
+                                                        <Image.Source>
+                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                <Binding Source="Shell32.dll" />
+                                                                <Binding Source="16" />
+                                                            </MultiBinding>
+                                                        </Image.Source>
+                                                    </Image>
+                                                </Hyperlink>
                                             </TextBlock>
                                         </Grid>
                                     </Border>

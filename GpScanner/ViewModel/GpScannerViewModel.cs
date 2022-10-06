@@ -203,6 +203,23 @@ namespace GpScanner.ViewModel
                 Settings.Default.Reload();
             }, parameter => true);
 
+            ModifyGridWidth = new RelayCommand<object>(parameter =>
+            {
+                switch (parameter)
+                {
+                    case "0":
+                        MainWindowDocumentGuiControlLength = new(1, GridUnitType.Star);
+                        MainWindowGuiControlLength = new(2, GridUnitType.Star);
+                        return;
+
+                    case "1":
+                        MainWindowDocumentGuiControlLength = new(1, GridUnitType.Star);
+                        MainWindowGuiControlLength = new(0, GridUnitType.Star);
+                        ShowPdfPreview = true;
+                        return;
+                }
+            }, parameter => true);
+
             DatabaseSave = new RelayCommand<object>(parameter => ScannerData.Serialize());
 
             Settings.Default.PropertyChanged += Default_PropertyChanged;
@@ -310,7 +327,7 @@ namespace GpScanner.ViewModel
             }
         }
 
-        public RelayCommand<object> ChangeDataFolder { get; }
+        public ICommand ChangeDataFolder { get; }
 
         public ObservableCollection<Chart> ChartData
         {
@@ -340,7 +357,7 @@ namespace GpScanner.ViewModel
             }
         }
 
-        public RelayCommand<object> DatabaseSave { get; }
+        public ICommand DatabaseSave { get; }
 
         public bool DetectBarCode
         {
@@ -384,7 +401,7 @@ namespace GpScanner.ViewModel
             }
         }
 
-        public RelayCommand<object> ExtractPdfFile { get; }
+        public ICommand ExtractPdfFile { get; }
 
         public double Fold
         {
@@ -399,6 +416,34 @@ namespace GpScanner.ViewModel
                 }
             }
         }
+
+        public GridLength MainWindowDocumentGuiControlLength
+        {
+            get => mainWindowDocumentGuiControlLength; set
+
+            {
+                if (mainWindowDocumentGuiControlLength != value)
+                {
+                    mainWindowDocumentGuiControlLength = value;
+                    OnPropertyChanged(nameof(MainWindowDocumentGuiControlLength));
+                }
+            }
+        }
+
+        public GridLength MainWindowGuiControlLength
+        {
+            get => mainWindowGuiControlLength; set
+
+            {
+                if (mainWindowGuiControlLength != value)
+                {
+                    mainWindowGuiControlLength = value;
+                    OnPropertyChanged(nameof(MainWindowGuiControlLength));
+                }
+            }
+        }
+
+        public ICommand ModifyGridWidth { get; }
 
         public bool OcrIsBusy
         {
@@ -461,13 +506,13 @@ namespace GpScanner.ViewModel
 
         public ICommand RegisterSti { get; }
 
-        public RelayCommand<object> RemovePatchProfile { get; }
+        public ICommand RemovePatchProfile { get; }
 
         public ICommand ResetFilter { get; }
 
-        public RelayCommand<object> SaveOcrPdf { get; }
+        public ICommand SaveOcrPdf { get; }
 
-        public RelayCommand<object> SavePatchProfile { get; }
+        public ICommand SavePatchProfile { get; }
 
         public int SayfaBaşlangıç
         {
@@ -597,7 +642,7 @@ namespace GpScanner.ViewModel
             }
         }
 
-        public RelayCommand<object> TransferImage { get; }
+        public ICommand TransferImage { get; }
 
         public TranslateViewModel TranslateViewModel
         {
@@ -737,6 +782,10 @@ namespace GpScanner.ViewModel
         private ObservableCollection<Scanner> dosyalar;
 
         private double fold = 0.3;
+
+        private GridLength mainWindowDocumentGuiControlLength = new(1, GridUnitType.Star);
+
+        private GridLength mainWindowGuiControlLength = new(2, GridUnitType.Star);
 
         private bool ocrısBusy;
 

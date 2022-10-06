@@ -35,18 +35,41 @@
             </Style>
         </Grid.Style>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="{Binding MainWindowGuiControlLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" d:Width="2*" />
             <ColumnDefinition Width="3" />
-            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="{Binding MainWindowDocumentGuiControlLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" d:Width="1*" />
         </Grid.ColumnDefinitions>
         <twainctrl:TwainCtrl x:Name="TwainCtrl" />
         <GridSplitter Grid.Column="1"
             Width="3"
             HorizontalAlignment="Stretch"
-            Background="{StaticResource GroupBoxBackGround}" />
+            Background="{StaticResource GroupBoxBackGround}"
+            MouseDoubleClick="GridSplitter_MouseDoubleClick" />
         <GroupBox Grid.Column="2" Margin="1,0,0,0">
             <GroupBox.Header>
-                <UniformGrid Columns="2">
+                <UniformGrid Columns="3">
+                    <UniformGrid Columns="2">
+                        <Button Command="{Binding ModifyGridWidth}" CommandParameter="0">
+                            <Image Width="24" Height="24">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="240" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                        </Button>
+                        <Button Command="{Binding ModifyGridWidth}" CommandParameter="1">
+                            <Image Width="24" Height="24">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="263" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                        </Button>
+                    </UniformGrid>
                     <Button Command="{Binding ChangeDataFolder}">
                         <StackPanel Orientation="Horizontal">
                             <Image Width="24" Height="24">
@@ -319,7 +342,9 @@
                                                             <DataTrigger Binding="{Binding Path=DataContext.ShowPdfPreview, RelativeSource={RelativeSource AncestorType=Window}}" Value="true">
                                                                 <Setter Property="Content">
                                                                     <Setter.Value>
-                                                                        <ContentControl Content="{Binding Path=FileName}" ContentTemplateSelector="{StaticResource ThumbViewerSelector}" />
+                                                                        <ContentControl Content="{Binding Path=FileName}"
+                                                                            ContentTemplateSelector="{StaticResource ThumbViewerSelector}"
+                                                                            IsHitTestVisible="False" />
                                                                     </Setter.Value>
                                                                 </Setter>
                                                             </DataTrigger>

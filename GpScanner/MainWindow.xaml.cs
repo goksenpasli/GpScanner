@@ -26,11 +26,28 @@ namespace GpScanner
             TwainCtrl.PropertyChanged += TwainCtrl_PropertyChanged;
         }
 
+        private static void AddBarcodeToList(GpScannerViewModel ViewModel)
+        {
+            if (ViewModel.BarcodeContent is not null)
+            {
+                ViewModel.BarcodeList.Add(ViewModel.BarcodeContent);
+            }
+        }
+
         private void Calendar_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             if (Mouse.Captured is CalendarItem)
             {
                 _ = Mouse.Capture(null);
+            }
+        }
+
+        private void GridSplitter_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (DataContext is GpScannerViewModel ViewModel)
+            {
+                ViewModel.MainWindowDocumentGuiControlLength = new(1, GridUnitType.Star);
+                ViewModel.MainWindowGuiControlLength = new(2, GridUnitType.Star);
             }
         }
 
@@ -53,19 +70,14 @@ namespace GpScanner
                     ViewModel.ChartData = ViewModel.GetChartsData();
                 }
 
-                if (e.PropertyName is "DetectPageSeperator")
+                if (e.PropertyName is "DetectPageSeperator" && ViewModel.DetectBarCode)
                 {
-                    if (ViewModel.DetectBarCode)
-                    {
-                        Result result = ViewModel.GetImageBarcodeResult(TwainCtrl.Scanner.Resimler.LastOrDefault().Resim.BitmapSourceToBitmap());
-                        ViewModel.BarcodeContent = result?.Text;
-                        ViewModel.BarcodePosition = result?.ResultPoints;
-                        if (ViewModel.BarcodeContent is not null)
-                        {
-                            ViewModel.BarcodeList.Add(ViewModel.BarcodeContent);
-                        }
-                    }
-                    if (ViewModel.DetectBarCode && ViewModel.DetectPageSeperator && ViewModel.BarcodeContent is not null)
+                    Result result = ViewModel.GetImageBarcodeResult(TwainCtrl.Scanner.Resimler.LastOrDefault().Resim.BitmapSourceToBitmap());
+                    ViewModel.BarcodeContent = result?.Text;
+                    ViewModel.BarcodePosition = result?.ResultPoints;
+                    AddBarcodeToList(ViewModel);
+
+                    if (ViewModel.DetectPageSeperator && ViewModel.BarcodeContent is not null)
                     {
                         TwainCtrl.Scanner.FileName = ViewModel.GetPatchCodeResult(ViewModel.BarcodeContent);
                     }
@@ -74,10 +86,7 @@ namespace GpScanner
                 if (e.PropertyName is "ImgData" && TwainCtrl.ImgData is not null)
                 {
                     ViewModel.BarcodeContent = ViewModel.GetImageBarcodeResult(TwainCtrl.ImgData)?.Text;
-                    if (ViewModel.BarcodeContent is not null)
-                    {
-                        ViewModel.BarcodeList.Add(ViewModel.BarcodeContent);
-                    }
+                    AddBarcodeToList(ViewModel);
                     _ = ViewModel.Ocr(TwainCtrl.ImgData);
                     TwainCtrl.ImgData = null;
                 }

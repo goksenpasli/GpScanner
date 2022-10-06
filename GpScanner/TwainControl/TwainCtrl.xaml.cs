@@ -169,16 +169,18 @@ namespace TwainControl
                     {
                         if (saveFileDialog.FilterIndex == 1)
                         {
-                            PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToList(), Format.Jpg).Save(saveFileDialog.FileName);
+                            PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili), Format.Jpg).Save(saveFileDialog.FileName);
+                            return;
                         }
                         if (saveFileDialog.FilterIndex == 2)
                         {
-                            PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToList(), Format.Tiff).Save(saveFileDialog.FileName);
+                            PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili), Format.Tiff).Save(saveFileDialog.FileName);
+                            return;
                         }
                         if (saveFileDialog.FilterIndex == 3)
                         {
                             string dosyayolu = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
-                            PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToList(), Format.Jpg).Save(dosyayolu);
+                            PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili), Format.Jpg).Save(dosyayolu);
                             using ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Update);
                             _ = archive.CreateEntryFromFile(dosyayolu, $"{Scanner.SaveFileName}.pdf", CompressionLevel.Optimal);
                             File.Delete(dosyayolu);
@@ -387,6 +389,8 @@ namespace TwainControl
                 }
             }, parameter => true);
 
+            PrintCroppedImage = new RelayCommand<object>(parameter => PdfViewer.PdfViewer.PrintImageSource(parameter as ImageSource), parameter => Scanner.CroppedImage is not null);
+
             Scanner.PropertyChanged += Scanner_PropertyChanged;
 
             Settings.Default.PropertyChanged += Default_PropertyChanged;
@@ -428,6 +432,7 @@ namespace TwainControl
         }
 
         public ICommand DeskewImage { get; }
+        public ICommand PrintCroppedImage { get; }
 
         public GridLength DocumentGridLength
         {
