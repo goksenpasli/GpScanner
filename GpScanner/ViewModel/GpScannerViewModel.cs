@@ -159,6 +159,10 @@ namespace GpScanner.ViewModel
 
             SaveOcrPdf = new RelayCommand<object>(parameter =>
             {
+                if (OcrIsBusy)
+                {
+                    return;
+                }
                 if (parameter is TwainCtrl twainCtrl)
                 {
                     SaveFileDialog saveFileDialog = new()
@@ -171,11 +175,11 @@ namespace GpScanner.ViewModel
                         switch (saveFileDialog.FilterIndex)
                         {
                             case 1:
-                                PdfGeneration.GeneratePdf(twainCtrl.SeçiliResim.Resim, ScannedText, Format.Jpg).Save(saveFileDialog.FileName);
+                                PdfGeneration.GeneratePdf(twainCtrl.SeçiliResim.Resim, ScannedText, Format.Jpg, twainCtrl.Scanner.JpegQuality, PdfOnlyText).Save(saveFileDialog.FileName);
                                 return;
 
                             case 2:
-                                PdfGeneration.GeneratePdf(twainCtrl.SeçiliResim.Resim, ScannedText, Format.Tiff).Save(saveFileDialog.FileName);
+                                PdfGeneration.GeneratePdf(twainCtrl.SeçiliResim.Resim, ScannedText, Format.Tiff, twainCtrl.Scanner.JpegQuality, PdfOnlyText).Save(saveFileDialog.FileName);
                                 return;
                         }
                     }
@@ -504,6 +508,20 @@ namespace GpScanner.ViewModel
 
         public ICommand PdfBirleştir { get; }
 
+        public bool PdfOnlyText
+        {
+            get => pdfOnlyText;
+
+            set
+            {
+                if (pdfOnlyText != value)
+                {
+                    pdfOnlyText = value;
+                    OnPropertyChanged(nameof(PdfOnlyText));
+                }
+            }
+        }
+
         public ICommand RegisterSti { get; }
 
         public ICommand RemovePatchProfile { get; }
@@ -794,6 +812,8 @@ namespace GpScanner.ViewModel
         private string patchProfileName = string.Empty;
 
         private string patchTag;
+
+        private bool pdfOnlyText;
 
         private int sayfaBaşlangıç = 1;
 

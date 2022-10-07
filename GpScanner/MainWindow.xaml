@@ -342,7 +342,7 @@
                                                             <DataTrigger Binding="{Binding Path=DataContext.ShowPdfPreview, RelativeSource={RelativeSource AncestorType=Window}}" Value="true">
                                                                 <Setter Property="Content">
                                                                     <Setter.Value>
-                                                                        <ContentControl Content="{Binding Path=FileName}"
+                                                                        <ContentControl Content="{Binding Path=FileName, IsAsync=True}"
                                                                             ContentTemplateSelector="{StaticResource ThumbViewerSelector}"
                                                                             IsHitTestVisible="False" />
                                                                     </Setter.Value>
@@ -398,6 +398,7 @@
                 </ListBox>
                 <ListBox Grid.Row="6"
                     d:ItemsSource="{d:SampleData ItemCount=5}"
+                    Background="{StaticResource BorderBackground}"
                     ItemsSource="{Binding BarcodeList}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -510,8 +511,10 @@
                             </ContextMenu>
                         </Button.ContextMenu>
                     </Button>
-                    <Button Command="{Binding SaveOcrPdf}" CommandParameter="{Binding ElementName=TwainCtrl}">
-                        <Button.Content>
+                    <Extensions:SplitButton Command="{Binding SaveOcrPdf}"
+                        CommandParameter="{Binding ElementName=TwainCtrl}"
+                        PlacementMode="Top">
+                        <Extensions:SplitButton.Content>
                             <StackPanel Orientation="Horizontal">
                                 <Image Width="32" Height="32">
                                     <Image.Source>
@@ -523,8 +526,26 @@
                                 </Image>
                                 <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc OCRPDFSAVE}" />
                             </StackPanel>
-                        </Button.Content>
-                    </Button>
+                        </Extensions:SplitButton.Content>
+                        <Extensions:SplitButton.InternalContent>
+                            <GroupBox>
+                                <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding PdfOnlyText}">
+                                    <Image Width="32" Height="32">
+                                        <Image.Effect>
+                                            <Extensions:BlackWhiteEffect Threshold="0.95" />
+                                        </Image.Effect>
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="70" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                </CheckBox>
+                            </GroupBox>
+                        </Extensions:SplitButton.InternalContent>
+
+                    </Extensions:SplitButton>
                 </UniformGrid>
             </Grid>
         </GroupBox>

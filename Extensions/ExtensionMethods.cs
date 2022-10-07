@@ -393,7 +393,7 @@ namespace Extensions
             return null;
         }
 
-        public static byte[] ToTiffJpegByteArray(this ImageSource bitmapsource, Format format)
+        public static byte[] ToTiffJpegByteArray(this ImageSource bitmapsource, Format format, int jpegquality = 75)
         {
             try
             {
@@ -413,7 +413,7 @@ namespace Extensions
                         return outStream.ToArray();
 
                     case Format.Jpg:
-                        JpegBitmapEncoder jpgencoder = new() { QualityLevel = 75 };
+                        JpegBitmapEncoder jpgencoder = new() { QualityLevel = jpegquality };
                         BitmapFrame item = BitmapFrame.Create((BitmapSource)bitmapsource);
                         jpgencoder.Frames.Add(item);
                         jpgencoder.Save(outStream);

@@ -252,6 +252,9 @@ SCANSIONE</value>
   <data name="HEIGHTCOUNT" xml:space="preserve">
     <value>TAGLIA QUANTITÀ</value>
   </data>
+  <data name="JPEGQUALITY" xml:space="preserve">
+    <value>QUALITÀ JPEG</value>
+  </data>
   <data name="LISTREMOVEWARN" xml:space="preserve">
     <value>Tutti i documenti scansionati nell'elenco principale verranno eliminati Continuare?</value>
   </data>

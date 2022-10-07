@@ -97,12 +97,12 @@ namespace TwainControl
                         }
                         if (saveFileDialog.FilterIndex == 3)
                         {
-                            PdfGeneration.GeneratePdf(scannedImage.Resim, null, Format.Jpg).Save(saveFileDialog.FileName);
+                            PdfGeneration.GeneratePdf(scannedImage.Resim, null, Format.Jpg, Scanner.JpegQuality).Save(saveFileDialog.FileName);
                             return;
                         }
                         if (saveFileDialog.FilterIndex == 4)
                         {
-                            PdfGeneration.GeneratePdf(scannedImage.Resim, null, Format.Tiff).Save(saveFileDialog.FileName);
+                            PdfGeneration.GeneratePdf(scannedImage.Resim, null, Format.Tiff, Scanner.JpegQuality).Save(saveFileDialog.FileName);
                         }
                     }
                 }
@@ -169,18 +169,18 @@ namespace TwainControl
                     {
                         if (saveFileDialog.FilterIndex == 1)
                         {
-                            PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili), Format.Jpg).Save(saveFileDialog.FileName);
+                            PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili), Format.Jpg, Scanner.JpegQuality).Save(saveFileDialog.FileName);
                             return;
                         }
                         if (saveFileDialog.FilterIndex == 2)
                         {
-                            PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili), Format.Tiff).Save(saveFileDialog.FileName);
+                            PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili), Format.Tiff, Scanner.JpegQuality).Save(saveFileDialog.FileName);
                             return;
                         }
                         if (saveFileDialog.FilterIndex == 3)
                         {
                             string dosyayolu = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
-                            PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili), Format.Jpg).Save(dosyayolu);
+                            PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili), Format.Jpg, Scanner.JpegQuality).Save(dosyayolu);
                             using ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Update);
                             _ = archive.CreateEntryFromFile(dosyayolu, $"{Scanner.SaveFileName}.pdf", CompressionLevel.Optimal);
                             File.Delete(dosyayolu);
@@ -277,11 +277,11 @@ namespace TwainControl
                     switch (saveFileDialog.FilterIndex)
                     {
                         case 1:
-                            PdfGeneration.GeneratePdf((BitmapSource)parameter, null, Format.Jpg).Save(saveFileDialog.FileName);
+                            PdfGeneration.GeneratePdf((BitmapSource)parameter, null, Format.Jpg, Scanner.JpegQuality).Save(saveFileDialog.FileName);
                             return;
 
                         case 2:
-                            PdfGeneration.GeneratePdf((BitmapSource)parameter, null, Format.Tiff).Save(saveFileDialog.FileName);
+                            PdfGeneration.GeneratePdf((BitmapSource)parameter, null, Format.Tiff, Scanner.JpegQuality).Save(saveFileDialog.FileName);
                             return;
 
                         case 3:
@@ -432,7 +432,6 @@ namespace TwainControl
         }
 
         public ICommand DeskewImage { get; }
-        public ICommand PrintCroppedImage { get; }
 
         public GridLength DocumentGridLength
         {
@@ -525,6 +524,8 @@ namespace TwainControl
                 }
             }
         }
+
+        public ICommand PrintCroppedImage { get; }
 
         public ICommand RemoveProfile { get; }
 
@@ -811,11 +812,11 @@ namespace TwainControl
 
             if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
             {
-                PdfGeneration.GeneratePdf(Scanner.Resimler, Format.Tiff).Save(pdffilepath);
+                PdfGeneration.GeneratePdf(Scanner.Resimler, Format.Tiff, Scanner.JpegQuality).Save(pdffilepath);
             }
             if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
             {
-                PdfGeneration.GeneratePdf(Scanner.Resimler, Format.Jpg).Save(pdffilepath);
+                PdfGeneration.GeneratePdf(Scanner.Resimler, Format.Jpg, Scanner.JpegQuality).Save(pdffilepath);
             }
             OnPropertyChanged(nameof(Scanner.Resimler));
 

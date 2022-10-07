@@ -252,6 +252,9 @@ ANALYSE</value>
   <data name="HEIGHTCOUNT" xml:space="preserve">
     <value>TAILLE QUANTITÉ</value>
   </data>
+  <data name="JPEGQUALITY" xml:space="preserve">
+    <value>QUALITÉ JPEG</value>
+  </data>
   <data name="LISTREMOVEWARN" xml:space="preserve">
     <value>Tous les documents numérisés de la liste principale seront supprimés Voulez-vous continuer ?</value>
   </data>

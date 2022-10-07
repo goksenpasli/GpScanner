@@ -441,4 +441,7 @@ DEVICE</value>
   <data name="EMPTYPAGE" xml:space="preserve">
     <value>SKIP EMPTY PAGE</value>
   </data>
+  <data name="JPEGQUALITY" xml:space="preserve">
+    <value>JPEG QUALITY</value>
+  </data>
 </root>

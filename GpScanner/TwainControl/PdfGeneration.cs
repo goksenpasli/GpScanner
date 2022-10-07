@@ -53,7 +53,7 @@ namespace TwainControl
             return outputDocument;
         }
 
-        public static PdfDocument GeneratePdf(IEnumerable<ScannedImage> bitmapFrames, Format format)
+        public static PdfDocument GeneratePdf(IEnumerable<ScannedImage> bitmapFrames, Format format, int jpegquality = 75)
         {
             using PdfDocument document = new();
             double index = 0;
@@ -67,7 +67,7 @@ namespace TwainControl
                         ApplyPdfSecurity(document);
                     }
                     using XGraphics gfx = XGraphics.FromPdfPage(page);
-                    using MemoryStream ms = new(scannedimage.Resim.ToTiffJpegByteArray(format));
+                    using MemoryStream ms = new(scannedimage.Resim.ToTiffJpegByteArray(format, jpegquality));
                     using XImage xImage = XImage.FromStream(ms);
                     XSize size = PageSizeConverter.ToSize(PageSize.A4);
                     if (scannedimage.Resim.PixelWidth < scannedimage.Resim.PixelHeight)
@@ -91,7 +91,7 @@ namespace TwainControl
             return document;
         }
 
-        public static PdfDocument GeneratePdf(BitmapSource bitmapframe, ObservableCollection<OcrData> ScannedText, Format format)
+        public static PdfDocument GeneratePdf(BitmapSource bitmapframe, ObservableCollection<OcrData> ScannedText, Format format, int jpegquality = 75, bool pdfonlytext = false)
         {
             try
             {
@@ -102,33 +102,35 @@ namespace TwainControl
                     ApplyPdfSecurity(document);
                 }
                 using XGraphics gfx = XGraphics.FromPdfPage(page);
-                using MemoryStream ms = new(bitmapframe.ToTiffJpegByteArray(format));
+                using MemoryStream ms = new(bitmapframe.ToTiffJpegByteArray(format, jpegquality));
                 using XImage xImage = XImage.FromStream(ms);
                 XSize size = PageSizeConverter.ToSize(PageSize.A4);
-                if (bitmapframe.PixelWidth < bitmapframe.PixelHeight)
-                {
-                    gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
-                }
-                else
-                {
-                    page.Orientation = PageOrientation.Landscape;
-                    gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
-                }
+
                 if (ScannedText is not null)
                 {
-                    XTextFormatter textformatter = new(gfx);
-                    foreach (OcrData item in ScannedText)
+                    if (pdfonlytext)
                     {
-                        XRect adjustedBounds = AdjustBounds(item.Rect, page.Width / bitmapframe.PixelWidth, page.Height / bitmapframe.PixelHeight);
-                        int adjustedFontSize = CalculateFontSize(item.Text, adjustedBounds, gfx);
-                        XFont font = new("Times New Roman", adjustedFontSize, XFontStyle.Regular, new XPdfFontOptions(PdfFontEncoding.Unicode));
-                        XSize adjustedTextSize = gfx.MeasureString(item.Text, font);
-                        double verticalOffset = (adjustedBounds.Height - adjustedTextSize.Height) / 2;
-                        double horizontalOffset = (adjustedBounds.Width - adjustedTextSize.Width) / 2;
-                        adjustedBounds.Offset(horizontalOffset, verticalOffset);
-                        textformatter.DrawString(item.Text, font, XBrushes.Transparent, adjustedBounds);
+                        WritePdfTextContent(bitmapframe, ScannedText, page, gfx, XBrushes.Black);
+                    }
+                    else
+                    {
+                        WritePdfTextContent(bitmapframe, ScannedText, page, gfx, XBrushes.Transparent);
                     }
                 }
+
+                if (!pdfonlytext)
+                {
+                    if (bitmapframe.PixelWidth < bitmapframe.PixelHeight)
+                    {
+                        gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
+                    }
+                    else
+                    {
+                        page.Orientation = PageOrientation.Landscape;
+                        gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
+                    }
+                }
+
                 DefaultPdfCompression(document);
                 return document;
             }
@@ -214,6 +216,22 @@ namespace TwainControl
                 securitySettings.PermitModifyDocument = Scanner.AllowEdit;
                 securitySettings.PermitPrint = Scanner.AllowPrint;
                 securitySettings.PermitExtractContent = Scanner.AllowCopy;
+            }
+        }
+
+        private static void WritePdfTextContent(BitmapSource bitmapframe, ObservableCollection<OcrData> ScannedText, PdfPage page, XGraphics gfx, XBrush xBrush)
+        {
+            XTextFormatter textformatter = new(gfx);
+            foreach (OcrData item in ScannedText)
+            {
+                XRect adjustedBounds = AdjustBounds(item.Rect, page.Width / bitmapframe.PixelWidth, page.Height / bitmapframe.PixelHeight);
+                int adjustedFontSize = CalculateFontSize(item.Text, adjustedBounds, gfx);
+                XFont font = new("Times New Roman", adjustedFontSize, XFontStyle.Regular, new XPdfFontOptions(PdfFontEncoding.Unicode));
+                XSize adjustedTextSize = gfx.MeasureString(item.Text, font);
+                double verticalOffset = (adjustedBounds.Height - adjustedTextSize.Height) / 2;
+                double horizontalOffset = (adjustedBounds.Width - adjustedTextSize.Width) / 2;
+                adjustedBounds.Offset(horizontalOffset, verticalOffset);
+                textformatter.DrawString(item.Text, font, xBrush, adjustedBounds);
             }
         }
     }

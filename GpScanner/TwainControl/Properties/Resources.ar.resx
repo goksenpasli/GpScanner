@@ -252,6 +252,9 @@
   <data name="HEIGHTCOUNT" xml:space="preserve">
     <value>كمية الحجم</value>
   </data>
+  <data name="JPEGQUALITY" xml:space="preserve">
+    <value>جودة JPEG</value>
+  </data>
   <data name="LISTREMOVEWARN" xml:space="preserve">
     <value>سيتم حذف كافة المستندات الممسوحة ضوئيًا في القائمة العلوية هل تريد المتابعة؟</value>
   </data>

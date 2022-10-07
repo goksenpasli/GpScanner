@@ -446,4 +446,7 @@ EKLE</value>
   <data name="EMPTYPAGE" xml:space="preserve">
     <value>BOŞ SAYFALARI GEÇ</value>
   </data>
+  <data name="JPEGQUALITY" xml:space="preserve">
+    <value>JPEG KALİTE ORANI</value>
+  </data>
 </root>
