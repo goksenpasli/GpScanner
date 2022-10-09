@@ -62,10 +62,6 @@ namespace TwainControl
                 foreach (ScannedImage scannedimage in bitmapFrames)
                 {
                     PdfPage page = document.AddPage();
-                    if (Scanner.PasswordProtect)
-                    {
-                        ApplyPdfSecurity(document);
-                    }
                     using XGraphics gfx = XGraphics.FromPdfPage(page);
                     using MemoryStream ms = new(scannedimage.Resim.ToTiffJpegByteArray(format, jpegquality));
                     using XImage xImage = XImage.FromStream(ms);
@@ -82,6 +78,10 @@ namespace TwainControl
                     index++;
                     Scanner.PdfSaveProgressValue = index / bitmapFrames.Count();
                 }
+                if (Scanner.PasswordProtect)
+                {
+                    ApplyPdfSecurity(document);
+                }
                 DefaultPdfCompression(document);
             }
             catch (Exception ex)
@@ -97,10 +97,6 @@ namespace TwainControl
             {
                 using PdfDocument document = new();
                 PdfPage page = document.AddPage();
-                if (Scanner.PasswordProtect)
-                {
-                    ApplyPdfSecurity(document);
-                }
                 using XGraphics gfx = XGraphics.FromPdfPage(page);
                 using MemoryStream ms = new(bitmapframe.ToTiffJpegByteArray(format, jpegquality));
                 using XImage xImage = XImage.FromStream(ms);
@@ -129,6 +125,11 @@ namespace TwainControl
                         page.Orientation = PageOrientation.Landscape;
                         gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
                     }
+                }
+
+                if (Scanner.PasswordProtect)
+                {
+                    ApplyPdfSecurity(document);
                 }
 
                 DefaultPdfCompression(document);

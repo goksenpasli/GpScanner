@@ -213,7 +213,8 @@
                                     <CheckBox.Content>
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock VerticalAlignment="Center" Text="{local:Loc EMPTYPAGE}" />
-                                            <Extensions:NumericUpDownControl IsEnabled="{Binding Scanner.DetectEmptyPage}"
+                                            <Extensions:NumericUpDownControl Foreground="{StaticResource GroupBoxBackGround}"
+                                                IsEnabled="{Binding Scanner.DetectEmptyPage}"
                                                 IsReadOnly="True" Maximum="100" Minimum="1"
                                                 Orientation="Horizontal" SmallChange="1"
                                                 Value="{Binding EmptyThreshold, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
@@ -318,22 +319,24 @@
                                         <TextBlock VerticalAlignment="Center" Text="{local:Loc SAVEPROFILE}" />
                                     </StackPanel>
                                 </Button>
-                                <ComboBox HorizontalContentAlignment="Stretch"
-                                    ItemsSource="{Binding Profile, Source={x:Static properties:Settings.Default}}"
-                                    SelectedItem="{Binding Scanner.SelectedProfile}">
-                                    <ComboBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <UniformGrid Columns="2">
-                                                <TextBlock VerticalAlignment="Center" Text="{Binding Converter={StaticResource SplitConverter}, Mode=OneWay}" />
-                                                <Button Background="Transparent" BorderBrush="Transparent"
-                                                    Command="{Binding DataContext.RemoveProfile, ElementName=UserControl}"
-                                                    CommandParameter="{Binding Mode=OneWay}"
-                                                    Content="{local:Loc DELETE}"
-                                                    FontWeight="Bold" Foreground="Red" />
-                                            </UniformGrid>
-                                        </DataTemplate>
-                                    </ComboBox.ItemTemplate>
-                                </ComboBox>
+                                <CheckBox HorizontalContentAlignment="Stretch" IsChecked="{Binding UseSelectedProfile, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                    <ComboBox HorizontalContentAlignment="Stretch"
+                                        ItemsSource="{Binding Profile, Source={x:Static properties:Settings.Default}}"
+                                        SelectedItem="{Binding Scanner.SelectedProfile}">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <UniformGrid Columns="2">
+                                                    <TextBlock VerticalAlignment="Center" Text="{Binding Converter={StaticResource SplitConverter}, Mode=OneWay}" />
+                                                    <Button Background="Transparent" BorderBrush="Transparent"
+                                                        Command="{Binding DataContext.RemoveProfile, ElementName=UserControl}"
+                                                        CommandParameter="{Binding Mode=OneWay}"
+                                                        Content="{local:Loc DELETE}"
+                                                        FontWeight="Bold" Foreground="Red" />
+                                                </UniformGrid>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </CheckBox>
                             </UniformGrid>
                             <Separator />
                             <UniformGrid Columns="3">
@@ -458,6 +461,7 @@
                                                 <HeaderedContentControl Header="{local:Loc JPEGQUALITY}">
                                                     <Slider AutoToolTipPlacement="TopLeft" Maximum="95" Minimum="10"
                                                         SmallChange="1"
+                                                        Style="{StaticResource Slider}"
                                                         Value="{Binding Scanner.JpegQuality, UpdateSourceTrigger=PropertyChanged}" />
                                                 </HeaderedContentControl>
                                             </StackPanel>
@@ -520,7 +524,7 @@
                                                     <Image.Source>
                                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                             <Binding Source="Imageres.dll" />
-                                                            <Binding Source="248" />
+                                                            <Binding Source="249" />
                                                         </MultiBinding>
                                                     </Image.Source>
                                                 </Image>
@@ -535,7 +539,7 @@
                                                     <Image.Source>
                                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                             <Binding Source="Imageres.dll" />
-                                                            <Binding Source="249" />
+                                                            <Binding Source="250" />
                                                         </MultiBinding>
                                                     </Image.Source>
                                                 </Image>
@@ -550,7 +554,7 @@
                                                     <Image.Source>
                                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                             <Binding Source="Imageres.dll" />
-                                                            <Binding Source="250" />
+                                                            <Binding Source="251" />
                                                         </MultiBinding>
                                                     </Image.Source>
                                                 </Image>
@@ -570,6 +574,11 @@
                         SelectionMode="Extended" VirtualizingPanel.CacheLength="2,2"
                         VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                         VirtualizingPanel.ScrollUnit="Item" VirtualizingPanel.VirtualizationMode="Recycling">
+                        <ListBox.InputBindings>
+                            <KeyBinding Key="A"
+                                Command="{Binding Tümünüİşaretle}"
+                                Modifiers="Ctrl" />
+                        </ListBox.InputBindings>
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
                                 <Style.Triggers>
@@ -747,7 +756,8 @@
                             Angle="{Binding Scanner.RotateAngle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             FitImageOrientation="Height" OrijinalResimDosyaAçButtonVisibility="Collapsed"
                             PanoramaButtonVisibility="Collapsed" PreviewMouseDown="ImgViewer_MouseDown"
-                            PreviewMouseMove="ImgViewer_MouseMove" SnapTick="True"
+                            PreviewMouseMove="ImgViewer_MouseMove" PreviewMouseWheel="ImgViewer_PreviewMouseWheel"
+                            SnapTick="True"
                             Source="{Binding SeçiliResim.Resim}" />
                         <Canvas x:Name="cnv" />
                     </Grid>

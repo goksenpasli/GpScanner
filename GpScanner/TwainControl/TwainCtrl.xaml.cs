@@ -29,7 +29,7 @@ namespace TwainControl
 {
     public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposable
     {
-        public static Task pdfsavetask;
+        public static Task filesavetask;
 
         public TwainCtrl()
         {
@@ -153,19 +153,19 @@ namespace TwainControl
 
             Seçilikaydet = new RelayCommand<object>(parameter =>
             {
-                if (pdfsavetask?.IsCompleted == false)
+                if (filesavetask?.IsCompleted == false)
                 {
                     _ = MessageBox.Show("İşlem Devam Ediyor. Bitmesini Bekleyin.");
                     return;
                 }
                 SaveFileDialog saveFileDialog = new()
                 {
-                    Filter = "Pdf Dosyası (*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf|Zip Dosyası (*.zip)|*.zip",
+                    Filter = "Pdf Dosyası (*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf|Zip Dosyası (*.zip)|*.zip|Jpg Resmi (*.jpg)|*.jpg",
                     FileName = Scanner.SaveFileName
                 };
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    pdfsavetask = Task.Run(() =>
+                    filesavetask = Task.Run(() =>
                     {
                         if (saveFileDialog.FilterIndex == 1)
                         {
@@ -184,6 +184,16 @@ namespace TwainControl
                             using ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Update);
                             _ = archive.CreateEntryFromFile(dosyayolu, $"{Scanner.SaveFileName}.pdf", CompressionLevel.Optimal);
                             File.Delete(dosyayolu);
+                            return;
+                        }
+                        if (saveFileDialog.FilterIndex == 4)
+                        {
+                            string filename = saveFileDialog.FileName;
+                            string directory = Path.GetDirectoryName(filename);
+                            foreach (ScannedImage item in Scanner.Resimler.Where(z => z.Seçili))
+                            {
+                                File.WriteAllBytes(directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "jpg"), item.Resim.ToTiffJpegByteArray(Format.Jpg));
+                            }
                         }
                     });
                 }
@@ -396,7 +406,10 @@ namespace TwainControl
             Settings.Default.PropertyChanged += Default_PropertyChanged;
 
             DecodeHeight = (int)(A4Height / 2.54 * ImgLoadResolution);
-            Scanner.SelectedProfile = Settings.Default.DefaultProfile;
+            if (Settings.Default.UseSelectedProfile)
+            {
+                Scanner.SelectedProfile = Settings.Default.DefaultProfile;
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -952,6 +965,18 @@ namespace TwainControl
             }
         }
 
+        private void ImgViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+            {
+                ImgViewer.Zoom += (double)(e.Delta > 0 ? .05 : -.05);
+                if (ImgViewer.Zoom <= 0.01)
+                {
+                    ImgViewer.Zoom = 0.01;
+                }
+            }
+        }
+
         private void ListBox_Drop(object sender, DragEventArgs e)
         {
             string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
@@ -1109,8 +1134,7 @@ namespace TwainControl
                 önizleme.Freeze();
                 BitmapFrame bitmapFrame = BitmapFrame.Create(evrak, önizleme);
                 bitmapFrame.Freeze();
-                ObservableCollection<ScannedImage> resimler = Scanner?.Resimler;
-                resimler?.Add(new ScannedImage() { Resim = bitmapFrame });
+                Scanner?.Resimler?.Add(new ScannedImage() { Resim = bitmapFrame });
                 evrak = null;
                 önizleme = null;
                 bitmapFrame = null;

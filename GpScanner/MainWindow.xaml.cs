@@ -95,7 +95,7 @@ namespace GpScanner
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            if (TwainCtrl.pdfsavetask?.IsCompleted == false)
+            if (TwainCtrl.filesavetask?.IsCompleted == false)
             {
                 e.Cancel = true;
             }

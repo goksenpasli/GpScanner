@@ -25,7 +25,7 @@ namespace TwainControl
             src.DestinationFormat = PixelFormats.Bgra32;
             src.EndInit();
             Bitmap bitmap = new(src.PixelWidth, src.PixelHeight, PixelFormat.Format32bppArgb);
-            BitmapData data = bitmap.LockBits(new System.Drawing.Rectangle(System.Drawing.Point.Empty, bitmap.Size), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+            BitmapData data = bitmap.LockBits(new Rectangle(System.Drawing.Point.Empty, bitmap.Size), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
             src.CopyPixels(Int32Rect.Empty, data.Scan0, data.Height * data.Stride, data.Stride);
             bitmap.UnlockBits(data);
 
@@ -64,7 +64,7 @@ namespace TwainControl
 
             BitmapImage thumbimage = new();
             thumbimage.BeginInit();
-            thumbimage.DecodePixelHeight = 96;
+            thumbimage.DecodePixelHeight = decodeheight / 10;
             thumbimage.CacheOption = BitmapCacheOption.None;
             thumbimage.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
             thumbimage.UriSource = item;

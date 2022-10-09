@@ -46,7 +46,7 @@ namespace Extensions
 
         public static readonly DependencyProperty ToolBarVisibilityProperty = DependencyProperty.Register("ToolBarVisibility", typeof(Visibility), typeof(ImageViewer), new PropertyMetadata(Visibility.Visible));
 
-        public static readonly DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(ImageViewer), new PropertyMetadata(1.0));
+        public static readonly DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(ImageViewer), new PropertyMetadata(1.0), ZoomValidateCallBack);
 
         static ImageViewer()
         {
@@ -566,6 +566,12 @@ namespace Extensions
                         return;
                 }
             }
+        }
+
+        private static bool ZoomValidateCallBack(object value)
+        {
+            double zoom = (double)value;
+            return zoom > 0.0;
         }
 
         private void ImageViewer_PropertyChanged(object sender, PropertyChangedEventArgs e)

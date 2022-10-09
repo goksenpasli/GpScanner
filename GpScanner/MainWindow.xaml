@@ -48,28 +48,28 @@
         <GroupBox Grid.Column="2" Margin="1,0,0,0">
             <GroupBox.Header>
                 <UniformGrid Columns="3">
-                    <UniformGrid Columns="2">
-                        <Button Command="{Binding ModifyGridWidth}" CommandParameter="0">
-                            <Image Width="24" Height="24">
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Shell32.dll" />
-                                        <Binding Source="240" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
-                        </Button>
-                        <Button Command="{Binding ModifyGridWidth}" CommandParameter="1">
-                            <Image Width="24" Height="24">
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Shell32.dll" />
-                                        <Binding Source="263" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
-                        </Button>
-                    </UniformGrid>
+                    <ToggleButton Command="{Binding ModifyGridWidth}">
+                        <ToggleButton.Style>
+                            <Style TargetType="ToggleButton">
+                                <Style.Triggers>
+                                    <Trigger Property="IsChecked" Value="True">
+                                        <Setter Property="CommandParameter" Value="1" />
+                                    </Trigger>
+                                    <Trigger Property="IsChecked" Value="False">
+                                        <Setter Property="CommandParameter" Value="0" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ToggleButton.Style>
+                        <Image Width="24" Height="24">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                    <Binding Source="Shell32.dll" />
+                                    <Binding Source="263" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                    </ToggleButton>
                     <Button Command="{Binding ChangeDataFolder}">
                         <StackPanel Orientation="Horizontal">
                             <Image Width="24" Height="24">
@@ -217,7 +217,7 @@
                                     <Image.Source>
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                             <Binding Source="Imageres.dll" />
-                                            <Binding Source="248" />
+                                            <Binding Source="249" />
                                         </MultiBinding>
                                     </Image.Source>
                                 </Image>
@@ -232,7 +232,7 @@
                                     <Image.Source>
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                             <Binding Source="Imageres.dll" />
-                                            <Binding Source="249" />
+                                            <Binding Source="250" />
                                         </MultiBinding>
                                     </Image.Source>
                                 </Image>
@@ -247,7 +247,7 @@
                                     <Image.Source>
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                             <Binding Source="Imageres.dll" />
-                                            <Binding Source="250" />
+                                            <Binding Source="251" />
                                         </MultiBinding>
                                     </Image.Source>
                                 </Image>
@@ -313,7 +313,7 @@
                     SelectedItem="{Binding SelectedDocument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     SelectionMode="Extended" VirtualizingPanel.CacheLength="2,2"
                     VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                    VirtualizingPanel.ScrollUnit="Item" VirtualizingPanel.VirtualizationMode="Standard">
+                    VirtualizingPanel.ScrollUnit="Item" VirtualizingPanel.VirtualizationMode="Recycling">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="160,220" SpacingMode="None" />
