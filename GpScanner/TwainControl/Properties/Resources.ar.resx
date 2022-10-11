@@ -142,6 +142,9 @@
   <data name="ALLOWPRINT" xml:space="preserve">
     <value>السماح بالطباعة</value>
   </data>
+  <data name="APPDESC" xml:space="preserve">
+    <value>تم تطوير هذا التطبيق لتسهيل المسح الضوئي وتتبع المستندات.</value>
+  </data>
   <data name="APPLY" xml:space="preserve">
     <value>يتقدم</value>
   </data>
@@ -286,6 +289,9 @@
   <data name="OCRPDFSAVE" xml:space="preserve">
     <value>احفظ Ocr Pdf</value>
   </data>
+  <data name="OTHERAPPS" xml:space="preserve">
+    <value>تطبيقاتي الأخرى</value>
+  </data>
   <data name="OTHERSETTINGS" xml:space="preserve">
     <value>اعدادات اخرى</value>
   </data>
@@ -409,6 +415,9 @@
   </data>
   <data name="TEXTSIZE" xml:space="preserve">
     <value>حجم الخط</value>
+  </data>
+  <data name="THIRDPARTY" xml:space="preserve">
+    <value>مكتبات الطرف الثالث المستخدمة في التطبيق</value>
   </data>
   <data name="THRESHOLD" xml:space="preserve">
     <value>عتبة</value>

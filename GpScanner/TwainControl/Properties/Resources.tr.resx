@@ -449,4 +449,13 @@ EKLE</value>
   <data name="JPEGQUALITY" xml:space="preserve">
     <value>JPEG KALİTE ORANI</value>
   </data>
+  <data name="APPDESC" xml:space="preserve">
+    <value>Bu uygulama tarama ve belge takibini kolaylaştırmak amacıyla geliştirilmiştir.</value>
+  </data>
+  <data name="OTHERAPPS" xml:space="preserve">
+    <value>DİĞER UYGULAMALARIM</value>
+  </data>
+  <data name="THIRDPARTY" xml:space="preserve">
+    <value>UYGULAMADA KULLANILAN 3.PARTİ KÜTÜPHANELER</value>
+  </data>
 </root>

@@ -189,10 +189,13 @@
                 <Controls:ArchiveViewer ArchivePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="ImgViewerTemplate">
+                <Extensions:ImageViewer ImageFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" ToolBarVisibility="Collapsed" />
+            </DataTemplate>
+            <DataTemplate x:Key="ImgViewerTemplateFull">
                 <Extensions:ImageViewer ImageFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <ViewModel:ViewerTemplateSelector x:Key="ViewerSelector"
-                Img="{StaticResource ImgViewerTemplate}"
+                Img="{StaticResource ImgViewerTemplateFull}"
                 Pdf="{StaticResource PdfViewerTemplateFull}"
                 Zip="{StaticResource ZipViewerTemplateFull}" />
             <ViewModel:ViewerTemplateSelector x:Key="ThumbViewerSelector"

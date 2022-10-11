@@ -444,4 +444,13 @@ DEVICE</value>
   <data name="JPEGQUALITY" xml:space="preserve">
     <value>JPEG QUALITY</value>
   </data>
+  <data name="APPDESC" xml:space="preserve">
+    <value>This application has been developed to facilitate scanning and document tracking.</value>
+  </data>
+  <data name="OTHERAPPS" xml:space="preserve">
+    <value>MY OTHER APPS</value>
+  </data>
+  <data name="THIRDPARTY" xml:space="preserve">
+    <value>3rd PARTY LIBRARIES USED IN THE APPLICATION</value>
+  </data>
 </root>

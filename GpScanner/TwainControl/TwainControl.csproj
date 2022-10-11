@@ -66,6 +66,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AboutView.xaml.cs">
+      <DependentUpon>AboutView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BitmapMethods.cs" />
     <Compile Include="OcrData.cs" />
     <Compile Include="PdfGeneration.cs" />
@@ -86,6 +89,10 @@
     </Compile>
     <Compile Include="ScannedImage.cs" />
     <Compile Include="WpfLocalizationWithMultipleResourceManagers.cs" />
+    <Page Include="AboutView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Slider.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -142,6 +142,9 @@ ALIMENTATEUR</value>
   <data name="ALLOWPRINT" xml:space="preserve">
     <value>AUTORISER L'IMPRESSION</value>
   </data>
+  <data name="APPDESC" xml:space="preserve">
+    <value>Cette application a été développée pour faciliter la numérisation et le suivi des documents.</value>
+  </data>
   <data name="APPLY" xml:space="preserve">
     <value>APPLIQUER</value>
   </data>
@@ -286,6 +289,9 @@ RELIER</value>
   <data name="OCRPDFSAVE" xml:space="preserve">
     <value>ENREGISTRER OCR PDF</value>
   </data>
+  <data name="OTHERAPPS" xml:space="preserve">
+    <value>MES AUTRES APPLICATIONS</value>
+  </data>
   <data name="OTHERSETTINGS" xml:space="preserve">
     <value>AUTRES RÉGLAGES</value>
   </data>
@@ -409,6 +415,9 @@ AJOUTER</value>
   </data>
   <data name="TEXTSIZE" xml:space="preserve">
     <value>TAILLE DU TEXTE</value>
+  </data>
+  <data name="THIRDPARTY" xml:space="preserve">
+    <value>BIBLIOTHÈQUES TIERS UTILISÉES DANS L'APPLICATION</value>
   </data>
   <data name="THRESHOLD" xml:space="preserve">
     <value>AU SEUIL</value>

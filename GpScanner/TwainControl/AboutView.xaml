@@ -1,0 +1,66 @@
+﻿<UserControl x:Class="TwainControl.AboutView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:TwainControl"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:properties="clr-namespace:TwainControl.Properties"
+    d:DesignHeight="290" d:DesignWidth="800"
+    local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
+    UseLayoutRounding="True"
+    mc:Ignorable="d">
+    <GroupBox Header="{local:Loc ABOUT}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="200" />
+            </Grid.ColumnDefinitions>
+            <Image Width="256" Height="256"
+                Source="https://avatars.githubusercontent.com/u/34131218?v=4">
+                <Image.Clip>
+                    <EllipseGeometry Center="128,128" RadiusX="128" RadiusY="128" />
+                </Image.Clip>
+            </Image>
+            <StackPanel Grid.Column="1" Margin="2,0,0,0">
+                <TextBlock FontSize="20" TextWrapping="Wrap">
+                    <Hyperlink Command="{Binding DataContext.WebAdreseGit, RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}" CommandParameter="https://github.com/goksenpasli?tab=repositories">
+                        <Run Text="{local:Loc OTHERAPPS}" />
+                    </Hyperlink>
+                </TextBlock>
+                <Separator />
+                <TextBlock FontWeight="Bold"
+                    Text="{local:Loc APPDESC}"
+                    TextWrapping="Wrap" />
+                <TextBlock Margin="0,25,0,0"
+                    Background="Red"
+                    Text="{local:Loc THIRDPARTY}"
+                    TextWrapping="Wrap" />
+                <TextBlock>
+                    <Hyperlink Command="{Binding DataContext.WebAdreseGit, RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}" CommandParameter="https://github.com/charlesw/tesseract">
+                        TESSERACT
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock>
+                    <Hyperlink Command="{Binding DataContext.WebAdreseGit, RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}" CommandParameter="http://www.pdfsharp.net">
+                        PDFSHARP
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock>
+                    <Hyperlink Command="{Binding DataContext.WebAdreseGit, RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}" CommandParameter="https://github.com/micjahn/ZXing.Net">
+                        ZXing.Net
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock>
+                    <Hyperlink Command="{Binding DataContext.WebAdreseGit, RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}" CommandParameter="https://github.com/GMZ">
+                        TWAINWPF
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock>
+                    <Hyperlink Command="{Binding DataContext.WebAdreseGit, RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}" CommandParameter="https://www.nuget.org/packages/Freeware.Pdf2Png/1.0.1">
+                        Pdf2Png
+                    </Hyperlink>
+                </TextBlock>
+            </StackPanel>
+        </Grid>
+    </GroupBox>
+</UserControl>

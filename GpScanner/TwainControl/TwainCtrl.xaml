@@ -699,19 +699,22 @@
                             </StackPanel>
                         </Grid>
                     </Button>
-                    <Button Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/goksenpasli">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Width="24" Height="24">
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Shell32.dll" />
-                                        <Binding Source="14" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
-                            <TextBlock VerticalAlignment="Center" Text="{local:Loc ABOUT}" />
-                        </StackPanel>
-                    </Button>
+                    <Extensions:ContentToggleButton>
+                        <Extensions:ContentToggleButton.OverContent>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="24" Height="24">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="14" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock VerticalAlignment="Center" Text="{local:Loc ABOUT}" />
+                            </StackPanel>
+                        </Extensions:ContentToggleButton.OverContent>
+                        <local:AboutView />
+                    </Extensions:ContentToggleButton>
                 </UniformGrid>
             </Grid>
         </GroupBox>

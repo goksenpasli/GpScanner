@@ -755,20 +755,17 @@ namespace GpScanner.ViewModel
         {
             if (imgdata is not null)
             {
-                _ = await Task.Run(() =>
+                OcrIsBusy = true;
+                ScannedTextWindowOpen = false;
+                ScannedText = await imgdata.OcrYap(Settings.Default.DefaultTtsLang);
+                if (ScannedText != null)
                 {
-                    OcrIsBusy = true;
-                    ScannedTextWindowOpen = false;
-                    ScannedText = imgdata.OcrYap(Settings.Default.DefaultTtsLang);
-                    if (ScannedText != null)
-                    {
-                        TranslateViewModel.Metin = string.Join(" ", ScannedText.Select(z => z.Text));
-                        OcrIsBusy = false;
-                        ScannedTextWindowOpen = true;
-                    }
-                    imgdata = null;
-                    return ScannedText;
-                }).ConfigureAwait(false);
+                    TranslateViewModel.Metin = string.Join(" ", ScannedText.Select(z => z.Text));
+                    OcrIsBusy = false;
+                    ScannedTextWindowOpen = true;
+                }
+                imgdata = null;
+                return ScannedText;
             }
             return null;
         }

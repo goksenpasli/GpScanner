@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using Tesseract;
 using TwainControl;
@@ -10,18 +11,18 @@ namespace GpScanner.ViewModel
 {
     public static class Ocr
     {
-        public static ObservableCollection<OcrData> OcrYap(this byte[] dosya, string lang)
+        public static async Task<ObservableCollection<OcrData>> OcrYap(this byte[] dosya, string lang)
         {
             if (string.IsNullOrWhiteSpace(lang))
             {
-                _ = Application.Current.Dispatcher.BeginInvoke(() => MessageBox.Show("Dil Seçimini Kontrol Edin.", Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error));
+                MessageBox.Show("Dil Seçimini Kontrol Edin.", Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
                 return null;
             }
             if (Directory.Exists(Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + @"\tessdata"))
             {
-                return GetText(dosya, lang);
+                return await Task.Run(() => GetText(dosya, lang));
             }
-            _ = Application.Current.Dispatcher.BeginInvoke(() => MessageBox.Show("Tesseract Engine Klasörünü Kontrol Edin.", Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error));
+            MessageBox.Show("Tesseract Engine Klasörünü Kontrol Edin.", Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
             return null;
         }
 

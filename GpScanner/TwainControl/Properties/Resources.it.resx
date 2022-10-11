@@ -142,6 +142,9 @@ ALIMENTATORE</value>
   <data name="ALLOWPRINT" xml:space="preserve">
     <value>CONSENTI LA STAMPA</value>
   </data>
+  <data name="APPDESC" xml:space="preserve">
+    <value>Questa applicazione è stata sviluppata per facilitare la scansione e il monitoraggio dei documenti.</value>
+  </data>
   <data name="APPLY" xml:space="preserve">
     <value>APPLICARE</value>
   </data>
@@ -286,6 +289,9 @@ COLLEGARE</value>
   <data name="OCRPDFSAVE" xml:space="preserve">
     <value>SALVA OCR PDF</value>
   </data>
+  <data name="OTHERAPPS" xml:space="preserve">
+    <value>LE MIE ALTRE APP</value>
+  </data>
   <data name="OTHERSETTINGS" xml:space="preserve">
     <value>ALTRE IMPOSTAZIONI</value>
   </data>
@@ -409,6 +415,9 @@ INSERISCI</value>
   </data>
   <data name="TEXTSIZE" xml:space="preserve">
     <value>DIMENSIONE DEL TESTO</value>
+  </data>
+  <data name="THIRDPARTY" xml:space="preserve">
+    <value>BIBLIOTECHE DI TERZE PARTI UTILIZZATE NELL'APPLICAZIONE</value>
   </data>
   <data name="THRESHOLD" xml:space="preserve">
     <value>SOGLIA</value>
