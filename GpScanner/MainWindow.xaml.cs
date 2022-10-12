@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
@@ -98,8 +99,8 @@ namespace GpScanner
                     for (int i = 0; i < TwainCtrl.Scanner.Resimler.Count; i++)
                     {
                         ScannedImage scannedimage = TwainCtrl.Scanner.Resimler[i];
-                        TwainCtrl.Scanner.OcrData = await ViewModel.GetScannedTextAsync(scannedimage.Resim.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg), false);
-                        ViewModel.ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = TwainCtrl.Scanner.PdfFilePath, FileContent = string.Join(" ", TwainCtrl.Scanner.OcrData.Select(z => z.Text)) });
+                        ObservableCollection<OcrData> scannedtext = await ViewModel.GetScannedTextAsync(scannedimage.Resim.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg), false);
+                        ViewModel.ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = TwainCtrl.Scanner.PdfFilePath, FileContent = string.Join(" ", scannedtext.Select(z => z.Text)) });
                         ViewModel.DatabaseSave.Execute(null);
                         scannedimage = null;
                     }

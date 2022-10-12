@@ -827,11 +827,11 @@ namespace TwainControl
 
             if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
             {
-                PdfGeneration.GeneratePdf(Scanner.Resimler, Format.Tiff, Scanner.JpegQuality, Scanner.OcrData).Save(Scanner.PdfFilePath);
+                PdfGeneration.GeneratePdf(Scanner.Resimler, Format.Tiff, Scanner.JpegQuality).Save(Scanner.PdfFilePath);
             }
             if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
             {
-                PdfGeneration.GeneratePdf(Scanner.Resimler, Format.Jpg, Scanner.JpegQuality, Scanner.OcrData).Save(Scanner.PdfFilePath);
+                PdfGeneration.GeneratePdf(Scanner.Resimler, Format.Jpg, Scanner.JpegQuality).Save(Scanner.PdfFilePath);
             }
             OnPropertyChanged(nameof(Scanner.Resimler));
             if (Settings.Default.ShowFile)

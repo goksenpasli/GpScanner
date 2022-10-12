@@ -360,20 +360,6 @@ namespace TwainControl
             }
         }
 
-        public ObservableCollection<OcrData> OcrData
-        {
-            get => ocrData;
-
-            set
-            {
-                if (ocrData != value)
-                {
-                    ocrData = value;
-                    OnPropertyChanged(nameof(OcrData));
-                }
-            }
-        }
-
         public bool PasswordProtect
         {
             get => passwordProtect;
@@ -738,8 +724,6 @@ namespace TwainControl
         private int jpegQuality = 75;
 
         private string localizedPath;
-
-        private ObservableCollection<OcrData> ocrData = new();
 
         private bool passwordProtect;
 
