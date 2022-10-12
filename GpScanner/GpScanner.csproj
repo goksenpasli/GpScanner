@@ -160,6 +160,10 @@
       <Project>{ea1285ba-203e-4d61-a869-7567966e5367}</Project>
       <Name>PdfViewer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TwainWpf\TwainWpf.csproj">
+      <Project>{8304C254-E3D2-4553-B596-F028B8D9B740}</Project>
+      <Name>TwainWpf</Name>
+    </ProjectReference>
     <ProjectReference Include="TwainControl\TwainControl.csproj">
       <Project>{e18bdb1b-1d7c-4f60-85b1-53eae13074c4}</Project>
       <Name>TwainControl</Name>

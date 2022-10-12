@@ -10,7 +10,9 @@ using Extensions;
 using GpScanner.Properties;
 using GpScanner.ViewModel;
 using TwainControl;
+using TwainWpf;
 using ZXing;
+using static Extensions.ExtensionMethods;
 
 namespace GpScanner
 {
@@ -96,13 +98,20 @@ namespace GpScanner
 
                 if (e.PropertyName is "ApplyOcr" && TwainCtrl.Scanner.ApplyOcr && TwainCtrl.Scanner.Resimler is not null && !string.IsNullOrEmpty(Settings.Default.DefaultTtsLang))
                 {
-                    for (int i = 0; i < TwainCtrl.Scanner.Resimler.Count; i++)
+                    ObservableCollection<OcrData> scannedtext = new();
+                    foreach (ScannedImage scannedimage in TwainCtrl.Scanner.Resimler)
                     {
-                        ScannedImage scannedimage = TwainCtrl.Scanner.Resimler[i];
-                        ObservableCollection<OcrData> scannedtext = await ViewModel.GetScannedTextAsync(scannedimage.Resim.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg), false);
-                        ViewModel.ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = TwainCtrl.Scanner.PdfFilePath, FileContent = string.Join(" ", scannedtext.Select(z => z.Text)) });
+                        scannedtext = await ViewModel.GetScannedTextAsync(scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg), false);
+                        ViewModel.ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = TwainCtrl.Scanner.PdfFilePath, FileContent = ViewModel.TranslateViewModel.Metin });
                         ViewModel.DatabaseSave.Execute(null);
-                        scannedimage = null;
+                    }
+                    if ((ColourSetting)TwainControl.Properties.Settings.Default.Mode == ColourSetting.BlackAndWhite)
+                    {
+                        PdfGeneration.GeneratePdf(TwainCtrl.Scanner.Resimler, Format.Tiff, TwainCtrl.Scanner.JpegQuality, scannedtext).Save(TwainCtrl.Scanner.PdfFilePath);
+                    }
+                    if ((ColourSetting)TwainControl.Properties.Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
+                    {
+                        PdfGeneration.GeneratePdf(TwainCtrl.Scanner.Resimler, Format.Jpg, TwainCtrl.Scanner.JpegQuality, scannedtext).Save(TwainCtrl.Scanner.PdfFilePath);
                     }
                 }
             }

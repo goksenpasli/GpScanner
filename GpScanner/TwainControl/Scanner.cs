@@ -681,7 +681,7 @@ namespace TwainControl
 
         private bool allowPrint = true;
 
-        private bool applyOcr=true;
+        private bool applyOcr = true;
 
         private bool arayüzetkin = true;
 

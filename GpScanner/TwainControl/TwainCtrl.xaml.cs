@@ -823,16 +823,22 @@ namespace TwainControl
             OnPropertyChanged(nameof(Scanner.DetectPageSeperator));
 
             Scanner.PdfFilePath = PdfGeneration.GetPdfScanPath();
-            OnPropertyChanged(nameof(Scanner.ApplyOcr));
+            if (Scanner.ApplyOcr)
+            {
+                OnPropertyChanged(nameof(Scanner.ApplyOcr));
+            }
+            else
+            {
+                if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
+                {
+                    PdfGeneration.GeneratePdf(Scanner.Resimler, Format.Tiff, Scanner.JpegQuality).Save(Scanner.PdfFilePath);
+                }
+                if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
+                {
+                    PdfGeneration.GeneratePdf(Scanner.Resimler, Format.Jpg, Scanner.JpegQuality).Save(Scanner.PdfFilePath);
+                }
+            }
 
-            if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
-            {
-                PdfGeneration.GeneratePdf(Scanner.Resimler, Format.Tiff, Scanner.JpegQuality).Save(Scanner.PdfFilePath);
-            }
-            if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
-            {
-                PdfGeneration.GeneratePdf(Scanner.Resimler, Format.Jpg, Scanner.JpegQuality).Save(Scanner.PdfFilePath);
-            }
             OnPropertyChanged(nameof(Scanner.Resimler));
             if (Settings.Default.ShowFile)
             {
