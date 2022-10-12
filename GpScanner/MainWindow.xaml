@@ -84,6 +84,7 @@
                         </StackPanel>
                     </Button>
                     <ComboBox VerticalContentAlignment="Center"
+                        d:SelectedValue="TÜRKÇE"
                         SelectedValue="{Binding SeçiliDil}"
                         SelectedValuePath="Tag">
                         <ComboBoxItem Tag="TÜRKÇE">
@@ -255,10 +256,6 @@
                             </StackPanel>
                         </Button.Content>
                     </Button>
-                    <CheckBox VerticalAlignment="Center"
-                        Content="{twainctrl:Loc ADDOCRTODB}"
-                        IsChecked="{Binding AddOcrToDataBase}"
-                        ToolTip="{twainctrl:Loc ADDOCRTOOLTIP}" />
                     <CheckBox VerticalAlignment="Center"
                         Content="{twainctrl:Loc QRDETECT}"
                         IsChecked="{Binding DetectBarCode}" />

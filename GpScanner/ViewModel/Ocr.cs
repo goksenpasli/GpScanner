@@ -11,7 +11,7 @@ namespace GpScanner.ViewModel
 {
     public static class Ocr
     {
-        public static async Task<ObservableCollection<OcrData>> OcrYap(this byte[] dosya, string lang)
+        public static async Task<ObservableCollection<OcrData>> OcrAsyc(this byte[] dosya, string lang)
         {
             if (string.IsNullOrWhiteSpace(lang))
             {
@@ -20,13 +20,13 @@ namespace GpScanner.ViewModel
             }
             if (Directory.Exists(Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + @"\tessdata"))
             {
-                return await Task.Run(() => GetText(dosya, lang));
+                return await Task.Run(() => GetOcrData(dosya, lang));
             }
             MessageBox.Show("Tesseract Engine Klasörünü Kontrol Edin.", Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
             return null;
         }
 
-        private static ObservableCollection<OcrData> GetText(byte[] dosya, string lang)
+        public static ObservableCollection<OcrData> GetOcrData(this byte[] dosya, string lang)
         {
             try
             {

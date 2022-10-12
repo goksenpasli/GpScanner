@@ -289,6 +289,9 @@ COLLEGARE</value>
   <data name="OCRPDFSAVE" xml:space="preserve">
     <value>SALVA OCR PDF</value>
   </data>
+  <data name="OCRTIME" xml:space="preserve">
+    <value>Il processo Pdf Ocr richiede più tempo.</value>
+  </data>
   <data name="OTHERAPPS" xml:space="preserve">
     <value>LE MIE ALTRE APP</value>
   </data>

@@ -53,6 +53,20 @@ namespace TwainControl
             }
         }
 
+        public bool ApplyOcr
+        {
+            get => applyOcr;
+
+            set
+            {
+                if (applyOcr != value)
+                {
+                    applyOcr = value;
+                    OnPropertyChanged(nameof(ApplyOcr));
+                }
+            }
+        }
+
         public bool ArayüzEtkin
         {
             get => arayüzetkin;
@@ -346,6 +360,20 @@ namespace TwainControl
             }
         }
 
+        public ObservableCollection<OcrData> OcrData
+        {
+            get => ocrData;
+
+            set
+            {
+                if (ocrData != value)
+                {
+                    ocrData = value;
+                    OnPropertyChanged(nameof(OcrData));
+                }
+            }
+        }
+
         public bool PasswordProtect
         {
             get => passwordProtect;
@@ -356,6 +384,20 @@ namespace TwainControl
                 {
                     passwordProtect = value;
                     OnPropertyChanged(nameof(PasswordProtect));
+                }
+            }
+        }
+
+        public string PdfFilePath
+        {
+            get => pdfFilePath;
+
+            set
+            {
+                if (pdfFilePath != value)
+                {
+                    pdfFilePath = value;
+                    OnPropertyChanged(nameof(PdfFilePath));
                 }
             }
         }
@@ -653,6 +695,8 @@ namespace TwainControl
 
         private bool allowPrint = true;
 
+        private bool applyOcr=true;
+
         private bool arayüzetkin = true;
 
         private bool autoSave = Directory.Exists(Settings.Default.AutoFolder);
@@ -695,7 +739,11 @@ namespace TwainControl
 
         private string localizedPath;
 
+        private ObservableCollection<OcrData> ocrData = new();
+
         private bool passwordProtect;
+
+        private string pdfFilePath;
 
         private SecureString pdfPassword;
 

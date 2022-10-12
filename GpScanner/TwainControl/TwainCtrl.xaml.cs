@@ -821,21 +821,22 @@ namespace TwainControl
         private void Fastscan(object sender, ScanningCompleteEventArgs e)
         {
             OnPropertyChanged(nameof(Scanner.DetectPageSeperator));
-            string pdffilepath = PdfGeneration.GetPdfScanPath();
+
+            Scanner.PdfFilePath = PdfGeneration.GetPdfScanPath();
+            OnPropertyChanged(nameof(Scanner.ApplyOcr));
 
             if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
             {
-                PdfGeneration.GeneratePdf(Scanner.Resimler, Format.Tiff, Scanner.JpegQuality).Save(pdffilepath);
+                PdfGeneration.GeneratePdf(Scanner.Resimler, Format.Tiff, Scanner.JpegQuality, Scanner.OcrData).Save(Scanner.PdfFilePath);
             }
             if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
             {
-                PdfGeneration.GeneratePdf(Scanner.Resimler, Format.Jpg, Scanner.JpegQuality).Save(pdffilepath);
+                PdfGeneration.GeneratePdf(Scanner.Resimler, Format.Jpg, Scanner.JpegQuality, Scanner.OcrData).Save(Scanner.PdfFilePath);
             }
             OnPropertyChanged(nameof(Scanner.Resimler));
-
             if (Settings.Default.ShowFile)
             {
-                ExploreFile.Execute(pdffilepath);
+                ExploreFile.Execute(Scanner.PdfFilePath);
             }
             twain.ScanningComplete -= Fastscan;
             switch (Scanner.ShutDownMode)
@@ -1111,6 +1112,10 @@ namespace TwainControl
                 TransformedBitmap transformedBitmap = new((BitmapSource)Scanner.CopyCroppedImage, new RotateTransform(Scanner.CroppedImageAngle));
                 transformedBitmap.Freeze();
                 Scanner.CroppedImage = transformedBitmap;
+            }
+            if (e.PropertyName is "ApplyOcr" && Scanner.ApplyOcr)
+            {
+                MessageBox.Show(Translation.GetResStringValue("OCRTIME"), Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using Extensions;
@@ -53,7 +54,7 @@ namespace TwainControl
             return outputDocument;
         }
 
-        public static PdfDocument GeneratePdf(IEnumerable<ScannedImage> bitmapFrames, Format format, int jpegquality = 75)
+        public static PdfDocument GeneratePdf(IEnumerable<ScannedImage> bitmapFrames, Format format, int jpegquality = 75, ObservableCollection<OcrData> ScannedText = null)
         {
             using PdfDocument document = new();
             double index = 0;
@@ -66,6 +67,10 @@ namespace TwainControl
                     using MemoryStream ms = new(scannedimage.Resim.ToTiffJpegByteArray(format, jpegquality));
                     using XImage xImage = XImage.FromStream(ms);
                     XSize size = PageSizeConverter.ToSize(PageSize.A4);
+                    if (ScannedText != null)
+                    {
+                        WritePdfTextContent(scannedimage.Resim, ScannedText, page, gfx, XBrushes.Black);
+                    }
                     if (scannedimage.Resim.PixelWidth < scannedimage.Resim.PixelHeight)
                     {
                         gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
@@ -178,7 +183,7 @@ namespace TwainControl
             return outputDocument;
         }
 
-        public static void SavePdfFiles(string[] files)
+        public static async void SavePdfFiles(string[] files)
         {
             SaveFileDialog saveFileDialog = new()
             {
@@ -189,7 +194,7 @@ namespace TwainControl
             {
                 try
                 {
-                    MergePdf(files).Save(saveFileDialog.FileName);
+                    await Task.Run(() => MergePdf(files).Save(saveFileDialog.FileName));
                 }
                 catch (Exception ex)
                 {

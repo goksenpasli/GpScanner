@@ -320,9 +320,7 @@
                                     </StackPanel>
                                 </Button>
                                 <CheckBox HorizontalContentAlignment="Stretch" IsChecked="{Binding UseSelectedProfile, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
-                                    <ComboBox HorizontalContentAlignment="Stretch"
-                                        ItemsSource="{Binding Profile, Source={x:Static properties:Settings.Default}}"
-                                        SelectedItem="{Binding Scanner.SelectedProfile}">
+                                    <ComboBox ItemsSource="{Binding Profile, Source={x:Static properties:Settings.Default}}" SelectedItem="{Binding Scanner.SelectedProfile}">
                                         <ComboBox.ItemTemplate>
                                             <DataTemplate>
                                                 <UniformGrid Columns="2">
@@ -353,37 +351,41 @@
                                         <TextBlock VerticalAlignment="Center" Text="{local:Loc SCAN}" />
                                     </StackPanel>
                                 </Button>
-                                <Button Background="Green" Command="{Binding FastScanImage}">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Width="32" Height="32"
-                                            ToolTip="{local:Loc WARNREBOOT}">
-                                            <Image.Style>
-                                                <Style TargetType="{x:Type Image}">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Scanner.ShutDownMode}" Value="0">
-                                                            <Setter Property="Visibility" Value="Collapsed" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Image.Style>
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="77" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                        <Image Width="32" Height="32">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Imageres.dll" />
-                                                    <Binding Source="90" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc FASTSCAN}" />
-                                    </StackPanel>
-                                </Button>
+                                <CheckBox HorizontalContentAlignment="Stretch"
+                                    IsChecked="{Binding Scanner.ApplyOcr}"
+                                    ToolTip="{local:Loc OCR}">
+                                    <Button Background="Green" Command="{Binding FastScanImage}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="32" Height="32"
+                                                ToolTip="{local:Loc WARNREBOOT}">
+                                                <Image.Style>
+                                                    <Style TargetType="{x:Type Image}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Scanner.ShutDownMode}" Value="0">
+                                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Image.Style>
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="77" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                            <Image Width="32" Height="32">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Imageres.dll" />
+                                                        <Binding Source="90" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc FASTSCAN}" />
+                                        </StackPanel>
+                                    </Button>
+                                </CheckBox>
                                 <Button Command="{Binding KayıtYoluBelirle}">
                                     <StackPanel Orientation="Horizontal">
                                         <Image Width="32" Height="32">

@@ -458,4 +458,7 @@ EKLE</value>
   <data name="THIRDPARTY" xml:space="preserve">
     <value>UYGULAMADA KULLANILAN 3.PARTİ KÜTÜPHANELER</value>
   </data>
+  <data name="OCRTIME" xml:space="preserve">
+    <value>Pdf Ocr İşlemi Fazladan Zaman Alır.</value>
+  </data>
 </root>

@@ -453,4 +453,7 @@ DEVICE</value>
   <data name="THIRDPARTY" xml:space="preserve">
     <value>3rd PARTY LIBRARIES USED IN THE APPLICATION</value>
   </data>
+  <data name="OCRTIME" xml:space="preserve">
+    <value>Pdf Ocr Process Takes Extra Time.</value>
+  </data>
 </root>

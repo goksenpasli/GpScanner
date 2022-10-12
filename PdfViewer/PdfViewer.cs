@@ -60,10 +60,7 @@ namespace PdfViewer
                 }
             });
 
-            Yazdır = new RelayCommand<object>(parameter =>
-            {
-                PrintPdfFile(PdfFileStream);
-            }, parameter => PdfFileStream is not null);
+            Yazdır = new RelayCommand<object>(parameter => PrintPdfFile(PdfFileStream), parameter => PdfFileStream is not null);
 
             ViewerBack = new RelayCommand<object>(parameter => Sayfa--, parameter => Source is not null && Sayfa > 1 && Sayfa <= ToplamSayfa);
 

@@ -5,6 +5,8 @@ using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
+using Extensions;
+using GpScanner.Properties;
 using GpScanner.ViewModel;
 using TwainControl;
 using ZXing;
@@ -60,7 +62,7 @@ namespace GpScanner
             }
         }
 
-        private void TwainCtrl_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private async void TwainCtrl_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (DataContext is GpScannerViewModel ViewModel)
             {
@@ -87,8 +89,20 @@ namespace GpScanner
                 {
                     ViewModel.BarcodeContent = ViewModel.GetImageBarcodeResult(TwainCtrl.ImgData)?.Text;
                     AddBarcodeToList(ViewModel);
-                    _ = ViewModel.Ocr(TwainCtrl.ImgData);
+                    _ = ViewModel.GetScannedTextAsync(TwainCtrl.ImgData);
                     TwainCtrl.ImgData = null;
+                }
+
+                if (e.PropertyName is "ApplyOcr" && TwainCtrl.Scanner.ApplyOcr && TwainCtrl.Scanner.Resimler is not null && !string.IsNullOrEmpty(Settings.Default.DefaultTtsLang))
+                {
+                    for (int i = 0; i < TwainCtrl.Scanner.Resimler.Count; i++)
+                    {
+                        ScannedImage scannedimage = TwainCtrl.Scanner.Resimler[i];
+                        TwainCtrl.Scanner.OcrData = await ViewModel.GetScannedTextAsync(scannedimage.Resim.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg), false);
+                        ViewModel.ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = TwainCtrl.Scanner.PdfFilePath, FileContent = string.Join(" ", TwainCtrl.Scanner.OcrData.Select(z => z.Text)) });
+                        ViewModel.DatabaseSave.Execute(null);
+                        scannedimage = null;
+                    }
                 }
             }
         }
