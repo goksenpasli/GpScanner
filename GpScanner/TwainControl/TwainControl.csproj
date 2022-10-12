@@ -114,7 +114,6 @@
       <DependentUpon>Resources.tr.resx</DependentUpon>
     </Compile>
     <Compile Include="Scanner.cs" />
-    <Compile Include="Shutdown.cs" />
     <Compile Include="TwainCtrl.xaml.cs">
       <DependentUpon>TwainCtrl.xaml</DependentUpon>
       <SubType>Code</SubType>

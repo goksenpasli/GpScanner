@@ -723,20 +723,6 @@ namespace GpScanner.ViewModel
                 : "Tarama";
         }
 
-        public ObservableCollection<Scanner> GetScannerFileData()
-        {
-            if (Directory.Exists(Twainsettings.Settings.Default.AutoFolder))
-            {
-                ObservableCollection<Scanner> list = new();
-                foreach (string dosya in Directory.EnumerateFiles(Twainsettings.Settings.Default.AutoFolder, "*.*", SearchOption.AllDirectories).Where(s => (new string[] { ".pdf", ".tif", ".jpg", ".png", ".bmp", ".zip" }).Any(ext => ext == Path.GetExtension(s).ToLower())))
-                {
-                    list.Add(new Scanner() { FileName = dosya, Seçili = false });
-                }
-                return list;
-            }
-            return null;
-        }
-
         public async Task<ObservableCollection<OcrData>> GetScannedTextAsync(byte[] imgdata, bool opentextwindow = true)
         {
             if (imgdata is not null)
@@ -752,6 +738,20 @@ namespace GpScanner.ViewModel
                 }
                 imgdata = null;
                 return ScannedText;
+            }
+            return null;
+        }
+
+        public ObservableCollection<Scanner> GetScannerFileData()
+        {
+            if (Directory.Exists(Twainsettings.Settings.Default.AutoFolder))
+            {
+                ObservableCollection<Scanner> list = new();
+                foreach (string dosya in Directory.EnumerateFiles(Twainsettings.Settings.Default.AutoFolder, "*.*", SearchOption.AllDirectories).Where(s => (new string[] { ".pdf", ".tif", ".jpg", ".png", ".bmp", ".zip" }).Any(ext => ext == Path.GetExtension(s).ToLower())))
+                {
+                    list.Add(new Scanner() { FileName = dosya, Seçili = false });
+                }
+                return list;
             }
             return null;
         }

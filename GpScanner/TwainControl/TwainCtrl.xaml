@@ -232,37 +232,6 @@
                                     Content="{local:Loc SHOWPROGRESS}"
                                     IsChecked="{Binding Scanner.ShowProgress}" />
                             </Grid>
-                            <Expander Header="{local:Loc OTHERSETTINGS}">
-                                <ComboBox SelectedIndex="{Binding Scanner.ShutDownMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="{local:Loc FASTSCANAFTER}">
-                                    <ComboBoxItem Content="{local:Loc NO ACTION}" />
-                                    <ComboBoxItem>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Width="16" Height="16">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="27" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc CLOSECOMP}" />
-                                        </StackPanel>
-                                    </ComboBoxItem>
-                                    <ComboBoxItem>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Width="16" Height="16">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="44" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc RESTARTCOMP}" />
-                                        </StackPanel>
-                                    </ComboBoxItem>
-                                </ComboBox>
-                            </Expander>
                             <Separator />
                             <UniformGrid Columns="2">
                                 <TextBlock d:Text="AutoFolder" FontWeight="Bold">
@@ -356,24 +325,6 @@
                                     ToolTip="{local:Loc OCR}">
                                     <Button Background="Green" Command="{Binding FastScanImage}">
                                         <StackPanel Orientation="Horizontal">
-                                            <Image Width="32" Height="32"
-                                                ToolTip="{local:Loc WARNREBOOT}">
-                                                <Image.Style>
-                                                    <Style TargetType="{x:Type Image}">
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding Scanner.ShutDownMode}" Value="0">
-                                                                <Setter Property="Visibility" Value="Collapsed" />
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </Image.Style>
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="77" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
                                             <Image Width="32" Height="32">
                                                 <Image.Source>
                                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">

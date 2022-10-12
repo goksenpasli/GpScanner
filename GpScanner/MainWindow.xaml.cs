@@ -39,6 +39,12 @@ namespace GpScanner
             }
         }
 
+        private static void ReloadFileDatas(GpScannerViewModel ViewModel)
+        {
+            ViewModel.Dosyalar = ViewModel.GetScannerFileData();
+            ViewModel.ChartData = ViewModel.GetChartsData();
+        }
+
         private void Calendar_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             if (Mouse.Captured is CalendarItem)
@@ -71,8 +77,7 @@ namespace GpScanner
             {
                 if (e.PropertyName is "Resimler")
                 {
-                    ViewModel.Dosyalar = ViewModel.GetScannerFileData();
-                    ViewModel.ChartData = ViewModel.GetChartsData();
+                    ReloadFileDatas(ViewModel);
                 }
 
                 if (e.PropertyName is "DetectPageSeperator" && ViewModel.DetectBarCode)
@@ -113,6 +118,11 @@ namespace GpScanner
                     {
                         PdfGeneration.GeneratePdf(TwainCtrl.Scanner.Resimler, Format.Jpg, TwainCtrl.Scanner.JpegQuality, scannedtext).Save(TwainCtrl.Scanner.PdfFilePath);
                     }
+                    if (TwainControl.Properties.Settings.Default.ShowFile)
+                    {
+                        TwainCtrl.ExploreFile.Execute(TwainCtrl.Scanner.PdfFilePath);
+                    }
+                    ReloadFileDatas(ViewModel);
                 }
             }
         }

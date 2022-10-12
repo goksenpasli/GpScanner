@@ -837,24 +837,14 @@ namespace TwainControl
                 {
                     PdfGeneration.GeneratePdf(Scanner.Resimler, Format.Jpg, Scanner.JpegQuality).Save(Scanner.PdfFilePath);
                 }
+                if (Settings.Default.ShowFile)
+                {
+                    ExploreFile.Execute(Scanner.PdfFilePath);
+                }
+                OnPropertyChanged(nameof(Scanner.Resimler));
             }
 
-            OnPropertyChanged(nameof(Scanner.Resimler));
-            if (Settings.Default.ShowFile)
-            {
-                ExploreFile.Execute(Scanner.PdfFilePath);
-            }
             twain.ScanningComplete -= Fastscan;
-            switch (Scanner.ShutDownMode)
-            {
-                case 1:
-                    Shutdown.DoExitWin(Shutdown.EWX_SHUTDOWN);
-                    break;
-
-                case 2:
-                    Shutdown.DoExitWin(Shutdown.EWX_REBOOT);
-                    break;
-            }
         }
 
         private void GridSplitter_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -1121,7 +1111,7 @@ namespace TwainControl
             }
             if (e.PropertyName is "ApplyOcr" && Scanner.ApplyOcr)
             {
-                MessageBox.Show(Translation.GetResStringValue("OCRTIME"), Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                _ = MessageBox.Show(Translation.GetResStringValue("OCRTIME"), Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
         }
 

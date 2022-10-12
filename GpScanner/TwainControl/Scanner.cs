@@ -570,20 +570,6 @@ namespace TwainControl
             }
         }
 
-        public int ShutDownMode
-        {
-            get => shutDownMode;
-
-            set
-            {
-                if (shutDownMode != value)
-                {
-                    shutDownMode = value;
-                    OnPropertyChanged(nameof(ShutDownMode));
-                }
-            }
-        }
-
         public IList<string> Tarayıcılar
         {
             get => tarayıcılar;
@@ -752,8 +738,6 @@ namespace TwainControl
         private bool showProgress;
 
         private bool showUi;
-
-        private int shutDownMode;
 
         private IList<string> tarayıcılar;
 
