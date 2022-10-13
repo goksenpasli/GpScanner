@@ -120,6 +120,10 @@
   <data name="ABOUT" xml:space="preserve">
     <value>DI</value>
   </data>
+  <data name="ADDDOC" xml:space="preserve">
+    <value>AGGIUNGI DOCUMENTO
+AL FILE</value>
+  </data>
   <data name="ADDOCRTODB" xml:space="preserve">
     <value>SALVA DATI OCR</value>
   </data>

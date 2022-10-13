@@ -461,4 +461,8 @@ EKLE</value>
   <data name="OCRTIME" xml:space="preserve">
     <value>Pdf Ocr İşlemi Fazladan Zaman Alır.</value>
   </data>
+  <data name="ADDDOC" xml:space="preserve">
+    <value>DOSYAYA
+BELGE EKLE</value>
+  </data>
 </root>

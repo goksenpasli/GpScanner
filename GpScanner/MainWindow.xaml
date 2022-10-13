@@ -408,7 +408,10 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
                 <UniformGrid Grid.Row="7"
-                    Columns="2" Rows="2">
+                    Columns="3" Rows="2">
+                    <Button Command="{Binding BelgeİleBirleştir}"
+                        CommandParameter="{Binding ElementName=TwainCtrl, Path=DataContext}"
+                        Content="{twainctrl:Loc ADDDOC}" />
                     <Button Command="{Binding PdfBirleştir}">
                         <StackPanel Orientation="Horizontal">
                             <Image Width="32" Height="32">

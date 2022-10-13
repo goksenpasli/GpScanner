@@ -320,7 +320,7 @@
                                         <TextBlock VerticalAlignment="Center" Text="{local:Loc SCAN}" />
                                     </StackPanel>
                                 </Button>
-                                <CheckBox HorizontalContentAlignment="Stretch"
+                                <CheckBox HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"
                                     IsChecked="{Binding Scanner.ApplyOcr}"
                                     ToolTip="{local:Loc OCR}">
                                     <Button Background="Green" Command="{Binding FastScanImage}">

@@ -50,7 +50,7 @@ namespace GpScanner.ViewModel
 
             UnRegisterSti = new RelayCommand<object>(parameter => StillImageHelper.Unregister(), parameter => true);
 
-            PdfBirleştir = new RelayCommand<object>(parameter =>
+            PdfBirleştir = new RelayCommand<object>(async parameter =>
             {
                 SaveFileDialog saveFileDialog = new()
                 {
@@ -61,7 +61,7 @@ namespace GpScanner.ViewModel
                 {
                     try
                     {
-                        PdfGeneration.MergePdf(Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName).ToArray()).Save(saveFileDialog.FileName);
+                        await Task.Run(() => PdfGeneration.MergePdf(Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName).ToArray()).Save(saveFileDialog.FileName));
                     }
                     catch (Exception ex)
                     {
@@ -139,7 +139,7 @@ namespace GpScanner.ViewModel
                 }
             }, parameter => true);
 
-            ExtractPdfFile = new RelayCommand<object>(parameter =>
+            ExtractPdfFile = new RelayCommand<object>(async parameter =>
             {
                 if (parameter is string filename)
                 {
@@ -150,9 +150,12 @@ namespace GpScanner.ViewModel
                     };
                     if (saveFileDialog.ShowDialog() == true)
                     {
-                        using PdfDocument outputDocument = PdfGeneration.ExtractPdfPages(filename, SayfaBaşlangıç, SayfaBitiş);
-                        PdfGeneration.DefaultPdfCompression(outputDocument);
-                        outputDocument.Save(saveFileDialog.FileName);
+                        await Task.Run(() =>
+                        {
+                            using PdfDocument outputDocument = PdfGeneration.ExtractPdfPages(filename, SayfaBaşlangıç, SayfaBitiş);
+                            PdfGeneration.DefaultPdfCompression(outputDocument);
+                            outputDocument.Save(saveFileDialog.FileName);
+                        });
                     }
                 }
             }, parameter => SayfaBaşlangıç <= SayfaBitiş);
@@ -206,6 +209,33 @@ namespace GpScanner.ViewModel
                 Settings.Default.Save();
                 Settings.Default.Reload();
             }, parameter => true);
+
+            BelgeİleBirleştir = new RelayCommand<object>(async parameter =>
+            {
+                if (parameter is TwainCtrl twainCtrl)
+                {
+                    try
+                    {
+                        string file = SelectedDocument.FileName;
+                        string temporarypdf = Path.GetTempPath() + Guid.NewGuid() + ".pdf";
+                        ObservableCollection<ScannedImage> scannedimages = twainCtrl.Scanner.Resimler;
+                        await Task.Run(() =>
+                        {
+                            PdfGeneration.GeneratePdf(scannedimages.Where(z => z.Seçili), Format.Jpg).Save(temporarypdf);
+                            PdfGeneration.MergePdf(new string[] { temporarypdf, file }).Save(file);
+                            File.Delete(temporarypdf);
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        _ = MessageBox.Show(ex.Message);
+                    }
+                }
+            }, parameter =>
+            {
+                CheckedPdfCount = Dosyalar?.Count(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase));
+                return CheckedPdfCount == 1 && parameter is TwainCtrl twainCtrl && twainCtrl.Scanner.Resimler.Count(z => z.Seçili) > 0;
+            });
 
             ModifyGridWidth = new RelayCommand<object>(parameter =>
             {
@@ -302,6 +332,8 @@ namespace GpScanner.ViewModel
                 }
             }
         }
+
+        public ICommand BelgeİleBirleştir { get; }
 
         public XmlLanguage CalendarLang
         {

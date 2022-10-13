@@ -95,6 +95,8 @@ namespace PdfViewer
             OrijinalDosyaAç = new RelayCommand<object>(parameter => _ = Process.Start(parameter as string), parameter => !DesignerProperties.GetIsInDesignMode(new DependencyObject()) && File.Exists(parameter as string));
 
             PropertyChanged += PdfViewer_PropertyChanged;
+            Loaded += PdfViewer_Loaded;
+            Unloaded += PdfViewer_Unloaded;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -530,12 +532,23 @@ namespace PdfViewer
             }
         }
 
+        private async void PdfViewer_Loaded(object sender, RoutedEventArgs e)
+        {
+            string path = PdfFilePath;
+            PdfFileStream = await Task.Run(() => File.ReadAllBytes(path));
+        }
+
         private async void PdfViewer_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName is "Sayfa" && sender is PdfViewer pdfViewer && pdfViewer.PdfFileStream is not null)
             {
                 Source = await ConvertToImgAsync(pdfViewer.PdfFileStream, Sayfa, pdfViewer.Dpi);
             }
+        }
+
+        private void PdfViewer_Unloaded(object sender, RoutedEventArgs e)
+        {
+            PdfFileStream = null;
         }
     }
 }

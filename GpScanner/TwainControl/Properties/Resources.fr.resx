@@ -120,6 +120,10 @@
   <data name="ABOUT" xml:space="preserve">
     <value>SUR</value>
   </data>
+  <data name="ADDDOC" xml:space="preserve">
+    <value>AJOUTER UN DOCUMENT
+AU DOSSIER</value>
+  </data>
   <data name="ADDOCRTODB" xml:space="preserve">
     <value>ENREGISTRER LES DONNÉES OCR</value>
   </data>

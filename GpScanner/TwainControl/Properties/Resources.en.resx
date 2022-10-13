@@ -456,4 +456,8 @@ DEVICE</value>
   <data name="OCRTIME" xml:space="preserve">
     <value>Pdf Ocr Process Takes Extra Time.</value>
   </data>
+  <data name="ADDDOC" xml:space="preserve">
+    <value>ADD DOCUMENT
+TO FILE</value>
+  </data>
 </root>
