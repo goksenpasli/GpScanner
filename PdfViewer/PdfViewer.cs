@@ -535,7 +535,10 @@ namespace PdfViewer
         private async void PdfViewer_Loaded(object sender, RoutedEventArgs e)
         {
             string path = PdfFilePath;
-            PdfFileStream = await Task.Run(() => File.ReadAllBytes(path));
+            if (path != null)
+            {
+                PdfFileStream = await Task.Run(() => File.ReadAllBytes(path));
+            }
         }
 
         private async void PdfViewer_PropertyChanged(object sender, PropertyChangedEventArgs e)

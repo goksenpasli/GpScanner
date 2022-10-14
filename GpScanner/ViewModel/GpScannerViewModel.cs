@@ -225,6 +225,11 @@ namespace GpScanner.ViewModel
                             PdfGeneration.MergePdf(new string[] { temporarypdf, file }).Save(file);
                             File.Delete(temporarypdf);
                         });
+                        if (ShowPdfPreview)
+                        {
+                            ShowPdfPreview = false;
+                            ShowPdfPreview = true;
+                        }
                     }
                     catch (Exception ex)
                     {

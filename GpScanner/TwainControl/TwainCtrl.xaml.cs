@@ -983,6 +983,22 @@ namespace TwainControl
             }
         }
 
+        private void ListBox_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+            {
+                Settings.Default.PreviewWidth += e.Delta > 0 ? 10 : -10;
+                if (Settings.Default.PreviewWidth <= 85)
+                {
+                    Settings.Default.PreviewWidth = 85;
+                }
+                if (Settings.Default.PreviewWidth >= 300)
+                {
+                    Settings.Default.PreviewWidth = 300;
+                }
+            }
+        }
+
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
             Scanner.PdfPassword = ((PasswordBox)sender).SecurePassword;

@@ -523,7 +523,7 @@
                         Background="{StaticResource BorderBackground}"
                         Drop="ListBox_Drop" IsSynchronizedWithCurrentItem="False"
                         ItemsSource="{Binding Scanner.Resimler, Mode=OneWay}"
-                        SelectedItem="{Binding SeçiliResim}"
+                        SelectedItem="{Binding SeçiliResim}" PreviewMouseWheel="ListBox_PreviewMouseWheel"
                         SelectionMode="Extended" VirtualizingPanel.CacheLength="2,2"
                         VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                         VirtualizingPanel.ScrollUnit="Item" VirtualizingPanel.VirtualizationMode="Recycling">

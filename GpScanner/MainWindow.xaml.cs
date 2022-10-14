@@ -101,28 +101,35 @@ namespace GpScanner
                     TwainCtrl.ImgData = null;
                 }
 
-                if (e.PropertyName is "ApplyOcr" && TwainCtrl.Scanner.ApplyOcr && TwainCtrl.Scanner.Resimler is not null && !string.IsNullOrEmpty(Settings.Default.DefaultTtsLang))
+                if (e.PropertyName is "ApplyOcr" && TwainCtrl.Scanner.ApplyOcr && TwainCtrl.Scanner.Resimler.Count > 0 && !string.IsNullOrEmpty(Settings.Default.DefaultTtsLang))
                 {
-                    ObservableCollection<OcrData> scannedtext = new();
-                    foreach (ScannedImage scannedimage in TwainCtrl.Scanner.Resimler)
+                    try
                     {
-                        scannedtext = await ViewModel.GetScannedTextAsync(scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg), false);
-                        ViewModel.ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = TwainCtrl.Scanner.PdfFilePath, FileContent = ViewModel.TranslateViewModel.Metin });
-                        ViewModel.DatabaseSave.Execute(null);
+                        ObservableCollection<OcrData> scannedtext = new();
+                        foreach (ScannedImage scannedimage in TwainCtrl.Scanner.Resimler)
+                        {
+                            scannedtext = await ViewModel.GetScannedTextAsync(scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg), false);
+                            ViewModel.ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = TwainCtrl.Scanner.PdfFilePath, FileContent = ViewModel.TranslateViewModel.Metin });
+                            ViewModel.DatabaseSave.Execute(null);
+                        }
+                        if ((ColourSetting)TwainControl.Properties.Settings.Default.Mode == ColourSetting.BlackAndWhite)
+                        {
+                            PdfGeneration.GeneratePdf(TwainCtrl.Scanner.Resimler, Format.Tiff, TwainCtrl.Scanner.JpegQuality, scannedtext).Save(TwainCtrl.Scanner.PdfFilePath);
+                        }
+                        if ((ColourSetting)TwainControl.Properties.Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
+                        {
+                            PdfGeneration.GeneratePdf(TwainCtrl.Scanner.Resimler, Format.Jpg, TwainCtrl.Scanner.JpegQuality, scannedtext).Save(TwainCtrl.Scanner.PdfFilePath);
+                        }
+                        if (TwainControl.Properties.Settings.Default.ShowFile)
+                        {
+                            TwainCtrl.ExploreFile.Execute(TwainCtrl.Scanner.PdfFilePath);
+                        }
+                        ReloadFileDatas(ViewModel);
                     }
-                    if ((ColourSetting)TwainControl.Properties.Settings.Default.Mode == ColourSetting.BlackAndWhite)
+                    catch (Exception ex)
                     {
-                        PdfGeneration.GeneratePdf(TwainCtrl.Scanner.Resimler, Format.Tiff, TwainCtrl.Scanner.JpegQuality, scannedtext).Save(TwainCtrl.Scanner.PdfFilePath);
+                        MessageBox.Show(ex.Message);
                     }
-                    if ((ColourSetting)TwainControl.Properties.Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
-                    {
-                        PdfGeneration.GeneratePdf(TwainCtrl.Scanner.Resimler, Format.Jpg, TwainCtrl.Scanner.JpegQuality, scannedtext).Save(TwainCtrl.Scanner.PdfFilePath);
-                    }
-                    if (TwainControl.Properties.Settings.Default.ShowFile)
-                    {
-                        TwainCtrl.ExploreFile.Execute(TwainCtrl.Scanner.PdfFilePath);
-                    }
-                    ReloadFileDatas(ViewModel);
                 }
             }
         }
