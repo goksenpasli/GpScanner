@@ -132,12 +132,89 @@
                     </DataTrigger>
                 </ControlTemplate.Triggers>
             </ControlTemplate>
+            <ControlTemplate x:Key="PdfViewerThumbTemplate" TargetType="{x:Type PdfViewer:PdfViewer}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <ScrollViewer HorizontalScrollBarVisibility="{Binding ScrollBarVisible, RelativeSource={RelativeSource TemplatedParent}}" VerticalScrollBarVisibility="{Binding ScrollBarVisible, RelativeSource={RelativeSource TemplatedParent}}">
+                        <Image RenderTransformOrigin="0.5,0.5" ScrollViewer.CanContentScroll="True"
+                            Source="{Binding Source, RelativeSource={RelativeSource TemplatedParent}}"
+                            Stretch="None">
+                            <Image.LayoutTransform>
+                                <TransformGroup>
+                                    <ScaleTransform ScaleX="{Binding Zoom, RelativeSource={RelativeSource TemplatedParent}}" ScaleY="{Binding Zoom, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    <RotateTransform Angle="{Binding Angle, RelativeSource={RelativeSource TemplatedParent}}" />
+                                </TransformGroup>
+                            </Image.LayoutTransform>
+                        </Image>
+                    </ScrollViewer>
+                    <ContentControl x:Name="Cnt"
+                        Grid.Row="1"
+                        Visibility="{Binding ToolBarVisibility, RelativeSource={RelativeSource TemplatedParent}}">
+                        <Grid IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="2"
+                                Orientation="Horizontal"
+                                Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}">
+                                <RepeatButton Command="{Binding ViewerBack, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ToolTip="Önceki Sayfa">
+                                    <Image Width="16" Height="16">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="246" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                </RepeatButton>
+                                <ComboBox ItemsSource="{Binding Pages, RelativeSource={RelativeSource TemplatedParent}}" SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}">
+                                    <ComboBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <VirtualizingStackPanel />
+                                        </ItemsPanelTemplate>
+                                    </ComboBox.ItemsPanel>
+                                </ComboBox>
+                                <RepeatButton Command="{Binding ViewerNext, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ToolTip="Sonraki Sayfa">
+                                    <Image Width="16" Height="16">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="247" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                </RepeatButton>
+                            </StackPanel>
+                        </Grid>
+                    </ContentControl>
+                </Grid>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" Value="0.56" />
+                    </Trigger>
+                    <DataTrigger Binding="{Binding Visibility, ElementName=Cnt}" Value="Collapsed">
+                        <Setter TargetName="Cnt" Property="Content" Value="{x:Null}" />
+                    </DataTrigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
             <DataTemplate x:Key="PdfViewerTemplate">
-                <PdfViewer:PdfViewer Width="126" Height="178"
+                <PdfViewer:PdfViewer Width="111" Height="157"
                     DpiListVisibility="Collapsed" FirstPageThumbnail="True" OpenButtonVisibility="Collapsed"
                     PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                     PrintButtonVisibility="Collapsed" ScrollBarVisible="Hidden" SliderZoomAngleVisibility="Collapsed"
-                    SnapTick="True" TifNavigasyonButtonEtkin="Collapsed" />
+                    SnapTick="True"
+                    Template="{StaticResource PdfViewerThumbTemplate}"
+                    TifNavigasyonButtonEtkin="Collapsed" />
             </DataTemplate>
             <DataTemplate x:Key="PdfViewerTemplateFull">
                 <Grid>

@@ -581,9 +581,9 @@
                                                     BorderBrush="{x:Null}"
                                                     IsChecked="{Binding Seçili}">
                                                     <Viewbox>
-                                                        <Image Width="{Binding Resim.Thumbnail.Width, Mode=OneWay}"
+                                                        <local:ShadowedImage Width="{Binding Resim.Thumbnail.Width, Mode=OneWay}"
                                                             Height="{Binding Resim.Thumbnail.Height, Mode=OneWay}"
-                                                            d:Source="/TwainControl;component/bw.png"
+                                                            d:Source="/TwainControl;component/bw.png" ShowShadow="True"
                                                             Source="{Binding Resim.Thumbnail, Mode=OneWay, IsAsync=True}" />
                                                     </Viewbox>
                                                 </ToggleButton>
@@ -753,7 +753,7 @@
                                         BorderBrush="{StaticResource GroupBoxBackGround}"
                                         BorderThickness="1">
                                         <Grid Width="200" Height="200">
-                                            <Image x:Name="Img" Source="{Binding Scanner.CroppedImage}" />
+                                            <local:ShadowedImage x:Name="Img" Source="{Binding Scanner.CroppedImage}" ShowShadow="True"/>
                                             <Grid x:Name="LineGrid"
                                                 Width="{Binding ElementName=Img, Path=ActualWidth}"
                                                 Height="{Binding ElementName=Img, Path=ActualHeight}"

@@ -313,14 +313,13 @@
                     VirtualizingPanel.ScrollUnit="Item" VirtualizingPanel.VirtualizationMode="Recycling">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="160,220" SpacingMode="None" />
+                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="145,190" SpacingMode="None" />
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Seçili}" Value="true">
-                                    <Setter Property="Background" Value="MediumSeaGreen" />
                                     <Setter Property="IsSelected" Value="True" />
                                 </DataTrigger>
                             </Style.Triggers>
@@ -328,65 +327,77 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate>
-                                        <StackPanel>
-                                            <CheckBox VerticalContentAlignment="Center"
-                                                d:Height="50" Background="Transparent" Drop="ContentControl_Drop"
-                                                IsChecked="{Binding Seçili}"
-                                                IsEnabled="{Binding FileName, Mode=OneWay, Converter={StaticResource FileNamePdfZipCheckConverter}}">
-                                                <CheckBox.Style>
-                                                    <Style TargetType="CheckBox">
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding Path=DataContext.ShowPdfPreview, RelativeSource={RelativeSource AncestorType=Window}}" Value="true">
-                                                                <Setter Property="Content">
-                                                                    <Setter.Value>
-                                                                        <ContentControl AllowDrop="True"
-                                                                            Content="{Binding Path=FileName, IsAsync=True}"
-                                                                            ContentTemplateSelector="{StaticResource ThumbViewerSelector}" />
-                                                                    </Setter.Value>
-                                                                </Setter>
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </CheckBox.Style>
-                                            </CheckBox>
-                                            <StackPanel HorizontalAlignment="Center"
-                                                Background="{TemplateBinding Background}"
-                                                Orientation="Horizontal">
-                                                <TextBlock VerticalAlignment="Center" ToolTip="{twainctrl:Loc SHOWFOLDER}">
-                                                    <Hyperlink Command="{Binding DataContext.ExploreFile, ElementName=TwainCtrl, Mode=OneWay}"
-                                                        CommandParameter="{Binding Path=FileName}"
-                                                        TextDecorations="None">
-                                                        <Image Width="32" Height="32">
-                                                            <Image.Source>
-                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                    <Binding Source="Shell32.dll" />
-                                                                    <Binding Source="4" />
-                                                                </MultiBinding>
-                                                            </Image.Source>
-                                                        </Image>
-                                                    </Hyperlink>
-                                                </TextBlock>
-                                                <Extensions:SplitButton Width="120"
-                                                    Command="{Binding DataContext.WebAdreseGit, ElementName=TwainCtrl, Mode=OneWay}"
-                                                    CommandParameter="{Binding Path=FileName}">
-                                                    <Extensions:SplitButton.Content>
-                                                        <StackPanel Orientation="Horizontal">
-                                                            <Image Width="32" Height="32"
-                                                                Source="{Binding FileName, Converter={StaticResource FilePathToIconConverter}}" />
-                                                            <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay, Path=FileName, Converter={StaticResource FileNameExtractConverter}}" />
-                                                        </StackPanel>
-                                                    </Extensions:SplitButton.Content>
-                                                    <Extensions:SplitButton.InternalContent>
-                                                        <Extensions:ResizablePanel Width="480" Height="360" MinWidth="480"
-                                                            MinHeight="360">
-                                                            <GroupBox>
-                                                                <ContentPresenter Content="{Binding Path=FileName}" ContentTemplateSelector="{StaticResource ViewerSelector}" />
-                                                            </GroupBox>
-                                                        </Extensions:ResizablePanel>
-                                                    </Extensions:SplitButton.InternalContent>
-                                                </Extensions:SplitButton>
+                                        <Border>
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Seçili}" Value="true">
+                                                            <Setter Property="BorderBrush" Value="MediumSeaGreen" />
+                                                            <Setter Property="BorderThickness" Value="3" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <StackPanel Margin="2">
+                                                <CheckBox VerticalContentAlignment="Center"
+                                                    d:Height="50" Background="Transparent" Drop="ContentControl_Drop"
+                                                    IsChecked="{Binding Seçili}"
+                                                    IsEnabled="{Binding FileName, Mode=OneWay, Converter={StaticResource FileNamePdfZipCheckConverter}}">
+                                                    <CheckBox.Style>
+                                                        <Style TargetType="CheckBox">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Path=DataContext.ShowPdfPreview, RelativeSource={RelativeSource AncestorType=Window}}" Value="true">
+                                                                    <Setter Property="Content">
+                                                                        <Setter.Value>
+                                                                            <ContentControl AllowDrop="True"
+                                                                                Content="{Binding Path=FileName, IsAsync=True}"
+                                                                                ContentTemplateSelector="{StaticResource ThumbViewerSelector}" />
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </CheckBox.Style>
+                                                </CheckBox>
+                                                <StackPanel HorizontalAlignment="Center"
+                                                    Background="{TemplateBinding Background}"
+                                                    Orientation="Horizontal">
+                                                    <TextBlock VerticalAlignment="Center" ToolTip="{twainctrl:Loc SHOWFOLDER}">
+                                                        <Hyperlink Command="{Binding DataContext.ExploreFile, ElementName=TwainCtrl, Mode=OneWay}"
+                                                            CommandParameter="{Binding Path=FileName}"
+                                                            TextDecorations="None">
+                                                            <Image Width="16" Height="16">
+                                                                <Image.Source>
+                                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                        <Binding Source="Shell32.dll" />
+                                                                        <Binding Source="4" />
+                                                                    </MultiBinding>
+                                                                </Image.Source>
+                                                            </Image>
+                                                        </Hyperlink>
+                                                    </TextBlock>
+                                                    <Extensions:SplitButton Width="106"
+                                                        Command="{Binding DataContext.WebAdreseGit, ElementName=TwainCtrl, Mode=OneWay}"
+                                                        CommandParameter="{Binding Path=FileName}">
+                                                        <Extensions:SplitButton.Content>
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <Image Width="16" Height="16"
+                                                                    Source="{Binding FileName, Converter={StaticResource FilePathToIconConverter}}" />
+                                                                <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay, Path=FileName, Converter={StaticResource FileNameExtractConverter}}" />
+                                                            </StackPanel>
+                                                        </Extensions:SplitButton.Content>
+                                                        <Extensions:SplitButton.InternalContent>
+                                                            <Extensions:ResizablePanel Width="480" Height="360" MinWidth="480"
+                                                                MinHeight="360">
+                                                                <GroupBox>
+                                                                    <ContentPresenter Content="{Binding Path=FileName}" ContentTemplateSelector="{StaticResource ViewerSelector}" />
+                                                                </GroupBox>
+                                                            </Extensions:ResizablePanel>
+                                                        </Extensions:SplitButton.InternalContent>
+                                                    </Extensions:SplitButton>
+                                                </StackPanel>
                                             </StackPanel>
-                                        </StackPanel>
+                                        </Border>
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>

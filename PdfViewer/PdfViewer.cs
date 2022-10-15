@@ -585,6 +585,8 @@ namespace PdfViewer
         private void PdfViewer_Unloaded(object sender, RoutedEventArgs e)
         {
             PdfFileStream = null;
+            Source = null;
+            GC.Collect();
         }
     }
 }

@@ -128,7 +128,7 @@ namespace GpScanner.ViewModel
                 {
                     BitmapSource resim = (BitmapSource)data[0];
                     resim.Freeze();
-                    BitmapSource thumbnail = resim.Resize(84, 117);
+                    BitmapSource thumbnail = resim.PixelWidth < resim.PixelHeight ? resim.Resize(Twainsettings.Settings.Default.PreviewWidth, Twainsettings.Settings.Default.PreviewWidth / 21 * 29.7) : resim.Resize(Twainsettings.Settings.Default.PreviewWidth, Twainsettings.Settings.Default.PreviewWidth / 29.7 * 21);
                     thumbnail.Freeze();
                     BitmapFrame bitmapFrame = BitmapFrame.Create(resim, thumbnail);
                     bitmapFrame.Freeze();
