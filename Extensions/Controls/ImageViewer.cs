@@ -533,38 +533,7 @@ namespace Extensions
         {
             if (d is ImageViewer imageViewer && e.NewValue is not null)
             {
-                switch (imageViewer.FitImageOrientation)
-                {
-                    case FitImageOrientation.Width:
-                        {
-                            if (!double.IsNaN(imageViewer.Width))
-                            {
-                                imageViewer.Zoom = imageViewer.Width == 0 ? 1 : imageViewer.Width / imageViewer.Source.Width;
-                                return;
-                            }
-                            if (imageViewer.ActualWidth == 0)
-                            {
-                                imageViewer.Zoom = 1;
-                                return;
-                            }
-                            imageViewer.Zoom = Math.Round(imageViewer.ActualWidth / imageViewer.Source.Width, 2);
-                            return;
-                        }
-
-                    default:
-                        if (!double.IsNaN(imageViewer.Height))
-                        {
-                            imageViewer.Zoom = imageViewer.Height == 0 ? 1 : imageViewer.Height / imageViewer.Source.Height;
-                            return;
-                        }
-                        if (imageViewer.ActualHeight == 0)
-                        {
-                            imageViewer.Zoom = 1;
-                            return;
-                        }
-                        imageViewer.Zoom = Math.Round(imageViewer.ActualHeight / imageViewer.Source.Height, 2);
-                        return;
-                }
+                imageViewer.Resize.Execute(null);        
             }
         }
 

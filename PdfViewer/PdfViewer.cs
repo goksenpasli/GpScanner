@@ -111,8 +111,8 @@ namespace PdfViewer
 
         public Visibility ContextMenuVisibilityProperty
         {
-            get { return (Visibility)GetValue(ContextMenuVisibilityPropertyProperty); }
-            set { SetValue(ContextMenuVisibilityPropertyProperty, value); }
+            get => (Visibility)GetValue(ContextMenuVisibilityPropertyProperty);
+            set => SetValue(ContextMenuVisibilityPropertyProperty, value);
         }
 
         public RelayCommand<object> DosyaAç { get; }
@@ -388,50 +388,6 @@ namespace PdfViewer
             }
         }
 
-        public static async void PrintPdfFile(byte[] stream, int Dpi = 300)
-        {
-            int pagecount = PdfPageCount(stream);
-            PrintDialog pd = new()
-            {
-                PageRangeSelection = PageRangeSelection.AllPages,
-                UserPageRangeEnabled = true,
-                MaxPage = (uint)pagecount,
-                MinPage = 1
-            };
-            DrawingVisual dv = new();
-            if (pd.ShowDialog() == true)
-            {
-                int başlangıç;
-                int bitiş;
-                if (pd.PageRangeSelection == PageRangeSelection.AllPages)
-                {
-                    başlangıç = 1;
-                    bitiş = pagecount;
-                }
-                else
-                {
-                    başlangıç = pd.PageRange.PageFrom;
-                    bitiş = pd.PageRange.PageTo;
-                }
-
-                for (int i = başlangıç; i <= bitiş; i++)
-                {
-                    using (DrawingContext dc = dv.RenderOpen())
-                    {
-                        BitmapImage bitmapimage = await ConvertToImgAsync(stream, i, Dpi);
-                        BitmapSource bs = bitmapimage.Width > bitmapimage.Height
-                        ? bitmapimage?.Resize((int)pd.PrintableAreaHeight, (int)pd.PrintableAreaWidth, 90, Dpi, Dpi)
-                        : bitmapimage?.Resize((int)pd.PrintableAreaWidth, (int)pd.PrintableAreaHeight, 0, Dpi, Dpi);
-                        bs.Freeze();
-                        dc.DrawImage(bs, new Rect(0, 0, pd.PrintableAreaWidth, pd.PrintableAreaHeight));
-                        bitmapimage = null;
-                        bs = null;
-                    }
-                    pd.PrintVisual(dv, "");
-                }
-            }
-        }
-
         public void Dispose()
         {
             Dispose(disposing: true);
@@ -530,38 +486,7 @@ namespace PdfViewer
         {
             if (d is PdfViewer pdfViewer && e.NewValue is not null)
             {
-                switch (pdfViewer.FitImageOrientation)
-                {
-                    case FitImageOrientation.Width:
-                        {
-                            if (!double.IsNaN(pdfViewer.Width))
-                            {
-                                pdfViewer.Zoom = pdfViewer.Width == 0 ? 1 : pdfViewer.Width / pdfViewer.Source.Width;
-                                return;
-                            }
-                            if (pdfViewer.ActualWidth == 0)
-                            {
-                                pdfViewer.Zoom = 1;
-                                return;
-                            }
-                            pdfViewer.Zoom = Math.Round(pdfViewer.ActualWidth / pdfViewer.Source.Width, 2);
-                            return;
-                        }
-
-                    default:
-                        if (!double.IsNaN(pdfViewer.Height))
-                        {
-                            pdfViewer.Zoom = pdfViewer.Height == 0 ? 1 : pdfViewer.Height / pdfViewer.Source.Height;
-                            return;
-                        }
-                        if (pdfViewer.ActualHeight == 0)
-                        {
-                            pdfViewer.Zoom = 1;
-                            return;
-                        }
-                        pdfViewer.Zoom = Math.Round(pdfViewer.ActualHeight / pdfViewer.Source.Height, 2);
-                        return;
-                }
+                pdfViewer.Resize.Execute(null);
             }
         }
 
@@ -579,6 +504,7 @@ namespace PdfViewer
             if (e.PropertyName is "Sayfa" && sender is PdfViewer pdfViewer && pdfViewer.PdfFileStream is not null)
             {
                 Source = pdfViewer.FirstPageThumbnail ? await ConvertToImgAsync(pdfViewer.PdfFileStream, sayfa, pdfViewer.ThumbnailDpi, true) : await ConvertToImgAsync(pdfViewer.PdfFileStream, sayfa, pdfViewer.Dpi);
+                GC.Collect();
             }
         }
 
@@ -587,6 +513,50 @@ namespace PdfViewer
             PdfFileStream = null;
             Source = null;
             GC.Collect();
+        }
+
+        private async void PrintPdfFile(byte[] stream, int Dpi = 300)
+        {
+            int pagecount = PdfPageCount(stream);
+            PrintDialog pd = new()
+            {
+                PageRangeSelection = PageRangeSelection.AllPages,
+                UserPageRangeEnabled = true,
+                MaxPage = (uint)pagecount,
+                MinPage = 1
+            };
+            DrawingVisual dv = new();
+            if (pd.ShowDialog() == true)
+            {
+                int başlangıç;
+                int bitiş;
+                if (pd.PageRangeSelection == PageRangeSelection.AllPages)
+                {
+                    başlangıç = 1;
+                    bitiş = pagecount;
+                }
+                else
+                {
+                    başlangıç = pd.PageRange.PageFrom;
+                    bitiş = pd.PageRange.PageTo;
+                }
+
+                for (int i = başlangıç; i <= bitiş; i++)
+                {
+                    using (DrawingContext dc = dv.RenderOpen())
+                    {
+                        BitmapImage bitmapimage = await ConvertToImgAsync(stream, i, Dpi);
+                        BitmapSource bs = bitmapimage.Width > bitmapimage.Height
+                        ? bitmapimage?.Resize((int)pd.PrintableAreaHeight, (int)pd.PrintableAreaWidth, 90, Dpi, Dpi)
+                        : bitmapimage?.Resize((int)pd.PrintableAreaWidth, (int)pd.PrintableAreaHeight, 0, Dpi, Dpi);
+                        bs.Freeze();
+                        dc.DrawImage(bs, new Rect(0, 0, pd.PrintableAreaWidth, pd.PrintableAreaHeight));
+                        bitmapimage = null;
+                        bs = null;
+                    }
+                    pd.PrintVisual(dv, "");
+                }
+            }
         }
     }
 }
