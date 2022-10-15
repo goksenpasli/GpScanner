@@ -169,18 +169,27 @@ namespace TwainControl
 
         public static PdfDocument MergePdf(string[] pdffiles)
         {
-            using PdfDocument outputDocument = new();
-            foreach (string file in pdffiles)
+            try
             {
-                PdfDocument inputDocument = PdfReader.Open(file, PdfDocumentOpenMode.Import);
-                int count = inputDocument.PageCount;
-                for (int idx = 0; idx < count; idx++)
+                using PdfDocument outputDocument = new();
+                foreach (string file in pdffiles)
                 {
-                    PdfPage page = inputDocument.Pages[idx];
-                    _ = outputDocument.AddPage(page);
+                    PdfDocument inputDocument = PdfReader.Open(file, PdfDocumentOpenMode.Import);
+                    int count = inputDocument.PageCount;
+                    for (int idx = 0; idx < count; idx++)
+                    {
+                        PdfPage page = inputDocument.Pages[idx];
+                        _ = outputDocument.AddPage(page);
+                    }
                 }
+                return outputDocument;
             }
-            return outputDocument;
+            catch (Exception ex)
+            {
+                _ = MessageBox.Show(ex.Message);
+            }
+
+            return null;
         }
 
         public static async void SavePdfFiles(string[] files)

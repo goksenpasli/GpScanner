@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -50,6 +52,24 @@ namespace GpScanner
             if (Mouse.Captured is CalendarItem)
             {
                 _ = Mouse.Capture(null);
+            }
+        }
+
+        private void ContentControl_Drop(object sender, DragEventArgs e)
+        {
+            if (sender is ContentControl contentControl)
+            {
+                ScannedImage droppedData = e.Data.GetData(typeof(ScannedImage)) as ScannedImage;
+                Scanner scanner = contentControl.DataContext as Scanner;
+                string temporarypdf = Path.GetTempPath() + Guid.NewGuid() + ".pdf";
+                PdfGeneration.GeneratePdf(droppedData.Resim, null, Format.Jpg).Save(temporarypdf);
+                PdfGeneration.MergePdf(new string[] { temporarypdf, scanner.FileName }).Save(scanner.FileName);
+                File.Delete(temporarypdf);
+                if (DataContext is GpScannerViewModel gpScannerViewModel && gpScannerViewModel.ShowPdfPreview)
+                {
+                    gpScannerViewModel.ShowPdfPreview = false;
+                    gpScannerViewModel.ShowPdfPreview = true;
+                }
             }
         }
 
@@ -128,7 +148,7 @@ namespace GpScanner
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show(ex.Message);
+                        _ = MessageBox.Show(ex.Message);
                     }
                 }
             }

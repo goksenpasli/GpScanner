@@ -9,6 +9,34 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:PdfViewer}">
                     <Grid>
+                        <Grid.ContextMenu>
+                            <ContextMenu Visibility="{Binding ContextMenuVisibilityProperty, RelativeSource={RelativeSource TemplatedParent}}">
+                                <MenuItem Command="{Binding ViewerBack, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Header="GERİ">
+                                    <MenuItem.Icon>
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="246" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Command="{Binding ViewerNext, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Header="İLERİ">
+                                    <MenuItem.Icon>
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="247" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </ContextMenu>
+                        </Grid.ContextMenu>
                         <Grid.RowDefinitions>
                             <RowDefinition />
                             <RowDefinition Height="Auto" />
@@ -33,13 +61,11 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />                                  
                                     <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />                        
                                     <ColumnDefinition />
                                     <ColumnDefinition />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <Button Command="{Binding DosyaAç, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Visibility="{Binding OpenButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                                     <Image Width="16" Height="16">
@@ -104,25 +130,13 @@
                                         </Image.Source>
                                     </Image>
                                 </Button>
-                                <Slider Grid.Column="4"
-                                    Margin="2"
-                                    AutoToolTipPlacement="TopLeft" Minimum="0.01" SmallChange="1"
-                                    Style="{DynamicResource Slider}"
-                                    Value="{Binding Zoom, RelativeSource={RelativeSource TemplatedParent}}" />
-                                <Slider Grid.Column="5"
-                                    Margin="2"
-                                    AutoToolTipPlacement="TopLeft"
-                                    IsSnapToTickEnabled="{Binding SnapTick, RelativeSource={RelativeSource TemplatedParent}}"
-                                    Maximum="360" SmallChange="1"
-                                    Style="{DynamicResource Slider}"
-                                    Ticks="0, 90, 180, 270, 360"
-                                    Value="{Binding Angle, RelativeSource={RelativeSource TemplatedParent}}" />
-                                <ComboBox Grid.Column="6"
+                                <ComboBox Grid.Column="4"
                                     ItemStringFormat="{}{0} Dpi"
                                     ItemsSource="{Binding DpiList, RelativeSource={RelativeSource TemplatedParent}}"
-                                    SelectedItem="{Binding Dpi, RelativeSource={RelativeSource TemplatedParent}, StringFormat=Dpi}" />
+                                    SelectedItem="{Binding Dpi, RelativeSource={RelativeSource TemplatedParent}, StringFormat=Dpi}"
+                                    Visibility="{Binding DpiListVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
                                 <Button x:Name="BtnSave"
-                                    Grid.Column="7"
+                                    Grid.Column="5"
                                     Command="{Binding SaveImage, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
                                     <Image Width="16" Height="16">
                                         <Image.Source>
@@ -133,6 +147,21 @@
                                         </Image.Source>
                                     </Image>
                                 </Button>
+                                <Slider Grid.Column="6"
+                                    Margin="2"
+                                    AutoToolTipPlacement="TopLeft" Minimum="0.01" SmallChange="1"
+                                    Style="{DynamicResource Slider}"
+                                    Visibility="{Binding SliderZoomAngleVisibility, RelativeSource={RelativeSource TemplatedParent}}"
+                                    Value="{Binding Zoom, RelativeSource={RelativeSource TemplatedParent}}" />
+                                <Slider Grid.Column="7"
+                                    Margin="2"
+                                    AutoToolTipPlacement="TopLeft"
+                                    IsSnapToTickEnabled="{Binding SnapTick, RelativeSource={RelativeSource TemplatedParent}}"
+                                    Maximum="360" SmallChange="1"
+                                    Style="{DynamicResource Slider}"
+                                    Ticks="0, 90, 180, 270, 360"
+                                    Visibility="{Binding SliderZoomAngleVisibility, RelativeSource={RelativeSource TemplatedParent}}"
+                                    Value="{Binding Angle, RelativeSource={RelativeSource TemplatedParent}}" />
                             </Grid>
                         </ContentControl>
                     </Grid>

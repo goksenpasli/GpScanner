@@ -28,6 +28,8 @@ namespace PdfViewer
     {
         public static readonly DependencyProperty AngleProperty = DependencyProperty.Register("Angle", typeof(double), typeof(PdfViewer), new PropertyMetadata(0.0));
 
+        public static readonly DependencyProperty ContextMenuVisibilityPropertyProperty = DependencyProperty.Register("ContextMenuVisibilityProperty", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Collapsed));
+
         public static readonly DependencyProperty DpiProperty = DependencyProperty.Register("Dpi", typeof(int), typeof(PdfViewer), new PropertyMetadata(200, DpiChanged));
 
         public static readonly DependencyProperty PdfFilePathProperty = DependencyProperty.Register("PdfFilePath", typeof(string), typeof(PdfViewer), new PropertyMetadata(null, async (o, e) => await PdfFilePathChangedAsync(o, e)));
@@ -107,6 +109,12 @@ namespace PdfViewer
             set => SetValue(AngleProperty, value);
         }
 
+        public Visibility ContextMenuVisibilityProperty
+        {
+            get { return (Visibility)GetValue(ContextMenuVisibilityPropertyProperty); }
+            set { SetValue(ContextMenuVisibilityPropertyProperty, value); }
+        }
+
         public RelayCommand<object> DosyaAç { get; }
 
         public int Dpi
@@ -116,6 +124,20 @@ namespace PdfViewer
         }
 
         public int[] DpiList { get; } = new int[] { 72, 96, 120, 150, 200, 300, 400, 500, 600 };
+
+        public Visibility DpiListVisibility
+        {
+            get => dpiListVisibility;
+
+            set
+            {
+                if (dpiListVisibility != value)
+                {
+                    dpiListVisibility = value;
+                    OnPropertyChanged(nameof(DpiListVisibility));
+                }
+            }
+        }
 
         public bool FirstPageThumbnail
         {
@@ -226,6 +248,20 @@ namespace PdfViewer
             set => SetValue(ScrollBarVisibleProperty, value);
         }
 
+        public Visibility SliderZoomAngleVisibility
+        {
+            get => sliderZoomAngleVisibility;
+
+            set
+            {
+                if (sliderZoomAngleVisibility != value)
+                {
+                    sliderZoomAngleVisibility = value;
+                    OnPropertyChanged(nameof(SliderZoomAngleVisibility));
+                }
+            }
+        }
+
         public bool SnapTick
         {
             get => (bool)GetValue(SnapTickProperty);
@@ -298,7 +334,7 @@ namespace PdfViewer
             set => SetValue(ZoomProperty, value);
         }
 
-        public static BitmapImage BitmapSourceFromByteArray(byte[] buffer, bool fasterimage = false, int thumbdpi = 120)
+        public static BitmapImage BitmapSourceFromByteArray(byte[] buffer, bool fasterimage = false, int thumbdpi = 96)
         {
             if (buffer != null)
             {
@@ -421,6 +457,8 @@ namespace PdfViewer
 
         private bool disposedValue;
 
+        private Visibility dpiListVisibility = Visibility.Visible;
+
         private bool firstPageThumbnail;
 
         private FitImageOrientation fitImageOrientation;
@@ -432,6 +470,8 @@ namespace PdfViewer
         private Visibility printButtonVisibility = Visibility.Collapsed;
 
         private int sayfa = 1;
+
+        private Visibility sliderZoomAngleVisibility = Visibility.Visible;
 
         private int thumbnailDpi = 96;
 
@@ -472,17 +512,10 @@ namespace PdfViewer
                     int sayfa = pdfViewer.Sayfa;
                     int dpi = pdfViewer.Dpi;
                     int thumbdpi = pdfViewer.ThumbnailDpi;
-                    if (pdfViewer.FirstPageThumbnail)
-                    {
-                        pdfViewer.Source = await ConvertToImgAsync(pdfdata, 1, thumbdpi, true);
-                    }
-                    else
-                    {
-                        pdfViewer.ToplamSayfa = PdfPageCount(pdfdata);
-                        pdfViewer.Source = await ConvertToImgAsync(pdfdata, sayfa, dpi);
-                        pdfViewer.TifNavigasyonButtonEtkin = pdfViewer.ToplamSayfa > 1 ? Visibility.Visible : Visibility.Collapsed;
-                        pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
-                    }
+                    pdfViewer.Source = pdfViewer.FirstPageThumbnail ? await ConvertToImgAsync(pdfdata, sayfa, thumbdpi, true) : await ConvertToImgAsync(pdfdata, sayfa, dpi);
+                    pdfViewer.ToplamSayfa = PdfPageCount(pdfdata);
+                    pdfViewer.TifNavigasyonButtonEtkin = pdfViewer.ToplamSayfa > 1 ? Visibility.Visible : Visibility.Collapsed;
+                    pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
                     pdfdata = null;
                     GC.Collect();
                 }
@@ -545,7 +578,7 @@ namespace PdfViewer
         {
             if (e.PropertyName is "Sayfa" && sender is PdfViewer pdfViewer && pdfViewer.PdfFileStream is not null)
             {
-                Source = await ConvertToImgAsync(pdfViewer.PdfFileStream, Sayfa, pdfViewer.Dpi);
+                Source = pdfViewer.FirstPageThumbnail ? await ConvertToImgAsync(pdfViewer.PdfFileStream, sayfa, pdfViewer.ThumbnailDpi, true) : await ConvertToImgAsync(pdfViewer.PdfFileStream, sayfa, pdfViewer.Dpi);
             }
         }
 

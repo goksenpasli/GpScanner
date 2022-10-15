@@ -308,7 +308,7 @@
                     IsSynchronizedWithCurrentItem="False"
                     ItemsSource="{Binding Mode=OneWay, Source={StaticResource Veriler}}"
                     SelectedItem="{Binding SelectedDocument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    SelectionMode="Extended" VirtualizingPanel.CacheLength="2,2"
+                    SelectionMode="Extended" VirtualizingPanel.CacheLength="3,3"
                     VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                     VirtualizingPanel.ScrollUnit="Item" VirtualizingPanel.VirtualizationMode="Recycling">
                     <ListBox.ItemsPanel>
@@ -330,7 +330,7 @@
                                     <ControlTemplate>
                                         <StackPanel>
                                             <CheckBox VerticalContentAlignment="Center"
-                                                d:Height="50" Background="Transparent"
+                                                d:Height="50" Background="Transparent" Drop="ContentControl_Drop"
                                                 IsChecked="{Binding Seçili}"
                                                 IsEnabled="{Binding FileName, Mode=OneWay, Converter={StaticResource FileNamePdfZipCheckConverter}}">
                                                 <CheckBox.Style>
@@ -339,9 +339,9 @@
                                                             <DataTrigger Binding="{Binding Path=DataContext.ShowPdfPreview, RelativeSource={RelativeSource AncestorType=Window}}" Value="true">
                                                                 <Setter Property="Content">
                                                                     <Setter.Value>
-                                                                        <ContentControl Content="{Binding Path=FileName, IsAsync=True}"
-                                                                            ContentTemplateSelector="{StaticResource ThumbViewerSelector}"
-                                                                            IsHitTestVisible="False" />
+                                                                        <ContentControl AllowDrop="True"
+                                                                            Content="{Binding Path=FileName, IsAsync=True}"
+                                                                            ContentTemplateSelector="{StaticResource ThumbViewerSelector}" />
                                                                     </Setter.Value>
                                                                 </Setter>
                                                             </DataTrigger>
