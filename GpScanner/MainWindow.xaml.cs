@@ -57,19 +57,18 @@ namespace GpScanner
 
         private void ContentControl_Drop(object sender, DragEventArgs e)
         {
-            if (sender is ContentControl contentControl)
+            if (sender is ContentControl contentControl && e.Data.GetData(typeof(ScannedImage)) is ScannedImage droppedData)
             {
-                ScannedImage droppedData = e.Data.GetData(typeof(ScannedImage)) as ScannedImage;
                 Scanner scanner = contentControl.DataContext as Scanner;
                 string temporarypdf = Path.GetTempPath() + Guid.NewGuid() + ".pdf";
                 PdfGeneration.GeneratePdf(droppedData.Resim, null, Format.Jpg).Save(temporarypdf);
                 PdfGeneration.MergePdf(new string[] { temporarypdf, scanner.FileName }).Save(scanner.FileName);
-                File.Delete(temporarypdf);
                 if (DataContext is GpScannerViewModel gpScannerViewModel && gpScannerViewModel.ShowPdfPreview)
                 {
                     gpScannerViewModel.ShowPdfPreview = false;
                     gpScannerViewModel.ShowPdfPreview = true;
                 }
+                File.Delete(temporarypdf);
             }
         }
 
