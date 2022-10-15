@@ -122,20 +122,15 @@ namespace GpScanner.ViewModel
                 }
             }, parameter => Dosyalar?.Count > 0);
 
-            TransferImage = new RelayCommand<object>(parameter =>
+            TransferImage = new RelayCommand<object>(async parameter =>
             {
-                if (parameter is object[] data && data[0] is not null)
+                if (parameter is object[] data && data[0] is PdfViewer.PdfViewer pdfviewer && data[1] is TwainCtrl twainCtrl)
                 {
-                    BitmapSource resim = (BitmapSource)data[0];
-                    resim.Freeze();
-                    BitmapSource thumbnail = resim.PixelWidth < resim.PixelHeight ? resim.Resize(Twainsettings.Settings.Default.PreviewWidth, Twainsettings.Settings.Default.PreviewWidth / 21 * 29.7) : resim.Resize(Twainsettings.Settings.Default.PreviewWidth, Twainsettings.Settings.Default.PreviewWidth / 29.7 * 21);
-                    thumbnail.Freeze();
-                    BitmapFrame bitmapFrame = BitmapFrame.Create(resim, thumbnail);
+                    BitmapImage bitmapSource = await PdfViewer.PdfViewer.ConvertToImgAsync(pdfviewer.PdfFileStream, pdfviewer.Sayfa, pdfviewer.Dpi);
+                    BitmapFrame bitmapFrame = GenerateBitmapFrame(bitmapSource);
                     bitmapFrame.Freeze();
-                    ScannedImage scannedImage = new() { Seçili = true, Resim = bitmapFrame };
-
-                    (data[1] as TwainCtrl)?.Scanner?.Resimler.Add(scannedImage);
-                    (data[2] as Scanner).Seçili = true;
+                    ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
+                    twainCtrl.Scanner?.Resimler.Add(scannedImage);
                 }
             }, parameter => true);
 
@@ -853,6 +848,16 @@ namespace GpScanner.ViewModel
 
         private TranslateViewModel translateViewModel;
 
+        private static BitmapFrame GenerateBitmapFrame(BitmapSource bitmapSource)
+        {
+            bitmapSource.Freeze();
+            BitmapSource thumbnail = bitmapSource.PixelWidth < bitmapSource.PixelHeight ? bitmapSource.Resize(Twainsettings.Settings.Default.PreviewWidth, Twainsettings.Settings.Default.PreviewWidth / 21 * 29.7) : bitmapSource.Resize(Twainsettings.Settings.Default.PreviewWidth, Twainsettings.Settings.Default.PreviewWidth / 29.7 * 21);
+            thumbnail.Freeze();
+            BitmapFrame bitmapFrame = BitmapFrame.Create(bitmapSource, thumbnail);
+            bitmapFrame.Freeze();
+            return bitmapFrame;
+        }
+
         private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             Settings.Default.Save();
@@ -879,13 +884,6 @@ namespace GpScanner.ViewModel
                     x.Accepted = Path.GetFileNameWithoutExtension(scanner?.FileName).Contains(AramaMetni, StringComparison.OrdinalIgnoreCase) ||
                     ScannerData.Data.Any(z => z.FileName == scanner.FileName && z.FileContent?.Contains(AramaMetni, StringComparison.OrdinalIgnoreCase) == true);
                 };
-            }
-
-            if (e.PropertyName is "OcrIsBusy" && !OcrIsBusy && SelectedDocument is not null)
-            {
-                ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = SelectedDocument?.FileName, FileContent = TranslateViewModel?.Metin });
-                DatabaseSave.Execute(null);
-                TümününİşaretiniKaldır.Execute(null);
             }
 
             if (e.PropertyName is "SeçiliDil")

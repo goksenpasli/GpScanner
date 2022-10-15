@@ -57,18 +57,15 @@ namespace GpScanner
 
         private void ContentControl_Drop(object sender, DragEventArgs e)
         {
-            if (sender is ContentControl contentControl && e.Data.GetData(typeof(ScannedImage)) is ScannedImage droppedData)
+            if (e.OriginalSource is Image image && e.Data.GetData(typeof(ScannedImage)) is ScannedImage droppedData && image.TemplatedParent is PdfViewer.PdfViewer pdfviewer)
             {
-                Scanner scanner = contentControl.DataContext as Scanner;
                 string temporarypdf = Path.GetTempPath() + Guid.NewGuid() + ".pdf";
+                string pdfFilePath = pdfviewer.PdfFilePath;
                 PdfGeneration.GeneratePdf(droppedData.Resim, null, Format.Jpg).Save(temporarypdf);
-                PdfGeneration.MergePdf(new string[] { temporarypdf, scanner.FileName }).Save(scanner.FileName);
-                if (DataContext is GpScannerViewModel gpScannerViewModel && gpScannerViewModel.ShowPdfPreview)
-                {
-                    gpScannerViewModel.ShowPdfPreview = false;
-                    gpScannerViewModel.ShowPdfPreview = true;
-                }
+                PdfGeneration.MergePdf(new string[] { temporarypdf, pdfFilePath }).Save(pdfFilePath);
                 File.Delete(temporarypdf);
+                pdfviewer.PdfFilePath = null;
+                pdfviewer.PdfFilePath = pdfFilePath;
             }
         }
 
@@ -143,7 +140,6 @@ namespace GpScanner
                         {
                             TwainCtrl.ExploreFile.Execute(TwainCtrl.Scanner.PdfFilePath);
                         }
-                        ReloadFileDatas(ViewModel);
                     }
                     catch (Exception ex)
                     {

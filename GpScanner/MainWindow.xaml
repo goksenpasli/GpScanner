@@ -349,9 +349,7 @@
                                                                 <DataTrigger Binding="{Binding Path=DataContext.ShowPdfPreview, RelativeSource={RelativeSource AncestorType=Window}}" Value="true">
                                                                     <Setter Property="Content">
                                                                         <Setter.Value>
-                                                                            <ContentControl AllowDrop="True"
-                                                                                Content="{Binding Path=FileName, IsAsync=True}"
-                                                                                ContentTemplateSelector="{StaticResource ThumbViewerSelector}" />
+                                                                            <ContentControl Content="{Binding Path=FileName, IsAsync=True}" ContentTemplateSelector="{StaticResource ThumbViewerSelector}" />
                                                                         </Setter.Value>
                                                                     </Setter>
                                                                 </DataTrigger>

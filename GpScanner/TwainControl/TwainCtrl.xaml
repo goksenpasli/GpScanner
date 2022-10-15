@@ -753,7 +753,9 @@
                                         BorderBrush="{StaticResource GroupBoxBackGround}"
                                         BorderThickness="1">
                                         <Grid Width="200" Height="200">
-                                            <local:ShadowedImage x:Name="Img" Source="{Binding Scanner.CroppedImage}" ShowShadow="True"/>
+                                            <local:ShadowedImage x:Name="Img"
+                                                ShowShadow="True"
+                                                Source="{Binding Scanner.CroppedImage}" />
                                             <Grid x:Name="LineGrid"
                                                 Width="{Binding ElementName=Img, Path=ActualWidth}"
                                                 Height="{Binding ElementName=Img, Path=ActualHeight}"

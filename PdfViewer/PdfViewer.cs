@@ -94,8 +94,6 @@ namespace PdfViewer
                 Zoom = (FitImageOrientation.Width != 0) ? (double.IsNaN(Height) ? ((ActualHeight == 0.0) ? 1.0 : (ActualHeight / Source.Height)) : ((Height == 0.0) ? 1.0 : (Height / Source.Height))) : (double.IsNaN(Width) ? ((ActualWidth == 0.0) ? 1.0 : (ActualWidth / Source.Width)) : ((Width == 0.0) ? 1.0 : (Width / Source.Width)));
             }, (object parameter) => Source != null);
 
-            OrijinalDosyaAç = new RelayCommand<object>(parameter => _ = Process.Start(parameter as string), parameter => !DesignerProperties.GetIsInDesignMode(new DependencyObject()) && File.Exists(parameter as string));
-
             PropertyChanged += PdfViewer_PropertyChanged;
             Loaded += PdfViewer_Loaded;
             Unloaded += PdfViewer_Unloaded;
@@ -180,8 +178,6 @@ namespace PdfViewer
                 }
             }
         }
-
-        public RelayCommand<object> OrijinalDosyaAç { get; }
 
         [Browsable(false)]
         public IEnumerable<int> Pages
