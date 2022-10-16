@@ -110,6 +110,20 @@ namespace TwainControl
             }
         }
 
+        public double Brightness
+        {
+            get => brightness;
+
+            set
+            {
+                if (brightness != value)
+                {
+                    brightness = value;
+                    OnPropertyChanged(nameof(Brightness));
+                }
+            }
+        }
+
         public int CaretPosition
         {
             get => caretPosition;
@@ -674,6 +688,8 @@ namespace TwainControl
         private bool autoSave = Directory.Exists(Settings.Default.AutoFolder);
 
         private int boyAdet = 1;
+
+        private double brightness;
 
         private int caretPosition;
 

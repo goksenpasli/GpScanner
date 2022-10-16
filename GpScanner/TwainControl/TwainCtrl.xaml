@@ -719,7 +719,7 @@
                         <Canvas x:Name="cnv" />
                     </Grid>
                 </DockPanel>
-                <Expander Height="575"
+                <Expander Height="580"
                     HorizontalAlignment="Left" VerticalAlignment="Bottom"
                     ExpandDirection="Up"
                     IsExpanded="{Binding Scanner.CropDialogExpanded}">
@@ -779,16 +779,36 @@
                                                     </Image>
                                                 </Hyperlink>
                                             </TextBlock>
+                                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top">
+                                                <Hyperlink Command="{Binding TransferImage}" TextDecorations="None">
+                                                    <Run FontFamily="Wingdings" FontSize="16" Foreground="Black"
+                                                        Text="ç" />
+                                                </Hyperlink>
+                                            </TextBlock>
                                         </Grid>
                                     </Border>
                                 </DockPanel>
                                 <UniformGrid Columns="2">
-                                    <Slider VerticalAlignment="Center"
-                                        IsSnapToTickEnabled="True" Maximum="360" Minimum="0"
-                                        Orientation="Horizontal" SmallChange="1"
-                                        Style="{StaticResource Slider}"
-                                        Ticks="0, 90, 180, 270, 360"
-                                        Value="{Binding Scanner.CroppedImageAngle}" />
+                                    <StackPanel>
+                                        <Slider VerticalAlignment="Center"
+                                            IsSnapToTickEnabled="True" Maximum="360" Minimum="0"
+                                            Orientation="Horizontal" SmallChange="1"
+                                            Style="{StaticResource Slider}"
+                                            Ticks="0, 90, 180, 270, 360"
+                                            Value="{Binding Scanner.CroppedImageAngle}" />
+                                        <Slider VerticalAlignment="Center"
+                                            Maximum="255" Minimum="-255" Orientation="Horizontal"
+                                            SmallChange="1"
+                                            Style="{StaticResource Slider}"
+                                            Value="{Binding Scanner.Brightness, Delay=100}">
+                                            <Slider.Background>
+                                                <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                                    <GradientStop Offset="0" Color="Black" />
+                                                    <GradientStop Offset="1" Color="White" />
+                                                </LinearGradientBrush>
+                                            </Slider.Background>
+                                        </Slider>
+                                    </StackPanel>
                                     <Button Background="Green" Command="{Binding LoadCroppedImage}">
                                         <StackPanel Orientation="Horizontal">
                                             <Image Width="32" Height="32">
@@ -867,9 +887,9 @@
                                     <UniformGrid Columns="2">
                                         <Slider VerticalAlignment="Center"
                                             IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"
-                                            Maximum="255" Minimum="1"
+                                            Maximum="128" Minimum="0"
                                             Style="{StaticResource Slider}"
-                                            Value="{Binding Scanner.Threshold, Delay=300}" />
+                                            Value="{Binding Scanner.Threshold, Delay=100}" />
                                         <Button x:Name="BtnApply"
                                             Command="{Binding ApplyColorChange}"
                                             Content="{local:Loc APPLY}"

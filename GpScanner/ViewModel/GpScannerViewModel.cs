@@ -127,7 +127,7 @@ namespace GpScanner.ViewModel
                 if (parameter is object[] data && data[0] is PdfViewer.PdfViewer pdfviewer && data[1] is TwainCtrl twainCtrl)
                 {
                     BitmapImage bitmapSource = await PdfViewer.PdfViewer.ConvertToImgAsync(pdfviewer.PdfFileStream, pdfviewer.Sayfa, pdfviewer.Dpi);
-                    BitmapFrame bitmapFrame = GenerateBitmapFrame(bitmapSource);
+                    BitmapFrame bitmapFrame = twainCtrl.GenerateBitmapFrame(bitmapSource);
                     bitmapFrame.Freeze();
                     ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
                     twainCtrl.Scanner?.Resimler.Add(scannedImage);
@@ -773,11 +773,18 @@ namespace GpScanner.ViewModel
             if (Directory.Exists(Twainsettings.Settings.Default.AutoFolder))
             {
                 ObservableCollection<Scanner> list = new();
-                foreach (string dosya in Directory.EnumerateFiles(Twainsettings.Settings.Default.AutoFolder, "*.*", SearchOption.AllDirectories).Where(s => (new string[] { ".pdf", ".tiff", ".tif", ".jpg", ".png", ".bmp", ".zip" }).Any(ext => ext == Path.GetExtension(s).ToLower())))
+                try
                 {
-                    list.Add(new Scanner() { FileName = dosya, Seçili = false });
+                    foreach (string dosya in Directory.EnumerateFiles(Twainsettings.Settings.Default.AutoFolder, "*.*", SearchOption.AllDirectories).Where(s => (new string[] { ".pdf", ".tiff", ".tif", ".jpg", ".png", ".bmp", ".zip" }).Any(ext => ext == Path.GetExtension(s).ToLower())))
+                    {
+                        list.Add(new Scanner() { FileName = dosya, Seçili = false });
+                    }
+                    return list;
                 }
-                return list;
+                catch (UnauthorizedAccessException)
+                {
+                    return list;
+                }
             }
             return null;
         }
@@ -841,16 +848,6 @@ namespace GpScanner.ViewModel
         private TesseractViewModel tesseractViewModel;
 
         private TranslateViewModel translateViewModel;
-
-        private static BitmapFrame GenerateBitmapFrame(BitmapSource bitmapSource)
-        {
-            bitmapSource.Freeze();
-            BitmapSource thumbnail = bitmapSource.PixelWidth < bitmapSource.PixelHeight ? bitmapSource.Resize(Twainsettings.Settings.Default.PreviewWidth, Twainsettings.Settings.Default.PreviewWidth / 21 * 29.7) : bitmapSource.Resize(Twainsettings.Settings.Default.PreviewWidth, Twainsettings.Settings.Default.PreviewWidth / 29.7 * 21);
-            thumbnail.Freeze();
-            BitmapFrame bitmapFrame = BitmapFrame.Create(bitmapSource, thumbnail);
-            bitmapFrame.Freeze();
-            return bitmapFrame;
-        }
 
         private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {

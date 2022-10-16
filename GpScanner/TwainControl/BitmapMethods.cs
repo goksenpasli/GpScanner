@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,6 +19,66 @@ namespace TwainControl
 {
     public static class BitmapMethods
     {
+        public static Bitmap AdjustBrightness(this Bitmap bitmap, int brightness)
+        {
+            BitmapData bmpData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, bitmap.PixelFormat);
+            IntPtr ptr = bmpData.Scan0;
+            int bytes = bmpData.Stride * bmpData.Height;
+            byte[] rgb = new byte[bytes];
+            Marshal.Copy(ptr, rgb, 0, bytes);
+            int step = System.Drawing.Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
+            _ = Parallel.ForEach(SteppedRange(0, bytes, step), k =>
+            {
+                int b = rgb[k];
+                int g = rgb[k + 1];
+                int r = rgb[k + 2];
+                b += brightness;
+                g += brightness;
+                r += brightness;
+
+                switch (r)
+                {
+                    case > 255:
+                        r = 255;
+                        break;
+
+                    case < 0:
+                        r = 0;
+                        break;
+                }
+
+                switch (g)
+                {
+                    case > 255:
+                        g = 255;
+                        break;
+
+                    case < 0:
+                        g = 0;
+                        break;
+                }
+
+                switch (b)
+                {
+                    case > 255:
+                        b = 255;
+                        break;
+
+                    case < 0:
+                        b = 0;
+                        break;
+                }
+
+                rgb[k] = (byte)b;
+                rgb[k + 1] = (byte)g;
+                rgb[k + 2] = (byte)r;
+            });
+            Marshal.Copy(rgb, 0, ptr, bytes);
+            bitmap.UnlockBits(bmpData);
+            rgb = null;
+            return bitmap;
+        }
+
         public static Bitmap BitmapSourceToBitmap(this BitmapSource bitmapsource)
         {
             FormatConvertedBitmap src = new();
@@ -170,6 +232,14 @@ namespace TwainControl
             rtb.Render(dv);
             rtb.Freeze();
             return rtb;
+        }
+
+        public static IEnumerable<int> SteppedRange(int fromInclusive, int toExclusive, int step)
+        {
+            for (int i = fromInclusive; i < toExclusive; i += step)
+            {
+                yield return i;
+            }
         }
 
         public static RenderTargetBitmap ÜstüneResimÇiz(this ImageSource Source, System.Windows.Point konum, System.Windows.Media.Brush brushes, double emSize = 64, string metin = null, double angle = 315, string font = "Arial")

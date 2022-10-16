@@ -223,8 +223,7 @@
                     PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                     PrintButtonVisibility="Collapsed" ScrollBarVisible="Hidden" SliderZoomAngleVisibility="Collapsed"
                     SnapTick="True"
-                    Template="{StaticResource PdfViewerThumbTemplate}"
-                    TifNavigasyonButtonEtkin="Collapsed" />
+                    Template="{StaticResource PdfViewerThumbTemplate}" />
             </DataTemplate>
             <DataTemplate x:Key="PdfViewerTemplateFull">
                 <Grid>

@@ -427,7 +427,7 @@ namespace PdfViewer
 
         private int thumbnailDpi = 96;
 
-        private Visibility tifNavigasyonButtonEtkin = Visibility.Collapsed;
+        private Visibility tifNavigasyonButtonEtkin = Visibility.Visible;
 
         private int toplamSayfa;
 
@@ -466,7 +466,6 @@ namespace PdfViewer
                     int thumbdpi = pdfViewer.ThumbnailDpi;
                     pdfViewer.Source = pdfViewer.FirstPageThumbnail ? await ConvertToImgAsync(pdfdata, sayfa, thumbdpi, true) : await ConvertToImgAsync(pdfdata, sayfa, dpi);
                     pdfViewer.ToplamSayfa = PdfPageCount(pdfdata);
-                    pdfViewer.TifNavigasyonButtonEtkin = pdfViewer.ToplamSayfa > 1 ? Visibility.Visible : Visibility.Collapsed;
                     pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
                     pdfdata = null;
                     GC.Collect();

@@ -408,6 +408,14 @@ namespace TwainControl
             }, parameter => true);
 
             PrintCroppedImage = new RelayCommand<object>(parameter => PdfViewer.PdfViewer.PrintImageSource(parameter as ImageSource), parameter => Scanner.CroppedImage is not null);
+
+            TransferImage = new RelayCommand<object>(parameter =>
+            {
+                BitmapFrame bitmapFrame = GenerateBitmapFrame((BitmapSource)Scanner.CroppedImage);
+                bitmapFrame.Freeze();
+                ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
+                Scanner?.Resimler.Add(scannedImage);
+            }, parameter => Scanner.CroppedImage is not null);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -615,6 +623,8 @@ namespace TwainControl
 
         public ICommand Tersiniİşaretle { get; }
 
+        public ICommand TransferImage { get; }
+
         public ICommand Tümünüİşaretle { get; }
 
         public ICommand TümününİşaretiniKaldır { get; }
@@ -712,6 +722,16 @@ namespace TwainControl
         private GridLength twainGuiControlLength = new(3, GridUnitType.Star);
 
         private double width;
+
+        public BitmapFrame GenerateBitmapFrame(BitmapSource bitmapSource)
+        {
+            bitmapSource.Freeze();
+            BitmapSource thumbnail = bitmapSource.PixelWidth < bitmapSource.PixelHeight ? bitmapSource.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 21 * 29.7) : bitmapSource.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 29.7 * 21);
+            thumbnail.Freeze();
+            BitmapFrame bitmapFrame = BitmapFrame.Create(bitmapSource, thumbnail);
+            bitmapFrame.Freeze();
+            return bitmapFrame;
+        }
 
         private void AddFiles(string[] filenames, int decodeheight)
         {
@@ -1019,6 +1039,9 @@ namespace TwainControl
             Scanner.CropRight = 0;
             Scanner.EnAdet = 1;
             Scanner.BoyAdet = 1;
+            Scanner.Brightness = 0;
+            Scanner.Threshold = 0;
+            Scanner.Watermark = string.Empty;
             Scanner.CroppedImage = null;
         }
 
@@ -1116,6 +1139,11 @@ namespace TwainControl
                 System.Windows.Media.Color target = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(TargetColor);
                 using Bitmap bmp = ((BitmapSource)Scanner.CopyCroppedImage).BitmapSourceToBitmap();
                 Scanner.CroppedImage = bmp.ReplaceColor(source, target, (int)Scanner.Threshold).ToBitmapImage(ImageFormat.Png);
+            }
+            if (e.PropertyName is "Brightness" && Scanner.CopyCroppedImage is not null)
+            {
+                using Bitmap bmp = ((BitmapSource)Scanner.CopyCroppedImage).BitmapSourceToBitmap();
+                Scanner.CroppedImage = bmp.AdjustBrightness((int)Scanner.Brightness).ToBitmapImage(ImageFormat.Png);
             }
             if (e.PropertyName is "CroppedImageAngle" && Scanner.CopyCroppedImage is not null)
             {
