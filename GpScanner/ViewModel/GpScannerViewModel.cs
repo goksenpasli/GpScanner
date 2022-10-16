@@ -34,13 +34,15 @@ namespace GpScanner.ViewModel
                 Settings.Default.Save();
             }
 
+            Settings.Default.PropertyChanged += Default_PropertyChanged;
+            PropertyChanged += GpScannerViewModel_PropertyChanged;
+
             GenerateFoldTimer();
             Dosyalar = GetScannerFileData();
             ChartData = GetChartsData();
-            ScannerData = new ScannerData() { Data = DataYükle() };
-            SeçiliGün = DateTime.Today;
             SeçiliDil = Settings.Default.DefaultLang;
-
+            SeçiliGün = DateTime.Today;
+            ScannerData = new ScannerData() { Data = DataYükle() };
             TesseractViewModel = new TesseractViewModel();
             TranslateViewModel = new TranslateViewModel();
 
@@ -255,10 +257,6 @@ namespace GpScanner.ViewModel
             }, parameter => true);
 
             DatabaseSave = new RelayCommand<object>(parameter => ScannerData.Serialize());
-
-            Settings.Default.PropertyChanged += Default_PropertyChanged;
-            PropertyChanged += GpScannerViewModel_PropertyChanged;
-            OnPropertyChanged(nameof(SeçiliDil));
         }
 
         public static event EventHandler<PropertyChangedEventArgs> StaticPropertyChanged;
@@ -779,7 +777,7 @@ namespace GpScanner.ViewModel
             if (Directory.Exists(Twainsettings.Settings.Default.AutoFolder))
             {
                 ObservableCollection<Scanner> list = new();
-                foreach (string dosya in Directory.EnumerateFiles(Twainsettings.Settings.Default.AutoFolder, "*.*", SearchOption.AllDirectories).Where(s => (new string[] { ".pdf", ".tif", ".jpg", ".png", ".bmp", ".zip" }).Any(ext => ext == Path.GetExtension(s).ToLower())))
+                foreach (string dosya in Directory.EnumerateFiles(Twainsettings.Settings.Default.AutoFolder, "*.*", SearchOption.AllDirectories).Where(s => (new string[] { ".pdf", ".tiff", ".tif", ".jpg", ".png", ".bmp", ".zip" }).Any(ext => ext == Path.GetExtension(s).ToLower())))
                 {
                     list.Add(new Scanner() { FileName = dosya, Seçili = false });
                 }

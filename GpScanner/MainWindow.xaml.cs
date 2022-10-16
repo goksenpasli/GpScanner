@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using Extensions;
@@ -28,8 +27,8 @@ namespace GpScanner
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new GpScannerViewModel();
             cvs = TryFindResource("Veriler") as CollectionViewSource;
+            DataContext = new GpScannerViewModel();
             TwainCtrl.PropertyChanged += TwainCtrl_PropertyChanged;
         }
 
@@ -45,14 +44,6 @@ namespace GpScanner
         {
             ViewModel.Dosyalar = ViewModel.GetScannerFileData();
             ViewModel.ChartData = ViewModel.GetChartsData();
-        }
-
-        private void Calendar_PreviewMouseUp(object sender, MouseButtonEventArgs e)
-        {
-            if (Mouse.Captured is CalendarItem)
-            {
-                _ = Mouse.Capture(null);
-            }
         }
 
         private void ContentControl_Drop(object sender, DragEventArgs e)
@@ -140,6 +131,7 @@ namespace GpScanner
                         {
                             TwainCtrl.ExploreFile.Execute(TwainCtrl.Scanner.PdfFilePath);
                         }
+                        ReloadFileDatas(ViewModel);
                     }
                     catch (Exception ex)
                     {

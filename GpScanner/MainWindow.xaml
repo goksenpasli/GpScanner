@@ -47,7 +47,7 @@
             MouseDoubleClick="GridSplitter_MouseDoubleClick" />
         <GroupBox Grid.Column="2" Margin="1,0,0,0">
             <GroupBox.Header>
-                <UniformGrid Columns="3">
+                <UniformGrid Columns="4">
                     <ToggleButton Command="{Binding ModifyGridWidth}">
                         <ToggleButton.Style>
                             <Style TargetType="ToggleButton">
@@ -70,6 +70,15 @@
                             </Image.Source>
                         </Image>
                     </ToggleButton>
+                    <Extensions:ContentToggleButton>
+                        <Extensions:ContentToggleButton.OverContent>
+                            <TextBlock Text="{twainctrl:Loc GRAPH}" />
+                        </Extensions:ContentToggleButton.OverContent>
+                        <GroupBox Header="{twainctrl:Loc GRAPH}">
+                            <Extensions:GraphControl Width="600" Height="400"
+                                Series="{Binding ChartData}" />
+                        </GroupBox>
+                    </Extensions:ContentToggleButton>
                     <Button Command="{Binding ChangeDataFolder}">
                         <StackPanel Orientation="Horizontal">
                             <Image Width="24" Height="24">
@@ -141,27 +150,12 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="23.2" />
                     <RowDefinition />
                     <RowDefinition Height="40" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Expander Header="{twainctrl:Loc CALENDAR}">
-                    <TabControl Height="250">
-                        <TabItem Header="{twainctrl:Loc CALENDAR}">
-                            <Viewbox Stretch="Fill">
-                                <Calendar DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}"
-                                    Language="{Binding CalendarLang}"
-                                    PreviewMouseUp="Calendar_PreviewMouseUp"
-                                    SelectedDate="{Binding SeçiliGün}" />
-                            </Viewbox>
-                        </TabItem>
-                        <TabItem Header="{twainctrl:Loc GRAPH}">
-                            <Extensions:GraphControl Grid.Row="1" Series="{Binding ChartData}" />
-                        </TabItem>
-                    </TabControl>
-                </Expander>
-                <UniformGrid Grid.Row="1" Columns="3">
+                <UniformGrid Columns="3">
                     <Button Command="{Binding ResetFilter}">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
@@ -206,10 +200,10 @@
                         </Extensions:ContentToggleButton.Content>
                     </Extensions:ContentToggleButton>
                 </UniformGrid>
-                <Extensions:ButtonedTextBox Grid.Row="2"
+                <Extensions:ButtonedTextBox Grid.Row="1"
                     CopyButtonVisibility="Collapsed"
                     Text="{Binding AramaMetni, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                <UniformGrid Grid.Row="3"
+                <UniformGrid Grid.Row="2"
                     Columns="3" Rows="2">
                     <Button Command="{Binding Tümünüİşaretle}">
                         <Button.Content>
@@ -264,7 +258,7 @@
                         IsChecked="{Binding DetectPageSeperator}"
                         IsEnabled="{Binding DetectBarCode}" />
                 </UniformGrid>
-                <UniformGrid Grid.Row="4"
+                <UniformGrid Grid.Row="3"
                     Columns="3"
                     IsEnabled="{Binding DetectPageSeperator}"
                     Rows="2">
@@ -302,6 +296,10 @@
                         </StackPanel>
                     </Button>
                 </UniformGrid>
+                <DatePicker Grid.Row="4"
+                    DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}"
+                    Language="{Binding CalendarLang}"
+                    SelectedDate="{Binding SeçiliGün}" />
                 <ListBox Grid.Row="5"
                     d:ItemsSource="{d:SampleData ItemCount=5}"
                     Background="{StaticResource BorderBackground}"

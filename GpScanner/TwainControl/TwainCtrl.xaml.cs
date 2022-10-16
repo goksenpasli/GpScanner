@@ -37,6 +37,14 @@ namespace TwainControl
             DataContext = this;
             Scanner = new Scanner();
             PdfGeneration.Scanner = Scanner;
+            Scanner.PropertyChanged += Scanner_PropertyChanged;
+            Settings.Default.PropertyChanged += Default_PropertyChanged;
+
+            DecodeHeight = (int)(A4Height / 2.54 * ImgLoadResolution);
+            if (Settings.Default.UseSelectedProfile)
+            {
+                Scanner.SelectedProfile = Settings.Default.DefaultProfile;
+            }
 
             ScanImage = new RelayCommand<object>(parameter =>
             {
@@ -400,16 +408,6 @@ namespace TwainControl
             }, parameter => true);
 
             PrintCroppedImage = new RelayCommand<object>(parameter => PdfViewer.PdfViewer.PrintImageSource(parameter as ImageSource), parameter => Scanner.CroppedImage is not null);
-
-            Scanner.PropertyChanged += Scanner_PropertyChanged;
-
-            Settings.Default.PropertyChanged += Default_PropertyChanged;
-
-            DecodeHeight = (int)(A4Height / 2.54 * ImgLoadResolution);
-            if (Settings.Default.UseSelectedProfile)
-            {
-                Scanner.SelectedProfile = Settings.Default.DefaultProfile;
-            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
