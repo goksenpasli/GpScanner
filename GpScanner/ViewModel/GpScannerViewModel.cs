@@ -46,8 +46,6 @@ namespace GpScanner.ViewModel
             TesseractViewModel = new TesseractViewModel();
             TranslateViewModel = new TranslateViewModel();
 
-            ResetFilter = new RelayCommand<object>(parameter => MainWindow.cvs.View.Filter = null, parameter => MainWindow.cvs.View is not null); ;
-
             RegisterSti = new RelayCommand<object>(parameter => StillImageHelper.Register(), parameter => true);
 
             UnRegisterSti = new RelayCommand<object>(parameter => StillImageHelper.Unregister(), parameter => true);
@@ -542,8 +540,6 @@ namespace GpScanner.ViewModel
 
         public ICommand RemovePatchProfile { get; }
 
-        public ICommand ResetFilter { get; }
-
         public ICommand SaveOcrPdf { get; }
 
         public ICommand SavePatchProfile { get; }
@@ -876,12 +872,12 @@ namespace GpScanner.ViewModel
             }
             if (e.PropertyName is "AramaMetni")
             {
-                MainWindow.cvs.Filter += (s, x) =>
+                if (string.IsNullOrEmpty(AramaMetni))
                 {
-                    Scanner scanner = x.Item as Scanner;
-                    x.Accepted = Path.GetFileNameWithoutExtension(scanner?.FileName).Contains(AramaMetni, StringComparison.OrdinalIgnoreCase) ||
-                    ScannerData.Data.Any(z => z.FileName == scanner.FileName && z.FileContent?.Contains(AramaMetni, StringComparison.OrdinalIgnoreCase) == true);
-                };
+                    OnPropertyChanged(nameof(SeçiliGün));
+                    return;
+                }
+                MainWindow.cvs.Filter += (s, x) => x.Accepted = ScannerData.Data.Any(z => z.FileName == (x.Item as Scanner).FileName && z.FileContent?.Contains(AramaMetni, StringComparison.OrdinalIgnoreCase) == true);
             }
 
             if (e.PropertyName is "SeçiliDil")

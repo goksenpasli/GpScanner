@@ -155,22 +155,7 @@
                     <RowDefinition Height="40" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <UniformGrid Columns="3">
-                    <Button Command="{Binding ResetFilter}">
-                        <Button.Content>
-                            <StackPanel Orientation="Horizontal">
-                                <Image Width="32" Height="32">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="238" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc VIEWALL}" />
-                            </StackPanel>
-                        </Button.Content>
-                    </Button>
+                <UniformGrid Columns="2">
                     <ToggleButton IsChecked="{Binding Path=ShowPdfPreview}">
                         <ToggleButton.Content>
                             <StackPanel Orientation="Horizontal">
@@ -200,10 +185,10 @@
                         </Extensions:ContentToggleButton.Content>
                     </Extensions:ContentToggleButton>
                 </UniformGrid>
-                <Extensions:ButtonedTextBox Grid.Row="1"
+                <Extensions:ButtonedTextBox Grid.Row="3"
                     CopyButtonVisibility="Collapsed"
                     Text="{Binding AramaMetni, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                <UniformGrid Grid.Row="2"
+                <UniformGrid Grid.Row="1"
                     Columns="3" Rows="2">
                     <Button Command="{Binding Tümünüİşaretle}">
                         <Button.Content>
@@ -258,7 +243,7 @@
                         IsChecked="{Binding DetectPageSeperator}"
                         IsEnabled="{Binding DetectBarCode}" />
                 </UniformGrid>
-                <UniformGrid Grid.Row="3"
+                <UniformGrid Grid.Row="2"
                     Columns="3"
                     IsEnabled="{Binding DetectPageSeperator}"
                     Rows="2">
