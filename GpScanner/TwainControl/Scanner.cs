@@ -53,16 +53,30 @@ namespace TwainControl
             }
         }
 
-        public bool ApplyOcr
+        public bool ApplyDataBaseOcr
         {
-            get => applyOcr;
+            get => applyDataBaseOcr;
 
             set
             {
-                if (applyOcr != value)
+                if (applyDataBaseOcr != value)
                 {
-                    applyOcr = value;
-                    OnPropertyChanged(nameof(ApplyOcr));
+                    applyDataBaseOcr = value;
+                    OnPropertyChanged(nameof(ApplyDataBaseOcr));
+                }
+            }
+        }
+
+        public bool ApplyPdfSaveOcr
+        {
+            get => applyPdfSaveOcr;
+
+            set
+            {
+                if (applyPdfSaveOcr != value)
+                {
+                    applyPdfSaveOcr = value;
+                    OnPropertyChanged(nameof(ApplyPdfSaveOcr));
                 }
             }
         }
@@ -695,7 +709,9 @@ namespace TwainControl
 
         private bool allowPrint = true;
 
-        private bool applyOcr = true;
+        private bool applyDataBaseOcr = true;
+
+        private bool applyPdfSaveOcr;
 
         private bool arayüzetkin = true;
 

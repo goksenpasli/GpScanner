@@ -88,7 +88,7 @@ namespace TwainControl
                     if (saveFileDialog.ShowDialog() == true)
                     {
                         ObservableCollection<OcrData> ocrtext = null;
-                        if (Scanner.ApplyOcr)
+                        if (Scanner.ApplyPdfSaveOcr)
                         {
                             ocrtext = await scannedImage.Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsyc(Scanner.SelectedTtsLanguage);
                         }
@@ -184,7 +184,7 @@ namespace TwainControl
                     {
                         IEnumerable<ScannedImage> seçiliresimler = Scanner.Resimler.Where(z => z.Seçili);
                         List<ObservableCollection<OcrData>> scannedtext = null;
-                        if (Scanner.ApplyOcr)
+                        if (Scanner.ApplyPdfSaveOcr)
                         {
                             scannedtext = new List<ObservableCollection<OcrData>>();
                             foreach (ScannedImage scannedimage in seçiliresimler)
@@ -863,14 +863,17 @@ namespace TwainControl
                             TiffBitmapDecoder decoder = new(new Uri(item), BitmapCreateOptions.None, BitmapCacheOption.None);
                             for (int i = 0; i < decoder.Frames.Count; i++)
                             {
-                                BitmapFrame image = decoder.Frames[i];
+                                MemoryStream memoryStream = new(decoder.Frames[i].ToTiffJpegByteArray(Format.Jpg));
+                                BitmapFrame image = BitmapMethods.GenerateImageDocumentBitmapFrame(decodeheight, memoryStream);
                                 image.Freeze();
                                 BitmapFrame bitmapFrame = BitmapFrame.Create(image, image.PixelWidth < image.PixelHeight ? image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 21 * 29.7) : image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 29.7 * 21));
                                 bitmapFrame.Freeze();
-                                Scanner?.Resimler.Add(new ScannedImage() { Resim = bitmapFrame });
+                                Scanner?.Resimler.Add(new ScannedImage() { Resim = image });
                                 bitmapFrame = null;
                                 image = null;
+                                memoryStream = null;
                             }
+                            decoder = null;
                             break;
                         }
                 }
@@ -928,9 +931,9 @@ namespace TwainControl
             OnPropertyChanged(nameof(Scanner.DetectPageSeperator));
 
             Scanner.PdfFilePath = PdfGeneration.GetPdfScanPath();
-            if (Scanner.ApplyOcr)
+            if (Scanner.ApplyDataBaseOcr)
             {
-                OnPropertyChanged(nameof(Scanner.ApplyOcr));
+                OnPropertyChanged(nameof(Scanner.ApplyDataBaseOcr));
             }
             else
             {
@@ -1241,7 +1244,7 @@ namespace TwainControl
                 transformedBitmap.Freeze();
                 Scanner.CroppedImage = transformedBitmap;
             }
-            if (e.PropertyName is "ApplyOcr" && Scanner.ApplyOcr)
+            if (e.PropertyName is "ApplyDataBaseOcr" && Scanner.ApplyDataBaseOcr)
             {
                 _ = MessageBox.Show(Translation.GetResStringValue("OCRTIME"), Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }

@@ -880,7 +880,7 @@ namespace GpScanner.ViewModel
                     OnPropertyChanged(nameof(SeçiliGün));
                     return;
                 }
-                MainWindow.cvs.Filter += (s, x) => x.Accepted = ScannerData.Data.Any(z => z.FileName == (x.Item as Scanner).FileName && z.FileContent?.Contains(AramaMetni, StringComparison.OrdinalIgnoreCase) == true);
+                MainWindow.cvs.Filter += (s, x) => x.Accepted = ScannerData.Data.Any(z => z.FileName == (x.Item as Scanner)?.FileName && z.FileContent?.Contains(AramaMetni, StringComparison.OrdinalIgnoreCase) == true);
             }
 
             if (e.PropertyName is "SeçiliDil")

@@ -110,7 +110,7 @@ namespace GpScanner
                     TwainCtrl.ImgData = null;
                 }
 
-                if (e.PropertyName is "ApplyOcr" && TwainCtrl.Scanner.ApplyOcr && TwainCtrl.Scanner.Resimler.Count > 0 && !string.IsNullOrEmpty(Settings.Default.DefaultTtsLang))
+                if (e.PropertyName is "ApplyDataBaseOcr" && TwainCtrl.Scanner.ApplyDataBaseOcr && TwainCtrl.Scanner.Resimler.Count > 0 && !string.IsNullOrEmpty(Settings.Default.DefaultTtsLang))
                 {
                     try
                     {

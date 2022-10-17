@@ -321,7 +321,7 @@
                                     </StackPanel>
                                 </Button>
                                 <CheckBox HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"
-                                    IsChecked="{Binding Scanner.ApplyOcr}"
+                                    IsChecked="{Binding Scanner.ApplyDataBaseOcr}"
                                     ToolTip="{local:Loc OCR}">
                                     <Button Background="Green" Command="{Binding FastScanImage}">
                                         <StackPanel Orientation="Horizontal">
@@ -417,6 +417,16 @@
                                                         Style="{StaticResource Slider}"
                                                         Value="{Binding Scanner.JpegQuality, UpdateSourceTrigger=PropertyChanged}" />
                                                 </HeaderedContentControl>
+                                                <CheckBox IsChecked="{Binding Scanner.ApplyPdfSaveOcr}">
+                                                    <CheckBox.Content>
+                                                        <TextBlock>
+                                                            <Run Text="{local:Loc FILE}" />
+                                                            <Run Text="{local:Loc OCR}" />
+                                                            <Run FontWeight="Bold" Foreground="Red"
+                                                                Text="{local:Loc OCRTIME}" />
+                                                        </TextBlock>
+                                                    </CheckBox.Content>
+                                                </CheckBox>
                                             </StackPanel>
                                         </GroupBox>
                                     </Extensions:ContentToggleButton>
