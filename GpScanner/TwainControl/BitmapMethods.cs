@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
@@ -111,6 +113,43 @@ namespace TwainControl
             {
                 return null;
             }
+        }
+
+        public static ObservableCollection<Chart> GenerateHistogram(this Bitmap bitmap, System.Windows.Media.Brush color)
+        {
+            ObservableCollection<Chart> chart = new();
+            int[] histogram = new int[256];
+            BitmapData bmpData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, bitmap.PixelFormat);
+            IntPtr ptr = bmpData.Scan0;
+            int bytes = bmpData.Stride * bmpData.Height;
+            byte[] rgb = new byte[bytes];
+            Marshal.Copy(ptr, rgb, 0, bytes);
+            int step = System.Drawing.Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
+            _ = Parallel.ForEach(SteppedRange(0, bytes, step), k =>
+            {
+                if (color == System.Windows.Media.Brushes.Red)
+                {
+                    histogram[rgb[k + 2]]++;
+                }
+                if (color == System.Windows.Media.Brushes.Green)
+                {
+                    histogram[rgb[k + 1]]++;
+                }
+                if (color == System.Windows.Media.Brushes.Blue)
+                {
+                    histogram[rgb[k]]++;
+                }
+            });
+            foreach (int item in histogram.Take(255))
+            {
+                chart.Add(new Chart() { ChartBrush = color, ChartValue = item });
+            }
+            bitmap.UnlockBits(bmpData);
+            bitmap = null;
+            bmpData = null;
+            rgb = null;
+            histogram = null;
+            return chart;
         }
 
         public static BitmapFrame GenerateImageDocumentBitmapFrame(int decodeheight, Uri item)

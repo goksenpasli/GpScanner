@@ -833,7 +833,24 @@
                                     <Extensions:NumericUpDownControl Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
                                         Minimum="1" SmallChange="1"
                                         Value="{Binding Scanner.BoyAdet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <TextBlock />
+                                    <Extensions:ContentToggleButton Command="{Binding LoadHistogram}">
+                                        <Extensions:ContentToggleButton.OverContent>
+                                            <TextBlock Text="HISTOGRAM" />
+                                        </Extensions:ContentToggleButton.OverContent>
+                                        <GroupBox>
+                                            <UniformGrid Columns="3">
+                                                <Extensions:GraphControl Width="200" Height="200"
+                                                    Series="{Binding RedChart}"
+                                                    SeriesTextVisibility="Collapsed" ValueTextVisibility="Collapsed" />
+                                                <Extensions:GraphControl Width="200" Height="200"
+                                                    Series="{Binding GreenChart}"
+                                                    SeriesTextVisibility="Collapsed" ValueTextVisibility="Collapsed" />
+                                                <Extensions:GraphControl Width="200" Height="200"
+                                                    Series="{Binding BlueChart}"
+                                                    SeriesTextVisibility="Collapsed" ValueTextVisibility="Collapsed" />
+                                            </UniformGrid>
+                                        </GroupBox>
+                                    </Extensions:ContentToggleButton>
                                     <Button Command="{Binding SplitImage}" Content="{local:Loc SLICE}" />
                                     <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXT}" />
                                     <TextBox Text="{Binding Scanner.Watermark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

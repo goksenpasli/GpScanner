@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
@@ -112,12 +113,11 @@ namespace GpScanner
                 {
                     try
                     {
-                        ObservableCollection<OcrData> scannedtext = new();
+                        List<ObservableCollection<OcrData>> scannedtext = new();
                         foreach (ScannedImage scannedimage in TwainCtrl.Scanner.Resimler)
                         {
-                            scannedtext = await ViewModel.GetScannedTextAsync(scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg), false);
+                            scannedtext.Add(await ViewModel.GetScannedTextAsync(scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg), false));
                             ViewModel.ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = TwainCtrl.Scanner.PdfFilePath, FileContent = ViewModel.TranslateViewModel.Metin });
-                            ViewModel.DatabaseSave.Execute(null);
                         }
                         if ((ColourSetting)TwainControl.Properties.Settings.Default.Mode == ColourSetting.BlackAndWhite)
                         {
@@ -131,6 +131,7 @@ namespace GpScanner
                         {
                             TwainCtrl.ExploreFile.Execute(TwainCtrl.Scanner.PdfFilePath);
                         }
+                        ViewModel.DatabaseSave.Execute(null);
                         ReloadFileDatas(ViewModel);
                     }
                     catch (Exception ex)

@@ -277,6 +277,13 @@ namespace TwainControl
                 Scanner.CroppedImage.Freeze();
             }, parameter => SeçiliResim is not null);
 
+            LoadHistogram = new RelayCommand<object>(parameter =>
+            {
+                RedChart = ((BitmapSource)Scanner.CroppedImage).BitmapSourceToBitmap().GenerateHistogram(System.Windows.Media.Brushes.Red);
+                GreenChart = ((BitmapSource)Scanner.CroppedImage).BitmapSourceToBitmap().GenerateHistogram(System.Windows.Media.Brushes.Green);
+                BlueChart = ((BitmapSource)Scanner.CroppedImage).BitmapSourceToBitmap().GenerateHistogram(System.Windows.Media.Brushes.Blue);
+            }, parameter => Scanner.CroppedImage is not null);
+
             InsertFileNamePlaceHolder = new RelayCommand<object>(parameter =>
             {
                 string placeholder = parameter as string;
@@ -422,6 +429,20 @@ namespace TwainControl
 
         public ICommand ApplyColorChange { get; }
 
+        public ObservableCollection<Chart> BlueChart
+        {
+            get => blueChart;
+
+            set
+            {
+                if (blueChart != value)
+                {
+                    blueChart = value;
+                    OnPropertyChanged(nameof(BlueChart));
+                }
+            }
+        }
+
         public CroppedBitmap CroppedOcrBitmap
         {
             get => croppedOcrBitmap;
@@ -484,6 +505,20 @@ namespace TwainControl
 
         public ICommand FastScanImage { get; }
 
+        public ObservableCollection<Chart> GreenChart
+        {
+            get => greenChart;
+
+            set
+            {
+                if (greenChart != value)
+                {
+                    greenChart = value;
+                    OnPropertyChanged(nameof(GreenChart));
+                }
+            }
+        }
+
         public byte[] ImgData
         {
             get => ımgData;
@@ -524,6 +559,8 @@ namespace TwainControl
 
         public ICommand LoadCroppedImage { get; }
 
+        public ICommand LoadHistogram { get; }
+
         public ICommand LoadImage { get; }
 
         public ICommand OcrPage { get; }
@@ -545,6 +582,20 @@ namespace TwainControl
         }
 
         public ICommand PrintCroppedImage { get; }
+
+        public ObservableCollection<Chart> RedChart
+        {
+            get => redChart;
+
+            set
+            {
+                if (redChart != value)
+                {
+                    redChart = value;
+                    OnPropertyChanged(nameof(RedChart));
+                }
+            }
+        }
 
         public ICommand RemoveProfile { get; }
 
@@ -656,6 +707,16 @@ namespace TwainControl
             Dispose(true);
         }
 
+        public BitmapFrame GenerateBitmapFrame(BitmapSource bitmapSource)
+        {
+            bitmapSource.Freeze();
+            BitmapSource thumbnail = bitmapSource.PixelWidth < bitmapSource.PixelHeight ? bitmapSource.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 21 * 29.7) : bitmapSource.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 29.7 * 21);
+            thumbnail.Freeze();
+            BitmapFrame bitmapFrame = BitmapFrame.Create(bitmapSource, thumbnail);
+            bitmapFrame.Freeze();
+            return bitmapFrame;
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -681,6 +742,8 @@ namespace TwainControl
 
         private ScanSettings _settings;
 
+        private ObservableCollection<Chart> blueChart;
+
         private CroppedBitmap croppedOcrBitmap;
 
         private int decodeHeight;
@@ -690,6 +753,8 @@ namespace TwainControl
         private GridLength documentGridLength = new(5, GridUnitType.Star);
 
         private bool documentPreviewIsExpanded = true;
+
+        private ObservableCollection<Chart> greenChart;
 
         private double height;
 
@@ -704,6 +769,8 @@ namespace TwainControl
         private double pdfLoadProgressValue;
 
         private Task pdfloadtask;
+
+        private ObservableCollection<Chart> redChart;
 
         private Scanner scanner;
 
@@ -722,16 +789,6 @@ namespace TwainControl
         private GridLength twainGuiControlLength = new(3, GridUnitType.Star);
 
         private double width;
-
-        public BitmapFrame GenerateBitmapFrame(BitmapSource bitmapSource)
-        {
-            bitmapSource.Freeze();
-            BitmapSource thumbnail = bitmapSource.PixelWidth < bitmapSource.PixelHeight ? bitmapSource.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 21 * 29.7) : bitmapSource.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 29.7 * 21);
-            thumbnail.Freeze();
-            BitmapFrame bitmapFrame = BitmapFrame.Create(bitmapSource, thumbnail);
-            bitmapFrame.Freeze();
-            return bitmapFrame;
-        }
 
         private void AddFiles(string[] filenames, int decodeheight)
         {
@@ -774,16 +831,28 @@ namespace TwainControl
                     case ".png":
                     case ".gif":
                     case ".gıf":
-                    case ".tif":
-                    case ".tıf":
-                    case ".tiff":
-                    case ".tıff":
                     case ".bmp":
                         {
                             BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(decodeheight, new Uri(item));
                             bitmapFrame.Freeze();
                             Scanner?.Resimler.Add(new ScannedImage() { Resim = bitmapFrame });
                             bitmapFrame = null;
+                            break;
+                        }
+
+                    case ".tıf" or ".tiff" or ".tıff" or ".tif":
+                        {
+                            TiffBitmapDecoder decoder = new(new Uri(item), BitmapCreateOptions.None, BitmapCacheOption.None);
+                            for (int i = 0; i < decoder.Frames.Count; i++)
+                            {
+                                BitmapFrame image = decoder.Frames[i];
+                                image.Freeze();
+                                BitmapFrame bitmapFrame = BitmapFrame.Create(image, image.PixelWidth < image.PixelHeight ? image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 21 * 29.7) : image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 29.7 * 21));
+                                bitmapFrame.Freeze();
+                                Scanner?.Resimler.Add(new ScannedImage() { Resim = bitmapFrame });
+                                bitmapFrame = null;
+                                image = null;
+                            }
                             break;
                         }
                 }
@@ -1043,6 +1112,9 @@ namespace TwainControl
             Scanner.Threshold = 0;
             Scanner.Watermark = string.Empty;
             Scanner.CroppedImage = null;
+            RedChart = null;
+            GreenChart = null;
+            BlueChart = null;
         }
 
         private void Run_Drop(object sender, DragEventArgs e)

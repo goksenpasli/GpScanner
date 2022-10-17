@@ -54,7 +54,7 @@ namespace TwainControl
             return outputDocument;
         }
 
-        public static PdfDocument GeneratePdf(IEnumerable<ScannedImage> bitmapFrames, Format format, int jpegquality = 75, ObservableCollection<OcrData> ScannedText = null)
+        public static PdfDocument GeneratePdf(IEnumerable<ScannedImage> bitmapFrames, Format format, int jpegquality = 75, List<ObservableCollection<OcrData>> ScannedText = null)
         {
             using PdfDocument document = new();
             double index = 0;
@@ -69,7 +69,10 @@ namespace TwainControl
                     XSize size = PageSizeConverter.ToSize(PageSize.A4);
                     if (ScannedText != null)
                     {
-                        WritePdfTextContent(scannedimage.Resim, ScannedText, page, gfx, XBrushes.Black);
+                        foreach (var item in ScannedText)
+                        {
+                            WritePdfTextContent(scannedimage.Resim, item, page, gfx, XBrushes.Black);
+                        }
                     }
                     if (scannedimage.Resim.PixelWidth < scannedimage.Resim.PixelHeight)
                     {
