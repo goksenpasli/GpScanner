@@ -16,6 +16,7 @@ using System.Windows.Threading;
 using Extensions;
 using GpScanner.Properties;
 using Microsoft.Win32;
+using Ocr;
 using PdfSharp.Pdf;
 using TwainControl;
 using ZXing;
@@ -33,6 +34,7 @@ namespace GpScanner.ViewModel
                 XmlDataPath = Settings.Default.DatabaseFile = Path.GetDirectoryName(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath) + @"\Data.xml";
                 Settings.Default.Save();
             }
+            PdfGeneration.Scanner.SelectedTtsLanguage = Settings.Default.DefaultTtsLang;
 
             Settings.Default.PropertyChanged += Default_PropertyChanged;
             PropertyChanged += GpScannerViewModel_PropertyChanged;
@@ -851,6 +853,10 @@ namespace GpScanner.ViewModel
 
         private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            if (e.PropertyName is "DefaultTtsLang")
+            {
+                PdfGeneration.Scanner.SelectedTtsLanguage = Settings.Default.DefaultTtsLang;
+            }
             Settings.Default.Save();
         }
 

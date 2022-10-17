@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using Extensions;
 
-namespace GpScanner.ViewModel
+namespace Ocr
 {
     public class TesseractOcrData : InpcBase
     {

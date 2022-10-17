@@ -5,27 +5,11 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using Tesseract;
-using TwainControl;
 
-namespace GpScanner.ViewModel
+namespace Ocr
 {
     public static class Ocr
     {
-        public static async Task<ObservableCollection<OcrData>> OcrAsyc(this byte[] dosya, string lang)
-        {
-            if (string.IsNullOrWhiteSpace(lang))
-            {
-                MessageBox.Show("Dil Seçimini Kontrol Edin.", Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
-                return null;
-            }
-            if (Directory.Exists(Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + @"\tessdata"))
-            {
-                return await Task.Run(() => GetOcrData(dosya, lang));
-            }
-            MessageBox.Show("Tesseract Engine Klasörünü Kontrol Edin.", Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
-            return null;
-        }
-
         public static ObservableCollection<OcrData> GetOcrData(this byte[] dosya, string lang)
         {
             try
@@ -56,6 +40,21 @@ namespace GpScanner.ViewModel
                 _ = Application.Current.Dispatcher.BeginInvoke(() => MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Exclamation));
                 return null;
             }
+        }
+
+        public static async Task<ObservableCollection<OcrData>> OcrAsyc(this byte[] dosya, string lang)
+        {
+            if (string.IsNullOrWhiteSpace(lang))
+            {
+                MessageBox.Show("Tesseract Dil Seçimini Kontrol Edin.", Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+                return null;
+            }
+            if (Directory.Exists(Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + @"\tessdata"))
+            {
+                return await Task.Run(() => GetOcrData(dosya, lang));
+            }
+            MessageBox.Show("Tesseract Engine Klasörünü Kontrol Edin.", Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+            return null;
         }
     }
 }

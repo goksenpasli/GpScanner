@@ -63,9 +63,6 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="Tesseract, Version=4.1.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Tesseract.4.1.1\lib\net45\Tesseract.dll</HintPath>
-    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -94,8 +91,6 @@
     <Compile Include="ViewModel\DataSerialize.cs" />
     <Compile Include="ViewModel\FoldEffect.cs" />
     <Compile Include="ViewModel\GpScannerViewModel.cs" />
-    <Compile Include="ViewModel\Ocr.cs" />
-    <Compile Include="ViewModel\OcrData.cs" />
     <Compile Include="ViewModel\ScannerData.cs" />
     <Compile Include="ViewModel\StillImageHelper.cs" />
     <Compile Include="ViewModel\TesseractViewModel.cs" />
@@ -156,6 +151,10 @@
       <Project>{22b9a127-5e74-4534-bfc4-a3349544c52c}</Project>
       <Name>Extensions</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Ocr\Ocr.csproj">
+      <Project>{a9495099-87ce-4478-8555-8701f2989145}</Project>
+      <Name>Ocr</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PdfViewer\PdfViewer.csproj">
       <Project>{ea1285ba-203e-4d61-a869-7567966e5367}</Project>
       <Name>PdfViewer</Name>
@@ -195,11 +194,4 @@
     <Resource Include="Resources\flag-of-Saudi-Arabia.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Tesseract.4.1.1\build\Tesseract.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Tesseract.4.1.1\build\Tesseract.targets'))" />
-  </Target>
-  <Import Project="..\packages\Tesseract.4.1.1\build\Tesseract.targets" Condition="Exists('..\packages\Tesseract.4.1.1\build\Tesseract.targets')" />
 </Project>

@@ -556,6 +556,20 @@ namespace TwainControl
             }
         }
 
+        public string SelectedTtsLanguage
+        {
+            get => selectedTtsLanguage;
+
+            set
+            {
+                if (selectedTtsLanguage != value)
+                {
+                    selectedTtsLanguage = value;
+                    OnPropertyChanged(nameof(SelectedTtsLanguage));
+                }
+            }
+        }
+
         public bool ShowProgress
         {
             get => showProgress;
@@ -750,6 +764,8 @@ namespace TwainControl
         private string seçiliTarayıcı;
 
         private string selectedProfile;
+
+        private string selectedTtsLanguage;
 
         private bool showProgress;
 

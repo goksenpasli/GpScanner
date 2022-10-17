@@ -11,6 +11,7 @@ using System.Windows.Input;
 using Extensions;
 using GpScanner.Properties;
 using GpScanner.ViewModel;
+using Ocr;
 using TwainControl;
 using TwainWpf;
 using ZXing;

@@ -70,7 +70,6 @@
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="BitmapMethods.cs" />
-    <Compile Include="OcrData.cs" />
     <Compile Include="PdfGeneration.cs" />
     <Compile Include="Properties\Resources.ar.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -172,6 +171,10 @@
     <ProjectReference Include="..\..\Extensions\Extensions.csproj">
       <Project>{22b9a127-5e74-4534-bfc4-a3349544c52c}</Project>
       <Name>Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Ocr\Ocr.csproj">
+      <Project>{a9495099-87ce-4478-8555-8701f2989145}</Project>
+      <Name>Ocr</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\PdfViewer\PdfViewer.csproj">
       <Project>{ea1285ba-203e-4d61-a869-7567966e5367}</Project>

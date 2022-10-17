@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -18,6 +19,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Extensions;
 using Microsoft.Win32;
+using Ocr;
 using TwainControl.Properties;
 using TwainWpf;
 using TwainWpf.Wpf;
@@ -74,7 +76,7 @@ namespace TwainControl
 
             ExploreFile = new RelayCommand<object>(parameter => OpenFolderAndSelectItem(Path.GetDirectoryName(parameter as string), Path.GetFileName(parameter as string)), parameter => true);
 
-            Kaydet = new RelayCommand<object>(parameter =>
+            Kaydet = new RelayCommand<object>(async parameter =>
             {
                 if (parameter is ScannedImage scannedImage)
                 {
@@ -85,6 +87,11 @@ namespace TwainControl
                     };
                     if (saveFileDialog.ShowDialog() == true)
                     {
+                        ObservableCollection<OcrData> ocrtext = null;
+                        if (Scanner.ApplyOcr)
+                        {
+                            ocrtext = await scannedImage.Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsyc(Scanner.SelectedTtsLanguage);
+                        }
                         if (saveFileDialog.FilterIndex == 1)
                         {
                             if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
@@ -105,12 +112,12 @@ namespace TwainControl
                         }
                         if (saveFileDialog.FilterIndex == 3)
                         {
-                            PdfGeneration.GeneratePdf(scannedImage.Resim, null, Format.Jpg, Scanner.JpegQuality).Save(saveFileDialog.FileName);
+                            PdfGeneration.GeneratePdf(scannedImage.Resim, ocrtext, Format.Jpg, Scanner.JpegQuality).Save(saveFileDialog.FileName);
                             return;
                         }
                         if (saveFileDialog.FilterIndex == 4)
                         {
-                            PdfGeneration.GeneratePdf(scannedImage.Resim, null, Format.Tiff, Scanner.JpegQuality).Save(saveFileDialog.FileName);
+                            PdfGeneration.GeneratePdf(scannedImage.Resim, ocrtext, Format.Tiff, Scanner.JpegQuality).Save(saveFileDialog.FileName);
                         }
                     }
                 }
@@ -173,22 +180,33 @@ namespace TwainControl
                 };
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    filesavetask = Task.Run(() =>
+                    filesavetask = Task.Run(async () =>
                     {
+                        IEnumerable<ScannedImage> seçiliresimler = Scanner.Resimler.Where(z => z.Seçili);
+                        List<ObservableCollection<OcrData>> scannedtext = null;
+                        if (Scanner.ApplyOcr)
+                        {
+                            scannedtext = new List<ObservableCollection<OcrData>>();
+                            foreach (ScannedImage scannedimage in seçiliresimler)
+                            {
+                                scannedtext.Add(await scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsyc(Scanner.SelectedTtsLanguage));
+                            }
+                        }
+
                         if (saveFileDialog.FilterIndex == 1)
                         {
-                            PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili), Format.Jpg, Scanner.JpegQuality).Save(saveFileDialog.FileName);
+                            PdfGeneration.GeneratePdf(seçiliresimler, Format.Jpg, Scanner.JpegQuality, scannedtext).Save(saveFileDialog.FileName);
                             return;
                         }
                         if (saveFileDialog.FilterIndex == 2)
                         {
-                            PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili), Format.Tiff, Scanner.JpegQuality).Save(saveFileDialog.FileName);
+                            PdfGeneration.GeneratePdf(seçiliresimler, Format.Tiff, Scanner.JpegQuality, scannedtext).Save(saveFileDialog.FileName);
                             return;
                         }
                         if (saveFileDialog.FilterIndex == 3)
                         {
                             string dosyayolu = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
-                            PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili), Format.Jpg, Scanner.JpegQuality).Save(dosyayolu);
+                            PdfGeneration.GeneratePdf(seçiliresimler, Format.Jpg, Scanner.JpegQuality, scannedtext).Save(dosyayolu);
                             using ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Update);
                             _ = archive.CreateEntryFromFile(dosyayolu, $"{Scanner.SaveFileName}.pdf", CompressionLevel.Optimal);
                             File.Delete(dosyayolu);
@@ -198,7 +216,7 @@ namespace TwainControl
                         {
                             string filename = saveFileDialog.FileName;
                             string directory = Path.GetDirectoryName(filename);
-                            foreach (ScannedImage item in Scanner.Resimler.Where(z => z.Seçili))
+                            foreach (ScannedImage item in seçiliresimler)
                             {
                                 File.WriteAllBytes(directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "jpg"), item.Resim.ToTiffJpegByteArray(Format.Jpg));
                             }

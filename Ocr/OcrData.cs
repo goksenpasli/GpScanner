@@ -1,7 +1,7 @@
-﻿using System.Windows;
-using Extensions;
+﻿using Extensions;
+using System.Windows;
 
-namespace TwainControl
+namespace Ocr
 {
     public class OcrData : InpcBase
     {
