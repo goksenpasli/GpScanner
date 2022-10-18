@@ -431,36 +431,6 @@
                             </TextBlock>
                         </StackPanel>
                     </Button>
-                    <Extensions:SplitButton HorizontalContentAlignment="Stretch"
-                        Command="{Binding OcrPage, Mode=OneWay}"
-                        CommandParameter="{Binding ElementName=TwainCtrl, Path=DataContext}"
-                        IsEnabled="{Binding OcrIsBusy, Converter={StaticResource ReverseBooleanConverter}}"
-                        IsSplitPartOpen="{Binding ScannedTextWindowOpen}">
-                        <Extensions:SplitButton.Content>
-                            <Grid>
-                                <ProgressBar IsIndeterminate="{Binding OcrIsBusy}" />
-                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                    <Image Width="32" Height="32">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="70" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc READACTIVEPAGE}" />
-                                </StackPanel>
-                            </Grid>
-                        </Extensions:SplitButton.Content>
-                        <Extensions:SplitButton.InternalContent>
-                            <Extensions:ResizablePanel Width="420" Height="594" MinWidth="420"
-                                MinHeight="594">
-                                <GroupBox>
-                                    <local:TranslateView Grid.Row="2" />
-                                </GroupBox>
-                            </Extensions:ResizablePanel>
-                        </Extensions:SplitButton.InternalContent>
-                    </Extensions:SplitButton>
                     <Button Command="{Binding RegisterSti, Mode=OneWay}">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
@@ -503,6 +473,36 @@
                             </ContextMenu>
                         </Button.ContextMenu>
                     </Button>
+                    <Extensions:SplitButton HorizontalContentAlignment="Stretch"
+                        Command="{Binding OcrPage, Mode=OneWay}"
+                        CommandParameter="{Binding ElementName=TwainCtrl, Path=DataContext}"
+                        IsEnabled="{Binding OcrIsBusy, Converter={StaticResource ReverseBooleanConverter}}"
+                        IsSplitPartOpen="{Binding ScannedTextWindowOpen}">
+                        <Extensions:SplitButton.Content>
+                            <Grid>
+                                <ProgressBar IsIndeterminate="{Binding OcrIsBusy}" />
+                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                    <Image Width="32" Height="32">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="70" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc READACTIVEPAGE}" />
+                                </StackPanel>
+                            </Grid>
+                        </Extensions:SplitButton.Content>
+                        <Extensions:SplitButton.InternalContent>
+                            <Extensions:ResizablePanel Width="420" Height="594" MinWidth="420"
+                                MinHeight="594">
+                                <GroupBox>
+                                    <local:TranslateView Grid.Row="2" />
+                                </GroupBox>
+                            </Extensions:ResizablePanel>
+                        </Extensions:SplitButton.InternalContent>
+                    </Extensions:SplitButton>
                 </UniformGrid>
             </Grid>
         </GroupBox>

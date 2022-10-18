@@ -788,6 +788,8 @@ namespace TwainControl
 
         private bool documentPreviewIsExpanded = true;
 
+        private Task fileloadtask;
+
         private ObservableCollection<Chart> greenChart;
 
         private double height;
@@ -801,8 +803,6 @@ namespace TwainControl
         private bool isRightMouseDown;
 
         private double pdfLoadProgressValue;
-
-        private Task fileloadtask;
 
         private ObservableCollection<Chart> redChart;
 
@@ -881,7 +881,9 @@ namespace TwainControl
                                 TiffBitmapDecoder decoder = new(new Uri(item), BitmapCreateOptions.None, BitmapCacheOption.None);
                                 for (int i = 0; i < decoder.Frames.Count; i++)
                                 {
-                                    BitmapFrame image = decoder.Frames[i];
+                                    byte[] data = decoder.Frames[i].ToTiffJpegByteArray(Format.Jpg);
+                                    MemoryStream ms = new(data);
+                                    BitmapFrame image = BitmapMethods.GenerateImageDocumentBitmapFrame(decodeheight, ms);
                                     image.Freeze();
                                     BitmapSource thumbimage = image.PixelWidth < image.PixelHeight ? image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 21 * 29.7) : image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 29.7 * 21);
                                     thumbimage.Freeze();
@@ -890,6 +892,8 @@ namespace TwainControl
                                     uiContext.Send(_ => Scanner?.Resimler.Add(new ScannedImage() { Resim = bitmapFrame }), null);
                                     bitmapFrame = null;
                                     image = null;
+                                    data = null;
+                                    ms = null;
                                 }
                             });
                             break;
