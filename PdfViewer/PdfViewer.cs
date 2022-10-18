@@ -53,6 +53,10 @@ namespace PdfViewer
 
         public PdfViewer()
         {
+            PropertyChanged += PdfViewer_PropertyChanged;
+            Loaded += PdfViewer_Loaded;
+            Unloaded += PdfViewer_Unloaded;
+
             DosyaAç = new RelayCommand<object>(parameter =>
             {
                 OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = "Pdf Dosyaları (*.pdf)|*.pdf" };
@@ -93,10 +97,6 @@ namespace PdfViewer
             {
                 Zoom = (FitImageOrientation.Width != 0) ? (double.IsNaN(Height) ? ((ActualHeight == 0.0) ? 1.0 : (ActualHeight / Source.Height)) : ((Height == 0.0) ? 1.0 : (Height / Source.Height))) : (double.IsNaN(Width) ? ((ActualWidth == 0.0) ? 1.0 : (ActualWidth / Source.Width)) : ((Width == 0.0) ? 1.0 : (Width / Source.Width)));
             }, (object parameter) => Source != null);
-
-            PropertyChanged += PdfViewer_PropertyChanged;
-            Loaded += PdfViewer_Loaded;
-            Unloaded += PdfViewer_Unloaded;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -506,7 +506,6 @@ namespace PdfViewer
         private void PdfViewer_Unloaded(object sender, RoutedEventArgs e)
         {
             PdfFileStream = null;
-            Source = null;
             GC.Collect();
         }
 

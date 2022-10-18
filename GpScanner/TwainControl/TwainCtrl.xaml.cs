@@ -76,7 +76,7 @@ namespace TwainControl
 
             ExploreFile = new RelayCommand<object>(parameter => OpenFolderAndSelectItem(Path.GetDirectoryName(parameter as string), Path.GetFileName(parameter as string)), parameter => true);
 
-            Kaydet = new RelayCommand<object>(async parameter =>
+            Kaydet = new RelayCommand<object>(parameter =>
             {
                 if (parameter is ScannedImage scannedImage)
                 {
@@ -95,37 +95,37 @@ namespace TwainControl
                         filesavetask = Task.Run(async () =>
                         {
                             ObservableCollection<OcrData> ocrtext = null;
-                        if (Scanner.ApplyPdfSaveOcr)
-                        {
-                            ocrtext = await scannedImage.Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsyc(Scanner.SelectedTtsLanguage);
-                        }
-                        if (saveFileDialog.FilterIndex == 1)
-                        {
-                            if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
+                            if (Scanner.ApplyPdfSaveOcr)
                             {
-                                File.WriteAllBytes(saveFileDialog.FileName, scannedImage.Resim.ToTiffJpegByteArray(Format.Tiff));
+                                ocrtext = await scannedImage.Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsyc(Scanner.SelectedTtsLanguage);
+                            }
+                            if (saveFileDialog.FilterIndex == 1)
+                            {
+                                if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
+                                {
+                                    File.WriteAllBytes(saveFileDialog.FileName, scannedImage.Resim.ToTiffJpegByteArray(Format.Tiff));
+                                    return;
+                                }
+                                if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
+                                {
+                                    File.WriteAllBytes(saveFileDialog.FileName, scannedImage.Resim.ToTiffJpegByteArray(Format.TiffRenkli));
+                                    return;
+                                }
+                            }
+                            if (saveFileDialog.FilterIndex == 2)
+                            {
+                                File.WriteAllBytes(saveFileDialog.FileName, scannedImage.Resim.ToTiffJpegByteArray(Format.Jpg));
                                 return;
                             }
-                            if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
+                            if (saveFileDialog.FilterIndex == 3)
                             {
-                                File.WriteAllBytes(saveFileDialog.FileName, scannedImage.Resim.ToTiffJpegByteArray(Format.TiffRenkli));
+                                PdfGeneration.GeneratePdf(scannedImage.Resim, ocrtext, Format.Jpg, Scanner.JpegQuality).Save(saveFileDialog.FileName);
                                 return;
                             }
-                        }
-                        if (saveFileDialog.FilterIndex == 2)
-                        {
-                            File.WriteAllBytes(saveFileDialog.FileName, scannedImage.Resim.ToTiffJpegByteArray(Format.Jpg));
-                            return;
-                        }
-                        if (saveFileDialog.FilterIndex == 3)
-                        {
-                            PdfGeneration.GeneratePdf(scannedImage.Resim, ocrtext, Format.Jpg, Scanner.JpegQuality).Save(saveFileDialog.FileName);
-                            return;
-                        }
-                        if (saveFileDialog.FilterIndex == 4)
-                        {
-                            PdfGeneration.GeneratePdf(scannedImage.Resim, ocrtext, Format.Tiff, Scanner.JpegQuality).Save(saveFileDialog.FileName);
-                        }
+                            if (saveFileDialog.FilterIndex == 4)
+                            {
+                                PdfGeneration.GeneratePdf(scannedImage.Resim, ocrtext, Format.Tiff, Scanner.JpegQuality).Save(saveFileDialog.FileName);
+                            }
                         });
                     }
                 }
@@ -330,7 +330,7 @@ namespace TwainControl
                 };
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    filesavetask = Task.Run(async () =>
+                    filesavetask = Task.Run(() =>
                     {
                         switch (saveFileDialog.FilterIndex)
                         {
