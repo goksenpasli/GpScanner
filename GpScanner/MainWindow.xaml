@@ -400,7 +400,7 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
                 <UniformGrid Grid.Row="7"
-                    Columns="3" Rows="2">
+                    Columns="4" Rows="1">
                     <Button Command="{Binding BelgeİleBirleştir}"
                         CommandParameter="{Binding ElementName=TwainCtrl, Path=DataContext}"
                         Content="{twainctrl:Loc ADDDOC}" />
@@ -503,41 +503,6 @@
                             </ContextMenu>
                         </Button.ContextMenu>
                     </Button>
-                    <Extensions:SplitButton Command="{Binding SaveOcrPdf}"
-                        CommandParameter="{Binding ElementName=TwainCtrl}"
-                        PlacementMode="Top">
-                        <Extensions:SplitButton.Content>
-                            <StackPanel Orientation="Horizontal">
-                                <Image Width="32" Height="32">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="6" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc OCRPDFSAVE}" />
-                            </StackPanel>
-                        </Extensions:SplitButton.Content>
-                        <Extensions:SplitButton.InternalContent>
-                            <GroupBox>
-                                <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding PdfOnlyText}">
-                                    <Image Width="32" Height="32">
-                                        <Image.Effect>
-                                            <Extensions:BlackWhiteEffect Threshold="0.95" />
-                                        </Image.Effect>
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="70" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                </CheckBox>
-                            </GroupBox>
-                        </Extensions:SplitButton.InternalContent>
-
-                    </Extensions:SplitButton>
                 </UniformGrid>
             </Grid>
         </GroupBox>

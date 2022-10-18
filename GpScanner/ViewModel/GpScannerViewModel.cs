@@ -157,35 +157,6 @@ namespace GpScanner.ViewModel
                 }
             }, parameter => SayfaBaşlangıç <= SayfaBitiş);
 
-            SaveOcrPdf = new RelayCommand<object>(parameter =>
-            {
-                if (OcrIsBusy)
-                {
-                    return;
-                }
-                if (parameter is TwainCtrl twainCtrl)
-                {
-                    SaveFileDialog saveFileDialog = new()
-                    {
-                        Filter = "Pdf Dosyası (*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf",
-                    };
-
-                    if (saveFileDialog.ShowDialog() == true)
-                    {
-                        switch (saveFileDialog.FilterIndex)
-                        {
-                            case 1:
-                                PdfGeneration.GeneratePdf(twainCtrl.SeçiliResim.Resim, ScannedText, Format.Jpg, twainCtrl.Scanner.JpegQuality, PdfOnlyText).Save(saveFileDialog.FileName);
-                                return;
-
-                            case 2:
-                                PdfGeneration.GeneratePdf(twainCtrl.SeçiliResim.Resim, ScannedText, Format.Tiff, twainCtrl.Scanner.JpegQuality, PdfOnlyText).Save(saveFileDialog.FileName);
-                                return;
-                        }
-                    }
-                }
-            }, parameter => parameter is TwainCtrl twainCtrl && twainCtrl.SeçiliResim?.Resim is not null);
-
             SavePatchProfile = new RelayCommand<object>(parameter =>
             {
                 StringBuilder sb = new();
@@ -541,8 +512,6 @@ namespace GpScanner.ViewModel
         public ICommand RegisterSti { get; }
 
         public ICommand RemovePatchProfile { get; }
-
-        public ICommand SaveOcrPdf { get; }
 
         public ICommand SavePatchProfile { get; }
 

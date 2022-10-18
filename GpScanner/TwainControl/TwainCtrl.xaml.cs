@@ -80,6 +80,11 @@ namespace TwainControl
             {
                 if (parameter is ScannedImage scannedImage)
                 {
+                    if (filesavetask?.IsCompleted == false)
+                    {
+                        _ = MessageBox.Show("İşlem Devam Ediyor. Bitmesini Bekleyin.");
+                        return;
+                    }
                     SaveFileDialog saveFileDialog = new()
                     {
                         Filter = "Tif Resmi (*.tif)|*.tif|Jpg Resmi (*.jpg)|*.jpg|Pdf Dosyası (*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf",
@@ -87,7 +92,9 @@ namespace TwainControl
                     };
                     if (saveFileDialog.ShowDialog() == true)
                     {
-                        ObservableCollection<OcrData> ocrtext = null;
+                        filesavetask = Task.Run(async () =>
+                        {
+                            ObservableCollection<OcrData> ocrtext = null;
                         if (Scanner.ApplyPdfSaveOcr)
                         {
                             ocrtext = await scannedImage.Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsyc(Scanner.SelectedTtsLanguage);
@@ -119,6 +126,7 @@ namespace TwainControl
                         {
                             PdfGeneration.GeneratePdf(scannedImage.Resim, ocrtext, Format.Tiff, Scanner.JpegQuality).Save(saveFileDialog.FileName);
                         }
+                        });
                     }
                 }
             }, parameter => !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0);
@@ -310,6 +318,11 @@ namespace TwainControl
 
             SaveImage = new RelayCommand<object>(parameter =>
             {
+                if (filesavetask?.IsCompleted == false)
+                {
+                    _ = MessageBox.Show("İşlem Devam Ediyor. Bitmesini Bekleyin.");
+                    return;
+                }
                 SaveFileDialog saveFileDialog = new()
                 {
                     Filter = "Pdf Dosyası (*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf|Jpg Dosyası (*.jpg)|*.jpg|Png Dosyası (*.png)|*.png",
@@ -317,24 +330,27 @@ namespace TwainControl
                 };
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    switch (saveFileDialog.FilterIndex)
+                    filesavetask = Task.Run(async () =>
                     {
-                        case 1:
-                            PdfGeneration.GeneratePdf((BitmapSource)parameter, null, Format.Jpg, Scanner.JpegQuality).Save(saveFileDialog.FileName);
-                            return;
+                        switch (saveFileDialog.FilterIndex)
+                        {
+                            case 1:
+                                PdfGeneration.GeneratePdf((BitmapSource)parameter, null, Format.Jpg, Scanner.JpegQuality).Save(saveFileDialog.FileName);
+                                return;
 
-                        case 2:
-                            PdfGeneration.GeneratePdf((BitmapSource)parameter, null, Format.Tiff, Scanner.JpegQuality).Save(saveFileDialog.FileName);
-                            return;
+                            case 2:
+                                PdfGeneration.GeneratePdf((BitmapSource)parameter, null, Format.Tiff, Scanner.JpegQuality).Save(saveFileDialog.FileName);
+                                return;
 
-                        case 3:
-                            File.WriteAllBytes(saveFileDialog.FileName, ((BitmapSource)parameter).ToTiffJpegByteArray(Format.Jpg));
-                            return;
+                            case 3:
+                                File.WriteAllBytes(saveFileDialog.FileName, ((BitmapSource)parameter).ToTiffJpegByteArray(Format.Jpg));
+                                return;
 
-                        case 4:
-                            File.WriteAllBytes(saveFileDialog.FileName, ((BitmapSource)parameter).ToTiffJpegByteArray(Format.Png));
-                            break;
-                    }
+                            case 4:
+                                File.WriteAllBytes(saveFileDialog.FileName, ((BitmapSource)parameter).ToTiffJpegByteArray(Format.Png));
+                                break;
+                        }
+                    });
                 }
             }, parameter => Scanner.CroppedImage is not null);
 
@@ -416,7 +432,7 @@ namespace TwainControl
 
             LoadImage = new RelayCommand<object>(parameter =>
             {
-                if (pdfloadtask?.IsCompleted == false)
+                if (fileloadtask?.IsCompleted == false)
                 {
                     _ = MessageBox.Show("İşlem Devam Ediyor. Bitmesini Bekleyin.");
                     return;
@@ -786,7 +802,7 @@ namespace TwainControl
 
         private double pdfLoadProgressValue;
 
-        private Task pdfloadtask;
+        private Task fileloadtask;
 
         private ObservableCollection<Chart> redChart;
 
@@ -812,13 +828,13 @@ namespace TwainControl
         {
             foreach (string item in filenames)
             {
+                SynchronizationContext uiContext = SynchronizationContext.Current;
                 switch (Path.GetExtension(item.ToLower()))
                 {
                     case ".pdf":
                         {
-                            SynchronizationContext uiContext = SynchronizationContext.Current;
                             byte[] filedata = null;
-                            pdfloadtask = Task.Run(async () =>
+                            fileloadtask = Task.Run(async () =>
                             {
                                 filedata = File.ReadAllBytes(item);
                                 if (PdfGeneration.IsValidPdfFile(filedata.Take(4)))
@@ -860,20 +876,22 @@ namespace TwainControl
 
                     case ".tıf" or ".tiff" or ".tıff" or ".tif":
                         {
-                            TiffBitmapDecoder decoder = new(new Uri(item), BitmapCreateOptions.None, BitmapCacheOption.None);
-                            for (int i = 0; i < decoder.Frames.Count; i++)
+                            fileloadtask = Task.Run(() =>
                             {
-                                MemoryStream memoryStream = new(decoder.Frames[i].ToTiffJpegByteArray(Format.Jpg));
-                                BitmapFrame image = BitmapMethods.GenerateImageDocumentBitmapFrame(decodeheight, memoryStream);
-                                image.Freeze();
-                                BitmapFrame bitmapFrame = BitmapFrame.Create(image, image.PixelWidth < image.PixelHeight ? image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 21 * 29.7) : image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 29.7 * 21));
-                                bitmapFrame.Freeze();
-                                Scanner?.Resimler.Add(new ScannedImage() { Resim = image });
-                                bitmapFrame = null;
-                                image = null;
-                                memoryStream = null;
-                            }
-                            decoder = null;
+                                TiffBitmapDecoder decoder = new(new Uri(item), BitmapCreateOptions.None, BitmapCacheOption.None);
+                                for (int i = 0; i < decoder.Frames.Count; i++)
+                                {
+                                    BitmapFrame image = decoder.Frames[i];
+                                    image.Freeze();
+                                    BitmapSource thumbimage = image.PixelWidth < image.PixelHeight ? image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 21 * 29.7) : image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 29.7 * 21);
+                                    thumbimage.Freeze();
+                                    BitmapFrame bitmapFrame = BitmapFrame.Create(image, thumbimage);
+                                    bitmapFrame.Freeze();
+                                    uiContext.Send(_ => Scanner?.Resimler.Add(new ScannedImage() { Resim = bitmapFrame }), null);
+                                    bitmapFrame = null;
+                                    image = null;
+                                }
+                            });
                             break;
                         }
                 }
