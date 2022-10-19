@@ -529,7 +529,7 @@
                             </DockPanel>
                         </Grid>
                     </GroupBox.Header>
-                    <ListBox AllowDrop="True"
+                    <ListBox Extensions:DragDropExtension.ScrollOnDragDrop="True" AllowDrop="True"
                         Background="{StaticResource BorderBackground}"
                         Drop="ListBox_Drop" IsSynchronizedWithCurrentItem="False"
                         ItemsSource="{Binding Scanner.Resimler, Mode=OneWay}"

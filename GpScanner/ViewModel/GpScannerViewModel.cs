@@ -228,6 +228,10 @@ namespace GpScanner.ViewModel
             }, parameter => true);
 
             DatabaseSave = new RelayCommand<object>(parameter => ScannerData.Serialize());
+
+            DateBack = new RelayCommand<object>(parameter => SeçiliGün = SeçiliGün.Value.AddDays(-1), parameter => SeçiliGün > DateTime.MinValue);
+
+            DateForward = new RelayCommand<object>(parameter => SeçiliGün = SeçiliGün.Value.AddDays(1), parameter => SeçiliGün < DateTime.Today);
         }
 
         public static event EventHandler<PropertyChangedEventArgs> StaticPropertyChanged;
@@ -349,6 +353,10 @@ namespace GpScanner.ViewModel
         }
 
         public ICommand DatabaseSave { get; }
+
+        public ICommand DateBack { get; }
+
+        public ICommand DateForward { get; }
 
         public bool DetectBarCode
         {

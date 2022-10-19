@@ -115,41 +115,54 @@ namespace TwainControl
             }
         }
 
-        public static ObservableCollection<Chart> GenerateHistogram(this Bitmap bitmap, System.Windows.Media.Brush color)
+        public static ObservableCollection<Chart> GenerateHistogram(this Bitmap b, System.Windows.Media.Brush color)
         {
-            ObservableCollection<Chart> chart = new();
             int[] histogram = new int[256];
-            BitmapData bmpData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, bitmap.PixelFormat);
-            IntPtr ptr = bmpData.Scan0;
-            int bytes = bmpData.Stride * bmpData.Height;
-            byte[] rgb = new byte[bytes];
-            Marshal.Copy(ptr, rgb, 0, bytes);
-            int step = System.Drawing.Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
-            _ = Parallel.ForEach(SteppedRange(0, bytes, step), k =>
+            BitmapData bmData = null;
+            ObservableCollection<Chart> chart = new();
+            try
             {
-                if (color == System.Windows.Media.Brushes.Red)
+                bmData = b.LockBits(new Rectangle(0, 0, b.Width, b.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+                int scanline = bmData.Stride;
+                IntPtr Scan0 = bmData.Scan0;
+                unsafe
                 {
-                    histogram[rgb[k + 2]]++;
+                    byte* p = (byte*)(void*)Scan0;
+                    int nWidth = b.Width;
+                    int nHeight = b.Height;
+                    for (int y = 0; y < nHeight; y++)
+                    {
+                        for (int x = 0; x < nWidth; x++)
+                        {
+                            long Temp = 0;
+                            if (color == System.Windows.Media.Brushes.Red)
+                            {
+                                histogram[Temp += p[2]]++;
+                            }
+                            if (color == System.Windows.Media.Brushes.Green)
+                            {
+                                histogram[Temp += p[1]]++;
+                            }
+                            if (color == System.Windows.Media.Brushes.Blue)
+                            {
+                                histogram[Temp += p[0]]++;
+                            }
+                            p += 4;
+                        }
+                    }
                 }
-                if (color == System.Windows.Media.Brushes.Green)
+                b.UnlockBits(bmData);
+                foreach (int item in histogram.Take(255))
                 {
-                    histogram[rgb[k + 1]]++;
+                    chart.Add(new Chart() { ChartBrush = color, ChartValue = item });
                 }
-                if (color == System.Windows.Media.Brushes.Blue)
-                {
-                    histogram[rgb[k]]++;
-                }
-            });
-            foreach (int item in histogram.Take(255))
-            {
-                chart.Add(new Chart() { ChartBrush = color, ChartValue = item });
+                bmData = null;
+                return chart;
             }
-            bitmap.UnlockBits(bmpData);
-            bitmap = null;
-            bmpData = null;
-            rgb = null;
-            histogram = null;
-            return chart;
+            catch
+            {
+            }
+            return null;
         }
 
         public static BitmapFrame GenerateImageDocumentBitmapFrame(int decodeheight, Uri item)

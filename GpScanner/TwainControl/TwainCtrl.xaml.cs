@@ -183,7 +183,7 @@ namespace TwainControl
                 }
                 SaveFileDialog saveFileDialog = new()
                 {
-                    Filter = "Pdf Dosyası (*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf|Zip Dosyası (*.zip)|*.zip|Jpg Resmi (*.jpg)|*.jpg",
+                    Filter = "Pdf Dosyası (*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf|Zip Dosyası (*.zip)|*.zip|Jpg Resmi (*.jpg)|*.jpg|Tif Resmi (*.tif)|*.tif",
                     FileName = Scanner.SaveFileName
                 };
                 if (saveFileDialog.ShowDialog() == true)
@@ -228,6 +228,18 @@ namespace TwainControl
                             {
                                 File.WriteAllBytes(directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "jpg"), item.Resim.ToTiffJpegByteArray(Format.Jpg));
                             }
+                        }
+                        if (saveFileDialog.FilterIndex == 5)
+                        {
+                            string filename = saveFileDialog.FileName;
+                            string directory = Path.GetDirectoryName(filename);
+                            TiffBitmapEncoder tifccittencoder = new() { Compression = TiffCompressOption.Ccitt4 };
+                            foreach (ScannedImage item in seçiliresimler)
+                            {
+                                tifccittencoder.Frames.Add(item.Resim);
+                            }
+                            using FileStream stream = new(directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "tif"), FileMode.Create);
+                            tifccittencoder.Save(stream);
                         }
                     });
                 }
@@ -357,7 +369,7 @@ namespace TwainControl
             SplitImage = new RelayCommand<object>(parameter =>
             {
                 BitmapSource image = (BitmapSource)Scanner.CroppedImage;
-                _ = Directory.CreateDirectory($@"{Settings.Default.AutoFolder}\Parçalanmış");
+                _ = Directory.CreateDirectory($@"{Settings.Default.AutoFolder}\{Translation.GetResStringValue("SPLIT")}");
                 for (int i = 0; i < Scanner.EnAdet; i++)
                 {
                     for (int j = 0; j < Scanner.BoyAdet; j++)
@@ -370,11 +382,11 @@ namespace TwainControl
                         if (sourceRect.HasArea)
                         {
                             CroppedBitmap croppedBitmap = new(image, sourceRect);
-                            File.WriteAllBytes($@"{Settings.Default.AutoFolder}\Parçalanmış".SetUniqueFile("Parçalanmış", "jpg"), croppedBitmap.ToTiffJpegByteArray(Format.Jpg));
+                            File.WriteAllBytes($@"{Settings.Default.AutoFolder}\{Translation.GetResStringValue("SPLIT")}".SetUniqueFile(Translation.GetResStringValue("SPLIT"), "jpg"), croppedBitmap.ToTiffJpegByteArray(Format.Jpg));
                         }
                     }
                 }
-                WebAdreseGit.Execute($@"{Settings.Default.AutoFolder}\Parçalanmış");
+                WebAdreseGit.Execute($@"{Settings.Default.AutoFolder}\{Translation.GetResStringValue("SPLIT")}");
             }, parameter => Scanner.AutoSave && Scanner.CroppedImage is not null && (Scanner.EnAdet > 1 || Scanner.BoyAdet > 1));
 
             ResetCroppedImage = new RelayCommand<object>(parameter => ResetCropMargin(), parameter => Scanner.CroppedImage is not null);
@@ -1083,10 +1095,18 @@ namespace TwainControl
                         {
                             ImgData = BitmapMethods.CaptureScreen(mousemovecoordx, startupcoordy, width, height, scrollviewer, SeçiliResim.Resim);
                         }
+                        if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                        {
+                            MemoryStream ms = new(ImgData);
+                            BitmapFrame bitmapframe = BitmapMethods.GenerateImageDocumentBitmapFrame(DecodeHeight, ms);
+                            bitmapframe.Freeze();
+                            ScannedImage item = new() { Resim = bitmapframe };
+                            Scanner.Resimler.Add(item);
+                        }
                         startupcoordx = startupcoordy = 0;
                         isMouseDown = false;
                         Cursor = Cursors.Arrow;
-                        OnPropertyChanged(nameof(ImgData));
+                        ImgData = null;
                     }
                 }
             }

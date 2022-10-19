@@ -465,4 +465,7 @@ EKLE</value>
     <value>DOSYAYA
 BELGE EKLE</value>
   </data>
+  <data name="SPLIT" xml:space="preserve">
+    <value>Parçalanmış</value>
+  </data>
 </root>

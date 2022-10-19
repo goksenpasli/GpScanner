@@ -107,7 +107,6 @@ namespace GpScanner
                     ViewModel.BarcodeContent = ViewModel.GetImageBarcodeResult(TwainCtrl.ImgData)?.Text;
                     AddBarcodeToList(ViewModel);
                     _ = ViewModel.GetScannedTextAsync(TwainCtrl.ImgData);
-                    TwainCtrl.ImgData = null;
                 }
 
                 if (e.PropertyName is "ApplyDataBaseOcr" && TwainCtrl.Scanner.ApplyDataBaseOcr && TwainCtrl.Scanner.Resimler.Count > 0 && !string.IsNullOrEmpty(Settings.Default.DefaultTtsLang))

@@ -281,10 +281,15 @@
                         </StackPanel>
                     </Button>
                 </UniformGrid>
-                <DatePicker Grid.Row="4"
-                    DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}"
-                    Language="{Binding CalendarLang}"
-                    SelectedDate="{Binding SeçiliGün}" />
+                <UniformGrid Grid.Row="4" Columns="3">
+                    <Button Command="{Binding DateBack}"
+                        Content="ç" FontFamily="Wingdings" FontSize="16" />
+                    <DatePicker DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}"
+                        Language="{Binding CalendarLang}"
+                        SelectedDate="{Binding SeçiliGün}" />
+                    <Button Command="{Binding DateForward}"
+                        Content="è" FontFamily="Wingdings" FontSize="16" />
+                </UniformGrid>
                 <ListBox Grid.Row="5"
                     d:ItemsSource="{d:SampleData ItemCount=5}"
                     Background="{StaticResource BorderBackground}"

@@ -227,7 +227,7 @@ namespace Extensions
             return null;
         }
 
-        public static bool IsEmptyPage(this Bitmap bitmap, double emptythreshold = 100)
+        public static bool IsEmptyPage(this Bitmap bitmap, double emptythreshold = 10)
         {
             double total = 0, totalVariance = 0;
             int count = 0;

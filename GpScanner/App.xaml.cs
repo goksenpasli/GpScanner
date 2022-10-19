@@ -12,7 +12,7 @@ namespace GpScanner
     public partial class App : Application
     {
         private Mutex scannermutex;
-
+        
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             scannermutex = new Mutex(true, "GpScannerApplication", out bool aIsNewInstance);

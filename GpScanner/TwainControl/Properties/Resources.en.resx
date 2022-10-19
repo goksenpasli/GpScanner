@@ -460,4 +460,7 @@ DEVICE</value>
     <value>ADD DOCUMENT
 TO FILE</value>
   </data>
+  <data name="SPLIT" xml:space="preserve">
+    <value>Splitted</value>
+  </data>
 </root>

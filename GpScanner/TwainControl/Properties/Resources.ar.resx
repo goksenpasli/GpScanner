@@ -399,6 +399,9 @@
   <data name="SOURCELANG" xml:space="preserve">
     <value>لغة المصدر</value>
   </data>
+  <data name="SPLIT" xml:space="preserve">
+    <value>مكسور</value>
+  </data>
   <data name="SRC" xml:space="preserve">
     <value>اختر مصدر</value>
   </data>

@@ -399,6 +399,9 @@ AJOUTER</value>
   <data name="SOURCELANG" xml:space="preserve">
     <value>LANGUE ORIGINELLE</value>
   </data>
+  <data name="SPLIT" xml:space="preserve">
+    <value>Cassé</value>
+  </data>
   <data name="SRC" xml:space="preserve">
     <value>SÉLECTIONNER LA SOURCE</value>
   </data>
