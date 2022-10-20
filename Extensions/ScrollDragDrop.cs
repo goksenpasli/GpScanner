@@ -25,7 +25,7 @@ namespace Extensions
             element.SetValue(ScrollOnDragDropProperty, value);
         }
 
-        private static T GetFirstVisualChild<T>(DependencyObject depObj) where T : DependencyObject
+        public static T GetFirstVisualChild<T>(this DependencyObject depObj) where T : DependencyObject
         {
             if (depObj != null)
             {
@@ -73,7 +73,7 @@ namespace Extensions
                 return;
             }
 
-            ScrollViewer scrollViewer = GetFirstVisualChild<ScrollViewer>(container);
+            ScrollViewer scrollViewer = container.GetFirstVisualChild<ScrollViewer>();
 
             if (scrollViewer == null)
             {

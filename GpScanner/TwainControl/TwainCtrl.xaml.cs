@@ -17,6 +17,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Xps.Packaging;
 using Extensions;
 using Microsoft.Win32;
 using Ocr;
@@ -451,7 +452,7 @@ namespace TwainControl
                 }
                 OpenFileDialog openFileDialog = new()
                 {
-                    Filter = "Tüm Dosyalar (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf|Resim Dosyası (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle|Pdf Dosyası (*.pdf)|*.pdf",
+                    Filter = "Tüm Dosyalar (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps|Resim Dosyası (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle|Pdf Dosyası (*.pdf)|*.pdf|Xps Dosyası (*.xps)|*.xps",
                     Multiselect = true
                 };
                 if (openFileDialog.ShowDialog() == true)
@@ -906,6 +907,43 @@ namespace TwainControl
                                     image = null;
                                     data = null;
                                     ms = null;
+                                }
+                            });
+                            break;
+                        }
+                    case ".xps":
+                        {
+                            using XpsDocument xpsDoc = new(item, FileAccess.Read);
+                            FixedDocumentSequence docSeq = xpsDoc.GetFixedDocumentSequence();
+                            DocumentPage docPage = null;
+                            BitmapFrame bitmapframe = null;
+                            byte[] data = null;
+                            fileloadtask = Task.Run(() =>
+                            {
+                                for (int i = 0; i < docSeq.DocumentPaginator.PageCount; i++)
+                                {
+                                    Dispatcher.Invoke(() =>
+                                    {
+                                        docPage = docSeq.DocumentPaginator.GetPage(i);
+                                        RenderTargetBitmap rtb = new((int)docPage.Size.Width, (int)docPage.Size.Height, 96, 96, PixelFormats.Default);
+                                        rtb.Render(docPage.Visual);
+                                        bitmapframe = BitmapFrame.Create(rtb);
+                                        data = bitmapframe.ToTiffJpegByteArray(Format.Jpg, Scanner.JpegQuality);
+                                        docPage = null;
+                                    });
+                                    MemoryStream memoryStream = new(data);
+                                    BitmapFrame image = BitmapMethods.GenerateImageDocumentBitmapFrame(decodeheight, memoryStream);
+                                    image.Freeze();
+                                    BitmapSource thumbimage = image.PixelWidth < image.PixelHeight ? image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 21 * 29.7) : image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 29.7 * 21);
+                                    thumbimage.Freeze();
+                                    BitmapFrame bitmapFrame = BitmapFrame.Create(image, thumbimage);
+                                    bitmapFrame.Freeze();
+                                    uiContext.Send(_ => Scanner?.Resimler.Add(new ScannedImage() { Resim = bitmapFrame }), null);
+                                    bitmapFrame = null;
+                                    image = null;
+                                    thumbimage = null;
+                                    bitmapframe = null;
+                                    data = null;
                                 }
                             });
                             break;

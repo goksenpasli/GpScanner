@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -395,7 +396,7 @@ namespace PdfViewer
             {
                 if (disposing)
                 {
-                    PdfFilePath = null;
+                    PdfFileStream = null;
                 }
                 disposedValue = true;
             }
@@ -505,7 +506,6 @@ namespace PdfViewer
         private void PdfViewer_Unloaded(object sender, RoutedEventArgs e)
         {
             PdfFileStream = null;
-            GC.Collect();
         }
 
         private async void PrintPdfFile(byte[] stream, int Dpi = 300)

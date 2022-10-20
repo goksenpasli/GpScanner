@@ -71,6 +71,14 @@ namespace GpScanner
             }
         }
 
+        private void ListBox_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (e.VerticalChange > 200)
+            {
+                (sender as ListBox).GetFirstVisualChild<PdfViewer.PdfViewer>()?.Dispose();
+            }
+        }
+
         private void MW_ContentRendered(object sender, EventArgs e)
         {
             WindowExtensions.SystemMenu(this);
