@@ -216,11 +216,6 @@ namespace TwainControl
             }
         }
 
-        protected PdfGeneration(Scanner scanner)
-        {
-            Scanner = scanner;
-        }
-
         private static XRect AdjustBounds(Rect rect, double hAdjust, double vAdjust)
         {
             return new(rect.X * hAdjust, rect.Y * vAdjust, rect.Width * hAdjust, rect.Height * vAdjust);

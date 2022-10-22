@@ -11,6 +11,15 @@
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
     Loaded="UserControl_Loaded" UseLayoutRounding="True"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TwainControl;component/Slider.xaml" />
+                <ResourceDictionary Source="/Extensions;component/Themes/Skin.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <Border Background="{StaticResource BorderBackground}"
@@ -173,20 +182,20 @@
                             Content="{local:Loc OCR}" />
                         <Button Command="{Binding ResetCroppedImage}" Content="{local:Loc RESET}" />
                         <TextBlock VerticalAlignment="Center" Text="{local:Loc SRCCOLOR}" />
-                        <Extensions:ContentToggleButton Background="{Binding SourceColor, Mode=OneWay}">
-                            <TextBlock Text="{Binding SourceColor, Mode=OneWay}" />
+                        <Extensions:ContentToggleButton Background="{Binding Scanner.SourceColor, Mode=OneWay}">
+                            <TextBlock d:Text="Red" Text="{Binding Scanner.SourceColor, Mode=OneWay}" />
                             <Extensions:ContentToggleButton.OverContent>
                                 <Extensions:ColorPicker Width="350" Height="250"
-                                    HexCode="{Binding SourceColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    HexCode="{Binding Scanner.SourceColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     PredefinedColorVisibility="Visible" />
                             </Extensions:ContentToggleButton.OverContent>
                         </Extensions:ContentToggleButton>
                         <TextBlock VerticalAlignment="Center" Text="{local:Loc DSTCOLOR}" />
-                        <Extensions:ContentToggleButton Background="{Binding TargetColor, Mode=OneWay}">
-                            <TextBlock Text="{Binding TargetColor, Mode=OneWay}" />
+                        <Extensions:ContentToggleButton Background="{Binding Scanner.TargetColor, Mode=OneWay}">
+                            <TextBlock d:Text="Blue" Text="{Binding Scanner.TargetColor, Mode=OneWay}" />
                             <Extensions:ContentToggleButton.OverContent>
                                 <Extensions:ColorPicker Width="350" Height="250"
-                                    HexCode="{Binding TargetColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    HexCode="{Binding Scanner.TargetColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     PredefinedColorVisibility="Visible" />
                             </Extensions:ContentToggleButton.OverContent>
                         </Extensions:ContentToggleButton>
@@ -208,6 +217,5 @@
                 </StackPanel>
             </Border>
         </ScrollViewer>
-
     </Grid>
 </UserControl>

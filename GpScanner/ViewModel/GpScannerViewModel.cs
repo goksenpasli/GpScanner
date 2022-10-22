@@ -689,9 +689,9 @@ namespace GpScanner.ViewModel
 
         public ObservableCollection<Chart> GetChartsData()
         {
+            ObservableCollection<Chart> list = new();
             try
             {
-                ObservableCollection<Chart> list = new();
                 foreach (IGrouping<int, Scanner> chart in Dosyalar.GroupBy(z => DateTime.Parse(Directory.GetParent(z.FileName).Name).Day).OrderBy(z => z.Key))
                 {
                     list.Add(new Chart() { Description = chart.Key.ToString(), ChartBrush = RandomColor(), ChartValue = chart.Count() });
@@ -700,7 +700,7 @@ namespace GpScanner.ViewModel
             }
             catch (Exception)
             {
-                return null;
+                return list;
             }
         }
 

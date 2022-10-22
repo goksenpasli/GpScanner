@@ -1,5 +1,10 @@
 ﻿using System.ComponentModel;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using Extensions;
 
 namespace TwainControl
 {
@@ -15,19 +20,19 @@ namespace TwainControl
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public static Scanner Scanner { get; set; }
+
         protected virtual void OnPropertyChanged(string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        private TwainCtrl twainCtrl;
 
         private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName is "EnAdet")
             {
                 LineGrid.ColumnDefinitions.Clear();
-                for (int i = 0; i < twainCtrl.Scanner.EnAdet; i++)
+                for (int i = 0; i < Scanner.EnAdet; i++)
                 {
                     LineGrid.ColumnDefinitions.Add(new ColumnDefinition());
                 }
@@ -35,20 +40,34 @@ namespace TwainControl
             if (e.PropertyName is "BoyAdet")
             {
                 LineGrid.RowDefinitions.Clear();
-                for (int i = 0; i < twainCtrl.Scanner.BoyAdet; i++)
+                for (int i = 0; i < Scanner.BoyAdet; i++)
                 {
                     LineGrid.RowDefinitions.Add(new RowDefinition());
                 }
+            }
+            if (e.PropertyName is "Brightness" && Scanner.CopyCroppedImage is not null)
+            {
+                using Bitmap bmp = ((BitmapSource)Scanner.CopyCroppedImage).BitmapSourceToBitmap();
+                Scanner.CroppedImage = bmp.AdjustBrightness((int)Scanner.Brightness).ToBitmapImage(ImageFormat.Png);
+            }
+            if (e.PropertyName is "CroppedImageAngle" && Scanner.CopyCroppedImage is not null)
+            {
+                TransformedBitmap transformedBitmap = new((BitmapSource)Scanner.CopyCroppedImage, new RotateTransform(Scanner.CroppedImageAngle));
+                transformedBitmap.Freeze();
+                Scanner.CroppedImage = transformedBitmap;
+            }
+            if (e.PropertyName is "Threshold" && Scanner.CopyCroppedImage is not null)
+            {
+                System.Windows.Media.Color source = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Scanner.SourceColor);
+                System.Windows.Media.Color target = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Scanner.TargetColor);
+                using Bitmap bmp = ((BitmapSource)Scanner.CopyCroppedImage).BitmapSourceToBitmap();
+                Scanner.CroppedImage = bmp.ReplaceColor(source, target, (int)Scanner.Threshold).ToBitmapImage(ImageFormat.Png);
             }
         }
 
         private void UserControl_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            twainCtrl = DataContext as TwainCtrl;
-            if (twainCtrl != null)
-            {
-                twainCtrl.Scanner.PropertyChanged += Scanner_PropertyChanged;
-            }
+            Scanner.PropertyChanged += Scanner_PropertyChanged;
         }
     }
 }

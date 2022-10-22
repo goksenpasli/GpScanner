@@ -18,7 +18,7 @@ namespace GpScanner.ViewModel
             if (item is string dosya)
             {
                 string[] imgext = new string[] { ".jpg", ".bmp", ".png", ".tif", ".tiff" };
-                string ext = new FileInfo(dosya).Extension.ToLower();
+                string ext = Path.GetExtension(dosya).ToLower();
                 if (ext == ".pdf")
                 {
                     return Pdf;

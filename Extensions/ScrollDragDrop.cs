@@ -10,21 +10,6 @@ namespace Extensions
     {
         public static readonly DependencyProperty ScrollOnDragDropProperty = DependencyProperty.RegisterAttached("ScrollOnDragDrop", typeof(bool), typeof(DragDropExtension), new PropertyMetadata(false, HandleScrollOnDragDropChanged));
 
-        public static bool GetScrollOnDragDrop(DependencyObject element)
-        {
-            return element == null ? throw new ArgumentNullException(nameof(element)) : (bool)element.GetValue(ScrollOnDragDropProperty);
-        }
-
-        public static void SetScrollOnDragDrop(DependencyObject element, bool value)
-        {
-            if (element == null)
-            {
-                throw new ArgumentNullException(nameof(element));
-            }
-
-            element.SetValue(ScrollOnDragDropProperty, value);
-        }
-
         public static T GetFirstVisualChild<T>(this DependencyObject depObj) where T : DependencyObject
         {
             if (depObj != null)
@@ -48,49 +33,61 @@ namespace Extensions
             return null;
         }
 
+        public static bool GetScrollOnDragDrop(DependencyObject element)
+        {
+            return element == null ? throw new ArgumentNullException(nameof(element)) : (bool)element.GetValue(ScrollOnDragDropProperty);
+        }
+
+        public static void SetScrollOnDragDrop(DependencyObject element, bool value)
+        {
+            if (element == null)
+            {
+                throw new ArgumentNullException(nameof(element));
+            }
+
+            element.SetValue(ScrollOnDragDropProperty, value);
+        }
+
         private static void HandleScrollOnDragDropChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             FrameworkElement container = d as FrameworkElement;
 
-            if (d == null)
+            if (d != null)
+            {
+                Unsubscribe(container);
+
+                if (true.Equals(e.NewValue))
+                {
+                    Subscribe(container);
+                }
+            }
+            else
             {
                 Debug.Fail("Invalid type!");
-                return;
-            }
-
-            Unsubscribe(container);
-
-            if (true.Equals(e.NewValue))
-            {
-                Subscribe(container);
             }
         }
 
         private static void OnContainerPreviewDragOver(object sender, DragEventArgs e)
         {
-            if (sender is not FrameworkElement container)
+            if (sender is FrameworkElement container)
             {
-                return;
-            }
+                ScrollViewer scrollViewer = container.GetFirstVisualChild<ScrollViewer>();
 
-            ScrollViewer scrollViewer = container.GetFirstVisualChild<ScrollViewer>();
+                if (scrollViewer != null)
+                {
+                    const double tolerance = 60;
+                    double verticalPos = e.GetPosition(container).Y;
+                    const double offset = 20;
 
-            if (scrollViewer == null)
-            {
-                return;
-            }
-
-            const double tolerance = 60;
-            double verticalPos = e.GetPosition(container).Y;
-            const double offset = 20;
-
-            if (verticalPos < tolerance) // Top of visible list?
-            {
-                scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - offset); //Scroll up.
-            }
-            else if (verticalPos > container.ActualHeight - tolerance) //Bottom of visible list?
-            {
-                scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset + offset); //Scroll down.
+                    if (verticalPos < tolerance) // Top of visible list?
+                    {
+                        scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - offset); //Scroll up.
+                    }
+                    else if (verticalPos > container.ActualHeight - tolerance) //Bottom of visible list?
+                    {
+                        scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset + offset); //Scroll down.
+                    }
+                }
             }
         }
 

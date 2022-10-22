@@ -612,6 +612,20 @@ namespace TwainControl
             }
         }
 
+        public string SourceColor
+        {
+            get => sourceColor;
+
+            set
+            {
+                if (sourceColor != value)
+                {
+                    sourceColor = value;
+                    OnPropertyChanged(nameof(SourceColor));
+                }
+            }
+        }
+
         public IList<string> Tarayıcılar
         {
             get => tarayıcılar;
@@ -622,6 +636,19 @@ namespace TwainControl
                 {
                     tarayıcılar = value;
                     OnPropertyChanged(nameof(Tarayıcılar));
+                }
+            }
+        }
+
+        public string TargetColor
+        {
+            get => targetColor; set
+
+            {
+                if (targetColor != value)
+                {
+                    targetColor = value;
+                    OnPropertyChanged(nameof(TargetColor));
                 }
             }
         }
@@ -787,7 +814,11 @@ namespace TwainControl
 
         private bool showUi;
 
+        private string sourceColor = "Transparent";
+
         private IList<string> tarayıcılar;
+
+        private string targetColor = "Transparent";
 
         private double threshold = 1;
 

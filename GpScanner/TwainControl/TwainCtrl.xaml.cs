@@ -40,6 +40,7 @@ namespace TwainControl
             DataContext = this;
             Scanner = new Scanner();
             PdfGeneration.Scanner = Scanner;
+            ToolBox.Scanner = Scanner;
             Scanner.PropertyChanged += Scanner_PropertyChanged;
             Settings.Default.PropertyChanged += Default_PropertyChanged;
 
@@ -690,34 +691,7 @@ namespace TwainControl
 
         public ICommand SetWatermark { get; }
 
-        public string SourceColor
-        {
-            get => sourceColor;
-
-            set
-            {
-                if (sourceColor != value)
-                {
-                    sourceColor = value;
-                    OnPropertyChanged(nameof(SourceColor));
-                }
-            }
-        }
-
         public ICommand SplitImage { get; }
-
-        public string TargetColor
-        {
-            get => targetColor; set
-
-            {
-                if (targetColor != value)
-                {
-                    targetColor = value;
-                    OnPropertyChanged(nameof(TargetColor));
-                }
-            }
-        }
 
         public ICommand Tersiniİşaretle { get; }
 
@@ -823,13 +797,9 @@ namespace TwainControl
 
         private ScannedImage seçiliResim;
 
-        private string sourceColor = "Transparent";
-
         private double startupcoordx;
 
         private double startupcoordy;
-
-        private string targetColor = "Transparent";
 
         private Twain twain;
 
@@ -1077,7 +1047,7 @@ namespace TwainControl
                     byte[] pixels = new byte[4];
                     cb.CopyPixels(pixels, 4, 0);
                     cb.Freeze();
-                    SourceColor = System.Windows.Media.Color.FromRgb(pixels[2], pixels[1], pixels[0]).ToString();
+                    Scanner.SourceColor = System.Windows.Media.Color.FromRgb(pixels[2], pixels[1], pixels[0]).ToString();
                     if (e.RightButton == MouseButtonState.Released)
                     {
                         isRightMouseDown = false;
@@ -1087,10 +1057,20 @@ namespace TwainControl
 
                 if (isMouseDown)
                 {
+                    SolidColorBrush fill = new()
+                    {
+                        Color = System.Windows.Media.Color.FromArgb(80, 0, 255, 0)
+                    };
+                    fill.Freeze();
+                    SolidColorBrush stroke = new()
+                    {
+                        Color = System.Windows.Media.Color.FromArgb(80, 255, 0, 0)
+                    };
+                    stroke.Freeze();
                     Rectangle r = new()
                     {
-                        Stroke = new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#33FF0000")),
-                        Fill = new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#3300FF00")),
+                        Stroke = stroke,
+                        Fill = fill,
                         StrokeThickness = 2,
                         StrokeDashArray = new DoubleCollection(new double[] { 4, 2 }),
                         Width = Math.Abs(mousemovecoordx - startupcoordx),
@@ -1296,24 +1276,6 @@ namespace TwainControl
                 Scanner.FileName = selectedprofile[9];
                 Settings.Default.DefaultProfile = Scanner.SelectedProfile;
                 Settings.Default.Save();
-            }
-            if (e.PropertyName is "Threshold" && Scanner.CopyCroppedImage is not null)
-            {
-                System.Windows.Media.Color source = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(SourceColor);
-                System.Windows.Media.Color target = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(TargetColor);
-                using Bitmap bmp = ((BitmapSource)Scanner.CopyCroppedImage).BitmapSourceToBitmap();
-                Scanner.CroppedImage = bmp.ReplaceColor(source, target, (int)Scanner.Threshold).ToBitmapImage(ImageFormat.Png);
-            }
-            if (e.PropertyName is "Brightness" && Scanner.CopyCroppedImage is not null)
-            {
-                using Bitmap bmp = ((BitmapSource)Scanner.CopyCroppedImage).BitmapSourceToBitmap();
-                Scanner.CroppedImage = bmp.AdjustBrightness((int)Scanner.Brightness).ToBitmapImage(ImageFormat.Png);
-            }
-            if (e.PropertyName is "CroppedImageAngle" && Scanner.CopyCroppedImage is not null)
-            {
-                TransformedBitmap transformedBitmap = new((BitmapSource)Scanner.CopyCroppedImage, new RotateTransform(Scanner.CroppedImageAngle));
-                transformedBitmap.Freeze();
-                Scanner.CroppedImage = transformedBitmap;
             }
             if (e.PropertyName is "ApplyDataBaseOcr" && Scanner.ApplyDataBaseOcr)
             {
