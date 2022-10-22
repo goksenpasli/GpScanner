@@ -454,15 +454,17 @@
                         <local:ContentToggleButton.OverContent>
                             <StackPanel Background="{StaticResource PlayerBackGround}" Orientation="Horizontal">
                                 <UniformGrid Columns="2" Rows="2">
-                                    <local:ContentToggleButton FontFamily="Wingdings 3" Foreground="Blue" OverContent="n">
-                                        <ListBox FontFamily="Segoe UI"
-                                            SelectedValue="{Binding VideoStretch}"
-                                            SelectedValuePath="Tag">
-                                            <ListBoxItem Content="Orijinal Boyut" Tag="{x:Static Stretch.None}" />
-                                            <ListBoxItem Content="Doldur" Tag="{x:Static Stretch.Fill}" />
-                                            <ListBoxItem Content="En Boy" Tag="{x:Static Stretch.Uniform}" />
-                                            <ListBoxItem Content="En Boy Doldur" Tag="{x:Static Stretch.UniformToFill}" />
-                                        </ListBox>
+                                    <local:ContentToggleButton Content="n" FontFamily="Wingdings 3" Foreground="Blue">
+                                        <local:ContentToggleButton.OverContent>
+                                            <ListBox FontFamily="Segoe UI"
+                                                SelectedValue="{Binding VideoStretch}"
+                                                SelectedValuePath="Tag">
+                                                <ListBoxItem Content="Orijinal Boyut" Tag="{x:Static Stretch.None}" />
+                                                <ListBoxItem Content="Doldur" Tag="{x:Static Stretch.Fill}" />
+                                                <ListBoxItem Content="En Boy" Tag="{x:Static Stretch.Uniform}" />
+                                                <ListBoxItem Content="En Boy Doldur" Tag="{x:Static Stretch.UniformToFill}" />
+                                            </ListBox>
+                                        </local:ContentToggleButton.OverContent>
                                     </local:ContentToggleButton>
                                     <Button x:Name="Rotate"
                                         Click="Rotate_Click" Content="P" FontFamily="Wingdings 3"
@@ -484,10 +486,10 @@
                                             <Setter Property="Orientation" Value="Vertical" />
                                         </Style>
                                     </StackPanel.Resources>
-                                    <Slider BorderBrush="Red" Value="{Binding Red, ElementName=Color}" />
-                                    <Slider BorderBrush="Green" Value="{Binding Green, ElementName=Color}" />
-                                    <Slider BorderBrush="Blue" Value="{Binding Blue, ElementName=Color}" />
-                                    <Slider Value="{Binding Brightness, ElementName=Color}">
+                                    <Slider BorderBrush="Red" Value="{Binding Source={x:Reference Color}, Path=Red}" />
+                                    <Slider BorderBrush="Green" Value="{Binding Green, Source={x:Reference Color}}" />
+                                    <Slider BorderBrush="Blue" Value="{Binding Blue, Source={x:Reference Color}}" />
+                                    <Slider Value="{Binding Brightness, Source={x:Reference Color}}">
                                         <Slider.BorderBrush>
                                             <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
                                                 <GradientStop Color="Black" />
@@ -495,7 +497,7 @@
                                             </LinearGradientBrush>
                                         </Slider.BorderBrush>
                                     </Slider>
-                                    <Slider Value="{Binding Contrast, ElementName=Color}">
+                                    <Slider Value="{Binding Contrast, Source={x:Reference Color}}">
                                         <Slider.BorderBrush>
                                             <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
                                                 <GradientStop Color="White" />
