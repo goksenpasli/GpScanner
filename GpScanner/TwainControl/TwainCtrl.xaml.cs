@@ -1283,22 +1283,6 @@ namespace TwainControl
                     Scanner.CropDialogExpanded = true;
                 }
             }
-            if (e.PropertyName is "EnAdet")
-            {
-                LineGrid.ColumnDefinitions.Clear();
-                for (int i = 0; i < Scanner.EnAdet; i++)
-                {
-                    LineGrid.ColumnDefinitions.Add(new ColumnDefinition());
-                }
-            }
-            if (e.PropertyName is "BoyAdet")
-            {
-                LineGrid.RowDefinitions.Clear();
-                for (int i = 0; i < Scanner.BoyAdet; i++)
-                {
-                    LineGrid.RowDefinitions.Add(new RowDefinition());
-                }
-            }
             if (e.PropertyName is "SelectedProfile" && !string.IsNullOrWhiteSpace(Scanner.SelectedProfile))
             {
                 string[] selectedprofile = Scanner.SelectedProfile.Split('|');

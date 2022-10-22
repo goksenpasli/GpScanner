@@ -89,12 +89,19 @@
     </Compile>
     <Compile Include="ScannedImage.cs" />
     <Compile Include="ShadowedImage.cs" />
+    <Compile Include="ToolBox.xaml.cs">
+      <DependentUpon>ToolBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WpfLocalizationWithMultipleResourceManagers.cs" />
     <Page Include="AboutView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Slider.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ToolBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
