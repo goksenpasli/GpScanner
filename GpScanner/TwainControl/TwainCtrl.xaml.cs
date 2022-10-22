@@ -944,6 +944,7 @@ namespace TwainControl
                                     thumbimage = null;
                                     bitmapframe = null;
                                     data = null;
+                                    memoryStream = null;
                                 }
                             });
                             break;
@@ -1031,6 +1032,12 @@ namespace TwainControl
         {
             TwainGuiControlLength = new(3, GridUnitType.Star);
             DocumentGridLength = new(5, GridUnitType.Star);
+        }
+
+        private void GridSplitter_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            TwainGuiControlLength = new(1, GridUnitType.Star);
+            DocumentGridLength = new(0, GridUnitType.Star);
         }
 
         private void ImgViewer_MouseDown(object sender, MouseButtonEventArgs e)

@@ -521,7 +521,7 @@
                         <Grid>
                             <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                 VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                Content="{TemplateBinding OverContent}"
+                                Content="{TemplateBinding Content}"
                                 Focusable="False" RecognizesAccessKey="True" />
                             <Popup AllowsTransparency="True"
                                 IsOpen="{Binding IsChecked, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}"
@@ -529,7 +529,7 @@
                                 PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}"
                                 PopupAnimation="Slide"
                                 StaysOpen="{Binding StaysOpen, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}">
-                                <ContentPresenter Content="{TemplateBinding Content}" />
+                                <ContentPresenter Content="{TemplateBinding OverContent}" />
                             </Popup>
                         </Grid>
                     </Border>

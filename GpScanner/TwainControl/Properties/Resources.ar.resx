@@ -402,6 +402,9 @@
   <data name="SPLIT" xml:space="preserve">
     <value>مكسور</value>
   </data>
+  <data name="SPLITTERTOOLTIP" xml:space="preserve">
+    <value>انقر نقرًا مزدوجًا للاستعادة ، انقر بزر الماوس الأيمن للتوسيع</value>
+  </data>
   <data name="SRC" xml:space="preserve">
     <value>اختر مصدر</value>
   </data>

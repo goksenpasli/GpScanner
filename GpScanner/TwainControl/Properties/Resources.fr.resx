@@ -402,6 +402,9 @@ AJOUTER</value>
   <data name="SPLIT" xml:space="preserve">
     <value>Cassé</value>
   </data>
+  <data name="SPLITTERTOOLTIP" xml:space="preserve">
+    <value>Double-cliquez pour restaurer, cliquez avec le bouton droit pour développer</value>
+  </data>
   <data name="SRC" xml:space="preserve">
     <value>SÉLECTIONNER LA SOURCE</value>
   </data>

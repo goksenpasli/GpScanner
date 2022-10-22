@@ -468,4 +468,7 @@ BELGE EKLE</value>
   <data name="SPLIT" xml:space="preserve">
     <value>Parçalanmış</value>
   </data>
+  <data name="SPLITTERTOOLTIP" xml:space="preserve">
+    <value>Geri Yüklemek İçin Çift Tıklayın, Genişletmek İçin Sağ Tıklayın</value>
+  </data>
 </root>

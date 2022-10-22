@@ -463,4 +463,7 @@ TO FILE</value>
   <data name="SPLIT" xml:space="preserve">
     <value>Splitted</value>
   </data>
+  <data name="SPLITTERTOOLTIP" xml:space="preserve">
+    <value>Double Click To Restore, Right Click To Expand</value>
+  </data>
 </root>

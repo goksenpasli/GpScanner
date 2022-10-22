@@ -71,6 +71,15 @@ namespace GpScanner
             }
         }
 
+        private void GridSplitter_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (DataContext is GpScannerViewModel ViewModel)
+            {
+                ViewModel.MainWindowDocumentGuiControlLength = new(0, GridUnitType.Star);
+                ViewModel.MainWindowGuiControlLength = new(1, GridUnitType.Star);
+            }
+        }
+
         private void ListBox_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             if (e.VerticalChange > 200)

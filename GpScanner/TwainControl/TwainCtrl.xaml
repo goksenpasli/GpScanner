@@ -369,66 +369,66 @@
                             <DockPanel Grid.Column="1">
                                 <StackPanel DockPanel.Dock="Left">
                                     <Extensions:ContentToggleButton Height="28.8">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="24" Height="24">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="47" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc PDFPROTECT}" />
+                                        </StackPanel>
                                         <Extensions:ContentToggleButton.OverContent>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Image Width="24" Height="24">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Shell32.dll" />
-                                                            <Binding Source="47" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                                <TextBlock VerticalAlignment="Center" Text="{local:Loc PDFPROTECT}" />
-                                            </StackPanel>
+                                            <GroupBox>
+                                                <GroupBox.Header>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <CheckBox VerticalAlignment="Center"
+                                                            Content="{local:Loc ENCRYPT}"
+                                                            IsChecked="{Binding Scanner.PasswordProtect}" />
+                                                        <Image Width="32" Height="32">
+                                                            <Image.Source>
+                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                    <Binding Source="Shell32.dll" />
+                                                                    <Binding Source="77" />
+                                                                </MultiBinding>
+                                                            </Image.Source>
+                                                        </Image>
+                                                        <TextBlock VerticalAlignment="Center"
+                                                            FontSize="14"
+                                                            Text="{local:Loc PDFWARN}" />
+                                                    </StackPanel>
+                                                </GroupBox.Header>
+                                                <StackPanel>
+                                                    <HeaderedContentControl Header="{local:Loc PASSWORD}">
+                                                        <PasswordBox IsEnabled="{Binding Scanner.PasswordProtect}" PasswordChanged="PasswordBox_PasswordChanged" />
+                                                    </HeaderedContentControl>
+                                                    <StackPanel IsEnabled="{Binding Scanner.PdfPassword, Converter={StaticResource NullableToBooleanConverter}}">
+                                                        <CheckBox Content="{local:Loc ALLOWPRINT}" IsChecked="{Binding Scanner.AllowPrint}" />
+                                                        <CheckBox Content="{local:Loc ALLOWCOPY}" IsChecked="{Binding Scanner.AllowCopy}" />
+                                                        <CheckBox Content="{local:Loc ALLOWEDIT}" IsChecked="{Binding Scanner.AllowEdit}" />
+                                                    </StackPanel>
+                                                    <Separator />
+                                                    <HeaderedContentControl Header="{local:Loc JPEGQUALITY}">
+                                                        <Slider AutoToolTipPlacement="TopLeft" Maximum="95" Minimum="10"
+                                                            SmallChange="1"
+                                                            Style="{StaticResource Slider}"
+                                                            Value="{Binding Scanner.JpegQuality, UpdateSourceTrigger=PropertyChanged}" />
+                                                    </HeaderedContentControl>
+                                                    <CheckBox IsChecked="{Binding Scanner.ApplyPdfSaveOcr}">
+                                                        <CheckBox.Content>
+                                                            <TextBlock>
+                                                                <Run Text="{local:Loc FILE}" />
+                                                                <Run Text="{local:Loc OCR}" />
+                                                                <Run FontWeight="Bold" Foreground="Red"
+                                                                    Text="{local:Loc OCRTIME}" />
+                                                            </TextBlock>
+                                                        </CheckBox.Content>
+                                                    </CheckBox>
+                                                </StackPanel>
+                                            </GroupBox>
                                         </Extensions:ContentToggleButton.OverContent>
-                                        <GroupBox>
-                                            <GroupBox.Header>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <CheckBox VerticalAlignment="Center"
-                                                        Content="{local:Loc ENCRYPT}"
-                                                        IsChecked="{Binding Scanner.PasswordProtect}" />
-                                                    <Image Width="32" Height="32">
-                                                        <Image.Source>
-                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                <Binding Source="Shell32.dll" />
-                                                                <Binding Source="77" />
-                                                            </MultiBinding>
-                                                        </Image.Source>
-                                                    </Image>
-                                                    <TextBlock VerticalAlignment="Center"
-                                                        FontSize="14"
-                                                        Text="{local:Loc PDFWARN}" />
-                                                </StackPanel>
-                                            </GroupBox.Header>
-                                            <StackPanel>
-                                                <HeaderedContentControl Header="{local:Loc PASSWORD}">
-                                                    <PasswordBox IsEnabled="{Binding Scanner.PasswordProtect}" PasswordChanged="PasswordBox_PasswordChanged" />
-                                                </HeaderedContentControl>
-                                                <StackPanel IsEnabled="{Binding Scanner.PdfPassword, Converter={StaticResource NullableToBooleanConverter}}">
-                                                    <CheckBox Content="{local:Loc ALLOWPRINT}" IsChecked="{Binding Scanner.AllowPrint}" />
-                                                    <CheckBox Content="{local:Loc ALLOWCOPY}" IsChecked="{Binding Scanner.AllowCopy}" />
-                                                    <CheckBox Content="{local:Loc ALLOWEDIT}" IsChecked="{Binding Scanner.AllowEdit}" />
-                                                </StackPanel>
-                                                <Separator />
-                                                <HeaderedContentControl Header="{local:Loc JPEGQUALITY}">
-                                                    <Slider AutoToolTipPlacement="TopLeft" Maximum="95" Minimum="10"
-                                                        SmallChange="1"
-                                                        Style="{StaticResource Slider}"
-                                                        Value="{Binding Scanner.JpegQuality, UpdateSourceTrigger=PropertyChanged}" />
-                                                </HeaderedContentControl>
-                                                <CheckBox IsChecked="{Binding Scanner.ApplyPdfSaveOcr}">
-                                                    <CheckBox.Content>
-                                                        <TextBlock>
-                                                            <Run Text="{local:Loc FILE}" />
-                                                            <Run Text="{local:Loc OCR}" />
-                                                            <Run FontWeight="Bold" Foreground="Red"
-                                                                Text="{local:Loc OCRTIME}" />
-                                                        </TextBlock>
-                                                    </CheckBox.Content>
-                                                </CheckBox>
-                                            </StackPanel>
-                                        </GroupBox>
                                     </Extensions:ContentToggleButton>
                                     <Button Height="28.8"
                                         AllowDrop="True"
@@ -664,20 +664,20 @@
                         </Grid>
                     </Button>
                     <Extensions:ContentToggleButton>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="24" Height="24">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="14" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                            <TextBlock VerticalAlignment="Center" Text="{local:Loc ABOUT}" />
+                        </StackPanel>
                         <Extensions:ContentToggleButton.OverContent>
-                            <StackPanel Orientation="Horizontal">
-                                <Image Width="24" Height="24">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="14" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                                <TextBlock VerticalAlignment="Center" Text="{local:Loc ABOUT}" />
-                            </StackPanel>
+                            <local:AboutView />
                         </Extensions:ContentToggleButton.OverContent>
-                        <local:AboutView />
                     </Extensions:ContentToggleButton>
                 </UniformGrid>
             </Grid>
@@ -686,7 +686,9 @@
             Width="3"
             HorizontalAlignment="Stretch"
             Background="{StaticResource GroupBoxBackGround}"
-            MouseDoubleClick="GridSplitter_MouseDoubleClick" />
+            MouseDoubleClick="GridSplitter_MouseDoubleClick"
+            MouseRightButtonDown="GridSplitter_MouseRightButtonDown"
+            ToolTip="{local:Loc SPLITTERTOOLTIP}" />
         <GroupBox Grid.Column="2"
             Margin="1,0,0,0" Panel.ZIndex="-1"
             Header="{local:Loc DOCUMENT}">
@@ -698,13 +700,13 @@
                         Style="{StaticResource SliderStyle}"
                         TickPlacement="BottomRight"
                         Value="{Binding Scanner.CropLeft}" />
-                    <Slider Margin="20,0,20,0"
+                    <Slider Margin="25,0,20,0"
                         DockPanel.Dock="Bottom" IsDirectionReversed="True" IsSnapToTickEnabled="True"
                         Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
                         Style="{StaticResource SliderStyle}"
                         TickPlacement="TopLeft"
                         Value="{Binding Scanner.CropRight}" />
-                    <Slider Margin="0,-6,0,20"
+                    <Slider Margin="0,-5,0,20"
                         DockPanel.Dock="Left" IsDirectionReversed="True" IsSnapToTickEnabled="True"
                         Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
                         Orientation="Vertical"
@@ -844,22 +846,22 @@
                                         Minimum="1" SmallChange="1"
                                         Value="{Binding Scanner.BoyAdet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <Extensions:ContentToggleButton Command="{Binding LoadHistogram}">
+                                        <TextBlock Text="HISTOGRAM" />
                                         <Extensions:ContentToggleButton.OverContent>
-                                            <TextBlock Text="HISTOGRAM" />
+                                            <GroupBox>
+                                                <UniformGrid Columns="3">
+                                                    <Extensions:GraphControl Width="200" Height="200"
+                                                        Series="{Binding RedChart}"
+                                                        SeriesTextVisibility="Collapsed" ValueTextVisibility="Collapsed" />
+                                                    <Extensions:GraphControl Width="200" Height="200"
+                                                        Series="{Binding GreenChart}"
+                                                        SeriesTextVisibility="Collapsed" ValueTextVisibility="Collapsed" />
+                                                    <Extensions:GraphControl Width="200" Height="200"
+                                                        Series="{Binding BlueChart}"
+                                                        SeriesTextVisibility="Collapsed" ValueTextVisibility="Collapsed" />
+                                                </UniformGrid>
+                                            </GroupBox>
                                         </Extensions:ContentToggleButton.OverContent>
-                                        <GroupBox>
-                                            <UniformGrid Columns="3">
-                                                <Extensions:GraphControl Width="200" Height="200"
-                                                    Series="{Binding RedChart}"
-                                                    SeriesTextVisibility="Collapsed" ValueTextVisibility="Collapsed" />
-                                                <Extensions:GraphControl Width="200" Height="200"
-                                                    Series="{Binding GreenChart}"
-                                                    SeriesTextVisibility="Collapsed" ValueTextVisibility="Collapsed" />
-                                                <Extensions:GraphControl Width="200" Height="200"
-                                                    Series="{Binding BlueChart}"
-                                                    SeriesTextVisibility="Collapsed" ValueTextVisibility="Collapsed" />
-                                            </UniformGrid>
-                                        </GroupBox>
                                     </Extensions:ContentToggleButton>
                                     <Button Command="{Binding SplitImage}" Content="{local:Loc SLICE}" />
                                     <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXT}" />
@@ -895,21 +897,21 @@
                                     <Button Command="{Binding ResetCroppedImage}" Content="{local:Loc RESET}" />
                                     <TextBlock VerticalAlignment="Center" Text="{local:Loc SRCCOLOR}" />
                                     <Extensions:ContentToggleButton Background="{Binding SourceColor, Mode=OneWay}">
+                                        <TextBlock Text="{Binding SourceColor, Mode=OneWay}" />
                                         <Extensions:ContentToggleButton.OverContent>
-                                            <TextBlock Text="{Binding SourceColor, Mode=OneWay}" />
+                                            <Extensions:ColorPicker Width="350" Height="250"
+                                                HexCode="{Binding SourceColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                PredefinedColorVisibility="Visible" />
                                         </Extensions:ContentToggleButton.OverContent>
-                                        <Extensions:ColorPicker Width="350" Height="250"
-                                            HexCode="{Binding SourceColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            PredefinedColorVisibility="Visible" />
                                     </Extensions:ContentToggleButton>
                                     <TextBlock VerticalAlignment="Center" Text="{local:Loc DSTCOLOR}" />
                                     <Extensions:ContentToggleButton Background="{Binding TargetColor, Mode=OneWay}">
+                                        <TextBlock Text="{Binding TargetColor, Mode=OneWay}" />
                                         <Extensions:ContentToggleButton.OverContent>
-                                            <TextBlock Text="{Binding TargetColor, Mode=OneWay}" />
+                                            <Extensions:ColorPicker Width="350" Height="250"
+                                                HexCode="{Binding TargetColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                PredefinedColorVisibility="Visible" />
                                         </Extensions:ContentToggleButton.OverContent>
-                                        <Extensions:ColorPicker Width="350" Height="250"
-                                            HexCode="{Binding TargetColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            PredefinedColorVisibility="Visible" />
                                     </Extensions:ContentToggleButton>
                                     <UniformGrid Columns="2">
                                         <Slider VerticalAlignment="Center"

@@ -402,6 +402,9 @@ INSERISCI</value>
   <data name="SPLIT" xml:space="preserve">
     <value>Rotte</value>
   </data>
+  <data name="SPLITTERTOOLTIP" xml:space="preserve">
+    <value>Fare doppio clic per ripristinare, fare clic con il pulsante destro del mouse per espandere</value>
+  </data>
   <data name="SRC" xml:space="preserve">
     <value>SELEZIONA FONTE</value>
   </data>
