@@ -61,9 +61,9 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />                                  
                                     <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />                        
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
@@ -81,8 +81,8 @@
                                     <Image Width="16" Height="16">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="122" />
+                                                <Binding Source="Imageres.dll" />
+                                                <Binding Source="226" />
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>

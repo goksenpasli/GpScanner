@@ -74,18 +74,34 @@
                         <UniformGrid Columns="2">
                             <TextBlock VerticalAlignment="Center" Text="{local:Loc SETTİNGS}" />
                             <ComboBox ItemsSource="{Binding CompressionProfiles}" SelectedItem="{Binding SelectedCompressionProfile}">
+                                <ComboBox.ItemContainerStyle>
+                                    <Style TargetType="ComboBoxItem">
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                    </Style>
+                                </ComboBox.ItemContainerStyle>
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock VerticalAlignment="Center">
-                                                <Run Text="{Binding Item1, Mode=OneWay}" />
-                                                <Run Text="{Binding Item3, Mode=OneWay, StringFormat={}{0} Dpi}" />
-                                            </TextBlock>
-                                            <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                                Content="MOZJPEG"
-                                                IsChecked="{Binding Item4, Mode=OneWay}"
-                                                IsEnabled="False" />
-                                        </StackPanel>
+                                        <Grid>
+                                            <ProgressBar Foreground="Orange" Maximum="600"
+                                                Value="{Binding Item3, Mode=OneTime}">
+                                                <ProgressBar.Background>
+                                                    <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                                        <GradientStop Color="Lime" />
+                                                        <GradientStop Offset="1" Color="Red" />
+                                                    </LinearGradientBrush>
+                                                </ProgressBar.Background>
+                                            </ProgressBar>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock VerticalAlignment="Center" FontWeight="Bold">
+                                                    <Run Text="{Binding Item1, Mode=OneTime}" />
+                                                    <Run Text="{Binding Item3, Mode=OneTime, StringFormat={}{0} Dpi}" />
+                                                </TextBlock>
+                                                <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                                    Content="MOZJPEG" FontWeight="Bold"
+                                                    IsChecked="{Binding Item4, Mode=OneTime}"
+                                                    IsHitTestVisible="False" />
+                                            </StackPanel>
+                                        </Grid>
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
@@ -576,7 +592,7 @@
                                                         FontFamily="Wingdings" FontSize="24" FontWeight="Bold"
                                                         Foreground="Red" PreviewMouseMove="Run_PreviewMouseMove" Text="B" />
                                                     <Hyperlink Command="{Binding ElementName=UserControl, Path=DataContext.Kaydet}"
-                                                        CommandParameter="{Binding Mode=OneWay}"
+                                                        CommandParameter="{Binding Resim}"
                                                         TextDecorations="None">
                                                         <Image Width="24" Height="24">
                                                             <Image.Source>
@@ -741,6 +757,7 @@
                         Value="{Binding Scanner.CropBottom}" />
                     <Grid Panel.ZIndex="-1">
                         <Extensions:ImageViewer x:Name="ImgViewer"
+                            d:Source="/GpScanner;component/splash.png" d:Zoom="1"
                             Angle="{Binding Scanner.RotateAngle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             FitImageOrientation="Height" OrijinalResimDosyaAçButtonVisibility="Collapsed"
                             PanoramaButtonVisibility="Collapsed" PreviewMouseDown="ImgViewer_MouseDown"

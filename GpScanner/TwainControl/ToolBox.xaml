@@ -66,7 +66,9 @@
                                     </TextBlock.ToolTip>
                                 </TextBlock>
                                 <TextBlock HorizontalAlignment="Right" VerticalAlignment="Top">
-                                    <Hyperlink Command="{Binding PrintCroppedImage}" CommandParameter="{Binding Scanner.CroppedImage}">
+                                    <Hyperlink Command="{Binding PrintCroppedImage}"
+                                        CommandParameter="{Binding Scanner.CroppedImage}"
+                                        TextDecorations="None">
                                         <Image Width="16" Height="16">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -210,7 +212,7 @@
                                 Content="{local:Loc APPLY}"
                                 ToolTip="{local:Loc COLORCHANGETIP}" />
                         </UniformGrid>
-                        <Button Command="{Binding SaveImage}"
+                        <Button Command="{Binding SaveImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
                             CommandParameter="{Binding Scanner.CroppedImage}"
                             Content="{local:Loc SAVEPDF}" />
                     </UniformGrid>

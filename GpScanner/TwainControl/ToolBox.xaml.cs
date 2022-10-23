@@ -1,10 +1,15 @@
 ﻿using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Extensions;
+using Microsoft.Win32;
+using static Extensions.ExtensionMethods;
 
 namespace TwainControl
 {
@@ -16,11 +21,37 @@ namespace TwainControl
         public ToolBox()
         {
             InitializeComponent();
+
+            SaveImage = new RelayCommand<object>(parameter =>
+            {
+                if (TwainCtrl.filesavetask?.IsCompleted == false)
+                {
+                    _ = MessageBox.Show("İşlem Devam Ediyor. Bitmesini Bekleyin.");
+                    return;
+                }
+                SaveFileDialog saveFileDialog = new()
+                {
+                    Filter = "Tif Resmi (*.tif)|*.tif|Jpg Resmi (*.jpg)|*.jpg|Pdf Dosyası (*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf|Xps Dosyası (*.xps)|*.xps",
+                    FileName = Scanner.FileName
+                };
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    TwainCtrl.filesavetask = Task.Run(async () =>
+                    {
+                        BitmapFrame bitmapFrame = BitmapFrame.Create(parameter as BitmapSource);
+                        bitmapFrame.Freeze();
+                        await TwainCtrl.SaveImage(bitmapFrame, saveFileDialog, Scanner);
+                        bitmapFrame = null;
+                    });
+                }
+            }, parameter => Scanner.CroppedImage is not null);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public static Scanner Scanner { get; set; }
+
+        public ICommand SaveImage { get; }
 
         protected virtual void OnPropertyChanged(string propertyName = null)
         {
@@ -65,7 +96,7 @@ namespace TwainControl
             }
         }
 
-        private void UserControl_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             if (Scanner is not null)
             {
