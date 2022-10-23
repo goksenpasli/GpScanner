@@ -67,7 +67,10 @@ namespace TwainControl
 
         private void UserControl_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            Scanner.PropertyChanged += Scanner_PropertyChanged;
+            if (Scanner is not null)
+            {
+                Scanner.PropertyChanged += Scanner_PropertyChanged;
+            }
         }
     }
 }

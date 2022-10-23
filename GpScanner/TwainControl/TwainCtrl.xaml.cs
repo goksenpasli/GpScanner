@@ -371,7 +371,7 @@ namespace TwainControl
             SplitImage = new RelayCommand<object>(parameter =>
             {
                 BitmapSource image = (BitmapSource)Scanner.CroppedImage;
-                _ = Directory.CreateDirectory($@"{Settings.Default.AutoFolder}\{Translation.GetResStringValue("SPLIT")}");
+                _ = Directory.CreateDirectory($@"{PdfGeneration.GetSaveFolder()}\{Translation.GetResStringValue("SPLIT")}");
                 for (int i = 0; i < Scanner.EnAdet; i++)
                 {
                     for (int j = 0; j < Scanner.BoyAdet; j++)
@@ -384,11 +384,11 @@ namespace TwainControl
                         if (sourceRect.HasArea)
                         {
                             CroppedBitmap croppedBitmap = new(image, sourceRect);
-                            File.WriteAllBytes($@"{Settings.Default.AutoFolder}\{Translation.GetResStringValue("SPLIT")}".SetUniqueFile(Translation.GetResStringValue("SPLIT"), "jpg"), croppedBitmap.ToTiffJpegByteArray(Format.Jpg));
+                            File.WriteAllBytes($@"{PdfGeneration.GetSaveFolder()}\{Translation.GetResStringValue("SPLIT")}".SetUniqueFile(Translation.GetResStringValue("SPLIT"), "jpg"), croppedBitmap.ToTiffJpegByteArray(Format.Jpg));
                         }
                     }
                 }
-                WebAdreseGit.Execute($@"{Settings.Default.AutoFolder}\{Translation.GetResStringValue("SPLIT")}");
+                WebAdreseGit.Execute($@"{PdfGeneration.GetSaveFolder()}\{Translation.GetResStringValue("SPLIT")}");
             }, parameter => Scanner.AutoSave && Scanner.CroppedImage is not null && (Scanner.EnAdet > 1 || Scanner.BoyAdet > 1));
 
             ResetCroppedImage = new RelayCommand<object>(parameter => ResetCropMargin(), parameter => Scanner.CroppedImage is not null);

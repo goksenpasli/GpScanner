@@ -520,7 +520,9 @@
                             </DockPanel>
                         </Grid>
                     </GroupBox.Header>
-                    <ListBox Extensions:DragDropExtension.ScrollOnDragDrop="True" AllowDrop="True"
+                    <ListBox Extensions:DragDropExtension.ScrollOnDragDrop="True"
+                        d:ItemsSource="{d:SampleData ItemCount=5}"
+                        AllowDrop="True"
                         Background="{StaticResource BorderBackground}"
                         Drop="ListBox_Drop" IsSynchronizedWithCurrentItem="False"
                         ItemsSource="{Binding Scanner.Resimler, Mode=OneWay}"
@@ -584,7 +586,10 @@
                                                     <Viewbox>
                                                         <local:ShadowedImage Width="{Binding Resim.Thumbnail.Width, Mode=OneWay}"
                                                             Height="{Binding Resim.Thumbnail.Height, Mode=OneWay}"
-                                                            d:Source="/TwainControl;component/bw.png" ShowShadow="True"
+                                                            d:Height="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}"
+                                                            d:Source="/GpScanner;component/scanner.ico"
+                                                            d:Width="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}"
+                                                            ShowShadow="True"
                                                             Source="{Binding Resim.Thumbnail, Mode=OneWay, IsAsync=True}" />
                                                     </Viewbox>
                                                 </ToggleButton>
