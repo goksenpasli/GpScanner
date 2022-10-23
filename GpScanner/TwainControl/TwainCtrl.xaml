@@ -25,6 +25,15 @@
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
+            <LinearGradientBrush x:Key="Colorfull" StartPoint="0,0.5" EndPoint="1,0.5">
+                <GradientStop Offset="0.0" Color="Red" />
+                <GradientStop Offset="0.17" Color="Orange" />
+                <GradientStop Offset="0.33" Color="Yellow" />
+                <GradientStop Offset="0.5" Color="Green" />
+                <GradientStop Offset="0.67" Color="Blue" />
+                <GradientStop Offset="0.83" Color="Indigo" />
+                <GradientStop Offset="1.0" Color="Violet" />
+            </LinearGradientBrush>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -60,9 +69,28 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <GroupBox Grid.Row="1"
-                    Header="{local:Loc SETTİNGS}"
-                    IsEnabled="{Binding Scanner.ArayüzEtkin}">
+                <GroupBox Grid.Row="1" IsEnabled="{Binding Scanner.ArayüzEtkin}">
+                    <GroupBox.Header>
+                        <UniformGrid Columns="2">
+                            <TextBlock VerticalAlignment="Center" Text="{local:Loc SETTİNGS}" />
+                            <ComboBox ItemsSource="{Binding CompressionProfiles}" SelectedItem="{Binding SelectedCompressionProfile}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock VerticalAlignment="Center">
+                                                <Run Text="{Binding Item1, Mode=OneWay}" />
+                                                <Run Text="{Binding Item3, Mode=OneWay, StringFormat={}{0} Dpi}" />
+                                            </TextBlock>
+                                            <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                                Content="MOZJPEG"
+                                                IsChecked="{Binding Item4, Mode=OneWay}"
+                                                IsEnabled="False" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </UniformGrid>
+                    </GroupBox.Header>
                     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                         <StackPanel VerticalAlignment="Top">
                             <StackPanel.Resources>
@@ -148,19 +176,8 @@
                                         <StackPanel>
                                             <TextBlock HorizontalAlignment="Center"
                                                 FontWeight="Bold"
-                                                Text="{local:Loc COLOR}">
-                                                <TextBlock.Foreground>
-                                                    <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
-                                                        <GradientStop Offset="0.0" Color="Red" />
-                                                        <GradientStop Offset="0.17" Color="Orange" />
-                                                        <GradientStop Offset="0.33" Color="Yellow" />
-                                                        <GradientStop Offset="0.5" Color="Green" />
-                                                        <GradientStop Offset="0.67" Color="Blue" />
-                                                        <GradientStop Offset="0.83" Color="Indigo" />
-                                                        <GradientStop Offset="1.0" Color="Violet" />
-                                                    </LinearGradientBrush>
-                                                </TextBlock.Foreground>
-                                            </TextBlock>
+                                                Foreground="{StaticResource Colorfull}"
+                                                Text="{local:Loc COLOR}" />
                                             <Image Width="32" Height="32">
                                                 <Image.Source>
                                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -418,9 +435,11 @@
                                                             </TextBlock>
                                                         </CheckBox.Content>
                                                     </CheckBox>
-                                                    <CheckBox Content="MOZJPEG"
-                                                        IsChecked="{Binding Scanner.UseMozJpegEncoding}"
-                                                        IsEnabled="{Binding Source={x:Static mozjpeg:MozJpeg.MozJpegDllExists}}" />
+                                                    <CheckBox IsChecked="{Binding Scanner.UseMozJpegEncoding}" IsEnabled="{Binding Source={x:Static mozjpeg:MozJpeg.MozJpegDllExists}}">
+                                                        <CheckBox.Content>
+                                                            <TextBlock Foreground="{StaticResource Colorfull}" Text="MOZPEG" />
+                                                        </CheckBox.Content>
+                                                    </CheckBox>
                                                 </StackPanel>
                                             </GroupBox>
                                         </Extensions:ContentToggleButton.OverContent>

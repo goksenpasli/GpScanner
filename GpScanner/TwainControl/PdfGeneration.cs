@@ -68,7 +68,7 @@ namespace TwainControl
                     using XGraphics gfx = XGraphics.FromPdfPage(page);
                     byte[] data = null;
                     MemoryStream ms;
-                    if (Scanner.UseMozJpegEncoding)
+                    if (Scanner.UseMozJpegEncoding && format != Format.Tiff)
                     {
                         using MozJpeg.MozJpeg mozJpeg = new();
                         data = mozJpeg.Encode(scannedimage.Resim.BitmapSourceToBitmap(), jpegquality, false, TJFlags.ACCURATEDCT | TJFlags.DC_SCAN_OPT2 | TJFlags.TUNE_MS_SSIM);
@@ -123,7 +123,7 @@ namespace TwainControl
                 using XGraphics gfx = XGraphics.FromPdfPage(page);
                 byte[] data = null;
                 MemoryStream ms;
-                if (Scanner.UseMozJpegEncoding)
+                if (Scanner.UseMozJpegEncoding && format != Format.Tiff)
                 {
                     using MozJpeg.MozJpeg mozJpeg = new();
                     data = mozJpeg.Encode(bitmapframe.BitmapSourceToBitmap(), jpegquality, false, TJFlags.ACCURATEDCT | TJFlags.DC_SCAN_OPT2 | TJFlags.TUNE_MS_SSIM);

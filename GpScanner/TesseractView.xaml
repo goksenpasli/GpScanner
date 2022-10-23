@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:GpScanner"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:properties="clr-namespace:GpScanner.Properties"
+    xmlns:ocr="clr-namespace:Ocr;assembly=Ocr" xmlns:properties="clr-namespace:GpScanner.Properties"
     xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
     xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
     xmlns:viewmodel="clr-namespace:GpScanner.ViewModel"
@@ -53,6 +53,7 @@
             </ItemsControl>
             <ListBox Grid.Column="1"
                 d:ItemsSource="{d:SampleData ItemCount=5}"
+                IsEnabled="{Binding Source={x:Static ocr:Ocr.TesseractFolderExists}}"
                 ItemsSource="{Binding TesseractFiles}"
                 SelectedItem="{Binding DefaultTtsLang, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
             <FlowDocumentScrollViewer Grid.Row="1" Grid.ColumnSpan="2">

@@ -10,6 +10,8 @@ namespace Ocr
 {
     public static class Ocr
     {
+        public static bool TesseractFolderExists { get; set; } = Directory.Exists(Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + @"\tessdata");
+
         public static ObservableCollection<OcrData> GetOcrData(this byte[] dosya, string lang)
         {
             try
@@ -46,14 +48,14 @@ namespace Ocr
         {
             if (string.IsNullOrWhiteSpace(lang))
             {
-                MessageBox.Show("Tesseract Dil Seçimini Kontrol Edin.", Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+                _ = MessageBox.Show("Tesseract Dil Seçimini Kontrol Edin.", Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
                 return null;
             }
-            if (Directory.Exists(Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + @"\tessdata"))
+            if (TesseractFolderExists)
             {
                 return await Task.Run(() => GetOcrData(dosya, lang));
             }
-            MessageBox.Show("Tesseract Engine Klasörünü Kontrol Edin.", Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+            _ = MessageBox.Show("Tesseract Engine Klasörünü Kontrol Edin.", Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
             return null;
         }
     }
