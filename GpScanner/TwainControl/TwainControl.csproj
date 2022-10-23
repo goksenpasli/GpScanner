@@ -180,6 +180,10 @@
       <Project>{22b9a127-5e74-4534-bfc4-a3349544c52c}</Project>
       <Name>Extensions</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\MozJpeg\MozJpeg.csproj">
+      <Project>{6745dd23-9224-40d5-88f8-26637c3f4cf3}</Project>
+      <Name>MozJpeg</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Ocr\Ocr.csproj">
       <Project>{a9495099-87ce-4478-8555-8701f2989145}</Project>
       <Name>Ocr</Name>

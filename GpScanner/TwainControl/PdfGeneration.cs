@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using Extensions;
 using Microsoft.Win32;
+using MozJpeg;
 using Ocr;
 using PdfSharp;
 using PdfSharp.Drawing;
@@ -65,12 +66,23 @@ namespace TwainControl
                 {
                     PdfPage page = document.AddPage();
                     using XGraphics gfx = XGraphics.FromPdfPage(page);
-                    using MemoryStream ms = new(scannedimage.Resim.ToTiffJpegByteArray(format, jpegquality));
+                    byte[] data = null;
+                    MemoryStream ms;
+                    if (Scanner.UseMozJpegEncoding)
+                    {
+                        using MozJpeg.MozJpeg mozJpeg = new();
+                        data = mozJpeg.Encode(scannedimage.Resim.BitmapSourceToBitmap(), jpegquality, false, TJFlags.ACCURATEDCT | TJFlags.DC_SCAN_OPT2 | TJFlags.TUNE_MS_SSIM);
+                        ms = new MemoryStream(data);
+                    }
+                    else
+                    {
+                        ms = new(scannedimage.Resim.ToTiffJpegByteArray(format, jpegquality));
+                    }
                     using XImage xImage = XImage.FromStream(ms);
                     XSize size = PageSizeConverter.ToSize(PageSize.A4);
                     if (ScannedText != null)
                     {
-                        foreach (var item in ScannedText)
+                        foreach (ObservableCollection<OcrData> item in ScannedText)
                         {
                             WritePdfTextContent(scannedimage.Resim, item, page, gfx, XBrushes.Black);
                         }
@@ -86,6 +98,8 @@ namespace TwainControl
                     }
                     index++;
                     Scanner.PdfSaveProgressValue = index / bitmapFrames.Count();
+                    ms = null;
+                    data = null;
                 }
                 if (Scanner.PasswordProtect)
                 {
@@ -107,7 +121,18 @@ namespace TwainControl
                 using PdfDocument document = new();
                 PdfPage page = document.AddPage();
                 using XGraphics gfx = XGraphics.FromPdfPage(page);
-                using MemoryStream ms = new(bitmapframe.ToTiffJpegByteArray(format, jpegquality));
+                byte[] data = null;
+                MemoryStream ms;
+                if (Scanner.UseMozJpegEncoding)
+                {
+                    using MozJpeg.MozJpeg mozJpeg = new();
+                    data = mozJpeg.Encode(bitmapframe.BitmapSourceToBitmap(), jpegquality, false, TJFlags.ACCURATEDCT | TJFlags.DC_SCAN_OPT2 | TJFlags.TUNE_MS_SSIM);
+                    ms = new MemoryStream(data);
+                }
+                else
+                {
+                    ms = new(bitmapframe.ToTiffJpegByteArray(format, jpegquality));
+                }
                 using XImage xImage = XImage.FromStream(ms);
                 XSize size = PageSizeConverter.ToSize(PageSize.A4);
 
@@ -142,6 +167,8 @@ namespace TwainControl
                 }
 
                 DefaultPdfCompression(document);
+                ms = null;
+                data = null;
                 return document;
             }
             catch (Exception ex)

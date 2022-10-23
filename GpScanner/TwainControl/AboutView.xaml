@@ -61,6 +61,11 @@
                         Pdf2Png
                     </Hyperlink>
                 </TextBlock>
+                <TextBlock>
+                    <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/JosePineiro/MozJpeg-wrapper">
+                        MozJpeg
+                    </Hyperlink>
+                </TextBlock>
             </StackPanel>
         </Grid>
     </GroupBox>

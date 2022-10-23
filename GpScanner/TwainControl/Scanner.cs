@@ -666,6 +666,20 @@ namespace TwainControl
             }
         }
 
+        public bool UseMozJpegEncoding
+        {
+            get => useMozJpegEncoding;
+
+            set
+            {
+                if (useMozJpegEncoding != value)
+                {
+                    useMozJpegEncoding = value;
+                    OnPropertyChanged(nameof(UseMozJpegEncoding));
+                }
+            }
+        }
+
         public string Watermark
         {
             get => watermark;
@@ -821,6 +835,8 @@ namespace TwainControl
         private string targetColor = "Transparent";
 
         private double threshold = 1;
+
+        private bool useMozJpegEncoding;
 
         private string watermark;
 

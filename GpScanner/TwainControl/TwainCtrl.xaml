@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:TwainControl"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mozjpeg="clr-namespace:MozJpeg;assembly=MozJpeg"
     xmlns:properties="clr-namespace:TwainControl.Properties"
     x:Name="UserControl"
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
@@ -417,6 +418,9 @@
                                                             </TextBlock>
                                                         </CheckBox.Content>
                                                     </CheckBox>
+                                                    <CheckBox Content="MOZJPEG"
+                                                        IsChecked="{Binding Scanner.UseMozJpegEncoding}"
+                                                        IsEnabled="{Binding Source={x:Static mozjpeg:MozJpeg.MozJpegDllExists}}" />
                                                 </StackPanel>
                                             </GroupBox>
                                         </Extensions:ContentToggleButton.OverContent>
