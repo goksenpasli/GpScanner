@@ -1,5 +1,5 @@
-﻿using Extensions;
-using System.Windows;
+﻿using System.Windows;
+using Extensions;
 
 namespace Ocr
 {

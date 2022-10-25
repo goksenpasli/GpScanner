@@ -189,7 +189,7 @@ namespace GpScanner.ViewModel
                         ObservableCollection<ScannedImage> scannedimages = twainCtrl.Scanner.Resimler;
                         await Task.Run(() =>
                         {
-                            PdfGeneration.GeneratePdf(scannedimages.Where(z => z.Seçili), Format.Jpg).Save(temporarypdf);
+                            PdfGeneration.GeneratePdf(scannedimages.Where(z => z.Seçili), Format.Jpg, twainCtrl.SelectedPaper).Save(temporarypdf);
                             PdfGeneration.MergePdf(new string[] { temporarypdf, file }).Save(file);
                             File.Delete(temporarypdf);
                         });
@@ -692,7 +692,7 @@ namespace GpScanner.ViewModel
             ObservableCollection<Chart> list = new();
             try
             {
-                foreach (IGrouping<int, Scanner> chart in Dosyalar.GroupBy(z => DateTime.Parse(Directory.GetParent(z.FileName).Name).Day).OrderBy(z => z.Key))
+                foreach (IGrouping<int, Scanner> chart in Dosyalar.Where(z => DateTime.TryParse(Directory.GetParent(z.FileName).Name, out DateTime _)).GroupBy(z => DateTime.Parse(Directory.GetParent(z.FileName).Name).Day).OrderBy(z => z.Key))
                 {
                     list.Add(new Chart() { Description = chart.Key.ToString(), ChartBrush = RandomColor(), ChartValue = chart.Count() });
                 }

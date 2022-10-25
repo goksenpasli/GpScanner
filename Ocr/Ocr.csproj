@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Ocr.cs" />
     <Compile Include="OcrData.cs" />
+    <Compile Include="Paper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TesseractOcrData.cs" />
   </ItemGroup>

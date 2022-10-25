@@ -54,7 +54,7 @@ namespace GpScanner
             {
                 string temporarypdf = Path.GetTempPath() + Guid.NewGuid() + ".pdf";
                 string pdfFilePath = pdfviewer.PdfFilePath;
-                PdfGeneration.GeneratePdf(droppedData.Resim, null, Format.Jpg).Save(temporarypdf);
+                PdfGeneration.GeneratePdf(droppedData.Resim, null, Format.Jpg, TwainCtrl.SelectedPaper).Save(temporarypdf);
                 PdfGeneration.MergePdf(new string[] { temporarypdf, pdfFilePath }).Save(pdfFilePath);
                 File.Delete(temporarypdf);
                 pdfviewer.PdfFilePath = null;
@@ -138,11 +138,11 @@ namespace GpScanner
                         }
                         if ((ColourSetting)TwainControl.Properties.Settings.Default.Mode == ColourSetting.BlackAndWhite)
                         {
-                            PdfGeneration.GeneratePdf(TwainCtrl.Scanner.Resimler, Format.Tiff, TwainCtrl.Scanner.JpegQuality, scannedtext).Save(TwainCtrl.Scanner.PdfFilePath);
+                            PdfGeneration.GeneratePdf(TwainCtrl.Scanner.Resimler, Format.Tiff, TwainCtrl.SelectedPaper, TwainCtrl.Scanner.JpegQuality, scannedtext).Save(TwainCtrl.Scanner.PdfFilePath);
                         }
                         if ((ColourSetting)TwainControl.Properties.Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
                         {
-                            PdfGeneration.GeneratePdf(TwainCtrl.Scanner.Resimler, Format.Jpg, TwainCtrl.Scanner.JpegQuality, scannedtext).Save(TwainCtrl.Scanner.PdfFilePath);
+                            PdfGeneration.GeneratePdf(TwainCtrl.Scanner.Resimler, Format.Jpg, TwainCtrl.SelectedPaper, TwainCtrl.Scanner.JpegQuality, scannedtext).Save(TwainCtrl.Scanner.PdfFilePath);
                         }
                         if (TwainControl.Properties.Settings.Default.ShowFile)
                         {

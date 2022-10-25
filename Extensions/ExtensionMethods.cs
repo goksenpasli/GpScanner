@@ -356,11 +356,7 @@ namespace Extensions
                 memoryStream.Position = 0;
                 BitmapImage image = new();
                 image.BeginInit();
-                if (decodeheight != 0)
-                {
-                    image.DecodePixelHeight = bitmap.Height > (int)decodeheight ? (int)decodeheight : bitmap.Height;
-                }
-
+                image.DecodePixelHeight = (int)decodeheight;
                 image.CacheOption = BitmapCacheOption.None;
                 image.StreamSource = memoryStream;
                 image.EndInit();

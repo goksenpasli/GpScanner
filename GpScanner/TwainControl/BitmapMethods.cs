@@ -13,6 +13,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Extensions;
+using Ocr;
 using TwainControl.Properties;
 using static Extensions.ExtensionMethods;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
@@ -190,7 +191,7 @@ namespace TwainControl
             return bitmapFrame;
         }
 
-        public static BitmapFrame GenerateImageDocumentBitmapFrame(int decodeheight, MemoryStream ms, bool deskew = false)
+        public static BitmapFrame GenerateImageDocumentBitmapFrame(int decodeheight, MemoryStream ms, Paper paper, bool deskew = false)
         {
             BitmapImage image = new();
             image.BeginInit();
@@ -206,14 +207,26 @@ namespace TwainControl
             {
                 RenderTargetBitmap skewedimage = image.RotateImage((double)TwainCtrl.GetDeskewAngle(image, true));
                 skewedimage.Freeze();
-                bitmapFrame = BitmapFrame.Create(skewedimage, image.PixelWidth < image.PixelHeight ? image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 21 * 29.7) : image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 29.7 * 21));
+                bitmapFrame = BitmapFrame.Create(skewedimage, image.PixelWidth < image.PixelHeight ? image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Width * paper.Height) : image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Height * paper.Width));
             }
             else
             {
-                bitmapFrame = BitmapFrame.Create(image, image.PixelWidth < image.PixelHeight ? image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 21 * 29.7) : image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / 29.7 * 21));
+                bitmapFrame = BitmapFrame.Create(image, image.PixelWidth < image.PixelHeight ? image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Width * paper.Height) : image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Height * paper.Width));
             }
             bitmapFrame.Freeze();
             return bitmapFrame;
+        }
+
+        public static ObservableCollection<Paper> GetPapers()
+        {
+            return new ObservableCollection<Paper>
+            {
+                new Paper() { Height = 84.1, PaperType = "A1", Width = 59.5 },
+                new Paper() { Height = 59.5, PaperType = "A2", Width = 42 },
+                new Paper() { Height = 42, PaperType = "A3", Width = 29.7 },
+                new Paper() { Height = 29.7, PaperType = "A4", Width = 21 },
+                new Paper() { Height = 21, PaperType = "A5", Width = 14.8 },
+            };
         }
 
         public static unsafe Bitmap ReplaceColor(this Bitmap source, System.Windows.Media.Color toReplace, System.Windows.Media.Color replacement, int threshold)

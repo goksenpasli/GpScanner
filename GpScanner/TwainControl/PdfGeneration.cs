@@ -56,7 +56,7 @@ namespace TwainControl
             return outputDocument;
         }
 
-        public static PdfDocument GeneratePdf(IEnumerable<ScannedImage> bitmapFrames, Format format, int jpegquality = 75, List<ObservableCollection<OcrData>> ScannedText = null)
+        public static PdfDocument GeneratePdf(IEnumerable<ScannedImage> bitmapFrames, Format format, Paper paper, int jpegquality = 75, List<ObservableCollection<OcrData>> ScannedText = null)
         {
             using PdfDocument document = new();
             double index = 0;
@@ -65,6 +65,28 @@ namespace TwainControl
                 foreach (ScannedImage scannedimage in bitmapFrames)
                 {
                     PdfPage page = document.AddPage();
+                    switch (paper.PaperType)
+                    {
+                        case "A1":
+                            page.Size = PageSize.A1;
+                            break;
+
+                        case "A2":
+                            page.Size = PageSize.A2;
+                            break;
+
+                        case "A3":
+                            page.Size = PageSize.A3;
+                            break;
+
+                        case "A4":
+                            page.Size = PageSize.A4;
+                            break;
+
+                        case "A5":
+                            page.Size = PageSize.A5;
+                            break;
+                    }
                     using XGraphics gfx = XGraphics.FromPdfPage(page);
                     byte[] data = null;
                     MemoryStream ms;
@@ -114,12 +136,34 @@ namespace TwainControl
             return document;
         }
 
-        public static PdfDocument GeneratePdf(BitmapSource bitmapframe, ObservableCollection<OcrData> ScannedText, Format format, int jpegquality = 75, bool pdfonlytext = false)
+        public static PdfDocument GeneratePdf(BitmapSource bitmapframe, ObservableCollection<OcrData> ScannedText, Format format, Paper paper, int jpegquality = 75, bool pdfonlytext = false)
         {
             try
             {
                 using PdfDocument document = new();
                 PdfPage page = document.AddPage();
+                switch (paper.PaperType)
+                {
+                    case "A1":
+                        page.Size = PageSize.A1;
+                        break;
+
+                    case "A2":
+                        page.Size = PageSize.A2;
+                        break;
+
+                    case "A3":
+                        page.Size = PageSize.A3;
+                        break;
+
+                    case "A4":
+                        page.Size = PageSize.A4;
+                        break;
+
+                    case "A5":
+                        page.Size = PageSize.A5;
+                        break;
+                }
                 using XGraphics gfx = XGraphics.FromPdfPage(page);
                 byte[] data = null;
                 MemoryStream ms;

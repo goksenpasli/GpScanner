@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Extensions;
 using Microsoft.Win32;
+using Ocr;
 using static Extensions.ExtensionMethods;
 
 namespace TwainControl
@@ -40,14 +41,16 @@ namespace TwainControl
                     {
                         BitmapFrame bitmapFrame = BitmapFrame.Create(parameter as BitmapSource);
                         bitmapFrame.Freeze();
-                        await TwainCtrl.SaveImage(bitmapFrame, saveFileDialog, Scanner);
+                        await TwainCtrl.SaveImage(bitmapFrame, saveFileDialog, Scanner, Paper);
                         bitmapFrame = null;
                     });
                 }
-            }, parameter => Scanner.CroppedImage is not null);
+            }, parameter => Scanner?.CroppedImage is not null);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public static Paper Paper { get; set; }
 
         public static Scanner Scanner { get; set; }
 

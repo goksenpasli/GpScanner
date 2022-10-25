@@ -88,6 +88,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.it.resx</DependentUpon>
     </Compile>
+    <Compile Include="Resolution.cs" />
     <Compile Include="ScannedImage.cs" />
     <Compile Include="ShadowedImage.cs" />
     <Compile Include="ToolBox.xaml.cs">
