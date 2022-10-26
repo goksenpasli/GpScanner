@@ -809,7 +809,7 @@ namespace TwainControl
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private const double Inch = 2.54;
+        public const double Inch = 2.54;
 
         private ScanSettings _settings;
 
@@ -863,7 +863,7 @@ namespace TwainControl
 
         private double width;
 
-        private void AddFiles(string[] filenames, int decodeheight)
+        public void AddFiles(string[] filenames, int decodeheight)
         {
             foreach (string item in filenames)
             {
