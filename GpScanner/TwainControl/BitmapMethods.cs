@@ -226,6 +226,14 @@ namespace TwainControl
                 new Paper() { Height = 42, PaperType = "A3", Width = 29.7 },
                 new Paper() { Height = 29.7, PaperType = "A4", Width = 21 },
                 new Paper() { Height = 21, PaperType = "A5", Width = 14.8 },
+                new Paper() { Height = 100, PaperType = "B1", Width = 70.7 },
+                new Paper() { Height = 70.7, PaperType = "B2", Width = 50 },
+                new Paper() { Height = 50, PaperType = "B3", Width = 35.3 },
+                new Paper() { Height = 35.3, PaperType = "B4", Width = 25 },
+                new Paper() { Height = 25, PaperType = "B5", Width = 17.6},
+                new Paper() { Height = 27.9, PaperType = "Letter", Width = 21.6 },
+                new Paper() { Height = 35.6, PaperType = "Legal", Width = 21.6 },
+                new Paper() { Height = 26.7, PaperType = "Executive", Width = 18.4 },
             };
         }
 

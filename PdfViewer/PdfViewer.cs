@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -137,20 +136,6 @@ namespace PdfViewer
             }
         }
 
-        public bool FirstPageThumbnail
-        {
-            get => firstPageThumbnail;
-
-            set
-            {
-                if (firstPageThumbnail != value)
-                {
-                    firstPageThumbnail = value;
-                    OnPropertyChanged(nameof(FirstPageThumbnail));
-                }
-            }
-        }
-
         public FitImageOrientation FitImageOrientation
         {
             get => fitImageOrientation;
@@ -270,20 +255,6 @@ namespace PdfViewer
             set => SetValue(SourceProperty, value);
         }
 
-        public int ThumbnailDpi
-        {
-            get => thumbnailDpi;
-
-            set
-            {
-                if (thumbnailDpi != value)
-                {
-                    thumbnailDpi = value;
-                    OnPropertyChanged(nameof(ThumbnailDpi));
-                }
-            }
-        }
-
         public Visibility TifNavigasyonButtonEtkin
         {
             get => tifNavigasyonButtonEtkin;
@@ -330,30 +301,29 @@ namespace PdfViewer
             set => SetValue(ZoomProperty, value);
         }
 
-        public static BitmapImage BitmapSourceFromByteArray(byte[] buffer, bool fasterimage = false, int thumbdpi = 96)
+        public static BitmapImage BitmapSourceFromByteArray(byte[] buffer, int thumbdpi = 96)
         {
             if (buffer != null)
             {
                 BitmapImage bitmap = new();
                 MemoryStream stream = new(buffer);
                 bitmap.BeginInit();
-                if (fasterimage)
-                {
-                    bitmap.DecodePixelWidth = thumbdpi;
-                }
+                bitmap.DecodePixelWidth = thumbdpi;
                 bitmap.CacheOption = BitmapCacheOption.None;
                 bitmap.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
                 bitmap.StreamSource = stream;
                 bitmap.EndInit();
                 bitmap.Freeze();
+                buffer = null;
+                stream = null;
                 return bitmap;
             }
             return null;
         }
 
-        public static async Task<BitmapImage> ConvertToImgAsync(byte[] stream, int page, int dpi, bool fasterimage = false)
+        public static async Task<BitmapImage> ConvertToImgAsync(byte[] stream, int page, int dpi)
         {
-            return stream.Length > 0 ? await Task.Run(() => BitmapSourceFromByteArray(Pdf2Png.Convert(stream, page, dpi), fasterimage, dpi)) : null;
+            return stream.Length > 0 ? await Task.Run(() => BitmapSourceFromByteArray(Pdf2Png.Convert(stream, page, dpi), dpi)) : null;
         }
 
         public static async Task<MemoryStream> ConvertToImgStreamAsync(byte[] stream, int page, int dpi)
@@ -411,8 +381,6 @@ namespace PdfViewer
 
         private Visibility dpiListVisibility = Visibility.Visible;
 
-        private bool firstPageThumbnail;
-
         private FitImageOrientation fitImageOrientation;
 
         private Visibility openButtonVisibility = Visibility.Collapsed;
@@ -424,8 +392,6 @@ namespace PdfViewer
         private int sayfa = 1;
 
         private Visibility sliderZoomAngleVisibility = Visibility.Visible;
-
-        private int thumbnailDpi = 96;
 
         private Visibility tifNavigasyonButtonEtkin = Visibility.Visible;
 
@@ -463,8 +429,7 @@ namespace PdfViewer
                 {
                     int sayfa = pdfViewer.Sayfa;
                     int dpi = pdfViewer.Dpi;
-                    int thumbdpi = pdfViewer.ThumbnailDpi;
-                    pdfViewer.Source = pdfViewer.FirstPageThumbnail ? await ConvertToImgAsync(pdfdata, sayfa, thumbdpi, true) : await ConvertToImgAsync(pdfdata, sayfa, dpi);
+                    pdfViewer.Source = await ConvertToImgAsync(pdfdata, sayfa, dpi);
                     pdfViewer.ToplamSayfa = PdfPageCount(pdfdata);
                     pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
                     pdfdata = null;
@@ -498,7 +463,7 @@ namespace PdfViewer
         {
             if (e.PropertyName is "Sayfa" && sender is PdfViewer pdfViewer && pdfViewer.PdfFileStream is not null)
             {
-                Source = pdfViewer.FirstPageThumbnail ? await ConvertToImgAsync(pdfViewer.PdfFileStream, sayfa, pdfViewer.ThumbnailDpi, true) : await ConvertToImgAsync(pdfViewer.PdfFileStream, sayfa, pdfViewer.Dpi);
+                Source = await ConvertToImgAsync(pdfViewer.PdfFileStream, sayfa, pdfViewer.Dpi);
                 GC.Collect();
             }
         }

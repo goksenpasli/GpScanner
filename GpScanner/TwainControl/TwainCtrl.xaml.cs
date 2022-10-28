@@ -34,6 +34,8 @@ namespace TwainControl
 {
     public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposable
     {
+        public const double Inch = 2.54;
+
         public static Task filesavetask;
 
         public TwainCtrl()
@@ -773,96 +775,6 @@ namespace TwainControl
             }
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-
-        public BitmapFrame GenerateBitmapFrame(BitmapSource bitmapSource)
-        {
-            bitmapSource.Freeze();
-            BitmapSource thumbnail = bitmapSource.PixelWidth < bitmapSource.PixelHeight ? bitmapSource.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Width * SelectedPaper.Height) : bitmapSource.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Height * SelectedPaper.Width);
-            thumbnail.Freeze();
-            BitmapFrame bitmapFrame = BitmapFrame.Create(bitmapSource, thumbnail);
-            bitmapFrame.Freeze();
-            return bitmapFrame;
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    Scanner.Resimler = null;
-                    twain = null;
-                    Scanner.CroppedImage = null;
-                    Scanner.CopyCroppedImage = null;
-                }
-
-                disposedValue = true;
-            }
-        }
-
-        protected virtual void OnPropertyChanged(string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public const double Inch = 2.54;
-
-        private ScanSettings _settings;
-
-        private ObservableCollection<Chart> blueChart;
-
-        private CroppedBitmap croppedOcrBitmap;
-
-        private int decodeHeight;
-
-        private bool disposedValue;
-
-        private GridLength documentGridLength = new(5, GridUnitType.Star);
-
-        private bool documentPreviewIsExpanded = true;
-
-        private Task fileloadtask;
-
-        private ObservableCollection<Chart> greenChart;
-
-        private double height;
-
-        private byte[] ımgData;
-
-        private double ımgLoadResolution = 120;
-
-        private bool isMouseDown;
-
-        private bool isRightMouseDown;
-
-        private ObservableCollection<Paper> papers;
-
-        private double pdfLoadProgressValue;
-
-        private ObservableCollection<Chart> redChart;
-
-        private Scanner scanner;
-
-        private ScannedImage seçiliResim;
-
-        private Tuple<string, int, double, bool> selectedCompressionProfile;
-
-        private Paper selectedPaper = new();
-
-        private double startupcoordx;
-
-        private double startupcoordy;
-
-        private Twain twain;
-
-        private GridLength twainGuiControlLength = new(3, GridUnitType.Star);
-
-        private double width;
-
         public void AddFiles(string[] filenames, int decodeheight)
         {
             foreach (string item in filenames)
@@ -979,6 +891,94 @@ namespace TwainControl
             }
         }
 
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
+        public BitmapFrame GenerateBitmapFrame(BitmapSource bitmapSource)
+        {
+            bitmapSource.Freeze();
+            BitmapSource thumbnail = bitmapSource.PixelWidth < bitmapSource.PixelHeight ? bitmapSource.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Width * SelectedPaper.Height) : bitmapSource.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Height * SelectedPaper.Width);
+            thumbnail.Freeze();
+            BitmapFrame bitmapFrame = BitmapFrame.Create(bitmapSource, thumbnail);
+            bitmapFrame.Freeze();
+            return bitmapFrame;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    Scanner.Resimler = null;
+                    twain = null;
+                    Scanner.CroppedImage = null;
+                    Scanner.CopyCroppedImage = null;
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        protected virtual void OnPropertyChanged(string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private ScanSettings _settings;
+
+        private ObservableCollection<Chart> blueChart;
+
+        private CroppedBitmap croppedOcrBitmap;
+
+        private int decodeHeight;
+
+        private bool disposedValue;
+
+        private GridLength documentGridLength = new(5, GridUnitType.Star);
+
+        private bool documentPreviewIsExpanded = true;
+
+        private Task fileloadtask;
+
+        private ObservableCollection<Chart> greenChart;
+
+        private double height;
+
+        private byte[] ımgData;
+
+        private double ımgLoadResolution = 120;
+
+        private bool isMouseDown;
+
+        private bool isRightMouseDown;
+
+        private ObservableCollection<Paper> papers;
+
+        private double pdfLoadProgressValue;
+
+        private ObservableCollection<Chart> redChart;
+
+        private Scanner scanner;
+
+        private ScannedImage seçiliResim;
+
+        private Tuple<string, int, double, bool> selectedCompressionProfile;
+
+        private Paper selectedPaper = new();
+
+        private double startupcoordx;
+
+        private double startupcoordy;
+
+        private Twain twain;
+
+        private GridLength twainGuiControlLength = new(3, GridUnitType.Star);
+
+        private double width;
+
         private void ButtonedTextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             Scanner.CaretPosition = (sender as ButtonedTextBox)?.CaretIndex ?? 0;
@@ -1032,6 +1032,38 @@ namespace TwainControl
 
                 case "A5":
                     scansettings.Page.Size = PageType.A5;
+                    break;
+
+                case "B1":
+                    scansettings.Page.Size = PageType.ISOB1;
+                    break;
+
+                case "B2":
+                    scansettings.Page.Size = PageType.ISOB2;
+                    break;
+
+                case "B3":
+                    scansettings.Page.Size = PageType.ISOB3;
+                    break;
+
+                case "B4":
+                    scansettings.Page.Size = PageType.ISOB4;
+                    break;
+
+                case "B5":
+                    scansettings.Page.Size = PageType.ISOB5;
+                    break;
+
+                case "Letter":
+                    scansettings.Page.Size = PageType.UsLetter;
+                    break;
+
+                case "Legal":
+                    scansettings.Page.Size = PageType.UsLegal;
+                    break;
+
+                case "Executive":
+                    scansettings.Page.Size = PageType.UsExecutive;
                     break;
             }
             return scansettings;

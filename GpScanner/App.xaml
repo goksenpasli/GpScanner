@@ -203,6 +203,10 @@
                                         </MultiBinding>
                                     </Button.CommandParameter>
                                 </Button>
+                                <ComboBox ItemStringFormat="{}{0} Dpi"
+                                    ItemsSource="{Binding DpiList, RelativeSource={RelativeSource TemplatedParent}}"
+                                    SelectedItem="{Binding Dpi, RelativeSource={RelativeSource TemplatedParent}, StringFormat=Dpi}"
+                                    Visibility="{Binding DpiListVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
                             </StackPanel>
                         </Grid>
                     </ContentControl>
@@ -217,9 +221,7 @@
                 </ControlTemplate.Triggers>
             </ControlTemplate>
             <DataTemplate x:Key="PdfViewerTemplate">
-                <PdfViewer:PdfViewer Width="111" Height="157"
-                    AllowDrop="True" DpiListVisibility="Collapsed" FirstPageThumbnail="True"
-                    OpenButtonVisibility="Collapsed"
+                <PdfViewer:PdfViewer AllowDrop="True" Dpi="96" OpenButtonVisibility="Collapsed"
                     PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                     PrintButtonVisibility="Collapsed" ScrollBarVisible="Hidden" SliderZoomAngleVisibility="Collapsed"
                     SnapTick="True"
@@ -256,16 +258,13 @@
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="ZipViewerTemplate">
-                <Controls:ArchiveViewer Width="160" Height="220"
-                    ArchivePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                <Controls:ArchiveViewer ArchivePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="ZipViewerTemplateFull">
                 <Controls:ArchiveViewer ArchivePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="ImgViewerTemplate">
-                <Extensions:ImageViewer Width="160" Height="220"
-                    ImageFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                    ToolBarVisibility="Collapsed" />
+                <Extensions:ImageViewer ImageFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" ToolBarVisibility="Collapsed" />
             </DataTemplate>
             <DataTemplate x:Key="ImgViewerTemplateFull">
                 <Extensions:ImageViewer ImageFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />

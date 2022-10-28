@@ -65,28 +65,7 @@ namespace TwainControl
                 foreach (ScannedImage scannedimage in bitmapFrames)
                 {
                     PdfPage page = document.AddPage();
-                    switch (paper.PaperType)
-                    {
-                        case "A1":
-                            page.Size = PageSize.A1;
-                            break;
-
-                        case "A2":
-                            page.Size = PageSize.A2;
-                            break;
-
-                        case "A3":
-                            page.Size = PageSize.A3;
-                            break;
-
-                        case "A4":
-                            page.Size = PageSize.A4;
-                            break;
-
-                        case "A5":
-                            page.Size = PageSize.A5;
-                            break;
-                    }
+                    SetPaperSize(paper, page);
                     using XGraphics gfx = XGraphics.FromPdfPage(page);
                     byte[] data = null;
                     MemoryStream ms;
@@ -142,28 +121,7 @@ namespace TwainControl
             {
                 using PdfDocument document = new();
                 PdfPage page = document.AddPage();
-                switch (paper.PaperType)
-                {
-                    case "A1":
-                        page.Size = PageSize.A1;
-                        break;
-
-                    case "A2":
-                        page.Size = PageSize.A2;
-                        break;
-
-                    case "A3":
-                        page.Size = PageSize.A3;
-                        break;
-
-                    case "A4":
-                        page.Size = PageSize.A4;
-                        break;
-
-                    case "A5":
-                        page.Size = PageSize.A5;
-                        break;
-                }
+                SetPaperSize(paper, page);
                 using XGraphics gfx = XGraphics.FromPdfPage(page);
                 byte[] data = null;
                 MemoryStream ms;
@@ -301,6 +259,64 @@ namespace TwainControl
                 securitySettings.PermitModifyDocument = Scanner.AllowEdit;
                 securitySettings.PermitPrint = Scanner.AllowPrint;
                 securitySettings.PermitExtractContent = Scanner.AllowCopy;
+            }
+        }
+
+        private static void SetPaperSize(Paper paper, PdfPage page)
+        {
+            switch (paper.PaperType)
+            {
+                case "A1":
+                    page.Size = PageSize.A1;
+                    break;
+
+                case "A2":
+                    page.Size = PageSize.A2;
+                    break;
+
+                case "A3":
+                    page.Size = PageSize.A3;
+                    break;
+
+                case "A4":
+                    page.Size = PageSize.A4;
+                    break;
+
+                case "A5":
+                    page.Size = PageSize.A5;
+                    break;
+
+                case "B1":
+                    page.Size = PageSize.B1;
+                    break;
+
+                case "B2":
+                    page.Size = PageSize.B2;
+                    break;
+
+                case "B3":
+                    page.Size = PageSize.B3;
+                    break;
+
+                case "B4":
+                    page.Size = PageSize.B4;
+                    break;
+
+                case "B5":
+                    page.Size = PageSize.B5;
+                    break;
+
+                case "Letter":
+                    page.Size = PageSize.Letter;
+                    break;
+
+                case "Legal":
+                    page.Size = PageSize.Legal;
+                    break;
+
+                case "Executive":
+                    page.Size = PageSize.Executive;
+                    break;
             }
         }
 

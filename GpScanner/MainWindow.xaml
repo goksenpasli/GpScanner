@@ -281,7 +281,7 @@
                         </StackPanel>
                     </Button>
                 </UniformGrid>
-                <UniformGrid Grid.Row="4" Columns="3">
+                <UniformGrid Grid.Row="4" Columns="4">
                     <Button Command="{Binding DateBack}"
                         Content="ç" FontFamily="Wingdings" FontSize="16" />
                     <DatePicker DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}"
@@ -289,20 +289,25 @@
                         SelectedDate="{Binding SeçiliGün}" />
                     <Button Command="{Binding DateForward}"
                         Content="è" FontFamily="Wingdings" FontSize="16" />
+                    <ComboBox x:Name="CbSize"
+                        ItemsSource="{Binding GetPreviewSize}"
+                        SelectedItem="{Binding SelectedSize}" />
                 </UniformGrid>
                 <ListBox Grid.Row="5"
+                    HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
                     d:ItemsSource="{d:SampleData ItemCount=5}"
                     Background="{StaticResource BorderBackground}"
                     IsSynchronizedWithCurrentItem="False"
                     ItemsSource="{Binding Mode=OneWay, Source={StaticResource Veriler}}"
-                    ScrollViewer.ScrollChanged="ListBox_ScrollChanged"
                     SelectedItem="{Binding SelectedDocument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     SelectionMode="Extended" VirtualizingPanel.CacheLength="3,3"
                     VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                    VirtualizingPanel.ScrollUnit="Item" VirtualizingPanel.VirtualizationMode="Recycling">
+                    VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Recycling">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="145,190" SpacingMode="None" />
+                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
+                                ItemSize="{Binding SelectedSize}"
+                                SpacingMode="None" />
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
                     <ListBox.ItemContainerStyle>
@@ -312,11 +317,10 @@
                                     <Setter Property="IsSelected" Value="True" />
                                 </DataTrigger>
                             </Style.Triggers>
-                            <Setter Property="Margin" Value="2" />
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate>
-                                        <Border>
+                                        <Border Width="{Binding DataContext.SelectedSize.Width, RelativeSource={RelativeSource AncestorType=Window}}" Height="{Binding DataContext.SelectedSize.Height, RelativeSource={RelativeSource AncestorType=Window}}">
                                             <Border.Style>
                                                 <Style TargetType="Border">
                                                     <Style.Triggers>
@@ -327,8 +331,12 @@
                                                     </Style.Triggers>
                                                 </Style>
                                             </Border.Style>
-                                            <StackPanel Margin="2">
-                                                <CheckBox VerticalContentAlignment="Center"
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition />
+                                                    <RowDefinition Height="19.2" />
+                                                </Grid.RowDefinitions>
+                                                <CheckBox HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
                                                     d:Height="50" Background="Transparent" Drop="ContentControl_Drop"
                                                     IsChecked="{Binding Seçili}"
                                                     IsEnabled="{Binding FileName, Mode=OneWay, Converter={StaticResource FileNamePdfZipCheckConverter}}">
@@ -346,9 +354,13 @@
                                                         </Style>
                                                     </CheckBox.Style>
                                                 </CheckBox>
-                                                <StackPanel HorizontalAlignment="Center"
-                                                    Background="{TemplateBinding Background}"
-                                                    Orientation="Horizontal">
+                                                <Grid Grid.Row="1"
+                                                    HorizontalAlignment="Center"
+                                                    Background="{TemplateBinding Background}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="20" />
+                                                        <ColumnDefinition />
+                                                    </Grid.ColumnDefinitions>
                                                     <TextBlock VerticalAlignment="Center" ToolTip="{twainctrl:Loc SHOWFOLDER}">
                                                         <Hyperlink Command="{Binding DataContext.ExploreFile, ElementName=TwainCtrl, Mode=OneWay}"
                                                             CommandParameter="{Binding Path=FileName}"
@@ -363,7 +375,7 @@
                                                             </Image>
                                                         </Hyperlink>
                                                     </TextBlock>
-                                                    <Extensions:SplitButton Width="106"
+                                                    <Extensions:SplitButton Grid.Column="1"
                                                         Command="{Binding DataContext.WebAdreseGit, ElementName=TwainCtrl, Mode=OneWay}"
                                                         CommandParameter="{Binding Path=FileName}">
                                                         <Extensions:SplitButton.Content>
@@ -382,8 +394,8 @@
                                                             </Extensions:ResizablePanel>
                                                         </Extensions:SplitButton.InternalContent>
                                                     </Extensions:SplitButton>
-                                                </StackPanel>
-                                            </StackPanel>
+                                                </Grid>
+                                            </Grid>
                                         </Border>
                                     </ControlTemplate>
                                 </Setter.Value>

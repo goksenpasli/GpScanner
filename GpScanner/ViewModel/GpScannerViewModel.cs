@@ -416,6 +416,18 @@ namespace GpScanner.ViewModel
             }
         }
 
+        public ObservableCollection<Size> GetPreviewSize
+        {
+            get => new ObservableCollection<Size>
+                {
+                    new Size(240,315),
+                    new Size(320,420),
+                    new Size(426,560),
+                };
+
+            set => getPreviewSize = value;
+        }
+
         public GridLength MainWindowDocumentGuiControlLength
         {
             get => mainWindowDocumentGuiControlLength; set
@@ -621,6 +633,20 @@ namespace GpScanner.ViewModel
             }
         }
 
+        public Size SelectedSize
+        {
+            get => selectedSize;
+
+            set
+            {
+                if (selectedSize != value)
+                {
+                    selectedSize = value;
+                    OnPropertyChanged(nameof(SelectedSize));
+                }
+            }
+        }
+
         public bool ShowPdfPreview
         {
             get => showPdfPreview;
@@ -794,6 +820,8 @@ namespace GpScanner.ViewModel
 
         private double fold = 0.3;
 
+        private ObservableCollection<Size> getPreviewSize;
+
         private GridLength mainWindowDocumentGuiControlLength = new(1, GridUnitType.Star);
 
         private GridLength mainWindowGuiControlLength = new(2, GridUnitType.Star);
@@ -821,6 +849,8 @@ namespace GpScanner.ViewModel
         private DateTime? seçiliGün;
 
         private Scanner selectedDocument;
+
+        private Size selectedSize = new Size(240, 315);
 
         private bool showPdfPreview;
 
