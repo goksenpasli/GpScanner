@@ -157,34 +157,17 @@
                     <RowDefinition Height="40" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <UniformGrid Columns="2">
-                    <ToggleButton IsChecked="{Binding Path=ShowPdfPreview}">
-                        <ToggleButton.Content>
-                            <StackPanel Orientation="Horizontal">
-                                <Image Width="32" Height="32">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="1" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PREVIEWFILE}" />
-                            </StackPanel>
-                        </ToggleButton.Content>
-                    </ToggleButton>
-                    <Extensions:ContentToggleButton>
-                        <StackPanel Orientation="Horizontal">
-                            <Canvas Width="32" Height="32"
-                                HorizontalAlignment="Left"
-                                Background="{StaticResource Tesseract}" />
-                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc TESSERACT}" />
-                        </StackPanel>
-                        <Extensions:ContentToggleButton.OverContent>
-                            <local:TesseractView Width="500" Height="350" />
-                        </Extensions:ContentToggleButton.OverContent>
-                    </Extensions:ContentToggleButton>
-                </UniformGrid>
+                <Extensions:ContentToggleButton>
+                    <StackPanel Orientation="Horizontal">
+                        <Canvas Width="32" Height="32"
+                            HorizontalAlignment="Left"
+                            Background="{StaticResource Tesseract}" />
+                        <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc TESSERACT}" />
+                    </StackPanel>
+                    <Extensions:ContentToggleButton.OverContent>
+                        <local:TesseractView Width="500" Height="350" />
+                    </Extensions:ContentToggleButton.OverContent>
+                </Extensions:ContentToggleButton>
                 <Extensions:ButtonedTextBox Grid.Row="3"
                     CopyButtonVisibility="Collapsed"
                     Text="{Binding AramaMetni, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -291,7 +274,17 @@
                         Content="è" FontFamily="Wingdings" FontSize="16" />
                     <ComboBox x:Name="CbSize"
                         ItemsSource="{Binding GetPreviewSize}"
-                        SelectedItem="{Binding SelectedSize}" />
+                        SelectedItem="{Binding SelectedSize}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <Run Text="{Binding Width, StringFormat={}{0} Pixel}" />
+                                    <Run Text="X" />
+                                    <Run Text="{Binding Height, StringFormat={}{0} Pixel}" />
+                                </TextBlock>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                 </UniformGrid>
                 <ListBox Grid.Row="5"
                     HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
@@ -331,71 +324,14 @@
                                                     </Style.Triggers>
                                                 </Style>
                                             </Border.Style>
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition />
-                                                    <RowDefinition Height="19.2" />
-                                                </Grid.RowDefinitions>
-                                                <CheckBox HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
-                                                    d:Height="50" Background="Transparent" Drop="ContentControl_Drop"
-                                                    IsChecked="{Binding Seçili}"
-                                                    IsEnabled="{Binding FileName, Mode=OneWay, Converter={StaticResource FileNamePdfZipCheckConverter}}">
-                                                    <CheckBox.Style>
-                                                        <Style TargetType="CheckBox">
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding Path=DataContext.ShowPdfPreview, RelativeSource={RelativeSource AncestorType=Window}}" Value="true">
-                                                                    <Setter Property="Content">
-                                                                        <Setter.Value>
-                                                                            <ContentControl Content="{Binding Path=FileName, IsAsync=True}" ContentTemplateSelector="{StaticResource ThumbViewerSelector}" />
-                                                                        </Setter.Value>
-                                                                    </Setter>
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </CheckBox.Style>
-                                                </CheckBox>
-                                                <Grid Grid.Row="1"
-                                                    HorizontalAlignment="Center"
-                                                    Background="{TemplateBinding Background}">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="20" />
-                                                        <ColumnDefinition />
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock VerticalAlignment="Center" ToolTip="{twainctrl:Loc SHOWFOLDER}">
-                                                        <Hyperlink Command="{Binding DataContext.ExploreFile, ElementName=TwainCtrl, Mode=OneWay}"
-                                                            CommandParameter="{Binding Path=FileName}"
-                                                            TextDecorations="None">
-                                                            <Image Width="16" Height="16">
-                                                                <Image.Source>
-                                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                        <Binding Source="Shell32.dll" />
-                                                                        <Binding Source="4" />
-                                                                    </MultiBinding>
-                                                                </Image.Source>
-                                                            </Image>
-                                                        </Hyperlink>
-                                                    </TextBlock>
-                                                    <Extensions:SplitButton Grid.Column="1"
-                                                        Command="{Binding DataContext.WebAdreseGit, ElementName=TwainCtrl, Mode=OneWay}"
-                                                        CommandParameter="{Binding Path=FileName}">
-                                                        <Extensions:SplitButton.Content>
-                                                            <StackPanel Orientation="Horizontal">
-                                                                <Image Width="16" Height="16"
-                                                                    Source="{Binding FileName, Converter={StaticResource FilePathToIconConverter}}" />
-                                                                <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay, Path=FileName, Converter={StaticResource FileNameExtractConverter}}" />
-                                                            </StackPanel>
-                                                        </Extensions:SplitButton.Content>
-                                                        <Extensions:SplitButton.InternalContent>
-                                                            <Extensions:ResizablePanel Width="480" Height="360" MinWidth="480"
-                                                                MinHeight="360">
-                                                                <GroupBox>
-                                                                    <ContentPresenter Content="{Binding Path=FileName}" ContentTemplateSelector="{StaticResource ViewerSelector}" />
-                                                                </GroupBox>
-                                                            </Extensions:ResizablePanel>
-                                                        </Extensions:SplitButton.InternalContent>
-                                                    </Extensions:SplitButton>
-                                                </Grid>
-                                            </Grid>
+                                            <CheckBox HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                                                d:Height="50" Background="Transparent" Drop="ContentControl_Drop"
+                                                IsChecked="{Binding Seçili}"
+                                                IsEnabled="{Binding FileName, Mode=OneWay, Converter={StaticResource FileNamePdfZipCheckConverter}}">
+                                                <CheckBox.Content>
+                                                    <ContentControl Content="{Binding Path=FileName, IsAsync=True}" ContentTemplateSelector="{StaticResource ThumbViewerSelector}" />
+                                                </CheckBox.Content>
+                                            </CheckBox>
                                         </Border>
                                     </ControlTemplate>
                                 </Setter.Value>

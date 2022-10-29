@@ -153,62 +153,76 @@
                     <ContentControl x:Name="Cnt"
                         Grid.Row="1"
                         Visibility="{Binding ToolBarVisibility, RelativeSource={RelativeSource TemplatedParent}}">
-                        <Grid IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="2"
-                                Orientation="Horizontal"
-                                Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}">
-                                <RepeatButton Command="{Binding ViewerBack, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ToolTip="Önceki Sayfa">
-                                    <Image Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="246" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                </RepeatButton>
-                                <ComboBox ItemsSource="{Binding Pages, RelativeSource={RelativeSource TemplatedParent}}" SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}">
-                                    <ComboBox.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <VirtualizingStackPanel />
-                                        </ItemsPanelTemplate>
-                                    </ComboBox.ItemsPanel>
-                                </ComboBox>
-                                <RepeatButton Command="{Binding ViewerNext, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ToolTip="Sonraki Sayfa">
-                                    <Image Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="247" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                </RepeatButton>
-                                <Button Command="{Binding DataContext.TransferImage, RelativeSource={RelativeSource AncestorType=Window}}"
-                                    Content="ç" FontFamily="Wingdings" FontSize="16">
-                                    <Button.CommandParameter>
-                                        <MultiBinding Converter="{StaticResource CloneConverter}">
-                                            <Binding Mode="OneWay" RelativeSource="{RelativeSource AncestorType=PdfViewer:PdfViewer}" />
-                                            <Binding ElementName="TwainCtrl" Mode="OneWay" Path="DataContext" />
+                        <StackPanel IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}"
+                            Orientation="Horizontal"
+                            Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}">
+                            <RepeatButton Command="{Binding ViewerBack, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ToolTip="Önceki Sayfa">
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="246" />
                                         </MultiBinding>
-                                    </Button.CommandParameter>
-                                </Button>
-                                <ComboBox ItemStringFormat="{}{0} Dpi"
-                                    ItemsSource="{Binding DpiList, RelativeSource={RelativeSource TemplatedParent}}"
-                                    SelectedItem="{Binding Dpi, RelativeSource={RelativeSource TemplatedParent}, StringFormat=Dpi}"
-                                    Visibility="{Binding DpiListVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
-                            </StackPanel>
-                        </Grid>
+                                    </Image.Source>
+                                </Image>
+                            </RepeatButton>
+                            <ComboBox ItemsSource="{Binding Pages, RelativeSource={RelativeSource TemplatedParent}}" SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}">
+                                <ComboBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel />
+                                    </ItemsPanelTemplate>
+                                </ComboBox.ItemsPanel>
+                            </ComboBox>
+                            <RepeatButton Command="{Binding ViewerNext, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ToolTip="Sonraki Sayfa">
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="247" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                            </RepeatButton>
+                            <Button Command="{Binding DataContext.TransferImage, RelativeSource={RelativeSource AncestorType=Window}}"
+                                Content="ç" FontFamily="Wingdings" FontSize="16">
+                                <Button.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource CloneConverter}">
+                                        <Binding Mode="OneWay" RelativeSource="{RelativeSource AncestorType=PdfViewer:PdfViewer}" />
+                                        <Binding ElementName="TwainCtrl" Mode="OneWay" Path="DataContext" />
+                                    </MultiBinding>
+                                </Button.CommandParameter>
+                            </Button>
+                            <ComboBox ItemStringFormat="{}{0} Dpi"
+                                ItemsSource="{Binding DpiList, RelativeSource={RelativeSource TemplatedParent}}"
+                                SelectedItem="{Binding Dpi, RelativeSource={RelativeSource TemplatedParent}, StringFormat=Dpi}"
+                                Visibility="{Binding DpiListVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Button Grid.Column="3"
+                                Command="{Binding Yazdır, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                Visibility="{Binding PrintButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="16" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                            </Button>
+                            <TextBlock VerticalAlignment="Center">
+                                <Hyperlink Command="{Binding DataContext.ExploreFile, ElementName=TwainCtrl, Mode=OneWay}"
+                                    CommandParameter="{Binding Mode=OneWay}"
+                                    TextDecorations="None">
+                                    <Image Width="16" Height="16">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="4" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                </Hyperlink>
+                            </TextBlock>
+                        </StackPanel>
                     </ContentControl>
                 </Grid>
                 <ControlTemplate.Triggers>
@@ -221,9 +235,9 @@
                 </ControlTemplate.Triggers>
             </ControlTemplate>
             <DataTemplate x:Key="PdfViewerTemplate">
-                <PdfViewer:PdfViewer AllowDrop="True" Dpi="96" OpenButtonVisibility="Collapsed"
+                <PdfViewer:PdfViewer AllowDrop="True" OpenButtonVisibility="Collapsed"
                     PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                    PrintButtonVisibility="Collapsed" ScrollBarVisible="Hidden" SliderZoomAngleVisibility="Collapsed"
+                    PrintButtonVisibility="Visible" ScrollBarVisible="Hidden" SliderZoomAngleVisibility="Collapsed"
                     SnapTick="True"
                     Template="{StaticResource PdfViewerThumbTemplate}" />
             </DataTemplate>
@@ -253,8 +267,11 @@
                     </UniformGrid>
                     <PdfViewer:PdfViewer x:Name="PdfVwr"
                         Grid.Row="1"
+                        AllowDrop="True" Dpi="72" OpenButtonVisibility="Collapsed"
                         PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                        PrintButtonVisibility="Visible" SnapTick="True" />
+                        PrintButtonVisibility="Visible" ScrollBarVisible="Hidden" SliderZoomAngleVisibility="Collapsed"
+                        SnapTick="True"
+                        Template="{StaticResource PdfViewerThumbTemplate}" />
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="ZipViewerTemplate">
@@ -275,7 +292,7 @@
                 Zip="{StaticResource ZipViewerTemplateFull}" />
             <ViewModel:ViewerTemplateSelector x:Key="ThumbViewerSelector"
                 Img="{StaticResource ImgViewerTemplate}"
-                Pdf="{StaticResource PdfViewerTemplate}"
+                Pdf="{StaticResource PdfViewerTemplateFull}"
                 Zip="{StaticResource ZipViewerTemplate}" />
         </ResourceDictionary>
     </Application.Resources>

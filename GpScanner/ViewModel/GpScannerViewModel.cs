@@ -124,12 +124,11 @@ namespace GpScanner.ViewModel
                 }
             }, parameter => Dosyalar?.Count > 0);
 
-            TransferImage = new RelayCommand<object>(async parameter =>
+            TransferImage = new RelayCommand<object>(parameter =>
             {
                 if (parameter is object[] data && data[0] is PdfViewer.PdfViewer pdfviewer && data[1] is TwainCtrl twainCtrl)
                 {
-                    BitmapImage bitmapSource = await PdfViewer.PdfViewer.ConvertToImgAsync(pdfviewer.PdfFileStream, pdfviewer.Sayfa, pdfviewer.Dpi);
-                    BitmapFrame bitmapFrame = twainCtrl.GenerateBitmapFrame(bitmapSource);
+                    BitmapFrame bitmapFrame = twainCtrl.GenerateBitmapFrame((BitmapSource)pdfviewer.Source);
                     bitmapFrame.Freeze();
                     ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
                     twainCtrl.Scanner?.Resimler.Add(scannedImage);
@@ -193,11 +192,6 @@ namespace GpScanner.ViewModel
                             PdfGeneration.MergePdf(new string[] { temporarypdf, file }).Save(file);
                             File.Delete(temporarypdf);
                         });
-                        if (ShowPdfPreview)
-                        {
-                            ShowPdfPreview = false;
-                            ShowPdfPreview = true;
-                        }
                     }
                     catch (Exception ex)
                     {
@@ -222,7 +216,6 @@ namespace GpScanner.ViewModel
                     case "1":
                         MainWindowDocumentGuiControlLength = new(1, GridUnitType.Star);
                         MainWindowGuiControlLength = new(0, GridUnitType.Star);
-                        ShowPdfPreview = true;
                         return;
                 }
             }, parameter => true);
@@ -647,20 +640,6 @@ namespace GpScanner.ViewModel
             }
         }
 
-        public bool ShowPdfPreview
-        {
-            get => showPdfPreview;
-
-            set
-            {
-                if (showPdfPreview != value)
-                {
-                    showPdfPreview = value;
-                    OnPropertyChanged(nameof(ShowPdfPreview));
-                }
-            }
-        }
-
         public ICommand Tersiniİşaretle { get; }
 
         public TesseractViewModel TesseractViewModel
@@ -851,8 +830,6 @@ namespace GpScanner.ViewModel
         private Scanner selectedDocument;
 
         private Size selectedSize = new Size(240, 315);
-
-        private bool showPdfPreview;
 
         private TesseractViewModel tesseractViewModel;
 

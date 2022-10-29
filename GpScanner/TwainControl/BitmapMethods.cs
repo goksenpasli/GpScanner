@@ -214,6 +214,7 @@ namespace TwainControl
                 bitmapFrame = BitmapFrame.Create(image, image.PixelWidth < image.PixelHeight ? image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Width * paper.Height) : image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Height * paper.Width));
             }
             bitmapFrame.Freeze();
+            ms = null;
             return bitmapFrame;
         }
 

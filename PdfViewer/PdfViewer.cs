@@ -301,21 +301,19 @@ namespace PdfViewer
             set => SetValue(ZoomProperty, value);
         }
 
-        public static BitmapImage BitmapSourceFromByteArray(byte[] buffer, int thumbdpi = 96)
+        public static BitmapImage BitmapSourceFromByteArray(byte[] buffer)
         {
             if (buffer != null)
             {
                 BitmapImage bitmap = new();
-                MemoryStream stream = new(buffer);
+                using MemoryStream stream = new(buffer);
                 bitmap.BeginInit();
-                bitmap.DecodePixelWidth = thumbdpi;
-                bitmap.CacheOption = BitmapCacheOption.None;
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
                 bitmap.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
                 bitmap.StreamSource = stream;
                 bitmap.EndInit();
                 bitmap.Freeze();
                 buffer = null;
-                stream = null;
                 return bitmap;
             }
             return null;
@@ -323,7 +321,7 @@ namespace PdfViewer
 
         public static async Task<BitmapImage> ConvertToImgAsync(byte[] stream, int page, int dpi)
         {
-            return stream.Length > 0 ? await Task.Run(() => BitmapSourceFromByteArray(Pdf2Png.Convert(stream, page, dpi), dpi)) : null;
+            return stream.Length > 0 ? await Task.Run(() => BitmapSourceFromByteArray(Pdf2Png.Convert(stream, page, dpi))) : null;
         }
 
         public static async Task<MemoryStream> ConvertToImgStreamAsync(byte[] stream, int page, int dpi)
@@ -367,6 +365,7 @@ namespace PdfViewer
                 if (disposing)
                 {
                     PdfFileStream = null;
+                    Source = null;
                 }
                 disposedValue = true;
             }
@@ -471,6 +470,8 @@ namespace PdfViewer
         private void PdfViewer_Unloaded(object sender, RoutedEventArgs e)
         {
             PdfFileStream = null;
+            Source = null;
+            GC.Collect();
         }
 
         private async void PrintPdfFile(byte[] stream, int Dpi = 300)

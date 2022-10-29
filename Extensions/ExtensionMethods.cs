@@ -361,6 +361,7 @@ namespace Extensions
                 image.StreamSource = memoryStream;
                 image.EndInit();
                 bitmap.Dispose();
+                bitmap = null;
                 if (!image.IsFrozen && image.CanFreeze)
                 {
                     image.Freeze();
@@ -400,12 +401,16 @@ namespace Extensions
                         TiffBitmapEncoder tifzipencoder = new() { Compression = TiffCompressOption.Zip };
                         tifzipencoder.Frames.Add(BitmapFrame.Create((BitmapSource)bitmapsource));
                         tifzipencoder.Save(outStream);
+                        tifzipencoder = null;
+                        bitmapsource = null;
                         return outStream.ToArray();
 
                     case Format.Tiff:
                         TiffBitmapEncoder tifccittencoder = new() { Compression = TiffCompressOption.Ccitt4 };
                         tifccittencoder.Frames.Add(BitmapFrame.Create((BitmapSource)bitmapsource));
                         tifccittencoder.Save(outStream);
+                        tifccittencoder = null;
+                        bitmapsource = null;
                         return outStream.ToArray();
 
                     case Format.Jpg:
@@ -413,12 +418,16 @@ namespace Extensions
                         BitmapFrame item = BitmapFrame.Create((BitmapSource)bitmapsource);
                         jpgencoder.Frames.Add(item);
                         jpgencoder.Save(outStream);
+                        jpgencoder = null;
+                        bitmapsource = null;
                         return outStream.ToArray();
 
                     case Format.Png:
                         PngBitmapEncoder pngencoder = new();
                         pngencoder.Frames.Add(BitmapFrame.Create((BitmapSource)bitmapsource));
                         pngencoder.Save(outStream);
+                        pngencoder = null;
+                        bitmapsource = null;
                         return outStream.ToArray();
 
                     default:
