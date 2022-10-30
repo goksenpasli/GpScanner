@@ -33,8 +33,6 @@ namespace PdfViewer
 
         public static readonly DependencyProperty PdfFilePathProperty = DependencyProperty.Register("PdfFilePath", typeof(string), typeof(PdfViewer), new PropertyMetadata(null, async (o, e) => await PdfFilePathChangedAsync(o, e)));
 
-        public static readonly DependencyProperty PdfFileStreamProperty = DependencyProperty.Register("PdfFileStream", typeof(byte[]), typeof(PdfViewer), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.NotDataBindable, async (o, e) => await PdfStreamChangedAsync(o, e)));
-
         public static readonly DependencyProperty ScrollBarVisibleProperty = DependencyProperty.Register("ScrollBarVisible", typeof(ScrollBarVisibility), typeof(PdfViewer), new PropertyMetadata(ScrollBarVisibility.Auto));
 
         public static readonly DependencyProperty SnapTickProperty = DependencyProperty.Register("SnapTick", typeof(bool), typeof(PdfViewer), new PropertyMetadata(false));
@@ -53,7 +51,6 @@ namespace PdfViewer
         public PdfViewer()
         {
             PropertyChanged += PdfViewer_PropertyChanged;
-            Loaded += PdfViewer_Loaded;
             Unloaded += PdfViewer_Unloaded;
 
             DosyaAç = new RelayCommand<object>(parameter =>
@@ -65,7 +62,12 @@ namespace PdfViewer
                 }
             });
 
-            Yazdır = new RelayCommand<object>(parameter => PrintPdfFile(PdfFileStream), parameter => PdfFileStream is not null);
+            Yazdır = new RelayCommand<object>(async parameter =>
+            {
+                string pdfFilePath = PdfFilePath;
+                PrintPdfFile(await Task.Run(() => File.ReadAllBytes(pdfFilePath)));
+                GC.Collect();
+            }, parameter => PdfFilePath is not null);
 
             ViewerBack = new RelayCommand<object>(parameter => Sayfa--, parameter => Source is not null && Sayfa > 1 && Sayfa <= ToplamSayfa);
 
@@ -120,7 +122,7 @@ namespace PdfViewer
             set => SetValue(DpiProperty, value);
         }
 
-        public int[] DpiList { get; } = new int[] { 72, 96, 120, 150, 200, 300, 400, 500, 600 };
+        public int[] DpiList { get; } = new int[] { 12, 24, 36, 72, 96, 120, 150, 200, 300, 400, 500, 600 };
 
         public Visibility DpiListVisibility
         {
@@ -183,12 +185,6 @@ namespace PdfViewer
         {
             get => (string)GetValue(PdfFilePathProperty);
             set => SetValue(PdfFilePathProperty, value);
-        }
-
-        public byte[] PdfFileStream
-        {
-            get => (byte[])GetValue(PdfFileStreamProperty);
-            set => SetValue(PdfFileStreamProperty, value);
         }
 
         public Visibility PrintButtonVisibility
@@ -275,6 +271,7 @@ namespace PdfViewer
             set => SetValue(ToolBarVisibilityProperty, value);
         }
 
+        [Browsable(false)]
         public int ToplamSayfa
         {
             get => toplamSayfa;
@@ -364,7 +361,6 @@ namespace PdfViewer
             {
                 if (disposing)
                 {
-                    PdfFileStream = null;
                     Source = null;
                 }
                 disposedValue = true;
@@ -398,9 +394,11 @@ namespace PdfViewer
 
         private static async void DpiChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is PdfViewer pdfViewer && pdfViewer.PdfFileStream is not null)
+            if (d is PdfViewer pdfViewer && pdfViewer.PdfFilePath is not null)
             {
-                pdfViewer.Source = await ConvertToImgAsync(pdfViewer.PdfFileStream, pdfViewer.Sayfa, (int)e.NewValue);
+                string pdfFilePath = pdfViewer.PdfFilePath;
+                pdfViewer.Source = await ConvertToImgAsync(await Task.Run(() => File.ReadAllBytes(pdfFilePath)), pdfViewer.Sayfa, (int)e.NewValue);
+                GC.Collect();
             }
         }
 
@@ -410,33 +408,18 @@ namespace PdfViewer
             {
                 if (e.NewValue is not null && File.Exists(e.NewValue as string) && string.Equals(Path.GetExtension(e.NewValue as string), ".pdf", StringComparison.OrdinalIgnoreCase))
                 {
-                    pdfViewer.PdfFileStream = await Task.Run(() => File.ReadAllBytes(e.NewValue as string));
+                    var data = await Task.Run(() => File.ReadAllBytes(e.NewValue as string));
                     pdfViewer.Sayfa = 1;
+                    int dpi = pdfViewer.Dpi;
+                    pdfViewer.Source = await ConvertToImgAsync(data, 1, dpi);
+                    pdfViewer.ToplamSayfa = PdfPageCount(data);
+                    pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
+                    data = null;
+                    GC.Collect();
                 }
                 else
                 {
                     pdfViewer.Source = null;
-                }
-            }
-        }
-
-        private static async Task PdfStreamChangedAsync(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is PdfViewer pdfViewer && e.NewValue is byte[] pdfdata && pdfdata.Length > 0)
-            {
-                try
-                {
-                    int sayfa = pdfViewer.Sayfa;
-                    int dpi = pdfViewer.Dpi;
-                    pdfViewer.Source = await ConvertToImgAsync(pdfdata, sayfa, dpi);
-                    pdfViewer.ToplamSayfa = PdfPageCount(pdfdata);
-                    pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
-                    pdfdata = null;
-                    GC.Collect();
-                }
-                catch (Exception ex)
-                {
-                    _ = MessageBox.Show(ex.StackTrace, ex.Message);
                 }
             }
         }
@@ -449,29 +432,19 @@ namespace PdfViewer
             }
         }
 
-        private async void PdfViewer_Loaded(object sender, RoutedEventArgs e)
-        {
-            string path = PdfFilePath;
-            if (path != null)
-            {
-                PdfFileStream = await Task.Run(() => File.ReadAllBytes(path));
-            }
-        }
-
         private async void PdfViewer_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName is "Sayfa" && sender is PdfViewer pdfViewer && pdfViewer.PdfFileStream is not null)
+            if (e.PropertyName is "Sayfa" && sender is PdfViewer pdfViewer && pdfViewer.PdfFilePath is not null)
             {
-                Source = await ConvertToImgAsync(pdfViewer.PdfFileStream, sayfa, pdfViewer.Dpi);
+                string pdfFilePath = pdfViewer.PdfFilePath;
+                Source = await ConvertToImgAsync(await Task.Run(() => File.ReadAllBytes(pdfFilePath)), sayfa, pdfViewer.Dpi);
                 GC.Collect();
             }
         }
 
         private void PdfViewer_Unloaded(object sender, RoutedEventArgs e)
         {
-            PdfFileStream = null;
             Source = null;
-            GC.Collect();
         }
 
         private async void PrintPdfFile(byte[] stream, int Dpi = 300)
