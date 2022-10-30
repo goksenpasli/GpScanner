@@ -790,7 +790,7 @@ namespace TwainControl
                                 filedata = File.ReadAllBytes(item);
                                 if (PdfGeneration.IsValidPdfFile(filedata.Take(4)))
                                 {
-                                    double totalpagecount = PdfViewer.PdfViewer.PdfPageCount(filedata);
+                                    double totalpagecount =await PdfViewer.PdfViewer.PdfPageCountAsync(filedata);
                                     for (int i = 1; i <= totalpagecount; i++)
                                     {
                                         BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(decodeheight, await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, (int)ImgLoadResolution), SelectedPaper, Scanner.Deskew);

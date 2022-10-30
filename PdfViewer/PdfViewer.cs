@@ -316,9 +316,17 @@ namespace PdfViewer
             return null;
         }
 
-        public static async Task<BitmapImage> ConvertToImgAsync(byte[] stream, int page, int dpi)
+        public static async Task<BitmapImage> ConvertToImgAsync(byte[] pdffilestream, int page, int dpi)
         {
-            return stream.Length > 0 ? await Task.Run(() => BitmapSourceFromByteArray(Pdf2Png.Convert(stream, page, dpi))) : null;
+            return pdffilestream.Length > 0 ? await Task.Run(() =>
+            {
+                byte[] buffer = Pdf2Png.Convert(pdffilestream, page, dpi);
+                BitmapImage bitmapImage = BitmapSourceFromByteArray(buffer);
+                pdffilestream = null;
+                buffer = null;
+                GC.Collect();
+                return bitmapImage;
+            }) : null;
         }
 
         public static async Task<MemoryStream> ConvertToImgStreamAsync(byte[] stream, int page, int dpi)
@@ -326,9 +334,9 @@ namespace PdfViewer
             return stream.Length > 0 ? await Task.Run(() => new MemoryStream(Pdf2Png.Convert(stream, page, dpi))) : null;
         }
 
-        public static int PdfPageCount(byte[] stream)
+        public static async Task<int> PdfPageCountAsync(byte[] stream)
         {
-            return stream.Length > 0 ? Pdf2Png.ConvertAllPages(stream, 0).Count : 0;
+            return stream.Length > 0 ? await Task.Run(() => Pdf2Png.ConvertAllPages(stream, 0).Count) : 0;
         }
 
         public static void PrintImageSource(ImageSource Source, int Dpi = 300)
@@ -397,7 +405,7 @@ namespace PdfViewer
             if (d is PdfViewer pdfViewer && pdfViewer.PdfFilePath is not null)
             {
                 string pdfFilePath = pdfViewer.PdfFilePath;
-                pdfViewer.Source = await ConvertToImgAsync(await Task.Run(() => File.ReadAllBytes(pdfFilePath)), pdfViewer.Sayfa, (int)e.NewValue);
+                pdfViewer.Source = await ConvertToImgAsync(await ReadAllFileAsync(pdfFilePath), pdfViewer.Sayfa, (int)e.NewValue);
                 GC.Collect();
             }
         }
@@ -408,20 +416,26 @@ namespace PdfViewer
             {
                 if (e.NewValue is not null && File.Exists(e.NewValue as string) && string.Equals(Path.GetExtension(e.NewValue as string), ".pdf", StringComparison.OrdinalIgnoreCase))
                 {
-                    var data = await Task.Run(() => File.ReadAllBytes(e.NewValue as string));
+                    var data = await ReadAllFileAsync(e.NewValue as string);
                     pdfViewer.Sayfa = 1;
                     int dpi = pdfViewer.Dpi;
                     pdfViewer.Source = await ConvertToImgAsync(data, 1, dpi);
-                    pdfViewer.ToplamSayfa = PdfPageCount(data);
+                    pdfViewer.ToplamSayfa = await PdfPageCountAsync(data);
                     pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
-                    data = null;
-                    GC.Collect();
                 }
                 else
                 {
                     pdfViewer.Source = null;
                 }
             }
+        }
+
+        private static async Task<byte[]> ReadAllFileAsync(string filename)
+        {
+            using var file = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, true);
+            byte[] buffer = new byte[file.Length];
+            await file.ReadAsync(buffer, 0, (int)file.Length);
+            return buffer;
         }
 
         private static void SourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -437,7 +451,7 @@ namespace PdfViewer
             if (e.PropertyName is "Sayfa" && sender is PdfViewer pdfViewer && pdfViewer.PdfFilePath is not null)
             {
                 string pdfFilePath = pdfViewer.PdfFilePath;
-                Source = await ConvertToImgAsync(await Task.Run(() => File.ReadAllBytes(pdfFilePath)), sayfa, pdfViewer.Dpi);
+                Source = await ConvertToImgAsync(await ReadAllFileAsync(pdfFilePath), sayfa, pdfViewer.Dpi);
                 GC.Collect();
             }
         }
@@ -449,7 +463,7 @@ namespace PdfViewer
 
         private async void PrintPdfFile(byte[] stream, int Dpi = 300)
         {
-            int pagecount = PdfPageCount(stream);
+            int pagecount = await PdfPageCountAsync(stream);
             PrintDialog pd = new()
             {
                 PageRangeSelection = PageRangeSelection.AllPages,

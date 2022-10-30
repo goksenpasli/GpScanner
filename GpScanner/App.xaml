@@ -7,6 +7,7 @@
     xmlns:PdfViewer="clr-namespace:PdfViewer;assembly=PdfViewer"
     xmlns:ViewModel="clr-namespace:GpScanner.ViewModel"
     xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+    xmlns:properties="clr-namespace:GpScanner.Properties"
     Startup="Application_Startup" StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
@@ -267,7 +268,9 @@
                     </UniformGrid>
                     <PdfViewer:PdfViewer x:Name="PdfVwr"
                         Grid.Row="1"
-                        AllowDrop="True" Dpi="24" OpenButtonVisibility="Collapsed"
+                        AllowDrop="True"
+                        Dpi="{Binding DefaultThumbNailDpi, Source={x:Static properties:Settings.Default}}"
+                        OpenButtonVisibility="Collapsed"
                         PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                         PrintButtonVisibility="Visible" ScrollBarVisible="Hidden" SliderZoomAngleVisibility="Collapsed"
                         SnapTick="True"

@@ -293,7 +293,7 @@
                     IsSynchronizedWithCurrentItem="False"
                     ItemsSource="{Binding Mode=OneWay, Source={StaticResource Veriler}}"
                     SelectedItem="{Binding SelectedDocument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    SelectionMode="Extended" VirtualizingPanel.CacheLength="3,3"
+                    SelectionMode="Extended" VirtualizingPanel.CacheLength="6,6"
                     VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                     VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Recycling">
                     <ListBox.ItemsPanel>
@@ -329,7 +329,7 @@
                                                 IsChecked="{Binding Seçili}"
                                                 IsEnabled="{Binding FileName, Mode=OneWay, Converter={StaticResource FileNamePdfZipCheckConverter}}">
                                                 <CheckBox.Content>
-                                                    <ContentControl Content="{Binding Path=FileName, IsAsync=True}" ContentTemplateSelector="{StaticResource ThumbViewerSelector}" />
+                                                    <ContentControl Content="{Binding Path=FileName, IsAsync=True, Mode=OneWay}" ContentTemplateSelector="{StaticResource ThumbViewerSelector}" />
                                                 </CheckBox.Content>
                                             </CheckBox>
                                         </Border>
