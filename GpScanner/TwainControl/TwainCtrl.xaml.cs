@@ -790,7 +790,7 @@ namespace TwainControl
                                 filedata = File.ReadAllBytes(item);
                                 if (PdfGeneration.IsValidPdfFile(filedata.Take(4)))
                                 {
-                                    double totalpagecount =await PdfViewer.PdfViewer.PdfPageCountAsync(filedata);
+                                    double totalpagecount = await PdfViewer.PdfViewer.PdfPageCountAsync(filedata);
                                     for (int i = 1; i <= totalpagecount; i++)
                                     {
                                         BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(decodeheight, await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, (int)ImgLoadResolution), SelectedPaper, Scanner.Deskew);
@@ -1293,10 +1293,10 @@ namespace TwainControl
 
         private void PdfMergeButton_Drop(object sender, DragEventArgs e)
         {
-            string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
-            if (droppedfiles?.Where(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase)).Any() == true)
+            var pdffiles = ((string[])e.Data.GetData(DataFormats.FileDrop))?.Where(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase));
+            if (pdffiles.Any() == true)
             {
-                PdfGeneration.SavePdfFiles(droppedfiles);
+                PdfGeneration.SavePdfFiles(pdffiles.ToArray());
             }
         }
 

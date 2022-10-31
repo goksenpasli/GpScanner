@@ -123,15 +123,18 @@ namespace GpScanner
                     _ = ViewModel.GetScannedTextAsync(TwainCtrl.ImgData);
                 }
 
-                if (e.PropertyName is "ApplyDataBaseOcr" && TwainCtrl.Scanner.ApplyDataBaseOcr && TwainCtrl.Scanner.Resimler.Count > 0 && !string.IsNullOrEmpty(Settings.Default.DefaultTtsLang))
+                if (e.PropertyName is "ApplyDataBaseOcr" && TwainCtrl.Scanner.ApplyDataBaseOcr && TwainCtrl.Scanner.Resimler.Count > 0)
                 {
                     try
                     {
                         List<ObservableCollection<OcrData>> scannedtext = new();
-                        foreach (ScannedImage scannedimage in TwainCtrl.Scanner.Resimler)
+                        if (!string.IsNullOrEmpty(Settings.Default.DefaultTtsLang))
                         {
-                            scannedtext.Add(await ViewModel.GetScannedTextAsync(scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg), false));
-                            ViewModel.ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = TwainCtrl.Scanner.PdfFilePath, FileContent = ViewModel.TranslateViewModel.Metin });
+                            foreach (ScannedImage scannedimage in TwainCtrl.Scanner.Resimler)
+                            {
+                                scannedtext.Add(await ViewModel.GetScannedTextAsync(scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg), false));
+                                ViewModel.ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = TwainCtrl.Scanner.PdfFilePath, FileContent = ViewModel.TranslateViewModel.Metin });
+                            }
                         }
                         if ((ColourSetting)TwainControl.Properties.Settings.Default.Mode == ColourSetting.BlackAndWhite)
                         {
