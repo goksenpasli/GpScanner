@@ -298,45 +298,57 @@ namespace PdfViewer
             set => SetValue(ZoomProperty, value);
         }
 
-        public static BitmapImage BitmapSourceFromByteArray(byte[] buffer)
+        private static async Task<BitmapImage> ConvertToImgAsync(byte[] pdffilestream, int page, int dpi)
         {
-            if (buffer != null)
+            try
             {
-                BitmapImage bitmap = new();
-                using MemoryStream stream = new(buffer);
-                bitmap.BeginInit();
-                bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                bitmap.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
-                bitmap.StreamSource = stream;
-                bitmap.EndInit();
-                bitmap.Freeze();
-                buffer = null;
-                return bitmap;
+                if (pdffilestream.Length > 0)
+                {
+                    return await Task.Run(() =>
+                        {
+                            byte[] buffer = Pdf2Png.Convert(pdffilestream, page, dpi);
+                            BitmapImage bitmapImage = BitmapSourceFromByteArray(buffer);
+                            pdffilestream = null;
+                            buffer = null;
+                            GC.Collect();
+                            return bitmapImage;
+                        });
+                }
+            }
+            catch (Exception)
+            {
             }
             return null;
         }
 
-        public static async Task<BitmapImage> ConvertToImgAsync(byte[] pdffilestream, int page, int dpi)
-        {
-            return pdffilestream.Length > 0 ? await Task.Run(() =>
-            {
-                byte[] buffer = Pdf2Png.Convert(pdffilestream, page, dpi);
-                BitmapImage bitmapImage = BitmapSourceFromByteArray(buffer);
-                pdffilestream = null;
-                buffer = null;
-                GC.Collect();
-                return bitmapImage;
-            }) : null;
-        }
-
         public static async Task<MemoryStream> ConvertToImgStreamAsync(byte[] stream, int page, int dpi)
         {
-            return stream.Length > 0 ? await Task.Run(() => new MemoryStream(Pdf2Png.Convert(stream, page, dpi))) : null;
+            try
+            {
+                if (stream.Length > 0)
+                {
+                    return await Task.Run(() => new MemoryStream(Pdf2Png.Convert(stream, page, dpi)));
+                }
+            }
+            catch (Exception)
+            {
+            }
+            return null;
         }
 
         public static async Task<int> PdfPageCountAsync(byte[] stream)
         {
-            return stream.Length > 0 ? await Task.Run(() => Pdf2Png.ConvertAllPages(stream, 0).Count) : 0;
+            try
+            {
+                if (stream.Length > 0)
+                {
+                    return await Task.Run(() => Pdf2Png.ConvertAllPages(stream, 0).Count);
+                }
+            }
+            catch (Exception)
+            {
+            }
+            return 0;
         }
 
         public static void PrintImageSource(ImageSource Source, int Dpi = 300)
@@ -400,6 +412,24 @@ namespace PdfViewer
 
         private int toplamSayfa;
 
+        private static BitmapImage BitmapSourceFromByteArray(byte[] buffer)
+        {
+            if (buffer != null)
+            {
+                BitmapImage bitmap = new();
+                using MemoryStream stream = new(buffer);
+                bitmap.BeginInit();
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
+                bitmap.StreamSource = stream;
+                bitmap.EndInit();
+                bitmap.Freeze();
+                buffer = null;
+                return bitmap;
+            }
+            return null;
+        }
+
         private static async void DpiChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is PdfViewer pdfViewer && pdfViewer.PdfFilePath is not null)
@@ -416,12 +446,18 @@ namespace PdfViewer
             {
                 if (e.NewValue is not null && File.Exists(e.NewValue as string) && string.Equals(Path.GetExtension(e.NewValue as string), ".pdf", StringComparison.OrdinalIgnoreCase))
                 {
-                    var data = await ReadAllFileAsync(e.NewValue as string);
-                    pdfViewer.Sayfa = 1;
-                    int dpi = pdfViewer.Dpi;
-                    pdfViewer.Source = await ConvertToImgAsync(data, 1, dpi);
-                    pdfViewer.ToplamSayfa = await PdfPageCountAsync(data);
-                    pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
+                    try
+                    {
+                        var data = await ReadAllFileAsync(e.NewValue as string);
+                        pdfViewer.Sayfa = 1;
+                        int dpi = pdfViewer.Dpi;
+                        pdfViewer.Source = await ConvertToImgAsync(data, 1, dpi);
+                        pdfViewer.ToplamSayfa = await PdfPageCountAsync(data);
+                        pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
+                    }
+                    catch (Exception)
+                    {
+                    }
                 }
                 else
                 {
@@ -432,10 +468,17 @@ namespace PdfViewer
 
         private static async Task<byte[]> ReadAllFileAsync(string filename)
         {
-            using var file = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, true);
-            byte[] buffer = new byte[file.Length];
-            await file.ReadAsync(buffer, 0, (int)file.Length);
-            return buffer;
+            try
+            {
+                using var file = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, true);
+                byte[] buffer = new byte[file.Length];
+                await file.ReadAsync(buffer, 0, (int)file.Length);
+                return buffer;
+            }
+            catch (Exception)
+            {
+            }
+            return null;
         }
 
         private static void SourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

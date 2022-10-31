@@ -86,6 +86,21 @@ namespace GpScanner.ViewModel
                 }
             }, parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && parameter is TwainCtrl twainCtrl && twainCtrl.SeçiliResim is not null);
 
+            OpenOriginalFile = new RelayCommand<object>(parameter =>
+            {
+                if (parameter is string filepath)
+                {
+                    DocumentViewerWindow documentViewerWindow = new();
+                    documentViewerWindow.pdfviewer.PdfFilePath = filepath;
+                    documentViewerWindow.Show();
+                    documentViewerWindow.Unloaded += (s, e) =>
+                    {
+                        documentViewerWindow.pdfviewer = null;
+                        GC.Collect();
+                    };
+                }
+            }, parameter => parameter is string filepath && File.Exists(filepath));
+
             ChangeDataFolder = new RelayCommand<object>(parameter =>
             {
                 OpenFileDialog openFileDialog = new()
@@ -464,6 +479,8 @@ namespace GpScanner.ViewModel
         }
 
         public ICommand OcrPage { get; }
+
+        public ICommand OpenOriginalFile { get; }
 
         public string PatchFileName
         {

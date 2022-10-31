@@ -16,7 +16,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="DefaultThumbNailDpi" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">24</Value>
+      <Value Profile="(Default)">36</Value>
     </Setting>
   </Settings>
 </SettingsFile>

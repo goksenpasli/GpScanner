@@ -52,6 +52,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Speech" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -79,6 +80,9 @@
     <Compile Include="Converter\FileNameExtractConverter.cs" />
     <Compile Include="Converter\FileNamePdfZipCheckConverter.cs" />
     <Compile Include="Converter\FilePathMergeConverter.cs" />
+    <Compile Include="DocumentViewerWindow.xaml.cs">
+      <DependentUpon>DocumentViewerWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TesseractView.xaml.cs">
       <DependentUpon>TesseractView.xaml</DependentUpon>
     </Compile>
@@ -95,6 +99,10 @@
     <Compile Include="ViewModel\TranslateViewModel.cs" />
     <Compile Include="ViewModel\ViewerTemplateSelector.cs" />
     <Compile Include="ViewModel\WindowExtensions.cs" />
+    <Page Include="DocumentViewerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

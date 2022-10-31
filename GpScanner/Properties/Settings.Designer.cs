@@ -74,7 +74,7 @@ namespace GpScanner.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("24")]
+        [global::System.Configuration.DefaultSettingValueAttribute("36")]
         public int DefaultThumbNailDpi {
             get {
                 return ((int)(this["DefaultThumbNailDpi"]));
