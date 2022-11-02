@@ -49,10 +49,27 @@ namespace GpScanner.ViewModel
             }
         }
 
+        [XmlAttribute(AttributeName = "QrData")]
+        public string QrData
+        {
+            get => qrData;
+
+            set
+            {
+                if (qrData != value)
+                {
+                    qrData = value;
+                    OnPropertyChanged(nameof(QrData));
+                }
+            }
+        }
+
         private string fileContent;
 
         private string fileName;
 
         private int ıd;
+
+        private string qrData;
     }
 }

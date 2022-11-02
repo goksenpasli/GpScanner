@@ -80,6 +80,7 @@
     <Compile Include="Converter\FileNameExtractConverter.cs" />
     <Compile Include="Converter\FileNamePdfZipCheckConverter.cs" />
     <Compile Include="Converter\FilePathMergeConverter.cs" />
+    <Compile Include="Converter\StringToQrBitmapImageConverter.cs" />
     <Compile Include="DocumentViewerWindow.xaml.cs">
       <DependentUpon>DocumentViewerWindow.xaml</DependentUpon>
     </Compile>

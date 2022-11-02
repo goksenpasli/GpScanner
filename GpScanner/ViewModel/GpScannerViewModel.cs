@@ -20,6 +20,9 @@ using Ocr;
 using PdfSharp.Pdf;
 using TwainControl;
 using ZXing;
+using ZXing.Common;
+using ZXing.QrCode.Internal;
+using ZXing.Rendering;
 using static Extensions.ExtensionMethods;
 using Twainsettings = TwainControl.Properties;
 
@@ -85,6 +88,14 @@ namespace GpScanner.ViewModel
                     imgdata = null;
                 }
             }, parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && parameter is TwainCtrl twainCtrl && twainCtrl.SeçiliResim is not null);
+
+            AddAllFileToControlPanel = new RelayCommand<object>(parameter =>
+            {
+                if (parameter is object[] data && data[0] is TwainCtrl twainCtrl && data[1] is string filepath)
+                {
+                    twainCtrl.AddFiles(new string[] { filepath }, twainCtrl.DecodeHeight);
+                }
+            }, parameter => true);
 
             OpenOriginalFile = new RelayCommand<object>(parameter =>
             {
@@ -258,6 +269,8 @@ namespace GpScanner.ViewModel
                 }
             }
         }
+
+        public ICommand AddAllFileToControlPanel { get; }
 
         public string AramaMetni
         {
@@ -709,6 +722,20 @@ namespace GpScanner.ViewModel
             return new ObservableCollection<Data>();
         }
 
+        public static BitmapImage GenerateQr(string text)
+        {
+            BarcodeWriter barcodeWriter = new BarcodeWriter();
+            barcodeWriter.Format = BarcodeFormat.QR_CODE;
+            barcodeWriter.Renderer = new BitmapRenderer();
+            EncodingOptions encodingOptions = new EncodingOptions();
+            encodingOptions.Width = 80;
+            encodingOptions.Height = 80;
+            encodingOptions.Margin = 0;
+            encodingOptions.Hints.Add(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
+            barcodeWriter.Options = encodingOptions;
+            return barcodeWriter.Write(text).ToBitmapImage(System.Drawing.Imaging.ImageFormat.Png);
+        }
+
         public ObservableCollection<Chart> GetChartsData()
         {
             ObservableCollection<Chart> list = new();
@@ -731,6 +758,7 @@ namespace GpScanner.ViewModel
             using MemoryStream ms = new(imgbyte);
             using System.Drawing.Bitmap bmp = new(ms);
             IBarcodeReader reader = new BarcodeReader();
+            reader.Options.TryHarder = true;
             Result result = reader.Decode(bmp);
             imgbyte = null;
             return result;
@@ -738,8 +766,24 @@ namespace GpScanner.ViewModel
 
         public Result GetImageBarcodeResult(System.Drawing.Bitmap bitmap)
         {
-            IBarcodeReader reader = new BarcodeReader();
-            return reader.Decode(bitmap);
+            if (bitmap is not null)
+            {
+                IBarcodeReader reader = new BarcodeReader();
+                reader.Options.TryHarder = true;
+                return reader.Decode(bitmap);
+            }
+            return null;
+        }
+
+        public Result[] GetMultipleImageBarcodeResult(System.Drawing.Bitmap bitmap)
+        {
+            if (bitmap is not null)
+            {
+                IBarcodeReader reader = new BarcodeReader();
+                reader.Options.TryHarder = true;
+                return reader.DecodeMultiple(bitmap);
+            }
+            return null;
         }
 
         public string GetPatchCodeResult(string barcode)
@@ -808,7 +852,7 @@ namespace GpScanner.ViewModel
 
         private int? checkedPdfCount = 0;
 
-        private bool detectBarCode;
+        private bool detectBarCode = true;
 
         private bool detectPageSeperator;
 

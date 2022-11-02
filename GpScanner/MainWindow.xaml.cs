@@ -105,7 +105,7 @@ namespace GpScanner
 
                 if (e.PropertyName is "DetectPageSeperator" && ViewModel.DetectBarCode)
                 {
-                    Result result = ViewModel.GetImageBarcodeResult(TwainCtrl.Scanner.Resimler.LastOrDefault().Resim.BitmapSourceToBitmap());
+                    Result result = ViewModel.GetImageBarcodeResult(TwainCtrl?.Scanner?.Resimler?.LastOrDefault()?.Resim?.BitmapSourceToBitmap());
                     ViewModel.BarcodeContent = result?.Text;
                     ViewModel.BarcodePosition = result?.ResultPoints;
                     AddBarcodeToList(ViewModel);
@@ -118,12 +118,12 @@ namespace GpScanner
 
                 if (e.PropertyName is "ImgData" && TwainCtrl.ImgData is not null)
                 {
-                    ViewModel.BarcodeContent = ViewModel.GetImageBarcodeResult(TwainCtrl.ImgData)?.Text;
+                    ViewModel.BarcodeContent = ViewModel.GetImageBarcodeResult(TwainCtrl?.ImgData)?.Text;
                     AddBarcodeToList(ViewModel);
                     _ = ViewModel.GetScannedTextAsync(TwainCtrl.ImgData);
                 }
 
-                if (e.PropertyName is "ApplyDataBaseOcr" && TwainCtrl.Scanner.ApplyDataBaseOcr && TwainCtrl.Scanner.Resimler.Count > 0)
+                if (e.PropertyName is "ApplyDataBaseOcr" && TwainCtrl?.Scanner?.ApplyDataBaseOcr == true && TwainCtrl?.Scanner?.Resimler?.Count > 0)
                 {
                     try
                     {
@@ -133,7 +133,7 @@ namespace GpScanner
                             foreach (ScannedImage scannedimage in TwainCtrl.Scanner.Resimler)
                             {
                                 scannedtext.Add(await ViewModel.GetScannedTextAsync(scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg), false));
-                                ViewModel.ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = TwainCtrl.Scanner.PdfFilePath, FileContent = ViewModel.TranslateViewModel.Metin });
+                                ViewModel.ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = TwainCtrl.Scanner.PdfFilePath, FileContent = ViewModel.TranslateViewModel.Metin, QrData = ViewModel.GetImageBarcodeResult(scannedimage.Resim.BitmapSourceToBitmap())?.Text });
                             }
                         }
                         if ((ColourSetting)TwainControl.Properties.Settings.Default.Mode == ColourSetting.BlackAndWhite)

@@ -154,7 +154,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="23.2" />
                     <RowDefinition />
-                    <RowDefinition Height="40" />
+                    <RowDefinition Height="100" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Extensions:ContentToggleButton>
@@ -340,16 +340,37 @@
                     </ListBox.ItemContainerStyle>
                 </ListBox>
                 <ListBox Grid.Row="6"
+                    HorizontalContentAlignment="Stretch"
                     d:ItemsSource="{d:SampleData ItemCount=5}"
                     Background="{StaticResource BorderBackground}"
                     ItemsSource="{Binding BarcodeList}">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Padding" Value="0" />
+                        </Style>
+                    </ListBox.ItemContainerStyle>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock>
-                                <Hyperlink Command="{Binding DataContext.TesseractViewModel.TesseractDataFilesDownloadLink, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding Mode=OneWay}">
-                                    <Run Text="{Binding Mode=OneWay}" />
-                                </Hyperlink>
-                            </TextBlock>
+                            <Grid Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ListBox}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="84.8" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock VerticalAlignment="Center">
+                                    <Hyperlink Command="{Binding DataContext.TesseractViewModel.TesseractDataFilesDownloadLink, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding Mode=OneWay}">
+                                        <Run FontFamily="Wingdings" FontSize="16" FontWeight="Bold"
+                                            Text="8" />
+                                    </Hyperlink>
+                                </TextBlock>
+                                <Image Grid.Column="1"
+                                    Width="80" Height="80"
+                                    Source="{Binding Mode=OneWay, Converter={StaticResource StringToQrBitmapImageConverter}}" />
+                                <Extensions:ButtonedTextBox Grid.Column="2"
+                                    IsReadOnly="True" ResetButtonVisibility="Collapsed"
+                                    Text="{Binding Mode=OneWay}"
+                                    TextWrapping="Wrap" />
+                            </Grid>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>

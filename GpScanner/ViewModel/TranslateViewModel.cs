@@ -12,7 +12,7 @@ namespace GpScanner.ViewModel
         public TranslateViewModel()
         {
             TtsDilleri = synthesizer.GetInstalledVoices().Select(z => z.VoiceInfo.Name);
-            OkumaDili = TtsDilleri.FirstOrDefault();
+            OkumaDili = TtsDilleri?.FirstOrDefault();
 
             Sıfırla = new RelayCommand<object>(parameter =>
             {

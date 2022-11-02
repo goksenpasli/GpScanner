@@ -32,6 +32,7 @@
             <Converter:FilePathMergeConverter x:Key="FilePathMergeConverter" />
             <Converter:FileNamePdfZipCheckConverter x:Key="FileNamePdfZipCheckConverter" />
             <Converter:FileNameExtractConverter x:Key="FileNameExtractConverter" />
+            <Converter:StringToQrBitmapImageConverter x:Key="StringToQrBitmapImageConverter" />
             <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
             <LinearGradientBrush x:Key="BorderBackground" ice:Freeze="True" StartPoint="0.5,0" EndPoint="0.5,1">
                 <GradientStop ice:Freeze="True" Offset="0" Color="#FFFDFEFF" />
@@ -267,16 +268,24 @@
                                 </Image>
                             </Button>
                         </UniformGrid>
-                        <Button Command="{Binding DataContext.OpenOriginalFile, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding Mode=OneWay}">
-                            <Image Width="16" Height="16">
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Shell32.dll" />
-                                        <Binding Source="24" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
+                        <Button Command="{Binding DataContext.AddAllFileToControlPanel, RelativeSource={RelativeSource AncestorType=Window}}">
+                            <Button.CommandParameter>
+                                <MultiBinding Converter="{StaticResource CloneConverter}">
+                                    <Binding ElementName="TwainCtrl" Mode="OneWay" Path="DataContext" />
+                                    <Binding Mode="OneWay" />
+                                </MultiBinding>
+                            </Button.CommandParameter>
+                            <Button.Content>
+                                <TextBlock FontFamily="Wingdings 3" FontSize="16" Text="H" />
+                            </Button.Content>
                         </Button>
+                        <TextBlock Width="120" Height="16"
+                            TextTrimming="CharacterEllipsis" TextWrapping="Wrap"
+                            ToolTip="{Binding Mode=OneWay}">
+                            <Hyperlink Command="{Binding DataContext.OpenOriginalFile, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding Mode=OneWay}">
+                                <Run Text="{Binding Mode=OneWay, Converter={StaticResource FileNameExtractConverter}}" />
+                            </Hyperlink>
+                        </TextBlock>
                     </StackPanel>
                     <PdfViewer:PdfViewer x:Name="PdfVwr"
                         Grid.Row="1"

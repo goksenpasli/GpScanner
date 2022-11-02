@@ -601,11 +601,11 @@ namespace Extensions.Controls
                 try
                 {
                     string uriString = (string)e.NewValue;
-                    viewer.Player.Source = new Uri(uriString);
                     if (!File.Exists(uriString))
                     {
                         return;
                     }
+                    viewer.Player.Source = new Uri(uriString);
                     if (viewer.AutoLoadSameNameSubtitleFile)
                     {
                         viewer.SubtitleFilePath = GetAutoSubtitlePath(uriString);
