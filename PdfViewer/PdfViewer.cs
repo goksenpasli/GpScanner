@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -30,6 +32,8 @@ namespace PdfViewer
         public static readonly DependencyProperty ContextMenuVisibilityPropertyProperty = DependencyProperty.Register("ContextMenuVisibilityProperty", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Collapsed));
 
         public static readonly DependencyProperty DpiProperty = DependencyProperty.Register("Dpi", typeof(int), typeof(PdfViewer), new PropertyMetadata(200, DpiChanged));
+
+        public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(FitImageOrientation), typeof(PdfViewer), new PropertyMetadata(FitImageOrientation.Width, Changed));
 
         public static readonly DependencyProperty PdfFilePathProperty = DependencyProperty.Register("PdfFilePath", typeof(string), typeof(PdfViewer), new PropertyMetadata(null, async (o, e) => await PdfFilePathChangedAsync(o, e)));
 
@@ -65,8 +69,16 @@ namespace PdfViewer
             Yazdır = new RelayCommand<object>(async parameter =>
             {
                 string pdfFilePath = PdfFilePath;
-                PrintPdfFile(await Task.Run(() => File.ReadAllBytes(pdfFilePath)));
+                PrintPdfFile(await ReadAllFileAsync(pdfFilePath));
                 GC.Collect();
+            }, parameter => PdfFilePath is not null);
+
+            ViewAllThumbnailImage = new RelayCommand<object>(async parameter =>
+            {
+                if (Thumbnails is null)
+                {
+                    Thumbnails = await ConvertToAllPageThumbImgAsync(await ReadAllFileAsync(PdfFilePath), 4);
+                }
             }, parameter => PdfFilePath is not null);
 
             ViewerBack = new RelayCommand<object>(parameter => Sayfa--, parameter => Source is not null && Sayfa > 1 && Sayfa <= ToplamSayfa);
@@ -96,11 +108,25 @@ namespace PdfViewer
 
             Resize = new RelayCommand<object>(delegate
             {
-                Zoom = (FitImageOrientation.Width != 0) ? (double.IsNaN(Height) ? ((ActualHeight == 0.0) ? 1.0 : (ActualHeight / Source.Height)) : ((Height == 0.0) ? 1.0 : (Height / Source.Height))) : (double.IsNaN(Width) ? ((ActualWidth == 0.0) ? 1.0 : (ActualWidth / Source.Width)) : ((Width == 0.0) ? 1.0 : (Width / Source.Width)));
+                Zoom = (Orientation != 0) ? (double.IsNaN(Height) ? ((ActualHeight == 0.0) ? 1.0 : (ActualHeight / Source.Height)) : ((Height == 0.0) ? 1.0 : (Height / Source.Height))) : (double.IsNaN(Width) ? ((ActualWidth == 0.0) ? 1.0 : (ActualWidth / Source.Width)) : ((Width == 0.0) ? 1.0 : (Width / Source.Width)));
             }, (object parameter) => Source != null);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public ObservableCollection<ThumbClass> AllPagesThumb
+        {
+            get => allPagesThumb;
+
+            set
+            {
+                if (allPagesThumb != value)
+                {
+                    allPagesThumb = value;
+                    OnPropertyChanged(nameof(AllPagesThumb));
+                }
+            }
+        }
 
         public double Angle
         {
@@ -138,20 +164,6 @@ namespace PdfViewer
             }
         }
 
-        public FitImageOrientation FitImageOrientation
-        {
-            get => fitImageOrientation;
-
-            set
-            {
-                if (fitImageOrientation != value)
-                {
-                    fitImageOrientation = value;
-                    OnPropertyChanged(nameof(FitImageOrientation));
-                }
-            }
-        }
-
         public Visibility OpenButtonVisibility
         {
             get => openButtonVisibility;
@@ -164,6 +176,12 @@ namespace PdfViewer
                     OnPropertyChanged(nameof(OpenButtonVisibility));
                 }
             }
+        }
+
+        public FitImageOrientation Orientation
+        {
+            get { return (FitImageOrientation)GetValue(OrientationProperty); }
+            set { SetValue(OrientationProperty, value); }
         }
 
         [Browsable(false)]
@@ -251,6 +269,20 @@ namespace PdfViewer
             set => SetValue(SourceProperty, value);
         }
 
+        public ObservableCollection<ThumbClass> Thumbnails
+        {
+            get => thumbnails;
+
+            set
+            {
+                if (thumbnails != value)
+                {
+                    thumbnails = value;
+                    OnPropertyChanged(nameof(Thumbnails));
+                }
+            }
+        }
+
         public Visibility TifNavigasyonButtonEtkin
         {
             get => tifNavigasyonButtonEtkin;
@@ -286,6 +318,8 @@ namespace PdfViewer
             }
         }
 
+        public RelayCommand<object> ViewAllThumbnailImage { get; }
+
         public RelayCommand<object> ViewerBack { get; }
 
         public RelayCommand<object> ViewerNext { get; }
@@ -298,7 +332,27 @@ namespace PdfViewer
             set => SetValue(ZoomProperty, value);
         }
 
-        private static async Task<BitmapImage> ConvertToImgAsync(byte[] pdffilestream, int page, int dpi)
+        public static BitmapImage ConvertToImg(byte[] pdffilestream, int page, int dpi)
+        {
+            try
+            {
+                if (pdffilestream.Length > 0)
+                {
+                    byte[] buffer = Pdf2Png.Convert(pdffilestream, page, dpi);
+                    BitmapImage bitmapImage = BitmapSourceFromByteArray(buffer);
+                    pdffilestream = null;
+                    buffer = null;
+                    GC.Collect();
+                    return bitmapImage;
+                }
+            }
+            catch (Exception)
+            {
+            }
+            return null;
+        }
+
+        public static async Task<BitmapImage> ConvertToImgAsync(byte[] pdffilestream, int page, int dpi)
         {
             try
             {
@@ -369,6 +423,53 @@ namespace PdfViewer
             }
         }
 
+        public static async Task<byte[]> ReadAllFileAsync(string filename)
+        {
+            try
+            {
+                using var file = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, true);
+                byte[] buffer = new byte[file.Length];
+                await file.ReadAsync(buffer, 0, (int)file.Length);
+                return buffer;
+            }
+            catch (Exception)
+            {
+            }
+            return null;
+        }
+
+        public async Task<ObservableCollection<ThumbClass>> ConvertToAllPageThumbImgAsync(byte[] pdffilestream, int dpi)
+        {
+            try
+            {
+                if (pdffilestream?.Length > 0)
+                {
+                    SynchronizationContext uiContext = SynchronizationContext.Current;
+                    var pagecount = await PdfPageCountAsync(pdffilestream);
+                    Thumbnails = new ObservableCollection<ThumbClass>();
+                    await Task.Run(async () =>
+                    {
+                        for (int i = 1; i <= pagecount; i++)
+                        {
+                            BitmapImage bitmapImage = await PdfViewer.ConvertToImgAsync(pdffilestream, i, dpi);
+                            uiContext.Send(_ =>
+                            {
+                                Thumbnails?.Add(new ThumbClass() { Page = i, Thumb = bitmapImage });
+                            }, null);
+                            bitmapImage = null;
+                        }
+                        pdffilestream = null;
+                    });
+                    return Thumbnails;
+                }
+            }
+            catch (Exception)
+            {
+            }
+
+            return null;
+        }
+
         public void Dispose()
         {
             Dispose(disposing: true);
@@ -382,6 +483,7 @@ namespace PdfViewer
                 if (disposing)
                 {
                     Source = null;
+                    Thumbnails = null;
                 }
                 disposedValue = true;
             }
@@ -392,11 +494,11 @@ namespace PdfViewer
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        private ObservableCollection<ThumbClass> allPagesThumb;
+
         private bool disposedValue;
 
         private Visibility dpiListVisibility = Visibility.Visible;
-
-        private FitImageOrientation fitImageOrientation;
 
         private Visibility openButtonVisibility = Visibility.Collapsed;
 
@@ -407,6 +509,8 @@ namespace PdfViewer
         private int sayfa = 1;
 
         private Visibility sliderZoomAngleVisibility = Visibility.Visible;
+
+        private ObservableCollection<ThumbClass> thumbnails;
 
         private Visibility tifNavigasyonButtonEtkin = Visibility.Visible;
 
@@ -428,6 +532,14 @@ namespace PdfViewer
                 return bitmap;
             }
             return null;
+        }
+
+        private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is PdfViewer pdfViewer)
+            {
+                pdfViewer.Resize.Execute(null);
+            }
         }
 
         private static async void DpiChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -466,21 +578,6 @@ namespace PdfViewer
             }
         }
 
-        private static async Task<byte[]> ReadAllFileAsync(string filename)
-        {
-            try
-            {
-                using var file = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, true);
-                byte[] buffer = new byte[file.Length];
-                await file.ReadAsync(buffer, 0, (int)file.Length);
-                return buffer;
-            }
-            catch (Exception)
-            {
-            }
-            return null;
-        }
-
         private static void SourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is PdfViewer pdfViewer && e.NewValue is not null)
@@ -501,7 +598,7 @@ namespace PdfViewer
 
         private void PdfViewer_Unloaded(object sender, RoutedEventArgs e)
         {
-            Source = null;
+            Dispose(true);
         }
 
         private async void PrintPdfFile(byte[] stream, int Dpi = 300)

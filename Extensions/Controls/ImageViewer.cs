@@ -34,6 +34,8 @@ namespace Extensions
 
         public static readonly DependencyProperty ImageFilePathProperty = DependencyProperty.Register("ImageFilePath", typeof(string), typeof(ImageViewer), new PropertyMetadata(null, ImageFilePathChanged));
 
+        public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(FitImageOrientation), typeof(ImageViewer), new PropertyMetadata(FitImageOrientation.Width, Changed));
+
         public static readonly DependencyProperty PanoramaModeProperty = DependencyProperty.Register("PanoramaMode", typeof(bool), typeof(ImageViewer), new PropertyMetadata(PanoramaModeChanged));
 
         public static readonly DependencyProperty RotateXProperty = DependencyProperty.Register("RotateX", typeof(double), typeof(ImageViewer), new PropertyMetadata(0.0));
@@ -71,7 +73,7 @@ namespace Extensions
 
             Resize = new RelayCommand<object>(parameter =>
             {
-                Zoom = FitImageOrientation == FitImageOrientation.Width
+                Zoom = Orientation == FitImageOrientation.Width
                     ? !double.IsNaN(Width) ? Width == 0 ? 1 : Width / Source.Width : ActualWidth == 0 ? 1 : ActualWidth / Source.Width
                     : !double.IsNaN(Height) ? Height == 0 ? 1 : Height / Source.Height : ActualHeight == 0 ? 1 : ActualHeight / Source.Height;
             }, parameter => Source is not null);
@@ -170,20 +172,6 @@ namespace Extensions
 
         public virtual ICommand DosyaAç { get; set; }
 
-        public FitImageOrientation FitImageOrientation
-        {
-            get => fitImageOrientation;
-
-            set
-            {
-                if (fitImageOrientation != value)
-                {
-                    fitImageOrientation = value;
-                    OnPropertyChanged(nameof(FitImageOrientation));
-                }
-            }
-        }
-
         public double Fov { get => (double)GetValue(FovProperty); set => SetValue(FovProperty, value); }
 
         public string ImageFilePath
@@ -204,6 +192,12 @@ namespace Extensions
                     OnPropertyChanged(nameof(OpenButtonVisibility));
                 }
             }
+        }
+
+        public FitImageOrientation Orientation
+        {
+            get { return (FitImageOrientation)GetValue(OrientationProperty); }
+            set { SetValue(OrientationProperty, value); }
         }
 
         public virtual ICommand OrijinalDosyaAç { get; set; }
@@ -416,8 +410,6 @@ namespace Extensions
 
         private bool disposedValue;
 
-        private FitImageOrientation fitImageOrientation;
-
         private Visibility openButtonVisibility = Visibility.Collapsed;
 
         private Visibility orijinalResimDosyaAçButtonVisibility;
@@ -433,6 +425,14 @@ namespace Extensions
         private Visibility tifNavigasyonButtonEtkin = Visibility.Collapsed;
 
         private bool toolBarIsEnabled = true;
+
+        private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is ImageViewer imageViewer)
+            {
+                imageViewer.Resize.Execute(null);
+            }
+        }
 
         private static void DecodeHeightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -533,7 +533,7 @@ namespace Extensions
         {
             if (d is ImageViewer imageViewer && e.NewValue is not null)
             {
-                imageViewer.Resize.Execute(null);        
+                imageViewer.Resize.Execute(null);
             }
         }
 

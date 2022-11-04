@@ -376,9 +376,19 @@
                 </ListBox>
                 <UniformGrid Grid.Row="7"
                     Columns="4" Rows="1">
-                    <Button Command="{Binding BelgeİleBirleştir}"
-                        CommandParameter="{Binding ElementName=TwainCtrl, Path=DataContext}"
-                        Content="{twainctrl:Loc ADDDOC}" />
+                    <Button Command="{Binding BelgeİleBirleştir}" CommandParameter="{Binding ElementName=TwainCtrl, Path=DataContext}">
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                            <Image Width="32" Height="32">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Imageres.dll" />
+                                        <Binding Source="124" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc ADDDOC}" />
+                        </StackPanel>
+                    </Button>
                     <Button Command="{Binding PdfBirleştir}">
                         <StackPanel Orientation="Horizontal">
                             <Image Width="32" Height="32">

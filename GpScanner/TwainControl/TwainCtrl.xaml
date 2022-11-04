@@ -809,7 +809,7 @@
                         <Extensions:ImageViewer x:Name="ImgViewer"
                             d:Source="/GpScanner;component/splash.png" d:Zoom="1"
                             Angle="{Binding Scanner.RotateAngle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            FitImageOrientation="Height" OrijinalResimDosyaAçButtonVisibility="Collapsed"
+                            Orientation="Height" OrijinalResimDosyaAçButtonVisibility="Collapsed"
                             PanoramaButtonVisibility="Collapsed" PreviewMouseDown="ImgViewer_MouseDown"
                             PreviewMouseMove="ImgViewer_MouseMove" PreviewMouseWheel="ImgViewer_PreviewMouseWheel"
                             SnapTick="True"

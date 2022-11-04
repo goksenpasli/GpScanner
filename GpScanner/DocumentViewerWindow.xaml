@@ -9,6 +9,7 @@
     UseLayoutRounding="True" WindowStartupLocation="CenterOwner" WindowState="Maximized"
     mc:Ignorable="d">
     <Grid>
-        <pdf:PdfViewer x:Name="pdfviewer" />
+        <pdf:PdfViewer x:Name="pdfviewer"
+            PrintButtonVisibility="Visible" SnapTick="True" />
     </Grid>
 </Window>

@@ -212,6 +212,16 @@
                                         </Image>
                                     </Button.Content>
                                 </Button>
+                                <ComboBox SelectedValue="{Binding Orientation, RelativeSource={RelativeSource TemplatedParent}}" SelectedValuePath="Tag">
+                                    <ComboBoxItem Tag="Width">
+                                        <TextBlock FontFamily="Wingdings 3" FontSize="16" FontWeight="Bold"
+                                            Text="F" />
+                                    </ComboBoxItem>
+                                    <ComboBoxItem Tag="Height">
+                                        <TextBlock FontFamily="Wingdings 3" FontSize="16" FontWeight="Bold"
+                                            Text="G" />
+                                    </ComboBoxItem>
+                                </ComboBox>
                                 <Button Grid.Column="1" Command="{Binding Resize, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
                                     <Button.Content>
                                         <Image Width="16" Height="16">

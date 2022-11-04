@@ -390,7 +390,7 @@ namespace Extensions
             return null;
         }
 
-        public static byte[] ToTiffJpegByteArray(this ImageSource bitmapsource, Format format, int jpegquality = 75)
+        public static byte[] ToTiffJpegByteArray(this ImageSource bitmapsource, Format format, int jpegquality = 80)
         {
             try
             {

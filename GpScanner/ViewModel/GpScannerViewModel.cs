@@ -83,8 +83,16 @@ namespace GpScanner.ViewModel
             {
                 if (parameter is TwainCtrl twainCtrl)
                 {
-                    byte[] imgdata = twainCtrl.SeçiliResim.Resim.ToTiffJpegByteArray(Format.Jpg);
+                    BitmapFrame resim = twainCtrl.SeçiliResim.Resim;
+                    byte[] imgdata = resim.ToTiffJpegByteArray(Format.Jpg);
                     _ = GetScannedTextAsync(imgdata);
+                    Result result = GetImageBarcodeResult(resim.BitmapSourceToBitmap());
+                    if (result != null)
+                    {
+                        BarcodeContent = result.Text;
+                        BarcodePosition = result.ResultPoints;
+                        BarcodeList.Add(BarcodeContent);
+                    }
                     imgdata = null;
                 }
             }, parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && parameter is TwainCtrl twainCtrl && twainCtrl.SeçiliResim is not null);

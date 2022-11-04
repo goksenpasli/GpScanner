@@ -8,14 +8,6 @@ namespace GpScanner.ViewModel
 {
     public static class WindowExtensions
     {
-        public static void SystemMenu(this MainWindow form)
-        {
-            IntPtr systemMenuHandle = GetSystemMenu(new WindowInteropHelper(form).Handle, false);
-            _ = InsertMenu(systemMenuHandle, 7, MF_BYPOSITION, _AboutSysMenuID, "Hakkında...");
-            HwndSource source = HwndSource.FromHwnd(new WindowInteropHelper(form).Handle);
-            source.AddHook(WndProc);
-        }
-
         public static void DisableCloseButton(this Window window, bool disable)
         {
             IntPtr hwnd = new WindowInteropHelper(window).Handle;
@@ -28,6 +20,14 @@ namespace GpScanner.ViewModel
             {
                 _ = EnableMenuItem(sysMenu, SC_CLOSE, MF_BYCOMMAND | MF_ENABLED);
             }
+        }
+
+        public static void SystemMenu(this MainWindow form)
+        {
+            IntPtr systemMenuHandle = GetSystemMenu(new WindowInteropHelper(form).Handle, false);
+            _ = InsertMenu(systemMenuHandle, 7, MF_BYPOSITION, _AboutSysMenuID, "Hakkında...");
+            HwndSource source = HwndSource.FromHwnd(new WindowInteropHelper(form).Handle);
+            source.AddHook(WndProc);
         }
 
         internal static void HideMinimizeButtons(this Window window)
