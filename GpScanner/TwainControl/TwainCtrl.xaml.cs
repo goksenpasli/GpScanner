@@ -19,6 +19,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Xps;
 using System.Windows.Xps.Packaging;
+using System.Xml.Linq;
 using Extensions;
 using Microsoft.Win32;
 using Ocr;
@@ -390,7 +391,7 @@ namespace TwainControl
                 }
                 OpenFileDialog openFileDialog = new()
                 {
-                    Filter = "Tüm Dosyalar (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps|Resim Dosyası (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle|Pdf Dosyası (*.pdf)|*.pdf|Xps Dosyası (*.xps)|*.xps",
+                    Filter = "Tüm Dosyalar (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp|Resim Dosyası (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle|Pdf Dosyası (*.pdf)|*.pdf|Xps Dosyası (*.xps)|*.xps|Eyp Dosyası (*.eyp)|*.eyp",
                     Multiselect = true
                 };
                 if (openFileDialog.ShowDialog() == true)
@@ -787,21 +788,25 @@ namespace TwainControl
                             byte[] filedata = null;
                             fileloadtask = Task.Run(async () =>
                             {
-                                filedata = File.ReadAllBytes(item);
+                                filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(item);
                                 if (PdfGeneration.IsValidPdfFile(filedata.Take(4)))
                                 {
-                                    double totalpagecount = await PdfViewer.PdfViewer.PdfPageCountAsync(filedata);
-                                    for (int i = 1; i <= totalpagecount; i++)
-                                    {
-                                        BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(decodeheight, await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, (int)ImgLoadResolution), SelectedPaper, Scanner.Deskew);
-                                        bitmapFrame.Freeze();
-                                        uiContext.Send(_ =>
-                                        {
-                                            Scanner?.Resimler.Add(new ScannedImage() { Resim = bitmapFrame });
-                                            PdfLoadProgressValue = i / totalpagecount;
-                                        }, null);
-                                        bitmapFrame = null;
-                                    }
+                                    await AddPdfFile(decodeheight, uiContext, filedata);
+                                }
+                                filedata = null;
+                            });
+                            break;
+                        }
+                    case ".eyp":
+                        {
+                            byte[] filedata = null;
+                            fileloadtask = Task.Run(async () =>
+                            {
+                                var eyppdfpath = EypMainPdfExtract(item);
+                                filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(eyppdfpath);
+                                if (PdfGeneration.IsValidPdfFile(filedata.Take(4)))
+                                {
+                                    await AddPdfFile(decodeheight, uiContext, filedata);
                                 }
                                 filedata = null;
                             });
@@ -978,6 +983,41 @@ namespace TwainControl
         private GridLength twainGuiControlLength = new(3, GridUnitType.Star);
 
         private double width;
+
+        private static string EypMainPdfExtract(string eypfilepath)
+        {
+            using ZipArchive archive = ZipFile.Open(eypfilepath, ZipArchiveMode.Read);
+            if (archive != null)
+            {
+                var üstveri = archive.Entries.FirstOrDefault(entry => entry.Name == "Ustveri.xml");
+                string source = Path.GetTempPath() + Guid.NewGuid() + ".xml";
+                üstveri?.ExtractToFile(source, true);
+                var xdoc = XDocument.Load(source);
+                XNamespace ns = "urn:dpt:eyazisma:schema:xsd:Tipler-2";
+                string DosyaAdi = xdoc.Root?.Element(ns + "DosyaAdi")?.Value;
+                var yazi = archive.Entries.FirstOrDefault(entry => entry.Name == DosyaAdi);
+                string destinationFileName = Path.GetTempPath() + Guid.NewGuid() + ".pdf";
+                yazi.ExtractToFile(destinationFileName, true);
+                return destinationFileName;
+            }
+            return null;
+        }
+
+        private async Task AddPdfFile(int decodeheight, SynchronizationContext uiContext, byte[] filedata)
+        {
+            double totalpagecount = await PdfViewer.PdfViewer.PdfPageCountAsync(filedata);
+            for (int i = 1; i <= totalpagecount; i++)
+            {
+                BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(decodeheight, await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, (int)ImgLoadResolution), SelectedPaper, Scanner.Deskew);
+                bitmapFrame.Freeze();
+                uiContext.Send(_ =>
+                {
+                    Scanner?.Resimler.Add(new ScannedImage() { Resim = bitmapFrame });
+                    PdfLoadProgressValue = i / totalpagecount;
+                }, null);
+                bitmapFrame = null;
+            }
+        }
 
         private void ButtonedTextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {

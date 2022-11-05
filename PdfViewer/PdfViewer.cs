@@ -451,15 +451,18 @@ namespace PdfViewer
                     {
                         for (int i = 1; i <= pagecount; i++)
                         {
-                            BitmapImage bitmapImage = await PdfViewer.ConvertToImgAsync(pdffilestream, i, dpi);
-                            uiContext.Send(_ =>
+                            if (!cancellationToken.IsCancellationRequested)
                             {
-                                Thumbnails?.Add(new ThumbClass() { Page = i, Thumb = bitmapImage });
-                            }, null);
-                            bitmapImage = null;
+                                BitmapImage bitmapImage = await PdfViewer.ConvertToImgAsync(pdffilestream, i, dpi);
+                                uiContext.Send(_ =>
+                                {
+                                    Thumbnails?.Add(new ThumbClass() { Page = i, Thumb = bitmapImage });
+                                }, null);
+                                bitmapImage = null;
+                            }
                         }
                         pdffilestream = null;
-                    });
+                    }, cancellationToken.Token);
                     return Thumbnails;
                 }
             }
@@ -484,6 +487,7 @@ namespace PdfViewer
                 {
                     Source = null;
                     Thumbnails = null;
+                    cancellationToken?.Cancel();
                 }
                 disposedValue = true;
             }
@@ -495,6 +499,8 @@ namespace PdfViewer
         }
 
         private ObservableCollection<ThumbClass> allPagesThumb;
+
+        private CancellationTokenSource cancellationToken = new();
 
         private bool disposedValue;
 
