@@ -2,12 +2,28 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Interop;
+using Extensions;
+using TwainControl;
 
 namespace GpScanner.ViewModel
 {
     public static class WindowExtensions
     {
+        static WindowExtensions()
+        {
+            OpenSettings = new RelayCommand<object>(parameter =>
+            {
+                SettingsWindowView settingswindow = new SettingsWindowView();
+                settingswindow.Owner = App.Current.MainWindow;
+                settingswindow.DataContext = App.Current.MainWindow.DataContext;
+                settingswindow.ShowDialog();
+            });
+        }
+
+        public static ICommand OpenSettings { get; }
+
         public static void DisableCloseButton(this Window window, bool disable)
         {
             IntPtr hwnd = new WindowInteropHelper(window).Handle;
@@ -25,7 +41,8 @@ namespace GpScanner.ViewModel
         public static void SystemMenu(this MainWindow form)
         {
             IntPtr systemMenuHandle = GetSystemMenu(new WindowInteropHelper(form).Handle, false);
-            _ = InsertMenu(systemMenuHandle, 7, MF_BYPOSITION, _AboutSysMenuID, "Hakkında...");
+            _ = InsertMenu(systemMenuHandle, 7, MF_BYPOSITION, _SettingsSysMenuID, Translation.GetResStringValue("SETTİNGS"));
+            _ = InsertMenu(systemMenuHandle, 8, MF_BYPOSITION, _AboutSysMenuID, Translation.GetResStringValue("ABOUT"));
             HwndSource source = HwndSource.FromHwnd(new WindowInteropHelper(form).Handle);
             source.AddHook(WndProc);
         }
@@ -39,6 +56,8 @@ namespace GpScanner.ViewModel
         }
 
         private const int _AboutSysMenuID = 1001;
+
+        private const int _SettingsSysMenuID = 1002;
 
         private const int GWL_STYLE = -16, WS_MINIMIZEBOX = 0x20000;
 
@@ -80,9 +99,13 @@ namespace GpScanner.ViewModel
                         _ = Process.Start("https://github.com/goksenpasli");
                         handled = true;
                         break;
+
+                    case _SettingsSysMenuID:
+                        OpenSettings.Execute(null);
+                        handled = true;
+                        break;
                 }
             }
-
             return IntPtr.Zero;
         }
     }

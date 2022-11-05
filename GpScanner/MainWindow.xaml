@@ -49,107 +49,10 @@
             ToolTip="{twainctrl:Loc SPLITTERTOOLTIP}" />
         <GroupBox Grid.Column="2" Margin="1,0,0,0">
             <GroupBox.Header>
-                <UniformGrid Columns="4">
-                    <ToggleButton Command="{Binding ModifyGridWidth}">
-                        <ToggleButton.Style>
-                            <Style TargetType="ToggleButton">
-                                <Style.Triggers>
-                                    <Trigger Property="IsChecked" Value="True">
-                                        <Setter Property="CommandParameter" Value="1" />
-                                    </Trigger>
-                                    <Trigger Property="IsChecked" Value="False">
-                                        <Setter Property="CommandParameter" Value="0" />
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ToggleButton.Style>
-                        <Image Width="24" Height="24">
-                            <Image.Source>
-                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                    <Binding Source="Shell32.dll" />
-                                    <Binding Source="263" />
-                                </MultiBinding>
-                            </Image.Source>
-                        </Image>
-                    </ToggleButton>
-                    <Extensions:ContentToggleButton>
-                        <TextBlock Text="{twainctrl:Loc GRAPH}" />
-                        <Extensions:ContentToggleButton.OverContent>
-                            <GroupBox Header="{twainctrl:Loc GRAPH}">
-                                <Extensions:GraphControl Width="600" Height="400"
-                                    Series="{Binding ChartData}" />
-                            </GroupBox>
-                        </Extensions:ContentToggleButton.OverContent>
-                    </Extensions:ContentToggleButton>
-                    <Button Command="{Binding ChangeDataFolder}">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Width="24" Height="24">
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Imageres.dll" />
-                                        <Binding Source="8" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
-                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc FILE}" />
-                        </StackPanel>
-                    </Button>
-                    <ComboBox VerticalContentAlignment="Center"
-                        d:SelectedValue="TÜRKÇE"
-                        SelectedValue="{Binding SeçiliDil}"
-                        SelectedValuePath="Tag">
-                        <ComboBoxItem Tag="TÜRKÇE">
-                            <ComboBoxItem.Content>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Width="34" Height="20"
-                                        RenderOptions.BitmapScalingMode="Fant" Source="/Resources/flag-of-Turkey.png" />
-                                    <TextBlock VerticalAlignment="Center" Text="TÜRKÇE" />
-                                </StackPanel>
-                            </ComboBoxItem.Content>
-                        </ComboBoxItem>
-                        <ComboBoxItem Tag="ENGLISH">
-                            <ComboBoxItem.Content>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Width="34" Height="20"
-                                        RenderOptions.BitmapScalingMode="Fant" Source="/Resources/flag-of-United-States-of-America.png" />
-                                    <TextBlock VerticalAlignment="Center" Text="ENGLISH" />
-                                </StackPanel>
-                            </ComboBoxItem.Content>
-                        </ComboBoxItem>
-                        <ComboBoxItem Tag="FRANÇAIS">
-                            <ComboBoxItem.Content>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Width="34" Height="20"
-                                        RenderOptions.BitmapScalingMode="Fant" Source="/Resources/flag-of-France.png" />
-                                    <TextBlock VerticalAlignment="Center" Text="FRANÇAIS" />
-                                </StackPanel>
-                            </ComboBoxItem.Content>
-                        </ComboBoxItem>
-                        <ComboBoxItem Tag="ITALIANO">
-                            <ComboBoxItem.Content>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Width="34" Height="20"
-                                        RenderOptions.BitmapScalingMode="Fant" Source="/Resources/flag-of-Italy.png" />
-                                    <TextBlock VerticalAlignment="Center" Text="ITALIANO" />
-                                </StackPanel>
-                            </ComboBoxItem.Content>
-                        </ComboBoxItem>
-                        <ComboBoxItem Tag="عربي">
-                            <ComboBoxItem.Content>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Width="34" Height="20"
-                                        RenderOptions.BitmapScalingMode="Fant" Source="/Resources/flag-of-Saudi-Arabia.png" />
-                                    <TextBlock VerticalAlignment="Center" Text="عربي" />
-                                </StackPanel>
-                            </ComboBoxItem.Content>
-                        </ComboBoxItem>
-                    </ComboBox>
-                </UniformGrid>
+                <UniformGrid Columns="4" />
             </GroupBox.Header>
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="23.2" />
@@ -157,22 +60,10 @@
                     <RowDefinition Height="100" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Extensions:ContentToggleButton>
-                    <StackPanel Orientation="Horizontal">
-                        <Canvas Width="32" Height="32"
-                            HorizontalAlignment="Left"
-                            Background="{StaticResource Tesseract}" />
-                        <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc TESSERACT}" />
-                    </StackPanel>
-                    <Extensions:ContentToggleButton.OverContent>
-                        <local:TesseractView Width="500" Height="350" />
-                    </Extensions:ContentToggleButton.OverContent>
-                </Extensions:ContentToggleButton>
-                <Extensions:ButtonedTextBox Grid.Row="3"
+                <Extensions:ButtonedTextBox Grid.Row="1"
                     CopyButtonVisibility="Collapsed"
                     Text="{Binding AramaMetni, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                <UniformGrid Grid.Row="1"
-                    Columns="3" Rows="2">
+                <UniformGrid Columns="4">
                     <Button Command="{Binding Tümünüİşaretle}">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
@@ -218,53 +109,23 @@
                             </StackPanel>
                         </Button.Content>
                     </Button>
-                    <CheckBox VerticalAlignment="Center"
-                        Content="{twainctrl:Loc QRDETECT}"
-                        IsChecked="{Binding DetectBarCode}" />
-                    <CheckBox VerticalAlignment="Center"
-                        Content="{twainctrl:Loc SEPERATOR}"
-                        IsChecked="{Binding DetectPageSeperator}"
-                        IsEnabled="{Binding DetectBarCode}" />
-                </UniformGrid>
-                <UniformGrid Grid.Row="2"
-                    Columns="3"
-                    IsEnabled="{Binding DetectPageSeperator}"
-                    Rows="2">
-                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                        Text="{twainctrl:Loc FILENAME}" />
-                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                        Text="{twainctrl:Loc TAG}" />
-                    <ComboBox ItemsSource="{Binding PatchCodes, Source={x:Static properties:Settings.Default}}" SelectedItem="{Binding PatchProfileName}">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <UniformGrid Columns="2">
-                                    <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay}" />
-                                    <Button Background="Transparent" BorderBrush="Transparent"
-                                        Command="{Binding DataContext.RemovePatchProfile, RelativeSource={RelativeSource AncestorType=ComboBox}}"
-                                        CommandParameter="{Binding Mode=OneWay}"
-                                        Content="{twainctrl:Loc DELETE}"
-                                        FontWeight="Bold" Foreground="Red" />
-                                </UniformGrid>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                    <TextBox Text="{Binding PatchFileName, UpdateSourceTrigger=PropertyChanged}" />
-                    <TextBox Text="{Binding PatchTag, UpdateSourceTrigger=PropertyChanged}" />
-                    <Button Command="{Binding SavePatchProfile}">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Width="16" Height="16">
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Shell32.dll" />
-                                        <Binding Source="6" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
-                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SAVEPROFILE}" />
-                        </StackPanel>
+                    <Button Command="{Binding Source={x:Static ViewModel:WindowExtensions.OpenSettings}}">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="21" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SETTİNGS}" />
+                            </StackPanel>
+                        </Button.Content>
                     </Button>
                 </UniformGrid>
-                <UniformGrid Grid.Row="4" Columns="4">
+                <UniformGrid Grid.Row="2" Columns="4">
                     <Button Command="{Binding DateBack}"
                         Content="ç" FontFamily="Wingdings" FontSize="16" />
                     <DatePicker DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}"
@@ -272,9 +133,7 @@
                         SelectedDate="{Binding SeçiliGün}" />
                     <Button Command="{Binding DateForward}"
                         Content="è" FontFamily="Wingdings" FontSize="16" />
-                    <ComboBox x:Name="CbSize"
-                        ItemsSource="{Binding GetPreviewSize}"
-                        SelectedItem="{Binding SelectedSize}">
+                    <ComboBox ItemsSource="{Binding GetPreviewSize}" SelectedItem="{Binding SelectedSize}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock>
@@ -286,7 +145,7 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                 </UniformGrid>
-                <ListBox Grid.Row="5"
+                <ListBox Grid.Row="3"
                     HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
                     d:ItemsSource="{d:SampleData ItemCount=5}"
                     Background="{StaticResource BorderBackground}"
@@ -339,142 +198,124 @@
                         </Style>
                     </ListBox.ItemContainerStyle>
                 </ListBox>
-                <ListBox Grid.Row="6"
-                    HorizontalContentAlignment="Stretch"
-                    d:ItemsSource="{d:SampleData ItemCount=5}"
-                    Background="{StaticResource BorderBackground}"
-                    ItemsSource="{Binding BarcodeList}">
-                    <ListBox.ItemContainerStyle>
-                        <Style TargetType="ListBoxItem">
-                            <Setter Property="Padding" Value="0" />
-                        </Style>
-                    </ListBox.ItemContainerStyle>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ListBox}}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="20" />
-                                    <ColumnDefinition Width="84.8" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock VerticalAlignment="Center">
-                                    <Hyperlink Command="{Binding DataContext.TesseractViewModel.TesseractDataFilesDownloadLink, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding Mode=OneWay}">
-                                        <Run FontFamily="Wingdings" FontSize="16" FontWeight="Bold"
-                                            Text="8" />
-                                    </Hyperlink>
-                                </TextBlock>
-                                <Image Grid.Column="1"
-                                    Width="80" Height="80"
-                                    Source="{Binding Mode=OneWay, Converter={StaticResource StringToQrBitmapImageConverter}}" />
-                                <Extensions:ButtonedTextBox Grid.Column="2"
-                                    IsReadOnly="True" ResetButtonVisibility="Collapsed"
-                                    Text="{Binding Mode=OneWay}"
-                                    TextWrapping="Wrap" />
-                            </Grid>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-                <UniformGrid Grid.Row="7"
-                    Columns="3" Rows="1">
-                    <Button Command="{Binding PdfBirleştir}">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Width="32" Height="32">
+                <UniformGrid Grid.Row="4"
+                    Columns="2" Rows="1">
+                    <ListBox HorizontalContentAlignment="Stretch"
+                        d:ItemsSource="{d:SampleData ItemCount=5}"
+                        Background="{StaticResource BorderBackground}"
+                        ItemsSource="{Binding BarcodeList}">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Padding" Value="0" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ListBox}}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="20" />
+                                        <ColumnDefinition Width="84.8" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock VerticalAlignment="Center">
+                                        <Hyperlink Command="{Binding DataContext.TesseractViewModel.TesseractDataFilesDownloadLink, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding Mode=OneWay}">
+                                            <Run FontFamily="Wingdings" FontSize="16" FontWeight="Bold"
+                                                Text="8" />
+                                        </Hyperlink>
+                                    </TextBlock>
+                                    <Image Grid.Column="1"
+                                        Width="80" Height="80"
+                                        Source="{Binding Mode=OneWay, Converter={StaticResource StringToQrBitmapImageConverter}}" />
+                                    <Extensions:ButtonedTextBox Grid.Column="2"
+                                        Height="80"
+                                        IsReadOnly="True" ResetButtonVisibility="Collapsed"
+                                        Text="{Binding Mode=OneWay}"
+                                        TextWrapping="Wrap" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <StackPanel>
+                        <ToggleButton Command="{Binding ModifyGridWidth}">
+                            <ToggleButton.Style>
+                                <Style TargetType="ToggleButton">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsChecked" Value="True">
+                                            <Setter Property="CommandParameter" Value="1" />
+                                        </Trigger>
+                                        <Trigger Property="IsChecked" Value="False">
+                                            <Setter Property="CommandParameter" Value="0" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ToggleButton.Style>
+                            <Image Width="24" Height="24">
                                 <Image.Source>
                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                         <Binding Source="Shell32.dll" />
-                                        <Binding Source="68" />
+                                        <Binding Source="263" />
                                     </MultiBinding>
                                 </Image.Source>
                             </Image>
-                            <TextBlock VerticalAlignment="Center">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Text" Value="{twainctrl:Loc MERGE}" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding CheckedPdfCount}" Value="0">
-                                                <Setter Property="Text" Value="{twainctrl:Loc MERGESELECTED}" />
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding CheckedPdfCount}" Value="1">
-                                                <Setter Property="Text" Value="{twainctrl:Loc SELECTTWOPDF}" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                        </StackPanel>
-                    </Button>
-                    <Button Command="{Binding RegisterSti, Mode=OneWay}">
-                        <Button.Content>
+                        </ToggleButton>
+                        <Button Command="{Binding PdfBirleştir}">
                             <StackPanel Orientation="Horizontal">
-                                <Canvas Width="32" Height="32">
-                                    <Image Width="32" Height="32">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="sti.dll" />
-                                                <Binding Source="0" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                    <Image Canvas.Bottom="0"
-                                        Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="User32.dll" />
-                                                <Binding Source="6" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                </Canvas>
-                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc REGSTI}" />
+                                <Image Width="32" Height="32">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="68" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock VerticalAlignment="Center">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Text" Value="{twainctrl:Loc MERGE}" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding CheckedPdfCount}" Value="0">
+                                                    <Setter Property="Text" Value="{twainctrl:Loc MERGESELECTED}" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CheckedPdfCount}" Value="1">
+                                                    <Setter Property="Text" Value="{twainctrl:Loc SELECTTWOPDF}" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
                             </StackPanel>
-                        </Button.Content>
-                        <Button.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Command="{Binding UnRegisterSti, Mode=OneWay}" Header="{twainctrl:Loc UNREGSTI}">
-                                    <MenuItem.Icon>
-                                        <Image Width="16" Height="16">
+                        </Button>
+                        <Extensions:SplitButton HorizontalContentAlignment="Stretch"
+                            Command="{Binding OcrPage, Mode=OneWay}"
+                            CommandParameter="{Binding ElementName=TwainCtrl, Path=DataContext}"
+                            IsEnabled="{Binding OcrIsBusy, Converter={StaticResource ReverseBooleanConverter}}"
+                            IsSplitPartOpen="{Binding ScannedTextWindowOpen}">
+                            <Extensions:SplitButton.Content>
+                                <Grid>
+                                    <ProgressBar IsIndeterminate="{Binding OcrIsBusy}" />
+                                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                        <Image Width="32" Height="32">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                     <Binding Source="Shell32.dll" />
-                                                    <Binding Source="131" />
+                                                    <Binding Source="70" />
                                                 </MultiBinding>
                                             </Image.Source>
                                         </Image>
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                            </ContextMenu>
-                        </Button.ContextMenu>
-                    </Button>
-                    <Extensions:SplitButton HorizontalContentAlignment="Stretch"
-                        Command="{Binding OcrPage, Mode=OneWay}"
-                        CommandParameter="{Binding ElementName=TwainCtrl, Path=DataContext}"
-                        IsEnabled="{Binding OcrIsBusy, Converter={StaticResource ReverseBooleanConverter}}"
-                        IsSplitPartOpen="{Binding ScannedTextWindowOpen}">
-                        <Extensions:SplitButton.Content>
-                            <Grid>
-                                <ProgressBar IsIndeterminate="{Binding OcrIsBusy}" />
-                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                    <Image Width="32" Height="32">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="70" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc READACTIVEPAGE}" />
-                                </StackPanel>
-                            </Grid>
-                        </Extensions:SplitButton.Content>
-                        <Extensions:SplitButton.InternalContent>
-                            <Extensions:ResizablePanel Width="420" Height="594" MinWidth="420"
-                                MinHeight="594">
-                                <GroupBox>
-                                    <local:TranslateView Grid.Row="2" />
-                                </GroupBox>
-                            </Extensions:ResizablePanel>
-                        </Extensions:SplitButton.InternalContent>
-                    </Extensions:SplitButton>
+                                        <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc READACTIVEPAGE}" />
+                                    </StackPanel>
+                                </Grid>
+                            </Extensions:SplitButton.Content>
+                            <Extensions:SplitButton.InternalContent>
+                                <Extensions:ResizablePanel Width="420" Height="594" MinWidth="420"
+                                    MinHeight="594">
+                                    <GroupBox>
+                                        <local:TranslateView Grid.Row="2" />
+                                    </GroupBox>
+                                </Extensions:ResizablePanel>
+                            </Extensions:SplitButton.InternalContent>
+                        </Extensions:SplitButton>
+                    </StackPanel>
                 </UniformGrid>
             </Grid>
         </GroupBox>

@@ -649,6 +649,8 @@ namespace GpScanner.ViewModel
             }
         }
 
+        public int[] SettingsPagePdfDpiList { get; } = new int[] { 12, 24, 36, 72, 96, 120, 150, 200, 300, 400, 500, 600 };
+
         public ICommand Tersiniİşaretle { get; }
 
         public TesseractViewModel TesseractViewModel
