@@ -445,10 +445,10 @@ namespace PdfViewer
                 if (pdffilestream?.Length > 0)
                 {
                     SynchronizationContext uiContext = SynchronizationContext.Current;
-                    var pagecount = await PdfPageCountAsync(pdffilestream);
-                    Thumbnails = new ObservableCollection<ThumbClass>();
                     await Task.Run(async () =>
                     {
+                        var pagecount = await PdfPageCountAsync(pdffilestream);
+                        Thumbnails = new ObservableCollection<ThumbClass>();
                         for (int i = 1; i <= pagecount; i++)
                         {
                             if (!cancellationToken.IsCancellationRequested)

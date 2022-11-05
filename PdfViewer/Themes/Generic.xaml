@@ -185,27 +185,29 @@
                                         </Image.Source>
                                     </Image>
                                     <Extensions:ContentToggleButton.OverContent>
-                                        <ListBox Width="640" Height="480"
-                                            ItemsSource="{Binding Thumbnails, RelativeSource={RelativeSource TemplatedParent}}"
-                                            SelectedValue="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
-                                            SelectedValuePath="Page" SelectionMode="Extended" VirtualizingPanel.CacheLength="3,3"
-                                            VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                                            VirtualizingPanel.ScrollUnit="Item" VirtualizingPanel.VirtualizationMode="Recycling">
-                                            <ListBox.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" SpacingMode="None" />
-                                                </ItemsPanelTemplate>
-                                            </ListBox.ItemsPanel>
-                                            <ListBox.ItemTemplate>
-                                                <DataTemplate>
-                                                    <StackPanel>
-                                                        <TextBlock HorizontalAlignment="Center" Text="{Binding Page, IsAsync=True, Mode=OneWay}" />
-                                                        <Image Width="42" Height="60"
-                                                            Source="{Binding Thumb, IsAsync=True, Mode=OneWay}" />
-                                                    </StackPanel>
-                                                </DataTemplate>
-                                            </ListBox.ItemTemplate>
-                                        </ListBox>
+                                        <Extensions:ResizablePanel Width="640" Height="480" MinWidth="320"
+                                            MinHeight="240">
+                                            <ListBox ItemsSource="{Binding Thumbnails, RelativeSource={RelativeSource TemplatedParent}}"
+                                                SelectedValue="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
+                                                SelectedValuePath="Page" SelectionMode="Extended" VirtualizingPanel.CacheLength="3,3"
+                                                VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                                                VirtualizingPanel.ScrollUnit="Item" VirtualizingPanel.VirtualizationMode="Recycling">
+                                                <ListBox.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" SpacingMode="None" />
+                                                    </ItemsPanelTemplate>
+                                                </ListBox.ItemsPanel>
+                                                <ListBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel>
+                                                            <TextBlock HorizontalAlignment="Center" Text="{Binding Page, IsAsync=True, Mode=OneWay}" />
+                                                            <Image Width="42" Height="60"
+                                                                Source="{Binding Thumb, IsAsync=True, Mode=OneWay}" />
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>
+                                        </Extensions:ResizablePanel>
                                     </Extensions:ContentToggleButton.OverContent>
                                 </Extensions:ContentToggleButton>
                             </Grid>

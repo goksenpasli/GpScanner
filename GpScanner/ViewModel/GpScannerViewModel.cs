@@ -86,7 +86,7 @@ namespace GpScanner.ViewModel
                     BitmapFrame resim = twainCtrl.SeçiliResim.Resim;
                     byte[] imgdata = resim.ToTiffJpegByteArray(Format.Jpg);
                     _ = GetScannedTextAsync(imgdata);
-                    Result result = GetImageBarcodeResult(resim.BitmapSourceToBitmap());
+                    Result result = GetImageBarcodeResult(resim);
                     if (result != null)
                     {
                         BarcodeContent = result.Text;
@@ -211,33 +211,6 @@ namespace GpScanner.ViewModel
                 Settings.Default.Reload();
             }, parameter => true);
 
-            BelgeİleBirleştir = new RelayCommand<object>(async parameter =>
-            {
-                if (parameter is TwainCtrl twainCtrl)
-                {
-                    try
-                    {
-                        string file = SelectedDocument.FileName;
-                        string temporarypdf = Path.GetTempPath() + Guid.NewGuid() + ".pdf";
-                        ObservableCollection<ScannedImage> scannedimages = twainCtrl.Scanner.Resimler;
-                        await Task.Run(() =>
-                        {
-                            PdfGeneration.GeneratePdf(scannedimages.Where(z => z.Seçili), Format.Jpg, twainCtrl.SelectedPaper).Save(temporarypdf);
-                            PdfGeneration.MergePdf(new string[] { temporarypdf, file }).Save(file);
-                            File.Delete(temporarypdf);
-                        });
-                    }
-                    catch (Exception ex)
-                    {
-                        _ = MessageBox.Show(ex.Message);
-                    }
-                }
-            }, parameter =>
-            {
-                CheckedPdfCount = Dosyalar?.Count(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase));
-                return CheckedPdfCount == 1 && parameter is TwainCtrl twainCtrl && twainCtrl.Scanner.Resimler.Count(z => z.Seçili) > 0;
-            });
-
             ModifyGridWidth = new RelayCommand<object>(parameter =>
             {
                 switch (parameter)
@@ -334,8 +307,6 @@ namespace GpScanner.ViewModel
                 }
             }
         }
-
-        public ICommand BelgeİleBirleştir { get; }
 
         public XmlLanguage CalendarLang
         {
@@ -730,18 +701,29 @@ namespace GpScanner.ViewModel
             return new ObservableCollection<Data>();
         }
 
-        public static BitmapImage GenerateQr(string text)
+        public static WriteableBitmap GenerateQr(string text, int width = 80, int height = 80)
         {
             BarcodeWriter barcodeWriter = new BarcodeWriter();
             barcodeWriter.Format = BarcodeFormat.QR_CODE;
             barcodeWriter.Renderer = new BitmapRenderer();
             EncodingOptions encodingOptions = new EncodingOptions();
-            encodingOptions.Width = 80;
-            encodingOptions.Height = 80;
+            encodingOptions.Width = width;
+            encodingOptions.Height = height;
             encodingOptions.Margin = 0;
             encodingOptions.Hints.Add(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
             barcodeWriter.Options = encodingOptions;
-            return barcodeWriter.Write(text).ToBitmapImage(System.Drawing.Imaging.ImageFormat.Png);
+            return barcodeWriter.WriteAsWriteableBitmap(text);
+        }
+
+        public static Result GetImageBarcodeResult(BitmapFrame bitmapFrame)
+        {
+            if (bitmapFrame is not null)
+            {
+                BarcodeReader reader = new BarcodeReader();
+                reader.Options.TryHarder = true;
+                return reader.Decode(bitmapFrame);
+            }
+            return null;
         }
 
         public ObservableCollection<Chart> GetChartsData()
@@ -764,32 +746,26 @@ namespace GpScanner.ViewModel
         public Result GetImageBarcodeResult(byte[] imgbyte)
         {
             using MemoryStream ms = new(imgbyte);
-            using System.Drawing.Bitmap bmp = new(ms);
-            IBarcodeReader reader = new BarcodeReader();
+            BitmapImage bitmapImage = new BitmapImage();
+            bitmapImage.BeginInit();
+            bitmapImage.StreamSource = ms;
+            bitmapImage.EndInit();
+            bitmapImage.Freeze();
+            BarcodeReader reader = new BarcodeReader();
             reader.Options.TryHarder = true;
-            Result result = reader.Decode(bmp);
+            Result result = reader.Decode(bitmapImage);
             imgbyte = null;
+            bitmapImage = null;
             return result;
         }
 
-        public Result GetImageBarcodeResult(System.Drawing.Bitmap bitmap)
+        public Result[] GetMultipleImageBarcodeResult(BitmapFrame bitmapFrame)
         {
-            if (bitmap is not null)
+            if (bitmapFrame is not null)
             {
-                IBarcodeReader reader = new BarcodeReader();
+                BarcodeReader reader = new BarcodeReader();
                 reader.Options.TryHarder = true;
-                return reader.Decode(bitmap);
-            }
-            return null;
-        }
-
-        public Result[] GetMultipleImageBarcodeResult(System.Drawing.Bitmap bitmap)
-        {
-            if (bitmap is not null)
-            {
-                IBarcodeReader reader = new BarcodeReader();
-                reader.Options.TryHarder = true;
-                return reader.DecodeMultiple(bitmap);
+                return reader.DecodeMultiple(bitmapFrame);
             }
             return null;
         }
