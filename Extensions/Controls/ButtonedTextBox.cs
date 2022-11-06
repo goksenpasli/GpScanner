@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -16,6 +17,7 @@ namespace Extensions
         {
             _ = CommandBindings.Add(new CommandBinding(Reset, ResetCommand, CanExecute)); //handle reset
             _ = CommandBindings.Add(new CommandBinding(Copy, CopyCommand, CanExecute)); //handle copy
+            _ = CommandBindings.Add(new CommandBinding(Open, OpenCommand, CanExecute)); //handle copy
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -32,6 +34,22 @@ namespace Extensions
                 {
                     copyButtonVisibility = value;
                     OnPropertyChanged(nameof(CopyButtonVisibility));
+                }
+            }
+        }
+
+        public ICommand Open { get; } = new RoutedCommand();
+
+        public Visibility OpenButtonVisibility
+        {
+            get => openButtonVisibility;
+
+            set
+            {
+                if (openButtonVisibility != value)
+                {
+                    openButtonVisibility = value;
+                    OnPropertyChanged(nameof(OpenButtonVisibility));
                 }
             }
         }
@@ -58,6 +76,8 @@ namespace Extensions
 
         private Visibility copyButtonVisibility = Visibility.Visible;
 
+        private Visibility openButtonVisibility = Visibility.Visible;
+
         private Visibility resetButtonVisibility = Visibility.Visible;
 
         private void CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -71,6 +91,18 @@ namespace Extensions
         private void CopyCommand(object sender, ExecutedRoutedEventArgs e)
         {
             Clipboard.SetText(Text);
+        }
+
+        private void OpenCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            try
+            {
+                Process.Start(Text);
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void ResetCommand(object sender, ExecutedRoutedEventArgs e)

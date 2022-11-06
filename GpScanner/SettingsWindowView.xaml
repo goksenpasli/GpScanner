@@ -125,19 +125,24 @@
                         </StackPanel>
                     </Button>
                 </UniformGrid>
-                <Button Grid.Row="1" Command="{Binding ChangeDataFolder}">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Width="24" Height="24">
-                            <Image.Source>
-                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                    <Binding Source="Imageres.dll" />
-                                    <Binding Source="8" />
-                                </MultiBinding>
-                            </Image.Source>
-                        </Image>
-                        <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc FILE}" />
-                    </StackPanel>
-                </Button>
+                <UniformGrid Grid.Row="1" Columns="2">
+                    <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
+                        IsReadOnly="True" ResetButtonVisibility="Collapsed"
+                        Text="{Binding Path=DatabaseFile, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
+                    <Button Command="{Binding ChangeDataFolder}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="24" Height="24">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Imageres.dll" />
+                                        <Binding Source="8" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc FILE}" />
+                        </StackPanel>
+                    </Button>
+                </UniformGrid>
                 <UniformGrid Grid.Row="3" Columns="2">
                     <Button Command="{Binding RegisterSti, Mode=OneWay}">
                         <StackPanel Orientation="Horizontal">
@@ -202,7 +207,9 @@
                         ItemsSource="{Binding SettingsPagePdfDpiList}"
                         SelectedItem="{Binding DefaultThumbNailDpi, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                 </UniformGrid>
-                <Extensions:GraphControl Grid.Row="5" Series="{Binding ChartData}" />
+                <GroupBox Grid.Row="5">
+                    <Extensions:GraphControl Series="{Binding ChartData}" />
+                </GroupBox>
             </Grid>
         </GroupBox>
         <local:TesseractView Grid.Column="1" />

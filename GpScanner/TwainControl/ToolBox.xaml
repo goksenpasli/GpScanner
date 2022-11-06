@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
     xmlns:local="clr-namespace:TwainControl"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:properties="clr-namespace:TwainControl.Properties"
@@ -102,7 +103,7 @@
                                 Style="{StaticResource Slider}"
                                 Value="{Binding Scanner.Brightness, Delay=100}">
                                 <Slider.Background>
-                                    <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                    <LinearGradientBrush ice:Freeze="true" StartPoint="0,0.5" EndPoint="1,0.5">
                                         <GradientStop Offset="0" Color="Black" />
                                         <GradientStop Offset="1" Color="White" />
                                     </LinearGradientBrush>

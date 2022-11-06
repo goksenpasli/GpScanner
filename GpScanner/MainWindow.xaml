@@ -6,7 +6,6 @@
     xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=PresentationFramework"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:GpScanner"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:properties="clr-namespace:GpScanner.Properties"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
     xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
@@ -61,7 +60,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Extensions:ButtonedTextBox Grid.Row="1"
-                    CopyButtonVisibility="Collapsed"
+                    CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed"
                     Text="{Binding AramaMetni, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <UniformGrid Columns="4">
                     <Button Command="{Binding Tümünüİşaretle}">
@@ -188,7 +187,7 @@
                                                 IsChecked="{Binding Seçili}"
                                                 IsEnabled="{Binding FileName, Mode=OneWay, Converter={StaticResource FileNamePdfZipCheckConverter}}">
                                                 <CheckBox.Content>
-                                                    <ContentControl Content="{Binding Path=FileName, IsAsync=True, Mode=OneWay}" ContentTemplateSelector="{StaticResource ThumbViewerSelector}" />
+                                                    <ContentControl Content="{Binding Path=FileName, Mode=OneWay}" ContentTemplateSelector="{StaticResource ThumbViewerSelector}" />
                                                 </CheckBox.Content>
                                             </CheckBox>
                                         </Border>
@@ -228,7 +227,7 @@
                                         Source="{Binding Mode=OneWay, Converter={StaticResource StringToQrBitmapImageConverter}}" />
                                     <Extensions:ButtonedTextBox Grid.Column="2"
                                         Height="80"
-                                        IsReadOnly="True" ResetButtonVisibility="Collapsed"
+                                        IsReadOnly="True" OpenButtonVisibility="Collapsed" ResetButtonVisibility="Collapsed"
                                         Text="{Binding Mode=OneWay}"
                                         TextWrapping="Wrap" />
                                 </Grid>

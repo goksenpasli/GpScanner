@@ -2,7 +2,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Controls="clr-namespace:Extensions.Controls"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:Extensions"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+    xmlns:local="clr-namespace:Extensions"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance Type=Controls:MediaViewer}"
     d:DesignHeight="384" d:DesignWidth="512" UseLayoutRounding="True"
@@ -491,7 +493,7 @@
                                     <Slider BorderBrush="Blue" Value="{Binding Blue, Source={x:Reference Color}}" />
                                     <Slider Value="{Binding Brightness, Source={x:Reference Color}}">
                                         <Slider.BorderBrush>
-                                            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                            <LinearGradientBrush ice:Freeze="true" StartPoint="0.5,0" EndPoint="0.5,1">
                                                 <GradientStop Color="Black" />
                                                 <GradientStop Offset="1" Color="White" />
                                             </LinearGradientBrush>
@@ -499,7 +501,7 @@
                                     </Slider>
                                     <Slider Value="{Binding Contrast, Source={x:Reference Color}}">
                                         <Slider.BorderBrush>
-                                            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                            <LinearGradientBrush ice:Freeze="true" StartPoint="0.5,0" EndPoint="0.5,1">
                                                 <GradientStop Color="White" />
                                                 <GradientStop Offset="1" Color="Black" />
                                             </LinearGradientBrush>

@@ -782,7 +782,7 @@ namespace GpScanner.ViewModel
 
         public async Task<ObservableCollection<OcrData>> GetScannedTextAsync(byte[] imgdata, bool opentextwindow = true)
         {
-            if (imgdata is not null)
+            if (imgdata is not null && !string.IsNullOrEmpty(Settings.Default.DefaultTtsLang))
             {
                 OcrIsBusy = true;
                 ScannedTextWindowOpen = false;

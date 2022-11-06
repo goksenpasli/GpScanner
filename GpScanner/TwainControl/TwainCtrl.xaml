@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Converter="clr-namespace:TwainControl.Converter"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
+    xmlns:PresentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:TwainControl"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -25,7 +26,7 @@
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
-            <LinearGradientBrush x:Key="Colorfull" StartPoint="0,0.5" EndPoint="1,0.5">
+            <LinearGradientBrush x:Key="Colorfull" PresentationOptions:Freeze="true" StartPoint="0,0.5" EndPoint="1,0.5">
                 <GradientStop Offset="0.0" Color="Red" />
                 <GradientStop Offset="0.17" Color="Orange" />
                 <GradientStop Offset="0.33" Color="Yellow" />
@@ -318,6 +319,7 @@
                                     Text="{Binding Scanner.SaveFileName}" />
                             </UniformGrid>
                             <Extensions:ButtonedTextBox d:Text="FileName" GotKeyboardFocus="ButtonedTextBox_GotKeyboardFocus" MaxLength="255"
+                                OpenButtonVisibility="Collapsed"
                                 Text="{Binding Scanner.FileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
                                 <Extensions:ButtonedTextBox.ContextMenu>
                                     <ContextMenu>
@@ -679,7 +681,7 @@
                                                             d:Source="/GpScanner;component/scanner.ico"
                                                             d:Width="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}"
                                                             ShowShadow="True"
-                                                            Source="{Binding Resim.Thumbnail, Mode=OneWay, IsAsync=True}" />
+                                                            Source="{Binding Resim.Thumbnail, Mode=OneWay}" />
                                                     </Viewbox>
                                                 </ToggleButton>
                                             </StackPanel>

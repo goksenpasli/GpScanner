@@ -332,26 +332,6 @@ namespace PdfViewer
             set => SetValue(ZoomProperty, value);
         }
 
-        public static BitmapImage ConvertToImg(byte[] pdffilestream, int page, int dpi)
-        {
-            try
-            {
-                if (pdffilestream.Length > 0)
-                {
-                    byte[] buffer = Pdf2Png.Convert(pdffilestream, page, dpi);
-                    BitmapImage bitmapImage = BitmapSourceFromByteArray(buffer);
-                    pdffilestream = null;
-                    buffer = null;
-                    GC.Collect();
-                    return bitmapImage;
-                }
-            }
-            catch (Exception)
-            {
-            }
-            return null;
-        }
-
         public static async Task<BitmapImage> ConvertToImgAsync(byte[] pdffilestream, int page, int dpi)
         {
             try

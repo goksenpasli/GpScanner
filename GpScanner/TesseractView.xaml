@@ -1,9 +1,9 @@
 ﻿<UserControl x:Class="GpScanner.TesseractView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:GpScanner"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:ocr="clr-namespace:Ocr;assembly=Ocr" xmlns:properties="clr-namespace:GpScanner.Properties"
+    xmlns:properties="clr-namespace:GpScanner.Properties"
     xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
     xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
     xmlns:viewmodel="clr-namespace:GpScanner.ViewModel"
@@ -28,7 +28,8 @@
             <ItemsControl d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding OcrDatas}">
                 <ItemsControl.Template>
                     <ControlTemplate>
-                        <ScrollViewer Padding="{TemplateBinding Padding}" VerticalScrollBarVisibility="Auto">
+                        <ScrollViewer Padding="{TemplateBinding Padding}"
+                            CanContentScroll="True" VerticalScrollBarVisibility="Auto">
                             <ItemsPresenter />
                         </ScrollViewer>
                     </ControlTemplate>
@@ -50,6 +51,11 @@
                         </Button>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
             </ItemsControl>
             <ListBox Grid.Column="1"
                 d:ItemsSource="{d:SampleData ItemCount=5}"

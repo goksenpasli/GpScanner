@@ -200,9 +200,9 @@
                                                 <ListBox.ItemTemplate>
                                                     <DataTemplate>
                                                         <StackPanel>
-                                                            <TextBlock HorizontalAlignment="Center" Text="{Binding Page, IsAsync=True, Mode=OneWay}" />
+                                                            <TextBlock HorizontalAlignment="Center" Text="{Binding Page, Mode=OneWay}" />
                                                             <Image Width="42" Height="60"
-                                                                Source="{Binding Thumb, IsAsync=True, Mode=OneWay}" />
+                                                                Source="{Binding Thumb, Mode=OneWay}" />
                                                         </StackPanel>
                                                     </DataTemplate>
                                                 </ListBox.ItemTemplate>
