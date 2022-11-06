@@ -10,7 +10,7 @@ namespace Extensions
     {
         public static readonly DependencyProperty AmountProperty = DependencyProperty.Register("Amount", typeof(double), typeof(SharpenEffect), new UIPropertyMetadata(1D, PixelShaderConstantCallback(0)));
 
-        public static readonly DependencyProperty InputProperty = ShaderEffect.RegisterPixelShaderSamplerProperty("Input", typeof(SharpenEffect), 0);
+        public static readonly DependencyProperty InputProperty = RegisterPixelShaderSamplerProperty("Input", typeof(SharpenEffect), 0);
 
         public static readonly DependencyProperty InputSizeProperty = DependencyProperty.Register("InputSize", typeof(Size), typeof(SharpenEffect), new UIPropertyMetadata(new Size(800D, 600D), PixelShaderConstantCallback(1)));
 

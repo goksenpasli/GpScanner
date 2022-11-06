@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
-    xmlns:local="clr-namespace:PdfViewer">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
+                    xmlns:local="clr-namespace:PdfViewer">
     <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
     <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
     <Style TargetType="{x:Type local:PdfViewer}">

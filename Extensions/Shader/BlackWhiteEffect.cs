@@ -8,7 +8,7 @@ namespace Extensions
     /// <summary>An effect that turns the input into black/white colors.</summary>
     public class BlackWhiteEffect : ShaderEffect
     {
-        public static readonly DependencyProperty InputProperty = ShaderEffect.RegisterPixelShaderSamplerProperty("Input", typeof(BlackWhiteEffect), 0);
+        public static readonly DependencyProperty InputProperty = RegisterPixelShaderSamplerProperty("Input", typeof(BlackWhiteEffect), 0);
 
         public static readonly DependencyProperty ThresholdProperty = DependencyProperty.Register("Threshold", typeof(double), typeof(BlackWhiteEffect), new UIPropertyMetadata(0.6D, PixelShaderConstantCallback(1)));
 

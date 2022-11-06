@@ -794,7 +794,7 @@ namespace TwainControl
 
         private string fileName = "Tarama";
 
-        private int jpegQuality = 75;
+        private int jpegQuality = 80;
 
         private string localizedPath;
 

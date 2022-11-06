@@ -56,7 +56,7 @@ namespace TwainControl
             return outputDocument;
         }
 
-        public static PdfDocument GeneratePdf(IEnumerable<ScannedImage> bitmapFrames, Format format, Paper paper, int jpegquality = 75, List<ObservableCollection<OcrData>> ScannedText = null)
+        public static PdfDocument GeneratePdf(IEnumerable<ScannedImage> bitmapFrames, Format format, Paper paper, int jpegquality = 80, List<ObservableCollection<OcrData>> ScannedText = null)
         {
             using PdfDocument document = new();
             double index = 0;
@@ -115,7 +115,7 @@ namespace TwainControl
             return document;
         }
 
-        public static PdfDocument GeneratePdf(BitmapSource bitmapframe, ObservableCollection<OcrData> ScannedText, Format format, Paper paper, int jpegquality = 75, bool pdfonlytext = false)
+        public static PdfDocument GeneratePdf(BitmapSource bitmapframe, ObservableCollection<OcrData> ScannedText, Format format, Paper paper, int jpegquality = 80, bool pdfonlytext = false)
         {
             try
             {

@@ -418,8 +418,8 @@ namespace GpScanner.ViewModel
 
         public ObservableCollection<Size> GetPreviewSize
         {
-            get => new ObservableCollection<Size>
-                {
+            get => new()
+            {
                     new Size(240,315),
                     new Size(320,420),
                     new Size(426,560),
@@ -705,13 +705,17 @@ namespace GpScanner.ViewModel
 
         public static WriteableBitmap GenerateQr(string text, int width = 80, int height = 80)
         {
-            BarcodeWriter barcodeWriter = new BarcodeWriter();
-            barcodeWriter.Format = BarcodeFormat.QR_CODE;
-            barcodeWriter.Renderer = new BitmapRenderer();
-            EncodingOptions encodingOptions = new EncodingOptions();
-            encodingOptions.Width = width;
-            encodingOptions.Height = height;
-            encodingOptions.Margin = 0;
+            BarcodeWriter barcodeWriter = new()
+            {
+                Format = BarcodeFormat.QR_CODE,
+                Renderer = new BitmapRenderer()
+            };
+            EncodingOptions encodingOptions = new()
+            {
+                Width = width,
+                Height = height,
+                Margin = 0
+            };
             encodingOptions.Hints.Add(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
             barcodeWriter.Options = encodingOptions;
             return barcodeWriter.WriteAsWriteableBitmap(text);
@@ -721,7 +725,7 @@ namespace GpScanner.ViewModel
         {
             if (bitmapFrame is not null)
             {
-                BarcodeReader reader = new BarcodeReader();
+                BarcodeReader reader = new();
                 reader.Options.TryHarder = true;
                 return reader.Decode(bitmapFrame);
             }
@@ -748,12 +752,12 @@ namespace GpScanner.ViewModel
         public Result GetImageBarcodeResult(byte[] imgbyte)
         {
             using MemoryStream ms = new(imgbyte);
-            BitmapImage bitmapImage = new BitmapImage();
+            BitmapImage bitmapImage = new();
             bitmapImage.BeginInit();
             bitmapImage.StreamSource = ms;
             bitmapImage.EndInit();
             bitmapImage.Freeze();
-            BarcodeReader reader = new BarcodeReader();
+            BarcodeReader reader = new();
             reader.Options.TryHarder = true;
             Result result = reader.Decode(bitmapImage);
             imgbyte = null;
@@ -765,7 +769,7 @@ namespace GpScanner.ViewModel
         {
             if (bitmapFrame is not null)
             {
-                BarcodeReader reader = new BarcodeReader();
+                BarcodeReader reader = new();
                 reader.Options.TryHarder = true;
                 return reader.DecodeMultiple(bitmapFrame);
             }
@@ -876,7 +880,7 @@ namespace GpScanner.ViewModel
 
         private Scanner selectedDocument;
 
-        private Size selectedSize = new Size(240, 315);
+        private Size selectedSize = new(240, 315);
 
         private TesseractViewModel tesseractViewModel;
 

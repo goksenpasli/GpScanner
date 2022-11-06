@@ -8,7 +8,7 @@ namespace Extensions
     /// <summary>An effect that turns the input into gray scale shades.</summary>
     public class GrayScaleEffect : ShaderEffect
     {
-        public static readonly DependencyProperty InputProperty = ShaderEffect.RegisterPixelShaderSamplerProperty("Input", typeof(GrayScaleEffect), 0);
+        public static readonly DependencyProperty InputProperty = RegisterPixelShaderSamplerProperty("Input", typeof(GrayScaleEffect), 0);
 
         public GrayScaleEffect()
         {

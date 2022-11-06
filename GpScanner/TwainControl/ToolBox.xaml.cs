@@ -41,7 +41,26 @@ namespace TwainControl
                     {
                         BitmapFrame bitmapFrame = BitmapFrame.Create(parameter as BitmapSource);
                         bitmapFrame.Freeze();
-                        await TwainCtrl.SaveImage(bitmapFrame, saveFileDialog, Scanner, Paper);
+                        if (saveFileDialog.FilterIndex == 1)
+                        {
+                            TwainCtrl.SaveTifImage(bitmapFrame, saveFileDialog.FileName);
+                        }
+                        if (saveFileDialog.FilterIndex == 2)
+                        {
+                            TwainCtrl.SaveJpgImage(bitmapFrame, saveFileDialog.FileName);
+                        }
+                        if (saveFileDialog.FilterIndex == 3)
+                        {
+                            await TwainCtrl.SavePdfImage(bitmapFrame, saveFileDialog.FileName, Scanner, Paper);
+                        }
+                        if (saveFileDialog.FilterIndex == 4)
+                        {
+                            await TwainCtrl.SavePdfImage(bitmapFrame, saveFileDialog.FileName, Scanner, Paper, true);
+                        }
+                        if (saveFileDialog.FilterIndex == 5)
+                        {
+                            TwainCtrl.SaveXpsImage(bitmapFrame, saveFileDialog.FileName);
+                        }
                         bitmapFrame = null;
                     });
                 }

@@ -433,7 +433,7 @@ namespace PdfViewer
                         {
                             if (!cancellationToken.IsCancellationRequested)
                             {
-                                BitmapImage bitmapImage = await PdfViewer.ConvertToImgAsync(pdffilestream, i, dpi);
+                                BitmapImage bitmapImage = await ConvertToImgAsync(pdffilestream, i, dpi);
                                 uiContext.Send(_ =>
                                 {
                                     Thumbnails?.Add(new ThumbClass() { Page = i, Thumb = bitmapImage });

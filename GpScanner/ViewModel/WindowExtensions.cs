@@ -15,9 +15,11 @@ namespace GpScanner.ViewModel
         {
             OpenSettings = new RelayCommand<object>(parameter =>
             {
-                SettingsWindowView settingswindow = new SettingsWindowView();
-                settingswindow.Owner = App.Current.MainWindow;
-                settingswindow.DataContext = App.Current.MainWindow.DataContext;
+                SettingsWindowView settingswindow = new()
+                {
+                    Owner = Application.Current.MainWindow,
+                    DataContext = Application.Current.MainWindow.DataContext
+                };
                 settingswindow.ShowDialog();
             });
         }

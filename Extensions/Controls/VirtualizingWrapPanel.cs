@@ -40,7 +40,7 @@ namespace Extensions
         StartAndEndOnly
     }
 
-    public struct ItemRange
+    public readonly struct ItemRange
     {
         public ItemRange(int startIndex, int endIndex) : this()
         {

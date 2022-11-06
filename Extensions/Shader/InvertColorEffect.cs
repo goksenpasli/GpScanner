@@ -8,7 +8,7 @@ namespace Extensions
     /// <summary>An effect that inverts all colors.</summary>
     public class InvertColorEffect : ShaderEffect
     {
-        public static readonly DependencyProperty InputProperty = ShaderEffect.RegisterPixelShaderSamplerProperty("Input", typeof(InvertColorEffect), 0);
+        public static readonly DependencyProperty InputProperty = RegisterPixelShaderSamplerProperty("Input", typeof(InvertColorEffect), 0);
 
         public InvertColorEffect()
         {
