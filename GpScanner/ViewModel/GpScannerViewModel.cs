@@ -7,6 +7,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -83,6 +84,7 @@ namespace GpScanner.ViewModel
             {
                 if (parameter is TwainCtrl twainCtrl)
                 {
+                    Ocr.Ocr.ocrcancellationToken = new CancellationTokenSource();
                     BitmapFrame resim = twainCtrl.SeçiliResim.Resim;
                     byte[] imgdata = resim.ToTiffJpegByteArray(Format.Jpg);
                     _ = GetScannedTextAsync(imgdata);
@@ -229,6 +231,8 @@ namespace GpScanner.ViewModel
 
             DatabaseSave = new RelayCommand<object>(parameter => ScannerData.Serialize());
 
+            CancelOcr = new RelayCommand<object>(parameter => Ocr.Ocr.ocrcancellationToken?.Cancel());
+
             DateBack = new RelayCommand<object>(parameter => SeçiliGün = SeçiliGün.Value.AddDays(-1), parameter => SeçiliGün > DateTime.MinValue);
 
             DateForward = new RelayCommand<object>(parameter => SeçiliGün = SeçiliGün.Value.AddDays(1), parameter => SeçiliGün < DateTime.Today);
@@ -321,6 +325,8 @@ namespace GpScanner.ViewModel
                 }
             }
         }
+
+        public ICommand CancelOcr { get; }
 
         public ICommand ChangeDataFolder { get; }
 
@@ -426,6 +432,20 @@ namespace GpScanner.ViewModel
                 };
 
             set => getPreviewSize = value;
+        }
+
+        public bool ListBoxBorderAnimation
+        {
+            get { return listBoxBorderAnimation; }
+
+            set
+            {
+                if (listBoxBorderAnimation != value)
+                {
+                    listBoxBorderAnimation = value;
+                    OnPropertyChanged(nameof(ListBoxBorderAnimation));
+                }
+            }
         }
 
         public GridLength MainWindowDocumentGuiControlLength
@@ -788,17 +808,20 @@ namespace GpScanner.ViewModel
         {
             if (imgdata is not null && !string.IsNullOrEmpty(Settings.Default.DefaultTtsLang))
             {
-                OcrIsBusy = true;
-                ScannedTextWindowOpen = false;
-                ScannedText = await imgdata.OcrAsyc(Settings.Default.DefaultTtsLang);
-                if (ScannedText != null)
+                if (!Ocr.Ocr.ocrcancellationToken.IsCancellationRequested)
                 {
-                    TranslateViewModel.Metin = string.Join(" ", ScannedText.Select(z => z.Text));
-                    OcrIsBusy = false;
-                    ScannedTextWindowOpen = opentextwindow;
+                    OcrIsBusy = true;
+                    ScannedTextWindowOpen = false;
+                    ScannedText = await imgdata.OcrAsyc(Settings.Default.DefaultTtsLang);
+                    if (ScannedText != null)
+                    {
+                        TranslateViewModel.Metin = string.Join(" ", ScannedText.Select(z => z.Text));
+                        OcrIsBusy = false;
+                        ScannedTextWindowOpen = opentextwindow;
+                    }
+                    imgdata = null;
+                    return ScannedText;
                 }
-                imgdata = null;
-                return ScannedText;
             }
             return null;
         }
@@ -851,6 +874,8 @@ namespace GpScanner.ViewModel
         private double fold = 0.3;
 
         private ObservableCollection<Size> getPreviewSize;
+
+        private bool listBoxBorderAnimation;
 
         private GridLength mainWindowDocumentGuiControlLength = new(1, GridUnitType.Star);
 

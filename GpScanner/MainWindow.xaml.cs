@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -120,7 +121,8 @@ namespace GpScanner
                 {
                     ViewModel.BarcodeContent = ViewModel.GetImageBarcodeResult(TwainCtrl?.ImgData)?.Text;
                     AddBarcodeToList(ViewModel);
-                    _ = ViewModel.GetScannedTextAsync(TwainCtrl.ImgData);
+                    Ocr.Ocr.ocrcancellationToken = new CancellationTokenSource();
+                    _ = await ViewModel.GetScannedTextAsync(TwainCtrl.ImgData);
                 }
 
                 if (e.PropertyName is "ApplyDataBaseOcr" && TwainCtrl?.Scanner?.ApplyDataBaseOcr == true && TwainCtrl?.Scanner?.Resimler?.Count > 0)
@@ -130,6 +132,7 @@ namespace GpScanner
                         List<ObservableCollection<OcrData>> scannedtext = new();
                         if (!string.IsNullOrEmpty(Settings.Default.DefaultTtsLang))
                         {
+                            Ocr.Ocr.ocrcancellationToken = new CancellationTokenSource();
                             foreach (ScannedImage scannedimage in TwainCtrl.Scanner.Resimler)
                             {
                                 scannedtext.Add(await ViewModel.GetScannedTextAsync(scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg), false));
@@ -155,6 +158,10 @@ namespace GpScanner
                     {
                         _ = MessageBox.Show(ex.Message);
                     }
+                }
+                if (e.PropertyName is "DragMoveStarted")
+                {
+                    ViewModel.ListBoxBorderAnimation = TwainCtrl.DragMoveStarted;
                 }
             }
         }

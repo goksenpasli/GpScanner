@@ -148,12 +148,12 @@
                     HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
                     d:ItemsSource="{d:SampleData ItemCount=5}"
                     Background="{StaticResource BorderBackground}"
-                    IsSynchronizedWithCurrentItem="False"
+                    BorderThickness="2" IsSynchronizedWithCurrentItem="False"
                     ItemsSource="{Binding Mode=OneWay, Source={StaticResource Veriler}}"
                     SelectedItem="{Binding SelectedDocument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     SelectionMode="Extended" VirtualizingPanel.CacheLength="6,6"
                     VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                    VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Recycling">
+                    VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Standard">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
@@ -187,7 +187,9 @@
                                                 IsChecked="{Binding Seçili}"
                                                 IsEnabled="{Binding FileName, Mode=OneWay, Converter={StaticResource FileNamePdfZipCheckConverter}}">
                                                 <CheckBox.Content>
-                                                    <ContentControl Content="{Binding Path=FileName, Mode=OneWay}" ContentTemplateSelector="{StaticResource ThumbViewerSelector}" />
+                                                    <ContentControl d:Width="64"
+                                                        Content="{Binding Path=FileName, IsAsync=True, Mode=OneWay}"
+                                                        ContentTemplateSelector="{StaticResource ThumbViewerSelector}" />
                                                 </CheckBox.Content>
                                             </CheckBox>
                                         </Border>
@@ -196,6 +198,27 @@
                             </Setter>
                         </Style>
                     </ListBox.ItemContainerStyle>
+                    <ListBox.Style>
+                        <Style TargetType="ListBox">
+                            <Setter Property="BorderBrush" Value="Transparent" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ListBoxBorderAnimation}" Value="true">
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard x:Name="Sb">
+                                            <Storyboard RepeatBehavior="Forever">
+                                                <ColorAnimation Storyboard.TargetProperty="BorderBrush.Color" To="Red" Duration="0:0:1" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ListBoxBorderAnimation}" Value="false">
+                                    <DataTrigger.EnterActions>
+                                        <RemoveStoryboard BeginStoryboardName="Sb" />
+                                    </DataTrigger.EnterActions>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListBox.Style>
                 </ListBox>
                 <UniformGrid Grid.Row="4"
                     Columns="2" Rows="1">
@@ -284,36 +307,54 @@
                                 </TextBlock>
                             </StackPanel>
                         </Button>
-                        <Extensions:SplitButton HorizontalContentAlignment="Stretch"
-                            Command="{Binding OcrPage, Mode=OneWay}"
-                            CommandParameter="{Binding ElementName=TwainCtrl, Path=DataContext}"
-                            IsEnabled="{Binding OcrIsBusy, Converter={StaticResource ReverseBooleanConverter}}"
-                            IsSplitPartOpen="{Binding ScannedTextWindowOpen}">
-                            <Extensions:SplitButton.Content>
-                                <Grid>
-                                    <ProgressBar IsIndeterminate="{Binding OcrIsBusy}" />
-                                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                        <Image Width="32" Height="32">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="70" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                        <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc READACTIVEPAGE}" />
-                                    </StackPanel>
-                                </Grid>
-                            </Extensions:SplitButton.Content>
-                            <Extensions:SplitButton.InternalContent>
-                                <Extensions:ResizablePanel Width="420" Height="594" MinWidth="420"
-                                    MinHeight="594">
-                                    <GroupBox>
-                                        <local:TranslateView Grid.Row="2" />
-                                    </GroupBox>
-                                </Extensions:ResizablePanel>
-                            </Extensions:SplitButton.InternalContent>
-                        </Extensions:SplitButton>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="35.2" />
+                            </Grid.ColumnDefinitions>
+                            <Extensions:SplitButton HorizontalContentAlignment="Stretch"
+                                Command="{Binding OcrPage, Mode=OneWay}"
+                                CommandParameter="{Binding ElementName=TwainCtrl, Path=DataContext}"
+                                IsEnabled="{Binding OcrIsBusy, Converter={StaticResource ReverseBooleanConverter}}"
+                                IsSplitPartOpen="{Binding ScannedTextWindowOpen}">
+                                <Extensions:SplitButton.Content>
+                                    <Grid>
+                                        <ProgressBar IsIndeterminate="{Binding OcrIsBusy}" />
+                                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                            <Image Width="32" Height="32">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="70" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc READACTIVEPAGE}" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Extensions:SplitButton.Content>
+                                <Extensions:SplitButton.InternalContent>
+                                    <Extensions:ResizablePanel Width="420" Height="594" MinWidth="420"
+                                        MinHeight="594">
+                                        <GroupBox>
+                                            <local:TranslateView Grid.Row="2" />
+                                        </GroupBox>
+                                    </Extensions:ResizablePanel>
+                                </Extensions:SplitButton.InternalContent>
+                            </Extensions:SplitButton>
+                            <Button Grid.Column="1"
+                                Command="{Binding CancelOcr}"
+                                IsEnabled="{Binding OcrIsBusy}">
+                                <Image Width="32" Height="32">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="131" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                            </Button>
+                        </Grid>
                     </StackPanel>
                 </UniformGrid>
             </Grid>

@@ -514,6 +514,19 @@ namespace TwainControl
             }
         }
 
+        public bool DragMoveStarted
+        {
+            get => dragMoveStarted; set
+
+            {
+                if (dragMoveStarted != value)
+                {
+                    dragMoveStarted = value;
+                    OnPropertyChanged(nameof(DragMoveStarted));
+                }
+            }
+        }
+
         public ICommand ExploreFile { get; }
 
         public ICommand FastScanImage { get; }
@@ -965,6 +978,8 @@ namespace TwainControl
 
         private bool documentPreviewIsExpanded = true;
 
+        private bool dragMoveStarted;
+
         private Task fileloadtask;
 
         private ObservableCollection<Chart> greenChart;
@@ -1407,7 +1422,9 @@ namespace TwainControl
         {
             if (sender is Run run && e.LeftButton == MouseButtonState.Pressed)
             {
+                DragMoveStarted = true;
                 _ = DragDrop.DoDragDrop(run, run.DataContext, DragDropEffects.Move);
+                DragMoveStarted = false;
             }
         }
 
@@ -1452,11 +1469,6 @@ namespace TwainControl
             {
                 _ = MessageBox.Show(Translation.GetResStringValue("OCRTIME"), Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
-        }
-
-        private void SelectedPaper_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            throw new NotImplementedException();
         }
 
         private void Twain_ScanningComplete(object sender, ScanningCompleteEventArgs e)

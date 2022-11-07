@@ -322,17 +322,20 @@ namespace TwainControl
 
         private static void WritePdfTextContent(BitmapSource bitmapframe, ObservableCollection<OcrData> ScannedText, PdfPage page, XGraphics gfx, XBrush xBrush)
         {
-            XTextFormatter textformatter = new(gfx);
-            foreach (OcrData item in ScannedText)
+            if (ScannedText is not null)
             {
-                XRect adjustedBounds = AdjustBounds(item.Rect, page.Width / bitmapframe.PixelWidth, page.Height / bitmapframe.PixelHeight);
-                int adjustedFontSize = CalculateFontSize(item.Text, adjustedBounds, gfx);
-                XFont font = new("Times New Roman", adjustedFontSize, XFontStyle.Regular, new XPdfFontOptions(PdfFontEncoding.Unicode));
-                XSize adjustedTextSize = gfx.MeasureString(item.Text, font);
-                double verticalOffset = (adjustedBounds.Height - adjustedTextSize.Height) / 2;
-                double horizontalOffset = (adjustedBounds.Width - adjustedTextSize.Width) / 2;
-                adjustedBounds.Offset(horizontalOffset, verticalOffset);
-                textformatter.DrawString(item.Text, font, xBrush, adjustedBounds);
+                XTextFormatter textformatter = new(gfx);
+                foreach (OcrData item in ScannedText)
+                {
+                    XRect adjustedBounds = AdjustBounds(item.Rect, page.Width / bitmapframe.PixelWidth, page.Height / bitmapframe.PixelHeight);
+                    int adjustedFontSize = CalculateFontSize(item.Text, adjustedBounds, gfx);
+                    XFont font = new("Times New Roman", adjustedFontSize, XFontStyle.Regular, new XPdfFontOptions(PdfFontEncoding.Unicode));
+                    XSize adjustedTextSize = gfx.MeasureString(item.Text, font);
+                    double verticalOffset = (adjustedBounds.Height - adjustedTextSize.Height) / 2;
+                    double horizontalOffset = (adjustedBounds.Width - adjustedTextSize.Width) / 2;
+                    adjustedBounds.Offset(horizontalOffset, verticalOffset);
+                    textformatter.DrawString(item.Text, font, xBrush, adjustedBounds);
+                }
             }
         }
     }

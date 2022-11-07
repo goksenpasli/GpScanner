@@ -676,8 +676,6 @@ namespace MozJpeg
             catch (Exception ex) { throw new Exception(ex.Message + "\r\nIn clsArray.Locate"); }
         }
 
-        private static readonly int[] Empty = new int[0];
-
         private static bool IsEmptyLocate(byte[] array, byte[] candidate)
         {
             try

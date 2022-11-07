@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using Tesseract;
@@ -10,6 +11,8 @@ namespace Ocr
 {
     public static class Ocr
     {
+        public static CancellationTokenSource ocrcancellationToken;
+
         public static ObservableCollection<OcrData> GetOcrData(this byte[] dosya, string lang)
         {
             try
@@ -51,7 +54,7 @@ namespace Ocr
             }
             if (Directory.Exists(TesseractPath))
             {
-                return await Task.Run(() => GetOcrData(dosya, lang));
+                return await Task.Run(() => dosya.GetOcrData(lang), ocrcancellationToken.Token);
             }
             _ = MessageBox.Show("Tesseract Engine Klasörünü Kontrol Edin.", Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
             return null;

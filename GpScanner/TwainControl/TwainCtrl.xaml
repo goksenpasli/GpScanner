@@ -621,7 +621,7 @@
                         SelectedItem="{Binding SeçiliResim}"
                         SelectionMode="Extended" VirtualizingPanel.CacheLength="3,3"
                         VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                        VirtualizingPanel.ScrollUnit="Item" VirtualizingPanel.VirtualizationMode="Recycling">
+                        VirtualizingPanel.ScrollUnit="Item" VirtualizingPanel.VirtualizationMode="Standard">
                         <ListBox.InputBindings>
                             <KeyBinding Key="A"
                                 Command="{Binding Tümünüİşaretle}"
@@ -642,7 +642,29 @@
                                                 <TextBlock HorizontalAlignment="Center">
                                                     <Run AllowDrop="True" Cursor="SizeAll" Drop="Run_Drop"
                                                         FontFamily="Wingdings" FontSize="24" FontWeight="Bold"
-                                                        Foreground="Red" PreviewMouseMove="Run_PreviewMouseMove" Text="B" />
+                                                        PreviewMouseMove="Run_PreviewMouseMove" Text="B">
+                                                        <Run.Style>
+                                                            <Style TargetType="Run">
+                                                                <Setter Property="Foreground" Value="Red" />
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding DragMoveStarted, RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}" Value="true">
+                                                                        <DataTrigger.EnterActions>
+                                                                            <BeginStoryboard x:Name="Sb">
+                                                                                <Storyboard RepeatBehavior="Forever">
+                                                                                    <ColorAnimation Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)" To="Blue" Duration="0:0:1" />
+                                                                                </Storyboard>
+                                                                            </BeginStoryboard>
+                                                                        </DataTrigger.EnterActions>
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding DragMoveStarted, RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}" Value="false">
+                                                                        <DataTrigger.EnterActions>
+                                                                            <RemoveStoryboard BeginStoryboardName="Sb" />
+                                                                        </DataTrigger.EnterActions>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Run.Style>
+                                                    </Run>
                                                     <Hyperlink Command="{Binding ElementName=UserControl, Path=DataContext.Kaydet}"
                                                         CommandParameter="{Binding Resim}"
                                                         TextDecorations="None">
@@ -681,7 +703,7 @@
                                                             d:Source="/GpScanner;component/scanner.ico"
                                                             d:Width="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}"
                                                             ShowShadow="True"
-                                                            Source="{Binding Resim.Thumbnail, Mode=OneWay}" />
+                                                            Source="{Binding Resim.Thumbnail, IsAsync=True, Mode=OneWay}" />
                                                     </Viewbox>
                                                 </ToggleButton>
                                             </StackPanel>

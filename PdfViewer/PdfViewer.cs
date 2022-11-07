@@ -73,13 +73,7 @@ namespace PdfViewer
                 GC.Collect();
             }, parameter => PdfFilePath is not null);
 
-            ViewAllThumbnailImage = new RelayCommand<object>(async parameter =>
-            {
-                if (Thumbnails is null)
-                {
-                    Thumbnails = await ConvertToAllPageThumbImgAsync(await ReadAllFileAsync(PdfFilePath), 4);
-                }
-            }, parameter => PdfFilePath is not null);
+            ViewAllThumbnailImage = new RelayCommand<object>(async parameter => Thumbnails ??= await ConvertToAllPageThumbImgAsync(await ReadAllFileAsync(PdfFilePath), 4), parameter => PdfFilePath is not null);
 
             ViewerBack = new RelayCommand<object>(parameter => Sayfa--, parameter => Source is not null && Sayfa > 1 && Sayfa <= ToplamSayfa);
 
@@ -434,10 +428,7 @@ namespace PdfViewer
                             if (!cancellationToken.IsCancellationRequested)
                             {
                                 BitmapImage bitmapImage = await ConvertToImgAsync(pdffilestream, i, dpi);
-                                uiContext.Send(_ =>
-                                {
-                                    Thumbnails?.Add(new ThumbClass() { Page = i, Thumb = bitmapImage });
-                                }, null);
+                                uiContext.Send(_ => Thumbnails?.Add(new ThumbClass() { Page = i, Thumb = bitmapImage }), null);
                                 bitmapImage = null;
                             }
                         }
@@ -480,7 +471,7 @@ namespace PdfViewer
 
         private ObservableCollection<ThumbClass> allPagesThumb;
 
-        private CancellationTokenSource cancellationToken = new();
+        private readonly CancellationTokenSource cancellationToken = new();
 
         private bool disposedValue;
 
