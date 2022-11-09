@@ -190,7 +190,7 @@ namespace TwainControl
                 {
                     filesavetask = Task.Run(async () =>
                     {
-                        IEnumerable<ScannedImage> seçiliresimler = Scanner.Resimler.Where(z => z.Seçili);
+                        List<ScannedImage> seçiliresimler = Scanner.Resimler.Where(z => z.Seçili).ToList();
                         if (saveFileDialog.FilterIndex == 1)
                         {
                             await SavePdfImage(seçiliresimler, saveFileDialog.FileName, Scanner, SelectedPaper);
@@ -749,8 +749,9 @@ namespace TwainControl
         public static async Task SavePdfImage(BitmapFrame scannedImage, string filename, Scanner scanner, Paper paper, bool blackwhite = false)
         {
             ObservableCollection<OcrData> ocrtext = null;
-            if (scanner.ApplyPdfSaveOcr)
+            if (scanner?.ApplyPdfSaveOcr == true)
             {
+                Ocr.Ocr.ocrcancellationToken = new CancellationTokenSource();
                 ocrtext = await scannedImage.ToTiffJpegByteArray(Format.Jpg).OcrAsyc(scanner.SelectedTtsLanguage);
             }
             if (blackwhite)
@@ -761,11 +762,12 @@ namespace TwainControl
             PdfGeneration.GeneratePdf(scannedImage, ocrtext, Format.Jpg, paper, scanner.JpegQuality).Save(filename);
         }
 
-        public static async Task SavePdfImage(IEnumerable<ScannedImage> images, string filename, Scanner scanner, Paper paper, bool blackwhite = false)
+        public static async Task SavePdfImage(List<ScannedImage> images, string filename, Scanner scanner, Paper paper, bool blackwhite = false)
         {
             List<ObservableCollection<OcrData>> scannedtext = null;
-            if (scanner.ApplyPdfSaveOcr)
+            if (scanner?.ApplyPdfSaveOcr == true)
             {
+                Ocr.Ocr.ocrcancellationToken = new CancellationTokenSource();
                 scannedtext = new List<ObservableCollection<OcrData>>();
                 foreach (ScannedImage image in images)
                 {
@@ -1168,11 +1170,11 @@ namespace TwainControl
             {
                 if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
                 {
-                    PdfGeneration.GeneratePdf(Scanner.Resimler, Format.Tiff, SelectedPaper, Scanner.JpegQuality).Save(Scanner.PdfFilePath);
+                    PdfGeneration.GeneratePdf(Scanner.Resimler.ToList(), Format.Tiff, SelectedPaper, Scanner.JpegQuality).Save(Scanner.PdfFilePath);
                 }
                 if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
                 {
-                    PdfGeneration.GeneratePdf(Scanner.Resimler, Format.Jpg, SelectedPaper, Scanner.JpegQuality).Save(Scanner.PdfFilePath);
+                    PdfGeneration.GeneratePdf(Scanner.Resimler.ToList(), Format.Jpg, SelectedPaper, Scanner.JpegQuality).Save(Scanner.PdfFilePath);
                 }
                 if (Settings.Default.ShowFile)
                 {

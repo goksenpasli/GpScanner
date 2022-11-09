@@ -190,6 +190,21 @@ namespace TwainControl
             bitmapFrame.Freeze();
             return bitmapFrame;
         }
+        
+        public static BitmapFrame GenerateImageDocumentBitmapFrameWithoutThumb(int decodeheight, Uri item)
+        {
+            BitmapImage image = new();
+            image.BeginInit();
+            image.DecodePixelHeight = decodeheight;
+            image.CacheOption = BitmapCacheOption.None;
+            image.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.IgnoreImageCache;
+            image.UriSource = item;
+            image.EndInit();
+            image.Freeze();
+            BitmapFrame bitmapFrame = BitmapFrame.Create(image);
+            bitmapFrame.Freeze();
+            return bitmapFrame;
+        }
 
         public static BitmapFrame GenerateImageDocumentBitmapFrame(int decodeheight, MemoryStream ms, Paper paper, bool deskew = false)
         {

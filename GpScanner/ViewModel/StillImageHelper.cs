@@ -32,6 +32,12 @@ namespace GpScanner.ViewModel
                 key3.SetValue("Desc", "Scan with GpScanner");
                 key3.SetValue("Icon", "sti.dll,0");
                 key3.SetValue("Name", "GpScanner");
+
+                using RegistryKey key4 = Registry.LocalMachine.CreateSubKey(REGKEY_STI_EVENT_SCANBUTTON);
+                key4.SetValue("Cmdline", $"{exe} /StiDevice:%1 /StiEvent:%2");
+                key4.SetValue("Desc", "Scan with GpScanner");
+                key4.SetValue("Icon", "sti.dll,0");
+                key4.SetValue("Name", "GpScanner");
             }
             catch (Exception ex)
             {
@@ -48,6 +54,7 @@ namespace GpScanner.ViewModel
                 key?.DeleteValue("GpScanner", false);
 
                 Registry.LocalMachine.DeleteSubKey(REGKEY_STI_EVENT_GPSCANNER, false);
+                Registry.LocalMachine.DeleteSubKey(REGKEY_STI_EVENT_SCANBUTTON, false);
 
                 RegistryKey events = Registry.LocalMachine.OpenSubKey(REGKEY_IMAGE_EVENTS, true);
                 if (events != null)
@@ -71,5 +78,7 @@ namespace GpScanner.ViewModel
         private const string REGKEY_STI_APP = @"SOFTWARE\Microsoft\Windows\CurrentVersion\StillImage\Registered Applications";
 
         private const string REGKEY_STI_EVENT_GPSCANNER = @"SYSTEM\CurrentControlSet\Control\StillImage\Events\STIProxyEvent\{143762b8-772a-47af-bae6-08e0a1d0ca89}";
+        
+        private const string REGKEY_STI_EVENT_SCANBUTTON = @"SYSTEM\CurrentControlSet\Control\StillImage\Events\ScanButton\{143762b8-772a-47af-bae6-08e0a1d0ca89}";
     }
 }

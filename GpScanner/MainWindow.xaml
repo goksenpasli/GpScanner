@@ -247,7 +247,16 @@
                                     </TextBlock>
                                     <Image Grid.Column="1"
                                         Width="80" Height="80"
-                                        Source="{Binding Mode=OneWay, Converter={StaticResource StringToQrBitmapImageConverter}}" />
+                                        Source="{Binding Mode=OneWay, Converter={StaticResource StringToQrBitmapImageConverter}}"
+                                        Tag="{Binding DataContext, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}">
+                                        <Image.ContextMenu>
+                                            <ContextMenu DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
+                                                <MenuItem Command="{Binding Tag.SaveQrImage}"
+                                                    CommandParameter="{Binding Path=Source}"
+                                                    Header="{twainctrl:Loc SAVESELECTED}" />
+                                            </ContextMenu>
+                                        </Image.ContextMenu>
+                                    </Image>
                                     <Extensions:ButtonedTextBox Grid.Column="2"
                                         Height="80"
                                         IsReadOnly="True" OpenButtonVisibility="Collapsed" ResetButtonVisibility="Collapsed"

@@ -171,6 +171,9 @@ DISCO</value>
   <data name="AUTOROTATE" xml:space="preserve">
     <value>ROTAZIONE AUTOMATICA</value>
   </data>
+  <data name="BATCH" xml:space="preserve">
+    <value>LAVORO COLLETTIVO</value>
+  </data>
   <data name="BORDERDETECT" xml:space="preserve">
     <value>RILEVAMENTO AUTOMATICO DEI BORDI</value>
   </data>
@@ -413,6 +416,9 @@ INSERISCI</value>
   </data>
   <data name="SRCCOLORTIP" xml:space="preserve">
     <value>Fare clic con il tasto destro e scegliere colore</value>
+  </data>
+  <data name="START" xml:space="preserve">
+    <value>INIZIO</value>
   </data>
   <data name="TAG" xml:space="preserve">
     <value>ETICHETTA</value>

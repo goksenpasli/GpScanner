@@ -171,6 +171,9 @@ ENREGISTREMENT</value>
   <data name="AUTOROTATE" xml:space="preserve">
     <value>ROTATION AUTOMATIQUE</value>
   </data>
+  <data name="BATCH" xml:space="preserve">
+    <value>TRAVAIL COLLECTIF</value>
+  </data>
   <data name="BORDERDETECT" xml:space="preserve">
     <value>DÉTECTION AUTOMATIQUE DES BORDS</value>
   </data>
@@ -413,6 +416,9 @@ AJOUTER</value>
   </data>
   <data name="SRCCOLORTIP" xml:space="preserve">
     <value>Clic droit et choisir la couleur</value>
+  </data>
+  <data name="START" xml:space="preserve">
+    <value>DÉBUT</value>
   </data>
   <data name="TAG" xml:space="preserve">
     <value>ÉTIQUETTE</value>

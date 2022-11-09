@@ -171,6 +171,9 @@
   <data name="AUTOROTATE" xml:space="preserve">
     <value>الدوران التلقائي</value>
   </data>
+  <data name="BATCH" xml:space="preserve">
+    <value>العمل الجماعي</value>
+  </data>
   <data name="BORDERDETECT" xml:space="preserve">
     <value>كشف الحافة الأوتوماتيكي</value>
   </data>
@@ -413,6 +416,9 @@
   </data>
   <data name="SRCCOLORTIP" xml:space="preserve">
     <value>انقر بزر الماوس الأيمن واختر اللون</value>
+  </data>
+  <data name="START" xml:space="preserve">
+    <value>بداية</value>
   </data>
   <data name="TAG" xml:space="preserve">
     <value>بطاقة شعار</value>

@@ -141,11 +141,11 @@ namespace GpScanner
                         }
                         if ((ColourSetting)TwainControl.Properties.Settings.Default.Mode == ColourSetting.BlackAndWhite)
                         {
-                            PdfGeneration.GeneratePdf(TwainCtrl.Scanner.Resimler, Format.Tiff, TwainCtrl.SelectedPaper, TwainCtrl.Scanner.JpegQuality, scannedtext).Save(TwainCtrl.Scanner.PdfFilePath);
+                            PdfGeneration.GeneratePdf(TwainCtrl.Scanner.Resimler.ToList(), Format.Tiff, TwainCtrl.SelectedPaper, TwainCtrl.Scanner.JpegQuality, scannedtext).Save(TwainCtrl.Scanner.PdfFilePath);
                         }
                         if ((ColourSetting)TwainControl.Properties.Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
                         {
-                            PdfGeneration.GeneratePdf(TwainCtrl.Scanner.Resimler, Format.Jpg, TwainCtrl.SelectedPaper, TwainCtrl.Scanner.JpegQuality, scannedtext).Save(TwainCtrl.Scanner.PdfFilePath);
+                            PdfGeneration.GeneratePdf(TwainCtrl.Scanner.Resimler.ToList(), Format.Jpg, TwainCtrl.SelectedPaper, TwainCtrl.Scanner.JpegQuality, scannedtext).Save(TwainCtrl.Scanner.PdfFilePath);
                         }
                         if (TwainControl.Properties.Settings.Default.ShowFile)
                         {

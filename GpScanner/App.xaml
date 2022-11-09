@@ -237,7 +237,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Margin="1" Orientation="Horizontal">
                         <UniformGrid Columns="3" DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType=ListBox}}">
                             <Extensions:NumericUpDownControl Maximum="{Binding ElementName=PdfVwr, Path=ToplamSayfa}"
                                 Minimum="1" SmallChange="1"

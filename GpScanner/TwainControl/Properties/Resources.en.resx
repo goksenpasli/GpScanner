@@ -466,4 +466,10 @@ TO FILE</value>
   <data name="SPLITTERTOOLTIP" xml:space="preserve">
     <value>Double Click To Restore, Right Click To Expand</value>
   </data>
+  <data name="BATCH" xml:space="preserve">
+    <value>BATCH</value>
+  </data>
+  <data name="START" xml:space="preserve">
+    <value>START</value>
+  </data>
 </root>

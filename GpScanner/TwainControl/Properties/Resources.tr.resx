@@ -471,4 +471,10 @@ BELGE EKLE</value>
   <data name="SPLITTERTOOLTIP" xml:space="preserve">
     <value>Geri Yüklemek İçin Çift Tıklayın, Genişletmek İçin Sağ Tıklayın</value>
   </data>
+  <data name="BATCH" xml:space="preserve">
+    <value>TOPLU İŞ</value>
+  </data>
+  <data name="START" xml:space="preserve">
+    <value>BAŞLAT</value>
+  </data>
 </root>

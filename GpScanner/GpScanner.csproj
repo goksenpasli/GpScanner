@@ -54,6 +54,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Speech" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -95,6 +96,7 @@
     </Compile>
     <Compile Include="ViewModel\Data.cs" />
     <Compile Include="ViewModel\DataSerialize.cs" />
+    <Compile Include="ViewModel\FastFileSearch.cs" />
     <Compile Include="ViewModel\FoldEffect.cs" />
     <Compile Include="ViewModel\GpScannerViewModel.cs" />
     <Compile Include="ViewModel\ScannerData.cs" />

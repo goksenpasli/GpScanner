@@ -205,6 +205,19 @@ namespace GpScanner.ViewModel
                 Settings.Default.Reload();
             }, parameter => !string.IsNullOrWhiteSpace(PatchFileName) && !string.IsNullOrWhiteSpace(PatchTag) && !Settings.Default.PatchCodes.Cast<string>().Select(z => z.Split('|')[1]).Contains(PatchTag) && PatchFileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0);
 
+            SaveQrImage = new RelayCommand<object>(parameter =>
+            {
+                SaveFileDialog saveFileDialog = new()
+                {
+                    Filter = "Jpg Resmi (*.jpg)|*.jpg",
+                    FileName = "QR"
+                };
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    TwainCtrl.SaveJpgImage(BitmapFrame.Create(parameter as WriteableBitmap), saveFileDialog.FileName);
+                }
+            }, parameter => parameter is WriteableBitmap writeableBitmap && writeableBitmap is not null);
+
             RemovePatchProfile = new RelayCommand<object>(parameter =>
             {
                 Settings.Default.PatchCodes.Remove(parameter as string);
@@ -228,6 +241,43 @@ namespace GpScanner.ViewModel
                         return;
                 }
             }, parameter => true);
+
+            SetBatchFolder = new RelayCommand<object>(parameter =>
+            {
+                System.Windows.Forms.FolderBrowserDialog dialog = new();
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    BatchFolder = dialog.SelectedPath;
+                }
+            }, parameter => true);
+
+            StartBatch = new RelayCommand<object>(parameter =>
+            {
+                var files = Win32FileScanner.EnumerateFilepaths(BatchFolder, -1).Where(s => (new string[] { ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp" }).Any(ext => ext == Path.GetExtension(s).ToLower())).ToList();
+                if (files.Any())
+                {
+                    Scanner scanner = ToolBox.Scanner;
+                    var paper = ToolBox.Paper;
+                    List<ObservableCollection<OcrData>> scannedtext = null;
+                    List<ScannedImage> scannedimages = new List<ScannedImage>();
+                    filesavetask = Task.Run(() =>
+                    {
+                        if (scanner?.ApplyPdfSaveOcr == true)
+                        {
+                            Ocr.Ocr.ocrcancellationToken = new CancellationTokenSource();
+                            scannedtext = new List<ObservableCollection<OcrData>>();
+                            foreach (var image in files)
+                            {
+                                scannedtext.Add(image.GetOcrData(scanner.SelectedTtsLanguage));
+                            }
+                        }
+                        string filename = Twainsettings.Settings.Default.AutoFolder.SetUniqueFile("Toplu", "pdf");
+                        PdfGeneration.GeneratePdf(files, Format.Jpg, paper, scanner.JpegQuality, scannedtext, BatchImgLoadResolution).Save(filename);
+                        scannedimages = null;
+                        scanner = null;
+                    });
+                }
+            }, parameter => !string.IsNullOrWhiteSpace(BatchFolder) && !string.IsNullOrWhiteSpace(Twainsettings.Settings.Default.AutoFolder));
 
             DatabaseSave = new RelayCommand<object>(parameter => ScannerData.Serialize());
 
@@ -308,6 +358,34 @@ namespace GpScanner.ViewModel
                 {
                     barcodePosition = value;
                     OnPropertyChanged(nameof(BarcodePosition));
+                }
+            }
+        }
+
+        public string BatchFolder
+        {
+            get => batchFolder;
+
+            set
+            {
+                if (batchFolder != value)
+                {
+                    batchFolder = value;
+                    OnPropertyChanged(nameof(BatchFolder));
+                }
+            }
+        }
+
+        public double BatchImgLoadResolution
+        {
+            get => batchImgLoadResolution;
+
+            set
+            {
+                if (batchImgLoadResolution != value)
+                {
+                    batchImgLoadResolution = value;
+                    OnPropertyChanged(nameof(BatchImgLoadResolution));
                 }
             }
         }
@@ -557,6 +635,8 @@ namespace GpScanner.ViewModel
 
         public ICommand SavePatchProfile { get; }
 
+        public ICommand SaveQrImage { get; }
+
         public int SayfaBaşlangıç
         {
             get => sayfaBaşlangıç;
@@ -669,7 +749,11 @@ namespace GpScanner.ViewModel
             }
         }
 
+        public ICommand SetBatchFolder { get; }
+
         public int[] SettingsPagePdfDpiList { get; } = new int[] { 12, 24, 36, 72, 96, 120, 150, 200, 300, 400, 500, 600 };
+
+        public ICommand StartBatch { get; }
 
         public ICommand Tersiniİşaretle { get; }
 
@@ -859,6 +943,10 @@ namespace GpScanner.ViewModel
 
         private ResultPoint[] barcodePosition;
 
+        private string batchFolder;
+
+        private double batchImgLoadResolution = 120;
+
         private XmlLanguage calendarLang;
 
         private ObservableCollection<Chart> chartData;
@@ -870,6 +958,8 @@ namespace GpScanner.ViewModel
         private bool detectPageSeperator;
 
         private ObservableCollection<Scanner> dosyalar;
+
+        private Task filesavetask;
 
         private double fold = 0.3;
 
