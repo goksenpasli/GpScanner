@@ -272,7 +272,7 @@ namespace GpScanner.ViewModel
                             }
                         }
                         string filename = Twainsettings.Settings.Default.AutoFolder.SetUniqueFile("Toplu", "pdf");
-                        PdfGeneration.GeneratePdf(files, Format.Jpg, paper, scanner.JpegQuality, scannedtext, BatchImgLoadResolution).Save(filename);
+                        PdfGeneration.GeneratePdf(files, Format.Jpg, paper, scanner.JpegQuality, scannedtext).Save(filename);
                         scannedimages = null;
                         scanner = null;
                     });
@@ -372,20 +372,6 @@ namespace GpScanner.ViewModel
                 {
                     batchFolder = value;
                     OnPropertyChanged(nameof(BatchFolder));
-                }
-            }
-        }
-
-        public double BatchImgLoadResolution
-        {
-            get => batchImgLoadResolution;
-
-            set
-            {
-                if (batchImgLoadResolution != value)
-                {
-                    batchImgLoadResolution = value;
-                    OnPropertyChanged(nameof(BatchImgLoadResolution));
                 }
             }
         }
@@ -944,8 +930,6 @@ namespace GpScanner.ViewModel
         private ResultPoint[] barcodePosition;
 
         private string batchFolder;
-
-        private double batchImgLoadResolution = 120;
 
         private XmlLanguage calendarLang;
 

@@ -134,7 +134,7 @@ namespace TwainControl
             return document;
         }
 
-        public static PdfDocument GeneratePdf(List<string> imagefiles, Format format, Paper paper, int jpegquality = 80, List<ObservableCollection<OcrData>> ScannedText = null, double dpi = 120)
+        public static PdfDocument GeneratePdf(List<string> imagefiles, Format format, Paper paper, int jpegquality = 80, List<ObservableCollection<OcrData>> ScannedText = null)
         {
             using PdfDocument document = new();
             double index = 0;
@@ -156,13 +156,11 @@ namespace TwainControl
                     using XGraphics gfx = XGraphics.FromPdfPage(page);
                     using XImage xImage = XImage.FromFile(imagefile);
                     XSize size = PageSizeConverter.ToSize(page.Size);
-                    BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrameWithoutThumb((int)dpi, new Uri(imagefile));
-                    bitmapFrame.Freeze();
                     if (ScannedText != null)
                     {
-                        WritePdfTextContent(bitmapFrame, ScannedText[i], page, gfx, XBrushes.Black);
+                        WritePdfTextContentXimage(xImage, ScannedText[i], page, gfx, XBrushes.Black);
                     }
-                    if (bitmapFrame.PixelWidth < bitmapFrame.PixelHeight)
+                    if (xImage.PixelWidth < xImage.PixelHeight)
                     {
                         gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
                     }
@@ -401,6 +399,25 @@ namespace TwainControl
                 foreach (OcrData item in ScannedText)
                 {
                     XRect adjustedBounds = AdjustBounds(item.Rect, page.Width / bitmapframe.PixelWidth, page.Height / bitmapframe.PixelHeight);
+                    int adjustedFontSize = CalculateFontSize(item.Text, adjustedBounds, gfx);
+                    XFont font = new("Times New Roman", adjustedFontSize, XFontStyle.Regular, new XPdfFontOptions(PdfFontEncoding.Unicode));
+                    XSize adjustedTextSize = gfx.MeasureString(item.Text, font);
+                    double verticalOffset = (adjustedBounds.Height - adjustedTextSize.Height) / 2;
+                    double horizontalOffset = (adjustedBounds.Width - adjustedTextSize.Width) / 2;
+                    adjustedBounds.Offset(horizontalOffset, verticalOffset);
+                    textformatter.DrawString(item.Text, font, xBrush, adjustedBounds);
+                }
+            }
+        }
+
+        private static void WritePdfTextContentXimage(XImage xImage, ObservableCollection<OcrData> ScannedText, PdfPage page, XGraphics gfx, XBrush xBrush)
+        {
+            if (ScannedText is not null)
+            {
+                XTextFormatter textformatter = new(gfx);
+                foreach (OcrData item in ScannedText)
+                {
+                    XRect adjustedBounds = AdjustBounds(item.Rect, page.Width / xImage.PixelWidth, page.Height / xImage.PixelHeight);
                     int adjustedFontSize = CalculateFontSize(item.Text, adjustedBounds, gfx);
                     XFont font = new("Times New Roman", adjustedFontSize, XFontStyle.Regular, new XPdfFontOptions(PdfFontEncoding.Unicode));
                     XSize adjustedTextSize = gfx.MeasureString(item.Text, font);

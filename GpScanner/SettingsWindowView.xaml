@@ -211,7 +211,6 @@
                 <GroupBox Grid.Row="5" Header="{twainctrl:Loc BATCH}">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
                             <RowDefinition />
                             <RowDefinition />
                         </Grid.RowDefinitions>
@@ -220,24 +219,16 @@
                             <ColumnDefinition />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc RES}" />
-                        <Slider Grid.Column="1" Grid.ColumnSpan="2"
-                            AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="600"
-                            Minimum="72" SmallChange="1"
-                            Style="{StaticResource Slider}"
-                            Ticks="72,96,120,150,200,300,450,600"
-                            ToolTip="{twainctrl:Loc RES}"
-                            Value="{Binding BatchImgLoadResolution, UpdateSourceTrigger=PropertyChanged}" />
-                        <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                        <TextBox Grid.Column="0" Grid.ColumnSpan="2"
                             IsReadOnly="True"
                             Text="{Binding BatchFolder}" />
-                        <Button Grid.Row="1" Grid.Column="2"
+                        <Button Grid.Column="2"
                             Command="{Binding SetBatchFolder}"
                             Content="{twainctrl:Loc SRC}" />
-                        <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                        <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                             IsReadOnly="True"
                             Text="{Binding Path=AutoFolder, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}}" />
-                        <Button Grid.Row="2" Grid.Column="2"
+                        <Button Grid.Row="1" Grid.Column="2"
                             Command="{Binding StartBatch}"
                             Content="{twainctrl:Loc START}" />
                     </Grid>
