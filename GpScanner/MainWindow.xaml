@@ -18,6 +18,25 @@
     mc:Ignorable="d">
     <Window.Resources>
         <CollectionViewSource x:Key="Veriler" Source="{Binding Dosyalar}" />
+        <Style x:Key="ListBoxAnimationStyle" TargetType="{x:Type ListBox}">
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ListBoxBorderAnimation}" Value="true">
+                    <DataTrigger.EnterActions>
+                        <BeginStoryboard x:Name="Sb">
+                            <Storyboard RepeatBehavior="Forever">
+                                <ColorAnimation Storyboard.TargetProperty="BorderBrush.Color" To="Red" Duration="0:0:1" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </DataTrigger.EnterActions>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ListBoxBorderAnimation}" Value="false">
+                    <DataTrigger.EnterActions>
+                        <RemoveStoryboard BeginStoryboardName="Sb" />
+                    </DataTrigger.EnterActions>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid.Style>
@@ -151,9 +170,11 @@
                     BorderThickness="2" IsSynchronizedWithCurrentItem="False"
                     ItemsSource="{Binding Mode=OneWay, Source={StaticResource Veriler}}"
                     SelectedItem="{Binding SelectedDocument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    SelectionMode="Extended" VirtualizingPanel.CacheLength="6,6"
-                    VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                    VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Standard">
+                    SelectionMode="Extended"
+                    Style="{StaticResource ListBoxAnimationStyle}"
+                    VirtualizingPanel.CacheLength="6,6" VirtualizingPanel.CacheLengthUnit="Item"
+                    VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.ScrollUnit="Pixel"
+                    VirtualizingPanel.VirtualizationMode="Standard">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
@@ -198,34 +219,17 @@
                             </Setter>
                         </Style>
                     </ListBox.ItemContainerStyle>
-                    <ListBox.Style>
-                        <Style TargetType="ListBox">
-                            <Setter Property="BorderBrush" Value="Transparent" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ListBoxBorderAnimation}" Value="true">
-                                    <DataTrigger.EnterActions>
-                                        <BeginStoryboard x:Name="Sb">
-                                            <Storyboard RepeatBehavior="Forever">
-                                                <ColorAnimation Storyboard.TargetProperty="BorderBrush.Color" To="Red" Duration="0:0:1" />
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </DataTrigger.EnterActions>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding ListBoxBorderAnimation}" Value="false">
-                                    <DataTrigger.EnterActions>
-                                        <RemoveStoryboard BeginStoryboardName="Sb" />
-                                    </DataTrigger.EnterActions>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ListBox.Style>
                 </ListBox>
                 <UniformGrid Grid.Row="4"
                     Columns="2" Rows="1">
-                    <ListBox HorizontalContentAlignment="Stretch"
+                    <ListBox x:Name="QrListBox"
+                        HorizontalContentAlignment="Stretch"
                         d:ItemsSource="{d:SampleData ItemCount=5}"
+                        AllowDrop="True"
                         Background="{StaticResource BorderBackground}"
-                        ItemsSource="{Binding BarcodeList}">
+                        BorderThickness="2" Drop="QrListBox_Drop"
+                        ItemsSource="{Binding BarcodeList}"
+                        Style="{StaticResource ListBoxAnimationStyle}">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
                                 <Setter Property="Padding" Value="0" />

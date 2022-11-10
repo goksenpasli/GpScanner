@@ -85,7 +85,7 @@
                     Columns="2" Rows="4">
                     <CheckBox VerticalAlignment="Center"
                         Content="{twainctrl:Loc QRDETECT}"
-                        IsChecked="{Binding DetectBarCode}" />
+                        IsChecked="{Binding DetectBarCode}" HorizontalAlignment="Right" Width="238" />
                     <CheckBox VerticalAlignment="Center"
                         Content="{twainctrl:Loc SEPERATOR}"
                         IsChecked="{Binding DetectPageSeperator}"

@@ -38,7 +38,7 @@ namespace TwainControl
     {
         public const double Inch = 2.54;
 
-        public static Task filesavetask;
+        public static Task Filesavetask;
 
         public TwainCtrl()
         {
@@ -93,7 +93,7 @@ namespace TwainControl
             {
                 if (parameter is BitmapFrame bitmapFrame)
                 {
-                    if (filesavetask?.IsCompleted == false)
+                    if (Filesavetask?.IsCompleted == false)
                     {
                         _ = MessageBox.Show("İşlem Devam Ediyor. Bitmesini Bekleyin.");
                         return;
@@ -105,7 +105,7 @@ namespace TwainControl
                     };
                     if (saveFileDialog.ShowDialog() == true)
                     {
-                        filesavetask = Task.Run(async () =>
+                        Filesavetask = Task.Run(async () =>
                         {
                             if (saveFileDialog.FilterIndex == 1)
                             {
@@ -177,7 +177,7 @@ namespace TwainControl
 
             Seçilikaydet = new RelayCommand<object>(parameter =>
             {
-                if (filesavetask?.IsCompleted == false)
+                if (Filesavetask?.IsCompleted == false)
                 {
                     _ = MessageBox.Show("İşlem Devam Ediyor. Bitmesini Bekleyin.");
                     return;
@@ -189,7 +189,7 @@ namespace TwainControl
                 };
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    filesavetask = Task.Run(async () =>
+                    Filesavetask = Task.Run(async () =>
                     {
                         List<ScannedImage> seçiliresimler = Scanner.Resimler.Where(z => z.Seçili).ToList();
                         if (saveFileDialog.FilterIndex == 1)

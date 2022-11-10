@@ -264,7 +264,7 @@ namespace GpScanner.ViewModel
                     var paper = ToolBox.Paper;
                     List<ObservableCollection<OcrData>> scannedtext = null;
                     List<ScannedImage> scannedimages = new List<ScannedImage>();
-                    filesavetask = Task.Run(() =>
+                    Filesavetask = Task.Run(() =>
                     {
                         if (scanner?.ApplyPdfSaveOcr == true)
                         {
@@ -965,7 +965,7 @@ namespace GpScanner.ViewModel
 
         private ObservableCollection<Scanner> dosyalar;
 
-        private Task filesavetask;
+        public Task Filesavetask;
 
         private double fold = 0.3;
 

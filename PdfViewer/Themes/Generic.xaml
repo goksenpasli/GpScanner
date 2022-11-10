@@ -1,7 +1,10 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
-                    xmlns:local="clr-namespace:PdfViewer">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
+    xmlns:local="clr-namespace:PdfViewer">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Extensions;component/Themes/Skin.xaml" />
+    </ResourceDictionary.MergedDictionaries>
     <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
     <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
     <Style TargetType="{x:Type local:PdfViewer}">
@@ -161,7 +164,7 @@
                                 <Slider Grid.Column="6"
                                     Margin="2"
                                     AutoToolTipPlacement="TopLeft" Minimum="0.01" SmallChange="1"
-                                    Style="{DynamicResource Slider}"
+                                    Style="{StaticResource Slider}"
                                     Visibility="{Binding SliderZoomAngleVisibility, RelativeSource={RelativeSource TemplatedParent}}"
                                     Value="{Binding Zoom, RelativeSource={RelativeSource TemplatedParent}}" />
                                 <Slider Grid.Column="7"
@@ -169,7 +172,7 @@
                                     AutoToolTipPlacement="TopLeft"
                                     IsSnapToTickEnabled="{Binding SnapTick, RelativeSource={RelativeSource TemplatedParent}}"
                                     Maximum="360" SmallChange="1"
-                                    Style="{DynamicResource Slider}"
+                                    Style="{StaticResource Slider}"
                                     Ticks="0, 90, 180, 270, 360"
                                     Visibility="{Binding SliderZoomAngleVisibility, RelativeSource={RelativeSource TemplatedParent}}"
                                     Value="{Binding Angle, RelativeSource={RelativeSource TemplatedParent}}" />

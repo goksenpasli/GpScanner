@@ -95,6 +95,17 @@ namespace GpScanner
             }
         }
 
+        private void QrListBox_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetData(typeof(ScannedImage)) is ScannedImage scannedImage && DataContext is GpScannerViewModel ViewModel && ViewModel.GetMultipleImageBarcodeResult(scannedImage.Resim) is Result[] barcodes)
+            {
+                foreach (Result barcode in barcodes)
+                {
+                    ViewModel.BarcodeList.Add(barcode.Text);
+                }
+            }
+        }
+
         private async void TwainCtrl_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (DataContext is GpScannerViewModel ViewModel)
@@ -168,8 +179,9 @@ namespace GpScanner
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            if (TwainCtrl.filesavetask?.IsCompleted == false)
+            if (TwainCtrl.Filesavetask?.IsCompleted == false || (DataContext as GpScannerViewModel)?.Filesavetask?.IsCompleted == false)
             {
+                MessageBox.Show("Bazı Görevler Çalışıyor Bitmesini Bekleyin.");
                 e.Cancel = true;
             }
         }

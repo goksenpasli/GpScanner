@@ -25,7 +25,7 @@ namespace TwainControl
 
             SaveImage = new RelayCommand<object>(parameter =>
             {
-                if (TwainCtrl.filesavetask?.IsCompleted == false)
+                if (TwainCtrl.Filesavetask?.IsCompleted == false)
                 {
                     _ = MessageBox.Show("İşlem Devam Ediyor. Bitmesini Bekleyin.");
                     return;
@@ -37,7 +37,7 @@ namespace TwainControl
                 };
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    TwainCtrl.filesavetask = Task.Run(async () =>
+                    TwainCtrl.Filesavetask = Task.Run(async () =>
                     {
                         BitmapFrame bitmapFrame = BitmapFrame.Create(parameter as BitmapSource);
                         bitmapFrame.Freeze();
