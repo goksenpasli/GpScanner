@@ -8,6 +8,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -765,6 +766,8 @@ namespace TwainControl
         public static async Task SavePdfImage(List<ScannedImage> images, string filename, Scanner scanner, Paper paper, bool blackwhite = false)
         {
             List<ObservableCollection<OcrData>> scannedtext = null;
+            double index = 0;
+            int filescount = images.Count;
             if (scanner?.ApplyPdfSaveOcr == true)
             {
                 Ocr.Ocr.ocrcancellationToken = new CancellationTokenSource();
@@ -772,6 +775,8 @@ namespace TwainControl
                 foreach (ScannedImage image in images)
                 {
                     scannedtext.Add(await image.Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsyc(scanner.SelectedTtsLanguage));
+                    index++;
+                    scanner.PdfSaveProgressValue = index / filescount;
                 }
             }
             if (blackwhite)

@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Markup;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Extensions;
@@ -245,6 +246,7 @@ namespace GpScanner.ViewModel
             SetBatchFolder = new RelayCommand<object>(parameter =>
             {
                 System.Windows.Forms.FolderBrowserDialog dialog = new();
+                dialog.Description = $"{Translation.GetResStringValue("GRAPH")} {Translation.GetResStringValue("FILE")}";
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     BatchFolder = dialog.SelectedPath;
@@ -254,6 +256,8 @@ namespace GpScanner.ViewModel
             StartBatch = new RelayCommand<object>(parameter =>
             {
                 var files = Win32FileScanner.EnumerateFilepaths(BatchFolder, -1).Where(s => (new string[] { ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp" }).Any(ext => ext == Path.GetExtension(s).ToLower())).ToList();
+                double index = 0;
+                int filescount = files.Count;
                 if (files.Any())
                 {
                     Scanner scanner = ToolBox.Scanner;
@@ -266,15 +270,19 @@ namespace GpScanner.ViewModel
                         {
                             Ocr.Ocr.ocrcancellationToken = new CancellationTokenSource();
                             scannedtext = new List<ObservableCollection<OcrData>>();
+                            ProgressBarForegroundBrush = Brushes.Blue;
                             foreach (var image in files)
                             {
                                 scannedtext.Add(image.GetOcrData(scanner.SelectedTtsLanguage));
+                                index++;
+                                scanner.PdfSaveProgressValue = index / filescount;
                             }
                         }
-                        string filename = Twainsettings.Settings.Default.AutoFolder.SetUniqueFile("Toplu", "pdf");
-                        PdfGeneration.GeneratePdf(files, Format.Jpg, paper, scanner.JpegQuality, scannedtext).Save(filename);
+                        ProgressBarForegroundBrush = Brushes.Green;
+                        string filename = $"{Twainsettings.Settings.Default.AutoFolder}\\{Guid.NewGuid().ToString()}.pdf";
+                        PdfGeneration.GeneratePdf(files, Format.Jpg, paper, scannedtext).Save(filename);
                         scannedimages = null;
-                        scanner = null;
+                        GC.Collect();
                     });
                 }
             }, parameter => !string.IsNullOrWhiteSpace(BatchFolder) && !string.IsNullOrWhiteSpace(Twainsettings.Settings.Default.AutoFolder));
@@ -611,6 +619,20 @@ namespace GpScanner.ViewModel
                 {
                     pdfOnlyText = value;
                     OnPropertyChanged(nameof(PdfOnlyText));
+                }
+            }
+        }
+
+        public Brush ProgressBarForegroundBrush
+        {
+            get => progressBarForegroundBrush;
+
+            set
+            {
+                if (progressBarForegroundBrush != value)
+                {
+                    progressBarForegroundBrush = value;
+                    OnPropertyChanged(nameof(ProgressBarForegroundBrush));
                 }
             }
         }
@@ -964,6 +986,8 @@ namespace GpScanner.ViewModel
         private string patchTag;
 
         private bool pdfOnlyText;
+
+        private Brush progressBarForegroundBrush = Brushes.Green;
 
         private int sayfaBaşlangıç = 1;
 

@@ -134,7 +134,7 @@ namespace TwainControl
             return document;
         }
 
-        public static PdfDocument GeneratePdf(List<string> imagefiles, Format format, Paper paper, int jpegquality = 80, List<ObservableCollection<OcrData>> ScannedText = null)
+        public static PdfDocument GeneratePdf(List<string> imagefiles, Format format, Paper paper, List<ObservableCollection<OcrData>> ScannedText = null)
         {
             using PdfDocument document = new();
             double index = 0;
