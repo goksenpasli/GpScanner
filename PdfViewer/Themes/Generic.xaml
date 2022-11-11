@@ -12,6 +12,10 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:PdfViewer}">
                     <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
                         <Grid.ContextMenu>
                             <ContextMenu Visibility="{Binding ContextMenuVisibilityProperty, RelativeSource={RelativeSource TemplatedParent}}">
                                 <MenuItem Command="{Binding ViewerBack, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Header="GERİ">
@@ -44,7 +48,9 @@
                             <RowDefinition />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <ScrollViewer HorizontalScrollBarVisibility="{Binding ScrollBarVisible, RelativeSource={RelativeSource TemplatedParent}}" VerticalScrollBarVisibility="{Binding ScrollBarVisible, RelativeSource={RelativeSource TemplatedParent}}">
+                        <ScrollViewer Grid.Row="0" Grid.Column="0"
+                            HorizontalScrollBarVisibility="{Binding ScrollBarVisible, RelativeSource={RelativeSource TemplatedParent}}"
+                            VerticalScrollBarVisibility="{Binding ScrollBarVisible, RelativeSource={RelativeSource TemplatedParent}}">
                             <Image RenderTransformOrigin="0.5,0.5" ScrollViewer.CanContentScroll="True"
                                 Source="{Binding Source, RelativeSource={RelativeSource TemplatedParent}}"
                                 Stretch="None">
@@ -56,8 +62,13 @@
                                 </Image.LayoutTransform>
                             </Image>
                         </ScrollViewer>
+                        <ScrollBar Grid.Row="0" Grid.Column="1"
+                            Maximum="{Binding Pages.Count, RelativeSource={RelativeSource TemplatedParent}}"
+                            Minimum="1" Orientation="Vertical" SmallChange="1"
+                            ViewportSize="1"
+                            Value="{Binding Sayfa, Delay=25, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
                         <ContentControl x:Name="Cnt"
-                            Grid.Row="1"
+                            Grid.Row="1" Grid.ColumnSpan="2"
                             Visibility="{Binding ToolBarVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                             <Grid IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}">
                                 <Grid.ColumnDefinitions>
@@ -179,14 +190,6 @@
                                 <Extensions:ContentToggleButton Grid.Column="8"
                                     Command="{Binding ViewAllThumbnailImage, RelativeSource={RelativeSource TemplatedParent}}"
                                     PlacementMode="Top">
-                                    <Image Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="96" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
                                     <Extensions:ContentToggleButton.OverContent>
                                         <Extensions:ResizablePanel Width="640" Height="480" MinWidth="320"
                                             MinHeight="240">
@@ -212,6 +215,14 @@
                                             </ListBox>
                                         </Extensions:ResizablePanel>
                                     </Extensions:ContentToggleButton.OverContent>
+                                    <Image Width="16" Height="16">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="96" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
                                 </Extensions:ContentToggleButton>
                             </Grid>
                         </ContentControl>

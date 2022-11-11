@@ -8,7 +8,6 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -225,6 +224,23 @@ namespace TwainControl
                         }
                     });
                 }
+            }, parameter =>
+            {
+                Scanner.SeçiliResimSayısı = Scanner.Resimler.Count(z => z.Seçili);
+                return !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner.SeçiliResimSayısı > 0 && Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0;
+            });
+
+            SeçiliDirektPdfKaydet = new RelayCommand<object>(parameter =>
+            {
+                if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
+                {
+                    PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToList(), Format.Tiff, SelectedPaper, Scanner.JpegQuality).Save(PdfGeneration.GetPdfScanPath());
+                }
+                if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
+                {
+                    PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToList(), Format.Jpg, SelectedPaper, Scanner.JpegQuality).Save(PdfGeneration.GetPdfScanPath());
+                }
+                OnPropertyChanged(nameof(Scanner.Resimler));
             }, parameter =>
             {
                 Scanner.SeçiliResimSayısı = Scanner.Resimler.Count(z => z.Seçili);
@@ -661,6 +677,8 @@ namespace TwainControl
                 }
             }
         }
+
+        public ICommand SeçiliDirektPdfKaydet { get; }
 
         public ICommand Seçilikaydet { get; }
 

@@ -49,7 +49,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
-                    <RowDefinition Height="27.2" />
+                    <RowDefinition Height="70.4" />
                 </Grid.RowDefinitions>
                 <ComboBox Grid.Row="0"
                     ItemsSource="{Binding Scanner.Tarayıcılar}"
@@ -719,14 +719,15 @@
                         </ListBox.ItemsPanel>
                     </ListBox>
                 </GroupBox>
-                <UniformGrid Grid.Row="3" Columns="3">
-                    <Extensions:SplitButton HorizontalContentAlignment="Stretch"
+                <UniformGrid Grid.Row="3"
+                    Columns="2" Rows="2">
+                    <Extensions:SplitButton HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
                         Command="{Binding LoadImage}"
                         PlacementMode="Top">
                         <Grid>
                             <ProgressBar Maximum="1" Value="{Binding PdfLoadProgressValue}" />
                             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                <Image Width="24" Height="24">
+                                <Image Width="32" Height="32">
                                     <Image.Source>
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                             <Binding Source="Shell32.dll" />
@@ -734,7 +735,7 @@
                                         </MultiBinding>
                                     </Image.Source>
                                 </Image>
-                                <Image Width="24" Height="24"
+                                <Image Width="32" Height="32"
                                     Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
                                 <TextBlock VerticalAlignment="Center" Text="{local:Loc FILE}" />
                             </StackPanel>
@@ -751,12 +752,13 @@
                             </GroupBox>
                         </Extensions:SplitButton.InternalContent>
                     </Extensions:SplitButton>
-                    <Button HorizontalContentAlignment="Stretch" Command="{Binding Seçilikaydet}">
+                    <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                        Command="{Binding Seçilikaydet}">
                         <Grid>
                             <ProgressBar Maximum="1" Value="{Binding Scanner.PdfSaveProgressValue}" />
                             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                <Canvas Width="24" Height="24">
-                                    <Image Width="24" Height="24">
+                                <Canvas Width="32" Height="32">
+                                    <Image Width="32" Height="32">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                 <Binding Source="Shell32.dll" />
@@ -772,9 +774,31 @@
                             </StackPanel>
                         </Grid>
                     </Button>
+                    <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                        Command="{Binding SeçiliDirektPdfKaydet}">
+                        <Grid>
+                            <ProgressBar Maximum="1" Value="{Binding Scanner.PdfSaveProgressValue}" />
+                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                <Canvas Width="32" Height="32">
+                                    <Image Width="32" Height="32">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="223" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock d:Text="0" FontSize="10" FontWeight="Bold"
+                                        Foreground="Red"
+                                        Text="{Binding Scanner.SeçiliResimSayısı}" />
+                                </Canvas>
+                                <TextBlock VerticalAlignment="Center" Text="{local:Loc AUTOPATH}" />
+                            </StackPanel>
+                        </Grid>
+                    </Button>
                     <Extensions:ContentToggleButton>
                         <StackPanel Orientation="Horizontal">
-                            <Image Width="24" Height="24">
+                            <Image Width="32" Height="32">
                                 <Image.Source>
                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                         <Binding Source="Shell32.dll" />

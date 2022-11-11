@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -513,7 +514,7 @@ namespace PdfViewer
 
         private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is PdfViewer pdfViewer)
+            if (d is PdfViewer pdfViewer && !DesignerProperties.GetIsInDesignMode(pdfViewer))
             {
                 pdfViewer.Resize.Execute(null);
             }

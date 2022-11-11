@@ -10,6 +10,7 @@
     mc:Ignorable="d">
     <Grid>
         <pdf:PdfViewer x:Name="pdfviewer"
-            PrintButtonVisibility="Visible" SnapTick="True" />
+            Orientation="Height" PrintButtonVisibility="Visible" ScrollBarVisible="Hidden"
+            SnapTick="True" />
     </Grid>
 </Window>
