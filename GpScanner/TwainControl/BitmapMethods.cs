@@ -172,7 +172,7 @@ namespace TwainControl
             image.BeginInit();
             image.DecodePixelHeight = decodeheight;
             image.CacheOption = BitmapCacheOption.None;
-            image.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.IgnoreImageCache;
+            image.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.IgnoreImageCache | BitmapCreateOptions.DelayCreation;
             image.UriSource = item;
             image.EndInit();
             image.Freeze();
@@ -181,7 +181,7 @@ namespace TwainControl
             thumbimage.BeginInit();
             thumbimage.DecodePixelHeight = decodeheight / 10;
             thumbimage.CacheOption = BitmapCacheOption.None;
-            thumbimage.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.IgnoreImageCache;
+            thumbimage.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.IgnoreImageCache | BitmapCreateOptions.DelayCreation;
             thumbimage.UriSource = item;
             thumbimage.EndInit();
             thumbimage.Freeze();
@@ -197,7 +197,7 @@ namespace TwainControl
             image.BeginInit();
             image.DecodePixelHeight = decodeheight;
             image.CacheOption = BitmapCacheOption.None;
-            image.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
+            image.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.DelayCreation;
             image.StreamSource = ms;
             image.EndInit();
             image.Freeze();

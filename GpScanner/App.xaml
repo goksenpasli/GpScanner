@@ -146,8 +146,8 @@
                             Stretch="None">
                             <Image.LayoutTransform>
                                 <TransformGroup>
-                                    <ScaleTransform ScaleX="{Binding Zoom, RelativeSource={RelativeSource TemplatedParent}}" ScaleY="{Binding Zoom, RelativeSource={RelativeSource TemplatedParent}}" />
-                                    <RotateTransform Angle="{Binding Angle, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    <ScaleTransform x:Name="Pdfscale" ScaleX="{Binding Zoom, RelativeSource={RelativeSource TemplatedParent}}" ScaleY="{Binding Zoom, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    <RotateTransform x:Name="Pdfrotate" Angle="{Binding Angle, RelativeSource={RelativeSource TemplatedParent}}" />
                                 </TransformGroup>
                             </Image.LayoutTransform>
                         </Image>

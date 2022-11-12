@@ -32,6 +32,8 @@ namespace GpScanner.ViewModel
 {
     public class GpScannerViewModel : InpcBase
     {
+        public Task Filesavetask;
+
         public GpScannerViewModel()
         {
             if (string.IsNullOrWhiteSpace(Settings.Default.DatabaseFile))
@@ -104,7 +106,10 @@ namespace GpScanner.ViewModel
             {
                 if (parameter is object[] data && data[0] is TwainCtrl twainCtrl && data[1] is string filepath)
                 {
-                    twainCtrl.AddFiles(new string[] { filepath }, twainCtrl.DecodeHeight);
+                    if (File.Exists(filepath))
+                    {
+                        twainCtrl.AddFiles(new string[] { filepath }, twainCtrl.DecodeHeight);
+                    }
                 }
             }, parameter => true);
 
@@ -174,7 +179,7 @@ namespace GpScanner.ViewModel
 
             ExtractPdfFile = new RelayCommand<object>(async parameter =>
             {
-                if (parameter is string filename)
+                if (parameter is string filename && File.Exists(filename))
                 {
                     SaveFileDialog saveFileDialog = new()
                     {
@@ -964,8 +969,6 @@ namespace GpScanner.ViewModel
         private bool detectPageSeperator;
 
         private ObservableCollection<Scanner> dosyalar;
-
-        public Task Filesavetask;
 
         private double fold = 0.3;
 

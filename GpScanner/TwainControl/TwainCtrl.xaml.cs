@@ -230,15 +230,15 @@ namespace TwainControl
                 return !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner.SeçiliResimSayısı > 0 && Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0;
             });
 
-            SeçiliDirektPdfKaydet = new RelayCommand<object>(parameter =>
+            SeçiliDirektPdfKaydet = new RelayCommand<object>(async parameter =>
             {
                 if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
                 {
-                    PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToList(), Format.Tiff, SelectedPaper, Scanner.JpegQuality).Save(PdfGeneration.GetPdfScanPath());
+                    await SavePdfImage(Scanner.Resimler.Where(z => z.Seçili).ToList(), PdfGeneration.GetPdfScanPath(), Scanner, SelectedPaper, true);
                 }
                 if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
                 {
-                    PdfGeneration.GeneratePdf(Scanner.Resimler.Where(z => z.Seçili).ToList(), Format.Jpg, SelectedPaper, Scanner.JpegQuality).Save(PdfGeneration.GetPdfScanPath());
+                    await SavePdfImage(Scanner.Resimler.Where(z => z.Seçili).ToList(), PdfGeneration.GetPdfScanPath(), Scanner, SelectedPaper);
                 }
                 OnPropertyChanged(nameof(Scanner.Resimler));
             }, parameter =>
@@ -845,12 +845,19 @@ namespace TwainControl
                             byte[] filedata = null;
                             fileloadtask = Task.Run(async () =>
                             {
-                                filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(item);
-                                if (PdfGeneration.IsValidPdfFile(filedata.Take(4)))
+                                try
                                 {
-                                    await AddPdfFile(decodeheight, uiContext, filedata);
+                                    filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(item);
+                                    if (PdfGeneration.IsValidPdfFile(filedata.Take(4)))
+                                    {
+                                        await AddPdfFile(decodeheight, uiContext, filedata);
+                                    }
+                                    filedata = null;
                                 }
-                                filedata = null;
+                                catch (Exception)
+                                {
+                                    return;
+                                }
                             });
                             break;
                         }
@@ -859,13 +866,20 @@ namespace TwainControl
                             byte[] filedata = null;
                             fileloadtask = Task.Run(async () =>
                             {
-                                string eyppdfpath = EypMainPdfExtract(item);
-                                filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(eyppdfpath);
-                                if (PdfGeneration.IsValidPdfFile(filedata.Take(4)))
+                                try
                                 {
-                                    await AddPdfFile(decodeheight, uiContext, filedata);
+                                    string eyppdfpath = EypMainPdfExtract(item);
+                                    filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(eyppdfpath);
+                                    if (PdfGeneration.IsValidPdfFile(filedata.Take(4)))
+                                    {
+                                        await AddPdfFile(decodeheight, uiContext, filedata);
+                                    }
+                                    filedata = null;
                                 }
-                                filedata = null;
+                                catch (Exception)
+                                {
+                                    return;
+                                }
                             });
                             break;
                         }
@@ -880,10 +894,20 @@ namespace TwainControl
                     case ".gıf":
                     case ".bmp":
                         {
-                            BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(decodeheight, new Uri(item));
-                            bitmapFrame.Freeze();
-                            Scanner?.Resimler.Add(new ScannedImage() { Resim = bitmapFrame });
-                            bitmapFrame = null;
+                            fileloadtask = Task.Run(() =>
+                                           {
+                                               try
+                                               {
+                                                   BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(decodeheight, new Uri(item));
+                                                   bitmapFrame.Freeze();
+                                                   uiContext.Send(_ => Scanner?.Resimler.Add(new ScannedImage() { Resim = bitmapFrame }), null);
+                                                   bitmapFrame = null;
+                                               }
+                                               catch (Exception)
+                                               {
+                                                   return;
+                                               }
+                                           });
                             break;
                         }
 
@@ -891,22 +915,29 @@ namespace TwainControl
                         {
                             fileloadtask = Task.Run(() =>
                             {
-                                TiffBitmapDecoder decoder = new(new Uri(item), BitmapCreateOptions.None, BitmapCacheOption.None);
-                                for (int i = 0; i < decoder.Frames.Count; i++)
+                                try
                                 {
-                                    byte[] data = decoder.Frames[i].ToTiffJpegByteArray(Format.Jpg);
-                                    MemoryStream ms = new(data);
-                                    BitmapFrame image = BitmapMethods.GenerateImageDocumentBitmapFrame(decodeheight, ms, SelectedPaper);
-                                    image.Freeze();
-                                    BitmapSource thumbimage = image.PixelWidth < image.PixelHeight ? image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Width * SelectedPaper.Height) : image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Height * SelectedPaper.Width);
-                                    thumbimage.Freeze();
-                                    BitmapFrame bitmapFrame = BitmapFrame.Create(image, thumbimage);
-                                    bitmapFrame.Freeze();
-                                    uiContext.Send(_ => Scanner?.Resimler.Add(new ScannedImage() { Resim = bitmapFrame }), null);
-                                    bitmapFrame = null;
-                                    image = null;
-                                    data = null;
-                                    ms = null;
+                                    TiffBitmapDecoder decoder = new(new Uri(item), BitmapCreateOptions.None, BitmapCacheOption.None);
+                                    for (int i = 0; i < decoder.Frames.Count; i++)
+                                    {
+                                        byte[] data = decoder.Frames[i].ToTiffJpegByteArray(Format.Jpg);
+                                        MemoryStream ms = new(data);
+                                        BitmapFrame image = BitmapMethods.GenerateImageDocumentBitmapFrame(decodeheight, ms, SelectedPaper);
+                                        image.Freeze();
+                                        BitmapSource thumbimage = image.PixelWidth < image.PixelHeight ? image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Width * SelectedPaper.Height) : image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Height * SelectedPaper.Width);
+                                        thumbimage.Freeze();
+                                        BitmapFrame bitmapFrame = BitmapFrame.Create(image, thumbimage);
+                                        bitmapFrame.Freeze();
+                                        uiContext.Send(_ => Scanner?.Resimler.Add(new ScannedImage() { Resim = bitmapFrame }), null);
+                                        bitmapFrame = null;
+                                        image = null;
+                                        data = null;
+                                        ms = null;
+                                    }
+                                }
+                                catch (Exception)
+                                {
+                                    return;
                                 }
                             });
                             break;
@@ -920,31 +951,38 @@ namespace TwainControl
                             byte[] data = null;
                             fileloadtask = Task.Run(() =>
                             {
-                                for (int i = 0; i < docSeq.DocumentPaginator.PageCount; i++)
+                                try
                                 {
-                                    Dispatcher.Invoke(() =>
+                                    for (int i = 0; i < docSeq.DocumentPaginator.PageCount; i++)
                                     {
-                                        docPage = docSeq.DocumentPaginator.GetPage(i);
-                                        RenderTargetBitmap rtb = new((int)docPage.Size.Width, (int)docPage.Size.Height, 96, 96, PixelFormats.Default);
-                                        rtb.Render(docPage.Visual);
-                                        bitmapframe = BitmapFrame.Create(rtb);
-                                        data = bitmapframe.ToTiffJpegByteArray(Format.Jpg, Scanner.JpegQuality);
-                                        docPage = null;
-                                    });
-                                    MemoryStream memoryStream = new(data);
-                                    BitmapFrame image = BitmapMethods.GenerateImageDocumentBitmapFrame(decodeheight, memoryStream, SelectedPaper);
-                                    image.Freeze();
-                                    BitmapSource thumbimage = image.PixelWidth < image.PixelHeight ? image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Width * SelectedPaper.Height) : image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Height * SelectedPaper.Width);
-                                    thumbimage.Freeze();
-                                    BitmapFrame bitmapFrame = BitmapFrame.Create(image, thumbimage);
-                                    bitmapFrame.Freeze();
-                                    uiContext.Send(_ => Scanner?.Resimler.Add(new ScannedImage() { Resim = bitmapFrame }), null);
-                                    bitmapFrame = null;
-                                    image = null;
-                                    thumbimage = null;
-                                    bitmapframe = null;
-                                    data = null;
-                                    memoryStream = null;
+                                        Dispatcher.Invoke(() =>
+                                        {
+                                            docPage = docSeq.DocumentPaginator.GetPage(i);
+                                            RenderTargetBitmap rtb = new((int)docPage.Size.Width, (int)docPage.Size.Height, 96, 96, PixelFormats.Default);
+                                            rtb.Render(docPage.Visual);
+                                            bitmapframe = BitmapFrame.Create(rtb);
+                                            data = bitmapframe.ToTiffJpegByteArray(Format.Jpg, Scanner.JpegQuality);
+                                            docPage = null;
+                                        });
+                                        MemoryStream memoryStream = new(data);
+                                        BitmapFrame image = BitmapMethods.GenerateImageDocumentBitmapFrame(decodeheight, memoryStream, SelectedPaper);
+                                        image.Freeze();
+                                        BitmapSource thumbimage = image.PixelWidth < image.PixelHeight ? image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Width * SelectedPaper.Height) : image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Height * SelectedPaper.Width);
+                                        thumbimage.Freeze();
+                                        BitmapFrame bitmapFrame = BitmapFrame.Create(image, thumbimage);
+                                        bitmapFrame.Freeze();
+                                        uiContext.Send(_ => Scanner?.Resimler.Add(new ScannedImage() { Resim = bitmapFrame }), null);
+                                        bitmapFrame = null;
+                                        image = null;
+                                        thumbimage = null;
+                                        bitmapframe = null;
+                                        data = null;
+                                        memoryStream = null;
+                                    }
+                                }
+                                catch (Exception)
+                                {
+                                    return;
                                 }
                             });
                             break;
@@ -1180,7 +1218,7 @@ namespace TwainControl
                                     : null;
         }
 
-        private void Fastscan(object sender, ScanningCompleteEventArgs e)
+        private async void Fastscan(object sender, ScanningCompleteEventArgs e)
         {
             OnPropertyChanged(nameof(Scanner.DetectPageSeperator));
 
@@ -1193,11 +1231,11 @@ namespace TwainControl
             {
                 if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
                 {
-                    PdfGeneration.GeneratePdf(Scanner.Resimler.ToList(), Format.Tiff, SelectedPaper, Scanner.JpegQuality).Save(Scanner.PdfFilePath);
+                    await SavePdfImage(Scanner.Resimler.ToList(), Scanner.PdfFilePath, Scanner, SelectedPaper, true);
                 }
                 if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
                 {
-                    PdfGeneration.GeneratePdf(Scanner.Resimler.ToList(), Format.Jpg, SelectedPaper, Scanner.JpegQuality).Save(Scanner.PdfFilePath);
+                    await SavePdfImage(Scanner.Resimler.ToList(), Scanner.PdfFilePath, Scanner, SelectedPaper);
                 }
                 if (Settings.Default.ShowFile)
                 {
