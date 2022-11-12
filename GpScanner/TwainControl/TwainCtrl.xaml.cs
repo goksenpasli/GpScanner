@@ -193,12 +193,12 @@ namespace TwainControl
                         List<ScannedImage> seçiliresimler = Scanner.Resimler.Where(z => z.Seçili).ToList();
                         if (saveFileDialog.FilterIndex == 1)
                         {
-                            await SavePdfImage(seçiliresimler, saveFileDialog.FileName, Scanner, SelectedPaper);
+                            await SavePdfImage(seçiliresimler, saveFileDialog.FileName, Scanner, SelectedPaper, false, (int)ImgLoadResolution);
                             return;
                         }
                         if (saveFileDialog.FilterIndex == 2)
                         {
-                            await SavePdfImage(seçiliresimler, saveFileDialog.FileName, Scanner, SelectedPaper, true);
+                            await SavePdfImage(seçiliresimler, saveFileDialog.FileName, Scanner, SelectedPaper, true, (int)ImgLoadResolution);
                             return;
                         }
                         if (saveFileDialog.FilterIndex == 3)
@@ -234,11 +234,11 @@ namespace TwainControl
             {
                 if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
                 {
-                    await SavePdfImage(Scanner.Resimler.Where(z => z.Seçili).ToList(), PdfGeneration.GetPdfScanPath(), Scanner, SelectedPaper, true);
+                    await SavePdfImage(Scanner.Resimler.Where(z => z.Seçili).ToList(), PdfGeneration.GetPdfScanPath(), Scanner, SelectedPaper, true, (int)ImgLoadResolution);
                 }
                 if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
                 {
-                    await SavePdfImage(Scanner.Resimler.Where(z => z.Seçili).ToList(), PdfGeneration.GetPdfScanPath(), Scanner, SelectedPaper);
+                    await SavePdfImage(Scanner.Resimler.Where(z => z.Seçili).ToList(), PdfGeneration.GetPdfScanPath(), Scanner, SelectedPaper, false, (int)ImgLoadResolution);
                 }
                 OnPropertyChanged(nameof(Scanner.Resimler));
             }, parameter =>
@@ -765,7 +765,7 @@ namespace TwainControl
             File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.Jpg));
         }
 
-        public static async Task SavePdfImage(BitmapFrame scannedImage, string filename, Scanner scanner, Paper paper, bool blackwhite = false)
+        public static async Task SavePdfImage(BitmapFrame scannedImage, string filename, Scanner scanner, Paper paper, bool blackwhite = false, int dpi = 120)
         {
             ObservableCollection<OcrData> ocrtext = null;
             if (scanner?.ApplyPdfSaveOcr == true)
@@ -781,7 +781,7 @@ namespace TwainControl
             PdfGeneration.GeneratePdf(scannedImage, ocrtext, Format.Jpg, paper, scanner.JpegQuality).Save(filename);
         }
 
-        public static async Task SavePdfImage(List<ScannedImage> images, string filename, Scanner scanner, Paper paper, bool blackwhite = false)
+        public static async Task SavePdfImage(List<ScannedImage> images, string filename, Scanner scanner, Paper paper, bool blackwhite = false, int dpi = 120)
         {
             List<ObservableCollection<OcrData>> scannedtext = null;
             double index = 0;
@@ -799,10 +799,10 @@ namespace TwainControl
             }
             if (blackwhite)
             {
-                PdfGeneration.GeneratePdf(images, Format.Tiff, paper, scanner.JpegQuality, scannedtext).Save(filename);
+                PdfGeneration.GeneratePdf(images, Format.Tiff, paper, scanner.JpegQuality, scannedtext, dpi).Save(filename);
                 return;
             }
-            PdfGeneration.GeneratePdf(images, Format.Jpg, paper, scanner.JpegQuality, scannedtext).Save(filename);
+            PdfGeneration.GeneratePdf(images, Format.Jpg, paper, scanner.JpegQuality, scannedtext, dpi).Save(filename);
         }
 
         public static void SaveTifImage(BitmapFrame scannedImage, string filename)
@@ -1218,32 +1218,27 @@ namespace TwainControl
                                     : null;
         }
 
-        private async void Fastscan(object sender, ScanningCompleteEventArgs e)
+        private void Fastscan(object sender, ScanningCompleteEventArgs e)
         {
             OnPropertyChanged(nameof(Scanner.DetectPageSeperator));
 
             Scanner.PdfFilePath = PdfGeneration.GetPdfScanPath();
-            if (Scanner.ApplyDataBaseOcr)
-            {
-                OnPropertyChanged(nameof(Scanner.ApplyDataBaseOcr));
-            }
-            else
-            {
-                if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
-                {
-                    await SavePdfImage(Scanner.Resimler.ToList(), Scanner.PdfFilePath, Scanner, SelectedPaper, true);
-                }
-                if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
-                {
-                    await SavePdfImage(Scanner.Resimler.ToList(), Scanner.PdfFilePath, Scanner, SelectedPaper);
-                }
-                if (Settings.Default.ShowFile)
-                {
-                    ExploreFile.Execute(Scanner.PdfFilePath);
-                }
-                OnPropertyChanged(nameof(Scanner.Resimler));
-            }
 
+            OnPropertyChanged(nameof(Scanner.ApplyDataBaseOcr));
+
+            if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
+            {
+                PdfGeneration.GeneratePdf(Scanner.Resimler.ToList(), Format.Tiff, SelectedPaper, Scanner.JpegQuality, null, (int)Settings.Default.Çözünürlük).Save(Scanner.PdfFilePath);
+            }
+            if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
+            {
+                PdfGeneration.GeneratePdf(Scanner.Resimler.ToList(), Format.Jpg, SelectedPaper, Scanner.JpegQuality, null, (int)Settings.Default.Çözünürlük).Save(Scanner.PdfFilePath);
+            }
+            if (Settings.Default.ShowFile)
+            {
+                ExploreFile.Execute(Scanner.PdfFilePath);
+            }
+            OnPropertyChanged(nameof(Scanner.Resimler));
             twain.ScanningComplete -= Fastscan;
         }
 

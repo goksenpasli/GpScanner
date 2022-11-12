@@ -56,7 +56,7 @@ namespace TwainControl
             return outputDocument;
         }
 
-        public static PdfDocument GeneratePdf(List<ScannedImage> bitmapFrames, Format format, Paper paper, int jpegquality = 80, List<ObservableCollection<OcrData>> ScannedText = null)
+        public static PdfDocument GeneratePdf(List<ScannedImage> bitmapFrames, Format format, Paper paper, int jpegquality = 80, List<ObservableCollection<OcrData>> ScannedText = null, int dpi = 120)
         {
             using PdfDocument document = new();
             double index = 0;
@@ -78,10 +78,12 @@ namespace TwainControl
                     {
                         using XGraphics gfx = XGraphics.FromPdfPage(page);
                         using MozJpeg.MozJpeg mozJpeg = new();
-                        var data = mozJpeg.Encode(scannedimage.Resim.BitmapSourceToBitmap(), jpegquality, false, TJFlags.ACCURATEDCT | TJFlags.DC_SCAN_OPT2 | TJFlags.TUNE_MS_SSIM);
+                        var resizedimage = scannedimage.Resim.Resize(page.Width, page.Height, 0, dpi, dpi);
+                        var data = mozJpeg.Encode(resizedimage.BitmapSourceToBitmap(), jpegquality, false, TJFlags.ACCURATEDCT | TJFlags.DC_SCAN_OPT2 | TJFlags.TUNE_MS_SSIM);
                         using var ms = new MemoryStream(data);
                         using XImage xImage = XImage.FromStream(ms);
                         XSize size = PageSizeConverter.ToSize(page.Size);
+                        resizedimage = null;
                         if (ScannedText != null)
                         {
                             WritePdfTextContent(scannedimage.Resim, ScannedText[i], page, gfx, XBrushes.Black);
@@ -101,9 +103,11 @@ namespace TwainControl
                     else
                     {
                         using XGraphics gfx = XGraphics.FromPdfPage(page);
-                        using var ms = new MemoryStream(scannedimage.Resim.ToTiffJpegByteArray(format, jpegquality));
+                        var resizedimage = scannedimage.Resim.Resize(page.Width, page.Height, 0, dpi, dpi);
+                        using var ms = new MemoryStream(resizedimage.ToTiffJpegByteArray(format, jpegquality));
                         using XImage xImage = XImage.FromStream(ms);
                         XSize size = PageSizeConverter.ToSize(page.Size);
+                        resizedimage = null;
                         if (ScannedText != null)
                         {
                             WritePdfTextContent(scannedimage.Resim, ScannedText[i], page, gfx, XBrushes.Black);
@@ -185,7 +189,7 @@ namespace TwainControl
             return document;
         }
 
-        public static PdfDocument GeneratePdf(BitmapSource bitmapframe, ObservableCollection<OcrData> ScannedText, Format format, Paper paper, int jpegquality = 80, bool pdfonlytext = false)
+        public static PdfDocument GeneratePdf(BitmapSource bitmapframe, ObservableCollection<OcrData> ScannedText, Format format, Paper paper, int jpegquality = 80, bool pdfonlytext = false,int dpi=120)
         {
             try
             {
@@ -198,12 +202,16 @@ namespace TwainControl
                 if (Scanner.UseMozJpegEncoding && format != Format.Tiff)
                 {
                     using MozJpeg.MozJpeg mozJpeg = new();
-                    data = mozJpeg.Encode(bitmapframe.BitmapSourceToBitmap(), jpegquality, false, TJFlags.ACCURATEDCT | TJFlags.DC_SCAN_OPT2 | TJFlags.TUNE_MS_SSIM);
+                    var resizedimage = bitmapframe.Resize(page.Width, page.Height, 0, dpi, dpi);
+                    data = mozJpeg.Encode(resizedimage.BitmapSourceToBitmap(), jpegquality, false, TJFlags.ACCURATEDCT | TJFlags.DC_SCAN_OPT2 | TJFlags.TUNE_MS_SSIM);
                     ms = new MemoryStream(data);
+                    resizedimage = null;
                 }
                 else
                 {
-                    ms = new(bitmapframe.ToTiffJpegByteArray(format, jpegquality));
+                    var resizedimage = bitmapframe.Resize(page.Width, page.Height, 0, dpi, dpi);
+                    ms = new(resizedimage.ToTiffJpegByteArray(format, jpegquality));
+                    resizedimage = null;
                 }
                 using XImage xImage = XImage.FromStream(ms);
                 XSize size = PageSizeConverter.ToSize(page.Size);

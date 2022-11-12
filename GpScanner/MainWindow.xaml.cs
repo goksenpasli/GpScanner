@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
@@ -12,9 +11,7 @@ using System.Windows.Input;
 using Extensions;
 using GpScanner.Properties;
 using GpScanner.ViewModel;
-using Ocr;
 using TwainControl;
-using TwainWpf;
 using ZXing;
 using static Extensions.ExtensionMethods;
 
@@ -136,40 +133,27 @@ namespace GpScanner
                     _ = await ViewModel.GetScannedTextAsync(TwainCtrl.ImgData);
                 }
 
-                if (e.PropertyName is "ApplyDataBaseOcr" && TwainCtrl?.Scanner?.ApplyDataBaseOcr == true && TwainCtrl?.Scanner?.Resimler?.Count > 0)
+                if (e.PropertyName is "ApplyDataBaseOcr")
                 {
                     try
                     {
-                        List<ObservableCollection<OcrData>> scannedtext = new();
-                        if (!string.IsNullOrEmpty(Settings.Default.DefaultTtsLang))
+                        if (TwainCtrl?.Scanner?.Resimler?.Count > 0 && !string.IsNullOrEmpty(Settings.Default.DefaultTtsLang))
                         {
                             Ocr.Ocr.ocrcancellationToken = new CancellationTokenSource();
                             foreach (ScannedImage scannedimage in TwainCtrl.Scanner.Resimler)
                             {
-                                scannedtext.Add(await ViewModel.GetScannedTextAsync(scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg), false));
-                                ViewModel.ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = TwainCtrl.Scanner.PdfFilePath, FileContent = ViewModel.TranslateViewModel.Metin, QrData = GpScannerViewModel.GetImageBarcodeResult(scannedimage.Resim)?.Text });
+                                ObservableCollection<Ocr.OcrData> ocrdata = await Ocr.Ocr.OcrAsyc(scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg), Settings.Default.DefaultTtsLang);
+                                ViewModel.ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = TwainCtrl.Scanner.PdfFilePath, FileContent = string.Join(" ", ocrdata.Select(z => z.Text)), QrData = GpScannerViewModel.GetImageBarcodeResult(scannedimage.Resim)?.Text });
                             }
+                            ViewModel.DatabaseSave.Execute(null);
                         }
-                        if ((ColourSetting)TwainControl.Properties.Settings.Default.Mode == ColourSetting.BlackAndWhite)
-                        {
-                            PdfGeneration.GeneratePdf(TwainCtrl.Scanner.Resimler.ToList(), Format.Tiff, TwainCtrl.SelectedPaper, TwainCtrl.Scanner.JpegQuality, scannedtext).Save(TwainCtrl.Scanner.PdfFilePath);
-                        }
-                        if ((ColourSetting)TwainControl.Properties.Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
-                        {
-                            PdfGeneration.GeneratePdf(TwainCtrl.Scanner.Resimler.ToList(), Format.Jpg, TwainCtrl.SelectedPaper, TwainCtrl.Scanner.JpegQuality, scannedtext).Save(TwainCtrl.Scanner.PdfFilePath);
-                        }
-                        if (TwainControl.Properties.Settings.Default.ShowFile)
-                        {
-                            TwainCtrl.ExploreFile.Execute(TwainCtrl.Scanner.PdfFilePath);
-                        }
-                        ViewModel.DatabaseSave.Execute(null);
-                        ReloadFileDatas(ViewModel);
                     }
                     catch (Exception ex)
                     {
                         _ = MessageBox.Show(ex.Message);
                     }
                 }
+
                 if (e.PropertyName is "DragMoveStarted")
                 {
                     ViewModel.ListBoxBorderAnimation = TwainCtrl.DragMoveStarted;

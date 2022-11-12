@@ -170,7 +170,6 @@ namespace TwainControl
         {
             BitmapImage image = new();
             image.BeginInit();
-            image.DecodePixelHeight = decodeheight;
             image.CacheOption = BitmapCacheOption.None;
             image.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.IgnoreImageCache | BitmapCreateOptions.DelayCreation;
             image.UriSource = item;
@@ -195,7 +194,6 @@ namespace TwainControl
         {
             BitmapImage image = new();
             image.BeginInit();
-            image.DecodePixelHeight = decodeheight;
             image.CacheOption = BitmapCacheOption.None;
             image.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.DelayCreation;
             image.StreamSource = ms;

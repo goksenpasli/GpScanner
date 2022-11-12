@@ -397,25 +397,21 @@
                                         <TextBlock VerticalAlignment="Center" Text="{local:Loc SCAN}" />
                                     </StackPanel>
                                 </Button>
-                                <CheckBox HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"
-                                    IsChecked="{Binding Scanner.ApplyDataBaseOcr}"
-                                    ToolTip="{local:Loc OCR}">
-                                    <Button Background="Green"
-                                        Command="{Binding FastScanImage}"
-                                        IsDefault="True">
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Width="32" Height="32">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Imageres.dll" />
-                                                        <Binding Source="90" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc FASTSCAN}" />
-                                        </StackPanel>
-                                    </Button>
-                                </CheckBox>
+                                <Button Background="Green"
+                                    Command="{Binding FastScanImage}"
+                                    IsDefault="True">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Width="32" Height="32">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Imageres.dll" />
+                                                    <Binding Source="90" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc FASTSCAN}" />
+                                    </StackPanel>
+                                </Button>
                                 <Button Command="{Binding KayıtYoluBelirle}">
                                     <StackPanel Orientation="Horizontal">
                                         <Image Width="32" Height="32">

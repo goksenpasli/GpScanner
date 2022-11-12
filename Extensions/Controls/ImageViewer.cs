@@ -496,7 +496,7 @@ namespace Extensions
                             image.BeginInit();
                             image.DecodePixelHeight = imageViewer.DecodeHeight;
                             image.CacheOption = BitmapCacheOption.None;
-                            image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+                            image.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.IgnoreImageCache | BitmapCreateOptions.DelayCreation;
                             image.UriSource = new Uri(filepath);
                             image.EndInit();
                             if (!image.IsFrozen && image.CanFreeze)
