@@ -230,17 +230,19 @@ namespace TwainControl
                 return !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner.SeçiliResimSayısı > 0 && Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0;
             });
 
-            SeçiliDirektPdfKaydet = new RelayCommand<object>(async parameter =>
+            SeçiliDirektPdfKaydet = new RelayCommand<object>(parameter =>
             {
-                if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
+                Filesavetask = Task.Run(async () =>
                 {
-                    await SavePdfImage(Scanner.Resimler.Where(z => z.Seçili).ToList(), PdfGeneration.GetPdfScanPath(), Scanner, SelectedPaper, true, (int)ImgLoadResolution);
-                }
-                if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
-                {
-                    await SavePdfImage(Scanner.Resimler.Where(z => z.Seçili).ToList(), PdfGeneration.GetPdfScanPath(), Scanner, SelectedPaper, false, (int)ImgLoadResolution);
-                }
-                OnPropertyChanged(nameof(Scanner.Resimler));
+                    if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
+                    {
+                        await SavePdfImage(Scanner.Resimler.Where(z => z.Seçili).ToList(), PdfGeneration.GetPdfScanPath(), Scanner, SelectedPaper, true, (int)ImgLoadResolution);
+                    }
+                    if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
+                    {
+                        await SavePdfImage(Scanner.Resimler.Where(z => z.Seçili).ToList(), PdfGeneration.GetPdfScanPath(), Scanner, SelectedPaper, false, (int)ImgLoadResolution);
+                    }
+                }).ContinueWith((z) => Dispatcher.Invoke(() => OnPropertyChanged(nameof(Scanner.Resimler))));
             }, parameter =>
             {
                 Scanner.SeçiliResimSayısı = Scanner.Resimler.Count(z => z.Seçili);
