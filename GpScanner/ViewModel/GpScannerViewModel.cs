@@ -26,6 +26,7 @@ using ZXing.Common;
 using ZXing.QrCode.Internal;
 using ZXing.Rendering;
 using static Extensions.ExtensionMethods;
+using InpcBase = Extensions.InpcBase;
 using Twainsettings = TwainControl.Properties;
 
 namespace GpScanner.ViewModel

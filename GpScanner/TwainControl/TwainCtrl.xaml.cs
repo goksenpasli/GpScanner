@@ -1373,6 +1373,8 @@ namespace TwainControl
                             bitmapframe.Freeze();
                             ScannedImage item = new() { Resim = bitmapframe };
                             Scanner.Resimler.Add(item);
+                            ms = null;
+                            item = null;
                         }
                         startupcoordx = startupcoordy = 0;
                         isMouseDown = false;
@@ -1418,11 +1420,6 @@ namespace TwainControl
                     Settings.Default.PreviewWidth = 300;
                 }
             }
-        }
-
-        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
-        {
-            Scanner.PdfPassword = ((PasswordBox)sender).SecurePassword;
         }
 
         private void PdfMergeButton_Drop(object sender, DragEventArgs e)

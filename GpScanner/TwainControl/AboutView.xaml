@@ -10,7 +10,14 @@
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
     UseLayoutRounding="True"
     mc:Ignorable="d">
-    <GroupBox Header="{local:Loc ABOUT}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Extensions;component/Themes/Skin.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <GroupBox Background="{StaticResource GroupBoxBackGround}" Header="{local:Loc ABOUT}">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />

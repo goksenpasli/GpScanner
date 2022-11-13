@@ -15,7 +15,6 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TwainControl;component/Slider.xaml" />
                 <ResourceDictionary Source="/Extensions;component/Themes/Skin.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />

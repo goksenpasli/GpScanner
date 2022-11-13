@@ -85,12 +85,12 @@ namespace GpScanner.ViewModel
         private static extern int GetWindowLong(IntPtr hwnd, int index);
 
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-        private static extern bool InsertMenu(IntPtr hMenu, uint wPosition, uint wFlags, int wIDNewItem,
-    string lpNewItem);
+        private static extern bool InsertMenu(IntPtr hMenu, uint wPosition, uint wFlags, int wIDNewItem, string lpNewItem);
 
         [DllImport("user32.dll")]
         private static extern int SetWindowLong(IntPtr hwnd, int index, int value);
 
+        [DebuggerStepThrough]
         private static IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             if (msg == WM_SYSCOMMAND)

@@ -84,10 +84,6 @@ namespace TwainControl
                         using XImage xImage = XImage.FromStream(ms);
                         XSize size = PageSizeConverter.ToSize(page.Size);
                         resizedimage = null;
-                        if (ScannedText != null)
-                        {
-                            WritePdfTextContent(scannedimage.Resim, ScannedText[i], page, gfx, XBrushes.Black);
-                        }
                         if (scannedimage.Resim.PixelWidth < scannedimage.Resim.PixelHeight)
                         {
                             gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
@@ -96,6 +92,10 @@ namespace TwainControl
                         {
                             page.Orientation = PageOrientation.Landscape;
                             gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
+                        }
+                        if (ScannedText != null)
+                        {
+                            WritePdfTextContent(scannedimage.Resim, ScannedText[i], page, gfx, XBrushes.Transparent);
                         }
                         index++;
                         Scanner.PdfSaveProgressValue = index / bitmapFrames.Count();
@@ -108,10 +108,6 @@ namespace TwainControl
                         using XImage xImage = XImage.FromStream(ms);
                         XSize size = PageSizeConverter.ToSize(page.Size);
                         resizedimage = null;
-                        if (ScannedText != null)
-                        {
-                            WritePdfTextContent(scannedimage.Resim, ScannedText[i], page, gfx, XBrushes.Black);
-                        }
                         if (scannedimage.Resim.PixelWidth < scannedimage.Resim.PixelHeight)
                         {
                             gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
@@ -120,6 +116,10 @@ namespace TwainControl
                         {
                             page.Orientation = PageOrientation.Landscape;
                             gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
+                        }
+                        if (ScannedText != null)
+                        {
+                            WritePdfTextContent(scannedimage.Resim, ScannedText[i], page, gfx, XBrushes.Transparent);
                         }
                         index++;
                         Scanner.PdfSaveProgressValue = index / bitmapFrames.Count();
@@ -160,10 +160,6 @@ namespace TwainControl
                     using XGraphics gfx = XGraphics.FromPdfPage(page);
                     using XImage xImage = XImage.FromFile(imagefile);
                     XSize size = PageSizeConverter.ToSize(page.Size);
-                    if (ScannedText != null)
-                    {
-                        WritePdfTextContentXimage(xImage, ScannedText[i], page, gfx, XBrushes.Black);
-                    }
                     if (xImage.PixelWidth < xImage.PixelHeight)
                     {
                         gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
@@ -172,6 +168,10 @@ namespace TwainControl
                     {
                         page.Orientation = PageOrientation.Landscape;
                         gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
+                    }
+                    if (ScannedText != null)
+                    {
+                        WritePdfTextContentXimage(xImage, ScannedText[i], page, gfx, XBrushes.Transparent);
                     }
                     index++;
                     Scanner.PdfSaveProgressValue = index / imagefiles.Count();
@@ -189,7 +189,7 @@ namespace TwainControl
             return document;
         }
 
-        public static PdfDocument GeneratePdf(BitmapSource bitmapframe, ObservableCollection<OcrData> ScannedText, Format format, Paper paper, int jpegquality = 80, bool pdfonlytext = false,int dpi=120)
+        public static PdfDocument GeneratePdf(BitmapSource bitmapframe, ObservableCollection<OcrData> ScannedText, Format format, Paper paper, int jpegquality = 80, bool pdfonlytext = false, int dpi = 120)
         {
             try
             {
@@ -215,19 +215,6 @@ namespace TwainControl
                 }
                 using XImage xImage = XImage.FromStream(ms);
                 XSize size = PageSizeConverter.ToSize(page.Size);
-
-                if (ScannedText is not null)
-                {
-                    if (pdfonlytext)
-                    {
-                        WritePdfTextContent(bitmapframe, ScannedText, page, gfx, XBrushes.Black);
-                    }
-                    else
-                    {
-                        WritePdfTextContent(bitmapframe, ScannedText, page, gfx, XBrushes.Transparent);
-                    }
-                }
-
                 if (!pdfonlytext)
                 {
                     if (bitmapframe.PixelWidth < bitmapframe.PixelHeight)
@@ -240,7 +227,17 @@ namespace TwainControl
                         gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
                     }
                 }
-
+                if (ScannedText is not null)
+                {
+                    if (pdfonlytext)
+                    {
+                        WritePdfTextContent(bitmapframe, ScannedText, page, gfx, XBrushes.Black);
+                    }
+                    else
+                    {
+                        WritePdfTextContent(bitmapframe, ScannedText, page, gfx, XBrushes.Transparent);
+                    }
+                }
                 if (Scanner.PasswordProtect)
                 {
                     ApplyPdfSecurity(document);

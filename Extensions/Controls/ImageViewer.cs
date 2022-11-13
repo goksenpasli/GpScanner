@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -73,12 +72,11 @@ namespace Extensions
 
             Resize = new RelayCommand<object>(parameter =>
             {
-                Zoom = Orientation == FitImageOrientation.Width
-                    ? !double.IsNaN(Width) ? Width == 0 ? 1 : Width / Source.Width : ActualWidth == 0 ? 1 : ActualWidth / Source.Width
-                    : !double.IsNaN(Height) ? Height == 0 ? 1 : Height / Source.Height : ActualHeight == 0 ? 1 : ActualHeight / Source.Height;
+                if (Source is not null)
+                {
+                    Zoom = (Orientation != FitImageOrientation.Width) ? ActualHeight / Source.Height : ActualWidth / Source.Width;
+                }
             }, parameter => Source is not null);
-
-            OrijinalDosyaAç = new RelayCommand<object>(parameter => _ = Process.Start(parameter as string), parameter => !DesignerProperties.GetIsInDesignMode(new DependencyObject()) && File.Exists(parameter as string));
 
             Yazdır = new RelayCommand<object>(parameter =>
             {
@@ -199,8 +197,6 @@ namespace Extensions
             get { return (FitImageOrientation)GetValue(OrientationProperty); }
             set { SetValue(OrientationProperty, value); }
         }
-
-        public virtual ICommand OrijinalDosyaAç { get; set; }
 
         public Visibility OrijinalResimDosyaAçButtonVisibility
         {
@@ -540,7 +536,7 @@ namespace Extensions
         private static bool ZoomValidateCallBack(object value)
         {
             double zoom = (double)value;
-            return zoom > 0.0;
+            return zoom >= 0.0;
         }
 
         private void ImageViewer_PropertyChanged(object sender, PropertyChangedEventArgs e)
