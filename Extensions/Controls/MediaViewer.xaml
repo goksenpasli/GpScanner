@@ -263,7 +263,7 @@
         <Slider x:Name="Sld"
             Grid.Row="1"
             VerticalAlignment="Center"
-            Background="{StaticResource PlayerBackGround}"
+            Background="{StaticResource GroupBoxBackGround}"
             IsMoveToPointEnabled="True"
             Maximum="{Binding EndTimeSpan, Converter={StaticResource TimespanToSecondsConverter}, Mode=OneWay}"
             MouseLeave="Sld_MouseLeave" MouseMove="Sld_MouseMove" Thumb.DragCompleted="Sld_DragCompleted"
@@ -280,7 +280,7 @@
                     </Style.Triggers>
                 </Style>
             </ContentControl.Style>
-            <Grid Background="{StaticResource PlayerBackGround}">
+            <Grid Background="{StaticResource GroupBoxBackGround}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
@@ -382,7 +382,7 @@
                         Content="(" FontFamily="Webdings" FontSize="18"
                         Foreground="Blue">
                         <local:ContentToggleButton.OverContent>
-                            <StackPanel Background="{StaticResource PlayerBackGround}">
+                            <StackPanel Background="{StaticResource GroupBoxBackGround}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
@@ -423,7 +423,7 @@
                         Foreground="Blue">
                         <local:ContentToggleButton.OverContent>
                             <StackPanel>
-                                <StackPanel Background="{StaticResource PlayerBackGround}">
+                                <StackPanel Background="{StaticResource GroupBoxBackGround}">
                                     <Button x:Name="AddPlaylist"
                                         Click="AddPlaylist_Click" Content="ÇALMA LİSTESİ OLUŞTUR" FontFamily="Segoe UI" />
                                     <ToggleButton Content="BİTİNCE DİĞER VİDEOYA GEÇ" FontFamily="Segoe UI"
@@ -454,7 +454,7 @@
                     <local:ContentToggleButton Content="·" FontFamily="Webdings" FontSize="20"
                         Foreground="Blue" PlacementMode="Top">
                         <local:ContentToggleButton.OverContent>
-                            <StackPanel Background="{StaticResource PlayerBackGround}" Orientation="Horizontal">
+                            <StackPanel Background="{StaticResource GroupBoxBackGround}" Orientation="Horizontal">
                                 <UniformGrid Columns="2" Rows="2">
                                     <local:ContentToggleButton Content="n" FontFamily="Wingdings 3" Foreground="Blue">
                                         <local:ContentToggleButton.OverContent>

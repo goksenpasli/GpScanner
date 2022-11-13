@@ -7,7 +7,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:TwainControl"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:mozjpeg="clr-namespace:MozJpeg;assembly=MozJpeg"
     xmlns:properties="clr-namespace:TwainControl.Properties"
     x:Name="UserControl"
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
@@ -35,6 +34,35 @@
                 <GradientStop Offset="0.83" Color="Indigo" />
                 <GradientStop Offset="1.0" Color="Violet" />
             </LinearGradientBrush>
+            <Style TargetType="{x:Type GroupBox}">
+                <Setter Property="Background" Value="{StaticResource GroupBoxBackGround}" />
+                <Setter Property="BorderBrush" Value="Black" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type GroupBox}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Border Grid.Row="0"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="1" CornerRadius="3,3,0,0">
+                                    <ContentPresenter Margin="4"
+                                        ContentSource="Header" RecognizesAccessKey="True" />
+                                </Border>
+                                <Border Grid.Row="1"
+                                    Background="{StaticResource BorderBackground}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="1,0,1,1" CornerRadius="0,0,1,1">
+                                    <ContentPresenter Margin="1" />
+                                </Border>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -43,7 +71,7 @@
             <ColumnDefinition Width="3" />
             <ColumnDefinition Width="{Binding DocumentGridLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" d:Width="5*" />
         </Grid.ColumnDefinitions>
-        <GroupBox Grid.Column="0" Header="{local:Loc SRC}">
+        <GroupBox Grid.Column="0" Header="{local:Loc SRC}" Background="{StaticResource GroupBoxBackGround}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -70,7 +98,7 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <GroupBox Grid.Row="1" IsEnabled="{Binding Scanner.ArayüzEtkin}">
+                <GroupBox Background="{StaticResource GroupBoxBackGround}" Grid.Row="1" IsEnabled="{Binding Scanner.ArayüzEtkin}">
                     <GroupBox.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -429,7 +457,7 @@
                         </StackPanel>
                     </ScrollViewer>
                 </GroupBox>
-                <GroupBox Grid.Row="2">
+                <GroupBox Background="{StaticResource GroupBoxBackGround}" Grid.Row="2">
                     <GroupBox.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -456,58 +484,7 @@
                                             <TextBlock VerticalAlignment="Center" Text="{local:Loc PDFPROTECT}" />
                                         </StackPanel>
                                         <Extensions:ContentToggleButton.OverContent>
-                                            <GroupBox>
-                                                <GroupBox.Header>
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <CheckBox VerticalAlignment="Center"
-                                                            Content="{local:Loc ENCRYPT}"
-                                                            IsChecked="{Binding Scanner.PasswordProtect}" />
-                                                        <Image Width="32" Height="32">
-                                                            <Image.Source>
-                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                    <Binding Source="Shell32.dll" />
-                                                                    <Binding Source="77" />
-                                                                </MultiBinding>
-                                                            </Image.Source>
-                                                        </Image>
-                                                        <TextBlock VerticalAlignment="Center"
-                                                            FontSize="14"
-                                                            Text="{local:Loc PDFWARN}" />
-                                                    </StackPanel>
-                                                </GroupBox.Header>
-                                                <StackPanel>
-                                                    <HeaderedContentControl Header="{local:Loc PASSWORD}">
-                                                        <PasswordBox IsEnabled="{Binding Scanner.PasswordProtect}" PasswordChanged="PasswordBox_PasswordChanged" />
-                                                    </HeaderedContentControl>
-                                                    <StackPanel IsEnabled="{Binding Scanner.PdfPassword, Converter={StaticResource NullableToBooleanConverter}}">
-                                                        <CheckBox Content="{local:Loc ALLOWPRINT}" IsChecked="{Binding Scanner.AllowPrint}" />
-                                                        <CheckBox Content="{local:Loc ALLOWCOPY}" IsChecked="{Binding Scanner.AllowCopy}" />
-                                                        <CheckBox Content="{local:Loc ALLOWEDIT}" IsChecked="{Binding Scanner.AllowEdit}" />
-                                                    </StackPanel>
-                                                    <Separator />
-                                                    <HeaderedContentControl Header="{local:Loc JPEGQUALITY}">
-                                                        <Slider AutoToolTipPlacement="TopLeft" Maximum="95" Minimum="10"
-                                                            SmallChange="1"
-                                                            Style="{StaticResource Slider}"
-                                                            Value="{Binding Scanner.JpegQuality, UpdateSourceTrigger=PropertyChanged}" />
-                                                    </HeaderedContentControl>
-                                                    <CheckBox IsChecked="{Binding Scanner.ApplyPdfSaveOcr}">
-                                                        <CheckBox.Content>
-                                                            <TextBlock>
-                                                                <Run Text="{local:Loc FILE}" />
-                                                                <Run Text="{local:Loc OCR}" />
-                                                                <Run FontWeight="Bold" Foreground="Red"
-                                                                    Text="{local:Loc OCRTIME}" />
-                                                            </TextBlock>
-                                                        </CheckBox.Content>
-                                                    </CheckBox>
-                                                    <CheckBox IsChecked="{Binding Scanner.UseMozJpegEncoding}" IsEnabled="{Binding Source={x:Static mozjpeg:MozJpeg.MozJpegDllExists}}">
-                                                        <CheckBox.Content>
-                                                            <TextBlock Foreground="{StaticResource Colorfull}" Text="MOZJPEG" />
-                                                        </CheckBox.Content>
-                                                    </CheckBox>
-                                                </StackPanel>
-                                            </GroupBox>
+                                            <local:PdfSettings />
                                         </Extensions:ContentToggleButton.OverContent>
                                     </Extensions:ContentToggleButton>
                                     <Button Height="28.8"
@@ -717,9 +694,8 @@
                 </GroupBox>
                 <UniformGrid Grid.Row="3"
                     Columns="2" Rows="2">
-                    <Extensions:SplitButton HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
-                        Command="{Binding LoadImage}"
-                        PlacementMode="Top">
+                    <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                        Command="{Binding LoadImage}">
                         <Grid>
                             <ProgressBar Maximum="1" Value="{Binding PdfLoadProgressValue}" />
                             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
@@ -736,18 +712,7 @@
                                 <TextBlock VerticalAlignment="Center" Text="{local:Loc FILE}" />
                             </StackPanel>
                         </Grid>
-                        <Extensions:SplitButton.InternalContent>
-                            <GroupBox Header="{local:Loc RES}">
-                                <Slider Width="100"
-                                    AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="600"
-                                    Minimum="72" SmallChange="1"
-                                    Style="{StaticResource Slider}"
-                                    Ticks="72,96,120,150,200,300,450,600"
-                                    ToolTip="{local:Loc RES}"
-                                    Value="{Binding ImgLoadResolution, UpdateSourceTrigger=PropertyChanged}" />
-                            </GroupBox>
-                        </Extensions:SplitButton.InternalContent>
-                    </Extensions:SplitButton>
+                    </Button>
                     <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
                         Command="{Binding Seçilikaydet}">
                         <Grid>
@@ -818,7 +783,7 @@
             MouseDoubleClick="GridSplitter_MouseDoubleClick"
             MouseRightButtonDown="GridSplitter_MouseRightButtonDown"
             ToolTip="{local:Loc SPLITTERTOOLTIP}" />
-        <GroupBox Grid.Column="2"
+        <GroupBox Grid.Column="2" Background="{StaticResource GroupBoxBackGround}"
             Margin="1,0,0,0" Panel.ZIndex="-1"
             Header="{local:Loc DOCUMENT}">
             <Grid IsEnabled="{Binding SeçiliResim, Converter={StaticResource NullableToBooleanConverter}}">

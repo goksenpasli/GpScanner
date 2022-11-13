@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -103,7 +102,10 @@ namespace PdfViewer
 
             Resize = new RelayCommand<object>(delegate
             {
-                Zoom = (Orientation != 0) ? (double.IsNaN(Height) ? ((ActualHeight == 0.0) ? 1.0 : (ActualHeight / Source.Height)) : ((Height == 0.0) ? 1.0 : (Height / Source.Height))) : (double.IsNaN(Width) ? ((ActualWidth == 0.0) ? 1.0 : (ActualWidth / Source.Width)) : ((Width == 0.0) ? 1.0 : (Width / Source.Width)));
+                if (Source is not null)
+                {
+                    Zoom = (Orientation != FitImageOrientation.Width) ? ActualHeight / Source.Height : ActualWidth / Source.Width;
+                }
             }, (object parameter) => Source != null);
         }
 
@@ -335,12 +337,20 @@ namespace PdfViewer
                 {
                     return await Task.Run(() =>
                         {
-                            byte[] buffer = Pdf2Png.Convert(pdffilestream, page, dpi);
-                            BitmapImage bitmapImage = BitmapSourceFromByteArray(buffer);
+                            byte[] imagearray = Pdf2Png.Convert(pdffilestream, page, dpi);
+                            MemoryStream ms = new MemoryStream(imagearray);
+                            BitmapImage bitmap = new();
+                            bitmap.BeginInit();
+                            bitmap.CacheOption = BitmapCacheOption.None;
+                            bitmap.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.DelayCreation;
+                            bitmap.StreamSource = ms;
+                            bitmap.EndInit();
+                            bitmap.Freeze();
                             pdffilestream = null;
-                            buffer = null;
+                            imagearray = null;
+                            ms = null;
                             GC.Collect();
-                            return bitmapImage;
+                            return bitmap;
                         });
                 }
             }
@@ -470,9 +480,9 @@ namespace PdfViewer
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private ObservableCollection<ThumbClass> allPagesThumb;
-
         private readonly CancellationTokenSource cancellationToken = new();
+
+        private ObservableCollection<ThumbClass> allPagesThumb;
 
         private bool disposedValue;
 
@@ -494,27 +504,9 @@ namespace PdfViewer
 
         private int toplamSayfa;
 
-        private static BitmapImage BitmapSourceFromByteArray(byte[] buffer)
-        {
-            if (buffer != null)
-            {
-                BitmapImage bitmap = new();
-                using MemoryStream stream = new(buffer);
-                bitmap.BeginInit();
-                bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                bitmap.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
-                bitmap.StreamSource = stream;
-                bitmap.EndInit();
-                bitmap.Freeze();
-                buffer = null;
-                return bitmap;
-            }
-            return null;
-        }
-
         private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is PdfViewer pdfViewer && !DesignerProperties.GetIsInDesignMode(pdfViewer))
+            if (d is PdfViewer pdfViewer && pdfViewer.Source is not null && !DesignerProperties.GetIsInDesignMode(pdfViewer))
             {
                 pdfViewer.Resize.Execute(null);
             }
@@ -544,6 +536,7 @@ namespace PdfViewer
                         pdfViewer.Source = await ConvertToImgAsync(data, 1, dpi);
                         pdfViewer.ToplamSayfa = await PdfPageCountAsync(data);
                         pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
+                        pdfViewer.Resize.Execute(null);
                     }
                     catch (Exception)
                     {

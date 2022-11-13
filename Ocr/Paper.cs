@@ -1,5 +1,4 @@
-﻿using Extensions;
-
+﻿
 namespace Ocr
 {
     public class Paper : InpcBase

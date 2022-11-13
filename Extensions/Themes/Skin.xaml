@@ -58,7 +58,11 @@
     <SolidColorBrush x:Key="ScrollBar.Static.Thumb"
         ice:Freeze="True"
         Color="#CDCDCD" />
-    <LinearGradientBrush x:Key="PlayerBackGround" ice:Freeze="True" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0" EndPoint="0.5,1">
+    <LinearGradientBrush x:Key="BorderBackground" ice:Freeze="True" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop ice:Freeze="True" Offset="0" Color="#FFFDFEFF" />
+        <GradientStop ice:Freeze="True" Offset="1" Color="#FFC1D3EA" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="GroupBoxBackGround" ice:Freeze="True" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0" EndPoint="0.5,1">
         <GradientStop ice:Freeze="True" Offset="1" Color="#FE00B6E8" />
         <GradientStop ice:Freeze="True" Color="#FF48F3CA" />
     </LinearGradientBrush>

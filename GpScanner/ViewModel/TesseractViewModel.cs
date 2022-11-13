@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Input;
 using Extensions;
 using Ocr;
+using InpcBase = Extensions.InpcBase;
 
 namespace GpScanner.ViewModel
 {
