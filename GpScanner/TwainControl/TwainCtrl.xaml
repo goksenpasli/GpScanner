@@ -71,9 +71,7 @@
             <ColumnDefinition Width="3" />
             <ColumnDefinition Width="{Binding DocumentGridLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" d:Width="5*" />
         </Grid.ColumnDefinitions>
-        <GroupBox Grid.Column="0"
-            Background="{StaticResource GroupBoxBackGround}"
-            Header="{local:Loc SRC}">
+        <GroupBox Grid.Column="0" Header="{local:Loc SRC}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -100,9 +98,7 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <GroupBox Grid.Row="1"
-                    Background="{StaticResource GroupBoxBackGround}"
-                    IsEnabled="{Binding Scanner.ArayüzEtkin}">
+                <GroupBox Grid.Row="1" IsEnabled="{Binding Scanner.ArayüzEtkin}">
                     <GroupBox.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -461,7 +457,7 @@
                         </StackPanel>
                     </ScrollViewer>
                 </GroupBox>
-                <GroupBox Grid.Row="2" Background="{StaticResource GroupBoxBackGround}">
+                <GroupBox Grid.Row="2">
                     <GroupBox.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
