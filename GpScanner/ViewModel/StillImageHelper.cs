@@ -78,7 +78,7 @@ namespace GpScanner.ViewModel
         private const string REGKEY_STI_APP = @"SOFTWARE\Microsoft\Windows\CurrentVersion\StillImage\Registered Applications";
 
         private const string REGKEY_STI_EVENT_GPSCANNER = @"SYSTEM\CurrentControlSet\Control\StillImage\Events\STIProxyEvent\{143762b8-772a-47af-bae6-08e0a1d0ca89}";
-        
+
         private const string REGKEY_STI_EVENT_SCANBUTTON = @"SYSTEM\CurrentControlSet\Control\StillImage\Events\ScanButton\{143762b8-772a-47af-bae6-08e0a1d0ca89}";
     }
 }

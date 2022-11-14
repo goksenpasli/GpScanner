@@ -83,9 +83,10 @@
                 </ComboBox>
                 <UniformGrid Grid.Row="2"
                     Columns="2" Rows="4">
-                    <CheckBox VerticalAlignment="Center"
+                    <CheckBox Width="238"
+                        HorizontalAlignment="Right" VerticalAlignment="Center"
                         Content="{twainctrl:Loc QRDETECT}"
-                        IsChecked="{Binding DetectBarCode}" HorizontalAlignment="Right" Width="238" />
+                        IsChecked="{Binding DetectBarCode}" />
                     <CheckBox VerticalAlignment="Center"
                         Content="{twainctrl:Loc SEPERATOR}"
                         IsChecked="{Binding DetectPageSeperator}"
