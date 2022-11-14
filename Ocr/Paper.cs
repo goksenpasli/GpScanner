@@ -1,4 +1,6 @@
-﻿namespace Ocr
+﻿
+
+namespace Ocr
 {
     public class Paper : InpcBase
     {
