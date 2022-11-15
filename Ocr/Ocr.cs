@@ -13,7 +13,7 @@ namespace Ocr
     {
         public static CancellationTokenSource ocrcancellationToken;
 
-        public static ObservableCollection<OcrData> GetOcrData(this byte[] dosya, string lang)
+        private static ObservableCollection<OcrData> GetOcrData(this byte[] dosya, string lang)
         {
             try
             {
@@ -45,7 +45,7 @@ namespace Ocr
             }
         }
 
-        public static ObservableCollection<OcrData> GetOcrData(this string dosya, string lang)
+        private static ObservableCollection<OcrData> GetOcrData(this string dosya, string lang)
         {
             try
             {
@@ -78,6 +78,21 @@ namespace Ocr
         }
 
         public static async Task<ObservableCollection<OcrData>> OcrAsyc(this byte[] dosya, string lang)
+        {
+            if (string.IsNullOrWhiteSpace(lang))
+            {
+                _ = MessageBox.Show("Tesseract Dil Seçimini Kontrol Edin.", Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+                return null;
+            }
+            if (Directory.Exists(TesseractPath))
+            {
+                return await Task.Run(() => dosya.GetOcrData(lang), ocrcancellationToken.Token);
+            }
+            _ = MessageBox.Show("Tesseract Engine Klasörünü Kontrol Edin.", Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+            return null;
+        }
+
+        public static async Task<ObservableCollection<OcrData>> OcrAsyc(this string dosya, string lang)
         {
             if (string.IsNullOrWhiteSpace(lang))
             {

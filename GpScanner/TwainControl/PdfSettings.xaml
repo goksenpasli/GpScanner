@@ -64,7 +64,7 @@
                 <Slider AutoToolTipPlacement="TopLeft" Maximum="95" Minimum="10"
                     SmallChange="1"
                     Style="{StaticResource Slider}"
-                    Value="{Binding Scanner.JpegQuality, UpdateSourceTrigger=PropertyChanged}" />
+                    Value="{Binding Path=JpegQuality, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
             </HeaderedContentControl>
             <HeaderedContentControl Header="{local:Loc RES}">
                 <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="600"
@@ -72,7 +72,7 @@
                     Style="{StaticResource Slider}"
                     Ticks="72,96,120,150,200,300,450,600"
                     ToolTip="{local:Loc RES}"
-                    Value="{Binding ImgLoadResolution, UpdateSourceTrigger=PropertyChanged}" />
+                    Value="{Binding Path=ImgLoadResolution, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
             </HeaderedContentControl>
             <Separator />
             <CheckBox IsChecked="{Binding Scanner.ApplyPdfSaveOcr}">
@@ -87,7 +87,9 @@
             </CheckBox>
             <CheckBox IsChecked="{Binding Scanner.UseMozJpegEncoding}" IsEnabled="{Binding Source={x:Static mozjpeg:MozJpeg.MozJpegDllExists}}">
                 <CheckBox.Content>
-                    <TextBlock Foreground="{StaticResource Colorfull}" Text="MOZJPEG" />
+                    <TextBlock FontWeight="Bold"
+                        Foreground="{StaticResource Colorfull}"
+                        Text="MOZJPEG" />
                 </CheckBox.Content>
             </CheckBox>
         </StackPanel>

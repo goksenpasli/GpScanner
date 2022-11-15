@@ -477,11 +477,11 @@
                                                 <Image.Source>
                                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                         <Binding Source="Shell32.dll" />
-                                                        <Binding Source="47" />
+                                                        <Binding Source="21" />
                                                     </MultiBinding>
                                                 </Image.Source>
                                             </Image>
-                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc PDFPROTECT}" />
+                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc SETTİNGS}" />
                                         </StackPanel>
                                         <Extensions:ContentToggleButton.OverContent>
                                             <local:PdfSettings />
@@ -509,14 +509,21 @@
                                         Background="Yellow"
                                         Command="{Binding SeçiliListeTemizle}">
                                         <StackPanel Orientation="Horizontal">
-                                            <Image Width="24" Height="24">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="131" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
+                                            <Canvas Width="24" Height="24">
+                                                <Image Width="24" Height="24">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="131" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                                <TextBlock Canvas.Top="4"
+                                                    Width="24"
+                                                    d:Text="0" FontWeight="Bold"
+                                                    Text="{Binding Scanner.SeçiliResimSayısı}"
+                                                    TextAlignment="Center" />
+                                            </Canvas>
                                             <TextBlock VerticalAlignment="Center" Text="{local:Loc CLEARLIST}" />
                                         </StackPanel>
                                     </Button>
@@ -524,14 +531,21 @@
                                         Background="Red"
                                         Command="{Binding ListeTemizle}">
                                         <StackPanel Orientation="Horizontal">
-                                            <Image Width="24" Height="24">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="131" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
+                                            <Canvas Width="24" Height="24">
+                                                <Image Width="24" Height="24">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="131" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                                <TextBlock Canvas.Top="4"
+                                                    Width="24"
+                                                    d:Text="0" FontWeight="Bold"
+                                                    Text="{Binding Scanner.Resimler.Count}"
+                                                    TextAlignment="Center" />
+                                            </Canvas>
                                             <TextBlock VerticalAlignment="Center" Text="{local:Loc CLEARLIST}" />
                                         </StackPanel>
                                     </Button>

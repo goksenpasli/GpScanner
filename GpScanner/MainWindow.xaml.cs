@@ -81,14 +81,13 @@ namespace GpScanner
         private void MW_ContentRendered(object sender, EventArgs e)
         {
             WindowExtensions.SystemMenu(this);
-            if (Environment.GetCommandLineArgs().Length > 0)
+            if (Environment.GetCommandLineArgs().Length > 1)
             {
-                int decodeheight = (int)(TwainCtrl.SelectedPaper.Height / TwainCtrl.Inch * TwainCtrl.ImgLoadResolution);
-                TwainCtrl.AddFiles(Environment.GetCommandLineArgs(), decodeheight);
+                TwainCtrl.AddFiles(Environment.GetCommandLineArgs(), TwainCtrl.DecodeHeight);
             }
             if (StillImageHelper.ShouldScan)
             {
-                TwainCtrl.ScanImage.Execute(null);
+                TwainCtrl.FastScanImage.Execute(null);
             }
         }
 

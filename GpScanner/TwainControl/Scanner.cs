@@ -360,20 +360,6 @@ namespace TwainControl
             }
         }
 
-        public int JpegQuality
-        {
-            get => jpegQuality;
-
-            set
-            {
-                if (jpegQuality != value)
-                {
-                    jpegQuality = value;
-                    OnPropertyChanged(nameof(JpegQuality));
-                }
-            }
-        }
-
         public string LocalizedPath
         {
             get => ExtensionMethods.GetDisplayName(Settings.Default.AutoFolder);
@@ -793,8 +779,6 @@ namespace TwainControl
         private int eşik = 160;
 
         private string fileName = "Tarama";
-
-        private int jpegQuality = 80;
 
         private string localizedPath;
 

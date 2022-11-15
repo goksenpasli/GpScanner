@@ -270,7 +270,7 @@ namespace GpScanner.ViewModel
                     var paper = ToolBox.Paper;
                     List<ObservableCollection<OcrData>> scannedtext = null;
                     List<ScannedImage> scannedimages = new List<ScannedImage>();
-                    Filesavetask = Task.Run(() =>
+                    Filesavetask = Task.Run(async () =>
                     {
                         if (scanner?.ApplyPdfSaveOcr == true)
                         {
@@ -279,7 +279,7 @@ namespace GpScanner.ViewModel
                             ProgressBarForegroundBrush = Brushes.Blue;
                             foreach (var image in files)
                             {
-                                scannedtext.Add(image.GetOcrData(scanner.SelectedTtsLanguage));
+                                scannedtext.Add(await image.OcrAsyc(scanner.SelectedTtsLanguage));
                                 index++;
                                 scanner.PdfSaveProgressValue = index / filescount;
                             }
@@ -765,7 +765,7 @@ namespace GpScanner.ViewModel
 
         public ICommand SetBatchFolder { get; }
 
-        public int[] SettingsPagePdfDpiList { get; } = new int[] { 12, 24, 36, 72, 96, 120, 150, 200, 300, 400, 500, 600 };
+        public int[] SettingsPagePdfDpiList { get; } = PdfViewer.PdfViewer.DpiList;
 
         public ICommand StartBatch { get; }
 

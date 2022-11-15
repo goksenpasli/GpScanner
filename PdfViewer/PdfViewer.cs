@@ -145,7 +145,7 @@ namespace PdfViewer
             set => SetValue(DpiProperty, value);
         }
 
-        public int[] DpiList { get; } = new int[] { 12, 24, 36, 72, 96, 120, 150, 200, 300, 400, 500, 600 };
+        public static int[] DpiList { get; } = new int[] { 12, 24, 36, 48, 72, 96, 120, 150, 200, 300, 400, 500, 600 };
 
         public Visibility DpiListVisibility
         {
