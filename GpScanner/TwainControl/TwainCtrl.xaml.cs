@@ -1262,14 +1262,14 @@ namespace TwainControl
         {
             if (e.OriginalSource is System.Windows.Controls.Image img && img.Parent is ScrollViewer scrollviewer)
             {
-                System.Windows.Point mousemovecoord = e.GetPosition(scrollviewer);
-
                 if (isRightMouseDown)
                 {
+                    System.Windows.Point mousemovecoord;
+                    mousemovecoord = (img.DesiredSize.Width < img.ActualWidth) ? e.GetPosition(img) : e.GetPosition(scrollviewer);
                     mousemovecoord.X += scrollviewer.HorizontalOffset;
                     mousemovecoord.Y += scrollviewer.VerticalOffset;
-                    double widthmultiply = SeçiliResim.Resim.PixelWidth / (double)((scrollviewer.ExtentWidth < scrollviewer.ViewportWidth) ? scrollviewer.ViewportWidth : scrollviewer.ExtentWidth);
-                    double heightmultiply = SeçiliResim.Resim.PixelHeight / (double)((scrollviewer.ExtentHeight < scrollviewer.ViewportHeight) ? scrollviewer.ViewportHeight : scrollviewer.ExtentHeight);
+                    double widthmultiply = SeçiliResim.Resim.PixelWidth / (double)((img.DesiredSize.Width < img.ActualWidth) ? img.ActualWidth : img.DesiredSize.Width);
+                    double heightmultiply = SeçiliResim.Resim.PixelHeight / (double)((img.DesiredSize.Height < img.ActualHeight) ? img.ActualHeight : img.DesiredSize.Height);
 
                     CroppedBitmap croppedbitmap = new(SeçiliResim.Resim, new Int32Rect((int)(mousemovecoord.X * widthmultiply), (int)(mousemovecoord.Y * heightmultiply), 1, 1));
                     byte[] pixels = new byte[4];
@@ -1285,6 +1285,7 @@ namespace TwainControl
 
                 if (isMouseDown)
                 {
+                    System.Windows.Point mousemovecoord = e.GetPosition(scrollviewer);
                     SolidColorBrush fill = new()
                     {
                         Color = System.Windows.Media.Color.FromArgb(80, 0, 255, 0)
