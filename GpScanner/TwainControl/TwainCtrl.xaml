@@ -471,7 +471,7 @@
                                 Value="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}" />
                             <DockPanel Grid.Column="1">
                                 <StackPanel DockPanel.Dock="Left">
-                                    <Extensions:ContentToggleButton Height="28.8">
+                                    <Extensions:ContentToggleButton Height="35">
                                         <StackPanel Orientation="Horizontal">
                                             <Image Width="24" Height="24">
                                                 <Image.Source>
@@ -487,7 +487,7 @@
                                             <local:PdfSettings />
                                         </Extensions:ContentToggleButton.OverContent>
                                     </Extensions:ContentToggleButton>
-                                    <Button Height="28.8"
+                                    <Button Height="35"
                                         AllowDrop="True"
                                         Command="{Binding PdfBirleştir}"
                                         Drop="PdfMergeButton_Drop">
@@ -505,7 +505,7 @@
                                     </Button>
                                 </StackPanel>
                                 <StackPanel DockPanel.Dock="Right">
-                                    <Button Height="28.8"
+                                    <Button Height="35"
                                         Background="Yellow"
                                         Command="{Binding SeçiliListeTemizle}">
                                         <StackPanel Orientation="Horizontal">
@@ -527,7 +527,7 @@
                                             <TextBlock VerticalAlignment="Center" Text="{local:Loc CLEARLIST}" />
                                         </StackPanel>
                                     </Button>
-                                    <Button Height="28.8"
+                                    <Button Height="35"
                                         Background="Red"
                                         Command="{Binding ListeTemizle}">
                                         <StackPanel Orientation="Horizontal">
@@ -596,6 +596,10 @@
                                             </StackPanel>
                                         </Button.Content>
                                     </Button>
+                                    <Extensions:NumericUpDownControl VerticalAlignment="Center"
+                                        LargeChange="1" Maximum="1" Minimum="-1"
+                                        NumericUpdownTextBoxVisibility="Collapsed" Orientation="Horizontal" SmallChange="1"
+                                        Value="{Binding AllImageRotationAngle}" />
                                 </StackPanel>
                             </DockPanel>
                         </Grid>
@@ -677,6 +681,10 @@
                                                         </Image>
                                                     </Hyperlink>
                                                 </TextBlock>
+                                                <Extensions:NumericUpDownControl VerticalAlignment="Center"
+                                                    LargeChange="1" Maximum="1" Minimum="-1"
+                                                    NumericUpdownTextBoxVisibility="Collapsed" Orientation="Horizontal" SmallChange="1"
+                                                    Value="{Binding RotationAngle}" />
                                                 <ToggleButton Width="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}"
                                                     Height="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}"
                                                     VerticalAlignment="Center" VerticalContentAlignment="Center"

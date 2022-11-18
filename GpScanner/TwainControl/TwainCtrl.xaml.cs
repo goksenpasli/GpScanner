@@ -1062,6 +1062,7 @@ namespace TwainControl
         private GridLength twainGuiControlLength = new(3, GridUnitType.Star);
 
         private double width;
+        private double allImageRotationAngle;
 
         private static string EypMainPdfExtract(string eypfilepath)
         {
@@ -1512,6 +1513,19 @@ namespace TwainControl
             }
         }
 
+        public double AllImageRotationAngle
+        {
+            get => allImageRotationAngle;
+            set
+            {
+                if (allImageRotationAngle != value)
+                {
+                    allImageRotationAngle = value;
+                    OnPropertyChanged(nameof(AllImageRotationAngle));
+                }
+            }
+        }
+
         private void Twain_ScanningComplete(object sender, ScanningCompleteEventArgs e)
         {
             Scanner.ArayüzEtkin = true;
@@ -1551,6 +1565,14 @@ namespace TwainControl
             if (e.PropertyName is "SelectedPaper" && SelectedPaper is not null)
             {
                 DecodeHeight = (int)(SelectedPaper.Height / Inch * Settings.Default.ImgLoadResolution);
+            }
+            if (e.PropertyName is "AllImageRotationAngle" && AllImageRotationAngle != 0)
+            {
+                foreach (var image in Scanner.Resimler)
+                {
+                    image.Resim = image.Resim.RotateImage(AllImageRotationAngle);
+                }
+                AllImageRotationAngle = 0;
             }
         }
 

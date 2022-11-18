@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
-                    xmlns:local="clr-namespace:PdfViewer">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
+    xmlns:local="clr-namespace:PdfViewer">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Extensions;component/Themes/Skin.xaml" />
     </ResourceDictionary.MergedDictionaries>
@@ -66,7 +66,7 @@
                             Maximum="{Binding Pages.Count, RelativeSource={RelativeSource TemplatedParent}}"
                             Minimum="1" Orientation="Vertical" SmallChange="1"
                             ViewportSize="1"
-                            Value="{Binding Sayfa, Delay=25, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
+                            Value="{Binding Sayfa, Delay=15, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
                         <ContentControl x:Name="Cnt"
                             Grid.Row="1" Grid.ColumnSpan="2"
                             Visibility="{Binding ToolBarVisibility, RelativeSource={RelativeSource TemplatedParent}}">

@@ -108,7 +108,9 @@ namespace TwainControl
                 double heightmultiply = bitmapFrame.PixelHeight / (double)((scrollviewer.ExtentHeight < scrollviewer.ViewportHeight) ? scrollviewer.ViewportHeight : scrollviewer.ExtentHeight);
 
                 Int32Rect ınt32Rect = new((int)(coordx * widthmultiply), (int)(coordy * heightmultiply), (int)(selectionwidth * widthmultiply), (int)(selectionheight * heightmultiply));
-                return new CroppedBitmap(bitmapFrame, ınt32Rect).ToTiffJpegByteArray(Format.Png);
+                var cb = new CroppedBitmap(bitmapFrame, ınt32Rect);
+                bitmapFrame = null;
+                return cb.ToTiffJpegByteArray(Format.Png);
             }
             catch (Exception)
             {
@@ -292,18 +294,38 @@ namespace TwainControl
             return target;
         }
 
+        public static BitmapFrame RotateImage(this BitmapFrame bitmapFrame, double angle)
+        {
+            TransformedBitmap transformedBitmap = new((BitmapSource)bitmapFrame, new RotateTransform(angle * 90));
+            transformedBitmap.Freeze();
+            var bitmapframe = BitmapFrame.Create(transformedBitmap, transformedBitmap.Resize(0.1));
+            bitmapframe.Freeze();
+            transformedBitmap = null;
+            return bitmapframe;
+        }
+
         public static RenderTargetBitmap RotateImage(this ImageSource Source, double angle)
         {
-            DrawingVisual dv = new();
-            using (DrawingContext dc = dv.RenderOpen())
+            try
             {
-                dc.PushTransform(new RotateTransform(angle));
-                dc.DrawImage(Source, new Rect(0, 0, ((BitmapSource)Source).PixelWidth, ((BitmapSource)Source).PixelHeight));
+                DrawingVisual dv = new();
+                using (DrawingContext dc = dv.RenderOpen())
+                {
+                    dc.PushTransform(new RotateTransform(angle));
+                    dc.DrawImage(Source, new Rect(0, 0, ((BitmapSource)Source).PixelWidth, ((BitmapSource)Source).PixelHeight));
+                }
+                RenderTargetBitmap rtb = new(((BitmapSource)Source).PixelWidth, ((BitmapSource)Source).PixelHeight, 96, 96, PixelFormats.Default);
+                rtb.Render(dv);
+                rtb.Freeze();
+                Source = null;
+                dv = null;
+                return rtb;
             }
-            RenderTargetBitmap rtb = new(((BitmapSource)Source).PixelWidth, ((BitmapSource)Source).PixelHeight, 96, 96, PixelFormats.Default);
-            rtb.Render(dv);
-            rtb.Freeze();
-            return rtb;
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return null;
+            }
         }
 
         public static IEnumerable<int> SteppedRange(int fromInclusive, int toExclusive, int step)

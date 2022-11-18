@@ -85,8 +85,9 @@ namespace GpScanner
             {
                 TwainCtrl.AddFiles(Environment.GetCommandLineArgs(), TwainCtrl.DecodeHeight);
             }
-            if (StillImageHelper.ShouldScan)
+            if (StillImageHelper.ShouldScan && DataContext is GpScannerViewModel ViewModel)
             {
+                ViewModel.Fold = 0;
                 TwainCtrl.FastScanImage.Execute(null);
             }
         }
