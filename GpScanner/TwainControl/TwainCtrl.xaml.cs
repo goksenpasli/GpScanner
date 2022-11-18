@@ -435,6 +435,20 @@ namespace TwainControl
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public double AllImageRotationAngle
+        {
+            get => allImageRotationAngle;
+
+            set
+            {
+                if (allImageRotationAngle != value)
+                {
+                    allImageRotationAngle = value;
+                    OnPropertyChanged(nameof(AllImageRotationAngle));
+                }
+            }
+        }
+
         public ICommand ApplyColorChange { get; }
 
         public ObservableCollection<Chart> BlueChart
@@ -1015,6 +1029,8 @@ namespace TwainControl
 
         private ScanSettings _settings;
 
+        private double allImageRotationAngle;
+
         private ObservableCollection<Chart> blueChart;
 
         private CroppedBitmap croppedOcrBitmap;
@@ -1062,7 +1078,6 @@ namespace TwainControl
         private GridLength twainGuiControlLength = new(3, GridUnitType.Star);
 
         private double width;
-        private double allImageRotationAngle;
 
         private static string EypMainPdfExtract(string eypfilepath)
         {
@@ -1510,19 +1525,6 @@ namespace TwainControl
             if (e.PropertyName is "ApplyDataBaseOcr" && Scanner.ApplyDataBaseOcr)
             {
                 _ = MessageBox.Show(Translation.GetResStringValue("OCRTIME"), Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Exclamation);
-            }
-        }
-
-        public double AllImageRotationAngle
-        {
-            get => allImageRotationAngle;
-            set
-            {
-                if (allImageRotationAngle != value)
-                {
-                    allImageRotationAngle = value;
-                    OnPropertyChanged(nameof(AllImageRotationAngle));
-                }
             }
         }
 
