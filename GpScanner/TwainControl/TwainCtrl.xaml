@@ -313,7 +313,9 @@
                                         </StackPanel>
                                     </CheckBox.Content>
                                 </CheckBox>
-                                <CheckBox Grid.Row="2" IsChecked="{Binding Scanner.DetectEmptyPage}">
+                                <CheckBox Grid.Row="2"
+                                    IsChecked="{Binding Scanner.DetectEmptyPage}"
+                                    IsEnabled="{Binding Adf, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                                     <CheckBox.Content>
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock VerticalAlignment="Center" Text="{local:Loc EMPTYPAGE}" />
@@ -807,8 +809,22 @@
             ToolTip="{local:Loc SPLITTERTOOLTIP}" />
         <GroupBox Grid.Column="2"
             Margin="1,0,0,0" Panel.ZIndex="-1"
-            Background="{StaticResource GroupBoxBackGround}"
-            Header="{local:Loc DOCUMENT}">
+            Background="{StaticResource GroupBoxBackGround}">
+            <GroupBox.Header>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" Text="{local:Loc DOCUMENT}" />
+                    <Button Command="{Binding AddFromClipBoard}">
+                        <Image Width="16" Height="16">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                    <Binding Source="Shell32.dll" />
+                                    <Binding Source="54" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                    </Button>
+                </StackPanel>
+            </GroupBox.Header>
             <Grid IsEnabled="{Binding SeçiliResim, Converter={StaticResource NullableToBooleanConverter}}">
                 <DockPanel>
                     <Slider Margin="20,0,20,0"

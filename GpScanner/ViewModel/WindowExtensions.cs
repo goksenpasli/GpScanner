@@ -20,7 +20,7 @@ namespace GpScanner.ViewModel
                     Owner = Application.Current.MainWindow,
                     DataContext = Application.Current.MainWindow.DataContext
                 };
-                settingswindow.ShowDialog();
+                _ = settingswindow.ShowDialog();
             });
         }
 
@@ -30,14 +30,9 @@ namespace GpScanner.ViewModel
         {
             IntPtr hwnd = new WindowInteropHelper(window).Handle;
             IntPtr sysMenu = GetSystemMenu(hwnd, false);
-            if (disable)
-            {
-                _ = EnableMenuItem(sysMenu, SC_CLOSE, MF_BYCOMMAND | MF_GRAYED);
-            }
-            else
-            {
-                _ = EnableMenuItem(sysMenu, SC_CLOSE, MF_BYCOMMAND | MF_ENABLED);
-            }
+            _ = disable
+                ? EnableMenuItem(sysMenu, SC_CLOSE, MF_BYCOMMAND | MF_GRAYED)
+                : EnableMenuItem(sysMenu, SC_CLOSE, MF_BYCOMMAND | MF_ENABLED);
         }
 
         public static void SystemMenu(this MainWindow form)

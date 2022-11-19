@@ -251,8 +251,10 @@ namespace GpScanner.ViewModel
 
             SetBatchFolder = new RelayCommand<object>(parameter =>
             {
-                System.Windows.Forms.FolderBrowserDialog dialog = new();
-                dialog.Description = $"{Translation.GetResStringValue("GRAPH")} {Translation.GetResStringValue("FILE")}";
+                System.Windows.Forms.FolderBrowserDialog dialog = new()
+                {
+                    Description = $"{Translation.GetResStringValue("GRAPH")} {Translation.GetResStringValue("FILE")}"
+                };
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     BatchFolder = dialog.SelectedPath;
@@ -261,15 +263,15 @@ namespace GpScanner.ViewModel
 
             StartBatch = new RelayCommand<object>(parameter =>
             {
-                var files = Win32FileScanner.EnumerateFilepaths(BatchFolder, -1).Where(s => (new string[] { ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp" }).Any(ext => ext == Path.GetExtension(s).ToLower())).ToList();
+                List<string> files = Win32FileScanner.EnumerateFilepaths(BatchFolder, -1).Where(s => (new string[] { ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp" }).Any(ext => ext == Path.GetExtension(s).ToLower())).ToList();
                 double index = 0;
                 int filescount = files.Count;
-                if (files.Any())
+                if (files.Count > 0)
                 {
                     Scanner scanner = ToolBox.Scanner;
-                    var paper = ToolBox.Paper;
+                    Paper paper = ToolBox.Paper;
                     List<ObservableCollection<OcrData>> scannedtext = null;
-                    List<ScannedImage> scannedimages = new List<ScannedImage>();
+                    List<ScannedImage> scannedimages = new();
                     Filesavetask = Task.Run(async () =>
                     {
                         if (scanner?.ApplyPdfSaveOcr == true)
@@ -277,7 +279,7 @@ namespace GpScanner.ViewModel
                             Ocr.Ocr.ocrcancellationToken = new CancellationTokenSource();
                             scannedtext = new List<ObservableCollection<OcrData>>();
                             ProgressBarForegroundBrush = Brushes.Blue;
-                            foreach (var image in files)
+                            foreach (string image in files)
                             {
                                 scannedtext.Add(await image.OcrAsyc(scanner.SelectedTtsLanguage));
                                 index++;
@@ -285,7 +287,7 @@ namespace GpScanner.ViewModel
                             }
                         }
                         ProgressBarForegroundBrush = Brushes.Green;
-                        string filename = $"{Twainsettings.Settings.Default.AutoFolder}\\{Guid.NewGuid().ToString()}.pdf";
+                        string filename = $"{Twainsettings.Settings.Default.AutoFolder}\\{Guid.NewGuid()}.pdf";
                         PdfGeneration.GeneratePdf(files, Format.Jpg, paper, scannedtext).Save(filename);
                         scannedimages = null;
                         GC.Collect();
@@ -514,7 +516,7 @@ namespace GpScanner.ViewModel
 
         public bool ListBoxBorderAnimation
         {
-            get { return listBoxBorderAnimation; }
+            get => listBoxBorderAnimation;
 
             set
             {

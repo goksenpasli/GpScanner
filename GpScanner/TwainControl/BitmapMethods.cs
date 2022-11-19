@@ -108,7 +108,7 @@ namespace TwainControl
                 double heightmultiply = bitmapFrame.PixelHeight / (double)((scrollviewer.ExtentHeight < scrollviewer.ViewportHeight) ? scrollviewer.ViewportHeight : scrollviewer.ExtentHeight);
 
                 Int32Rect ınt32Rect = new((int)(coordx * widthmultiply), (int)(coordy * heightmultiply), (int)(selectionwidth * widthmultiply), (int)(selectionheight * heightmultiply));
-                var cb = new CroppedBitmap(bitmapFrame, ınt32Rect);
+                CroppedBitmap cb = new(bitmapFrame, ınt32Rect);
                 bitmapFrame = null;
                 return cb.ToTiffJpegByteArray(Format.Png);
             }
@@ -214,7 +214,6 @@ namespace TwainControl
                 bitmapFrame = BitmapFrame.Create(image, image.PixelWidth < image.PixelHeight ? image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Width * paper.Height) : image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Height * paper.Width));
             }
             bitmapFrame.Freeze();
-            ms = null;
             return bitmapFrame;
         }
 
@@ -296,11 +295,10 @@ namespace TwainControl
 
         public static BitmapFrame RotateImage(this BitmapFrame bitmapFrame, double angle)
         {
-            TransformedBitmap transformedBitmap = new((BitmapSource)bitmapFrame, new RotateTransform(angle * 90));
+            TransformedBitmap transformedBitmap = new(bitmapFrame, new RotateTransform(angle * 90));
             transformedBitmap.Freeze();
-            var bitmapframe = BitmapFrame.Create(transformedBitmap, transformedBitmap.Resize(0.1));
+            BitmapFrame bitmapframe = BitmapFrame.Create(transformedBitmap, transformedBitmap.Resize(0.1));
             bitmapframe.Freeze();
-            transformedBitmap = null;
             return bitmapframe;
         }
 
@@ -323,7 +321,7 @@ namespace TwainControl
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                _ = MessageBox.Show(ex.Message);
                 return null;
             }
         }

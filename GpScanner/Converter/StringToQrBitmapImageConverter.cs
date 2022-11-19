@@ -10,11 +10,9 @@ namespace GpScanner.Converter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is string data && !string.IsNullOrWhiteSpace(data))
-            {
-                return GpScannerViewModel.GenerateQr(data);
-            }
-            return GpScannerViewModel.GenerateQr("Goksen");
+            return value is string data && !string.IsNullOrWhiteSpace(data)
+                ? GpScannerViewModel.GenerateQr(data)
+                : GpScannerViewModel.GenerateQr("Goksen");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -36,7 +36,7 @@ namespace GpScanner.ViewModel
             return ScanRecursiveFilepath(Path.GetFullPath(path), maxDepth, 0);
         }
 
-        private static readonly IntPtr invalidHandle = new IntPtr(-1);
+        private static readonly IntPtr invalidHandle = new(-1);
 
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern bool FindClose(IntPtr hFindFile);
@@ -49,7 +49,7 @@ namespace GpScanner.ViewModel
 
         private static long GetFilesize(Win32FindData findData)
         {
-            return findData.nFileSizeLow + (long)findData.nFileSizeHigh * uint.MaxValue;
+            return findData.nFileSizeLow + ((long)findData.nFileSizeHigh * uint.MaxValue);
         }
 
         private static bool IsValidFile(Win32FindData findData)
@@ -71,7 +71,9 @@ namespace GpScanner.ViewModel
                     {
                         // Skip symlink (and junction?)
                         if (findData.dwFileAttributes.HasFlag(FileAttributes.ReparsePoint | FileAttributes.Directory) || !IsValidFile(findData))
+                        {
                             continue;
+                        }
 
                         string fullPath = Path.Combine(path, findData.cFileName);
 
@@ -82,12 +84,16 @@ namespace GpScanner.ViewModel
                         if (findData.dwFileAttributes.HasFlag(FileAttributes.Directory))
                         { // Directory
                             if (maxDepth >= 0 && depth + 1 > maxDepth)
+                            {
                                 continue;
+                            }
 
-                            DirectoryStats stats = new DirectoryStats();
+                            DirectoryStats stats = new();
 
                             foreach (FileResult fileResult in ScanRecursive(fullPath, maxDepth, depth + 1, stats))
+                            {
                                 yield return fileResult;
+                            }
 
                             parent.AddDirectory(ref stats);
 
@@ -111,7 +117,7 @@ namespace GpScanner.ViewModel
             }
             finally
             {
-                FindClose(handle);
+                _ = FindClose(handle);
             }
         }
 
@@ -129,17 +135,23 @@ namespace GpScanner.ViewModel
                     {
                         // Skip symlink (and junction?)
                         if (findData.dwFileAttributes.HasFlag(FileAttributes.ReparsePoint | FileAttributes.Directory) || !IsValidFile(findData))
+                        {
                             continue;
+                        }
 
                         string fullPath = Path.Combine(path, findData.cFileName);
 
                         if (findData.dwFileAttributes.HasFlag(FileAttributes.Directory))
                         { // Directory
                             if (maxDepth >= 0 && depth + 1 > maxDepth)
+                            {
                                 continue;
+                            }
 
                             foreach (string filePath in ScanRecursiveFilepath(fullPath, maxDepth, depth + 1))
+                            {
                                 yield return filePath;
+                            }
 
                             // yield return fullPath;
                         }
@@ -157,7 +169,7 @@ namespace GpScanner.ViewModel
             }
             finally
             {
-                FindClose(handle);
+                _ = FindClose(handle);
             }
         }
 

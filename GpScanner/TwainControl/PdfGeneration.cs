@@ -78,9 +78,9 @@ namespace TwainControl
                     {
                         using XGraphics gfx = XGraphics.FromPdfPage(page);
                         using MozJpeg.MozJpeg mozJpeg = new();
-                        var resizedimage = scannedimage.Resim.Resize(page.Width, page.Height, 0, dpi, dpi);
-                        var data = mozJpeg.Encode(resizedimage.BitmapSourceToBitmap(), jpegquality, false, TJFlags.ACCURATEDCT | TJFlags.DC_SCAN_OPT2 | TJFlags.TUNE_MS_SSIM);
-                        using var ms = new MemoryStream(data);
+                        BitmapSource resizedimage = scannedimage.Resim.Resize(page.Width, page.Height, 0, dpi, dpi);
+                        byte[] data = mozJpeg.Encode(resizedimage.BitmapSourceToBitmap(), jpegquality, false, TJFlags.ACCURATEDCT | TJFlags.DC_SCAN_OPT2 | TJFlags.TUNE_MS_SSIM);
+                        using MemoryStream ms = new(data);
                         using XImage xImage = XImage.FromStream(ms);
                         XSize size = PageSizeConverter.ToSize(page.Size);
                         resizedimage = null;
@@ -98,13 +98,13 @@ namespace TwainControl
                             WritePdfTextContent(scannedimage.Resim, ScannedText[i], page, gfx, XBrushes.Transparent);
                         }
                         index++;
-                        Scanner.PdfSaveProgressValue = index / bitmapFrames.Count();
+                        Scanner.PdfSaveProgressValue = index / bitmapFrames.Count;
                     }
                     else
                     {
                         using XGraphics gfx = XGraphics.FromPdfPage(page);
-                        var resizedimage = scannedimage.Resim.Resize(page.Width, page.Height, 0, dpi, dpi);
-                        using var ms = new MemoryStream(resizedimage.ToTiffJpegByteArray(format, jpegquality));
+                        BitmapSource resizedimage = scannedimage.Resim.Resize(page.Width, page.Height, 0, dpi, dpi);
+                        using MemoryStream ms = new(resizedimage.ToTiffJpegByteArray(format, jpegquality));
                         using XImage xImage = XImage.FromStream(ms);
                         XSize size = PageSizeConverter.ToSize(page.Size);
                         resizedimage = null;
@@ -122,7 +122,7 @@ namespace TwainControl
                             WritePdfTextContent(scannedimage.Resim, ScannedText[i], page, gfx, XBrushes.Transparent);
                         }
                         index++;
-                        Scanner.PdfSaveProgressValue = index / bitmapFrames.Count();
+                        Scanner.PdfSaveProgressValue = index / bitmapFrames.Count;
                     }
                 }
                 if (Scanner.PasswordProtect)
@@ -146,7 +146,7 @@ namespace TwainControl
             {
                 for (int i = 0; i < imagefiles.Count; i++)
                 {
-                    var imagefile = imagefiles[i];
+                    string imagefile = imagefiles[i];
                     PdfPage page = document.AddPage();
                     if (paper is null)
                     {
@@ -174,7 +174,7 @@ namespace TwainControl
                         WritePdfTextContentXimage(xImage, ScannedText[i], page, gfx, XBrushes.Transparent);
                     }
                     index++;
-                    Scanner.PdfSaveProgressValue = index / imagefiles.Count();
+                    Scanner.PdfSaveProgressValue = index / imagefiles.Count;
                 }
                 if (Scanner.PasswordProtect)
                 {
@@ -202,14 +202,14 @@ namespace TwainControl
                 if (Scanner.UseMozJpegEncoding && format != Format.Tiff)
                 {
                     using MozJpeg.MozJpeg mozJpeg = new();
-                    var resizedimage = bitmapframe.Resize(page.Width, page.Height, 0, dpi, dpi);
+                    BitmapSource resizedimage = bitmapframe.Resize(page.Width, page.Height, 0, dpi, dpi);
                     data = mozJpeg.Encode(resizedimage.BitmapSourceToBitmap(), jpegquality, false, TJFlags.ACCURATEDCT | TJFlags.DC_SCAN_OPT2 | TJFlags.TUNE_MS_SSIM);
                     ms = new MemoryStream(data);
                     resizedimage = null;
                 }
                 else
                 {
-                    var resizedimage = bitmapframe.Resize(page.Width, page.Height, 0, dpi, dpi);
+                    BitmapSource resizedimage = bitmapframe.Resize(page.Width, page.Height, 0, dpi, dpi);
                     ms = new(resizedimage.ToTiffJpegByteArray(format, jpegquality));
                     resizedimage = null;
                 }

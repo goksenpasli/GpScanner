@@ -111,6 +111,8 @@ namespace PdfViewer
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public static int[] DpiList { get; } = new int[] { 12, 24, 36, 48, 72, 96, 120, 150, 200, 300, 400, 500, 600 };
+
         public ObservableCollection<ThumbClass> AllPagesThumb
         {
             get => allPagesThumb;
@@ -145,8 +147,6 @@ namespace PdfViewer
             set => SetValue(DpiProperty, value);
         }
 
-        public static int[] DpiList { get; } = new int[] { 12, 24, 36, 48, 72, 96, 120, 150, 200, 300, 400, 500, 600 };
-
         public Visibility DpiListVisibility
         {
             get => dpiListVisibility;
@@ -177,8 +177,8 @@ namespace PdfViewer
 
         public FitImageOrientation Orientation
         {
-            get { return (FitImageOrientation)GetValue(OrientationProperty); }
-            set { SetValue(OrientationProperty, value); }
+            get => (FitImageOrientation)GetValue(OrientationProperty);
+            set => SetValue(OrientationProperty, value);
         }
 
         [Browsable(false)]
@@ -338,7 +338,7 @@ namespace PdfViewer
                     return await Task.Run(() =>
                         {
                             byte[] imagearray = Pdf2Png.Convert(pdffilestream, page, dpi);
-                            MemoryStream ms = new MemoryStream(imagearray);
+                            MemoryStream ms = new(imagearray);
                             BitmapImage bitmap = new();
                             bitmap.BeginInit();
                             bitmap.CacheOption = BitmapCacheOption.None;
@@ -412,9 +412,9 @@ namespace PdfViewer
         {
             try
             {
-                using var file = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, true);
+                using FileStream file = new(filename, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, true);
                 byte[] buffer = new byte[file.Length];
-                await file.ReadAsync(buffer, 0, (int)file.Length);
+                _ = await file.ReadAsync(buffer, 0, (int)file.Length);
                 return buffer;
             }
             catch (Exception)
@@ -432,7 +432,7 @@ namespace PdfViewer
                     SynchronizationContext uiContext = SynchronizationContext.Current;
                     await Task.Run(async () =>
                     {
-                        var pagecount = await PdfPageCountAsync(pdffilestream);
+                        int pagecount = await PdfPageCountAsync(pdffilestream);
                         Thumbnails = new ObservableCollection<ThumbClass>();
                         for (int i = 1; i <= pagecount; i++)
                         {
@@ -530,7 +530,7 @@ namespace PdfViewer
                 {
                     try
                     {
-                        var data = await ReadAllFileAsync(e.NewValue as string);
+                        byte[] data = await ReadAllFileAsync(e.NewValue as string);
                         pdfViewer.Sayfa = 1;
                         int dpi = pdfViewer.Dpi;
                         pdfViewer.Source = await ConvertToImgAsync(data, 1, dpi);

@@ -361,7 +361,6 @@ namespace Extensions
                 image.StreamSource = memoryStream;
                 image.EndInit();
                 bitmap.Dispose();
-                bitmap = null;
                 if (!image.IsFrozen && image.CanFreeze)
                 {
                     image.Freeze();

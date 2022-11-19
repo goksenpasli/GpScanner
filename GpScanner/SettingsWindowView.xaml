@@ -81,55 +81,10 @@
                         </ComboBoxItem.Content>
                     </ComboBoxItem>
                 </ComboBox>
-                <UniformGrid Grid.Row="2"
-                    Columns="2" Rows="4">
-                    <CheckBox VerticalAlignment="Center"
-                        Content="{twainctrl:Loc QRDETECT}"
-                        IsChecked="{Binding DetectBarCode}" />
-                    <CheckBox VerticalAlignment="Center"
-                        Content="{twainctrl:Loc SEPERATOR}"
-                        IsChecked="{Binding DetectPageSeperator}"
-                        IsEnabled="{Binding DetectBarCode}" />
-                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                        Text="{twainctrl:Loc FILENAME}" />
-                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                        Text="{twainctrl:Loc TAG}" />
-                    <ComboBox IsEnabled="{Binding DetectPageSeperator}"
-                        ItemsSource="{Binding PatchCodes, Source={x:Static properties:Settings.Default}}"
-                        SelectedItem="{Binding PatchProfileName}">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <UniformGrid Columns="2">
-                                    <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay}" />
-                                    <Button Background="Transparent" BorderBrush="Transparent"
-                                        Command="{Binding DataContext.RemovePatchProfile, RelativeSource={RelativeSource AncestorType=ComboBox}}"
-                                        CommandParameter="{Binding Mode=OneWay}"
-                                        Content="{twainctrl:Loc DELETE}"
-                                        FontWeight="Bold" Foreground="Red" />
-                                </UniformGrid>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                    <TextBox IsEnabled="{Binding DetectPageSeperator}" Text="{Binding PatchFileName, UpdateSourceTrigger=PropertyChanged}" />
-                    <TextBox IsEnabled="{Binding DetectPageSeperator}" Text="{Binding PatchTag, UpdateSourceTrigger=PropertyChanged}" />
-                    <Button Command="{Binding SavePatchProfile}" IsEnabled="{Binding DetectPageSeperator}">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Width="16" Height="16">
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Shell32.dll" />
-                                        <Binding Source="6" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
-                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SAVEPROFILE}" />
-                        </StackPanel>
-                    </Button>
-                </UniformGrid>
                 <UniformGrid Grid.Row="1" Columns="2">
                     <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
                         IsReadOnly="True" ResetButtonVisibility="Collapsed"
-                        Text="{Binding Path=DatabaseFile, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
+                        Text="{Binding DatabaseFile, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
                     <Button Command="{Binding ChangeDataFolder}">
                         <StackPanel Orientation="Horizontal">
                             <Image Width="24" Height="24">
@@ -144,6 +99,60 @@
                         </StackPanel>
                     </Button>
                 </UniformGrid>
+                <GroupBox Grid.Row="2">
+                    <UniformGrid Columns="2" Rows="4">
+                        <CheckBox VerticalAlignment="Center"
+                            Content="{twainctrl:Loc QRDETECT}"
+                            IsChecked="{Binding DetectBarCode}" />
+                        <CheckBox VerticalAlignment="Center"
+                            Content="{twainctrl:Loc SEPERATOR}"
+                            IsChecked="{Binding DetectPageSeperator}"
+                            IsEnabled="{Binding DetectBarCode}" />
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                            Text="{twainctrl:Loc FILENAME}" />
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                            Text="{twainctrl:Loc TAG}" />
+                        <ComboBox IsEnabled="{Binding DetectPageSeperator}"
+                            ItemsSource="{Binding PatchCodes, Source={x:Static properties:Settings.Default}}"
+                            SelectedItem="{Binding PatchProfileName}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <UniformGrid Columns="2">
+                                        <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay}" />
+                                        <Button Background="Transparent" BorderBrush="Transparent"
+                                            Command="{Binding DataContext.RemovePatchProfile, RelativeSource={RelativeSource AncestorType=ComboBox}}"
+                                            CommandParameter="{Binding Mode=OneWay}"
+                                            Content="{twainctrl:Loc DELETE}"
+                                            FontWeight="Bold" Foreground="Red" />
+                                    </UniformGrid>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <TextBox IsEnabled="{Binding DetectPageSeperator}" Text="{Binding PatchFileName, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBox IsEnabled="{Binding DetectPageSeperator}" Text="{Binding PatchTag, UpdateSourceTrigger=PropertyChanged}" />
+                        <Button Command="{Binding SavePatchProfile}" IsEnabled="{Binding DetectPageSeperator}">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="6" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SAVEPROFILE}" />
+                            </StackPanel>
+                        </Button>
+                    </UniformGrid>
+                </GroupBox>
+                <GroupBox Grid.Row="3">
+                    <UniformGrid Columns="2">
+                        <TextBlock VerticalAlignment="Center" Text="PDF DPI" />
+                        <ComboBox ItemStringFormat="{}{0} Dpi"
+                            ItemsSource="{Binding SettingsPagePdfDpiList}"
+                            SelectedItem="{Binding DefaultThumbNailDpi, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                    </UniformGrid>
+                </GroupBox>
                 <GroupBox Grid.Row="4">
                     <UniformGrid Columns="3" IsEnabled="{Binding Path=ArayüzEtkin, Source={x:Static twainctrl:ToolBox.Scanner}}">
                         <Button Command="{Binding RegisterSti, Mode=OneWay}">
@@ -231,12 +240,6 @@
                         </ListBox>
                     </UniformGrid>
                 </GroupBox>
-                <UniformGrid Grid.Row="3" Columns="2">
-                    <TextBlock VerticalAlignment="Center" Text="PDF DPI" />
-                    <ComboBox ItemStringFormat="{}{0} Dpi"
-                        ItemsSource="{Binding SettingsPagePdfDpiList}"
-                        SelectedItem="{Binding DefaultThumbNailDpi, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                </UniformGrid>
                 <GroupBox Grid.Row="5">
                     <GroupBox.Header>
                         <StackPanel Orientation="Horizontal">

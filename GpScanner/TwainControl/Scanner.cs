@@ -276,7 +276,9 @@ namespace TwainControl
 
         public bool DetectEmptyPage
         {
-            get => detectEmptyPage; set
+            get => detectEmptyPage;
+
+            set
 
             {
                 if (detectEmptyPage != value)

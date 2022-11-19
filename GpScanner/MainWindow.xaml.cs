@@ -93,6 +93,7 @@ namespace GpScanner
                     case 0 when TwainCtrl.ScanImage.CanExecute(null):
                         TwainCtrl.ScanImage.Execute(null);
                         break;
+
                     case 1 when TwainCtrl.FastScanImage.CanExecute(null):
                         TwainCtrl.FastScanImage.Execute(null);
                         break;
@@ -173,7 +174,7 @@ namespace GpScanner
         {
             if (TwainCtrl.Filesavetask?.IsCompleted == false || (DataContext as GpScannerViewModel)?.Filesavetask?.IsCompleted == false)
             {
-                MessageBox.Show("Bazı Görevler Çalışıyor Bitmesini Bekleyin.");
+                _ = MessageBox.Show("Bazı Görevler Çalışıyor Bitmesini Bekleyin.");
                 e.Cancel = true;
             }
         }
