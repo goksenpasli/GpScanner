@@ -18,5 +18,8 @@
     <Setting Name="DefaultThumbNailDpi" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">36</Value>
     </Setting>
+    <Setting Name="ButtonScanMode" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

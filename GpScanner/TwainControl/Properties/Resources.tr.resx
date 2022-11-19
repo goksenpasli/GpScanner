@@ -399,7 +399,8 @@ EKLE</value>
     <value>HEDEF DİL</value>
   </data>
   <data name="UNREGSTI" xml:space="preserve">
-    <value>TARAYICI MENÜSÜNDEN KALDIR</value>
+    <value>TARAYICI MENÜSÜNDEN
+KALDIR</value>
   </data>
   <data name="SEPERATESCANTOOLTIP" xml:space="preserve">
     <value>Her Sayfayı Ayrı Dosyaya Kaydet Dosyalar Aşağıda Belirtilen Klasöre Kaydedilir.</value>

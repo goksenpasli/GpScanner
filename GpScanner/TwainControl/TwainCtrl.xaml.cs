@@ -418,6 +418,7 @@ namespace TwainControl
                 };
                 if (openFileDialog.ShowDialog() == true)
                 {
+                    GC.Collect();
                     AddFiles(openFileDialog.FileNames, DecodeHeight);
                 }
             }, parameter => true);
@@ -431,6 +432,18 @@ namespace TwainControl
                 ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
                 Scanner?.Resimler.Add(scannedImage);
             }, parameter => Scanner.CroppedImage is not null);
+
+            SendMail = new RelayCommand<object>(parameter =>
+            {
+                try
+                {
+                    Mail.Mail.SendMail(MailData);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }, parameter => !string.IsNullOrWhiteSpace(MailData));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -606,6 +619,20 @@ namespace TwainControl
 
         public ICommand LoadImage { get; }
 
+        public string MailData
+        {
+            get => mailData;
+
+            set
+            {
+                if (mailData != value)
+                {
+                    mailData = value;
+                    OnPropertyChanged(nameof(MailData));
+                }
+            }
+        }
+
         public ICommand OcrPage { get; }
 
         public ObservableCollection<Paper> Papers
@@ -725,6 +752,8 @@ namespace TwainControl
                 }
             }
         }
+
+        public ICommand SendMail { get; }
 
         public ICommand SetWatermark { get; }
 
@@ -1056,6 +1085,8 @@ namespace TwainControl
         private bool isMouseDown;
 
         private bool isRightMouseDown;
+
+        private string mailData;
 
         private System.Windows.Point mousedowncoord;
 
@@ -1402,6 +1433,7 @@ namespace TwainControl
             string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
             if (droppedfiles?.Length > 0)
             {
+                GC.Collect();
                 AddFiles(droppedfiles, DecodeHeight);
             }
         }

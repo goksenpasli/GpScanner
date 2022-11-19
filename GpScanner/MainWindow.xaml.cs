@@ -88,7 +88,15 @@ namespace GpScanner
             if (StillImageHelper.ShouldScan && DataContext is GpScannerViewModel ViewModel)
             {
                 ViewModel.Fold = 0;
-                TwainCtrl.FastScanImage.Execute(null);
+                switch (Settings.Default.ButtonScanMode)
+                {
+                    case 0 when TwainCtrl.ScanImage.CanExecute(null):
+                        TwainCtrl.ScanImage.Execute(null);
+                        break;
+                    case 1 when TwainCtrl.FastScanImage.CanExecute(null):
+                        TwainCtrl.FastScanImage.Execute(null);
+                        break;
+                }
             }
         }
 
