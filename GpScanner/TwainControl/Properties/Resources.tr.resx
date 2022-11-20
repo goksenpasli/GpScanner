@@ -478,4 +478,7 @@ BELGE EKLE</value>
   <data name="START" xml:space="preserve">
     <value>BAŞLAT</value>
   </data>
+  <data name="LOAD" xml:space="preserve">
+    <value>YÜKLE</value>
+  </data>
 </root>

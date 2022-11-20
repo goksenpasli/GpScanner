@@ -59,6 +59,7 @@
             </ItemsControl>
             <ListBox Grid.Column="1"
                 d:ItemsSource="{d:SampleData ItemCount=5}"
+                Background="{StaticResource BorderBackground}"
                 ItemsSource="{Binding TesseractFiles}"
                 SelectedItem="{Binding DefaultTtsLang, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
             <FlowDocumentScrollViewer Grid.Row="1" Grid.ColumnSpan="2">

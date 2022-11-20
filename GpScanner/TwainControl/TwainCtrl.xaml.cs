@@ -289,7 +289,7 @@ namespace TwainControl
                     .Append("|")
                     .Append(Settings.Default.ShowFile)
                     .Append("|")
-                    .Append(true)
+                    .Append(Scanner.DetectEmptyPage)
                     .Append("|")
                     .Append(Scanner.FileName)
                     .ToString();
@@ -1203,6 +1203,7 @@ namespace TwainControl
             if (e.PropertyName is "Adf" && !Settings.Default.Adf)
             {
                 Scanner.DetectEmptyPage = false;
+                Scanner.Duplex = false;
             }
             Settings.Default.Save();
         }
@@ -1280,9 +1281,9 @@ namespace TwainControl
         {
             int decodepixelheight = (int)(SelectedPaper.Height / Inch * Settings.Default.Çözünürlük);
             return (ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite
-                ? bitmap.ConvertBlackAndWhite(Scanner.Eşik).ToBitmapImage(ImageFormat.Jpeg, decodepixelheight)
+                ? bitmap.ConvertBlackAndWhite().ToBitmapImage(ImageFormat.Jpeg, decodepixelheight)
                 : (ColourSetting)Settings.Default.Mode == ColourSetting.GreyScale
-                    ? bitmap.ConvertBlackAndWhite(Scanner.Eşik, true).ToBitmapImage(ImageFormat.Jpeg, decodepixelheight)
+                    ? bitmap.ConvertBlackAndWhite(160, true).ToBitmapImage(ImageFormat.Jpeg, decodepixelheight)
                     : (ColourSetting)Settings.Default.Mode == ColourSetting.Colour
                                     ? bitmap.ToBitmapImage(ImageFormat.Jpeg, decodepixelheight)
                                     : null;
@@ -1583,7 +1584,7 @@ namespace TwainControl
                 Scanner.Duplex = bool.Parse(selectedprofile[4]);
                 Scanner.ShowUi = bool.Parse(selectedprofile[5]);
                 Settings.Default.ShowFile = bool.Parse(selectedprofile[7]);
-                Settings.Default.DateGroupFolder = true;
+                Scanner.DetectEmptyPage = bool.Parse(selectedprofile[8]);
                 Scanner.FileName = selectedprofile[9];
                 Settings.Default.DefaultProfile = Scanner.SelectedProfile;
                 Settings.Default.Save();

@@ -102,10 +102,17 @@
                     <GroupBox.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="80" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-                            <TextBlock VerticalAlignment="Center" Text="{local:Loc SETTİNGS}" />
+                            <StackPanel>
+                                <TextBlock VerticalAlignment="Center" Text="{local:Loc SETTİNGS}" />
+                                <TextBlock d:Text="AutoFolder" FontWeight="Bold">
+                                    <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="{Binding AutoFolder, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
+                                        <Run Text="{Binding Scanner.LocalizedPath, Mode=OneWay}" />
+                                    </Hyperlink>
+                                </TextBlock>
+                            </StackPanel>
                             <UniformGrid Grid.Column="1" Columns="2">
                                 <ComboBox HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"
                                     ItemsSource="{Binding CompressionProfiles}"
@@ -296,7 +303,9 @@
                                     <RowDefinition />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
-                                <CheckBox Content="{local:Loc TWOSIDE}" IsChecked="{Binding Scanner.Duplex}" />
+                                <CheckBox Content="{local:Loc TWOSIDE}"
+                                    IsChecked="{Binding Scanner.Duplex}"
+                                    IsEnabled="{Binding Adf, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                                 <CheckBox Grid.Column="1"
                                     Content="{local:Loc GUI}"
                                     IsChecked="{Binding Scanner.ShowUi}" />
@@ -304,15 +313,8 @@
                                     Content="{local:Loc SHOWFILE}"
                                     IsChecked="{Binding ShowFile, Source={x:Static properties:Settings.Default}}" />
                                 <CheckBox Grid.Row="1" Grid.Column="1"
-                                    IsChecked="{Binding Scanner.Deskew}">
-                                    <CheckBox.Content>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Width="16" Height="16"
-                                                Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
-                                            <TextBlock Text="{local:Loc DESKEW}" />
-                                        </StackPanel>
-                                    </CheckBox.Content>
-                                </CheckBox>
+                                    Content="{local:Loc SHOWPROGRESS}"
+                                    IsChecked="{Binding Scanner.ShowProgress}" />
                                 <CheckBox Grid.Row="2"
                                     IsChecked="{Binding Scanner.DetectEmptyPage}"
                                     IsEnabled="{Binding Adf, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
@@ -334,53 +336,45 @@
                                         </StackPanel>
                                     </CheckBox.Content>
                                 </CheckBox>
-                                <CheckBox Grid.Row="2" Grid.Column="1"
-                                    Content="{local:Loc SHOWPROGRESS}"
-                                    IsChecked="{Binding Scanner.ShowProgress}" />
                             </Grid>
                             <Separator />
                             <UniformGrid Columns="2">
-                                <TextBlock d:Text="AutoFolder" FontWeight="Bold">
-                                    <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="{Binding AutoFolder, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
-                                        <Run Text="{Binding Scanner.LocalizedPath, Mode=OneWay}" />
-                                    </Hyperlink>
-                                </TextBlock>
+                                <Extensions:ButtonedTextBox d:Text="FileName" GotKeyboardFocus="ButtonedTextBox_GotKeyboardFocus" MaxLength="255"
+                                    OpenButtonVisibility="Collapsed"
+                                    Text="{Binding Scanner.FileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                                    <Extensions:ButtonedTextBox.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
+                                                CommandParameter="[GÜN]"
+                                                Header="{local:Loc DAY}" />
+                                            <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
+                                                CommandParameter="[AY]"
+                                                Header="{local:Loc MONTH}" />
+                                            <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
+                                                CommandParameter="[YIL]"
+                                                Header="{local:Loc YEAR}" />
+                                            <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
+                                                CommandParameter="[SAAT]"
+                                                Header="{local:Loc TIME}" />
+                                            <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
+                                                CommandParameter="[DAKİKA]"
+                                                Header="{local:Loc MINUTE}" />
+                                            <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
+                                                CommandParameter="[SANİYE]"
+                                                Header="{local:Loc SECOND}" />
+                                            <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
+                                                CommandParameter="[GUID]"
+                                                Header="{local:Loc GUID}" />
+                                            <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
+                                                CommandParameter="[USERNAME]"
+                                                Header="{local:Loc USERNAME}" />
+                                        </ContextMenu>
+                                    </Extensions:ButtonedTextBox.ContextMenu>
+                                </Extensions:ButtonedTextBox>
                                 <TextBlock d:Text="Tarama" FontWeight="Bold"
                                     Text="{Binding Scanner.SaveFileName}" />
                             </UniformGrid>
-                            <Extensions:ButtonedTextBox d:Text="FileName" GotKeyboardFocus="ButtonedTextBox_GotKeyboardFocus" MaxLength="255"
-                                OpenButtonVisibility="Collapsed"
-                                Text="{Binding Scanner.FileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
-                                <Extensions:ButtonedTextBox.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
-                                            CommandParameter="[GÜN]"
-                                            Header="{local:Loc DAY}" />
-                                        <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
-                                            CommandParameter="[AY]"
-                                            Header="{local:Loc MONTH}" />
-                                        <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
-                                            CommandParameter="[YIL]"
-                                            Header="{local:Loc YEAR}" />
-                                        <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
-                                            CommandParameter="[SAAT]"
-                                            Header="{local:Loc TIME}" />
-                                        <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
-                                            CommandParameter="[DAKİKA]"
-                                            Header="{local:Loc MINUTE}" />
-                                        <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
-                                            CommandParameter="[SANİYE]"
-                                            Header="{local:Loc SECOND}" />
-                                        <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
-                                            CommandParameter="[GUID]"
-                                            Header="{local:Loc GUID}" />
-                                        <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
-                                            CommandParameter="[USERNAME]"
-                                            Header="{local:Loc USERNAME}" />
-                                    </ContextMenu>
-                                </Extensions:ButtonedTextBox.ContextMenu>
-                            </Extensions:ButtonedTextBox>
-                            <UniformGrid Columns="3">
+                            <UniformGrid Columns="2">
                                 <TextBox VerticalContentAlignment="Center" Text="{Binding Scanner.ProfileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 <Button Command="{Binding SaveProfile}">
                                     <StackPanel Orientation="Horizontal">
@@ -395,7 +389,13 @@
                                         <TextBlock VerticalAlignment="Center" Text="{local:Loc SAVEPROFILE}" />
                                     </StackPanel>
                                 </Button>
-                                <CheckBox HorizontalContentAlignment="Stretch" IsChecked="{Binding UseSelectedProfile, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                            </UniformGrid>
+                            <Separator />
+                            <UniformGrid Columns="4">
+                                <StackPanel>
+                                    <CheckBox HorizontalContentAlignment="Stretch"
+                                        Content="{local:Loc LOAD}"
+                                        IsChecked="{Binding UseSelectedProfile, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                                     <ComboBox ItemsSource="{Binding Profile, Source={x:Static properties:Settings.Default}}" SelectedItem="{Binding Scanner.SelectedProfile}">
                                         <ComboBox.ItemTemplate>
                                             <DataTemplate>
@@ -410,10 +410,7 @@
                                             </DataTemplate>
                                         </ComboBox.ItemTemplate>
                                     </ComboBox>
-                                </CheckBox>
-                            </UniformGrid>
-                            <Separator />
-                            <UniformGrid Columns="3">
+                                </StackPanel>
                                 <Button Command="{Binding ScanImage}">
                                     <StackPanel Orientation="Horizontal">
                                         <Image Width="32" Height="32">
@@ -431,14 +428,25 @@
                                     Command="{Binding FastScanImage}"
                                     IsDefault="True">
                                     <StackPanel Orientation="Horizontal">
-                                        <Image Width="32" Height="32">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Imageres.dll" />
-                                                    <Binding Source="90" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
+                                        <Canvas Width="32" Height="32">
+                                            <Image Width="32" Height="32">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Imageres.dll" />
+                                                        <Binding Source="90" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                            <Image Canvas.Left="0" Canvas.Bottom="0"
+                                                Width="20" Height="20">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="6" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </Canvas>
                                         <TextBlock VerticalAlignment="Center" Text="{local:Loc FASTSCAN}" />
                                     </StackPanel>
                                 </Button>

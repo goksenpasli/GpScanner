@@ -9,7 +9,7 @@
     xmlns:mozjpeg="clr-namespace:MozJpeg;assembly=MozJpeg"
     xmlns:properties="clr-namespace:TwainControl.Properties"
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
-    d:DesignHeight="250" d:DesignWidth="550"
+    d:DesignHeight="275" d:DesignWidth="550"
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
     UseLayoutRounding="True"
     mc:Ignorable="d">
@@ -75,6 +75,15 @@
                     Value="{Binding Path=ImgLoadResolution, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
             </HeaderedContentControl>
             <Separator />
+            <CheckBox IsChecked="{Binding Scanner.Deskew}">
+                <CheckBox.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Width="16" Height="16"
+                            Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
+                        <TextBlock Text="{local:Loc DESKEW}" />
+                    </StackPanel>
+                </CheckBox.Content>
+            </CheckBox>
             <CheckBox IsChecked="{Binding Scanner.ApplyPdfSaveOcr}">
                 <CheckBox.Content>
                     <TextBlock>

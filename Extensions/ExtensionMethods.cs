@@ -68,7 +68,7 @@ namespace Extensions
             return source?.IndexOf(toCheck, comp) >= 0;
         }
 
-        public static Bitmap ConvertBlackAndWhite(this Bitmap bitmap, int bWthreshold, bool grayscale = false)
+        public static Bitmap ConvertBlackAndWhite(this Bitmap bitmap, int bWthreshold = 160, bool grayscale = false)
         {
             unsafe
             {

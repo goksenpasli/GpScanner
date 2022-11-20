@@ -539,7 +539,8 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:ContentToggleButton">
-                    <Border Background="{TemplateBinding Background}"
+                    <Border x:Name="border"
+                        Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
                         CornerRadius="{TemplateBinding CornerRadius}">
@@ -559,6 +560,10 @@
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
+                        <Trigger Property="UIElement.IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Border.BorderBrush" Value="#3C7FB1" />
+                            <Setter TargetName="border" Property="Panel.Background" Value="#BEE6FD" />
+                        </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Background" Value="#F4F4F4" />
                             <Setter Property="Foreground" Value="#ADADAD" />

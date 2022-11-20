@@ -333,20 +333,6 @@ namespace TwainControl
 
         public string Error => string.Empty;
 
-        public int Eşik
-        {
-            get => eşik;
-
-            set
-            {
-                if (eşik != value)
-                {
-                    eşik = value;
-                    OnPropertyChanged(nameof(Eşik));
-                }
-            }
-        }
-
         public string FileName
         {
             get => fileName;
@@ -777,8 +763,6 @@ namespace TwainControl
         private bool duplex;
 
         private int enAdet = 1;
-
-        private int eşik = 160;
 
         private string fileName = "Tarama";
 

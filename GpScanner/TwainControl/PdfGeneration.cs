@@ -138,7 +138,7 @@ namespace TwainControl
             return document;
         }
 
-        public static PdfDocument GeneratePdf(List<string> imagefiles, Format format, Paper paper, List<ObservableCollection<OcrData>> ScannedText = null)
+        public static PdfDocument GeneratePdf(List<string> imagefiles, Paper paper, List<ObservableCollection<OcrData>> ScannedText = null)
         {
             using PdfDocument document = new();
             double index = 0;
@@ -171,7 +171,7 @@ namespace TwainControl
                     }
                     if (ScannedText != null)
                     {
-                        WritePdfTextContentXimage(xImage, ScannedText[i], page, gfx, XBrushes.Transparent);
+                        WritePdfTextContent(xImage, ScannedText[i], page, gfx, XBrushes.Transparent);
                     }
                     index++;
                     Scanner.PdfSaveProgressValue = index / imagefiles.Count;
@@ -338,6 +338,17 @@ namespace TwainControl
             }
         }
 
+        private static void DrawGfx(XGraphics gfx, XBrush xBrush, XTextFormatter textformatter, OcrData item, XRect adjustedBounds)
+        {
+            int adjustedFontSize = CalculateFontSize(item.Text, adjustedBounds, gfx);
+            XFont font = new("Times New Roman", adjustedFontSize, XFontStyle.Regular, new XPdfFontOptions(PdfFontEncoding.Unicode));
+            XSize adjustedTextSize = gfx.MeasureString(item.Text, font);
+            double verticalOffset = (adjustedBounds.Height - adjustedTextSize.Height) / 2;
+            double horizontalOffset = (adjustedBounds.Width - adjustedTextSize.Width) / 2;
+            adjustedBounds.Offset(horizontalOffset, verticalOffset);
+            textformatter.DrawString(item.Text, font, xBrush, adjustedBounds);
+        }
+
         private static void SetPaperSize(Paper paper, PdfPage page)
         {
             switch (paper.PaperType)
@@ -404,18 +415,12 @@ namespace TwainControl
                 foreach (OcrData item in ScannedText)
                 {
                     XRect adjustedBounds = AdjustBounds(item.Rect, page.Width / bitmapframe.PixelWidth, page.Height / bitmapframe.PixelHeight);
-                    int adjustedFontSize = CalculateFontSize(item.Text, adjustedBounds, gfx);
-                    XFont font = new("Times New Roman", adjustedFontSize, XFontStyle.Regular, new XPdfFontOptions(PdfFontEncoding.Unicode));
-                    XSize adjustedTextSize = gfx.MeasureString(item.Text, font);
-                    double verticalOffset = (adjustedBounds.Height - adjustedTextSize.Height) / 2;
-                    double horizontalOffset = (adjustedBounds.Width - adjustedTextSize.Width) / 2;
-                    adjustedBounds.Offset(horizontalOffset, verticalOffset);
-                    textformatter.DrawString(item.Text, font, xBrush, adjustedBounds);
+                    DrawGfx(gfx, xBrush, textformatter, item, adjustedBounds);
                 }
             }
         }
 
-        private static void WritePdfTextContentXimage(XImage xImage, ObservableCollection<OcrData> ScannedText, PdfPage page, XGraphics gfx, XBrush xBrush)
+        private static void WritePdfTextContent(XImage xImage, ObservableCollection<OcrData> ScannedText, PdfPage page, XGraphics gfx, XBrush xBrush)
         {
             if (ScannedText is not null)
             {
@@ -423,13 +428,7 @@ namespace TwainControl
                 foreach (OcrData item in ScannedText)
                 {
                     XRect adjustedBounds = AdjustBounds(item.Rect, page.Width / xImage.PixelWidth, page.Height / xImage.PixelHeight);
-                    int adjustedFontSize = CalculateFontSize(item.Text, adjustedBounds, gfx);
-                    XFont font = new("Times New Roman", adjustedFontSize, XFontStyle.Regular, new XPdfFontOptions(PdfFontEncoding.Unicode));
-                    XSize adjustedTextSize = gfx.MeasureString(item.Text, font);
-                    double verticalOffset = (adjustedBounds.Height - adjustedTextSize.Height) / 2;
-                    double horizontalOffset = (adjustedBounds.Width - adjustedTextSize.Width) / 2;
-                    adjustedBounds.Offset(horizontalOffset, verticalOffset);
-                    textformatter.DrawString(item.Text, font, xBrush, adjustedBounds);
+                    DrawGfx(gfx, xBrush, textformatter, item, adjustedBounds);
                 }
             }
         }

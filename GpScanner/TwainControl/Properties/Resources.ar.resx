@@ -268,6 +268,9 @@
   <data name="LISTREMOVEWARN" xml:space="preserve">
     <value>سيتم حذف كافة المستندات الممسوحة ضوئيًا في القائمة العلوية هل تريد المتابعة؟</value>
   </data>
+  <data name="LOAD" xml:space="preserve">
+    <value>حمل</value>
+  </data>
   <data name="MERGE" xml:space="preserve">
     <value>الاتصال</value>
   </data>

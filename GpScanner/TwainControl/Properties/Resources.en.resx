@@ -472,4 +472,7 @@ TO FILE</value>
   <data name="START" xml:space="preserve">
     <value>START</value>
   </data>
+  <data name="LOAD" xml:space="preserve">
+    <value>LOAD</value>
+  </data>
 </root>

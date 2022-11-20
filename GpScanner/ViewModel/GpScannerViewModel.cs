@@ -288,7 +288,7 @@ namespace GpScanner.ViewModel
                         }
                         ProgressBarForegroundBrush = Brushes.Green;
                         string filename = $"{Twainsettings.Settings.Default.AutoFolder}\\{Guid.NewGuid()}.pdf";
-                        PdfGeneration.GeneratePdf(files, Format.Jpg, paper, scannedtext).Save(filename);
+                        PdfGeneration.GeneratePdf(files, paper, scannedtext).Save(filename);
                         scannedimages = null;
                         GC.Collect();
                     });
