@@ -968,7 +968,7 @@ namespace TwainControl
                                     {
                                         byte[] data = decoder.Frames[i].ToTiffJpegByteArray(Format.Jpg);
                                         MemoryStream ms = new(data);
-                                        BitmapFrame image = BitmapMethods.GenerateImageDocumentBitmapFrame(decodeheight, ms, SelectedPaper);
+                                        BitmapFrame image = BitmapMethods.GenerateImageDocumentBitmapFrame(ms, SelectedPaper);
                                         image.Freeze();
                                         BitmapSource thumbimage = image.PixelWidth < image.PixelHeight ? image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Width * SelectedPaper.Height) : image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Height * SelectedPaper.Width);
                                         thumbimage.Freeze();
@@ -1015,7 +1015,7 @@ namespace TwainControl
                                             docPage = null;
                                         });
                                         MemoryStream memoryStream = new(data);
-                                        BitmapFrame image = BitmapMethods.GenerateImageDocumentBitmapFrame(decodeheight, memoryStream, SelectedPaper);
+                                        BitmapFrame image = BitmapMethods.GenerateImageDocumentBitmapFrame(memoryStream, SelectedPaper);
                                         image.Freeze();
                                         BitmapSource thumbimage = image.PixelWidth < image.PixelHeight ? image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Width * SelectedPaper.Height) : image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Height * SelectedPaper.Width);
                                         thumbimage.Freeze();
@@ -1159,7 +1159,7 @@ namespace TwainControl
             double totalpagecount = await PdfViewer.PdfViewer.PdfPageCountAsync(filedata);
             for (int i = 1; i <= totalpagecount; i++)
             {
-                BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(decodeheight, await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, (int)Settings.Default.ImgLoadResolution), SelectedPaper, Scanner.Deskew);
+                BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, (int)Settings.Default.ImgLoadResolution), SelectedPaper, Scanner.Deskew);
                 bitmapFrame.Freeze();
                 uiContext.Send(_ =>
                 {
@@ -1170,6 +1170,7 @@ namespace TwainControl
                 }, null);
                 bitmapFrame = null;
             }
+            filedata = null;
         }
 
         private void ButtonedTextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
@@ -1431,7 +1432,7 @@ namespace TwainControl
                         if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
                         {
                             MemoryStream ms = new(ImgData);
-                            BitmapFrame bitmapframe = BitmapMethods.GenerateImageDocumentBitmapFrame(DecodeHeight, ms, SelectedPaper);
+                            BitmapFrame bitmapframe = BitmapMethods.GenerateImageDocumentBitmapFrame(ms, SelectedPaper);
                             bitmapframe.Freeze();
                             ScannedImage item = new() { Resim = bitmapframe };
                             Scanner.Resimler.Add(item);

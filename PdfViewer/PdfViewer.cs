@@ -336,22 +336,22 @@ namespace PdfViewer
                 if (pdffilestream.Length > 0)
                 {
                     return await Task.Run(() =>
-                        {
-                            byte[] imagearray = Pdf2Png.Convert(pdffilestream, page, dpi);
-                            MemoryStream ms = new(imagearray);
-                            BitmapImage bitmap = new();
-                            bitmap.BeginInit();
-                            bitmap.CacheOption = BitmapCacheOption.None;
-                            bitmap.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.DelayCreation;
-                            bitmap.StreamSource = ms;
-                            bitmap.EndInit();
-                            bitmap.Freeze();
-                            pdffilestream = null;
-                            imagearray = null;
-                            ms = null;
-                            GC.Collect();
-                            return bitmap;
-                        });
+                    {
+                        byte[] imagearray = Pdf2Png.Convert(pdffilestream, page, dpi);
+                        MemoryStream ms = new(imagearray);
+                        BitmapImage bitmap = new();
+                        bitmap.BeginInit();
+                        bitmap.CacheOption = BitmapCacheOption.None;
+                        bitmap.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.DelayCreation;
+                        bitmap.StreamSource = ms;
+                        bitmap.EndInit();
+                        bitmap.Freeze();
+                        pdffilestream = null;
+                        imagearray = null;
+                        ms = null;
+                        GC.Collect();
+                        return bitmap;
+                    });
                 }
             }
             catch (Exception)
@@ -366,7 +366,18 @@ namespace PdfViewer
             {
                 if (stream.Length > 0)
                 {
-                    return await Task.Run(() => new MemoryStream(Pdf2Png.Convert(stream, page, dpi)));
+                    return await Task.Run(() =>
+                    {
+                        byte[] buffer = Pdf2Png.Convert(stream, page, dpi);
+                        if (buffer != null)
+                        {
+                            MemoryStream ms = new MemoryStream(buffer);
+                            buffer = null;
+                            GC.Collect();
+                            return ms;
+                        }
+                        return null;
+                    });
                 }
             }
             catch (Exception)
@@ -381,7 +392,12 @@ namespace PdfViewer
             {
                 if (stream.Length > 0)
                 {
-                    return await Task.Run(() => Pdf2Png.ConvertAllPages(stream, 0).Count);
+                    return await Task.Run(() =>
+                    {
+                        int pagecount = Pdf2Png.ConvertAllPages(stream, 0).Count;
+                        stream = null;
+                        return pagecount;
+                    });
                 }
             }
             catch (Exception)
