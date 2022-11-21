@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -305,6 +306,16 @@ namespace GpScanner.ViewModel
         }
 
         public static event EventHandler<PropertyChangedEventArgs> StaticPropertyChanged;
+
+        public static bool IsAdministrator
+        {
+            get
+            {
+                using WindowsIdentity identity = WindowsIdentity.GetCurrent();
+                WindowsPrincipal principal = new WindowsPrincipal(identity);
+                return principal.IsInRole(WindowsBuiltInRole.Administrator);
+            }
+        }
 
         public static string XmlDataPath
         {
@@ -1082,8 +1093,17 @@ namespace GpScanner.ViewModel
 
         private void OnTick(object sender, EventArgs e)
         {
+            if (StillImageHelper.ShouldScan)
+            {
+                TimerFold();
+                return;
+            }
             Fold -= 0.01;
             if (Fold <= 0)
+            {
+                TimerFold();
+            }
+            void TimerFold()
             {
                 Fold = 0;
                 timer.Stop();

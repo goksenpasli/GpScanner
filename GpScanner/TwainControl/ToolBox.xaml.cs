@@ -114,14 +114,16 @@ namespace TwainControl
                 System.Windows.Media.Color source = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Scanner.SourceColor);
                 System.Windows.Media.Color target = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Scanner.TargetColor);
                 using Bitmap bmp = ((BitmapSource)Scanner.CopyCroppedImage).BitmapSourceToBitmap();
-                Scanner.CroppedImage = bmp.ReplaceColor(source, target, (int)Scanner.Threshold).ToBitmapImage(ImageFormat.Png);
+                using Bitmap replacedbmp = bmp.ReplaceColor(source, target, (int)Scanner.Threshold);
+                Scanner.CroppedImage = replacedbmp.ToBitmapImage(ImageFormat.Png);
             }
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if (Scanner is not null)
+            if (DataContext is TwainCtrl twainCtrl)
             {
+                Scanner = twainCtrl.Scanner;
                 Scanner.PropertyChanged += Scanner_PropertyChanged;
             }
         }

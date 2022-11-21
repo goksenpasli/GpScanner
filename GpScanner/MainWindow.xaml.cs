@@ -85,9 +85,8 @@ namespace GpScanner
             {
                 TwainCtrl.AddFiles(Environment.GetCommandLineArgs(), TwainCtrl.DecodeHeight);
             }
-            if (StillImageHelper.ShouldScan && DataContext is GpScannerViewModel ViewModel)
+            if (StillImageHelper.ShouldScan)
             {
-                ViewModel.Fold = 0;
                 switch (Settings.Default.ButtonScanMode)
                 {
                     case 0 when TwainCtrl.ScanImage.CanExecute(null):

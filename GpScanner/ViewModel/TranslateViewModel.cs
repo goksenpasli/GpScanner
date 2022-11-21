@@ -36,7 +36,6 @@ namespace GpScanner.ViewModel
                 if (synthesizer.State == SynthesizerState.Ready)
                 {
                     _ = synthesizer.SpeakAsync(Çeviri);
-                    return;
                 }
             }, parameter => !string.IsNullOrEmpty(Çeviri) && !string.IsNullOrEmpty(OkumaDili));
         }

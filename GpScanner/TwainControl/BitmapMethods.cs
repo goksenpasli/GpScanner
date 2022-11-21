@@ -293,11 +293,11 @@ namespace TwainControl
             return target;
         }
 
-        public static BitmapFrame RotateImage(this BitmapFrame bitmapFrame, double angle)
+        public static BitmapFrame RotateImage(this BitmapFrame bitmapFrame, double angle, double resizeratio)
         {
             TransformedBitmap transformedBitmap = new(bitmapFrame, new RotateTransform(angle * 90));
             transformedBitmap.Freeze();
-            BitmapFrame bitmapframe = BitmapFrame.Create(transformedBitmap, transformedBitmap.Resize(0.1));
+            BitmapFrame bitmapframe = BitmapFrame.Create(transformedBitmap, transformedBitmap.Resize(resizeratio));
             bitmapframe.Freeze();
             return bitmapframe;
         }

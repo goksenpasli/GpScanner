@@ -155,7 +155,7 @@
                 </GroupBox>
                 <GroupBox Grid.Row="4">
                     <UniformGrid Columns="3" IsEnabled="{Binding Path=ArayüzEtkin, Source={x:Static twainctrl:ToolBox.Scanner}}">
-                        <Button Command="{Binding RegisterSti, Mode=OneWay}">
+                        <Button Command="{Binding RegisterSti, Mode=OneWay}" IsEnabled="{Binding Source={x:Static viewmodel:GpScannerViewModel.IsAdministrator}}">
                             <StackPanel Orientation="Horizontal">
                                 <Canvas Width="32" Height="32">
                                     <Image Width="32" Height="32">
@@ -179,7 +179,7 @@
                                 <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc REGSTI}" />
                             </StackPanel>
                         </Button>
-                        <Button Command="{Binding UnRegisterSti, Mode=OneWay}">
+                        <Button Command="{Binding UnRegisterSti, Mode=OneWay}" IsEnabled="{Binding Source={x:Static viewmodel:GpScannerViewModel.IsAdministrator}}">
                             <StackPanel Orientation="Horizontal">
                                 <Canvas Width="32" Height="32">
                                     <Image Width="32" Height="32">

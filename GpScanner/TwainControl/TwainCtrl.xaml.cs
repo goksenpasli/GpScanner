@@ -45,7 +45,6 @@ namespace TwainControl
             DataContext = this;
             Scanner = new Scanner();
             PdfGeneration.Scanner = Scanner;
-            ToolBox.Scanner = Scanner;
 
             Scanner.PropertyChanged += Scanner_PropertyChanged;
             Settings.Default.PropertyChanged += Default_PropertyChanged;
@@ -895,13 +894,12 @@ namespace TwainControl
                                     filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(item);
                                     if (PdfGeneration.IsValidPdfFile(filedata.Take(4)))
                                     {
-                                        await AddPdfFile(decodeheight, uiContext, filedata);
+                                        await AddPdfFile(filedata, decodeheight, uiContext);
                                     }
                                     filedata = null;
                                 }
                                 catch (Exception)
                                 {
-                                    return;
                                 }
                             });
                             break;
@@ -917,13 +915,12 @@ namespace TwainControl
                                     filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(eyppdfpath);
                                     if (PdfGeneration.IsValidPdfFile(filedata.Take(4)))
                                     {
-                                        await AddPdfFile(decodeheight, uiContext, filedata);
+                                        await AddPdfFile(filedata, decodeheight, uiContext);
                                     }
                                     filedata = null;
                                 }
                                 catch (Exception)
                                 {
-                                    return;
                                 }
                             });
                             break;
@@ -955,7 +952,6 @@ namespace TwainControl
                                 }
                                 catch (Exception)
                                 {
-                                    return;
                                 }
                             });
                             break;
@@ -992,7 +988,6 @@ namespace TwainControl
                                 }
                                 catch (Exception)
                                 {
-                                    return;
                                 }
                             });
                             break;
@@ -1042,7 +1037,6 @@ namespace TwainControl
                                 }
                                 catch (Exception)
                                 {
-                                    return;
                                 }
                             });
                             break;
@@ -1160,7 +1154,7 @@ namespace TwainControl
             return null;
         }
 
-        private async Task AddPdfFile(int decodeheight, SynchronizationContext uiContext, byte[] filedata)
+        private async Task AddPdfFile(byte[] filedata, int decodeheight, SynchronizationContext uiContext)
         {
             double totalpagecount = await PdfViewer.PdfViewer.PdfPageCountAsync(filedata);
             for (int i = 1; i <= totalpagecount; i++)
@@ -1500,6 +1494,8 @@ namespace TwainControl
 
         private void ResetCropMargin()
         {
+            Scanner.CroppedImage = null;
+            Scanner.CopyCroppedImage = null;
             Scanner.CropBottom = 0;
             Scanner.CropLeft = 0;
             Scanner.CropTop = 0;
@@ -1507,12 +1503,13 @@ namespace TwainControl
             Scanner.EnAdet = 1;
             Scanner.BoyAdet = 1;
             Scanner.Brightness = 0;
+            Scanner.CroppedImageAngle = 0;
             Scanner.Threshold = 0;
             Scanner.Watermark = string.Empty;
-            Scanner.CroppedImage = null;
             RedChart = null;
             GreenChart = null;
             BlueChart = null;
+            GC.Collect();
         }
 
         private void Run_Drop(object sender, DragEventArgs e)
@@ -1639,7 +1636,7 @@ namespace TwainControl
             {
                 foreach (ScannedImage image in Scanner.Resimler)
                 {
-                    image.Resim = image.Resim.RotateImage(AllImageRotationAngle);
+                    image.Resim = image.Resim.RotateImage(AllImageRotationAngle, 0.1);
                 }
                 AllImageRotationAngle = 0;
             }

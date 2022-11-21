@@ -38,6 +38,9 @@
             </Style.Triggers>
         </Style>
     </Window.Resources>
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo ProgressState="Normal" ProgressValue="{Binding Scanner.PdfSaveProgressValue, ElementName=TwainCtrl}" />
+    </Window.TaskbarItemInfo>
     <Grid>
         <Grid.Style>
             <Style TargetType="Grid">
