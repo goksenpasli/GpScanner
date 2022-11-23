@@ -81,11 +81,13 @@ namespace GpScanner
         private void MW_ContentRendered(object sender, EventArgs e)
         {
             WindowExtensions.SystemMenu(this);
+
             if (Settings.Default.IsFirstRun)
             {
                 WindowExtensions.OpenSettings.Execute(null);
                 Settings.Default.IsFirstRun = false;
             }
+
             if (Environment.GetCommandLineArgs().Length > 1)
             {
                 TwainCtrl.AddFiles(Environment.GetCommandLineArgs(), TwainCtrl.DecodeHeight);

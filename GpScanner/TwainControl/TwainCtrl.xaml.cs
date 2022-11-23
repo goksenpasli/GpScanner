@@ -233,6 +233,10 @@ namespace TwainControl
             {
                 Filesavetask = Task.Run(async () =>
                 {
+                    if (Scanner.ApplyDataBaseOcr)
+                    {
+                        Scanner.PdfFilePath = PdfGeneration.GetPdfScanPath();
+                    }
                     if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
                     {
                         await SavePdfImage(Scanner.Resimler.Where(z => z.Seçili).ToList(), PdfGeneration.GetPdfScanPath(), Scanner, SelectedPaper, true, (int)Settings.Default.ImgLoadResolution);
@@ -241,11 +245,18 @@ namespace TwainControl
                     {
                         await SavePdfImage(Scanner.Resimler.Where(z => z.Seçili).ToList(), PdfGeneration.GetPdfScanPath(), Scanner, SelectedPaper, false, (int)Settings.Default.ImgLoadResolution);
                     }
-                }).ContinueWith((_) => Dispatcher.Invoke(() => OnPropertyChanged(nameof(Scanner.Resimler))));
+                }).ContinueWith((_) => Dispatcher.Invoke(() =>
+                {
+                    if (Scanner.ApplyDataBaseOcr)
+                    {
+                        OnPropertyChanged(nameof(Scanner.ApplyDataBaseOcr));
+                    }
+                    OnPropertyChanged(nameof(Scanner.Resimler));
+                }));
             }, parameter =>
             {
                 Scanner.SeçiliResimSayısı = Scanner.Resimler.Count(z => z.Seçili);
-                return !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner.SeçiliResimSayısı > 0 && Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0;
+                return !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner.AutoSave && Scanner.SeçiliResimSayısı > 0 && Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0;
             });
 
             ListeTemizle = new RelayCommand<object>(parameter =>
@@ -1586,10 +1597,6 @@ namespace TwainControl
                 Scanner.FileName = selectedprofile[9];
                 Settings.Default.DefaultProfile = Scanner.SelectedProfile;
                 Settings.Default.Save();
-            }
-            if (e.PropertyName is "ApplyDataBaseOcr" && Scanner.ApplyDataBaseOcr)
-            {
-                _ = MessageBox.Show(Translation.GetResStringValue("OCRTIME"), Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
         }
 
