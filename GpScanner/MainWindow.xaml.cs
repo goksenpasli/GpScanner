@@ -81,11 +81,17 @@ namespace GpScanner
         private void MW_ContentRendered(object sender, EventArgs e)
         {
             WindowExtensions.SystemMenu(this);
+            if (Settings.Default.IsFirstRun)
+            {
+                WindowExtensions.OpenSettings.Execute(null);
+                Settings.Default.IsFirstRun = false;
+            }
             if (Environment.GetCommandLineArgs().Length > 1)
             {
                 TwainCtrl.AddFiles(Environment.GetCommandLineArgs(), TwainCtrl.DecodeHeight);
             }
-            if (StillImageHelper.ShouldScan)
+
+            if (StillImageHelper.FirstLanuchScan)
             {
                 switch (Settings.Default.ButtonScanMode)
                 {
@@ -98,6 +104,23 @@ namespace GpScanner
                         break;
                 }
             }
+
+            StillImageHelper.StartServer(msg =>
+            {
+                if (msg.StartsWith(StillImageHelper.DEVICE_PREFIX, StringComparison.InvariantCulture))
+                {
+                    switch (Settings.Default.ButtonScanMode)
+                    {
+                        case 0 when TwainCtrl.ScanImage.CanExecute(null):
+                            Dispatcher.Invoke(() => TwainCtrl.ScanImage.Execute(null));
+                            break;
+
+                        case 1 when TwainCtrl.FastScanImage.CanExecute(null):
+                            Dispatcher.Invoke(() => TwainCtrl.FastScanImage.Execute(null));
+                            break;
+                    }
+                }
+            });
         }
 
         private void QrListBox_Drop(object sender, DragEventArgs e)
@@ -176,6 +199,7 @@ namespace GpScanner
                 _ = MessageBox.Show("Bazı Görevler Çalışıyor Bitmesini Bekleyin.");
                 e.Cancel = true;
             }
+            StillImageHelper.KillServer();
         }
     }
 }

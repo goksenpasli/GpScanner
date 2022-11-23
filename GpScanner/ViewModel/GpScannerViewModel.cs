@@ -312,7 +312,7 @@ namespace GpScanner.ViewModel
             get
             {
                 using WindowsIdentity identity = WindowsIdentity.GetCurrent();
-                WindowsPrincipal principal = new WindowsPrincipal(identity);
+                WindowsPrincipal principal = new(identity);
                 return principal.IsInRole(WindowsBuiltInRole.Administrator);
             }
         }
@@ -1093,7 +1093,7 @@ namespace GpScanner.ViewModel
 
         private void OnTick(object sender, EventArgs e)
         {
-            if (StillImageHelper.ShouldScan)
+            if (StillImageHelper.FirstLanuchScan)
             {
                 TimerFold();
                 return;

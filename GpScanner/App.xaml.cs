@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using GpScanner.ViewModel;
 
@@ -15,7 +18,24 @@ namespace GpScanner
             {
                 if (arg.StartsWith(StillImageHelper.DEVICE_PREFIX, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    StillImageHelper.ShouldScan = true;
+                    IEnumerable<Process> processes = StillImageHelper.GetAllGPScannerProcess();
+                    if (processes.Count() == 0)
+                    {
+                        StillImageHelper.FirstLanuchScan = true;
+                        return;
+                    }
+                    if (processes.Count() > 0)
+                    {
+                        StillImageHelper.FirstLanuchScan = false;
+                        foreach (Process process in processes)
+                        {
+                            StillImageHelper.ActivateProcess(process);
+                            if (StillImageHelper.SendMessage(process, StillImageHelper.DEVICE_PREFIX))
+                            {
+                                Environment.Exit(0);
+                            }
+                        }
+                    }
                 }
             }
         }
