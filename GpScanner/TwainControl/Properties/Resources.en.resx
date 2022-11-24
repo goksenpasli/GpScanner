@@ -475,4 +475,7 @@ TO FILE</value>
   <data name="LOAD" xml:space="preserve">
     <value>LOAD</value>
   </data>
+  <data name="NOPROFILE" xml:space="preserve">
+    <value>NO PROFILE SELECTED</value>
+  </data>
 </root>

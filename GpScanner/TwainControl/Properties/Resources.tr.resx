@@ -481,4 +481,7 @@ BELGE EKLE</value>
   <data name="LOAD" xml:space="preserve">
     <value>YÜKLE</value>
   </data>
+  <data name="NOPROFILE" xml:space="preserve">
+    <value>PROFİL SEÇİLMEDİ</value>
+  </data>
 </root>

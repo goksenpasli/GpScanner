@@ -293,6 +293,9 @@ RELIER</value>
   <data name="NONE" xml:space="preserve">
     <value>RIEN</value>
   </data>
+  <data name="NOPROFILE" xml:space="preserve">
+    <value>AUCUN PROFIL SÉLECTIONNÉ</value>
+  </data>
   <data name="OCR" xml:space="preserve">
     <value>ROC</value>
   </data>

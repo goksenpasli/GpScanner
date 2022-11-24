@@ -18,6 +18,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Extensions;component/Themes/Skin.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
             <LinearGradientBrush x:Key="Colorfull" PresentationOptions:Freeze="true" StartPoint="0,0.5" EndPoint="1,0.5">

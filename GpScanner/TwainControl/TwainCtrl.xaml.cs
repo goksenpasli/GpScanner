@@ -313,6 +313,7 @@ namespace TwainControl
             {
                 Settings.Default.Profile.Remove(parameter as string);
                 Settings.Default.DefaultProfile = null;
+                Settings.Default.UseSelectedProfile = false;
                 Settings.Default.Save();
                 Settings.Default.Reload();
             }, parameter => true);
@@ -461,7 +462,7 @@ namespace TwainControl
                 BitmapSource image = Clipboard.GetImage();
                 if (image != null)
                 {
-                    BitmapFrame bitmapFrame = GenerateBitmapFrame(Clipboard.GetImage());
+                    BitmapFrame bitmapFrame = GenerateBitmapFrame(image);
                     bitmapFrame.Freeze();
                     ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
                     Scanner?.Resimler.Add(scannedImage);
@@ -1210,6 +1211,14 @@ namespace TwainControl
             {
                 Scanner.DetectEmptyPage = false;
                 Scanner.Duplex = false;
+            }
+            if (e.PropertyName is "UseSelectedProfile" && Settings.Default.UseSelectedProfile)
+            {
+                if (string.IsNullOrEmpty(Scanner.SelectedProfile))
+                {
+                    Settings.Default.UseSelectedProfile = false;
+                    _ = MessageBox.Show(Translation.GetResStringValue("NOPROFILE"), Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                }
             }
             Settings.Default.Save();
         }

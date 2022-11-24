@@ -293,6 +293,9 @@
   <data name="NONE" xml:space="preserve">
     <value>لا أحد</value>
   </data>
+  <data name="NOPROFILE" xml:space="preserve">
+    <value>لم يتم تحديد ملف شخصي</value>
+  </data>
   <data name="OCR" xml:space="preserve">
     <value>التعرف الضوئي على الحروف</value>
   </data>
