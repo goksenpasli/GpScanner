@@ -22,22 +22,25 @@ namespace GpScanner.ViewModel
 
             Oku = new RelayCommand<object>(parameter =>
             {
-                synthesizer.SelectVoice(OkumaDili);
-                if (synthesizer.State == SynthesizerState.Speaking)
+                if (parameter is string metin)
                 {
-                    synthesizer.Pause();
-                    return;
+                    synthesizer.SelectVoice(OkumaDili);
+                    if (synthesizer.State == SynthesizerState.Speaking)
+                    {
+                        synthesizer.Pause();
+                        return;
+                    }
+                    if (synthesizer.State == SynthesizerState.Paused)
+                    {
+                        synthesizer.Resume();
+                        return;
+                    }
+                    if (synthesizer.State == SynthesizerState.Ready)
+                    {
+                        _ = synthesizer.SpeakAsync(metin);
+                    }
                 }
-                if (synthesizer.State == SynthesizerState.Paused)
-                {
-                    synthesizer.Resume();
-                    return;
-                }
-                if (synthesizer.State == SynthesizerState.Ready)
-                {
-                    _ = synthesizer.SpeakAsync(Çeviri);
-                }
-            }, parameter => !string.IsNullOrEmpty(Çeviri) && !string.IsNullOrEmpty(OkumaDili));
+            }, parameter => !string.IsNullOrEmpty(OkumaDili));
         }
 
         public string Çeviri

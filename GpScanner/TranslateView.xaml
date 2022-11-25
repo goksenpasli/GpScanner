@@ -75,6 +75,30 @@
             <Diller:DictionaryEntry Key="Cymraeg" Value="cy" />
             <Diller:DictionaryEntry Key="ייִדיש" Value="yi" />
         </Diller:ArrayList>
+        <Style x:Key="ToggleButtonPlayPauseStyle"
+            x:Shared="False"
+            TargetType="{x:Type ToggleButton}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=Self}}" Value="true">
+                    <Setter Property="Content">
+                        <Setter.Value>
+                            <Viewbox>
+                                <TextBlock FontFamily="Webdings" FontSize="16" Text=";" />
+                            </Viewbox>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=Self}}" Value="false">
+                    <Setter Property="Content">
+                        <Setter.Value>
+                            <Viewbox>
+                                <TextBlock FontFamily="Webdings" FontSize="16" Text="4" />
+                            </Viewbox>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -87,7 +111,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition />
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="72" />
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0"
             HorizontalAlignment="Center"
@@ -117,46 +141,31 @@
                 </ItemsPanelTemplate>
             </ComboBox.ItemsPanel>
         </ComboBox>
-        <StackPanel Grid.Row="1" Grid.Column="2"
-            Orientation="Horizontal">
-            <ToggleButton Command="{Binding TranslateViewModel.Oku}">
-                <ToggleButton.Style>
-                    <Style TargetType="ToggleButton">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=Self}}" Value="true">
-                                <Setter Property="Content">
-                                    <Setter.Value>
-                                        <TextBlock FontFamily="Webdings" FontSize="16" Text=";" />
-                                    </Setter.Value>
-                                </Setter>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=Self}}" Value="false">
-                                <Setter Property="Content">
-                                    <Setter.Value>
-                                        <TextBlock FontFamily="Webdings" FontSize="16" Text="4" />
-                                    </Setter.Value>
-                                </Setter>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ToggleButton.Style>
-            </ToggleButton>
-            <ComboBox Width="64"
-                ItemsSource="{Binding TranslateViewModel.TtsDilleri}"
-                SelectedItem="{Binding TranslateViewModel.OkumaDili}" />
-        </StackPanel>
-        <Extensions:ButtonedTextBox Grid.Row="2" Grid.ColumnSpan="3"
+        <ComboBox Grid.Row="1" Grid.Column="2"
+            ItemsSource="{Binding TranslateViewModel.TtsDilleri}"
+            SelectedItem="{Binding TranslateViewModel.OkumaDili}" />
+        <Extensions:ButtonedTextBox x:Name="BtnTxtMetin"
+            Grid.Row="2" Grid.ColumnSpan="2"
             VerticalContentAlignment="Top"
             AcceptsReturn="True" CharacterCasing="Normal" OpenButtonVisibility="Collapsed"
             ScrollViewer.VerticalScrollBarVisibility="Auto"
             Text="{Binding TranslateViewModel.Metin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             TextWrapping="Wrap" />
-        <Extensions:ButtonedTextBox Grid.Row="3" Grid.ColumnSpan="3"
+        <ToggleButton Grid.Row="2" Grid.Column="2"
+            Command="{Binding TranslateViewModel.Oku}"
+            CommandParameter="{Binding ElementName=BtnTxtMetin, Path=Text}"
+            Style="{StaticResource ToggleButtonPlayPauseStyle}" />
+        <Extensions:ButtonedTextBox x:Name="BtnTxtÇeviri"
+            Grid.Row="3" Grid.ColumnSpan="2"
             VerticalContentAlignment="Top"
             AcceptsReturn="True" CharacterCasing="Normal" IsReadOnly="True"
             OpenButtonVisibility="Collapsed" ScrollViewer.VerticalScrollBarVisibility="Auto"
             Text="{Binding TranslateViewModel.Çeviri}"
             TextWrapping="Wrap" />
+        <ToggleButton Grid.Row="3" Grid.Column="2"
+            Command="{Binding TranslateViewModel.Oku}"
+            CommandParameter="{Binding ElementName=BtnTxtÇeviri, Path=Text}"
+            Style="{StaticResource ToggleButtonPlayPauseStyle}" />
         <Button Grid.Row="4" Grid.ColumnSpan="3"
             Command="{Binding TranslateViewModel.Sıfırla}"
             Content="{twainctrl:Loc RESET}" />
