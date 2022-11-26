@@ -10,13 +10,13 @@ namespace TwainWpf.TwainNative
         /// </summary>
         Default = 0,
 
+        Portrait = Default,
+
         Rotate90 = 1,
 
         Rotate180 = 2,
 
         Rotate270 = 3,
-
-        Portrait = Default,
 
         Landscape = Rotate270,
 

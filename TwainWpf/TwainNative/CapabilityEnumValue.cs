@@ -22,11 +22,7 @@ namespace TwainWpf.TwainNative
 
 #pragma warning disable 169
 
-        /// <summary>
-        /// The start of the array values
-        /// </summary>
-        private readonly byte _valueStart;
-
+        
 #pragma warning restore 169
     }
 }

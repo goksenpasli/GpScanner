@@ -28,7 +28,7 @@ namespace TwainWpf
             }
         }
 
-        public Identity SourceId { get; private set; }
+        public Identity SourceId { get; }
 
         public bool SupportsDuplex
         {
@@ -391,8 +391,7 @@ namespace TwainWpf
             {
                 if (scanSettings.UseFilmScanner.HasValue && SupportsFilmScanner)
                 {
-                    _ = scanSettings.UseFilmScanner.Value == true
-                        ? Capability.SetBasicCapability(Capabilities.Lightpath, (ushort)Lightpath.Transmissive, TwainType.UInt16, _applicationId, SourceId)
+                    _ = scanSettings.UseFilmScanner.Value ? Capability.SetBasicCapability(Capabilities.Lightpath, (ushort)Lightpath.Transmissive, TwainType.UInt16, _applicationId, SourceId)
                         : Capability.SetBasicCapability(Capabilities.Lightpath, (ushort)Lightpath.Reflective, TwainType.UInt16, _applicationId, SourceId);
                 }
             }

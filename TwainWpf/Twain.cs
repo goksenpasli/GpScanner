@@ -13,14 +13,8 @@ namespace TwainWpf
             TransferImage += delegate { };
 
             _dataSourceManager = new DataSourceManager(DataSourceManager.DefaultApplicationId, messageHook);
-            _dataSourceManager.ScanningComplete += delegate (object sender, ScanningCompleteEventArgs args)
-            {
-                ScanningComplete(this, args);
-            };
-            _dataSourceManager.TransferImage += delegate (object sender, TransferImageEventArgs args)
-            {
-                TransferImage(this, args);
-            };
+            _dataSourceManager.ScanningComplete += (object sender, ScanningCompleteEventArgs args) => ScanningComplete(this, args);
+            _dataSourceManager.TransferImage += (object sender, TransferImageEventArgs args) => TransferImage(this, args);
         }
 
         /// <summary>

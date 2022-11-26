@@ -23,7 +23,7 @@ namespace TwainWpf
             private set
             {
                 _bottom = value;
-                OnPropertyChanged("Bottom");
+                OnPropertyChanged(nameof(Bottom));
             }
         }
 
@@ -34,7 +34,7 @@ namespace TwainWpf
             private set
             {
                 _left = value;
-                OnPropertyChanged("Left");
+                OnPropertyChanged(nameof(Left));
             }
         }
 
@@ -45,7 +45,7 @@ namespace TwainWpf
             private set
             {
                 _right = value;
-                OnPropertyChanged("Right");
+                OnPropertyChanged(nameof(Right));
             }
         }
 
@@ -56,7 +56,7 @@ namespace TwainWpf
             private set
             {
                 _top = value;
-                OnPropertyChanged("Top");
+                OnPropertyChanged(nameof(Top));
             }
         }
 
@@ -67,7 +67,7 @@ namespace TwainWpf
             set
             {
                 _units = value;
-                OnPropertyChanged("Units");
+                OnPropertyChanged(nameof(Units));
             }
         }
 

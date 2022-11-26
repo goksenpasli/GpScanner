@@ -24,7 +24,7 @@ namespace TwainWpf
                 if (value != _automaticBorderDetection)
                 {
                     _automaticBorderDetection = value;
-                    OnPropertyChanged("AutomaticBorderDetection");
+                    OnPropertyChanged(nameof(AutomaticBorderDetection));
                 }
             }
         }
@@ -42,7 +42,7 @@ namespace TwainWpf
                 if (value != _automaticDeskew)
                 {
                     _automaticDeskew = value;
-                    OnPropertyChanged("AutomaticDeskew");
+                    OnPropertyChanged(nameof(AutomaticDeskew));
                 }
             }
         }
@@ -60,7 +60,7 @@ namespace TwainWpf
                 if (value != _automaticRotate)
                 {
                     _automaticRotate = value;
-                    OnPropertyChanged("AutomaticRotate");
+                    OnPropertyChanged(nameof(AutomaticRotate));
                 }
             }
         }
@@ -78,7 +78,7 @@ namespace TwainWpf
                 if (value != _flipSideRotation)
                 {
                     _flipSideRotation = value;
-                    OnPropertyChanged("FlipSideRotation");
+                    OnPropertyChanged(nameof(FlipSideRotation));
                 }
             }
         }

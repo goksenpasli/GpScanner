@@ -37,7 +37,7 @@ namespace TwainWpf
                 if (value != _orientation)
                 {
                     _orientation = value;
-                    OnPropertyChanged("Orientation");
+                    OnPropertyChanged(nameof(Orientation));
                 }
             }
         }

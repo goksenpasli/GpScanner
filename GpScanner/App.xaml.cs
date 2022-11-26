@@ -19,12 +19,12 @@ namespace GpScanner
                 if (arg.StartsWith(StillImageHelper.DEVICE_PREFIX, StringComparison.InvariantCultureIgnoreCase))
                 {
                     IEnumerable<Process> processes = StillImageHelper.GetAllGPScannerProcess();
-                    if (processes.Count() == 0)
+                    if (!processes.Any())
                     {
                         StillImageHelper.FirstLanuchScan = true;
                         return;
                     }
-                    if (processes.Count() > 0)
+                    if (processes.Any())
                     {
                         StillImageHelper.FirstLanuchScan = false;
                         foreach (Process process in processes)

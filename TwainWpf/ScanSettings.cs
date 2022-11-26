@@ -36,7 +36,7 @@ namespace TwainWpf
                 if (value != _abortWhenNoPaperDetectable)
                 {
                     _abortWhenNoPaperDetectable = value;
-                    OnPropertyChanged("AbortWhenNoPaperDetectable");
+                    OnPropertyChanged(nameof(AbortWhenNoPaperDetectable));
                 }
             }
         }
@@ -50,7 +50,7 @@ namespace TwainWpf
                 if (value != _area)
                 {
                     _area = value;
-                    OnPropertyChanged("Area");
+                    OnPropertyChanged(nameof(Area));
                 }
             }
         }
@@ -68,7 +68,7 @@ namespace TwainWpf
                 if (value != _page)
                 {
                     _page = value;
-                    OnPropertyChanged("Page");
+                    OnPropertyChanged(nameof(Page));
                 }
             }
         }
@@ -85,7 +85,7 @@ namespace TwainWpf
                 if (value != _resolution)
                 {
                     _resolution = value;
-                    OnPropertyChanged("Resolution");
+                    OnPropertyChanged(nameof(Resolution));
                 }
             }
         }
@@ -103,7 +103,7 @@ namespace TwainWpf
                 if (value != _rotation)
                 {
                     _rotation = value;
-                    OnPropertyChanged("Rotation");
+                    OnPropertyChanged(nameof(Rotation));
                 }
             }
         }
@@ -167,7 +167,7 @@ namespace TwainWpf
                 if (value != _transferCount)
                 {
                     _transferCount = value;
-                    OnPropertyChanged("TransferCount");
+                    OnPropertyChanged(nameof(TransferCount));
                     OnPropertyChanged("ShouldTransferAllPages");
                 }
             }
@@ -186,7 +186,7 @@ namespace TwainWpf
                 if (value != _useAutoFeeder)
                 {
                     _useAutoFeeder = value;
-                    OnPropertyChanged("UseAutoFeeder");
+                    OnPropertyChanged(nameof(UseAutoFeeder));
                 }
             }
         }
@@ -203,7 +203,7 @@ namespace TwainWpf
                 if (value != _useAutoScanCache)
                 {
                     _useAutoScanCache = value;
-                    OnPropertyChanged("UseAutoScanCache");
+                    OnPropertyChanged(nameof(UseAutoScanCache));
                 }
             }
         }
@@ -220,7 +220,7 @@ namespace TwainWpf
                 if (value != _useDocumentFeeder)
                 {
                     _useDocumentFeeder = value;
-                    OnPropertyChanged("UseDocumentFeeder");
+                    OnPropertyChanged(nameof(UseDocumentFeeder));
                 }
             }
         }
@@ -237,7 +237,7 @@ namespace TwainWpf
                 if (value != _useDuplex)
                 {
                     _useDuplex = value;
-                    OnPropertyChanged("UseDuplex");
+                    OnPropertyChanged(nameof(UseDuplex));
                 }
             }
         }
@@ -254,7 +254,7 @@ namespace TwainWpf
                 if (value != _useFilmScanner)
                 {
                     _useFilmScanner = value;
-                    OnPropertyChanged("UseFilmScanner");
+                    OnPropertyChanged(nameof(UseFilmScanner));
                 }
             }
         }

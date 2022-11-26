@@ -371,7 +371,7 @@ namespace PdfViewer
                         byte[] buffer = Pdf2Png.Convert(stream, page, dpi);
                         if (buffer != null)
                         {
-                            MemoryStream ms = new MemoryStream(buffer);
+                            MemoryStream ms = new(buffer);
                             buffer = null;
                             GC.Collect();
                             return ms;

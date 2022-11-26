@@ -16,10 +16,5 @@ namespace TwainWpf.TwainNative
         public TwainType TwainType { get; set; }
 
         public int ItemCount { get; set; }
-
-        /// <summary>
-        /// The start of the array values
-        /// </summary>
-        private readonly byte _valueStart;
     }
 }

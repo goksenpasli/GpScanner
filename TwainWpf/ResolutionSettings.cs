@@ -52,7 +52,7 @@ namespace TwainWpf
                 if (value != _colourSettings)
                 {
                     _colourSettings = value;
-                    OnPropertyChanged("ColourSetting");
+                    OnPropertyChanged(nameof(ColourSetting));
                 }
             }
         }
@@ -69,7 +69,7 @@ namespace TwainWpf
                 if (value != _dpi)
                 {
                     _dpi = value;
-                    OnPropertyChanged("Dpi");
+                    OnPropertyChanged(nameof(Dpi));
                 }
             }
         }

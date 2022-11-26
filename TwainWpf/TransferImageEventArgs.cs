@@ -13,6 +13,6 @@ namespace TwainWpf
 
         public bool ContinueScanning { get; set; }
 
-        public Bitmap Image { get; private set; }
+        public Bitmap Image { get; }
     }
 }

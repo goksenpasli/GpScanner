@@ -996,21 +996,24 @@ namespace TwainControl
                             }
                         case ".xps":
                             {
-                                using XpsDocument xpsDoc = new(item, FileAccess.Read);
-                                FixedDocumentSequence docSeq = xpsDoc.GetFixedDocumentSequence();
+                                FixedDocumentSequence docSeq = null;
                                 DocumentPage docPage = null;
-                                BitmapFrame bitmapframe = null;
-                                byte[] data = null;
+                                Dispatcher.Invoke(() =>
+                                {
+                                    using XpsDocument xpsDoc = new(item, FileAccess.Read);
+                                    docSeq = xpsDoc.GetFixedDocumentSequence();
+                                });
                                 try
                                 {
                                     for (int i = 0; i < docSeq.DocumentPaginator.PageCount; i++)
                                     {
+                                        byte[] data = null;
                                         Dispatcher.Invoke(() =>
                                         {
                                             docPage = docSeq.DocumentPaginator.GetPage(i);
                                             RenderTargetBitmap rtb = new((int)docPage.Size.Width, (int)docPage.Size.Height, 96, 96, PixelFormats.Default);
                                             rtb.Render(docPage.Visual);
-                                            bitmapframe = BitmapFrame.Create(rtb);
+                                            BitmapFrame bitmapframe = BitmapFrame.Create(rtb);
                                             data = bitmapframe.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality);
                                             docPage = null;
                                         });
@@ -1030,7 +1033,6 @@ namespace TwainControl
                                         bitmapFrame = null;
                                         image = null;
                                         thumbimage = null;
-                                        bitmapframe = null;
                                         data = null;
                                         memoryStream = null;
                                     }

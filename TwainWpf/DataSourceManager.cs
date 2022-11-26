@@ -74,7 +74,7 @@ namespace TwainWpf
 
         public event EventHandler<TransferImageEventArgs> TransferImage;
 
-        public Identity ApplicationId { get; private set; }
+        public Identity ApplicationId { get; }
 
         public DataSource DataSource { get; private set; }
 
