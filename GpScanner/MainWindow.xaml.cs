@@ -173,7 +173,7 @@ namespace GpScanner
                         if (TwainCtrl?.Scanner?.Resimler?.Count > 0 && !string.IsNullOrEmpty(Settings.Default.DefaultTtsLang))
                         {
                             Ocr.Ocr.ocrcancellationToken = new CancellationTokenSource();
-                            foreach (ScannedImage scannedimage in TwainCtrl.Scanner.Resimler)
+                            foreach (ScannedImage scannedimage in TwainCtrl.Scanner.Resimler.ToList())
                             {
                                 ObservableCollection<Ocr.OcrData> ocrdata = await Ocr.Ocr.OcrAsyc(scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg), Settings.Default.DefaultTtsLang);
                                 ViewModel.ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = TwainCtrl.Scanner.PdfFilePath, FileContent = string.Join(" ", ocrdata.Select(z => z.Text)), QrData = GpScannerViewModel.GetImageBarcodeResult(scannedimage.Resim)?.Text });

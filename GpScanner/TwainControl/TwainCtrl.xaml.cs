@@ -891,16 +891,16 @@ namespace TwainControl
 
         public void AddFiles(string[] filenames, int decodeheight)
         {
-            foreach (string item in filenames)
+            SynchronizationContext uiContext = SynchronizationContext.Current;
+            fileloadtask = Task.Run(async () =>
             {
-                SynchronizationContext uiContext = SynchronizationContext.Current;
-                switch (Path.GetExtension(item.ToLower()))
+                foreach (string item in filenames)
                 {
-                    case ".pdf":
-                        {
-                            byte[] filedata = null;
-                            fileloadtask = Task.Run(async () =>
+                    switch (Path.GetExtension(item.ToLower()))
+                    {
+                        case ".pdf":
                             {
+                                byte[] filedata = null;
                                 try
                                 {
                                     filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(item);
@@ -913,14 +913,11 @@ namespace TwainControl
                                 catch (Exception)
                                 {
                                 }
-                            });
-                            break;
-                        }
-                    case ".eyp":
-                        {
-                            byte[] filedata = null;
-                            fileloadtask = Task.Run(async () =>
+                                break;
+                            }
+                        case ".eyp":
                             {
+                                byte[] filedata = null;
                                 try
                                 {
                                     string eyppdfpath = EypMainPdfExtract(item);
@@ -934,21 +931,18 @@ namespace TwainControl
                                 catch (Exception)
                                 {
                                 }
-                            });
-                            break;
-                        }
+                                break;
+                            }
 
-                    case ".jpg":
-                    case ".jpeg":
-                    case ".jfif":
-                    case ".jfıf":
-                    case ".jpe":
-                    case ".png":
-                    case ".gif":
-                    case ".gıf":
-                    case ".bmp":
-                        {
-                            fileloadtask = Task.Run(() =>
+                        case ".jpg":
+                        case ".jpeg":
+                        case ".jfif":
+                        case ".jfıf":
+                        case ".jpe":
+                        case ".png":
+                        case ".gif":
+                        case ".gıf":
+                        case ".bmp":
                             {
                                 try
                                 {
@@ -965,13 +959,10 @@ namespace TwainControl
                                 catch (Exception)
                                 {
                                 }
-                            });
-                            break;
-                        }
+                                break;
+                            }
 
-                    case ".tıf" or ".tiff" or ".tıff" or ".tif":
-                        {
-                            fileloadtask = Task.Run(() =>
+                        case ".tıf" or ".tiff" or ".tıff" or ".tif":
                             {
                                 try
                                 {
@@ -1001,18 +992,15 @@ namespace TwainControl
                                 catch (Exception)
                                 {
                                 }
-                            });
-                            break;
-                        }
-                    case ".xps":
-                        {
-                            using XpsDocument xpsDoc = new(item, FileAccess.Read);
-                            FixedDocumentSequence docSeq = xpsDoc.GetFixedDocumentSequence();
-                            DocumentPage docPage = null;
-                            BitmapFrame bitmapframe = null;
-                            byte[] data = null;
-                            fileloadtask = Task.Run(() =>
+                                break;
+                            }
+                        case ".xps":
                             {
+                                using XpsDocument xpsDoc = new(item, FileAccess.Read);
+                                FixedDocumentSequence docSeq = xpsDoc.GetFixedDocumentSequence();
+                                DocumentPage docPage = null;
+                                BitmapFrame bitmapframe = null;
+                                byte[] data = null;
                                 try
                                 {
                                     for (int i = 0; i < docSeq.DocumentPaginator.PageCount; i++)
@@ -1050,11 +1038,11 @@ namespace TwainControl
                                 catch (Exception)
                                 {
                                 }
-                            });
-                            break;
-                        }
+                                break;
+                            }
+                    }
                 }
-            }
+            });
         }
 
         public void Dispose()
@@ -1480,6 +1468,11 @@ namespace TwainControl
 
         private void ListBox_Drop(object sender, DragEventArgs e)
         {
+            if (fileloadtask?.IsCompleted == false)
+            {
+                _ = MessageBox.Show("İşlem Devam Ediyor. Bitmesini Bekleyin.");
+                return;
+            }
             string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
             if (droppedfiles?.Length > 0)
             {
@@ -1651,7 +1644,7 @@ namespace TwainControl
             }
             if (e.PropertyName is "AllImageRotationAngle" && AllImageRotationAngle != 0)
             {
-                foreach (ScannedImage image in Scanner.Resimler)
+                foreach (ScannedImage image in Scanner.Resimler.ToList())
                 {
                     image.Resim = image.Resim.RotateImage(AllImageRotationAngle, 0.1);
                 }
