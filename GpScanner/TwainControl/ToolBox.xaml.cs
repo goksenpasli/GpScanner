@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Threading.Tasks;
@@ -74,6 +75,29 @@ namespace TwainControl
         public static Scanner Scanner { get; set; }
 
         public ICommand SaveImage { get; }
+
+        public static List<CroppedBitmap> CropImageToList(ImageSource imageSource, int en, int boy)
+        {
+            List<CroppedBitmap> croppedBitmaps = new();
+            BitmapSource image = (BitmapSource)imageSource;
+            for (int i = 0; i < en; i++)
+            {
+                for (int j = 0; j < boy; j++)
+                {
+                    int x = i * image.PixelWidth / en;
+                    int y = j * image.PixelHeight / boy;
+                    int width = image.PixelWidth / en;
+                    int height = image.PixelHeight / boy;
+                    Int32Rect sourceRect = new(x, y, width, height);
+                    if (sourceRect.HasArea)
+                    {
+                        CroppedBitmap croppedBitmap = new(image, sourceRect);
+                        croppedBitmaps.Add(croppedBitmap);
+                    }
+                }
+            }
+            return croppedBitmaps;
+        }
 
         protected virtual void OnPropertyChanged(string propertyName = null)
         {

@@ -23,6 +23,7 @@ using System.Xml.Linq;
 using Extensions;
 using Microsoft.Win32;
 using Ocr;
+using PdfSharp.Pdf;
 using TwainControl.Properties;
 using TwainWpf;
 using TwainWpf.TwainNative;
@@ -341,26 +342,32 @@ namespace TwainControl
 
             SplitImage = new RelayCommand<object>(parameter =>
             {
-                BitmapSource image = (BitmapSource)Scanner.CroppedImage;
-                _ = Directory.CreateDirectory($@"{PdfGeneration.GetSaveFolder()}\{Translation.GetResStringValue("SPLIT")}");
-                for (int i = 0; i < Scanner.EnAdet; i++)
+                string savefolder = $@"{PdfGeneration.GetSaveFolder()}\{Translation.GetResStringValue("SPLIT")}";
+                if (!Directory.Exists(savefolder))
                 {
-                    for (int j = 0; j < Scanner.BoyAdet; j++)
-                    {
-                        int x = i * image.PixelWidth / Scanner.EnAdet;
-                        int y = j * image.PixelHeight / Scanner.BoyAdet;
-                        int width = image.PixelWidth / Scanner.EnAdet;
-                        int height = image.PixelHeight / Scanner.BoyAdet;
-                        Int32Rect sourceRect = new(x, y, width, height);
-                        if (sourceRect.HasArea)
-                        {
-                            CroppedBitmap croppedBitmap = new(image, sourceRect);
-                            File.WriteAllBytes($@"{PdfGeneration.GetSaveFolder()}\{Translation.GetResStringValue("SPLIT")}".SetUniqueFile(Translation.GetResStringValue("SPLIT"), "jpg"), croppedBitmap.ToTiffJpegByteArray(Format.Jpg));
-                        }
-                    }
+                    _ = Directory.CreateDirectory(savefolder);
                 }
-                WebAdreseGit.Execute($@"{PdfGeneration.GetSaveFolder()}\{Translation.GetResStringValue("SPLIT")}");
+                foreach (CroppedBitmap croppedBitmap in ToolBox.CropImageToList(Scanner.CroppedImage, Scanner.EnAdet, Scanner.BoyAdet))
+                {
+                    File.WriteAllBytes(savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "jpg"), croppedBitmap.ToTiffJpegByteArray(Format.Jpg));
+                }
+                WebAdreseGit.Execute(savefolder);
             }, parameter => Scanner.AutoSave && Scanner.CroppedImage is not null && (Scanner.EnAdet > 1 || Scanner.BoyAdet > 1));
+
+            SplitAllImage = new RelayCommand<object>(parameter =>
+            {
+                string savefolder = $@"{PdfGeneration.GetSaveFolder()}\{Translation.GetResStringValue("SPLIT")}";
+                if (!Directory.Exists(savefolder))
+                {
+                    _ = Directory.CreateDirectory(savefolder);
+                }
+                List<ScannedImage> listcroppedimages = Scanner.Resimler.Where(z => z.Seçili).SelectMany(scannedimage => ToolBox.CropImageToList(scannedimage.Resim, 2, 1).Select(croppedBitmap => new ScannedImage { Resim = BitmapFrame.Create(croppedBitmap) })).ToList();
+                PdfDocument pdfdocument = PdfGeneration.GeneratePdf(listcroppedimages, Format.Jpg, null, 80, null);
+                pdfdocument.Save(savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "pdf"));
+                WebAdreseGit.Execute(savefolder);
+                listcroppedimages = null;
+                pdfdocument = null;
+            }, parameter => Scanner.AutoSave && Scanner?.Resimler?.Count(z => z.Seçili) > 0);
 
             ResetCroppedImage = new RelayCommand<object>(parameter => ResetCropMargin(), parameter => Scanner.CroppedImage is not null);
 
@@ -784,6 +791,8 @@ namespace TwainControl
 
         public ICommand SetWatermark { get; }
 
+        public ICommand SplitAllImage { get; }
+
         public ICommand SplitImage { get; }
 
         public ICommand Tersiniİşaretle { get; }
@@ -906,7 +915,7 @@ namespace TwainControl
                                     filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(item);
                                     if (PdfGeneration.IsValidPdfFile(filedata.Take(4)))
                                     {
-                                        await AddPdfFile(filedata, decodeheight, uiContext);
+                                        await AddPdfFile(filedata, uiContext);
                                     }
                                     filedata = null;
                                 }
@@ -924,7 +933,7 @@ namespace TwainControl
                                     filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(eyppdfpath);
                                     if (PdfGeneration.IsValidPdfFile(filedata.Take(4)))
                                     {
-                                        await AddPdfFile(filedata, decodeheight, uiContext);
+                                        await AddPdfFile(filedata, uiContext);
                                     }
                                     filedata = null;
                                 }
@@ -1156,7 +1165,7 @@ namespace TwainControl
             return null;
         }
 
-        private async Task AddPdfFile(byte[] filedata, int decodeheight, SynchronizationContext uiContext)
+        private async Task AddPdfFile(byte[] filedata, SynchronizationContext uiContext)
         {
             double totalpagecount = await PdfViewer.PdfViewer.PdfPageCountAsync(filedata);
             for (int i = 1; i <= totalpagecount; i++)

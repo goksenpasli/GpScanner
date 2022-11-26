@@ -1,14 +1,14 @@
 ﻿<Application x:Class="GpScanner.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
-             xmlns:Controls="clr-namespace:Extensions.Controls;assembly=Extensions"
-             xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
-             xmlns:Converter="clr-namespace:GpScanner.Converter"
-             xmlns:properties="clr-namespace:GpScanner.Properties"
-             xmlns:ViewModel="clr-namespace:GpScanner.ViewModel"
-             xmlns:PdfViewer="clr-namespace:PdfViewer;assembly=PdfViewer"
-             Startup="Application_Startup" StartupUri="MainWindow.xaml">
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Controls="clr-namespace:Extensions.Controls;assembly=Extensions"
+    xmlns:Converter="clr-namespace:GpScanner.Converter"
+    xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
+    xmlns:PdfViewer="clr-namespace:PdfViewer;assembly=PdfViewer"
+    xmlns:ViewModel="clr-namespace:GpScanner.ViewModel"
+    xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+    xmlns:properties="clr-namespace:GpScanner.Properties"
+    Startup="Application_Startup" StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -237,8 +237,8 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <StackPanel Margin="1" Orientation="Horizontal">
-                        <UniformGrid Columns="3" DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType=ListBox}}">
+                    <StackPanel Margin="2" Orientation="Horizontal">
+                        <UniformGrid Columns="4" DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType=ListBox}}">
                             <Extensions:NumericUpDownControl Maximum="{Binding ElementName=PdfVwr, Path=ToplamSayfa}"
                                 Minimum="1" SmallChange="1"
                                 Value="{Binding SayfaBaşlangıç, UpdateSourceTrigger=PropertyChanged}" />
@@ -251,6 +251,16 @@
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                             <Binding Source="Shell32.dll" />
                                             <Binding Source="68" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                            </Button>
+                            <Button Command="{Binding RemoveSelectedPage}" CommandParameter="{Binding ElementName=PdfVwr}">
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="131" />
                                         </MultiBinding>
                                     </Image.Source>
                                 </Image>
@@ -277,7 +287,7 @@
                     </StackPanel>
                     <PdfViewer:PdfViewer x:Name="PdfVwr"
                         Grid.Row="1"
-                        AllowDrop="True"
+                        AllowDrop="True" AutoFitContent="True"
                         Dpi="{Binding DefaultThumbNailDpi, Source={x:Static properties:Settings.Default}}"
                         OpenButtonVisibility="Collapsed"
                         PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"

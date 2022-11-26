@@ -872,7 +872,7 @@
                         <Canvas x:Name="cnv" />
                     </Grid>
                 </DockPanel>
-                <Expander Height="580"
+                <Expander Height="605"
                     HorizontalAlignment="Left" VerticalAlignment="Bottom"
                     ExpandDirection="Up"
                     IsExpanded="{Binding Scanner.CropDialogExpanded}">

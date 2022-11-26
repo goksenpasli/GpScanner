@@ -56,7 +56,7 @@ namespace PdfViewer
         {
             PropertyChanged += PdfViewer_PropertyChanged;
             Unloaded += PdfViewer_Unloaded;
-
+            SizeChanged += PdfViewer_SizeChanged;
             DosyaAç = new RelayCommand<object>(parameter =>
             {
                 OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = "Pdf Dosyaları (*.pdf)|*.pdf" };
@@ -131,6 +131,20 @@ namespace PdfViewer
         {
             get => (double)GetValue(AngleProperty);
             set => SetValue(AngleProperty, value);
+        }
+
+        public bool AutoFitContent
+        {
+            get => autoFitContent;
+
+            set
+            {
+                if (autoFitContent != value)
+                {
+                    autoFitContent = value;
+                    OnPropertyChanged(nameof(AutoFitContent));
+                }
+            }
         }
 
         public Visibility ContextMenuVisibilityProperty
@@ -338,19 +352,23 @@ namespace PdfViewer
                     return await Task.Run(() =>
                     {
                         byte[] imagearray = Pdf2Png.Convert(pdffilestream, page, dpi);
-                        MemoryStream ms = new(imagearray);
-                        BitmapImage bitmap = new();
-                        bitmap.BeginInit();
-                        bitmap.CacheOption = BitmapCacheOption.None;
-                        bitmap.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.DelayCreation;
-                        bitmap.StreamSource = ms;
-                        bitmap.EndInit();
-                        bitmap.Freeze();
-                        pdffilestream = null;
-                        imagearray = null;
-                        ms = null;
-                        GC.Collect();
-                        return bitmap;
+                        if (imagearray is not null)
+                        {
+                            MemoryStream ms = new(imagearray);
+                            BitmapImage bitmap = new();
+                            bitmap.BeginInit();
+                            bitmap.CacheOption = BitmapCacheOption.None;
+                            bitmap.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.DelayCreation;
+                            bitmap.StreamSource = ms;
+                            bitmap.EndInit();
+                            bitmap.Freeze();
+                            pdffilestream = null;
+                            imagearray = null;
+                            ms = null;
+                            GC.Collect();
+                            return bitmap;
+                        }
+                        return null;
                     });
                 }
             }
@@ -500,6 +518,8 @@ namespace PdfViewer
 
         private ObservableCollection<ThumbClass> allPagesThumb;
 
+        private bool autoFitContent;
+
         private bool disposedValue;
 
         private Visibility dpiListVisibility = Visibility.Visible;
@@ -580,6 +600,14 @@ namespace PdfViewer
                 string pdfFilePath = pdfViewer.PdfFilePath;
                 Source = await ConvertToImgAsync(await ReadAllFileAsync(pdfFilePath), sayfa, pdfViewer.Dpi);
                 GC.Collect();
+            }
+        }
+
+        private void PdfViewer_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (AutoFitContent)
+            {
+                Resize.Execute(null);
             }
         }
 
