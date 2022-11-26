@@ -338,19 +338,23 @@ namespace PdfViewer
                     return await Task.Run(() =>
                     {
                         byte[] imagearray = Pdf2Png.Convert(pdffilestream, page, dpi);
-                        MemoryStream ms = new(imagearray);
-                        BitmapImage bitmap = new();
-                        bitmap.BeginInit();
-                        bitmap.CacheOption = BitmapCacheOption.None;
-                        bitmap.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.DelayCreation;
-                        bitmap.StreamSource = ms;
-                        bitmap.EndInit();
-                        bitmap.Freeze();
-                        pdffilestream = null;
-                        imagearray = null;
-                        ms = null;
-                        GC.Collect();
-                        return bitmap;
+                        if (imagearray is not null)
+                        {
+                            MemoryStream ms = new(imagearray);
+                            BitmapImage bitmap = new();
+                            bitmap.BeginInit();
+                            bitmap.CacheOption = BitmapCacheOption.None;
+                            bitmap.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.DelayCreation;
+                            bitmap.StreamSource = ms;
+                            bitmap.EndInit();
+                            bitmap.Freeze();
+                            pdffilestream = null;
+                            imagearray = null;
+                            ms = null;
+                            GC.Collect();
+                            return bitmap;
+                        }
+                        return null;
                     });
                 }
             }

@@ -21,6 +21,7 @@ using GpScanner.Properties;
 using Microsoft.Win32;
 using Ocr;
 using PdfSharp.Pdf;
+using PdfSharp.Pdf.IO;
 using TwainControl;
 using ZXing;
 using ZXing.Common;
@@ -199,6 +200,22 @@ namespace GpScanner.ViewModel
                     }
                 }
             }, parameter => SayfaBaşlangıç <= SayfaBitiş);
+
+            RemoveSelectedPage = new RelayCommand<object>(parameter =>
+            {
+                if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
+                {
+                    string path = pdfviewer.PdfFilePath;
+                    if (MessageBox.Show(Translation.GetResStringValue("DELETE"), Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                    {
+                        using PdfDocument inputDocument = PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Import);
+                        inputDocument.Pages.RemoveAt(pdfviewer.Sayfa - 1);
+                        inputDocument.Save(pdfviewer.PdfFilePath);
+                        pdfviewer.PdfFilePath = null;
+                        pdfviewer.PdfFilePath = path;
+                    }
+                }
+            }, parameter => parameter is PdfViewer.PdfViewer pdfviewer && pdfviewer.ToplamSayfa > 1);
 
             SavePatchProfile = new RelayCommand<object>(parameter =>
             {
@@ -659,6 +676,8 @@ namespace GpScanner.ViewModel
         public ICommand RegisterSti { get; }
 
         public ICommand RemovePatchProfile { get; }
+
+        public ICommand RemoveSelectedPage { get; }
 
         public ICommand SavePatchProfile { get; }
 

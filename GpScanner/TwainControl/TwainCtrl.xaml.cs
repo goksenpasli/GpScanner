@@ -356,6 +356,7 @@ namespace TwainControl
                         {
                             CroppedBitmap croppedBitmap = new(image, sourceRect);
                             File.WriteAllBytes($@"{PdfGeneration.GetSaveFolder()}\{Translation.GetResStringValue("SPLIT")}".SetUniqueFile(Translation.GetResStringValue("SPLIT"), "jpg"), croppedBitmap.ToTiffJpegByteArray(Format.Jpg));
+                            croppedBitmap = null;
                         }
                     }
                 }
