@@ -1640,7 +1640,7 @@ namespace TwainControl
             }
         }
 
-        private void TwainCtrl_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private async void TwainCtrl_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName is "SelectedCompressionProfile" && SelectedCompressionProfile is not null)
             {
@@ -1657,7 +1657,7 @@ namespace TwainControl
             {
                 foreach (ScannedImage image in Scanner.Resimler.ToList())
                 {
-                    image.Resim = image.Resim.RotateImage(AllImageRotationAngle, 0.1);
+                    image.Resim = await image.Resim.RotateImageAsync(AllImageRotationAngle, 0.1);
                 }
                 AllImageRotationAngle = 0;
             }

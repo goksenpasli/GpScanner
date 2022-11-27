@@ -323,6 +323,16 @@ namespace Extensions
             return tb;
         }
 
+        public static async Task<BitmapSource> ResizeAsync(this BitmapSource bfPhoto, double oran, double centerx = 0, double centery = 0)
+        {
+            return await Task.Run(() =>
+            {
+                TransformedBitmap tb = new(bfPhoto, new ScaleTransform(oran, oran, centerx, centery));
+                tb.Freeze();
+                return tb;
+            });
+        }
+
         public static string SetUniqueFile(this string path, string file, string extension, string seperator = "_")
         {
             if (seperator.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)

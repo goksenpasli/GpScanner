@@ -59,11 +59,11 @@ namespace TwainControl
 
         private bool seçili;
 
-        private void ScannedImage_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private async void ScannedImage_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName is "RotationAngle" && RotationAngle != 0)
             {
-                Resim = Resim.RotateImage(RotationAngle, 0.1);
+                Resim = await Resim.RotateImageAsync(RotationAngle, 0.1);
                 RotationAngle = 0;
             }
         }

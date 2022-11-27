@@ -294,15 +294,6 @@ namespace TwainControl
             return target;
         }
 
-        public static BitmapFrame RotateImage(this BitmapFrame bitmapFrame, double angle, double resizeratio)
-        {
-            TransformedBitmap transformedBitmap = new(bitmapFrame, new RotateTransform(angle * 90));
-            transformedBitmap.Freeze();
-            BitmapFrame bitmapframe = BitmapFrame.Create(transformedBitmap, transformedBitmap.Resize(resizeratio));
-            bitmapframe.Freeze();
-            return bitmapframe;
-        }
-
         public static RenderTargetBitmap RotateImage(this ImageSource Source, double angle)
         {
             try
@@ -325,6 +316,19 @@ namespace TwainControl
                 _ = MessageBox.Show(ex.Message);
                 return null;
             }
+        }
+
+        public static async Task<BitmapFrame> RotateImageAsync(this BitmapFrame bitmapFrame, double angle, double thumbresizeratio)
+        {
+            TransformedBitmap transformedBitmap = new(bitmapFrame, new RotateTransform(angle * 90));
+            transformedBitmap.Freeze();
+            return await Task.Run(async () =>
+            {
+                BitmapSource thumbnail = await transformedBitmap.ResizeAsync(thumbresizeratio);
+                BitmapFrame frame = BitmapFrame.Create(transformedBitmap, thumbnail);
+                frame.Freeze();
+                return frame;
+            });
         }
 
         public static IEnumerable<int> SteppedRange(int fromInclusive, int toExclusive, int step)
