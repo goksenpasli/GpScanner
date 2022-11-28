@@ -20,7 +20,23 @@
             <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
-        <GroupBox Header="{twainctrl:Loc SETTİNGS}">
+        <GroupBox>
+            <GroupBox.Header>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SETTİNGS}" />
+                    <Button Background="Red"
+                        Command="{Binding ResetSettings}"
+                        CommandParameter="{Binding Source={x:Static twainproperties:Settings.Default}}"
+                        FontWeight="Bold">
+                        <Button.Content>
+                            <TextBlock>
+                                <Run Text="{twainctrl:Loc SETTİNGS}" />
+                                <Run Text="{twainctrl:Loc RESET}" />
+                            </TextBlock>
+                        </Button.Content>
+                    </Button>
+                </StackPanel>
+            </GroupBox.Header>
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -146,7 +162,14 @@
                     </UniformGrid>
                 </GroupBox>
                 <GroupBox Grid.Row="3">
-                    <UniformGrid Columns="2">
+                    <UniformGrid Columns="4">
+                        <TextBlock VerticalAlignment="Center">
+                            <Run Text="{twainctrl:Loc FILE}" />
+                            <Run Text="{twainctrl:Loc RES}" />
+                        </TextBlock>
+                        <ComboBox ItemStringFormat="%{0}"
+                            ItemsSource="{Binding SettingsPagePictureResizeList}"
+                            SelectedItem="{Binding DefaultPictureResizeRatio, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                         <TextBlock VerticalAlignment="Center" Text="PDF DPI" />
                         <ComboBox ItemStringFormat="{}{0} Dpi"
                             ItemsSource="{Binding SettingsPagePdfDpiList}"

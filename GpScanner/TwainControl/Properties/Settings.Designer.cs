@@ -179,5 +179,17 @@ namespace TwainControl.Properties {
                 this["JpegQuality"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public int DefaultPictureResizeRatio {
+            get {
+                return ((int)(this["DefaultPictureResizeRatio"]));
+            }
+            set {
+                this["DefaultPictureResizeRatio"] = value;
+            }
+        }
     }
 }

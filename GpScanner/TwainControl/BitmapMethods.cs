@@ -93,7 +93,6 @@ namespace TwainControl
             BitmapData data = bitmap.LockBits(new Rectangle(System.Drawing.Point.Empty, bitmap.Size), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
             src.CopyPixels(Int32Rect.Empty, data.Scan0, data.Height * data.Stride, data.Stride);
             bitmap.UnlockBits(data);
-            bitmapsource = null;
             return bitmap;
         }
 
@@ -168,7 +167,7 @@ namespace TwainControl
             return null;
         }
 
-        public static BitmapFrame GenerateImageDocumentBitmapFrame(int decodeheight, Uri item)
+        public static BitmapFrame GenerateImageDocumentBitmapFrame(Uri item, int decodeheight, int defaultpictureresizeratio = 100)
         {
             BitmapImage image = new();
             image.BeginInit();
@@ -186,8 +185,7 @@ namespace TwainControl
             thumbimage.UriSource = item;
             thumbimage.EndInit();
             thumbimage.Freeze();
-
-            BitmapFrame bitmapFrame = BitmapFrame.Create(image, thumbimage);
+            BitmapFrame bitmapFrame = defaultpictureresizeratio != 100 ? BitmapFrame.Create(image.Resize(defaultpictureresizeratio / 100d), thumbimage) : BitmapFrame.Create(image, thumbimage);
             bitmapFrame.Freeze();
             return bitmapFrame;
         }
@@ -208,7 +206,6 @@ namespace TwainControl
                 RenderTargetBitmap skewedimage = image.RotateImage((double)TwainCtrl.GetDeskewAngle(image, true));
                 skewedimage.Freeze();
                 bitmapFrame = BitmapFrame.Create(skewedimage, image.PixelWidth < image.PixelHeight ? image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Width * paper.Height).BitmapSourceToBitmap().ToBitmapImage(System.Drawing.Imaging.ImageFormat.Jpeg, Settings.Default.PreviewWidth) : image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Height * paper.Width).BitmapSourceToBitmap().ToBitmapImage(System.Drawing.Imaging.ImageFormat.Jpeg, Settings.Default.PreviewWidth));
-                skewedimage = null;
             }
             else
             {

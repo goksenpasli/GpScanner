@@ -315,6 +315,16 @@ namespace GpScanner.ViewModel
 
             DatabaseSave = new RelayCommand<object>(parameter => ScannerData.Serialize());
 
+            ResetSettings = new RelayCommand<object>(parameter =>
+            {
+                if (MessageBox.Show($"{Translation.GetResStringValue("SETTİNGS")} {Translation.GetResStringValue("RESET")}", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                {
+                    var twainsettings = parameter as Twainsettings.Settings;
+                    twainsettings.Reset();
+                    Settings.Default.Reset();
+                }
+            });
+
             CancelOcr = new RelayCommand<object>(parameter => Ocr.Ocr.ocrcancellationToken?.Cancel());
 
             DateBack = new RelayCommand<object>(parameter => SeçiliGün = SeçiliGün.Value.AddDays(-1), parameter => SeçiliGün > DateTime.MinValue);
@@ -679,6 +689,8 @@ namespace GpScanner.ViewModel
 
         public ICommand RemoveSelectedPage { get; }
 
+        public ICommand ResetSettings { get; }
+
         public ICommand SavePatchProfile { get; }
 
         public ICommand SaveQrImage { get; }
@@ -798,6 +810,8 @@ namespace GpScanner.ViewModel
         public ICommand SetBatchFolder { get; }
 
         public int[] SettingsPagePdfDpiList { get; } = PdfViewer.PdfViewer.DpiList;
+
+        public int[] SettingsPagePictureResizeList { get; } = new int[] { 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 };
 
         public ICommand StartBatch { get; }
 

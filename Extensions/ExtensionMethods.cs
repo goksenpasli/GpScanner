@@ -375,7 +375,6 @@ namespace Extensions
                 {
                     image.Freeze();
                 }
-                memoryStream = null;
                 return image;
             }
 

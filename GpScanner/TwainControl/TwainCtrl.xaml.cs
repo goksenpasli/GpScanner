@@ -822,7 +822,8 @@ namespace TwainControl
         public static double GetDeskewAngle(ImageSource ımageSource, bool fast = false)
         {
             Deskew sk = new((BitmapSource)ımageSource);
-            return -1 * sk.GetSkewAngle(fast);
+            double angle = -1 * sk.GetSkewAngle(fast);
+            return angle;
         }
 
         public static void SaveJpgImage(BitmapFrame scannedImage, string filename)
@@ -955,7 +956,7 @@ namespace TwainControl
                             {
                                 try
                                 {
-                                    BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(decodeheight, new Uri(item));
+                                    BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(new Uri(item), decodeheight, Settings.Default.DefaultPictureResizeRatio);
                                     bitmapFrame.Freeze();
                                     uiContext.Send(_ =>
                                     {
