@@ -8,6 +8,8 @@ namespace Extensions
 {
     public class ButtonedTextBox : TextBox, INotifyPropertyChanged
     {
+        public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register("Description", typeof(string), typeof(ButtonedTextBox), new PropertyMetadata(string.Empty));
+
         static ButtonedTextBox()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(ButtonedTextBox), new FrameworkPropertyMetadata(typeof(ButtonedTextBox)));
@@ -36,6 +38,12 @@ namespace Extensions
                     OnPropertyChanged(nameof(CopyButtonVisibility));
                 }
             }
+        }
+
+        public string Description
+        {
+            get { return (string)GetValue(DescriptionProperty); }
+            set { SetValue(DescriptionProperty, value); }
         }
 
         public ICommand Open { get; } = new RoutedCommand();

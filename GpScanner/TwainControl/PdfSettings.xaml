@@ -9,7 +9,7 @@
     xmlns:mozjpeg="clr-namespace:MozJpeg;assembly=MozJpeg"
     xmlns:properties="clr-namespace:TwainControl.Properties"
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
-    d:DesignHeight="275" d:DesignWidth="550"
+    d:DesignHeight="285" d:DesignWidth="550"
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
     UseLayoutRounding="True"
     mc:Ignorable="d">
@@ -55,11 +55,23 @@
             <HeaderedContentControl Header="{local:Loc PASSWORD}">
                 <PasswordBox IsEnabled="{Binding Scanner.PasswordProtect}" PasswordChanged="PasswordBox_PasswordChanged" />
             </HeaderedContentControl>
-            <StackPanel IsEnabled="{Binding Scanner.PdfPassword, Converter={StaticResource NullableToBooleanConverter}}">
-                <CheckBox Content="{local:Loc ALLOWPRINT}" IsChecked="{Binding Scanner.AllowPrint}" />
-                <CheckBox Content="{local:Loc ALLOWCOPY}" IsChecked="{Binding Scanner.AllowCopy}" />
-                <CheckBox Content="{local:Loc ALLOWEDIT}" IsChecked="{Binding Scanner.AllowEdit}" />
-            </StackPanel>
+            <UniformGrid Columns="2">
+                <GroupBox>
+                    <StackPanel IsEnabled="{Binding Scanner.PdfPassword, Converter={StaticResource NullableToBooleanConverter}}">
+                        <CheckBox Content="{local:Loc ALLOWPRINT}" IsChecked="{Binding Scanner.AllowPrint}" />
+                        <CheckBox Content="{local:Loc ALLOWCOPY}" IsChecked="{Binding Scanner.AllowCopy}" />
+                        <CheckBox Content="{local:Loc ALLOWEDIT}" IsChecked="{Binding Scanner.AllowEdit}" />
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox>
+                    <StackPanel>
+                        <Extensions:ButtonedTextBox CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed"
+                            Text="{Binding Scanner.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <Extensions:ButtonedTextBox CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed"
+                            Text="{Binding Scanner.CreatorAppName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                </GroupBox>
+            </UniformGrid>
             <Separator />
             <HeaderedContentControl Header="{local:Loc JPEGQUALITY}">
                 <Slider AutoToolTipPlacement="TopLeft" Maximum="95" Minimum="10"

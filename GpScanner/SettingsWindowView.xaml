@@ -99,6 +99,7 @@
                 </ComboBox>
                 <UniformGrid Grid.Row="1" Columns="2">
                     <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
+                        Description="{twainctrl:Loc FILE}"
                         IsReadOnly="True" ResetButtonVisibility="Collapsed"
                         Text="{Binding DatabaseFile, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
                     <Button Command="{Binding ChangeDataFolder}">

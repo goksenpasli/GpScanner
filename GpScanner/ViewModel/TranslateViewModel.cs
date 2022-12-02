@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Speech.Synthesis;
 using System.Threading.Tasks;
@@ -127,6 +128,20 @@ namespace GpScanner.ViewModel
 
         public ICommand Sıfırla { get; }
 
+        public ObservableCollection<string> TaramaGeçmiş
+        {
+            get => taramaGeçmiş;
+
+            set
+            {
+                if (taramaGeçmiş != value)
+                {
+                    taramaGeçmiş = value;
+                    OnPropertyChanged(nameof(TaramaGeçmiş));
+                }
+            }
+        }
+
         public IEnumerable<string> TtsDilleri { get; }
 
         private readonly SpeechSynthesizer synthesizer = new() { Volume = 100 };
@@ -140,5 +155,7 @@ namespace GpScanner.ViewModel
         private string mevcutDil = "auto";
 
         private string okumaDili;
+
+        private ObservableCollection<string> taramaGeçmiş = new();
     }
 }

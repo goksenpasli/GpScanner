@@ -1482,7 +1482,7 @@ namespace TwainControl
         {
             if (fileloadtask?.IsCompleted == false)
             {
-                _ = MessageBox.Show("İşlem Devam Ediyor. Bitmesini Bekleyin.");
+                _ = MessageBox.Show(Application.Current.MainWindow, "İşlem Devam Ediyor. Bitmesini Bekleyin.");
                 return;
             }
             string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);

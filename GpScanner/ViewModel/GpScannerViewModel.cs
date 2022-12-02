@@ -960,6 +960,7 @@ namespace GpScanner.ViewModel
                     if (ScannedText != null)
                     {
                         TranslateViewModel.Metin = string.Join(" ", ScannedText.Select(z => z.Text));
+                        TranslateViewModel.TaramaGeçmiş.Add(TranslateViewModel.Metin);
                         OcrIsBusy = false;
                         ScannedTextWindowOpen = opentextwindow;
                     }

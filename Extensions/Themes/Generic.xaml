@@ -446,12 +446,17 @@
                 <ControlTemplate TargetType="{x:Type TextBoxBase}">
                     <Grid SnapsToDevicePixels="True">
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
+                        <TextBlock Name="description"
+                            VerticalAlignment="Center"
+                            Text="{Binding Description, RelativeSource={RelativeSource TemplatedParent}}" />
                         <Border Name="border"
+                            Grid.Column="1"
                             Background="{TemplateBinding Panel.Background}"
                             BorderBrush="{TemplateBinding Border.BorderBrush}"
                             BorderThickness="{TemplateBinding Border.BorderThickness}"
@@ -460,7 +465,7 @@
                                 Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" />
                         </Border>
                         <Border Name="copyborder"
-                            Grid.Column="1"
+                            Grid.Column="2"
                             Width="16"
                             Background="{TemplateBinding Panel.Background}"
                             BorderBrush="{TemplateBinding Border.BorderBrush}"
@@ -473,7 +478,7 @@
                             </TextBlock>
                         </Border>
                         <Border Name="clearborder"
-                            Grid.Column="2"
+                            Grid.Column="3"
                             Width="16"
                             Background="{TemplateBinding Panel.Background}"
                             BorderBrush="{TemplateBinding Border.BorderBrush}"
@@ -486,7 +491,7 @@
                             </TextBlock>
                         </Border>
                         <Border Name="openborder"
-                            Grid.Column="3"
+                            Grid.Column="4"
                             Width="16"
                             Background="{TemplateBinding Panel.Background}"
                             BorderBrush="{TemplateBinding Border.BorderBrush}"
@@ -505,6 +510,7 @@
                             <Setter TargetName="border" Property="UIElement.Opacity" Value="0.56" />
                             <Setter TargetName="clearborder" Property="UIElement.Opacity" Value="0.56" />
                             <Setter TargetName="copyborder" Property="UIElement.Opacity" Value="0.56" />
+                            <Setter TargetName="description" Property="UIElement.Opacity" Value="0.56" />
                             <Setter TargetName="openborder" Property="UIElement.Opacity" Value="0.56" />
                         </Trigger>
                         <Trigger Property="UIElement.IsMouseOver" Value="True">

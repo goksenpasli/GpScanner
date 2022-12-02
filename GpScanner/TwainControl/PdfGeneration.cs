@@ -35,8 +35,8 @@ namespace TwainControl
 
         public static void DefaultPdfCompression(PdfDocument doc)
         {
-            doc.Info.Author = Environment.UserName;
-            doc.Info.Creator = "GPSCANNER";
+            doc.Info.Author = Scanner.UserName;
+            doc.Info.Creator = Scanner.CreatorAppName;
             doc.Info.CreationDate = DateTime.Now;
             doc.Options.FlateEncodeMode = PdfFlateEncodeMode.BestCompression;
             doc.Options.CompressContentStreams = true;

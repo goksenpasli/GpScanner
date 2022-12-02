@@ -166,8 +166,47 @@
             Command="{Binding TranslateViewModel.Oku}"
             CommandParameter="{Binding ElementName=BtnTxtÇeviri, Path=Text}"
             Style="{StaticResource ToggleButtonPlayPauseStyle}" />
-        <Button Grid.Row="4" Grid.ColumnSpan="3"
+        <Button Grid.Row="4" Grid.ColumnSpan="2"
             Command="{Binding TranslateViewModel.Sıfırla}"
             Content="{twainctrl:Loc RESET}" />
+        <Extensions:ContentToggleButton Grid.Row="4" Grid.Column="3">
+            <Image Width="32" Height="32">
+                <Image.Source>
+                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                        <Binding Source="Shell32.dll" />
+                        <Binding Source="20" />
+                    </MultiBinding>
+                </Image.Source>
+            </Image>
+            <Extensions:ContentToggleButton.OverContent>
+                <GroupBox>
+                    <ItemsControl Width="200" Height="400"
+                        HorizontalContentAlignment="Stretch"
+                        ItemsSource="{Binding TranslateViewModel.TaramaGeçmiş}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.Template>
+                            <ControlTemplate>
+                                <ScrollViewer Padding="{TemplateBinding Padding}"
+                                    CanContentScroll="True" VerticalScrollBarVisibility="Visible">
+                                    <ItemsPresenter />
+                                </ScrollViewer>
+                            </ControlTemplate>
+                        </ItemsControl.Template>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBox Height="80"
+                                    IsReadOnly="True"
+                                    Text="{Binding Mode=OneWay}"
+                                    TextWrapping="Wrap" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </GroupBox>
+            </Extensions:ContentToggleButton.OverContent>
+        </Extensions:ContentToggleButton>
     </Grid>
 </UserControl>

@@ -165,6 +165,20 @@ namespace TwainControl
             }
         }
 
+        public string CreatorAppName
+        {
+            get => creatorAppName;
+
+            set
+            {
+                if (creatorAppName != value)
+                {
+                    creatorAppName = value;
+                    OnPropertyChanged(nameof(CreatorAppName));
+                }
+            }
+        }
+
         public double CropBottom
         {
             get => cropBottom; set
@@ -654,6 +668,20 @@ namespace TwainControl
             }
         }
 
+        public string UserName
+        {
+            get => userName;
+
+            set
+            {
+                if (userName != value)
+                {
+                    userName = value;
+                    OnPropertyChanged(nameof(UserName));
+                }
+            }
+        }
+
         public string Watermark
         {
             get => watermark;
@@ -740,6 +768,8 @@ namespace TwainControl
 
         private ImageSource copyCroppedImage;
 
+        private string creatorAppName = "GPSCANNER";
+
         private double cropBottom;
 
         private bool cropDialogExpanded;
@@ -807,6 +837,8 @@ namespace TwainControl
         private double threshold = 1;
 
         private bool useMozJpegEncoding;
+
+        private string userName = Environment.UserName;
 
         private string watermark;
 
