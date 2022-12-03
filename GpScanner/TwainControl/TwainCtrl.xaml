@@ -340,42 +340,39 @@
                                     </CheckBox>
                                 </Grid>
                                 <Separator />
-                                <UniformGrid Columns="2">
-                                    <Extensions:ButtonedTextBox d:Text="FileName" GotKeyboardFocus="ButtonedTextBox_GotKeyboardFocus" MaxLength="255"
-                                        OpenButtonVisibility="Collapsed"
-                                        Text="{Binding Scanner.FileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
-                                        <Extensions:ButtonedTextBox.ContextMenu>
-                                            <ContextMenu>
-                                                <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
-                                                    CommandParameter="[GÜN]"
-                                                    Header="{local:Loc DAY}" />
-                                                <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
-                                                    CommandParameter="[AY]"
-                                                    Header="{local:Loc MONTH}" />
-                                                <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
-                                                    CommandParameter="[YIL]"
-                                                    Header="{local:Loc YEAR}" />
-                                                <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
-                                                    CommandParameter="[SAAT]"
-                                                    Header="{local:Loc TIME}" />
-                                                <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
-                                                    CommandParameter="[DAKİKA]"
-                                                    Header="{local:Loc MINUTE}" />
-                                                <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
-                                                    CommandParameter="[SANİYE]"
-                                                    Header="{local:Loc SECOND}" />
-                                                <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
-                                                    CommandParameter="[GUID]"
-                                                    Header="{local:Loc GUID}" />
-                                                <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
-                                                    CommandParameter="[USERNAME]"
-                                                    Header="{local:Loc USERNAME}" />
-                                            </ContextMenu>
-                                        </Extensions:ButtonedTextBox.ContextMenu>
-                                    </Extensions:ButtonedTextBox>
-                                    <TextBlock d:Text="Tarama" FontWeight="Bold"
-                                        Text="{Binding Scanner.SaveFileName}" />
-                                </UniformGrid>
+                                <Extensions:ButtonedTextBox d:Description="SaveFileName" d:Text="FileName"
+                                    Description="{Binding Scanner.SaveFileName}"
+                                    GotKeyboardFocus="ButtonedTextBox_GotKeyboardFocus" MaxLength="255" OpenButtonVisibility="Collapsed"
+                                    Text="{Binding Scanner.FileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                                    <Extensions:ButtonedTextBox.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
+                                                CommandParameter="[GÜN]"
+                                                Header="{local:Loc DAY}" />
+                                            <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
+                                                CommandParameter="[AY]"
+                                                Header="{local:Loc MONTH}" />
+                                            <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
+                                                CommandParameter="[YIL]"
+                                                Header="{local:Loc YEAR}" />
+                                            <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
+                                                CommandParameter="[SAAT]"
+                                                Header="{local:Loc TIME}" />
+                                            <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
+                                                CommandParameter="[DAKİKA]"
+                                                Header="{local:Loc MINUTE}" />
+                                            <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
+                                                CommandParameter="[SANİYE]"
+                                                Header="{local:Loc SECOND}" />
+                                            <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
+                                                CommandParameter="[GUID]"
+                                                Header="{local:Loc GUID}" />
+                                            <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
+                                                CommandParameter="[USERNAME]"
+                                                Header="{local:Loc USERNAME}" />
+                                        </ContextMenu>
+                                    </Extensions:ButtonedTextBox.ContextMenu>
+                                </Extensions:ButtonedTextBox>
                                 <UniformGrid Columns="2">
                                     <TextBox VerticalContentAlignment="Center" Text="{Binding Scanner.ProfileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <Button Command="{Binding SaveProfile}">
@@ -819,7 +816,7 @@
             MouseRightButtonDown="GridSplitter_MouseRightButtonDown"
             ToolTip="{local:Loc SPLITTERTOOLTIP}" />
         <GroupBox Grid.Column="2"
-            Margin="1,0,0,0" Panel.ZIndex="-1"
+            Panel.ZIndex="-1"
             Background="{StaticResource GroupBoxBackGround}">
             <GroupBox.Header>
                 <StackPanel Orientation="Horizontal">

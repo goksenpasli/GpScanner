@@ -73,272 +73,276 @@
             MouseDoubleClick="GridSplitter_MouseDoubleClick"
             MouseRightButtonDown="GridSplitter_MouseRightButtonDown"
             ToolTip="{twainctrl:Loc SPLITTERTOOLTIP}" />
-        <GroupBox Grid.Column="2" Margin="1,0,0,0">
-            <GroupBox.Header>
-                <UniformGrid Columns="4" />
-            </GroupBox.Header>
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="23.2" />
-                    <RowDefinition />
-                    <RowDefinition Height="100" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Extensions:ButtonedTextBox Grid.Row="1"
-                    CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed"
-                    Text="{Binding AramaMetni, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                <UniformGrid Columns="4">
-                    <Button Command="{Binding Tümünüİşaretle}">
-                        <Button.Content>
-                            <StackPanel Orientation="Horizontal">
-                                <Image Width="16" Height="16">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Imageres.dll" />
-                                            <Binding Source="249" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc ALL}" />
-                            </StackPanel>
-                        </Button.Content>
-                    </Button>
-                    <Button Command="{Binding TümününİşaretiniKaldır}">
-                        <Button.Content>
-                            <StackPanel Orientation="Horizontal">
-                                <Image Width="16" Height="16">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Imageres.dll" />
-                                            <Binding Source="250" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc NONE}" />
-                            </StackPanel>
-                        </Button.Content>
-                    </Button>
-                    <Button Command="{Binding Tersiniİşaretle}">
-                        <Button.Content>
-                            <StackPanel Orientation="Horizontal">
-                                <Image Width="16" Height="16">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Imageres.dll" />
-                                            <Binding Source="251" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc REVERSE}" />
-                            </StackPanel>
-                        </Button.Content>
-                    </Button>
-                    <Button Command="{Binding Source={x:Static ViewModel:WindowExtensions.OpenSettings}}">
-                        <Button.Content>
-                            <StackPanel Orientation="Horizontal">
-                                <Image Width="16" Height="16">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="21" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SETTİNGS}" />
-                            </StackPanel>
-                        </Button.Content>
-                    </Button>
-                </UniformGrid>
-                <UniformGrid Grid.Row="2" Columns="4">
-                    <Button Command="{Binding DateBack}"
-                        Content="ç" FontFamily="Wingdings" FontSize="16" />
-                    <DatePicker DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}"
-                        Language="{Binding CalendarLang}"
-                        SelectedDate="{Binding SeçiliGün}" />
-                    <Button Command="{Binding DateForward}"
-                        Content="è" FontFamily="Wingdings" FontSize="16" />
-                    <ComboBox ItemsSource="{Binding GetPreviewSize}" SelectedItem="{Binding SelectedSize}">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock>
-                                    <Run Text="{Binding Width, StringFormat={}{0} Pixel}" />
-                                    <Run Text="X" />
-                                    <Run Text="{Binding Height, StringFormat={}{0} Pixel}" />
-                                </TextBlock>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                </UniformGrid>
-                <ListBox Grid.Row="3"
-                    HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
-                    d:ItemsSource="{d:SampleData ItemCount=5}"
-                    Background="{StaticResource BorderBackground}"
-                    BorderThickness="2" IsSynchronizedWithCurrentItem="False"
-                    ItemsSource="{Binding Mode=OneWay, Source={StaticResource Veriler}}"
-                    SelectedItem="{Binding SelectedDocument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    SelectionMode="Extended"
-                    Style="{StaticResource ListBoxAnimationStyle}"
-                    VirtualizingPanel.CacheLength="6,6" VirtualizingPanel.CacheLengthUnit="Item"
-                    VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.ScrollUnit="Pixel"
-                    VirtualizingPanel.VirtualizationMode="Standard">
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
-                                ItemSize="{Binding SelectedSize}"
-                                SpacingMode="None" />
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                    <ListBox.ItemContainerStyle>
-                        <Style TargetType="ListBoxItem">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Seçili}" Value="true">
-                                    <Setter Property="IsSelected" Value="True" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate>
-                                        <Border Width="{Binding DataContext.SelectedSize.Width, RelativeSource={RelativeSource AncestorType=Window}}" Height="{Binding DataContext.SelectedSize.Height, RelativeSource={RelativeSource AncestorType=Window}}">
-                                            <Border.Style>
-                                                <Style TargetType="Border">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Seçili}" Value="true">
-                                                            <Setter Property="BorderBrush" Value="MediumSeaGreen" />
-                                                            <Setter Property="BorderThickness" Value="3" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Border.Style>
-                                            <CheckBox HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
-                                                d:Height="50" Background="Transparent" Drop="ContentControl_Drop"
-                                                IsChecked="{Binding Seçili}"
-                                                IsEnabled="{Binding FileName, Mode=OneWay, Converter={StaticResource FileNamePdfZipCheckConverter}}">
-                                                <CheckBox.Content>
-                                                    <ContentControl d:Width="64"
-                                                        Content="{Binding Path=FileName, IsAsync=True, Mode=OneWay}"
-                                                        ContentTemplateSelector="{StaticResource ThumbViewerSelector}" />
-                                                </CheckBox.Content>
-                                            </CheckBox>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </ListBox.ItemContainerStyle>
-                </ListBox>
-                <UniformGrid Grid.Row="4"
-                    Columns="2" Rows="1">
-                    <ListBox x:Name="QrListBox"
-                        HorizontalContentAlignment="Stretch"
-                        d:ItemsSource="{d:SampleData ItemCount=5}"
-                        AllowDrop="True"
-                        Background="{StaticResource BorderBackground}"
-                        BorderThickness="2" Drop="QrListBox_Drop"
-                        ItemsSource="{Binding BarcodeList}"
-                        Style="{StaticResource ListBoxAnimationStyle}">
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="ListBoxItem">
-                                <Setter Property="Padding" Value="0" />
-                            </Style>
-                        </ListBox.ItemContainerStyle>
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ListBox}}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="20" />
-                                        <ColumnDefinition Width="84.8" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock VerticalAlignment="Center">
-                                        <Hyperlink Command="{Binding DataContext.TesseractViewModel.TesseractDataFilesDownloadLink, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding Mode=OneWay}">
-                                            <Run FontFamily="Wingdings" FontSize="16" FontWeight="Bold"
-                                                Text="8" />
-                                        </Hyperlink>
-                                    </TextBlock>
-                                    <Image Grid.Column="1"
-                                        Width="80" Height="80"
-                                        Source="{Binding Mode=OneWay, Converter={StaticResource StringToQrBitmapImageConverter}}"
-                                        Tag="{Binding DataContext, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}">
-                                        <Image.ContextMenu>
-                                            <ContextMenu DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
-                                                <MenuItem Command="{Binding Tag.SaveQrImage}"
-                                                    CommandParameter="{Binding Path=Source}"
-                                                    Header="{twainctrl:Loc SAVESELECTED}" />
-                                            </ContextMenu>
-                                        </Image.ContextMenu>
+        <GroupBox Grid.Column="2">
+            <TabControl Background="{StaticResource BorderBackground}">
+                <TabItem Header="{twainctrl:Loc CALENDAR}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="23.2" />
+                            <RowDefinition />
+                            <RowDefinition Height="100" />
+                        </Grid.RowDefinitions>
+                        <Extensions:ButtonedTextBox Grid.Row="1"
+                            CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed"
+                            Text="{Binding AramaMetni, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <UniformGrid Columns="3" Rows="2">
+                            <Button Command="{Binding PdfBirleştir}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="32" Height="32">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="68" />
+                                            </MultiBinding>
+                                        </Image.Source>
                                     </Image>
-                                    <Extensions:ButtonedTextBox Grid.Column="2"
-                                        Height="80"
-                                        IsReadOnly="True" OpenButtonVisibility="Collapsed" ResetButtonVisibility="Collapsed"
-                                        Text="{Binding Mode=OneWay}"
-                                        TextWrapping="Wrap" />
-                                </Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                    <StackPanel>
-                        <ToggleButton Command="{Binding ModifyGridWidth}">
-                            <ToggleButton.Style>
-                                <Style TargetType="ToggleButton">
-                                    <Style.Triggers>
-                                        <Trigger Property="IsChecked" Value="True">
-                                            <Setter Property="CommandParameter" Value="1" />
-                                        </Trigger>
-                                        <Trigger Property="IsChecked" Value="False">
-                                            <Setter Property="CommandParameter" Value="0" />
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </ToggleButton.Style>
-                            <Image Width="24" Height="24">
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Shell32.dll" />
-                                        <Binding Source="263" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
-                        </ToggleButton>
-                        <Button Command="{Binding PdfBirleştir}">
-                            <StackPanel Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Text" Value="{twainctrl:Loc MERGE}" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding CheckedPdfCount}" Value="0">
+                                                        <Setter Property="Text" Value="{twainctrl:Loc MERGESELECTED}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding CheckedPdfCount}" Value="1">
+                                                        <Setter Property="Text" Value="{twainctrl:Loc SELECTTWOPDF}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Button>
+                            <ToggleButton Command="{Binding ModifyGridWidth}">
+                                <ToggleButton.Style>
+                                    <Style TargetType="ToggleButton">
+                                        <Style.Triggers>
+                                            <Trigger Property="IsChecked" Value="True">
+                                                <Setter Property="CommandParameter" Value="1" />
+                                            </Trigger>
+                                            <Trigger Property="IsChecked" Value="False">
+                                                <Setter Property="CommandParameter" Value="0" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ToggleButton.Style>
                                 <Image Width="32" Height="32">
                                     <Image.Source>
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                             <Binding Source="Shell32.dll" />
-                                            <Binding Source="68" />
+                                            <Binding Source="263" />
                                         </MultiBinding>
                                     </Image.Source>
                                 </Image>
-                                <TextBlock VerticalAlignment="Center">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Text" Value="{twainctrl:Loc MERGE}" />
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding CheckedPdfCount}" Value="0">
-                                                    <Setter Property="Text" Value="{twainctrl:Loc MERGESELECTED}" />
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding CheckedPdfCount}" Value="1">
-                                                    <Setter Property="Text" Value="{twainctrl:Loc SELECTTWOPDF}" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                            </StackPanel>
-                        </Button>
+                            </ToggleButton>
+                            <Button Command="{Binding Source={x:Static ViewModel:WindowExtensions.OpenSettings}}">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Width="32" Height="32">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="21" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SETTİNGS}" />
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                            <Button Command="{Binding Tümünüİşaretle}">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Width="32" Height="32">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Imageres.dll" />
+                                                    <Binding Source="249" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc ALL}" />
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                            <Button Command="{Binding TümününİşaretiniKaldır}">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Width="32" Height="32">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Imageres.dll" />
+                                                    <Binding Source="250" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc NONE}" />
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                            <Button Command="{Binding Tersiniİşaretle}">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Width="32" Height="32">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Imageres.dll" />
+                                                    <Binding Source="251" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc REVERSE}" />
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                        </UniformGrid>
+                        <UniformGrid Grid.Row="2" Columns="4">
+                            <Button Command="{Binding DateBack}"
+                                Content="ç" FontFamily="Wingdings" FontSize="16" />
+                            <DatePicker DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}"
+                                Language="{Binding CalendarLang}"
+                                SelectedDate="{Binding SeçiliGün}" />
+                            <Button Command="{Binding DateForward}"
+                                Content="è" FontFamily="Wingdings" FontSize="16" />
+                            <ComboBox ItemsSource="{Binding GetPreviewSize}" SelectedItem="{Binding SelectedSize}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock>
+                                            <Run Text="{Binding Width, StringFormat={}{0} Pixel}" />
+                                            <Run Text="X" />
+                                            <Run Text="{Binding Height, StringFormat={}{0} Pixel}" />
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </UniformGrid>
+                        <ListBox Grid.Row="3"
+                            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                            d:ItemsSource="{d:SampleData ItemCount=5}"
+                            Background="{StaticResource BorderBackground}"
+                            BorderThickness="2" IsSynchronizedWithCurrentItem="False"
+                            ItemsSource="{Binding Mode=OneWay, Source={StaticResource Veriler}}"
+                            SelectedItem="{Binding SelectedDocument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            SelectionMode="Extended"
+                            Style="{StaticResource ListBoxAnimationStyle}"
+                            VirtualizingPanel.CacheLength="6,6" VirtualizingPanel.CacheLengthUnit="Item"
+                            VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.ScrollUnit="Pixel"
+                            VirtualizingPanel.VirtualizationMode="Standard">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
+                                        ItemSize="{Binding SelectedSize}"
+                                        SpacingMode="None" />
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Seçili}" Value="true">
+                                            <Setter Property="IsSelected" Value="True" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate>
+                                                <Border Width="{Binding DataContext.SelectedSize.Width, RelativeSource={RelativeSource AncestorType=Window}}" Height="{Binding DataContext.SelectedSize.Height, RelativeSource={RelativeSource AncestorType=Window}}">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Seçili}" Value="true">
+                                                                    <Setter Property="BorderBrush" Value="MediumSeaGreen" />
+                                                                    <Setter Property="BorderThickness" Value="3" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <CheckBox HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                                                        d:Height="50" Background="Transparent" Drop="ContentControl_Drop"
+                                                        IsChecked="{Binding Seçili}"
+                                                        IsEnabled="{Binding FileName, Mode=OneWay, Converter={StaticResource FileNamePdfZipCheckConverter}}">
+                                                        <CheckBox.Content>
+                                                            <ContentControl d:Width="64"
+                                                                Content="{Binding Path=FileName, IsAsync=True, Mode=OneWay}"
+                                                                ContentTemplateSelector="{StaticResource ThumbViewerSelector}" />
+                                                        </CheckBox.Content>
+                                                    </CheckBox>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                        </ListBox>
+                        <ListBox x:Name="QrListBox"
+                            Grid.Row="4"
+                            HorizontalContentAlignment="Stretch"
+                            d:ItemsSource="{d:SampleData ItemCount=5}"
+                            AllowDrop="True"
+                            Background="{StaticResource BorderBackground}"
+                            BorderThickness="2" Drop="QrListBox_Drop"
+                            ItemsSource="{Binding BarcodeList}"
+                            Style="{StaticResource ListBoxAnimationStyle}">
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Setter Property="Padding" Value="0" />
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ListBox}}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="20" />
+                                            <ColumnDefinition Width="84.8" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock VerticalAlignment="Center">
+                                            <Hyperlink Command="{Binding DataContext.TesseractViewModel.TesseractDataFilesDownloadLink, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding Mode=OneWay}">
+                                                <Run FontFamily="Wingdings" FontSize="16" FontWeight="Bold"
+                                                    Text="8" />
+                                            </Hyperlink>
+                                        </TextBlock>
+                                        <Image Grid.Column="1"
+                                            Width="80" Height="80"
+                                            Source="{Binding Mode=OneWay, Converter={StaticResource StringToQrBitmapImageConverter}}"
+                                            Tag="{Binding DataContext, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}">
+                                            <Image.ContextMenu>
+                                                <ContextMenu DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
+                                                    <MenuItem Command="{Binding Tag.SaveQrImage}"
+                                                        CommandParameter="{Binding Path=Source}"
+                                                        Header="{twainctrl:Loc SAVESELECTED}" />
+                                                </ContextMenu>
+                                            </Image.ContextMenu>
+                                        </Image>
+                                        <Extensions:ButtonedTextBox Grid.Column="2"
+                                            Height="80"
+                                            IsReadOnly="True" OpenButtonVisibility="Collapsed" ResetButtonVisibility="Collapsed"
+                                            Text="{Binding Mode=OneWay}"
+                                            TextWrapping="Wrap" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+
+                    </Grid>
+                </TabItem>
+                <TabItem Header="{twainctrl:Loc OCR}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="35.2" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
                                 <ColumnDefinition Width="35.2" />
                             </Grid.ColumnDefinitions>
-                            <Extensions:SplitButton HorizontalContentAlignment="Stretch"
+                            <Button HorizontalContentAlignment="Stretch"
                                 Command="{Binding OcrPage, Mode=OneWay}"
                                 CommandParameter="{Binding ElementName=TwainCtrl, Path=DataContext}"
-                                IsEnabled="{Binding OcrIsBusy, Converter={StaticResource ReverseBooleanConverter}}"
-                                IsSplitPartOpen="{Binding ScannedTextWindowOpen}">
-                                <Extensions:SplitButton.Content>
+                                IsEnabled="{Binding OcrIsBusy, Converter={StaticResource ReverseBooleanConverter}}">
+                                <Button.Content>
                                     <Grid>
                                         <ProgressBar IsIndeterminate="{Binding OcrIsBusy}" />
                                         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
@@ -353,16 +357,8 @@
                                             <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc READACTIVEPAGE}" />
                                         </StackPanel>
                                     </Grid>
-                                </Extensions:SplitButton.Content>
-                                <Extensions:SplitButton.InternalContent>
-                                    <Extensions:ResizablePanel Width="420" Height="594" MinWidth="420"
-                                        MinHeight="594">
-                                        <GroupBox>
-                                            <local:TranslateView Grid.Row="2" />
-                                        </GroupBox>
-                                    </Extensions:ResizablePanel>
-                                </Extensions:SplitButton.InternalContent>
-                            </Extensions:SplitButton>
+                                </Button.Content>
+                            </Button>
                             <Button Grid.Column="1"
                                 Command="{Binding CancelOcr}"
                                 IsEnabled="{Binding OcrIsBusy}">
@@ -376,9 +372,12 @@
                                 </Image>
                             </Button>
                         </Grid>
-                    </StackPanel>
-                </UniformGrid>
-            </Grid>
+                        <GroupBox Grid.Row="1">
+                            <local:TranslateView />
+                        </GroupBox>
+                    </Grid>
+                </TabItem>
+            </TabControl>
         </GroupBox>
     </Grid>
 </Window>

@@ -55,7 +55,6 @@ namespace PdfViewer
         public PdfViewer()
         {
             PropertyChanged += PdfViewer_PropertyChanged;
-            Unloaded += PdfViewer_Unloaded;
             SizeChanged += PdfViewer_SizeChanged;
             DosyaAç = new RelayCommand<object>(parameter =>
             {
@@ -609,11 +608,6 @@ namespace PdfViewer
             {
                 Resize.Execute(null);
             }
-        }
-
-        private void PdfViewer_Unloaded(object sender, RoutedEventArgs e)
-        {
-            Dispose(true);
         }
 
         private async void PrintPdfFile(byte[] stream, int Dpi = 300)
