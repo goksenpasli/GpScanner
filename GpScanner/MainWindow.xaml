@@ -39,7 +39,7 @@
         </Style>
     </Window.Resources>
     <Window.TaskbarItemInfo>
-        <TaskbarItemInfo ProgressState="Normal" ProgressValue="{Binding Scanner.PdfSaveProgressValue, ElementName=TwainCtrl}" />
+        <TaskbarItemInfo ProgressState="{Binding Scanner.ProgressState, ElementName=TwainCtrl}" ProgressValue="{Binding Scanner.PdfSaveProgressValue, ElementName=TwainCtrl}" />
     </Window.TaskbarItemInfo>
     <Window.InputBindings>
         <KeyBinding Key="F1"

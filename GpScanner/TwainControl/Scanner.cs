@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Security;
 using System.Windows.Media;
+using System.Windows.Shell;
 using Extensions;
 using TwainControl.Properties;
 
@@ -13,6 +14,11 @@ namespace TwainControl
 {
     public class Scanner : InpcBase, IDataErrorInfo
     {
+        public Scanner()
+        {
+            PropertyChanged += Scanner_PropertyChanged;
+        }
+
         public bool AllowCopy
         {
             get => allowCopy; set
@@ -446,6 +452,20 @@ namespace TwainControl
             }
         }
 
+        public TaskbarItemProgressState ProgressState
+        {
+            get => progressState;
+
+            set
+            {
+                if (progressState != value)
+                {
+                    progressState = value;
+                    OnPropertyChanged(nameof(ProgressState));
+                }
+            }
+        }
+
         public ObservableCollection<ScannedImage> Resimler
         {
             get => resimler;
@@ -808,6 +828,8 @@ namespace TwainControl
 
         private string profileName;
 
+        private TaskbarItemProgressState progressState = TaskbarItemProgressState.None;
+
         private ObservableCollection<ScannedImage> resimler = new();
 
         private double rotateAngle;
@@ -847,5 +869,13 @@ namespace TwainControl
         private string watermarkFont = "Arial";
 
         private double watermarkTextSize = 64;
+
+        private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName is "PdfSaveProgressValue" && PdfSaveProgressValue == 1)
+            {
+                ProgressState = TaskbarItemProgressState.None;
+            }
+        }
     }
 }

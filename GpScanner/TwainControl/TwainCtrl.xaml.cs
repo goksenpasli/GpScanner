@@ -17,6 +17,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shell;
 using System.Windows.Xps;
 using System.Windows.Xps.Packaging;
 using System.Xml.Linq;
@@ -856,6 +857,7 @@ namespace TwainControl
             {
                 Ocr.Ocr.ocrcancellationToken = new CancellationTokenSource();
                 scannedtext = new List<ObservableCollection<OcrData>>();
+                scanner.ProgressState = TaskbarItemProgressState.Normal;
                 foreach (ScannedImage image in images)
                 {
                     scannedtext.Add(await image.Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsyc(scanner.SelectedTtsLanguage));

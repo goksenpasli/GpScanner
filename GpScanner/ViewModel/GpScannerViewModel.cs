@@ -15,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shell;
 using System.Windows.Threading;
 using Extensions;
 using GpScanner.Properties;
@@ -297,6 +298,7 @@ namespace GpScanner.ViewModel
                             Ocr.Ocr.ocrcancellationToken = new CancellationTokenSource();
                             scannedtext = new List<ObservableCollection<OcrData>>();
                             ProgressBarForegroundBrush = Brushes.Blue;
+                            scanner.ProgressState = TaskbarItemProgressState.Normal;
                             foreach (string image in files)
                             {
                                 scannedtext.Add(await image.OcrAsyc(scanner.SelectedTtsLanguage));

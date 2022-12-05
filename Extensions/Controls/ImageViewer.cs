@@ -530,9 +530,16 @@ namespace Extensions
             if (d is ImageViewer imageViewer && e.NewValue is not null)
             {
                 imageViewer.Resize.Execute(null);
-                if (e.NewValue is BitmapFrame bitmapFrame && bitmapFrame.PixelHeight * 2 == bitmapFrame.PixelWidth)
+                if (e.NewValue is BitmapFrame bitmapFrame)
                 {
-                    imageViewer.PanoramaButtonVisibility = Visibility.Visible;
+                    if (bitmapFrame.PixelHeight < bitmapFrame.PixelWidth)
+                    {
+                        imageViewer.Orientation = FitImageOrientation.Width;
+                    }
+                    if (bitmapFrame.PixelHeight * 2 == bitmapFrame.PixelWidth)
+                    {
+                        imageViewer.PanoramaButtonVisibility = Visibility.Visible;
+                    }
                 }
             }
         }
