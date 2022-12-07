@@ -52,7 +52,7 @@ namespace GpScanner.ViewModel
                         ocrData.IsEnabled = ocrData.ProgressValue == 100;
                     };
                     client.DownloadFileCompleted += (s, e) => TesseractFiles = GetTesseractFiles(tessdatafolder);
-                    await client.DownloadFileTaskAsync(new Uri($"https://github.com/tesseract-ocr/tessdata/raw/main/{ocrData.OcrName}"), $@"{tessdatafolder}\{ocrData.OcrName}");
+                    await client.DownloadFileTaskAsync(new Uri($"https://github.com/tesseract-ocr/tessdata_best/raw/main/{ocrData.OcrName}"), $@"{tessdatafolder}\{ocrData.OcrName}");
                 }
                 catch (Exception ex)
                 {

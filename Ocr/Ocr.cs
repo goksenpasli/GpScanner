@@ -49,7 +49,7 @@ namespace Ocr
         {
             try
             {
-                using TesseractEngine engine = new(TesseractPath, lang, EngineMode.TesseractAndLstm);
+                using TesseractEngine engine = new(TesseractPath, lang, EngineMode.LstmOnly);
                 using Pix pixImage = Pix.LoadFromMemory(dosya);
                 using Page page = engine.Process(pixImage);
                 using ResultIterator iterator = page.GetIterator();
@@ -81,7 +81,7 @@ namespace Ocr
         {
             try
             {
-                using TesseractEngine engine = new(TesseractPath, lang, EngineMode.TesseractAndLstm);
+                using TesseractEngine engine = new(TesseractPath, lang, EngineMode.LstmOnly);
                 using Pix pixImage = Pix.LoadFromFile(dosya);
                 using Page page = engine.Process(pixImage);
                 using ResultIterator iterator = page.GetIterator();
