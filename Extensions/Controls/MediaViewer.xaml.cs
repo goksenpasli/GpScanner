@@ -787,7 +787,7 @@ namespace Extensions.Controls
         private string GetNextPlayListFile()
         {
             int index = PlayList.IndexOf(MediaDataFilePath);
-            return index < PlayList.Count() - 1 ? PlayList[index + 1] : null;
+            return index < PlayList.Count - 1 ? PlayList[index + 1] : null;
         }
 
         private void MediaElement_MediaEnded(object sender, RoutedEventArgs e)

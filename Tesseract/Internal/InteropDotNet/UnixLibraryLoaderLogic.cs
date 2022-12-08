@@ -8,28 +8,18 @@ using Tesseract.Internal;
 
 namespace InteropDotNet
 {
-    class UnixLibraryLoaderLogic : ILibraryLoaderLogic
+    internal class UnixLibraryLoaderLogic : ILibraryLoaderLogic
     {
-        public IntPtr LoadLibrary(string fileName)
+        public string FixUpLibraryName(string fileName)
         {
-            var libraryHandle = IntPtr.Zero;
-
-            try
+            if (!string.IsNullOrEmpty(fileName))
             {
-                Logger.TraceInformation("Trying to load native library \"{0}\"...", fileName);
-                libraryHandle = UnixLoadLibrary(fileName, RTLD_NOW);
-                if (libraryHandle != IntPtr.Zero)
-                    Logger.TraceInformation("Successfully loaded native library \"{0}\", handle = {1}.", fileName, libraryHandle);
-                else
-                    Logger.TraceError("Failed to load native library \"{0}\".\r\nCheck windows event log.", fileName);
+                if (!fileName.EndsWith(FileExtension, StringComparison.OrdinalIgnoreCase))
+                    fileName += FileExtension;
+                if (!fileName.StartsWith("lib", StringComparison.OrdinalIgnoreCase))
+                    fileName = "lib" + fileName;
             }
-            catch (Exception e)
-            {
-                var lastError = UnixGetLastError();
-                Logger.TraceError("Failed to load native library \"{0}\".\r\nLast Error:{1}\r\nCheck inner exception and\\or windows event log.\r\nInner Exception: {2}", fileName, lastError, e.ToString());
-            }
-
-            return libraryHandle;
+            return fileName;
         }
 
         public bool FreeLibrary(IntPtr libraryHandle)
@@ -55,32 +45,42 @@ namespace InteropDotNet
             return functionHandle;
         }
 
-        private static readonly string FileExtension = SystemManager.GetOperatingSystem() == OperatingSystem.MacOSX ? ".dylib" : ".so";
-
-        public string FixUpLibraryName(string fileName)
+        public IntPtr LoadLibrary(string fileName)
         {
-            if (!string.IsNullOrEmpty(fileName))
+            var libraryHandle = IntPtr.Zero;
+
+            try
             {
-                if (!fileName.EndsWith(FileExtension, StringComparison.OrdinalIgnoreCase))
-                    fileName += FileExtension;
-                if (!fileName.StartsWith("lib", StringComparison.OrdinalIgnoreCase))
-                    fileName = "lib" + fileName;
+                Logger.TraceInformation("Trying to load native library \"{0}\"...", fileName);
+                libraryHandle = UnixLoadLibrary(fileName, RTLD_NOW);
+                if (libraryHandle != IntPtr.Zero)
+                    Logger.TraceInformation("Successfully loaded native library \"{0}\", handle = {1}.", fileName, libraryHandle);
+                else
+                    Logger.TraceError("Failed to load native library \"{0}\".\r\nCheck windows event log.", fileName);
             }
-            return fileName;
+            catch (Exception e)
+            {
+                var lastError = UnixGetLastError();
+                Logger.TraceError("Failed to load native library \"{0}\".\r\nLast Error:{1}\r\nCheck inner exception and\\or windows event log.\r\nInner Exception: {2}", fileName, lastError, e.ToString());
+            }
+
+            return libraryHandle;
         }
 
-        const int RTLD_NOW = 2;
+        private const int RTLD_NOW = 2;
 
-        [DllImport("libdl", EntryPoint = "dlopen")]
-        private static extern IntPtr UnixLoadLibrary(String fileName, int flags);
+        private static readonly string FileExtension = SystemManager.GetOperatingSystem() == OperatingSystem.MacOSX ? ".dylib" : ".so";
 
         [DllImport("libdl", EntryPoint = "dlclose", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private static extern int UnixFreeLibrary(IntPtr handle);
 
+        [DllImport("libdl", EntryPoint = "dlerror", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern IntPtr UnixGetLastError();
+
         [DllImport("libdl", EntryPoint = "dlsym", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private static extern IntPtr UnixGetProcAddress(IntPtr handle, String symbol);
 
-        [DllImport("libdl", EntryPoint = "dlerror", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private static extern IntPtr UnixGetLastError();
+        [DllImport("libdl", EntryPoint = "dlopen")]
+        private static extern IntPtr UnixLoadLibrary(String fileName, int flags);
     }
 }

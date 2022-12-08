@@ -22,7 +22,6 @@ namespace TwainWpf.TwainNative
 
 #pragma warning disable 169
 
-        
 #pragma warning restore 169
     }
 }

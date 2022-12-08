@@ -19,6 +19,8 @@ namespace GpScanner.ViewModel
 
         public static string DEVICE_PREFIX = "/StiDevice:";
 
+        public static bool FirstLanuchScan { get; set; }
+
         public static void ActivateProcess(Process process)
         {
             if (process.MainWindowHandle != IntPtr.Zero)
@@ -171,8 +173,6 @@ namespace GpScanner.ViewModel
         private const int TIMEOUT = 1000;
 
         private static bool _serverRunning;
-
-        public static bool FirstLanuchScan { get;  set; }
 
         private static string GetPipeName(Process process)
         {

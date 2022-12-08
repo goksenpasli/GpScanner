@@ -6,17 +6,18 @@ using Tesseract.Internal;
 
 namespace Tesseract
 {
-    public unsafe sealed class Pix : DisposableBase, IEquatable<Pix>
+    public sealed unsafe class Pix : DisposableBase, IEquatable<Pix>
     {
         #region Constants
 
-        public const float Deg2Rad = (float)(Math.PI / 180.0);
-
         // Skew Defaults
-        public const int DefaultBinarySearchReduction = 2; // binary search part
+        public const int DefaultBinarySearchReduction = 2;
 
         public const int DefaultBinaryThreshold = 130;
 
+        public const float Deg2Rad = (float)(Math.PI / 180.0);
+
+        // binary search part
         /// <summary>
         /// A small angle, in radians, for threshold checking. Equal to about 0.06 degrees.
         /// </summary>
@@ -42,38 +43,13 @@ namespace Tesseract
 
         #region Fields
 
-        private readonly int depth;
-        private readonly int height;
-        private readonly int width;
         private PixColormap colormap;
+
         private HandleRef handle;
 
         #endregion Fields
-        
+
         #region Create\Load methods
-
-        /// <summary>
-        /// Creates a new pix instance using an existing handle to a pix structure.
-        /// </summary>
-        /// <remarks>
-        /// Note that the resulting instance takes ownership of the data structure.
-        /// </remarks>
-        /// <param name="handle"></param>
-        private Pix(IntPtr handle)
-        {
-            if (handle == IntPtr.Zero) throw new ArgumentNullException("handle");
-
-            this.handle = new HandleRef(this, handle);
-            this.width = Interop.LeptonicaApi.Native.pixGetWidth(this.handle);
-            this.height = Interop.LeptonicaApi.Native.pixGetHeight(this.handle);
-            this.depth = Interop.LeptonicaApi.Native.pixGetDepth(this.handle);
-
-            var colorMapHandle = Interop.LeptonicaApi.Native.pixGetColormap(this.handle);
-            if (colorMapHandle != IntPtr.Zero)
-            {
-                this.colormap = new PixColormap(colorMapHandle);
-            }
-        }
 
         public static Pix Create(int width, int height, int depth)
         {
@@ -108,17 +84,17 @@ namespace Tesseract
 
         public static Pix LoadFromMemory(byte[] bytes)
         {
-	        IntPtr handle;
-	        fixed (byte* ptr = bytes)
-	        {
-		        handle = Interop.LeptonicaApi.Native.pixReadMem(ptr, bytes.Length);
-	        }
-	        if (handle == IntPtr.Zero)
-	        {
-		        throw new IOException("Failed to load image from memory.");
-	        }
-	        return Create(handle);
-		}
+            IntPtr handle;
+            fixed (byte* ptr = bytes)
+            {
+                handle = Interop.LeptonicaApi.Native.pixReadMem(ptr, bytes.Length);
+            }
+            if (handle == IntPtr.Zero)
+            {
+                throw new IOException("Failed to load image from memory.");
+            }
+            return Create(handle);
+        }
 
         public static Pix LoadTiffFromMemory(byte[] bytes)
         {
@@ -146,6 +122,29 @@ namespace Tesseract
             return Create(handle);
         }
 
+        /// <summary>
+        /// Creates a new pix instance using an existing handle to a pix structure.
+        /// </summary>
+        /// <remarks>
+        /// Note that the resulting instance takes ownership of the data structure.
+        /// </remarks>
+        /// <param name="handle"></param>
+        private Pix(IntPtr handle)
+        {
+            if (handle == IntPtr.Zero) throw new ArgumentNullException("handle");
+
+            this.handle = new HandleRef(this, handle);
+            Width = Interop.LeptonicaApi.Native.pixGetWidth(this.handle);
+            Height = Interop.LeptonicaApi.Native.pixGetHeight(this.handle);
+            Depth = Interop.LeptonicaApi.Native.pixGetDepth(this.handle);
+
+            var colorMapHandle = Interop.LeptonicaApi.Native.pixGetColormap(this.handle);
+            if (colorMapHandle != IntPtr.Zero)
+            {
+                colormap = new PixColormap(colorMapHandle);
+            }
+        }
+
         #endregion Create\Load methods
 
         #region Properties
@@ -153,6 +152,7 @@ namespace Tesseract
         public PixColormap Colormap
         {
             get { return colormap; }
+
             set
             {
                 if (value != null)
@@ -172,41 +172,32 @@ namespace Tesseract
             }
         }
 
-        public int Depth
-        {
-            get { return depth; }
-        }
+        public int Depth { get; }
 
-        public int Height
-        {
-            get { return height; }
-        }
+        public int Height { get; }
 
-        public int Width
-        {
-            get { return width; }
-        }
+        public int Width { get; }
 
         public int XRes
         {
-            get { return Interop.LeptonicaApi.Native.pixGetXRes(this.handle); }
-            set { Interop.LeptonicaApi.Native.pixSetXRes(this.handle, value); }
+            get { return Interop.LeptonicaApi.Native.pixGetXRes(handle); }
+            set { Interop.LeptonicaApi.Native.pixSetXRes(handle, value); }
         }
 
         public int YRes
         {
-            get { return Interop.LeptonicaApi.Native.pixGetYRes(this.handle); }
-            set { Interop.LeptonicaApi.Native.pixSetYRes(this.handle, value); }
-        }
-
-        internal HandleRef Handle
-        {
-            get { return handle; }
+            get { return Interop.LeptonicaApi.Native.pixGetYRes(handle); }
+            set { Interop.LeptonicaApi.Native.pixSetYRes(handle, value); }
         }
 
         public PixData GetData()
         {
             return new PixData(this);
+        }
+
+        internal HandleRef Handle
+        {
+            get { return handle; }
         }
 
         #endregion Properties
@@ -230,14 +221,14 @@ namespace Tesseract
             }
 
             int same;
-            if(Interop.LeptonicaApi.Native.pixEqual(Handle, other.Handle, out same) != 0)
+            if (Interop.LeptonicaApi.Native.pixEqual(Handle, other.Handle, out same) != 0)
             {
                 throw new TesseractException("Failed to compare pix");
             }
             return same != 0;
         }
 
-        #endregion
+        #endregion Equals
 
         #region Save methods
 
@@ -300,6 +291,24 @@ namespace Tesseract
         #endregion Clone
 
         #region Image manipulation
+
+        /// <summary>
+        /// HMT (with just misses) for speckle up to 2x2
+        /// "oooo"
+        /// "oC o"
+        /// "o  o"
+        /// "oooo"
+        /// </summary>
+        public const string SEL_STR2 = "oooooC oo  ooooo";
+
+        /// <summary>
+        /// HMT (with just misses) for speckle up to 3x3
+        /// "oC  o"
+        /// "o   o"
+        /// "o   o"
+        /// "ooooo"
+        /// </summary>
+        public const string SEL_STR3 = "ooooooC  oo   oo   oooooo";
 
         /// <summary>
         /// Binarization of the input image based on the passed parameters and the Otsu method
@@ -454,6 +463,7 @@ namespace Tesseract
             if (resultPixHandle == IntPtr.Zero) throw new TesseractException("Failed to convert to grayscale.");
             return new Pix(resultPixHandle);
         }
+
         /// <summary>
         /// Conversion from RBG to 8bpp grayscale.
         /// </summary>
@@ -464,168 +474,19 @@ namespace Tesseract
         }
 
         /// <summary>
-        /// Removes horizontal lines from a grayscale image. 
-        /// The algorithm is based on Leptonica <code>lineremoval.c</code> example.
-        /// See <a href="http://www.leptonica.com/line-removal.html">line-removal</a>.
+        /// Top-level conversion to 8 bpp.
         /// </summary>
-        /// <returns>image with lines removed</returns>
-        public Pix RemoveLines()
-        {
-            float angle, conf;
-            IntPtr pix1, pix2, pix3, pix4, pix5, pix6, pix7, pix8, pix9;
-
-            pix1 = pix2 = pix3 = pix4 = pix5 = pix6 = pix7 = pix8 = pix9 = IntPtr.Zero;
-
-            try
-            {
-                /* threshold to binary, extracting much of the lines */
-                pix1 = Interop.LeptonicaApi.Native.pixThresholdToBinary(handle, 170);
-
-                /* find the skew angle and deskew using an interpolated
-                 * rotator for anti-aliasing (to avoid jaggies) */
-                Interop.LeptonicaApi.Native.pixFindSkew(new HandleRef(this, pix1), out angle, out conf);
-                pix2 = Interop.LeptonicaApi.Native.pixRotateAMGray(handle, (float)(Deg2Rad * angle), (byte)255);
-
-                /* extract the lines to be removed */
-                pix3 = Interop.LeptonicaApi.Native.pixCloseGray(new HandleRef(this, pix2), 51, 1);
-
-                /* solidify the lines to be removed */
-                pix4 = Interop.LeptonicaApi.Native.pixErodeGray(new HandleRef(this, pix3), 1, 5);
-
-                /* clean the background of those lines */
-                pix5 = Interop.LeptonicaApi.Native.pixThresholdToValue(new HandleRef(this, IntPtr.Zero), new HandleRef(this, pix4), 210, 255);
-
-                pix6 = Interop.LeptonicaApi.Native.pixThresholdToValue(new HandleRef(this, IntPtr.Zero), new HandleRef(this, pix5), 200, 0);
-
-                /* get paint-through mask for changed pixels */
-                pix7 = Interop.LeptonicaApi.Native.pixThresholdToBinary(new HandleRef(this, pix6), 210);
-
-                /* add the inverted, cleaned lines to orig.  Because
-                 * the background was cleaned, the inversion is 0,
-                 * so when you add, it doesn't lighten those pixels.
-                 * It only lightens (to white) the pixels in the lines! */
-                Interop.LeptonicaApi.Native.pixInvert(new HandleRef(this, pix6), new HandleRef(this, pix6));
-                pix8 = Interop.LeptonicaApi.Native.pixAddGray(new HandleRef(this, IntPtr.Zero), new HandleRef(this, pix2), new HandleRef(this, pix6));
-
-                pix9 = Interop.LeptonicaApi.Native.pixOpenGray(new HandleRef(this, pix8), 1, 9);
-
-                Interop.LeptonicaApi.Native.pixCombineMasked(new HandleRef(this, pix8), new HandleRef(this, pix9), new HandleRef(this, pix7));
-                if (pix8 == IntPtr.Zero)
-                {
-                    throw new TesseractException("Failed to remove lines from image.");
-                }
-
-                return new Pix(pix8);
-            }
-            finally
-            {
-                // destroy any created intermediate pix's, regardless of if the process 
-                // failed for any reason.
-                if (pix1 != IntPtr.Zero)
-                {
-                    Interop.LeptonicaApi.Native.pixDestroy(ref pix1);
-                }
-
-                if (pix2 != IntPtr.Zero)
-                {
-                    Interop.LeptonicaApi.Native.pixDestroy(ref pix2);
-                }
-
-                if (pix3 != IntPtr.Zero)
-                {
-                    Interop.LeptonicaApi.Native.pixDestroy(ref pix3);
-                }
-
-                if (pix4 != IntPtr.Zero)
-                {
-                    Interop.LeptonicaApi.Native.pixDestroy(ref pix4);
-                }
-
-                if (pix5 != IntPtr.Zero)
-                {
-                    Interop.LeptonicaApi.Native.pixDestroy(ref pix5);
-                }
-
-                if (pix6 != IntPtr.Zero)
-                {
-                    Interop.LeptonicaApi.Native.pixDestroy(ref pix6);
-                }
-
-                if (pix7 != IntPtr.Zero)
-                {
-                    Interop.LeptonicaApi.Native.pixDestroy(ref pix7);
-                }
-
-                if (pix9 != IntPtr.Zero)
-                {
-                    Interop.LeptonicaApi.Native.pixDestroy(ref pix9);
-                }
-            }
-        }
-
-        /// <summary>
-        /// HMT (with just misses) for speckle up to 2x2
-        /// "oooo"
-        /// "oC o"
-        /// "o  o"
-        /// "oooo"
-        /// </summary>
-        public const string SEL_STR2 = "oooooC oo  ooooo";
-
-        /// <summary>
-        /// HMT (with just misses) for speckle up to 3x3
-        /// "oC  o"
-        /// "o   o"
-        /// "o   o"
-        /// "ooooo"
-        /// </summary>
-        public const string SEL_STR3 = "ooooooC  oo   oo   oooooo";
-
-        /// <summary>
-        /// Reduces speckle noise in image. The algorithm is based on Leptonica
-        /// <code>speckle_reg.c</code> example demonstrating morphological method of
-        /// removing speckle.
-        /// </summary>
-        /// <param name="selStr">hit-miss sels in 2D layout; SEL_STR2 and SEL_STR3 are predefined values</param>
-        /// <param name="selSize">2 for 2x2, 3 for 3x3</param>
+        /// <param name="cmapflag"></param>
         /// <returns></returns>
-        public Pix Despeckle(string selStr, int selSize)
+        public Pix ConvertTo8(int cmapflag)
         {
-            IntPtr pix1, pix2, pix3;
-            IntPtr pix4, pix5, pix6;
-            IntPtr sel1, sel2;
+            IntPtr resultHandle = Interop.LeptonicaApi.Native.pixConvertTo8(handle, cmapflag);
 
-            /*  Normalize for rapidly varying background */
-            pix1 = Interop.LeptonicaApi.Native.pixBackgroundNormFlex(handle, 7, 7, 1, 1, 10);
-
-            /* Remove the background */
-            pix2 = Interop.LeptonicaApi.Native.pixGammaTRCMasked(new HandleRef(this, IntPtr.Zero), new HandleRef(this, pix1), new HandleRef(this, IntPtr.Zero), 1.0f, 100, 175);
-            
-            /* Binarize */
-            pix3 = Interop.LeptonicaApi.Native.pixThresholdToBinary(new HandleRef(this, pix2), 180);
-
-            /* Remove the speckle noise up to selSize x selSize */
-            sel1 = Interop.LeptonicaApi.Native.selCreateFromString(selStr, selSize + 2, selSize + 2, "speckle" + selSize);
-            pix4 = Interop.LeptonicaApi.Native.pixHMT(new HandleRef(this, IntPtr.Zero), new HandleRef(this, pix3), new HandleRef(this, sel1));
-            sel2 = Interop.LeptonicaApi.Native.selCreateBrick(selSize, selSize, 0, 0, SelType.SEL_HIT);
-            pix5 = Interop.LeptonicaApi.Native.pixDilate(new HandleRef(this, IntPtr.Zero), new HandleRef(this, pix4), new HandleRef(this, sel2));
-            pix6 = Interop.LeptonicaApi.Native.pixSubtract(new HandleRef(this, IntPtr.Zero), new HandleRef(this, pix3), new HandleRef(this, pix5));
-
-            Interop.LeptonicaApi.Native.selDestroy(ref sel1);
-            Interop.LeptonicaApi.Native.selDestroy(ref sel2);
-
-            Interop.LeptonicaApi.Native.pixDestroy(ref pix1);
-            Interop.LeptonicaApi.Native.pixDestroy(ref pix2);
-            Interop.LeptonicaApi.Native.pixDestroy(ref pix3);
-            Interop.LeptonicaApi.Native.pixDestroy(ref pix4);
-            Interop.LeptonicaApi.Native.pixDestroy(ref pix5);
-
-            if (pix6 == IntPtr.Zero)
+            if (resultHandle == IntPtr.Zero)
             {
-                throw new TesseractException("Failed to despeckle image.");
+                throw new LeptonicaException("Failed to convert image to 8 bpp.");
             }
-
-            return new Pix(pix6);
+            return new Pix(resultHandle);
         }
 
         /// <summary>
@@ -697,6 +558,168 @@ namespace Tesseract
         }
 
         /// <summary>
+        /// Reduces speckle noise in image. The algorithm is based on Leptonica
+        /// <code>speckle_reg.c</code> example demonstrating morphological method of
+        /// removing speckle.
+        /// </summary>
+        /// <param name="selStr">hit-miss sels in 2D layout; SEL_STR2 and SEL_STR3 are predefined values</param>
+        /// <param name="selSize">2 for 2x2, 3 for 3x3</param>
+        /// <returns></returns>
+        public Pix Despeckle(string selStr, int selSize)
+        {
+            IntPtr pix1, pix2, pix3;
+            IntPtr pix4, pix5, pix6;
+            IntPtr sel1, sel2;
+
+            /*  Normalize for rapidly varying background */
+            pix1 = Interop.LeptonicaApi.Native.pixBackgroundNormFlex(handle, 7, 7, 1, 1, 10);
+
+            /* Remove the background */
+            pix2 = Interop.LeptonicaApi.Native.pixGammaTRCMasked(new HandleRef(this, IntPtr.Zero), new HandleRef(this, pix1), new HandleRef(this, IntPtr.Zero), 1.0f, 100, 175);
+
+            /* Binarize */
+            pix3 = Interop.LeptonicaApi.Native.pixThresholdToBinary(new HandleRef(this, pix2), 180);
+
+            /* Remove the speckle noise up to selSize x selSize */
+            sel1 = Interop.LeptonicaApi.Native.selCreateFromString(selStr, selSize + 2, selSize + 2, "speckle" + selSize);
+            pix4 = Interop.LeptonicaApi.Native.pixHMT(new HandleRef(this, IntPtr.Zero), new HandleRef(this, pix3), new HandleRef(this, sel1));
+            sel2 = Interop.LeptonicaApi.Native.selCreateBrick(selSize, selSize, 0, 0, SelType.SEL_HIT);
+            pix5 = Interop.LeptonicaApi.Native.pixDilate(new HandleRef(this, IntPtr.Zero), new HandleRef(this, pix4), new HandleRef(this, sel2));
+            pix6 = Interop.LeptonicaApi.Native.pixSubtract(new HandleRef(this, IntPtr.Zero), new HandleRef(this, pix3), new HandleRef(this, pix5));
+
+            Interop.LeptonicaApi.Native.selDestroy(ref sel1);
+            Interop.LeptonicaApi.Native.selDestroy(ref sel2);
+
+            Interop.LeptonicaApi.Native.pixDestroy(ref pix1);
+            Interop.LeptonicaApi.Native.pixDestroy(ref pix2);
+            Interop.LeptonicaApi.Native.pixDestroy(ref pix3);
+            Interop.LeptonicaApi.Native.pixDestroy(ref pix4);
+            Interop.LeptonicaApi.Native.pixDestroy(ref pix5);
+
+            if (pix6 == IntPtr.Zero)
+            {
+                throw new TesseractException("Failed to despeckle image.");
+            }
+
+            return new Pix(pix6);
+        }
+
+        /// <summary>
+        /// Inverts pix.
+        /// </summary>
+        /// <returns></returns>
+        public Pix Invert()
+        {
+            IntPtr resultHandle = Interop.LeptonicaApi.Native.pixInvert(new HandleRef(this, IntPtr.Zero), handle);
+
+            if (resultHandle == IntPtr.Zero)
+            {
+                throw new LeptonicaException("Failed to invert image.");
+            }
+            return new Pix(resultHandle);
+        }
+
+        /// <summary>
+        /// Removes horizontal lines from a grayscale image.
+        /// The algorithm is based on Leptonica <code>lineremoval.c</code> example.
+        /// See <a href="http://www.leptonica.com/line-removal.html">line-removal</a>.
+        /// </summary>
+        /// <returns>image with lines removed</returns>
+        public Pix RemoveLines()
+        {
+            float angle, conf;
+            IntPtr pix1, pix2, pix3, pix4, pix5, pix6, pix7, pix8, pix9;
+
+            pix1 = pix2 = pix3 = pix4 = pix5 = pix6 = pix7 = pix8 = pix9 = IntPtr.Zero;
+
+            try
+            {
+                /* threshold to binary, extracting much of the lines */
+                pix1 = Interop.LeptonicaApi.Native.pixThresholdToBinary(handle, 170);
+
+                /* find the skew angle and deskew using an interpolated
+                 * rotator for anti-aliasing (to avoid jaggies) */
+                Interop.LeptonicaApi.Native.pixFindSkew(new HandleRef(this, pix1), out angle, out conf);
+                pix2 = Interop.LeptonicaApi.Native.pixRotateAMGray(handle, (float)(Deg2Rad * angle), (byte)255);
+
+                /* extract the lines to be removed */
+                pix3 = Interop.LeptonicaApi.Native.pixCloseGray(new HandleRef(this, pix2), 51, 1);
+
+                /* solidify the lines to be removed */
+                pix4 = Interop.LeptonicaApi.Native.pixErodeGray(new HandleRef(this, pix3), 1, 5);
+
+                /* clean the background of those lines */
+                pix5 = Interop.LeptonicaApi.Native.pixThresholdToValue(new HandleRef(this, IntPtr.Zero), new HandleRef(this, pix4), 210, 255);
+
+                pix6 = Interop.LeptonicaApi.Native.pixThresholdToValue(new HandleRef(this, IntPtr.Zero), new HandleRef(this, pix5), 200, 0);
+
+                /* get paint-through mask for changed pixels */
+                pix7 = Interop.LeptonicaApi.Native.pixThresholdToBinary(new HandleRef(this, pix6), 210);
+
+                /* add the inverted, cleaned lines to orig.  Because
+                 * the background was cleaned, the inversion is 0,
+                 * so when you add, it doesn't lighten those pixels.
+                 * It only lightens (to white) the pixels in the lines! */
+                Interop.LeptonicaApi.Native.pixInvert(new HandleRef(this, pix6), new HandleRef(this, pix6));
+                pix8 = Interop.LeptonicaApi.Native.pixAddGray(new HandleRef(this, IntPtr.Zero), new HandleRef(this, pix2), new HandleRef(this, pix6));
+
+                pix9 = Interop.LeptonicaApi.Native.pixOpenGray(new HandleRef(this, pix8), 1, 9);
+
+                Interop.LeptonicaApi.Native.pixCombineMasked(new HandleRef(this, pix8), new HandleRef(this, pix9), new HandleRef(this, pix7));
+                if (pix8 == IntPtr.Zero)
+                {
+                    throw new TesseractException("Failed to remove lines from image.");
+                }
+
+                return new Pix(pix8);
+            }
+            finally
+            {
+                // destroy any created intermediate pix's, regardless of if the process
+                // failed for any reason.
+                if (pix1 != IntPtr.Zero)
+                {
+                    Interop.LeptonicaApi.Native.pixDestroy(ref pix1);
+                }
+
+                if (pix2 != IntPtr.Zero)
+                {
+                    Interop.LeptonicaApi.Native.pixDestroy(ref pix2);
+                }
+
+                if (pix3 != IntPtr.Zero)
+                {
+                    Interop.LeptonicaApi.Native.pixDestroy(ref pix3);
+                }
+
+                if (pix4 != IntPtr.Zero)
+                {
+                    Interop.LeptonicaApi.Native.pixDestroy(ref pix4);
+                }
+
+                if (pix5 != IntPtr.Zero)
+                {
+                    Interop.LeptonicaApi.Native.pixDestroy(ref pix5);
+                }
+
+                if (pix6 != IntPtr.Zero)
+                {
+                    Interop.LeptonicaApi.Native.pixDestroy(ref pix6);
+                }
+
+                if (pix7 != IntPtr.Zero)
+                {
+                    Interop.LeptonicaApi.Native.pixDestroy(ref pix7);
+                }
+
+                if (pix9 != IntPtr.Zero)
+                {
+                    Interop.LeptonicaApi.Native.pixDestroy(ref pix9);
+                }
+            }
+        }
+
+        /// <summary>
         /// Creates a new image by rotating this image about it's centre.
         /// </summary>
         /// <remarks>
@@ -726,10 +749,10 @@ namespace Tesseract
         /// <returns>The image rotated around it's centre.</returns>
         public Pix Rotate(float angleInRadians, RotationMethod method = RotationMethod.AreaMap, RotationFill fillColor = RotationFill.White, int? width = null, int? height = null)
         {
-            if (width == null) width = this.Width;
-            if (height == null) height = this.Height;
+            if (width == null) width = Width;
+            if (height == null) height = Height;
 
-            if (Math.Abs(angleInRadians) < VerySmallAngle) return this.Clone();
+            if (Math.Abs(angleInRadians) < VerySmallAngle) return Clone();
 
             IntPtr resultHandle;
 
@@ -765,43 +788,13 @@ namespace Tesseract
             }
             return new Pix(resultHandle);
         }
-        /// <summary>
-        /// Inverts pix.
-        /// </summary>
-        /// <returns></returns>
-        public Pix Invert()
-        {
-            IntPtr resultHandle = Interop.LeptonicaApi.Native.pixInvert(new HandleRef(this, IntPtr.Zero), handle);
-
-            if (resultHandle == IntPtr.Zero)
-            {
-                throw new LeptonicaException("Failed to invert image.");
-            }
-            return new Pix(resultHandle);
-        }
-        /// <summary>
-        /// Top-level conversion to 8 bpp.
-        /// </summary>
-        /// <param name="cmapflag"></param>
-        /// <returns></returns>
-        public Pix ConvertTo8(int cmapflag)
-        {
-            IntPtr resultHandle = Interop.LeptonicaApi.Native.pixConvertTo8(handle, cmapflag);
-
-            if (resultHandle == IntPtr.Zero)
-            {
-                throw new LeptonicaException("Failed to convert image to 8 bpp.");
-            }
-            return new Pix(resultHandle);
-        }
 
         #endregion Image manipulation
 
         #region Scaling
 
-
         /// <summary>
-        /// Scales the current pix by the specified <paramref name="scaleX"/> and <paramref name="scaleY"/> factors returning a new <see cref="Pix"/> of the same depth. 
+        /// Scales the current pix by the specified <paramref name="scaleX"/> and <paramref name="scaleY"/> factors returning a new <see cref="Pix"/> of the same depth.
         /// </summary>
         /// <param name="scaleX"></param>
         /// <param name="scaleY"></param>
@@ -925,7 +918,7 @@ namespace Tesseract
             return new Pix(result);
         }
 
-        #endregion
+        #endregion Scaling
 
         #region Disposal
 
@@ -933,7 +926,7 @@ namespace Tesseract
         {
             var tmpHandle = handle.Handle;
             Interop.LeptonicaApi.Native.pixDestroy(ref tmpHandle);
-            this.handle = new HandleRef(this, IntPtr.Zero);
+            handle = new HandleRef(this, IntPtr.Zero);
         }
 
         #endregion Disposal

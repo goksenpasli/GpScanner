@@ -74,7 +74,7 @@
                     </Paragraph>
                     <Paragraph>
                         <Span>
-                            <Hyperlink Command="{Binding TesseractDataFilesDownloadLink}" CommandParameter="https://github.com/tesseract-ocr/tessdata">
+                            <Hyperlink Command="{Binding TesseractDataFilesDownloadLink}" CommandParameter="https://github.com/tesseract-ocr/tessdata_best">
                                 <Run Text="{twainctrl:Loc OTHERTESSERACTLINK}" />
                             </Hyperlink>
                         </Span>

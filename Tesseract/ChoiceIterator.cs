@@ -8,27 +8,8 @@ namespace Tesseract
     /// </summary>
     public sealed class ChoiceIterator : DisposableBase
     {
-        private readonly HandleRef _handleRef;
-        
-        internal ChoiceIterator(IntPtr handle)
-        {
-            this._handleRef = new HandleRef(this, handle);
-        }
-
         /// <summary>
-        /// Moves to the next choice for the symbol and returns false if there are none left.
-        /// </summary>
-        /// <returns>true|false</returns>
-        public bool Next()
-        {
-            VerifyNotDisposed();
-            if (_handleRef.Handle == IntPtr.Zero)
-                return false;
-            return Interop.TessApi.Native.ChoiceIteratorNext(_handleRef) != 0;
-        }
-
-        /// <summary>
-        /// Returns the confidence of the current choice.        
+        /// Returns the confidence of the current choice.
         /// </summary>
         /// <remarks>
         /// The number should be interpreted as a percent probability. (0.0f-100.0f)
@@ -50,10 +31,27 @@ namespace Tesseract
         public string GetText()
         {
             VerifyNotDisposed();
-            if (_handleRef.Handle == IntPtr.Zero)            
+            if (_handleRef.Handle == IntPtr.Zero)
                 return String.Empty;
-            
+
             return Interop.TessApi.ChoiceIteratorGetUTF8Text(_handleRef);
+        }
+
+        /// <summary>
+        /// Moves to the next choice for the symbol and returns false if there are none left.
+        /// </summary>
+        /// <returns>true|false</returns>
+        public bool Next()
+        {
+            VerifyNotDisposed();
+            if (_handleRef.Handle == IntPtr.Zero)
+                return false;
+            return Interop.TessApi.Native.ChoiceIteratorNext(_handleRef) != 0;
+        }
+
+        internal ChoiceIterator(IntPtr handle)
+        {
+            _handleRef = new HandleRef(this, handle);
         }
 
         protected override void Dispose(bool disposing)
@@ -63,5 +61,7 @@ namespace Tesseract
                 Interop.TessApi.Native.ChoiceIteratorDelete(_handleRef);
             }
         }
+
+        private readonly HandleRef _handleRef;
     }
 }

@@ -60,7 +60,8 @@ namespace Extensions
 
         public static Bitmap BitmapChangeFormat(this Bitmap bitmap, System.Drawing.Imaging.PixelFormat format)
         {
-            return bitmap.Clone(new Rectangle(0, 0, bitmap.Width, bitmap.Height), format);
+            Rectangle rect = new(0, 0, bitmap.Width, bitmap.Height);
+            return bitmap.Clone(rect, format);
         }
 
         public static bool Contains(this string source, string toCheck, StringComparison comp)
@@ -106,7 +107,8 @@ namespace Extensions
 
         public static System.Windows.Media.Brush ConvertToBrush(this System.Drawing.Color color)
         {
-            return new SolidColorBrush(System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B));
+            System.Windows.Media.Color convertedcolor = System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B);
+            return new SolidColorBrush(convertedcolor);
         }
 
         public static System.Drawing.Color ConvertToColor(this System.Windows.Media.Brush color)
@@ -161,9 +163,9 @@ namespace Extensions
 
         public static string GetFileType(this string filename)
         {
-            SHFILEINFO shinfo = new SHFILEINFO();
+            SHFILEINFO shinfo = new();
             _ = SHGetFileInfo
-                (
+                    (
                         filename,
                         FILE_ATTRIBUTE_NORMAL,
                         out shinfo, (uint)Marshal.SizeOf(shinfo),
@@ -189,7 +191,7 @@ namespace Extensions
                     flags += SHGFI_LARGEICON;
                 }
 
-                SHFILEINFO shfi = new SHFILEINFO();
+                SHFILEINFO shfi = new();
 
                 IntPtr res = SHGetFileInfo(path, FILE_ATTRIBUTE_NORMAL, out shfi, (uint)Marshal.SizeOf(shfi), flags);
 
@@ -318,7 +320,8 @@ namespace Extensions
 
         public static BitmapSource Resize(this BitmapSource bfPhoto, double oran)
         {
-            TransformedBitmap tb = new(bfPhoto, new ScaleTransform(oran, oran, 0, 0));
+            ScaleTransform newTransform = new(oran, oran, 0, 0);
+            TransformedBitmap tb = new(bfPhoto, newTransform);
             tb.Freeze();
             return tb;
         }
@@ -327,7 +330,8 @@ namespace Extensions
         {
             return await Task.Run(() =>
             {
-                TransformedBitmap tb = new(bfPhoto, new ScaleTransform(oran, oran, centerx, centery));
+                ScaleTransform newTransform = new(oran, oran, centerx, centery);
+                TransformedBitmap tb = new(bfPhoto, newTransform);
                 tb.Freeze();
                 return tb;
             });
@@ -384,7 +388,8 @@ namespace Extensions
         public static RenderTargetBitmap ToRenderTargetBitmap(this UIElement uiElement, double resolution = 96)
         {
             double scale = resolution / 96d;
-            uiElement.Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
+            System.Windows.Size availableSize = new(double.PositiveInfinity, double.PositiveInfinity);
+            uiElement.Measure(availableSize);
             System.Windows.Size sz = uiElement.DesiredSize;
             Rect rect = new(sz);
             uiElement.Arrange(rect);
@@ -404,11 +409,12 @@ namespace Extensions
             try
             {
                 using MemoryStream outStream = new();
+                BitmapFrame frame = BitmapFrame.Create((BitmapSource)bitmapsource);
                 switch (format)
                 {
                     case Format.TiffRenkli:
                         TiffBitmapEncoder tifzipencoder = new() { Compression = TiffCompressOption.Zip };
-                        tifzipencoder.Frames.Add(BitmapFrame.Create((BitmapSource)bitmapsource));
+                        tifzipencoder.Frames.Add(frame);
                         tifzipencoder.Save(outStream);
                         tifzipencoder = null;
                         bitmapsource = null;
@@ -416,7 +422,7 @@ namespace Extensions
 
                     case Format.Tiff:
                         TiffBitmapEncoder tifccittencoder = new() { Compression = TiffCompressOption.Ccitt4 };
-                        tifccittencoder.Frames.Add(BitmapFrame.Create((BitmapSource)bitmapsource));
+                        tifccittencoder.Frames.Add(frame);
                         tifccittencoder.Save(outStream);
                         tifccittencoder = null;
                         bitmapsource = null;
@@ -424,7 +430,7 @@ namespace Extensions
 
                     case Format.Jpg:
                         JpegBitmapEncoder jpgencoder = new() { QualityLevel = jpegquality };
-                        BitmapFrame item = BitmapFrame.Create((BitmapSource)bitmapsource);
+                        BitmapFrame item = frame;
                         jpgencoder.Frames.Add(item);
                         jpgencoder.Save(outStream);
                         jpgencoder = null;
@@ -433,7 +439,7 @@ namespace Extensions
 
                     case Format.Png:
                         PngBitmapEncoder pngencoder = new();
-                        pngencoder.Frames.Add(BitmapFrame.Create((BitmapSource)bitmapsource));
+                        pngencoder.Frames.Add(frame);
                         pngencoder.Save(outStream);
                         pngencoder = null;
                         bitmapsource = null;

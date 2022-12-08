@@ -68,14 +68,8 @@ namespace TwainControl
                 {
                     ScannedImage scannedimage = bitmapFrames[i];
                     PdfPage page = document.AddPage();
-                    if (paper is null)
-                    {
-                        page.Size = PageSize.A4;
-                    }
-                    else
-                    {
-                        SetPaperSize(paper, page);
-                    }
+                    SetPaperSize(paper, page);
+
                     if (Scanner.UseMozJpegEncoding && format != Format.Tiff)
                     {
                         using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
@@ -151,15 +145,7 @@ namespace TwainControl
                 {
                     string imagefile = imagefiles[i];
                     PdfPage page = document.AddPage();
-                    if (paper is null)
-                    {
-                        page.Size = PageSize.A4;
-                    }
-                    else
-                    {
-                        SetPaperSize(paper, page);
-                    }
-
+                    SetPaperSize(paper, page);
                     using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
                     using XImage xImage = XImage.FromFile(imagefile);
                     XSize size = PageSizeConverter.ToSize(page.Size);
@@ -354,6 +340,11 @@ namespace TwainControl
 
         private static void SetPaperSize(Paper paper, PdfPage page)
         {
+            if (paper is null)
+            {
+                page.Size = PageSize.A4;
+                return;
+            }
             switch (paper.PaperType)
             {
                 case "A1":

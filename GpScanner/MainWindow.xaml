@@ -368,7 +368,6 @@
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
-
                     </Grid>
                 </TabItem>
                 <TabItem Header="{twainctrl:Loc OCR}">

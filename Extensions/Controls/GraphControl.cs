@@ -174,7 +174,7 @@ namespace Extensions
 
         private void DrawGraph(DrawingContext drawingContext, ObservableCollection<Chart> Series)
         {
-            if (Series is not null && Series.Any())
+            if (Series?.Any() == true)
             {
                 double max = Series.Max(z => z.ChartValue);
                 double thickness = ActualWidth / Series.Count;

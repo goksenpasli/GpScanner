@@ -14,12 +14,6 @@ namespace Tesseract
     /// </summary>
     public class TesseractEngine : DisposableBase
     {
-        private static readonly TraceSource trace = new TraceSource("Tesseract");
-
-        private HandleRef handle;
-
-        private int processCount = 0;
-
         /// <summary>
         /// Creates a new instance of <see cref="TesseractEngine"/> using the <see cref="EngineMode.Default"/> mode.
         /// </summary>
@@ -193,11 +187,6 @@ namespace Tesseract
             }
         }
 
-        internal HandleRef Handle
-        {
-            get { return handle; }
-        }
-
         /// <summary>
         /// Processes the specific image.
         /// </summary>
@@ -271,7 +260,37 @@ namespace Tesseract
             page.Disposed += OnIteratorDisposed;
             return page;
         }
-        
+
+        /// <summary>
+        /// Ties the specified pix to the lifecycle of a page.
+        /// </summary>
+        public class PageDisposalHandle
+        {
+            public PageDisposalHandle(Page page, Pix pix)
+            {
+                this.page = page;
+                this.pix = pix;
+                page.Disposed += OnPageDisposed;
+            }
+
+            private readonly Page page;
+
+            private readonly Pix pix;
+
+            private void OnPageDisposed(object sender, System.EventArgs e)
+            {
+                page.Disposed -= OnPageDisposed;
+
+                // dispose the pix when the page is disposed.
+                pix.Dispose();
+            }
+        }
+
+        internal HandleRef Handle
+        {
+            get { return handle; }
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (handle.Handle != IntPtr.Zero)
@@ -280,6 +299,12 @@ namespace Tesseract
                 handle = new HandleRef(this, IntPtr.Zero);
             }
         }
+
+        private static readonly TraceSource trace = new TraceSource("Tesseract");
+
+        private HandleRef handle;
+
+        private int processCount = 0;
 
         private string GetTessDataPrefix()
         {
@@ -318,29 +343,6 @@ namespace Tesseract
                 GC.SuppressFinalize(this);
 
                 throw new TesseractException(ErrorMessage.Format(1, "Failed to initialise tesseract engine."));
-            }
-        }
-
-        /// <summary>
-        /// Ties the specified pix to the lifecycle of a page.
-        /// </summary>
-        public class PageDisposalHandle
-        {
-            private readonly Page page;
-            private readonly Pix pix;
-
-            public PageDisposalHandle(Page page, Pix pix)
-            {
-                this.page = page;
-                this.pix = pix;
-                page.Disposed += OnPageDisposed;
-            }
-
-            private void OnPageDisposed(object sender, System.EventArgs e)
-            {
-                page.Disposed -= OnPageDisposed;
-                // dispose the pix when the page is disposed.
-                pix.Dispose();
             }
         }
 

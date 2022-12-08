@@ -1,30 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Tesseract
 {
-    public struct Scew
+    public readonly struct Scew
     {
-        private float angle;
-        private float confidence;
-
         public Scew(float angle, float confidence)
         {
-            this.angle = angle;
-            this.confidence = confidence;
+            Angle = angle;
+            Confidence = confidence;
         }
 
-        public float Angle
-        {
-            get { return angle; }
-        }
+        public float Angle { get; }
 
-
-        public float Confidence
-        {
-            get { return confidence; }
-        }
+        public float Confidence { get; }
 
         #region ToString
 
@@ -33,27 +21,13 @@ namespace Tesseract
             return String.Format("Scew: {0} [conf: {1}]", Angle, Confidence);
         }
 
-        #endregion
+        #endregion ToString
 
         #region Equals and GetHashCode implementation
-        public override bool Equals(object obj)
-        {
-            return (obj is Scew) && Equals((Scew)obj);
-        }
 
-        public bool Equals(Scew other)
+        public static bool operator !=(Scew lhs, Scew rhs)
         {
-            return this.confidence == other.confidence && this.angle == other.angle;
-        }
-
-        public override int GetHashCode()
-        {
-            int hashCode = 0;
-            unchecked {
-                hashCode += 1000000007 * angle.GetHashCode();
-                hashCode += 1000000009 * confidence.GetHashCode();
-            }
-            return hashCode;
+            return !(lhs == rhs);
         }
 
         public static bool operator ==(Scew lhs, Scew rhs)
@@ -61,11 +35,27 @@ namespace Tesseract
             return lhs.Equals(rhs);
         }
 
-        public static bool operator !=(Scew lhs, Scew rhs)
+        public override bool Equals(object obj)
         {
-            return !(lhs == rhs);
+            return (obj is Scew) && Equals((Scew)obj);
         }
-        #endregion
-        
+
+        public bool Equals(Scew other)
+        {
+            return Confidence == other.Confidence && Angle == other.Angle;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = 0;
+            unchecked
+            {
+                hashCode += 1000000007 * Angle.GetHashCode();
+                hashCode += 1000000009 * Confidence.GetHashCode();
+            }
+            return hashCode;
+        }
+
+        #endregion Equals and GetHashCode implementation
     }
 }

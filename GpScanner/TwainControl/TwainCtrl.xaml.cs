@@ -82,7 +82,8 @@ namespace TwainControl
 
             ResimSil = new RelayCommand<object>(parameter =>
             {
-                _ = Scanner.Resimler?.Remove(parameter as ScannedImage);
+                ScannedImage item = parameter as ScannedImage;
+                _ = Scanner.Resimler?.Remove(item);
                 ResetCropMargin();
                 GC.Collect();
             }, parameter => true);
@@ -216,9 +217,9 @@ namespace TwainControl
                             string filename = saveFileDialog.FileName;
                             string directory = Path.GetDirectoryName(filename);
                             TiffBitmapEncoder tifccittencoder = new() { Compression = TiffCompressOption.Ccitt4 };
-                            foreach (ScannedImage item in seçiliresimler)
+                            foreach (ScannedImage scannedimage in seçiliresimler)
                             {
-                                tifccittencoder.Frames.Add(item.Resim);
+                                tifccittencoder.Frames.Add(scannedimage.Resim);
                             }
                             using FileStream stream = new(directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "tif"), FileMode.Create);
                             tifccittencoder.Save(stream);
@@ -1372,7 +1373,8 @@ namespace TwainControl
                     double widthmultiply = SeçiliResim.Resim.PixelWidth / (double)((img.DesiredSize.Width < img.ActualWidth) ? img.ActualWidth : img.DesiredSize.Width);
                     double heightmultiply = SeçiliResim.Resim.PixelHeight / (double)((img.DesiredSize.Height < img.ActualHeight) ? img.ActualHeight : img.DesiredSize.Height);
 
-                    CroppedBitmap croppedbitmap = new(SeçiliResim.Resim, new Int32Rect((int)(mousemovecoord.X * widthmultiply), (int)(mousemovecoord.Y * heightmultiply), 1, 1));
+                    Int32Rect sourceRect = new((int)(mousemovecoord.X * widthmultiply), (int)(mousemovecoord.Y * heightmultiply), 1, 1);
+                    CroppedBitmap croppedbitmap = new(SeçiliResim.Resim, sourceRect);
                     byte[] pixels = new byte[4];
                     croppedbitmap.CopyPixels(pixels, 4, 0);
                     croppedbitmap.Freeze();
