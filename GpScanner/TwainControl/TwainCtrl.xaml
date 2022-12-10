@@ -82,23 +82,41 @@
                     Background="{StaticResource GroupBoxBackGround}"
                     BorderBrush="Black" IsExpanded="True">
                     <Expander.Header>
-                        <ComboBox ItemsSource="{Binding Scanner.Tarayıcılar}" SelectedItem="{Binding Scanner.SeçiliTarayıcı, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Width="32" Height="32">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Imageres.dll" />
-                                                    <Binding Source="90" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                        <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay}" />
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
+                        <StackPanel Orientation="Horizontal">
+                            <ComboBox ItemsSource="{Binding Scanner.Tarayıcılar}" SelectedItem="{Binding Scanner.SeçiliTarayıcı, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="32" Height="32">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Imageres.dll" />
+                                                        <Binding Source="90" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                            <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <Extensions:ContentToggleButton>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="32" Height="32">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Imageres.dll" />
+                                                <Binding Source="41" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc CAMERA}" />
+                                </StackPanel>
+                                <Extensions:ContentToggleButton.OverContent>
+                                    <local:CameraUserControl Width="480" Height="360" PropertyChanged="CameraUserControl_PropertyChanged"/>
+                                </Extensions:ContentToggleButton.OverContent>
+                            </Extensions:ContentToggleButton>
+                        </StackPanel>
                     </Expander.Header>
                     <GroupBox Grid.Row="1" IsEnabled="{Binding Scanner.ArayüzEtkin}">
                         <GroupBox.Header>

@@ -529,9 +529,9 @@ namespace Extensions
         {
             if (d is ImageViewer imageViewer && e.NewValue is not null)
             {
-                imageViewer.Resize.Execute(null);
                 if (e.NewValue is BitmapFrame bitmapFrame)
                 {
+                    imageViewer.Resize.Execute(null);
                     if (bitmapFrame.PixelHeight < bitmapFrame.PixelWidth)
                     {
                         imageViewer.Orientation = FitImageOrientation.Width;

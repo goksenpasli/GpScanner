@@ -183,6 +183,9 @@ ENREGISTREMENT</value>
   <data name="CALENDAR" xml:space="preserve">
     <value>CALENDRIER</value>
   </data>
+  <data name="CAMERA" xml:space="preserve">
+    <value>CAMÉRA</value>
+  </data>
   <data name="CLEARLIST" xml:space="preserve">
     <value>EFFACER LA LISTE</value>
   </data>

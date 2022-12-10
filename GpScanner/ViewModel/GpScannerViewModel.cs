@@ -332,6 +332,14 @@ namespace GpScanner.ViewModel
             DateBack = new RelayCommand<object>(parameter => SeçiliGün = SeçiliGün.Value.AddDays(-1), parameter => SeçiliGün > DateTime.MinValue);
 
             DateForward = new RelayCommand<object>(parameter => SeçiliGün = SeçiliGün.Value.AddDays(1), parameter => SeçiliGün < DateTime.Today);
+
+            ReadOcrDataFile = new RelayCommand<object>(parameter =>
+            {
+                if (parameter is Scanner scanner)
+                {
+                    scanner.FileOcrContent = DataYükle()?.FirstOrDefault(z => z.FileName == scanner.FileName)?.FileContent;
+                }
+            }, parameter => true);
         }
 
         public static event EventHandler<PropertyChangedEventArgs> StaticPropertyChanged;
@@ -546,9 +554,9 @@ namespace GpScanner.ViewModel
         {
             get => new()
             {
-                    new Size(240,315),
-                    new Size(320,420),
-                    new Size(426,560),
+                    new Size(240,385),
+                    new Size(320,495),
+                    new Size(425,645),
                 };
 
             set => getPreviewSize = value;
@@ -684,6 +692,8 @@ namespace GpScanner.ViewModel
                 }
             }
         }
+
+        public ICommand ReadOcrDataFile { get; }
 
         public ICommand RegisterSti { get; }
 
@@ -1056,7 +1066,7 @@ namespace GpScanner.ViewModel
 
         private Scanner selectedDocument;
 
-        private Size selectedSize = new(240, 315);
+        private Size selectedSize = new(240, 385);
 
         private TesseractViewModel tesseractViewModel;
 

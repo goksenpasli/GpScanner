@@ -77,12 +77,18 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WpfCap, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\WPFCap.1.2.0\lib\net46\WpfCap.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="BitmapMethods.cs" />
+    <Compile Include="CameraUserControl.xaml.cs">
+      <DependentUpon>CameraUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PdfGeneration.cs" />
     <Compile Include="PdfSettings.xaml.cs">
       <DependentUpon>PdfSettings.xaml</DependentUpon>
@@ -110,6 +116,10 @@
     </Compile>
     <Compile Include="WpfLocalizationWithMultipleResourceManagers.cs" />
     <Page Include="AboutView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CameraUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

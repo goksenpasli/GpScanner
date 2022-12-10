@@ -1686,5 +1686,16 @@ namespace TwainControl
                 Scanner.ArayüzEtkin = false;
             }
         }
+
+        private void CameraUserControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName is "ResimData" && sender is CameraUserControl cameraUserControl)
+            {
+                using MemoryStream ms = new MemoryStream(cameraUserControl.ResimData);
+                BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(ms, SelectedPaper);
+                bitmapFrame.Freeze();
+                Scanner.Resimler.Add(new ScannedImage() { Resim = bitmapFrame });
+            }
+        }
     }
 }

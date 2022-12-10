@@ -307,9 +307,30 @@
                                                         IsChecked="{Binding Seçili}"
                                                         IsEnabled="{Binding FileName, Mode=OneWay, Converter={StaticResource FileNamePdfZipCheckConverter}}">
                                                         <CheckBox.Content>
-                                                            <ContentControl d:Width="64"
-                                                                Content="{Binding Path=FileName, IsAsync=True, Mode=OneWay}"
-                                                                ContentTemplateSelector="{StaticResource ThumbViewerSelector}" />
+                                                            <StackPanel>
+                                                                <Extensions:ContentToggleButton Margin="1"
+                                                                    Command="{Binding DataContext.ReadOcrDataFile, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                    CommandParameter="{Binding Mode=OneWay}">
+                                                                    <Image Width="16" Height="16">
+                                                                        <Image.Source>
+                                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                                <Binding Source="Shell32.dll" />
+                                                                                <Binding Source="70" />
+                                                                            </MultiBinding>
+                                                                        </Image.Source>
+                                                                    </Image>
+                                                                    <Extensions:ContentToggleButton.OverContent>
+                                                                        <GroupBox Width="{Binding ActualWidth, RelativeSource={RelativeSource Mode=TemplatedParent}}" Height="{Binding ActualHeight, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                                                            <Extensions:ButtonedTextBox IsReadOnly="True" OpenButtonVisibility="Collapsed" ResetButtonVisibility="Collapsed"
+                                                                                Text="{Binding FileOcrContent, Mode=OneWay}"
+                                                                                TextWrapping="Wrap" />
+                                                                        </GroupBox>
+                                                                    </Extensions:ContentToggleButton.OverContent>
+                                                                </Extensions:ContentToggleButton>
+                                                                <ContentControl d:Width="64"
+                                                                    Content="{Binding Path=FileName, IsAsync=True, Mode=OneWay}"
+                                                                    ContentTemplateSelector="{StaticResource ThumbViewerSelector}" />
+                                                            </StackPanel>
                                                         </CheckBox.Content>
                                                     </CheckBox>
                                                 </Border>

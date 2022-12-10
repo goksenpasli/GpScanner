@@ -50,13 +50,27 @@ namespace GpScanner
         {
             if (e.OriginalSource is Image image && e.Data.GetData(typeof(ScannedImage)) is ScannedImage droppedData && image.TemplatedParent is PdfViewer.PdfViewer pdfviewer)
             {
-                string temporarypdf = Path.GetTempPath() + Guid.NewGuid() + ".pdf";
-                string pdfFilePath = pdfviewer.PdfFilePath;
-                PdfGeneration.GeneratePdf(droppedData.Resim, null, Format.Jpg, TwainCtrl.SelectedPaper).Save(temporarypdf);
-                PdfGeneration.MergePdf(new string[] { temporarypdf, pdfFilePath }).Save(pdfFilePath);
-                File.Delete(temporarypdf);
-                pdfviewer.PdfFilePath = null;
-                pdfviewer.PdfFilePath = pdfFilePath;
+                try
+                {
+                    string temporarypdf = Path.GetTempPath() + Guid.NewGuid() + ".pdf";
+                    string pdfFilePath = pdfviewer.PdfFilePath;
+                    PdfGeneration.GeneratePdf(droppedData.Resim, null, Format.Jpg, TwainCtrl.SelectedPaper).Save(temporarypdf);
+                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                    {
+                        PdfGeneration.MergePdf(new string[] { pdfFilePath, temporarypdf }).Save(pdfFilePath);
+                    }
+                    else
+                    {
+                        PdfGeneration.MergePdf(new string[] { temporarypdf, pdfFilePath }).Save(pdfFilePath);
+                    }
+                    File.Delete(temporarypdf);
+                    pdfviewer.PdfFilePath = null;
+                    pdfviewer.PdfFilePath = pdfFilePath;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
         }
 

@@ -69,6 +69,11 @@
                         MozJpeg
                     </Hyperlink>
                 </TextBlock>
+                <TextBlock>
+                    <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://bitbucket.org/jvandezande/wpfcap/src/master/">
+                        WPFCap
+                    </Hyperlink>
+                </TextBlock>
             </StackPanel>
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>

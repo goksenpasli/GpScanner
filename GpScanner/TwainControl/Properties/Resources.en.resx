@@ -478,4 +478,7 @@ TO FILE</value>
   <data name="NOPROFILE" xml:space="preserve">
     <value>NO PROFILE SELECTED</value>
   </data>
+  <data name="CAMERA" xml:space="preserve">
+    <value>CAMERA</value>
+  </data>
 </root>

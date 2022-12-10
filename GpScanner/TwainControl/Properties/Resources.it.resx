@@ -183,6 +183,9 @@ DISCO</value>
   <data name="CALENDAR" xml:space="preserve">
     <value>CALENDARIO</value>
   </data>
+  <data name="CAMERA" xml:space="preserve">
+    <value>TELECAMERA</value>
+  </data>
   <data name="CLEARLIST" xml:space="preserve">
     <value>ELENCO CHIARO</value>
   </data>

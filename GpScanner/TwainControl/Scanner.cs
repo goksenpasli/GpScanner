@@ -368,6 +368,20 @@ namespace TwainControl
             }
         }
 
+        public string FileOcrContent
+        {
+            get => fileOcrContent;
+
+            set
+            {
+                if (fileOcrContent != value)
+                {
+                    fileOcrContent = value;
+                    OnPropertyChanged(nameof(FileOcrContent));
+                }
+            }
+        }
+
         public string LocalizedPath
         {
             get => ExtensionMethods.GetDisplayName(Settings.Default.AutoFolder);
@@ -815,6 +829,8 @@ namespace TwainControl
         private int enAdet = 1;
 
         private string fileName = "Tarama";
+
+        private string fileOcrContent;
 
         private string localizedPath;
 

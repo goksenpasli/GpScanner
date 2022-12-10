@@ -484,4 +484,7 @@ BELGE EKLE</value>
   <data name="NOPROFILE" xml:space="preserve">
     <value>PROFİL SEÇİLMEDİ</value>
   </data>
+  <data name="CAMERA" xml:space="preserve">
+    <value>KAMERA</value>
+  </data>
 </root>

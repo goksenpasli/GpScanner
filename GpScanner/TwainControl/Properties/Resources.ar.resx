@@ -183,6 +183,9 @@
   <data name="CALENDAR" xml:space="preserve">
     <value>تقويم</value>
   </data>
+  <data name="CAMERA" xml:space="preserve">
+    <value>كاميرا</value>
+  </data>
   <data name="CLEARLIST" xml:space="preserve">
     <value>لائحة خالية</value>
   </data>
