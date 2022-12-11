@@ -11,6 +11,8 @@ namespace GpScanner.ViewModel
 
         public DataTemplate Pdf { get; set; }
 
+        public DataTemplate Xps { get; set; }
+
         public DataTemplate Zip { get; set; }
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
@@ -26,6 +28,10 @@ namespace GpScanner.ViewModel
                 if (ext == ".zip")
                 {
                     return Zip;
+                }
+                if (ext == ".xps")
+                {
+                    return Xps;
                 }
                 if (imgext.Contains(ext))
                 {

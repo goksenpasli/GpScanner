@@ -291,9 +291,13 @@
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate>
-                                                <Border Width="{Binding DataContext.SelectedSize.Width, RelativeSource={RelativeSource AncestorType=Window}}" Height="{Binding DataContext.SelectedSize.Height, RelativeSource={RelativeSource AncestorType=Window}}">
-                                                    <Border.Style>
-                                                        <Style TargetType="Border">
+                                                <CheckBox Width="{Binding DataContext.SelectedSize.Width, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                    Height="{Binding DataContext.SelectedSize.Height, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                    HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                                                    d:Height="50" Background="Transparent" Drop="ContentControl_Drop"
+                                                    IsChecked="{Binding Seçili}">
+                                                    <CheckBox.Style>
+                                                        <Style TargetType="CheckBox">
                                                             <Style.Triggers>
                                                                 <DataTrigger Binding="{Binding Seçili}" Value="true">
                                                                     <Setter Property="BorderBrush" Value="MediumSeaGreen" />
@@ -301,39 +305,40 @@
                                                                 </DataTrigger>
                                                             </Style.Triggers>
                                                         </Style>
-                                                    </Border.Style>
-                                                    <CheckBox HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
-                                                        d:Height="50" Background="Transparent" Drop="ContentControl_Drop"
-                                                        IsChecked="{Binding Seçili}"
-                                                        IsEnabled="{Binding FileName, Mode=OneWay, Converter={StaticResource FileNamePdfZipCheckConverter}}">
-                                                        <CheckBox.Content>
-                                                            <StackPanel>
-                                                                <Extensions:ContentToggleButton Margin="1"
-                                                                    Command="{Binding DataContext.ReadOcrDataFile, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                                    CommandParameter="{Binding Mode=OneWay}">
-                                                                    <Image Width="16" Height="16">
-                                                                        <Image.Source>
-                                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                                <Binding Source="Shell32.dll" />
-                                                                                <Binding Source="70" />
-                                                                            </MultiBinding>
-                                                                        </Image.Source>
-                                                                    </Image>
-                                                                    <Extensions:ContentToggleButton.OverContent>
-                                                                        <GroupBox Width="{Binding ActualWidth, RelativeSource={RelativeSource Mode=TemplatedParent}}" Height="{Binding ActualHeight, RelativeSource={RelativeSource Mode=TemplatedParent}}">
-                                                                            <Extensions:ButtonedTextBox IsReadOnly="True" OpenButtonVisibility="Collapsed" ResetButtonVisibility="Collapsed"
-                                                                                Text="{Binding FileOcrContent, Mode=OneWay}"
-                                                                                TextWrapping="Wrap" />
-                                                                        </GroupBox>
-                                                                    </Extensions:ContentToggleButton.OverContent>
-                                                                </Extensions:ContentToggleButton>
-                                                                <ContentControl d:Width="64"
-                                                                    Content="{Binding Path=FileName, IsAsync=True, Mode=OneWay}"
-                                                                    ContentTemplateSelector="{StaticResource ThumbViewerSelector}" />
-                                                            </StackPanel>
-                                                        </CheckBox.Content>
-                                                    </CheckBox>
-                                                </Border>
+                                                    </CheckBox.Style>
+                                                    <CheckBox.Content>
+                                                        <Grid>
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="19.2" />
+                                                                <RowDefinition />
+                                                            </Grid.RowDefinitions>
+                                                            <Extensions:ContentToggleButton Grid.Row="0"
+                                                                Margin="1"
+                                                                Command="{Binding DataContext.ReadOcrDataFile, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                CommandParameter="{Binding Mode=OneWay}">
+                                                                <Image Width="16" Height="16">
+                                                                    <Image.Source>
+                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                            <Binding Source="Shell32.dll" />
+                                                                            <Binding Source="70" />
+                                                                        </MultiBinding>
+                                                                    </Image.Source>
+                                                                </Image>
+                                                                <Extensions:ContentToggleButton.OverContent>
+                                                                    <GroupBox Width="{Binding ActualWidth, RelativeSource={RelativeSource Mode=TemplatedParent}}" Height="{Binding ActualHeight, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                                                        <Extensions:ButtonedTextBox IsReadOnly="True" OpenButtonVisibility="Collapsed" ResetButtonVisibility="Collapsed"
+                                                                            Text="{Binding FileOcrContent, Mode=OneWay}"
+                                                                            TextWrapping="Wrap" />
+                                                                    </GroupBox>
+                                                                </Extensions:ContentToggleButton.OverContent>
+                                                            </Extensions:ContentToggleButton>
+                                                            <ContentControl Grid.Row="1"
+                                                                d:Width="64"
+                                                                Content="{Binding Path=FileName, IsAsync=True, Mode=OneWay}"
+                                                                ContentTemplateSelector="{StaticResource ThumbViewerSelector}" />
+                                                        </Grid>
+                                                    </CheckBox.Content>
+                                                </CheckBox>
                                             </ControlTemplate>
                                         </Setter.Value>
                                     </Setter>

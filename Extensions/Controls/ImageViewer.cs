@@ -33,7 +33,7 @@ namespace Extensions
 
         public static readonly DependencyProperty ImageFilePathProperty = DependencyProperty.Register("ImageFilePath", typeof(string), typeof(ImageViewer), new PropertyMetadata(null, ImageFilePathChanged));
 
-        public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(FitImageOrientation), typeof(ImageViewer), new PropertyMetadata(FitImageOrientation.Width, Changed));
+        public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(FitImageOrientation), typeof(ImageViewer), new PropertyMetadata(FitImageOrientation.Width, OrientationChanged));
 
         public static readonly DependencyProperty PanoramaModeProperty = DependencyProperty.Register("PanoramaMode", typeof(bool), typeof(ImageViewer), new PropertyMetadata(PanoramaModeChanged));
 
@@ -168,7 +168,7 @@ namespace Extensions
             }
         }
 
-        public virtual ICommand DosyaAç { get; set; }
+        public ICommand DosyaAç { get; set; }
 
         public double Fov { get => (double)GetValue(FovProperty); set => SetValue(FovProperty, value); }
 
@@ -261,7 +261,7 @@ namespace Extensions
             }
         }
 
-        public virtual ICommand Resize { get; set; }
+        public ICommand Resize { get; set; }
 
         public double RotateX { get => (double)GetValue(RotateXProperty); set => SetValue(RotateXProperty, value); }
 
@@ -422,14 +422,6 @@ namespace Extensions
 
         private bool toolBarIsEnabled = true;
 
-        private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is ImageViewer imageViewer)
-            {
-                imageViewer.Resize.Execute(null);
-            }
-        }
-
         private static void DecodeHeightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is ImageViewer imageViewer)
@@ -483,6 +475,10 @@ namespace Extensions
                         imageViewer.TifNavigasyonButtonEtkin = Visibility.Visible;
                         imageViewer.Source = imageViewer.Decoder.Frames[0];
                         imageViewer.Pages = Enumerable.Range(1, imageViewer.Decoder.Frames.Count);
+                        if (imageViewer.TemplatedParent is ContentPresenter contentpresenter)
+                        {
+                            imageViewer.Zoom = imageViewer.Orientation != FitImageOrientation.Width ? contentpresenter.ActualHeight / imageViewer.Source.Height : contentpresenter.ActualWidth / imageViewer.Source.Width;
+                        }
                         return;
 
                     case ".png" or ".jpg" or ".jpeg" or ".bmp":
@@ -503,6 +499,14 @@ namespace Extensions
                             return;
                         }
                 }
+            }
+        }
+
+        private static void OrientationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is ImageViewer imageViewer)
+            {
+                imageViewer.Resize.Execute(null);
             }
         }
 

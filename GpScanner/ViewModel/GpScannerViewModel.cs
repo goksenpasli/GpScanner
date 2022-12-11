@@ -990,7 +990,7 @@ namespace GpScanner.ViewModel
                 ObservableCollection<Scanner> list = new();
                 try
                 {
-                    foreach (string dosya in Directory.EnumerateFiles(Twainsettings.Settings.Default.AutoFolder, "*.*", SearchOption.AllDirectories).Where(s => (new string[] { ".pdf", ".tiff", ".tif", ".jpg", ".png", ".bmp", ".zip" }).Any(ext => ext == Path.GetExtension(s).ToLower())))
+                    foreach (string dosya in Directory.EnumerateFiles(Twainsettings.Settings.Default.AutoFolder, "*.*", SearchOption.AllDirectories).Where(s => (new string[] { ".pdf", ".tiff", ".tif", ".jpg", ".png", ".bmp", ".zip", ".xps" }).Any(ext => ext == Path.GetExtension(s).ToLower())))
                     {
                         list.Add(new Scanner() { FileName = dosya, Seçili = false });
                     }

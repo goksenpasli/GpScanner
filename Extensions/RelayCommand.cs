@@ -91,6 +91,7 @@ namespace Extensions
             return _canExecute == null || _canExecute((T)parameter);
         }
 
+        [DebuggerStepThrough]
         public virtual void Execute(object parameter)
         {
             _execute((T)parameter);
