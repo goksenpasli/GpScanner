@@ -113,7 +113,8 @@
                                     <TextBlock VerticalAlignment="Center" Text="{local:Loc CAMERA}" />
                                 </StackPanel>
                                 <Extensions:ContentToggleButton.OverContent>
-                                    <local:CameraUserControl Width="480" Height="360" PropertyChanged="CameraUserControl_PropertyChanged"/>
+                                    <local:CameraUserControl Width="480" Height="360"
+                                        PropertyChanged="CameraUserControl_PropertyChanged" />
                                 </Extensions:ContentToggleButton.OverContent>
                             </Extensions:ContentToggleButton>
                         </StackPanel>
@@ -499,7 +500,7 @@
                                 Value="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}" />
                             <DockPanel Grid.Column="1">
                                 <StackPanel DockPanel.Dock="Left">
-                                    <Extensions:ContentToggleButton Height="35">
+                                    <Extensions:ContentToggleButton>
                                         <StackPanel Orientation="Horizontal">
                                             <Image Width="24" Height="24">
                                                 <Image.Source>
@@ -515,8 +516,7 @@
                                             <local:PdfSettings />
                                         </Extensions:ContentToggleButton.OverContent>
                                     </Extensions:ContentToggleButton>
-                                    <Button Height="35"
-                                        AllowDrop="True"
+                                    <Button AllowDrop="True"
                                         Command="{Binding PdfBirleştir}"
                                         Drop="PdfMergeButton_Drop">
                                         <StackPanel Orientation="Horizontal">
@@ -531,6 +531,28 @@
                                             <TextBlock VerticalAlignment="Center" Text="{local:Loc MERGEPDF}" />
                                         </StackPanel>
                                     </Button>
+                                    <UniformGrid Columns="2">
+                                        <Button Command="{Binding SaveFileList}">
+                                            <Image Width="16" Height="16">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="6" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </Button>
+                                        <Button Command="{Binding LoadFileList}">
+                                            <Image Width="16" Height="16">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="70" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </Button>
+                                    </UniformGrid>
                                 </StackPanel>
                                 <StackPanel DockPanel.Dock="Right">
                                     <Button Height="35"

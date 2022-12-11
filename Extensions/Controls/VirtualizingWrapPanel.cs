@@ -440,30 +440,33 @@ namespace Extensions
                 for (int i = ItemRange.StartIndex; i <= ItemRange.EndIndex; i++, childIndex++)
                 {
                     UIElement child = (UIElement)ItemContainerGenerator.GenerateNext(out bool isNewlyRealized);
-                    if (isNewlyRealized || /*recycled*/!InternalChildren.Contains(child))
+                    if (child != null)
                     {
-                        if (childIndex >= InternalChildren.Count)
+                        if (isNewlyRealized || /*recycled*/!InternalChildren.Contains(child))
                         {
-                            AddInternalChild(child);
+                            if (childIndex >= InternalChildren.Count)
+                            {
+                                AddInternalChild(child);
+                            }
+                            else
+                            {
+                                InsertInternalChild(childIndex, child);
+                            }
+                            if (!System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
+                            {
+                                ItemContainerGenerator.PrepareItemContainer(child);
+                            }
+                            child.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
                         }
-                        else
-                        {
-                            InsertInternalChild(childIndex, child);
-                        }
-                        if (!System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
-                        {
-                            ItemContainerGenerator.PrepareItemContainer(child);
-                        }
-                        child.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-                    }
 
-                    if (child is IHierarchicalVirtualizationAndScrollInfo groupItem)
-                    {
-                        groupItem.Constraints = new HierarchicalVirtualizationConstraints(
-                            new VirtualizationCacheLength(0),
-                            VirtualizationCacheLengthUnit.Item,
-                            new Rect(0, 0, ViewportWidth, ViewportHeight));
-                        child.Measure(new Size(ViewportWidth, ViewportHeight));
+                        if (child is IHierarchicalVirtualizationAndScrollInfo groupItem)
+                        {
+                            groupItem.Constraints = new HierarchicalVirtualizationConstraints(
+                                new VirtualizationCacheLength(0),
+                                VirtualizationCacheLengthUnit.Item,
+                                new Rect(0, 0, ViewportWidth, ViewportHeight));
+                            child.Measure(new Size(ViewportWidth, ViewportHeight));
+                        }
                     }
                 }
             }
@@ -927,7 +930,7 @@ namespace Extensions
             return new ItemRange(startIndex, endIndex);
         }
 
-        private Size CalculateChildSize(Size availableSize)
+        private Size CalculateChildSize(Size _)
         {
             if (Items.Count == 0)
             {

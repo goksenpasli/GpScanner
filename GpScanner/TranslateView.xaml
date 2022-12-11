@@ -8,7 +8,7 @@
     xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
     xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
     xmlns:viewmodel="clr-namespace:GpScanner.ViewModel"
-    d:DataContext="{d:DesignInstance Type=viewmodel:GpScannerViewModel}"
+    d:DataContext="{d:DesignInstance Type=viewmodel:TranslateViewModel}"
     d:DesignHeight="450" d:DesignWidth="800"
     twainctrl:Translation.ResourceManager="{x:Static twainproperties:Resources.ResourceManager}"
     UseLayoutRounding="True"
@@ -122,7 +122,7 @@
         <ComboBox Grid.Row="1" Grid.Column="0"
             DisplayMemberPath="Key"
             ItemsSource="{StaticResource Diller}"
-            SelectedValue="{Binding TranslateViewModel.MevcutDil, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            SelectedValue="{Binding MevcutDil, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             SelectedValuePath="Value">
             <ComboBox.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -133,7 +133,7 @@
         <ComboBox Grid.Row="1" Grid.Column="1"
             DisplayMemberPath="Key"
             ItemsSource="{StaticResource Diller}"
-            SelectedValue="{Binding TranslateViewModel.ÇevrilenDil, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            SelectedValue="{Binding ÇevrilenDil, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             SelectedValuePath="Value">
             <ComboBox.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -142,17 +142,18 @@
             </ComboBox.ItemsPanel>
         </ComboBox>
         <ComboBox Grid.Row="1" Grid.Column="2"
-            ItemsSource="{Binding TranslateViewModel.TtsDilleri}"
-            SelectedItem="{Binding TranslateViewModel.OkumaDili}" />
+            ItemsSource="{Binding TtsDilleri}"
+            SelectedItem="{Binding OkumaDili}" />
         <Extensions:ButtonedTextBox x:Name="BtnTxtMetin"
             Grid.Row="2" Grid.ColumnSpan="2"
             VerticalContentAlignment="Top"
-            AcceptsReturn="True" CharacterCasing="Normal" OpenButtonVisibility="Collapsed"
-            ScrollViewer.VerticalScrollBarVisibility="Auto"
-            Text="{Binding TranslateViewModel.Metin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            AcceptsReturn="True" CharacterCasing="Normal"
+            IsEnabled="{Binding MetinBoxEnabled}"
+            OpenButtonVisibility="Collapsed" ScrollViewer.VerticalScrollBarVisibility="Auto"
+            Text="{Binding Metin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             TextWrapping="Wrap" />
         <ToggleButton Grid.Row="2" Grid.Column="2"
-            Command="{Binding TranslateViewModel.Oku}"
+            Command="{Binding Oku}"
             CommandParameter="{Binding ElementName=BtnTxtMetin, Path=Text}"
             Style="{StaticResource ToggleButtonPlayPauseStyle}" />
         <Extensions:ButtonedTextBox x:Name="BtnTxtÇeviri"
@@ -160,14 +161,14 @@
             VerticalContentAlignment="Top"
             AcceptsReturn="True" CharacterCasing="Normal" IsReadOnly="True"
             OpenButtonVisibility="Collapsed" ScrollViewer.VerticalScrollBarVisibility="Auto"
-            Text="{Binding TranslateViewModel.Çeviri}"
+            Text="{Binding Çeviri}"
             TextWrapping="Wrap" />
         <ToggleButton Grid.Row="3" Grid.Column="2"
-            Command="{Binding TranslateViewModel.Oku}"
+            Command="{Binding Oku}"
             CommandParameter="{Binding ElementName=BtnTxtÇeviri, Path=Text}"
             Style="{StaticResource ToggleButtonPlayPauseStyle}" />
         <Button Grid.Row="4" Grid.ColumnSpan="2"
-            Command="{Binding TranslateViewModel.Sıfırla}"
+            Command="{Binding Sıfırla}"
             Content="{twainctrl:Loc RESET}" />
         <Extensions:ContentToggleButton Grid.Row="4" Grid.Column="3">
             <Image Width="32" Height="32">
@@ -182,7 +183,7 @@
                 <GroupBox>
                     <ItemsControl Width="200" Height="400"
                         HorizontalContentAlignment="Stretch"
-                        ItemsSource="{Binding TranslateViewModel.TaramaGeçmiş}">
+                        ItemsSource="{Binding TaramaGeçmiş}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <VirtualizingStackPanel />

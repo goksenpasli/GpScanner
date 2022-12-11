@@ -11,6 +11,20 @@ namespace TwainControl
             PropertyChanged += ScannedImage_PropertyChanged;
         }
 
+        public string FilePath
+        {
+            get => filePath;
+
+            set
+            {
+                if (filePath != value)
+                {
+                    filePath = value;
+                    OnPropertyChanged(nameof(FilePath));
+                }
+            }
+        }
+
         public BitmapFrame Resim
         {
             get => resim;
@@ -52,6 +66,8 @@ namespace TwainControl
                 }
             }
         }
+
+        private string filePath;
 
         private BitmapFrame resim;
 

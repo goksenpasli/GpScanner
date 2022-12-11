@@ -326,9 +326,7 @@
                                                                 </Image>
                                                                 <Extensions:ContentToggleButton.OverContent>
                                                                     <GroupBox Width="{Binding ActualWidth, RelativeSource={RelativeSource Mode=TemplatedParent}}" Height="{Binding ActualHeight, RelativeSource={RelativeSource Mode=TemplatedParent}}">
-                                                                        <Extensions:ButtonedTextBox IsReadOnly="True" OpenButtonVisibility="Collapsed" ResetButtonVisibility="Collapsed"
-                                                                            Text="{Binding FileOcrContent, Mode=OneWay}"
-                                                                            TextWrapping="Wrap" />
+                                                                        <local:TranslateView ViewModel:TranslateViewModel.AttachedText="{Binding DataContext.FileOcrContent, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                                                                     </GroupBox>
                                                                 </Extensions:ContentToggleButton.OverContent>
                                                             </Extensions:ContentToggleButton>
@@ -442,7 +440,7 @@
                             </Button>
                         </Grid>
                         <GroupBox Grid.Row="1">
-                            <local:TranslateView />
+                            <local:TranslateView DataContext="{Binding DataContext.TranslateViewModel, RelativeSource={RelativeSource AncestorType=Window}}" />
                         </GroupBox>
                     </Grid>
                 </TabItem>

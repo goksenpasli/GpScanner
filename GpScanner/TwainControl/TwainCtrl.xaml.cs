@@ -478,6 +478,35 @@ namespace TwainControl
                     scannedImage = null;
                 }
             }, parameter => true);
+
+            SaveFileList = new RelayCommand<object>(parameter =>
+            {
+                SaveFileDialog saveFileDialog = new()
+                {
+                    Filter = "Txt Dosyası (*.txt)|*.txt",
+                    FileName = "Filedata.txt"
+                };
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    using StreamWriter file = new(saveFileDialog.FileName);
+                    foreach (var image in Scanner?.Resimler?.GroupBy(z => z.FilePath).Select(z => z.FirstOrDefault()))
+                    {
+                        file.WriteLine(image.FilePath);
+                    }
+                }
+            }, parameter => Scanner?.Resimler?.Count(z => !string.IsNullOrWhiteSpace(z.FilePath)) > 0);
+
+            LoadFileList = new RelayCommand<object>(parameter =>
+            {
+                OpenFileDialog openFileDialog = new()
+                {
+                    Filter = "Txt Dosyası (*.txt)|*.txt",
+                };
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    AddFiles(File.ReadAllLines(openFileDialog.FileName), DecodeHeight);
+                }
+            }, parameter => true);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -651,6 +680,8 @@ namespace TwainControl
 
         public ICommand LoadCroppedImage { get; }
 
+        public ICommand LoadFileList { get; }
+
         public ICommand LoadHistogram { get; }
 
         public ICommand LoadImage { get; }
@@ -722,6 +753,8 @@ namespace TwainControl
         public ICommand ResetCroppedImage { get; }
 
         public ICommand ResimSil { get; }
+
+        public ICommand SaveFileList { get; }
 
         public ICommand SaveProfile { get; }
 
@@ -919,7 +952,7 @@ namespace TwainControl
                                     filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(item);
                                     if (PdfGeneration.IsValidPdfFile(filedata.Take(4)))
                                     {
-                                        await AddPdfFile(filedata, uiContext);
+                                        await AddPdfFile(filedata, uiContext, item);
                                     }
                                     filedata = null;
                                 }
@@ -937,7 +970,7 @@ namespace TwainControl
                                     filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(eyppdfpath);
                                     if (PdfGeneration.IsValidPdfFile(filedata.Take(4)))
                                     {
-                                        await AddPdfFile(filedata, uiContext);
+                                        await AddPdfFile(filedata, uiContext, item);
                                     }
                                     filedata = null;
                                 }
@@ -963,7 +996,7 @@ namespace TwainControl
                                     bitmapFrame.Freeze();
                                     uiContext.Send(_ =>
                                     {
-                                        ScannedImage img = new() { Resim = bitmapFrame };
+                                        ScannedImage img = new() { Resim = bitmapFrame, FilePath = item };
                                         Scanner?.Resimler.Add(img);
                                         img = null;
                                     }, null);
@@ -992,7 +1025,7 @@ namespace TwainControl
                                         bitmapFrame.Freeze();
                                         uiContext.Send(_ =>
                                         {
-                                            ScannedImage img = new() { Resim = bitmapFrame };
+                                            ScannedImage img = new() { Resim = bitmapFrame, FilePath = item };
                                             Scanner?.Resimler.Add(img);
                                             img = null;
                                         }, null);
@@ -1039,7 +1072,7 @@ namespace TwainControl
                                         bitmapFrame.Freeze();
                                         uiContext.Send(_ =>
                                         {
-                                            ScannedImage img = new() { Resim = bitmapFrame };
+                                            ScannedImage img = new() { Resim = bitmapFrame, FilePath = item };
                                             Scanner?.Resimler.Add(img);
                                             img = null;
                                         }, null);
@@ -1169,7 +1202,7 @@ namespace TwainControl
             return null;
         }
 
-        private async Task AddPdfFile(byte[] filedata, SynchronizationContext uiContext)
+        private async Task AddPdfFile(byte[] filedata, SynchronizationContext uiContext, string filepath = null)
         {
             double totalpagecount = await PdfViewer.PdfViewer.PdfPageCountAsync(filedata);
             for (int i = 1; i <= totalpagecount; i++)
@@ -1178,7 +1211,7 @@ namespace TwainControl
                 bitmapFrame.Freeze();
                 uiContext.Send(_ =>
                 {
-                    ScannedImage item = new() { Resim = bitmapFrame };
+                    ScannedImage item = new() { Resim = bitmapFrame, FilePath = filepath };
                     Scanner?.Resimler.Add(item);
                     item = null;
                     PdfLoadProgressValue = i / totalpagecount;
@@ -1191,6 +1224,17 @@ namespace TwainControl
         private void ButtonedTextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             Scanner.CaretPosition = (sender as ButtonedTextBox)?.CaretIndex ?? 0;
+        }
+
+        private void CameraUserControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName is "ResimData" && sender is CameraUserControl cameraUserControl)
+            {
+                using MemoryStream ms = new(cameraUserControl.ResimData);
+                BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(ms, SelectedPaper);
+                bitmapFrame.Freeze();
+                Scanner.Resimler.Add(new ScannedImage() { Resim = bitmapFrame });
+            }
         }
 
         private Int32Rect CropPreviewImage(ImageSource ımageSource)
@@ -1684,17 +1728,6 @@ namespace TwainControl
             catch (Exception)
             {
                 Scanner.ArayüzEtkin = false;
-            }
-        }
-
-        private void CameraUserControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName is "ResimData" && sender is CameraUserControl cameraUserControl)
-            {
-                using MemoryStream ms = new MemoryStream(cameraUserControl.ResimData);
-                BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(ms, SelectedPaper);
-                bitmapFrame.Freeze();
-                Scanner.Resimler.Add(new ScannedImage() { Resim = bitmapFrame });
             }
         }
     }

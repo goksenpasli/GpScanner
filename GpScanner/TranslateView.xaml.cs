@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using GpScanner.ViewModel;
 
 namespace GpScanner
 {
@@ -10,6 +11,7 @@ namespace GpScanner
         public TranslateView()
         {
             InitializeComponent();
+            DataContext = new TranslateViewModel();
         }
     }
 }
