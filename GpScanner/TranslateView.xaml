@@ -148,7 +148,7 @@
             Grid.Row="2" Grid.ColumnSpan="2"
             VerticalContentAlignment="Top"
             AcceptsReturn="True" CharacterCasing="Normal"
-            IsEnabled="{Binding MetinBoxEnabled}"
+            IsReadOnly="{Binding MetinBoxIsreadOnly}"
             OpenButtonVisibility="Collapsed" ScrollViewer.VerticalScrollBarVisibility="Auto"
             Text="{Binding Metin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             TextWrapping="Wrap" />

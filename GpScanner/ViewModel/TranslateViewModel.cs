@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Speech.Synthesis;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using Extensions;
 
@@ -11,8 +10,6 @@ namespace GpScanner.ViewModel
 {
     public class TranslateViewModel : InpcBase
     {
-        public static readonly DependencyProperty AttachedTextProperty = DependencyProperty.RegisterAttached("AttachedText", typeof(string), typeof(TranslateViewModel), new PropertyMetadata(string.Empty, Changed));
-
         public TranslateViewModel()
         {
             TtsDilleri = synthesizer.GetInstalledVoices().Select(z => z.VoiceInfo.Name);
@@ -98,16 +95,16 @@ namespace GpScanner.ViewModel
             }
         }
 
-        public bool MetinBoxEnabled
+        public bool MetinBoxIsreadOnly
         {
-            get => metinBoxEnabled;
+            get => metinBoxIsreadOnly;
 
             set
             {
-                if (metinBoxEnabled != value)
+                if (metinBoxIsreadOnly != value)
                 {
-                    metinBoxEnabled = value;
-                    OnPropertyChanged(nameof(MetinBoxEnabled));
+                    metinBoxIsreadOnly = value;
+                    OnPropertyChanged(nameof(MetinBoxIsreadOnly));
                 }
             }
         }
@@ -161,16 +158,6 @@ namespace GpScanner.ViewModel
 
         public IEnumerable<string> TtsDilleri { get; }
 
-        public static string GetAttachedText(DependencyObject obj)
-        {
-            return (string)obj.GetValue(AttachedTextProperty);
-        }
-
-        public static void SetAttachedText(DependencyObject obj, string value)
-        {
-            obj.SetValue(AttachedTextProperty, value);
-        }
-
         private readonly SpeechSynthesizer synthesizer = new() { Volume = 100 };
 
         private string çeviri;
@@ -179,21 +166,12 @@ namespace GpScanner.ViewModel
 
         private string metin;
 
-        private bool metinBoxEnabled = true;
+        private bool metinBoxIsreadOnly;
 
         private string mevcutDil = "auto";
 
         private string okumaDili;
 
         private ObservableCollection<string> taramaGeçmiş = new();
-
-        private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is TranslateView translateView && translateView.DataContext is TranslateViewModel translateViewModel)
-            {
-                translateViewModel.MetinBoxEnabled = false;
-                translateViewModel.Metin = e.NewValue as string;
-            }
-        }
     }
 }

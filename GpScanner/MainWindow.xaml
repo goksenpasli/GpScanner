@@ -324,11 +324,26 @@
                                                                         </MultiBinding>
                                                                     </Image.Source>
                                                                 </Image>
-                                                                <Extensions:ContentToggleButton.OverContent>
-                                                                    <GroupBox Width="{Binding ActualWidth, RelativeSource={RelativeSource Mode=TemplatedParent}}" Height="{Binding ActualHeight, RelativeSource={RelativeSource Mode=TemplatedParent}}">
-                                                                        <local:TranslateView ViewModel:TranslateViewModel.AttachedText="{Binding DataContext.FileOcrContent, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                                                                    </GroupBox>
-                                                                </Extensions:ContentToggleButton.OverContent>
+                                                                <Extensions:ContentToggleButton.Style>
+                                                                    <Style TargetType="Extensions:ContentToggleButton">
+                                                                        <Style.Triggers>
+                                                                            <Trigger Property="IsChecked" Value="True">
+                                                                                <Setter Property="OverContent">
+                                                                                    <Setter.Value>
+                                                                                        <Extensions:ResizablePanel Width="{Binding Path=Parent.DataContext.SelectedSize.Width, Source={x:Reference TwainCtrl}}"
+                                                                                            Height="{Binding Path=Parent.DataContext.SelectedSize.Height, Source={x:Reference TwainCtrl}}"
+                                                                                            MinWidth="{Binding Path=Parent.DataContext.SelectedSize.Width, Source={x:Reference TwainCtrl}}"
+                                                                                            MinHeight="{Binding Path=Parent.DataContext.SelectedSize.Height, Source={x:Reference TwainCtrl}}">
+                                                                                            <GroupBox>
+                                                                                                <local:TranslateView ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding Parent.DataContext.FileOcrContent, RelativeSource={RelativeSource Mode=Self}}" />
+                                                                                            </GroupBox>
+                                                                                        </Extensions:ResizablePanel>
+                                                                                    </Setter.Value>
+                                                                                </Setter>
+                                                                            </Trigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </Extensions:ContentToggleButton.Style>
                                                             </Extensions:ContentToggleButton>
                                                             <ContentControl Grid.Row="1"
                                                                 d:Width="64"

@@ -940,11 +940,16 @@ namespace Extensions
             using (ItemContainerGenerator.StartAt(startPosition, GeneratorDirection.Forward, true))
             {
                 UIElement child = (UIElement)ItemContainerGenerator.GenerateNext();
-                AddInternalChild(child);
-                ItemContainerGenerator.PrepareItemContainer(child);
-                child.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-                return child.DesiredSize;
+                if (child != null)
+                {
+                    AddInternalChild(child);
+                    ItemContainerGenerator.PrepareItemContainer(child);
+                    child.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                    return child.DesiredSize;
+                }
             }
+
+            return default;
         }
 
         private int GetRowIndex(double location)
