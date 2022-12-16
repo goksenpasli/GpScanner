@@ -247,6 +247,9 @@ SCANSIONE</value>
   <data name="FILENAME" xml:space="preserve">
     <value>NOME DEL FILE:</value>
   </data>
+  <data name="FLATBED" xml:space="preserve">
+    <value>PIATTAFORMA</value>
+  </data>
   <data name="FONT" xml:space="preserve">
     <value>FONT</value>
   </data>

@@ -487,4 +487,7 @@ BELGE EKLE</value>
   <data name="CAMERA" xml:space="preserve">
     <value>KAMERA</value>
   </data>
+  <data name="FLATBED" xml:space="preserve">
+    <value>DÜZ YATAKLI</value>
+  </data>
 </root>

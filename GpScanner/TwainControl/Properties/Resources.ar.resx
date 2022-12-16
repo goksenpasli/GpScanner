@@ -247,6 +247,9 @@
   <data name="FILENAME" xml:space="preserve">
     <value>اسم الملف:</value>
   </data>
+  <data name="FLATBED" xml:space="preserve">
+    <value>مسطحة</value>
+  </data>
   <data name="FONT" xml:space="preserve">
     <value>خط</value>
   </data>

@@ -481,4 +481,7 @@ TO FILE</value>
   <data name="CAMERA" xml:space="preserve">
     <value>CAMERA</value>
   </data>
+  <data name="FLATBED" xml:space="preserve">
+    <value>FLATBED</value>
+  </data>
 </root>

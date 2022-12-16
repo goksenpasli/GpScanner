@@ -222,96 +222,123 @@
                                         <Setter Property="VerticalContentAlignment" Value="Center" />
                                     </Style>
                                 </StackPanel.Resources>
-                                <StackPanel Orientation="Horizontal">
+                                <StackPanel>
                                     <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="600"
-                                        Minimum="72" Orientation="Vertical" SmallChange="1"
+                                        Minimum="72" SmallChange="1"
                                         Style="{StaticResource Slider}"
                                         Ticks="72,96,120,150,200,300,450,600"
                                         ToolTip="{local:Loc RES}"
                                         Value="{Binding Çözünürlük, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                                    <Separator />
                                     <StackPanel Orientation="Horizontal">
-                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                        <ToggleButton Background="{x:Null}" IsChecked="{Binding Adf, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                            <ToggleButton.Style>
+                                                <Style TargetType="ToggleButton">
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsChecked" Value="True">
+                                                            <Setter Property="Content">
+                                                                <Setter.Value>
+                                                                    <Grid>
+                                                                        <Image Width="68" Height="48"
+                                                                            Source="/TwainControl;component/adf.png"
+                                                                            Visibility="{Binding Adf, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                                                                        <TextBlock VerticalAlignment="Center"
+                                                                            FontWeight="Bold" Foreground="White"
+                                                                            Text="{local:Loc ADF}" />
+                                                                    </Grid>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </Trigger>
+                                                        <Trigger Property="IsChecked" Value="False">
+                                                            <Setter Property="Content">
+                                                                <Setter.Value>
+                                                                    <Grid>
+                                                                        <Image Width="68" Height="48"
+                                                                            Source="/TwainControl;component/flatbed.png" />
+                                                                        <TextBlock VerticalAlignment="Center"
+                                                                            FontWeight="Bold"
+                                                                            Text="{local:Loc FLATBED}" />
+                                                                    </Grid>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ToggleButton.Style>
+                                        </ToggleButton>
+                                        <ListBox Background="{x:Null}"
+                                            BorderBrush="{x:Null}"
+                                            SelectedIndex="{Binding Mode, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                            <ListBox.Resources>
+                                                <Style TargetType="{x:Type ListBoxItem}">
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate>
+                                                                <RadioButton VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                                                    Content="{TemplateBinding ContentPresenter.Content}"
+                                                                    IsChecked="{Binding IsSelected, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </ListBox.Resources>
+                                            <ListBox.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <UniformGrid Columns="3" />
+                                                </ItemsPanelTemplate>
+                                            </ListBox.ItemsPanel>
+                                            <ListBoxItem HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center">
+                                                <StackPanel>
+                                                    <TextBlock FontWeight="Bold" Text="{local:Loc BW}" />
+                                                    <Image Width="32" Height="32">
+                                                        <Image.Effect>
+                                                            <Extensions:BlackWhiteEffect Threshold="0.95" />
+                                                        </Image.Effect>
+                                                        <Image.Source>
+                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                <Binding Source="Imageres.dll" />
+                                                                <Binding Source="14" />
+                                                            </MultiBinding>
+                                                        </Image.Source>
+                                                    </Image>
+                                                </StackPanel>
+                                            </ListBoxItem>
+                                            <ListBoxItem HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center">
+                                                <StackPanel>
+                                                    <TextBlock HorizontalAlignment="Center"
+                                                        FontWeight="Bold" Foreground="Gray"
+                                                        Text="{local:Loc GRAY}" />
+                                                    <Image Width="32" Height="32">
+                                                        <Image.Effect>
+                                                            <Extensions:GrayScaleEffect />
+                                                        </Image.Effect>
+                                                        <Image.Source>
+                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                <Binding Source="Imageres.dll" />
+                                                                <Binding Source="14" />
+                                                            </MultiBinding>
+                                                        </Image.Source>
+                                                    </Image>
+                                                </StackPanel>
+                                            </ListBoxItem>
+                                            <ListBoxItem HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center">
+                                                <StackPanel>
+                                                    <TextBlock HorizontalAlignment="Center"
+                                                        FontWeight="Bold"
+                                                        Foreground="{StaticResource Colorfull}"
+                                                        Text="{local:Loc COLOR}" />
+                                                    <Image Width="32" Height="32">
+                                                        <Image.Source>
+                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                <Binding Source="Imageres.dll" />
+                                                                <Binding Source="14" />
+                                                            </MultiBinding>
+                                                        </Image.Source>
+                                                    </Image>
+                                                </StackPanel>
+                                            </ListBoxItem>
+                                        </ListBox>
                                     </StackPanel>
-                                    <CheckBox IsChecked="{Binding Adf, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
-                                        <Grid>
-                                            <Image Source="/TwainControl;component/adf.png" Visibility="{Binding Adf, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                                            <TextBlock VerticalAlignment="Center"
-                                                FontWeight="Bold"
-                                                Text="{local:Loc ADF}" />
-                                        </Grid>
-                                    </CheckBox>
-                                    <ListBox Background="{x:Null}"
-                                        BorderBrush="{x:Null}"
-                                        SelectedIndex="{Binding Mode, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
-                                        <ListBox.Resources>
-                                            <Style TargetType="{x:Type ListBoxItem}">
-                                                <Setter Property="Template">
-                                                    <Setter.Value>
-                                                        <ControlTemplate>
-                                                            <RadioButton VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                                                Content="{TemplateBinding ContentPresenter.Content}"
-                                                                IsChecked="{Binding IsSelected, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" />
-                                                        </ControlTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Style>
-                                        </ListBox.Resources>
-                                        <ListBox.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <UniformGrid Columns="3" />
-                                            </ItemsPanelTemplate>
-                                        </ListBox.ItemsPanel>
-                                        <ListBoxItem HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center">
-                                            <StackPanel>
-                                                <TextBlock FontWeight="Bold" Text="{local:Loc BW}" />
-                                                <Image Width="32" Height="32">
-                                                    <Image.Effect>
-                                                        <Extensions:BlackWhiteEffect Threshold="0.95" />
-                                                    </Image.Effect>
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Imageres.dll" />
-                                                            <Binding Source="14" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                            </StackPanel>
-                                        </ListBoxItem>
-                                        <ListBoxItem HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center">
-                                            <StackPanel>
-                                                <TextBlock HorizontalAlignment="Center"
-                                                    FontWeight="Bold" Foreground="Gray"
-                                                    Text="{local:Loc GRAY}" />
-                                                <Image Width="32" Height="32">
-                                                    <Image.Effect>
-                                                        <Extensions:GrayScaleEffect />
-                                                    </Image.Effect>
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Imageres.dll" />
-                                                            <Binding Source="14" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                            </StackPanel>
-                                        </ListBoxItem>
-                                        <ListBoxItem HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center">
-                                            <StackPanel>
-                                                <TextBlock HorizontalAlignment="Center"
-                                                    FontWeight="Bold"
-                                                    Foreground="{StaticResource Colorfull}"
-                                                    Text="{local:Loc COLOR}" />
-                                                <Image Width="32" Height="32">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Imageres.dll" />
-                                                            <Binding Source="14" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                            </StackPanel>
-                                        </ListBoxItem>
-                                    </ListBox>
                                 </StackPanel>
                                 <Separator />
                                 <Grid>
@@ -654,7 +681,9 @@
                             </DockPanel>
                         </Grid>
                     </GroupBox.Header>
-                    <ListBox Extensions:DragDropExtension.ScrollOnDragDrop="True" AllowDrop="True"
+                    <ListBox Extensions:DragDropExtension.ScrollOnDragDrop="True"
+                        d:ItemsSource="{d:SampleData ItemCount=5}"
+                        AllowDrop="True"
                         Background="{StaticResource BorderBackground}"
                         Drop="ListBox_Drop" IsSynchronizedWithCurrentItem="False"
                         ItemsSource="{Binding Scanner.Resimler, Mode=OneWay}"

@@ -247,6 +247,9 @@ ANALYSE</value>
   <data name="FILENAME" xml:space="preserve">
     <value>NOM DE FICHIER:</value>
   </data>
+  <data name="FLATBED" xml:space="preserve">
+    <value>À PLAT</value>
+  </data>
   <data name="FONT" xml:space="preserve">
     <value>POLICE DE CARACTÈRE</value>
   </data>
