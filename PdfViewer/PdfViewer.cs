@@ -576,11 +576,9 @@ namespace PdfViewer
                     catch (Exception)
                     {
                     }
+                    return;
                 }
-                else
-                {
-                    pdfViewer.Source = null;
-                }
+                pdfViewer.Source = null;
             }
         }
 

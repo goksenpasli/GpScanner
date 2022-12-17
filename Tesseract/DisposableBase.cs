@@ -16,10 +16,7 @@ namespace Tesseract
             IsDisposed = true;
             GC.SuppressFinalize(this);
 
-            if (Disposed != null)
-            {
-                Disposed(this, EventArgs.Empty);
-            }
+            Disposed?.Invoke(this, EventArgs.Empty);
         }
 
         protected DisposableBase()

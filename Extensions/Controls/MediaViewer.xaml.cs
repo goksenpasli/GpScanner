@@ -703,12 +703,10 @@ namespace Extensions.Controls
                     viewer.PanoramaViewPort.Visibility = Visibility.Visible;
                     viewer.panoramaBrush.Brush = null;
                     viewer.panoramaBrush.Brush = new VisualBrush(viewer.Player);
+                    return;
                 }
-                else
-                {
-                    viewer.PanoramaViewPort.Visibility = Visibility.Collapsed;
-                    viewer.panoramaBrush.Brush = null;
-                }
+                viewer.PanoramaViewPort.Visibility = Visibility.Collapsed;
+                viewer.panoramaBrush.Brush = null;
             }
         }
 
@@ -877,12 +875,10 @@ namespace Extensions.Controls
             {
                 Player.Pause();
                 OsdText = "Durduruldu";
+                return;
             }
-            else
-            {
-                Player.Play();
-                OsdText = "Çalıyor";
-            }
+            Player.Play();
+            OsdText = "Çalıyor";
         }
 
         private void Rotate_Click(object sender, RoutedEventArgs e)

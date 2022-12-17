@@ -281,11 +281,9 @@ namespace Extensions
                     double y = (_columnHeader.ActualHeight / 2) - 5;
                     Rect rect = new(x, y, 10, 10);
                     drawingContext.DrawImage(_sortGlyph, rect);
+                    return;
                 }
-                else
-                {
-                    drawingContext.DrawGeometry(Brushes.LightGray, new Pen(Brushes.Gray, 1.0), GetDefaultGlyph());
-                }
+                drawingContext.DrawGeometry(Brushes.LightGray, new Pen(Brushes.Gray, 1.0), GetDefaultGlyph());
             }
 
             private readonly GridViewColumnHeader _columnHeader;

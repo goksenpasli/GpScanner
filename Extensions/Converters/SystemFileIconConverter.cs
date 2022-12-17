@@ -20,10 +20,7 @@ namespace Extensions
                     return null;
                 }
             }
-            else
-            {
-                return null;
-            }
+            return null;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

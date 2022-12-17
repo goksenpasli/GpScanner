@@ -347,7 +347,7 @@ namespace TwainControl
         {
             if (deskew)
             {
-                RenderTargetBitmap skewedimage = image.RotateImage((double)TwainCtrl.GetDeskewAngle(image, true));
+                RenderTargetBitmap skewedimage = image.RotateImage((double)ToolBox.GetDeskewAngle(image, true));
                 skewedimage.Freeze();
                 return BitmapFrame.Create(skewedimage, image.PixelWidth < image.PixelHeight ? image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Width * paper.Height).BitmapSourceToBitmap().ToBitmapImage(System.Drawing.Imaging.ImageFormat.Jpeg, Settings.Default.PreviewWidth) : image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Height * paper.Width).BitmapSourceToBitmap().ToBitmapImage(System.Drawing.Imaging.ImageFormat.Jpeg, Settings.Default.PreviewWidth));
             }

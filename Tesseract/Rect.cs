@@ -6,8 +6,6 @@ namespace Tesseract
     {
         public static readonly Rect Empty = new Rect();
 
-
-
         #region Constructors + Factory Methods
 
         public Rect(int x, int y, int width, int height)

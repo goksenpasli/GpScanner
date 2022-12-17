@@ -929,6 +929,11 @@ namespace Tesseract
             handle = new HandleRef(this, IntPtr.Zero);
         }
 
+        public override int GetHashCode()
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion Disposal
     }
 }

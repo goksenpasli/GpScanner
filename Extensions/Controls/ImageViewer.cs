@@ -97,41 +97,40 @@ namespace Extensions
 
                         pd.PrintVisual(dv, "");
                     }
+                    return;
                 }
-                else
+
+                pd.PageRangeSelection = PageRangeSelection.AllPages;
+                pd.UserPageRangeEnabled = true;
+                pd.MaxPage = (uint)Decoder.Frames.Count;
+                pd.MinPage = 1;
+                if (pd.ShowDialog() == true)
                 {
-                    pd.PageRangeSelection = PageRangeSelection.AllPages;
-                    pd.UserPageRangeEnabled = true;
-                    pd.MaxPage = (uint)Decoder.Frames.Count;
-                    pd.MinPage = 1;
-                    if (pd.ShowDialog() == true)
+                    int başlangıç;
+                    int bitiş;
+                    if (pd.PageRangeSelection == PageRangeSelection.AllPages)
                     {
-                        int başlangıç;
-                        int bitiş;
-                        if (pd.PageRangeSelection == PageRangeSelection.AllPages)
+                        başlangıç = 0;
+                        bitiş = Decoder.Frames.Count - 1;
+                    }
+                    else
+                    {
+                        başlangıç = pd.PageRange.PageFrom - 1;
+                        bitiş = pd.PageRange.PageTo - 1;
+                    }
+
+                    for (int i = başlangıç; i <= bitiş; i++)
+                    {
+                        using (DrawingContext dc = dv.RenderOpen())
                         {
-                            başlangıç = 0;
-                            bitiş = Decoder.Frames.Count - 1;
-                        }
-                        else
-                        {
-                            başlangıç = pd.PageRange.PageFrom - 1;
-                            bitiş = pd.PageRange.PageTo - 1;
+                            BitmapSource imagesource = Source.Width > Source.Height
+                                ? Decoder.Frames[i]?.Resize((int)pd.PrintableAreaHeight, (int)pd.PrintableAreaWidth, 90, 300, 300)
+                                : Decoder.Frames[i]?.Resize((int)pd.PrintableAreaWidth, (int)pd.PrintableAreaHeight, 0, 300, 300);
+                            imagesource.Freeze();
+                            dc.DrawImage(imagesource, new Rect(0, 0, pd.PrintableAreaWidth, pd.PrintableAreaHeight));
                         }
 
-                        for (int i = başlangıç; i <= bitiş; i++)
-                        {
-                            using (DrawingContext dc = dv.RenderOpen())
-                            {
-                                BitmapSource imagesource = Source.Width > Source.Height
-                                    ? Decoder.Frames[i]?.Resize((int)pd.PrintableAreaHeight, (int)pd.PrintableAreaWidth, 90, 300, 300)
-                                    : Decoder.Frames[i]?.Resize((int)pd.PrintableAreaWidth, (int)pd.PrintableAreaHeight, 0, 300, 300);
-                                imagesource.Freeze();
-                                dc.DrawImage(imagesource, new Rect(0, 0, pd.PrintableAreaWidth, pd.PrintableAreaHeight));
-                            }
-
-                            pd.PrintVisual(dv, "");
-                        }
+                        pd.PrintVisual(dv, "");
                     }
                 }
             }, parameter => Source is not null);
@@ -455,11 +454,9 @@ namespace Extensions
                 if (e.NewValue is string filepath)
                 {
                     LoadImage(filepath, imageViewer);
+                    return;
                 }
-                else
-                {
-                    imageViewer.Source = null;
-                }
+                imageViewer.Source = null;
             }
         }
 
@@ -520,12 +517,10 @@ namespace Extensions
                     viewer._panoramaBrush.Brush = null;
                     viewer._panoramaBrush.Brush = new ImageBrush(viewer.Source);
                     viewer._panoramaBrush.Brush.Freeze();
+                    return;
                 }
-                else
-                {
-                    viewer._viewport.Visibility = Visibility.Collapsed;
-                    viewer._panoramaBrush.Brush = null;
-                }
+                viewer._viewport.Visibility = Visibility.Collapsed;
+                viewer._panoramaBrush.Brush = null;
             }
         }
 

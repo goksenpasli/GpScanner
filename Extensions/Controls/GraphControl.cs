@@ -157,17 +157,15 @@ namespace Extensions
             if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
             {
                 DrawGraph(drawingContext, Series);
+                return;
             }
-            else
-            {
-                MockData = new()
+            MockData = new()
                 {
                     new Chart() { ChartBrush = Brushes.Blue, ChartValue = 100, Description = "Sample Item 1" },
                     new Chart() { ChartBrush = Brushes.Red, ChartValue = 40, Description = "Sample Item 2" },
                     new Chart() { ChartBrush = Brushes.Yellow, ChartValue = 60, Description = "Sample Item 3" }
                 };
-                DrawGraph(drawingContext, MockData);
-            }
+            DrawGraph(drawingContext, MockData);
         }
 
         private static ObservableCollection<Chart> MockData;

@@ -24,7 +24,6 @@ using System.Xml.Linq;
 using Extensions;
 using Microsoft.Win32;
 using Ocr;
-using PdfSharp.Pdf;
 using TwainControl.Properties;
 using TwainWpf;
 using TwainWpf.TwainNative;
@@ -84,7 +83,7 @@ namespace TwainControl
             {
                 ScannedImage item = parameter as ScannedImage;
                 _ = Scanner.Resimler?.Remove(item);
-                ResetCropMargin();
+                ToolBox.ResetCropMargin();
                 GC.Collect();
             }, parameter => true);
 
@@ -267,7 +266,7 @@ namespace TwainControl
                 if (MessageBox.Show(Translation.GetResStringValue("LISTREMOVEWARN"), Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     Scanner.Resimler?.Clear();
-                    ResetCropMargin();
+                    ToolBox.ResetCropMargin();
                     GC.Collect();
                 }
             }, parameter => Scanner?.Resimler?.Count > 0);
@@ -278,7 +277,7 @@ namespace TwainControl
                 {
                     _ = Scanner.Resimler?.Remove(item);
                 }
-                ResetCropMargin();
+                ToolBox.ResetCropMargin();
                 GC.Collect();
             }, parameter => Scanner?.Resimler?.Any(z => z.Seçili) == true);
 
@@ -329,77 +328,13 @@ namespace TwainControl
                 Scanner.CroppedImage.Freeze();
             }, parameter => SeçiliResim is not null);
 
-            LoadHistogram = new RelayCommand<object>(parameter =>
-            {
-                RedChart = ((BitmapSource)Scanner.CroppedImage).BitmapSourceToBitmap().GenerateHistogram(System.Windows.Media.Brushes.Red);
-                GreenChart = ((BitmapSource)Scanner.CroppedImage).BitmapSourceToBitmap().GenerateHistogram(System.Windows.Media.Brushes.Green);
-                BlueChart = ((BitmapSource)Scanner.CroppedImage).BitmapSourceToBitmap().GenerateHistogram(System.Windows.Media.Brushes.Blue);
-            }, parameter => Scanner.CroppedImage is not null);
-
             InsertFileNamePlaceHolder = new RelayCommand<object>(parameter =>
             {
                 string placeholder = parameter as string;
                 Scanner.FileName = $"{Scanner.FileName.Substring(0, Scanner.CaretPosition)}{placeholder}{Scanner.FileName.Substring(Scanner.CaretPosition, Scanner.FileName.Length - Scanner.CaretPosition)}";
             }, parameter => true);
 
-            SplitImage = new RelayCommand<object>(parameter =>
-            {
-                string savefolder = $@"{PdfGeneration.GetSaveFolder()}\{Translation.GetResStringValue("SPLIT")}";
-                if (!Directory.Exists(savefolder))
-                {
-                    _ = Directory.CreateDirectory(savefolder);
-                }
-                foreach (CroppedBitmap croppedBitmap in ToolBox.CropImageToList(Scanner.CroppedImage, Scanner.EnAdet, Scanner.BoyAdet))
-                {
-                    File.WriteAllBytes(savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "jpg"), croppedBitmap.ToTiffJpegByteArray(Format.Jpg));
-                }
-                WebAdreseGit.Execute(savefolder);
-            }, parameter => Scanner.AutoSave && Scanner.CroppedImage is not null && (Scanner.EnAdet > 1 || Scanner.BoyAdet > 1));
-
-            SplitAllImage = new RelayCommand<object>(parameter =>
-            {
-                string savefolder = $@"{PdfGeneration.GetSaveFolder()}\{Translation.GetResStringValue("SPLIT")}";
-                if (!Directory.Exists(savefolder))
-                {
-                    _ = Directory.CreateDirectory(savefolder);
-                }
-                List<ScannedImage> listcroppedimages = Scanner.Resimler.Where(z => z.Seçili).SelectMany(scannedimage => ToolBox.CropImageToList(scannedimage.Resim, 2, 1).Select(croppedBitmap => new ScannedImage { Resim = BitmapFrame.Create(croppedBitmap) })).ToList();
-                PdfDocument pdfdocument = PdfGeneration.GeneratePdf(listcroppedimages, Format.Jpg, null, 80, null);
-                pdfdocument.Save(savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "pdf"));
-                WebAdreseGit.Execute(savefolder);
-                listcroppedimages = null;
-                pdfdocument = null;
-            }, parameter => Scanner.AutoSave && Scanner?.Resimler?.Count(z => z.Seçili) > 0);
-
-            ResetCroppedImage = new RelayCommand<object>(parameter => ResetCropMargin(), parameter => Scanner.CroppedImage is not null);
-
-            WebAdreseGit = new RelayCommand<object>(parameter =>
-            {
-                string path = parameter as string;
-                if (string.IsNullOrWhiteSpace(path))
-                {
-                    return;
-                }
-
-                try
-                {
-                    _ = Process.Start(path);
-                }
-                catch (Exception ex)
-                {
-                    _ = MessageBox.Show(ex.Message);
-                }
-            }, parameter => true);
-
-            SetWatermark = new RelayCommand<object>(parameter => Scanner.CroppedImage = Scanner.CroppedImage.ÜstüneResimÇiz(new System.Windows.Point(Scanner.CroppedImage.Width / 2, Scanner.CroppedImage.Height / 2), System.Windows.Media.Brushes.Red, Scanner.WatermarkTextSize, Scanner.Watermark, Scanner.WatermarkAngle, Scanner.WatermarkFont), parameter => Scanner.CroppedImage is not null && !string.IsNullOrWhiteSpace(Scanner?.Watermark));
-
-            ApplyColorChange = new RelayCommand<object>(parameter => Scanner.CopyCroppedImage = Scanner.CroppedImage, parameter => Scanner.CroppedImage is not null);
-
-            DeskewImage = new RelayCommand<object>(parameter =>
-            {
-                double skewAngle = GetDeskewAngle(Scanner.CroppedImage, true);
-                Scanner.CroppedImage = Scanner.CroppedImage.RotateImage(skewAngle);
-            }, parameter => Scanner.CroppedImage is not null);
+            WebAdreseGit = new RelayCommand<object>(parameter => GotoPage(parameter as string), parameter => true);
 
             OcrPage = new RelayCommand<object>(parameter =>
             {
@@ -442,8 +377,6 @@ namespace TwainControl
                     AddFiles(openFileDialog.FileNames, DecodeHeight);
                 }
             }, parameter => true);
-
-            PrintCroppedImage = new RelayCommand<object>(parameter => PdfViewer.PdfViewer.PrintImageSource(parameter as ImageSource), parameter => Scanner.CroppedImage is not null);
 
             TransferImage = new RelayCommand<object>(parameter =>
             {
@@ -527,22 +460,6 @@ namespace TwainControl
             }
         }
 
-        public ICommand ApplyColorChange { get; }
-
-        public ObservableCollection<Chart> BlueChart
-        {
-            get => blueChart;
-
-            set
-            {
-                if (blueChart != value)
-                {
-                    blueChart = value;
-                    OnPropertyChanged(nameof(BlueChart));
-                }
-            }
-        }
-
         public List<Tuple<string, int, double, bool>> CompressionProfiles => new()
             {
                 new Tuple<string, int, double, bool>(Translation.GetResStringValue("BW"), 0, (double)Resolution.Low, false),
@@ -595,8 +512,6 @@ namespace TwainControl
             }
         }
 
-        public ICommand DeskewImage { get; }
-
         public GridLength DocumentGridLength
         {
             get => documentGridLength;
@@ -642,20 +557,6 @@ namespace TwainControl
 
         public ICommand FastScanImage { get; }
 
-        public ObservableCollection<Chart> GreenChart
-        {
-            get => greenChart;
-
-            set
-            {
-                if (greenChart != value)
-                {
-                    greenChart = value;
-                    OnPropertyChanged(nameof(GreenChart));
-                }
-            }
-        }
-
         public byte[] ImgData
         {
             get => ımgData;
@@ -681,8 +582,6 @@ namespace TwainControl
         public ICommand LoadCroppedImage { get; }
 
         public ICommand LoadFileList { get; }
-
-        public ICommand LoadHistogram { get; }
 
         public ICommand LoadImage { get; }
 
@@ -732,25 +631,7 @@ namespace TwainControl
             }
         }
 
-        public ICommand PrintCroppedImage { get; }
-
-        public ObservableCollection<Chart> RedChart
-        {
-            get => redChart;
-
-            set
-            {
-                if (redChart != value)
-                {
-                    redChart = value;
-                    OnPropertyChanged(nameof(RedChart));
-                }
-            }
-        }
-
         public ICommand RemoveProfile { get; }
-
-        public ICommand ResetCroppedImage { get; }
 
         public ICommand ResimSil { get; }
 
@@ -824,12 +705,6 @@ namespace TwainControl
 
         public ICommand SendMail { get; }
 
-        public ICommand SetWatermark { get; }
-
-        public ICommand SplitAllImage { get; }
-
-        public ICommand SplitImage { get; }
-
         public ICommand Tersiniİşaretle { get; }
 
         public ICommand TransferImage { get; }
@@ -854,11 +729,21 @@ namespace TwainControl
 
         public ICommand WebAdreseGit { get; }
 
-        public static double GetDeskewAngle(ImageSource ımageSource, bool fast = false)
+        public static void GotoPage(string path)
         {
-            Deskew sk = new((BitmapSource)ımageSource);
-            double angle = -1 * sk.GetSkewAngle(fast);
-            return angle;
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                return;
+            }
+
+            try
+            {
+                _ = Process.Start(path);
+            }
+            catch (Exception ex)
+            {
+                _ = MessageBox.Show(ex.Message);
+            }
         }
 
         public static void SaveJpgImage(BitmapFrame scannedImage, string filename)
@@ -1133,8 +1018,6 @@ namespace TwainControl
 
         private double allImageRotationAngle;
 
-        private ObservableCollection<Chart> blueChart;
-
         private CroppedBitmap croppedOcrBitmap;
 
         private int decodeHeight;
@@ -1148,8 +1031,6 @@ namespace TwainControl
         private bool dragMoveStarted;
 
         private Task fileloadtask;
-
-        private ObservableCollection<Chart> greenChart;
 
         private double height;
 
@@ -1166,8 +1047,6 @@ namespace TwainControl
         private ObservableCollection<Paper> papers;
 
         private double pdfLoadProgressValue;
-
-        private ObservableCollection<Chart> redChart;
 
         private Scanner scanner;
 
@@ -1566,31 +1445,10 @@ namespace TwainControl
             }
         }
 
-        private void ResetCropMargin()
-        {
-            Scanner.CroppedImage = null;
-            Scanner.CopyCroppedImage = null;
-            Scanner.CropBottom = 0;
-            Scanner.CropLeft = 0;
-            Scanner.CropTop = 0;
-            Scanner.CropRight = 0;
-            Scanner.EnAdet = 1;
-            Scanner.BoyAdet = 1;
-            Scanner.Brightness = 0;
-            Scanner.CroppedImageAngle = 0;
-            Scanner.Threshold = 0;
-            Scanner.Watermark = string.Empty;
-            RedChart = null;
-            GreenChart = null;
-            BlueChart = null;
-            GC.Collect();
-        }
-
         private void Run_Drop(object sender, DragEventArgs e)
         {
-            if (sender is Run run)
+            if (sender is Run run && e.Data.GetData(typeof(ScannedImage)) is ScannedImage droppedData)
             {
-                ScannedImage droppedData = e.Data.GetData(typeof(ScannedImage)) as ScannedImage;
                 ScannedImage target = run.DataContext as ScannedImage;
 
                 int removedIdx = Scanner.Resimler.IndexOf(droppedData);
@@ -1600,15 +1458,13 @@ namespace TwainControl
                 {
                     Scanner.Resimler.Insert(targetIdx + 1, droppedData);
                     Scanner.Resimler.RemoveAt(removedIdx);
+                    return;
                 }
-                else
+                int remIdx = removedIdx + 1;
+                if (Scanner.Resimler.Count + 1 > remIdx)
                 {
-                    int remIdx = removedIdx + 1;
-                    if (Scanner.Resimler.Count + 1 > remIdx)
-                    {
-                        Scanner.Resimler.Insert(targetIdx, droppedData);
-                        Scanner.Resimler.RemoveAt(remIdx);
-                    }
+                    Scanner.Resimler.Insert(targetIdx, droppedData);
+                    Scanner.Resimler.RemoveAt(remIdx);
                 }
             }
         }

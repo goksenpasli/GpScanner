@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,6 +14,7 @@ using System.Windows.Media.Imaging;
 using Extensions;
 using Microsoft.Win32;
 using Ocr;
+using PdfSharp.Pdf;
 using static Extensions.ExtensionMethods;
 
 namespace TwainControl
@@ -66,6 +70,58 @@ namespace TwainControl
                     });
                 }
             }, parameter => Scanner?.CroppedImage is not null);
+
+            PrintCroppedImage = new RelayCommand<object>(parameter => PdfViewer.PdfViewer.PrintImageSource(parameter as ImageSource), parameter => Scanner?.CroppedImage is not null);
+
+            LoadHistogram = new RelayCommand<object>(parameter =>
+            {
+                Scanner.RedChart = ((BitmapSource)Scanner.CroppedImage).BitmapSourceToBitmap().GenerateHistogram(System.Windows.Media.Brushes.Red);
+                Scanner.GreenChart = ((BitmapSource)Scanner.CroppedImage).BitmapSourceToBitmap().GenerateHistogram(System.Windows.Media.Brushes.Green);
+                Scanner.BlueChart = ((BitmapSource)Scanner.CroppedImage).BitmapSourceToBitmap().GenerateHistogram(System.Windows.Media.Brushes.Blue);
+            }, parameter => Scanner?.CroppedImage is not null);
+
+            DeskewImage = new RelayCommand<object>(parameter =>
+            {
+                double skewAngle = GetDeskewAngle(Scanner.CroppedImage, true);
+                Scanner.CroppedImage = Scanner.CroppedImage.RotateImage(skewAngle);
+            }, parameter => Scanner?.CroppedImage is not null);
+
+            ApplyColorChange = new RelayCommand<object>(parameter => Scanner.CopyCroppedImage = Scanner.CroppedImage, parameter => Scanner?.CroppedImage is not null);
+
+            ResetCroppedImage = new RelayCommand<object>(parameter => ResetCropMargin(), parameter => Scanner?.CroppedImage is not null);
+
+            SetWatermark = new RelayCommand<object>(parameter => Scanner.CroppedImage = Scanner.CroppedImage.ÜstüneResimÇiz(new System.Windows.Point(Scanner.CroppedImage.Width / 2, Scanner.CroppedImage.Height / 2), System.Windows.Media.Brushes.Red, Scanner.WatermarkTextSize, Scanner.Watermark, Scanner.WatermarkAngle, Scanner.WatermarkFont), parameter => Scanner?.CroppedImage is not null && !string.IsNullOrWhiteSpace(Scanner?.Watermark));
+
+            WebAdreseGit = new RelayCommand<object>(parameter => TwainCtrl.GotoPage(parameter as string), parameter => true);
+
+            SplitImage = new RelayCommand<object>(parameter =>
+            {
+                string savefolder = $@"{PdfGeneration.GetSaveFolder()}\{Translation.GetResStringValue("SPLIT")}";
+                if (!Directory.Exists(savefolder))
+                {
+                    _ = Directory.CreateDirectory(savefolder);
+                }
+                foreach (CroppedBitmap croppedBitmap in ToolBox.CropImageToList(Scanner.CroppedImage, Scanner.EnAdet, Scanner.BoyAdet))
+                {
+                    File.WriteAllBytes(savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "jpg"), croppedBitmap.ToTiffJpegByteArray(Format.Jpg));
+                }
+                WebAdreseGit.Execute(savefolder);
+            }, parameter => Scanner?.AutoSave == true && Scanner?.CroppedImage is not null && (Scanner?.EnAdet > 1 || Scanner?.BoyAdet > 1));
+
+            SplitAllImage = new RelayCommand<object>(parameter =>
+            {
+                string savefolder = $@"{PdfGeneration.GetSaveFolder()}\{Translation.GetResStringValue("SPLIT")}";
+                if (!Directory.Exists(savefolder))
+                {
+                    _ = Directory.CreateDirectory(savefolder);
+                }
+                List<ScannedImage> listcroppedimages = Scanner.Resimler.Where(z => z.Seçili).SelectMany(scannedimage => ToolBox.CropImageToList(scannedimage.Resim, 2, 1).Select(croppedBitmap => new ScannedImage { Resim = BitmapFrame.Create(croppedBitmap) })).ToList();
+                PdfDocument pdfdocument = PdfGeneration.GeneratePdf(listcroppedimages, Format.Jpg, null, 80, null);
+                pdfdocument.Save(savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "pdf"));
+                WebAdreseGit.Execute(savefolder);
+                listcroppedimages = null;
+                pdfdocument = null;
+            }, parameter => Scanner?.AutoSave == true && Scanner?.Resimler?.Count(z => z.Seçili) > 0);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -74,7 +130,25 @@ namespace TwainControl
 
         public static Scanner Scanner { get; set; }
 
+        public ICommand ApplyColorChange { get; }
+
+        public ICommand DeskewImage { get; }
+
+        public ICommand LoadHistogram { get; }
+
+        public ICommand PrintCroppedImage { get; }
+
+        public ICommand ResetCroppedImage { get; }
+
         public ICommand SaveImage { get; }
+
+        public ICommand SetWatermark { get; }
+
+        public ICommand SplitAllImage { get; }
+
+        public ICommand SplitImage { get; }
+
+        public ICommand WebAdreseGit { get; }
 
         public static List<CroppedBitmap> CropImageToList(ImageSource imageSource, int en, int boy)
         {
@@ -97,6 +171,33 @@ namespace TwainControl
                 }
             }
             return croppedBitmaps;
+        }
+
+        public static double GetDeskewAngle(ImageSource ımageSource, bool fast = false)
+        {
+            Deskew sk = new((BitmapSource)ımageSource);
+            double angle = -1 * sk.GetSkewAngle(fast);
+            return angle;
+        }
+
+        public static void ResetCropMargin()
+        {
+            Scanner.CroppedImage = null;
+            Scanner.CopyCroppedImage = null;
+            Scanner.CropBottom = 0;
+            Scanner.CropLeft = 0;
+            Scanner.CropTop = 0;
+            Scanner.CropRight = 0;
+            Scanner.EnAdet = 1;
+            Scanner.BoyAdet = 1;
+            Scanner.Brightness = 0;
+            Scanner.CroppedImageAngle = 0;
+            Scanner.Threshold = 0;
+            Scanner.Watermark = string.Empty;
+            Scanner.RedChart = null;
+            Scanner.BlueChart = null;
+            Scanner.GreenChart = null;
+            GC.Collect();
         }
 
         protected virtual void OnPropertyChanged(string propertyName = null)

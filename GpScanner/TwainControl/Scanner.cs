@@ -115,6 +115,20 @@ namespace TwainControl
             }
         }
 
+        public ObservableCollection<Chart> BlueChart
+        {
+            get => blueChart;
+
+            set
+            {
+                if (blueChart != value)
+                {
+                    blueChart = value;
+                    OnPropertyChanged(nameof(BlueChart));
+                }
+            }
+        }
+
         public int BoyAdet
         {
             get => boyAdet;
@@ -382,6 +396,20 @@ namespace TwainControl
             }
         }
 
+        public ObservableCollection<Chart> GreenChart
+        {
+            get => greenChart;
+
+            set
+            {
+                if (greenChart != value)
+                {
+                    greenChart = value;
+                    OnPropertyChanged(nameof(GreenChart));
+                }
+            }
+        }
+
         public string LocalizedPath
         {
             get => ExtensionMethods.GetDisplayName(Settings.Default.AutoFolder);
@@ -476,6 +504,20 @@ namespace TwainControl
                 {
                     progressState = value;
                     OnPropertyChanged(nameof(ProgressState));
+                }
+            }
+        }
+
+        public ObservableCollection<Chart> RedChart
+        {
+            get => redChart;
+
+            set
+            {
+                if (redChart != value)
+                {
+                    redChart = value;
+                    OnPropertyChanged(nameof(RedChart));
                 }
             }
         }
@@ -794,6 +836,8 @@ namespace TwainControl
 
         private bool autoSave = Directory.Exists(Settings.Default.AutoFolder);
 
+        private ObservableCollection<Chart> blueChart;
+
         private int boyAdet = 1;
 
         private double brightness;
@@ -832,6 +876,8 @@ namespace TwainControl
 
         private string fileOcrContent;
 
+        private ObservableCollection<Chart> greenChart;
+
         private string localizedPath;
 
         private bool passwordProtect;
@@ -845,6 +891,8 @@ namespace TwainControl
         private string profileName;
 
         private TaskbarItemProgressState progressState = TaskbarItemProgressState.None;
+
+        private ObservableCollection<Chart> redChart;
 
         private ObservableCollection<ScannedImage> resimler = new();
 

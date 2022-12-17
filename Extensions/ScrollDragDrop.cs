@@ -60,11 +60,9 @@ namespace Extensions
                 {
                     Subscribe(container);
                 }
+                return;
             }
-            else
-            {
-                Debug.Fail("Invalid type!");
-            }
+            Debug.Fail("Invalid type!");
         }
 
         private static void OnContainerPreviewDragOver(object sender, DragEventArgs e)
@@ -82,8 +80,9 @@ namespace Extensions
                     if (verticalPos < tolerance) // Top of visible list?
                     {
                         scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - offset); //Scroll up.
+                        return;
                     }
-                    else if (verticalPos > container.ActualHeight - tolerance) //Bottom of visible list?
+                    if (verticalPos > container.ActualHeight - tolerance) //Bottom of visible list?
                     {
                         scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset + offset); //Scroll down.
                     }

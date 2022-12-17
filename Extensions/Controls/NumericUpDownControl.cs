@@ -82,19 +82,21 @@ namespace Extensions
                     e.Handled = true;
                 }
 
-                if (e.Key == Key.Up)
+                switch (e.Key)
                 {
-                    if (ShowMode == Mode.DateTimeMode && DateValue.HasValue && DateValue < DateTime.MaxValue)
-                    {
-                        DateValue = DateValue.Value.AddDays(1);
-                    }
-                }
-                else if (e.Key == Key.Down)
-                {
-                    if (ShowMode == Mode.DateTimeMode && DateValue.HasValue && DateValue > DateTime.MinValue)
-                    {
-                        DateValue = DateValue.Value.AddDays(-1);
-                    }
+                    case Key.Up:
+                        if (ShowMode == Mode.DateTimeMode && DateValue.HasValue && DateValue < DateTime.MaxValue)
+                        {
+                            DateValue = DateValue.Value.AddDays(1);
+                        }
+                        break;
+
+                    case Key.Down:
+                        if (ShowMode == Mode.DateTimeMode && DateValue.HasValue && DateValue > DateTime.MinValue)
+                        {
+                            DateValue = DateValue.Value.AddDays(-1);
+                        }
+                        break;
                 }
             }
             base.OnKeyDown(e);

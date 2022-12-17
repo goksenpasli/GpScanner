@@ -67,7 +67,7 @@
                                     </TextBlock.ToolTip>
                                 </TextBlock>
                                 <TextBlock HorizontalAlignment="Right" VerticalAlignment="Top">
-                                    <Hyperlink Command="{Binding PrintCroppedImage}"
+                                    <Hyperlink Command="{Binding PrintCroppedImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
                                         CommandParameter="{Binding Scanner.CroppedImage}"
                                         TextDecorations="None">
                                         <Image Width="16" Height="16">
@@ -134,27 +134,27 @@
                         <Extensions:NumericUpDownControl Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
                             Minimum="1" SmallChange="1"
                             Value="{Binding Scanner.BoyAdet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <Extensions:ContentToggleButton Command="{Binding LoadHistogram}">
+                        <Extensions:ContentToggleButton Command="{Binding LoadHistogram, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
                             <TextBlock Text="HISTOGRAM" />
                             <Extensions:ContentToggleButton.OverContent>
                                 <GroupBox>
                                     <UniformGrid Columns="3">
                                         <Extensions:GraphControl Width="200" Height="200"
-                                            Series="{Binding RedChart}"
+                                            Series="{Binding Scanner.RedChart}"
                                             SeriesTextVisibility="Collapsed" ValueTextVisibility="Collapsed" />
                                         <Extensions:GraphControl Width="200" Height="200"
-                                            Series="{Binding GreenChart}"
+                                            Series="{Binding Scanner.GreenChart}"
                                             SeriesTextVisibility="Collapsed" ValueTextVisibility="Collapsed" />
                                         <Extensions:GraphControl Width="200" Height="200"
-                                            Series="{Binding BlueChart}"
+                                            Series="{Binding Scanner.BlueChart}"
                                             SeriesTextVisibility="Collapsed" ValueTextVisibility="Collapsed" />
                                     </UniformGrid>
                                 </GroupBox>
                             </Extensions:ContentToggleButton.OverContent>
                         </Extensions:ContentToggleButton>
-                        <Button Command="{Binding SplitImage}" Content="{local:Loc SLICE}" />
+                        <Button Command="{Binding SplitImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" Content="{local:Loc SLICE}" />
                         <TextBlock />
-                        <Button Command="{Binding SplitAllImage}">
+                        <Button Command="{Binding SplitAllImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
                             <Button.Content>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock VerticalAlignment="Center">
@@ -192,12 +192,12 @@
                                 </ItemsPanelTemplate>
                             </ComboBox.ItemsPanel>
                         </ComboBox>
-                        <Button Command="{Binding SetWatermark}" Content="{local:Loc DRAWTEXT}" />
-                        <Button Command="{Binding DeskewImage}" Content="{local:Loc DESKEW}" />
+                        <Button Command="{Binding SetWatermark, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" Content="{local:Loc DRAWTEXT}" />
+                        <Button Command="{Binding DeskewImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" Content="{local:Loc DESKEW}" />
                         <Button Command="{Binding OcrPage}"
                             CommandParameter="{Binding Scanner.CroppedImage}"
                             Content="{local:Loc OCR}" />
-                        <Button Command="{Binding ResetCroppedImage}" Content="{local:Loc RESET}" />
+                        <Button Command="{Binding ResetCroppedImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" Content="{local:Loc RESET}" />
                         <TextBlock VerticalAlignment="Center" Text="{local:Loc SRCCOLOR}" />
                         <Extensions:ContentToggleButton Background="{Binding Scanner.SourceColor, Mode=OneWay}">
                             <TextBlock d:Text="Red" Text="{Binding Scanner.SourceColor, Mode=OneWay}" />
@@ -223,7 +223,7 @@
                                 Style="{StaticResource Slider}"
                                 Value="{Binding Scanner.Threshold, Delay=100}" />
                             <Button x:Name="BtnApply"
-                                Command="{Binding ApplyColorChange}"
+                                Command="{Binding ApplyColorChange, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
                                 Content="{local:Loc APPLY}"
                                 ToolTip="{local:Loc COLORCHANGETIP}" />
                         </UniformGrid>
