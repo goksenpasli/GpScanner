@@ -52,8 +52,7 @@ namespace TwainControl
             PropertyChanged += TwainCtrl_PropertyChanged;
 
             Papers = BitmapMethods.GetPapers();
-            SelectedPaper.PaperType = "A4";
-            ToolBox.Paper = SelectedPaper;
+            ToolBox.Paper = SelectedPaper = Papers.FirstOrDefault(z => z.PaperType == "A4");
 
             if (Settings.Default.UseSelectedProfile)
             {
@@ -77,7 +76,7 @@ namespace TwainControl
                 twain.StartScanning(_settings);
 
                 twain.ScanningComplete += Fastscan;
-            }, parameter => !Environment.Is64BitProcess && Scanner.AutoSave && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0 && Scanner?.Tarayıcılar?.Count > 0);
+            }, parameter => !Environment.Is64BitProcess && Scanner?.AutoSave == true && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0 && Scanner?.Tarayıcılar?.Count > 0);
 
             ResimSil = new RelayCommand<object>(parameter =>
             {
@@ -227,8 +226,8 @@ namespace TwainControl
                 }
             }, parameter =>
             {
-                Scanner.SeçiliResimSayısı = Scanner.Resimler.Count(z => z.Seçili);
-                return !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner.SeçiliResimSayısı > 0 && Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0;
+                Scanner.SeçiliResimSayısı = Scanner?.Resimler.Count(z => z.Seçili) ?? 0;
+                return !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.SeçiliResimSayısı > 0 && Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0;
             });
 
             SeçiliDirektPdfKaydet = new RelayCommand<object>(parameter =>
@@ -257,8 +256,8 @@ namespace TwainControl
                 }));
             }, parameter =>
             {
-                Scanner.SeçiliResimSayısı = Scanner.Resimler.Count(z => z.Seçili);
-                return !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner.AutoSave && Scanner.SeçiliResimSayısı > 0 && Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0;
+                Scanner.SeçiliResimSayısı = Scanner?.Resimler.Count(z => z.Seçili) ?? 0;
+                return !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.AutoSave == true && Scanner?.SeçiliResimSayısı > 0 && Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0;
             });
 
             ListeTemizle = new RelayCommand<object>(parameter =>
@@ -340,7 +339,7 @@ namespace TwainControl
             {
                 ImgData = Scanner.CroppedImage.ToTiffJpegByteArray(Format.Jpg);
                 OnPropertyChanged(nameof(ImgData));
-            }, parameter => Scanner.CroppedImage is not null);
+            }, parameter => Scanner?.CroppedImage is not null);
 
             PdfBirleştir = new RelayCommand<object>(parameter =>
             {
@@ -378,15 +377,6 @@ namespace TwainControl
                 }
             }, parameter => true);
 
-            TransferImage = new RelayCommand<object>(parameter =>
-            {
-                BitmapFrame bitmapFrame = GenerateBitmapFrame((BitmapSource)Scanner.CroppedImage);
-                bitmapFrame.Freeze();
-                ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
-                Scanner?.Resimler.Add(scannedImage);
-                scannedImage = null;
-            }, parameter => Scanner.CroppedImage is not null);
-
             SendMail = new RelayCommand<object>(parameter =>
             {
                 try
@@ -404,7 +394,7 @@ namespace TwainControl
                 BitmapSource image = Clipboard.GetImage();
                 if (image != null)
                 {
-                    BitmapFrame bitmapFrame = GenerateBitmapFrame(image);
+                    BitmapFrame bitmapFrame = GenerateBitmapFrame(image, SelectedPaper);
                     bitmapFrame.Freeze();
                     ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
                     Scanner?.Resimler.Add(scannedImage);
@@ -689,6 +679,19 @@ namespace TwainControl
             }
         }
 
+        public TwainWpf.TwainNative.Orientation SelectedOrientation
+        {
+            get => selectedOrientation; set
+
+            {
+                if (selectedOrientation != value)
+                {
+                    selectedOrientation = value;
+                    OnPropertyChanged(nameof(SelectedOrientation));
+                }
+            }
+        }
+
         public Paper SelectedPaper
         {
             get => selectedPaper;
@@ -706,8 +709,6 @@ namespace TwainControl
         public ICommand SendMail { get; }
 
         public ICommand Tersiniİşaretle { get; }
-
-        public ICommand TransferImage { get; }
 
         public ICommand Tümünüİşaretle { get; }
 
@@ -728,6 +729,16 @@ namespace TwainControl
         }
 
         public ICommand WebAdreseGit { get; }
+
+        public static BitmapFrame GenerateBitmapFrame(BitmapSource bitmapSource, Paper thumbnailpaper)
+        {
+            bitmapSource.Freeze();
+            BitmapSource thumbnail = bitmapSource.PixelWidth < bitmapSource.PixelHeight ? bitmapSource.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / thumbnailpaper.Width * thumbnailpaper.Height) : bitmapSource.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / thumbnailpaper.Height * thumbnailpaper.Width);
+            thumbnail.Freeze();
+            BitmapFrame bitmapFrame = BitmapFrame.Create(bitmapSource, thumbnail);
+            bitmapFrame.Freeze();
+            return bitmapFrame;
+        }
 
         public static void GotoPage(string path)
         {
@@ -983,16 +994,6 @@ namespace TwainControl
             Dispose(true);
         }
 
-        public BitmapFrame GenerateBitmapFrame(BitmapSource bitmapSource)
-        {
-            bitmapSource.Freeze();
-            BitmapSource thumbnail = bitmapSource.PixelWidth < bitmapSource.PixelHeight ? bitmapSource.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Width * SelectedPaper.Height) : bitmapSource.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Height * SelectedPaper.Width);
-            thumbnail.Freeze();
-            BitmapFrame bitmapFrame = BitmapFrame.Create(bitmapSource, thumbnail);
-            bitmapFrame.Freeze();
-            return bitmapFrame;
-        }
-
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -1053,6 +1054,8 @@ namespace TwainControl
         private ScannedImage seçiliResim;
 
         private Tuple<string, int, double, bool> selectedCompressionProfile;
+
+        private TwainWpf.TwainNative.Orientation selectedOrientation = TwainWpf.TwainNative.Orientation.Default;
 
         private Paper selectedPaper = new();
 
@@ -1153,13 +1156,14 @@ namespace TwainControl
         {
             ScanSettings scansettings = new()
             {
+                UseAutoScanCache = true,
                 UseDocumentFeeder = Settings.Default.Adf,
                 ShowTwainUi = Scanner.ShowUi,
                 ShowProgressIndicatorUi = Scanner.ShowProgress,
                 UseDuplex = Scanner.Duplex,
                 ShouldTransferAllPages = true,
-                Resolution = new ResolutionSettings(),
-                Page = new PageSettings()
+                Resolution = new ResolutionSettings() { Dpi = (int)Settings.Default.Çözünürlük, ColourSetting = (ColourSetting)Settings.Default.Mode },
+                Page = new PageSettings() { Orientation = SelectedOrientation }
             };
             switch (SelectedPaper.PaperType)
             {
@@ -1439,7 +1443,7 @@ namespace TwainControl
         private void PdfMergeButton_Drop(object sender, DragEventArgs e)
         {
             IEnumerable<string> pdffiles = ((string[])e.Data.GetData(DataFormats.FileDrop))?.Where(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase));
-            if (pdffiles.Any())
+            if (pdffiles?.Any() == true)
             {
                 PdfGeneration.SavePdfFiles(pdffiles.ToArray());
             }
@@ -1483,9 +1487,7 @@ namespace TwainControl
         {
             Scanner.ArayüzEtkin = false;
             _settings = DefaultScanSettings();
-            _settings.Resolution.ColourSetting = (ColourSetting)Settings.Default.Mode;
-            _settings.Resolution.Dpi = (int)Settings.Default.Çözünürlük;
-            _settings.Rotation = new RotationSettings { AutomaticDeskew = Scanner.Deskew };
+            _settings.Rotation = new RotationSettings { AutomaticBorderDetection = true, AutomaticRotate = true, AutomaticDeskew = true };
         }
 
         private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)

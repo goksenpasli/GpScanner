@@ -3,22 +3,18 @@ namespace TwainWpf.TwainNative
     /// <summary>
     /// Twain spec ICAP_ORIENTATION values.
     /// </summary>
-    public enum Orientation
+    public enum Orientation : ushort
     {
         /// <summary>
         /// Default is zero rotation, same as Portrait.
         /// </summary>
         Default = 0,
 
-        Portrait = Default,
-
         Rotate90 = 1,
 
         Rotate180 = 2,
 
         Rotate270 = 3,
-
-        Landscape = Rotate270,
 
         /// <summary>
         /// Following require Twain 2.0+.

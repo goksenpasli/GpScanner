@@ -89,6 +89,8 @@
     <Compile Include="CameraUserControl.xaml.cs">
       <DependentUpon>CameraUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converter\EnumOrientationToConvertedLanguageTextConverter.cs" />
+    <Compile Include="Converter\EnumOrientationToTwainVersionConverter.cs" />
     <Compile Include="PdfGeneration.cs" />
     <Compile Include="PdfSettings.xaml.cs">
       <DependentUpon>PdfSettings.xaml</DependentUpon>

@@ -174,7 +174,7 @@ namespace GpScanner.ViewModel
             {
                 if (parameter is object[] data && data[0] is PdfViewer.PdfViewer pdfviewer && data[1] is TwainCtrl twainCtrl)
                 {
-                    BitmapFrame bitmapFrame = twainCtrl.GenerateBitmapFrame((BitmapSource)pdfviewer.Source);
+                    BitmapFrame bitmapFrame = TwainCtrl.GenerateBitmapFrame((BitmapSource)pdfviewer.Source, twainCtrl.SelectedPaper);
                     bitmapFrame.Freeze();
                     ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
                     twainCtrl.Scanner?.Resimler.Add(scannedImage);

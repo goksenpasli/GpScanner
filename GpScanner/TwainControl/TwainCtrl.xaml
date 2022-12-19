@@ -4,6 +4,8 @@
     xmlns:Converter="clr-namespace:TwainControl.Converter"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
     xmlns:PresentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+    xmlns:System="clr-namespace:System;assembly=mscorlib"
+    xmlns:TwainNative="clr-namespace:TwainWpf.TwainNative;assembly=TwainWpf"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:TwainControl"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -22,6 +24,8 @@
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <Converter:SplitConverter x:Key="SplitConverter" />
+            <Converter:EnumOrientationToConvertedLanguageTextConverter x:Key="EnumOrientationToConvertedLanguageTextConverter" />
+            <Converter:EnumOrientationToTwainVersionConverter x:Key="EnumOrientationToTwainVersionConverter" />
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
@@ -63,6 +67,13 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+            <ObjectDataProvider x:Key="PageOrientation"
+                MethodName="GetValues"
+                ObjectType="{x:Type System:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="TwainNative:Orientation" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -384,6 +395,19 @@
                                             </StackPanel>
                                         </CheckBox.Content>
                                     </CheckBox>
+                                    <ComboBox Grid.Row="2" Grid.Column="1"
+                                        ItemsSource="{Binding Mode=OneWay, Source={StaticResource PageOrientation}}"
+                                        SelectedItem="{Binding SelectedOrientation}">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock>
+                                                    <Run Text="{Binding Mode=OneWay, Converter={StaticResource EnumOrientationToConvertedLanguageTextConverter}}" />
+                                                    <Run FontStyle="Italic" Foreground="Red"
+                                                        Text="{Binding Mode=OneWay, Converter={StaticResource EnumOrientationToTwainVersionConverter}}" />
+                                                </TextBlock>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
                                 </Grid>
                                 <Separator />
                                 <Extensions:ButtonedTextBox d:Description="SaveFileName" d:Text="FileName"
@@ -558,33 +582,9 @@
                                             <TextBlock VerticalAlignment="Center" Text="{local:Loc MERGEPDF}" />
                                         </StackPanel>
                                     </Button>
-                                    <UniformGrid Columns="2">
-                                        <Button Command="{Binding SaveFileList}">
-                                            <Image Width="16" Height="16">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="6" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                        </Button>
-                                        <Button Command="{Binding LoadFileList}">
-                                            <Image Width="16" Height="16">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="70" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                        </Button>
-                                    </UniformGrid>
                                 </StackPanel>
                                 <StackPanel DockPanel.Dock="Right">
-                                    <Button Height="35"
-                                        Background="Yellow"
-                                        Command="{Binding SeçiliListeTemizle}">
+                                    <Button Background="Yellow" Command="{Binding SeçiliListeTemizle}">
                                         <StackPanel Orientation="Horizontal">
                                             <Canvas Width="24" Height="24">
                                                 <Image Width="24" Height="24">
@@ -604,9 +604,7 @@
                                             <TextBlock VerticalAlignment="Center" Text="{local:Loc CLEARLIST}" />
                                         </StackPanel>
                                     </Button>
-                                    <Button Height="35"
-                                        Background="Red"
-                                        Command="{Binding ListeTemizle}">
+                                    <Button Background="Red" Command="{Binding ListeTemizle}">
                                         <StackPanel Orientation="Horizontal">
                                             <Canvas Width="24" Height="24">
                                                 <Image Width="24" Height="24">
@@ -627,11 +625,11 @@
                                         </StackPanel>
                                     </Button>
                                 </StackPanel>
-                                <StackPanel>
-                                    <Button Command="{Binding Tümünüİşaretle}">
-                                        <Button.Content>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Image Width="16" Height="16">
+                                <StackPanel Margin="4,0,4,0">
+                                    <UniformGrid Columns="3">
+                                        <Button Command="{Binding Tümünüİşaretle}">
+                                            <Button.Content>
+                                                <Image Width="24" Height="24">
                                                     <Image.Source>
                                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                             <Binding Source="Imageres.dll" />
@@ -639,14 +637,11 @@
                                                         </MultiBinding>
                                                     </Image.Source>
                                                 </Image>
-                                                <TextBlock VerticalAlignment="Center" Text="{local:Loc ALL}" />
-                                            </StackPanel>
-                                        </Button.Content>
-                                    </Button>
-                                    <Button Command="{Binding TümününİşaretiniKaldır}">
-                                        <Button.Content>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Image Width="16" Height="16">
+                                            </Button.Content>
+                                        </Button>
+                                        <Button Command="{Binding TümününİşaretiniKaldır}">
+                                            <Button.Content>
+                                                <Image Width="24" Height="24">
                                                     <Image.Source>
                                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                             <Binding Source="Imageres.dll" />
@@ -654,14 +649,11 @@
                                                         </MultiBinding>
                                                     </Image.Source>
                                                 </Image>
-                                                <TextBlock VerticalAlignment="Center" Text="{local:Loc NONE}" />
-                                            </StackPanel>
-                                        </Button.Content>
-                                    </Button>
-                                    <Button Command="{Binding Tersiniİşaretle}">
-                                        <Button.Content>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Image Width="16" Height="16">
+                                            </Button.Content>
+                                        </Button>
+                                        <Button Command="{Binding Tersiniİşaretle}">
+                                            <Button.Content>
+                                                <Image Width="24" Height="24">
                                                     <Image.Source>
                                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                             <Binding Source="Imageres.dll" />
@@ -669,10 +661,29 @@
                                                         </MultiBinding>
                                                     </Image.Source>
                                                 </Image>
-                                                <TextBlock VerticalAlignment="Center" Text="{local:Loc REVERSE}" />
-                                            </StackPanel>
-                                        </Button.Content>
-                                    </Button>
+                                            </Button.Content>
+                                        </Button>
+                                        <Button Command="{Binding SaveFileList}">
+                                            <Image Width="24" Height="24">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="6" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </Button>
+                                        <Button Command="{Binding LoadFileList}">
+                                            <Image Width="24" Height="24">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="70" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </Button>
+                                    </UniformGrid>
                                     <Extensions:NumericUpDownControl VerticalAlignment="Center"
                                         LargeChange="1" Maximum="1" Minimum="-1"
                                         NumericUpdownTextBoxVisibility="Collapsed" Orientation="Horizontal" SmallChange="1"

@@ -307,49 +307,52 @@
                                                         </Style>
                                                     </CheckBox.Style>
                                                     <CheckBox.Content>
-                                                        <Grid>
-                                                            <Grid.RowDefinitions>
-                                                                <RowDefinition Height="19.2" />
-                                                                <RowDefinition />
-                                                            </Grid.RowDefinitions>
-                                                            <Extensions:ContentToggleButton Grid.Row="0"
-                                                                Margin="1"
-                                                                Command="{Binding DataContext.ReadOcrDataFile, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                                CommandParameter="{Binding Mode=OneWay}">
-                                                                <Image Width="16" Height="16">
-                                                                    <Image.Source>
-                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                            <Binding Source="Shell32.dll" />
-                                                                            <Binding Source="70" />
-                                                                        </MultiBinding>
-                                                                    </Image.Source>
-                                                                </Image>
-                                                                <Extensions:ContentToggleButton.Style>
-                                                                    <Style TargetType="Extensions:ContentToggleButton">
-                                                                        <Style.Triggers>
-                                                                            <Trigger Property="IsChecked" Value="True">
-                                                                                <Setter Property="OverContent">
-                                                                                    <Setter.Value>
-                                                                                        <Extensions:ResizablePanel Width="{Binding Path=Parent.DataContext.SelectedSize.Width, Source={x:Reference TwainCtrl}}"
-                                                                                            Height="{Binding Path=Parent.DataContext.SelectedSize.Height, Source={x:Reference TwainCtrl}}"
-                                                                                            MinWidth="{Binding Path=Parent.DataContext.SelectedSize.Width, Source={x:Reference TwainCtrl}}"
-                                                                                            MinHeight="{Binding Path=Parent.DataContext.SelectedSize.Height, Source={x:Reference TwainCtrl}}">
-                                                                                            <GroupBox>
-                                                                                                <local:TranslateView ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding Parent.DataContext.FileOcrContent, RelativeSource={RelativeSource Mode=Self}}" />
-                                                                                            </GroupBox>
-                                                                                        </Extensions:ResizablePanel>
-                                                                                    </Setter.Value>
-                                                                                </Setter>
-                                                                            </Trigger>
-                                                                        </Style.Triggers>
-                                                                    </Style>
-                                                                </Extensions:ContentToggleButton.Style>
-                                                            </Extensions:ContentToggleButton>
-                                                            <ContentControl Grid.Row="1"
-                                                                d:Width="64"
-                                                                Content="{Binding Path=FileName, IsAsync=True, Mode=OneWay}"
-                                                                ContentTemplateSelector="{StaticResource ThumbViewerSelector}" />
-                                                        </Grid>
+                                                        <Border Margin="1"
+                                                            BorderBrush="Black" BorderThickness="1">
+                                                            <Grid>
+                                                                <Grid.RowDefinitions>
+                                                                    <RowDefinition Height="19.2" />
+                                                                    <RowDefinition />
+                                                                </Grid.RowDefinitions>
+                                                                <Extensions:ContentToggleButton Grid.Row="0"
+                                                                    Margin="1"
+                                                                    Command="{Binding DataContext.ReadOcrDataFile, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                    CommandParameter="{Binding Mode=OneWay}">
+                                                                    <Image Width="16" Height="16">
+                                                                        <Image.Source>
+                                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                                <Binding Source="Shell32.dll" />
+                                                                                <Binding Source="70" />
+                                                                            </MultiBinding>
+                                                                        </Image.Source>
+                                                                    </Image>
+                                                                    <Extensions:ContentToggleButton.Style>
+                                                                        <Style TargetType="Extensions:ContentToggleButton">
+                                                                            <Style.Triggers>
+                                                                                <Trigger Property="IsChecked" Value="True">
+                                                                                    <Setter Property="OverContent">
+                                                                                        <Setter.Value>
+                                                                                            <Extensions:ResizablePanel Width="{Binding Path=Parent.DataContext.SelectedSize.Width, Source={x:Reference TwainCtrl}}"
+                                                                                                Height="{Binding Path=Parent.DataContext.SelectedSize.Height, Source={x:Reference TwainCtrl}}"
+                                                                                                MinWidth="{Binding Path=Parent.DataContext.SelectedSize.Width, Source={x:Reference TwainCtrl}}"
+                                                                                                MinHeight="{Binding Path=Parent.DataContext.SelectedSize.Height, Source={x:Reference TwainCtrl}}">
+                                                                                                <GroupBox>
+                                                                                                    <local:TranslateView ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding Parent.DataContext.FileOcrContent, RelativeSource={RelativeSource Mode=Self}}" />
+                                                                                                </GroupBox>
+                                                                                            </Extensions:ResizablePanel>
+                                                                                        </Setter.Value>
+                                                                                    </Setter>
+                                                                                </Trigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </Extensions:ContentToggleButton.Style>
+                                                                </Extensions:ContentToggleButton>
+                                                                <ContentControl Grid.Row="1"
+                                                                    d:Width="64"
+                                                                    Content="{Binding Path=FileName, IsAsync=True, Mode=OneWay}"
+                                                                    ContentTemplateSelector="{StaticResource ThumbViewerSelector}" />
+                                                            </Grid>
+                                                        </Border>
                                                     </CheckBox.Content>
                                                 </CheckBox>
                                             </ControlTemplate>

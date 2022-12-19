@@ -484,4 +484,25 @@ TO FILE</value>
   <data name="FLATBED" xml:space="preserve">
     <value>FLATBED</value>
   </data>
+  <data name="Auto" xml:space="preserve">
+    <value>AUTOMATIC</value>
+  </data>
+  <data name="AutoPicture" xml:space="preserve">
+    <value>AUTOMATIC PICTURE</value>
+  </data>
+  <data name="AutoText" xml:space="preserve">
+    <value>AUTOMATIC TEXT</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>DEFAULT</value>
+  </data>
+  <data name="Rotate180" xml:space="preserve">
+    <value>ROTATE 180 DEGREES</value>
+  </data>
+  <data name="Rotate270" xml:space="preserve">
+    <value>ROTATE 270 DEGREES</value>
+  </data>
+  <data name="Rotate90" xml:space="preserve">
+    <value>ROTATE 90 DEGREES</value>
+  </data>
 </root>

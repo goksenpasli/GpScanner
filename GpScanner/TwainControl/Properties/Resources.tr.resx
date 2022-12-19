@@ -490,4 +490,25 @@ BELGE EKLE</value>
   <data name="FLATBED" xml:space="preserve">
     <value>DÜZ YATAKLI</value>
   </data>
+  <data name="Auto" xml:space="preserve">
+    <value>OTOMATİK</value>
+  </data>
+  <data name="AutoPicture" xml:space="preserve">
+    <value>OTOMATİK RESİM</value>
+  </data>
+  <data name="AutoText" xml:space="preserve">
+    <value>OTOMATİK METİN</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>VARSAYILAN</value>
+  </data>
+  <data name="Rotate180" xml:space="preserve">
+    <value>180 DERECE DÖNDÜR</value>
+  </data>
+  <data name="Rotate270" xml:space="preserve">
+    <value>270 DERECE DÖNDÜR</value>
+  </data>
+  <data name="Rotate90" xml:space="preserve">
+    <value>90 DERECE DÖNDÜR</value>
+  </data>
 </root>

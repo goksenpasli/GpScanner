@@ -158,6 +158,9 @@
   <data name="APPRUNNING" xml:space="preserve">
     <value>التطبيق بالفعل يعمل.</value>
   </data>
+  <data name="Auto" xml:space="preserve">
+    <value>أوتوماتيكي</value>
+  </data>
   <data name="AUTOFOLDER" xml:space="preserve">
     <value>حدد مجلد الحفظ التلقائي.</value>
   </data>
@@ -168,8 +171,14 @@
     <value>أوتوماتيكي
 سجل</value>
   </data>
+  <data name="AutoPicture" xml:space="preserve">
+    <value>صورة تلقائية</value>
+  </data>
   <data name="AUTOROTATE" xml:space="preserve">
     <value>الدوران التلقائي</value>
+  </data>
+  <data name="AutoText" xml:space="preserve">
+    <value>النص السيارات</value>
   </data>
   <data name="BATCH" xml:space="preserve">
     <value>العمل الجماعي</value>
@@ -206,6 +215,9 @@
   </data>
   <data name="DAY" xml:space="preserve">
     <value>[يوم]</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>إفتراضي</value>
   </data>
   <data name="DEFAULTSCANNAME" xml:space="preserve">
     <value>يتم المسح</value>
@@ -362,6 +374,15 @@
   </data>
   <data name="REVERSE" xml:space="preserve">
     <value>يعكس</value>
+  </data>
+  <data name="Rotate180" xml:space="preserve">
+    <value>تدوير 180 درجة</value>
+  </data>
+  <data name="Rotate270" xml:space="preserve">
+    <value>تدوير 270 درجة</value>
+  </data>
+  <data name="Rotate90" xml:space="preserve">
+    <value>تدوير 90 درجة</value>
   </data>
   <data name="ROTSAVE" xml:space="preserve">
     <value>حفظ بالتناوب؟</value>

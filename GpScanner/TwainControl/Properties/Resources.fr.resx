@@ -158,6 +158,9 @@ ALIMENTATEUR</value>
   <data name="APPRUNNING" xml:space="preserve">
     <value>Application déjà en cours d'exécution.</value>
   </data>
+  <data name="Auto" xml:space="preserve">
+    <value>AUTOMATIQUE</value>
+  </data>
   <data name="AUTOFOLDER" xml:space="preserve">
     <value>Spécifiez le dossier d'enregistrement automatique.</value>
   </data>
@@ -168,8 +171,14 @@ ALIMENTATEUR</value>
     <value>AUTOMATIQUE
 ENREGISTREMENT</value>
   </data>
+  <data name="AutoPicture" xml:space="preserve">
+    <value>IMAGE AUTO</value>
+  </data>
   <data name="AUTOROTATE" xml:space="preserve">
     <value>ROTATION AUTOMATIQUE</value>
+  </data>
+  <data name="AutoText" xml:space="preserve">
+    <value>TEXTE AUTOMATIQUE</value>
   </data>
   <data name="BATCH" xml:space="preserve">
     <value>TRAVAIL COLLECTIF</value>
@@ -206,6 +215,9 @@ ENREGISTREMENT</value>
   </data>
   <data name="DAY" xml:space="preserve">
     <value>[JOURNÉE]</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>DÉFAUT</value>
   </data>
   <data name="DEFAULTSCANNAME" xml:space="preserve">
     <value>Balayage</value>
@@ -362,6 +374,15 @@ AJOUTER</value>
   </data>
   <data name="REVERSE" xml:space="preserve">
     <value>INVERSE</value>
+  </data>
+  <data name="Rotate180" xml:space="preserve">
+    <value>TOURNER DE 180 DEGRÉS</value>
+  </data>
+  <data name="Rotate270" xml:space="preserve">
+    <value>TOURNER DE 270 DEGRÉS</value>
+  </data>
+  <data name="Rotate90" xml:space="preserve">
+    <value>TOURNER DE 90 DEGRÉS</value>
   </data>
   <data name="ROTSAVE" xml:space="preserve">
     <value>Enregistrer avec rotation ?</value>

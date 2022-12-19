@@ -81,7 +81,7 @@
                                     </Hyperlink>
                                 </TextBlock>
                                 <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top">
-                                    <Hyperlink Command="{Binding TransferImage}" TextDecorations="None">
+                                    <Hyperlink Command="{Binding TransferImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" TextDecorations="None">
                                         <Run FontFamily="Wingdings" FontSize="16" Foreground="Black"
                                             Text="ç" />
                                     </Hyperlink>
@@ -180,7 +180,9 @@
                             Style="{StaticResource Slider}"
                             Value="{Binding Scanner.WatermarkAngle}" />
                         <TextBlock VerticalAlignment="Center" Text="{local:Loc FONT}" />
-                        <ComboBox ItemsSource="{Binding Source={x:Static Fonts.SystemFontFamilies}}" SelectedItem="{Binding Scanner.WatermarkFont}">
+                        <ComboBox Height="22.4"
+                            ItemsSource="{Binding Source={x:Static Fonts.SystemFontFamilies}}"
+                            SelectedItem="{Binding Scanner.WatermarkFont}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock FontFamily="{Binding Mode=OneWay}" Text="{Binding Mode=OneWay}" />

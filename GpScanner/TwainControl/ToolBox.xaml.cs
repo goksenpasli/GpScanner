@@ -108,6 +108,15 @@ namespace TwainControl
                 WebAdreseGit.Execute(savefolder);
             }, parameter => Scanner?.AutoSave == true && Scanner?.CroppedImage is not null && (Scanner?.EnAdet > 1 || Scanner?.BoyAdet > 1));
 
+            TransferImage = new RelayCommand<object>(parameter =>
+            {
+                BitmapFrame bitmapFrame = TwainCtrl.GenerateBitmapFrame((BitmapSource)Scanner.CroppedImage, Paper);
+                bitmapFrame.Freeze();
+                ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
+                Scanner?.Resimler.Add(scannedImage);
+                scannedImage = null;
+            }, parameter => Scanner?.CroppedImage is not null);
+
             SplitAllImage = new RelayCommand<object>(parameter =>
             {
                 string savefolder = $@"{PdfGeneration.GetSaveFolder()}\{Translation.GetResStringValue("SPLIT")}";
@@ -147,6 +156,8 @@ namespace TwainControl
         public ICommand SplitAllImage { get; }
 
         public ICommand SplitImage { get; }
+
+        public ICommand TransferImage { get; }
 
         public ICommand WebAdreseGit { get; }
 
