@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Tesseract
+﻿namespace Tesseract
 {
     public readonly struct Scew
     {
@@ -18,7 +16,7 @@ namespace Tesseract
 
         public override string ToString()
         {
-            return String.Format("Scew: {0} [conf: {1}]", Angle, Confidence);
+            return string.Format("Scew: {0} [conf: {1}]", Angle, Confidence);
         }
 
         #endregion ToString

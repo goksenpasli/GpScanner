@@ -28,7 +28,10 @@ namespace Tesseract
 
         protected virtual void VerifyNotDisposed()
         {
-            if (IsDisposed) throw new ObjectDisposedException(ToString());
+            if (IsDisposed)
+            {
+                throw new ObjectDisposedException(ToString());
+            }
         }
 
         private static readonly TraceSource trace = new TraceSource("Tesseract");

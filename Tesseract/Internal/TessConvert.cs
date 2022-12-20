@@ -1,5 +1,4 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 
 namespace Tesseract.Internal
 {
@@ -28,32 +27,32 @@ namespace Tesseract.Internal
             return value.ToString("R", CultureInfo.InvariantCulture.NumberFormat);
         }
 
-        public static string ToString(Int16 value)
+        public static string ToString(short value)
         {
             return value.ToString("D", CultureInfo.InvariantCulture.NumberFormat);
         }
 
-        public static string ToString(Int32 value)
+        public static string ToString(int value)
         {
             return value.ToString("D", CultureInfo.InvariantCulture.NumberFormat);
         }
 
-        public static string ToString(Int64 value)
+        public static string ToString(long value)
         {
             return value.ToString("D", CultureInfo.InvariantCulture.NumberFormat);
         }
 
-        public static string ToString(UInt16 value)
+        public static string ToString(ushort value)
         {
             return value.ToString("D", CultureInfo.InvariantCulture.NumberFormat);
         }
 
-        public static string ToString(UInt32 value)
+        public static string ToString(uint value)
         {
             return value.ToString("D", CultureInfo.InvariantCulture.NumberFormat);
         }
 
-        public static string ToString(UInt64 value)
+        public static string ToString(ulong value)
         {
             return value.ToString("D", CultureInfo.InvariantCulture.NumberFormat);
         }
@@ -76,29 +75,29 @@ namespace Tesseract.Internal
             {
                 result = ToString((float)value);
             }
-            else if (value is Int16)
+            else if (value is short)
             {
-                result = ToString((Int16)value);
+                result = ToString((short)value);
             }
-            else if (value is Int32)
+            else if (value is int)
             {
-                result = ToString((Int32)value);
+                result = ToString((int)value);
             }
-            else if (value is Int64)
+            else if (value is long)
             {
-                result = ToString((Int64)value);
+                result = ToString((long)value);
             }
-            else if (value is UInt16)
+            else if (value is ushort)
             {
-                result = ToString((UInt16)value);
+                result = ToString((ushort)value);
             }
-            else if (value is UInt32)
+            else if (value is uint)
             {
-                result = ToString((UInt32)value);
+                result = ToString((uint)value);
             }
-            else if (value is UInt64)
+            else if (value is ulong)
             {
-                result = ToString((UInt64)value);
+                result = ToString((ulong)value);
             }
             else if (value is string)
             {

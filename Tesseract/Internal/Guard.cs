@@ -17,7 +17,9 @@ namespace Tesseract.Internal
         public static void Require(string paramName, bool condition)
         {
             if (!condition)
+            {
                 throw new ArgumentException(string.Empty, paramName);
+            }
         }
 
         /// <summary>
@@ -31,7 +33,9 @@ namespace Tesseract.Internal
         public static void Require(string paramName, bool condition, string message)
         {
             if (!condition)
+            {
                 throw new ArgumentException(message, paramName);
+            }
         }
 
         /// <summary>
@@ -46,7 +50,9 @@ namespace Tesseract.Internal
         public static void Require(string paramName, bool condition, string message, params object[] args)
         {
             if (!condition)
-                throw new ArgumentException(String.Format(message, args), paramName);
+            {
+                throw new ArgumentException(string.Format(message, args), paramName);
+            }
         }
 
         [DebuggerHidden]
@@ -54,7 +60,7 @@ namespace Tesseract.Internal
         {
             if (value == null)
             {
-                throw new ArgumentException(String.Format("Argument \"{0}\" must not be null.", value));
+                throw new ArgumentException(string.Format("Argument \"{0}\" must not be null.", value));
             }
         }
 
@@ -71,7 +77,7 @@ namespace Tesseract.Internal
             if (value.Length == 0)
             {
                 throw new ArgumentException(paramName,
-                    String.Format(@"The argument ""{0}"" must not be null or empty.", paramName));
+                    string.Format(@"The argument ""{0}"" must not be null or empty.", paramName));
             }
         }
 
@@ -86,7 +92,7 @@ namespace Tesseract.Internal
         {
             if (!condition)
             {
-                throw new InvalidOperationException(String.Format(message, args));
+                throw new InvalidOperationException(string.Format(message, args));
             }
         }
     }

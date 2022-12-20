@@ -10,19 +10,14 @@ namespace Tesseract
     /// <summary>
     /// Represents an array of <see cref="Pix"/>.
     /// </summary>
-    public class PixArray : DisposableBase, IEnumerable<Pix>
+    public sealed class PixArray : DisposableBase, IEnumerable<Pix>
     {
         #region Static Constructors
 
         public static PixArray Create(int n)
         {
-            var pixaHandle = Interop.LeptonicaApi.Native.pixaCreate(n);
-            if (pixaHandle == IntPtr.Zero)
-            {
-                throw new IOException("Failed to create PixArray");
-            }
-
-            return new PixArray(pixaHandle);
+            IntPtr pixaHandle = Interop.LeptonicaApi.Native.pixaCreate(n);
+            return pixaHandle == IntPtr.Zero ? throw new IOException("Failed to create PixArray") : new PixArray(pixaHandle);
         }
 
         /// <summary>
@@ -32,13 +27,10 @@ namespace Tesseract
         /// <returns></returns>
         public static PixArray LoadMultiPageTiffFromFile(string filename)
         {
-            var pixaHandle = Interop.LeptonicaApi.Native.pixaReadMultipageTiff(filename);
-            if (pixaHandle == IntPtr.Zero)
-            {
-                throw new IOException(String.Format("Failed to load image '{0}'.", filename));
-            }
-
-            return new PixArray(pixaHandle);
+            IntPtr pixaHandle = Interop.LeptonicaApi.Native.pixaReadMultipageTiff(filename);
+            return pixaHandle == IntPtr.Zero
+                ? throw new IOException(string.Format("Failed to load image '{0}'.", filename))
+                : new PixArray(pixaHandle);
         }
 
         #endregion Static Constructors
@@ -92,19 +84,11 @@ namespace Tesseract
             }
 
             /// <inheritdoc/>
-            object IEnumerator.Current
-            {
-                get
-                {
+            object IEnumerator.Current =>
                     // note: Only the non-generic requires an exception check according the MSDN docs (Generic version just undefined if it's not currently pointing to an item). Go figure.
-                    if (index == 0 || index == items.Length + 1)
-                    {
-                        throw new InvalidOperationException("The enumerator is positioned either before the first item or after the last item .");
-                    }
-
-                    return Current;
-                }
-            }
+                    index == 0 || index == items.Length + 1
+                        ? throw new InvalidOperationException("The enumerator is positioned either before the first item or after the last item .")
+                        : (object)Current;
 
             /// <inheritdoc/>
             public bool MoveNext()
@@ -234,7 +218,7 @@ namespace Tesseract
         public bool Add(Pix pix, PixArrayAccessType copyflag = PixArrayAccessType.Clone)
         {
             Guard.RequireNotNull("pix", pix);
-            Guard.Require("copyflag", copyflag == PixArrayAccessType.Clone || copyflag == PixArrayAccessType.Copy,
+            Guard.Require(nameof(copyflag), copyflag == PixArrayAccessType.Clone || copyflag == PixArrayAccessType.Copy,
                 "Copy flag must be either copy or clone but was {0}.", copyflag);
 
             int result = Interop.LeptonicaApi.Native.pixaAddPix(_handle, pix.Handle, copyflag);
@@ -281,17 +265,15 @@ namespace Tesseract
         /// <returns>The retrieved <see cref="Pix"/>.</returns>
         public Pix GetPix(int index, PixArrayAccessType accessType = PixArrayAccessType.Clone)
         {
-            Guard.Require("accessType", accessType == PixArrayAccessType.Clone || accessType == PixArrayAccessType.Copy, "Access type must be either copy or clone but was {0}.", accessType);
-            Guard.Require("index", index >= 0 && index < Count, "The index {0} must be between 0 and {1}.", index, Count);
+            Guard.Require(nameof(accessType), accessType == PixArrayAccessType.Clone || accessType == PixArrayAccessType.Copy, "Access type must be either copy or clone but was {0}.", accessType);
+            Guard.Require(nameof(index), index >= 0 && index < Count, "The index {0} must be between 0 and {1}.", index, Count);
 
             VerifyNotDisposed();
 
-            var pixHandle = Interop.LeptonicaApi.Native.pixaGetPix(_handle, index, accessType);
-            if (pixHandle == IntPtr.Zero)
-            {
-                throw new InvalidOperationException(String.Format("Failed to retrieve pix {0}.", pixHandle));
-            }
-            return Pix.Create(pixHandle);
+            IntPtr pixHandle = Interop.LeptonicaApi.Native.pixaGetPix(_handle, index, accessType);
+            return pixHandle == IntPtr.Zero
+                ? throw new InvalidOperationException(string.Format("Failed to retrieve pix {0}.", pixHandle))
+                : Pix.Create(pixHandle);
         }
 
         /// <summary>
@@ -306,7 +288,7 @@ namespace Tesseract
         /// <param name="index">The index of the pix to remove.</param>
         public void Remove(int index)
         {
-            Guard.Require("index", index >= 0 && index < Count, "The index {0} must be between 0 and {1}.", index, Count);
+            Guard.Require(nameof(index), index >= 0 && index < Count, "The index {0} must be between 0 and {1}.", index, Count);
 
             VerifyNotDisposed();
             if (Interop.LeptonicaApi.Native.pixaRemovePix(_handle, index) == 0)

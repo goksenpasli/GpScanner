@@ -4,7 +4,7 @@ namespace Tesseract
 {
     public unsafe class PixData
     {
-        public Pix Pix { get; private set; }
+        public Pix Pix { get; }
 
         internal PixData(Pix pix)
         {
@@ -21,7 +21,7 @@ namespace Tesseract
         /// <summary>
         /// Number of 32-bit words per line.
         /// </summary>
-        public int WordsPerLine { get; private set; }
+        public int WordsPerLine { get; }
 
         /// <summary>
         /// Swaps the bytes on little-endian platforms within a word; bytes 0 and 3 swapped, and bytes `1 and 2 are swapped.
@@ -32,7 +32,7 @@ namespace Tesseract
         /// </remarks>
         public void EndianByteSwap()
         {
-            Interop.LeptonicaApi.Native.pixEndianByteSwap(Pix.Handle);
+            _ = Interop.LeptonicaApi.Native.pixEndianByteSwap(Pix.Handle);
         }
 
 #if Net45
@@ -56,7 +56,7 @@ namespace Tesseract
 
         public static uint GetDataBit(uint* data, int index)
         {
-            return (*(data + ((index) >> 5)) >> (31 - ((index) & 31))) & 1;
+            return (*(data + (index >> 5)) >> (31 - (index & 31))) & 1;
         }
 
         /// <summary>
@@ -68,9 +68,9 @@ namespace Tesseract
 
         public static void SetDataBit(uint* data, int index, uint value)
         {
-            uint* wordPtr = data + ((index) >> 5);
-            *wordPtr &= ~(0x80000000 >> ((index) & 31));
-            *wordPtr |= (value << (31 - ((index) & 31)));
+            uint* wordPtr = data + (index >> 5);
+            *wordPtr &= ~(0x80000000 >> (index & 31));
+            *wordPtr |= value << (31 - (index & 31));
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace Tesseract
 
         public static uint GetDataDIBit(uint* data, int index)
         {
-            return (*(data + ((index) >> 4)) >> (2 * (15 - ((index) & 15)))) & 3;
+            return (*(data + (index >> 4)) >> (2 * (15 - (index & 15)))) & 3;
         }
 
         /// <summary>
@@ -94,9 +94,9 @@ namespace Tesseract
 
         public static void SetDataDIBit(uint* data, int index, uint value)
         {
-            uint* wordPtr = data + ((index) >> 4);
-            *wordPtr &= ~(0xc0000000 >> (2 * ((index) & 15)));
-            *wordPtr |= (((value) & 3) << (30 - 2 * ((index) & 15)));
+            uint* wordPtr = data + (index >> 4);
+            *wordPtr &= ~(0xc0000000 >> (2 * (index & 15)));
+            *wordPtr |= (value & 3) << (30 - (2 * (index & 15)));
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace Tesseract
 
         public static uint GetDataQBit(uint* data, int index)
         {
-            return (*(data + ((index) >> 3)) >> (4 * (7 - ((index) & 7)))) & 0xf;
+            return (*(data + (index >> 3)) >> (4 * (7 - (index & 7)))) & 0xf;
         }
 
         /// <summary>
@@ -120,9 +120,9 @@ namespace Tesseract
 
         public static void SetDataQBit(uint* data, int index, uint value)
         {
-            uint* wordPtr = data + ((index) >> 3);
-            *wordPtr &= ~(0xf0000000 >> (4 * ((index) & 7)));
-            *wordPtr |= (((value) & 15) << (28 - 4 * ((index) & 7)));
+            uint* wordPtr = data + (index >> 3);
+            *wordPtr &= ~(0xf0000000 >> (4 * (index & 7)));
+            *wordPtr |= (value & 15) << (28 - (4 * (index & 7)));
         }
 
         /// <summary>
@@ -135,14 +135,7 @@ namespace Tesseract
         public static uint GetDataByte(uint* data, int index)
         {
             // Must do direct size comparison to detect x64 process, since in this will be jited out and results in a lot faster code (e.g. 6x faster for image conversion)
-            if (IntPtr.Size == 8)
-            {
-                return *((byte*)((ulong)((byte*)data + index) ^ 3));
-            }
-            else
-            {
-                return *((byte*)((uint)((byte*)data + index) ^ 3));
-            }
+            return IntPtr.Size == 8 ? *(byte*)((ulong)((byte*)data + index) ^ 3) : *(byte*)((uint)((byte*)data + index) ^ 3);
 
             // Architecture types that are NOT little edian are not currently supported
             //return *((byte*)data + index);
@@ -181,14 +174,7 @@ namespace Tesseract
         public static uint GetDataTwoByte(uint* data, int index)
         {
             // Must do direct size comparison to detect x64 process, since in this will be jited out and results in a lot faster code (e.g. 6x faster for image conversion)
-            if (IntPtr.Size == 8)
-            {
-                return *(ushort*)((ulong)((ushort*)data + index) ^ 2);
-            }
-            else
-            {
-                return *(ushort*)((uint)((ushort*)data + index) ^ 2);
-            }
+            return IntPtr.Size == 8 ? *(ushort*)((ulong)((ushort*)data + index) ^ 2) : *(ushort*)((uint)((ushort*)data + index) ^ 2);
 
             // Architecture types that are NOT little edian are not currently supported
             // return *((ushort*)data + index);

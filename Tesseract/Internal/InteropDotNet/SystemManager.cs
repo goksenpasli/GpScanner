@@ -3,7 +3,7 @@
 //  Distributed under the MIT License: http://opensource.org/licenses/MIT
 using System;
 
-namespace InteropDotNet
+namespace Tesseract.Internal.InteropDotNet
 {
     internal static class SystemManager
     {
@@ -25,7 +25,7 @@ namespace InteropDotNet
 
             return OperatingSystem.Unknown;
 #else
-            var pid = (int)Environment.OSVersion.Platform;
+            int pid = (int)Environment.OSVersion.Platform;
             switch (pid)
             {
                 case (int)PlatformID.Win32NT:

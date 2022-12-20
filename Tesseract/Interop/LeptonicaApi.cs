@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using InteropDotNet;
+using Tesseract.Internal.InteropDotNet;
 
 namespace Tesseract.Interop
 {
@@ -378,6 +378,9 @@ namespace Tesseract.Interop
         [RuntimeDllImport(Constants.LeptonicaDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "pixcmapGetCount")]
         int pixcmapGetCount(HandleRef cmap);
 
+        /// <summary>
+        /// 
+        /// </summary>
         /// <returns>Returns color maps depth, or 0 on error.</returns>
         [RuntimeDllImport(Constants.LeptonicaDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "pixcmapGetDepth")]
         int pixcmapGetDepth(HandleRef cmap);
@@ -519,7 +522,10 @@ namespace Tesseract.Interop
             get
             {
                 if (native == null)
+                {
                     Initialize();
+                }
+
                 return native;
             }
         }

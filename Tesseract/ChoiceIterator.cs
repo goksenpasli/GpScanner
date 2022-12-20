@@ -18,10 +18,7 @@ namespace Tesseract
         public float GetConfidence()
         {
             VerifyNotDisposed();
-            if (_handleRef.Handle == IntPtr.Zero)
-                return 0f;
-
-            return Interop.TessApi.Native.ChoiceIteratorGetConfidence(_handleRef);
+            return _handleRef.Handle == IntPtr.Zero ? 0f : Interop.TessApi.Native.ChoiceIteratorGetConfidence(_handleRef);
         }
 
         /// <summary>
@@ -31,10 +28,7 @@ namespace Tesseract
         public string GetText()
         {
             VerifyNotDisposed();
-            if (_handleRef.Handle == IntPtr.Zero)
-                return String.Empty;
-
-            return Interop.TessApi.ChoiceIteratorGetUTF8Text(_handleRef);
+            return _handleRef.Handle == IntPtr.Zero ? string.Empty : Interop.TessApi.ChoiceIteratorGetUTF8Text(_handleRef);
         }
 
         /// <summary>
@@ -44,9 +38,7 @@ namespace Tesseract
         public bool Next()
         {
             VerifyNotDisposed();
-            if (_handleRef.Handle == IntPtr.Zero)
-                return false;
-            return Interop.TessApi.Native.ChoiceIteratorNext(_handleRef) != 0;
+            return _handleRef.Handle != IntPtr.Zero && Interop.TessApi.Native.ChoiceIteratorNext(_handleRef) != 0;
         }
 
         internal ChoiceIterator(IntPtr handle)

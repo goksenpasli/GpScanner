@@ -31,17 +31,11 @@ namespace Tesseract
 
         public int X1 { get; }
 
-        public int X2
-        {
-            get { return X1 + Width; }
-        }
+        public int X2 => X1 + Width;
 
         public int Y1 { get; }
 
-        public int Y2
-        {
-            get { return Y1 + Height; }
-        }
+        public int Y2 => Y1 + Height;
 
         #endregion Properties
 

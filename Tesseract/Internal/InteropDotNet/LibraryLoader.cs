@@ -5,10 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using Tesseract;
-using Tesseract.Internal;
 
-namespace InteropDotNet
+namespace Tesseract.Internal.InteropDotNet
 {
     public sealed class LibraryLoader
     {
@@ -26,7 +24,7 @@ namespace InteropDotNet
                 }
                 if (logic.FreeLibrary(loadedAssemblies[fileName]))
                 {
-                    loadedAssemblies.Remove(fileName);
+                    _ = loadedAssemblies.Remove(fileName);
                     return true;
                 }
                 return false;
@@ -36,19 +34,16 @@ namespace InteropDotNet
         public IntPtr GetProcAddress(IntPtr dllHandle, string name)
         {
             IntPtr procAddress = logic.GetProcAddress(dllHandle, name);
-            if (procAddress == IntPtr.Zero)
-            {
-                throw new LoadLibraryException(String.Format("Failed to load proc {0}", name));
-            }
-
-            return procAddress;
+            return procAddress == IntPtr.Zero ? throw new LoadLibraryException(string.Format("Failed to load proc {0}", name)) : procAddress;
         }
 
         public bool IsLibraryLoaded(string fileName)
         {
             fileName = FixUpLibraryName(fileName);
             lock (syncLock)
+            {
                 return loadedAssemblies.ContainsKey(fileName);
+            }
         }
 
         public IntPtr LoadLibrary(string fileName, string platformName = null)
@@ -59,24 +54,36 @@ namespace InteropDotNet
                 if (!loadedAssemblies.ContainsKey(fileName))
                 {
                     if (platformName == null)
+                    {
                         platformName = SystemManager.GetPlatformName();
+                    }
 
                     Logger.TraceInformation("Current platform: " + platformName);
 
                     IntPtr dllHandle = CheckCustomSearchPath(fileName, platformName);
                     if (dllHandle == IntPtr.Zero)
+                    {
                         dllHandle = CheckExecutingAssemblyDomain(fileName, platformName);
-                    if (dllHandle == IntPtr.Zero)
-                        dllHandle = CheckCurrentAppDomain(fileName, platformName);
-                    if (dllHandle == IntPtr.Zero)
-                        dllHandle = CheckCurrentAppDomainBin(fileName, platformName);
-                    if (dllHandle == IntPtr.Zero)
-                        dllHandle = CheckWorkingDirecotry(fileName, platformName);
+                    }
 
-                    if (dllHandle != IntPtr.Zero)
-                        loadedAssemblies[fileName] = dllHandle;
-                    else
-                        throw new DllNotFoundException(string.Format("Failed to find library \"{0}\" for platform {1}.", fileName, platformName));
+                    if (dllHandle == IntPtr.Zero)
+                    {
+                        dllHandle = CheckCurrentAppDomain(fileName, platformName);
+                    }
+
+                    if (dllHandle == IntPtr.Zero)
+                    {
+                        dllHandle = CheckCurrentAppDomainBin(fileName, platformName);
+                    }
+
+                    if (dllHandle == IntPtr.Zero)
+                    {
+                        dllHandle = CheckWorkingDirecotry(fileName, platformName);
+                    }
+
+                    loadedAssemblies[fileName] = dllHandle != IntPtr.Zero
+                        ? dllHandle
+                        : throw new DllNotFoundException(string.Format("Failed to find library \"{0}\" for platform {1}.", fileName, platformName));
                 }
 
                 return loadedAssemblies[fileName];
@@ -96,7 +103,7 @@ namespace InteropDotNet
 
         private IntPtr CheckCurrentAppDomain(string fileName, string platformName)
         {
-            var baseDirectory = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory);
+            string baseDirectory = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory);
             Logger.TraceInformation("Checking current application domain location '{0}' for '{1}' on platform {2}.", baseDirectory, fileName, platformName);
             return InternalLoadLibrary(baseDirectory, platformName, fileName);
         }
@@ -117,7 +124,7 @@ namespace InteropDotNet
         /// <returns></returns>
         private IntPtr CheckCurrentAppDomainBin(string fileName, string platformName)
         {
-            var baseDirectory = Path.Combine(Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory), "bin");
+            string baseDirectory = Path.Combine(Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory), "bin");
             if (Directory.Exists(baseDirectory))
             {
                 Logger.TraceInformation("Checking current application domain's bin location '{0}' for '{1}' on platform {2}.", baseDirectory, fileName, platformName);
@@ -132,8 +139,8 @@ namespace InteropDotNet
 
         private IntPtr CheckCustomSearchPath(string fileName, string platformName)
         {
-            var baseDirectory = CustomSearchPath;
-            if (!String.IsNullOrEmpty(baseDirectory))
+            string baseDirectory = CustomSearchPath;
+            if (!string.IsNullOrEmpty(baseDirectory))
             {
                 Logger.TraceInformation("Checking custom search location '{0}' for '{1}' on platform {2}.", baseDirectory, fileName, platformName);
                 return InternalLoadLibrary(baseDirectory, platformName, fileName);
@@ -147,21 +154,21 @@ namespace InteropDotNet
 
         private IntPtr CheckExecutingAssemblyDomain(string fileName, string platformName)
         {
-            var executingAssembly = Assembly.GetExecutingAssembly();
+            Assembly executingAssembly = Assembly.GetExecutingAssembly();
             if (executingAssembly == null)
             {
                 // #591 Executing assembly may be null in some cases
                 return IntPtr.Zero;
             }
 
-            var baseDirectory = Path.GetDirectoryName(executingAssembly.Location);
+            string baseDirectory = Path.GetDirectoryName(executingAssembly.Location);
             Logger.TraceInformation("Checking executing application domain location '{0}' for '{1}' on platform {2}.", baseDirectory, fileName, platformName);
             return InternalLoadLibrary(baseDirectory, platformName, fileName);
         }
 
         private IntPtr CheckWorkingDirecotry(string fileName, string platformName)
         {
-            var baseDirectory = Path.GetFullPath(Environment.CurrentDirectory);
+            string baseDirectory = Path.GetFullPath(Environment.CurrentDirectory);
             Logger.TraceInformation("Checking working directory '{0}' for '{1}' on platform {2}.", baseDirectory, fileName, platformName);
             return InternalLoadLibrary(baseDirectory, platformName, fileName);
         }
@@ -173,7 +180,7 @@ namespace InteropDotNet
 
         private IntPtr InternalLoadLibrary(string baseDirectory, string platformName, string fileName)
         {
-            var fullPath = Path.Combine(baseDirectory, Path.Combine(platformName, fileName));
+            string fullPath = Path.Combine(baseDirectory, Path.Combine(platformName, fileName));
             return File.Exists(fullPath) ? logic.LoadLibrary(fullPath) : IntPtr.Zero;
         }
 
@@ -185,7 +192,7 @@ namespace InteropDotNet
             {
                 if (instance == null)
                 {
-                    var operatingSystem = SystemManager.GetOperatingSystem();
+                    global::Tesseract.Internal.InteropDotNet.OperatingSystem operatingSystem = SystemManager.GetOperatingSystem();
                     switch (operatingSystem)
                     {
                         case OperatingSystem.Windows:

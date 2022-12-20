@@ -3,7 +3,7 @@
 //  Distributed under the MIT License: http://opensource.org/licenses/MIT
 using System;
 
-namespace InteropDotNet
+namespace Tesseract.Internal.InteropDotNet
 {
     internal interface ILibraryLoaderLogic
     {

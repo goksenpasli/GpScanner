@@ -325,7 +325,7 @@ namespace GpScanner.ViewModel
             {
                 if (MessageBox.Show($"{Translation.GetResStringValue("SETTİNGS")} {Translation.GetResStringValue("RESET")}", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
-                    var twainsettings = parameter as Twainsettings.Settings;
+                    Twainsettings.Settings twainsettings = parameter as Twainsettings.Settings;
                     twainsettings.Reset();
                     Settings.Default.Reset();
                 }
@@ -375,7 +375,7 @@ namespace GpScanner.ViewModel
 
         public ICommand AddAllFileToControlPanel { get; }
 
-        public bool AnyDataExists { get => ScannerData?.Data?.Count > 0; set => anyDataExists = value; }
+        public bool AnyDataExists { get => DataYükle()?.Count > 0; set => anyDataExists = value; }
 
         public string AramaMetni
         {
@@ -1076,7 +1076,7 @@ namespace GpScanner.ViewModel
 
         private Size selectedSize = new(240, 385);
 
-        private string[] supportedfilesextension = new string[] { ".pdf", ".tiff", ".tif", ".jpg", ".png", ".bmp", ".zip", ".xps" };
+        private readonly string[] supportedfilesextension = new string[] { ".pdf", ".tiff", ".tif", ".jpg", ".png", ".bmp", ".zip", ".xps" };
 
         private TesseractViewModel tesseractViewModel;
 
@@ -1169,11 +1169,13 @@ namespace GpScanner.ViewModel
 
         private void RegisterSimplePdfFileWatcher()
         {
-            FileSystemWatcher watcher = new(Twainsettings.Settings.Default.AutoFolder);
-            watcher.NotifyFilter = NotifyFilters.FileName;
-            watcher.Filter = "*.pdf";
-            watcher.IncludeSubdirectories = true;
-            watcher.EnableRaisingEvents = true;
+            FileSystemWatcher watcher = new(Twainsettings.Settings.Default.AutoFolder)
+            {
+                NotifyFilter = NotifyFilters.FileName,
+                Filter = "*.pdf",
+                IncludeSubdirectories = true,
+                EnableRaisingEvents = true
+            };
             watcher.Renamed += (s, e) =>
             {
                 foreach (Data item in ScannerData?.Data?.Where(z => z.FileName == e.OldFullPath))

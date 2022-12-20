@@ -8,35 +8,40 @@ using System.Reflection.Emit;
 using System.Runtime.InteropServices;
 using System.Threading;
 
-namespace InteropDotNet
+namespace Tesseract.Internal.InteropDotNet
 {
     internal static class InteropRuntimeImplementer
     {
         public static T CreateInstance<T>() where T : class
         {
-            var interfaceType = typeof(T);
+            Type interfaceType = typeof(T);
             if (!typeof(T).IsInterface)
+            {
                 throw new Exception(string.Format("The type {0} should be an interface", interfaceType.Name));
+            }
+
             if (!interfaceType.IsPublic)
+            {
                 throw new Exception(string.Format("The interface {0} should be public", interfaceType.Name));
+            }
 
-            var assemblyName = GetAssemblyName(interfaceType);
+            string assemblyName = GetAssemblyName(interfaceType);
 
-            var assemblyBuilder = Thread.GetDomain().DefineDynamicAssembly(new AssemblyName(assemblyName), AssemblyBuilderAccess.Run);
+            AssemblyBuilder assemblyBuilder = Thread.GetDomain().DefineDynamicAssembly(new AssemblyName(assemblyName), AssemblyBuilderAccess.Run);
 
-            var moduleBuilder = assemblyBuilder.DefineDynamicModule(assemblyName);
+            ModuleBuilder moduleBuilder = assemblyBuilder.DefineDynamicModule(assemblyName);
 
-            var typeName = GetImplementationTypeName(assemblyName, interfaceType);
-            var typeBuilder = moduleBuilder.DefineType(typeName, TypeAttributes.Public,
+            string typeName = GetImplementationTypeName(assemblyName, interfaceType);
+            TypeBuilder typeBuilder = moduleBuilder.DefineType(typeName, TypeAttributes.Public,
                 typeof(object), new[] { interfaceType });
-            var methods = BuildMethods(interfaceType);
+            MethodItem[] methods = BuildMethods(interfaceType);
 
             ImplementDelegates(assemblyName, moduleBuilder, methods);
             ImplementFields(typeBuilder, methods);
             ImplementMethods(typeBuilder, methods);
             ImplementConstructor(typeBuilder, methods);
 
-            var implementationType = typeBuilder.CreateType();
+            Type implementationType = typeBuilder.CreateType();
             return (T)Activator.CreateInstance(implementationType, LibraryLoader.Instance);
         }
 
@@ -44,14 +49,12 @@ namespace InteropDotNet
 
         private static MethodItem[] BuildMethods(Type interfaceType)
         {
-            var methodInfoArray = interfaceType.GetMethods();
-            var methods = new MethodItem[methodInfoArray.Length];
+            MethodInfo[] methodInfoArray = interfaceType.GetMethods();
+            MethodItem[] methods = new MethodItem[methodInfoArray.Length];
             for (int i = 0; i < methodInfoArray.Length; i++)
             {
                 methods[i] = new MethodItem { Info = methodInfoArray[i] };
-                var attribute = GetRuntimeDllImportAttribute(methodInfoArray[i]);
-                if (attribute == null)
-                    throw new Exception(string.Format("Method '{0}' of interface '{1}' should be marked with the RuntimeDllImport attribute",
+                RuntimeDllImportAttribute attribute = GetRuntimeDllImportAttribute(methodInfoArray[i]) ?? throw new Exception(string.Format("Method '{0}' of interface '{1}' should be marked with the RuntimeDllImport attribute",
                         methodInfoArray[i].Name, interfaceType.Name));
                 methods[i].DllImportAttribute = attribute;
             }
@@ -61,33 +64,38 @@ namespace InteropDotNet
         private static void ImplementConstructor(TypeBuilder typeBuilder, MethodItem[] methods)
         {
             // Preparing
-            var ctorBuilder = typeBuilder.DefineConstructor(MethodAttributes.Public,
+            ConstructorBuilder ctorBuilder = typeBuilder.DefineConstructor(MethodAttributes.Public,
                 CallingConventions.Standard, new[] { typeof(LibraryLoader) });
-            ctorBuilder.DefineParameter(1, ParameterAttributes.HasDefault, "loader");
+            _ = ctorBuilder.DefineParameter(1, ParameterAttributes.HasDefault, "loader");
             if (typeBuilder.BaseType == null)
+            {
                 throw new Exception("There is no a BaseType of typeBuilder");
-            var baseCtor = typeBuilder.BaseType.GetConstructor(new Type[0]);
-            if (baseCtor == null)
-                throw new Exception("There is no a default constructor of BaseType of typeBuilder");
+            }
+
+            ConstructorInfo baseCtor = typeBuilder.BaseType.GetConstructor(new Type[0]) ?? throw new Exception("There is no a default constructor of BaseType of typeBuilder");
 
             // Build list of library names
-            var libraries = new List<string>();
-            foreach (var method in methods)
+            List<string> libraries = new List<string>();
+            foreach (MethodItem method in methods)
             {
-                var libraryName = method.DllImportAttribute.LibraryFileName;
+                string libraryName = method.DllImportAttribute.LibraryFileName;
                 if (!libraries.Contains(libraryName))
+                {
                     libraries.Add(libraryName);
+                }
             }
 
             // Create ILGenerator
-            var ilGen = ctorBuilder.GetILGenerator();
+            ILGenerator ilGen = ctorBuilder.GetILGenerator();
 
             // Declare locals for library handles
             for (int i = 0; i < libraries.Count; i++)
-                ilGen.DeclareLocal(typeof(IntPtr));
+            {
+                _ = ilGen.DeclareLocal(typeof(IntPtr));
+            }
 
             // Declare locals for a method handle
-            ilGen.DeclareLocal(typeof(IntPtr));
+            _ = ilGen.DeclareLocal(typeof(IntPtr));
 
             // Load this
             ilGen.Emit(OpCodes.Ldarg_0);
@@ -97,7 +105,7 @@ namespace InteropDotNet
             for (int i = 0; i < libraries.Count; i++)
             {
                 // Preparing
-                var library = libraries[i];
+                string library = libraries[i];
 
                 // Load LibraryLoader
                 ilGen.Emit(OpCodes.Ldarg_1);
@@ -114,11 +122,11 @@ namespace InteropDotNet
                 // Store libraryHandle in locals[i]
                 ilGen.Emit(OpCodes.Stloc, i);
             }
-            foreach (var method in methods)
+            foreach (MethodItem method in methods)
             {
                 // Preparing
-                var libraryIndex = libraries.IndexOf(method.DllImportAttribute.LibraryFileName);
-                var methodName = method.DllImportAttribute.EntryPoint ?? method.Info.Name;
+                int libraryIndex = libraries.IndexOf(method.DllImportAttribute.LibraryFileName);
+                string methodName = method.DllImportAttribute.EntryPoint ?? method.Info.Name;
 
                 // Load Library Loader
                 ilGen.Emit(OpCodes.Ldarg_1);
@@ -164,16 +172,18 @@ namespace InteropDotNet
 
         private static void ImplementDelegates(string assemblyName, ModuleBuilder moduleBuilder, IEnumerable<MethodItem> methods)
         {
-            foreach (var method in methods)
+            foreach (MethodItem method in methods)
+            {
                 method.DelegateType = ImplementMethodDelegate(assemblyName, moduleBuilder, method);
+            }
         }
 
         private static void ImplementFields(TypeBuilder typeBuilder, IEnumerable<MethodItem> methods)
         {
-            foreach (var method in methods)
+            foreach (MethodItem method in methods)
             {
-                var fieldName = method.Info.Name + "Field";
-                var fieldBuilder = typeBuilder.DefineField(fieldName, method.DelegateType, FieldAttributes.Private);
+                string fieldName = method.Info.Name + "Field";
+                FieldBuilder fieldBuilder = typeBuilder.DefineField(fieldName, method.DelegateType, FieldAttributes.Private);
                 method.FieldInfo = fieldBuilder;
             }
         }
@@ -185,16 +195,14 @@ namespace InteropDotNet
                 MethodAttributes.NewSlot | MethodAttributes.Virtual;
 
             // Initial
-            var delegateName = GetDelegateName(assemblyName, method.Info);
-            var delegateBuilder = moduleBuilder.DefineType(delegateName,
+            string delegateName = GetDelegateName(assemblyName, method.Info);
+            TypeBuilder delegateBuilder = moduleBuilder.DefineType(delegateName,
                 TypeAttributes.Public | TypeAttributes.AutoClass | TypeAttributes.Sealed, typeof(MulticastDelegate));
 
             // UnmanagedFunctionPointer
-            var importAttribute = method.DllImportAttribute;
-            var attributeCtor = typeof(UnmanagedFunctionPointerAttribute).GetConstructor(new[] { typeof(CallingConvention) });
-            if (attributeCtor == null)
-                throw new Exception("There is no the target constructor of the UnmanagedFunctionPointerAttribute");
-            var attributeBuilder = new CustomAttributeBuilder(attributeCtor, new object[] { importAttribute.CallingConvention },
+            RuntimeDllImportAttribute importAttribute = method.DllImportAttribute;
+            ConstructorInfo attributeCtor = typeof(UnmanagedFunctionPointerAttribute).GetConstructor(new[] { typeof(CallingConvention) }) ?? throw new Exception("There is no the target constructor of the UnmanagedFunctionPointerAttribute");
+            CustomAttributeBuilder attributeBuilder = new CustomAttributeBuilder(attributeCtor, new object[] { importAttribute.CallingConvention },
                 new[]
                 {
                     typeof(UnmanagedFunctionPointerAttribute).GetField("CharSet"),
@@ -212,16 +220,16 @@ namespace InteropDotNet
             delegateBuilder.SetCustomAttribute(attributeBuilder);
 
             // ctor
-            var ctorBuilder = delegateBuilder.DefineConstructor(MethodAttributes.Public | MethodAttributes.HideBySig |
+            ConstructorBuilder ctorBuilder = delegateBuilder.DefineConstructor(MethodAttributes.Public | MethodAttributes.HideBySig |
                 MethodAttributes.SpecialName | MethodAttributes.RTSpecialName, CallingConventions.Standard,
                 new[] { typeof(object), typeof(IntPtr) });
             ctorBuilder.SetImplementationFlags(MethodImplAttributes.CodeTypeMask);
-            ctorBuilder.DefineParameter(1, ParameterAttributes.HasDefault, "object");
-            ctorBuilder.DefineParameter(2, ParameterAttributes.HasDefault, "method");
+            _ = ctorBuilder.DefineParameter(1, ParameterAttributes.HasDefault, "object");
+            _ = ctorBuilder.DefineParameter(2, ParameterAttributes.HasDefault, "method");
 
             // Invoke
-            var parameters = GetParameterInfoArray(method.Info);
-            var methodBuilder = DefineMethod(delegateBuilder, "Invoke", methodAttributes, method.ReturnType, parameters);
+            LightParameterInfo[] parameters = GetParameterInfoArray(method.Info);
+            MethodBuilder methodBuilder = DefineMethod(delegateBuilder, "Invoke", methodAttributes, method.ReturnType, parameters);
             methodBuilder.SetImplementationFlags(MethodImplAttributes.CodeTypeMask);
 
             // BeginInvoke
@@ -241,15 +249,15 @@ namespace InteropDotNet
 
         private static void ImplementMethods(TypeBuilder typeBuilder, IEnumerable<MethodItem> methods)
         {
-            foreach (var method in methods)
+            foreach (MethodItem method in methods)
             {
-                var infoArray = GetParameterInfoArray(method.Info);
-                var methodBuilder = DefineMethod(typeBuilder, method.Name,
+                LightParameterInfo[] infoArray = GetParameterInfoArray(method.Info);
+                MethodBuilder methodBuilder = DefineMethod(typeBuilder, method.Name,
                     MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.NewSlot |
                     MethodAttributes.Final | MethodAttributes.Virtual,
                     method.ReturnType, infoArray);
 
-                var ilGen = methodBuilder.GetILGenerator();
+                ILGenerator ilGen = methodBuilder.GetILGenerator();
 
                 // Load this
                 ilGen.Emit(OpCodes.Ldarg_0);
@@ -259,7 +267,9 @@ namespace InteropDotNet
 
                 // Load arguments
                 for (int i = 0; i < infoArray.Length; i++)
+                {
                     LdArg(ilGen, i + 1);
+                }
 
                 // Invoke delegate
                 ilGen.Emit(OpCodes.Callvirt, method.DelegateType.GetMethod("Invoke"));
@@ -279,19 +289,22 @@ namespace InteropDotNet
         private static MethodBuilder DefineMethod(TypeBuilder typeBuilder, string name,
            MethodAttributes attributes, Type returnType, LightParameterInfo[] infoArray)
         {
-            var methodBuilder = typeBuilder.DefineMethod(name, attributes, returnType, GetParameterTypeArray(infoArray));
+            MethodBuilder methodBuilder = typeBuilder.DefineMethod(name, attributes, returnType, GetParameterTypeArray(infoArray));
             for (int parameterIndex = 0; parameterIndex < infoArray.Length; parameterIndex++)
-                methodBuilder.DefineParameter(parameterIndex + 1,
+            {
+                _ = methodBuilder.DefineParameter(parameterIndex + 1,
                     infoArray[parameterIndex].Attributes, infoArray[parameterIndex].Name);
+            }
+
             return methodBuilder;
         }
 
         private static RuntimeDllImportAttribute GetRuntimeDllImportAttribute(MethodInfo methodInfo)
         {
-            var attributes = methodInfo.GetCustomAttributes(typeof(RuntimeDllImportAttribute), true);
-            if (attributes.Length == 0)
-                throw new Exception(string.Format("RuntimeDllImportAttribute for method '{0}' not found", methodInfo.Name));
-            return (RuntimeDllImportAttribute)attributes[0];
+            object[] attributes = methodInfo.GetCustomAttributes(typeof(RuntimeDllImportAttribute), true);
+            return attributes.Length == 0
+                ? throw new Exception(string.Format("RuntimeDllImportAttribute for method '{0}' not found", methodInfo.Name))
+                : (RuntimeDllImportAttribute)attributes[0];
         }
 
         private static void LdArg(ILGenerator ilGen, int index)
@@ -331,29 +344,43 @@ namespace InteropDotNet
 
         private static LightParameterInfo[] GetParameterInfoArray(MethodInfo methodInfo, InfoArrayMode mode = InfoArrayMode.Invoke)
         {
-            var parameters = methodInfo.GetParameters();
-            var infoList = new List<LightParameterInfo>();
+            ParameterInfo[] parameters = methodInfo.GetParameters();
+            List<LightParameterInfo> infoList = new List<LightParameterInfo>();
             for (int i = 0; i < parameters.Length; i++)
+            {
                 if (mode != InfoArrayMode.EndInvoke || parameters[i].ParameterType.IsByRef)
+                {
                     infoList.Add(new LightParameterInfo(parameters[i]));
+                }
+            }
+
             if (mode == InfoArrayMode.BeginInvoke)
             {
                 infoList.Add(new LightParameterInfo(typeof(AsyncCallback), "callback"));
                 infoList.Add(new LightParameterInfo(typeof(object), "object"));
             }
             if (mode == InfoArrayMode.EndInvoke)
+            {
                 infoList.Add(new LightParameterInfo(typeof(IAsyncResult), "result"));
-            var infoArray = new LightParameterInfo[infoList.Count];
+            }
+
+            LightParameterInfo[] infoArray = new LightParameterInfo[infoList.Count];
             for (int i = 0; i < infoList.Count; i++)
+            {
                 infoArray[i] = infoList[i];
+            }
+
             return infoArray;
         }
 
         private static Type[] GetParameterTypeArray(LightParameterInfo[] infoArray)
         {
-            var typeArray = new Type[infoArray.Length];
+            Type[] typeArray = new Type[infoArray.Length];
             for (int i = 0; i < infoArray.Length; i++)
+            {
                 typeArray[i] = infoArray[i].Type;
+            }
+
             return typeArray;
         }
 
@@ -373,11 +400,11 @@ namespace InteropDotNet
                 Attributes = ParameterAttributes.HasDefault;
             }
 
-            public ParameterAttributes Attributes { get; private set; }
+            public ParameterAttributes Attributes { get; }
 
-            public string Name { get; private set; }
+            public string Name { get; }
 
-            public Type Type { get; private set; }
+            public Type Type { get; }
         }
 
         private class MethodItem
@@ -390,11 +417,9 @@ namespace InteropDotNet
 
             public MethodInfo Info { get; set; }
 
-            public string Name
-            { get { return Info.Name; } }
+            public string Name => Info.Name;
 
-            public Type ReturnType
-            { get { return Info.ReturnType; } }
+            public Type ReturnType => Info.ReturnType;
         }
 
         #endregion Method helpers
@@ -418,9 +443,12 @@ namespace InteropDotNet
 
         private static string GetSubstantialName(Type interfaceType)
         {
-            var name = interfaceType.Name;
+            string name = interfaceType.Name;
             if (name.StartsWith("I"))
+            {
                 name = name.Substring(1);
+            }
+
             return name;
         }
 

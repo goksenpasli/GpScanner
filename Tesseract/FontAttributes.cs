@@ -19,12 +19,12 @@ namespace Tesseract
             PointSize = pointSize;
         }
 
-        public FontInfo FontInfo { get; private set; }
+        public FontInfo FontInfo { get; }
 
-        public bool IsSmallCaps { get; private set; }
+        public bool IsSmallCaps { get; }
 
-        public bool IsUnderlined { get; private set; }
+        public bool IsUnderlined { get; }
 
-        public int PointSize { get; private set; }
+        public int PointSize { get; }
     }
 }

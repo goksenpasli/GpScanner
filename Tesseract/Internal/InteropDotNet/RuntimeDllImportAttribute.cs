@@ -4,7 +4,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace InteropDotNet
+namespace Tesseract.Internal.InteropDotNet
 {
     [ComVisible(true)]
     [AttributeUsage(AttributeTargets.Method, Inherited = false, AllowMultiple = false)]
@@ -27,6 +27,6 @@ namespace InteropDotNet
             LibraryFileName = libraryFileName;
         }
 
-        public string LibraryFileName { get; private set; }
+        public string LibraryFileName { get; }
     }
 }

@@ -561,12 +561,7 @@ namespace Extensions
 
         private void UpdateText(int position)
         {
-            MaskedTextProvider provider = MaskProvider;
-            if (provider == null)
-            {
-                throw new InvalidOperationException();
-            }
-
+            MaskedTextProvider provider = MaskProvider ?? throw new InvalidOperationException();
             Text = provider.ToDisplayString();
             SelectionLength = 0;
             SelectionStart = position;

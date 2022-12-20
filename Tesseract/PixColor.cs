@@ -37,7 +37,7 @@ namespace Tesseract
                (byte)((value >> 24) & 0xFF),
                (byte)((value >> 16) & 0xFF),
                (byte)((value >> 8) & 0xFF),
-               (byte)0xFF);
+               0xFF);
         }
 
         public uint ToRGBA()
@@ -99,7 +99,7 @@ namespace Tesseract
 
         public override string ToString()
         {
-            return String.Format("Color(0x{0:X})", ToRGBA());
+            return string.Format("Color(0x{0:X})", ToRGBA());
         }
     }
 }

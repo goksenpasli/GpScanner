@@ -6,19 +6,19 @@ namespace Tesseract
     // it's probably not all that useful anyway)
     public class FontInfo
     {
-        public int Id { get; private set; }
+        public int Id { get; }
 
-        public bool IsBold { get; private set; }
+        public bool IsBold { get; }
 
-        public bool IsFixedPitch { get; private set; }
+        public bool IsFixedPitch { get; }
 
-        public bool IsFraktur { get; private set; }
+        public bool IsFraktur { get; }
 
-        public bool IsItalic { get; private set; }
+        public bool IsItalic { get; }
 
-        public bool IsSerif { get; private set; }
+        public bool IsSerif { get; }
 
-        public string Name { get; private set; }
+        public string Name { get; }
 
         internal FontInfo(
                                                                     string name, int id,

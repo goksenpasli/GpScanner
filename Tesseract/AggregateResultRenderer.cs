@@ -32,18 +32,12 @@ namespace Tesseract
         /// <summary>
         /// Get's the current page number.
         /// </summary>
-        public int PageNumber
-        {
-            get { return _pageNumber; }
-        }
+        public int PageNumber { get; private set; } = -1;
 
         /// <summary>
         /// Get's the child result renderers.
         /// </summary>
-        public IEnumerable<IResultRenderer> ResultRenderers
-        {
-            get { return _resultRenderers; }
-        }
+        public IEnumerable<IResultRenderer> ResultRenderers => _resultRenderers;
 
         /// <summary>
         /// Adds a page to each of the child result renderers.
@@ -55,8 +49,8 @@ namespace Tesseract
             Guard.RequireNotNull("page", page);
             VerifyNotDisposed();
 
-            _pageNumber++;
-            foreach (var renderer in ResultRenderers)
+            PageNumber++;
+            foreach (IResultRenderer renderer in ResultRenderers)
             {
                 if (!renderer.AddPage(page))
                 {
@@ -79,13 +73,13 @@ namespace Tesseract
             Guard.Verify(_currentDocumentHandle == null, "Cannot begin document \"{0}\" as another document is currently being processed which must be dispose off first.", title);
 
             // Reset the page numer
-            _pageNumber = -1;
+            PageNumber = -1;
 
             // Begin the document on each child renderer.
             List<IDisposable> children = new List<IDisposable>();
             try
             {
-                foreach (var renderer in ResultRenderers)
+                foreach (IResultRenderer renderer in ResultRenderers)
                 {
                     children.Add(renderer.BeginDocument(title));
                 }
@@ -96,7 +90,7 @@ namespace Tesseract
             catch (Exception)
             {
                 // Dispose of all previously created child document's iff an error occured to prevent a memory leak.
-                foreach (var child in children)
+                foreach (IDisposable child in children)
                 {
                     try
                     {
@@ -129,7 +123,7 @@ namespace Tesseract
             finally
             {
                 // dispose of result renderers
-                foreach (var renderer in ResultRenderers)
+                foreach (IResultRenderer renderer in ResultRenderers)
                 {
                     renderer.Dispose();
                 }
@@ -138,9 +132,6 @@ namespace Tesseract
         }
 
         private IDisposable _currentDocumentHandle;
-
-        private int _pageNumber = -1;
-
         private List<IResultRenderer> _resultRenderers;
 
         /// <summary>
@@ -161,7 +152,7 @@ namespace Tesseract
                     Guard.Verify(_renderer._currentDocumentHandle == this, "Expected the Result Render's active document to be this document.");
 
                     // End the renderer
-                    foreach (var child in _children)
+                    foreach (IDisposable child in _children)
                     {
                         child.Dispose();
                     }

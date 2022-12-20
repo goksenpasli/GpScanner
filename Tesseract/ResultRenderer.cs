@@ -17,7 +17,7 @@ namespace Tesseract
     {
         public AltoResultRenderer(string outputFilename)
         {
-            var rendererHandle = Interop.TessApi.Native.AltoRendererCreate(outputFilename);
+            IntPtr rendererHandle = Interop.TessApi.Native.AltoRendererCreate(outputFilename);
             Initialise(rendererHandle);
         }
     }
@@ -26,7 +26,7 @@ namespace Tesseract
     {
         public BoxResultRenderer(string outputFilename)
         {
-            var rendererHandle = Interop.TessApi.Native.BoxTextRendererCreate(outputFilename);
+            IntPtr rendererHandle = Interop.TessApi.Native.BoxTextRendererCreate(outputFilename);
             Initialise(rendererHandle);
         }
     }
@@ -35,7 +35,7 @@ namespace Tesseract
     {
         public HOcrResultRenderer(string outputFilename, bool fontInfo = false)
         {
-            var rendererHandle = Interop.TessApi.Native.HOcrRendererCreate2(outputFilename, fontInfo ? 1 : 0);
+            IntPtr rendererHandle = Interop.TessApi.Native.HOcrRendererCreate2(outputFilename, fontInfo ? 1 : 0);
             Initialise(rendererHandle);
         }
     }
@@ -44,7 +44,7 @@ namespace Tesseract
     {
         public LSTMBoxResultRenderer(string outputFilename)
         {
-            var rendererHandle = Interop.TessApi.Native.LSTMBoxRendererCreate(outputFilename);
+            IntPtr rendererHandle = Interop.TessApi.Native.LSTMBoxRendererCreate(outputFilename);
             Initialise(rendererHandle);
         }
     }
@@ -53,8 +53,8 @@ namespace Tesseract
     {
         public PdfResultRenderer(string outputFilename, string fontDirectory, bool textonly)
         {
-            var fontDirectoryHandle = Marshal.StringToHGlobalAnsi(fontDirectory);
-            var rendererHandle = Interop.TessApi.Native.PDFRendererCreate(outputFilename, fontDirectoryHandle, textonly ? 1 : 0);
+            IntPtr fontDirectoryHandle = Marshal.StringToHGlobalAnsi(fontDirectory);
+            IntPtr rendererHandle = Interop.TessApi.Native.PDFRendererCreate(outputFilename, fontDirectoryHandle, textonly ? 1 : 0);
 
             Initialise(rendererHandle);
         }
@@ -170,7 +170,7 @@ namespace Tesseract
 
                     case RenderedFormat.PDF:
                     case RenderedFormat.PDF_TEXTONLY:
-                        bool textonly = (format == RenderedFormat.PDF_TEXTONLY);
+                        bool textonly = format == RenderedFormat.PDF_TEXTONLY;
                         renderer = CreatePdfRenderer(outputbase, dataPath, textonly);
                         break;
 
@@ -295,7 +295,7 @@ namespace Tesseract
                 // release the pointer first before throwing an error.
                 Marshal.FreeHGlobal(titlePtr);
 
-                throw new InvalidOperationException(String.Format("Failed to begin document \"{0}\".", title));
+                throw new InvalidOperationException(string.Format("Failed to begin document \"{0}\".", title));
             }
 
             _currentDocumentHandle = new EndDocumentOnDispose(this, titlePtr);
@@ -307,10 +307,7 @@ namespace Tesseract
             _handle = new HandleRef(this, IntPtr.Zero);
         }
 
-        protected HandleRef Handle
-        {
-            get { return _handle; }
-        }
+        protected HandleRef Handle => _handle;
 
         protected override void Dispose(bool disposing)
         {
@@ -342,7 +339,7 @@ namespace Tesseract
         /// <param name="handle"></param>
         protected void Initialise(IntPtr handle)
         {
-            Guard.Require("handle", handle != IntPtr.Zero, "handle must be initialised.");
+            Guard.Require(nameof(handle), handle != IntPtr.Zero, "handle must be initialised.");
             Guard.Verify(_handle.Handle == IntPtr.Zero, "Rensult renderer has already been initialised.");
 
             _handle = new HandleRef(this, handle);
@@ -372,7 +369,7 @@ namespace Tesseract
                         Guard.Verify(_renderer._currentDocumentHandle == this, "Expected the Result Render's active document to be this document.");
 
                         // End the renderer
-                        Interop.TessApi.Native.ResultRendererEndDocument(_renderer._handle);
+                        _ = Interop.TessApi.Native.ResultRendererEndDocument(_renderer._handle);
                         _renderer._currentDocumentHandle = null;
                     }
                 }
@@ -397,7 +394,7 @@ namespace Tesseract
     {
         public TextResultRenderer(string outputFilename)
         {
-            var rendererHandle = Interop.TessApi.Native.TextRendererCreate(outputFilename);
+            IntPtr rendererHandle = Interop.TessApi.Native.TextRendererCreate(outputFilename);
             Initialise(rendererHandle);
         }
     }
@@ -406,7 +403,7 @@ namespace Tesseract
     {
         public TsvResultRenderer(string outputFilename)
         {
-            var rendererHandle = Interop.TessApi.Native.TsvRendererCreate(outputFilename);
+            IntPtr rendererHandle = Interop.TessApi.Native.TsvRendererCreate(outputFilename);
             Initialise(rendererHandle);
         }
     }
@@ -415,7 +412,7 @@ namespace Tesseract
     {
         public UnlvResultRenderer(string outputFilename)
         {
-            var rendererHandle = Interop.TessApi.Native.UnlvRendererCreate(outputFilename);
+            IntPtr rendererHandle = Interop.TessApi.Native.UnlvRendererCreate(outputFilename);
             Initialise(rendererHandle);
         }
     }
@@ -424,7 +421,7 @@ namespace Tesseract
     {
         public WordStrBoxResultRenderer(string outputFilename)
         {
-            var rendererHandle = Interop.TessApi.Native.WordStrBoxRendererCreate(outputFilename);
+            IntPtr rendererHandle = Interop.TessApi.Native.WordStrBoxRendererCreate(outputFilename);
             Initialise(rendererHandle);
         }
     }

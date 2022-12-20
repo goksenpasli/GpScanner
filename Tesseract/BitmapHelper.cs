@@ -111,13 +111,13 @@
 
         public static uint ConvertRgb555ToRGBA(uint val)
         {
-            var red = ((val & 0x7C00) >> 10);
-            var green = ((val & 0x3E0) >> 5);
-            var blue = (val & 0x1F);
+            uint red = (val & 0x7C00) >> 10;
+            uint green = (val & 0x3E0) >> 5;
+            uint blue = val & 0x1F;
 
-            return ((red << 3 | red >> 2) << 24) |
-                ((green << 3 | green >> 2) << 16) |
-                ((blue << 3 | blue >> 2) << 8) |
+            return (((red << 3) | (red >> 2)) << 24) |
+                (((green << 3) | (green >> 2)) << 16) |
+                (((blue << 3) | (blue >> 2)) << 8) |
                 0xFF;
         }
 
@@ -127,13 +127,13 @@
 
         public static uint ConvertRgb565ToRGBA(uint val)
         {
-            var red = ((val & 0xF800) >> 11);
-            var green = ((val & 0x7E0) >> 5);
-            var blue = (val & 0x1F);
+            uint red = (val & 0xF800) >> 11;
+            uint green = (val & 0x7E0) >> 5;
+            uint blue = val & 0x1F;
 
-            return ((red << 3 | red >> 2) << 24) |
-                ((green << 2 | green >> 4) << 16) |
-                ((blue << 3 | blue >> 2) << 8) |
+            return (((red << 3) | (red >> 2)) << 24) |
+                (((green << 2) | (green >> 4)) << 16) |
+                (((blue << 3) | (blue >> 2)) << 8) |
                 0xFF;
         }
 
@@ -143,14 +143,14 @@
 
         public static uint ConvertArgb1555ToRGBA(uint val)
         {
-            var alpha = ((val & 0x8000) >> 15);
-            var red = ((val & 0x7C00) >> 10);
-            var green = ((val & 0x3E0) >> 5);
-            var blue = (val & 0x1F);
+            uint alpha = (val & 0x8000) >> 15;
+            uint red = (val & 0x7C00) >> 10;
+            uint green = (val & 0x3E0) >> 5;
+            uint blue = val & 0x1F;
 
-            return ((red << 3 | red >> 2) << 24) |
-                ((green << 3 | green >> 2) << 16) |
-                ((blue << 3 | blue >> 2) << 8) |
+            return (((red << 3) | (red >> 2)) << 24) |
+                (((green << 3) | (green >> 2)) << 16) |
+                (((blue << 3) | (blue >> 2)) << 8) |
                 ((alpha << 8) - alpha); // effectively alpha * 255, only works as alpha will be either 0 or 1
         }
 

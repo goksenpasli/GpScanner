@@ -8,19 +8,19 @@ namespace Tesseract.Interop
     {
         public static string PtrToString(IntPtr handle, Encoding encoding)
         {
-            var length = StrLength(handle);
-            return new String((sbyte*)handle.ToPointer(), 0, length, encoding);
+            int length = StrLength(handle);
+            return new string((sbyte*)handle.ToPointer(), 0, length, encoding);
         }
 
         public static IntPtr StringToPtr(string value, Encoding encoding)
         {
-            var encoder = encoding.GetEncoder();
-            var length = encoding.GetByteCount(value);
+            _ = encoding.GetEncoder();
+            int length = encoding.GetByteCount(value);
 
             // The encoded value is null terminated that's the reason for the '+1'.
-            var encodedValue = new byte[length + 1];
-            encoding.GetBytes(value, 0, value.Length, encodedValue, 0);
-            var handle = Marshal.AllocHGlobal(new IntPtr(encodedValue.Length));
+            byte[] encodedValue = new byte[length + 1];
+            _ = encoding.GetBytes(value, 0, value.Length, encodedValue, 0);
+            IntPtr handle = Marshal.AllocHGlobal(new IntPtr(encodedValue.Length));
             Marshal.Copy(encodedValue, 0, handle, encodedValue.Length);
             return handle;
         }
@@ -35,7 +35,7 @@ namespace Tesseract.Interop
                 return 0;
             }
 
-            var ptr = (byte*)handle.ToPointer();
+            byte* ptr = (byte*)handle.ToPointer();
             int length = 0;
             while (*(ptr + length) != 0)
             {
