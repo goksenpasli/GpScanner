@@ -341,6 +341,9 @@
   <data name="PDFPROTECT" xml:space="preserve">
     <value>حماية ملفات PDF</value>
   </data>
+  <data name="PDFTRACK" xml:space="preserve">
+    <value>مشاهدة تغيير مجلد PDF</value>
+  </data>
   <data name="PDFWARN" xml:space="preserve">
     <value>تؤثر الإعدادات التي تم إجراؤها هنا على جميع تسجيلات PDF.
 أيضًا ، قد يتم كسر حماية PDF بواسطة تطبيقات الطرف الثالث.</value>

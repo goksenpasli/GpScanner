@@ -45,8 +45,12 @@ namespace GpScanner.ViewModel
                 XmlDataPath = Settings.Default.DatabaseFile = Path.GetDirectoryName(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath) + @"\Data.xml";
                 Settings.Default.Save();
             }
-            PdfGeneration.Scanner.SelectedTtsLanguage = Settings.Default.DefaultTtsLang;
+            if (Settings.Default.WatchFolderPdfFileChange && AnyDataExists)
+            {
+                RegisterSimplePdfFileWatcher();
+            }
 
+            PdfGeneration.Scanner.SelectedTtsLanguage = Settings.Default.DefaultTtsLang;
             Settings.Default.PropertyChanged += Default_PropertyChanged;
             PropertyChanged += GpScannerViewModel_PropertyChanged;
 
@@ -370,6 +374,8 @@ namespace GpScanner.ViewModel
         }
 
         public ICommand AddAllFileToControlPanel { get; }
+
+        public bool AnyDataExists { get => ScannerData?.Data?.Count > 0; set => anyDataExists = value; }
 
         public string AramaMetni
         {
@@ -990,7 +996,7 @@ namespace GpScanner.ViewModel
                 ObservableCollection<Scanner> list = new();
                 try
                 {
-                    foreach (string dosya in Directory.EnumerateFiles(Twainsettings.Settings.Default.AutoFolder, "*.*", SearchOption.AllDirectories).Where(s => (new string[] { ".pdf", ".tiff", ".tif", ".jpg", ".png", ".bmp", ".zip", ".xps" }).Any(ext => ext == Path.GetExtension(s).ToLower())))
+                    foreach (string dosya in Directory.EnumerateFiles(Twainsettings.Settings.Default.AutoFolder, "*.*", SearchOption.AllDirectories).Where(s => supportedfilesextension.Any(ext => ext == Path.GetExtension(s).ToLower())))
                     {
                         list.Add(new Scanner() { FileName = dosya, Seçili = false });
                     }
@@ -1007,6 +1013,8 @@ namespace GpScanner.ViewModel
         private static DispatcherTimer timer;
 
         private static string xmlDataPath = Settings.Default.DatabaseFile;
+
+        private bool anyDataExists;
 
         private string aramaMetni;
 
@@ -1067,6 +1075,8 @@ namespace GpScanner.ViewModel
         private Scanner selectedDocument;
 
         private Size selectedSize = new(240, 385);
+
+        private string[] supportedfilesextension = new string[] { ".pdf", ".tiff", ".tif", ".jpg", ".png", ".bmp", ".zip", ".xps" };
 
         private TesseractViewModel tesseractViewModel;
 
@@ -1155,6 +1165,24 @@ namespace GpScanner.ViewModel
                 timer.Stop();
                 timer.Tick -= OnTick;
             }
+        }
+
+        private void RegisterSimplePdfFileWatcher()
+        {
+            FileSystemWatcher watcher = new(Twainsettings.Settings.Default.AutoFolder);
+            watcher.NotifyFilter = NotifyFilters.FileName;
+            watcher.Filter = "*.pdf";
+            watcher.IncludeSubdirectories = true;
+            watcher.EnableRaisingEvents = true;
+            watcher.Renamed += (s, e) =>
+            {
+                foreach (Data item in ScannerData?.Data?.Where(z => z.FileName == e.OldFullPath))
+                {
+                    item.FileName = e.FullPath;
+                }
+                DatabaseSave.Execute(null);
+                Dosyalar = GetScannerFileData();
+            };
         }
     }
 }

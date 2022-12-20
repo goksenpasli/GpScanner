@@ -341,6 +341,9 @@ COLLEGARE</value>
   <data name="PDFPROTECT" xml:space="preserve">
     <value>PDF PROTEGGI</value>
   </data>
+  <data name="PDFTRACK" xml:space="preserve">
+    <value>GUARDA CAMBIO CARTELLA PDF</value>
+  </data>
   <data name="PDFWARN" xml:space="preserve">
     <value>LE IMPOSTAZIONI EFFETTUATE QUI INFLUENZANO TUTTE LE REGISTRAZIONI PDF.
 INOLTRE, LA PROTEZIONE PDF PUÒ ESSERE ROTTA DA APPLICAZIONI DI TERZI.</value>

@@ -97,7 +97,7 @@
                         </ComboBoxItem.Content>
                     </ComboBoxItem>
                 </ComboBox>
-                <UniformGrid Grid.Row="1" Columns="2">
+                <UniformGrid Grid.Row="1" Columns="3">
                     <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
                         Description="{twainctrl:Loc FILE}"
                         IsReadOnly="True" ResetButtonVisibility="Collapsed"
@@ -115,6 +115,10 @@
                             <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc FILE}" />
                         </StackPanel>
                     </Button>
+                    <CheckBox VerticalAlignment="Center"
+                        Content="{twainctrl:Loc PDFTRACK}"
+                        IsChecked="{Binding WatchFolderPdfFileChange, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
+                        IsEnabled="{Binding AnyDataExists}" />
                 </UniformGrid>
                 <GroupBox Grid.Row="2">
                     <UniformGrid Columns="2" Rows="4">

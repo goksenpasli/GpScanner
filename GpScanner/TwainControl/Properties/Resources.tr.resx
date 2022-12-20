@@ -511,4 +511,7 @@ BELGE EKLE</value>
   <data name="Rotate90" xml:space="preserve">
     <value>90 DERECE DÖNDÜR</value>
   </data>
+  <data name="PDFTRACK" xml:space="preserve">
+    <value>PDF KLASÖR DEĞİŞİMİNİ İZLE</value>
+  </data>
 </root>

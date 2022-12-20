@@ -1382,12 +1382,16 @@ namespace TwainControl
                         }
                         if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
                         {
-                            MemoryStream ms = new(ImgData);
-                            BitmapFrame bitmapframe = BitmapMethods.GenerateImageDocumentBitmapFrame(ms, SelectedPaper);
-                            bitmapframe.Freeze();
-                            ScannedImage item = new() { Resim = bitmapframe };
-                            Scanner.Resimler.Add(item);
+                            if (ImgData is not null)
+                            {
+                                MemoryStream ms = new(ImgData);
+                                BitmapFrame bitmapframe = BitmapMethods.GenerateImageDocumentBitmapFrame(ms, SelectedPaper);
+                                bitmapframe.Freeze();
+                                ScannedImage item = new() { Resim = bitmapframe };
+                                Scanner.Resimler.Add(item);
+                            }
                         }
+
                         mousedowncoord.X = mousedowncoord.Y = 0;
                         isMouseDown = false;
                         Cursor = Cursors.Arrow;

@@ -341,6 +341,9 @@ RELIER</value>
   <data name="PDFPROTECT" xml:space="preserve">
     <value>PDF PROTÉGER</value>
   </data>
+  <data name="PDFTRACK" xml:space="preserve">
+    <value>REGARDEZ LE CHANGEMENT DE DOSSIER PDF</value>
+  </data>
   <data name="PDFWARN" xml:space="preserve">
     <value>LES PARAMÈTRES RÉALISÉS ICI AFFECTENT TOUS LES ENREGISTREMENTS PDF.
 DE PLUS, LA PROTECTION DES PDF PEUT ÊTRE BRISÉE PAR DES APPLICATIONS TIERS.</value>

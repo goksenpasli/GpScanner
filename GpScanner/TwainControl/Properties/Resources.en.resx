@@ -505,4 +505,7 @@ TO FILE</value>
   <data name="Rotate90" xml:space="preserve">
     <value>ROTATE 90 DEGREES</value>
   </data>
+  <data name="PDFTRACK" xml:space="preserve">
+    <value>WATCH PDF FOLDER CHANGE</value>
+  </data>
 </root>

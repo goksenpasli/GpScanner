@@ -625,69 +625,73 @@
                                         </StackPanel>
                                     </Button>
                                 </StackPanel>
-                                <StackPanel Margin="4,0,4,0">
-                                    <UniformGrid Columns="3">
-                                        <Button Command="{Binding Tümünüİşaretle}">
-                                            <Button.Content>
+                                    <StackPanel Margin="4,0,4,0">
+                                    <Viewbox StretchDirection="DownOnly">
+                                        <UniformGrid Columns="5">
+                                            <Button Command="{Binding Tümünüİşaretle}">
+                                                <Button.Content>
+                                                    <Image Width="24" Height="24">
+                                                        <Image.Source>
+                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                <Binding Source="Imageres.dll" />
+                                                                <Binding Source="249" />
+                                                            </MultiBinding>
+                                                        </Image.Source>
+                                                    </Image>
+                                                </Button.Content>
+                                            </Button>
+                                            <Button Command="{Binding TümününİşaretiniKaldır}">
+                                                <Button.Content>
+                                                    <Image Width="24" Height="24">
+                                                        <Image.Source>
+                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                <Binding Source="Imageres.dll" />
+                                                                <Binding Source="250" />
+                                                            </MultiBinding>
+                                                        </Image.Source>
+                                                    </Image>
+                                                </Button.Content>
+                                            </Button>
+                                            <Button Command="{Binding Tersiniİşaretle}">
+                                                <Button.Content>
+                                                    <Image Width="24" Height="24">
+                                                        <Image.Source>
+                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                <Binding Source="Imageres.dll" />
+                                                                <Binding Source="251" />
+                                                            </MultiBinding>
+                                                        </Image.Source>
+                                                    </Image>
+                                                </Button.Content>
+                                            </Button>
+                                            <Button Command="{Binding SaveFileList}">
                                                 <Image Width="24" Height="24">
                                                     <Image.Source>
                                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Imageres.dll" />
-                                                            <Binding Source="249" />
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="6" />
                                                         </MultiBinding>
                                                     </Image.Source>
                                                 </Image>
-                                            </Button.Content>
-                                        </Button>
-                                        <Button Command="{Binding TümününİşaretiniKaldır}">
-                                            <Button.Content>
+                                            </Button>
+                                            <Button Command="{Binding LoadFileList}">
                                                 <Image Width="24" Height="24">
                                                     <Image.Source>
                                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Imageres.dll" />
-                                                            <Binding Source="250" />
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="70" />
                                                         </MultiBinding>
                                                     </Image.Source>
                                                 </Image>
-                                            </Button.Content>
-                                        </Button>
-                                        <Button Command="{Binding Tersiniİşaretle}">
-                                            <Button.Content>
-                                                <Image Width="24" Height="24">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Imageres.dll" />
-                                                            <Binding Source="251" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                            </Button.Content>
-                                        </Button>
-                                        <Button Command="{Binding SaveFileList}">
-                                            <Image Width="24" Height="24">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="6" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                        </Button>
-                                        <Button Command="{Binding LoadFileList}">
-                                            <Image Width="24" Height="24">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="70" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                        </Button>
-                                    </UniformGrid>
+                                            </Button>
+                                        </UniformGrid>
+                                    </Viewbox>
+                                    <Separator/>
                                     <Extensions:NumericUpDownControl VerticalAlignment="Center"
                                         LargeChange="1" Maximum="1" Minimum="-1"
                                         NumericUpdownTextBoxVisibility="Collapsed" Orientation="Horizontal" SmallChange="1"
                                         Value="{Binding AllImageRotationAngle}" />
+                                    <Separator/>
                                 </StackPanel>
                             </DockPanel>
                         </Grid>
