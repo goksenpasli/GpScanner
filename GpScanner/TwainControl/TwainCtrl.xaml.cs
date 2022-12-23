@@ -81,10 +81,22 @@ namespace TwainControl
             ResimSil = new RelayCommand<object>(parameter =>
             {
                 ScannedImage item = parameter as ScannedImage;
+                UndoImageIndex = Scanner.Resimler?.IndexOf(item);
                 _ = Scanner.Resimler?.Remove(item);
+                UndoImage = item;
+                CanUndoImage = true;
                 ToolBox.ResetCropMargin();
                 GC.Collect();
             }, parameter => true);
+
+            ResimSilGeriAl = new RelayCommand<object>(parameter =>
+            {
+                Scanner.Resimler?.Insert((int)UndoImageIndex, UndoImage);
+                CanUndoImage = false;
+                UndoImage = null;
+                UndoImageIndex = null;
+                GC.Collect();
+            }, parameter => CanUndoImage && UndoImage is not null);
 
             ExploreFile = new RelayCommand<object>(parameter => OpenFolderAndSelectItem(Path.GetDirectoryName(parameter as string), Path.GetFileName(parameter as string)), parameter => true);
 
@@ -265,6 +277,7 @@ namespace TwainControl
                 if (MessageBox.Show(Translation.GetResStringValue("LISTREMOVEWARN"), Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     Scanner.Resimler?.Clear();
+                    UndoImage = null;
                     ToolBox.ResetCropMargin();
                     GC.Collect();
                 }
@@ -276,6 +289,7 @@ namespace TwainControl
                 {
                     _ = Scanner.Resimler?.Remove(item);
                 }
+                UndoImage = null;
                 ToolBox.ResetCropMargin();
                 GC.Collect();
             }, parameter => Scanner?.Resimler?.Any(z => z.Seçili) == true);
@@ -446,6 +460,19 @@ namespace TwainControl
                 {
                     allImageRotationAngle = value;
                     OnPropertyChanged(nameof(AllImageRotationAngle));
+                }
+            }
+        }
+
+        public bool CanUndoImage
+        {
+            get => canUndoImage; set
+
+            {
+                if (canUndoImage != value)
+                {
+                    canUndoImage = value;
+                    OnPropertyChanged(nameof(CanUndoImage));
                 }
             }
         }
@@ -625,6 +652,8 @@ namespace TwainControl
 
         public ICommand ResimSil { get; }
 
+        public ICommand ResimSilGeriAl { get; }
+
         public ICommand SaveFileList { get; }
 
         public ICommand SaveProfile { get; }
@@ -724,6 +753,33 @@ namespace TwainControl
                 {
                     twainGuiControlLength = value;
                     OnPropertyChanged(nameof(TwainGuiControlLength));
+                }
+            }
+        }
+
+        public ScannedImage UndoImage
+        {
+            get => undoImage; set
+
+            {
+                if (undoImage != value)
+                {
+                    undoImage = value;
+                    OnPropertyChanged(nameof(UndoImage));
+                }
+            }
+        }
+
+        public int? UndoImageIndex
+        {
+            get { return undoImageIndex; }
+
+            set
+            {
+                if (undoImageIndex != value)
+                {
+                    undoImageIndex = value;
+                    OnPropertyChanged(nameof(UndoImageIndex));
                 }
             }
         }
@@ -1019,6 +1075,8 @@ namespace TwainControl
 
         private double allImageRotationAngle;
 
+        private bool canUndoImage;
+
         private CroppedBitmap croppedOcrBitmap;
 
         private int decodeHeight;
@@ -1062,6 +1120,10 @@ namespace TwainControl
         private Twain twain;
 
         private GridLength twainGuiControlLength = new(3, GridUnitType.Star);
+
+        private ScannedImage undoImage;
+
+        private int? undoImageIndex;
 
         private double width;
 

@@ -81,8 +81,9 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="23.2" />
-                            <RowDefinition />
-                            <RowDefinition Height="100" />
+                            <RowDefinition Height="100*" />
+                            <RowDefinition Height="3" />
+                            <RowDefinition Height="20*" />
                         </Grid.RowDefinitions>
                         <Extensions:ButtonedTextBox Grid.Row="1"
                             CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed"
@@ -361,8 +362,12 @@
                                 </Style>
                             </ListBox.ItemContainerStyle>
                         </ListBox>
+                        <GridSplitter Grid.Row="4"
+                            Height="3"
+                            Margin="-2,0,-1,0" HorizontalAlignment="Stretch"
+                            Background="{StaticResource BorderBackground}" />
                         <ListBox x:Name="QrListBox"
-                            Grid.Row="4"
+                            Grid.Row="5"
                             HorizontalContentAlignment="Stretch"
                             d:ItemsSource="{d:SampleData ItemCount=5}"
                             AllowDrop="True"

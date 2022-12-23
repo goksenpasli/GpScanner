@@ -61,7 +61,11 @@
                 d:ItemsSource="{d:SampleData ItemCount=5}"
                 Background="{StaticResource BorderBackground}"
                 ItemsSource="{Binding TesseractFiles}"
-                SelectedItem="{Binding DefaultTtsLang, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                SelectedItem="{Binding DefaultTtsLang, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                <ListBox.Resources>
+                    <Style BasedOn="{StaticResource ListBoxItemTemplate}" TargetType="ListBoxItem" />
+                </ListBox.Resources>
+            </ListBox>
             <FlowDocumentScrollViewer Grid.Row="1" Grid.ColumnSpan="2">
                 <FlowDocument>
                     <Paragraph>

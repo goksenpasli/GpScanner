@@ -222,6 +222,19 @@ namespace GpScanner.ViewModel
                 }
             }, parameter => parameter is PdfViewer.PdfViewer pdfviewer && pdfviewer.ToplamSayfa > 1);
 
+            RotateSelectedPage = new RelayCommand<object>(parameter =>
+            {
+                if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
+                {
+                    string path = pdfviewer.PdfFilePath;
+                    using PdfDocument inputDocument = PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Import);
+                    inputDocument.Pages[pdfviewer.Sayfa - 1].Rotate += (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)) ? -90 : 90;
+                    inputDocument.Save(pdfviewer.PdfFilePath);
+                    pdfviewer.PdfFilePath = null;
+                    pdfviewer.PdfFilePath = path;
+                }
+            }, parameter => true);
+
             SavePatchProfile = new RelayCommand<object>(parameter =>
             {
                 StringBuilder sb = new();
@@ -709,6 +722,8 @@ namespace GpScanner.ViewModel
 
         public ICommand ResetSettings { get; }
 
+        public ICommand RotateSelectedPage { get; }
+
         public ICommand SavePatchProfile { get; }
 
         public ICommand SaveQrImage { get; }
@@ -1014,6 +1029,8 @@ namespace GpScanner.ViewModel
 
         private static string xmlDataPath = Settings.Default.DatabaseFile;
 
+        private readonly string[] supportedfilesextension = new string[] { ".pdf", ".tiff", ".tif", ".jpg", ".png", ".bmp", ".zip", ".xps" };
+
         private bool anyDataExists;
 
         private string aramaMetni;
@@ -1075,8 +1092,6 @@ namespace GpScanner.ViewModel
         private Scanner selectedDocument;
 
         private Size selectedSize = new(240, 385);
-
-        private readonly string[] supportedfilesextension = new string[] { ".pdf", ".tiff", ".tif", ".jpg", ".png", ".bmp", ".zip", ".xps" };
 
         private TesseractViewModel tesseractViewModel;
 
