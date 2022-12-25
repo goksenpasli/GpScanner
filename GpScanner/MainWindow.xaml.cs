@@ -69,7 +69,7 @@ namespace GpScanner
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    _ = MessageBox.Show(ex.Message);
                 }
             }
         }

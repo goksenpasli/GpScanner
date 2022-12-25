@@ -9,15 +9,13 @@ namespace TwainControl.Converter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is Orientation orientation)
-            {
-                return Enum.GetName(typeof(Orientation), orientation) switch
+            return value is Orientation orientation
+                ? Enum.GetName(typeof(Orientation), orientation) switch
                 {
                     "Auto" or "AutoText" or "AutoPicture" => "Twain 2.0",
                     _ => string.Empty
-                };
-            }
-            return string.Empty;
+                }
+                : (object)string.Empty;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

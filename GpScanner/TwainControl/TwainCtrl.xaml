@@ -93,7 +93,7 @@
                     Background="{StaticResource GroupBoxBackGround}"
                     BorderBrush="Black" IsExpanded="True">
                     <Expander.Header>
-                        <StackPanel Orientation="Horizontal">
+                        <UniformGrid Width="{Binding ColumnDefinitions[1].ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}" Columns="2">
                             <ComboBox ItemsSource="{Binding Scanner.Tarayıcılar}" SelectedItem="{Binding Scanner.SeçiliTarayıcı, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
@@ -106,7 +106,10 @@
                                                     </MultiBinding>
                                                 </Image.Source>
                                             </Image>
-                                            <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay}" />
+                                            <TextBlock Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ComboBox}}"
+                                                VerticalAlignment="Center"
+                                                Text="{Binding Mode=OneWay}"
+                                                TextWrapping="Wrap" />
                                         </StackPanel>
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
@@ -128,102 +131,16 @@
                                         PropertyChanged="CameraUserControl_PropertyChanged" />
                                 </Extensions:ContentToggleButton.OverContent>
                             </Extensions:ContentToggleButton>
-                        </StackPanel>
+                        </UniformGrid>
                     </Expander.Header>
                     <GroupBox Grid.Row="1" IsEnabled="{Binding Scanner.ArayüzEtkin}">
                         <GroupBox.Header>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="80" />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <StackPanel>
-                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc SETTİNGS}" />
-                                    <TextBlock d:Text="AutoFolder" FontWeight="Bold">
-                                        <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="{Binding AutoFolder, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
-                                            <Run Text="{Binding Scanner.LocalizedPath, Mode=OneWay}" />
-                                        </Hyperlink>
-                                    </TextBlock>
-                                </StackPanel>
-                                <UniformGrid Grid.Column="1" Columns="2">
-                                    <ComboBox HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"
-                                        ItemsSource="{Binding CompressionProfiles}"
-                                        SelectedItem="{Binding SelectedCompressionProfile}">
-                                        <ComboBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <Grid>
-                                                    <ProgressBar Foreground="Orange" Maximum="600"
-                                                        Value="{Binding Item3, Mode=OneTime}">
-                                                        <ProgressBar.Background>
-                                                            <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
-                                                                <GradientStop Color="Lime" />
-                                                                <GradientStop Offset="1" Color="Red" />
-                                                            </LinearGradientBrush>
-                                                        </ProgressBar.Background>
-                                                    </ProgressBar>
-                                                    <StackPanel>
-                                                        <TextBlock VerticalAlignment="Center" FontWeight="Bold">
-                                                            <Run Text="{Binding Item1, Mode=OneTime}" />
-                                                            <Run Text="{Binding Item3, Mode=OneTime, StringFormat={}{0} Dpi}" />
-                                                        </TextBlock>
-                                                        <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                                            Content="MOZJPEG" FontWeight="Bold"
-                                                            IsChecked="{Binding Item4, Mode=OneTime}"
-                                                            IsHitTestVisible="False" />
-                                                    </StackPanel>
-                                                </Grid>
-                                            </DataTemplate>
-                                        </ComboBox.ItemTemplate>
-                                    </ComboBox>
-                                    <ComboBox Height="36"
-                                        ItemsSource="{Binding Papers}"
-                                        SelectedItem="{Binding SelectedPaper}"
-                                        SelectedValue="{Binding SelectedPaper.PaperType}"
-                                        SelectedValuePath="PaperType">
-                                        <ComboBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" />
-                                                        <ColumnDefinition Width="Auto" />
-                                                        <ColumnDefinition />
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock VerticalAlignment="Center"
-                                                        FontStyle="Italic"
-                                                        Text="{Binding PaperType}" />
-                                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                                    </StackPanel>
-                                                    <Viewbox Grid.Column="2">
-                                                        <DockPanel LastChildFill="True">
-                                                            <TextBlock HorizontalAlignment="Right"
-                                                                DockPanel.Dock="Top" FontSize="9" Foreground="Red"
-                                                                Text="{Binding Width, StringFormat={}{0}cm}"
-                                                                TextWrapping="Wrap" />
-                                                            <TextBlock VerticalAlignment="Center"
-                                                                DockPanel.Dock="Left" FontSize="9" Foreground="Red"
-                                                                RenderTransformOrigin="0.5,0.5" SnapsToDevicePixels="True"
-                                                                Text="{Binding Height, StringFormat={}{0}cm}"
-                                                                TextWrapping="Wrap" UseLayoutRounding="True">
-                                                                <TextBlock.LayoutTransform>
-                                                                    <RotateTransform Angle="-90" />
-                                                                </TextBlock.LayoutTransform>
-                                                            </TextBlock>
-                                                            <Rectangle Width="{Binding Width}"
-                                                                Height="{Binding Height}"
-                                                                Stroke="#7F000000" StrokeThickness="2">
-                                                                <Rectangle.Effect>
-                                                                    <DropShadowEffect BlurRadius="3" Opacity="0.33" ShadowDepth="3" />
-                                                                </Rectangle.Effect>
-                                                            </Rectangle>
-                                                        </DockPanel>
-                                                    </Viewbox>
-                                                </Grid>
-                                            </DataTemplate>
-                                        </ComboBox.ItemTemplate>
-                                    </ComboBox>
-                                </UniformGrid>
-                            </Grid>
+                            <TextBlock HorizontalAlignment="Center"
+                                d:Text="AutoFolder" FontWeight="Bold">
+                                <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="{Binding AutoFolder, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
+                                    <Run Text="{Binding Scanner.LocalizedPath, Mode=OneWay}" />
+                                </Hyperlink>
+                            </TextBlock>
                         </GroupBox.Header>
                         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                             <StackPanel VerticalAlignment="Top">
@@ -286,6 +203,9 @@
                                                 </Style>
                                             </ToggleButton.Style>
                                         </ToggleButton>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                        </StackPanel>
                                         <ListBox Background="{x:Null}"
                                             BorderBrush="{x:Null}"
                                             SelectedIndex="{Binding Mode, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
@@ -374,6 +294,88 @@
                                                 </StackPanel>
                                             </ListBoxItem>
                                         </ListBox>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                        </StackPanel>
+                                        <UniformGrid Width="100" Height="56"
+                                            Rows="2">
+                                            <ComboBox VerticalContentAlignment="Center"
+                                                ItemsSource="{Binding Papers}"
+                                                SelectedItem="{Binding SelectedPaper}"
+                                                SelectedValue="{Binding SelectedPaper.PaperType}"
+                                                SelectedValuePath="PaperType">
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="Auto" />
+                                                                <ColumnDefinition Width="Auto" />
+                                                                <ColumnDefinition />
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock VerticalAlignment="Center"
+                                                                FontStyle="Italic" FontWeight="Bold"
+                                                                Text="{Binding PaperType}" />
+                                                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                                            </StackPanel>
+                                                            <Viewbox Grid.Column="2">
+                                                                <DockPanel LastChildFill="True">
+                                                                    <TextBlock HorizontalAlignment="Right"
+                                                                        DockPanel.Dock="Top" FontSize="9" Foreground="Red"
+                                                                        Text="{Binding Width, StringFormat={}{0}cm}"
+                                                                        TextWrapping="Wrap" />
+                                                                    <TextBlock VerticalAlignment="Center"
+                                                                        DockPanel.Dock="Left" FontSize="9" Foreground="Red"
+                                                                        RenderTransformOrigin="0.5,0.5" SnapsToDevicePixels="True"
+                                                                        Text="{Binding Height, StringFormat={}{0}cm}"
+                                                                        TextWrapping="Wrap" UseLayoutRounding="True">
+                                                                        <TextBlock.LayoutTransform>
+                                                                            <RotateTransform Angle="-90" />
+                                                                        </TextBlock.LayoutTransform>
+                                                                    </TextBlock>
+                                                                    <Rectangle Width="{Binding Width}"
+                                                                        Height="{Binding Height}"
+                                                                        Stroke="#7F000000" StrokeThickness="2">
+                                                                        <Rectangle.Effect>
+                                                                            <DropShadowEffect BlurRadius="3" Opacity="0.33" ShadowDepth="3" />
+                                                                        </Rectangle.Effect>
+                                                                    </Rectangle>
+                                                                </DockPanel>
+                                                            </Viewbox>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                            </ComboBox>
+                                            <ComboBox HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"
+                                                ItemsSource="{Binding CompressionProfiles}"
+                                                SelectedItem="{Binding SelectedCompressionProfile}">
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Grid>
+                                                            <ProgressBar Foreground="Orange" Maximum="600"
+                                                                Value="{Binding Item3, Mode=OneTime}">
+                                                                <ProgressBar.Background>
+                                                                    <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                                                        <GradientStop Color="Lime" />
+                                                                        <GradientStop Offset="1" Color="Red" />
+                                                                    </LinearGradientBrush>
+                                                                </ProgressBar.Background>
+                                                            </ProgressBar>
+                                                            <StackPanel>
+                                                                <TextBlock VerticalAlignment="Center" FontWeight="Bold">
+                                                                    <Run Text="{Binding Item1, Mode=OneTime}" />
+                                                                    <Run Text="{Binding Item3, Mode=OneTime, StringFormat={}{0} Dpi}" />
+                                                                </TextBlock>
+                                                                <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                                                    Content="MOZJPEG" FontWeight="Bold"
+                                                                    IsChecked="{Binding Item4, Mode=OneTime}"
+                                                                    IsHitTestVisible="False" />
+                                                            </StackPanel>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                            </ComboBox>
+                                        </UniformGrid>
                                     </StackPanel>
                                 </StackPanel>
                                 <Separator />
@@ -697,6 +699,30 @@
                                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                                 <Binding Source="Imageres.dll" />
                                                                 <Binding Source="251" />
+                                                            </MultiBinding>
+                                                        </Image.Source>
+                                                    </Image>
+                                                </Button.Content>
+                                            </Button>
+                                            <Button Command="{Binding TümünüİşaretleDikey}">
+                                                <Button.Content>
+                                                    <Image Width="24" Height="24">
+                                                        <Image.Source>
+                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                <Binding Source="Imageres.dll" />
+                                                                <Binding Source="253" />
+                                                            </MultiBinding>
+                                                        </Image.Source>
+                                                    </Image>
+                                                </Button.Content>
+                                            </Button>
+                                            <Button Command="{Binding TümünüİşaretleYatay}">
+                                                <Button.Content>
+                                                    <Image Width="24" Height="24">
+                                                        <Image.Source>
+                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                <Binding Source="Imageres.dll" />
+                                                                <Binding Source="306" />
                                                             </MultiBinding>
                                                         </Image.Source>
                                                     </Image>

@@ -199,8 +199,30 @@ namespace TwainControl
             image.StreamSource = ms;
             image.EndInit();
             image.Freeze();
+            BitmapFrame bitmapFrame;
 
-            BitmapFrame bitmapFrame = GenerateBitmapFrame(paper, deskew, image);
+            if (deskew)
+            {
+                RenderTargetBitmap skewedimage = image.RotateImage((double)ToolBox.GetDeskewAngle(image, true));
+                skewedimage.Freeze();
+                if (image.PixelWidth < image.PixelHeight)
+                {
+                    bitmapFrame = BitmapFrame.Create(skewedimage, image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Width * paper.Height).BitmapSourceToBitmap().ToBitmapImage(System.Drawing.Imaging.ImageFormat.Jpeg, Settings.Default.PreviewWidth));
+                    bitmapFrame.Freeze();
+                    return bitmapFrame;
+                }
+                bitmapFrame = BitmapFrame.Create(skewedimage, image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Height * paper.Width).BitmapSourceToBitmap().ToBitmapImage(System.Drawing.Imaging.ImageFormat.Jpeg, Settings.Default.PreviewWidth));
+                bitmapFrame.Freeze();
+                return bitmapFrame;
+            }
+
+            if (image.PixelWidth < image.PixelHeight)
+            {
+                bitmapFrame = BitmapFrame.Create(image, image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Width * paper.Height).BitmapSourceToBitmap().ToBitmapImage(System.Drawing.Imaging.ImageFormat.Jpeg, Settings.Default.PreviewWidth));
+                bitmapFrame.Freeze();
+                return bitmapFrame;
+            }
+            bitmapFrame = BitmapFrame.Create(image, image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Height * paper.Width).BitmapSourceToBitmap().ToBitmapImage(System.Drawing.Imaging.ImageFormat.Jpeg, Settings.Default.PreviewWidth));
             bitmapFrame.Freeze();
             return bitmapFrame;
         }
@@ -341,17 +363,6 @@ namespace TwainControl
             rtb.Render(dv);
             rtb.Freeze();
             return rtb;
-        }
-
-        private static BitmapFrame GenerateBitmapFrame(Paper paper, bool deskew, BitmapImage image)
-        {
-            if (deskew)
-            {
-                RenderTargetBitmap skewedimage = image.RotateImage((double)ToolBox.GetDeskewAngle(image, true));
-                skewedimage.Freeze();
-                return BitmapFrame.Create(skewedimage, image.PixelWidth < image.PixelHeight ? image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Width * paper.Height).BitmapSourceToBitmap().ToBitmapImage(System.Drawing.Imaging.ImageFormat.Jpeg, Settings.Default.PreviewWidth) : image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Height * paper.Width).BitmapSourceToBitmap().ToBitmapImage(System.Drawing.Imaging.ImageFormat.Jpeg, Settings.Default.PreviewWidth));
-            }
-            return BitmapFrame.Create(image, image.PixelWidth < image.PixelHeight ? image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Width * paper.Height).BitmapSourceToBitmap().ToBitmapImage(System.Drawing.Imaging.ImageFormat.Jpeg, Settings.Default.PreviewWidth) : image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Height * paper.Width).BitmapSourceToBitmap().ToBitmapImage(System.Drawing.Imaging.ImageFormat.Jpeg, Settings.Default.PreviewWidth));
         }
     }
 }

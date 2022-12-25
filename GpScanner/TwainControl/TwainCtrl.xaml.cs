@@ -151,6 +151,24 @@ namespace TwainControl
                 }
             }, parameter => Scanner?.Resimler?.Count > 0);
 
+            TümünüİşaretleDikey = new RelayCommand<object>(parameter =>
+            {
+                TümününİşaretiniKaldır.Execute(null);
+                foreach (ScannedImage item in Scanner.Resimler.ToList().Where(item => item.Resim.PixelWidth <= item.Resim.PixelHeight))
+                {
+                    item.Seçili = true;
+                }
+            }, parameter => Scanner?.Resimler?.Count > 0);
+
+            TümünüİşaretleYatay = new RelayCommand<object>(parameter =>
+            {
+                TümününİşaretiniKaldır.Execute(null);
+                foreach (ScannedImage item in Scanner.Resimler.ToList().Where(item => item.Resim.PixelHeight < item.Resim.PixelWidth))
+                {
+                    item.Seçili = true;
+                }
+            }, parameter => Scanner?.Resimler?.Count > 0);
+
             TümününİşaretiniKaldır = new RelayCommand<object>(parameter =>
             {
                 foreach (ScannedImage item in Scanner.Resimler.ToList())
@@ -426,7 +444,7 @@ namespace TwainControl
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     using StreamWriter file = new(saveFileDialog.FileName);
-                    foreach (var image in Scanner?.Resimler?.GroupBy(z => z.FilePath).Select(z => z.FirstOrDefault()))
+                    foreach (ScannedImage image in Scanner?.Resimler?.GroupBy(z => z.FilePath).Select(z => z.FirstOrDefault()))
                     {
                         file.WriteLine(image.FilePath);
                     }
@@ -741,6 +759,10 @@ namespace TwainControl
 
         public ICommand Tümünüİşaretle { get; }
 
+        public ICommand TümünüİşaretleDikey { get; }
+
+        public ICommand TümünüİşaretleYatay { get; }
+
         public ICommand TümününİşaretiniKaldır { get; }
 
         public GridLength TwainGuiControlLength
@@ -772,7 +794,7 @@ namespace TwainControl
 
         public int? UndoImageIndex
         {
-            get { return undoImageIndex; }
+            get => undoImageIndex;
 
             set
             {
