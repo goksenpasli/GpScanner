@@ -460,6 +460,7 @@ namespace TwainControl
                 if (openFileDialog.ShowDialog() == true)
                 {
                     AddFiles(File.ReadAllLines(openFileDialog.FileName), DecodeHeight);
+                    GC.Collect();
                 }
             }, parameter => true);
         }

@@ -184,15 +184,6 @@
                                     </Image.Source>
                                 </Image>
                             </RepeatButton>
-                            <Button Command="{Binding DataContext.TransferImage, RelativeSource={RelativeSource AncestorType=Window}}"
-                                Content="ç" FontFamily="Wingdings" FontSize="16">
-                                <Button.CommandParameter>
-                                    <MultiBinding Converter="{StaticResource CloneConverter}">
-                                        <Binding Mode="OneWay" RelativeSource="{RelativeSource AncestorType=PdfViewer:PdfViewer}" />
-                                        <Binding ElementName="TwainCtrl" Mode="OneWay" Path="DataContext" />
-                                    </MultiBinding>
-                                </Button.CommandParameter>
-                            </Button>
                             <ComboBox ItemStringFormat="{}{0} Dpi"
                                 ItemsSource="{Binding DpiList, RelativeSource={RelativeSource TemplatedParent}}"
                                 SelectedItem="{Binding Dpi, RelativeSource={RelativeSource TemplatedParent}, StringFormat=Dpi}"
@@ -263,7 +254,7 @@
                                     </Image.Source>
                                 </Image>
                             </Button>
-                            <Button Command="{Binding RotateSelectedPage}" CommandParameter="{Binding ElementName=PdfVwr}">
+                            <Button  BorderBrush="Cyan"  Command="{Binding RotateSelectedPage}" CommandParameter="{Binding ElementName=PdfVwr}">
                                 <Image Width="16" Height="16">
                                     <Image.Source>
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -274,15 +265,15 @@
                                 </Image>
                             </Button>
                         </UniformGrid>
-                        <Button Command="{Binding DataContext.AddAllFileToControlPanel, RelativeSource={RelativeSource AncestorType=Window}}">
+                        <Button BorderBrush="Cyan" Command="{Binding DataContext.AddAllFileToControlPanel, RelativeSource={RelativeSource AncestorType=Window}}">
                             <Button.CommandParameter>
                                 <MultiBinding Converter="{StaticResource CloneConverter}">
                                     <Binding ElementName="TwainCtrl" Mode="OneWay" Path="DataContext" />
-                                    <Binding Mode="OneWay" />
+                                    <Binding ElementName="PdfVwr" Mode="OneWay" />
                                 </MultiBinding>
                             </Button.CommandParameter>
                             <Button.Content>
-                                <TextBlock FontFamily="Wingdings 3" FontSize="16" Text="H" />
+                                <TextBlock FontFamily="Wingdings" FontSize="16" Text="ç" />
                             </Button.Content>
                         </Button>
                         <TextBlock Width="120" Height="16"

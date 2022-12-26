@@ -110,14 +110,27 @@ namespace GpScanner.ViewModel
                 }
             }, parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && parameter is TwainCtrl twainCtrl && twainCtrl.SeçiliResim is not null);
 
-            AddAllFileToControlPanel = new RelayCommand<object>(parameter =>
+            AddAllFileToControlPanel = new RelayCommand<object>(async parameter =>
             {
-                if (parameter is object[] data && data[0] is TwainCtrl twainCtrl && data[1] is string filepath)
+                if (parameter is object[] data && data[0] is TwainCtrl twainCtrl && data[1] is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
                 {
-                    if (File.Exists(filepath))
+                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                     {
-                        twainCtrl.AddFiles(new string[] { filepath }, twainCtrl.DecodeHeight);
+                        twainCtrl.AddFiles(new string[] { pdfviewer.PdfFilePath }, twainCtrl.DecodeHeight);
+                        GC.Collect();
+                        return;
                     }
+                    byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfviewer.PdfFilePath);
+                    MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfviewer.Sayfa, (int)Twainsettings.Settings.Default.ImgLoadResolution);
+                    BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(ms, twainCtrl.SelectedPaper, false);
+                    bitmapFrame.Freeze();
+                    ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
+                    twainCtrl.Scanner?.Resimler.Add(scannedImage);
+                    filedata = null;
+                    bitmapFrame = null;
+                    scannedImage = null;
+                    ms = null;
+                    GC.Collect();
                 }
             }, parameter => true);
 
@@ -173,17 +186,6 @@ namespace GpScanner.ViewModel
                     item.Seçili = !item.Seçili;
                 }
             }, parameter => Dosyalar?.Count > 0);
-
-            TransferImage = new RelayCommand<object>(parameter =>
-            {
-                if (parameter is object[] data && data[0] is PdfViewer.PdfViewer pdfviewer && data[1] is TwainCtrl twainCtrl)
-                {
-                    BitmapFrame bitmapFrame = TwainCtrl.GenerateBitmapFrame((BitmapSource)pdfviewer.Source, twainCtrl.SelectedPaper);
-                    bitmapFrame.Freeze();
-                    ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
-                    twainCtrl.Scanner?.Resimler.Add(scannedImage);
-                }
-            }, parameter => true);
 
             ExtractPdfFile = new RelayCommand<object>(async parameter =>
             {
@@ -356,7 +358,7 @@ namespace GpScanner.ViewModel
                 {
                     scanner.FileOcrContent = DataYükle()?.FirstOrDefault(z => z.FileName == scanner.FileName)?.FileContent;
                 }
-            }, parameter => true);
+            }, parameter => parameter is Scanner scanner && !string.IsNullOrWhiteSpace(DataYükle()?.FirstOrDefault(z => z.FileName == scanner.FileName)?.FileContent));
         }
 
         public static event EventHandler<PropertyChangedEventArgs> StaticPropertyChanged;
@@ -863,8 +865,6 @@ namespace GpScanner.ViewModel
                 }
             }
         }
-
-        public ICommand TransferImage { get; }
 
         public TranslateViewModel TranslateViewModel
         {

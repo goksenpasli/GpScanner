@@ -55,14 +55,8 @@ namespace GpScanner
                     string temporarypdf = Path.GetTempPath() + Guid.NewGuid() + ".pdf";
                     string pdfFilePath = pdfviewer.PdfFilePath;
                     PdfGeneration.GeneratePdf(droppedData.Resim, null, Format.Jpg, TwainCtrl.SelectedPaper).Save(temporarypdf);
-                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
-                    {
-                        PdfGeneration.MergePdf(new string[] { pdfFilePath, temporarypdf }).Save(pdfFilePath);
-                    }
-                    else
-                    {
-                        PdfGeneration.MergePdf(new string[] { temporarypdf, pdfFilePath }).Save(pdfFilePath);
-                    }
+                    string[] pdffiles = (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)) ? new string[] { pdfFilePath, temporarypdf } : new string[] { temporarypdf, pdfFilePath };
+                    PdfGeneration.MergePdf(pdffiles).Save(pdfFilePath);
                     File.Delete(temporarypdf);
                     pdfviewer.PdfFilePath = null;
                     pdfviewer.PdfFilePath = pdfFilePath;
@@ -105,6 +99,7 @@ namespace GpScanner
             if (Environment.GetCommandLineArgs().Length > 1)
             {
                 TwainCtrl.AddFiles(Environment.GetCommandLineArgs(), TwainCtrl.DecodeHeight);
+                GC.Collect();
             }
 
             if (StillImageHelper.FirstLanuchScan)
