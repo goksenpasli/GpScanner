@@ -107,8 +107,27 @@ namespace GpScanner.ViewModel
                         BarcodeList.Add(BarcodeContent);
                     }
                     imgdata = null;
+                    GC.Collect();
                 }
             }, parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && parameter is TwainCtrl twainCtrl && twainCtrl.SeçiliResim is not null);
+
+            OcrPdfThumbnailPage = new RelayCommand<object>(async parameter =>
+            {
+                if (parameter is PdfViewer.PdfViewer pdfviewer)
+                {
+                    Ocr.Ocr.ocrcancellationToken = new CancellationTokenSource();
+                    OcrIsBusy = true;
+                    byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfviewer.PdfFilePath);
+                    MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfviewer.Sayfa, (int)Twainsettings.Settings.Default.ImgLoadResolution);
+                    ObservableCollection<OcrData> ocrdata = await ms.ToArray().OcrAsyc(Settings.Default.DefaultTtsLang);
+                    ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = pdfviewer.PdfFilePath, FileContent = string.Join(" ", ocrdata.Select(z => z.Text)) });
+                    DatabaseSave.Execute(null);
+                    OcrIsBusy = false;
+                    filedata = null;
+                    ms = null;
+                    GC.Collect();
+                }
+            }, parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && !OcrIsBusy);
 
             AddAllFileToControlPanel = new RelayCommand<object>(async parameter =>
             {
@@ -230,10 +249,27 @@ namespace GpScanner.ViewModel
                 {
                     string path = pdfviewer.PdfFilePath;
                     using PdfDocument inputDocument = PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Import);
+                    if ((Keyboard.IsKeyDown(Key.LeftCtrl) && Keyboard.IsKeyDown(Key.LeftAlt)) || (Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.RightAlt)))
+                    {
+                        if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                        {
+                            foreach (PdfPage page in inputDocument.Pages)
+                            {
+                                page.Rotate -= 90;
+                            }
+                            SaveRotated(pdfviewer, path, inputDocument);
+                            return;
+                        }
+
+                        foreach (PdfPage page in inputDocument.Pages)
+                        {
+                            page.Rotate += 90;
+                        }
+                        SaveRotated(pdfviewer, path, inputDocument);
+                        return;
+                    }
                     inputDocument.Pages[pdfviewer.Sayfa - 1].Rotate += (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)) ? -90 : 90;
-                    inputDocument.Save(pdfviewer.PdfFilePath);
-                    pdfviewer.PdfFilePath = null;
-                    pdfviewer.PdfFilePath = path;
+                    SaveRotated(pdfviewer, path, inputDocument);
                 }
             }, parameter => true);
 
@@ -356,9 +392,9 @@ namespace GpScanner.ViewModel
             {
                 if (parameter is Scanner scanner)
                 {
-                    scanner.FileOcrContent = DataYükle()?.FirstOrDefault(z => z.FileName == scanner.FileName)?.FileContent;
+                    scanner.FileOcrContent = string.Join(" ", DataYükle()?.Where(z => z.FileName == scanner.FileName).Select(z => z.FileContent));
                 }
-            }, parameter => parameter is Scanner scanner && !string.IsNullOrWhiteSpace(DataYükle()?.FirstOrDefault(z => z.FileName == scanner.FileName)?.FileContent));
+            }, parameter => parameter is Scanner scanner && !string.IsNullOrWhiteSpace(string.Join(" ", DataYükle()?.Where(z => z.FileName == scanner.FileName).Select(z => z.FileContent))));
         }
 
         public static event EventHandler<PropertyChangedEventArgs> StaticPropertyChanged;
@@ -641,6 +677,8 @@ namespace GpScanner.ViewModel
 
         public ICommand OcrPage { get; }
 
+        public ICommand OcrPdfThumbnailPage { get; }
+
         public ICommand OpenOriginalFile { get; }
 
         public string PatchFileName
@@ -771,20 +809,6 @@ namespace GpScanner.ViewModel
             }
         }
 
-        public bool ScannedTextWindowOpen
-        {
-            get => scannedTextWindowOpen;
-
-            set
-            {
-                if (scannedTextWindowOpen != value)
-                {
-                    scannedTextWindowOpen = value;
-                    OnPropertyChanged(nameof(ScannedTextWindowOpen));
-                }
-            }
-        }
-
         public ScannerData ScannerData { get; set; }
 
         public string SeçiliDil
@@ -847,6 +871,20 @@ namespace GpScanner.ViewModel
         public int[] SettingsPagePdfDpiList { get; } = PdfViewer.PdfViewer.DpiList;
 
         public int[] SettingsPagePictureResizeList { get; } = new int[] { 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 };
+
+        public bool Sıralama
+        {
+            get => sıralama;
+
+            set
+            {
+                if (sıralama != value)
+                {
+                    sıralama = value;
+                    OnPropertyChanged(nameof(Sıralama));
+                }
+            }
+        }
 
         public ICommand StartBatch { get; }
 
@@ -981,25 +1019,20 @@ namespace GpScanner.ViewModel
                 : "Tarama";
         }
 
-        public async Task<ObservableCollection<OcrData>> GetScannedTextAsync(byte[] imgdata, bool opentextwindow = true)
+        public async Task<ObservableCollection<OcrData>> GetScannedTextAsync(byte[] imgdata)
         {
-            if (imgdata is not null && !string.IsNullOrEmpty(Settings.Default.DefaultTtsLang))
+            if (imgdata is not null && !string.IsNullOrEmpty(Settings.Default.DefaultTtsLang) && !Ocr.Ocr.ocrcancellationToken.IsCancellationRequested)
             {
-                if (!Ocr.Ocr.ocrcancellationToken.IsCancellationRequested)
+                OcrIsBusy = true;
+                ScannedText = await imgdata.OcrAsyc(Settings.Default.DefaultTtsLang);
+                if (ScannedText != null)
                 {
-                    OcrIsBusy = true;
-                    ScannedTextWindowOpen = false;
-                    ScannedText = await imgdata.OcrAsyc(Settings.Default.DefaultTtsLang);
-                    if (ScannedText != null)
-                    {
-                        TranslateViewModel.Metin = string.Join(" ", ScannedText.Select(z => z.Text));
-                        TranslateViewModel.TaramaGeçmiş.Add(TranslateViewModel.Metin);
-                        OcrIsBusy = false;
-                        ScannedTextWindowOpen = opentextwindow;
-                    }
-                    imgdata = null;
-                    return ScannedText;
+                    TranslateViewModel.Metin = string.Join(" ", ScannedText.Select(z => z.Text));
+                    TranslateViewModel.TaramaGeçmiş.Add(TranslateViewModel.Metin);
+                    OcrIsBusy = false;
                 }
+                imgdata = null;
+                return ScannedText;
             }
             return null;
         }
@@ -1083,8 +1116,6 @@ namespace GpScanner.ViewModel
 
         private ObservableCollection<OcrData> scannedText = new();
 
-        private bool scannedTextWindowOpen;
-
         private string seçiliDil;
 
         private DateTime? seçiliGün;
@@ -1092,6 +1123,8 @@ namespace GpScanner.ViewModel
         private Scanner selectedDocument;
 
         private Size selectedSize = new(240, 385);
+
+        private bool sıralama;
 
         private TesseractViewModel tesseractViewModel;
 
@@ -1118,6 +1151,16 @@ namespace GpScanner.ViewModel
             if (e.PropertyName is "SeçiliGün")
             {
                 MainWindow.cvs.Filter += (s, x) => x.Accepted = Directory.GetParent((x.Item as Scanner)?.FileName).Name.StartsWith(SeçiliGün.Value.ToShortDateString());
+            }
+            if (e.PropertyName is "Sıralama")
+            {
+                MainWindow.cvs?.SortDescriptions.Clear();
+                if (Sıralama)
+                {
+                    MainWindow.cvs?.SortDescriptions.Add(new SortDescription("FileName", ListSortDirection.Descending));
+                    return;
+                }
+                MainWindow.cvs?.SortDescriptions.Add(new SortDescription("FileName", ListSortDirection.Ascending));
             }
             if (e.PropertyName is "AramaMetni")
             {
@@ -1200,6 +1243,13 @@ namespace GpScanner.ViewModel
                 DatabaseSave.Execute(null);
                 Dosyalar = GetScannerFileData();
             };
+        }
+
+        private void SaveRotated(PdfViewer.PdfViewer pdfviewer, string path, PdfDocument inputDocument)
+        {
+            inputDocument.Save(pdfviewer.PdfFilePath);
+            pdfviewer.PdfFilePath = null;
+            pdfviewer.PdfFilePath = path;
         }
     }
 }

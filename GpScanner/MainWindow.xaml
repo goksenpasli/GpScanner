@@ -10,7 +10,7 @@
     xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
     xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
     Title="GPSCANNER"
-    d:DataContext="{d:DesignInstance Type=ViewModel:GpScannerViewModel}"
+    d:DataContext="{d:DesignInstance Type={x:Type ViewModel:GpScannerViewModel}}"
     d:Height="600" d:Width="1280"
     twainctrl:Translation.ResourceManager="{x:Static twainproperties:Resources.ResourceManager}"
     Closing="Window_Closing" ContentRendered="MW_ContentRendered" UseLayoutRounding="True"
@@ -48,9 +48,9 @@
     </Window.InputBindings>
     <Grid>
         <Grid.Style>
-            <Style TargetType="Grid">
+            <Style TargetType="{x:Type Grid}">
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(componentModel:DesignerProperties.IsInDesignMode)}" Value="False">
+                    <DataTrigger Binding="{Binding (componentModel:DesignerProperties.IsInDesignMode), RelativeSource={RelativeSource Self}}" Value="False">
                         <Setter Property="Effect">
                             <Setter.Value>
                                 <ViewModel:FoldEffect FoldAmount="{Binding Fold}" />
@@ -101,7 +101,7 @@
                                     </Image>
                                     <TextBlock VerticalAlignment="Center">
                                         <TextBlock.Style>
-                                            <Style TargetType="TextBlock">
+                                            <Style TargetType="{x:Type TextBlock}">
                                                 <Setter Property="Text" Value="{twainctrl:Loc MERGE}" />
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding CheckedPdfCount}" Value="0">
@@ -118,7 +118,7 @@
                             </Button>
                             <ToggleButton Command="{Binding ModifyGridWidth}">
                                 <ToggleButton.Style>
-                                    <Style TargetType="ToggleButton">
+                                    <Style TargetType="{x:Type ToggleButton}">
                                         <Style.Triggers>
                                             <Trigger Property="IsChecked" Value="True">
                                                 <Setter Property="CommandParameter" Value="1" />
@@ -139,22 +139,20 @@
                                 </Image>
                             </ToggleButton>
                             <Button Command="{Binding Source={x:Static ViewModel:WindowExtensions.OpenSettings}}">
-                                <Button.Content>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Width="32" Height="32">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="21" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                        <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SETTİNGS}" />
-                                    </StackPanel>
-                                </Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="32" Height="32">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="21" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SETTİNGS}" />
+                                </StackPanel>
                             </Button>
                         </UniformGrid>
-                        <UniformGrid Grid.Row="2" Columns="3">
+                        <UniformGrid Grid.Row="2" Columns="4">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
@@ -172,6 +170,49 @@
                                     Content="è" FontFamily="Wingdings" FontSize="16" />
                             </Grid>
                             <Extensions:ContentToggleButton>
+                                <Extensions:ContentToggleButton.OverContent>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Command="{Binding Tümünüİşaretle}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="32" Height="32">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Imageres.dll" />
+                                                            <Binding Source="249" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc ALL}" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Command="{Binding TümününİşaretiniKaldır}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="32" Height="32">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Imageres.dll" />
+                                                            <Binding Source="250" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc NONE}" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Command="{Binding Tersiniİşaretle}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="32" Height="32">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Imageres.dll" />
+                                                            <Binding Source="251" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc REVERSE}" />
+                                            </StackPanel>
+                                        </Button>
+                                    </StackPanel>
+                                </Extensions:ContentToggleButton.OverContent>
                                 <StackPanel Orientation="Horizontal">
                                     <Image Width="16" Height="16">
                                         <Image.Source>
@@ -201,67 +242,29 @@
                                         d:Text="0"
                                         Text="{Binding CheckedPdfCount}" />
                                 </StackPanel>
-                                <Extensions:ContentToggleButton.OverContent>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Button Command="{Binding Tümünüİşaretle}">
-                                            <Button.Content>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Image Width="32" Height="32">
-                                                        <Image.Source>
-                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                <Binding Source="Imageres.dll" />
-                                                                <Binding Source="249" />
-                                                            </MultiBinding>
-                                                        </Image.Source>
-                                                    </Image>
-                                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc ALL}" />
-                                                </StackPanel>
-                                            </Button.Content>
-                                        </Button>
-                                        <Button Command="{Binding TümününİşaretiniKaldır}">
-                                            <Button.Content>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Image Width="32" Height="32">
-                                                        <Image.Source>
-                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                <Binding Source="Imageres.dll" />
-                                                                <Binding Source="250" />
-                                                            </MultiBinding>
-                                                        </Image.Source>
-                                                    </Image>
-                                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc NONE}" />
-                                                </StackPanel>
-                                            </Button.Content>
-                                        </Button>
-                                        <Button Command="{Binding Tersiniİşaretle}">
-                                            <Button.Content>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Image Width="32" Height="32">
-                                                        <Image.Source>
-                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                <Binding Source="Imageres.dll" />
-                                                                <Binding Source="251" />
-                                                            </MultiBinding>
-                                                        </Image.Source>
-                                                    </Image>
-                                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc REVERSE}" />
-                                                </StackPanel>
-                                            </Button.Content>
-                                        </Button>
-                                    </StackPanel>
-                                </Extensions:ContentToggleButton.OverContent>
                             </Extensions:ContentToggleButton>
                             <ComboBox ItemsSource="{Binding GetPreviewSize}" SelectedItem="{Binding SelectedSize}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBlock>
-                                            <Run Text="{Binding Width, StringFormat={}{0} Pixel}" />
-                                            <Run Text="X" />
-                                            <Run Text="{Binding Height, StringFormat={}{0} Pixel}" />
-                                        </TextBlock>
+                                        <TextBlock><Run Text="{Binding Width, StringFormat=\{0\} Pixel}" /><Run Text=" " /><Run Text="X" /><Run Text=" " /><Run Text="{Binding Height, StringFormat=\{0\} Pixel}" /></TextBlock>
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
+                            <ToggleButton FontFamily="Wingdings" FontSize="16"
+                                IsChecked="{Binding Sıralama}">
+                                <ToggleButton.Style>
+                                    <Style TargetType="ToggleButton">
+                                        <Style.Triggers>
+                                            <Trigger Property="IsChecked" Value="True">
+                                                <Setter Property="Content" Value="é" />
+                                            </Trigger>
+                                            <Trigger Property="IsChecked" Value="False">
+                                                <Setter Property="Content" Value="ê" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ToggleButton.Style>
+                            </ToggleButton>
                         </UniformGrid>
                         <ListBox Grid.Row="3"
                             HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
@@ -283,23 +286,18 @@
                                 </ItemsPanelTemplate>
                             </ListBox.ItemsPanel>
                             <ListBox.ItemContainerStyle>
-                                <Style TargetType="ListBoxItem">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Seçili}" Value="true">
-                                            <Setter Property="IsSelected" Value="True" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
+                                <Style TargetType="{x:Type ListBoxItem}">
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate>
-                                                <CheckBox Width="{Binding DataContext.SelectedSize.Width, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                    Height="{Binding DataContext.SelectedSize.Height, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                <CheckBox Width="{Binding DataContext.SelectedSize.Width, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                                    Height="{Binding DataContext.SelectedSize.Height, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                                                     HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
                                                     d:Height="50" Background="Transparent" BorderBrush="Cyan"
                                                     Drop="ContentControl_Drop"
                                                     IsChecked="{Binding Seçili}">
                                                     <CheckBox.Style>
-                                                        <Style TargetType="CheckBox">
+                                                        <Style TargetType="{x:Type CheckBox}">
                                                             <Style.Triggers>
                                                                 <DataTrigger Binding="{Binding Seçili}" Value="true">
                                                                     <Setter Property="BorderBrush" Value="MediumSeaGreen" />
@@ -308,58 +306,61 @@
                                                             </Style.Triggers>
                                                         </Style>
                                                     </CheckBox.Style>
-                                                    <CheckBox.Content>
-                                                        <Border Margin="1"
-                                                            BorderBrush="Black" BorderThickness="1">
-                                                            <Grid>
-                                                                <Grid.RowDefinitions>
-                                                                    <RowDefinition Height="19.2" />
-                                                                    <RowDefinition />
-                                                                </Grid.RowDefinitions>
-                                                                <Extensions:ContentToggleButton Grid.Row="0"
-                                                                    Margin="1"
-                                                                    Command="{Binding DataContext.ReadOcrDataFile, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                                    CommandParameter="{Binding Mode=OneWay}">
-                                                                    <Image Width="16" Height="16">
-                                                                        <Image.Source>
-                                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                                <Binding Source="Shell32.dll" />
-                                                                                <Binding Source="70" />
-                                                                            </MultiBinding>
-                                                                        </Image.Source>
-                                                                    </Image>
-                                                                    <Extensions:ContentToggleButton.Style>
-                                                                        <Style TargetType="Extensions:ContentToggleButton">
-                                                                            <Style.Triggers>
-                                                                                <Trigger Property="IsChecked" Value="True">
-                                                                                    <Setter Property="OverContent">
-                                                                                        <Setter.Value>
-                                                                                            <Extensions:ResizablePanel Width="{Binding Path=Parent.DataContext.SelectedSize.Width, Source={x:Reference TwainCtrl}}"
-                                                                                                Height="{Binding Path=Parent.DataContext.SelectedSize.Height, Source={x:Reference TwainCtrl}}"
-                                                                                                MinWidth="{Binding Path=Parent.DataContext.SelectedSize.Width, Source={x:Reference TwainCtrl}}"
-                                                                                                MinHeight="{Binding Path=Parent.DataContext.SelectedSize.Height, Source={x:Reference TwainCtrl}}">
-                                                                                                <GroupBox>
-                                                                                                    <local:TranslateView ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding Parent.DataContext.FileOcrContent, RelativeSource={RelativeSource Mode=Self}}" />
-                                                                                                </GroupBox>
-                                                                                            </Extensions:ResizablePanel>
-                                                                                        </Setter.Value>
-                                                                                    </Setter>
-                                                                                </Trigger>
-                                                                            </Style.Triggers>
-                                                                        </Style>
-                                                                    </Extensions:ContentToggleButton.Style>
-                                                                </Extensions:ContentToggleButton>
-                                                                <ContentControl Grid.Row="1"
-                                                                    d:Width="64"
-                                                                    Content="{Binding Path=FileName, IsAsync=True, Mode=OneWay}"
-                                                                    ContentTemplateSelector="{StaticResource ThumbViewerSelector}" />
-                                                            </Grid>
-                                                        </Border>
-                                                    </CheckBox.Content>
+                                                    <Border Margin="1"
+                                                        BorderBrush="Black" BorderThickness="1">
+                                                        <Grid>
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="19.2" />
+                                                                <RowDefinition />
+                                                            </Grid.RowDefinitions>
+                                                            <Extensions:ContentToggleButton Grid.Row="0"
+                                                                Margin="1"
+                                                                Command="{Binding DataContext.ReadOcrDataFile, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                                                CommandParameter="{Binding Mode=OneWay}">
+                                                                <Extensions:ContentToggleButton.Style>
+                                                                    <Style TargetType="{x:Type Extensions:ContentToggleButton}">
+                                                                        <Style.Triggers>
+                                                                            <Trigger Property="IsChecked" Value="True">
+                                                                                <Setter Property="OverContent">
+                                                                                    <Setter.Value>
+                                                                                        <Extensions:ResizablePanel Width="{Binding Parent.DataContext.SelectedSize.Width, Source={x:Reference TwainCtrl}}"
+                                                                                            Height="{Binding Parent.DataContext.SelectedSize.Height, Source={x:Reference TwainCtrl}}"
+                                                                                            MinWidth="{Binding Parent.DataContext.SelectedSize.Width, Source={x:Reference TwainCtrl}}"
+                                                                                            MinHeight="{Binding Parent.DataContext.SelectedSize.Height, Source={x:Reference TwainCtrl}}">
+                                                                                            <GroupBox>
+                                                                                                <local:TranslateView ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding Parent.DataContext.FileOcrContent, RelativeSource={RelativeSource Mode=Self}}" />
+                                                                                            </GroupBox>
+                                                                                        </Extensions:ResizablePanel>
+                                                                                    </Setter.Value>
+                                                                                </Setter>
+                                                                            </Trigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </Extensions:ContentToggleButton.Style>
+                                                                <Image Width="16" Height="16">
+                                                                    <Image.Source>
+                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                            <Binding Source="Shell32.dll" />
+                                                                            <Binding Source="70" />
+                                                                        </MultiBinding>
+                                                                    </Image.Source>
+                                                                </Image>
+                                                            </Extensions:ContentToggleButton>
+                                                            <ContentControl Grid.Row="1"
+                                                                d:Width="64"
+                                                                Content="{Binding FileName, IsAsync=True, Mode=OneWay}"
+                                                                ContentTemplateSelector="{StaticResource ThumbViewerSelector}" />
+                                                        </Grid>
+                                                    </Border>
                                                 </CheckBox>
                                             </ControlTemplate>
                                         </Setter.Value>
                                     </Setter>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Seçili}" Value="true">
+                                            <Setter Property="IsSelected" Value="True" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
                                 </Style>
                             </ListBox.ItemContainerStyle>
                         </ListBox>
@@ -377,32 +378,30 @@
                             ItemsSource="{Binding BarcodeList}"
                             Style="{StaticResource ListBoxAnimationStyle}">
                             <ListBox.ItemContainerStyle>
-                                <Style TargetType="ListBoxItem">
+                                <Style TargetType="{x:Type ListBoxItem}">
                                     <Setter Property="Padding" Value="0" />
                                 </Style>
                             </ListBox.ItemContainerStyle>
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ListBox}}">
+                                    <Grid Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="20" />
                                             <ColumnDefinition Width="84.8" />
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock VerticalAlignment="Center">
-                                            <Hyperlink Command="{Binding DataContext.TesseractViewModel.TesseractDataFilesDownloadLink, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding Mode=OneWay}">
+                                        <TextBlock VerticalAlignment="Center"><Hyperlink Command="{Binding DataContext.TesseractViewModel.TesseractDataFilesDownloadLink, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding Mode=OneWay}">
                                                 <Run FontFamily="Wingdings" FontSize="16" FontWeight="Bold"
                                                     Text="8" />
-                                            </Hyperlink>
-                                        </TextBlock>
+                                            </Hyperlink></TextBlock>
                                         <Image Grid.Column="1"
                                             Width="80" Height="80"
-                                            Source="{Binding Mode=OneWay, Converter={StaticResource StringToQrBitmapImageConverter}}"
-                                            Tag="{Binding DataContext, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}">
+                                            Source="{Binding Converter={StaticResource StringToQrBitmapImageConverter}, Mode=OneWay}"
+                                            Tag="{Binding DataContext, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type Window}}}">
                                             <Image.ContextMenu>
                                                 <ContextMenu DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
                                                     <MenuItem Command="{Binding Tag.SaveQrImage}"
-                                                        CommandParameter="{Binding Path=Source}"
+                                                        CommandParameter="{Binding Source}"
                                                         Header="{twainctrl:Loc SAVESELECTED}" />
                                                 </ContextMenu>
                                             </Image.ContextMenu>
@@ -431,24 +430,22 @@
                             </Grid.ColumnDefinitions>
                             <Button HorizontalContentAlignment="Stretch"
                                 Command="{Binding OcrPage, Mode=OneWay}"
-                                CommandParameter="{Binding ElementName=TwainCtrl, Path=DataContext}"
+                                CommandParameter="{Binding DataContext, ElementName=TwainCtrl}"
                                 IsEnabled="{Binding OcrIsBusy, Converter={StaticResource ReverseBooleanConverter}}">
-                                <Button.Content>
-                                    <Grid>
-                                        <ProgressBar IsIndeterminate="{Binding OcrIsBusy}" />
-                                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                            <Image Width="32" Height="32">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="70" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc READACTIVEPAGE}" />
-                                        </StackPanel>
-                                    </Grid>
-                                </Button.Content>
+                                <Grid>
+                                    <ProgressBar IsIndeterminate="{Binding OcrIsBusy}" />
+                                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                        <Image Width="32" Height="32">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="70" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc READACTIVEPAGE}" />
+                                    </StackPanel>
+                                </Grid>
                             </Button>
                             <Button Grid.Column="1"
                                 Command="{Binding CancelOcr}"
@@ -464,7 +461,7 @@
                             </Button>
                         </Grid>
                         <GroupBox Grid.Row="1">
-                            <local:TranslateView DataContext="{Binding DataContext.TranslateViewModel, RelativeSource={RelativeSource AncestorType=Window}}" />
+                            <local:TranslateView DataContext="{Binding DataContext.TranslateViewModel, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
                         </GroupBox>
                     </Grid>
                 </TabItem>
