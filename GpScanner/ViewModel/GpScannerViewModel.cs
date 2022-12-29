@@ -158,13 +158,13 @@ namespace GpScanner.ViewModel
                 if (parameter is string filepath)
                 {
                     DocumentViewerWindow documentViewerWindow = new();
-                    documentViewerWindow.pdfviewer.PdfFilePath = filepath;
-                    documentViewerWindow.Show();
-                    documentViewerWindow.Unloaded += (s, e) =>
+                    if (documentViewerWindow.DataContext is DocumentViewerModel documentViewerModel)
                     {
-                        documentViewerWindow.pdfviewer = null;
+                        documentViewerModel.PdfFilePath = filepath;
+                        documentViewerWindow.Show();
+                        documentViewerWindow.Unloaded += (s, e) => documentViewerModel.PdfFilePath = null;
                         GC.Collect();
-                    };
+                    }
                 }
             }, parameter => parameter is string filepath && File.Exists(filepath));
 
@@ -924,6 +924,14 @@ namespace GpScanner.ViewModel
 
         public ICommand UnRegisterSti { get; }
 
+        public static void AddBarcodeToList(GpScannerViewModel ViewModel)
+        {
+            if (ViewModel.BarcodeContent is not null)
+            {
+                ViewModel.BarcodeList.Add(ViewModel.BarcodeContent);
+            }
+        }
+
         public static ObservableCollection<Data> DataYükle()
         {
             if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
@@ -965,6 +973,12 @@ namespace GpScanner.ViewModel
                 return reader.Decode(bitmapFrame);
             }
             return null;
+        }
+
+        public static void ReloadFileDatas(GpScannerViewModel ViewModel)
+        {
+            ViewModel.Dosyalar = ViewModel.GetScannerFileData();
+            ViewModel.ChartData = ViewModel.GetChartsData();
         }
 
         public ObservableCollection<Chart> GetChartsData()

@@ -32,20 +32,6 @@ namespace GpScanner
             TwainCtrl.PropertyChanged += TwainCtrl_PropertyChanged;
         }
 
-        private static void AddBarcodeToList(GpScannerViewModel ViewModel)
-        {
-            if (ViewModel.BarcodeContent is not null)
-            {
-                ViewModel.BarcodeList.Add(ViewModel.BarcodeContent);
-            }
-        }
-
-        private static void ReloadFileDatas(GpScannerViewModel ViewModel)
-        {
-            ViewModel.Dosyalar = ViewModel.GetScannerFileData();
-            ViewModel.ChartData = ViewModel.GetChartsData();
-        }
-
         private void ContentControl_Drop(object sender, DragEventArgs e)
         {
             if (e.OriginalSource is Image image && e.Data.GetData(typeof(ScannedImage)) is ScannedImage droppedData && image.TemplatedParent is PdfViewer.PdfViewer pdfviewer)
@@ -151,7 +137,7 @@ namespace GpScanner
             {
                 if (e.PropertyName is "Resimler")
                 {
-                    ReloadFileDatas(ViewModel);
+                    GpScannerViewModel.ReloadFileDatas(ViewModel);
                 }
 
                 if (e.PropertyName is "DetectPageSeperator" && ViewModel.DetectBarCode)
@@ -159,7 +145,7 @@ namespace GpScanner
                     Result result = GpScannerViewModel.GetImageBarcodeResult(TwainCtrl?.Scanner?.Resimler?.LastOrDefault()?.Resim);
                     ViewModel.BarcodeContent = result?.Text;
                     ViewModel.BarcodePosition = result?.ResultPoints;
-                    AddBarcodeToList(ViewModel);
+                    GpScannerViewModel.AddBarcodeToList(ViewModel);
 
                     if (ViewModel.DetectPageSeperator && ViewModel.BarcodeContent is not null)
                     {
@@ -170,7 +156,7 @@ namespace GpScanner
                 if (e.PropertyName is "ImgData" && TwainCtrl.ImgData is not null)
                 {
                     ViewModel.BarcodeContent = ViewModel.GetImageBarcodeResult(TwainCtrl?.ImgData)?.Text;
-                    AddBarcodeToList(ViewModel);
+                    GpScannerViewModel.AddBarcodeToList(ViewModel);
                     Ocr.Ocr.ocrcancellationToken = new CancellationTokenSource();
                     _ = await ViewModel.GetScannedTextAsync(TwainCtrl.ImgData);
                 }
