@@ -1076,7 +1076,7 @@ namespace GpScanner.ViewModel
 
         private static string xmlDataPath = Settings.Default.DatabaseFile;
 
-        private readonly string[] supportedfilesextension = new string[] { ".pdf", ".tiff", ".tif", ".jpg", ".png", ".bmp", ".zip", ".xps" };
+        public static readonly string[] supportedfilesextension = new string[] { ".pdf", ".tiff", ".tif", ".jpg", ".png", ".bmp", ".zip", ".xps" };
 
         private bool anyDataExists;
 

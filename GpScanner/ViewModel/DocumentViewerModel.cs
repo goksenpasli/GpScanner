@@ -25,7 +25,19 @@ namespace GpScanner.ViewModel
 
         public ICommand Back { get; }
 
-        public IEnumerable<string> DirectoryAllPdfFiles { get; set; }
+        public IEnumerable<string> DirectoryAllPdfFiles
+        {
+            get => directoryAllPdfFiles;
+
+            set
+            {
+                if (directoryAllPdfFiles != value)
+                {
+                    directoryAllPdfFiles = value;
+                    OnPropertyChanged(nameof(DirectoryAllPdfFiles));
+                }
+            }
+        }
 
         public ICommand Forward { get; }
 
@@ -59,6 +71,8 @@ namespace GpScanner.ViewModel
         }
 
         public string Title { get => Path.GetFileName(PdfFilePath); set => title = value; }
+
+        private IEnumerable<string> directoryAllPdfFiles;
 
         private int ındex;
 

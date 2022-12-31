@@ -21,7 +21,7 @@ namespace GpScanner
         {
             if (DataContext is DocumentViewerModel documentViewerModel)
             {
-                documentViewerModel.DirectoryAllPdfFiles = Directory.EnumerateFiles(Path.GetDirectoryName(documentViewerModel.PdfFilePath), "*.pdf");
+                documentViewerModel.DirectoryAllPdfFiles = Directory.EnumerateFiles(Path.GetDirectoryName(documentViewerModel.PdfFilePath), "*.*").Where(z => GpScannerViewModel.supportedfilesextension.Any(ext => ext == Path.GetExtension(z).ToLower()));
                 if (documentViewerModel.DirectoryAllPdfFiles?.Count() > 0)
                 {
                     documentViewerModel.Index = Array.IndexOf(documentViewerModel.DirectoryAllPdfFiles.ToArray(), documentViewerModel.PdfFilePath);
