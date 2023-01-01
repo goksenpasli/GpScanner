@@ -93,7 +93,7 @@
                     Background="{StaticResource GroupBoxBackGround}"
                     BorderBrush="Black" IsExpanded="True">
                     <Expander.Header>
-                        <UniformGrid Width="{Binding ColumnDefinitions[1].ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}" Columns="2">
+                        <UniformGrid Columns="2">
                             <ComboBox ItemsSource="{Binding Scanner.Tarayıcılar}" SelectedItem="{Binding Scanner.SeçiliTarayıcı, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>

@@ -9,6 +9,11 @@
     d:DataContext="{d:DesignInstance Type=viewmodel:DocumentViewerModel}"
     UseLayoutRounding="True" WindowStartupLocation="CenterOwner" WindowState="Maximized"
     mc:Ignorable="d">
+    <Window.InputBindings>
+        <KeyBinding Key="S"
+            Command="{Binding SaveImageAsPdfFile}"
+            CommandParameter="yardım.chm" Modifiers="Ctrl" />
+    </Window.InputBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="48" />
@@ -47,9 +52,12 @@
         </ListBox>
         <Button Command="{Binding Back}"
             Content="ç" FontFamily="Wingdings" FontSize="16" />
-        <ContentControl Grid.Row="1" Grid.ColumnSpan="3"
-            Content="{Binding PdfFilePath, IsAsync=True, Mode=OneWay}"
-            ContentTemplateSelector="{StaticResource DocumentViewerSelector}" />
+        <Grid Grid.Row="1" Grid.ColumnSpan="3">
+            <ContentControl Content="{Binding PdfFilePath, IsAsync=True, Mode=OneWay}"
+                ContentTemplateSelector="{StaticResource DocumentViewerSelector}"
+                PreviewMouseDown="DocumentViewer_MouseDown" PreviewMouseMove="DocumentViewer_MouseMove" />
+            <Canvas x:Name="cnv" />
+        </Grid>
         <Button Grid.Column="2"
             Command="{Binding Forward}"
             Content="è" FontFamily="Wingdings" FontSize="16" />

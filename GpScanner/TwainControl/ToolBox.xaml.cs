@@ -124,7 +124,7 @@ namespace TwainControl
                 {
                     _ = Directory.CreateDirectory(savefolder);
                 }
-                List<ScannedImage> listcroppedimages = Scanner.Resimler.Where(z => z.Seçili).SelectMany(scannedimage => ToolBox.CropImageToList(scannedimage.Resim, 2, 1).Select(croppedBitmap => new ScannedImage { Resim = BitmapFrame.Create(croppedBitmap) })).ToList();
+                List<ScannedImage> listcroppedimages = Scanner.Resimler.Where(z => z.Seçili).SelectMany(scannedimage => CropImageToList(scannedimage.Resim, 2, 1).Select(croppedBitmap => new ScannedImage { Resim = BitmapFrame.Create(croppedBitmap) })).ToList();
                 PdfDocument pdfdocument = PdfGeneration.GeneratePdf(listcroppedimages, Format.Jpg, null, 80, null);
                 pdfdocument.Save(savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "pdf"));
                 WebAdreseGit.Execute(savefolder);

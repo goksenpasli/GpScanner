@@ -118,7 +118,6 @@ namespace GpScanner.ViewModel
             {
                 if (parameter is PdfViewer.PdfViewer pdfviewer)
                 {
-                    Ocr.Ocr.ocrcancellationToken = new CancellationTokenSource();
                     OcrIsBusy = true;
                     byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfviewer.PdfFilePath);
                     MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfviewer.Sayfa, (int)Twainsettings.Settings.Default.ImgLoadResolution);
@@ -351,7 +350,6 @@ namespace GpScanner.ViewModel
                     {
                         if (scanner?.ApplyPdfSaveOcr == true)
                         {
-                            Ocr.Ocr.ocrcancellationToken = new CancellationTokenSource();
                             scannedtext = new List<ObservableCollection<OcrData>>();
                             ProgressBarForegroundBrush = Brushes.Blue;
                             scanner.ProgressState = TaskbarItemProgressState.Normal;
@@ -1055,7 +1053,7 @@ namespace GpScanner.ViewModel
 
         public async Task<ObservableCollection<OcrData>> GetScannedTextAsync(byte[] imgdata)
         {
-            if (imgdata is not null && !string.IsNullOrEmpty(Settings.Default.DefaultTtsLang) && !Ocr.Ocr.ocrcancellationToken.IsCancellationRequested)
+            if (imgdata is not null && !string.IsNullOrEmpty(Settings.Default.DefaultTtsLang) && Ocr.Ocr.ocrcancellationToken?.IsCancellationRequested == false)
             {
                 OcrIsBusy = true;
                 ScannedText = await imgdata.OcrAsyc(Settings.Default.DefaultTtsLang);
@@ -1068,6 +1066,7 @@ namespace GpScanner.ViewModel
                 imgdata = null;
                 return ScannedText;
             }
+
             return null;
         }
 

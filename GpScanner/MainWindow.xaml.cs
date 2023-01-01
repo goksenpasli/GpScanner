@@ -168,7 +168,6 @@ namespace GpScanner
                     {
                         if (TwainCtrl?.Scanner?.Resimler?.Count > 0 && !string.IsNullOrEmpty(Settings.Default.DefaultTtsLang))
                         {
-                            Ocr.Ocr.ocrcancellationToken = new CancellationTokenSource();
                             foreach (ScannedImage scannedimage in TwainCtrl.Scanner.Resimler.ToList())
                             {
                                 ObservableCollection<OcrData> ocrdata = await scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsyc(Settings.Default.DefaultTtsLang);

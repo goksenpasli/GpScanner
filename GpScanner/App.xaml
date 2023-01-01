@@ -226,10 +226,13 @@
                         <ColumnDefinition Width="4*" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <PdfViewer:PdfViewer Orientation="Height"
+                    <PdfViewer:PdfViewer Orientation="Width"
                         PdfFilePath="{Binding Mode=OneWay}"
                         PrintButtonVisibility="Visible" ScrollBarVisible="Hidden" SnapTick="True" />
-                    <local:TranslateView Grid.Column="1" ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding DataContext.PdfFileContent, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}" />
+                    <UniformGrid Grid.Column="1" Rows="2">
+                        <local:TranslateView ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding DataContext.PdfFileContent, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}" />
+                        <TextBox Text="{Binding DataContext.OcrText, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}" TextWrapping="Wrap" />
+                    </UniformGrid>
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="PdfViewerTemplateFull">

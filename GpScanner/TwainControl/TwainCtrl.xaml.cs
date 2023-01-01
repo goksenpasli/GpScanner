@@ -846,7 +846,6 @@ namespace TwainControl
             ObservableCollection<OcrData> ocrtext = null;
             if (scanner?.ApplyPdfSaveOcr == true)
             {
-                Ocr.Ocr.ocrcancellationToken = new CancellationTokenSource();
                 ocrtext = await scannedImage.ToTiffJpegByteArray(Format.Jpg).OcrAsyc(scanner.SelectedTtsLanguage);
             }
             if (blackwhite)
@@ -864,7 +863,6 @@ namespace TwainControl
             int filescount = images.Count;
             if (scanner?.ApplyPdfSaveOcr == true)
             {
-                Ocr.Ocr.ocrcancellationToken = new CancellationTokenSource();
                 scannedtext = new List<ObservableCollection<OcrData>>();
                 scanner.ProgressState = TaskbarItemProgressState.Normal;
                 foreach (ScannedImage image in images)
@@ -1359,7 +1357,7 @@ namespace TwainControl
         {
             if (e.OriginalSource is System.Windows.Controls.Image img && img.Parent is ScrollViewer scrollviewer)
             {
-                if (e.LeftButton == MouseButtonState.Pressed)
+                if (e.LeftButton == MouseButtonState.Pressed && Keyboard.IsKeyDown(Key.LeftCtrl))
                 {
                     isMouseDown = true;
                     Cursor = Cursors.Cross;
@@ -1465,7 +1463,7 @@ namespace TwainControl
                         {
                             ImgData = BitmapMethods.CaptureScreen(mousemovecoord.X, mousedowncoord.Y, width, height, scrollviewer, SeçiliResim.Resim);
                         }
-                        if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                        if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
                         {
                             if (ImgData is not null)
                             {

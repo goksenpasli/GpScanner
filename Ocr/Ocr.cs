@@ -22,6 +22,7 @@ namespace Ocr
             }
             if (Directory.Exists(TesseractPath))
             {
+                ocrcancellationToken = new CancellationTokenSource();
                 return await Task.Run(() => dosya.GetOcrData(lang), ocrcancellationToken.Token);
             }
             _ = MessageBox.Show("Tesseract Engine Klasörünü Kontrol Edin.", Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
@@ -37,6 +38,7 @@ namespace Ocr
             }
             if (Directory.Exists(TesseractPath))
             {
+                ocrcancellationToken = new CancellationTokenSource();
                 return await Task.Run(() => dosya.GetOcrData(lang), ocrcancellationToken.Token);
             }
             _ = MessageBox.Show("Tesseract Engine Klasörünü Kontrol Edin.", Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
