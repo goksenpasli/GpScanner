@@ -175,7 +175,7 @@
                     </UniformGrid>
                 </GroupBox>
                 <GroupBox Grid.Row="3">
-                    <UniformGrid Columns="4">
+                    <UniformGrid Columns="5">
                         <TextBlock VerticalAlignment="Center">
                             <Run Text="{twainctrl:Loc FILE}" />
                             <Run Text="{twainctrl:Loc RES}" />
@@ -187,6 +187,15 @@
                         <ComboBox ItemStringFormat="{}{0} Dpi"
                             ItemsSource="{Binding SettingsPagePdfDpiList}"
                             SelectedItem="{Binding DefaultThumbNailDpi, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                        <ComboBox ItemsSource="{Binding GetPreviewSize}"
+                            SelectedIndex="{Binding PreviewIndex, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
+                            SelectedItem="{Binding SelectedSize}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock><Run Text="{Binding Width, StringFormat=\{0\} Pixel}" /><Run Text=" " /><Run Text="X" /><Run Text=" " /><Run Text="{Binding Height, StringFormat=\{0\} Pixel}" /></TextBlock>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </UniformGrid>
                 </GroupBox>
                 <GroupBox Grid.Row="4">

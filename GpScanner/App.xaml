@@ -7,7 +7,7 @@
     xmlns:PdfViewer="clr-namespace:PdfViewer;assembly=PdfViewer"
     xmlns:ViewModel="clr-namespace:GpScanner.ViewModel"
     xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
-    xmlns:properties="clr-namespace:GpScanner.Properties"
+    xmlns:local="clr-namespace:GpScanner" xmlns:properties="clr-namespace:GpScanner.Properties"
     Startup="Application_Startup" StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
@@ -221,9 +221,16 @@
                     Template="{StaticResource PdfViewerThumbTemplate}" />
             </DataTemplate>
             <DataTemplate x:Key="PdfViewerDocumentViewerTemplateFull">
-                <PdfViewer:PdfViewer Orientation="Height"
-                    PdfFilePath="{Binding Mode=OneWay}"
-                    PrintButtonVisibility="Visible" ScrollBarVisible="Hidden" SnapTick="True" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <PdfViewer:PdfViewer Orientation="Height"
+                        PdfFilePath="{Binding Mode=OneWay}"
+                        PrintButtonVisibility="Visible" ScrollBarVisible="Hidden" SnapTick="True" />
+                    <local:TranslateView Grid.Column="1" ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding DataContext.PdfFileContent, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}" />
+                </Grid>
             </DataTemplate>
             <DataTemplate x:Key="PdfViewerTemplateFull">
                 <Grid>

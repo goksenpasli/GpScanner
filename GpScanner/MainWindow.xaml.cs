@@ -11,6 +11,7 @@ using System.Windows.Input;
 using Extensions;
 using GpScanner.Properties;
 using GpScanner.ViewModel;
+using Ocr;
 using TwainControl;
 using ZXing;
 using static Extensions.ExtensionMethods;
@@ -59,7 +60,7 @@ namespace GpScanner
             if (DataContext is GpScannerViewModel ViewModel)
             {
                 ViewModel.MainWindowDocumentGuiControlLength = new(1, GridUnitType.Star);
-                ViewModel.MainWindowGuiControlLength = new(2, GridUnitType.Star);
+                ViewModel.MainWindowGuiControlLength = new(3, GridUnitType.Star);
             }
         }
 
@@ -170,7 +171,7 @@ namespace GpScanner
                             Ocr.Ocr.ocrcancellationToken = new CancellationTokenSource();
                             foreach (ScannedImage scannedimage in TwainCtrl.Scanner.Resimler.ToList())
                             {
-                                ObservableCollection<Ocr.OcrData> ocrdata = await Ocr.Ocr.OcrAsyc(scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg), Settings.Default.DefaultTtsLang);
+                                ObservableCollection<OcrData> ocrdata = await scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsyc(Settings.Default.DefaultTtsLang);
                                 ViewModel.ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = TwainCtrl.Scanner.PdfFilePath, FileContent = string.Join(" ", ocrdata.Select(z => z.Text)), QrData = GpScannerViewModel.GetImageBarcodeResult(scannedimage.Resim)?.Text });
                             }
                             ViewModel.DatabaseSave.Execute(null);

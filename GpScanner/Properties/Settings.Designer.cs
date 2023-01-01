@@ -119,5 +119,17 @@ namespace GpScanner.Properties {
                 this["WatchFolderPdfFileChange"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int PreviewIndex {
+            get {
+                return ((int)(this["PreviewIndex"]));
+            }
+            set {
+                this["PreviewIndex"] = value;
+            }
+        }
     }
 }

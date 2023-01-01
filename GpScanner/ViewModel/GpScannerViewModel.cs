@@ -36,6 +36,8 @@ namespace GpScanner.ViewModel
 {
     public class GpScannerViewModel : InpcBase
     {
+        public static readonly string[] supportedfilesextension = new string[] { ".pdf", ".tiff", ".tif", ".jpg", ".png", ".bmp", ".zip", ".xps" };
+
         public Task Filesavetask;
 
         public GpScannerViewModel()
@@ -59,6 +61,7 @@ namespace GpScanner.ViewModel
             ChartData = GetChartsData();
             SeçiliDil = Settings.Default.DefaultLang;
             SeçiliGün = DateTime.Today;
+            SelectedSize = GetPreviewSize[Settings.Default.PreviewIndex];
             ScannerData = new ScannerData() { Data = DataYükle() };
             TesseractViewModel = new TesseractViewModel();
             TranslateViewModel = new TranslateViewModel();
@@ -161,6 +164,8 @@ namespace GpScanner.ViewModel
                     if (documentViewerWindow.DataContext is DocumentViewerModel documentViewerModel)
                     {
                         documentViewerModel.PdfFilePath = filepath;
+                        documentViewerModel.DirectoryAllPdfFiles = Directory.EnumerateFiles(Path.GetDirectoryName(documentViewerModel.PdfFilePath), "*.*").Where(z => supportedfilesextension.Any(ext => ext == Path.GetExtension(z).ToLower()));
+                        documentViewerModel.Index = Array.IndexOf(documentViewerModel.DirectoryAllPdfFiles.ToArray(), documentViewerModel.PdfFilePath);
                         documentViewerWindow.Show();
                         documentViewerWindow.Unloaded += (s, e) => documentViewerModel.PdfFilePath = null;
                         GC.Collect();
@@ -253,23 +258,19 @@ namespace GpScanner.ViewModel
                     {
                         if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
                         {
-                            foreach (PdfPage page in inputDocument.Pages)
-                            {
-                                page.Rotate -= 90;
-                            }
-                            SaveRotated(pdfviewer, path, inputDocument);
+                            SavePageRotated(path, inputDocument, -90);
+                            pdfviewer.PdfFilePath = null;
+                            pdfviewer.PdfFilePath = path;
                             return;
                         }
-
-                        foreach (PdfPage page in inputDocument.Pages)
-                        {
-                            page.Rotate += 90;
-                        }
-                        SaveRotated(pdfviewer, path, inputDocument);
+                        SavePageRotated(path, inputDocument, 90);
+                        pdfviewer.PdfFilePath = null;
+                        pdfviewer.PdfFilePath = path;
                         return;
                     }
-                    inputDocument.Pages[pdfviewer.Sayfa - 1].Rotate += (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)) ? -90 : 90;
-                    SaveRotated(pdfviewer, path, inputDocument);
+                    SavePageRotated(path, inputDocument, (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)) ? -90 : 90, pdfviewer.Sayfa - 1);
+                    pdfviewer.PdfFilePath = null;
+                    pdfviewer.PdfFilePath = path;
                 }
             }, parameter => true);
 
@@ -426,7 +427,19 @@ namespace GpScanner.ViewModel
 
         public ICommand AddAllFileToControlPanel { get; }
 
-        public bool AnyDataExists { get => DataYükle()?.Count > 0; set => anyDataExists = value; }
+        public bool AnyDataExists
+        {
+            get => DataYükle()?.Count > 0;
+
+            set
+            {
+                if (anyDataExists != value)
+                {
+                    anyDataExists = value;
+                    OnPropertyChanged(nameof(AnyDataExists));
+                }
+            }
+        }
 
         public string AramaMetni
         {
@@ -614,9 +627,16 @@ namespace GpScanner.ViewModel
                     new Size(240,385),
                     new Size(320,495),
                     new Size(425,645),
-                };
+            };
 
-            set => getPreviewSize = value;
+            set
+            {
+                if (getPreviewSize != value)
+                {
+                    getPreviewSize = value;
+                    OnPropertyChanged(nameof(GetPreviewSize));
+                }
+            }
         }
 
         public bool ListBoxBorderAnimation
@@ -1076,8 +1096,6 @@ namespace GpScanner.ViewModel
 
         private static string xmlDataPath = Settings.Default.DatabaseFile;
 
-        public static readonly string[] supportedfilesextension = new string[] { ".pdf", ".tiff", ".tif", ".jpg", ".png", ".bmp", ".zip", ".xps" };
-
         private bool anyDataExists;
 
         private string aramaMetni;
@@ -1110,7 +1128,7 @@ namespace GpScanner.ViewModel
 
         private GridLength mainWindowDocumentGuiControlLength = new(1, GridUnitType.Star);
 
-        private GridLength mainWindowGuiControlLength = new(2, GridUnitType.Star);
+        private GridLength mainWindowGuiControlLength = new(3, GridUnitType.Star);
 
         private bool ocrısBusy;
 
@@ -1136,7 +1154,7 @@ namespace GpScanner.ViewModel
 
         private Scanner selectedDocument;
 
-        private Size selectedSize = new(240, 385);
+        private Size selectedSize;
 
         private bool sıralama;
 
@@ -1259,11 +1277,19 @@ namespace GpScanner.ViewModel
             };
         }
 
-        private void SaveRotated(PdfViewer.PdfViewer pdfviewer, string path, PdfDocument inputDocument)
+        private void SavePageRotated(string savepath, PdfDocument inputDocument, int angle)
         {
-            inputDocument.Save(pdfviewer.PdfFilePath);
-            pdfviewer.PdfFilePath = null;
-            pdfviewer.PdfFilePath = path;
+            foreach (PdfPage page in inputDocument.Pages)
+            {
+                page.Rotate += angle;
+            }
+            inputDocument.Save(savepath);
+        }
+
+        private void SavePageRotated(string savepath, PdfDocument inputDocument, int angle, int pageindex)
+        {
+            inputDocument.Pages[pageindex].Rotate += angle;
+            inputDocument.Save(savepath);
         }
     }
 }

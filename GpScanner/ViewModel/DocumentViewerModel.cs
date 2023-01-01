@@ -55,6 +55,20 @@ namespace GpScanner.ViewModel
             }
         }
 
+        public string PdfFileContent
+        {
+            get => string.Join(" ", GpScannerViewModel.DataYükle()?.Where(z => z.FileName == PdfFilePath).Select(z => z.FileContent));
+
+            set
+            {
+                if (pdfFileContent != value)
+                {
+                    pdfFileContent = value;
+                    OnPropertyChanged(nameof(PdfFileContent));
+                }
+            }
+        }
+
         public string PdfFilePath
         {
             get => pdfFilePath;
@@ -66,15 +80,30 @@ namespace GpScanner.ViewModel
                     pdfFilePath = value;
                     OnPropertyChanged(nameof(PdfFilePath));
                     OnPropertyChanged(nameof(Title));
+                    OnPropertyChanged(nameof(PdfFileContent));
                 }
             }
         }
 
-        public string Title { get => Path.GetFileName(PdfFilePath); set => title = value; }
+        public string Title
+        {
+            get => Path.GetFileName(PdfFilePath);
+
+            set
+            {
+                if (title != value)
+                {
+                    title = value;
+                    OnPropertyChanged(nameof(Title));
+                }
+            }
+        }
 
         private IEnumerable<string> directoryAllPdfFiles;
 
         private int ındex;
+
+        private string pdfFileContent;
 
         private string pdfFilePath;
 
