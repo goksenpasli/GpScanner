@@ -223,7 +223,7 @@
             <DataTemplate x:Key="PdfViewerDocumentViewerTemplateFull">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="5*" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <PdfViewer:PdfViewer Orientation="Width"
@@ -231,7 +231,10 @@
                         PrintButtonVisibility="Visible" ScrollBarVisible="Hidden" SnapTick="True" />
                     <UniformGrid Grid.Column="1" Rows="2">
                         <local:TranslateView ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding DataContext.PdfFileContent, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}" />
-                        <TextBox Text="{Binding DataContext.OcrText, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}" TextWrapping="Wrap" />
+                        <TextBox Background="{StaticResource BorderBackground}"
+                            IsReadOnly="True"
+                            Text="{Binding DataContext.OcrText, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}"
+                            TextWrapping="Wrap" />
                     </UniformGrid>
                 </Grid>
             </DataTemplate>
@@ -329,15 +332,57 @@
                 <Controls:ArchiveViewer ArchivePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="ImgViewerTemplate">
-                <Extensions:ImageViewer DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
-                    ImageFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                    PanoramaButtonVisibility="Collapsed" PrintButtonVisibility="Visible" />
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock Width="{Binding ElementName=Imgvwr, Path=Width}"
+                        TextTrimming="CharacterEllipsis" TextWrapping="Wrap"
+                        ToolTip="{Binding Mode=OneWay}">
+                        <Hyperlink Command="{Binding DataContext.OpenOriginalFile, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding Mode=OneWay}">
+                            <Run Text="{Binding Mode=OneWay, Converter={StaticResource FileNameExtractConverter}}" />
+                        </Hyperlink>
+                    </TextBlock>
+                    <Extensions:ImageViewer x:Name="Imgvwr"
+                        Grid.Row="1"
+                        DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
+                        ImageFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                        PanoramaButtonVisibility="Collapsed" PrintButtonVisibility="Visible" />
+                </Grid>
             </DataTemplate>
             <DataTemplate x:Key="ImgViewerTemplateFull">
                 <Extensions:ImageViewer ImageFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="ImgViewerDocumentViewerTemplateFull">
-                <Extensions:ImageViewer DecodeHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}}" ImageFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5*" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Extensions:ImageViewer x:Name="ImgVwr"
+                        DecodeHeight="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Grid}}"
+                        ImageFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                        PanoramaButtonVisibility="Collapsed" />
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Slider LargeChange="1"
+                            Maximum="{Binding ElementName=ImgVwr, Path=OriginalPixelHeight}"
+                            Minimum="96" SmallChange="1"
+                            Style="{StaticResource Slider}"
+                            Value="{Binding ElementName=ImgVwr, Path=DecodeHeight, Delay=100}" />
+                        <local:TranslateView Grid.Row="1" ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding DataContext.OcrText, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=3}}" />
+                        <TextBox Grid.Row="2"
+                            Background="{StaticResource BorderBackground}"
+                            IsReadOnly="True"
+                            Text="{Binding DataContext.OcrText, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=3}}"
+                            TextWrapping="Wrap" />
+                    </Grid>
+                </Grid>
             </DataTemplate>
             <DataTemplate x:Key="XpsViewerTemplate">
                 <Controls:XpsViewer XpsDataFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />

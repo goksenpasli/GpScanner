@@ -31,7 +31,7 @@ namespace GpScanner
 
         private void DocumentViewer_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer && Keyboard.IsKeyDown(Key.LeftCtrl))
+            if (e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer && e.LeftButton == MouseButtonState.Pressed && Keyboard.IsKeyDown(Key.LeftCtrl))
             {
                 isMouseDown = true;
                 Cursor = Cursors.Cross;
