@@ -18,6 +18,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shell;
+using System.Windows.Threading;
 using System.Windows.Xps;
 using System.Windows.Xps.Packaging;
 using System.Xml.Linq;
@@ -37,6 +38,8 @@ namespace TwainControl
     public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposable
     {
         public const double Inch = 2.54;
+
+        public static DispatcherTimer CameraQrCodeTimer;
 
         public static Task Filesavetask;
 
@@ -479,6 +482,20 @@ namespace TwainControl
                 {
                     allImageRotationAngle = value;
                     OnPropertyChanged(nameof(AllImageRotationAngle));
+                }
+            }
+        }
+
+        public byte[] CameraQRCodeData
+        {
+            get => cameraQRCodeData;
+
+            set
+            {
+                if (cameraQRCodeData != value)
+                {
+                    cameraQRCodeData = value;
+                    OnPropertyChanged(nameof(CameraQRCodeData));
                 }
             }
         }
@@ -1096,6 +1113,8 @@ namespace TwainControl
 
         private double allImageRotationAngle;
 
+        private byte[] cameraQRCodeData;
+
         private bool canUndoImage;
 
         private CroppedBitmap croppedOcrBitmap;
@@ -1193,12 +1212,33 @@ namespace TwainControl
 
         private void CameraUserControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName is "ResimData" && sender is CameraUserControl cameraUserControl)
+            if (sender is CameraUserControl cameraUserControl)
             {
-                using MemoryStream ms = new(cameraUserControl.ResimData);
-                BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(ms, SelectedPaper);
-                bitmapFrame.Freeze();
-                Scanner.Resimler.Add(new ScannedImage() { Resim = bitmapFrame });
+                if (e.PropertyName is "ResimData" && cameraUserControl.ResimData is not null)
+                {
+                    MemoryStream ms = new(cameraUserControl.ResimData);
+                    BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(ms, SelectedPaper);
+                    bitmapFrame.Freeze();
+                    Scanner.Resimler.Add(new ScannedImage() { Resim = bitmapFrame });
+                    ms = null;
+                }
+                if (e.PropertyName is "DetectQRCode")
+                {
+                    if (cameraUserControl.DetectQRCode)
+                    {
+                        CameraQrCodeTimer = new(DispatcherPriority.Normal) { Interval = TimeSpan.FromSeconds(1) };
+                        CameraQrCodeTimer.Tick += (s, f2) =>
+                        {
+                            using MemoryStream ms = new();
+                            cameraUserControl.EncodeBitmapImage(ms);
+                            CameraQRCodeData = ms.ToArray();
+                            OnPropertyChanged(nameof(CameraQRCodeData));
+                        };
+                        CameraQrCodeTimer?.Start();
+                        return;
+                    }
+                    CameraQrCodeTimer?.Stop();
+                }
             }
         }
 

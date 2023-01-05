@@ -30,7 +30,7 @@
                     <ComboBox DisplayMemberPath="Name"
                         ItemsSource="{Binding Liste}"
                         SelectedItem="{Binding SeçiliKamera}" />
-                    <UniformGrid Columns="5" IsEnabled="{Binding SeçiliKamera, Converter={StaticResource NullableToBooleanConverter}}">
+                    <UniformGrid Columns="6" IsEnabled="{Binding SeçiliKamera, Converter={StaticResource NullableToBooleanConverter}}">
                         <Button Command="{Binding KameradanResimYükle}"
                             CommandParameter="{Binding Parent.DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
                             Content="ç" FontFamily="Wingdings" FontSize="16" />
@@ -51,6 +51,9 @@
                         <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="360"
                             Minimum="0" SmallChange="1" Ticks="0,90,180,270,360"
                             Value="{Binding Rotation}" />
+                        <CheckBox VerticalAlignment="Center"
+                            Content="{local:Loc QRDETECT}"
+                            IsChecked="{Binding DetectQRCode}" />
                     </UniformGrid>
                 </StackPanel>
             </Grid>

@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Extensions;
 using GpScanner.Properties;
 using GpScanner.ViewModel;
@@ -185,6 +186,16 @@ namespace GpScanner
                 if (e.PropertyName is "DragMoveStarted")
                 {
                     ViewModel.ListBoxBorderAnimation = TwainCtrl.DragMoveStarted;
+                }
+
+                if (e.PropertyName is "CameraQRCodeData" && TwainCtrl.CameraQRCodeData is not null)
+                {
+                    ViewModel.BarcodeContent = ViewModel.GetImageBarcodeResult(TwainCtrl.CameraQRCodeData)?.Text;
+                    if (!string.IsNullOrWhiteSpace(ViewModel.BarcodeContent))
+                    {
+                        GpScannerViewModel.AddBarcodeToList(ViewModel);
+                        TwainCtrl.CameraQRCodeData = null;
+                    }
                 }
             }
         }

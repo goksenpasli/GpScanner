@@ -46,6 +46,20 @@ namespace TwainControl
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public bool DetectQRCode
+        {
+            get => detectQRCode;
+
+            set
+            {
+                if (detectQRCode != value)
+                {
+                    detectQRCode = value;
+                    OnPropertyChanged(nameof(DetectQRCode));
+                }
+            }
+        }
+
         public CapDevice Device
         {
             get => device;
@@ -124,10 +138,20 @@ namespace TwainControl
             }
         }
 
+        public void EncodeBitmapImage(Stream ms)
+        {
+            JpegBitmapEncoder encoder = new();
+            encoder.Frames.Add(BitmapFrame.Create(new TransformedBitmap(Device.BitmapSource, new RotateTransform(Rotation))));
+            encoder.QualityLevel = 90;
+            encoder.Save(ms);
+        }
+
         protected virtual void OnPropertyChanged(string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        private bool detectQRCode;
 
         private CapDevice device;
 
@@ -153,14 +177,7 @@ namespace TwainControl
         private void CameraUserControl_Unloaded(object sender, System.Windows.RoutedEventArgs e)
         {
             Device?.Stop();
-        }
-
-        private void EncodeBitmapImage(Stream ms)
-        {
-            JpegBitmapEncoder encoder = new();
-            encoder.Frames.Add(BitmapFrame.Create(new TransformedBitmap(Device.BitmapSource, new RotateTransform(Rotation))));
-            encoder.QualityLevel = 90;
-            encoder.Save(ms);
+            DetectQRCode=false;
         }
     }
 }
