@@ -1360,11 +1360,13 @@ namespace TwainControl
         private void Fastscan(object sender, ScanningCompleteEventArgs e)
         {
             OnPropertyChanged(nameof(Scanner.DetectPageSeperator));
-
             Scanner.PdfFilePath = PdfGeneration.GetPdfScanPath();
 
-            OnPropertyChanged(nameof(Scanner.ApplyDataBaseOcr));
-
+            if (Scanner.ApplyDataBaseOcr)
+            {
+                Tümünüİşaretle.Execute(null);
+                OnPropertyChanged(nameof(Scanner.ApplyDataBaseOcr));
+            }
             if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
             {
                 PdfGeneration.GeneratePdf(Scanner.Resimler.ToList(), Format.Tiff, SelectedPaper, Settings.Default.JpegQuality, null, (int)Settings.Default.Çözünürlük).Save(Scanner.PdfFilePath);
@@ -1377,6 +1379,7 @@ namespace TwainControl
             {
                 ExploreFile.Execute(Scanner.PdfFilePath);
             }
+
             OnPropertyChanged(nameof(Scanner.Resimler));
             twain.ScanningComplete -= Fastscan;
         }

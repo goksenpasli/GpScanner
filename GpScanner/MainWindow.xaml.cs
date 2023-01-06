@@ -167,12 +167,15 @@ namespace GpScanner
                 {
                     try
                     {
-                        if (TwainCtrl?.Scanner?.Resimler?.Count > 0 && !string.IsNullOrEmpty(Settings.Default.DefaultTtsLang))
+                        if (!string.IsNullOrEmpty(Settings.Default.DefaultTtsLang))
                         {
-                            foreach (ScannedImage scannedimage in TwainCtrl.Scanner.Resimler.ToList())
+                            double index = 0;
+                            foreach (ScannedImage scannedimage in TwainCtrl.Scanner.Resimler.Where(z => z.Seçili).ToList())
                             {
                                 ObservableCollection<OcrData> ocrdata = await scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsyc(Settings.Default.DefaultTtsLang);
-                                ViewModel.ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = TwainCtrl.Scanner.PdfFilePath, FileContent = string.Join(" ", ocrdata.Select(z => z.Text)), QrData = GpScannerViewModel.GetImageBarcodeResult(scannedimage.Resim)?.Text });
+                                ViewModel.ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = TwainCtrl.Scanner.PdfFilePath, FileContent = string.Join(" ", ocrdata?.Select(z => z.Text)), QrData = GpScannerViewModel.GetImageBarcodeResult(scannedimage.Resim)?.Text });
+                                index++;
+                                TwainCtrl.Scanner.PdfSaveProgressValue = index / TwainCtrl.Scanner.Resimler.Count(z => z.Seçili);
                             }
                             ViewModel.DatabaseSave.Execute(null);
                         }
