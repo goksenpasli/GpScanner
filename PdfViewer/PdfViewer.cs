@@ -29,7 +29,7 @@ namespace PdfViewer
     {
         public static readonly DependencyProperty AngleProperty = DependencyProperty.Register("Angle", typeof(double), typeof(PdfViewer), new PropertyMetadata(0.0));
 
-        public static readonly DependencyProperty ContextMenuVisibilityPropertyProperty = DependencyProperty.Register("ContextMenuVisibilityProperty", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Collapsed));
+        public static readonly DependencyProperty ContextMenuVisibilityProperty = DependencyProperty.Register("ContextMenuVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Collapsed));
 
         public static readonly DependencyProperty DpiProperty = DependencyProperty.Register("Dpi", typeof(int), typeof(PdfViewer), new PropertyMetadata(200, DpiChanged));
 
@@ -146,10 +146,10 @@ namespace PdfViewer
             }
         }
 
-        public Visibility ContextMenuVisibilityProperty
+        public Visibility ContextMenuVisibility
         {
-            get => (Visibility)GetValue(ContextMenuVisibilityPropertyProperty);
-            set => SetValue(ContextMenuVisibilityPropertyProperty, value);
+            get => (Visibility)GetValue(ContextMenuVisibilityProperty);
+            set => SetValue(ContextMenuVisibilityProperty, value);
         }
 
         public RelayCommand<object> DosyaAç { get; }

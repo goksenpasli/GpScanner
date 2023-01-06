@@ -127,8 +127,10 @@
                                     <TextBlock VerticalAlignment="Center" Text="{local:Loc CAMERA}" />
                                 </StackPanel>
                                 <Extensions:ContentToggleButton.OverContent>
-                                    <local:CameraUserControl Width="480" Height="360"
-                                        PropertyChanged="CameraUserControl_PropertyChanged" />
+                                    <Extensions:ResizablePanel Width="480" Height="360" MinWidth="480"
+                                        MinHeight="360">
+                                        <local:CameraUserControl PropertyChanged="CameraUserControl_PropertyChanged" />
+                                    </Extensions:ResizablePanel>
                                 </Extensions:ContentToggleButton.OverContent>
                             </Extensions:ContentToggleButton>
                         </UniformGrid>
@@ -297,8 +299,11 @@
                                         <StackPanel Orientation="Horizontal">
                                             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                         </StackPanel>
-                                        <UniformGrid Width="100" Height="56"
-                                            Rows="2">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="75" />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
                                             <ComboBox VerticalContentAlignment="Center"
                                                 ItemsSource="{Binding Papers}"
                                                 SelectedItem="{Binding SelectedPaper}"
@@ -346,7 +351,8 @@
                                                     </DataTemplate>
                                                 </ComboBox.ItemTemplate>
                                             </ComboBox>
-                                            <ComboBox HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"
+                                            <ComboBox Grid.Column="1"
+                                                HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"
                                                 ItemsSource="{Binding CompressionProfiles}"
                                                 SelectedItem="{Binding SelectedCompressionProfile}">
                                                 <ComboBox.ItemTemplate>
@@ -364,6 +370,7 @@
                                                             <StackPanel>
                                                                 <TextBlock VerticalAlignment="Center" FontWeight="Bold">
                                                                     <Run Text="{Binding Item1, Mode=OneTime}" />
+                                                                    <LineBreak />
                                                                     <Run Text="{Binding Item3, Mode=OneTime, StringFormat={}{0} Dpi}" />
                                                                 </TextBlock>
                                                                 <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
@@ -375,7 +382,7 @@
                                                     </DataTemplate>
                                                 </ComboBox.ItemTemplate>
                                             </ComboBox>
-                                        </UniformGrid>
+                                        </Grid>
                                     </StackPanel>
                                 </StackPanel>
                                 <Separator />

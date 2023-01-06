@@ -56,19 +56,7 @@ namespace Ocr
                 using Page page = engine.Process(pixImage);
                 using ResultIterator iterator = page.GetIterator();
                 iterator.Begin();
-                ObservableCollection<OcrData> ocrdata = new();
-                do
-                {
-                    if (iterator.TryGetBoundingBox(PageIteratorLevel.Word, out Tesseract.Rect rect))
-                    {
-                        System.Windows.Rect imgrect = new(rect.X1, rect.Y1, rect.Width, rect.Height);
-                        OcrData item = new() { Text = iterator.GetText(PageIteratorLevel.Word), Rect = imgrect };
-                        if (!string.IsNullOrWhiteSpace(item.Text))
-                        {
-                            ocrdata.Add(item);
-                        }
-                    }
-                } while (iterator.Next(PageIteratorLevel.Word));
+                ObservableCollection<OcrData> ocrdata = iterator.IterateOcr(PageIteratorLevel.Word);
                 dosya = null;
                 return ocrdata;
             }
@@ -88,19 +76,7 @@ namespace Ocr
                 using Page page = engine.Process(pixImage);
                 using ResultIterator iterator = page.GetIterator();
                 iterator.Begin();
-                ObservableCollection<OcrData> ocrdata = new();
-                do
-                {
-                    if (iterator.TryGetBoundingBox(PageIteratorLevel.Word, out Tesseract.Rect rect))
-                    {
-                        System.Windows.Rect imgrect = new(rect.X1, rect.Y1, rect.Width, rect.Height);
-                        OcrData item = new() { Text = iterator.GetText(PageIteratorLevel.Word), Rect = imgrect };
-                        if (!string.IsNullOrWhiteSpace(item.Text))
-                        {
-                            ocrdata.Add(item);
-                        }
-                    }
-                } while (iterator.Next(PageIteratorLevel.Word));
+                ObservableCollection<OcrData> ocrdata = iterator.IterateOcr(PageIteratorLevel.Word);
                 dosya = null;
                 return ocrdata;
             }
@@ -109,6 +85,24 @@ namespace Ocr
                 _ = Application.Current.Dispatcher.BeginInvoke(() => MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Exclamation));
                 return null;
             }
+        }
+
+        private static ObservableCollection<OcrData> IterateOcr(this ResultIterator iterator, PageIteratorLevel pageIteratorLevel)
+        {
+            ObservableCollection<OcrData> ocrdata = new();
+            do
+            {
+                if (iterator.TryGetBoundingBox(pageIteratorLevel, out Tesseract.Rect rect))
+                {
+                    System.Windows.Rect imgrect = new(rect.X1, rect.Y1, rect.Width, rect.Height);
+                    OcrData item = new() { Text = iterator.GetText(pageIteratorLevel), Rect = imgrect };
+                    if (!string.IsNullOrWhiteSpace(item.Text))
+                    {
+                        ocrdata.Add(item);
+                    }
+                }
+            } while (iterator.Next(pageIteratorLevel));
+            return ocrdata;
         }
     }
 }

@@ -24,7 +24,7 @@
             <ColumnDefinition />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <ListBox Grid.Column="1"
+        <ListBox Grid.Column="1" x:Name="Lb"
             d:ItemsSource="{d:SampleData ItemCount=15}"
             ItemsSource="{Binding DirectoryAllPdfFiles}"
             SelectedIndex="{Binding Index}"

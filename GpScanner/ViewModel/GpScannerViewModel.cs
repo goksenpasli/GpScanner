@@ -166,6 +166,7 @@ namespace GpScanner.ViewModel
                         documentViewerModel.DirectoryAllPdfFiles = Directory.EnumerateFiles(Path.GetDirectoryName(documentViewerModel.PdfFilePath), "*.*").Where(z => supportedfilesextension.Any(ext => ext == Path.GetExtension(z).ToLower()));
                         documentViewerModel.Index = Array.IndexOf(documentViewerModel.DirectoryAllPdfFiles.ToArray(), documentViewerModel.PdfFilePath);
                         documentViewerWindow.Show();
+                        documentViewerWindow.Lb?.ScrollIntoView(filepath);
                         documentViewerWindow.Unloaded += (s, e) => documentViewerModel.PdfFilePath = null;
                         GC.Collect();
                     }

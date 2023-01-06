@@ -226,9 +226,9 @@
                         <ColumnDefinition Width="5*" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <PdfViewer:PdfViewer Orientation="Width"
+                    <PdfViewer:PdfViewer ContextMenuVisibility="Visible" Orientation="Width"
                         PdfFilePath="{Binding Mode=OneWay}"
-                        PrintButtonVisibility="Visible" ScrollBarVisible="Hidden" SnapTick="True" />
+                        PrintButtonVisibility="Visible" ScrollBarVisible="Visible" SnapTick="True" />
                     <UniformGrid Grid.Column="1" Rows="2">
                         <local:TranslateView ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding DataContext.PdfFileContent, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}" />
                         <TextBox Background="{StaticResource BorderBackground}"

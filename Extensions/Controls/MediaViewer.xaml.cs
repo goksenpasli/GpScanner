@@ -998,24 +998,21 @@ namespace Extensions.Controls
                 {
                     case "6":
                         defaultsubtitlethickness.Bottom -= 10;
-                        SubTitleMargin = defaultsubtitlethickness;
-                        return;
+                        break;
 
                     case "5":
                         defaultsubtitlethickness.Bottom += 10;
-                        SubTitleMargin = defaultsubtitlethickness;
-                        return;
+                        break;
 
                     case "4":
                         defaultsubtitlethickness.Left += 10;
-                        SubTitleMargin = defaultsubtitlethickness;
-                        return;
+                        break;
 
                     case "3":
                         defaultsubtitlethickness.Left -= 10;
-                        SubTitleMargin = defaultsubtitlethickness;
-                        return;
+                        break;
                 }
+                SubTitleMargin = defaultsubtitlethickness;
             }
         }
 

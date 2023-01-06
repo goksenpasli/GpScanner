@@ -17,7 +17,7 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <Grid.ContextMenu>
-                            <ContextMenu Visibility="{Binding ContextMenuVisibilityProperty, RelativeSource={RelativeSource TemplatedParent}}">
+                            <ContextMenu Visibility="{Binding ContextMenuVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                                 <MenuItem Command="{Binding ViewerBack, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Header="GERİ">
                                     <MenuItem.Icon>
                                         <Image Width="16" Height="16">
