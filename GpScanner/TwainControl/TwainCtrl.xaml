@@ -498,7 +498,8 @@
                                     <StackPanel>
                                         <CheckBox HorizontalContentAlignment="Stretch"
                                             Content="{local:Loc LOAD}"
-                                            IsChecked="{Binding UseSelectedProfile, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                                            IsChecked="{Binding UseSelectedProfile, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
+                                            IsEnabled="{Binding Scanner.SelectedProfile, Converter={StaticResource NullableToBooleanConverter}}" />
                                         <ComboBox ItemsSource="{Binding Profile, Source={x:Static properties:Settings.Default}}" SelectedItem="{Binding Scanner.SelectedProfile}">
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate>
@@ -649,7 +650,9 @@
                                             <TextBlock VerticalAlignment="Center" Text="{local:Loc CLEARLIST}" />
                                         </StackPanel>
                                     </Button>
-                                    <Button Background="Red" Command="{Binding ListeTemizle}">
+                                    <Button x:Name="BtnClearAll"
+                                        Background="Red"
+                                        Command="{Binding ListeTemizle}">
                                         <StackPanel Orientation="Horizontal">
                                             <Canvas Width="24" Height="24">
                                                 <Image Width="24" Height="24">
@@ -770,6 +773,7 @@
                                     </ScrollViewer>
                                     <Separator />
                                     <Extensions:NumericUpDownControl VerticalAlignment="Center"
+                                        IsEnabled="{Binding ElementName=BtnClearAll, Path=IsEnabled}"
                                         LargeChange="1" Maximum="1" Minimum="-1"
                                         NumericUpdownTextBoxVisibility="Collapsed" Orientation="Horizontal" SmallChange="1"
                                         Value="{Binding AllImageRotationAngle}" />

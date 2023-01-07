@@ -1264,14 +1264,6 @@ namespace TwainControl
                 Scanner.DetectEmptyPage = false;
                 Scanner.Duplex = false;
             }
-            if (e.PropertyName is "UseSelectedProfile" && Settings.Default.UseSelectedProfile)
-            {
-                if (string.IsNullOrEmpty(Scanner.SelectedProfile))
-                {
-                    Settings.Default.UseSelectedProfile = false;
-                    _ = MessageBox.Show(Translation.GetResStringValue("NOPROFILE"), Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                }
-            }
             Settings.Default.Save();
         }
 

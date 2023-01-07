@@ -160,7 +160,15 @@ namespace GpScanner
                     ViewModel.BarcodeContent = ViewModel.GetImageBarcodeResult(TwainCtrl?.ImgData)?.Text;
                     GpScannerViewModel.AddBarcodeToList(ViewModel);
                     Ocr.Ocr.ocrcancellationToken = new CancellationTokenSource();
-                    _ = await ViewModel.GetScannedTextAsync(TwainCtrl.ImgData);
+                    ViewModel.OcrIsBusy = true;
+                    ViewModel.ScannedText = await TwainCtrl.ImgData.OcrAsyc(Settings.Default.DefaultTtsLang);
+                    if (ViewModel.ScannedText != null)
+                    {
+                        ViewModel.TranslateViewModel.Metin = string.Join(" ", ViewModel.ScannedText.Select(z => z.Text));
+                        ViewModel.TranslateViewModel.TaramaGeçmiş.Add(ViewModel.TranslateViewModel.Metin);
+                        ViewModel.OcrIsBusy = false;
+                    }
+                    TwainCtrl.ImgData = null;
                 }
 
                 if (e.PropertyName is "ApplyDataBaseOcr")

@@ -94,15 +94,21 @@ namespace GpScanner.ViewModel
                 return CheckedPdfCount > 1;
             });
 
-            OcrPage = new RelayCommand<object>(parameter =>
+            OcrPage = new RelayCommand<object>(async parameter =>
             {
                 if (parameter is TwainCtrl twainCtrl)
                 {
                     Ocr.Ocr.ocrcancellationToken = new CancellationTokenSource();
-                    BitmapFrame resim = twainCtrl.SeçiliResim.Resim;
-                    byte[] imgdata = resim.ToTiffJpegByteArray(Format.Jpg);
-                    _ = GetScannedTextAsync(imgdata);
-                    Result result = GetImageBarcodeResult(resim);
+                    byte[] imgdata = twainCtrl.SeçiliResim.Resim.ToTiffJpegByteArray(Format.Jpg);
+                    OcrIsBusy = true;
+                    ScannedText = await imgdata.OcrAsyc(Settings.Default.DefaultTtsLang);
+                    if (ScannedText != null)
+                    {
+                        TranslateViewModel.Metin = string.Join(" ", ScannedText.Select(z => z.Text));
+                        TranslateViewModel.TaramaGeçmiş.Add(TranslateViewModel.Metin);
+                        OcrIsBusy = false;
+                    }
+                    Result result = GetImageBarcodeResult(twainCtrl.SeçiliResim.Resim);
                     if (result != null)
                     {
                         BarcodeContent = result.Text;
@@ -314,7 +320,7 @@ namespace GpScanner.ViewModel
                 {
                     case "0":
                         MainWindowDocumentGuiControlLength = new(1, GridUnitType.Star);
-                        MainWindowGuiControlLength = new(2, GridUnitType.Star);
+                        MainWindowGuiControlLength = new(3, GridUnitType.Star);
                         return;
 
                     case "1":
@@ -1050,25 +1056,6 @@ namespace GpScanner.ViewModel
             return patchcodes.Any(z => z.Split('|')[1] == barcode)
                 ? (patchcodes?.FirstOrDefault(z => z.Split('|')[1] == barcode)?.Split('|')[0])
                 : "Tarama";
-        }
-
-        public async Task<ObservableCollection<OcrData>> GetScannedTextAsync(byte[] imgdata)
-        {
-            if (imgdata is not null && !string.IsNullOrEmpty(Settings.Default.DefaultTtsLang) && Ocr.Ocr.ocrcancellationToken?.IsCancellationRequested == false)
-            {
-                OcrIsBusy = true;
-                ScannedText = await imgdata.OcrAsyc(Settings.Default.DefaultTtsLang);
-                if (ScannedText != null)
-                {
-                    TranslateViewModel.Metin = string.Join(" ", ScannedText.Select(z => z.Text));
-                    TranslateViewModel.TaramaGeçmiş.Add(TranslateViewModel.Metin);
-                    OcrIsBusy = false;
-                }
-                imgdata = null;
-                return ScannedText;
-            }
-
-            return null;
         }
 
         public ObservableCollection<Scanner> GetScannerFileData()

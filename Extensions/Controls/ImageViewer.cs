@@ -477,7 +477,7 @@ namespace Extensions
         {
             if (d is ImageViewer imageViewer)
             {
-                if (e.NewValue is string filepath)
+                if (e.NewValue is string filepath && File.Exists(filepath))
                 {
                     int[] size = await GetImagePixelSize(filepath);
                     imageViewer.OriginalPixelHeight = size[0];
