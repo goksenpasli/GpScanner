@@ -270,16 +270,15 @@ namespace TwainControl
             try
             {
                 using PdfDocument outputDocument = new();
-                foreach (string file in pdffiles)
+                foreach (PdfDocument inputDocument in from string file in pdffiles let inputDocument = PdfReader.Open(file, PdfDocumentOpenMode.Import) select inputDocument)
                 {
-                    PdfDocument inputDocument = PdfReader.Open(file, PdfDocumentOpenMode.Import);
-                    int count = inputDocument.PageCount;
-                    for (int idx = 0; idx < count; idx++)
+                    for (int idx = 0; idx < inputDocument.PageCount; idx++)
                     {
                         PdfPage page = inputDocument.Pages[idx];
                         _ = outputDocument.AddPage(page);
                     }
                 }
+
                 return outputDocument;
             }
             catch (Exception ex)

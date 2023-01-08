@@ -81,7 +81,25 @@ namespace GpScanner.ViewModel
                 {
                     try
                     {
-                        await Task.Run(() => PdfGeneration.MergePdf(Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName).ToArray()).Save(saveFileDialog.FileName));
+                        await Task.Run(() =>
+                        {
+                            using PdfDocument outputDocument = new();
+                            IEnumerable<Scanner> Files = Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase));
+                            double fileindex = 0;
+                            foreach (PdfDocument inputDocument in from string file in Files.Select(z => z.FileName) let inputDocument = PdfReader.Open(file, PdfDocumentOpenMode.Import) select inputDocument)
+                            {
+                                for (int idx = 0; idx < inputDocument.PageCount; idx++)
+                                {
+                                    PdfPage page = inputDocument.Pages[idx];
+                                    _ = outputDocument.AddPage(page);
+                                }
+
+                                fileindex++;
+                                PdfMergeProgressValue = fileindex / Files.Count();
+                            }
+
+                            outputDocument.Save(saveFileDialog.FileName);
+                        });
                     }
                     catch (Exception ex)
                     {
@@ -195,6 +213,14 @@ namespace GpScanner.ViewModel
 
             Tümünüİşaretle = new RelayCommand<object>(parameter =>
             {
+                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                {
+                    foreach (Scanner item in Dosyalar)
+                    {
+                        item.Seçili = true;
+                    }
+                    return;
+                }
                 foreach (Scanner item in MainWindow.cvs.View.OfType<Scanner>().Where(z => Path.GetExtension(z.FileName.ToLower()) == ".pdf"))
                 {
                     item.Seçili = true;
@@ -203,6 +229,14 @@ namespace GpScanner.ViewModel
 
             TümününİşaretiniKaldır = new RelayCommand<object>(parameter =>
             {
+                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                {
+                    foreach (Scanner item in Dosyalar)
+                    {
+                        item.Seçili = false;
+                    }
+                    return;
+                }
                 foreach (Scanner item in MainWindow.cvs.View)
                 {
                     item.Seçili = false;
@@ -211,6 +245,14 @@ namespace GpScanner.ViewModel
 
             Tersiniİşaretle = new RelayCommand<object>(parameter =>
             {
+                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                {
+                    foreach (Scanner item in Dosyalar)
+                    {
+                        item.Seçili = !item.Seçili;
+                    }
+                    return;
+                }
                 foreach (Scanner item in MainWindow.cvs.View.OfType<Scanner>().Where(z => Path.GetExtension(z.FileName.ToLower()) == ".pdf"))
                 {
                     item.Seçili = !item.Seçili;
@@ -243,16 +285,20 @@ namespace GpScanner.ViewModel
                 if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
                 {
                     string path = pdfviewer.PdfFilePath;
-                    if (MessageBox.Show(Translation.GetResStringValue("DELETE"), Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                    if (MessageBox.Show($"{SayfaBaşlangıç}-{SayfaBitiş} {Translation.GetResStringValue("DELETE")}", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                     {
                         using PdfDocument inputDocument = PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Import);
-                        inputDocument.Pages.RemoveAt(pdfviewer.Sayfa - 1);
+                        for (int i = SayfaBitiş; i >= SayfaBaşlangıç; i--)
+                        {
+                            inputDocument.Pages.RemoveAt(i - 1);
+                        }
                         inputDocument.Save(pdfviewer.PdfFilePath);
                         pdfviewer.PdfFilePath = null;
                         pdfviewer.PdfFilePath = path;
+                        SayfaBaşlangıç = SayfaBitiş = 1;
                     }
                 }
-            }, parameter => parameter is PdfViewer.PdfViewer pdfviewer && pdfviewer.ToplamSayfa > 1);
+            }, parameter => parameter is PdfViewer.PdfViewer pdfviewer && pdfviewer.ToplamSayfa > 1 && SayfaBaşlangıç <= SayfaBitiş && (SayfaBitiş - SayfaBaşlangıç + 1) < pdfviewer.ToplamSayfa);
 
             RotateSelectedPage = new RelayCommand<object>(parameter =>
             {
@@ -749,6 +795,19 @@ namespace GpScanner.ViewModel
 
         public ICommand PdfBirleştir { get; }
 
+        public double PdfMergeProgressValue
+        {
+            get => pdfMergeProgressValue; set
+
+            {
+                if (pdfMergeProgressValue != value)
+                {
+                    pdfMergeProgressValue = value;
+                    OnPropertyChanged(nameof(PdfMergeProgressValue));
+                }
+            }
+        }
+
         public bool PdfOnlyText
         {
             get => pdfOnlyText;
@@ -1124,6 +1183,8 @@ namespace GpScanner.ViewModel
         private string patchProfileName = string.Empty;
 
         private string patchTag;
+
+        private double pdfMergeProgressValue;
 
         private bool pdfOnlyText;
 

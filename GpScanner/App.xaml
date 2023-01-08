@@ -202,6 +202,42 @@
                                     </Image>
                                 </Hyperlink>
                             </TextBlock>
+                            <Extensions:ContentToggleButton Command="{Binding ViewAllThumbnailImage, RelativeSource={RelativeSource TemplatedParent}}" PlacementMode="Top">
+                                <Extensions:ContentToggleButton.OverContent>
+                                    <Extensions:ResizablePanel Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}"
+                                        Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualHeight}"
+                                        MinWidth="240" MinHeight="385">
+                                        <ListBox ItemsSource="{Binding Thumbnails, RelativeSource={RelativeSource TemplatedParent}}"
+                                            SelectedValue="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
+                                            SelectedValuePath="Page" SelectionMode="Extended" VirtualizingPanel.CacheLength="3,3"
+                                            VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                                            VirtualizingPanel.ScrollUnit="Item" VirtualizingPanel.VirtualizationMode="Recycling">
+                                            <ListBox.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" SpacingMode="None" />
+                                                </ItemsPanelTemplate>
+                                            </ListBox.ItemsPanel>
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel>
+                                                        <TextBlock HorizontalAlignment="Center" Text="{Binding Page, Mode=OneWay}" />
+                                                        <Image Width="42" Height="60"
+                                                            Source="{Binding Thumb, Mode=OneWay}" />
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+                                    </Extensions:ResizablePanel>
+                                </Extensions:ContentToggleButton.OverContent>
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="96" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                            </Extensions:ContentToggleButton>
                         </StackPanel>
                     </ContentControl>
                 </Grid>
@@ -214,12 +250,6 @@
                     </DataTrigger>
                 </ControlTemplate.Triggers>
             </ControlTemplate>
-            <DataTemplate x:Key="PdfViewerTemplate">
-                <PdfViewer:PdfViewer AllowDrop="True" OpenButtonVisibility="Collapsed"
-                    PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                    PrintButtonVisibility="Visible" ScrollBarVisible="Hidden" SnapTick="True"
-                    Template="{StaticResource PdfViewerThumbTemplate}" />
-            </DataTemplate>
             <DataTemplate x:Key="PdfViewerDocumentViewerTemplateFull">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -413,10 +443,6 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
-            <ViewModel:ViewerTemplateSelector x:Key="ViewerSelector"
-                Img="{StaticResource ImgViewerTemplateFull}"
-                Pdf="{StaticResource PdfViewerTemplateFull}"
-                Zip="{StaticResource ZipViewerTemplateFull}" />
             <ViewModel:ViewerTemplateSelector x:Key="DocumentViewerSelector"
                 Img="{StaticResource ImgViewerDocumentViewerTemplateFull}"
                 Pdf="{StaticResource PdfViewerDocumentViewerTemplateFull}"
