@@ -253,13 +253,21 @@
             <DataTemplate x:Key="PdfViewerDocumentViewerTemplateFull">
                 <Grid>
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="5*" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <PdfViewer:PdfViewer ContextMenuVisibility="Visible" Orientation="Width"
+                    <Button Command="{Binding DataContext.AddFileToControlPanel, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}" CommandParameter="{Binding ElementName=PdfVwr, Path=Source}">
+                        <Button.Content>
+                            <TextBlock FontFamily="Wingdings" FontSize="16" Text="ç" />
+                        </Button.Content>
+                    </Button>
+                    <PdfViewer:PdfViewer x:Name="PdfVwr"
+                        Grid.Column="1"
+                        ContextMenuVisibility="Visible" Orientation="Width"
                         PdfFilePath="{Binding Mode=OneWay}"
                         PrintButtonVisibility="Visible" ScrollBarVisible="Visible" SnapTick="True" />
-                    <UniformGrid Grid.Column="1" Rows="2">
+                    <UniformGrid Grid.Column="2" Rows="2">
                         <local:TranslateView ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding DataContext.PdfFileContent, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}" />
                         <TextBox Background="{StaticResource BorderBackground}"
                             IsReadOnly="True"

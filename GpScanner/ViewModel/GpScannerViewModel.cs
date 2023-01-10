@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
@@ -186,6 +187,8 @@ namespace GpScanner.ViewModel
                     DocumentViewerWindow documentViewerWindow = new();
                     if (documentViewerWindow.DataContext is DocumentViewerModel documentViewerModel)
                     {
+                        documentViewerWindow.Owner = Application.Current.MainWindow;
+                        documentViewerModel.Scanner = ToolBox.Scanner;
                         documentViewerModel.PdfFilePath = filepath;
                         documentViewerModel.DirectoryAllPdfFiles = Directory.EnumerateFiles(Path.GetDirectoryName(documentViewerModel.PdfFilePath), "*.*").Where(z => supportedfilesextension.Any(ext => ext == Path.GetExtension(z).ToLower()));
                         documentViewerModel.Index = Array.IndexOf(documentViewerModel.DirectoryAllPdfFiles.ToArray(), documentViewerModel.PdfFilePath);
@@ -440,6 +443,20 @@ namespace GpScanner.ViewModel
 
             DateForward = new RelayCommand<object>(parameter => SeçiliGün = SeçiliGün.Value.AddDays(1), parameter => SeçiliGün < DateTime.Today);
 
+            int cycleindex = 0;
+            CycleSelectedDocuments = new RelayCommand<object>(parameter =>
+            {
+                if (parameter is ListBox listBox)
+                {
+                    listBox.ScrollIntoView(MainWindow.cvs.View.OfType<Scanner>().Where(z => z.Seçili).ElementAtOrDefault(cycleindex));
+                    cycleindex++;
+                    if (cycleindex >= MainWindow.cvs.View.OfType<Scanner>().Count(z => z.Seçili))
+                    {
+                        cycleindex = 0;
+                    }
+                }
+            }, parameter => parameter is ListBox && MainWindow.cvs?.View?.OfType<Scanner>().Count(z => z.Seçili) > 0);
+
             ReadOcrDataFile = new RelayCommand<object>(parameter =>
             {
                 if (parameter is Scanner scanner)
@@ -606,6 +623,8 @@ namespace GpScanner.ViewModel
                 }
             }
         }
+
+        public ICommand CycleSelectedDocuments { get; }
 
         public ICommand DatabaseSave { get; }
 

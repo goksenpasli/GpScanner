@@ -930,57 +930,44 @@ namespace TwainControl
             SynchronizationContext uiContext = SynchronizationContext.Current;
             fileloadtask = Task.Run(async () =>
             {
-                foreach (string item in filenames)
+                try
                 {
-                    switch (Path.GetExtension(item.ToLower()))
+                    foreach (string item in filenames)
                     {
-                        case ".pdf":
-                            {
-                                byte[] filedata = null;
-                                try
+                        switch (Path.GetExtension(item.ToLower()))
+                        {
+                            case ".pdf":
                                 {
-                                    filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(item);
-                                    if (PdfGeneration.IsValidPdfFile(filedata.Take(4)))
+                                    byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(item);
+                                    if (PdfGeneration.IsValidPdfFile(filedata))
                                     {
                                         await AddPdfFile(filedata, uiContext, item);
                                     }
                                     filedata = null;
+                                    break;
                                 }
-                                catch (Exception)
+                            case ".eyp":
                                 {
-                                }
-                                break;
-                            }
-                        case ".eyp":
-                            {
-                                byte[] filedata = null;
-                                try
-                                {
+                                    byte[] filedata = null;
                                     string eyppdfpath = EypMainPdfExtract(item);
                                     filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(eyppdfpath);
-                                    if (PdfGeneration.IsValidPdfFile(filedata.Take(4)))
+                                    if (PdfGeneration.IsValidPdfFile(filedata))
                                     {
                                         await AddPdfFile(filedata, uiContext, item);
                                     }
                                     filedata = null;
+                                    break;
                                 }
-                                catch (Exception)
-                                {
-                                }
-                                break;
-                            }
 
-                        case ".jpg":
-                        case ".jpeg":
-                        case ".jfif":
-                        case ".jfıf":
-                        case ".jpe":
-                        case ".png":
-                        case ".gif":
-                        case ".gıf":
-                        case ".bmp":
-                            {
-                                try
+                            case ".jpg":
+                            case ".jpeg":
+                            case ".jfif":
+                            case ".jfıf":
+                            case ".jpe":
+                            case ".png":
+                            case ".gif":
+                            case ".gıf":
+                            case ".bmp":
                                 {
                                     BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(new Uri(item), decodeheight, Settings.Default.DefaultPictureResizeRatio);
                                     bitmapFrame.Freeze();
@@ -991,16 +978,10 @@ namespace TwainControl
                                         img = null;
                                     }, null);
                                     bitmapFrame = null;
+                                    break;
                                 }
-                                catch (Exception)
-                                {
-                                }
-                                break;
-                            }
 
-                        case ".tıf" or ".tiff" or ".tıff" or ".tif":
-                            {
-                                try
+                            case ".tıf" or ".tiff" or ".tıff" or ".tif":
                                 {
                                     TiffBitmapDecoder decoder = new(new Uri(item), BitmapCreateOptions.None, BitmapCacheOption.None);
                                     for (int i = 0; i < decoder.Frames.Count; i++)
@@ -1024,23 +1005,17 @@ namespace TwainControl
                                         data = null;
                                         ms = null;
                                     }
+                                    break;
                                 }
-                                catch (Exception)
+                            case ".xps":
                                 {
-                                }
-                                break;
-                            }
-                        case ".xps":
-                            {
-                                FixedDocumentSequence docSeq = null;
-                                DocumentPage docPage = null;
-                                Dispatcher.Invoke(() =>
-                                {
-                                    using XpsDocument xpsDoc = new(item, FileAccess.Read);
-                                    docSeq = xpsDoc.GetFixedDocumentSequence();
-                                });
-                                try
-                                {
+                                    FixedDocumentSequence docSeq = null;
+                                    DocumentPage docPage = null;
+                                    Dispatcher.Invoke(() =>
+                                    {
+                                        using XpsDocument xpsDoc = new(item, FileAccess.Read);
+                                        docSeq = xpsDoc.GetFixedDocumentSequence();
+                                    });
                                     for (int i = 0; i < docSeq.DocumentPaginator.PageCount; i++)
                                     {
                                         byte[] data = null;
@@ -1072,13 +1047,14 @@ namespace TwainControl
                                         data = null;
                                         memoryStream = null;
                                     }
+                                    break;
                                 }
-                                catch (Exception)
-                                {
-                                }
-                                break;
-                            }
+                        }
                     }
+                }
+                catch (Exception ex)
+                {
+                    _ = MessageBox.Show(ex.Message);
                 }
             });
         }

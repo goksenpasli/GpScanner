@@ -1,13 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Extensions;
 using GpScanner.Properties;
 using Microsoft.Win32;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
+using TwainControl;
 
 namespace GpScanner.ViewModel
 {
@@ -27,6 +31,23 @@ namespace GpScanner.ViewModel
                 Index++;
                 PdfFilePath = DirectoryAllPdfFiles?.ElementAtOrDefault(Index);
             }, parameter => Index < DirectoryAllPdfFiles?.Count() - 1);
+
+            AddFileToControlPanel = new RelayCommand<object>(parameter =>
+            {
+                if (parameter is ImageSource imageSource)
+                {
+                    MemoryStream ms = new(imageSource.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg));
+                    BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(ms, ToolBox.Paper);
+                    bitmapFrame.Freeze();
+                    ScannedImage scannedImage = new() { Seçili = false, FilePath = PdfFilePath, Resim = bitmapFrame };
+                    Scanner?.Resimler.Add(scannedImage);
+                    bitmapFrame = null;
+                    scannedImage = null;
+                    imageSource = null;
+                    ms = null;
+                    GC.Collect();
+                }
+            }, parameter => true);
 
             SaveImageAsPdfFile = new RelayCommand<object>(parameter =>
             {
@@ -48,6 +69,8 @@ namespace GpScanner.ViewModel
                 }
             }, parameter => Path.GetExtension(PdfFilePath?.ToLower()) is not ".pdf" and not ".zip" and not ".xps");
         }
+
+        public ICommand AddFileToControlPanel { get; }
 
         public ICommand Back { get; }
 
@@ -140,6 +163,20 @@ namespace GpScanner.ViewModel
 
         public ICommand SaveImageAsPdfFile { get; }
 
+        public Scanner Scanner
+        {
+            get => scanner;
+
+            set
+            {
+                if (scanner != value)
+                {
+                    scanner = value;
+                    OnPropertyChanged(nameof(Scanner));
+                }
+            }
+        }
+
         public string Title
         {
             get => Path.GetFileName(PdfFilePath);
@@ -165,6 +202,8 @@ namespace GpScanner.ViewModel
         private string pdfFileContent;
 
         private string pdfFilePath;
+
+        private Scanner scanner;
 
         private string title;
 
