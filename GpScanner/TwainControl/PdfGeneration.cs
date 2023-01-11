@@ -22,11 +22,11 @@ using static Extensions.ExtensionMethods;
 
 namespace TwainControl
 {
-    public abstract class PdfGeneration
+    public static class PdfGeneration
     {
         public static Scanner Scanner { get; set; }
 
-        public static int CalculateFontSize(string text, XRect adjustedBounds, XGraphics gfx)
+        public static int CalculateFontSize(this string text, XRect adjustedBounds, XGraphics gfx)
         {
             int fontSizeGuess = Math.Max(1, (int)adjustedBounds.Height);
             XSize measuredBoundsForGuess = gfx.MeasureString(text, new XFont("Times New Roman", fontSizeGuess, XFontStyle.Regular));
@@ -34,7 +34,7 @@ namespace TwainControl
             return Math.Max(1, (int)Math.Floor(fontSizeGuess * adjustmentFactor));
         }
 
-        public static void DefaultPdfCompression(PdfDocument doc)
+        public static void DefaultPdfCompression(this PdfDocument doc)
         {
             doc.Info.Author = Scanner.UserName;
             doc.Info.Creator = Scanner.CreatorAppName;
@@ -46,7 +46,7 @@ namespace TwainControl
             doc.Options.EnableCcittCompressionForBilevelImages = true;
         }
 
-        public static PdfDocument ExtractPdfPages(string filename, int startpage, int endpage)
+        public static PdfDocument ExtractPdfPages(this string filename, int startpage, int endpage)
         {
             using PdfDocument inputDocument = PdfReader.Open(filename, PdfDocumentOpenMode.Import);
             using PdfDocument outputDocument = new();
@@ -57,7 +57,7 @@ namespace TwainControl
             return outputDocument;
         }
 
-        public static PdfDocument GeneratePdf(List<ScannedImage> bitmapFrames, Format format, Paper paper, int jpegquality = 80, List<ObservableCollection<OcrData>> ScannedText = null, int dpi = 120)
+        public static PdfDocument GeneratePdf(this List<ScannedImage> bitmapFrames, Format format, Paper paper, int jpegquality = 80, List<ObservableCollection<OcrData>> ScannedText = null, int dpi = 120)
         {
             using PdfDocument document = new();
             double index = 0;
@@ -93,6 +93,10 @@ namespace TwainControl
                             page.Orientation = PageOrientation.Landscape;
                             gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
                         }
+                        if (Scanner.PdfPageNumberDraw)
+                        {
+                            DrawText(gfx, XBrushes.Black, (i + 1).ToString(), page.Width / 2, 20);
+                        }
                         index++;
                         Scanner.PdfSaveProgressValue = index / bitmapFrames.Count;
                     }
@@ -117,6 +121,10 @@ namespace TwainControl
                             page.Orientation = PageOrientation.Landscape;
                             gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
                         }
+                        if (Scanner.PdfPageNumberDraw)
+                        {
+                            DrawText(gfx, XBrushes.Black, (i + 1).ToString(), page.Width / 2, 20);
+                        }
                         index++;
                         Scanner.PdfSaveProgressValue = index / bitmapFrames.Count;
                     }
@@ -134,7 +142,7 @@ namespace TwainControl
             return document;
         }
 
-        public static PdfDocument GeneratePdf(List<string> imagefiles, Paper paper, List<ObservableCollection<OcrData>> ScannedText = null)
+        public static PdfDocument GeneratePdf(this List<string> imagefiles, Paper paper, List<ObservableCollection<OcrData>> ScannedText = null)
         {
             using PdfDocument document = new();
             double index = 0;
@@ -162,6 +170,10 @@ namespace TwainControl
                         page.Orientation = PageOrientation.Landscape;
                         gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
                     }
+                    if (Scanner.PdfPageNumberDraw)
+                    {
+                        DrawText(gfx, XBrushes.Black, (i + 1).ToString(), page.Width / 2, 20);
+                    }
                     index++;
                     Scanner.PdfSaveProgressValue = index / imagefiles.Count;
                 }
@@ -178,7 +190,7 @@ namespace TwainControl
             return document;
         }
 
-        public static PdfDocument GeneratePdf(BitmapSource bitmapframe, ObservableCollection<OcrData> ScannedText, Format format, Paper paper, int jpegquality = 80, bool pdfonlytext = false, int dpi = 120)
+        public static PdfDocument GeneratePdf(this BitmapSource bitmapframe, ObservableCollection<OcrData> ScannedText, Format format, Paper paper, int jpegquality = 80, bool pdfonlytext = false, int dpi = 120)
         {
             try
             {
@@ -227,6 +239,10 @@ namespace TwainControl
                         gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
                     }
                 }
+                if (Scanner.PdfPageNumberDraw)
+                {
+                    DrawText(gfx, XBrushes.Black, "1", page.Width / 2, 20);
+                }
                 if (Scanner.PasswordProtect)
                 {
                     ApplyPdfSecurity(document);
@@ -260,12 +276,12 @@ namespace TwainControl
             return datefolder;
         }
 
-        public static bool IsValidPdfFile(IEnumerable<byte> buffer)
+        public static bool IsValidPdfFile(this IEnumerable<byte> buffer)
         {
             return buffer.Take(4).SequenceEqual(new byte[] { 0x25, 0x50, 0x44, 0x46 });
         }
 
-        public static PdfDocument MergePdf(string[] pdffiles)
+        public static PdfDocument MergePdf(this string[] pdffiles)
         {
             try
             {
@@ -289,7 +305,7 @@ namespace TwainControl
             return null;
         }
 
-        public static async void SavePdfFiles(string[] files)
+        public static async void SavePdfFiles(this string[] files)
         {
             SaveFileDialog saveFileDialog = new()
             {
@@ -309,12 +325,12 @@ namespace TwainControl
             }
         }
 
-        private static XRect AdjustBounds(Rect rect, double hAdjust, double vAdjust)
+        private static XRect AdjustBounds(this Rect rect, double hAdjust, double vAdjust)
         {
             return new(rect.X * hAdjust, rect.Y * vAdjust, rect.Width * hAdjust, rect.Height * vAdjust);
         }
 
-        private static void ApplyPdfSecurity(PdfDocument document)
+        private static void ApplyPdfSecurity(this PdfDocument document)
         {
             PdfSecuritySettings securitySettings = document.SecuritySettings;
             if (Scanner.PdfPassword is not null)
@@ -326,7 +342,7 @@ namespace TwainControl
             }
         }
 
-        private static void DrawGfx(XGraphics gfx, XBrush xBrush, XTextFormatter textformatter, OcrData item, XRect adjustedBounds)
+        private static void DrawGfx(this XGraphics gfx, XBrush xBrush, XTextFormatter textformatter, OcrData item, XRect adjustedBounds)
         {
             int adjustedFontSize = CalculateFontSize(item.Text, adjustedBounds, gfx);
             XFont font = new("Times New Roman", adjustedFontSize, XFontStyle.Regular, new XPdfFontOptions(PdfFontEncoding.Unicode));
@@ -337,7 +353,13 @@ namespace TwainControl
             textformatter.DrawString(item.Text, font, xBrush, adjustedBounds);
         }
 
-        private static void SetPaperSize(Paper paper, PdfPage page)
+        private static void DrawText(this XGraphics gfx, XBrush xBrush, string item, double x, double y, double fontsize = 16)
+        {
+            XFont font = new("Times New Roman", fontsize, XFontStyle.Regular, new XPdfFontOptions(PdfFontEncoding.Unicode));
+            gfx.DrawString(item, font, xBrush, x, y);
+        }
+
+        private static void SetPaperSize(this Paper paper, PdfPage page)
         {
             if (paper is null)
             {
@@ -400,7 +422,7 @@ namespace TwainControl
             }
         }
 
-        private static void WritePdfTextContent(BitmapSource bitmapframe, ObservableCollection<OcrData> ScannedText, PdfPage page, XGraphics gfx, XBrush xBrush)
+        private static void WritePdfTextContent(this BitmapSource bitmapframe, ObservableCollection<OcrData> ScannedText, PdfPage page, XGraphics gfx, XBrush xBrush)
         {
             if (ScannedText is not null)
             {
@@ -413,7 +435,7 @@ namespace TwainControl
             }
         }
 
-        private static void WritePdfTextContent(XImage xImage, ObservableCollection<OcrData> ScannedText, PdfPage page, XGraphics gfx, XBrush xBrush)
+        private static void WritePdfTextContent(this XImage xImage, ObservableCollection<OcrData> ScannedText, PdfPage page, XGraphics gfx, XBrush xBrush)
         {
             if (ScannedText is not null)
             {

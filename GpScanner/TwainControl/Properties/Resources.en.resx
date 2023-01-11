@@ -508,4 +508,7 @@ TO FILE</value>
   <data name="PDFTRACK" xml:space="preserve">
     <value>WATCH PDF FOLDER CHANGE</value>
   </data>
+  <data name="PAGENUMBER" xml:space="preserve">
+    <value>PAGE NUMBER</value>
+  </data>
 </root>

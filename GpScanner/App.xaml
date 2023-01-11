@@ -314,14 +314,8 @@
                             <Button BorderBrush="Cyan"
                                 Command="{Binding RotateSelectedPage}"
                                 CommandParameter="{Binding ElementName=PdfVwr}">
-                                <Image Width="16" Height="16">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Imageres.dll" />
-                                            <Binding Source="285" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
+                                <Image Width="16" Height="16"
+                                    Source="/TwainControl;component/Icons/rotate.png" />
                             </Button>
                         </UniformGrid>
                         <Button BorderBrush="Cyan" Command="{Binding DataContext.AddAllFileToControlPanel, RelativeSource={RelativeSource AncestorType=Window}}">

@@ -335,6 +335,9 @@ COLLEGARE</value>
   <data name="OTHERTESSERACTLINK" xml:space="preserve">
     <value>Altri dati sulla lingua tesseract</value>
   </data>
+  <data name="PAGENUMBER" xml:space="preserve">
+    <value>NUMERO DI PAGINA</value>
+  </data>
   <data name="PASSWORD" xml:space="preserve">
     <value>PAROLA D'ORDINE</value>
   </data>

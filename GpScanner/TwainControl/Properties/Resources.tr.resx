@@ -514,4 +514,7 @@ BELGE EKLE</value>
   <data name="PDFTRACK" xml:space="preserve">
     <value>PDF KLASÖR DEĞİŞİMİNİ İZLE</value>
   </data>
+  <data name="PAGENUMBER" xml:space="preserve">
+    <value>SAYFA NO</value>
+  </data>
 </root>

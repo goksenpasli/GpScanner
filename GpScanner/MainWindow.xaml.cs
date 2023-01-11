@@ -42,9 +42,9 @@ namespace GpScanner
                 {
                     string temporarypdf = Path.GetTempPath() + Guid.NewGuid() + ".pdf";
                     string pdfFilePath = pdfviewer.PdfFilePath;
-                    PdfGeneration.GeneratePdf(droppedData.Resim, null, Format.Jpg, TwainCtrl.SelectedPaper).Save(temporarypdf);
+                    droppedData.Resim.GeneratePdf(null, Format.Jpg, TwainCtrl.SelectedPaper).Save(temporarypdf);
                     string[] pdffiles = (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)) ? new string[] { pdfFilePath, temporarypdf } : new string[] { temporarypdf, pdfFilePath };
-                    PdfGeneration.MergePdf(pdffiles).Save(pdfFilePath);
+                    pdffiles.MergePdf().Save(pdfFilePath);
                     File.Delete(temporarypdf);
                     pdfviewer.PdfFilePath = null;
                     pdfviewer.PdfFilePath = pdfFilePath;

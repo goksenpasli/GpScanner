@@ -452,6 +452,20 @@ namespace TwainControl
             }
         }
 
+        public bool PdfPageNumberDraw
+        {
+            get => pdfPageNumberDraw;
+
+            set
+            {
+                if (pdfPageNumberDraw != value)
+                {
+                    pdfPageNumberDraw = value;
+                    OnPropertyChanged(nameof(PdfPageNumberDraw));
+                }
+            }
+        }
+
         public SecureString PdfPassword
         {
             get => pdfPassword;
@@ -883,6 +897,8 @@ namespace TwainControl
         private bool passwordProtect;
 
         private string pdfFilePath;
+
+        private bool pdfPageNumberDraw;
 
         private SecureString pdfPassword;
 

@@ -335,6 +335,9 @@
   <data name="OTHERTESSERACTLINK" xml:space="preserve">
     <value>بيانات لغة tesseract الأخرى</value>
   </data>
+  <data name="PAGENUMBER" xml:space="preserve">
+    <value>رقم الصفحة</value>
+  </data>
   <data name="PASSWORD" xml:space="preserve">
     <value>كلمه السر</value>
   </data>

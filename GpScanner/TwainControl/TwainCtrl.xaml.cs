@@ -388,7 +388,7 @@ namespace TwainControl
                     string[] files = openFileDialog.FileNames;
                     if (files.Length > 0)
                     {
-                        PdfGeneration.SavePdfFiles(files);
+                        files.SavePdfFiles();
                     }
                 }
             }, parameter => true);
@@ -867,10 +867,10 @@ namespace TwainControl
             }
             if (blackwhite)
             {
-                PdfGeneration.GeneratePdf(scannedImage, ocrtext, Format.Tiff, paper, Settings.Default.JpegQuality, false, (int)Settings.Default.ImgLoadResolution).Save(filename);
+                scannedImage.GeneratePdf(ocrtext, Format.Tiff, paper, Settings.Default.JpegQuality, false, (int)Settings.Default.ImgLoadResolution).Save(filename);
                 return;
             }
-            PdfGeneration.GeneratePdf(scannedImage, ocrtext, Format.Jpg, paper, Settings.Default.JpegQuality, false, (int)Settings.Default.ImgLoadResolution).Save(filename);
+            scannedImage.GeneratePdf(ocrtext, Format.Jpg, paper, Settings.Default.JpegQuality, false, (int)Settings.Default.ImgLoadResolution).Save(filename);
         }
 
         public static async Task SavePdfImage(List<ScannedImage> images, string filename, Scanner scanner, Paper paper, bool blackwhite = false, int dpi = 120)
@@ -891,10 +891,10 @@ namespace TwainControl
             }
             if (blackwhite)
             {
-                PdfGeneration.GeneratePdf(images, Format.Tiff, paper, Settings.Default.JpegQuality, scannedtext, dpi).Save(filename);
+                images.GeneratePdf(Format.Tiff, paper, Settings.Default.JpegQuality, scannedtext, dpi).Save(filename);
                 return;
             }
-            PdfGeneration.GeneratePdf(images, Format.Jpg, paper, Settings.Default.JpegQuality, scannedtext, dpi).Save(filename);
+            images.GeneratePdf(Format.Jpg, paper, Settings.Default.JpegQuality, scannedtext, dpi).Save(filename);
         }
 
         public static void SaveTifImage(BitmapFrame scannedImage, string filename)
@@ -939,7 +939,7 @@ namespace TwainControl
                             case ".pdf":
                                 {
                                     byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(item);
-                                    if (PdfGeneration.IsValidPdfFile(filedata))
+                                    if (filedata.IsValidPdfFile())
                                     {
                                         await AddPdfFile(filedata, uiContext, item);
                                     }
@@ -951,7 +951,7 @@ namespace TwainControl
                                     byte[] filedata = null;
                                     string eyppdfpath = EypMainPdfExtract(item);
                                     filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(eyppdfpath);
-                                    if (PdfGeneration.IsValidPdfFile(filedata))
+                                    if (filedata.IsValidPdfFile())
                                     {
                                         await AddPdfFile(filedata, uiContext, item);
                                     }
@@ -1337,11 +1337,11 @@ namespace TwainControl
             }
             if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
             {
-                PdfGeneration.GeneratePdf(Scanner.Resimler.ToList(), Format.Tiff, SelectedPaper, Settings.Default.JpegQuality, null, (int)Settings.Default.Çözünürlük).Save(Scanner.PdfFilePath);
+                Scanner.Resimler.ToList().GeneratePdf(Format.Tiff, SelectedPaper, Settings.Default.JpegQuality, null, (int)Settings.Default.Çözünürlük).Save(Scanner.PdfFilePath);
             }
             if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
             {
-                PdfGeneration.GeneratePdf(Scanner.Resimler.ToList(), Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, null, (int)Settings.Default.Çözünürlük).Save(Scanner.PdfFilePath);
+                Scanner.Resimler.ToList().GeneratePdf(Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, null, (int)Settings.Default.Çözünürlük).Save(Scanner.PdfFilePath);
             }
             if (Settings.Default.ShowFile)
             {
@@ -1543,7 +1543,7 @@ namespace TwainControl
             IEnumerable<string> pdffiles = ((string[])e.Data.GetData(DataFormats.FileDrop))?.Where(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase));
             if (pdffiles?.Any() == true)
             {
-                PdfGeneration.SavePdfFiles(pdffiles.ToArray());
+                pdffiles.ToArray().SavePdfFiles();
             }
         }
 
@@ -1551,22 +1551,23 @@ namespace TwainControl
         {
             if (sender is Run run && e.Data.GetData(typeof(ScannedImage)) is ScannedImage droppedData)
             {
-                ScannedImage target = run.DataContext as ScannedImage;
-
-                int removedIdx = Scanner.Resimler.IndexOf(droppedData);
-                int targetIdx = Scanner.Resimler.IndexOf(target);
-
-                if (removedIdx < targetIdx)
+                if (run.DataContext is ScannedImage target)
                 {
-                    Scanner.Resimler.Insert(targetIdx + 1, droppedData);
-                    Scanner.Resimler.RemoveAt(removedIdx);
-                    return;
-                }
-                int remIdx = removedIdx + 1;
-                if (Scanner.Resimler.Count + 1 > remIdx)
-                {
-                    Scanner.Resimler.Insert(targetIdx, droppedData);
-                    Scanner.Resimler.RemoveAt(remIdx);
+                    int removedIdx = Scanner.Resimler.IndexOf(droppedData);
+                    int targetIdx = Scanner.Resimler.IndexOf(target);
+
+                    if (removedIdx < targetIdx)
+                    {
+                        Scanner.Resimler.Insert(targetIdx + 1, droppedData);
+                        Scanner.Resimler.RemoveAt(removedIdx);
+                        return;
+                    }
+                    int remIdx = removedIdx + 1;
+                    if (Scanner.Resimler.Count + 1 > remIdx)
+                    {
+                        Scanner.Resimler.Insert(targetIdx, droppedData);
+                        Scanner.Resimler.RemoveAt(remIdx);
+                    }
                 }
             }
         }

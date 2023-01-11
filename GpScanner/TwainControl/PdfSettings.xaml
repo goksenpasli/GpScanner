@@ -9,7 +9,7 @@
     xmlns:mozjpeg="clr-namespace:MozJpeg;assembly=MozJpeg"
     xmlns:properties="clr-namespace:TwainControl.Properties"
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
-    d:DesignHeight="285" d:DesignWidth="550"
+    d:DesignHeight="310" d:DesignWidth="550"
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
     UseLayoutRounding="True"
     mc:Ignorable="d">
@@ -123,6 +123,7 @@
                         Text="MOZJPEG" />
                 </CheckBox.Content>
             </CheckBox>
+            <CheckBox Content="{local:Loc PAGENUMBER}" IsChecked="{Binding Scanner.PdfPageNumberDraw}" />
         </StackPanel>
     </GroupBox>
 </UserControl>

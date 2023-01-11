@@ -205,7 +205,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="adf.png" />
+    <Resource Include="Icons\adf.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Extensions\Extensions.csproj">
@@ -230,7 +230,18 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="flatbed.png" />
+    <Resource Include="Icons\flatbed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\inverse.png" />
+    <Resource Include="Icons\landscape.png" />
+    <Resource Include="Icons\none.png" />
+    <Resource Include="Icons\portrait.png" />
+    <Resource Include="Icons\selectall.png" />
+    <Resource Include="Icons\undo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\rotate.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

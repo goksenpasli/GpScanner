@@ -179,70 +179,34 @@
                                     <StackPanel Orientation="Horizontal">
                                         <Button BorderBrush="Cyan" Command="{Binding Tümünüİşaretle}">
                                             <StackPanel Orientation="Horizontal">
-                                                <Image Width="32" Height="32">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Imageres.dll" />
-                                                            <Binding Source="249" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
+                                                <Image Width="32" Height="32"
+                                                    Source="/TwainControl;component/Icons/selectall.png" />
                                                 <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc ALL}" />
                                             </StackPanel>
                                         </Button>
                                         <Button BorderBrush="Cyan" Command="{Binding TümününİşaretiniKaldır}">
                                             <StackPanel Orientation="Horizontal">
-                                                <Image Width="32" Height="32">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Imageres.dll" />
-                                                            <Binding Source="250" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
+                                                <Image Width="32" Height="32"
+                                                    Source="/TwainControl;component/Icons/none.png" />
                                                 <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc NONE}" />
                                             </StackPanel>
                                         </Button>
                                         <Button BorderBrush="Cyan" Command="{Binding Tersiniİşaretle}">
                                             <StackPanel Orientation="Horizontal">
-                                                <Image Width="32" Height="32">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Imageres.dll" />
-                                                            <Binding Source="251" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
+                                                <Image Width="32" Height="32"
+                                                    Source="/TwainControl;component/Icons/inverse.png" />
                                                 <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc REVERSE}" />
                                             </StackPanel>
                                         </Button>
                                     </StackPanel>
                                 </Extensions:ContentToggleButton.OverContent>
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Imageres.dll" />
-                                                <Binding Source="249" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                    <Image Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Imageres.dll" />
-                                                <Binding Source="251" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                    <Image Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Imageres.dll" />
-                                                <Binding Source="250" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
+                                    <Image Width="16" Height="16"
+                                        Source="/TwainControl;component/Icons/selectall.png" />
+                                    <Image Width="16" Height="16"
+                                        Source="/TwainControl;component/Icons/inverse.png" />
+                                    <Image Width="16" Height="16"
+                                        Source="/TwainControl;component/Icons/none.png" />
                                     <TextBlock VerticalAlignment="Center"
                                         d:Text="0"
                                         Text="{Binding CheckedPdfCount}" />

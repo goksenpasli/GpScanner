@@ -179,7 +179,7 @@
                                                                 <Setter.Value>
                                                                     <Grid>
                                                                         <Image Width="68" Height="48"
-                                                                            Source="/TwainControl;component/adf.png"
+                                                                            Source="/TwainControl;component/Icons/adf.png"
                                                                             Visibility="{Binding Adf, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                                                                         <TextBlock VerticalAlignment="Center"
                                                                             FontWeight="Bold" Foreground="White"
@@ -193,7 +193,7 @@
                                                                 <Setter.Value>
                                                                     <Grid>
                                                                         <Image Width="68" Height="48"
-                                                                            Source="/TwainControl;component/flatbed.png" />
+                                                                            Source="/TwainControl;component/Icons/flatbed.png" />
                                                                         <TextBlock VerticalAlignment="Center"
                                                                             FontWeight="Bold"
                                                                             Text="{local:Loc FLATBED}" />
@@ -679,74 +679,38 @@
                                         <WrapPanel>
                                             <Button Command="{Binding ResimSilGeriAl}">
                                                 <Button.Content>
-                                                    <Image Width="24" Height="24">
-                                                        <Image.Source>
-                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                <Binding Source="Imageres.dll" />
-                                                                <Binding Source="256" />
-                                                            </MultiBinding>
-                                                        </Image.Source>
-                                                    </Image>
+                                                    <Image Width="24" Height="24"
+                                                        Source="/TwainControl;component/Icons/undo.png" />
                                                 </Button.Content>
                                             </Button>
                                             <Button Command="{Binding Tümünüİşaretle}">
                                                 <Button.Content>
-                                                    <Image Width="24" Height="24">
-                                                        <Image.Source>
-                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                <Binding Source="Imageres.dll" />
-                                                                <Binding Source="249" />
-                                                            </MultiBinding>
-                                                        </Image.Source>
-                                                    </Image>
+                                                    <Image Width="24" Height="24"
+                                                        Source="/TwainControl;component/Icons/selectall.png" />
                                                 </Button.Content>
                                             </Button>
                                             <Button Command="{Binding TümününİşaretiniKaldır}">
                                                 <Button.Content>
-                                                    <Image Width="24" Height="24">
-                                                        <Image.Source>
-                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                <Binding Source="Imageres.dll" />
-                                                                <Binding Source="250" />
-                                                            </MultiBinding>
-                                                        </Image.Source>
-                                                    </Image>
+                                                    <Image Width="24" Height="24"
+                                                        Source="/TwainControl;component/Icons/none.png" />
                                                 </Button.Content>
                                             </Button>
                                             <Button Command="{Binding Tersiniİşaretle}">
                                                 <Button.Content>
-                                                    <Image Width="24" Height="24">
-                                                        <Image.Source>
-                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                <Binding Source="Imageres.dll" />
-                                                                <Binding Source="251" />
-                                                            </MultiBinding>
-                                                        </Image.Source>
-                                                    </Image>
+                                                    <Image Width="24" Height="24"
+                                                        Source="/TwainControl;component/Icons/inverse.png" />
                                                 </Button.Content>
                                             </Button>
                                             <Button Command="{Binding TümünüİşaretleDikey}">
                                                 <Button.Content>
-                                                    <Image Width="24" Height="24">
-                                                        <Image.Source>
-                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                <Binding Source="Imageres.dll" />
-                                                                <Binding Source="253" />
-                                                            </MultiBinding>
-                                                        </Image.Source>
-                                                    </Image>
+                                                    <Image Width="24" Height="24"
+                                                        Source="/TwainControl;component/Icons/portrait.png" />
                                                 </Button.Content>
                                             </Button>
                                             <Button Command="{Binding TümünüİşaretleYatay}">
                                                 <Button.Content>
-                                                    <Image Width="24" Height="24">
-                                                        <Image.Source>
-                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                <Binding Source="Imageres.dll" />
-                                                                <Binding Source="306" />
-                                                            </MultiBinding>
-                                                        </Image.Source>
-                                                    </Image>
+                                                    <Image Width="24" Height="24"
+                                                        Source="/TwainControl;component/Icons/landscape.png" />
                                                 </Button.Content>
                                             </Button>
                                             <Button Command="{Binding SaveFileList}">
@@ -929,7 +893,7 @@
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
-                                    <TextBlock d:Text="0" FontSize="10" FontWeight="Bold"
+                                    <TextBlock d:Text="0" FontSize="11" FontWeight="Bold"
                                         Foreground="Red"
                                         Text="{Binding Scanner.SeçiliResimSayısı}" />
                                 </Canvas>
@@ -951,7 +915,7 @@
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
-                                    <TextBlock d:Text="0" FontSize="10" FontWeight="Bold"
+                                    <TextBlock d:Text="0" FontSize="11" FontWeight="Bold"
                                         Foreground="Red"
                                         Text="{Binding Scanner.SeçiliResimSayısı}" />
                                 </Canvas>
