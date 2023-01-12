@@ -733,6 +733,16 @@
                                                     </Image.Source>
                                                 </Image>
                                             </Button>
+                                            <Button Command="{Binding CycleSelectedDocuments}" CommandParameter="{Binding ElementName=Lb}">
+                                                <Image Width="24" Height="24">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="ImageRes.dll" />
+                                                            <Binding Source="7" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                            </Button>
                                         </WrapPanel>
                                     </ScrollViewer>
                                     <Separator />
@@ -746,7 +756,8 @@
                             </DockPanel>
                         </Grid>
                     </GroupBox.Header>
-                    <ListBox Extensions:DragDropExtension.ScrollOnDragDrop="True"
+                    <ListBox x:Name="Lb"
+                        Extensions:DragDropExtension.ScrollOnDragDrop="True"
                         d:ItemsSource="{d:SampleData ItemCount=5}"
                         AllowDrop="True"
                         Background="{StaticResource BorderBackground}"

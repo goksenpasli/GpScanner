@@ -8,6 +8,7 @@ using System.Security;
 using System.Windows.Media;
 using System.Windows.Shell;
 using Extensions;
+using PdfSharp.Drawing;
 using TwainControl.Properties;
 
 namespace TwainControl
@@ -410,6 +411,19 @@ namespace TwainControl
             }
         }
 
+        public PdfPageLayout Layout
+        {
+            get => layout; set
+
+            {
+                if (layout != value)
+                {
+                    layout = value;
+                    OnPropertyChanged(nameof(Layout));
+                }
+            }
+        }
+
         public string LocalizedPath
         {
             get => ExtensionMethods.GetDisplayName(Settings.Default.AutoFolder);
@@ -434,6 +448,20 @@ namespace TwainControl
                 {
                     passwordProtect = value;
                     OnPropertyChanged(nameof(PasswordProtect));
+                }
+            }
+        }
+
+        public XKnownColor PdfAlignTextColor
+        {
+            get => pdfAlignTextColor;
+
+            set
+            {
+                if (pdfAlignTextColor != value)
+                {
+                    pdfAlignTextColor = value;
+                    OnPropertyChanged(nameof(PdfAlignTextColor));
                 }
             }
         }
@@ -892,9 +920,13 @@ namespace TwainControl
 
         private ObservableCollection<Chart> greenChart;
 
+        private PdfPageLayout layout = PdfPageLayout.Middle;
+
         private string localizedPath;
 
         private bool passwordProtect;
+
+        private XKnownColor pdfAlignTextColor = XKnownColor.Black;
 
         private string pdfFilePath;
 

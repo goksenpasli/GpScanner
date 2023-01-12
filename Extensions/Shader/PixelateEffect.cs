@@ -16,10 +16,10 @@ namespace Extensions
 
         public PixelateEffect()
         {
-            PixelShader = (new()
+            PixelShader = new()
             {
                 UriSource = new Uri("/Extensions;component/Shader/PixelateEffect.ps", UriKind.Relative)
-            });
+            };
 
             UpdateShaderValue(InputProperty);
             UpdateShaderValue(PixelCountsProperty);

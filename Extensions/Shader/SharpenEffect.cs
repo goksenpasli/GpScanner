@@ -16,10 +16,10 @@ namespace Extensions
 
         public SharpenEffect()
         {
-            PixelShader = (new()
+            PixelShader = new()
             {
                 UriSource = new Uri("/Extensions;component/Shader/SharpenEffect.ps", UriKind.Relative)
-            });
+            };
 
             UpdateShaderValue(InputProperty);
             UpdateShaderValue(AmountProperty);

@@ -12,10 +12,10 @@ namespace Extensions
 
         public InvertColorEffect()
         {
-            PixelShader = (new()
+            PixelShader = new()
             {
                 UriSource = new Uri("/Extensions;component/Shader/InvertColorEffect.ps", UriKind.Relative)
-            });
+            };
 
             UpdateShaderValue(InputProperty);
         }

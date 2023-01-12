@@ -22,6 +22,11 @@ using static Extensions.ExtensionMethods;
 
 namespace TwainControl
 {
+    public enum PdfPageLayout
+    {
+        Left = 0, Middle = 1, Right = 2,
+    }
+
     public static class PdfGeneration
     {
         public static Scanner Scanner { get; set; }
@@ -95,7 +100,7 @@ namespace TwainControl
                         }
                         if (Scanner.PdfPageNumberDraw)
                         {
-                            DrawText(gfx, XBrushes.Black, (i + 1).ToString(), page.Width / 2, 20);
+                            gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfAlignTextColor)), (i + 1).ToString(), GetPdfTextLayout(page), 20);
                         }
                         index++;
                         Scanner.PdfSaveProgressValue = index / bitmapFrames.Count;
@@ -123,7 +128,7 @@ namespace TwainControl
                         }
                         if (Scanner.PdfPageNumberDraw)
                         {
-                            DrawText(gfx, XBrushes.Black, (i + 1).ToString(), page.Width / 2, 20);
+                            gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfAlignTextColor)), (i + 1).ToString(), GetPdfTextLayout(page), 20);
                         }
                         index++;
                         Scanner.PdfSaveProgressValue = index / bitmapFrames.Count;
@@ -172,7 +177,7 @@ namespace TwainControl
                     }
                     if (Scanner.PdfPageNumberDraw)
                     {
-                        DrawText(gfx, XBrushes.Black, (i + 1).ToString(), page.Width / 2, 20);
+                        gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfAlignTextColor)), (i + 1).ToString(), GetPdfTextLayout(page), 20);
                     }
                     index++;
                     Scanner.PdfSaveProgressValue = index / imagefiles.Count;
@@ -241,7 +246,7 @@ namespace TwainControl
                 }
                 if (Scanner.PdfPageNumberDraw)
                 {
-                    DrawText(gfx, XBrushes.Black, "1", page.Width / 2, 20);
+                    gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfAlignTextColor)), "1", GetPdfTextLayout(page), 20);
                 }
                 if (Scanner.PasswordProtect)
                 {
@@ -357,6 +362,17 @@ namespace TwainControl
         {
             XFont font = new("Times New Roman", fontsize, XFontStyle.Regular, new XPdfFontOptions(PdfFontEncoding.Unicode));
             gfx.DrawString(item, font, xBrush, x, y);
+        }
+
+        private static double GetPdfTextLayout(PdfPage page)
+        {
+            return Scanner.Layout switch
+            {
+                PdfPageLayout.Left => 30,
+                PdfPageLayout.Middle => page.Width / 2,
+                PdfPageLayout.Right => page.Width - 30,
+                _ => 0,
+            };
         }
 
         private static void SetPaperSize(this Paper paper, PdfPage page)

@@ -16,10 +16,10 @@ namespace Extensions
 
         public GrowablePoissonDiskEffect()
         {
-            PixelShader = (new()
+            PixelShader = new()
             {
                 UriSource = new Uri("/Extensions;component/Shader/GrowablePoissonDiskEffect.ps", UriKind.Relative)
-            });
+            };
 
             UpdateShaderValue(InputProperty);
             UpdateShaderValue(DiskRadiusProperty);

@@ -466,6 +466,20 @@ namespace TwainControl
                     GC.Collect();
                 }
             }, parameter => true);
+
+            int cycleindex = 0;
+            CycleSelectedDocuments = new RelayCommand<object>(parameter =>
+            {
+                if (parameter is ListBox listBox)
+                {
+                    listBox.ScrollIntoView(Scanner?.Resimler?.Where(z => z.Seçili).ElementAtOrDefault(cycleindex));
+                    cycleindex++;
+                    if (cycleindex >= Scanner?.Resimler?.Count(z => z.Seçili))
+                    {
+                        cycleindex = 0;
+                    }
+                }
+            }, parameter => parameter is ListBox && Scanner?.Resimler?.Count(z => z.Seçili) > 0);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -550,6 +564,8 @@ namespace TwainControl
                 }
             }
         }
+
+        public ICommand CycleSelectedDocuments { get; }
 
         public int DecodeHeight
         {

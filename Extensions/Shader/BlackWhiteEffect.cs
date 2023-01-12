@@ -14,10 +14,10 @@ namespace Extensions
 
         public BlackWhiteEffect()
         {
-            PixelShader = (new()
+            PixelShader = new()
             {
                 UriSource = new Uri("/Extensions;component/Shader/BlackWhiteEffect.ps", UriKind.Relative)
-            });
+            };
 
             UpdateShaderValue(InputProperty);
             UpdateShaderValue(ThresholdProperty);

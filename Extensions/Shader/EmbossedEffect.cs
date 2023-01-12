@@ -16,10 +16,10 @@ namespace Extensions
 
         public EmbossedEffect()
         {
-            PixelShader = (new()
+            PixelShader = new()
             {
                 UriSource = new Uri("/Extensions;component/Shader/EmbossedEffect.ps", UriKind.Relative)
-            });
+            };
 
             UpdateShaderValue(InputProperty);
             UpdateShaderValue(EmbossedAmountProperty);
