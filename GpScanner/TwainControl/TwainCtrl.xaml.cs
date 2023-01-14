@@ -412,6 +412,32 @@ namespace TwainControl
                 }
             }, parameter => true);
 
+            LoadSinglePdfFile = new RelayCommand<object>(parameter =>
+            {
+                OpenFileDialog openFileDialog = new()
+                {
+                    Filter = "Pdf Dosyası (*.pdf)|*.pdf",
+                    Multiselect = false
+                };
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    SinglePdfFilePath = openFileDialog.FileName;
+                }
+            }, parameter => true);
+
+            AddSinglePdfPage = new RelayCommand<object>(parameter =>
+            {
+                if (parameter is ImageSource imageSource)
+                {
+                    BitmapFrame bitmapFrame = BitmapFrame.Create((BitmapSource)imageSource, ((BitmapSource)imageSource).Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Width * SelectedPaper.Height).BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg, Settings.Default.PreviewWidth));
+                    bitmapFrame.Freeze();
+                    ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
+                    Scanner?.Resimler.Add(scannedImage);
+                    bitmapFrame = null;
+                    GC.Collect();
+                }
+            }, parameter => parameter is ImageSource);
+
             SendMail = new RelayCommand<object>(parameter =>
             {
                 try
@@ -485,6 +511,8 @@ namespace TwainControl
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ICommand AddFromClipBoard { get; }
+
+        public ICommand AddSinglePdfPage { get; }
 
         public double AllImageRotationAngle
         {
@@ -654,6 +682,8 @@ namespace TwainControl
 
         public ICommand LoadImage { get; }
 
+        public ICommand LoadSinglePdfFile { get; }
+
         public string MailData
         {
             get => mailData;
@@ -788,6 +818,20 @@ namespace TwainControl
         }
 
         public ICommand SendMail { get; }
+
+        public string SinglePdfFilePath
+        {
+            get => singlePdfFilePath;
+
+            set
+            {
+                if (singlePdfFilePath != value)
+                {
+                    singlePdfFilePath = value;
+                    OnPropertyChanged(nameof(SinglePdfFilePath));
+                }
+            }
+        }
 
         public ICommand Tersiniİşaretle { get; }
 
@@ -1148,6 +1192,8 @@ namespace TwainControl
         private TwainWpf.TwainNative.Orientation selectedOrientation = TwainWpf.TwainNative.Orientation.Default;
 
         private Paper selectedPaper = new();
+
+        private string singlePdfFilePath;
 
         private Twain twain;
 

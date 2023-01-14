@@ -207,22 +207,22 @@ namespace TwainControl
                 skewedimage.Freeze();
                 if (image.PixelWidth < image.PixelHeight)
                 {
-                    bitmapFrame = BitmapFrame.Create(skewedimage, image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Width * paper.Height).BitmapSourceToBitmap().ToBitmapImage(System.Drawing.Imaging.ImageFormat.Jpeg, Settings.Default.PreviewWidth));
+                    bitmapFrame = BitmapFrame.Create(skewedimage, image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Width * paper.Height).BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg, Settings.Default.PreviewWidth));
                     bitmapFrame.Freeze();
                     return bitmapFrame;
                 }
-                bitmapFrame = BitmapFrame.Create(skewedimage, image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Height * paper.Width).BitmapSourceToBitmap().ToBitmapImage(System.Drawing.Imaging.ImageFormat.Jpeg, Settings.Default.PreviewWidth));
+                bitmapFrame = BitmapFrame.Create(skewedimage, image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Height * paper.Width).BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg, Settings.Default.PreviewWidth));
                 bitmapFrame.Freeze();
                 return bitmapFrame;
             }
 
             if (image.PixelWidth < image.PixelHeight)
             {
-                bitmapFrame = BitmapFrame.Create(image, image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Width * paper.Height).BitmapSourceToBitmap().ToBitmapImage(System.Drawing.Imaging.ImageFormat.Jpeg, Settings.Default.PreviewWidth));
+                bitmapFrame = BitmapFrame.Create(image, image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Width * paper.Height).BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg, Settings.Default.PreviewWidth));
                 bitmapFrame.Freeze();
                 return bitmapFrame;
             }
-            bitmapFrame = BitmapFrame.Create(image, image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Height * paper.Width).BitmapSourceToBitmap().ToBitmapImage(System.Drawing.Imaging.ImageFormat.Jpeg, Settings.Default.PreviewWidth));
+            bitmapFrame = BitmapFrame.Create(image, image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Height * paper.Width).BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg, Settings.Default.PreviewWidth));
             bitmapFrame.Freeze();
             return bitmapFrame;
         }

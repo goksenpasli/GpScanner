@@ -101,7 +101,7 @@ namespace TwainControl
                 {
                     _ = Directory.CreateDirectory(savefolder);
                 }
-                foreach (CroppedBitmap croppedBitmap in ToolBox.CropImageToList(Scanner.CroppedImage, Scanner.EnAdet, Scanner.BoyAdet))
+                foreach (CroppedBitmap croppedBitmap in CropImageToList(Scanner.CroppedImage, Scanner.EnAdet, Scanner.BoyAdet))
                 {
                     File.WriteAllBytes(savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "jpg"), croppedBitmap.ToTiffJpegByteArray(Format.Jpg));
                 }

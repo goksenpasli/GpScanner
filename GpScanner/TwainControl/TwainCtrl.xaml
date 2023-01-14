@@ -756,118 +756,139 @@
                             </DockPanel>
                         </Grid>
                     </GroupBox.Header>
-                    <ListBox x:Name="Lb"
-                        Extensions:DragDropExtension.ScrollOnDragDrop="True"
-                        d:ItemsSource="{d:SampleData ItemCount=5}"
-                        AllowDrop="True"
-                        Background="{StaticResource BorderBackground}"
-                        Drop="ListBox_Drop" IsSynchronizedWithCurrentItem="False"
-                        ItemsSource="{Binding Scanner.Resimler, Mode=OneWay}"
-                        PreviewMouseWheel="ListBox_PreviewMouseWheel"
-                        SelectedItem="{Binding SeçiliResim}"
-                        SelectionMode="Extended" VirtualizingPanel.CacheLength="3,3"
-                        VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                        VirtualizingPanel.ScrollUnit="Item" VirtualizingPanel.VirtualizationMode="Standard">
-                        <ListBox.InputBindings>
-                            <KeyBinding Key="A"
-                                Command="{Binding Tümünüİşaretle}"
-                                Modifiers="Ctrl" />
-                        </ListBox.InputBindings>
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="ListBoxItem">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Seçili}" Value="true">
-                                        <Setter Property="Background" Value="MediumSeaGreen" />
-                                        <Setter Property="IsSelected" Value="True" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate>
-                                            <StackPanel Background="{TemplateBinding Background}">
-                                                <TextBlock HorizontalAlignment="Center">
-                                                    <Run AllowDrop="True" Cursor="SizeAll" Drop="Run_Drop"
-                                                        FontFamily="Wingdings" FontSize="24" FontWeight="Bold"
-                                                        PreviewMouseMove="Run_PreviewMouseMove" Text="B">
-                                                        <Run.Style>
-                                                            <Style TargetType="Run">
-                                                                <Setter Property="Foreground" Value="Red" />
-                                                                <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding DragMoveStarted, RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}" Value="true">
-                                                                        <DataTrigger.EnterActions>
-                                                                            <BeginStoryboard x:Name="Sb">
-                                                                                <Storyboard RepeatBehavior="Forever">
-                                                                                    <ColorAnimation Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)" To="Blue" Duration="0:0:1" />
-                                                                                </Storyboard>
-                                                                            </BeginStoryboard>
-                                                                        </DataTrigger.EnterActions>
-                                                                    </DataTrigger>
-                                                                    <DataTrigger Binding="{Binding DragMoveStarted, RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}" Value="false">
-                                                                        <DataTrigger.EnterActions>
-                                                                            <RemoveStoryboard BeginStoryboardName="Sb" />
-                                                                        </DataTrigger.EnterActions>
-                                                                    </DataTrigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </Run.Style>
-                                                    </Run>
-                                                    <Hyperlink Command="{Binding ElementName=UserControl, Path=DataContext.Kaydet}"
-                                                        CommandParameter="{Binding Resim}"
-                                                        TextDecorations="None">
-                                                        <Image Width="24" Height="24">
-                                                            <Image.Source>
-                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                    <Binding Source="Shell32.dll" />
-                                                                    <Binding Source="6" />
-                                                                </MultiBinding>
-                                                            </Image.Source>
-                                                        </Image>
-                                                    </Hyperlink>
-                                                    <Hyperlink Command="{Binding ElementName=UserControl, Path=DataContext.ResimSil}"
-                                                        CommandParameter="{Binding Mode=OneWay}"
-                                                        FontFamily="Segoe UI Black" TextDecorations="None">
-                                                        <Image Width="24" Height="24">
-                                                            <Image.Source>
-                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                    <Binding Source="Shell32.dll" />
-                                                                    <Binding Source="131" />
-                                                                </MultiBinding>
-                                                            </Image.Source>
-                                                        </Image>
-                                                    </Hyperlink>
-                                                </TextBlock>
-                                                <Extensions:NumericUpDownControl VerticalAlignment="Center"
-                                                    LargeChange="1" Maximum="1" Minimum="-1"
-                                                    NumericUpdownTextBoxVisibility="Collapsed" Orientation="Horizontal" SmallChange="1"
-                                                    Value="{Binding RotationAngle}" />
-                                                <ToggleButton Width="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}"
-                                                    Height="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}"
-                                                    VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                                    Background="{x:Null}"
-                                                    BorderBrush="{x:Null}"
-                                                    IsChecked="{Binding Seçili}">
-                                                    <Viewbox>
-                                                        <local:ShadowedImage Width="{Binding Resim.Thumbnail.Width, Mode=OneWay}"
-                                                            Height="{Binding Resim.Thumbnail.Height, Mode=OneWay}"
-                                                            d:Height="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}"
-                                                            d:Source="/GpScanner;component/scanner.ico"
-                                                            d:Width="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}"
-                                                            ShowShadow="True"
-                                                            Source="{Binding Resim.Thumbnail, IsAsync=True, Mode=OneWay}" />
-                                                    </Viewbox>
-                                                </ToggleButton>
-                                            </StackPanel>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ListBox.ItemContainerStyle>
-                        <ListBox.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" SpacingMode="None" />
-                            </ItemsPanelTemplate>
-                        </ListBox.ItemsPanel>
-                    </ListBox>
+                    <TabControl TabStripPlacement="Left">
+                        <TabItem>
+                            <TabItem.Header>
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="19" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                            </TabItem.Header>
+                            <ListBox x:Name="Lb"
+                                Extensions:DragDropExtension.ScrollOnDragDrop="True"
+                                d:ItemsSource="{d:SampleData ItemCount=5}"
+                                AllowDrop="True"
+                                Background="{StaticResource BorderBackground}"
+                                Drop="ListBox_Drop" IsSynchronizedWithCurrentItem="False"
+                                ItemsSource="{Binding Scanner.Resimler, Mode=OneWay}"
+                                PreviewMouseWheel="ListBox_PreviewMouseWheel"
+                                SelectedItem="{Binding SeçiliResim}"
+                                SelectionMode="Extended" VirtualizingPanel.CacheLength="3,3"
+                                VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                                VirtualizingPanel.ScrollUnit="Item" VirtualizingPanel.VirtualizationMode="Standard">
+                                <ListBox.InputBindings>
+                                    <KeyBinding Key="A"
+                                        Command="{Binding Tümünüİşaretle}"
+                                        Modifiers="Ctrl" />
+                                </ListBox.InputBindings>
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Seçili}" Value="true">
+                                                <Setter Property="Background" Value="MediumSeaGreen" />
+                                                <Setter Property="IsSelected" Value="True" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate>
+                                                    <StackPanel Background="{TemplateBinding Background}">
+                                                        <TextBlock HorizontalAlignment="Center">
+                                                            <Run AllowDrop="True" Cursor="SizeAll" Drop="Run_Drop"
+                                                                FontFamily="Wingdings" FontSize="24" FontWeight="Bold"
+                                                                PreviewMouseMove="Run_PreviewMouseMove" Text="B">
+                                                                <Run.Style>
+                                                                    <Style TargetType="Run">
+                                                                        <Setter Property="Foreground" Value="Red" />
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding DragMoveStarted, RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}" Value="true">
+                                                                                <DataTrigger.EnterActions>
+                                                                                    <BeginStoryboard x:Name="Sb">
+                                                                                        <Storyboard RepeatBehavior="Forever">
+                                                                                            <ColorAnimation Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)" To="Blue" Duration="0:0:1" />
+                                                                                        </Storyboard>
+                                                                                    </BeginStoryboard>
+                                                                                </DataTrigger.EnterActions>
+                                                                            </DataTrigger>
+                                                                            <DataTrigger Binding="{Binding DragMoveStarted, RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}" Value="false">
+                                                                                <DataTrigger.EnterActions>
+                                                                                    <RemoveStoryboard BeginStoryboardName="Sb" />
+                                                                                </DataTrigger.EnterActions>
+                                                                            </DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </Run.Style>
+                                                            </Run>
+                                                            <Hyperlink Command="{Binding ElementName=UserControl, Path=DataContext.Kaydet}"
+                                                                CommandParameter="{Binding Resim}"
+                                                                TextDecorations="None">
+                                                                <Image Width="24" Height="24">
+                                                                    <Image.Source>
+                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                            <Binding Source="Shell32.dll" />
+                                                                            <Binding Source="6" />
+                                                                        </MultiBinding>
+                                                                    </Image.Source>
+                                                                </Image>
+                                                            </Hyperlink>
+                                                            <Hyperlink Command="{Binding ElementName=UserControl, Path=DataContext.ResimSil}"
+                                                                CommandParameter="{Binding Mode=OneWay}"
+                                                                FontFamily="Segoe UI Black" TextDecorations="None">
+                                                                <Image Width="24" Height="24">
+                                                                    <Image.Source>
+                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                            <Binding Source="Shell32.dll" />
+                                                                            <Binding Source="131" />
+                                                                        </MultiBinding>
+                                                                    </Image.Source>
+                                                                </Image>
+                                                            </Hyperlink>
+                                                        </TextBlock>
+                                                        <Extensions:NumericUpDownControl VerticalAlignment="Center"
+                                                            LargeChange="1" Maximum="1" Minimum="-1"
+                                                            NumericUpdownTextBoxVisibility="Collapsed" Orientation="Horizontal" SmallChange="1"
+                                                            Value="{Binding RotationAngle}" />
+                                                        <ToggleButton Width="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}"
+                                                            Height="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}"
+                                                            VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                                            Background="{x:Null}"
+                                                            BorderBrush="{x:Null}"
+                                                            IsChecked="{Binding Seçili}">
+                                                            <Viewbox>
+                                                                <local:ShadowedImage Width="{Binding Resim.Thumbnail.Width, Mode=OneWay}"
+                                                                    Height="{Binding Resim.Thumbnail.Height, Mode=OneWay}"
+                                                                    d:Height="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}"
+                                                                    d:Source="/GpScanner;component/scanner.ico"
+                                                                    d:Width="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}"
+                                                                    ShowShadow="True"
+                                                                    Source="{Binding Resim.Thumbnail, IsAsync=True, Mode=OneWay}" />
+                                                            </Viewbox>
+                                                        </ToggleButton>
+                                                    </StackPanel>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" SpacingMode="None" />
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                            </ListBox>
+                        </TabItem>
+                        <TabItem>
+                            <TabItem.Header>
+                                <Image Width="16" Height="16"
+                                    Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
+                            </TabItem.Header>
+                            <local:PdfImportViewerControl />
+                        </TabItem>
+                    </TabControl>
                 </GroupBox>
                 <UniformGrid Grid.Row="2"
                     Columns="2" Rows="2">
