@@ -89,6 +89,7 @@ namespace TwainControl
             src.Source = bitmapsource;
             src.DestinationFormat = PixelFormats.Bgra32;
             src.EndInit();
+            src.Freeze();
             Bitmap bitmap = new(src.PixelWidth, src.PixelHeight, PixelFormat.Format32bppArgb);
             BitmapData data = bitmap.LockBits(new Rectangle(System.Drawing.Point.Empty, bitmap.Size), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
             src.CopyPixels(Int32Rect.Empty, data.Scan0, data.Height * data.Stride, data.Stride);

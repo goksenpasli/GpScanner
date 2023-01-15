@@ -290,6 +290,7 @@ namespace TwainControl
                         OnPropertyChanged(nameof(Scanner.ApplyDataBaseOcr));
                     }
                     OnPropertyChanged(nameof(Scanner.Resimler));
+                    Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
                 }));
             }, parameter =>
             {
@@ -374,11 +375,7 @@ namespace TwainControl
 
             WebAdreseGit = new RelayCommand<object>(parameter => GotoPage(parameter as string), parameter => true);
 
-            OcrPage = new RelayCommand<object>(parameter =>
-            {
-                ImgData = Scanner.CroppedImage.ToTiffJpegByteArray(Format.Jpg);
-                OnPropertyChanged(nameof(ImgData));
-            }, parameter => Scanner?.CroppedImage is not null);
+            OcrPage = new RelayCommand<object>(parameter => ImgData = Scanner.CroppedImage.ToTiffJpegByteArray(Format.Jpg), parameter => Scanner?.CroppedImage is not null);
 
             PdfBirleştir = new RelayCommand<object>(parameter =>
             {
@@ -431,16 +428,18 @@ namespace TwainControl
 
             AddSinglePdfPage = new RelayCommand<object>(parameter =>
             {
-                if (parameter is ImageSource imageSource)
+                if (parameter is BitmapSource imageSource)
                 {
-                    BitmapFrame bitmapFrame = BitmapFrame.Create((BitmapSource)imageSource, ((BitmapSource)imageSource).Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Width * SelectedPaper.Height).BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg, Settings.Default.PreviewWidth));
+                    BitmapSource bitmapSource = imageSource.Width < imageSource.Height ? imageSource.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Width * SelectedPaper.Height) :
+                    imageSource.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Height * SelectedPaper.Width);
+                    BitmapFrame bitmapFrame = BitmapFrame.Create(imageSource, bitmapSource.BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg, Settings.Default.PreviewWidth));
                     bitmapFrame.Freeze();
                     ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
                     Scanner?.Resimler.Add(scannedImage);
                     bitmapFrame = null;
                     GC.Collect();
                 }
-            }, parameter => parameter is ImageSource);
+            }, parameter => parameter is BitmapSource);
 
             SendMail = new RelayCommand<object>(parameter =>
             {
@@ -598,6 +597,19 @@ namespace TwainControl
         }
 
         public ICommand CycleSelectedDocuments { get; }
+
+        public byte[] DataBaseTextData
+        {
+            get => dataBaseTextData; set
+
+            {
+                if (dataBaseTextData != value)
+                {
+                    dataBaseTextData = value;
+                    OnPropertyChanged(nameof(DataBaseTextData));
+                }
+            }
+        }
 
         public int DecodeHeight
         {
@@ -1159,6 +1171,8 @@ namespace TwainControl
 
         private CroppedBitmap croppedOcrBitmap;
 
+        private byte[] dataBaseTextData;
+
         private int decodeHeight;
 
         private bool disposedValue;
@@ -1399,7 +1413,10 @@ namespace TwainControl
             if (Scanner.ApplyDataBaseOcr)
             {
                 Tümünüİşaretle.Execute(null);
-                OnPropertyChanged(nameof(Scanner.ApplyDataBaseOcr));
+                foreach (ScannedImage scannedimage in Scanner.Resimler.Where(z => z.Seçili).ToList())
+                {
+                    DataBaseTextData = scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg);
+                }
             }
             if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
             {
@@ -1415,6 +1432,7 @@ namespace TwainControl
             }
 
             OnPropertyChanged(nameof(Scanner.Resimler));
+            SeçiliListeTemizle.Execute(null);
             twain.ScanningComplete -= Fastscan;
         }
 

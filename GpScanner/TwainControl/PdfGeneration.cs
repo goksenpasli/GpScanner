@@ -144,7 +144,10 @@ namespace TwainControl
                         Scanner.PdfSaveProgressValue = index / bitmapFrames.Count;
                     }
                     Uri uri = new("pack://application:,,,/TwainControl;component/Icons/okay.png", UriKind.Absolute);
-                    scannedimage.Resim = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(uri, 0);
+                    if (uri != null)
+                    {
+                        scannedimage.Resim = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(uri, 0);
+                    }
                     GC.Collect();
                 }
                 if (Scanner.PasswordProtect)
