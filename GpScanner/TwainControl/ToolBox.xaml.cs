@@ -80,10 +80,10 @@ namespace TwainControl
                 Scanner.BlueChart = ((BitmapSource)Scanner.CroppedImage).BitmapSourceToBitmap().GenerateHistogram(System.Windows.Media.Brushes.Blue);
             }, parameter => Scanner?.CroppedImage is not null);
 
-            DeskewImage = new RelayCommand<object>(parameter =>
+            DeskewImage = new RelayCommand<object>(async parameter =>
             {
                 double skewAngle = GetDeskewAngle(Scanner.CroppedImage, true);
-                Scanner.CroppedImage = Scanner.CroppedImage.RotateImage(skewAngle);
+                Scanner.CroppedImage = await Scanner.CroppedImage.RotateImageAsync(skewAngle);
             }, parameter => Scanner?.CroppedImage is not null);
 
             ApplyColorChange = new RelayCommand<object>(parameter => Scanner.CopyCroppedImage = Scanner.CroppedImage, parameter => Scanner?.CroppedImage is not null);
@@ -187,8 +187,7 @@ namespace TwainControl
         public static double GetDeskewAngle(ImageSource ımageSource, bool fast = false)
         {
             Deskew sk = new((BitmapSource)ımageSource);
-            double angle = -1 * sk.GetSkewAngle(fast);
-            return angle;
+            return (double)(-1 * sk.GetSkewAngle(fast));
         }
 
         public static void ResetCropMargin()

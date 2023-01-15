@@ -32,12 +32,12 @@ namespace GpScanner.ViewModel
                 PdfFilePath = DirectoryAllPdfFiles?.ElementAtOrDefault(Index);
             }, parameter => Index < DirectoryAllPdfFiles?.Count() - 1);
 
-            AddFileToControlPanel = new RelayCommand<object>(parameter =>
+            AddFileToControlPanel = new RelayCommand<object>(async parameter =>
             {
                 if (parameter is ImageSource imageSource)
                 {
                     MemoryStream ms = new(imageSource.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg));
-                    BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(ms, ToolBox.Paper);
+                    BitmapFrame bitmapFrame =await BitmapMethods.GenerateImageDocumentBitmapFrame(ms, ToolBox.Paper);
                     bitmapFrame.Freeze();
                     ScannedImage scannedImage = new() { Seçili = false, FilePath = PdfFilePath, Resim = bitmapFrame };
                     Scanner?.Resimler.Add(scannedImage);

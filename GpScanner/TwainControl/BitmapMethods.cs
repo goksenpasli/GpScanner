@@ -167,30 +167,7 @@ namespace TwainControl
             return null;
         }
 
-        public static BitmapFrame GenerateImageDocumentBitmapFrame(Uri item, int decodeheight, int defaultpictureresizeratio = 100)
-        {
-            BitmapImage image = new();
-            image.BeginInit();
-            image.CacheOption = BitmapCacheOption.None;
-            image.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.IgnoreImageCache | BitmapCreateOptions.DelayCreation;
-            image.UriSource = item;
-            image.EndInit();
-            image.Freeze();
-
-            BitmapImage thumbimage = new();
-            thumbimage.BeginInit();
-            thumbimage.DecodePixelHeight = decodeheight / 10;
-            thumbimage.CacheOption = BitmapCacheOption.None;
-            thumbimage.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.IgnoreImageCache | BitmapCreateOptions.DelayCreation;
-            thumbimage.UriSource = item;
-            thumbimage.EndInit();
-            thumbimage.Freeze();
-            BitmapFrame bitmapFrame = defaultpictureresizeratio != 100 ? BitmapFrame.Create(image.Resize(defaultpictureresizeratio / 100d), thumbimage) : BitmapFrame.Create(image, thumbimage);
-            bitmapFrame.Freeze();
-            return bitmapFrame;
-        }
-
-        public static BitmapFrame GenerateImageDocumentBitmapFrame(MemoryStream ms, Paper paper, bool deskew = false)
+        public static async Task<BitmapFrame> GenerateImageDocumentBitmapFrame(MemoryStream ms, Paper paper, bool deskew = false)
         {
             BitmapImage image = new();
             image.BeginInit();
@@ -203,7 +180,7 @@ namespace TwainControl
 
             if (deskew)
             {
-                RenderTargetBitmap skewedimage = image.RotateImage((double)ToolBox.GetDeskewAngle(image, true));
+                RenderTargetBitmap skewedimage = await image.RotateImageAsync((double)ToolBox.GetDeskewAngle(image, true));
                 skewedimage.Freeze();
                 if (image.PixelWidth < image.PixelHeight)
                 {
@@ -225,6 +202,32 @@ namespace TwainControl
             bitmapFrame = BitmapFrame.Create(image, image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Height * paper.Width).BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg, Settings.Default.PreviewWidth));
             bitmapFrame.Freeze();
             return bitmapFrame;
+        }
+
+        public static async Task<BitmapFrame> GenerateImageDocumentBitmapFrameAsync(Uri item, int decodeheight, int defaultpictureresizeratio = 100)
+        {
+            return await Task.Run(() =>
+            {
+                BitmapImage image = new();
+                image.BeginInit();
+                image.CacheOption = BitmapCacheOption.None;
+                image.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.IgnoreImageCache | BitmapCreateOptions.DelayCreation;
+                image.UriSource = item;
+                image.EndInit();
+                image.Freeze();
+
+                BitmapImage thumbimage = new();
+                thumbimage.BeginInit();
+                thumbimage.DecodePixelHeight = decodeheight / 10;
+                thumbimage.CacheOption = BitmapCacheOption.None;
+                thumbimage.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.IgnoreImageCache | BitmapCreateOptions.DelayCreation;
+                thumbimage.UriSource = item;
+                thumbimage.EndInit();
+                thumbimage.Freeze();
+                BitmapFrame bitmapFrame = defaultpictureresizeratio != 100 ? BitmapFrame.Create(image.Resize(defaultpictureresizeratio / 100d), thumbimage) : BitmapFrame.Create(image, thumbimage);
+                bitmapFrame.Freeze();
+                return bitmapFrame;
+            });
         }
 
         public static ObservableCollection<Paper> GetPapers()
@@ -303,22 +306,26 @@ namespace TwainControl
             return target;
         }
 
-        public static RenderTargetBitmap RotateImage(this ImageSource Source, double angle)
+        public static async Task<RenderTargetBitmap> RotateImageAsync(this ImageSource Source, double angle)
         {
             try
             {
-                DrawingVisual dv = new();
-                using (DrawingContext dc = dv.RenderOpen())
+                return await Task.Run(() =>
                 {
-                    dc.PushTransform(new RotateTransform(angle));
-                    dc.DrawImage(Source, new Rect(0, 0, ((BitmapSource)Source).PixelWidth, ((BitmapSource)Source).PixelHeight));
-                }
-                RenderTargetBitmap rtb = new(((BitmapSource)Source).PixelWidth, ((BitmapSource)Source).PixelHeight, 96, 96, PixelFormats.Default);
-                rtb.Render(dv);
-                rtb.Freeze();
-                Source = null;
-                dv = null;
-                return rtb;
+                    DrawingVisual dv = new();
+                    using (DrawingContext dc = dv.RenderOpen())
+                    {
+                        dc.PushTransform(new RotateTransform(angle));
+                        dc.DrawImage(Source, new Rect(0, 0, ((BitmapSource)Source).PixelWidth, ((BitmapSource)Source).PixelHeight));
+                        dc.Pop();
+                    }
+                    RenderTargetBitmap rtb = new(((BitmapSource)Source).PixelWidth, ((BitmapSource)Source).PixelHeight, 96, 96, PixelFormats.Default);
+                    rtb.Render(dv);
+                    rtb.Freeze();
+                    Source = null;
+                    dv = null;
+                    return rtb;
+                });
             }
             catch (Exception ex)
             {
@@ -327,14 +334,15 @@ namespace TwainControl
             }
         }
 
-        public static async Task<BitmapFrame> RotateImageAsync(this BitmapFrame bitmapFrame, double angle, double thumbresizeratio)
+        public static async Task<BitmapFrame> RotateImageAsync(this BitmapFrame bitmapFrame, double angle)
         {
             TransformedBitmap transformedBitmap = new(bitmapFrame, new RotateTransform(angle * 90));
+            TransformedBitmap transformedBitmapthumb = new(bitmapFrame.Thumbnail, new RotateTransform(angle * 90));
             transformedBitmap.Freeze();
-            return await Task.Run(async () =>
+            transformedBitmapthumb.Freeze();
+            return await Task.Run(() =>
             {
-                BitmapSource thumbnail = await transformedBitmap.ResizeAsync(thumbresizeratio);
-                BitmapFrame frame = BitmapFrame.Create(transformedBitmap, thumbnail);
+                BitmapFrame frame = BitmapFrame.Create(transformedBitmap, transformedBitmapthumb);
                 frame.Freeze();
                 return frame;
             });

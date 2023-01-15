@@ -177,7 +177,7 @@ namespace TwainControl
         private void CameraUserControl_Unloaded(object sender, System.Windows.RoutedEventArgs e)
         {
             Device?.Stop();
-            DetectQRCode=false;
+            DetectQRCode = false;
         }
     }
 }

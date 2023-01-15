@@ -1029,7 +1029,7 @@ namespace TwainControl
                             case ".gıf":
                             case ".bmp":
                                 {
-                                    BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(new Uri(item), decodeheight, Settings.Default.DefaultPictureResizeRatio);
+                                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(new Uri(item), decodeheight, Settings.Default.DefaultPictureResizeRatio);
                                     bitmapFrame.Freeze();
                                     uiContext.Send(_ =>
                                     {
@@ -1048,7 +1048,7 @@ namespace TwainControl
                                     {
                                         byte[] data = decoder.Frames[i].ToTiffJpegByteArray(Format.Jpg);
                                         MemoryStream ms = new(data);
-                                        BitmapFrame image = BitmapMethods.GenerateImageDocumentBitmapFrame(ms, SelectedPaper);
+                                        BitmapFrame image = await BitmapMethods.GenerateImageDocumentBitmapFrame(ms, SelectedPaper);
                                         image.Freeze();
                                         BitmapSource thumbimage = image.PixelWidth < image.PixelHeight ? image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Width * SelectedPaper.Height) : image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Height * SelectedPaper.Width);
                                         thumbimage.Freeze();
@@ -1089,7 +1089,7 @@ namespace TwainControl
                                             docPage = null;
                                         });
                                         MemoryStream memoryStream = new(data);
-                                        BitmapFrame image = BitmapMethods.GenerateImageDocumentBitmapFrame(memoryStream, SelectedPaper);
+                                        BitmapFrame image = await BitmapMethods.GenerateImageDocumentBitmapFrame(memoryStream, SelectedPaper);
                                         image.Freeze();
                                         BitmapSource thumbimage = image.PixelWidth < image.PixelHeight ? image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Width * SelectedPaper.Height) : image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Height * SelectedPaper.Width);
                                         thumbimage.Freeze();
@@ -1229,7 +1229,7 @@ namespace TwainControl
             double totalpagecount = await PdfViewer.PdfViewer.PdfPageCountAsync(filedata);
             for (int i = 1; i <= totalpagecount; i++)
             {
-                BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, (int)Settings.Default.ImgLoadResolution), SelectedPaper, Scanner.Deskew);
+                BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrame(await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, (int)Settings.Default.ImgLoadResolution), SelectedPaper, Scanner.Deskew);
                 bitmapFrame.Freeze();
                 uiContext.Send(_ =>
                 {
@@ -1248,14 +1248,14 @@ namespace TwainControl
             Scanner.CaretPosition = (sender as ButtonedTextBox)?.CaretIndex ?? 0;
         }
 
-        private void CameraUserControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private async void CameraUserControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (sender is CameraUserControl cameraUserControl)
             {
                 if (e.PropertyName is "ResimData" && cameraUserControl.ResimData is not null)
                 {
                     MemoryStream ms = new(cameraUserControl.ResimData);
-                    BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(ms, SelectedPaper);
+                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrame(ms, SelectedPaper);
                     bitmapFrame.Freeze();
                     Scanner.Resimler.Add(new ScannedImage() { Resim = bitmapFrame });
                     ms = null;
@@ -1444,7 +1444,7 @@ namespace TwainControl
             }
         }
 
-        private void ImgViewer_MouseMove(object sender, MouseEventArgs e)
+        private async void ImgViewer_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.OriginalSource is System.Windows.Controls.Image img && img.Parent is ScrollViewer scrollviewer)
             {
@@ -1541,7 +1541,7 @@ namespace TwainControl
                             if (ImgData is not null)
                             {
                                 MemoryStream ms = new(ImgData);
-                                BitmapFrame bitmapframe = BitmapMethods.GenerateImageDocumentBitmapFrame(ms, SelectedPaper);
+                                BitmapFrame bitmapframe = await BitmapMethods.GenerateImageDocumentBitmapFrame(ms, SelectedPaper);
                                 bitmapframe.Freeze();
                                 ScannedImage item = new() { Resim = bitmapframe };
                                 Scanner.Resimler.Add(item);
@@ -1725,7 +1725,7 @@ namespace TwainControl
             {
                 foreach (ScannedImage image in Scanner.Resimler.ToList())
                 {
-                    image.Resim = await image.Resim.RotateImageAsync(AllImageRotationAngle, 0.1);
+                    image.Resim = await image.Resim.RotateImageAsync(AllImageRotationAngle);
                 }
                 AllImageRotationAngle = 0;
             }
