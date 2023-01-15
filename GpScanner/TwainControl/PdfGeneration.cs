@@ -62,7 +62,7 @@ namespace TwainControl
             return outputDocument;
         }
 
-        public static PdfDocument GeneratePdf(this List<ScannedImage> bitmapFrames, Format format, Paper paper, int jpegquality = 80, List<ObservableCollection<OcrData>> ScannedText = null, int dpi = 120)
+        public static async Task<PdfDocument> GeneratePdf(this List<ScannedImage> bitmapFrames, Format format, Paper paper, int jpegquality = 80, List<ObservableCollection<OcrData>> ScannedText = null, int dpi = 120)
         {
             using PdfDocument document = new();
             double index = 0;
@@ -143,6 +143,9 @@ namespace TwainControl
                         index++;
                         Scanner.PdfSaveProgressValue = index / bitmapFrames.Count;
                     }
+                    Uri uri = new("pack://application:,,,/TwainControl;component/Icons/okay.png", UriKind.Absolute);
+                    scannedimage.Resim = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(uri, 0);
+                    GC.Collect();
                 }
                 if (Scanner.PasswordProtect)
                 {

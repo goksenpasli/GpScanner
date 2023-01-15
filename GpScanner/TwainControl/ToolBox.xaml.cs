@@ -117,7 +117,7 @@ namespace TwainControl
                 scannedImage = null;
             }, parameter => Scanner?.CroppedImage is not null);
 
-            SplitAllImage = new RelayCommand<object>(parameter =>
+            SplitAllImage = new RelayCommand<object>(async parameter =>
             {
                 string savefolder = $@"{PdfGeneration.GetSaveFolder()}\{Translation.GetResStringValue("SPLIT")}";
                 if (!Directory.Exists(savefolder))
@@ -125,11 +125,12 @@ namespace TwainControl
                     _ = Directory.CreateDirectory(savefolder);
                 }
                 List<ScannedImage> listcroppedimages = Scanner.Resimler.Where(z => z.Seçili).SelectMany(scannedimage => CropImageToList(scannedimage.Resim, 2, 1).Select(croppedBitmap => new ScannedImage { Resim = BitmapFrame.Create(croppedBitmap) })).ToList();
-                PdfDocument pdfdocument = listcroppedimages.GeneratePdf(Format.Jpg, null, 80, null);
+                PdfDocument pdfdocument = await listcroppedimages.GeneratePdf(Format.Jpg, null, 80, null);
                 pdfdocument.Save(savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "pdf"));
                 WebAdreseGit.Execute(savefolder);
                 listcroppedimages = null;
                 pdfdocument = null;
+                (DataContext as TwainCtrl)?.SeçiliListeTemizle.Execute(null);
             }, parameter => Scanner?.AutoSave == true && Scanner?.Resimler?.Count(z => z.Seçili) > 0);
         }
 

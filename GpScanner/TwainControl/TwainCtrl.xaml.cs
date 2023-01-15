@@ -223,15 +223,17 @@ namespace TwainControl
                 {
                     Filesavetask = Task.Run(async () =>
                     {
-                        List<ScannedImage> seçiliresimler = Scanner.Resimler.Where(z => z.Seçili).ToList();
+                        List<ScannedImage> seçiliresimler = Scanner?.Resimler?.Where(z => z.Seçili).ToList();
                         if (saveFileDialog.FilterIndex == 1)
                         {
                             await SavePdfImage(seçiliresimler, saveFileDialog.FileName, Scanner, SelectedPaper, false, (int)Settings.Default.ImgLoadResolution);
+                            Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
                             return;
                         }
                         if (saveFileDialog.FilterIndex == 2)
                         {
                             await SavePdfImage(seçiliresimler, saveFileDialog.FileName, Scanner, SelectedPaper, true, (int)Settings.Default.ImgLoadResolution);
+                            Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
                             return;
                         }
                         if (saveFileDialog.FilterIndex == 3)
@@ -242,6 +244,7 @@ namespace TwainControl
                             {
                                 File.WriteAllBytes(directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "jpg"), item.Resim.ToTiffJpegByteArray(Format.Jpg));
                             }
+                            Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
                         }
                         if (saveFileDialog.FilterIndex == 4)
                         {
@@ -254,6 +257,7 @@ namespace TwainControl
                             }
                             using FileStream stream = new(directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "tif"), FileMode.Create);
                             tifccittencoder.Save(stream);
+                            Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
                         }
                     });
                 }
@@ -951,10 +955,10 @@ namespace TwainControl
             }
             if (blackwhite)
             {
-                images.GeneratePdf(Format.Tiff, paper, Settings.Default.JpegQuality, scannedtext, dpi).Save(filename);
+                (await images.GeneratePdf(Format.Tiff, paper, Settings.Default.JpegQuality, scannedtext, dpi)).Save(filename);
                 return;
             }
-            images.GeneratePdf(Format.Jpg, paper, Settings.Default.JpegQuality, scannedtext, dpi).Save(filename);
+          (await images.GeneratePdf(Format.Jpg, paper, Settings.Default.JpegQuality, scannedtext, dpi)).Save(filename);
         }
 
         public static void SaveTifImage(BitmapFrame scannedImage, string filename)
@@ -1387,7 +1391,7 @@ namespace TwainControl
                                     : null;
         }
 
-        private void Fastscan(object sender, ScanningCompleteEventArgs e)
+        private async void Fastscan(object sender, ScanningCompleteEventArgs e)
         {
             OnPropertyChanged(nameof(Scanner.DetectPageSeperator));
             Scanner.PdfFilePath = PdfGeneration.GetPdfScanPath();
@@ -1399,11 +1403,11 @@ namespace TwainControl
             }
             if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
             {
-                Scanner.Resimler.ToList().GeneratePdf(Format.Tiff, SelectedPaper, Settings.Default.JpegQuality, null, (int)Settings.Default.Çözünürlük).Save(Scanner.PdfFilePath);
+                (await Scanner.Resimler.ToList().GeneratePdf(Format.Tiff, SelectedPaper, Settings.Default.JpegQuality, null, (int)Settings.Default.Çözünürlük)).Save(Scanner.PdfFilePath);
             }
             if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
             {
-                Scanner.Resimler.ToList().GeneratePdf(Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, null, (int)Settings.Default.Çözünürlük).Save(Scanner.PdfFilePath);
+                (await Scanner.Resimler.ToList().GeneratePdf(Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, null, (int)Settings.Default.Çözünürlük)).Save(Scanner.PdfFilePath);
             }
             if (Settings.Default.ShowFile)
             {
