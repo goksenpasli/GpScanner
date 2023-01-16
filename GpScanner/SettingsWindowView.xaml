@@ -217,7 +217,7 @@
                     </UniformGrid>
                 </GroupBox>
                 <GroupBox Grid.Row="4">
-                    <UniformGrid Columns="3" IsEnabled="{Binding Path=ArayüzEtkin, Source={x:Static twainctrl:ToolBox.Scanner}}">
+                    <UniformGrid Columns="3" IsEnabled="{Binding Path=SeçiliTarayıcı, Source={x:Static twainctrl:ToolBox.Scanner}, Converter={StaticResource NullableToBooleanConverter}}">
                         <Button Command="{Binding RegisterSti, Mode=OneWay}" IsEnabled="{Binding Source={x:Static viewmodel:GpScannerViewModel.IsAdministrator}}">
                             <StackPanel Orientation="Horizontal">
                                 <Canvas Width="32" Height="32">

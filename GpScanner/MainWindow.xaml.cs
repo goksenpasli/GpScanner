@@ -158,7 +158,7 @@ namespace GpScanner
                     ViewModel.ScannedText = await TwainCtrl.DataBaseTextData.OcrAsyc(Settings.Default.DefaultTtsLang);
                     if (ViewModel.ScannedText != null)
                     {
-                        ViewModel.ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = TwainCtrl.Scanner.PdfFilePath, FileContent = string.Join(" ", ViewModel.ScannedText.Select(z => z.Text)) });
+                        ViewModel.ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = TwainCtrl.Scanner.PdfFilePath, FileContent = string.Join(" ", ViewModel.ScannedText.Select(z => z.Text)), QrData = ViewModel.GetImageBarcodeResult(TwainCtrl?.DataBaseTextData)?.Text });
                     }
                     ViewModel.DatabaseSave.Execute(null);
                     TwainCtrl.DataBaseTextData = null;

@@ -168,7 +168,7 @@ namespace GpScanner.ViewModel
                     }
                     byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfviewer.PdfFilePath);
                     MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfviewer.Sayfa, (int)Twainsettings.Settings.Default.ImgLoadResolution);
-                    BitmapFrame bitmapFrame =await BitmapMethods.GenerateImageDocumentBitmapFrame(ms, twainCtrl.SelectedPaper, false);
+                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrame(ms, twainCtrl.SelectedPaper, false);
                     bitmapFrame.Freeze();
                     ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
                     twainCtrl.Scanner?.Resimler.Add(scannedImage);
@@ -1103,18 +1103,22 @@ namespace GpScanner.ViewModel
 
         public Result GetImageBarcodeResult(byte[] imgbyte)
         {
-            using MemoryStream ms = new(imgbyte);
-            BitmapImage bitmapImage = new();
-            bitmapImage.BeginInit();
-            bitmapImage.StreamSource = ms;
-            bitmapImage.EndInit();
-            bitmapImage.Freeze();
-            BarcodeReader reader = new();
-            reader.Options.TryHarder = true;
-            Result result = reader.Decode(bitmapImage);
-            imgbyte = null;
-            bitmapImage = null;
-            return result;
+            if (imgbyte != null)
+            {
+                using MemoryStream ms = new(imgbyte);
+                BitmapImage bitmapImage = new();
+                bitmapImage.BeginInit();
+                bitmapImage.StreamSource = ms;
+                bitmapImage.EndInit();
+                bitmapImage.Freeze();
+                BarcodeReader reader = new();
+                reader.Options.TryHarder = true;
+                Result result = reader.Decode(bitmapImage);
+                imgbyte = null;
+                bitmapImage = null;
+                return result;
+            }
+            return null;
         }
 
         public Result[] GetMultipleImageBarcodeResult(BitmapFrame bitmapFrame)
@@ -1130,10 +1134,14 @@ namespace GpScanner.ViewModel
 
         public string GetPatchCodeResult(string barcode)
         {
-            IEnumerable<string> patchcodes = Settings.Default.PatchCodes.Cast<string>();
-            return patchcodes.Any(z => z.Split('|')[1] == barcode)
-                ? (patchcodes?.FirstOrDefault(z => z.Split('|')[1] == barcode)?.Split('|')[0])
-                : "Tarama";
+            if (!string.IsNullOrWhiteSpace(barcode))
+            {
+                IEnumerable<string> patchcodes = Settings.Default.PatchCodes.Cast<string>();
+                return patchcodes.Any(z => z.Split('|')[1] == barcode)
+                    ? (patchcodes?.FirstOrDefault(z => z.Split('|')[1] == barcode)?.Split('|')[0])
+                    : "Tarama";
+            }
+            return string.Empty;
         }
 
         public ObservableCollection<Scanner> GetScannerFileData()

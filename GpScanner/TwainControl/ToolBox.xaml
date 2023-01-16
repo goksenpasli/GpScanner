@@ -168,7 +168,7 @@
                             </Button.Content>
                         </Button>
                         <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXT}" />
-                        <TextBox Text="{Binding Scanner.Watermark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBox MaxWidth="200" Text="{Binding Scanner.Watermark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXTSIZE}" />
                         <Slider AutoToolTipPlacement="TopLeft" Maximum="1024" Minimum="12"
                             SmallChange="1"

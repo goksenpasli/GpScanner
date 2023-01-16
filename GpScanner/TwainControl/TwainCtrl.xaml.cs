@@ -9,7 +9,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -224,40 +223,44 @@ namespace TwainControl
                     Filesavetask = Task.Run(async () =>
                     {
                         List<ScannedImage> seçiliresimler = Scanner?.Resimler?.Where(z => z.Seçili).ToList();
-                        if (saveFileDialog.FilterIndex == 1)
+                        switch (saveFileDialog.FilterIndex)
                         {
-                            await SavePdfImage(seçiliresimler, saveFileDialog.FileName, Scanner, SelectedPaper, false, (int)Settings.Default.ImgLoadResolution);
-                            Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
-                            return;
-                        }
-                        if (saveFileDialog.FilterIndex == 2)
-                        {
-                            await SavePdfImage(seçiliresimler, saveFileDialog.FileName, Scanner, SelectedPaper, true, (int)Settings.Default.ImgLoadResolution);
-                            Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
-                            return;
-                        }
-                        if (saveFileDialog.FilterIndex == 3)
-                        {
-                            string filename = saveFileDialog.FileName;
-                            string directory = Path.GetDirectoryName(filename);
-                            foreach (ScannedImage item in seçiliresimler)
-                            {
-                                File.WriteAllBytes(directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "jpg"), item.Resim.ToTiffJpegByteArray(Format.Jpg));
-                            }
-                            Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
-                        }
-                        if (saveFileDialog.FilterIndex == 4)
-                        {
-                            string filename = saveFileDialog.FileName;
-                            string directory = Path.GetDirectoryName(filename);
-                            TiffBitmapEncoder tifccittencoder = new() { Compression = TiffCompressOption.Ccitt4 };
-                            foreach (ScannedImage scannedimage in seçiliresimler)
-                            {
-                                tifccittencoder.Frames.Add(scannedimage.Resim);
-                            }
-                            using FileStream stream = new(directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "tif"), FileMode.Create);
-                            tifccittencoder.Save(stream);
-                            Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
+                            case 1:
+                                await SavePdfImage(seçiliresimler, saveFileDialog.FileName, Scanner, SelectedPaper, false, (int)Settings.Default.ImgLoadResolution);
+                                Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
+                                return;
+
+                            case 2:
+                                await SavePdfImage(seçiliresimler, saveFileDialog.FileName, Scanner, SelectedPaper, true, (int)Settings.Default.ImgLoadResolution);
+                                Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
+                                return;
+
+                            case 3:
+                                {
+                                    string filename = saveFileDialog.FileName;
+                                    string directory = Path.GetDirectoryName(filename);
+                                    foreach (ScannedImage item in seçiliresimler)
+                                    {
+                                        File.WriteAllBytes(directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "jpg"), item.Resim.ToTiffJpegByteArray(Format.Jpg));
+                                    }
+                                    Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
+                                    return;
+                                }
+
+                            case 4:
+                                {
+                                    string filename = saveFileDialog.FileName;
+                                    string directory = Path.GetDirectoryName(filename);
+                                    TiffBitmapEncoder tifccittencoder = new() { Compression = TiffCompressOption.Ccitt4 };
+                                    foreach (ScannedImage scannedimage in seçiliresimler)
+                                    {
+                                        tifccittencoder.Frames.Add(scannedimage.Resim);
+                                    }
+                                    using FileStream stream = new(directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "tif"), FileMode.Create);
+                                    tifccittencoder.Save(stream);
+                                    Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
+                                    break;
+                                }
                         }
                     });
                 }
@@ -271,10 +274,17 @@ namespace TwainControl
             {
                 Filesavetask = Task.Run(async () =>
                 {
-                    if (Scanner.ApplyDataBaseOcr)
+                    Dispatcher.Invoke(() =>
                     {
-                        Scanner.PdfFilePath = PdfGeneration.GetPdfScanPath();
-                    }
+                        if (Scanner.ApplyDataBaseOcr)
+                        {
+                            Scanner.PdfFilePath = PdfGeneration.GetPdfScanPath();
+                            foreach (ScannedImage scannedimage in Scanner.Resimler.Where(z => z.Seçili).ToList())
+                            {
+                                DataBaseTextData = scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg);
+                            }
+                        }
+                    });
                     if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
                     {
                         await SavePdfImage(Scanner.Resimler.Where(z => z.Seçili).ToList(), PdfGeneration.GetPdfScanPath(), Scanner, SelectedPaper, true, (int)Settings.Default.ImgLoadResolution);
@@ -285,12 +295,8 @@ namespace TwainControl
                     }
                 }).ContinueWith((_) => Dispatcher.Invoke(() =>
                 {
-                    if (Scanner.ApplyDataBaseOcr)
-                    {
-                        OnPropertyChanged(nameof(Scanner.ApplyDataBaseOcr));
-                    }
                     OnPropertyChanged(nameof(Scanner.Resimler));
-                    Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
+                    SeçiliListeTemizle.Execute(null);
                 }));
             }, parameter =>
             {
@@ -455,14 +461,19 @@ namespace TwainControl
 
             AddFromClipBoard = new RelayCommand<object>(parameter =>
             {
-                BitmapSource image = Clipboard.GetImage();
-                if (image != null)
+                System.Windows.Forms.IDataObject clipboardData = System.Windows.Forms.Clipboard.GetDataObject();
+                if (clipboardData?.GetDataPresent(System.Windows.Forms.DataFormats.Bitmap) == true)
                 {
-                    BitmapFrame bitmapFrame = GenerateBitmapFrame(image, SelectedPaper);
-                    bitmapFrame.Freeze();
-                    ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
-                    Scanner?.Resimler.Add(scannedImage);
-                    scannedImage = null;
+                    using Bitmap bitmap = (Bitmap)clipboardData.GetData(System.Windows.Forms.DataFormats.Bitmap);
+                    BitmapSource image = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                    if (image != null)
+                    {
+                        BitmapFrame bitmapFrame = GenerateBitmapFrame(image, SelectedPaper);
+                        bitmapFrame.Freeze();
+                        ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
+                        Scanner?.Resimler.Add(scannedImage);
+                        scannedImage = null;
+                    }
                 }
             }, parameter => true);
 
@@ -1003,7 +1014,6 @@ namespace TwainControl
 
         public void AddFiles(string[] filenames, int decodeheight)
         {
-            SynchronizationContext uiContext = SynchronizationContext.Current;
             fileloadtask = Task.Run(async () =>
             {
                 try
@@ -1017,21 +1027,21 @@ namespace TwainControl
                                     byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(item);
                                     if (filedata.IsValidPdfFile())
                                     {
-                                        await AddPdfFile(filedata, uiContext, item);
+                                        await AddPdfFile(filedata, item);
                                     }
                                     filedata = null;
                                     break;
                                 }
                             case ".eyp":
                                 {
-                                    byte[] filedata = null;
-                                    string eyppdfpath = EypMainPdfExtract(item);
-                                    filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(eyppdfpath);
-                                    if (filedata.IsValidPdfFile())
+                                    byte[] mainfiledata = null;
+                                    string eypfilepath = EypMainPdfExtract(item);
+                                    mainfiledata = await PdfViewer.PdfViewer.ReadAllFileAsync(eypfilepath);
+                                    if (mainfiledata.IsValidPdfFile())
                                     {
-                                        await AddPdfFile(filedata, uiContext, item);
+                                        await AddPdfFile(mainfiledata, item);
                                     }
-                                    filedata = null;
+                                    AddFiles(EypAttachmentPdfExtract(item), DecodeHeight);
                                     break;
                                 }
 
@@ -1047,7 +1057,7 @@ namespace TwainControl
                                 {
                                     BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(new Uri(item), decodeheight, Settings.Default.DefaultPictureResizeRatio);
                                     bitmapFrame.Freeze();
-                                    uiContext.Send(_ =>
+                                    Dispatcher.Invoke(() =>
                                     {
                                         ScannedImage img = new() { Resim = bitmapFrame, FilePath = item };
                                         Scanner?.Resimler.Add(img);
@@ -1070,12 +1080,7 @@ namespace TwainControl
                                         thumbimage.Freeze();
                                         BitmapFrame bitmapFrame = BitmapFrame.Create(image, thumbimage);
                                         bitmapFrame.Freeze();
-                                        uiContext.Send(_ =>
-                                        {
-                                            ScannedImage img = new() { Resim = bitmapFrame, FilePath = item };
-                                            Scanner?.Resimler.Add(img);
-                                            img = null;
-                                        }, null);
+                                        Dispatcher.Invoke(() => { ScannedImage img = new() { Resim = bitmapFrame, FilePath = item }; Scanner?.Resimler.Add(img); img = null; }, null);
                                         bitmapFrame = null;
                                         image = null;
                                         data = null;
@@ -1111,12 +1116,7 @@ namespace TwainControl
                                         thumbimage.Freeze();
                                         BitmapFrame bitmapFrame = BitmapFrame.Create(image, thumbimage);
                                         bitmapFrame.Freeze();
-                                        uiContext.Send(_ =>
-                                        {
-                                            ScannedImage img = new() { Resim = bitmapFrame, FilePath = item };
-                                            Scanner?.Resimler.Add(img);
-                                            img = null;
-                                        }, null);
+                                        Dispatcher.Invoke(() => { ScannedImage img = new() { Resim = bitmapFrame, FilePath = item }; Scanner?.Resimler.Add(img); img = null; }, null);
                                         bitmapFrame = null;
                                         image = null;
                                         thumbimage = null;
@@ -1223,6 +1223,29 @@ namespace TwainControl
 
         private double width;
 
+        private static string[] EypAttachmentPdfExtract(string eypfilepath)
+        {
+            using ZipArchive archive = ZipFile.Open(eypfilepath, ZipArchiveMode.Read);
+            if (archive != null)
+            {
+                List<string> pdfattachmentfiles = new();
+                ZipArchiveEntry üstveri = archive.Entries.FirstOrDefault(entry => entry.Name == "Ustveri.xml");
+                string source = Path.GetTempPath() + Guid.NewGuid() + ".xml";
+                üstveri?.ExtractToFile(source, true);
+                XDocument xdoc = XDocument.Load(source);
+                XNamespace ns = "urn:dpt:eyazisma:schema:xsd:Tipler-2";
+                foreach (var ek in xdoc.Root?.Elements(ns + "Ekler").Descendants(ns + "DosyaAdi"))
+                {
+                    ZipArchiveEntry data = archive.Entries.FirstOrDefault(entry => entry.Name == ek.Value);
+                    string destinationFileName = Path.GetTempPath() + Guid.NewGuid() + Path.GetExtension(ek.Value.ToLower());
+                    data.ExtractToFile(destinationFileName, true);
+                    pdfattachmentfiles.Add(destinationFileName);
+                }
+                return pdfattachmentfiles.ToArray();
+            }
+            return null;
+        }
+
         private static string EypMainPdfExtract(string eypfilepath)
         {
             using ZipArchive archive = ZipFile.Open(eypfilepath, ZipArchiveMode.Read);
@@ -1242,14 +1265,14 @@ namespace TwainControl
             return null;
         }
 
-        private async Task AddPdfFile(byte[] filedata, SynchronizationContext uiContext, string filepath = null)
+        private async Task AddPdfFile(byte[] filedata, string filepath = null)
         {
             double totalpagecount = await PdfViewer.PdfViewer.PdfPageCountAsync(filedata);
             for (int i = 1; i <= totalpagecount; i++)
             {
                 BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrame(await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, (int)Settings.Default.ImgLoadResolution), SelectedPaper, Scanner.Deskew);
                 bitmapFrame.Freeze();
-                uiContext.Send(_ =>
+                Dispatcher.Invoke(() =>
                 {
                     ScannedImage item = new() { Resim = bitmapFrame, FilePath = filepath };
                     Scanner?.Resimler.Add(item);
@@ -1668,7 +1691,7 @@ namespace TwainControl
 
         private void ScanCommonSettings()
         {
-            Scanner.ArayüzEtkin = false;
+            //Scanner.ArayüzEtkin = false;
             _settings = DefaultScanSettings();
             _settings.Rotation = new RotationSettings { AutomaticBorderDetection = true, AutomaticRotate = true, AutomaticDeskew = true };
         }
@@ -1705,7 +1728,7 @@ namespace TwainControl
 
         private void Twain_ScanningComplete(object sender, ScanningCompleteEventArgs e)
         {
-            Scanner.ArayüzEtkin = true;
+            //Scanner.ArayüzEtkin = true;
         }
 
         private void Twain_TransferImage(object sender, TransferImageEventArgs e)
@@ -1768,7 +1791,7 @@ namespace TwainControl
             }
             catch (Exception)
             {
-                Scanner.ArayüzEtkin = false;
+                //Scanner.ArayüzEtkin = false;
             }
         }
     }
