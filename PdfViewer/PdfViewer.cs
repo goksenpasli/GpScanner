@@ -462,7 +462,6 @@ namespace PdfViewer
             {
                 if (pdffilestream?.Length > 0)
                 {
-                    SynchronizationContext uiContext = SynchronizationContext.Current;
                     await Task.Run(async () =>
                     {
                         int pagecount = await PdfPageCountAsync(pdffilestream);
@@ -472,7 +471,7 @@ namespace PdfViewer
                             if (!cancellationToken.IsCancellationRequested)
                             {
                                 BitmapImage bitmapImage = await ConvertToImgAsync(pdffilestream, i, dpi);
-                                uiContext.Send(_ => Thumbnails?.Add(new ThumbClass() { Page = i, Thumb = bitmapImage }), null);
+                                Dispatcher.Invoke(() => Thumbnails?.Add(new ThumbClass() { Page = i, Thumb = bitmapImage }), null);
                                 bitmapImage = null;
                             }
                         }

@@ -63,21 +63,34 @@ namespace TwainControl
 
             ScanImage = new RelayCommand<object>(parameter =>
             {
-                GC.Collect();
-                ScanCommonSettings();
-                twain.SelectSource(Scanner.SeçiliTarayıcı);
-                twain.StartScanning(_settings);
+                try
+                {
+                    GC.Collect();
+                    ScanCommonSettings();
+                    twain.SelectSource(Scanner.SeçiliTarayıcı);
+                    twain.StartScanning(_settings);
+                }
+                catch (Exception ex)
+                {
+                    _ = MessageBox.Show(ex.InnerException.Message);
+                }
             }, parameter => !Environment.Is64BitProcess && Scanner?.Tarayıcılar?.Count > 0);
 
             FastScanImage = new RelayCommand<object>(parameter =>
             {
-                GC.Collect();
-                ScanCommonSettings();
-                Scanner.Resimler = new ObservableCollection<ScannedImage>();
-                twain.SelectSource(Scanner.SeçiliTarayıcı);
-                twain.StartScanning(_settings);
-
-                twain.ScanningComplete += Fastscan;
+                try
+                {
+                    GC.Collect();
+                    ScanCommonSettings();
+                    Scanner.Resimler = new ObservableCollection<ScannedImage>();
+                    twain.SelectSource(Scanner.SeçiliTarayıcı);
+                    twain.StartScanning(_settings);
+                    twain.ScanningComplete += Fastscan;
+                }
+                catch (Exception ex)
+                {
+                    _ = MessageBox.Show(ex.InnerException.Message);
+                }
             }, parameter => !Environment.Is64BitProcess && Scanner?.AutoSave == true && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0 && Scanner?.Tarayıcılar?.Count > 0);
 
             ResimSil = new RelayCommand<object>(parameter =>
@@ -1057,7 +1070,7 @@ namespace TwainControl
                                 {
                                     BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(new Uri(item), decodeheight, Settings.Default.DefaultPictureResizeRatio);
                                     bitmapFrame.Freeze();
-                                    Dispatcher.Invoke(() =>
+                                    _ = Dispatcher.Invoke(() =>
                                     {
                                         ScannedImage img = new() { Resim = bitmapFrame, FilePath = item };
                                         Scanner?.Resimler.Add(img);
@@ -1080,7 +1093,7 @@ namespace TwainControl
                                         thumbimage.Freeze();
                                         BitmapFrame bitmapFrame = BitmapFrame.Create(image, thumbimage);
                                         bitmapFrame.Freeze();
-                                        Dispatcher.Invoke(() => { ScannedImage img = new() { Resim = bitmapFrame, FilePath = item }; Scanner?.Resimler.Add(img); img = null; }, null);
+                                        _ = Dispatcher.Invoke(() => { ScannedImage img = new() { Resim = bitmapFrame, FilePath = item }; Scanner?.Resimler.Add(img); img = null; }, null);
                                         bitmapFrame = null;
                                         image = null;
                                         data = null;
@@ -1116,7 +1129,7 @@ namespace TwainControl
                                         thumbimage.Freeze();
                                         BitmapFrame bitmapFrame = BitmapFrame.Create(image, thumbimage);
                                         bitmapFrame.Freeze();
-                                        Dispatcher.Invoke(() => { ScannedImage img = new() { Resim = bitmapFrame, FilePath = item }; Scanner?.Resimler.Add(img); img = null; }, null);
+                                        _ = Dispatcher.Invoke(() => { ScannedImage img = new() { Resim = bitmapFrame, FilePath = item }; Scanner?.Resimler.Add(img); img = null; }, null);
                                         bitmapFrame = null;
                                         image = null;
                                         thumbimage = null;
@@ -1234,7 +1247,7 @@ namespace TwainControl
                 üstveri?.ExtractToFile(source, true);
                 XDocument xdoc = XDocument.Load(source);
                 XNamespace ns = "urn:dpt:eyazisma:schema:xsd:Tipler-2";
-                foreach (var ek in xdoc.Root?.Elements(ns + "Ekler").Descendants(ns + "DosyaAdi"))
+                foreach (XElement ek in xdoc.Root?.Elements(ns + "Ekler").Descendants(ns + "DosyaAdi"))
                 {
                     ZipArchiveEntry data = archive.Entries.FirstOrDefault(entry => entry.Name == ek.Value);
                     string destinationFileName = Path.GetTempPath() + Guid.NewGuid() + Path.GetExtension(ek.Value.ToLower());
@@ -1272,7 +1285,7 @@ namespace TwainControl
             {
                 BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrame(await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, (int)Settings.Default.ImgLoadResolution), SelectedPaper, Scanner.Deskew);
                 bitmapFrame.Freeze();
-                Dispatcher.Invoke(() =>
+                _ = Dispatcher.Invoke(() =>
                 {
                     ScannedImage item = new() { Resim = bitmapFrame, FilePath = filepath };
                     Scanner?.Resimler.Add(item);
@@ -1789,9 +1802,9 @@ namespace TwainControl
                 twain.TransferImage += Twain_TransferImage;
                 twain.ScanningComplete += Twain_ScanningComplete;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //Scanner.ArayüzEtkin = false;
+                _ = MessageBox.Show(ex.InnerException.Message);
             }
         }
     }
