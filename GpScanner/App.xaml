@@ -280,7 +280,6 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <StackPanel Margin="2" Orientation="Horizontal">
@@ -339,16 +338,8 @@
                             </Button.Content>
                         </Button>
                     </StackPanel>
-                    <TextBlock Grid.Row="1"
-                        Width="{Binding ElementName=PdfVwr, Path=Width}"
-                        TextTrimming="CharacterEllipsis" TextWrapping="Wrap"
-                        ToolTip="{Binding Mode=OneWay}">
-                        <Hyperlink Command="{Binding DataContext.OpenOriginalFile, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding Mode=OneWay}">
-                            <Run Text="{Binding Mode=OneWay, Converter={StaticResource FileNameExtractConverter}}" />
-                        </Hyperlink>
-                    </TextBlock>
                     <PdfViewer:PdfViewer x:Name="PdfVwr"
-                        Grid.Row="2"
+                        Grid.Row="1"
                         AllowDrop="True" AutoFitContent="True"
                         Dpi="{Binding DefaultThumbNailDpi, Source={x:Static properties:Settings.Default}}"
                         OpenButtonVisibility="Collapsed"

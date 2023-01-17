@@ -53,6 +53,18 @@ namespace GpScanner
             }
         }
 
+        private void ContentControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (DataContext is GpScannerViewModel gpScannerViewModel && sender is ContentControl contentControl)
+            {
+                string filepath = contentControl.Content.ToString();
+                if (gpScannerViewModel.OpenOriginalFile.CanExecute(filepath))
+                {
+                    gpScannerViewModel.OpenOriginalFile.Execute(filepath);
+                }
+            }
+        }
+
         private void GridSplitter_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (DataContext is GpScannerViewModel ViewModel)
