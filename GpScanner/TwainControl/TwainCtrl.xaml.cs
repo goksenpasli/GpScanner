@@ -1791,6 +1791,10 @@ namespace TwainControl
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+            {
+                return;
+            }
             try
             {
                 twain = new Twain(new WindowMessageHook(Window.GetWindow(Parent)));
