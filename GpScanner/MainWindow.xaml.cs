@@ -55,9 +55,9 @@ namespace GpScanner
 
         private void ContentControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (DataContext is GpScannerViewModel gpScannerViewModel && sender is ContentControl contentControl)
+            if (DataContext is GpScannerViewModel gpScannerViewModel && e.MouseDevice.DirectlyOver is Image image)
             {
-                string filepath = contentControl.Content.ToString();
+                string filepath = image.DataContext.ToString();
                 if (gpScannerViewModel.OpenOriginalFile.CanExecute(filepath))
                 {
                     gpScannerViewModel.OpenOriginalFile.Execute(filepath);

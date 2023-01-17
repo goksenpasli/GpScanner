@@ -332,11 +332,7 @@
                                                                 d:Width="64"
                                                                 Content="{Binding FileName, IsAsync=True, Mode=OneWay}"
                                                                 ContentTemplateSelector="{StaticResource ThumbViewerSelector}"
-                                                                MouseDoubleClick="ContentControl_MouseDoubleClick" >
-                                                                <ContentControl.Triggers>
-                                                                    <EventTrigger RoutedEvent="MouseDoubleClick" />
-                                                                </ContentControl.Triggers>
-                                                            </ContentControl>
+                                                                MouseDoubleClick="ContentControl_MouseDoubleClick" />
                                                         </Grid>
                                                     </Border>
                                                 </CheckBox>
