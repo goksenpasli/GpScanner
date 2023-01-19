@@ -1795,7 +1795,6 @@ namespace TwainControl
                 }
                 catch (Exception)
                 {
-                   // _ = MessageBox.Show(ex.InnerException.Message);
                 }
             }
         }

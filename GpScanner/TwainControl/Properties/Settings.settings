@@ -37,7 +37,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="ImgLoadResolution" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">120</Value>
+      <Value Profile="(Default)">200</Value>
     </Setting>
     <Setting Name="JpegQuality" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">80</Value>

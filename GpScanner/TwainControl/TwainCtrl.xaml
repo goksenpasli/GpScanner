@@ -144,7 +144,9 @@
                                 </Hyperlink>
                             </TextBlock>
                         </GroupBox.Header>
-                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                            IsEnabled="{Binding Scanner.SeçiliTarayıcı, Mode=OneWay, Converter={StaticResource NullableToBooleanConverter}}"
+                            VerticalScrollBarVisibility="Auto">
                             <StackPanel VerticalAlignment="Top">
                                 <StackPanel.Resources>
                                     <Style BasedOn="{StaticResource {x:Type CheckBox}}" TargetType="{x:Type CheckBox}">
