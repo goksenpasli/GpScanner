@@ -63,34 +63,20 @@ namespace TwainControl
 
             ScanImage = new RelayCommand<object>(parameter =>
             {
-                try
-                {
-                    GC.Collect();
-                    ScanCommonSettings();
-                    twain.SelectSource(Scanner.SeçiliTarayıcı);
-                    twain.StartScanning(_settings);
-                }
-                catch (Exception ex)
-                {
-                    _ = MessageBox.Show(ex.InnerException.Message);
-                }
+                GC.Collect();
+                ScanCommonSettings();
+                twain.SelectSource(Scanner.SeçiliTarayıcı);
+                twain.StartScanning(_settings);
             }, parameter => !Environment.Is64BitProcess && Scanner?.Tarayıcılar?.Count > 0);
 
             FastScanImage = new RelayCommand<object>(parameter =>
             {
-                try
-                {
-                    GC.Collect();
-                    ScanCommonSettings();
-                    Scanner.Resimler = new ObservableCollection<ScannedImage>();
-                    twain.SelectSource(Scanner.SeçiliTarayıcı);
-                    twain.StartScanning(_settings);
-                    twain.ScanningComplete += Fastscan;
-                }
-                catch (Exception ex)
-                {
-                    _ = MessageBox.Show(ex.InnerException.Message);
-                }
+                GC.Collect();
+                ScanCommonSettings();
+                Scanner.Resimler = new ObservableCollection<ScannedImage>();
+                twain.SelectSource(Scanner.SeçiliTarayıcı);
+                twain.StartScanning(_settings);
+                twain.ScanningComplete += Fastscan;
             }, parameter => !Environment.Is64BitProcess && Scanner?.AutoSave == true && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0 && Scanner?.Tarayıcılar?.Count > 0);
 
             ResimSil = new RelayCommand<object>(parameter =>
@@ -1704,7 +1690,7 @@ namespace TwainControl
 
         private void ScanCommonSettings()
         {
-            //Scanner.ArayüzEtkin = false;
+            Scanner.ArayüzEtkin = false;
             _settings = DefaultScanSettings();
             _settings.Rotation = new RotationSettings { AutomaticBorderDetection = true, AutomaticRotate = true, AutomaticDeskew = true };
         }
@@ -1741,7 +1727,7 @@ namespace TwainControl
 
         private void Twain_ScanningComplete(object sender, ScanningCompleteEventArgs e)
         {
-            //Scanner.ArayüzEtkin = true;
+            Scanner.ArayüzEtkin = true;
         }
 
         private void Twain_TransferImage(object sender, TransferImageEventArgs e)
@@ -1791,24 +1777,23 @@ namespace TwainControl
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+            if (!DesignerProperties.GetIsInDesignMode(this))
             {
-                return;
-            }
-            try
-            {
-                twain = new Twain(new WindowMessageHook(Window.GetWindow(Parent)));
-                Scanner.Tarayıcılar = twain.SourceNames;
-                if (Scanner.Tarayıcılar?.Count > 0)
+                try
                 {
-                    Scanner.SeçiliTarayıcı = Scanner.Tarayıcılar[0];
+                    twain = new Twain(new WindowMessageHook(Window.GetWindow(Parent)));
+                    Scanner.Tarayıcılar = twain.SourceNames;
+                    if (Scanner.Tarayıcılar?.Count > 0)
+                    {
+                        Scanner.SeçiliTarayıcı = Scanner.Tarayıcılar[0];
+                    }
+                    twain.TransferImage += Twain_TransferImage;
+                    twain.ScanningComplete += Twain_ScanningComplete;
                 }
-                twain.TransferImage += Twain_TransferImage;
-                twain.ScanningComplete += Twain_ScanningComplete;
-            }
-            catch (Exception ex)
-            {
-                _ = MessageBox.Show(ex.InnerException.Message);
+                catch (Exception ex)
+                {
+                    _ = MessageBox.Show(ex.InnerException.Message);
+                }
             }
         }
     }

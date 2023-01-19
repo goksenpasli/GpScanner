@@ -55,7 +55,7 @@ namespace GpScanner
 
         private void ContentControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (DataContext is GpScannerViewModel gpScannerViewModel && e.MouseDevice.DirectlyOver is Image image)
+            if (DataContext is GpScannerViewModel gpScannerViewModel && e.LeftButton is MouseButtonState.Pressed && e.MouseDevice.DirectlyOver is Image image)
             {
                 string filepath = image.DataContext.ToString();
                 if (gpScannerViewModel.OpenOriginalFile.CanExecute(filepath))
@@ -217,6 +217,7 @@ namespace GpScanner
                 _ = MessageBox.Show("Bazı Görevler Çalışıyor Bitmesini Bekleyin.");
                 e.Cancel = true;
             }
+            GpScannerViewModel.BackupDataXmlFile();
             StillImageHelper.KillServer();
         }
     }

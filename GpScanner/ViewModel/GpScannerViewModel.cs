@@ -1035,6 +1035,15 @@ namespace GpScanner.ViewModel
             }
         }
 
+        public static void BackupDataXmlFile()
+        {
+            FileInfo fi = new(Settings.Default.DatabaseFile);
+            if (File.Exists(fi.FullName) && fi.Length > 0)
+            {
+                File.Copy(fi.FullName, fi.FullName + DateTime.Today.DayOfWeek + ".bak", true);
+            }
+        }
+
         public static ObservableCollection<Data> DataYükle()
         {
             if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))

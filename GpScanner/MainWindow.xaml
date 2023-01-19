@@ -296,7 +296,7 @@
                                                                 <RowDefinition />
                                                             </Grid.RowDefinitions>
                                                             <Extensions:ContentToggleButton Grid.Row="0"
-                                                                Margin="1"
+                                                                Margin="1" HorizontalContentAlignment="Stretch"
                                                                 Command="{Binding DataContext.ReadOcrDataFile, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                                                                 CommandParameter="{Binding Mode=OneWay}">
                                                                 <Extensions:ContentToggleButton.Style>
@@ -319,14 +319,18 @@
                                                                         </Style.Triggers>
                                                                     </Style>
                                                                 </Extensions:ContentToggleButton.Style>
-                                                                <Image Width="16" Height="16">
-                                                                    <Image.Source>
-                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                            <Binding Source="Shell32.dll" />
-                                                                            <Binding Source="70" />
-                                                                        </MultiBinding>
-                                                                    </Image.Source>
-                                                                </Image>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <Image Width="16" Height="16">
+                                                                        <Image.Source>
+                                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                                <Binding Source="Shell32.dll" />
+                                                                                <Binding Source="70" />
+                                                                            </MultiBinding>
+                                                                        </Image.Source>
+                                                                    </Image>
+                                                                    <TextBlock Text="{Binding Mode=OneWay, Path=FileName, Converter={StaticResource FileNameExtractConverter}}"
+                                                                        TextTrimming="CharacterEllipsis" TextWrapping="Wrap" />
+                                                                </StackPanel>
                                                             </Extensions:ContentToggleButton>
                                                             <ContentControl Grid.Row="1"
                                                                 d:Width="64"
