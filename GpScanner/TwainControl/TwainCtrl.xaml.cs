@@ -1793,9 +1793,9 @@ namespace TwainControl
                     twain.TransferImage += Twain_TransferImage;
                     twain.ScanningComplete += Twain_ScanningComplete;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    _ = MessageBox.Show(ex.InnerException.Message);
+                   // _ = MessageBox.Show(ex.InnerException.Message);
                 }
             }
         }
