@@ -1236,9 +1236,12 @@ namespace TwainControl
                 foreach (XElement ek in xdoc.Root?.Elements(ns + "Ekler").Descendants(ns + "DosyaAdi"))
                 {
                     ZipArchiveEntry data = archive.Entries.FirstOrDefault(entry => entry.Name == ek.Value);
-                    string destinationFileName = Path.GetTempPath() + Guid.NewGuid() + Path.GetExtension(ek.Value.ToLower());
-                    data.ExtractToFile(destinationFileName, true);
-                    pdfattachmentfiles.Add(destinationFileName);
+                    if (data != null)
+                    {
+                        string destinationFileName = Path.GetTempPath() + Guid.NewGuid() + Path.GetExtension(ek.Value.ToLower());
+                        data.ExtractToFile(destinationFileName, true);
+                        pdfattachmentfiles.Add(destinationFileName);
+                    }
                 }
                 return pdfattachmentfiles.ToArray();
             }
