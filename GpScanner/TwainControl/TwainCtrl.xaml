@@ -137,12 +137,29 @@
                     </Expander.Header>
                     <GroupBox Grid.Row="1" IsEnabled="{Binding Scanner.ArayüzEtkin}">
                         <GroupBox.Header>
-                            <TextBlock HorizontalAlignment="Center"
-                                d:Text="AutoFolder" FontWeight="Bold">
-                                <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="{Binding AutoFolder, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
-                                    <Run Text="{Binding Scanner.LocalizedPath, Mode=OneWay}" />
-                                </Hyperlink>
-                            </TextBlock>
+                            <UniformGrid Columns="2">
+                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                                    d:Text="AutoFolder" FontWeight="Bold">
+                                    <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="{Binding AutoFolder, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
+                                        <Run Text="{Binding Scanner.LocalizedPath, Mode=OneWay}" />
+                                    </Hyperlink>
+                                </TextBlock>
+                                <Grid VerticalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Margin="0,0,2,0" VerticalAlignment="Center"
+                                        Text="DPI" />
+                                    <Slider Grid.Column="1"
+                                        AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="600"
+                                        Minimum="72" SmallChange="1"
+                                        Style="{StaticResource Slider}"
+                                        Ticks="72,96,120,150,200,300,450,600"
+                                        ToolTip="{local:Loc RES}"
+                                        Value="{Binding Çözünürlük, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                                </Grid>
+                            </UniformGrid>
                         </GroupBox.Header>
                         <ScrollViewer HorizontalScrollBarVisibility="Auto"
                             IsEnabled="{Binding Scanner.SeçiliTarayıcı, Mode=OneWay, Converter={StaticResource NullableToBooleanConverter}}"
@@ -155,22 +172,6 @@
                                     </Style>
                                 </StackPanel.Resources>
                                 <StackPanel>
-                                    <Grid VerticalAlignment="Center">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Margin="0,0,2,0" VerticalAlignment="Center"
-                                            Text="DPI" />
-                                        <Slider Grid.Column="1"
-                                            AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="600"
-                                            Minimum="72" SmallChange="1"
-                                            Style="{StaticResource Slider}"
-                                            Ticks="72,96,120,150,200,300,450,600"
-                                            ToolTip="{local:Loc RES}"
-                                            Value="{Binding Çözünürlük, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                                    </Grid>
-                                    <Separator />
                                     <StackPanel Orientation="Horizontal">
                                         <ToggleButton Background="{x:Null}" IsChecked="{Binding Adf, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                                             <ToggleButton.Style>
@@ -749,6 +750,7 @@
                                     </ScrollViewer>
                                     <Separator />
                                     <Extensions:NumericUpDownControl VerticalAlignment="Center"
+                                        BorderBrush="Cyan"
                                         IsEnabled="{Binding ElementName=BtnClearAll, Path=IsEnabled}"
                                         LargeChange="1" Maximum="1" Minimum="-1"
                                         NumericUpdownTextBoxVisibility="Collapsed" Orientation="Horizontal" SmallChange="1"

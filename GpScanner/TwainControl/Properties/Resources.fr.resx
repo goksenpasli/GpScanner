@@ -462,6 +462,9 @@ AJOUTER</value>
   <data name="TAG" xml:space="preserve">
     <value>ÉTIQUETTE</value>
   </data>
+  <data name="TASKSRUNNING" xml:space="preserve">
+    <value>Certaines tâches sont en cours d'exécution Attendez qu'elles se terminent.</value>
+  </data>
   <data name="TESSERACT" xml:space="preserve">
     <value>TESSERACT</value>
   </data>
@@ -485,6 +488,9 @@ AJOUTER</value>
   </data>
   <data name="TRANSLATE" xml:space="preserve">
     <value>TRADUCTION</value>
+  </data>
+  <data name="TRANSLATEPENDING" xml:space="preserve">
+    <value>Le processus est en cours. Attendez qu'il se termine.</value>
   </data>
   <data name="TRIMIMAGE" xml:space="preserve">
     <value>GARNITURE OFFICIELLE</value>

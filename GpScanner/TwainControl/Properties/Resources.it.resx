@@ -462,6 +462,9 @@ INSERISCI</value>
   <data name="TAG" xml:space="preserve">
     <value>ETICHETTA</value>
   </data>
+  <data name="TASKSRUNNING" xml:space="preserve">
+    <value>Alcune attività sono in esecuzione Attendi che finisca.</value>
+  </data>
   <data name="TESSERACT" xml:space="preserve">
     <value>TESSERATTO</value>
   </data>
@@ -485,6 +488,9 @@ INSERISCI</value>
   </data>
   <data name="TRANSLATE" xml:space="preserve">
     <value>TRADUZIONE</value>
+  </data>
+  <data name="TRANSLATEPENDING" xml:space="preserve">
+    <value>Il processo è in corso. Aspetta che finisca.</value>
   </data>
   <data name="TRIMIMAGE" xml:space="preserve">
     <value>ALLESTIMENTO UFFICIALE</value>

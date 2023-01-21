@@ -423,7 +423,7 @@ namespace PdfViewer
             return 0;
         }
 
-        public static void PrintImageSource(ImageSource Source, int Dpi = 300)
+        public static void PrintImageSource(ImageSource Source, int Dpi = 300, bool resize = true)
         {
             PrintDialog pd = new();
             DrawingVisual dv = new();
@@ -431,11 +431,19 @@ namespace PdfViewer
             {
                 using (DrawingContext dc = dv.RenderOpen())
                 {
-                    BitmapSource bs = Source.Width > Source.Height
-                        ? ((BitmapSource)Source)?.Resize((int)pd.PrintableAreaHeight, (int)pd.PrintableAreaWidth, 90, Dpi, Dpi)
-                        : ((BitmapSource)Source)?.Resize((int)pd.PrintableAreaWidth, (int)pd.PrintableAreaHeight, 0, Dpi, Dpi);
-                    bs.Freeze();
-                    dc.DrawImage(bs, new Rect(0, 0, pd.PrintableAreaWidth, pd.PrintableAreaHeight));
+                    BitmapSource bs;
+                    if (resize)
+                    {
+                        bs = Source.Width > Source.Height ? ((BitmapSource)Source)?.Resize((int)pd.PrintableAreaHeight, (int)pd.PrintableAreaWidth, 90, Dpi, Dpi) : ((BitmapSource)Source)?.Resize((int)pd.PrintableAreaWidth, (int)pd.PrintableAreaHeight, 0, Dpi, Dpi);
+                        bs.Freeze();
+                        dc.DrawImage(bs, new Rect(0, 0, pd.PrintableAreaWidth, pd.PrintableAreaHeight));
+                    }
+                    else
+                    {
+                        bs = (BitmapSource)Source;
+                        bs.Freeze();
+                        dc.DrawImage(bs, new Rect(0, 0, pd.PrintableAreaWidth, pd.PrintableAreaHeight));
+                    }
                 }
                 pd.PrintVisual(dv, "");
             }
@@ -471,7 +479,7 @@ namespace PdfViewer
                             if (!cancellationToken.IsCancellationRequested)
                             {
                                 BitmapImage bitmapImage = await ConvertToImgAsync(pdffilestream, i, dpi);
-                                Dispatcher.Invoke(() => Thumbnails?.Add(new ThumbClass() { Page = i, Thumb = bitmapImage }), null);
+                                _ = Dispatcher.Invoke(() => Thumbnails?.Add(new ThumbClass() { Page = i, Thumb = bitmapImage }), null);
                                 bitmapImage = null;
                             }
                         }

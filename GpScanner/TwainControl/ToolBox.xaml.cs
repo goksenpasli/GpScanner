@@ -32,13 +32,14 @@ namespace TwainControl
             {
                 if (TwainCtrl.Filesavetask?.IsCompleted == false)
                 {
-                    _ = MessageBox.Show("İşlem Devam Ediyor. Bitmesini Bekleyin.");
+                    _ = MessageBox.Show(Translation.GetResStringValue("TRANSLATEPENDING"));
                     return;
                 }
                 SaveFileDialog saveFileDialog = new()
                 {
                     Filter = "Tif Resmi (*.tif)|*.tif|Jpg Resmi (*.jpg)|*.jpg|Pdf Dosyası (*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf|Xps Dosyası (*.xps)|*.xps",
-                    FileName = Scanner.FileName
+                    FileName = Scanner.FileName,
+                    FilterIndex = 3
                 };
                 if (saveFileDialog.ShowDialog() == true)
                 {

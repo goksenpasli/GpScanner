@@ -292,7 +292,7 @@
                                                         BorderBrush="Black" BorderThickness="1">
                                                         <Grid>
                                                             <Grid.RowDefinitions>
-                                                                <RowDefinition Height="19.2" />
+                                                                <RowDefinition Height="Auto" />
                                                                 <RowDefinition />
                                                             </Grid.RowDefinitions>
                                                             <Extensions:ContentToggleButton Grid.Row="0"
@@ -320,14 +320,21 @@
                                                                     </Style>
                                                                 </Extensions:ContentToggleButton.Style>
                                                                 <StackPanel Orientation="Horizontal">
-                                                                    <Image Width="16" Height="16">
-                                                                        <Image.Source>
-                                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                                <Binding Source="Shell32.dll" />
-                                                                                <Binding Source="70" />
-                                                                            </MultiBinding>
-                                                                        </Image.Source>
-                                                                    </Image>
+                                                                    <ItemsControl MaxHeight="120" ItemsSource="{Binding QrData}">
+                                                                        <ItemsControl.Template>
+                                                                            <ControlTemplate>
+                                                                                <ScrollViewer Padding="{TemplateBinding Padding}"
+                                                                                    CanContentScroll="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                                                                                    <ItemsPresenter />
+                                                                                </ScrollViewer>
+                                                                            </ControlTemplate>
+                                                                        </ItemsControl.Template>
+                                                                        <ItemsControl.ItemTemplate>
+                                                                            <DataTemplate>
+                                                                                <Image Source="{Binding Mode=OneWay, Converter={StaticResource StringToQrBitmapImageConverter}}" />
+                                                                            </DataTemplate>
+                                                                        </ItemsControl.ItemTemplate>
+                                                                    </ItemsControl>
                                                                     <TextBlock Text="{Binding Mode=OneWay, Path=FileName, Converter={StaticResource FileNameExtractConverter}}"
                                                                         TextTrimming="CharacterEllipsis" TextWrapping="Wrap" />
                                                                 </StackPanel>

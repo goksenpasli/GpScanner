@@ -107,13 +107,14 @@ namespace TwainControl
                 {
                     if (Filesavetask?.IsCompleted == false)
                     {
-                        _ = MessageBox.Show("İşlem Devam Ediyor. Bitmesini Bekleyin.");
+                        _ = MessageBox.Show(Translation.GetResStringValue("TRANSLATEPENDING"));
                         return;
                     }
                     SaveFileDialog saveFileDialog = new()
                     {
                         Filter = "Tif Resmi (*.tif)|*.tif|Jpg Resmi (*.jpg)|*.jpg|Pdf Dosyası (*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf|Xps Dosyası (*.xps)|*.xps",
-                        FileName = Scanner.SaveFileName
+                        FileName = Scanner.SaveFileName,
+                        FilterIndex = 3,
                     };
                     if (saveFileDialog.ShowDialog() == true)
                     {
@@ -209,7 +210,7 @@ namespace TwainControl
             {
                 if (Filesavetask?.IsCompleted == false)
                 {
-                    _ = MessageBox.Show("İşlem Devam Ediyor. Bitmesini Bekleyin.");
+                    _ = MessageBox.Show(Translation.GetResStringValue("TRANSLATEPENDING"));
                     return;
                 }
                 SaveFileDialog saveFileDialog = new()
@@ -403,7 +404,7 @@ namespace TwainControl
             {
                 if (fileloadtask?.IsCompleted == false)
                 {
-                    _ = MessageBox.Show("İşlem Devam Ediyor. Bitmesini Bekleyin.");
+                    _ = MessageBox.Show(Translation.GetResStringValue("TRANSLATEPENDING"));
                     return;
                 }
                 OpenFileDialog openFileDialog = new()
@@ -1620,7 +1621,7 @@ namespace TwainControl
         {
             if (fileloadtask?.IsCompleted == false)
             {
-                _ = MessageBox.Show(Application.Current.MainWindow, "İşlem Devam Ediyor. Bitmesini Bekleyin.");
+                _ = MessageBox.Show(Application.Current.MainWindow, Translation.GetResStringValue("TRANSLATEPENDING"));
                 return;
             }
             string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
@@ -1693,7 +1694,7 @@ namespace TwainControl
 
         private void ScanCommonSettings()
         {
-            Scanner.ArayüzEtkin = false;
+            //Scanner.ArayüzEtkin = false;
             _settings = DefaultScanSettings();
             _settings.Rotation = new RotationSettings { AutomaticBorderDetection = true, AutomaticRotate = true, AutomaticDeskew = true };
         }
@@ -1730,7 +1731,7 @@ namespace TwainControl
 
         private void Twain_ScanningComplete(object sender, ScanningCompleteEventArgs e)
         {
-            Scanner.ArayüzEtkin = true;
+            //Scanner.ArayüzEtkin = true;
         }
 
         private void Twain_TransferImage(object sender, TransferImageEventArgs e)
@@ -1770,6 +1771,15 @@ namespace TwainControl
             }
             if (e.PropertyName is "AllImageRotationAngle" && AllImageRotationAngle != 0)
             {
+                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                {
+                    foreach (ScannedImage image in Scanner.Resimler.Where(z => z.Seçili).ToList())
+                    {
+                        image.Resim = await image.Resim.RotateImageAsync(AllImageRotationAngle);
+                    }
+                    AllImageRotationAngle = 0;
+                    return;
+                }
                 foreach (ScannedImage image in Scanner.Resimler.ToList())
                 {
                     image.Resim = await image.Resim.RotateImageAsync(AllImageRotationAngle);

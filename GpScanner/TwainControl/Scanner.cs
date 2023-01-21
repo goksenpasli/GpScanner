@@ -550,6 +550,20 @@ namespace TwainControl
             }
         }
 
+        public IEnumerable<string> QrData
+        {
+            get => qrData;
+
+            set
+            {
+                if (qrData != value)
+                {
+                    qrData = value;
+                    OnPropertyChanged(nameof(QrData));
+                }
+            }
+        }
+
         public ObservableCollection<Chart> RedChart
         {
             get => redChart;
@@ -939,6 +953,8 @@ namespace TwainControl
         private string profileName;
 
         private TaskbarItemProgressState progressState = TaskbarItemProgressState.None;
+
+        private IEnumerable<string> qrData;
 
         private ObservableCollection<Chart> redChart;
 

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using GpScanner.ViewModel;
+using System.Windows.Threading;
 
 namespace GpScanner
 {
@@ -14,6 +15,9 @@ namespace GpScanner
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+        #if !DEBUG
+            Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
+        #endif
             foreach (string arg in e.Args)
             {
                 if (arg.StartsWith(StillImageHelper.DEVICE_PREFIX, StringComparison.InvariantCultureIgnoreCase))
@@ -38,6 +42,15 @@ namespace GpScanner
                     }
                 }
             }
+        }
+
+        private void Current_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            using EventLog eventLog = new("GPSCANNER");
+            eventLog.Source = "GPSCANNER";
+            eventLog.WriteEntry(e.Exception.Message, EventLogEntryType.Error, 101, 1);
+            eventLog.WriteEntry(e.Exception.StackTrace, EventLogEntryType.Error, 101, 1);
+            e.Handled = true;
         }
     }
 }

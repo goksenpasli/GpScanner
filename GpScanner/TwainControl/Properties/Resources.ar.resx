@@ -462,6 +462,9 @@
   <data name="TAG" xml:space="preserve">
     <value>بطاقة شعار</value>
   </data>
+  <data name="TASKSRUNNING" xml:space="preserve">
+    <value>بعض المهام قيد التشغيل ، انتظر حتى تنتهي.</value>
+  </data>
   <data name="TESSERACT" xml:space="preserve">
     <value>تسيراكت</value>
   </data>
@@ -485,6 +488,9 @@
   </data>
   <data name="TRANSLATE" xml:space="preserve">
     <value>ترجمة</value>
+  </data>
+  <data name="TRANSLATEPENDING" xml:space="preserve">
+    <value>العملية جارية. انتظر حتى النهاية.</value>
   </data>
   <data name="TRIMIMAGE" xml:space="preserve">
     <value>الهيكل الرسمي</value>

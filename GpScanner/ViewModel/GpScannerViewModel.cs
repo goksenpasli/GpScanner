@@ -117,7 +117,6 @@ namespace GpScanner.ViewModel
             {
                 if (parameter is TwainCtrl twainCtrl)
                 {
-                    Ocr.Ocr.ocrcancellationToken = new CancellationTokenSource();
                     byte[] imgdata = twainCtrl.SeçiliResim.Resim.ToTiffJpegByteArray(Format.Jpg);
                     OcrIsBusy = true;
                     ScannedText = await imgdata.OcrAsyc(Settings.Default.DefaultTtsLang);
@@ -131,7 +130,6 @@ namespace GpScanner.ViewModel
                     if (result != null)
                     {
                         BarcodeContent = result.Text;
-                        BarcodePosition = result.ResultPoints;
                         BarcodeList.Add(BarcodeContent);
                     }
                     imgdata = null;
@@ -461,9 +459,13 @@ namespace GpScanner.ViewModel
             {
                 if (parameter is Scanner scanner)
                 {
-                    scanner.FileOcrContent = string.Join(" ", DataYükle()?.Where(z => z.FileName == scanner.FileName).Select(z => z.FileContent));
+                    IEnumerable<Data> data = DataYükle()?.Where(z => z.FileName == scanner.FileName);
+                    scanner.FileOcrContent = string.Join(" ", data.Select(z => z.FileContent));
+                    scanner.QrData = data.Select(z => z.QrData);
                 }
-            }, parameter => parameter is Scanner scanner && !string.IsNullOrWhiteSpace(string.Join(" ", DataYükle()?.Where(z => z.FileName == scanner.FileName).Select(z => z.FileContent))));
+            }, parameter => true);
+
+            PrintImage = new RelayCommand<object>(parameter => PdfViewer.PdfViewer.PrintImageSource(parameter as ImageSource, 300, false), parameter => parameter is ImageSource);
         }
 
         public static event EventHandler<PropertyChangedEventArgs> StaticPropertyChanged;
@@ -841,6 +843,8 @@ namespace GpScanner.ViewModel
             }
         }
 
+        public ICommand PrintImage { get; }
+
         public Brush ProgressBarForegroundBrush
         {
             get => progressBarForegroundBrush;
@@ -1058,22 +1062,26 @@ namespace GpScanner.ViewModel
             return new ObservableCollection<Data>();
         }
 
-        public static WriteableBitmap GenerateQr(string text, int width = 80, int height = 80)
+        public static WriteableBitmap GenerateQr(string text, int width = 120, int height = 120)
         {
-            BarcodeWriter barcodeWriter = new()
+            if (!string.IsNullOrWhiteSpace(text))
             {
-                Format = BarcodeFormat.QR_CODE,
-                Renderer = new BitmapRenderer()
-            };
-            EncodingOptions encodingOptions = new()
-            {
-                Width = width,
-                Height = height,
-                Margin = 0
-            };
-            encodingOptions.Hints.Add(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
-            barcodeWriter.Options = encodingOptions;
-            return barcodeWriter.WriteAsWriteableBitmap(text);
+                BarcodeWriter barcodeWriter = new()
+                {
+                    Format = BarcodeFormat.QR_CODE,
+                    Renderer = new BitmapRenderer()
+                };
+                EncodingOptions encodingOptions = new()
+                {
+                    Width = width,
+                    Height = height,
+                    Margin = 0
+                };
+                encodingOptions.Hints.Add(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
+                barcodeWriter.Options = encodingOptions;
+                return barcodeWriter.WriteAsWriteableBitmap(text);
+            }
+            return null;
         }
 
         public static Result GetImageBarcodeResult(BitmapFrame bitmapFrame)

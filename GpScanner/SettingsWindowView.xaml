@@ -129,40 +129,83 @@
                         IsEnabled="{Binding AnyDataExists}" />
                 </UniformGrid>
                 <GroupBox Grid.Row="2">
-                    <UniformGrid Columns="2">
-                        <UniformGrid Columns="2" Rows="4">
-                            <CheckBox VerticalAlignment="Center"
-                                Content="{twainctrl:Loc QRDETECT}"
-                                IsChecked="{Binding DetectBarCode}" />
-                            <CheckBox VerticalAlignment="Center"
-                                Content="{twainctrl:Loc SEPERATOR}"
-                                IsChecked="{Binding DetectPageSeperator}"
-                                IsEnabled="{Binding DetectBarCode}" />
-                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                                Text="{twainctrl:Loc FILENAME}" />
-                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                                Text="{twainctrl:Loc TAG}" />
-                            <ComboBox IsEnabled="{Binding DetectPageSeperator}"
-                                ItemsSource="{Binding PatchCodes, Source={x:Static properties:Settings.Default}}"
-                                SelectedItem="{Binding PatchProfileName}">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <UniformGrid Columns="2">
-                                            <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay}" />
-                                            <Button Background="Transparent" BorderBrush="Transparent"
-                                                Command="{Binding DataContext.RemovePatchProfile, RelativeSource={RelativeSource AncestorType=ComboBox}}"
-                                                CommandParameter="{Binding Mode=OneWay}"
-                                                Content="{twainctrl:Loc DELETE}"
-                                                FontWeight="Bold" Foreground="Red" />
-                                        </UniformGrid>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
-                            <TextBox IsEnabled="{Binding DetectPageSeperator}" Text="{Binding PatchFileName, UpdateSourceTrigger=PropertyChanged}" />
-                            <TextBox IsEnabled="{Binding DetectPageSeperator}" Text="{Binding PatchTag, UpdateSourceTrigger=PropertyChanged}" />
-                            <Button Command="{Binding SavePatchProfile}" IsEnabled="{Binding DetectPageSeperator}">
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Width="16" Height="16">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="3" />
+                            <ColumnDefinition Width="160" />
+                        </Grid.ColumnDefinitions>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="15.2" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <StackPanel Orientation="Horizontal">
+                                <CheckBox VerticalAlignment="Center"
+                                    Content="{twainctrl:Loc QRDETECT}"
+                                    IsChecked="{Binding DetectBarCode}" />
+                                <CheckBox VerticalAlignment="Center"
+                                    Content="{twainctrl:Loc SEPERATOR}"
+                                    IsChecked="{Binding DetectPageSeperator}"
+                                    IsEnabled="{Binding DetectBarCode}" />
+                            </StackPanel>
+                            <UniformGrid Grid.Row="1" Columns="2">
+                                <StackPanel>
+                                    <Extensions:ButtonedTextBox Description="{twainctrl:Loc TAG}"
+                                        IsEnabled="{Binding DetectPageSeperator}"
+                                        OpenButtonVisibility="Collapsed"
+                                        Text="{Binding PatchFileName, UpdateSourceTrigger=PropertyChanged}" />
+                                    <Extensions:ButtonedTextBox Description="{twainctrl:Loc FILENAME}"
+                                        IsEnabled="{Binding DetectPageSeperator}"
+                                        OpenButtonVisibility="Collapsed"
+                                        Text="{Binding PatchTag, UpdateSourceTrigger=PropertyChanged}" />
+                                    <Button Command="{Binding SavePatchProfile}" IsEnabled="{Binding DetectPageSeperator}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="16" Height="16">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="6" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SAVEPROFILE}" />
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                                <ListBox d:ItemsSource="{d:SampleData ItemCount=5}"
+                                    IsEnabled="{Binding DetectPageSeperator}"
+                                    ItemsSource="{Binding PatchCodes, Source={x:Static properties:Settings.Default}}"
+                                    SelectedItem="{Binding PatchProfileName}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Margin="1" Orientation="Horizontal">
+                                                <TextBlock Margin="0,0,5,0" VerticalAlignment="Center"
+                                                    Text="{Binding Mode=OneWay}" />
+                                                <TextBlock>
+                                                    <Hyperlink Command="{Binding DataContext.RemovePatchProfile, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding Mode=OneWay}">
+                                                        <Run Text="{twainctrl:Loc DELETE}" />
+                                                    </Hyperlink>
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </UniformGrid>
+                        </Grid>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                        </StackPanel>
+                        <UniformGrid Grid.Column="2"
+                            Margin="1"
+                            Columns="2">
+                            <Image x:Name="Img"
+                                Width="80" Height="80"
+                                Source="{Binding ElementName=Tb, Path=Text, Converter={StaticResource StringToQrBitmapImageConverter}, Mode=OneWay}" />
+                            <UniformGrid Rows="3">
+                                <TextBox x:Name="Tb" TextWrapping="Wrap" />
+                                <Button Command="{Binding SaveQrImage}" CommandParameter="{Binding Path=Source, ElementName=Img, Mode=OneWay}">
+                                    <Image Width="24" Height="24">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                 <Binding Source="Shell32.dll" />
@@ -170,27 +213,20 @@
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
-                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SAVEPROFILE}" />
-                                </StackPanel>
-                            </Button>
+                                </Button>
+                                <Button Command="{Binding PrintImage}" CommandParameter="{Binding Path=Source, ElementName=Img, Mode=OneWay}">
+                                    <Image Width="24" Height="24">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="16" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                </Button>
+                            </UniformGrid>
                         </UniformGrid>
-                        <UniformGrid Columns="3">
-                            <TextBox x:Name="Tb" TextWrapping="Wrap" />
-                            <Image x:Name="Img"
-                                Width="80" Height="80"
-                                Source="{Binding ElementName=Tb, Path=Text, Converter={StaticResource StringToQrBitmapImageConverter}, Mode=OneWay}" />
-                            <Button Command="{Binding SaveQrImage}" CommandParameter="{Binding Path=Source, ElementName=Img, Mode=OneWay}">
-                                <Image Width="32" Height="32">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="6" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                            </Button>
-                        </UniformGrid>
-                    </UniformGrid>
+                    </Grid>
                 </GroupBox>
                 <GroupBox Grid.Row="3">
                     <UniformGrid Columns="5">

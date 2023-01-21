@@ -517,4 +517,10 @@ BELGE EKLE</value>
   <data name="PAGENUMBER" xml:space="preserve">
     <value>SAYFA NO</value>
   </data>
+  <data name="TASKSRUNNING" xml:space="preserve">
+    <value>Bazı Görevler Çalışıyor Bitmesini Bekleyin.</value>
+  </data>
+  <data name="TRANSLATEPENDING" xml:space="preserve">
+    <value>İşlem Devam Ediyor. Bitmesini Bekleyin.</value>
+  </data>
 </root>

@@ -511,4 +511,10 @@ TO FILE</value>
   <data name="PAGENUMBER" xml:space="preserve">
     <value>PAGE NUMBER</value>
   </data>
+  <data name="TASKSRUNNING" xml:space="preserve">
+    <value>Some Tasks Are Running Wait For It To Finish.</value>
+  </data>
+  <data name="TRANSLATEPENDING" xml:space="preserve">
+    <value>The Process is in Progress. Wait for it to finish.</value>
+  </data>
 </root>

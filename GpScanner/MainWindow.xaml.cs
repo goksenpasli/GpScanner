@@ -155,7 +155,6 @@ namespace GpScanner
                 {
                     Result result = GpScannerViewModel.GetImageBarcodeResult(TwainCtrl?.Scanner?.Resimler?.LastOrDefault()?.Resim);
                     ViewModel.BarcodeContent = result?.Text;
-                    ViewModel.BarcodePosition = result?.ResultPoints;
                     GpScannerViewModel.AddBarcodeToList(ViewModel);
 
                     if (ViewModel.DetectPageSeperator && ViewModel.BarcodeContent is not null)
@@ -214,7 +213,7 @@ namespace GpScanner
         {
             if (TwainCtrl.Filesavetask?.IsCompleted == false || (DataContext as GpScannerViewModel)?.Filesavetask?.IsCompleted == false)
             {
-                _ = MessageBox.Show("Bazı Görevler Çalışıyor Bitmesini Bekleyin.");
+                _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
                 e.Cancel = true;
             }
             GpScannerViewModel.BackupDataXmlFile();
