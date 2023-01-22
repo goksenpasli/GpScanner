@@ -69,6 +69,7 @@ namespace TwainControl
             try
             {
                 Scanner.ProgressState = TaskbarItemProgressState.Normal;
+                Uri uri = new("pack://application:,,,/TwainControl;component/Icons/okay.png", UriKind.Absolute);
                 for (int i = 0; i < bitmapFrames.Count; i++)
                 {
                     ScannedImage scannedimage = bitmapFrames[i];
@@ -143,7 +144,6 @@ namespace TwainControl
                         index++;
                         Scanner.PdfSaveProgressValue = index / bitmapFrames.Count;
                     }
-                    Uri uri = new("pack://application:,,,/TwainControl;component/Icons/okay.png", UriKind.Absolute);
                     if (uri != null)
                     {
                         scannedimage.Resim = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(uri, 0);

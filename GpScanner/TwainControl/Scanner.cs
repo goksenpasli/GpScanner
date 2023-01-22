@@ -634,6 +634,19 @@ namespace TwainControl
             }
         }
 
+        public bool SaveProgressIndeterminate
+        {
+            get => saveProgressIndeterminate; set
+
+            {
+                if (saveProgressIndeterminate != value)
+                {
+                    saveProgressIndeterminate = value;
+                    OnPropertyChanged(nameof(SaveProgressIndeterminate));
+                }
+            }
+        }
+
         public bool Seçili
         {
             get => seçili;
@@ -963,6 +976,8 @@ namespace TwainControl
         private double rotateAngle;
 
         private string saveFileName;
+
+        private bool saveProgressIndeterminate;
 
         private bool seçili;
 

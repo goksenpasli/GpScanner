@@ -24,15 +24,11 @@
                     </DrawingGroup>
                 </DrawingBrush.Drawing>
             </DrawingBrush>
-            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
             <Extensions:CloneConverter x:Key="CloneConverter" />
-            <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
             <Converter:FilePathMergeConverter x:Key="FilePathMergeConverter" />
             <Converter:FileNameExtractConverter x:Key="FileNameExtractConverter" />
-            <Converter:StringToQrBitmapImageConverter x:Key="StringToQrBitmapImageConverter" />
-            <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
             <LinearGradientBrush x:Key="BorderBackground" ice:Freeze="True" StartPoint="0.5,0" EndPoint="0.5,1">
                 <GradientStop ice:Freeze="True" Offset="0" Color="#FFFDFEFF" />
                 <GradientStop ice:Freeze="True" Offset="1" Color="#FFC1D3EA" />

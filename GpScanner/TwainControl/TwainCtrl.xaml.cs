@@ -237,27 +237,14 @@ namespace TwainControl
 
                             case 3:
                                 {
-                                    string filename = saveFileDialog.FileName;
-                                    string directory = Path.GetDirectoryName(filename);
-                                    foreach (ScannedImage item in seçiliresimler)
-                                    {
-                                        File.WriteAllBytes(directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "jpg"), item.Resim.ToTiffJpegByteArray(Format.Jpg));
-                                    }
+                                    await SaveJpgImage(seçiliresimler, saveFileDialog.FileName, Scanner);
                                     Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
                                     return;
                                 }
 
                             case 4:
                                 {
-                                    string filename = saveFileDialog.FileName;
-                                    string directory = Path.GetDirectoryName(filename);
-                                    TiffBitmapEncoder tifccittencoder = new() { Compression = TiffCompressOption.Ccitt4 };
-                                    foreach (ScannedImage scannedimage in seçiliresimler)
-                                    {
-                                        tifccittencoder.Frames.Add(scannedimage.Resim);
-                                    }
-                                    using FileStream stream = new(directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "tif"), FileMode.Create);
-                                    tifccittencoder.Save(stream);
+                                    await SaveTifImage(seçiliresimler, saveFileDialog.FileName, Scanner);
                                     Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
                                     break;
                                 }
@@ -945,6 +932,28 @@ namespace TwainControl
             File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.Jpg));
         }
 
+        public static async Task SaveJpgImage(List<ScannedImage> images, string filename, Scanner scanner)
+        {
+            await Task.Run(async () =>
+            {
+                string directory = Path.GetDirectoryName(filename);
+                double index = 0;
+                int filescount = images.Count;
+                Uri uri = new("pack://application:,,,/TwainControl;component/Icons/okay.png", UriKind.Absolute);
+                foreach (ScannedImage scannedimage in images)
+                {
+                    File.WriteAllBytes(directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "jpg"), scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg));
+                    index++;
+                    scanner.PdfSaveProgressValue = index / filescount;
+                    if (uri != null)
+                    {
+                        scannedimage.Resim = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(uri, 0);
+                    }
+                }
+                GC.Collect();
+            });
+        }
+
         public static async Task SavePdfImage(BitmapFrame scannedImage, string filename, Scanner scanner, Paper paper, bool blackwhite = false)
         {
             ObservableCollection<OcrData> ocrtext = null;
@@ -982,6 +991,27 @@ namespace TwainControl
                 return;
             }
           (await images.GeneratePdf(Format.Jpg, paper, Settings.Default.JpegQuality, scannedtext, dpi)).Save(filename);
+        }
+
+        public static async Task SaveTifImage(List<ScannedImage> images, string filename, Scanner scanner)
+        {
+            await Task.Run(() =>
+              {
+                  double index = 0;
+                  int filescount = images.Count;
+                  TiffBitmapEncoder tifccittencoder = new() { Compression = TiffCompressOption.Ccitt4 };
+                  foreach (ScannedImage scannedimage in images)
+                  {
+                      tifccittencoder.Frames.Add(scannedimage.Resim);
+                      index++;
+                      scanner.PdfSaveProgressValue = index / filescount;
+                  }
+                  GC.Collect();
+                  scanner.SaveProgressIndeterminate = true;
+                  using FileStream stream = new(filename, FileMode.Create);
+                  tifccittencoder.Save(stream);
+                  scanner.SaveProgressIndeterminate = false;
+              });
         }
 
         public static void SaveTifImage(BitmapFrame scannedImage, string filename)

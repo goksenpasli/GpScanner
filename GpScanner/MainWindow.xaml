@@ -1,6 +1,7 @@
 ﻿<Window x:Class="GpScanner.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Converter="clr-namespace:GpScanner.Converter"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
     xmlns:ViewModel="clr-namespace:GpScanner.ViewModel"
     xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=PresentationFramework"
@@ -17,6 +18,8 @@
     WindowStartupLocation="CenterScreen" WindowState="Maximized"
     mc:Ignorable="d">
     <Window.Resources>
+        <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
+        <Converter:StringToQrBitmapImageConverter x:Key="StringToQrBitmapImageConverter" />
         <CollectionViewSource x:Key="Veriler" Source="{Binding Dosyalar}" />
         <Style x:Key="ListBoxAnimationStyle" TargetType="{x:Type ListBox}">
             <Setter Property="BorderBrush" Value="Transparent" />

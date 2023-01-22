@@ -918,7 +918,9 @@
                     <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
                         Command="{Binding Seçilikaydet}">
                         <Grid>
-                            <ProgressBar Maximum="1" Value="{Binding Scanner.PdfSaveProgressValue}" />
+                            <ProgressBar IsIndeterminate="{Binding Scanner.SaveProgressIndeterminate}"
+                                Maximum="1"
+                                Value="{Binding Scanner.PdfSaveProgressValue}" />
                             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                 <Canvas Width="32" Height="32">
                                     <Image Width="32" Height="32">
