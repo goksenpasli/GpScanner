@@ -12,8 +12,12 @@ namespace GpScanner.ViewModel
     {
         public TranslateViewModel()
         {
-            TtsDilleri = synthesizer.GetInstalledVoices().Select(z => z.VoiceInfo.Name);
-            OkumaDili = TtsDilleri?.FirstOrDefault();
+            SpeechSynthesizer = new SpeechSynthesizer() { Volume = 100 };
+            if (SpeechSynthesizer is not null)
+            {
+                TtsDilleri = SpeechSynthesizer.GetInstalledVoices().Select(z => z.VoiceInfo.Name);
+                OkumaDili = TtsDilleri?.FirstOrDefault();
+            }
 
             Sıfırla = new RelayCommand<object>(parameter =>
             {
@@ -25,20 +29,20 @@ namespace GpScanner.ViewModel
             {
                 if (parameter is string metin)
                 {
-                    synthesizer.SelectVoice(OkumaDili);
-                    if (synthesizer.State == SynthesizerState.Speaking)
+                    SpeechSynthesizer.SelectVoice(OkumaDili);
+                    if (SpeechSynthesizer.State == SynthesizerState.Speaking)
                     {
-                        synthesizer.Pause();
+                        SpeechSynthesizer.Pause();
                         return;
                     }
-                    if (synthesizer.State == SynthesizerState.Paused)
+                    if (SpeechSynthesizer.State == SynthesizerState.Paused)
                     {
-                        synthesizer.Resume();
+                        SpeechSynthesizer.Resume();
                         return;
                     }
-                    if (synthesizer.State == SynthesizerState.Ready)
+                    if (SpeechSynthesizer.State == SynthesizerState.Ready)
                     {
-                        _ = synthesizer.SpeakAsync(metin);
+                        _ = SpeechSynthesizer.SpeakAsync(metin);
                     }
                 }
             }, parameter => !string.IsNullOrEmpty(OkumaDili));
@@ -142,6 +146,19 @@ namespace GpScanner.ViewModel
 
         public ICommand Sıfırla { get; }
 
+        public SpeechSynthesizer SpeechSynthesizer
+        {
+            get => speechSynthesizer; set
+
+            {
+                if (speechSynthesizer != value)
+                {
+                    speechSynthesizer = value;
+                    OnPropertyChanged(nameof(SpeechSynthesizer));
+                }
+            }
+        }
+
         public ObservableCollection<string> TaramaGeçmiş
         {
             get => taramaGeçmiş;
@@ -158,8 +175,6 @@ namespace GpScanner.ViewModel
 
         public IEnumerable<string> TtsDilleri { get; }
 
-        private readonly SpeechSynthesizer synthesizer = new() { Volume = 100 };
-
         private string çeviri;
 
         private string çevrilenDil = "en";
@@ -171,6 +186,8 @@ namespace GpScanner.ViewModel
         private string mevcutDil = "auto";
 
         private string okumaDili;
+
+        private SpeechSynthesizer speechSynthesizer;
 
         private ObservableCollection<string> taramaGeçmiş = new();
     }

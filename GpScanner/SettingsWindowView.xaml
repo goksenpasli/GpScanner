@@ -203,7 +203,8 @@
                                 Width="80" Height="80"
                                 Source="{Binding ElementName=Tb, Path=Text, Converter={StaticResource StringToQrBitmapImageConverter}, Mode=OneWay}" />
                             <UniformGrid Rows="3">
-                                <TextBox x:Name="Tb" TextWrapping="Wrap" />
+                                <Extensions:ButtonedTextBox x:Name="Tb"
+                                    CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed" TextWrapping="Wrap" />
                                 <Button Command="{Binding SaveQrImage}" CommandParameter="{Binding Path=Source, ElementName=Img, Mode=OneWay}">
                                     <Image Width="24" Height="24">
                                         <Image.Source>

@@ -357,9 +357,10 @@ namespace TwainControl
             }
         }
 
-        public static RenderTargetBitmap ÜstüneResimÇiz(this ImageSource Source, System.Windows.Point konum, System.Windows.Media.Brush brushes, double emSize = 64, string metin = null, double angle = 315, string font = "Arial")
+        public static RenderTargetBitmap ÜstüneResimÇiz(this ImageSource Source, System.Windows.Point konum, System.Windows.Media.Brush brushes, Visual visual, double emSize = 64, string metin = null, double angle = 315, string font = "Arial")
         {
-            FormattedText formattedText = new(metin, CultureInfo.GetCultureInfo("tr-TR"), FlowDirection.LeftToRight, new Typeface(font), emSize, brushes) { TextAlignment = TextAlignment.Center };
+            double dpi = VisualTreeHelper.GetDpi(visual).PixelsPerDip;
+            FormattedText formattedText = new(metin, CultureInfo.GetCultureInfo("tr-TR"), FlowDirection.LeftToRight, new Typeface(font), emSize, brushes, dpi) { TextAlignment = TextAlignment.Center };
             DrawingVisual dv = new();
             using (DrawingContext dc = dv.RenderOpen())
             {

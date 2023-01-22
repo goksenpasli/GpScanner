@@ -8,7 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -1041,10 +1040,13 @@ namespace GpScanner.ViewModel
 
         public static void BackupDataXmlFile()
         {
-            FileInfo fi = new(Settings.Default.DatabaseFile);
-            if (File.Exists(fi.FullName) && fi.Length > 0)
+            if (File.Exists(Settings.Default.DatabaseFile))
             {
-                File.Copy(fi.FullName, fi.FullName + DateTime.Today.DayOfWeek + ".bak", true);
+                FileInfo fi = new(Settings.Default.DatabaseFile);
+                if (fi.Length > 0)
+                {
+                    File.Copy(fi.FullName, fi.FullName + DateTime.Today.DayOfWeek + ".bak", true);
+                }
             }
         }
 
