@@ -93,7 +93,13 @@
                     Background="{StaticResource GroupBoxBackGround}"
                     BorderBrush="Black" IsExpanded="True">
                     <Expander.Header>
-                        <UniformGrid Columns="2">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="33.6" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
                             <ComboBox ItemsSource="{Binding Scanner.Tarayıcılar}" SelectedItem="{Binding Scanner.SeçiliTarayıcı, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
@@ -114,18 +120,15 @@
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
-                            <Extensions:ContentToggleButton>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Width="32" Height="32">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Imageres.dll" />
-                                                <Binding Source="41" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc CAMERA}" />
-                                </StackPanel>
+                            <Extensions:ContentToggleButton Grid.Column="1">
+                                <Image Width="32" Height="32">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Imageres.dll" />
+                                            <Binding Source="41" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
                                 <Extensions:ContentToggleButton.OverContent>
                                     <Extensions:ResizablePanel Width="480" Height="360" MinWidth="480"
                                         MinHeight="360">
@@ -133,7 +136,50 @@
                                     </Extensions:ResizablePanel>
                                 </Extensions:ContentToggleButton.OverContent>
                             </Extensions:ContentToggleButton>
-                        </UniformGrid>
+                            <Button Grid.Column="2"
+                                Command="{Binding ScanImage}"
+                                IsEnabled="{Binding Scanner.ArayüzEtkin}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="32" Height="32">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Imageres.dll" />
+                                                <Binding Source="90" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc SCAN}" />
+                                </StackPanel>
+                            </Button>
+                            <Button Grid.Column="3"
+                                Background="Green"
+                                Command="{Binding FastScanImage}"
+                                IsDefault="True"
+                                IsEnabled="{Binding Scanner.ArayüzEtkin}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Canvas Width="32" Height="32">
+                                        <Image Width="32" Height="32">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Imageres.dll" />
+                                                    <Binding Source="90" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <Image Canvas.Left="0" Canvas.Bottom="0"
+                                            Width="20" Height="20">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="6" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </Canvas>
+                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc FASTSCAN}" />
+                                </StackPanel>
+                            </Button>
+                        </Grid>
                     </Expander.Header>
                     <GroupBox Grid.Row="1" IsEnabled="{Binding Scanner.ArayüzEtkin}">
                         <GroupBox.Header>
@@ -480,24 +526,24 @@
                                         </ContextMenu>
                                     </Extensions:ButtonedTextBox.ContextMenu>
                                 </Extensions:ButtonedTextBox>
-                                <UniformGrid Columns="2">
-                                    <TextBox VerticalContentAlignment="Center" Text="{Binding Scanner.ProfileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <Button Command="{Binding SaveProfile}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Width="16" Height="16">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="6" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc SAVEPROFILE}" />
-                                        </StackPanel>
-                                    </Button>
-                                </UniformGrid>
                                 <Separator />
-                                <UniformGrid Columns="4">
+                                <UniformGrid Columns="3">
+                                    <StackPanel>
+                                        <TextBox VerticalContentAlignment="Center" Text="{Binding Scanner.ProfileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <Button Command="{Binding SaveProfile}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="16" Height="16">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="6" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                                <TextBlock VerticalAlignment="Center" Text="{local:Loc SAVEPROFILE}" />
+                                            </StackPanel>
+                                        </Button>
+                                    </StackPanel>
                                     <StackPanel>
                                         <CheckBox HorizontalContentAlignment="Stretch"
                                             Content="{local:Loc LOAD}"
@@ -518,45 +564,6 @@
                                             </ComboBox.ItemTemplate>
                                         </ComboBox>
                                     </StackPanel>
-                                    <Button Command="{Binding ScanImage}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Width="32" Height="32">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Imageres.dll" />
-                                                        <Binding Source="90" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc SCAN}" />
-                                        </StackPanel>
-                                    </Button>
-                                    <Button Background="Green"
-                                        Command="{Binding FastScanImage}"
-                                        IsDefault="True">
-                                        <StackPanel Orientation="Horizontal">
-                                            <Canvas Width="32" Height="32">
-                                                <Image Width="32" Height="32">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Imageres.dll" />
-                                                            <Binding Source="90" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                                <Image Canvas.Left="0" Canvas.Bottom="0"
-                                                    Width="20" Height="20">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Shell32.dll" />
-                                                            <Binding Source="6" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                            </Canvas>
-                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc FASTSCAN}" />
-                                        </StackPanel>
-                                    </Button>
                                     <Button Command="{Binding KayıtYoluBelirle}">
                                         <StackPanel Orientation="Horizontal">
                                             <Canvas Width="32" Height="32">

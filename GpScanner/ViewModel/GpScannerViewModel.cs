@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Configuration;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -1101,6 +1102,23 @@ namespace GpScanner.ViewModel
         {
             ViewModel.Dosyalar = ViewModel.GetScannerFileData();
             ViewModel.ChartData = ViewModel.GetChartsData();
+        }
+
+        public static void WriteAppExceptions(DispatcherUnhandledExceptionEventArgs e)
+        {
+            if (IsAdministrator)
+            {
+                using EventLog eventLog = new("GPSCANNER");
+                eventLog.Source = "GPSCANNER";
+                eventLog.WriteEntry(e.Exception.Message, EventLogEntryType.Error, 101, 1);
+                eventLog.WriteEntry(e.Exception.StackTrace, EventLogEntryType.Error, 101, 1);
+            }
+            else
+            {
+                string path = $@"{Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName)}\error.log";
+                File.AppendAllText(path, e.Exception.Message);
+                File.AppendAllText(path, e.Exception.StackTrace);
+            }
         }
 
         public ObservableCollection<Chart> GetChartsData()

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Windows;
-using GpScanner.ViewModel;
 using System.Windows.Threading;
+using GpScanner.ViewModel;
 
 namespace GpScanner
 {
@@ -15,9 +16,9 @@ namespace GpScanner
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-        #if !DEBUG
+            #if !DEBUG
             Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
-        #endif
+            #endif
             foreach (string arg in e.Args)
             {
                 if (arg.StartsWith(StillImageHelper.DEVICE_PREFIX, StringComparison.InvariantCultureIgnoreCase))
@@ -46,10 +47,7 @@ namespace GpScanner
 
         private void Current_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            using EventLog eventLog = new("GPSCANNER");
-            eventLog.Source = "GPSCANNER";
-            eventLog.WriteEntry(e.Exception.Message, EventLogEntryType.Error, 101, 1);
-            eventLog.WriteEntry(e.Exception.StackTrace, EventLogEntryType.Error, 101, 1);
+         GpScannerViewModel.WriteAppExceptions(e);
             e.Handled = true;
         }
     }
