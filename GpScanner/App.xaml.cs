@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
@@ -16,9 +15,9 @@ namespace GpScanner
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            #if !DEBUG
+#if !DEBUG
             Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
-            #endif
+#endif
             foreach (string arg in e.Args)
             {
                 if (arg.StartsWith(StillImageHelper.DEVICE_PREFIX, StringComparison.InvariantCultureIgnoreCase))
@@ -47,7 +46,7 @@ namespace GpScanner
 
         private void Current_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-         GpScannerViewModel.WriteAppExceptions(e);
+            GpScannerViewModel.WriteAppExceptions(e);
             e.Handled = true;
         }
     }

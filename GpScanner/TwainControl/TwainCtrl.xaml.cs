@@ -1064,14 +1064,7 @@ namespace TwainControl
                                 }
                             case ".eyp":
                                 {
-                                    byte[] mainfiledata = null;
-                                    string eypfilepath = EypMainPdfExtract(item);
-                                    mainfiledata = await PdfViewer.PdfViewer.ReadAllFileAsync(eypfilepath);
-                                    if (mainfiledata.IsValidPdfFile())
-                                    {
-                                        await AddPdfFile(mainfiledata, item);
-                                    }
-                                    AddFiles(EypAttachmentPdfExtract(item), DecodeHeight);
+                                    AddFiles(EypFileExtract(item).ToArray(), DecodeHeight);
                                     break;
                                 }
 
@@ -1253,47 +1246,30 @@ namespace TwainControl
 
         private double width;
 
-        private static string[] EypAttachmentPdfExtract(string eypfilepath)
+        private static List<string> EypFileExtract(string eypfilepath)
         {
             using ZipArchive archive = ZipFile.Open(eypfilepath, ZipArchiveMode.Read);
             if (archive != null)
             {
-                List<string> pdfattachmentfiles = new();
-                ZipArchiveEntry üstveri = archive.Entries.FirstOrDefault(entry => entry.Name == "Ustveri.xml");
+                List<string> data = new();
+                ZipArchiveEntry üstveri = archive.Entries.FirstOrDefault(entry => entry.Name == "NihaiOzet.xml");
                 string source = Path.GetTempPath() + Guid.NewGuid() + ".xml";
                 üstveri?.ExtractToFile(source, true);
                 XDocument xdoc = XDocument.Load(source);
-                XNamespace ns = "urn:dpt:eyazisma:schema:xsd:Tipler-2";
-                foreach (XElement ek in xdoc.Root?.Elements(ns + "Ekler").Descendants(ns + "DosyaAdi"))
+                if (xdoc != null)
                 {
-                    ZipArchiveEntry data = archive.Entries.FirstOrDefault(entry => entry.Name == ek.Value);
-                    if (data != null)
+                    foreach (string file in xdoc.Descendants().Select(z => Path.GetFileName((string)z.Attribute("URI"))).Where(z => !string.IsNullOrEmpty(z)))
                     {
-                        string destinationFileName = Path.GetTempPath() + Guid.NewGuid() + Path.GetExtension(ek.Value.ToLower());
-                        data.ExtractToFile(destinationFileName, true);
-                        pdfattachmentfiles.Add(destinationFileName);
+                        ZipArchiveEntry zipArchiveEntry = archive.Entries.FirstOrDefault(entry => entry.Name == file);
+                        if (zipArchiveEntry != null)
+                        {
+                            string destinationFileName = Path.GetTempPath() + Guid.NewGuid() + Path.GetExtension(file.ToLower());
+                            zipArchiveEntry.ExtractToFile(destinationFileName, true);
+                            data.Add(destinationFileName);
+                        }
                     }
                 }
-                return pdfattachmentfiles.ToArray();
-            }
-            return null;
-        }
-
-        private static string EypMainPdfExtract(string eypfilepath)
-        {
-            using ZipArchive archive = ZipFile.Open(eypfilepath, ZipArchiveMode.Read);
-            if (archive != null)
-            {
-                ZipArchiveEntry üstveri = archive.Entries.FirstOrDefault(entry => entry.Name == "Ustveri.xml");
-                string source = Path.GetTempPath() + Guid.NewGuid() + ".xml";
-                üstveri?.ExtractToFile(source, true);
-                XDocument xdoc = XDocument.Load(source);
-                XNamespace ns = "urn:dpt:eyazisma:schema:xsd:Tipler-2";
-                string DosyaAdi = xdoc.Root?.Element(ns + "DosyaAdi")?.Value;
-                ZipArchiveEntry yazi = archive.Entries.FirstOrDefault(entry => entry.Name == DosyaAdi);
-                string destinationFileName = Path.GetTempPath() + Guid.NewGuid() + ".pdf";
-                yazi.ExtractToFile(destinationFileName, true);
-                return destinationFileName;
+                return data;
             }
             return null;
         }

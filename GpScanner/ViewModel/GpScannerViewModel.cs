@@ -1116,8 +1116,9 @@ namespace GpScanner.ViewModel
             else
             {
                 string path = $@"{Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName)}\error.log";
-                File.AppendAllText(path, e.Exception.Message);
-                File.AppendAllText(path, e.Exception.StackTrace);
+                File.AppendAllText(path, DateTime.Now.ToString());
+                File.AppendAllText(path, e.Exception.Message + Environment.NewLine);
+                File.AppendAllText(path, e.Exception.StackTrace + Environment.NewLine);
             }
         }
 
