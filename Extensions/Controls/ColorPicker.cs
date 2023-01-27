@@ -83,6 +83,8 @@ namespace Extensions
     [TemplatePart(Name = "RgbGrid", Type = typeof(Rectangle))]
     public class ColorPicker : Control
     {
+        public static readonly DependencyProperty AlphaProperty = DependencyProperty.Register("Alpha", typeof(byte), typeof(ColorPicker), new PropertyMetadata((byte)0xff, AlphaChanged));
+
         public static readonly DependencyProperty ColorPickerColumnCountProperty = DependencyProperty.Register("ColorPickerColumnCount", typeof(int), typeof(ColorPicker), new PropertyMetadata(8));
 
         public static readonly DependencyProperty HexCodeProperty = DependencyProperty.Register("HexCode", typeof(string), typeof(ColorPicker), new PropertyMetadata("#00000000"));
@@ -119,6 +121,12 @@ namespace Extensions
 
             SpectrumGridBackground = gradientBrush;
             MiddleStopColor = HSV.RGBFromHSV(0, 1f, 1f).Color();
+        }
+
+        public byte Alpha
+        {
+            get { return (byte)GetValue(AlphaProperty); }
+            set { SetValue(AlphaProperty, value); }
         }
 
         public int ColorPickerColumnCount
@@ -186,6 +194,14 @@ namespace Extensions
 
         private double currH = 360;
 
+        private static void AlphaChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is ColorPicker colorPicker)
+            {
+                colorPicker._rgbgrid.Opacity = (double)colorPicker.Alpha / 255;
+            }
+        }
+
         private void Rgbgrid_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
@@ -197,7 +213,7 @@ namespace Extensions
                     ? HSV.RGBFromHSV(currH, 1f, x / (_rgbgrid.ActualWidth / 2))
                     : HSV.RGBFromHSV(currH, ((_rgbgrid.ActualWidth / 2) - (x - (_rgbgrid.ActualWidth / 2))) / _rgbgrid.ActualWidth, 1f);
 
-                HexCode = "#" + c.Hex();
+                HexCode = "#" + c.Hex(Alpha);
                 Selected = c;
             }
         }
@@ -251,9 +267,9 @@ namespace Extensions
             };
         }
 
-        public string Hex()
+        public string Hex(byte Alpha)
         {
-            return BitConverter.ToString(new byte[] { R, G, B }).Replace("-", string.Empty);
+            return BitConverter.ToString(new byte[] { Alpha, R, G, B }).Replace("-", string.Empty);
         }
     }
 }

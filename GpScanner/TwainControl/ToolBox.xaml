@@ -153,7 +153,6 @@
                             </Extensions:ContentToggleButton.OverContent>
                         </Extensions:ContentToggleButton>
                         <Button Command="{Binding SplitImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" Content="{local:Loc SLICE}" />
-                        <TextBlock />
                         <Button Command="{Binding SplitAllImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
                             <Button.Content>
                                 <StackPanel Orientation="Horizontal">
@@ -167,8 +166,30 @@
                                 </StackPanel>
                             </Button.Content>
                         </Button>
+                        <Button Command="{Binding MergeAllImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center">
+                                        <Run Text="2" />
+                                        <Run FontFamily="Webdings" Text="§" />
+                                        <Run Text="{local:Loc MERGE}" />
+                                    </TextBlock>
+                                    <Image Width="16" Height="16"
+                                        Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
                         <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXT}" />
-                        <TextBox MaxWidth="200" Text="{Binding Scanner.Watermark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <UniformGrid Columns="2">
+                            <TextBox MaxWidth="200" Text="{Binding Scanner.Watermark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <Extensions:ContentToggleButton Background="{Binding Scanner.WatermarkColor, Mode=OneWay}">
+                                <Extensions:ContentToggleButton.OverContent>
+                                    <Extensions:ColorPicker Width="350" Height="250"
+                                        HexCode="{Binding Scanner.WatermarkColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        PredefinedColorVisibility="Visible" />
+                                </Extensions:ContentToggleButton.OverContent>
+                            </Extensions:ContentToggleButton>
+                        </UniformGrid>
                         <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXTSIZE}" />
                         <Slider AutoToolTipPlacement="TopLeft" Maximum="1024" Minimum="12"
                             SmallChange="1"

@@ -1615,10 +1615,14 @@ namespace TwainControl
         {
             if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
-                ImgViewer.Zoom += (double)(e.Delta > 0 ? .05 : -.05);
-                if (ImgViewer.Zoom <= 0.01)
+                double change = (double)(e.Delta > 0 ? .05 : -.05);
+                if (ImgViewer.Zoom + change <= 0.01)
                 {
                     ImgViewer.Zoom = 0.01;
+                }
+                else
+                {
+                    ImgViewer.Zoom += change;
                 }
             }
         }
@@ -1700,7 +1704,6 @@ namespace TwainControl
 
         private void ScanCommonSettings()
         {
-            //Scanner.ArayüzEtkin = false;
             _settings = DefaultScanSettings();
             _settings.Rotation = new RotationSettings { AutomaticBorderDetection = true, AutomaticRotate = true, AutomaticDeskew = true };
         }
@@ -1737,7 +1740,6 @@ namespace TwainControl
 
         private void Twain_ScanningComplete(object sender, ScanningCompleteEventArgs e)
         {
-            //Scanner.ArayüzEtkin = true;
         }
 
         private void Twain_TransferImage(object sender, TransferImageEventArgs e)

@@ -75,7 +75,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:ColorPicker">
-                    <Grid IsEnabled="{TemplateBinding IsEnabled}">
+                    <Grid Background="{StaticResource BorderBackground}" IsEnabled="{TemplateBinding IsEnabled}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="{Binding SelectorLength, RelativeSource={RelativeSource TemplatedParent}}" />
                             <ColumnDefinition Width="Auto" />
@@ -83,6 +83,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="5*" />
                             <RowDefinition Height="2*" />
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Rectangle Name="RgbGrid"
@@ -121,6 +122,10 @@
                                 </Style>
                             </ListBox.ItemContainerStyle>
                         </ListBox>
+                        <Slider Grid.Row="3" Grid.ColumnSpan="2"
+                            Maximum="255" Minimum="0"
+                            Style="{StaticResource Slider}"
+                            Value="{Binding Alpha, RelativeSource={RelativeSource TemplatedParent}}" />
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled" Value="False">

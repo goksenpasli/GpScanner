@@ -14,6 +14,8 @@ using System.Windows.Media.Imaging;
 using Extensions;
 using Microsoft.Win32;
 using Ocr;
+using PdfSharp;
+using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using static Extensions.ExtensionMethods;
 
@@ -91,7 +93,7 @@ namespace TwainControl
 
             ResetCroppedImage = new RelayCommand<object>(parameter => ResetCropMargin(), parameter => Scanner?.CroppedImage is not null);
 
-            SetWatermark = new RelayCommand<object>(parameter => Scanner.CroppedImage = Scanner.CroppedImage.ÜstüneResimÇiz(new System.Windows.Point(Scanner.CroppedImage.Width / 2, Scanner.CroppedImage.Height / 2), System.Windows.Media.Brushes.Red, Scanner.WatermarkTextSize, Scanner.Watermark, Scanner.WatermarkAngle, Scanner.WatermarkFont), parameter => Scanner?.CroppedImage is not null && !string.IsNullOrWhiteSpace(Scanner?.Watermark));
+            SetWatermark = new RelayCommand<object>(parameter => Scanner.CroppedImage = Scanner.CroppedImage.ÜstüneResimÇiz(new System.Windows.Point(Scanner.CroppedImage.Width / 2, Scanner.CroppedImage.Height / 2), Scanner.WatermarkColor, Scanner.WatermarkTextSize, Scanner.Watermark, Scanner.WatermarkAngle, Scanner.WatermarkFont), parameter => Scanner?.CroppedImage is not null && !string.IsNullOrWhiteSpace(Scanner?.Watermark));
 
             WebAdreseGit = new RelayCommand<object>(parameter => TwainCtrl.GotoPage(parameter as string), parameter => true);
 
@@ -133,6 +135,50 @@ namespace TwainControl
                 pdfdocument = null;
                 (DataContext as TwainCtrl)?.SeçiliListeTemizle.Execute(null);
             }, parameter => Scanner?.AutoSave == true && Scanner?.Resimler?.Count(z => z.Seçili) > 0);
+
+            MergeAllImage = new RelayCommand<object>(parameter =>
+            {
+                string savefolder = $@"{PdfGeneration.GetSaveFolder()}\{Translation.GetResStringValue("MERGE")}";
+                if (!Directory.Exists(savefolder))
+                {
+                    _ = Directory.CreateDirectory(savefolder);
+                }
+                IEnumerable<ScannedImage> seçiliresimler = Scanner.Resimler.Where(z => z.Seçili);
+                XRect box;
+                PdfDocument pdfdocument = new();
+                PdfPage page = null;
+                XGraphics gfx = null;
+                XImage xImage = null;
+                MemoryStream ms = null;
+                for (int i = 0; i < seçiliresimler.Count(); i++)
+                {
+                    if (i % 2 == 0)
+                    {
+                        page = pdfdocument.AddPage();
+                        page.Orientation = PageOrientation.Landscape;
+                        ms = new MemoryStream(seçiliresimler.ElementAt(i).Resim.ToTiffJpegByteArray(Format.Jpg, Properties.Settings.Default.JpegQuality));
+                        xImage = XImage.FromStream(ms);
+                        gfx = XGraphics.FromPdfPage(page);
+                        box = new XRect(0, 0, (double)page.Width / 2, (double)page.Height);
+                        gfx.DrawImage(xImage, box);
+                    }
+                    if (i % 2 == 1)
+                    {
+                        ms = new MemoryStream(seçiliresimler.ElementAt(i).Resim.ToTiffJpegByteArray(Format.Jpg, Properties.Settings.Default.JpegQuality));
+                        xImage = XImage.FromStream(ms); box = new XRect((double)page.Width / 2, 0, (double)page.Width / 2, (double)page.Height);
+                        gfx.DrawImage(xImage, box);
+                    }
+                }
+                pdfdocument.DefaultPdfCompression();
+                pdfdocument.Save(savefolder.SetUniqueFile(Translation.GetResStringValue("MERGE"), "pdf"));
+                WebAdreseGit.Execute(savefolder);
+                pdfdocument = null;
+                page = null;
+                gfx = null;
+                xImage = null;
+                ms = null;
+                (DataContext as TwainCtrl)?.SeçiliListeTemizle.Execute(null);
+            }, parameter => Scanner?.AutoSave == true && Scanner?.Resimler?.Count(z => z.Seçili) > 1);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -146,6 +192,8 @@ namespace TwainControl
         public ICommand DeskewImage { get; }
 
         public ICommand LoadHistogram { get; }
+
+        public ICommand MergeAllImage { get; }
 
         public ICommand PrintCroppedImage { get; }
 

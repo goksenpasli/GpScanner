@@ -855,6 +855,20 @@ namespace TwainControl
             }
         }
 
+        public SolidColorBrush WatermarkColor
+        {
+            get => watermarkColor;
+
+            set
+            {
+                if (watermarkColor != value)
+                {
+                    watermarkColor = value;
+                    OnPropertyChanged(nameof(WatermarkColor));
+                }
+            }
+        }
+
         public string WatermarkFont
         {
             get => watermarkFont;
@@ -1008,6 +1022,8 @@ namespace TwainControl
         private string watermark;
 
         private double watermarkAngle = 315;
+
+        private SolidColorBrush watermarkColor = Brushes.Red;
 
         private string watermarkFont = "Arial";
 
