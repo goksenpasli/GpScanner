@@ -745,16 +745,29 @@ namespace TwainControl
             }
         }
 
-        public double SliceCount
+        public double SliceCountHeight
         {
-            get => sliceCount;
+            get => sliceCountHeight; set
+
+            {
+                if (sliceCountHeight != value)
+                {
+                    sliceCountHeight = value;
+                    OnPropertyChanged(nameof(SliceCountHeight));
+                }
+            }
+        }
+
+        public double SliceCountWidth
+        {
+            get => sliceCountWidth;
 
             set
             {
-                if (sliceCount != value)
+                if (sliceCountWidth != value)
                 {
-                    sliceCount = value;
-                    OnPropertyChanged(nameof(SliceCount));
+                    sliceCountWidth = value;
+                    OnPropertyChanged(nameof(SliceCountWidth));
                 }
             }
         }
@@ -1021,7 +1034,9 @@ namespace TwainControl
 
         private bool showUi;
 
-        private double sliceCount = 2;
+        private double sliceCountHeight = 1;
+
+        private double sliceCountWidth = 2;
 
         private string sourceColor = "Transparent";
 

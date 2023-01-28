@@ -43,7 +43,8 @@
                             Visibility="{Binding IsVisible}">
                             <Button.Content>
                                 <Grid>
-                                    <ProgressBar Maximum="100" Minimum="0"
+                                    <ProgressBar Background="{x:Null}"
+                                        Maximum="100" Minimum="0"
                                         Value="{Binding ProgressValue}" />
                                     <TextBlock HorizontalAlignment="Center" Text="{Binding OcrName}" />
                                 </Grid>

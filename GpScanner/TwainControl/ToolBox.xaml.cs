@@ -99,11 +99,7 @@ namespace TwainControl
 
             SplitImage = new RelayCommand<object>(parameter =>
             {
-                string savefolder = $@"{PdfGeneration.GetSaveFolder()}\{Translation.GetResStringValue("SPLIT")}";
-                if (!Directory.Exists(savefolder))
-                {
-                    _ = Directory.CreateDirectory(savefolder);
-                }
+                string savefolder = CreateSaveFolder("SPLIT");
                 foreach (CroppedBitmap croppedBitmap in CropImageToList(Scanner.CroppedImage, Scanner.EnAdet, Scanner.BoyAdet))
                 {
                     File.WriteAllBytes(savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "jpg"), croppedBitmap.ToTiffJpegByteArray(Format.Jpg));
@@ -122,11 +118,7 @@ namespace TwainControl
 
             SplitAllImage = new RelayCommand<object>(async parameter =>
             {
-                string savefolder = $@"{PdfGeneration.GetSaveFolder()}\{Translation.GetResStringValue("SPLIT")}";
-                if (!Directory.Exists(savefolder))
-                {
-                    _ = Directory.CreateDirectory(savefolder);
-                }
+                string savefolder = CreateSaveFolder("SPLIT");
                 List<ScannedImage> listcroppedimages = Scanner.Resimler.Where(z => z.Seçili).SelectMany(scannedimage => CropImageToList(scannedimage.Resim, 2, 1).Select(croppedBitmap => new ScannedImage { Resim = BitmapFrame.Create(croppedBitmap) })).ToList();
                 PdfDocument pdfdocument = await listcroppedimages.GeneratePdf(Format.Jpg, null, 80, null);
                 pdfdocument.Save(savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "pdf"));
@@ -138,31 +130,40 @@ namespace TwainControl
 
             MergeAllImage = new RelayCommand<object>(parameter =>
             {
-                string savefolder = $@"{PdfGeneration.GetSaveFolder()}\{Translation.GetResStringValue("MERGE")}";
-                if (!Directory.Exists(savefolder))
-                {
-                    _ = Directory.CreateDirectory(savefolder);
-                }
+                string savefolder = CreateSaveFolder("MERGE");
                 IEnumerable<ScannedImage> seçiliresimler = Scanner.Resimler.Where(z => z.Seçili);
-                XRect box;
                 PdfDocument pdfdocument = new();
+                XRect box;
                 PdfPage page = null;
-                for (int i = 0; i < seçiliresimler.Count(); i++)
+                int imageindex = 0;
+                for (int i = 0; i < seçiliresimler.Count() / (Scanner.SliceCountWidth * Scanner.SliceCountHeight); i++)
                 {
-                    double remainder = i % Scanner.SliceCount;
-                    if (remainder == 0)
+                    page = pdfdocument.AddPage();
+                    Paper.SetPaperSize(page);
+                    page.Orientation = PageOrientation.Landscape;
+                    for (int heighindex = 0; heighindex < Scanner.SliceCountHeight; heighindex++)
                     {
-                        page = pdfdocument.AddPage();
-                        Paper.SetPaperSize(page);
-                        page.Orientation = PageOrientation.Landscape;
+                        for (int widthindex = 0; widthindex < Scanner.SliceCountWidth; widthindex++)
+                        {
+                            if (imageindex >= seçiliresimler.Count())
+                            {
+                                break;
+                            }
+                            double x = widthindex * page.Width / Scanner.SliceCountWidth;
+                            double y = heighindex * page.Height / Scanner.SliceCountHeight;
+                            double width = page.Width / Scanner.SliceCountWidth;
+                            double height = page.Height / Scanner.SliceCountHeight;
+                            using MemoryStream ms = new(seçiliresimler.ElementAt(imageindex).Resim.Resize(width, height).ToTiffJpegByteArray(Format.Jpg, Properties.Settings.Default.JpegQuality));
+                            using XImage xImage = XImage.FromStream(ms);
+                            using XGraphics gfx = XGraphics.FromPdfPage(page);
+                            box = new XRect(x, y, width, height);
+                            gfx.DrawImage(xImage, box);
+                            imageindex++;
+                            GC.Collect();
+                        }
                     }
-                    using MemoryStream ms = new(seçiliresimler.ElementAt(i).Resim.Resize(page.Width, page.Height).ToTiffJpegByteArray(Format.Jpg, Properties.Settings.Default.JpegQuality));
-                    using XImage xImage = XImage.FromStream(ms);
-                    using XGraphics gfx = XGraphics.FromPdfPage(page);
-                    box = new XRect(remainder * (double)page.Width / Scanner.SliceCount, 0, (double)page.Width / Scanner.SliceCount, (double)page.Height);
-                    gfx.DrawImage(xImage, box);
-                    GC.Collect();
                 }
+
                 pdfdocument.DefaultPdfCompression();
                 pdfdocument.Save(savefolder.SetUniqueFile(Translation.GetResStringValue("MERGE"), "pdf"));
                 WebAdreseGit.Execute(savefolder);
@@ -254,6 +255,17 @@ namespace TwainControl
         protected virtual void OnPropertyChanged(string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private static string CreateSaveFolder(string langdata)
+        {
+            string savefolder = $@"{PdfGeneration.GetSaveFolder()}\{Translation.GetResStringValue(langdata)}";
+            if (!Directory.Exists(savefolder))
+            {
+                _ = Directory.CreateDirectory(savefolder);
+            }
+
+            return savefolder;
         }
 
         private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)

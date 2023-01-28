@@ -906,7 +906,9 @@
                     <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
                         Command="{Binding LoadImage}">
                         <Grid>
-                            <ProgressBar Maximum="1" Value="{Binding PdfLoadProgressValue}" />
+                            <ProgressBar Background="{x:Null}"
+                                Maximum="1"
+                                Value="{Binding PdfLoadProgressValue}" />
                             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                 <Image Width="32" Height="32">
                                     <Image.Source>
@@ -925,7 +927,8 @@
                     <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
                         Command="{Binding Seçilikaydet}">
                         <Grid>
-                            <ProgressBar IsIndeterminate="{Binding Scanner.SaveProgressIndeterminate}"
+                            <ProgressBar Background="{x:Null}"
+                                IsIndeterminate="{Binding Scanner.SaveProgressIndeterminate}"
                                 Maximum="1"
                                 Value="{Binding Scanner.PdfSaveProgressValue}" />
                             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
@@ -949,7 +952,9 @@
                     <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
                         Command="{Binding SeçiliDirektPdfKaydet}">
                         <Grid>
-                            <ProgressBar Maximum="1" Value="{Binding Scanner.PdfSaveProgressValue}" />
+                            <ProgressBar Background="{x:Null}"
+                                Maximum="1"
+                                Value="{Binding Scanner.PdfSaveProgressValue}" />
                             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                 <Canvas Width="32" Height="32">
                                     <Image Width="32" Height="32">
@@ -1055,7 +1060,7 @@
                     ExpandDirection="Up"
                     IsExpanded="{Binding Scanner.CropDialogExpanded}">
                     <Grid>
-                        <local:ToolBox/>
+                        <local:ToolBox />
                         <ToggleButton HorizontalAlignment="Right" VerticalAlignment="Top"
                             Background="{x:Null}"
                             BorderBrush="{x:Null}"
