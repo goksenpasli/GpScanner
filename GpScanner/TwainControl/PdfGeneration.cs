@@ -345,52 +345,7 @@ namespace TwainControl
             }
         }
 
-        private static XRect AdjustBounds(this Rect rect, double hAdjust, double vAdjust)
-        {
-            return new(rect.X * hAdjust, rect.Y * vAdjust, rect.Width * hAdjust, rect.Height * vAdjust);
-        }
-
-        private static void ApplyPdfSecurity(this PdfDocument document)
-        {
-            PdfSecuritySettings securitySettings = document.SecuritySettings;
-            if (Scanner.PdfPassword is not null)
-            {
-                securitySettings.OwnerPassword = Scanner.PdfPassword.ToString();
-                securitySettings.PermitModifyDocument = Scanner.AllowEdit;
-                securitySettings.PermitPrint = Scanner.AllowPrint;
-                securitySettings.PermitExtractContent = Scanner.AllowCopy;
-            }
-        }
-
-        private static void DrawGfx(this XGraphics gfx, XBrush xBrush, XTextFormatter textformatter, OcrData item, XRect adjustedBounds)
-        {
-            int adjustedFontSize = CalculateFontSize(item.Text, adjustedBounds, gfx);
-            XFont font = new("Times New Roman", adjustedFontSize, XFontStyle.Regular, new XPdfFontOptions(PdfFontEncoding.Unicode));
-            XSize adjustedTextSize = gfx.MeasureString(item.Text, font);
-            double verticalOffset = (adjustedBounds.Height - adjustedTextSize.Height) / 2;
-            double horizontalOffset = (adjustedBounds.Width - adjustedTextSize.Width) / 2;
-            adjustedBounds.Offset(horizontalOffset, verticalOffset);
-            textformatter.DrawString(item.Text, font, xBrush, adjustedBounds);
-        }
-
-        private static void DrawText(this XGraphics gfx, XBrush xBrush, string item, double x, double y, double fontsize = 16)
-        {
-            XFont font = new("Times New Roman", fontsize, XFontStyle.Regular, new XPdfFontOptions(PdfFontEncoding.Unicode));
-            gfx.DrawString(item, font, xBrush, x, y);
-        }
-
-        private static double GetPdfTextLayout(PdfPage page)
-        {
-            return Scanner.Layout switch
-            {
-                PdfPageLayout.Left => 30,
-                PdfPageLayout.Middle => page.Width / 2,
-                PdfPageLayout.Right => page.Width - 30,
-                _ => 0,
-            };
-        }
-
-        private static void SetPaperSize(this Paper paper, PdfPage page)
+        public static void SetPaperSize(this Paper paper, PdfPage page)
         {
             if (paper is null)
             {
@@ -451,6 +406,51 @@ namespace TwainControl
                     page.Size = PageSize.Executive;
                     break;
             }
+        }
+
+        private static XRect AdjustBounds(this Rect rect, double hAdjust, double vAdjust)
+        {
+            return new(rect.X * hAdjust, rect.Y * vAdjust, rect.Width * hAdjust, rect.Height * vAdjust);
+        }
+
+        private static void ApplyPdfSecurity(this PdfDocument document)
+        {
+            PdfSecuritySettings securitySettings = document.SecuritySettings;
+            if (Scanner.PdfPassword is not null)
+            {
+                securitySettings.OwnerPassword = Scanner.PdfPassword.ToString();
+                securitySettings.PermitModifyDocument = Scanner.AllowEdit;
+                securitySettings.PermitPrint = Scanner.AllowPrint;
+                securitySettings.PermitExtractContent = Scanner.AllowCopy;
+            }
+        }
+
+        private static void DrawGfx(this XGraphics gfx, XBrush xBrush, XTextFormatter textformatter, OcrData item, XRect adjustedBounds)
+        {
+            int adjustedFontSize = CalculateFontSize(item.Text, adjustedBounds, gfx);
+            XFont font = new("Times New Roman", adjustedFontSize, XFontStyle.Regular, new XPdfFontOptions(PdfFontEncoding.Unicode));
+            XSize adjustedTextSize = gfx.MeasureString(item.Text, font);
+            double verticalOffset = (adjustedBounds.Height - adjustedTextSize.Height) / 2;
+            double horizontalOffset = (adjustedBounds.Width - adjustedTextSize.Width) / 2;
+            adjustedBounds.Offset(horizontalOffset, verticalOffset);
+            textformatter.DrawString(item.Text, font, xBrush, adjustedBounds);
+        }
+
+        private static void DrawText(this XGraphics gfx, XBrush xBrush, string item, double x, double y, double fontsize = 16)
+        {
+            XFont font = new("Times New Roman", fontsize, XFontStyle.Regular, new XPdfFontOptions(PdfFontEncoding.Unicode));
+            gfx.DrawString(item, font, xBrush, x, y);
+        }
+
+        private static double GetPdfTextLayout(PdfPage page)
+        {
+            return Scanner.Layout switch
+            {
+                PdfPageLayout.Left => 30,
+                PdfPageLayout.Middle => page.Width / 2,
+                PdfPageLayout.Right => page.Width - 30,
+                _ => 0,
+            };
         }
 
         private static void WritePdfTextContent(this BitmapSource bitmapframe, ObservableCollection<OcrData> ScannedText, PdfPage page, XGraphics gfx, XBrush xBrush)

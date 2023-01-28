@@ -124,8 +124,7 @@
                             </StackPanel>
                         </Button>
                     </UniformGrid>
-                    <UniformGrid Margin="1"
-                        Columns="2" Rows="12">
+                    <UniformGrid Columns="2" Rows="13">
                         <TextBlock VerticalAlignment="Center" Text="{local:Loc WIDTHCOUNT}" />
                         <Extensions:NumericUpDownControl Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
                             Minimum="1" SmallChange="1"
@@ -152,7 +151,13 @@
                                 </GroupBox>
                             </Extensions:ContentToggleButton.OverContent>
                         </Extensions:ContentToggleButton>
-                        <Button Command="{Binding SplitImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" Content="{local:Loc SLICE}" />
+                        <Button Command="{Binding SplitImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center" Text="{local:Loc SLICE}" />
+                                <Image Width="16" Height="16"
+                                    Source="{Binding Source='.jpg', Converter={StaticResource FilePathToIconConverter}}" />
+                            </StackPanel>
+                        </Button>
                         <Button Command="{Binding SplitAllImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
                             <Button.Content>
                                 <StackPanel Orientation="Horizontal">

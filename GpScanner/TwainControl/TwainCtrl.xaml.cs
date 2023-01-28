@@ -1776,6 +1776,7 @@ namespace TwainControl
             if (e.PropertyName is "SelectedPaper" && SelectedPaper is not null)
             {
                 DecodeHeight = (int)(SelectedPaper.Height / Inch * Settings.Default.ImgLoadResolution);
+                ToolBox.Paper = SelectedPaper;
             }
             if (e.PropertyName is "AllImageRotationAngle" && AllImageRotationAngle != 0)
             {

@@ -1012,8 +1012,8 @@
                     </Button>
                 </StackPanel>
             </GroupBox.Header>
-            <Grid IsEnabled="{Binding SeçiliResim, Converter={StaticResource NullableToBooleanConverter}}">
-                <DockPanel>
+            <Grid>
+                <DockPanel IsEnabled="{Binding SeçiliResim, Converter={StaticResource NullableToBooleanConverter}}">
                     <Slider Margin="20,0,20,0"
                         DockPanel.Dock="Top" IsSnapToTickEnabled="True"
                         Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
@@ -1051,11 +1051,25 @@
                         <Canvas x:Name="cnv" />
                     </Grid>
                 </DockPanel>
-                <Expander Height="605"
-                    HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                <Expander HorizontalAlignment="Left" VerticalAlignment="Bottom"
                     ExpandDirection="Up"
                     IsExpanded="{Binding Scanner.CropDialogExpanded}">
-                    <local:ToolBox />
+                    <Grid>
+                        <local:ToolBox/>
+                        <ToggleButton HorizontalAlignment="Right" VerticalAlignment="Top"
+                            Background="{x:Null}"
+                            BorderBrush="{x:Null}"
+                            IsChecked="{Binding Scanner.CropDialogExpanded}">
+                            <Image Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="131" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                        </ToggleButton>
+                    </Grid>
                 </Expander>
             </Grid>
         </GroupBox>

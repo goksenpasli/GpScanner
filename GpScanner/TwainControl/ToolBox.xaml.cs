@@ -155,6 +155,7 @@ namespace TwainControl
                     if (i % 2 == 0)
                     {
                         page = pdfdocument.AddPage();
+                        Paper. SetPaperSize(page);
                         page.Orientation = PageOrientation.Landscape;
                         ms = new MemoryStream(seçiliresimler.ElementAt(i).Resim.ToTiffJpegByteArray(Format.Jpg, Properties.Settings.Default.JpegQuality));
                         xImage = XImage.FromStream(ms);
