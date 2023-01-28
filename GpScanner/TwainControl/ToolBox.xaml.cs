@@ -147,37 +147,27 @@ namespace TwainControl
                 XRect box;
                 PdfDocument pdfdocument = new();
                 PdfPage page = null;
-                XGraphics gfx = null;
-                XImage xImage = null;
-                MemoryStream ms = null;
                 for (int i = 0; i < seçiliresimler.Count(); i++)
                 {
-                    if (i % 2 == 0)
+                    double remainder = i % Scanner.SliceCount;
+                    if (remainder == 0)
                     {
                         page = pdfdocument.AddPage();
-                        Paper. SetPaperSize(page);
+                        Paper.SetPaperSize(page);
                         page.Orientation = PageOrientation.Landscape;
-                        ms = new MemoryStream(seçiliresimler.ElementAt(i).Resim.ToTiffJpegByteArray(Format.Jpg, Properties.Settings.Default.JpegQuality));
-                        xImage = XImage.FromStream(ms);
-                        gfx = XGraphics.FromPdfPage(page);
-                        box = new XRect(0, 0, (double)page.Width / 2, (double)page.Height);
-                        gfx.DrawImage(xImage, box);
                     }
-                    if (i % 2 == 1)
-                    {
-                        ms = new MemoryStream(seçiliresimler.ElementAt(i).Resim.ToTiffJpegByteArray(Format.Jpg, Properties.Settings.Default.JpegQuality));
-                        xImage = XImage.FromStream(ms); box = new XRect((double)page.Width / 2, 0, (double)page.Width / 2, (double)page.Height);
-                        gfx.DrawImage(xImage, box);
-                    }
+                    using MemoryStream ms = new(seçiliresimler.ElementAt(i).Resim.Resize(page.Width, page.Height).ToTiffJpegByteArray(Format.Jpg, Properties.Settings.Default.JpegQuality));
+                    using XImage xImage = XImage.FromStream(ms);
+                    using XGraphics gfx = XGraphics.FromPdfPage(page);
+                    box = new XRect(remainder * (double)page.Width / Scanner.SliceCount, 0, (double)page.Width / Scanner.SliceCount, (double)page.Height);
+                    gfx.DrawImage(xImage, box);
+                    GC.Collect();
                 }
                 pdfdocument.DefaultPdfCompression();
                 pdfdocument.Save(savefolder.SetUniqueFile(Translation.GetResStringValue("MERGE"), "pdf"));
                 WebAdreseGit.Execute(savefolder);
                 pdfdocument = null;
                 page = null;
-                gfx = null;
-                xImage = null;
-                ms = null;
                 (DataContext as TwainCtrl)?.SeçiliListeTemizle.Execute(null);
             }, parameter => Scanner?.AutoSave == true && Scanner?.Resimler?.Count(z => z.Seçili) > 1);
         }

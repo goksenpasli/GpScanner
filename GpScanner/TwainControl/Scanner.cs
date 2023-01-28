@@ -745,6 +745,20 @@ namespace TwainControl
             }
         }
 
+        public double SliceCount
+        {
+            get => sliceCount;
+
+            set
+            {
+                if (sliceCount != value)
+                {
+                    sliceCount = value;
+                    OnPropertyChanged(nameof(SliceCount));
+                }
+            }
+        }
+
         public string SourceColor
         {
             get => sourceColor;
@@ -1006,6 +1020,8 @@ namespace TwainControl
         private bool showProgress;
 
         private bool showUi;
+
+        private double sliceCount = 2;
 
         private string sourceColor = "Transparent";
 

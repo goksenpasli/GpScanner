@@ -154,7 +154,7 @@ namespace TwainControl
                 {
                     ApplyPdfSecurity(document);
                 }
-                DefaultPdfCompression(document);
+                document.DefaultPdfCompression();
             }
             catch (Exception ex)
             {
@@ -206,7 +206,7 @@ namespace TwainControl
                 {
                     ApplyPdfSecurity(document);
                 }
-                DefaultPdfCompression(document);
+                document.DefaultPdfCompression();
             }
             catch (Exception ex)
             {
@@ -268,7 +268,7 @@ namespace TwainControl
                     ApplyPdfSecurity(document);
                 }
 
-                DefaultPdfCompression(document);
+                document.DefaultPdfCompression();
                 ms = null;
                 data = null;
                 bitmapframe = null;

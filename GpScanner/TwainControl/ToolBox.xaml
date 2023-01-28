@@ -174,8 +174,10 @@
                         <Button Command="{Binding MergeAllImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
                             <Button.Content>
                                 <StackPanel Orientation="Horizontal">
+                                    <Extensions:NumericUpDownControl IsReadOnly="True" LargeChange="1" Minimum="2"
+                                        Orientation="Horizontal" SmallChange="1"
+                                        Value="{Binding Scanner.SliceCount}" />
                                     <TextBlock VerticalAlignment="Center">
-                                        <Run Text="2" />
                                         <Run FontFamily="Webdings" Text="§" />
                                         <Run Text="{local:Loc MERGE}" />
                                     </TextBlock>
