@@ -22,11 +22,18 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Pdfviewer:PdfViewer x:Name="PdfViewer" PdfFilePath="{Binding SinglePdfFilePath}" />
-        <UniformGrid Grid.Row="1" Columns="2">
+        <UniformGrid Grid.Row="1" Columns="3">
             <Button Command="{Binding LoadSinglePdfFile}">
                 <StackPanel Orientation="Horizontal">
                     <Image Width="32" Height="32"
                         Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
+                    <TextBlock VerticalAlignment="Center" Text="{local:Loc FILE}" />
+                </StackPanel>
+            </Button>
+            <Button Command="{Binding LoadSingleEypFile}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Width="32" Height="32"
+                        Source="{Binding Source='.eyp', Converter={StaticResource FilePathToIconConverter}}" />
                     <TextBlock VerticalAlignment="Center" Text="{local:Loc FILE}" />
                 </StackPanel>
             </Button>

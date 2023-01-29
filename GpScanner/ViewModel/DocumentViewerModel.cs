@@ -212,7 +212,7 @@ namespace GpScanner.ViewModel
             if (e.PropertyName is "ImgData" && ImgData is not null && !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang))
             {
                 ObservableCollection<Ocr.OcrData> ocrtext = await Ocr.Ocr.OcrAsyc(ImgData, Settings.Default.DefaultTtsLang);
-                OcrText = string.Join(" ", ocrtext.Select(z => z.Text));
+                OcrText = string.Join(" ", ocrtext?.Select(z => z.Text));
                 ImgData = null;
             }
         }

@@ -145,7 +145,7 @@ namespace GpScanner.ViewModel
                     byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfviewer.PdfFilePath);
                     MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfviewer.Sayfa, (int)Twainsettings.Settings.Default.ImgLoadResolution);
                     ObservableCollection<OcrData> ocrdata = await ms.ToArray().OcrAsyc(Settings.Default.DefaultTtsLang);
-                    ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = pdfviewer.PdfFilePath, FileContent = string.Join(" ", ocrdata.Select(z => z.Text)) });
+                    ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = pdfviewer.PdfFilePath, FileContent = string.Join(" ", ocrdata?.Select(z => z.Text)) });
                     DatabaseSave.Execute(null);
                     OcrIsBusy = false;
                     filedata = null;
@@ -193,7 +193,6 @@ namespace GpScanner.ViewModel
                         documentViewerWindow.Show();
                         documentViewerWindow.Lb?.ScrollIntoView(filepath);
                         documentViewerWindow.Unloaded += (s, e) => documentViewerModel.PdfFilePath = null;
-                        GC.Collect();
                     }
                 }
             }, parameter => parameter is string filepath && File.Exists(filepath));
@@ -461,7 +460,7 @@ namespace GpScanner.ViewModel
                 if (parameter is Scanner scanner)
                 {
                     IEnumerable<Data> data = DataYükle()?.Where(z => z.FileName == scanner.FileName);
-                    scanner.FileOcrContent = string.Join(" ", data.Select(z => z.FileContent));
+                    scanner.FileOcrContent = string.Join(" ", data?.Select(z => z.FileContent));
                     scanner.QrData = data.Select(z => z.QrData);
                 }
             }, parameter => true);

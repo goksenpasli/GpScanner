@@ -870,19 +870,18 @@
                                                             BorderBrush="{x:Null}"
                                                             IsChecked="{Binding Seçili}">
                                                             <Viewbox>
-                                                                <local:ShadowedImage Width="{Binding Resim.Thumbnail.Width, Mode=OneWay}"
+                                                                <Image Width="{Binding Resim.Thumbnail.Width, Mode=OneWay}"
                                                                     Height="{Binding Resim.Thumbnail.Height, Mode=OneWay}"
                                                                     d:Height="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}"
                                                                     d:Source="/GpScanner;component/scanner.ico"
-                                                                    d:Width="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}"
-                                                                    ShowShadow="True">
-                                                                    <local:ShadowedImage.Source>
+                                                                    d:Width="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}">
+                                                                    <Image.Source>
                                                                         <PriorityBinding>
                                                                             <Binding IsAsync="True" Mode="OneWay" Path="Resim.Thumbnail" />
                                                                             <Binding Converter="{StaticResource FilePathToIconConverter}" Path="FilePath" />
                                                                         </PriorityBinding>
-                                                                    </local:ShadowedImage.Source>
-                                                                </local:ShadowedImage>
+                                                                    </Image.Source>
+                                                                </Image>
                                                             </Viewbox>
                                                         </ToggleButton>
                                                     </StackPanel>

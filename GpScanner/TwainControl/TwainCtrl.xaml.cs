@@ -24,6 +24,7 @@ using System.Xml.Linq;
 using Extensions;
 using Microsoft.Win32;
 using Ocr;
+using PdfSharp.Pdf;
 using TwainControl.Properties;
 using TwainWpf;
 using TwainWpf.TwainNative;
@@ -419,6 +420,22 @@ namespace TwainControl
                 }
             }, parameter => true);
 
+            LoadSingleEypFile = new RelayCommand<object>(parameter =>
+            {
+                OpenFileDialog openFileDialog = new()
+                {
+                    Filter = "Eyp Dosyası (*.eyp)|*.eyp",
+                    Multiselect = false
+                };
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    using PdfDocument document = EypFileExtract(openFileDialog.FileName).Where(z => Path.GetExtension(z.ToLower()) == ".pdf").ToArray().MergePdf();
+                    string source = Path.GetTempPath() + Guid.NewGuid() + ".pdf";
+                    document.Save(source);
+                    SinglePdfFilePath = source;
+                }
+            }, parameter => true);
+
             AddSinglePdfPage = new RelayCommand<object>(parameter =>
             {
                 if (parameter is BitmapSource imageSource)
@@ -695,6 +712,8 @@ namespace TwainControl
         public ICommand LoadFileList { get; }
 
         public ICommand LoadImage { get; }
+
+        public ICommand LoadSingleEypFile { get; }
 
         public ICommand LoadSinglePdfFile { get; }
 
@@ -1051,23 +1070,23 @@ namespace TwainControl
             {
                 try
                 {
-                    foreach (string item in filenames)
+                    foreach (string filename in filenames)
                     {
-                        switch (Path.GetExtension(item.ToLower()))
+                        switch (Path.GetExtension(filename.ToLower()))
                         {
                             case ".pdf":
                                 {
-                                    byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(item);
+                                    byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(filename);
                                     if (filedata.IsValidPdfFile())
                                     {
-                                        await AddPdfFile(filedata, item);
+                                        await AddPdfFile(filedata, filename);
                                     }
                                     filedata = null;
                                     break;
                                 }
                             case ".eyp":
                                 {
-                                    AddFiles(EypFileExtract(item).ToArray(), DecodeHeight);
+                                    AddFiles(EypFileExtract(filename).ToArray(), DecodeHeight);
                                     break;
                                 }
 
@@ -1081,9 +1100,9 @@ namespace TwainControl
                             case ".gıf":
                             case ".bmp":
                                 {
-                                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(new Uri(item), decodeheight, Settings.Default.DefaultPictureResizeRatio);
+                                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(new Uri(filename), decodeheight, Settings.Default.DefaultPictureResizeRatio);
                                     bitmapFrame.Freeze();
-                                    ScannedImage img = new() { Resim = bitmapFrame, FilePath = item };
+                                    ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
                                     Dispatcher.Invoke(() => Scanner?.Resimler.Add(img));
                                     img = null;
                                     bitmapFrame = null;
@@ -1092,7 +1111,7 @@ namespace TwainControl
 
                             case ".tıf" or ".tiff" or ".tıff" or ".tif":
                                 {
-                                    TiffBitmapDecoder decoder = new(new Uri(item), BitmapCreateOptions.None, BitmapCacheOption.None);
+                                    TiffBitmapDecoder decoder = new(new Uri(filename), BitmapCreateOptions.None, BitmapCacheOption.None);
                                     for (int i = 0; i < decoder.Frames.Count; i++)
                                     {
                                         byte[] data = decoder.Frames[i].ToTiffJpegByteArray(Format.Jpg);
@@ -1103,7 +1122,7 @@ namespace TwainControl
                                         thumbimage.Freeze();
                                         BitmapFrame bitmapFrame = BitmapFrame.Create(image, thumbimage);
                                         bitmapFrame.Freeze();
-                                        ScannedImage img = new() { Resim = bitmapFrame, FilePath = item };
+                                        ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
                                         Dispatcher.Invoke(() => Scanner?.Resimler.Add(img));
                                         img = null;
                                         bitmapFrame = null;
@@ -1119,7 +1138,7 @@ namespace TwainControl
                                     DocumentPage docPage = null;
                                     Dispatcher.Invoke(() =>
                                     {
-                                        using XpsDocument xpsDoc = new(item, FileAccess.Read);
+                                        using XpsDocument xpsDoc = new(filename, FileAccess.Read);
                                         docSeq = xpsDoc.GetFixedDocumentSequence();
                                     });
                                     for (int i = 0; i < docSeq.DocumentPaginator.PageCount; i++)
@@ -1141,7 +1160,7 @@ namespace TwainControl
                                         thumbimage.Freeze();
                                         BitmapFrame bitmapFrame = BitmapFrame.Create(image, thumbimage);
                                         bitmapFrame.Freeze();
-                                        ScannedImage img = new() { Resim = bitmapFrame, FilePath = item };
+                                        ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
                                         Dispatcher.Invoke(() => Scanner?.Resimler.Add(img));
                                         img = null;
                                         bitmapFrame = null;
