@@ -875,8 +875,14 @@
                                                                     d:Height="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}"
                                                                     d:Source="/GpScanner;component/scanner.ico"
                                                                     d:Width="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}"
-                                                                    ShowShadow="True"
-                                                                    Source="{Binding Resim.Thumbnail, IsAsync=True, Mode=OneWay}" />
+                                                                    ShowShadow="True">
+                                                                    <local:ShadowedImage.Source>
+                                                                        <PriorityBinding>
+                                                                            <Binding IsAsync="True" Mode="OneWay" Path="Resim.Thumbnail" />
+                                                                            <Binding Converter="{StaticResource FilePathToIconConverter}" Path="FilePath" />
+                                                                        </PriorityBinding>
+                                                                    </local:ShadowedImage.Source>
+                                                                </local:ShadowedImage>
                                                             </Viewbox>
                                                         </ToggleButton>
                                                     </StackPanel>

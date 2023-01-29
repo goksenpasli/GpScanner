@@ -100,11 +100,23 @@ namespace TwainControl
             SplitImage = new RelayCommand<object>(parameter =>
             {
                 string savefolder = CreateSaveFolder("SPLIT");
-                foreach (CroppedBitmap croppedBitmap in CropImageToList(Scanner.CroppedImage, Scanner.EnAdet, Scanner.BoyAdet))
+                List<CroppedBitmap> croppedBitmaps = CropImageToList(Scanner.CroppedImage, Scanner.EnAdet, Scanner.BoyAdet);
+                _ = Task.Run(() =>
                 {
-                    File.WriteAllBytes(savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "jpg"), croppedBitmap.ToTiffJpegByteArray(Format.Jpg));
-                }
-                WebAdreseGit.Execute(savefolder);
+                    for (int i = 0; i < croppedBitmaps.Count; i++)
+                    {
+                        CroppedBitmap croppedBitmap = croppedBitmaps[i];
+                        Dispatcher.Invoke(() =>
+                            {
+                                File.WriteAllBytes(savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "jpg"), croppedBitmap.ToTiffJpegByteArray(Format.Jpg));
+                                ToolBoxPdfMergeProgressValue = (i + 1) / (double)croppedBitmaps.Count;
+                            });
+                    }
+                }).ContinueWith((_) =>
+                {
+                    WebAdreseGit.Execute(savefolder);
+                    ToolBoxPdfMergeProgressValue = 0;
+                });
             }, parameter => Scanner?.AutoSave == true && Scanner?.CroppedImage is not null && (Scanner?.EnAdet > 1 || Scanner?.BoyAdet > 1));
 
             TransferImage = new RelayCommand<object>(parameter =>
@@ -119,7 +131,7 @@ namespace TwainControl
             SplitAllImage = new RelayCommand<object>(async parameter =>
             {
                 string savefolder = CreateSaveFolder("SPLIT");
-                List<ScannedImage> listcroppedimages = Scanner.Resimler.Where(z => z.Seçili).SelectMany(scannedimage => CropImageToList(scannedimage.Resim, 2, 1).Select(croppedBitmap => new ScannedImage { Resim = BitmapFrame.Create(croppedBitmap) })).ToList();
+                List<ScannedImage> listcroppedimages = Scanner.Resimler.Where(z => z.Seçili).SelectMany(scannedimage => CropImageToList(scannedimage.Resim, (int)Scanner.SliceCountWidth, (int)Scanner.SliceCountHeight).Select(croppedBitmap => new ScannedImage { Resim = BitmapFrame.Create(croppedBitmap) })).ToList();
                 PdfDocument pdfdocument = await listcroppedimages.GeneratePdf(Format.Jpg, null, 80, null);
                 pdfdocument.Save(savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "pdf"));
                 WebAdreseGit.Execute(savefolder);
@@ -128,7 +140,7 @@ namespace TwainControl
                 (DataContext as TwainCtrl)?.SeçiliListeTemizle.Execute(null);
             }, parameter => Scanner?.AutoSave == true && Scanner?.Resimler?.Count(z => z.Seçili) > 0);
 
-            MergeAllImage = new RelayCommand<object>(parameter =>
+            MergeAllImage = new RelayCommand<object>(async parameter =>
             {
                 string savefolder = CreateSaveFolder("MERGE");
                 IEnumerable<ScannedImage> seçiliresimler = Scanner.Resimler.Where(z => z.Seçili);
@@ -136,11 +148,12 @@ namespace TwainControl
                 XRect box;
                 PdfPage page = null;
                 int imageindex = 0;
+
                 for (int i = 0; i < seçiliresimler.Count() / (Scanner.SliceCountWidth * Scanner.SliceCountHeight); i++)
                 {
                     page = pdfdocument.AddPage();
                     Paper.SetPaperSize(page);
-                    page.Orientation = PageOrientation.Landscape;
+                    page.Orientation = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt) ? PageOrientation.Portrait : PageOrientation.Landscape;
                     for (int heighindex = 0; heighindex < Scanner.SliceCountHeight; heighindex++)
                     {
                         for (int widthindex = 0; widthindex < Scanner.SliceCountWidth; widthindex++)
@@ -149,27 +162,31 @@ namespace TwainControl
                             {
                                 break;
                             }
-                            double x = widthindex * page.Width / Scanner.SliceCountWidth;
-                            double y = heighindex * page.Height / Scanner.SliceCountHeight;
-                            double width = page.Width / Scanner.SliceCountWidth;
-                            double height = page.Height / Scanner.SliceCountHeight;
-                            using MemoryStream ms = new(seçiliresimler.ElementAt(imageindex).Resim.Resize(width, height).ToTiffJpegByteArray(Format.Jpg, Properties.Settings.Default.JpegQuality));
-                            using XImage xImage = XImage.FromStream(ms);
-                            using XGraphics gfx = XGraphics.FromPdfPage(page);
-                            box = new XRect(x, y, width, height);
-                            gfx.DrawImage(xImage, box);
-                            imageindex++;
-                            GC.Collect();
+                            await Task.Run(() =>
+                            {
+                                double x = widthindex * page.Width / Scanner.SliceCountWidth;
+                                double y = heighindex * page.Height / Scanner.SliceCountHeight;
+                                double width = page.Width / Scanner.SliceCountWidth;
+                                double height = page.Height / Scanner.SliceCountHeight;
+                                using MemoryStream ms = new(seçiliresimler.ElementAt(imageindex).Resim.Resize(width, height).ToTiffJpegByteArray(Format.Jpg, Properties.Settings.Default.JpegQuality));
+                                using XImage xImage = XImage.FromStream(ms);
+                                using XGraphics gfx = XGraphics.FromPdfPage(page);
+                                box = new XRect(x, y, width, height);
+                                gfx.DrawImage(xImage, box);
+                                imageindex++;
+                                ToolBoxPdfMergeProgressValue = imageindex / (double)seçiliresimler.Count();
+                                GC.Collect();
+                            });
                         }
                     }
                 }
-
                 pdfdocument.DefaultPdfCompression();
                 pdfdocument.Save(savefolder.SetUniqueFile(Translation.GetResStringValue("MERGE"), "pdf"));
                 WebAdreseGit.Execute(savefolder);
                 pdfdocument = null;
                 page = null;
                 (DataContext as TwainCtrl)?.SeçiliListeTemizle.Execute(null);
+                ToolBoxPdfMergeProgressValue = 0;
             }, parameter => Scanner?.AutoSave == true && Scanner?.Resimler?.Count(z => z.Seçili) > 1);
         }
 
@@ -199,32 +216,23 @@ namespace TwainControl
 
         public ICommand SplitImage { get; }
 
+        public double ToolBoxPdfMergeProgressValue
+        {
+            get => toolBoxPdfMergeProgressValue;
+
+            set
+            {
+                if (toolBoxPdfMergeProgressValue != value)
+                {
+                    toolBoxPdfMergeProgressValue = value;
+                    OnPropertyChanged(nameof(ToolBoxPdfMergeProgressValue));
+                }
+            }
+        }
+
         public ICommand TransferImage { get; }
 
         public ICommand WebAdreseGit { get; }
-
-        public static List<CroppedBitmap> CropImageToList(ImageSource imageSource, int en, int boy)
-        {
-            List<CroppedBitmap> croppedBitmaps = new();
-            BitmapSource image = (BitmapSource)imageSource;
-            for (int i = 0; i < en; i++)
-            {
-                for (int j = 0; j < boy; j++)
-                {
-                    int x = i * image.PixelWidth / en;
-                    int y = j * image.PixelHeight / boy;
-                    int width = image.PixelWidth / en;
-                    int height = image.PixelHeight / boy;
-                    Int32Rect sourceRect = new(x, y, width, height);
-                    if (sourceRect.HasArea)
-                    {
-                        CroppedBitmap croppedBitmap = new(image, sourceRect);
-                        croppedBitmaps.Add(croppedBitmap);
-                    }
-                }
-            }
-            return croppedBitmaps;
-        }
 
         public static double GetDeskewAngle(ImageSource ımageSource, bool fast = false)
         {
@@ -252,10 +260,37 @@ namespace TwainControl
             GC.Collect();
         }
 
+        public List<CroppedBitmap> CropImageToList(ImageSource imageSource, int en, int boy)
+        {
+            List<CroppedBitmap> croppedBitmaps = new();
+            BitmapSource image = (BitmapSource)imageSource;
+
+            for (int j = 0; j < boy; j++)
+            {
+                for (int i = 0; i < en; i++)
+                {
+                    int x = i * image.PixelWidth / en;
+                    int y = j * image.PixelHeight / boy;
+                    int width = image.PixelWidth / en;
+                    int height = image.PixelHeight / boy;
+                    Int32Rect sourceRect = new(x, y, width, height);
+                    if (sourceRect.HasArea)
+                    {
+                        CroppedBitmap croppedBitmap = new(image, sourceRect);
+                        croppedBitmaps.Add(croppedBitmap);
+                    }
+                }
+            }
+
+            return croppedBitmaps;
+        }
+
         protected virtual void OnPropertyChanged(string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        private double toolBoxPdfMergeProgressValue;
 
         private static string CreateSaveFolder(string langdata)
         {

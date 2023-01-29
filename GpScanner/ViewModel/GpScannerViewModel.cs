@@ -414,6 +414,7 @@ namespace GpScanner.ViewModel
                                 scanner.PdfSaveProgressValue = index / filescount;
                             }
                         }
+                        scanner.PdfSaveProgressValue = 0;
                         ProgressBarForegroundBrush = Brushes.Green;
                         string filename = $"{Twainsettings.Settings.Default.AutoFolder}\\{Guid.NewGuid()}.pdf";
                         files.GeneratePdf(paper, scannedtext).Save(filename);

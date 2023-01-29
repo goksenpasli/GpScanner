@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:properties="clr-namespace:TwainControl.Properties"
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
-    d:DesignHeight="600" d:DesignWidth="300"
+    d:DesignHeight="550" d:DesignWidth="300"
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
     Loaded="UserControl_Loaded" UseLayoutRounding="True"
     mc:Ignorable="d">
@@ -52,6 +52,9 @@
                             BorderBrush="{StaticResource GroupBoxBackGround}"
                             BorderThickness="1">
                             <Grid Width="200" Height="200">
+                                <ProgressBar Background="{x:Null}"
+                                    Maximum="1"
+                                    Value="{Binding ToolBoxPdfMergeProgressValue, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" />
                                 <local:ShadowedImage x:Name="Img"
                                     ShowShadow="True"
                                     Source="{Binding Scanner.CroppedImage}" />
@@ -124,15 +127,19 @@
                             </StackPanel>
                         </Button>
                     </UniformGrid>
-                    <UniformGrid Columns="2" Rows="13">
-                        <TextBlock VerticalAlignment="Center" Text="{local:Loc WIDTHCOUNT}" />
-                        <Extensions:NumericUpDownControl Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
-                            Minimum="1" SmallChange="1"
-                            Value="{Binding Scanner.EnAdet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <TextBlock VerticalAlignment="Center" Text="{local:Loc HEIGHTCOUNT}" />
-                        <Extensions:NumericUpDownControl Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
-                            Minimum="1" SmallChange="1"
-                            Value="{Binding Scanner.BoyAdet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <UniformGrid Columns="2" Rows="11">
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Text="{local:Loc WIDTHCOUNT}" />
+                            <Extensions:NumericUpDownControl Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
+                                Minimum="1" SmallChange="1"
+                                Value="{Binding Scanner.EnAdet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Text="{local:Loc HEIGHTCOUNT}" />
+                            <Extensions:NumericUpDownControl Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
+                                Minimum="1" SmallChange="1"
+                                Value="{Binding Scanner.BoyAdet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
                         <Extensions:ContentToggleButton Command="{Binding LoadHistogram, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
                             <TextBlock Text="HISTOGRAM" />
                             <Extensions:ContentToggleButton.OverContent>
@@ -161,19 +168,6 @@
                         <Button Command="{Binding SplitAllImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
                             <Button.Content>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock VerticalAlignment="Center">
-                                        <Run Text="2" />
-                                        <Run FontFamily="Webdings" Text="§" />
-                                        <Run Text="{local:Loc SLICE}" />
-                                    </TextBlock>
-                                    <Image Width="16" Height="16"
-                                        Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
-                                </StackPanel>
-                            </Button.Content>
-                        </Button>
-                        <Button Command="{Binding MergeAllImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
-                            <Button.Content>
-                                <StackPanel Orientation="Horizontal">
                                     <Extensions:NumericUpDownControl IsReadOnly="True" LargeChange="1" Minimum="1"
                                         Orientation="Horizontal" SmallChange="1"
                                         Value="{Binding Scanner.SliceCountWidth}" />
@@ -182,14 +176,35 @@
                                         Value="{Binding Scanner.SliceCountHeight}" />
                                     <TextBlock VerticalAlignment="Center">
                                         <Run FontFamily="Webdings" Text="§" />
-                                        <Run Text="{local:Loc MERGE}" />
+                                        <Run Text="{local:Loc SLICE}" />
                                     </TextBlock>
                                     <Image Width="16" Height="16"
                                         Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
                                 </StackPanel>
                             </Button.Content>
                         </Button>
-                        <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXT}" />
+                        <Button BorderBrush="Cyan" Command="{Binding MergeAllImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
+                            <Button.Content>
+                                <Grid>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Extensions:NumericUpDownControl IsReadOnly="True" LargeChange="1" Minimum="1"
+                                            Orientation="Horizontal" SmallChange="1"
+                                            Value="{Binding Scanner.SliceCountWidth}" />
+                                        <Extensions:NumericUpDownControl IsReadOnly="True" LargeChange="1" Minimum="1"
+                                            Orientation="Horizontal" SmallChange="1"
+                                            Value="{Binding Scanner.SliceCountHeight}" />
+                                        <TextBlock VerticalAlignment="Center">
+                                            <Run FontFamily="Webdings" Text="§" />
+                                            <Run Text="{local:Loc MERGE}" />
+                                        </TextBlock>
+                                        <Image Width="16" Height="16"
+                                            Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
+                                    </StackPanel>
+                                </Grid>
+                            </Button.Content>
+                        </Button>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                            Text="{local:Loc TEXT}" />
                         <UniformGrid Columns="2">
                             <TextBox MaxWidth="200" Text="{Binding Scanner.Watermark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <Extensions:ContentToggleButton Background="{Binding Scanner.WatermarkColor, Mode=OneWay}">
@@ -200,17 +215,24 @@
                                 </Extensions:ContentToggleButton.OverContent>
                             </Extensions:ContentToggleButton>
                         </UniformGrid>
-                        <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXTSIZE}" />
-                        <Slider AutoToolTipPlacement="TopLeft" Maximum="1024" Minimum="12"
-                            SmallChange="1"
-                            Style="{StaticResource Slider}"
-                            Value="{Binding Scanner.WatermarkTextSize}" />
-                        <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXTANGLE}" />
-                        <Slider AutoToolTipPlacement="TopLeft" Maximum="360" Minimum="0"
-                            SmallChange="1"
-                            Style="{StaticResource Slider}"
-                            Value="{Binding Scanner.WatermarkAngle}" />
-                        <TextBlock VerticalAlignment="Center" Text="{local:Loc FONT}" />
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXTSIZE}" />
+                            <Slider Width="50"
+                                AutoToolTipPlacement="TopLeft" Maximum="1024" Minimum="12"
+                                SmallChange="1"
+                                Style="{StaticResource Slider}"
+                                Value="{Binding Scanner.WatermarkTextSize}" />
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXTANGLE}" />
+                            <Slider Width="50"
+                                AutoToolTipPlacement="TopLeft" Maximum="360" Minimum="0"
+                                SmallChange="1"
+                                Style="{StaticResource Slider}"
+                                Value="{Binding Scanner.WatermarkAngle}" />
+                        </StackPanel>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                            Text="{local:Loc FONT}" />
                         <ComboBox Height="22.4"
                             ItemsSource="{Binding Source={x:Static Fonts.SystemFontFamilies}}"
                             SelectedItem="{Binding Scanner.WatermarkFont}">

@@ -479,7 +479,7 @@ namespace PdfViewer
                             if (!cancellationToken.IsCancellationRequested)
                             {
                                 BitmapImage bitmapImage = await ConvertToImgAsync(pdffilestream, i, dpi);
-                                _ = Dispatcher.Invoke(() => Thumbnails?.Add(new ThumbClass() { Page = i, Thumb = bitmapImage }), null);
+                                Dispatcher.Invoke(() => Thumbnails?.Add(new ThumbClass() { Page = i, Thumb = bitmapImage }));
                                 bitmapImage = null;
                             }
                         }

@@ -155,6 +155,7 @@ namespace TwainControl
                     ApplyPdfSecurity(document);
                 }
                 document.DefaultPdfCompression();
+                Scanner.PdfSaveProgressValue = 0;
             }
             catch (Exception ex)
             {
@@ -207,6 +208,7 @@ namespace TwainControl
                     ApplyPdfSecurity(document);
                 }
                 document.DefaultPdfCompression();
+                Scanner.PdfSaveProgressValue = 0;
             }
             catch (Exception ex)
             {
