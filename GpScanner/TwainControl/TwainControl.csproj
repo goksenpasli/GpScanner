@@ -236,6 +236,10 @@
       <Project>{8304c254-e3d2-4553-b596-f028b8d9b740}</Project>
       <Name>TwainWpf</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\UdfParser\UdfParser.csproj">
+      <Project>{39ace1c2-42eb-4bdd-89bf-2b73c82b7925}</Project>
+      <Name>UdfParser</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\flatbed.png" />

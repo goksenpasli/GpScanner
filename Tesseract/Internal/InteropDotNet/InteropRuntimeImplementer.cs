@@ -54,9 +54,8 @@ namespace Tesseract.Internal.InteropDotNet
             for (int i = 0; i < methodInfoArray.Length; i++)
             {
                 methods[i] = new MethodItem { Info = methodInfoArray[i] };
-                RuntimeDllImportAttribute attribute = GetRuntimeDllImportAttribute(methodInfoArray[i]) ?? throw new Exception(string.Format("Method '{0}' of interface '{1}' should be marked with the RuntimeDllImport attribute",
+                methods[i].DllImportAttribute = GetRuntimeDllImportAttribute(methodInfoArray[i]) ?? throw new Exception(string.Format("Method '{0}' of interface '{1}' should be marked with the RuntimeDllImport attribute",
                         methodInfoArray[i].Name, interfaceType.Name));
-                methods[i].DllImportAttribute = attribute;
             }
             return methods;
         }
@@ -183,8 +182,7 @@ namespace Tesseract.Internal.InteropDotNet
             foreach (MethodItem method in methods)
             {
                 string fieldName = method.Info.Name + "Field";
-                FieldBuilder fieldBuilder = typeBuilder.DefineField(fieldName, method.DelegateType, FieldAttributes.Private);
-                method.FieldInfo = fieldBuilder;
+                method.FieldInfo = typeBuilder.DefineField(fieldName, method.DelegateType, FieldAttributes.Private);
             }
         }
 

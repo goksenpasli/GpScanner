@@ -517,4 +517,7 @@ TO FILE</value>
   <data name="TRANSLATEPENDING" xml:space="preserve">
     <value>The Process is in Progress. Wait for it to finish.</value>
   </data>
+  <data name="LIMITED" xml:space="preserve">
+    <value>This File Format Has Limited Support.</value>
+  </data>
 </root>

@@ -519,8 +519,7 @@ namespace Tesseract.Interop
             IntPtr versionHandle = Native.GetVersion();
             if (versionHandle != IntPtr.Zero)
             {
-                string result = MarshalHelper.PtrToString(versionHandle, Encoding.UTF8);
-                return result;
+                return MarshalHelper.PtrToString(versionHandle, Encoding.UTF8);
             }
 
             return null;

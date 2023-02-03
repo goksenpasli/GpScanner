@@ -283,6 +283,9 @@ SCANSIONE</value>
   <data name="JPEGQUALITY" xml:space="preserve">
     <value>QUALITÀ JPEG</value>
   </data>
+  <data name="LIMITED" xml:space="preserve">
+    <value>Questo formato di file ha un supporto limitato.</value>
+  </data>
   <data name="LISTREMOVEWARN" xml:space="preserve">
     <value>Tutti i documenti scansionati nell'elenco principale verranno eliminati Continuare?</value>
   </data>

@@ -478,8 +478,7 @@ namespace MozJpeg
                 //Read webP file
                 rawJpeg = File.ReadAllBytes(pathFileName);
 
-                Bitmap bmp = Decode(rawJpeg, TJFlags.NONE);
-                return bmp;
+                return Decode(rawJpeg, TJFlags.NONE);
             }
             catch (Exception ex) { throw new Exception(ex.Message + "\r\nIn MozJpeg.Load"); }
         }

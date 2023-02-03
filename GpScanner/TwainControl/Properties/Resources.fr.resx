@@ -283,6 +283,9 @@ ANALYSE</value>
   <data name="JPEGQUALITY" xml:space="preserve">
     <value>QUALITÉ JPEG</value>
   </data>
+  <data name="LIMITED" xml:space="preserve">
+    <value>Ce format de fichier a une prise en charge limitée.</value>
+  </data>
   <data name="LISTREMOVEWARN" xml:space="preserve">
     <value>Tous les documents numérisés de la liste principale seront supprimés Voulez-vous continuer ?</value>
   </data>

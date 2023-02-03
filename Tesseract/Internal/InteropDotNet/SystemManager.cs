@@ -25,8 +25,7 @@ namespace Tesseract.Internal.InteropDotNet
 
             return OperatingSystem.Unknown;
 #else
-            int pid = (int)Environment.OSVersion.Platform;
-            switch (pid)
+            switch ((int)Environment.OSVersion.Platform)
             {
                 case (int)PlatformID.Win32NT:
                 case (int)PlatformID.Win32S:

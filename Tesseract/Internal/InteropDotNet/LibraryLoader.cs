@@ -192,8 +192,7 @@ namespace Tesseract.Internal.InteropDotNet
             {
                 if (instance == null)
                 {
-                    global::Tesseract.Internal.InteropDotNet.OperatingSystem operatingSystem = SystemManager.GetOperatingSystem();
-                    switch (operatingSystem)
+                    switch (SystemManager.GetOperatingSystem())
                     {
                         case OperatingSystem.Windows:
                             Logger.TraceInformation("Current OS: Windows");

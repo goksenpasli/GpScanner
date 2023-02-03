@@ -523,4 +523,7 @@ BELGE EKLE</value>
   <data name="TRANSLATEPENDING" xml:space="preserve">
     <value>İşlem Devam Ediyor. Bitmesini Bekleyin.</value>
   </data>
+  <data name="LIMITED" xml:space="preserve">
+    <value>Bu Dosya Formatının Kısıtlı Desteği Vardır.</value>
+  </data>
 </root>

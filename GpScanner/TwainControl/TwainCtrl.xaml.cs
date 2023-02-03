@@ -21,7 +21,9 @@ using System.Windows.Threading;
 using System.Windows.Xps;
 using System.Windows.Xps.Packaging;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 using Extensions;
+using Extensions.Controls;
 using Microsoft.Win32;
 using Ocr;
 using PdfSharp.Pdf;
@@ -29,6 +31,7 @@ using TwainControl.Properties;
 using TwainWpf;
 using TwainWpf.TwainNative;
 using TwainWpf.Wpf;
+using UdfParser;
 using static Extensions.ExtensionMethods;
 using Path = System.IO.Path;
 using Rectangle = System.Windows.Shapes.Rectangle;
@@ -436,6 +439,35 @@ namespace TwainControl
                 }
             }, parameter => true);
 
+            LoadSingleUdfFile = new RelayCommand<object>(parameter =>
+            {
+                OpenFileDialog openFileDialog = new()
+                {
+                    Filter = "Uyap Dokuman Formatı (*.udf)|*.udf",
+                    Multiselect = false
+                };
+
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    using ZipArchive archive = ZipFile.Open(openFileDialog.FileName, ZipArchiveMode.Read);
+                    if (archive != null && parameter is XpsViewer xpsViewer)
+                    {
+                        ZipArchiveEntry üstveri = archive.Entries.FirstOrDefault(entry => entry.Name == "content.xml");
+                        string source = Path.GetTempPath() + Guid.NewGuid() + ".xml";
+                        string xpssource = Path.GetTempPath() + Guid.NewGuid() + ".xps";
+                        üstveri?.ExtractToFile(source, true);
+                        Template xmldata = DeSerialize<Template>(source);
+                        IDocumentPaginatorSource flowDocument = UdfParser.UdfParser.RenderDocument(xmldata);
+                        using (XpsDocument xpsDocument = new(xpssource, FileAccess.ReadWrite))
+                        {
+                            XpsDocumentWriter xw = XpsDocument.CreateXpsDocumentWriter(xpsDocument);
+                            xw.Write(flowDocument.DocumentPaginator);
+                        }
+                        xpsViewer.XpsDataFilePath = xpssource;
+                    }
+                }
+            }, parameter => true);
+
             AddSinglePdfPage = new RelayCommand<object>(parameter =>
             {
                 if (parameter is BitmapSource imageSource)
@@ -716,6 +748,8 @@ namespace TwainControl
         public ICommand LoadSingleEypFile { get; }
 
         public ICommand LoadSinglePdfFile { get; }
+
+        public ICommand LoadSingleUdfFile { get; }
 
         public string MailData
         {
@@ -1184,6 +1218,21 @@ namespace TwainControl
         public void Dispose()
         {
             Dispose(true);
+        }
+
+        internal static T DeSerialize<T>(string xmldatapath) where T : class, new()
+        {
+            try
+            {
+                XmlSerializer serializer = new(typeof(T));
+                using StreamReader stream = new(xmldatapath);
+                return serializer.Deserialize(stream) as T;
+            }
+            catch (Exception Ex)
+            {
+                _ = MessageBox.Show(Ex.Message);
+                return null;
+            }
         }
 
         protected virtual void Dispose(bool disposing)
