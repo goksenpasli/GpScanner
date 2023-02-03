@@ -72,11 +72,10 @@ namespace UdfParser
             {
                 for (int i = 0; i < genişlik; i++)
                 {
-                    System.Collections.Generic.IEnumerable<Content> rr = cellparagrafcontent;
-                    Content rrrr = cellparagrafcontent.ElementAtOrDefault(j);
-                    if (rrrr is not null)
+                    Content cellcontent = cellparagrafcontent.ElementAtOrDefault(j);
+                    if (cellcontent is not null)
                     {
-                        string text = content.Content.Substring(rrrr.StartOffset, rrrr.Length);
+                        string text = content.Content.Substring(cellcontent.StartOffset, cellcontent.Length);
                         array[i, x] = GetRun(text, cellparagrafcontent.ElementAtOrDefault(j));
                     }
                     j++;
