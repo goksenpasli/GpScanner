@@ -115,7 +115,8 @@ namespace Extensions.Controls
 
         private void CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = true;
+            XpsViewer xpsViewer = (sender as DocumentViewer)?.DataContext as XpsViewer;
+            e.CanExecute = xpsViewer.Document is not null;
         }
 
         private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)

@@ -1137,7 +1137,7 @@ namespace TwainControl
                                     BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(new Uri(filename), decodeheight, Settings.Default.DefaultPictureResizeRatio);
                                     bitmapFrame.Freeze();
                                     ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
-                                    Dispatcher.Invoke(() => Scanner?.Resimler.Add(img));
+                                    await Dispatcher.BeginInvoke(() => Scanner?.Resimler.Add(img));
                                     img = null;
                                     bitmapFrame = null;
                                     break;
@@ -1170,38 +1170,31 @@ namespace TwainControl
                                 {
                                     FixedDocumentSequence docSeq = null;
                                     DocumentPage docPage = null;
-                                    Dispatcher.Invoke(() =>
-                                    {
-                                        using XpsDocument xpsDoc = new(filename, FileAccess.Read);
-                                        docSeq = xpsDoc.GetFixedDocumentSequence();
-                                    });
+                                    await Dispatcher.BeginInvoke(() =>
+                                          {
+                                              using XpsDocument xpsDoc = new(filename, FileAccess.Read);
+                                              docSeq = xpsDoc.GetFixedDocumentSequence();
+                                          });
+                                    BitmapFrame bitmapframe = null;
                                     for (int i = 0; i < docSeq.DocumentPaginator.PageCount; i++)
                                     {
-                                        byte[] data = null;
-                                        Dispatcher.Invoke(() =>
-                                        {
-                                            docPage = docSeq.DocumentPaginator.GetPage(i);
-                                            RenderTargetBitmap rtb = new((int)docPage.Size.Width, (int)docPage.Size.Height, 96, 96, PixelFormats.Default);
-                                            rtb.Render(docPage.Visual);
-                                            BitmapFrame bitmapframe = BitmapFrame.Create(rtb);
-                                            data = bitmapframe.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality);
-                                            docPage = null;
-                                        });
-                                        MemoryStream memoryStream = new(data);
-                                        BitmapFrame image = await BitmapMethods.GenerateImageDocumentBitmapFrame(memoryStream, SelectedPaper);
-                                        image.Freeze();
-                                        BitmapSource thumbimage = image.PixelWidth < image.PixelHeight ? image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Width * SelectedPaper.Height) : image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Height * SelectedPaper.Width);
+                                        await Dispatcher.BeginInvoke(() =>
+                                              {
+                                                  docPage = docSeq.DocumentPaginator.GetPage(i);
+                                                  RenderTargetBitmap rtb = new((int)docPage.Size.Width, (int)docPage.Size.Height, 96, 96, PixelFormats.Default);
+                                                  rtb.Render(docPage.Visual);
+                                                  bitmapframe = BitmapFrame.Create(rtb);
+                                                  bitmapframe.Freeze();
+                                              });
+                                        BitmapSource thumbimage = bitmapframe.PixelWidth < bitmapframe.PixelHeight ? bitmapframe.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Width * SelectedPaper.Height) : bitmapframe.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Height * SelectedPaper.Width);
                                         thumbimage.Freeze();
-                                        BitmapFrame bitmapFrame = BitmapFrame.Create(image, thumbimage);
+                                        BitmapFrame bitmapFrame = BitmapFrame.Create(bitmapframe, thumbimage);
                                         bitmapFrame.Freeze();
                                         ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
-                                        Dispatcher.Invoke(() => Scanner?.Resimler.Add(img));
+                                        await Dispatcher.BeginInvoke(() => Scanner?.Resimler.Add(img));
                                         img = null;
                                         bitmapFrame = null;
-                                        image = null;
                                         thumbimage = null;
-                                        data = null;
-                                        memoryStream = null;
                                     }
                                     break;
                                 }
