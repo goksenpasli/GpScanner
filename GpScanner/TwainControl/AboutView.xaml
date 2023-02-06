@@ -84,7 +84,8 @@
                 <TextBlock HorizontalAlignment="Center" Text="{local:Loc ABOUT}" />
                 <TextBox Grid.Row="1"
                     AcceptsReturn="True"
-                    Text="{Binding MailData, UpdateSourceTrigger=PropertyChanged}" />
+                    Text="{Binding MailData, UpdateSourceTrigger=PropertyChanged}"
+                    TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" />
                 <UniformGrid Grid.Row="2" Columns="2">
                     <Button Command="{Binding WebAdreseGit}" CommandParameter="eventvwr.msc">
                         <Image Width="32" Height="32">

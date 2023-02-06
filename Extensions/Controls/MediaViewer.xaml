@@ -34,6 +34,26 @@
                 <ContextMenu Visibility="{Binding ContextMenuVisibility}">
                     <MenuItem Click="Open_Click" FontFamily="Segoe UI" Header="Dosya Aç"
                         Visibility="{Binding OpenButtonVisibility}" />
+                    <MenuItem>
+                        <MenuItem.Template>
+                            <ControlTemplate>
+                                <StackPanel Margin="32,0,0,0" Orientation="Horizontal">
+                                    <Button x:Name="Play"
+                                        Width="24" Height="24"
+                                        Click="Play_Click" Content="4" FontFamily="Webdings"
+                                        FontSize="18" Foreground="Blue" />
+                                    <Button x:Name="Pause"
+                                        Width="24" Height="24"
+                                        Click="Pause_Click" Content=";" FontFamily="Webdings"
+                                        FontSize="18" Foreground="Blue" />
+                                    <Button x:Name="Stop"
+                                        Width="24" Height="24"
+                                        Click="Stop_Click" Content="&lt;" FontFamily="Webdings"
+                                        FontSize="18" Foreground="Blue" />
+                                </StackPanel>
+                            </ControlTemplate>
+                        </MenuItem.Template>
+                    </MenuItem>
                     <MenuItem FontFamily="Segoe UI" Header="Ters Renk" IsCheckable="True"
                         IsChecked="{Binding InvertColor}" />
                     <MenuItem FontFamily="Segoe UI" Header="Keskinlik" IsCheckable="True"

@@ -83,14 +83,50 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="46.4" />
-                            <RowDefinition Height="367*" />
+                            <RowDefinition Height="23.2" />
+                            <RowDefinition Height="191*" />
                             <RowDefinition Height="3" />
-                            <RowDefinition Height="74*" />
+                            <RowDefinition Height="39*" />
                         </Grid.RowDefinitions>
-                        <Extensions:ButtonedTextBox Grid.Row="1"
-                            CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed"
-                            Text="{Binding AramaMetni, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <UniformGrid Grid.Row="1" Columns="3">
+                            <Extensions:ButtonedTextBox CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed"
+                                Text="{Binding AramaMetni, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <ComboBox ItemsSource="{Binding GetPreviewSize}" SelectedItem="{Binding SelectedSize}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock><Run Text="{Binding Width, StringFormat=\{0\} Pixel}" /><Run Text=" " /><Run Text="X" /><Run Text=" " /><Run Text="{Binding Height, StringFormat=\{0\} Pixel}" /></TextBlock>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <UniformGrid Columns="2">
+                                <ToggleButton FontFamily="Wingdings" FontSize="16"
+                                    IsChecked="{Binding Sıralama}"
+                                    IsEnabled="{Binding HasItems, ElementName=LbDoc}">
+                                    <ToggleButton.Style>
+                                        <Style TargetType="{x:Type ToggleButton}">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsChecked" Value="True">
+                                                    <Setter Property="Content" Value="é" />
+                                                </Trigger>
+                                                <Trigger Property="IsChecked" Value="False">
+                                                    <Setter Property="Content" Value="ê" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ToggleButton.Style>
+                                </ToggleButton>
+                                <Button Command="{Binding CycleSelectedDocuments}" CommandParameter="{Binding ElementName=LbDoc}">
+                                    <Image Width="16" Height="16">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="ImageRes.dll" />
+                                                <Binding Source="7" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                </Button>
+                            </UniformGrid>
+                        </UniformGrid>
                         <UniformGrid Columns="3" Rows="1">
                             <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
                                 Command="{Binding PdfBirleştir}">
@@ -125,28 +161,6 @@
                                     </StackPanel>
                                 </Grid>
                             </Button>
-                            <ToggleButton Command="{Binding ModifyGridWidth}">
-                                <ToggleButton.Style>
-                                    <Style TargetType="{x:Type ToggleButton}">
-                                        <Style.Triggers>
-                                            <Trigger Property="IsChecked" Value="True">
-                                                <Setter Property="CommandParameter" Value="1" />
-                                            </Trigger>
-                                            <Trigger Property="IsChecked" Value="False">
-                                                <Setter Property="CommandParameter" Value="0" />
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ToggleButton.Style>
-                                <Image Width="32" Height="32">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="263" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                            </ToggleButton>
                             <Button Command="{Binding Source={x:Static ViewModel:WindowExtensions.OpenSettings}}">
                                 <StackPanel Orientation="Horizontal">
                                     <Image Width="32" Height="32">
@@ -160,9 +174,52 @@
                                     <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SETTİNGS}" />
                                 </StackPanel>
                             </Button>
+                            <ToggleButton Command="{Binding ModifyGridWidth}">
+                                <ToggleButton.Style>
+                                    <Style TargetType="{x:Type ToggleButton}">
+                                        <Style.Triggers>
+                                            <Trigger Property="IsChecked" Value="True">
+                                                <Setter Property="CommandParameter" Value="1" />
+                                                <Setter Property="Content">
+                                                    <Setter.Value>
+                                                        <Image Width="32" Height="32"
+                                                            RenderTransformOrigin="0.5,0.5">
+                                                            <Image.RenderTransform>
+                                                                <TransformGroup>
+                                                                    <RotateTransform Angle="180" />
+                                                                </TransformGroup>
+                                                            </Image.RenderTransform>
+                                                            <Image.Source>
+                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                    <Binding Source="Shell32.dll" />
+                                                                    <Binding Source="252" />
+                                                                </MultiBinding>
+                                                            </Image.Source>
+                                                        </Image>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                            <Trigger Property="IsChecked" Value="False">
+                                                <Setter Property="CommandParameter" Value="0" />
+                                                <Setter Property="Content">
+                                                    <Setter.Value>
+                                                        <Image Width="32" Height="32">
+                                                            <Image.Source>
+                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                    <Binding Source="Shell32.dll" />
+                                                                    <Binding Source="252" />
+                                                                </MultiBinding>
+                                                            </Image.Source>
+                                                        </Image>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ToggleButton.Style>
+                            </ToggleButton>
                         </UniformGrid>
-                        <UniformGrid Grid.Row="2"
-                            Columns="2" Rows="2">
+                        <UniformGrid Grid.Row="2" Columns="2">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
@@ -217,40 +274,6 @@
                                         Text="{Binding CheckedPdfCount}" />
                                 </StackPanel>
                             </Extensions:ContentToggleButton>
-                            <ComboBox ItemsSource="{Binding GetPreviewSize}" SelectedItem="{Binding SelectedSize}">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock><Run Text="{Binding Width, StringFormat=\{0\} Pixel}" /><Run Text=" " /><Run Text="X" /><Run Text=" " /><Run Text="{Binding Height, StringFormat=\{0\} Pixel}" /></TextBlock>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
-                            <UniformGrid Columns="2">
-                                <ToggleButton FontFamily="Wingdings" FontSize="16"
-                                    IsChecked="{Binding Sıralama}">
-                                    <ToggleButton.Style>
-                                        <Style TargetType="ToggleButton">
-                                            <Style.Triggers>
-                                                <Trigger Property="IsChecked" Value="True">
-                                                    <Setter Property="Content" Value="é" />
-                                                </Trigger>
-                                                <Trigger Property="IsChecked" Value="False">
-                                                    <Setter Property="Content" Value="ê" />
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </ToggleButton.Style>
-                                </ToggleButton>
-                                <Button Command="{Binding CycleSelectedDocuments}" CommandParameter="{Binding ElementName=LbDoc}">
-                                    <Image Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="ImageRes.dll" />
-                                                <Binding Source="7" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                </Button>
-                            </UniformGrid>
                         </UniformGrid>
                         <ListBox x:Name="LbDoc"
                             Grid.Row="3"
@@ -336,11 +359,11 @@
                                                                         </ItemsControl.Template>
                                                                         <ItemsControl.ItemTemplate>
                                                                             <DataTemplate>
-                                                                                <Image Source="{Binding Mode=OneWay, Converter={StaticResource StringToQrBitmapImageConverter}}" />
+                                                                                <Image Source="{Binding Converter={StaticResource StringToQrBitmapImageConverter}, Mode=OneWay}" />
                                                                             </DataTemplate>
                                                                         </ItemsControl.ItemTemplate>
                                                                     </ItemsControl>
-                                                                    <TextBlock Text="{Binding Mode=OneWay, Path=FileName, Converter={StaticResource FileNameExtractConverter}}"
+                                                                    <TextBlock Text="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}"
                                                                         TextTrimming="CharacterEllipsis" TextWrapping="Wrap" />
                                                                 </StackPanel>
                                                             </Extensions:ContentToggleButton>

@@ -37,8 +37,6 @@ namespace GpScanner.ViewModel
 {
     public class GpScannerViewModel : InpcBase
     {
-        public static readonly string[] supportedfilesextension = new string[] { ".pdf", ".tiff", ".tif", ".jpg", ".png", ".bmp", ".zip", ".xps" };
-
         public Task Filesavetask;
 
         public GpScannerViewModel()
@@ -98,7 +96,7 @@ namespace GpScanner.ViewModel
                                 fileindex++;
                                 PdfMergeProgressValue = fileindex / Files.Count();
                             }
-
+                            PdfMergeProgressValue = 0;
                             outputDocument.Save(saveFileDialog.FileName);
                         });
                     }
@@ -398,7 +396,6 @@ namespace GpScanner.ViewModel
                     Scanner scanner = ToolBox.Scanner;
                     Paper paper = ToolBox.Paper;
                     List<ObservableCollection<OcrData>> scannedtext = null;
-                    List<ScannedImage> scannedimages = new();
                     Filesavetask = Task.Run(async () =>
                     {
                         if (scanner?.ApplyPdfSaveOcr == true)
@@ -411,17 +408,50 @@ namespace GpScanner.ViewModel
                                 scannedtext.Add(await image.OcrAsyc(scanner.SelectedTtsLanguage));
                                 index++;
                                 scanner.PdfSaveProgressValue = index / filescount;
+                                GC.Collect();
                             }
                         }
                         scanner.PdfSaveProgressValue = 0;
                         ProgressBarForegroundBrush = Brushes.Green;
                         string filename = $"{Twainsettings.Settings.Default.AutoFolder}\\{Guid.NewGuid()}.pdf";
                         files.GeneratePdf(paper, scannedtext).Save(filename);
-                        scannedimages = null;
                         GC.Collect();
                     });
                 }
             }, parameter => !string.IsNullOrWhiteSpace(BatchFolder) && !string.IsNullOrWhiteSpace(Twainsettings.Settings.Default.AutoFolder));
+
+            StartTxtBatch = new RelayCommand<object>(parameter =>
+            {
+                int slicecount;
+                List<string> files = Win32FileScanner.EnumerateFilepaths(BatchFolder, -1).Where(s => (new string[] { ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp" }).Any(ext => ext == Path.GetExtension(s).ToLower())).ToList();
+                slicecount = files.Count > Environment.ProcessorCount ? Environment.ProcessorCount : 1;
+                Scanner scanner = ToolBox.Scanner;
+                List<Task> Tasks = new();
+                foreach (List<string> item in ChunkBy(files, slicecount))
+                {
+                    double index = 0;
+                    int filescount = item.Count;
+                    if (item.Count > 0)
+                    {
+                        Tasks.Add(Task.Run(async () =>
+                        {
+                            List<string> scannedtext = new();
+                            scanner.ProgressState = TaskbarItemProgressState.Normal;
+                            foreach (string image in item)
+                            {
+                                string txtfile = Path.ChangeExtension(image, ".txt");
+                                string content = string.Join(" ", (await image.OcrAsyc(scanner.SelectedTtsLanguage)).Select(z => z.Text));
+                                File.WriteAllText(txtfile, content);
+                                index++;
+                                scanner.PdfSaveProgressValue = index / item.Count;
+                                GC.Collect();
+                            }
+                            scanner.PdfSaveProgressValue = 1;
+                        }));
+                    }
+                }
+                Filesavetask = Task.WhenAll(Tasks);
+            }, parameter => !string.IsNullOrWhiteSpace(BatchFolder));
 
             DatabaseSave = new RelayCommand<object>(parameter => ScannerData.Serialize());
 
@@ -995,6 +1025,8 @@ namespace GpScanner.ViewModel
 
         public ICommand StartBatch { get; }
 
+        public ICommand StartTxtBatch { get; }
+
         public ICommand Tersiniİşaretle { get; }
 
         public TesseractViewModel TesseractViewModel
@@ -1049,6 +1081,15 @@ namespace GpScanner.ViewModel
                     File.Copy(fi.FullName, fi.FullName + DateTime.Today.DayOfWeek + ".bak", true);
                 }
             }
+        }
+
+        public static List<List<T>> ChunkBy<T>(List<T> source, int chunkSize)
+        {
+            return source
+                .Select((x, i) => new { Index = i, Value = x })
+                .GroupBy(x => x.Index / chunkSize)
+                .Select(x => x.Select(v => v.Value).ToList())
+                .ToList();
         }
 
         public static ObservableCollection<Data> DataYükle()
@@ -1206,6 +1247,8 @@ namespace GpScanner.ViewModel
         private static DispatcherTimer timer;
 
         private static string xmlDataPath = Settings.Default.DatabaseFile;
+
+        private readonly string[] supportedfilesextension = new string[] { ".pdf", ".tiff", ".tif", ".jpg", ".png", ".bmp", ".zip", ".xps" };
 
         private bool anyDataExists;
 
