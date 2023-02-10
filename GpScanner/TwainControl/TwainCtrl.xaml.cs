@@ -376,6 +376,24 @@ namespace TwainControl
 
             PdfBirleştir = new RelayCommand<object>(parameter =>
             {
+                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                {
+                    string[] files = Scanner?.Resimler?.GroupBy(z => z.FilePath).Select(z => z.FirstOrDefault()).Select(z => z.FilePath).ToArray();
+                    if (files?.Length > 0 && !files.Contains(null))
+                    {
+                        files.SavePdfFiles();
+                    }
+                    return;
+                }
+                if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                {
+                    string[] files = Scanner?.Resimler?.Where(z => z.Seçili).GroupBy(z => z.FilePath).Select(z => z.FirstOrDefault()).Select(z => z.FilePath).ToArray();
+                    if (files?.Length > 0 && !files.Contains(null))
+                    {
+                        files.SavePdfFiles();
+                    }
+                    return;
+                }
                 OpenFileDialog openFileDialog = new()
                 {
                     Filter = "Pdf Dosyası (*.pdf)|*.pdf",
@@ -543,6 +561,16 @@ namespace TwainControl
                 }
             }, parameter => true);
 
+            EypPdfİçerikBirleştir = new RelayCommand<object>(parameter =>
+            {
+                string[] files = Scanner.UnsupportedFiles.Where(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase)).ToArray();
+                if (files.Length > 0)
+                {
+                    files.SavePdfFiles();
+                }
+
+            }, parameter => Scanner.UnsupportedFiles?.Count(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase)) > 1);
+
             int cycleindex = 0;
             CycleSelectedDocuments = new RelayCommand<object>(parameter =>
             {
@@ -644,6 +672,8 @@ namespace TwainControl
         }
 
         public ICommand CycleSelectedDocuments { get; }
+
+        public ICommand EypPdfİçerikBirleştir { get; }
 
         public byte[] DataBaseTextData
         {
@@ -1120,7 +1150,9 @@ namespace TwainControl
                                 }
                             case ".eyp":
                                 {
-                                    AddFiles(EypFileExtract(filename).ToArray(), DecodeHeight);
+                                    List<string> files = EypFileExtract(filename);
+                                    await Dispatcher.BeginInvoke(() =>files.ForEach(z=> Scanner?.UnsupportedFiles.Add(z)));
+                                    AddFiles(files.ToArray(), DecodeHeight);
                                     break;
                                 }
 

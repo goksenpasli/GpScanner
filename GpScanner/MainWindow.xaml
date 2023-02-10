@@ -130,36 +130,31 @@
                         <UniformGrid Columns="3" Rows="1">
                             <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
                                 Command="{Binding PdfBirleştir}">
-                                <Grid>
-                                    <ProgressBar Background="{x:Null}"
-                                        Maximum="1"
-                                        Value="{Binding PdfMergeProgressValue}" />
-                                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                        <Image Width="32" Height="32">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="68" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                        <TextBlock VerticalAlignment="Center">
-                                            <TextBlock.Style>
-                                                <Style TargetType="{x:Type TextBlock}">
-                                                    <Setter Property="Text" Value="{twainctrl:Loc MERGE}" />
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding CheckedPdfCount}" Value="0">
-                                                            <Setter Property="Text" Value="{twainctrl:Loc MERGESELECTED}" />
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding CheckedPdfCount}" Value="1">
-                                                            <Setter Property="Text" Value="{twainctrl:Loc SELECTTWOPDF}" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
-                                    </StackPanel>
-                                </Grid>
+                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                    <Image Width="32" Height="32">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="68" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock VerticalAlignment="Center">
+                                        <TextBlock.Style>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Setter Property="Text" Value="{twainctrl:Loc MERGE}" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding CheckedPdfCount}" Value="0">
+                                                        <Setter Property="Text" Value="{twainctrl:Loc MERGESELECTED}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding CheckedPdfCount}" Value="1">
+                                                        <Setter Property="Text" Value="{twainctrl:Loc SELECTTWOPDF}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </StackPanel>
                             </Button>
                             <Button Command="{Binding Source={x:Static ViewModel:WindowExtensions.OpenSettings}}">
                                 <StackPanel Orientation="Horizontal">

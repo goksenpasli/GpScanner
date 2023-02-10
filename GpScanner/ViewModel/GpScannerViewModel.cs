@@ -83,21 +83,8 @@ namespace GpScanner.ViewModel
                         await Task.Run(() =>
                         {
                             using PdfDocument outputDocument = new();
-                            IEnumerable<Scanner> Files = Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase));
-                            double fileindex = 0;
-                            foreach (PdfDocument inputDocument in from string file in Files.Select(z => z.FileName) let inputDocument = PdfReader.Open(file, PdfDocumentOpenMode.Import) select inputDocument)
-                            {
-                                for (int idx = 0; idx < inputDocument.PageCount; idx++)
-                                {
-                                    PdfPage page = inputDocument.Pages[idx];
-                                    _ = outputDocument.AddPage(page);
-                                }
-
-                                fileindex++;
-                                PdfMergeProgressValue = fileindex / Files.Count();
-                            }
-                            PdfMergeProgressValue = 0;
-                            outputDocument.Save(saveFileDialog.FileName);
+                            IEnumerable<string> pdffilelist = Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName);
+                            pdffilelist.ToArray().MergePdf().Save(saveFileDialog.FileName);
                         });
                     }
                     catch (Exception ex)

@@ -826,6 +826,20 @@ namespace TwainControl
             }
         }
 
+        public ObservableCollection<string> UnsupportedFiles
+        {
+            get => unsupportedFiles;
+
+            set
+            {
+                if (unsupportedFiles != value)
+                {
+                    unsupportedFiles = value;
+                    OnPropertyChanged(nameof(UnsupportedFiles));
+                }
+            }
+        }
+
         public bool UseMozJpegEncoding
         {
             get => useMozJpegEncoding;
@@ -1045,6 +1059,8 @@ namespace TwainControl
         private string targetColor = "Transparent";
 
         private double threshold = 1;
+
+        private ObservableCollection<string> unsupportedFiles = new();
 
         private bool useMozJpegEncoding;
 

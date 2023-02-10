@@ -624,7 +624,7 @@
                                             <local:PdfSettings />
                                         </Extensions:ContentToggleButton.OverContent>
                                     </Extensions:ContentToggleButton>
-                                    <Button AllowDrop="True"
+                                    <Button AllowDrop="True" BorderBrush="Cyan"
                                         Command="{Binding PdfBirleştir}"
                                         Drop="PdfMergeButton_Drop">
                                         <StackPanel Orientation="Horizontal">
@@ -926,6 +926,58 @@
                                     </Button>
                                     <TextBlock Text="{local:Loc LIMITED}" TextWrapping="Wrap" />
                                 </UniformGrid>
+                            </Grid>
+                        </TabItem>
+                        <TabItem>
+                            <TabItem.Header>
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="96" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                            </TabItem.Header>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding Scanner.UnsupportedFiles}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="32" Height="32"
+                                                    Source="{Binding Mode=OneWay, Converter={StaticResource FilePathToIconConverter}}" />
+                                                <TextBlock Width="130" Height="64"
+                                                    VerticalAlignment="Center"
+                                                    TextWrapping="Wrap">
+                                                    <Hyperlink Command="{Binding Path=DataContext.WebAdreseGit, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding Mode=OneWay}">
+                                                        <Run Text="{Binding Mode=OneWay}" />
+                                                    </Hyperlink>
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" SpacingMode="None" />
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                </ListBox>
+                                <Button Grid.Row="1"
+                                    HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                                    Command="{Binding EypPdfİçerikBirleştir}">
+                                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                        <Image Width="32" Height="32"
+                                            Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
+                                        <TextBlock VerticalAlignment="Center">
+                                            <Run Text="{local:Loc ALL}" />
+                                            <Run Text="{local:Loc MERGE}" />
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Button>
                             </Grid>
                         </TabItem>
                     </TabControl>
