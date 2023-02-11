@@ -42,6 +42,19 @@
                                         </Image>
                                     </MenuItem.Icon>
                                 </MenuItem>
+                                <MenuItem>
+                                    <MenuItem.Template>
+                                        <ControlTemplate>
+                                            <ComboBox ItemsSource="{Binding Pages, RelativeSource={RelativeSource AncestorType=local:PdfViewer}}" SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=local:PdfViewer}, UpdateSourceTrigger=PropertyChanged}">
+                                                <ComboBox.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <VirtualizingStackPanel />
+                                                    </ItemsPanelTemplate>
+                                                </ComboBox.ItemsPanel>
+                                            </ComboBox>
+                                        </ControlTemplate>
+                                    </MenuItem.Template>
+                                </MenuItem>
                             </ContextMenu>
                         </Grid.ContextMenu>
                         <Grid.RowDefinitions>
@@ -66,6 +79,7 @@
                             Maximum="{Binding Pages.Count, RelativeSource={RelativeSource TemplatedParent}}"
                             Minimum="1" Orientation="Vertical" SmallChange="1"
                             ViewportSize="1"
+                            Visibility="{Binding PageScrollBarVisibility, RelativeSource={RelativeSource TemplatedParent}}"
                             Value="{Binding Sayfa, Delay=15, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
                         <ContentControl x:Name="Cnt"
                             Grid.Row="1" Grid.ColumnSpan="2"

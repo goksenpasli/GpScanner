@@ -244,6 +244,8 @@ namespace GpScanner.ViewModel
                 }
             }, parameter => Dosyalar?.Count > 0);
 
+            ExploreFile = new RelayCommand<object>(parameter => OpenFolderAndSelectItem(Path.GetDirectoryName(parameter as string), Path.GetFileName(parameter as string)), parameter => true);
+
             ExtractPdfFile = new RelayCommand<object>(async parameter =>
             {
                 if (parameter is string filename && File.Exists(filename))
@@ -692,6 +694,8 @@ namespace GpScanner.ViewModel
                 }
             }
         }
+
+        public ICommand ExploreFile { get; }
 
         public ICommand ExtractPdfFile { get; }
 

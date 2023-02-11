@@ -624,21 +624,13 @@
                                             <local:PdfSettings />
                                         </Extensions:ContentToggleButton.OverContent>
                                     </Extensions:ContentToggleButton>
-                                    <Button AllowDrop="True" BorderBrush="Cyan"
-                                        Command="{Binding PdfBirleştir}"
-                                        Drop="PdfMergeButton_Drop">
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Width="24" Height="24">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="68" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc MERGEPDF}" />
-                                        </StackPanel>
-                                    </Button>
+                                    <Extensions:NumericUpDownControl Height="26"
+                                        VerticalAlignment="Center"
+                                        BorderBrush="Cyan"
+                                        IsEnabled="{Binding ElementName=BtnClearAll, Path=IsEnabled}"
+                                        LargeChange="1" Maximum="1" Minimum="-1"
+                                        NumericUpdownTextBoxVisibility="Collapsed" Orientation="Horizontal" SmallChange="1"
+                                        Value="{Binding AllImageRotationAngle}" />
                                 </StackPanel>
                                 <StackPanel DockPanel.Dock="Right">
                                     <Button Background="Yellow" Command="{Binding SeçiliListeTemizle}">
@@ -756,14 +748,6 @@
                                             </Button>
                                         </WrapPanel>
                                     </ScrollViewer>
-                                    <Separator />
-                                    <Extensions:NumericUpDownControl VerticalAlignment="Center"
-                                        BorderBrush="Cyan"
-                                        IsEnabled="{Binding ElementName=BtnClearAll, Path=IsEnabled}"
-                                        LargeChange="1" Maximum="1" Minimum="-1"
-                                        NumericUpdownTextBoxVisibility="Collapsed" Orientation="Horizontal" SmallChange="1"
-                                        Value="{Binding AllImageRotationAngle}" />
-                                    <Separator />
                                 </StackPanel>
                             </DockPanel>
                         </Grid>
@@ -835,7 +819,8 @@
                                                                     </Style>
                                                                 </Run.Style>
                                                             </Run>
-                                                            <Hyperlink Command="{Binding ElementName=UserControl, Path=DataContext.Kaydet}"
+                                                            <Hyperlink BaselineAlignment="Center"
+                                                                Command="{Binding ElementName=UserControl, Path=DataContext.Kaydet}"
                                                                 CommandParameter="{Binding Resim}"
                                                                 TextDecorations="None">
                                                                 <Image Width="24" Height="24">
@@ -847,7 +832,8 @@
                                                                     </Image.Source>
                                                                 </Image>
                                                             </Hyperlink>
-                                                            <Hyperlink Command="{Binding ElementName=UserControl, Path=DataContext.ResimSil}"
+                                                            <Hyperlink BaselineAlignment="Center"
+                                                                Command="{Binding ElementName=UserControl, Path=DataContext.ResimSil}"
                                                                 CommandParameter="{Binding Mode=OneWay}"
                                                                 FontFamily="Segoe UI Black" TextDecorations="None">
                                                                 <Image Width="24" Height="24">
@@ -944,40 +930,40 @@
                                     <RowDefinition />
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
-                                <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding Scanner.UnsupportedFiles}">
+                                <ListBox x:Name="LbEypContent"
+                                    d:ItemsSource="{d:SampleData ItemCount=5}"
+                                    AllowDrop="True" Drop="LbEypContent_Drop"
+                                    ItemsSource="{Binding Scanner.UnsupportedFiles}">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Image Width="32" Height="32"
-                                                    Source="{Binding Mode=OneWay, Converter={StaticResource FilePathToIconConverter}}" />
-                                                <TextBlock Width="130" Height="64"
-                                                    VerticalAlignment="Center"
-                                                    TextWrapping="Wrap">
-                                                    <Hyperlink Command="{Binding Path=DataContext.WebAdreseGit, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding Mode=OneWay}">
-                                                        <Run Text="{Binding Mode=OneWay}" />
-                                                    </Hyperlink>
-                                                </TextBlock>
-                                            </StackPanel>
+                                            <ContentControl d:Width="64"
+                                                Content="{Binding IsAsync=True, Mode=OneWay}"
+                                                ContentTemplateSelector="{StaticResource PdfEypViewerSelector}" />
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                     <ListBox.ItemsPanel>
                                         <ItemsPanelTemplate>
-                                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" SpacingMode="None" />
+                                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="170,250" SpacingMode="None" />
                                         </ItemsPanelTemplate>
                                     </ListBox.ItemsPanel>
                                 </ListBox>
-                                <Button Grid.Row="1"
-                                    HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
-                                    Command="{Binding EypPdfİçerikBirleştir}">
-                                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                        <Image Width="32" Height="32"
-                                            Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
-                                        <TextBlock VerticalAlignment="Center">
-                                            <Run Text="{local:Loc ALL}" />
-                                            <Run Text="{local:Loc MERGE}" />
-                                        </TextBlock>
-                                    </StackPanel>
-                                </Button>
+                                <UniformGrid Grid.Row="1" Columns="2">
+                                    <Button Command="{Binding EypPdfDosyaEkle}">
+                                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                            <Image Width="32" Height="32"
+                                                Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
+                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc FILE}" />
+                                        </StackPanel>
+                                    </Button>
+                                    <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                                        Command="{Binding EypPdfİçerikBirleştir}">
+                                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                            <Image Width="32" Height="32"
+                                                Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
+                                            <TextBlock VerticalAlignment="Center"><Run Text="{local:Loc ALL}" /><Run Text=" " /><Run Text="{local:Loc MERGE}" /></TextBlock>
+                                        </StackPanel>
+                                    </Button>
+                                </UniformGrid>
                             </Grid>
                         </TabItem>
                     </TabControl>

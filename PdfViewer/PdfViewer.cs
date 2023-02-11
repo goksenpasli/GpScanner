@@ -35,6 +35,8 @@ namespace PdfViewer
 
         public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(FitImageOrientation), typeof(PdfViewer), new PropertyMetadata(FitImageOrientation.Width, Changed));
 
+        public static readonly DependencyProperty PageScrollBarVisibilityProperty = DependencyProperty.Register("PageScrollBarVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Visible));
+
         public static readonly DependencyProperty PdfFilePathProperty = DependencyProperty.Register("PdfFilePath", typeof(string), typeof(PdfViewer), new PropertyMetadata(null, async (o, e) => await PdfFilePathChangedAsync(o, e)));
 
         public static readonly DependencyProperty ScrollBarVisibleProperty = DependencyProperty.Register("ScrollBarVisible", typeof(ScrollBarVisibility), typeof(PdfViewer), new PropertyMetadata(ScrollBarVisibility.Auto));
@@ -207,6 +209,12 @@ namespace PdfViewer
                     OnPropertyChanged(nameof(Pages));
                 }
             }
+        }
+
+        public Visibility PageScrollBarVisibility
+        {
+            get => (Visibility)GetValue(PageScrollBarVisibilityProperty);
+            set => SetValue(PageScrollBarVisibilityProperty, value);
         }
 
         public string PdfFilePath

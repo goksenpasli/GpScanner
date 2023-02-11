@@ -7,9 +7,13 @@ namespace GpScanner.ViewModel
 {
     public class ViewerTemplateSelector : DataTemplateSelector
     {
+        public DataTemplate Empty { get; set; }
+
         public DataTemplate Img { get; set; }
 
         public DataTemplate Pdf { get; set; }
+
+        public DataTemplate Vid { get; set; }
 
         public DataTemplate Xps { get; set; }
 
@@ -20,6 +24,7 @@ namespace GpScanner.ViewModel
             if (item is string dosya)
             {
                 string[] imgext = new string[] { ".jpg", ".bmp", ".png", ".tif", ".tiff" };
+                string[] videoext = new string[] { ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg" };
                 string ext = Path.GetExtension(dosya).ToLower();
                 if (ext == ".pdf")
                 {
@@ -37,6 +42,11 @@ namespace GpScanner.ViewModel
                 {
                     return Img;
                 }
+                if (videoext.Contains(ext))
+                {
+                    return Vid;
+                }
+                return Empty;
             }
             return null;
         }

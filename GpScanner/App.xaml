@@ -27,6 +27,7 @@
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
             <Extensions:CloneConverter x:Key="CloneConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
+            <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Converter:FilePathMergeConverter x:Key="FilePathMergeConverter" />
             <Converter:FileNameExtractConverter x:Key="FileNameExtractConverter" />
             <LinearGradientBrush x:Key="BorderBackground" ice:Freeze="True" StartPoint="0.5,0" EndPoint="0.5,1">
@@ -185,7 +186,7 @@
                                 SelectedItem="{Binding Dpi, RelativeSource={RelativeSource TemplatedParent}, StringFormat=Dpi}"
                                 Visibility="{Binding DpiListVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
                             <TextBlock VerticalAlignment="Center">
-                                <Hyperlink Command="{Binding DataContext.ExploreFile, ElementName=TwainCtrl, Mode=OneWay}"
+                                <Hyperlink Command="{Binding DataContext.ExploreFile, RelativeSource={RelativeSource AncestorType=Window}, Mode=OneWay}"
                                     CommandParameter="{Binding Mode=OneWay}"
                                     TextDecorations="None">
                                     <Image Width="16" Height="16">
@@ -279,7 +280,7 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <StackPanel Margin="2" Orientation="Horizontal">
-                        <UniformGrid Columns="5" DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType=ListBox}}">
+                        <UniformGrid Columns="5" DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType=Window}}">
                             <Extensions:NumericUpDownControl Maximum="{Binding ElementName=PdfVwr, Path=ToplamSayfa}"
                                 Minimum="1" SmallChange="1"
                                 Value="{Binding SayfaBaşlangıç, UpdateSourceTrigger=PropertyChanged}" />
@@ -406,6 +407,65 @@
             <DataTemplate x:Key="XpsViewerTemplate">
                 <Controls:XpsViewer XpsDataFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
+            <DataTemplate x:Key="VideoViewerTemplate">
+                <Controls:MediaViewer Width="160" Height="90"
+                    AutoPlay="False" ContextMenuVisibility="Visible" ControlVisible="Collapsed"
+                    MediaDataFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+            </DataTemplate>
+            <DataTemplate x:Key="EmptyTemplate">
+                <TextBlock Width="157" TextWrapping="Wrap">
+                    <Image Width="32" Height="32"
+                        Source="{Binding Mode=OneWay, Converter={StaticResource FilePathToIconConverter}}" />
+                   <LineBreak/>
+                    <Hyperlink BaselineAlignment="Center"
+                        Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                        CommandParameter="{Binding Mode=OneWay}"
+                        TextDecorations="None">
+                        <Image Width="16" Height="16">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                    <Binding Source="Shell32.dll" />
+                                    <Binding Source="131" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                    </Hyperlink>
+                    <Hyperlink Command="{Binding DataContext.WebAdreseGit, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding Mode=OneWay}">
+                        <Run Text="{Binding Mode=OneWay}" />
+                    </Hyperlink>
+                </TextBlock>
+            </DataTemplate>
+            <DataTemplate x:Key="EypSimplePdfTemplate">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock VerticalAlignment="Center">
+                        <Hyperlink BaselineAlignment="Center"
+                            Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            CommandParameter="{Binding Mode=OneWay}"
+                            TextDecorations="None">
+                            <Image Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="131" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                        </Hyperlink>
+                    </TextBlock>
+                    <PdfViewer:PdfViewer Grid.Row="1"
+                        Width="157" Height="222"
+                        AutoFitContent="True" ContextMenuVisibility="Visible"
+                        Dpi="{Binding DefaultThumbNailDpi, Source={x:Static properties:Settings.Default}}"
+                        DpiListVisibility="Collapsed" OpenButtonVisibility="Collapsed" PageScrollBarVisibility="Collapsed"
+                        PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                        PrintButtonVisibility="Collapsed" ScrollBarVisible="Hidden" SliderZoomAngleVisibility="Collapsed"
+                        SnapTick="True" ToolBarVisibility="Collapsed" />
+                </Grid>
+            </DataTemplate>
             <Style x:Key="ListBoxItemTemplate" TargetType="{x:Type ListBoxItem}">
                 <Setter Property="Template">
                     <Setter.Value>
@@ -440,6 +500,13 @@
             <ViewModel:ViewerTemplateSelector x:Key="ThumbViewerSelector"
                 Img="{StaticResource ImgViewerTemplate}"
                 Pdf="{StaticResource PdfViewerTemplateFull}"
+                Xps="{StaticResource XpsViewerTemplate}"
+                Zip="{StaticResource ZipViewerTemplate}" />
+            <ViewModel:ViewerTemplateSelector x:Key="PdfEypViewerSelector"
+                Empty="{StaticResource EmptyTemplate}"
+                Img="{StaticResource ImgViewerTemplate}"
+                Pdf="{StaticResource EypSimplePdfTemplate}"
+                Vid="{StaticResource VideoViewerTemplate}"
                 Xps="{StaticResource XpsViewerTemplate}"
                 Zip="{StaticResource ZipViewerTemplate}" />
         </ResourceDictionary>

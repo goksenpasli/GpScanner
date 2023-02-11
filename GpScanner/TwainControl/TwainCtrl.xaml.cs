@@ -374,41 +374,6 @@ namespace TwainControl
 
             OcrPage = new RelayCommand<object>(parameter => ImgData = Scanner.CroppedImage.ToTiffJpegByteArray(Format.Jpg), parameter => Scanner?.CroppedImage is not null);
 
-            PdfBirleştir = new RelayCommand<object>(parameter =>
-            {
-                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
-                {
-                    string[] files = Scanner?.Resimler?.GroupBy(z => z.FilePath).Select(z => z.FirstOrDefault()).Select(z => z.FilePath).ToArray();
-                    if (files?.Length > 0 && !files.Contains(null))
-                    {
-                        files.SavePdfFiles();
-                    }
-                    return;
-                }
-                if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
-                {
-                    string[] files = Scanner?.Resimler?.Where(z => z.Seçili).GroupBy(z => z.FilePath).Select(z => z.FirstOrDefault()).Select(z => z.FilePath).ToArray();
-                    if (files?.Length > 0 && !files.Contains(null))
-                    {
-                        files.SavePdfFiles();
-                    }
-                    return;
-                }
-                OpenFileDialog openFileDialog = new()
-                {
-                    Filter = "Pdf Dosyası (*.pdf)|*.pdf",
-                    Multiselect = true
-                };
-                if (openFileDialog.ShowDialog() == true)
-                {
-                    string[] files = openFileDialog.FileNames;
-                    if (files.Length > 0)
-                    {
-                        files.SavePdfFiles();
-                    }
-                }
-            }, parameter => true);
-
             LoadImage = new RelayCommand<object>(parameter =>
             {
                 if (fileloadtask?.IsCompleted == false)
@@ -568,8 +533,29 @@ namespace TwainControl
                 {
                     files.SavePdfFiles();
                 }
+            }, parameter => Scanner?.UnsupportedFiles?.Count(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase)) > 1);
 
-            }, parameter => Scanner.UnsupportedFiles?.Count(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase)) > 1);
+            EypPdfSeçiliDosyaSil = new RelayCommand<object>(parameter => Scanner?.UnsupportedFiles?.Remove(parameter as string), parameter => true);
+
+            EypPdfDosyaEkle = new RelayCommand<object>(parameter =>
+            {
+                OpenFileDialog openFileDialog = new()
+                {
+                    Filter = "Pdf Dosyası (*.pdf)|*.pdf",
+                    Multiselect = true
+                };
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    string[] files = openFileDialog.FileNames;
+                    if (files.Length > 0)
+                    {
+                        foreach (string item in files)
+                        {
+                            Scanner?.UnsupportedFiles?.Add(item);
+                        }
+                    }
+                }
+            }, parameter => true);
 
             int cycleindex = 0;
             CycleSelectedDocuments = new RelayCommand<object>(parameter =>
@@ -673,8 +659,6 @@ namespace TwainControl
 
         public ICommand CycleSelectedDocuments { get; }
 
-        public ICommand EypPdfİçerikBirleştir { get; }
-
         public byte[] DataBaseTextData
         {
             get => dataBaseTextData; set
@@ -745,6 +729,12 @@ namespace TwainControl
 
         public ICommand ExploreFile { get; }
 
+        public ICommand EypPdfDosyaEkle { get; }
+
+        public ICommand EypPdfİçerikBirleştir { get; }
+
+        public ICommand EypPdfSeçiliDosyaSil { get; }
+
         public ICommand FastScanImage { get; }
 
         public byte[] ImgData
@@ -810,8 +800,6 @@ namespace TwainControl
                 }
             }
         }
-
-        public ICommand PdfBirleştir { get; }
 
         public double PdfLoadProgressValue
         {
@@ -1151,7 +1139,7 @@ namespace TwainControl
                             case ".eyp":
                                 {
                                     List<string> files = EypFileExtract(filename);
-                                    await Dispatcher.BeginInvoke(() =>files.ForEach(z=> Scanner?.UnsupportedFiles.Add(z)));
+                                    await Dispatcher.BeginInvoke(() => files.ForEach(z => Scanner?.UnsupportedFiles?.Add(z)));
                                     AddFiles(files.ToArray(), DecodeHeight);
                                     break;
                                 }
@@ -1725,6 +1713,18 @@ namespace TwainControl
             }
         }
 
+        private void LbEypContent_Drop(object sender, DragEventArgs e)
+        {
+            string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
+            if (droppedfiles?.Length > 0)
+            {
+                foreach (string file in droppedfiles.Where(file => string.Equals(Path.GetExtension(file), ".pdf", StringComparison.OrdinalIgnoreCase)))
+                {
+                    Scanner?.UnsupportedFiles?.Add(file);
+                }
+            }
+        }
+
         private void ListBox_Drop(object sender, DragEventArgs e)
         {
             if (fileloadtask?.IsCompleted == false)
@@ -1753,15 +1753,6 @@ namespace TwainControl
                 {
                     Settings.Default.PreviewWidth = 300;
                 }
-            }
-        }
-
-        private void PdfMergeButton_Drop(object sender, DragEventArgs e)
-        {
-            IEnumerable<string> pdffiles = ((string[])e.Data.GetData(DataFormats.FileDrop))?.Where(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase));
-            if (pdffiles?.Any() == true)
-            {
-                pdffiles.ToArray().SavePdfFiles();
             }
         }
 
