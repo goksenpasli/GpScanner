@@ -84,8 +84,9 @@
                         <ContentControl x:Name="Cnt"
                             Grid.Row="1" Grid.ColumnSpan="2"
                             Visibility="{Binding ToolBarVisibility, RelativeSource={RelativeSource TemplatedParent}}">
-                            <Grid IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}">
+                            <Grid>
                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
@@ -106,7 +107,10 @@
                                         </Image.Source>
                                     </Image>
                                 </Button>
-                                <ComboBox SelectedValue="{Binding Orientation, RelativeSource={RelativeSource TemplatedParent}}" SelectedValuePath="Tag">
+                                <ComboBox Grid.Column="1"
+                                    IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}"
+                                    SelectedValue="{Binding Orientation, RelativeSource={RelativeSource TemplatedParent}}"
+                                    SelectedValuePath="Tag">
                                     <ComboBoxItem Tag="Width">
                                         <TextBlock FontFamily="Wingdings 3" FontSize="16" FontWeight="Bold"
                                             Text="F" />
@@ -116,7 +120,9 @@
                                             Text="G" />
                                     </ComboBoxItem>
                                 </ComboBox>
-                                <Button Grid.Column="1" Command="{Binding Resize, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                <Button Grid.Column="2"
+                                    Command="{Binding Resize, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                    IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}">
                                     <Image Width="16" Height="16">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -126,7 +132,8 @@
                                         </Image.Source>
                                     </Image>
                                 </Button>
-                                <StackPanel Grid.Column="2"
+                                <StackPanel Grid.Column="3"
+                                    IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}"
                                     Orientation="Horizontal"
                                     Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}">
                                     <RepeatButton Command="{Binding ViewerBack, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ToolTip="Önceki Sayfa">
@@ -157,8 +164,9 @@
                                         </Image>
                                     </RepeatButton>
                                 </StackPanel>
-                                <Button Grid.Column="3"
+                                <Button Grid.Column="4"
                                     Command="{Binding Yazdır, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                    IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}"
                                     Visibility="{Binding PrintButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                                     <Image Width="16" Height="16">
                                         <Image.Source>
@@ -169,14 +177,16 @@
                                         </Image.Source>
                                     </Image>
                                 </Button>
-                                <ComboBox Grid.Column="4"
+                                <ComboBox Grid.Column="5"
+                                    IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}"
                                     ItemStringFormat="{}{0} Dpi"
                                     ItemsSource="{Binding DpiList, RelativeSource={RelativeSource TemplatedParent}}"
                                     SelectedItem="{Binding Dpi, RelativeSource={RelativeSource TemplatedParent}, StringFormat=Dpi}"
                                     Visibility="{Binding DpiListVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
                                 <Button x:Name="BtnSave"
-                                    Grid.Column="5"
-                                    Command="{Binding SaveImage, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                    Grid.Column="6"
+                                    Command="{Binding SaveImage, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                    IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}">
                                     <Image Width="16" Height="16">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -186,23 +196,27 @@
                                         </Image.Source>
                                     </Image>
                                 </Button>
-                                <Slider Grid.Column="6"
-                                    Margin="2"
-                                    AutoToolTipPlacement="TopLeft" Minimum="0.01" SmallChange="1"
-                                    Style="{StaticResource Slider}"
-                                    Visibility="{Binding SliderZoomAngleVisibility, RelativeSource={RelativeSource TemplatedParent}}"
-                                    Value="{Binding Zoom, RelativeSource={RelativeSource TemplatedParent}}" />
                                 <Slider Grid.Column="7"
                                     Margin="2"
                                     AutoToolTipPlacement="TopLeft"
+                                    IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}"
+                                    Minimum="0.01" SmallChange="1"
+                                    Style="{StaticResource Slider}"
+                                    Visibility="{Binding SliderZoomAngleVisibility, RelativeSource={RelativeSource TemplatedParent}}"
+                                    Value="{Binding Zoom, RelativeSource={RelativeSource TemplatedParent}}" />
+                                <Slider Grid.Column="8"
+                                    Margin="2"
+                                    AutoToolTipPlacement="TopLeft"
+                                    IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}"
                                     IsSnapToTickEnabled="{Binding SnapTick, RelativeSource={RelativeSource TemplatedParent}}"
                                     Maximum="360" SmallChange="1"
                                     Style="{StaticResource Slider}"
                                     Ticks="0, 90, 180, 270, 360"
                                     Visibility="{Binding SliderZoomAngleVisibility, RelativeSource={RelativeSource TemplatedParent}}"
                                     Value="{Binding Angle, RelativeSource={RelativeSource TemplatedParent}}" />
-                                <Extensions:ContentToggleButton Grid.Column="8"
+                                <Extensions:ContentToggleButton Grid.Column="9"
                                     Command="{Binding ViewAllThumbnailImage, RelativeSource={RelativeSource TemplatedParent}}"
+                                    IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}"
                                     PlacementMode="Top">
                                     <Extensions:ContentToggleButton.OverContent>
                                         <Extensions:ResizablePanel Width="640" Height="480" MinWidth="320"

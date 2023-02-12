@@ -1758,25 +1758,44 @@ namespace TwainControl
 
         private void Run_Drop(object sender, DragEventArgs e)
         {
-            if (sender is Run run && e.Data.GetData(typeof(ScannedImage)) is ScannedImage droppedData)
+            if (sender is Run run && e.Data.GetData(typeof(ScannedImage)) is ScannedImage droppedData && run.DataContext is ScannedImage target)
             {
-                if (run.DataContext is ScannedImage target)
-                {
-                    int removedIdx = Scanner.Resimler.IndexOf(droppedData);
-                    int targetIdx = Scanner.Resimler.IndexOf(target);
+                int removedIdx = Scanner.Resimler.IndexOf(droppedData);
+                int targetIdx = Scanner.Resimler.IndexOf(target);
 
-                    if (removedIdx < targetIdx)
-                    {
-                        Scanner.Resimler.Insert(targetIdx + 1, droppedData);
-                        Scanner.Resimler.RemoveAt(removedIdx);
-                        return;
-                    }
-                    int remIdx = removedIdx + 1;
-                    if (Scanner.Resimler.Count + 1 > remIdx)
-                    {
-                        Scanner.Resimler.Insert(targetIdx, droppedData);
-                        Scanner.Resimler.RemoveAt(remIdx);
-                    }
+                if (removedIdx < targetIdx)
+                {
+                    Scanner.Resimler.Insert(targetIdx + 1, droppedData);
+                    Scanner.Resimler.RemoveAt(removedIdx);
+                    return;
+                }
+                int remIdx = removedIdx + 1;
+                if (Scanner.Resimler.Count + 1 > remIdx)
+                {
+                    Scanner.Resimler.Insert(targetIdx, droppedData);
+                    Scanner.Resimler.RemoveAt(remIdx);
+                }
+            }
+        }
+
+        private void Run_EypDrop(object sender, DragEventArgs e)
+        {
+            if (sender is Run run && e.Data.GetData(typeof(string)) is string droppedData && run.DataContext is string target)
+            {
+                int removedIdx = Scanner.UnsupportedFiles.IndexOf(droppedData);
+                int targetIdx = Scanner.UnsupportedFiles.IndexOf(target);
+
+                if (removedIdx < targetIdx)
+                {
+                    Scanner.UnsupportedFiles.Insert(targetIdx + 1, droppedData);
+                    Scanner.UnsupportedFiles.RemoveAt(removedIdx);
+                    return;
+                }
+                int remIdx = removedIdx + 1;
+                if (Scanner.UnsupportedFiles.Count + 1 > remIdx)
+                {
+                    Scanner.UnsupportedFiles.Insert(targetIdx, droppedData);
+                    Scanner.UnsupportedFiles.RemoveAt(remIdx);
                 }
             }
         }

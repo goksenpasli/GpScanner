@@ -416,7 +416,7 @@
                 <TextBlock Width="157" TextWrapping="Wrap">
                     <Image Width="32" Height="32"
                         Source="{Binding Mode=OneWay, Converter={StaticResource FilePathToIconConverter}}" />
-                   <LineBreak/>
+                    <LineBreak />
                     <Hyperlink BaselineAlignment="Center"
                         Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=UserControl}}"
                         CommandParameter="{Binding Mode=OneWay}"
@@ -457,7 +457,7 @@
                         </Hyperlink>
                     </TextBlock>
                     <PdfViewer:PdfViewer Grid.Row="1"
-                        Width="157" Height="222"
+                        Width="105" Height="150"
                         AutoFitContent="True" ContextMenuVisibility="Visible"
                         Dpi="{Binding DefaultThumbNailDpi, Source={x:Static properties:Settings.Default}}"
                         DpiListVisibility="Collapsed" OpenButtonVisibility="Collapsed" PageScrollBarVisibility="Collapsed"

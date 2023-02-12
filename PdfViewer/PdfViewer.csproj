@@ -35,7 +35,7 @@
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-      <LangVersion>preview</LangVersion>
+    <LangVersion>preview</LangVersion>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'x64|AnyCPU'">
@@ -95,7 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Extensions\Extensions.csproj">
-      <Project>{22B9A127-5E74-4534-BFC4-A3349544C52C}</Project>
+      <Project>{22b9a127-5e74-4534-bfc4-a3349544c52c}</Project>
       <Name>Extensions</Name>
     </ProjectReference>
   </ItemGroup>
