@@ -1808,6 +1808,14 @@ namespace TwainControl
                 _ = DragDrop.DoDragDrop(run, run.DataContext, DragDropEffects.Move);
                 DragMoveStarted = false;
             }
+        }     
+        
+        private void Run_EypPreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            if (sender is Run run && e.LeftButton == MouseButtonState.Pressed)
+            {
+                _ = DragDrop.DoDragDrop(run, run.DataContext, DragDropEffects.Move);
+            }
         }
 
         private void ScanCommonSettings()
