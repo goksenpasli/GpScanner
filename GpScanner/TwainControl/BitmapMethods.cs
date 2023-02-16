@@ -235,11 +235,13 @@ namespace TwainControl
         {
             return new ObservableCollection<Paper>
             {
+                new Paper() { Height = 119, PaperType = "A0", Width = 84.1 },
                 new Paper() { Height = 84.1, PaperType = "A1", Width = 59.5 },
                 new Paper() { Height = 59.5, PaperType = "A2", Width = 42 },
                 new Paper() { Height = 42, PaperType = "A3", Width = 29.7 },
                 new Paper() { Height = 29.7, PaperType = "A4", Width = 21 },
                 new Paper() { Height = 21, PaperType = "A5", Width = 14.8 },
+                new Paper() { Height = 141, PaperType = "B0", Width = 100 },
                 new Paper() { Height = 100, PaperType = "B1", Width = 70.7 },
                 new Paper() { Height = 70.7, PaperType = "B2", Width = 50 },
                 new Paper() { Height = 50, PaperType = "B3", Width = 35.3 },

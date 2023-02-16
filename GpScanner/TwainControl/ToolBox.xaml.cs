@@ -17,6 +17,7 @@ using Ocr;
 using PdfSharp;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
+using TwainControl.Properties;
 using static Extensions.ExtensionMethods;
 
 namespace TwainControl
@@ -130,14 +131,17 @@ namespace TwainControl
 
             SplitAllImage = new RelayCommand<object>(async parameter =>
             {
-                string savefolder = CreateSaveFolder("SPLIT");
-                List<ScannedImage> listcroppedimages = Scanner.Resimler.Where(z => z.Seçili).SelectMany(scannedimage => CropImageToList(scannedimage.Resim, (int)Scanner.SliceCountWidth, (int)Scanner.SliceCountHeight).Select(croppedBitmap => new ScannedImage { Resim = BitmapFrame.Create(croppedBitmap) })).ToList();
-                PdfDocument pdfdocument = await listcroppedimages.GeneratePdf(Format.Jpg, null, 80, null);
-                pdfdocument.Save(savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "pdf"));
-                WebAdreseGit.Execute(savefolder);
-                listcroppedimages = null;
-                pdfdocument = null;
-                (DataContext as TwainCtrl)?.SeçiliListeTemizle.Execute(null);
+                if (DataContext is TwainCtrl twainControl)
+                {
+                    string savefolder = CreateSaveFolder("SPLIT");
+                    List<ScannedImage> listcroppedimages = Scanner.Resimler.Where(z => z.Seçili).SelectMany(scannedimage => CropImageToList(scannedimage.Resim, (int)Scanner.SliceCountWidth, (int)Scanner.SliceCountHeight).Select(croppedBitmap => new ScannedImage { Resim = BitmapFrame.Create(croppedBitmap) })).ToList();
+                    PdfDocument pdfdocument = await listcroppedimages.GeneratePdf(Format.Jpg, Paper, Settings.Default.JpegQuality, null, (int)Properties.Settings.Default.Çözünürlük);
+                    pdfdocument.Save(savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "pdf"));
+                    WebAdreseGit.Execute(savefolder);
+                    listcroppedimages = null;
+                    pdfdocument = null;
+                    twainControl.SeçiliListeTemizle.Execute(null);
+                }
             }, parameter => Scanner?.AutoSave == true && Scanner?.Resimler?.Count(z => z.Seçili) > 0);
 
             MergeAllImage = new RelayCommand<object>(async parameter =>

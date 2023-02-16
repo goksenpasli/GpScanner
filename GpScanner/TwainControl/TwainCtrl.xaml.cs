@@ -1456,6 +1456,10 @@ namespace TwainControl
             };
             switch (SelectedPaper.PaperType)
             {
+                case "A0":
+                    scansettings.Page.Size = PageType.A0;
+                    break;
+
                 case "A1":
                     scansettings.Page.Size = PageType.A1;
                     break;
@@ -1474,6 +1478,10 @@ namespace TwainControl
 
                 case "A5":
                     scansettings.Page.Size = PageType.A5;
+                    break;
+
+                case "B0":
+                    scansettings.Page.Size = PageType.ISOB0;
                     break;
 
                 case "B1":
@@ -1800,6 +1808,14 @@ namespace TwainControl
             }
         }
 
+        private void Run_EypPreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            if (sender is Run run && e.LeftButton == MouseButtonState.Pressed)
+            {
+                _ = DragDrop.DoDragDrop(run, run.DataContext, DragDropEffects.Move);
+            }
+        }
+
         private void Run_PreviewMouseMove(object sender, MouseEventArgs e)
         {
             if (sender is Run run && e.LeftButton == MouseButtonState.Pressed)
@@ -1807,14 +1823,6 @@ namespace TwainControl
                 DragMoveStarted = true;
                 _ = DragDrop.DoDragDrop(run, run.DataContext, DragDropEffects.Move);
                 DragMoveStarted = false;
-            }
-        }     
-        
-        private void Run_EypPreviewMouseMove(object sender, MouseEventArgs e)
-        {
-            if (sender is Run run && e.LeftButton == MouseButtonState.Pressed)
-            {
-                _ = DragDrop.DoDragDrop(run, run.DataContext, DragDropEffects.Move);
             }
         }
 

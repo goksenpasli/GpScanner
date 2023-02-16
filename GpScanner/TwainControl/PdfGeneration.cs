@@ -356,6 +356,10 @@ namespace TwainControl
             }
             switch (paper.PaperType)
             {
+                case "A0":
+                    page.Size = PageSize.A0;
+                    break;
+
                 case "A1":
                     page.Size = PageSize.A1;
                     break;
@@ -374,6 +378,10 @@ namespace TwainControl
 
                 case "A5":
                     page.Size = PageSize.A5;
+                    break;
+
+                case "B0":
+                    page.Size = PageSize.B0;
                     break;
 
                 case "B1":
