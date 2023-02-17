@@ -104,7 +104,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converter\FileNameExtractConverter.cs" />
-    <Compile Include="Converter\FilePathMergeConverter.cs" />
+    <Compile Include="Converter\FilePathCheckConverter.cs" />
     <Compile Include="Converter\StringToQrBitmapImageConverter.cs" />
     <Compile Include="DocumentViewerWindow.xaml.cs">
       <DependentUpon>DocumentViewerWindow.xaml</DependentUpon>
@@ -118,6 +118,7 @@
     <Compile Include="TranslateView.xaml.cs">
       <DependentUpon>TranslateView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\BatchTxtOcr.cs" />
     <Compile Include="ViewModel\Data.cs" />
     <Compile Include="ViewModel\DataSerialize.cs" />
     <Compile Include="ViewModel\DocumentViewerModel.cs" />

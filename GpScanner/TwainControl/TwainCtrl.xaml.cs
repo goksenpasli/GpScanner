@@ -149,6 +149,27 @@ namespace TwainControl
                 }
             }, parameter => !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0);
 
+            SinglePageSavePdf = new RelayCommand<object>(async parameter =>
+            {
+                if (parameter is object[] dc && dc[0] is int page && dc[1] is string filepath)
+                {
+                    SaveFileDialog saveFileDialog = new()
+                    {
+                        Filter = "Pdf Dosyası (*.pdf)|*.pdf",
+                        FileName = Scanner.SaveFileName,
+                    };
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        await Task.Run(() =>
+                        {
+                            using PdfDocument outputDocument = filepath.ExtractPdfPages(page, page);
+                            outputDocument.DefaultPdfCompression();
+                            outputDocument.Save(saveFileDialog.FileName);
+                        });
+                    }
+                }
+            }, parameter => true);
+
             Tümünüİşaretle = new RelayCommand<object>(parameter =>
             {
                 foreach (ScannedImage item in Scanner.Resimler.ToList())
@@ -903,6 +924,8 @@ namespace TwainControl
         }
 
         public ICommand SendMail { get; }
+
+        public ICommand SinglePageSavePdf { get; }
 
         public string SinglePdfFilePath
         {

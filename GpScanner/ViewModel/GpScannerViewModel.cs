@@ -411,32 +411,31 @@ namespace GpScanner.ViewModel
 
             StartTxtBatch = new RelayCommand<object>(parameter =>
             {
-                int slicecount;
                 List<string> files = Win32FileScanner.EnumerateFilepaths(BatchFolder, -1).Where(s => (new string[] { ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp" }).Any(ext => ext == Path.GetExtension(s).ToLower())).ToList();
-                slicecount = files.Count > Environment.ProcessorCount ? Environment.ProcessorCount : 1;
+                int slicecount = files.Count > Environment.ProcessorCount ? files.Count / Environment.ProcessorCount : 1;
                 Scanner scanner = ToolBox.Scanner;
+                BatchTxtOcrs = new List<BatchTxtOcr>();
                 List<Task> Tasks = new();
                 foreach (List<string> item in ChunkBy(files, slicecount))
                 {
-                    double index = 0;
-                    int filescount = item.Count;
                     if (item.Count > 0)
                     {
-                        Tasks.Add(Task.Run(async () =>
+                        BatchTxtOcr batchTxtOcr = new BatchTxtOcr();
+                        var task = Task.Run(async () =>
                         {
                             List<string> scannedtext = new();
-                            scanner.ProgressState = TaskbarItemProgressState.Normal;
-                            foreach (string image in item)
+                            for (int i = 0; i < item.Count; i++)
                             {
+                                string image = item[i];
                                 string txtfile = Path.ChangeExtension(image, ".txt");
                                 string content = string.Join(" ", (await image.OcrAsyc(scanner.SelectedTtsLanguage)).Select(z => z.Text));
                                 File.WriteAllText(txtfile, content);
-                                index++;
-                                scanner.PdfSaveProgressValue = index / item.Count;
+                                batchTxtOcr.ProgressValue = (i + 1) / (double)item.Count;
                                 GC.Collect();
                             }
-                            scanner.PdfSaveProgressValue = 1;
-                        }));
+                        });
+                        BatchTxtOcrs.Add(batchTxtOcr);
+                        Tasks.Add(task);
                     }
                 }
                 Filesavetask = Task.WhenAll(Tasks);
@@ -595,6 +594,20 @@ namespace GpScanner.ViewModel
                 {
                     batchFolder = value;
                     OnPropertyChanged(nameof(BatchFolder));
+                }
+            }
+        }
+
+        public List<BatchTxtOcr> BatchTxtOcrs
+        {
+            get => batchTxtOcrs;
+
+            set
+            {
+                if (batchTxtOcrs != value)
+                {
+                    batchTxtOcrs = value;
+                    OnPropertyChanged(nameof(BatchTxtOcrs));
                 }
             }
         }
@@ -1252,6 +1265,8 @@ namespace GpScanner.ViewModel
         private ResultPoint[] barcodePosition;
 
         private string batchFolder;
+
+        private List<BatchTxtOcr> batchTxtOcrs;
 
         private XmlLanguage calendarLang;
 

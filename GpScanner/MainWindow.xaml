@@ -50,6 +50,10 @@
             CommandParameter="yardım.chm" />
     </Window.InputBindings>
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
         <Grid.Style>
             <Style TargetType="{x:Type Grid}">
                 <Style.Triggers>
@@ -68,7 +72,7 @@
             <ColumnDefinition Width="3" />
             <ColumnDefinition Width="{Binding MainWindowDocumentGuiControlLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" d:Width="1*" />
         </Grid.ColumnDefinitions>
-        <twainctrl:TwainCtrl x:Name="TwainCtrl" />
+        <twainctrl:TwainCtrl x:Name="TwainCtrl" Grid.ColumnSpan="2" />
         <GridSplitter Grid.Column="1"
             Width="3"
             HorizontalAlignment="Stretch"
@@ -484,5 +488,26 @@
                 </TabItem>
             </TabControl>
         </GroupBox>
+        <StatusBar Background="Maroon" Grid.Row="1" Grid.ColumnSpan="3">
+            <StatusBarItem HorizontalAlignment="Right">
+                <Extensions:ContentToggleButton Content="{twainctrl:Loc BATCH}">
+                    <Extensions:ContentToggleButton.OverContent>
+                        <GroupBox>
+                            <ListBox Width="300" Height="240"
+                                HorizontalContentAlignment="Stretch"
+                                ItemsSource="{Binding BatchTxtOcrs}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <ProgressBar Height="20"
+                                            Maximum="1" Minimum="0"
+                                            Value="{Binding ProgressValue}" />
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </GroupBox>
+                    </Extensions:ContentToggleButton.OverContent>
+                </Extensions:ContentToggleButton>
+            </StatusBarItem>
+        </StatusBar>
     </Grid>
 </Window>

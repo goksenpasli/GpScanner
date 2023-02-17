@@ -28,7 +28,7 @@
             <Extensions:CloneConverter x:Key="CloneConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
-            <Converter:FilePathMergeConverter x:Key="FilePathMergeConverter" />
+            <Converter:FilePathCheckConverter x:Key="FilePathCheckConverter" />
             <Converter:FileNameExtractConverter x:Key="FileNameExtractConverter" />
             <LinearGradientBrush x:Key="BorderBackground" ice:Freeze="True" StartPoint="0.5,0" EndPoint="0.5,1">
                 <GradientStop ice:Freeze="True" Offset="0" Color="#FFFDFEFF" />
@@ -206,9 +206,11 @@
                                         MinWidth="240" MinHeight="385">
                                         <ListBox ItemsSource="{Binding Thumbnails, RelativeSource={RelativeSource TemplatedParent}}"
                                             SelectedValue="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
-                                            SelectedValuePath="Page" SelectionMode="Extended" VirtualizingPanel.CacheLength="3,3"
-                                            VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                                            VirtualizingPanel.ScrollUnit="Item" VirtualizingPanel.VirtualizationMode="Recycling">
+                                            SelectedValuePath="Page" SelectionMode="Extended"
+                                            Tag="{Binding Tag, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                            VirtualizingPanel.CacheLength="3,3" VirtualizingPanel.CacheLengthUnit="Item"
+                                            VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.ScrollUnit="Item"
+                                            VirtualizingPanel.VirtualizationMode="Recycling">
                                             <ListBox.ItemsPanel>
                                                 <ItemsPanelTemplate>
                                                     <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" SpacingMode="None" />
@@ -217,7 +219,28 @@
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate>
                                                     <StackPanel>
-                                                        <TextBlock HorizontalAlignment="Center" Text="{Binding Page, Mode=OneWay}" />
+                                                        <TextBlock HorizontalAlignment="Center">
+                                                            <Run Text="{Binding Page, Mode=OneWay}" />
+                                                            <Hyperlink BaselineAlignment="Center"
+                                                                Command="{Binding RelativeSource={RelativeSource AncestorType=ListBox}, Path=Tag.SinglePageSavePdf}"
+                                                                TextDecorations="None">
+                                                                <Hyperlink.CommandParameter>
+                                                                    <MultiBinding Converter="{StaticResource CloneConverter}">
+                                                                        <Binding Mode="OneWay" Path="Page" />
+                                                                        <Binding Mode="OneWay" Path="Parent.DataContext"
+                                                                            RelativeSource="{RelativeSource AncestorType=Extensions:ContentToggleButton}" />
+                                                                    </MultiBinding>
+                                                                </Hyperlink.CommandParameter>
+                                                                <Image Width="24" Height="24">
+                                                                    <Image.Source>
+                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                            <Binding Source="Shell32.dll" />
+                                                                            <Binding Source="6" />
+                                                                        </MultiBinding>
+                                                                    </Image.Source>
+                                                                </Image>
+                                                            </Hyperlink>
+                                                        </TextBlock>
                                                         <Image Width="42" Height="60"
                                                             Source="{Binding Thumb, Mode=OneWay}" />
                                                     </StackPanel>
@@ -340,16 +363,17 @@
                         AllowDrop="True" AutoFitContent="True"
                         Dpi="{Binding DefaultThumbNailDpi, Source={x:Static properties:Settings.Default}}"
                         OpenButtonVisibility="Collapsed"
-                        PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                        PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                         PrintButtonVisibility="Visible" ScrollBarVisible="Hidden" SnapTick="True"
+                        Tag="{Binding ElementName=TwainCtrl, Mode=OneWay}"
                         Template="{StaticResource PdfViewerThumbTemplate}" />
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="ZipViewerTemplate">
-                <Controls:ArchiveViewer ArchivePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                <Controls:ArchiveViewer ArchivePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="ZipViewerTemplateFull">
-                <Controls:ArchiveViewer ArchivePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                <Controls:ArchiveViewer ArchivePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="ImgViewerTemplate">
                 <Grid>
@@ -367,12 +391,12 @@
                     <Extensions:ImageViewer x:Name="Imgvwr"
                         Grid.Row="1"
                         DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
-                        ImageFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                        ImageFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                         PanoramaButtonVisibility="Collapsed" PrintButtonVisibility="Visible" />
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="ImgViewerTemplateFull">
-                <Extensions:ImageViewer ImageFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                <Extensions:ImageViewer ImageFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="ImgViewerDocumentViewerTemplateFull">
                 <Grid>
@@ -382,7 +406,7 @@
                     </Grid.ColumnDefinitions>
                     <Extensions:ImageViewer x:Name="ImgVwr"
                         DecodeHeight="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Grid}}"
-                        ImageFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                        ImageFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                         PanoramaButtonVisibility="Collapsed" />
                     <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
@@ -405,12 +429,12 @@
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="XpsViewerTemplate">
-                <Controls:XpsViewer XpsDataFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                <Controls:XpsViewer XpsDataFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="VideoViewerTemplate">
                 <Controls:MediaViewer Width="160" Height="90"
                     AutoPlay="False" ContextMenuVisibility="Visible" ControlVisible="Collapsed"
-                    MediaDataFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                    MediaDataFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="EmptyTemplate">
                 <TextBlock Width="157" TextWrapping="Wrap">
@@ -461,7 +485,7 @@
                         AutoFitContent="True" ContextMenuVisibility="Visible"
                         Dpi="{Binding DefaultThumbNailDpi, Source={x:Static properties:Settings.Default}}"
                         DpiListVisibility="Collapsed" OpenButtonVisibility="Collapsed" PageScrollBarVisibility="Collapsed"
-                        PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathMergeConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                        PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                         PrintButtonVisibility="Collapsed" ScrollBarVisible="Hidden" SliderZoomAngleVisibility="Collapsed"
                         SnapTick="True" ToolBarVisibility="Collapsed" />
                 </Grid>

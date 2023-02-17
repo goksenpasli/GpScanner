@@ -1,24 +1,24 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.IO;
 using System.Windows;
 using System.Windows.Data;
-using System.Windows.Media.Imaging;
 
 namespace GpScanner.Converter
 {
-    public sealed class FilePathMergeConverter : IValueConverter
+    public sealed class FilePathCheckConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return !DesignerProperties.GetIsInDesignMode(new DependencyObject()) && value is string filename && !string.IsNullOrEmpty(filename)
+            return !DesignerProperties.GetIsInDesignMode(new DependencyObject()) && value is string filename && File.Exists(filename)
                 ? filename
-                : (object)null;
+                : null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value as BitmapSource;
+            throw new NotImplementedException();
         }
     }
 }
