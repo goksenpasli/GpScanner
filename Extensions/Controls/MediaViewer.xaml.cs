@@ -836,6 +836,7 @@ namespace Extensions.Controls
             }
             catch (Exception)
             {
+                filepath = null;
                 return null;
             }
         }

@@ -159,6 +159,8 @@ namespace TwainControl
             }
             catch (Exception ex)
             {
+                bitmapFrames = null;
+                ScannedText = null;
                 _ = MessageBox.Show(ex.Message);
             }
             return document;
@@ -212,6 +214,8 @@ namespace TwainControl
             }
             catch (Exception ex)
             {
+                imagefiles = null;
+                ScannedText = null;
                 _ = MessageBox.Show(ex.Message);
             }
             return document;
@@ -321,6 +325,7 @@ namespace TwainControl
             }
             catch (Exception ex)
             {
+                pdffiles = null;
                 _ = MessageBox.Show(ex.Message);
             }
 
@@ -342,6 +347,7 @@ namespace TwainControl
                 }
                 catch (Exception ex)
                 {
+                    files = null;
                     _ = MessageBox.Show(ex.Message);
                 }
             }

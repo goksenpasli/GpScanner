@@ -19,8 +19,13 @@
     <Window.Resources>
         <Converter:StringToQrBitmapImageConverter x:Key="StringToQrBitmapImageConverter" />
         <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
+        <Extensions:StringNullableToBooleanConverter x:Key="StringNullableToBooleanConverter" />
     </Window.Resources>
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="1*" />
@@ -378,9 +383,7 @@
                             Command="{Binding SetBatchFolder}"
                             Content="{twainctrl:Loc SRC}" />
                         <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-                            <ProgressBar Foreground="{Binding ProgressBarForegroundBrush}"
-                                Maximum="1"
-                                Value="{Binding PdfSaveProgressValue, Source={x:Static twainctrl:ToolBox.Scanner}}" />
+                            <ProgressBar Maximum="1" Value="{Binding PdfSaveProgressValue, Source={x:Static twainctrl:ToolBox.Scanner}}" />
                             <TextBox d:Text="AutoFolder"
                                 Background="{x:Null}"
                                 IsReadOnly="True"
@@ -415,5 +418,24 @@
             </Grid>
         </GroupBox>
         <local:TesseractView Grid.Column="1" />
+        <StatusBar Grid.Row="1" Grid.ColumnSpan="2"
+            Background="Maroon">
+            <StatusBarItem>
+                <StatusBarItem.Style>
+                    <Style TargetType="StatusBarItem">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding DefaultTtsLang, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}, Converter={StaticResource StringNullableToBooleanConverter}}" Value="true">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding DefaultTtsLang, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}, Converter={StaticResource StringNullableToBooleanConverter}}" Value="false">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StatusBarItem.Style>
+                <TextBlock FontWeight="Bold" Foreground="Red"
+                    Text="{twainctrl:Loc TESSLANGSELECT}" />
+            </StatusBarItem>
+        </StatusBar>
     </Grid>
 </Window>

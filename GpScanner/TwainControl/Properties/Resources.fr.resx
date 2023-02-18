@@ -471,6 +471,9 @@ AJOUTER</value>
   <data name="TESSERACT" xml:space="preserve">
     <value>TESSERACT</value>
   </data>
+  <data name="TESSLANGSELECT" xml:space="preserve">
+    <value>Sélectionnez la langue Tesseract</value>
+  </data>
   <data name="TEXT" xml:space="preserve">
     <value>TEXTE</value>
   </data>

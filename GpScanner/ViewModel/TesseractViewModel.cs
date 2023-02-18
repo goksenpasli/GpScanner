@@ -25,18 +25,16 @@ namespace GpScanner.ViewModel
             TesseractDataFilesDownloadLink = new RelayCommand<object>(parameter =>
             {
                 string path = parameter as string;
-                if (string.IsNullOrWhiteSpace(path))
+                if (!string.IsNullOrWhiteSpace(path))
                 {
-                    return;
-                }
-
-                try
-                {
-                    _ = Process.Start(path);
-                }
-                catch (Exception ex)
-                {
-                    _ = MessageBox.Show(ex.Message);
+                    try
+                    {
+                        _ = Process.Start(path);
+                    }
+                    catch (Exception ex)
+                    {
+                        _ = MessageBox.Show(ex.Message);
+                    }
                 }
             }, parameter => true);
 

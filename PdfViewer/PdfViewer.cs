@@ -381,6 +381,7 @@ namespace PdfViewer
             }
             catch (Exception)
             {
+                pdffilestream = null;
             }
             return null;
         }
@@ -407,6 +408,7 @@ namespace PdfViewer
             }
             catch (Exception)
             {
+                stream = null;
             }
             return null;
         }
@@ -427,6 +429,7 @@ namespace PdfViewer
             }
             catch (Exception)
             {
+                stream = null;
             }
             return 0;
         }
@@ -498,6 +501,7 @@ namespace PdfViewer
             }
             catch (Exception)
             {
+                pdffilestream = null;
             }
 
             return null;

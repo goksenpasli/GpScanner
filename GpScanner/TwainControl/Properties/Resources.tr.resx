@@ -526,4 +526,7 @@ BELGE EKLE</value>
   <data name="LIMITED" xml:space="preserve">
     <value>Bu Dosya Formatının Kısıtlı Desteği Vardır.</value>
   </data>
+  <data name="TESSLANGSELECT" xml:space="preserve">
+    <value>Tesseract Dilini Seçin</value>
+  </data>
 </root>

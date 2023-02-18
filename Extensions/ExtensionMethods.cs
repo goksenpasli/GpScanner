@@ -451,6 +451,7 @@ namespace Extensions
             }
             catch (Exception ex)
             {
+                bitmapsource = null;
                 MessageBox.Show(ex.Message);
                 return null;
             }

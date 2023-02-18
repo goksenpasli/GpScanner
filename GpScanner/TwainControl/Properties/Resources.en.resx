@@ -520,4 +520,7 @@ TO FILE</value>
   <data name="LIMITED" xml:space="preserve">
     <value>This File Format Has Limited Support.</value>
   </data>
+  <data name="TESSLANGSELECT" xml:space="preserve">
+    <value>Select Tesseract Language</value>
+  </data>
 </root>

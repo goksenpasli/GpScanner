@@ -18,10 +18,30 @@
     WindowStartupLocation="CenterScreen" WindowState="Maximized"
     mc:Ignorable="d">
     <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
         <Converter:StringToQrBitmapImageConverter x:Key="StringToQrBitmapImageConverter" />
         <CollectionViewSource x:Key="Veriler" Source="{Binding Dosyalar}" />
         <Style x:Key="ListBoxAnimationStyle" TargetType="{x:Type ListBox}">
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ListBoxBorderAnimation}" Value="true">
+                    <DataTrigger.EnterActions>
+                        <BeginStoryboard x:Name="Sb">
+                            <Storyboard RepeatBehavior="Forever">
+                                <ColorAnimation Storyboard.TargetProperty="BorderBrush.Color" To="Red" Duration="0:0:1" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </DataTrigger.EnterActions>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ListBoxBorderAnimation}" Value="false">
+                    <DataTrigger.EnterActions>
+                        <RemoveStoryboard BeginStoryboardName="Sb" />
+                    </DataTrigger.EnterActions>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="ContentToggleButtonAnimationStyle" TargetType="{x:Type Extensions:ContentToggleButton}">
             <Setter Property="BorderBrush" Value="Transparent" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding ListBoxBorderAnimation}" Value="true">
@@ -88,9 +108,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="23.2" />
-                            <RowDefinition Height="191*" />
-                            <RowDefinition Height="3" />
-                            <RowDefinition Height="39*" />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
                         <UniformGrid Grid.Row="1" Columns="3">
                             <Extensions:ButtonedTextBox CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed"
@@ -385,57 +403,6 @@
                                 </Style>
                             </ListBox.ItemContainerStyle>
                         </ListBox>
-                        <GridSplitter Grid.Row="4"
-                            Height="3"
-                            Margin="-2,0,-1,0" HorizontalAlignment="Stretch"
-                            Background="{StaticResource BorderBackground}" />
-                        <ListBox x:Name="QrListBox"
-                            Grid.Row="5"
-                            HorizontalContentAlignment="Stretch"
-                            d:ItemsSource="{d:SampleData ItemCount=5}"
-                            AllowDrop="True"
-                            Background="{StaticResource BorderBackground}"
-                            BorderThickness="2" Drop="QrListBox_Drop"
-                            ItemsSource="{Binding BarcodeList}"
-                            Style="{StaticResource ListBoxAnimationStyle}">
-                            <ListBox.ItemContainerStyle>
-                                <Style TargetType="{x:Type ListBoxItem}">
-                                    <Setter Property="Padding" Value="0" />
-                                </Style>
-                            </ListBox.ItemContainerStyle>
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="20" />
-                                            <ColumnDefinition Width="84.8" />
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock VerticalAlignment="Center"><Hyperlink Command="{Binding DataContext.TesseractViewModel.TesseractDataFilesDownloadLink, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding Mode=OneWay}">
-                                                <Run FontFamily="Wingdings" FontSize="16" FontWeight="Bold"
-                                                    Text="8" />
-                                            </Hyperlink></TextBlock>
-                                        <Image Grid.Column="1"
-                                            Width="80" Height="80"
-                                            Source="{Binding Converter={StaticResource StringToQrBitmapImageConverter}, Mode=OneWay}"
-                                            Tag="{Binding DataContext, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type Window}}}">
-                                            <Image.ContextMenu>
-                                                <ContextMenu DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
-                                                    <MenuItem Command="{Binding Tag.SaveQrImage}"
-                                                        CommandParameter="{Binding Source}"
-                                                        Header="{twainctrl:Loc SAVESELECTED}" />
-                                                </ContextMenu>
-                                            </Image.ContextMenu>
-                                        </Image>
-                                        <Extensions:ButtonedTextBox Grid.Column="2"
-                                            Height="80"
-                                            IsReadOnly="True" OpenButtonVisibility="Collapsed" ResetButtonVisibility="Collapsed"
-                                            Text="{Binding Mode=OneWay}"
-                                            TextWrapping="Wrap" />
-                                    </Grid>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
                     </Grid>
                 </TabItem>
                 <TabItem Header="{twainctrl:Loc OCR}">
@@ -488,25 +455,126 @@
                 </TabItem>
             </TabControl>
         </GroupBox>
-        <StatusBar Background="Maroon" Grid.Row="1" Grid.ColumnSpan="3">
+        <StatusBar Grid.Row="1" Grid.ColumnSpan="3"
+            Background="Maroon">
+            <StatusBarItem Visibility="{Binding Scanner.PasswordProtect, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=TwainCtrl}">
+                <Image Width="16" Height="16">
+                    <Image.Source>
+                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                            <Binding Source="Shell32.dll" />
+                            <Binding Source="47" />
+                        </MultiBinding>
+                    </Image.Source>
+                </Image>
+            </StatusBarItem>
+            <StatusBarItem Visibility="{Binding Scanner.ApplyPdfSaveOcr, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=TwainCtrl}">
+                <Image Width="16" Height="16">
+                    <Image.Source>
+                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                            <Binding Source="Shell32.dll" />
+                            <Binding Source="20" />
+                        </MultiBinding>
+                    </Image.Source>
+                </Image>
+            </StatusBarItem>
+            <StatusBarItem Visibility="{Binding Scanner.ApplyDataBaseOcr, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=TwainCtrl}">
+                <Image Width="16" Height="16">
+                    <Image.Source>
+                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                            <Binding Source="Shell32.dll" />
+                            <Binding Source="1" />
+                        </MultiBinding>
+                    </Image.Source>
+                </Image>
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock FontStyle="Italic" Foreground="White">
+                    <Run Text="{Binding ElementName=TwainCtrl, Path=SelectedPaper.PaperType}" />
+                    <Run Text="{Binding Çözünürlük, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}, StringFormat={}{0} DPI}" />
+                    <Run Text="{Binding ElementName=TwainCtrl, Path=Scanner.SeçiliTarayıcı}" />
+                </TextBlock>
+            </StatusBarItem>
             <StatusBarItem HorizontalAlignment="Right">
-                <Extensions:ContentToggleButton Content="{twainctrl:Loc BATCH}">
-                    <Extensions:ContentToggleButton.OverContent>
-                        <GroupBox>
-                            <ListBox Width="300" Height="240"
-                                HorizontalContentAlignment="Stretch"
-                                ItemsSource="{Binding BatchTxtOcrs}">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <ProgressBar Height="20"
-                                            Maximum="1" Minimum="0"
-                                            Value="{Binding ProgressValue}" />
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
-                        </GroupBox>
-                    </Extensions:ContentToggleButton.OverContent>
-                </Extensions:ContentToggleButton>
+                <StackPanel Orientation="Horizontal">
+                    <Extensions:ContentToggleButton AllowDrop="True" Background="Transparent" BorderThickness="2"
+                        Content="{twainctrl:Loc QRDETECT}"
+                        Drop="QrListBox_Drop" Foreground="White"
+                        Style="{StaticResource ContentToggleButtonAnimationStyle}">
+                        <Extensions:ContentToggleButton.OverContent>
+                            <GroupBox>
+                                <ListBox x:Name="QrListBox"
+                                    Grid.Row="5"
+                                    Width="310" Height="240"
+                                    HorizontalContentAlignment="Stretch"
+                                    d:ItemsSource="{d:SampleData ItemCount=5}"
+                                    Background="{StaticResource BorderBackground}"
+                                    ItemsSource="{Binding BarcodeList}">
+                                    <ListBox.ItemContainerStyle>
+                                        <Style TargetType="{x:Type ListBoxItem}">
+                                            <Setter Property="Padding" Value="0" />
+                                        </Style>
+                                    </ListBox.ItemContainerStyle>
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="20" />
+                                                    <ColumnDefinition Width="84.8" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock VerticalAlignment="Center"><Hyperlink Command="{Binding DataContext.TesseractViewModel.TesseractDataFilesDownloadLink, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding Mode=OneWay}">
+                                                        <Run FontFamily="Wingdings" FontSize="16" FontWeight="Bold"
+                                                            Text="8" />
+                                                    </Hyperlink></TextBlock>
+                                                <Image Grid.Column="1"
+                                                    Width="80" Height="80"
+                                                    Source="{Binding Converter={StaticResource StringToQrBitmapImageConverter}, Mode=OneWay}"
+                                                    Tag="{Binding DataContext, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type Window}}}">
+                                                    <Image.ContextMenu>
+                                                        <ContextMenu DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
+                                                            <MenuItem Command="{Binding Tag.SaveQrImage}"
+                                                                CommandParameter="{Binding Source}"
+                                                                Header="{twainctrl:Loc SAVESELECTED}" />
+                                                        </ContextMenu>
+                                                    </Image.ContextMenu>
+                                                </Image>
+                                                <Extensions:ButtonedTextBox Grid.Column="2"
+                                                    Height="80"
+                                                    IsReadOnly="True" OpenButtonVisibility="Collapsed" ResetButtonVisibility="Collapsed"
+                                                    Text="{Binding Mode=OneWay}"
+                                                    TextWrapping="Wrap" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </GroupBox>
+                        </Extensions:ContentToggleButton.OverContent>
+                    </Extensions:ContentToggleButton>
+                    <StackPanel Orientation="Horizontal">
+                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                    </StackPanel>
+                    <Extensions:ContentToggleButton Background="{x:Null}"
+                        BorderBrush="{x:Null}"
+                        Content="{twainctrl:Loc BATCH}"
+                        Foreground="White">
+                        <Extensions:ContentToggleButton.OverContent>
+                            <GroupBox>
+                                <ListBox Width="300" Height="240"
+                                    HorizontalContentAlignment="Stretch"
+                                    Background="{StaticResource BorderBackground}"
+                                    ItemsSource="{Binding BatchTxtOcrs}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <ProgressBar Height="20"
+                                                Maximum="1" Minimum="0"
+                                                Value="{Binding ProgressValue}" />
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </GroupBox>
+                        </Extensions:ContentToggleButton.OverContent>
+                    </Extensions:ContentToggleButton>
+                </StackPanel>
             </StatusBarItem>
         </StatusBar>
     </Grid>

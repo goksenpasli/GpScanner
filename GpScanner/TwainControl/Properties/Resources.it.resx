@@ -471,6 +471,9 @@ INSERISCI</value>
   <data name="TESSERACT" xml:space="preserve">
     <value>TESSERATTO</value>
   </data>
+  <data name="TESSLANGSELECT" xml:space="preserve">
+    <value>Seleziona Lingua Tesseract</value>
+  </data>
   <data name="TEXT" xml:space="preserve">
     <value>TESTO</value>
   </data>

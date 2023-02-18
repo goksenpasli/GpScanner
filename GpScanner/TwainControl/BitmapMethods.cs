@@ -332,6 +332,7 @@ namespace TwainControl
             }
             catch (Exception ex)
             {
+                Source = null;
                 _ = MessageBox.Show(ex.Message);
                 return null;
             }

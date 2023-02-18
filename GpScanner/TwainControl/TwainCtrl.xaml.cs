@@ -1006,18 +1006,16 @@ namespace TwainControl
 
         public static void GotoPage(string path)
         {
-            if (string.IsNullOrWhiteSpace(path))
+            if (!string.IsNullOrWhiteSpace(path))
             {
-                return;
-            }
-
-            try
-            {
-                _ = Process.Start(path);
-            }
-            catch (Exception ex)
-            {
-                _ = MessageBox.Show(ex.Message);
+                try
+                {
+                    _ = Process.Start(path);
+                }
+                catch (Exception ex)
+                {
+                    _ = MessageBox.Show(ex.Message);
+                }
             }
         }
 
@@ -1246,6 +1244,7 @@ namespace TwainControl
                 }
                 catch (Exception ex)
                 {
+                    filenames = null;
                     _ = MessageBox.Show(ex.Message);
                 }
             });

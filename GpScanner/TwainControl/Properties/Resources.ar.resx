@@ -471,6 +471,9 @@
   <data name="TESSERACT" xml:space="preserve">
     <value>تسيراكت</value>
   </data>
+  <data name="TESSLANGSELECT" xml:space="preserve">
+    <value>حدد لغة Tesseract</value>
+  </data>
   <data name="TEXT" xml:space="preserve">
     <value>نص</value>
   </data>

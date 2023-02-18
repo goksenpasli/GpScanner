@@ -38,15 +38,7 @@ namespace GpScanner.ViewModel
                 {
                     return Xps;
                 }
-                if (imgext.Contains(ext))
-                {
-                    return Img;
-                }
-                if (videoext.Contains(ext))
-                {
-                    return Vid;
-                }
-                return Empty;
+                return imgext.Contains(ext) ? Img : videoext.Contains(ext) ? Vid : Empty;
             }
             return null;
         }
