@@ -92,7 +92,7 @@
             <ColumnDefinition Width="3" />
             <ColumnDefinition Width="{Binding MainWindowDocumentGuiControlLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" d:Width="1*" />
         </Grid.ColumnDefinitions>
-        <twainctrl:TwainCtrl x:Name="TwainCtrl" Grid.ColumnSpan="2" />
+        <twainctrl:TwainCtrl x:Name="TwainCtrl" />
         <GridSplitter Grid.Column="1"
             Width="3"
             HorizontalAlignment="Stretch"
@@ -107,20 +107,42 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="23.2" />
                             <RowDefinition />
                         </Grid.RowDefinitions>
-                        <UniformGrid Grid.Row="1" Columns="3">
-                            <Extensions:ButtonedTextBox CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed"
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="7*" />
+                                <ColumnDefinition Width="4*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Button Command="{Binding DateBack}"
+                                    Content="ç" FontFamily="Wingdings" FontSize="16" />
+                                <DatePicker Grid.Column="1"
+                                    DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}"
+                                    Language="{Binding CalendarLang}"
+                                    SelectedDate="{Binding SeçiliGün}" />
+                                <Button Grid.Column="2"
+                                    Command="{Binding DateForward}"
+                                    Content="è" FontFamily="Wingdings" FontSize="16" />
+                            </Grid>
+                            <Extensions:ButtonedTextBox Grid.Column="1"
+                                VerticalContentAlignment="Center"
+                                CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed"
                                 Text="{Binding AramaMetni, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <ComboBox ItemsSource="{Binding GetPreviewSize}" SelectedItem="{Binding SelectedSize}">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock><Run Text="{Binding Width, StringFormat=\{0\} Pixel}" /><Run Text=" " /><Run Text="X" /><Run Text=" " /><Run Text="{Binding Height, StringFormat=\{0\} Pixel}" /></TextBlock>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
-                            <UniformGrid Columns="2">
+                            <StackPanel Grid.Column="2" Orientation="Horizontal">
+                                <ComboBox ItemsSource="{Binding GetPreviewSize}" SelectedItem="{Binding SelectedSize}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock><Run Text="{Binding Width, StringFormat=\{0\}}" /><Run Text="X" /><Run Text="{Binding Height, StringFormat=\{0\}}" /></TextBlock>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
                                 <ToggleButton FontFamily="Wingdings" FontSize="16"
                                     IsChecked="{Binding Sıralama}"
                                     IsEnabled="{Binding HasItems, ElementName=LbDoc}">
@@ -147,8 +169,48 @@
                                         </Image.Source>
                                     </Image>
                                 </Button>
-                            </UniformGrid>
-                        </UniformGrid>
+                                <Extensions:ContentToggleButton>
+                                    <Extensions:ContentToggleButton.OverContent>
+                                        <GroupBox>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock VerticalAlignment="Center"
+                                                    d:Text="0"
+                                                    Text="{Binding CheckedPdfCount}" />
+                                                <Button BorderBrush="Cyan" Command="{Binding Tümünüİşaretle}">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Image Width="32" Height="32"
+                                                            Source="/TwainControl;component/Icons/selectall.png" />
+                                                        <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc ALL}" />
+                                                    </StackPanel>
+                                                </Button>
+                                                <Button BorderBrush="Cyan" Command="{Binding TümününİşaretiniKaldır}">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Image Width="32" Height="32"
+                                                            Source="/TwainControl;component/Icons/none.png" />
+                                                        <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc NONE}" />
+                                                    </StackPanel>
+                                                </Button>
+                                                <Button BorderBrush="Cyan" Command="{Binding Tersiniİşaretle}">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Image Width="32" Height="32"
+                                                            Source="/TwainControl;component/Icons/inverse.png" />
+                                                        <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc REVERSE}" />
+                                                    </StackPanel>
+                                                </Button>
+                                            </StackPanel>
+                                        </GroupBox>
+                                    </Extensions:ContentToggleButton.OverContent>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Width="16" Height="16"
+                                            Source="/TwainControl;component/Icons/selectall.png" />
+                                        <Image Width="16" Height="16"
+                                            Source="/TwainControl;component/Icons/inverse.png" />
+                                        <Image Width="16" Height="16"
+                                            Source="/TwainControl;component/Icons/none.png" />
+                                    </StackPanel>
+                                </Extensions:ContentToggleButton>
+                            </StackPanel>
+                        </Grid>
                         <UniformGrid Columns="3" Rows="1">
                             <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
                                 Command="{Binding PdfBirleştir}">
@@ -236,64 +298,8 @@
                                 </ToggleButton.Style>
                             </ToggleButton>
                         </UniformGrid>
-                        <UniformGrid Grid.Row="2" Columns="2">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <Button Command="{Binding DateBack}"
-                                    Content="ç" FontFamily="Wingdings" FontSize="16" />
-                                <DatePicker Grid.Column="1"
-                                    DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}"
-                                    Language="{Binding CalendarLang}"
-                                    SelectedDate="{Binding SeçiliGün}" />
-                                <Button Grid.Column="2"
-                                    Command="{Binding DateForward}"
-                                    Content="è" FontFamily="Wingdings" FontSize="16" />
-                            </Grid>
-                            <Extensions:ContentToggleButton>
-                                <Extensions:ContentToggleButton.OverContent>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Button BorderBrush="Cyan" Command="{Binding Tümünüİşaretle}">
-                                            <StackPanel Orientation="Horizontal">
-                                                <Image Width="32" Height="32"
-                                                    Source="/TwainControl;component/Icons/selectall.png" />
-                                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc ALL}" />
-                                            </StackPanel>
-                                        </Button>
-                                        <Button BorderBrush="Cyan" Command="{Binding TümününİşaretiniKaldır}">
-                                            <StackPanel Orientation="Horizontal">
-                                                <Image Width="32" Height="32"
-                                                    Source="/TwainControl;component/Icons/none.png" />
-                                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc NONE}" />
-                                            </StackPanel>
-                                        </Button>
-                                        <Button BorderBrush="Cyan" Command="{Binding Tersiniİşaretle}">
-                                            <StackPanel Orientation="Horizontal">
-                                                <Image Width="32" Height="32"
-                                                    Source="/TwainControl;component/Icons/inverse.png" />
-                                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc REVERSE}" />
-                                            </StackPanel>
-                                        </Button>
-                                    </StackPanel>
-                                </Extensions:ContentToggleButton.OverContent>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Width="16" Height="16"
-                                        Source="/TwainControl;component/Icons/selectall.png" />
-                                    <Image Width="16" Height="16"
-                                        Source="/TwainControl;component/Icons/inverse.png" />
-                                    <Image Width="16" Height="16"
-                                        Source="/TwainControl;component/Icons/none.png" />
-                                    <TextBlock VerticalAlignment="Center"
-                                        d:Text="0"
-                                        Text="{Binding CheckedPdfCount}" />
-                                </StackPanel>
-                            </Extensions:ContentToggleButton>
-                        </UniformGrid>
                         <ListBox x:Name="LbDoc"
-                            Grid.Row="3"
+                            Grid.Row="2"
                             HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
                             d:ItemsSource="{d:SampleData ItemCount=5}"
                             Background="{StaticResource BorderBackground}"
