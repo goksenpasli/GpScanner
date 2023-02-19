@@ -21,7 +21,9 @@
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Pdfviewer:PdfViewer x:Name="PdfViewer" PdfFilePath="{Binding SinglePdfFilePath}" />
+        <Pdfviewer:PdfViewer x:Name="PdfViewer"
+            PdfFilePath="{Binding SinglePdfFilePath}"
+            PrintButtonVisibility="Visible" />
         <UniformGrid Grid.Row="1" Columns="3">
             <Button Command="{Binding LoadSinglePdfFile}">
                 <StackPanel Orientation="Horizontal">

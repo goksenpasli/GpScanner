@@ -318,6 +318,12 @@ namespace TwainControl
 
             ListeTemizle = new RelayCommand<object>(parameter =>
             {
+                if ((Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)) && SeçiliListeTemizle.CanExecute(null))
+                {
+                    SeçiliListeTemizle.Execute(null);
+                    return;
+                }
+
                 if (MessageBox.Show(Translation.GetResStringValue("LISTREMOVEWARN"), Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     Scanner.Resimler?.Clear();

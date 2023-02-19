@@ -199,65 +199,6 @@
                                     </Image>
                                 </Hyperlink>
                             </TextBlock>
-                            <Extensions:ContentToggleButton Command="{Binding ViewAllThumbnailImage, RelativeSource={RelativeSource TemplatedParent}}" PlacementMode="Top">
-                                <Extensions:ContentToggleButton.OverContent>
-                                    <Extensions:ResizablePanel Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}"
-                                        Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualHeight}"
-                                        MinWidth="240" MinHeight="385">
-                                        <ListBox ItemsSource="{Binding Thumbnails, RelativeSource={RelativeSource TemplatedParent}}"
-                                            SelectedValue="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
-                                            SelectedValuePath="Page" SelectionMode="Extended"
-                                            Tag="{Binding Tag, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                            VirtualizingPanel.CacheLength="3,3" VirtualizingPanel.CacheLengthUnit="Item"
-                                            VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.ScrollUnit="Item"
-                                            VirtualizingPanel.VirtualizationMode="Recycling">
-                                            <ListBox.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" SpacingMode="None" />
-                                                </ItemsPanelTemplate>
-                                            </ListBox.ItemsPanel>
-                                            <ListBox.ItemTemplate>
-                                                <DataTemplate>
-                                                    <StackPanel>
-                                                        <TextBlock HorizontalAlignment="Center">
-                                                            <Run Text="{Binding Page, Mode=OneWay}" />
-                                                            <Hyperlink BaselineAlignment="Center"
-                                                                Command="{Binding RelativeSource={RelativeSource AncestorType=ListBox}, Path=Tag.SinglePageSavePdf}"
-                                                                TextDecorations="None">
-                                                                <Hyperlink.CommandParameter>
-                                                                    <MultiBinding Converter="{StaticResource CloneConverter}">
-                                                                        <Binding Mode="OneWay" Path="Page" />
-                                                                        <Binding Mode="OneWay" Path="Parent.DataContext"
-                                                                            RelativeSource="{RelativeSource AncestorType=Extensions:ContentToggleButton}" />
-                                                                    </MultiBinding>
-                                                                </Hyperlink.CommandParameter>
-                                                                <Image Width="24" Height="24">
-                                                                    <Image.Source>
-                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                            <Binding Source="Shell32.dll" />
-                                                                            <Binding Source="6" />
-                                                                        </MultiBinding>
-                                                                    </Image.Source>
-                                                                </Image>
-                                                            </Hyperlink>
-                                                        </TextBlock>
-                                                        <Image Width="42" Height="60"
-                                                            Source="{Binding Thumb, Mode=OneWay}" />
-                                                    </StackPanel>
-                                                </DataTemplate>
-                                            </ListBox.ItemTemplate>
-                                        </ListBox>
-                                    </Extensions:ResizablePanel>
-                                </Extensions:ContentToggleButton.OverContent>
-                                <Image Width="16" Height="16">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="96" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                            </Extensions:ContentToggleButton>
                         </StackPanel>
                     </ContentControl>
                 </Grid>

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -74,8 +72,6 @@ namespace PdfViewer
                 GC.Collect();
             }, parameter => PdfFilePath is not null);
 
-            ViewAllThumbnailImage = new RelayCommand<object>(async parameter => Thumbnails ??= await ConvertToAllPageThumbImgAsync(await ReadAllFileAsync(PdfFilePath), 4), parameter => PdfFilePath is not null);
-
             ViewerBack = new RelayCommand<object>(parameter => Sayfa--, parameter => Source is not null && Sayfa > 1 && Sayfa <= ToplamSayfa);
 
             ViewerNext = new RelayCommand<object>(parameter => Sayfa++, parameter => Source is not null && Sayfa >= 1 && Sayfa < ToplamSayfa);
@@ -113,20 +109,6 @@ namespace PdfViewer
         public event PropertyChangedEventHandler PropertyChanged;
 
         public static int[] DpiList { get; } = new int[] { 12, 24, 36, 48, 72, 96, 120, 150, 200, 300, 400, 500, 600 };
-
-        public ObservableCollection<ThumbClass> AllPagesThumb
-        {
-            get => allPagesThumb;
-
-            set
-            {
-                if (allPagesThumb != value)
-                {
-                    allPagesThumb = value;
-                    OnPropertyChanged(nameof(AllPagesThumb));
-                }
-            }
-        }
 
         public double Angle
         {
@@ -285,20 +267,6 @@ namespace PdfViewer
         {
             get => (ImageSource)GetValue(SourceProperty);
             set => SetValue(SourceProperty, value);
-        }
-
-        public ObservableCollection<ThumbClass> Thumbnails
-        {
-            get => thumbnails;
-
-            set
-            {
-                if (thumbnails != value)
-                {
-                    thumbnails = value;
-                    OnPropertyChanged(nameof(Thumbnails));
-                }
-            }
         }
 
         public Visibility TifNavigasyonButtonEtkin
@@ -475,38 +443,6 @@ namespace PdfViewer
             return null;
         }
 
-        public async Task<ObservableCollection<ThumbClass>> ConvertToAllPageThumbImgAsync(byte[] pdffilestream, int dpi)
-        {
-            try
-            {
-                if (pdffilestream?.Length > 0)
-                {
-                    await Task.Run(async () =>
-                    {
-                        int pagecount = await PdfPageCountAsync(pdffilestream);
-                        Thumbnails = new ObservableCollection<ThumbClass>();
-                        for (int i = 1; i <= pagecount; i++)
-                        {
-                            if (!cancellationToken.IsCancellationRequested)
-                            {
-                                BitmapImage bitmapImage = await ConvertToImgAsync(pdffilestream, i, dpi);
-                                Dispatcher.Invoke(() => Thumbnails?.Add(new ThumbClass() { Page = i, Thumb = bitmapImage }));
-                                bitmapImage = null;
-                            }
-                        }
-                        pdffilestream = null;
-                    }, cancellationToken.Token);
-                    return Thumbnails;
-                }
-            }
-            catch (Exception)
-            {
-                pdffilestream = null;
-            }
-
-            return null;
-        }
-
         public void Dispose()
         {
             Dispose(disposing: true);
@@ -520,8 +456,6 @@ namespace PdfViewer
                 if (disposing)
                 {
                     Source = null;
-                    Thumbnails = null;
-                    cancellationToken?.Cancel();
                 }
                 disposedValue = true;
             }
@@ -531,10 +465,6 @@ namespace PdfViewer
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        private readonly CancellationTokenSource cancellationToken = new();
-
-        private ObservableCollection<ThumbClass> allPagesThumb;
 
         private bool autoFitContent;
 
@@ -551,8 +481,6 @@ namespace PdfViewer
         private int sayfa = 1;
 
         private Visibility sliderZoomAngleVisibility = Visibility.Visible;
-
-        private ObservableCollection<ThumbClass> thumbnails;
 
         private Visibility tifNavigasyonButtonEtkin = Visibility.Visible;
 

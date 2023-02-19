@@ -241,7 +241,7 @@ namespace Extensions
             if (SeriesTextVisibility == Visibility.Visible)
             {
                 FormattedText formattedText = GenerateFormattedText(item, pen);
-                Point textpoint = new(point1.X - (formattedText.WidthIncludingTrailingWhitespace / 2), point1.Y - formattedText.Height);
+                Point textpoint = new(point1.X - (formattedText.WidthIncludingTrailingWhitespace / 2), point1.Y - formattedText.Height / 3);
                 graph.DrawText(formattedText, textpoint);
             }
         }

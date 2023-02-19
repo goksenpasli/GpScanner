@@ -66,7 +66,7 @@
         <GradientStop ice:Freeze="True" Offset="1" Color="#FE00B6E8" />
         <GradientStop ice:Freeze="True" Color="#FF48F3CA" />
     </LinearGradientBrush>
-    <StreamGeometry x:Key="ArrowGeometry">M0,0L4,4 8,0z</StreamGeometry>
+    <StreamGeometry x:Key="ArrowGeometry">F1M0,0L2.667,2.66665 5.3334,0 5.3334,-1.78168 2.6667,0.88501 0,-1.78168 0,0z</StreamGeometry>
     <Style x:Key="RightRepeatButton" TargetType="RepeatButton">
         <Setter Property="Focusable" Value="false" />
         <Setter Property="IsTabStop" Value="false" />
