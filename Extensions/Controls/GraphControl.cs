@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
@@ -289,6 +290,8 @@ namespace Extensions
             if (saveFileDialog.ShowDialog() == true)
             {
                 File.WriteAllBytes(saveFileDialog.FileName, imgdata);
+                imgdata = null;
+                GC.Collect();
             }
         }
     }

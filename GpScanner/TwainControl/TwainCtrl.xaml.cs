@@ -417,6 +417,7 @@ namespace TwainControl
                 {
                     GC.Collect();
                     AddFiles(openFileDialog.FileNames, DecodeHeight);
+                    GC.Collect();
                 }
             }, parameter => true);
 
@@ -548,6 +549,7 @@ namespace TwainControl
                 };
                 if (openFileDialog.ShowDialog() == true)
                 {
+                    GC.Collect();
                     AddFiles(File.ReadAllLines(openFileDialog.FileName), DecodeHeight);
                     GC.Collect();
                 }
@@ -1405,6 +1407,7 @@ namespace TwainControl
             }
             _ = Dispatcher.Invoke(() => PdfLoadProgressValue = 0);
             filedata = null;
+            GC.Collect();
         }
 
         private void ButtonedTextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
@@ -1773,6 +1776,7 @@ namespace TwainControl
             {
                 GC.Collect();
                 AddFiles(droppedfiles, DecodeHeight);
+                GC.Collect();
             }
         }
 

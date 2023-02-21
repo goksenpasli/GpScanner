@@ -43,6 +43,8 @@ namespace PdfViewer
 
         public static readonly DependencyProperty SourceProperty = DependencyProperty.Register("Source", typeof(ImageSource), typeof(PdfViewer), new PropertyMetadata(null, SourceChanged));
 
+        public static readonly DependencyProperty ThumbsVisibleProperty = DependencyProperty.Register("ThumbsVisible", typeof(bool), typeof(PdfViewer), new PropertyMetadata(true));
+
         public static readonly DependencyProperty ToolBarVisibilityProperty = DependencyProperty.Register("ToolBarVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Visible));
 
         public static readonly DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(PdfViewer), new PropertyMetadata(1.0));
@@ -269,6 +271,12 @@ namespace PdfViewer
             set => SetValue(SourceProperty, value);
         }
 
+        public bool ThumbsVisible
+        {
+            get { return (bool)GetValue(ThumbsVisibleProperty); }
+            set { SetValue(ThumbsVisibleProperty, value); }
+        }
+
         public Visibility TifNavigasyonButtonEtkin
         {
             get => tifNavigasyonButtonEtkin;
@@ -303,8 +311,6 @@ namespace PdfViewer
                 }
             }
         }
-
-        public RelayCommand<object> ViewAllThumbnailImage { get; }
 
         public RelayCommand<object> ViewerBack { get; }
 
@@ -367,6 +373,7 @@ namespace PdfViewer
                         {
                             MemoryStream ms = new(buffer);
                             buffer = null;
+                            stream = null;
                             GC.Collect();
                             return ms;
                         }
@@ -391,6 +398,7 @@ namespace PdfViewer
                     {
                         int pagecount = Pdf2Png.ConvertAllPages(stream, 0).Count;
                         stream = null;
+                        GC.Collect();
                         return pagecount;
                     });
                 }
@@ -519,6 +527,8 @@ namespace PdfViewer
                         pdfViewer.ToplamSayfa = await PdfPageCountAsync(data);
                         pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
                         pdfViewer.Resize.Execute(null);
+                        data = null;
+                        GC.Collect();
                     }
                     catch (Exception)
                     {

@@ -86,6 +86,7 @@ namespace TwainControl
                         using XImage xImage = XImage.FromStream(ms);
                         XSize size = PageSizeConverter.ToSize(page.Size);
                         resizedimage = null;
+                        data = null;
 
                         if (scannedimage.Resim.PixelWidth < scannedimage.Resim.PixelHeight)
                         {
@@ -278,6 +279,7 @@ namespace TwainControl
                 ms = null;
                 data = null;
                 bitmapframe = null;
+                GC.Collect();
                 return document;
             }
             catch (Exception ex)

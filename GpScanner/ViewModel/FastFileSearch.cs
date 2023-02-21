@@ -184,7 +184,7 @@ namespace GpScanner.ViewModel
             long longValue = BitConverter.ToInt64(highBytes, 0);
             longValue <<= 32;
             longValue |= fileTime.dwLowDateTime;
-
+            highBytes = null;
             return DateTime.FromFileTime(longValue);
         }
 

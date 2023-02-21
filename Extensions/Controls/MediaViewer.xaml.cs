@@ -752,6 +752,8 @@ namespace Extensions.Controls
                 File.WriteAllBytes(dosya, data);
                 ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, dosya);
                 OsdText = "Görüntü Yakalandı";
+                data = null;
+                GC.Collect();
             }
         }
 

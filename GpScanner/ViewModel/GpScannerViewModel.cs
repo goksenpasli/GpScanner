@@ -148,6 +148,14 @@ namespace GpScanner.ViewModel
                         GC.Collect();
                         return;
                     }
+                    if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                    {
+                        string savefilename = Path.GetTempPath() + Guid.NewGuid() + ".pdf";
+                        await SaveFile(pdfviewer.PdfFilePath, savefilename, pdfviewer.Sayfa, pdfviewer.ToplamSayfa);
+                        twainCtrl.AddFiles(new string[] { savefilename }, twainCtrl.DecodeHeight);
+                        GC.Collect();
+                        return;
+                    }
                     byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfviewer.PdfFilePath);
                     MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfviewer.Sayfa, (int)Twainsettings.Settings.Default.ImgLoadResolution);
                     BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrame(ms, twainCtrl.SelectedPaper, false);
@@ -247,21 +255,19 @@ namespace GpScanner.ViewModel
 
             ExtractPdfFile = new RelayCommand<object>(async parameter =>
             {
-                if (parameter is string filename && File.Exists(filename))
+                if (parameter is string loadfilename && File.Exists(loadfilename))
                 {
                     SaveFileDialog saveFileDialog = new()
                     {
                         Filter = "Pdf Dosyası(*.pdf)|*.pdf",
-                        FileName = $"{Path.GetFileNameWithoutExtension(filename)} {SayfaBaşlangıç}-{SayfaBitiş}.pdf"
+                        FileName = $"{Path.GetFileNameWithoutExtension(loadfilename)} {SayfaBaşlangıç}-{SayfaBitiş}.pdf"
                     };
                     if (saveFileDialog.ShowDialog() == true)
                     {
-                        await Task.Run(() =>
-                        {
-                            using PdfDocument outputDocument = filename.ExtractPdfPages(SayfaBaşlangıç, SayfaBitiş);
-                            outputDocument.DefaultPdfCompression();
-                            outputDocument.Save(saveFileDialog.FileName);
-                        });
+                        var savefilename = saveFileDialog.FileName;
+                        int start = SayfaBaşlangıç;
+                        int end = SayfaBitiş;
+                        await SaveFile(loadfilename, savefilename, start, end);
                     }
                 }
             }, parameter => SayfaBaşlangıç <= SayfaBitiş);
@@ -1195,6 +1201,7 @@ namespace GpScanner.ViewModel
                 Result result = reader.Decode(bitmapImage);
                 imgbyte = null;
                 bitmapImage = null;
+                GC.Collect();
                 return result;
             }
             return null;
@@ -1319,6 +1326,16 @@ namespace GpScanner.ViewModel
         private TesseractViewModel tesseractViewModel;
 
         private TranslateViewModel translateViewModel;
+
+        private static async Task SaveFile(string loadfilename, string savefilename, int start, int end)
+        {
+            await Task.Run(() =>
+            {
+                using PdfDocument outputDocument = loadfilename.ExtractPdfPages(start, end);
+                outputDocument.DefaultPdfCompression();
+                outputDocument.Save(savefilename);
+            });
+        }
 
         private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {

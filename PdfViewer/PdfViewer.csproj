@@ -68,6 +68,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PageToImageConverter.cs" />
     <Compile Include="PdfViewer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

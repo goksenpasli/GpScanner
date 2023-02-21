@@ -7,6 +7,7 @@
     </ResourceDictionary.MergedDictionaries>
     <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
     <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
+    <local:PageToImageConverter x:Key="PageToImageConverter" />
     <Style TargetType="{x:Type local:PdfViewer}">
         <Setter Property="Template">
             <Setter.Value>
@@ -80,7 +81,7 @@
                             Minimum="1" Orientation="Vertical" SmallChange="1"
                             ViewportSize="1"
                             Visibility="{Binding PageScrollBarVisibility, RelativeSource={RelativeSource TemplatedParent}}"
-                            Value="{Binding Sayfa, Delay=15, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
+                            Value="{Binding Sayfa, Delay=150, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
                         <ContentControl x:Name="Cnt"
                             Grid.Row="1" Grid.ColumnSpan="2"
                             Visibility="{Binding ToolBarVisibility, RelativeSource={RelativeSource TemplatedParent}}">
@@ -106,19 +107,25 @@
                                         </Image.Source>
                                     </Image>
                                 </Button>
-                                <ComboBox Grid.Column="1"
+                                <ListBox Grid.Column="1"
+                                    VerticalContentAlignment="Center"
                                     IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}"
                                     SelectedValue="{Binding Orientation, RelativeSource={RelativeSource TemplatedParent}}"
                                     SelectedValuePath="Tag">
-                                    <ComboBoxItem Tag="Width">
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <VirtualizingStackPanel Orientation="Horizontal" />
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                    <ListBoxItem Tag="Width">
                                         <TextBlock FontFamily="Wingdings 3" FontSize="16" FontWeight="Bold"
                                             Text="F" />
-                                    </ComboBoxItem>
-                                    <ComboBoxItem Tag="Height">
+                                    </ListBoxItem>
+                                    <ListBoxItem Tag="Height">
                                         <TextBlock FontFamily="Wingdings 3" FontSize="16" FontWeight="Bold"
                                             Text="G" />
-                                    </ComboBoxItem>
-                                </ComboBox>
+                                    </ListBoxItem>
+                                </ListBox>
                                 <Button Grid.Column="2"
                                     Command="{Binding Resize, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
                                     IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}">
@@ -145,7 +152,43 @@
                                             </Image.Source>
                                         </Image>
                                     </RepeatButton>
-                                    <ComboBox ItemsSource="{Binding Pages, RelativeSource={RelativeSource TemplatedParent}}" SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}">
+                                    <ComboBox Height="26"
+                                        VerticalContentAlignment="Center"
+                                        ItemsSource="{Binding Pages, RelativeSource={RelativeSource TemplatedParent}}"
+                                        SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
+                                        VirtualizingPanel.CacheLength="3,3" VirtualizingPanel.CacheLengthUnit="Item"
+                                        VirtualizingPanel.ScrollUnit="Item" VirtualizingPanel.VirtualizationMode="Standard">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel x:Name="Sp" Orientation="Horizontal">
+                                                    <StackPanel.Tag>
+                                                        <MultiBinding Converter="{StaticResource PageToImageConverter}">
+                                                            <Binding Path="DataContext" RelativeSource="{RelativeSource AncestorType=local:PdfViewer}" />
+                                                            <Binding Mode="OneWay" />
+                                                        </MultiBinding>
+                                                    </StackPanel.Tag>
+                                                    <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay}" />
+                                                    <Viewbox>
+                                                        <Image>
+                                                            <Image.Style>
+                                                                <Style TargetType="Image">
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding ThumbsVisible, RelativeSource={RelativeSource AncestorType=local:PdfViewer}}" Value="true">
+                                                                            <Setter Property="Height" Value="64" />
+                                                                            <Setter Property="Source" Value="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, ElementName=Sp}" />
+                                                                            <Setter Property="Width" Value="64" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding ThumbsVisible, RelativeSource={RelativeSource AncestorType=local:PdfViewer}}" Value="false">
+                                                                            <Setter Property="Source" Value="{x:Null}" />
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </Image.Style>
+                                                        </Image>
+                                                    </Viewbox>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
                                         <ComboBox.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <VirtualizingStackPanel />
@@ -177,6 +220,7 @@
                                     </Image>
                                 </Button>
                                 <ComboBox Grid.Column="5"
+                                    VerticalContentAlignment="Center"
                                     IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}"
                                     ItemStringFormat="{}{0} Dpi"
                                     ItemsSource="{Binding DpiList, RelativeSource={RelativeSource TemplatedParent}}"
@@ -196,7 +240,7 @@
                                     </Image>
                                 </Button>
                                 <Slider Grid.Column="7"
-                                    Margin="2"
+                                    Margin="2" VerticalAlignment="Center"
                                     AutoToolTipPlacement="TopLeft"
                                     IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}"
                                     Minimum="0.01" SmallChange="1"
@@ -204,7 +248,7 @@
                                     Visibility="{Binding SliderZoomAngleVisibility, RelativeSource={RelativeSource TemplatedParent}}"
                                     Value="{Binding Zoom, RelativeSource={RelativeSource TemplatedParent}}" />
                                 <Slider Grid.Column="8"
-                                    Margin="2"
+                                    Margin="2" VerticalAlignment="Center"
                                     AutoToolTipPlacement="TopLeft"
                                     IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}"
                                     IsSnapToTickEnabled="{Binding SnapTick, RelativeSource={RelativeSource TemplatedParent}}"
