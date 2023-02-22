@@ -1,7 +1,5 @@
-namespace TwainWpf.TwainNative
-{
-    public enum PixelType : short
-    {
+namespace TwainWpf.TwainNative {
+    public enum PixelType : short {
         BlackAndWhite = 0,
 
         Grey = 1,

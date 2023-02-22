@@ -2,27 +2,20 @@ using System;
 using System.Collections.Generic;
 using TwainWpf.TwainNative;
 
-namespace TwainWpf
-{
-    public class DataSource : IDisposable
-    {
-        public DataSource(Identity applicationId, Identity sourceId, IWindowsMessageHook messageHook)
-        {
+namespace TwainWpf {
+    public class DataSource : IDisposable {
+        public DataSource(Identity applicationId, Identity sourceId, IWindowsMessageHook messageHook) {
             _applicationId = applicationId;
             SourceId = sourceId.Clone();
             _messageHook = messageHook;
         }
 
-        public bool PaperDetectable
-        {
-            get
-            {
-                try
-                {
+        public bool PaperDetectable {
+            get {
+                try {
                     return Capability.GetBoolCapability(Capabilities.FeederLoaded, _applicationId, SourceId);
                 }
-                catch
-                {
+                catch {
                     return false;
                 }
             }
@@ -30,42 +23,33 @@ namespace TwainWpf
 
         public Identity SourceId { get; }
 
-        public bool SupportsDuplex
-        {
-            get
-            {
-                try
-                {
+        public bool SupportsDuplex {
+            get {
+                try {
                     Capability cap = new Capability(Capabilities.Duplex, TwainType.Int16, _applicationId, SourceId);
                     return ((Duplex)cap.GetBasicValue().Int16Value) != Duplex.None;
                 }
-                catch
-                {
+                catch {
                     return false;
                 }
             }
         }
 
-        public bool SupportsFilmScanner
-        {
-            get
-            {
-                try
-                {
+        public bool SupportsFilmScanner {
+            get {
+                try {
                     Capability cap = new Capability(Capabilities.Lightpath, TwainType.Int16, _applicationId, SourceId);
 
                     //return ((Lightpath)cap.GetBasicValue().Int16Value) != Lightpath.Transmissive;
                     return true;
                 }
-                catch
-                {
+                catch {
                     return false;
                 }
             }
         }
 
-        public static List<DataSource> GetAllSources(Identity applicationId, IWindowsMessageHook messageHook)
-        {
+        public static List<DataSource> GetAllSources(Identity applicationId, IWindowsMessageHook messageHook) {
             List<DataSource> sources = new List<DataSource>();
             Identity id = new Identity();
 
@@ -78,21 +62,17 @@ namespace TwainWpf
                 Message.GetFirst,
                 id);
 
-            if (result == TwainResult.EndOfList)
-            {
+            if (result == TwainResult.EndOfList) {
                 return sources;
             }
-            else if (result != TwainResult.Success)
-            {
+            else if (result != TwainResult.Success) {
                 throw new TwainException("Error getting first source.", result);
             }
-            else
-            {
+            else {
                 sources.Add(new DataSource(applicationId, id, messageHook));
             }
 
-            while (true)
-            {
+            while (true) {
                 // Get the next source
                 result = Twain32Native.DsmIdentity(
                     applicationId,
@@ -102,12 +82,10 @@ namespace TwainWpf
                     Message.GetNext,
                     id);
 
-                if (result == TwainResult.EndOfList)
-                {
+                if (result == TwainResult.EndOfList) {
                     break;
                 }
-                else if (result != TwainResult.Success)
-                {
+                else if (result != TwainResult.Success) {
                     throw new TwainException("Error enumerating sources.", result);
                 }
 
@@ -117,8 +95,7 @@ namespace TwainWpf
             return sources;
         }
 
-        public static DataSource GetDefault(Identity applicationId, IWindowsMessageHook messageHook)
-        {
+        public static DataSource GetDefault(Identity applicationId, IWindowsMessageHook messageHook) {
             Identity defaultSourceId = new Identity();
 
             // Attempt to get information about the system default source
@@ -130,8 +107,7 @@ namespace TwainWpf
                 Message.GetDefault,
                 defaultSourceId);
 
-            if (result != TwainResult.Success)
-            {
+            if (result != TwainResult.Success) {
                 ConditionCode status = DataSourceManager.GetConditionCode(applicationId, null);
                 throw new TwainException("Error getting information about the default source: " + result, result, status);
             }
@@ -139,13 +115,10 @@ namespace TwainWpf
             return new DataSource(applicationId, defaultSourceId, messageHook);
         }
 
-        public static DataSource GetSource(string sourceProductName, Identity applicationId, IWindowsMessageHook messageHook)
-        {
+        public static DataSource GetSource(string sourceProductName, Identity applicationId, IWindowsMessageHook messageHook) {
             // A little slower than it could be, if enumerating unnecessary sources is slow. But less code duplication.
-            foreach (DataSource source in GetAllSources(applicationId, messageHook))
-            {
-                if (sourceProductName.Equals(source.SourceId.ProductName, StringComparison.InvariantCultureIgnoreCase))
-                {
+            foreach (DataSource source in GetAllSources(applicationId, messageHook)) {
+                if (sourceProductName.Equals(source.SourceId.ProductName, StringComparison.InvariantCultureIgnoreCase)) {
                     return source;
                 }
             }
@@ -153,8 +126,7 @@ namespace TwainWpf
             return null;
         }
 
-        public static DataSource UserSelected(Identity applicationId, IWindowsMessageHook messageHook)
-        {
+        public static DataSource UserSelected(Identity applicationId, IWindowsMessageHook messageHook) {
             Identity defaultSourceId = new Identity();
 
             // Show the TWAIN interface to allow the user to select a source
@@ -169,12 +141,9 @@ namespace TwainWpf
             return new DataSource(applicationId, defaultSourceId, messageHook);
         }
 
-        public void Close()
-        {
-            if (SourceId.Id != 0)
-            {
-                try
-                {
+        public void Close() {
+            if (SourceId.Id != 0) {
+                try {
                     UserInterface userInterface = new UserInterface();
 
                     TwainResult result = Twain32Native.DsUserInterface(
@@ -185,8 +154,7 @@ namespace TwainWpf
                         Message.DisableDS,
                         userInterface);
 
-                    if (result != TwainResult.Failure)
-                    {
+                    if (result != TwainResult.Failure) {
                         result = Twain32Native.DsmIdentity(
                             _applicationId,
                             IntPtr.Zero,
@@ -196,23 +164,19 @@ namespace TwainWpf
                             SourceId);
                     }
                 }
-                catch
-                {
+                catch {
                     // ignore this is bypass an error that if trigerd needs the whole twain classto be reinitialised
                 }
             }
         }
 
-        public void Dispose()
-        {
+        public void Dispose() {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
-        public bool Enable(ScanSettings settings)
-        {
-            UserInterface ui = new UserInterface
-            {
+        public bool Enable(ScanSettings settings) {
+            UserInterface ui = new UserInterface {
                 ShowUI = (short)(settings.ShowTwainUi ? 1 : 0),
                 ModalUI = 1,
                 ParentHand = _messageHook.WindowHandle
@@ -226,18 +190,15 @@ namespace TwainWpf
                 Message.EnableDS,
                 ui);
 
-            if (result != TwainResult.Success)
-            {
+            if (result != TwainResult.Success) {
                 Dispose();
                 return false;
             }
             return true;
         }
 
-        public short GetBitDepth(ScanSettings scanSettings)
-        {
-            switch (scanSettings.Resolution.ColourSetting)
-            {
+        public short GetBitDepth(ScanSettings scanSettings) {
+            switch (scanSettings.Resolution.ColourSetting) {
                 case ColourSetting.BlackAndWhite:
                     return 1;
 
@@ -251,10 +212,8 @@ namespace TwainWpf
             throw new NotImplementedException();
         }
 
-        public PixelType GetPixelType(ScanSettings scanSettings)
-        {
-            switch (scanSettings.Resolution.ColourSetting)
-            {
+        public PixelType GetPixelType(ScanSettings scanSettings) {
+            switch (scanSettings.Resolution.ColourSetting) {
                 case ColourSetting.BlackAndWhite:
                     return PixelType.BlackAndWhite;
 
@@ -272,17 +231,13 @@ namespace TwainWpf
         /// Negotiates the automatic border detection capability.
         /// </summary>
         /// <param name="scanSettings">The scan settings.</param>
-        public void NegotiateAutomaticBorderDetection(ScanSettings scanSettings)
-        {
-            try
-            {
-                if (scanSettings.Rotation.AutomaticBorderDetection)
-                {
+        public void NegotiateAutomaticBorderDetection(ScanSettings scanSettings) {
+            try {
+                if (scanSettings.Rotation.AutomaticBorderDetection) {
                     Capability.SetCapability(Capabilities.Automaticborderdetection, true, _applicationId, SourceId);
                 }
             }
-            catch
-            {
+            catch {
                 // Do nothing if the data source does not support the requested capability
             }
         }
@@ -291,129 +246,97 @@ namespace TwainWpf
         /// Negotiates the automatic rotation capability.
         /// </summary>
         /// <param name="scanSettings">The scan settings.</param>
-        public void NegotiateAutomaticRotate(ScanSettings scanSettings)
-        {
-            try
-            {
-                if (scanSettings.Rotation.AutomaticRotate)
-                {
+        public void NegotiateAutomaticRotate(ScanSettings scanSettings) {
+            try {
+                if (scanSettings.Rotation.AutomaticRotate) {
                     Capability.SetCapability(Capabilities.Automaticrotate, true, _applicationId, SourceId);
                 }
             }
-            catch
-            {
+            catch {
                 // Do nothing if the data source does not support the requested capability
             }
         }
 
-        public void NegotiateColour(ScanSettings scanSettings)
-        {
-            try
-            {
+        public void NegotiateColour(ScanSettings scanSettings) {
+            try {
                 _ = Capability.SetBasicCapability(Capabilities.IPixelType, (ushort)GetPixelType(scanSettings), TwainType.UInt16, _applicationId, SourceId);
             }
-            catch
-            {
+            catch {
                 // Do nothing if the data source does not support the requested capability
             }
 
             // TODO: Also set this for colour scanning
-            try
-            {
-                if (scanSettings.Resolution.ColourSetting != ColourSetting.Colour)
-                {
+            try {
+                if (scanSettings.Resolution.ColourSetting != ColourSetting.Colour) {
                     _ = Capability.SetCapability(Capabilities.BitDepth, GetBitDepth(scanSettings), _applicationId, SourceId);
                 }
             }
-            catch
-            {
+            catch {
                 // Do nothing if the data source does not support the requested capability
             }
         }
 
-        public void NegotiateDuplex(ScanSettings scanSettings)
-        {
-            try
-            {
-                if (scanSettings.UseDuplex.HasValue && SupportsDuplex)
-                {
+        public void NegotiateDuplex(ScanSettings scanSettings) {
+            try {
+                if (scanSettings.UseDuplex.HasValue && SupportsDuplex) {
                     Capability.SetCapability(Capabilities.DuplexEnabled, scanSettings.UseDuplex.Value, _applicationId, SourceId);
                 }
             }
-            catch
-            {
+            catch {
                 // Do nothing if the data source does not support the requested capability
             }
         }
 
-        public void NegotiateFeeder(ScanSettings scanSettings)
-        {
-            try
-            {
-                if (scanSettings.UseDocumentFeeder.HasValue)
-                {
+        public void NegotiateFeeder(ScanSettings scanSettings) {
+            try {
+                if (scanSettings.UseDocumentFeeder.HasValue) {
                     Capability.SetCapability(Capabilities.FeederEnabled, scanSettings.UseDocumentFeeder.Value, _applicationId, SourceId);
                 }
             }
-            catch
-            {
+            catch {
                 // Do nothing if the data source does not support the requested capability
             }
 
-            try
-            {
-                if (scanSettings.UseAutoFeeder.HasValue)
-                {
+            try {
+                if (scanSettings.UseAutoFeeder.HasValue) {
                     Capability.SetCapability(Capabilities.AutoFeed, scanSettings.UseAutoFeeder == true && scanSettings.UseDocumentFeeder == true, _applicationId, SourceId);
                 }
             }
-            catch
-            {
+            catch {
                 // Do nothing if the data source does not support the requested capability
             }
 
-            try
-            {
-                if (scanSettings.UseAutoScanCache.HasValue)
-                {
+            try {
+                if (scanSettings.UseAutoScanCache.HasValue) {
                     Capability.SetCapability(Capabilities.AutoScan, scanSettings.UseAutoScanCache.Value, _applicationId, SourceId);
                 }
             }
-            catch
-            {
+            catch {
                 // Do nothing if the data source does not support the requested capability
             }
         }
 
-        public void NegotiateLightPath(ScanSettings scanSettings)
-        {
-            try
-            {
-                if (scanSettings.UseFilmScanner.HasValue && SupportsFilmScanner)
-                {
+        public void NegotiateLightPath(ScanSettings scanSettings) {
+            try {
+                if (scanSettings.UseFilmScanner.HasValue && SupportsFilmScanner) {
                     _ = scanSettings.UseFilmScanner.Value ? Capability.SetBasicCapability(Capabilities.Lightpath, (ushort)Lightpath.Transmissive, TwainType.UInt16, _applicationId, SourceId)
                         : Capability.SetBasicCapability(Capabilities.Lightpath, (ushort)Lightpath.Reflective, TwainType.UInt16, _applicationId, SourceId);
                 }
             }
-            catch
-            {
+            catch {
                 // Do nothing if the data source does not support the requested capability
             }
         }
 
-        public void NegotiateOrientation(ScanSettings scanSettings)
-        {
+        public void NegotiateOrientation(ScanSettings scanSettings) {
             // Set orientation (default is portrait)
-            try
-            {
+            try {
                 Capability cap = new Capability(Capabilities.Orientation, TwainType.Int16, _applicationId, SourceId);
-                if ((Orientation)cap.GetBasicValue().Int16Value != Orientation.Default)
-                {
+                if ((Orientation)cap.GetBasicValue().Int16Value != Orientation.Default) {
                     _ = Capability.SetBasicCapability(Capabilities.Orientation, (ushort)scanSettings.Page.Orientation, TwainType.UInt16, _applicationId, SourceId);
                 }
             }
-            catch
-            {
+            catch {
                 // Do nothing if the data source does not support the requested capability
             }
         }
@@ -422,18 +345,14 @@ namespace TwainWpf
         /// Negotiates the size of the page.
         /// </summary>
         /// <param name="scanSettings">The scan settings.</param>
-        public void NegotiatePageSize(ScanSettings scanSettings)
-        {
-            try
-            {
+        public void NegotiatePageSize(ScanSettings scanSettings) {
+            try {
                 Capability cap = new Capability(Capabilities.Supportedsizes, TwainType.Int16, _applicationId, SourceId);
-                if ((PageType)cap.GetBasicValue().Int16Value != PageType.UsLetter)
-                {
+                if ((PageType)cap.GetBasicValue().Int16Value != PageType.UsLetter) {
                     _ = Capability.SetBasicCapability(Capabilities.Supportedsizes, (ushort)scanSettings.Page.Size, TwainType.UInt16, _applicationId, SourceId);
                 }
             }
-            catch
-            {
+            catch {
                 // Do nothing if the data source does not support the requested capability
             }
         }
@@ -442,60 +361,47 @@ namespace TwainWpf
         /// Negotiates the indicator.
         /// </summary>
         /// <param name="scanSettings">The scan settings.</param>
-        public void NegotiateProgressIndicator(ScanSettings scanSettings)
-        {
-            try
-            {
-                if (scanSettings.ShowProgressIndicatorUi.HasValue)
-                {
+        public void NegotiateProgressIndicator(ScanSettings scanSettings) {
+            try {
+                if (scanSettings.ShowProgressIndicatorUi.HasValue) {
                     Capability.SetCapability(Capabilities.Indicators, scanSettings.ShowProgressIndicatorUi.Value, _applicationId, SourceId);
                 }
             }
-            catch
-            {
+            catch {
                 // Do nothing if the data source does not support the requested capability
             }
         }
 
-        public void NegotiateResolution(ScanSettings scanSettings)
-        {
-            try
-            {
-                if (scanSettings.Resolution.Dpi.HasValue)
-                {
+        public void NegotiateResolution(ScanSettings scanSettings) {
+            try {
+                if (scanSettings.Resolution.Dpi.HasValue) {
                     int dpi = scanSettings.Resolution.Dpi.Value;
                     _ = Capability.SetBasicCapability(Capabilities.XResolution, dpi, TwainType.Fix32, _applicationId, SourceId);
                     _ = Capability.SetBasicCapability(Capabilities.YResolution, dpi, TwainType.Fix32, _applicationId, SourceId);
                 }
             }
-            catch
-            {
+            catch {
                 // Do nothing if the data source does not support the requested capability
             }
         }
 
-        public void NegotiateTransferCount(ScanSettings scanSettings)
-        {
-            try
-            {
+        public void NegotiateTransferCount(ScanSettings scanSettings) {
+            try {
                 scanSettings.TransferCount = Capability.SetCapability(
                         Capabilities.XferCount,
                         scanSettings.TransferCount,
                         _applicationId,
                         SourceId);
             }
-            catch
-            {
+            catch {
                 // Do nothing if the data source does not support the requested capability
             }
         }
 
-        public bool Open(ScanSettings settings)
-        {
+        public bool Open(ScanSettings settings) {
             OpenSource();
 
-            if (settings.AbortWhenNoPaperDetectable && !PaperDetectable)
-            {
+            if (settings.AbortWhenNoPaperDetectable && !PaperDetectable) {
                 throw new FeederEmptyException();
             }
 
@@ -507,26 +413,22 @@ namespace TwainWpf
             NegotiateLightPath(settings);
 
             if (settings.UseDocumentFeeder == true &&
-                settings.Page != null)
-            {
+                settings.Page != null) {
                 NegotiatePageSize(settings);
                 NegotiateOrientation(settings);
             }
 
-            if (settings.Area != null)
-            {
+            if (settings.Area != null) {
                 _ = NegotiateArea(settings);
             }
 
-            if (settings.Resolution != null)
-            {
+            if (settings.Resolution != null) {
                 NegotiateColour(settings);
                 NegotiateResolution(settings);
             }
 
             // Configure automatic rotation and image border detection
-            if (settings.Rotation != null)
-            {
+            if (settings.Rotation != null) {
                 NegotiateAutomaticRotate(settings);
                 NegotiateAutomaticBorderDetection(settings);
             }
@@ -534,8 +436,7 @@ namespace TwainWpf
             return Enable(settings);
         }
 
-        public void OpenSource()
-        {
+        public void OpenSource() {
             TwainResult result = Twain32Native.DsmIdentity(
                    _applicationId,
                    IntPtr.Zero,
@@ -544,16 +445,13 @@ namespace TwainWpf
                    Message.OpenDS,
                    SourceId);
 
-            if (result != TwainResult.Success)
-            {
+            if (result != TwainResult.Success) {
                 throw new TwainException("Error opening data source", result);
             }
         }
 
-        protected void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
+        protected void Dispose(bool disposing) {
+            if (disposing) {
                 Close();
             }
         }
@@ -562,37 +460,29 @@ namespace TwainWpf
 
         private readonly IWindowsMessageHook _messageHook;
 
-        ~DataSource()
-        {
+        ~DataSource() {
             Dispose(false);
         }
 
-        private bool NegotiateArea(ScanSettings scanSettings)
-        {
+        private bool NegotiateArea(ScanSettings scanSettings) {
             AreaSettings area = scanSettings.Area;
 
-            if (area == null)
-            {
+            if (area == null) {
                 return false;
             }
 
-            try
-            {
+            try {
                 Capability cap = new Capability(Capabilities.IUnits, TwainType.Int16, _applicationId, SourceId);
-                if ((Units)cap.GetBasicValue().Int16Value != area.Units)
-                {
+                if ((Units)cap.GetBasicValue().Int16Value != area.Units) {
                     _ = Capability.SetCapability(Capabilities.IUnits, (short)area.Units, _applicationId, SourceId);
                 }
             }
-            catch
-            {
+            catch {
                 // Do nothing if the data source does not support the requested capability
             }
 
-            ImageLayout imageLayout = new ImageLayout
-            {
-                Frame = new Frame
-                {
+            ImageLayout imageLayout = new ImageLayout {
+                Frame = new Frame {
                     Left = new Fix32(area.Left),
                     Top = new Fix32(area.Top),
                     Right = new Fix32(area.Right),

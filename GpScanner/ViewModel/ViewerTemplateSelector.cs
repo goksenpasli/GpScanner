@@ -3,10 +3,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace GpScanner.ViewModel
-{
-    public class ViewerTemplateSelector : DataTemplateSelector
-    {
+namespace GpScanner.ViewModel {
+    public class ViewerTemplateSelector : DataTemplateSelector {
         public DataTemplate Empty { get; set; }
 
         public DataTemplate Img { get; set; }
@@ -19,23 +17,18 @@ namespace GpScanner.ViewModel
 
         public DataTemplate Zip { get; set; }
 
-        public override DataTemplate SelectTemplate(object item, DependencyObject container)
-        {
-            if (item is string dosya)
-            {
+        public override DataTemplate SelectTemplate(object item, DependencyObject container) {
+            if (item is string dosya) {
                 string[] imgext = new string[] { ".jpg", ".bmp", ".png", ".tif", ".tiff" };
                 string[] videoext = new string[] { ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg" };
                 string ext = Path.GetExtension(dosya).ToLower();
-                if (ext == ".pdf")
-                {
+                if (ext == ".pdf") {
                     return Pdf;
                 }
-                if (ext == ".zip")
-                {
+                if (ext == ".zip") {
                     return Zip;
                 }
-                if (ext == ".xps")
-                {
+                if (ext == ".xps") {
                     return Xps;
                 }
                 return imgext.Contains(ext) ? Img : videoext.Contains(ext) ? Vid : Empty;

@@ -1,7 +1,5 @@
-﻿namespace Tesseract
-{
-    public enum SelType : int
-    {
+﻿namespace Tesseract {
+    public enum SelType : int {
         SEL_DONT_CARE = 0,
 
         SEL_HIT = 1,

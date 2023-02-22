@@ -1,9 +1,7 @@
 using System.Runtime.InteropServices;
 
-namespace TwainWpf.Win32
-{
-    public static class User32Native
-    {
+namespace TwainWpf.Win32 {
+    public static class User32Native {
         [DllImport("user32.dll", ExactSpelling = true)]
         public static extern int GetMessagePos();
 

@@ -10,56 +10,43 @@ using Extensions;
 using Ocr;
 using InpcBase = Extensions.InpcBase;
 
-namespace GpScanner.ViewModel
-{
-    public class TesseractViewModel : InpcBase
-    {
-        public TesseractViewModel()
-        {
+namespace GpScanner.ViewModel {
+    public class TesseractViewModel : InpcBase {
+        public TesseractViewModel() {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             string tessdatafolder = Path.GetDirectoryName(Process.GetCurrentProcess()?.MainModule?.FileName) + @"\tessdata";
             TesseractFiles = GetTesseractFiles(tessdatafolder);
 
             OcrDatas = TesseractDownloadData();
 
-            TesseractDataFilesDownloadLink = new RelayCommand<object>(parameter =>
-            {
+            TesseractDataFilesDownloadLink = new RelayCommand<object>(parameter => {
                 string path = parameter as string;
-                if (!string.IsNullOrWhiteSpace(path))
-                {
-                    try
-                    {
+                if (!string.IsNullOrWhiteSpace(path)) {
+                    try {
                         _ = Process.Start(path);
                     }
-                    catch (Exception ex)
-                    {
+                    catch (Exception ex) {
                         _ = MessageBox.Show(ex.Message);
                     }
                 }
             }, parameter => true);
 
-            TesseractDownload = new RelayCommand<object>(async parameter =>
-            {
-                try
-                {
+            TesseractDownload = new RelayCommand<object>(async parameter => {
+                try {
                     TesseractOcrData ocrData = parameter as TesseractOcrData;
                     using WebClient client = new();
-                    client.DownloadProgressChanged += (s, e) =>
-                    {
+                    client.DownloadProgressChanged += (s, e) => {
                         ocrData.ProgressValue = e.ProgressPercentage;
                         ocrData.IsEnabled = ocrData.ProgressValue == 100;
                     };
-                    client.DownloadFileCompleted += (s, e) =>
-                    {
-                        if (e.Error is null)
-                        {
+                    client.DownloadFileCompleted += (s, e) => {
+                        if (e.Error is null) {
                             TesseractFiles = GetTesseractFiles(tessdatafolder);
                         }
                     };
                     await client.DownloadFileTaskAsync(new Uri($"https://github.com/tesseract-ocr/tessdata_best/raw/main/{ocrData.OcrName}"), $@"{tessdatafolder}\{ocrData.OcrName}");
                 }
-                catch (Exception ex)
-                {
+                catch (Exception ex) {
                     _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }, parameter => true);
@@ -69,14 +56,11 @@ namespace GpScanner.ViewModel
 
         public ObservableCollection<TesseractOcrData> OcrDatas { get; set; }
 
-        public bool ShowAllLanguages
-        {
+        public bool ShowAllLanguages {
             get => showAllLanguages;
 
-            set
-            {
-                if (showAllLanguages != value)
-                {
+            set {
+                if (showAllLanguages != value) {
                     showAllLanguages = value;
                     OnPropertyChanged(nameof(ShowAllLanguages));
                 }
@@ -87,14 +71,11 @@ namespace GpScanner.ViewModel
 
         public ICommand TesseractDownload { get; }
 
-        public ObservableCollection<string> TesseractFiles
-        {
+        public ObservableCollection<string> TesseractFiles {
             get => tesseractFiles;
 
-            set
-            {
-                if (tesseractFiles != value)
-                {
+            set {
+                if (tesseractFiles != value) {
                     tesseractFiles = value;
                     OnPropertyChanged(nameof(TesseractFiles));
                 }
@@ -105,13 +86,11 @@ namespace GpScanner.ViewModel
 
         private ObservableCollection<string> tesseractFiles;
 
-        private ObservableCollection<string> GetTesseractFiles(string tesseractfolder)
-        {
+        private ObservableCollection<string> GetTesseractFiles(string tesseractfolder) {
             return Directory.Exists(tesseractfolder) ? new ObservableCollection<string>(Directory.EnumerateFiles(tesseractfolder, "*.traineddata").Select(Path.GetFileNameWithoutExtension)) : null;
         }
 
-        private ObservableCollection<TesseractOcrData> TesseractDownloadData()
-        {
+        private ObservableCollection<TesseractOcrData> TesseractDownloadData() {
             return new()
             {
                 new TesseractOcrData(){OcrName = "afr.traineddata", IsVisible=Visibility.Visible},
@@ -244,12 +223,9 @@ namespace GpScanner.ViewModel
             };
         }
 
-        private void TesseractViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName is "ShowAllLanguages" && ShowAllLanguages)
-            {
-                foreach (TesseractOcrData item in OcrDatas.ToList())
-                {
+        private void TesseractViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+            if (e.PropertyName is "ShowAllLanguages" && ShowAllLanguages) {
+                foreach (TesseractOcrData item in OcrDatas.ToList()) {
                     item.IsVisible = Visibility.Visible;
                 }
             }

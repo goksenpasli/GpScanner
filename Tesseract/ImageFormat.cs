@@ -1,7 +1,5 @@
-﻿namespace Tesseract
-{
-    public enum ImageFormat : int
-    {
+﻿namespace Tesseract {
+    public enum ImageFormat : int {
         Unknown = 0,
 
         Bmp = 1,

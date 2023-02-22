@@ -8,6 +8,35 @@
     <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
     <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
     <local:PageToImageConverter x:Key="PageToImageConverter" />
+    <DataTemplate x:Key="ComboBoxItemTemplate">
+        <StackPanel x:Name="Sp" Orientation="Horizontal">
+            <StackPanel.Tag>
+                <MultiBinding Converter="{StaticResource PageToImageConverter}">
+                    <Binding Path="PdfFilePath" RelativeSource="{RelativeSource AncestorType={x:Type local:PdfViewer}}" />
+                    <Binding Mode="OneWay" />
+                </MultiBinding>
+            </StackPanel.Tag>
+            <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay}" />
+            <Viewbox>
+                <Image>
+                    <Image.Style>
+                        <Style TargetType="{x:Type Image}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ThumbsVisible, RelativeSource={RelativeSource AncestorType={x:Type local:PdfViewer}}}" Value="true">
+                                    <Setter Property="Height" Value="64" />
+                                    <Setter Property="Source" Value="{Binding Tag.Result, ElementName=Sp, IsAsync=True, Mode=OneWay}" />
+                                    <Setter Property="Width" Value="64" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ThumbsVisible, RelativeSource={RelativeSource AncestorType={x:Type local:PdfViewer}}}" Value="false">
+                                    <Setter Property="Source" Value="{x:Null}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+            </Viewbox>
+        </StackPanel>
+    </DataTemplate>
     <Style TargetType="{x:Type local:PdfViewer}">
         <Setter Property="Template">
             <Setter.Value>
@@ -46,7 +75,9 @@
                                 <MenuItem>
                                     <MenuItem.Template>
                                         <ControlTemplate>
-                                            <ComboBox ItemsSource="{Binding Pages, RelativeSource={RelativeSource AncestorType=local:PdfViewer}}" SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=local:PdfViewer}, UpdateSourceTrigger=PropertyChanged}">
+                                            <ComboBox ItemTemplate="{StaticResource ComboBoxItemTemplate}"
+                                                ItemsSource="{Binding Pages, RelativeSource={RelativeSource AncestorType=local:PdfViewer}}"
+                                                SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=local:PdfViewer}, UpdateSourceTrigger=PropertyChanged}">
                                                 <ComboBox.ItemsPanel>
                                                     <ItemsPanelTemplate>
                                                         <VirtualizingStackPanel />
@@ -154,44 +185,16 @@
                                     </RepeatButton>
                                     <ComboBox Height="26"
                                         VerticalContentAlignment="Center"
+                                        ItemTemplate="{StaticResource ComboBoxItemTemplate}"
                                         ItemsSource="{Binding Pages, RelativeSource={RelativeSource TemplatedParent}}"
                                         SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
                                         VirtualizingPanel.CacheLength="3,3" VirtualizingPanel.CacheLengthUnit="Item"
                                         VirtualizingPanel.ScrollUnit="Item" VirtualizingPanel.VirtualizationMode="Standard">
-                                        <ComboBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <StackPanel x:Name="Sp" Orientation="Horizontal">
-                                                    <StackPanel.Tag>
-                                                        <MultiBinding Converter="{StaticResource PageToImageConverter}">
-                                                            <Binding Path="DataContext" RelativeSource="{RelativeSource AncestorType=local:PdfViewer}" />
-                                                            <Binding Mode="OneWay" />
-                                                        </MultiBinding>
-                                                    </StackPanel.Tag>
-                                                    <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay}" />
-                                                    <Viewbox>
-                                                        <Image>
-                                                            <Image.Style>
-                                                                <Style TargetType="Image">
-                                                                    <Style.Triggers>
-                                                                        <DataTrigger Binding="{Binding ThumbsVisible, RelativeSource={RelativeSource AncestorType=local:PdfViewer}}" Value="true">
-                                                                            <Setter Property="Height" Value="64" />
-                                                                            <Setter Property="Source" Value="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, ElementName=Sp}" />
-                                                                            <Setter Property="Width" Value="64" />
-                                                                        </DataTrigger>
-                                                                        <DataTrigger Binding="{Binding ThumbsVisible, RelativeSource={RelativeSource AncestorType=local:PdfViewer}}" Value="false">
-                                                                            <Setter Property="Source" Value="{x:Null}" />
-                                                                        </DataTrigger>
-                                                                    </Style.Triggers>
-                                                                </Style>
-                                                            </Image.Style>
-                                                        </Image>
-                                                    </Viewbox>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </ComboBox.ItemTemplate>
                                         <ComboBox.ItemsPanel>
                                             <ItemsPanelTemplate>
-                                                <VirtualizingStackPanel />
+                                                <Extensions:VirtualizingWrapPanel Width="270" Height="270"
+                                                    CanHorizontallyScroll="False" ItemSize="90,90" SpacingMode="BetweenItemsOnly"
+                                                    StretchItems="False" />
                                             </ItemsPanelTemplate>
                                         </ComboBox.ItemsPanel>
                                     </ComboBox>

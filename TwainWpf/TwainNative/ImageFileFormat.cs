@@ -1,10 +1,8 @@
-﻿namespace TwainWpf.TwainNative
-{
+﻿namespace TwainWpf.TwainNative {
     /// <summary>
     /// Twain spec ICAP_IMAGEFILEFORMAT values.
     /// </summary>
-    public enum ImageFileFormat : ushort
-    {
+    public enum ImageFileFormat : ushort {
         Tiff = 0,       /* Tagged Image File Format     */
 
         Pict = 1,       /* Macintosh PICT               */

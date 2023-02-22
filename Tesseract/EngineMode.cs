@@ -1,7 +1,5 @@
-﻿namespace Tesseract
-{
-    public enum EngineMode : int
-    {
+﻿namespace Tesseract {
+    public enum EngineMode : int {
         /// <summary>
         /// Only the legacy tesseract OCR engine is used.
         /// </summary>

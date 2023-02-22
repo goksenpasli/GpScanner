@@ -7,16 +7,11 @@ using System.Windows.Interop;
 using Extensions;
 using TwainControl;
 
-namespace GpScanner.ViewModel
-{
-    public static class WindowExtensions
-    {
-        static WindowExtensions()
-        {
-            OpenSettings = new RelayCommand<object>(parameter =>
-            {
-                SettingsWindowView settingswindow = new()
-                {
+namespace GpScanner.ViewModel {
+    public static class WindowExtensions {
+        static WindowExtensions() {
+            OpenSettings = new RelayCommand<object>(parameter => {
+                SettingsWindowView settingswindow = new() {
                     Owner = Application.Current.MainWindow,
                     DataContext = Application.Current.MainWindow.DataContext
                 };
@@ -26,8 +21,7 @@ namespace GpScanner.ViewModel
 
         public static ICommand OpenSettings { get; }
 
-        public static void DisableCloseButton(this Window window, bool disable)
-        {
+        public static void DisableCloseButton(this Window window, bool disable) {
             IntPtr hwnd = new WindowInteropHelper(window).Handle;
             IntPtr sysMenu = GetSystemMenu(hwnd, false);
             _ = disable
@@ -35,8 +29,7 @@ namespace GpScanner.ViewModel
                 : EnableMenuItem(sysMenu, SC_CLOSE, MF_BYCOMMAND | MF_ENABLED);
         }
 
-        public static void SystemMenu(this MainWindow form)
-        {
+        public static void SystemMenu(this MainWindow form) {
             IntPtr systemMenuHandle = GetSystemMenu(new WindowInteropHelper(form).Handle, false);
             _ = InsertMenu(systemMenuHandle, 7, MF_BYPOSITION, _SettingsSysMenuID, Translation.GetResStringValue("SETTİNGS"));
             _ = InsertMenu(systemMenuHandle, 8, MF_BYPOSITION, _AboutSysMenuID, Translation.GetResStringValue("ABOUT"));
@@ -44,8 +37,7 @@ namespace GpScanner.ViewModel
             source.AddHook(WndProc);
         }
 
-        internal static void HideMinimizeButtons(this Window window)
-        {
+        internal static void HideMinimizeButtons(this Window window) {
             IntPtr hwnd = new WindowInteropHelper(window).Handle;
             int currentStyle = GetWindowLong(hwnd, GWL_STYLE);
 
@@ -86,12 +78,9 @@ namespace GpScanner.ViewModel
         private static extern int SetWindowLong(IntPtr hwnd, int index, int value);
 
         [DebuggerStepThrough]
-        private static IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
-        {
-            if (msg == WM_SYSCOMMAND)
-            {
-                switch (wParam.ToInt32())
-                {
+        private static IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled) {
+            if (msg == WM_SYSCOMMAND) {
+                switch (wParam.ToInt32()) {
                     case _AboutSysMenuID:
                         _ = Process.Start("https://github.com/goksenpasli");
                         handled = true;

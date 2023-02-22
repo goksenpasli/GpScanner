@@ -1,10 +1,8 @@
-﻿namespace Tesseract
-{
+﻿namespace Tesseract {
     /// <summary>
     /// Represents the possible page layou analysis modes.
     /// </summary>
-    public enum PageSegMode : int
-    {
+    public enum PageSegMode : int {
         /// <summary>
         /// Orientation and script detection (OSD) only.
         /// </summary>

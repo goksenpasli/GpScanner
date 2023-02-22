@@ -1,19 +1,14 @@
 ﻿using System;
 
-namespace Tesseract
-{
+namespace Tesseract {
     [Serializable]
-    public class LeptonicaException : Exception
-    {
-        public LeptonicaException()
-        { }
+    public class LeptonicaException : Exception {
+        public LeptonicaException() { }
 
-        public LeptonicaException(string message) : base(message)
-        {
+        public LeptonicaException(string message) : base(message) {
         }
 
-        public LeptonicaException(string message, Exception inner) : base(message, inner)
-        {
+        public LeptonicaException(string message, Exception inner) : base(message, inner) {
         }
 
         protected LeptonicaException(

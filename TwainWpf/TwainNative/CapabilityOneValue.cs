@@ -1,7 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace TwainWpf.TwainNative
-{
+namespace TwainWpf.TwainNative {
     /// <summary>
     /// /* TWON_ONEVALUE. Container for one value. */
     /// typedef struct {
@@ -10,10 +9,8 @@ namespace TwainWpf.TwainNative
     /// } TW_ONEVALUE, FAR * pTW_ONEVALUE;
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 2)]
-    public class CapabilityOneValue
-    {
-        public CapabilityOneValue(TwainType twainType, int value)
-        {
+    public class CapabilityOneValue {
+        public CapabilityOneValue(TwainType twainType, int value) {
             Value = value;
             TwainType = twainType;
         }

@@ -1,9 +1,7 @@
 using TwainWpf.TwainNative;
 
-namespace TwainWpf
-{
-    public class BasicCapabilityResult : CapabilityResult
-    {
+namespace TwainWpf {
+    public class BasicCapabilityResult : CapabilityResult {
         public bool BoolValue => RawBasicValue == 1;
 
         public short Int16Value => (short)RawBasicValue;
@@ -13,8 +11,7 @@ namespace TwainWpf
         public int RawBasicValue { get; set; }
     }
 
-    public abstract class CapabilityResult
-    {
+    public abstract class CapabilityResult {
         public ConditionCode ConditionCode { get; set; }
 
         public TwainResult ErrorCode { get; set; }

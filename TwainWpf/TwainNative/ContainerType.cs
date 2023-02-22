@@ -1,10 +1,8 @@
-namespace TwainWpf.TwainNative
-{
+namespace TwainWpf.TwainNative {
     /// <summary>
     /// TWON_...
     /// </summary>
-    public enum ContainerType : short
-    {
+    public enum ContainerType : short {
         Array = 0x0003,
 
         Enum = 0x0004,

@@ -1,7 +1,5 @@
-﻿namespace Tesseract
-{
-    public enum PageIteratorLevel : int
-    {
+﻿namespace Tesseract {
+    public enum PageIteratorLevel : int {
         Block,
 
         Para,

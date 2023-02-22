@@ -1,10 +1,8 @@
 using System.Runtime.InteropServices;
 
-namespace TwainWpf.TwainNative
-{
+namespace TwainWpf.TwainNative {
     [StructLayout(LayoutKind.Sequential, Pack = 2)]
-    public class ImageLayout
-    {
+    public class ImageLayout {
         public Frame Frame;
 
         public uint DocumentNumber;

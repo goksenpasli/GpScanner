@@ -1,10 +1,8 @@
 using System;
 
-namespace TwainWpf.Win32
-{
+namespace TwainWpf.Win32 {
     [Flags]
-    public enum GlobalAllocFlags : uint
-    {
+    public enum GlobalAllocFlags : uint {
         MemFixed = 0,
 
         MemMoveable = 0x2,

@@ -1,10 +1,8 @@
-﻿namespace TwainWpf.TwainNative
-{
+﻿namespace TwainWpf.TwainNative {
     /// <summary>
     /// Twain spec ICAP_FLIPROTATION values.
     /// </summary>
-    public enum FlipRotation
-    {
+    public enum FlipRotation {
         Book = 0,
 
         FanFold = 1

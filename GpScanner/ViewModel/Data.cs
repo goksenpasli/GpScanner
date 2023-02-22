@@ -1,19 +1,13 @@
 ﻿using System.Xml.Serialization;
 using Extensions;
 
-namespace GpScanner.ViewModel
-{
+namespace GpScanner.ViewModel {
     [XmlRoot(ElementName = "Data")]
-    public class Data : InpcBase
-    {
+    public class Data : InpcBase {
         [XmlAttribute(AttributeName = "FileContent")]
-        public string FileContent
-        {
-            get => fileContent; set
-
-            {
-                if (fileContent != value)
-                {
+        public string FileContent {
+            get => fileContent; set {
+                if (fileContent != value) {
                     fileContent = value;
                     OnPropertyChanged(nameof(FileContent));
                 }
@@ -21,13 +15,9 @@ namespace GpScanner.ViewModel
         }
 
         [XmlAttribute(AttributeName = "FileName")]
-        public string FileName
-        {
-            get => fileName; set
-
-            {
-                if (fileName != value)
-                {
+        public string FileName {
+            get => fileName; set {
+                if (fileName != value) {
                     fileName = value;
                     OnPropertyChanged(nameof(FileName));
                 }
@@ -35,14 +25,11 @@ namespace GpScanner.ViewModel
         }
 
         [XmlAttribute(AttributeName = "Id")]
-        public int Id
-        {
+        public int Id {
             get => ıd;
 
-            set
-            {
-                if (ıd != value)
-                {
+            set {
+                if (ıd != value) {
                     ıd = value;
                     OnPropertyChanged(nameof(Id));
                 }
@@ -50,14 +37,11 @@ namespace GpScanner.ViewModel
         }
 
         [XmlAttribute(AttributeName = "QrData")]
-        public string QrData
-        {
+        public string QrData {
             get => qrData;
 
-            set
-            {
-                if (qrData != value)
-                {
+            set {
+                if (qrData != value) {
                     qrData = value;
                     OnPropertyChanged(nameof(QrData));
                 }

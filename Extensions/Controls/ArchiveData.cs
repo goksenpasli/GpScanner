@@ -1,87 +1,67 @@
 ﻿using System;
 
-namespace Extensions
-{
-    public class ArchiveData : InpcBase
-    {
-        public long Boyut
-        {
+namespace Extensions {
+    public class ArchiveData : InpcBase {
+        public long Boyut {
             get => boyut;
 
-            set
-            {
-                if (boyut != value)
-                {
+            set {
+                if (boyut != value) {
                     boyut = value;
                     OnPropertyChanged(nameof(Boyut));
                 }
             }
         }
 
-        public string DosyaAdı
-        {
+        public string DosyaAdı {
             get => dosyaAdı;
 
-            set
-            {
-                if (dosyaAdı != value)
-                {
+            set {
+                if (dosyaAdı != value) {
                     dosyaAdı = value;
                     OnPropertyChanged(nameof(DosyaAdı));
                 }
             }
         }
 
-        public DateTime DüzenlenmeZamanı
-        {
+        public DateTime DüzenlenmeZamanı {
             get => düzenlenmeZamanı;
 
-            set
-            {
-                if (düzenlenmeZamanı != value)
-                {
+            set {
+                if (düzenlenmeZamanı != value) {
                     düzenlenmeZamanı = value;
                     OnPropertyChanged(nameof(DüzenlenmeZamanı));
                 }
             }
         }
 
-        public double Oran
-        {
+        public double Oran {
             get => oran;
 
-            set
-            {
-                if (oran != value)
-                {
+            set {
+                if (oran != value) {
                     oran = value;
                     OnPropertyChanged(nameof(Oran));
                 }
             }
         }
 
-        public long SıkıştırılmışBoyut
-        {
+        public long SıkıştırılmışBoyut {
             get => sıkıştırılmışBoyut;
 
-            set
-            {
-                if (sıkıştırılmışBoyut != value)
-                {
+            set {
+                if (sıkıştırılmışBoyut != value) {
                     sıkıştırılmışBoyut = value;
                     OnPropertyChanged(nameof(SıkıştırılmışBoyut));
                 }
             }
         }
 
-        public string TamYol
-        {
+        public string TamYol {
             get => tamYol;
 
-            set
-            {
-                if (tamYol != value)
-                {
+            set {
+                if (tamYol != value) {
                     tamYol = value;
                     OnPropertyChanged(nameof(TamYol));
                 }

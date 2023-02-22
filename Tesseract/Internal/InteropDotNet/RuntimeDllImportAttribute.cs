@@ -4,12 +4,10 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Tesseract.Internal.InteropDotNet
-{
+namespace Tesseract.Internal.InteropDotNet {
     [ComVisible(true)]
     [AttributeUsage(AttributeTargets.Method, Inherited = false, AllowMultiple = false)]
-    internal sealed class RuntimeDllImportAttribute : Attribute
-    {
+    internal sealed class RuntimeDllImportAttribute : Attribute {
         public bool BestFitMapping;
 
         public CallingConvention CallingConvention;
@@ -22,8 +20,7 @@ namespace Tesseract.Internal.InteropDotNet
 
         public bool ThrowOnUnmappableChar;
 
-        public RuntimeDllImportAttribute(string libraryFileName)
-        {
+        public RuntimeDllImportAttribute(string libraryFileName) {
             LibraryFileName = libraryFileName;
         }
 

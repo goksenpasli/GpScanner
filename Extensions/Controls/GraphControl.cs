@@ -11,10 +11,8 @@ using System.Windows.Media.Imaging;
 using Microsoft.Win32;
 using static Extensions.ExtensionMethods;
 
-namespace Extensions
-{
-    public class GraphControl : FrameworkElement
-    {
+namespace Extensions {
+    public class GraphControl : FrameworkElement {
         public static readonly DependencyProperty ContextMenuVisibilityProperty = DependencyProperty.Register("ContextMenuVisibility", typeof(Visibility), typeof(GraphControl), new PropertyMetadata(Visibility.Visible));
 
         public static readonly DependencyProperty DotColorProperty = DependencyProperty.Register("DotColor", typeof(Brush), typeof(GraphControl), new FrameworkPropertyMetadata(Brushes.Blue, FrameworkPropertyMetadataOptions.AffectsRender));
@@ -43,47 +41,40 @@ namespace Extensions
 
         public static readonly DependencyProperty ValueTextVisibilityProperty = DependencyProperty.Register("ValueTextVisibility", typeof(Visibility), typeof(GraphControl), new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.AffectsRender));
 
-        static GraphControl()
-        {
+        static GraphControl() {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(GraphControl), new FrameworkPropertyMetadata(typeof(GraphControl)));
         }
 
-        public GraphControl()
-        {
+        public GraphControl() {
             Kaydet = new RelayCommand<object>(parameter => SaveFile(RenderVisual(this).ToTiffJpegByteArray(Format.Png)));
         }
 
         [Description("Graph Controls"), Category("Graph")]
-        public Visibility ContextMenuVisibility
-        {
+        public Visibility ContextMenuVisibility {
             get => (Visibility)GetValue(ContextMenuVisibilityProperty);
             set => SetValue(ContextMenuVisibilityProperty, value);
         }
 
         [Description("Graph Controls"), Category("Graph")]
-        public Brush DotColor
-        {
+        public Brush DotColor {
             get => (Brush)GetValue(DotColorProperty);
             set => SetValue(DotColorProperty, value);
         }
 
         [Description("Graph Controls"), Category("Graph")]
-        public double FontSize
-        {
+        public double FontSize {
             get => (double)GetValue(FontSizeProperty);
             set => SetValue(FontSizeProperty, value);
         }
 
         [Description("Graph Controls"), Category("Graph")]
-        public Visibility GraphContentVisibility
-        {
+        public Visibility GraphContentVisibility {
             get => (Visibility)GetValue(GraphContentVisibilityProperty);
             set => SetValue(GraphContentVisibilityProperty, value);
         }
 
         [Description("Graph Controls"), Category("Graph")]
-        public bool IsContextMenuEnabled
-        {
+        public bool IsContextMenuEnabled {
             get => (bool)GetValue(IsContextMenuEnabledProperty);
             set => SetValue(IsContextMenuEnabledProperty, value);
         }
@@ -91,72 +82,61 @@ namespace Extensions
         public ICommand Kaydet { get; }
 
         [Description("Graph Controls"), Category("Graph")]
-        public Brush LineColor
-        {
+        public Brush LineColor {
             get => (Brush)GetValue(LineColorProperty);
             set => SetValue(LineColorProperty, value);
         }
 
         [Description("Graph Controls"), Category("Graph")]
-        public Visibility LineDotVisibility
-        {
+        public Visibility LineDotVisibility {
             get => (Visibility)GetValue(LineDotVisibilityProperty);
             set => SetValue(LineDotVisibilityProperty, value);
         }
 
         [Description("Graph Controls"), Category("Graph")]
-        public Visibility LineGraphVisibility
-        {
+        public Visibility LineGraphVisibility {
             get => (Visibility)GetValue(LineGraphVisibilityProperty);
             set => SetValue(LineGraphVisibilityProperty, value);
         }
 
         [Description("Graph Controls"), Category("Graph")]
-        public double LineThickness
-        {
+        public double LineThickness {
             get => (double)GetValue(LineThicknessProperty);
             set => SetValue(LineThicknessProperty, value);
         }
 
         [Description("Graph Controls"), Category("Graph")]
-        public ObservableCollection<Chart> Series
-        {
+        public ObservableCollection<Chart> Series {
             get => (ObservableCollection<Chart>)GetValue(SeriesProperty);
             set => SetValue(SeriesProperty, value);
         }
 
         [Description("Graph Controls"), Category("Graph")]
-        public Visibility SeriesTextVisibility
-        {
+        public Visibility SeriesTextVisibility {
             get => (Visibility)GetValue(SeriesTextVisibilityProperty);
             set => SetValue(SeriesTextVisibilityProperty, value);
         }
 
         [Description("Graph Controls"), Category("Graph")]
-        public Brush TextColor
-        {
+        public Brush TextColor {
             get => (Brush)GetValue(TextColorProperty);
             set => SetValue(TextColorProperty, value);
         }
 
         [Description("Graph Controls"), Category("Graph")]
-        public Brush ValueColor
-        {
+        public Brush ValueColor {
             get => (Brush)GetValue(ValueColorProperty);
             set => SetValue(ValueColorProperty, value);
         }
 
         [Description("Graph Controls"), Category("Graph")]
-        public Visibility ValueTextVisibility
-        {
+        public Visibility ValueTextVisibility {
             get => (Visibility)GetValue(ValueTextVisibilityProperty);
             set => SetValue(ValueTextVisibilityProperty, value);
         }
 
-        protected override void OnRender(DrawingContext drawingContext)
-        {
-            if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
-            {
+        protected override void OnRender(DrawingContext drawingContext) {
+            if (!DesignerProperties.GetIsInDesignMode(new DependencyObject())) {
                 DrawGraph(drawingContext, Series);
                 return;
             }
@@ -171,10 +151,8 @@ namespace Extensions
 
         private static ObservableCollection<Chart> MockData;
 
-        private void DrawGraph(DrawingContext drawingContext, ObservableCollection<Chart> Series)
-        {
-            if (Series?.Any() == true)
-            {
+        private void DrawGraph(DrawingContext drawingContext, ObservableCollection<Chart> Series) {
+            if (Series?.Any() == true) {
                 double max = Series.Max(z => z.ChartValue);
                 double thickness = ActualWidth / Series.Count;
                 DrawingGroup graphdrawinggroup = null;
@@ -187,8 +165,7 @@ namespace Extensions
                 StreamGeometry geometry = new();
                 using StreamGeometryContext gc = geometry.Open();
                 gc.BeginFigure(new Point(thickness / 2, ActualHeight - (Series[0].ChartValue / max * ActualHeight)), false, false);
-                for (int i = 1; i <= Series.Count; i++)
-                {
+                for (int i = 1; i <= Series.Count; i++) {
                     graphdrawinggroup = new();
                     graphgeometrygroup = new();
                     item = Series[i - 1];
@@ -211,84 +188,66 @@ namespace Extensions
             }
         }
 
-        private void DrawLineDot(Pen linepen, Point point1, DrawingContext graph)
-        {
-            if (LineDotVisibility == Visibility.Visible)
-            {
+        private void DrawLineDot(Pen linepen, Point point1, DrawingContext graph) {
+            if (LineDotVisibility == Visibility.Visible) {
                 graph.DrawEllipse(DotColor, linepen, point1, linepen.Thickness, linepen.Thickness);
             }
         }
 
-        private void DrawLineGraph(Pen linepen, Point point1, StreamGeometry geometry, StreamGeometryContext gc, DrawingContext geometrygraph)
-        {
-            if (LineGraphVisibility == Visibility.Visible)
-            {
+        private void DrawLineGraph(Pen linepen, Point point1, StreamGeometry geometry, StreamGeometryContext gc, DrawingContext geometrygraph) {
+            if (LineGraphVisibility == Visibility.Visible) {
                 gc.LineTo(point1, true, true);
                 geometry.Freeze();
                 geometrygraph.DrawGeometry(null, linepen, geometry);
             }
         }
 
-        private void DrawMainContent(Pen pen, Point point0, Point point1, DrawingContext graph)
-        {
-            if (GraphContentVisibility == Visibility.Visible)
-            {
+        private void DrawMainContent(Pen pen, Point point0, Point point1, DrawingContext graph) {
+            if (GraphContentVisibility == Visibility.Visible) {
                 graph.DrawLine(pen, point0, point1);
             }
         }
 
-        private void DrawSeriesText(Pen pen, Chart item, Point point1, DrawingContext graph)
-        {
-            if (SeriesTextVisibility == Visibility.Visible)
-            {
+        private void DrawSeriesText(Pen pen, Chart item, Point point1, DrawingContext graph) {
+            if (SeriesTextVisibility == Visibility.Visible) {
                 FormattedText formattedText = GenerateFormattedText(item, pen);
                 Point textpoint = new(point1.X - (formattedText.WidthIncludingTrailingWhitespace / 2), point1.Y - formattedText.Height / 3);
                 graph.DrawText(formattedText, textpoint);
             }
         }
 
-        private void DrawValueText(Pen pen, Chart item, Point point1, DrawingContext graph)
-        {
-            if (ValueTextVisibility == Visibility.Visible)
-            {
+        private void DrawValueText(Pen pen, Chart item, Point point1, DrawingContext graph) {
+            if (ValueTextVisibility == Visibility.Visible) {
                 FormattedText formattedValueText = GenerateFormattedValueText(item, pen);
                 graph.DrawText(formattedValueText, new Point(point1.X - (formattedValueText.WidthIncludingTrailingWhitespace / 2), 0));
             }
         }
 
-        private FormattedText GenerateFormattedText(Chart item, Pen pen)
-        {
-            return new(item.Description, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), FontSize, TextColor)
-            {
+        private FormattedText GenerateFormattedText(Chart item, Pen pen) {
+            return new(item.Description, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), FontSize, TextColor) {
                 MaxTextWidth = pen.Thickness
             };
         }
 
-        private FormattedText GenerateFormattedValueText(Chart item, Pen pen)
-        {
-            return new(item.ChartValue.ToString(), CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI Bold"), FontSize, ValueColor)
-            {
+        private FormattedText GenerateFormattedValueText(Chart item, Pen pen) {
+            return new(item.ChartValue.ToString(), CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI Bold"), FontSize, ValueColor) {
                 MaxTextWidth = pen.Thickness
             };
         }
 
-        private RenderTargetBitmap RenderVisual(FrameworkElement frameworkElement)
-        {
+        private RenderTargetBitmap RenderVisual(FrameworkElement frameworkElement) {
             RenderTargetBitmap rtb = new((int)frameworkElement.ActualWidth, (int)frameworkElement.ActualHeight, 96, 96, PixelFormats.Default);
             rtb.Render(frameworkElement);
             rtb.Freeze();
             return rtb;
         }
 
-        private void SaveFile(byte[] imgdata)
-        {
-            SaveFileDialog saveFileDialog = new()
-            {
+        private void SaveFile(byte[] imgdata) {
+            SaveFileDialog saveFileDialog = new() {
                 FileName = "Resim.png",
                 Filter = "Png Dosyası (*.png)|*.png"
             };
-            if (saveFileDialog.ShowDialog() == true)
-            {
+            if (saveFileDialog.ShowDialog() == true) {
                 File.WriteAllBytes(saveFileDialog.FileName, imgdata);
                 imgdata = null;
                 GC.Collect();

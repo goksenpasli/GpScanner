@@ -1,7 +1,5 @@
-namespace TwainWpf.TwainNative
-{
-    public enum Units
-    {
+namespace TwainWpf.TwainNative {
+    public enum Units {
         Inches = 0,
 
         Centimeters = 1,

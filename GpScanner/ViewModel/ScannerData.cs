@@ -2,20 +2,15 @@
 using System.Xml.Serialization;
 using Extensions;
 
-namespace GpScanner.ViewModel
-{
+namespace GpScanner.ViewModel {
     [XmlRoot(ElementName = "ScannerData")]
-    public class ScannerData : InpcBase
-    {
+    public class ScannerData : InpcBase {
         [XmlElement(ElementName = "Data")]
-        public ObservableCollection<Data> Data
-        {
+        public ObservableCollection<Data> Data {
             get => data;
 
-            set
-            {
-                if (data != value)
-                {
+            set {
+                if (data != value) {
                     data = value;
                     OnPropertyChanged(nameof(Data));
                 }

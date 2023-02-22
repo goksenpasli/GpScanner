@@ -1,7 +1,5 @@
-namespace TwainWpf.TwainNative
-{
-    public enum Duplex : short
-    {
+namespace TwainWpf.TwainNative {
+    public enum Duplex : short {
         None = 0,
 
         OnePass = 1,

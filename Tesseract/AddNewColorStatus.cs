@@ -1,7 +1,5 @@
-﻿namespace Tesseract
-{
-    public enum AddNewColorStatus
-    {
+﻿namespace Tesseract {
+    public enum AddNewColorStatus {
         Ok = 0,
 
         Error = 1,

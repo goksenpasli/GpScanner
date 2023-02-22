@@ -225,7 +225,7 @@
                     </Button>
                     <PdfViewer:PdfViewer x:Name="PdfVwr"
                         Grid.Column="1"
-                        ContextMenuVisibility="Visible" Orientation="Width"
+                        ContextMenuVisibility="Visible" Orientation="Height"
                         PdfFilePath="{Binding Mode=OneWay}"
                         PrintButtonVisibility="Visible" ScrollBarVisible="Visible" SnapTick="True" />
                     <UniformGrid Grid.Column="2" Rows="2">

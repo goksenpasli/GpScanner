@@ -1,45 +1,34 @@
 ﻿using System.Windows.Media;
 
-namespace Extensions
-{
-    public class Chart : InpcBase
-    {
-        public Brush ChartBrush
-        {
+namespace Extensions {
+    public class Chart : InpcBase {
+        public Brush ChartBrush {
             get => chartBrush;
 
-            set
-            {
-                if (chartBrush != value)
-                {
+            set {
+                if (chartBrush != value) {
                     chartBrush = value;
                     OnPropertyChanged(nameof(ChartBrush));
                 }
             }
         }
 
-        public double ChartValue
-        {
+        public double ChartValue {
             get => chartValue;
 
-            set
-            {
-                if (chartValue != value)
-                {
+            set {
+                if (chartValue != value) {
                     chartValue = value;
                     OnPropertyChanged(nameof(ChartValue));
                 }
             }
         }
 
-        public string Description
-        {
+        public string Description {
             get => description;
 
-            set
-            {
-                if (description != value)
-                {
+            set {
+                if (description != value) {
                     description = value;
                     OnPropertyChanged(nameof(Description));
                 }

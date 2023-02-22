@@ -1,11 +1,9 @@
 using System;
 
-namespace TwainWpf
-{
+namespace TwainWpf {
     public delegate IntPtr FilterMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled);
 
-    public interface IWindowsMessageHook
-    {
+    public interface IWindowsMessageHook {
         /// <summary>
         /// The delegate to call back then the filter is in place and a message arrives.
         /// </summary>

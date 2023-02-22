@@ -1,7 +1,5 @@
-namespace TwainWpf.TwainNative
-{
-    public enum Command
-    {
+namespace TwainWpf.TwainNative {
+    public enum Command {
         Not = -1,
 
         Null = 0,

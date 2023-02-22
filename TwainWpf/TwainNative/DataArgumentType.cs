@@ -1,8 +1,6 @@
 // ReSharper disable InconsistentNaming
-namespace TwainWpf.TwainNative
-{
-    public enum DataArgumentType : short
-    {
+namespace TwainWpf.TwainNative {
+    public enum DataArgumentType : short {
         Null = 0x0000,
 
         Capability = 0x0001,

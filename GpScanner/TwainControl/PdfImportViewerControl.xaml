@@ -18,21 +18,72 @@
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Pdfviewer:PdfViewer x:Name="PdfViewer"
-            PdfFilePath="{Binding SinglePdfFilePath}"
-            PrintButtonVisibility="Visible" />
-        <UniformGrid Grid.Row="1" Columns="3">
-            <Button Command="{Binding LoadSinglePdfFile}">
-                <StackPanel Orientation="Horizontal">
-                    <Image Width="32" Height="32"
-                        Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
-                    <TextBlock VerticalAlignment="Center" Text="{local:Loc FILE}" />
-                </StackPanel>
+        <StackPanel Margin="2" Orientation="Horizontal">
+            <UniformGrid Columns="5" DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType=Window}}">
+                <Extensions:NumericUpDownControl Maximum="{Binding ElementName=PdfViewer, Path=ToplamSayfa}"
+                    Minimum="1" SmallChange="1"
+                    Value="{Binding SayfaBaşlangıç, UpdateSourceTrigger=PropertyChanged}" />
+                <Extensions:NumericUpDownControl Maximum="{Binding ElementName=PdfViewer, Path=ToplamSayfa}"
+                    Minimum="1" SmallChange="1"
+                    Value="{Binding SayfaBitiş, UpdateSourceTrigger=PropertyChanged}" />
+                <Button Command="{Binding ExtractPdfFile}" CommandParameter="{Binding PdfFilePath, ElementName=PdfViewer, Mode=OneWay}">
+                    <Image Width="16" Height="16">
+                        <Image.Source>
+                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                <Binding Source="Shell32.dll" />
+                                <Binding Source="68" />
+                            </MultiBinding>
+                        </Image.Source>
+                    </Image>
+                </Button>
+                <Button Command="{Binding RemoveSelectedPage}" CommandParameter="{Binding ElementName=PdfViewer}">
+                    <Image Width="16" Height="16">
+                        <Image.Source>
+                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                <Binding Source="Shell32.dll" />
+                                <Binding Source="131" />
+                            </MultiBinding>
+                        </Image.Source>
+                    </Image>
+                </Button>
+                <Button BorderBrush="Cyan"
+                    Command="{Binding RotateSelectedPage}"
+                    CommandParameter="{Binding ElementName=PdfViewer}">
+                    <Image Width="16" Height="16"
+                        Source="/TwainControl;component/Icons/rotate.png" />
+                </Button>
+            </UniformGrid>
+            <Button BorderBrush="Cyan" Command="{Binding DataContext.AddAllFileToControlPanel, RelativeSource={RelativeSource AncestorType=Window}}">
+                <Button.CommandParameter>
+                    <MultiBinding Converter="{StaticResource CloneConverter}">
+                        <Binding Mode="OneWay" Path="DataContext" />
+                        <Binding ElementName="PdfViewer" Mode="OneWay" />
+                    </MultiBinding>
+                </Button.CommandParameter>
+                <Button.Content>
+                    <TextBlock FontFamily="Wingdings" FontSize="16" Text="ç" />
+                </Button.Content>
             </Button>
-            <Button Command="{Binding LoadSingleEypFile}">
+            <Button Command="{Binding DataContext.OcrPdfThumbnailPage, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
+                <Button.Content>
+                    <Grid>
+                        <ProgressBar IsIndeterminate="{Binding DataContext.OcrIsBusy, RelativeSource={RelativeSource AncestorType=Window}}" />
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                            Text="OCR" />
+                    </Grid>
+                </Button.Content>
+            </Button>
+        </StackPanel>
+        <Pdfviewer:PdfViewer x:Name="PdfViewer"
+            Grid.Row="1"
+            PdfFilePath="{Binding SinglePdfFilePath}"
+            PrintButtonVisibility="Visible" OpenButtonVisibility="Visible" />
+        <UniformGrid Grid.Row="2" Columns="2">
+            <Button Command="{Binding LoadSingleEypFile}" CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
                 <StackPanel Orientation="Horizontal">
                     <Image Width="32" Height="32"
                         Source="{Binding Source='.eyp', Converter={StaticResource FilePathToIconConverter}}" />

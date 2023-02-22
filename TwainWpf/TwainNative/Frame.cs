@@ -1,11 +1,9 @@
 using System.Runtime.InteropServices;
 
-namespace TwainWpf.TwainNative
-{
+namespace TwainWpf.TwainNative {
     // all values are in Inches (2.54 cm)
     [StructLayout(LayoutKind.Sequential, Pack = 2)]
-    public class Frame
-    {
+    public class Frame {
         public Fix32 Left;
 
         public Fix32 Top;

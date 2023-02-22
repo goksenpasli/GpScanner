@@ -9,32 +9,26 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace Extensions.Controls
-{
+namespace Extensions.Controls {
     /// <summary>
     /// Interaction logic for ArchiveViewer.xaml
     /// </summary>
-    public partial class ArchiveViewer : UserControl, INotifyPropertyChanged
-    {
+    public partial class ArchiveViewer : UserControl, INotifyPropertyChanged {
         public static readonly DependencyProperty ArchivePathProperty = DependencyProperty.Register("ArchivePath", typeof(string), typeof(ArchiveViewer), new PropertyMetadata(null, Changed));
 
-        public ArchiveViewer()
-        {
+        public ArchiveViewer() {
             InitializeComponent();
             DataContext = this;
 
-            ArşivTekDosyaÇıkar = new RelayCommand<object>(parameter =>
-            {
-                try
-                {
+            ArşivTekDosyaÇıkar = new RelayCommand<object>(parameter => {
+                try {
                     using ZipArchive archive = ZipFile.Open(ArchivePath, ZipArchiveMode.Read);
                     ZipArchiveEntry dosya = archive.GetEntry(parameter as string);
                     string extractpath = Path.Combine(Path.GetTempPath(), dosya.Name);
                     dosya?.ExtractToFile(extractpath, true);
                     _ = Process.Start(extractpath);
                 }
-                catch (Exception ex)
-                {
+                catch (Exception ex) {
                     _ = MessageBox.Show($"Dosya Açılamadı.\n{ex.Message}", Application.Current.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 }
             }, parameter => !string.IsNullOrWhiteSpace(ArchivePath));
@@ -42,20 +36,16 @@ namespace Extensions.Controls
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public string ArchivePath
-        {
+        public string ArchivePath {
             get => (string)GetValue(ArchivePathProperty);
             set => SetValue(ArchivePathProperty, value);
         }
 
-        public ObservableCollection<ArchiveData> Arşivİçerik
-        {
+        public ObservableCollection<ArchiveData> Arşivİçerik {
             get => arşivİçerik;
 
-            set
-            {
-                if (arşivİçerik != value)
-                {
+            set {
+                if (arşivİçerik != value) {
                     arşivİçerik = value;
                     OnPropertyChanged(nameof(Arşivİçerik));
                 }
@@ -64,19 +54,16 @@ namespace Extensions.Controls
 
         public ICommand ArşivTekDosyaÇıkar { get; }
 
-        public double ToplamOran
-        {
+        public double ToplamOran {
             get => toplamOran;
 
-            set
-            {
+            set {
                 toplamOran = value;
                 OnPropertyChanged(nameof(ToplamOran));
             }
         }
 
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
+        protected virtual void OnPropertyChanged(string propertyName) {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
@@ -84,17 +71,12 @@ namespace Extensions.Controls
 
         private ObservableCollection<ArchiveData> arşivİçerik;
 
-        private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is ArchiveViewer archiveViewer && e.NewValue is not null)
-            {
+        private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+            if (d is ArchiveViewer archiveViewer && e.NewValue is not null) {
                 archiveViewer.Arşivİçerik = new();
-                using (ZipArchive archive = ZipFile.Open((string)e.NewValue, ZipArchiveMode.Read))
-                {
-                    foreach (ZipArchiveEntry item in archive.Entries.Where(z => z.Length > 0))
-                    {
-                        ArchiveData archiveData = new()
-                        {
+                using (ZipArchive archive = ZipFile.Open((string)e.NewValue, ZipArchiveMode.Read)) {
+                    foreach (ZipArchiveEntry item in archive.Entries.Where(z => z.Length > 0)) {
+                        ArchiveData archiveData = new() {
                             SıkıştırılmışBoyut = item.CompressedLength,
                             DosyaAdı = item.Name,
                             TamYol = item.FullName,

@@ -8,19 +8,15 @@ using System.Windows.Data;
 using System.Windows.Markup;
 using System.Xaml;
 
-namespace TwainControl
-{
-    public class LocExtension : MarkupExtension
-    {
-        public LocExtension(string stringName)
-        {
+namespace TwainControl {
+    public class LocExtension : MarkupExtension {
+        public LocExtension(string stringName) {
             StringName = stringName;
         }
 
         public string StringName { get; }
 
-        public override object ProvideValue(IServiceProvider serviceProvider)
-        {
+        public override object ProvideValue(IServiceProvider serviceProvider) {
             // targetObject is the control that is using the LocExtension
             object targetObject = (serviceProvider as IProvideValueTarget)?.TargetObject;
 
@@ -31,8 +27,7 @@ namespace TwainControl
 
             string baseName = GetResourceManager(targetObject)?.BaseName ?? string.Empty;
 
-            if (string.IsNullOrEmpty(baseName))
-            {
+            if (string.IsNullOrEmpty(baseName)) {
                 // rootObject is the root control of the visual tree (the top parent of targetObject)
                 object rootObject = (serviceProvider as IRootObjectProvider)?.RootObject;
                 baseName = GetResourceManager(rootObject)?.BaseName ?? string.Empty;
@@ -43,8 +38,7 @@ namespace TwainControl
                 baseName = GetResourceManager(frameworkElement.TemplatedParent)?.BaseName ?? string.Empty;
             }
 
-            Binding binding = new()
-            {
+            Binding binding = new() {
                 Mode = BindingMode.OneWay,
                 Path = new PropertyPath($"[{baseName}.{StringName}]"),
                 Source = TranslationSource.Instance,
@@ -54,15 +48,12 @@ namespace TwainControl
             return binding.ProvideValue(serviceProvider);
         }
 
-        private ResourceManager GetResourceManager(object control)
-        {
-            if (control is DependencyObject dependencyObject)
-            {
+        private ResourceManager GetResourceManager(object control) {
+            if (control is DependencyObject dependencyObject) {
                 object localValue = dependencyObject.ReadLocalValue(Translation.ResourceManagerProperty);
 
                 // does this control have a "Translation.ResourceManager" attached property with a set value?
-                if (localValue != DependencyProperty.UnsetValue && localValue is ResourceManager resourceManager)
-                {
+                if (localValue != DependencyProperty.UnsetValue && localValue is ResourceManager resourceManager) {
                     TranslationSource.Instance.AddResourceManager(resourceManager);
 
                     return resourceManager;
@@ -73,43 +64,35 @@ namespace TwainControl
         }
     }
 
-    public class Translation : DependencyObject
-    {
+    public class Translation : DependencyObject {
         public static readonly DependencyProperty ResourceManagerProperty = DependencyProperty.RegisterAttached("ResourceManager", typeof(ResourceManager), typeof(Translation));
 
-        public static ResourceManager GetResourceManager(DependencyObject dependencyObject)
-        {
+        public static ResourceManager GetResourceManager(DependencyObject dependencyObject) {
             return (ResourceManager)dependencyObject.GetValue(ResourceManagerProperty);
         }
 
-        public static string GetResStringValue(string resdata)
-        {
+        public static string GetResStringValue(string resdata) {
             return string.IsNullOrEmpty(resdata)
                 ? throw new ArgumentException($"'{nameof(resdata)}' cannot be null or empty.", nameof(resdata))
                 : Properties.Resources.ResourceManager.GetString(resdata, TranslationSource.Instance.CurrentCulture);
         }
 
-        public static void SetResourceManager(DependencyObject dependencyObject, ResourceManager value)
-        {
+        public static void SetResourceManager(DependencyObject dependencyObject, ResourceManager value) {
             dependencyObject.SetValue(ResourceManagerProperty, value);
         }
     }
 
-    public class TranslationSource : INotifyPropertyChanged
-    {
+    public class TranslationSource : INotifyPropertyChanged {
         // WPF bindings register PropertyChanged event if the object supports it and update themselves when it is raised
         public event PropertyChangedEventHandler PropertyChanged;
 
         public static TranslationSource Instance { get; } = new TranslationSource();
 
-        public CultureInfo CurrentCulture
-        {
+        public CultureInfo CurrentCulture {
             get => currentCulture;
 
-            set
-            {
-                if (currentCulture != value)
-                {
+            set {
+                if (currentCulture != value) {
                     currentCulture = value;
 
                     // string.Empty/null indicates that all properties have changed
@@ -118,13 +101,10 @@ namespace TwainControl
             }
         }
 
-        public string this[string key]
-        {
-            get
-            {
+        public string this[string key] {
+            get {
                 string translation = null;
-                if (resourceManagerDictionary.ContainsKey(SplitName(key).Item1))
-                {
+                if (resourceManagerDictionary.ContainsKey(SplitName(key).Item1)) {
                     translation = resourceManagerDictionary[SplitName(key).Item1].GetString(SplitName(key).Item2, currentCulture);
                 }
 
@@ -132,16 +112,13 @@ namespace TwainControl
             }
         }
 
-        public static Tuple<string, string> SplitName(string name)
-        {
+        public static Tuple<string, string> SplitName(string name) {
             int idx = name.LastIndexOf('.');
             return Tuple.Create(name.Substring(0, idx), name.Substring(idx + 1));
         }
 
-        public void AddResourceManager(ResourceManager resourceManager)
-        {
-            if (!resourceManagerDictionary.ContainsKey(resourceManager.BaseName))
-            {
+        public void AddResourceManager(ResourceManager resourceManager) {
+            if (!resourceManagerDictionary.ContainsKey(resourceManager.BaseName)) {
                 resourceManagerDictionary.Add(resourceManager.BaseName, resourceManager);
             }
         }

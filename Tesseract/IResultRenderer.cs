@@ -1,9 +1,7 @@
 ﻿using System;
 
-namespace Tesseract
-{
-    public interface IResultRenderer : IDisposable
-    {
+namespace Tesseract {
+    public interface IResultRenderer : IDisposable {
         /// <summary>
         /// Gets the current page number; returning -1 if no page has yet been added otherwise the number
         /// of the last added page (starting from 0).

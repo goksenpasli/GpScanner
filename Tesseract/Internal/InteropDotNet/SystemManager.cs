@@ -3,17 +3,13 @@
 //  Distributed under the MIT License: http://opensource.org/licenses/MIT
 using System;
 
-namespace Tesseract.Internal.InteropDotNet
-{
-    internal static class SystemManager
-    {
-        public static string GetPlatformName()
-        {
+namespace Tesseract.Internal.InteropDotNet {
+    internal static class SystemManager {
+        public static string GetPlatformName() {
             return IntPtr.Size == sizeof(int) ? "x86" : "x64";
         }
 
-        public static OperatingSystem GetOperatingSystem()
-        {
+        public static OperatingSystem GetOperatingSystem() {
             // Environment.OSVersion.Platform detects MacOS as Unix in .net core environment
 #if NETCORE || NETSTANDARD
             if(RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -25,8 +21,7 @@ namespace Tesseract.Internal.InteropDotNet
 
             return OperatingSystem.Unknown;
 #else
-            switch ((int)Environment.OSVersion.Platform)
-            {
+            switch ((int)Environment.OSVersion.Platform) {
                 case (int)PlatformID.Win32NT:
                 case (int)PlatformID.Win32S:
                 case (int)PlatformID.Win32Windows:
@@ -47,8 +42,7 @@ namespace Tesseract.Internal.InteropDotNet
         }
     }
 
-    internal enum OperatingSystem
-    {
+    internal enum OperatingSystem {
         Windows,
 
         Unix,

@@ -1,7 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace TwainWpf.TwainNative
-{
+namespace TwainWpf.TwainNative {
     /// <summary>
     /// /* TWON_ARRAY. Container for array of values (a simplified TW_ENUMERATION) */
     /// typedef struct {
@@ -11,8 +10,7 @@ namespace TwainWpf.TwainNative
     /// } TW_ARRAY, FAR * pTW_ARRAY;
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 2)]
-    public class CapabilityArrayValue
-    {
+    public class CapabilityArrayValue {
         public TwainType TwainType { get; set; }
 
         public int ItemCount { get; set; }

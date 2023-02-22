@@ -1,10 +1,8 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace TwainWpf.TwainNative
-{
-    public static class Twain32Native
-    {
+namespace TwainWpf.TwainNative {
+    public static class Twain32Native {
         [DllImport("twain_32.dll", EntryPoint = "#1")]
         public static extern TwainResult DsCapability([In, Out] Identity origin, [In] Identity dest, DataGroup dg, DataArgumentType dat, Message msg, [In, Out] TwainCapability capa);
 

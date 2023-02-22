@@ -1,9 +1,7 @@
 using System.ComponentModel;
 
-namespace TwainWpf
-{
-    public class ScanSettings : INotifyPropertyChanged
-    {
+namespace TwainWpf {
+    public class ScanSettings : INotifyPropertyChanged {
         /// <summary>
         /// The value to set to scan all available pages.
         /// </summary>
@@ -12,43 +10,35 @@ namespace TwainWpf
         /// <summary>
         /// Default scan settings.
         /// </summary>
-        public static readonly ScanSettings Default = new ScanSettings()
-        {
+        public static readonly ScanSettings Default = new ScanSettings() {
             Resolution = ResolutionSettings.ColourPhotocopier,
             Page = PageSettings.Default,
             Rotation = new RotationSettings()
         };
 
-        public ScanSettings()
-        {
+        public ScanSettings() {
             ShouldTransferAllPages = true;
         }
 
         /// <summary>
         /// Indicates if the transfer should not start when no paper was detected (e.g. by the ADF).
         /// </summary>
-        public bool AbortWhenNoPaperDetectable
-        {
+        public bool AbortWhenNoPaperDetectable {
             get => _abortWhenNoPaperDetectable;
 
-            set
-            {
-                if (value != _abortWhenNoPaperDetectable)
-                {
+            set {
+                if (value != _abortWhenNoPaperDetectable) {
                     _abortWhenNoPaperDetectable = value;
                     OnPropertyChanged(nameof(AbortWhenNoPaperDetectable));
                 }
             }
         }
 
-        public AreaSettings Area
-        {
+        public AreaSettings Area {
             get => _area;
 
-            set
-            {
-                if (value != _area)
-                {
+            set {
+                if (value != _area) {
                     _area = value;
                     OnPropertyChanged(nameof(Area));
                 }
@@ -59,14 +49,11 @@ namespace TwainWpf
         /// The page / paper settings. Set null to use current defaults.
         /// </summary>
         /// <value>The page.</value>
-        public PageSettings Page
-        {
+        public PageSettings Page {
             get => _page;
 
-            set
-            {
-                if (value != _page)
-                {
+            set {
+                if (value != _page) {
                     _page = value;
                     OnPropertyChanged(nameof(Page));
                 }
@@ -76,14 +63,11 @@ namespace TwainWpf
         /// <summary>
         /// The resolution settings. Set null to use current defaults.
         /// </summary>
-        public ResolutionSettings Resolution
-        {
+        public ResolutionSettings Resolution {
             get => _resolution;
 
-            set
-            {
-                if (value != _resolution)
-                {
+            set {
+                if (value != _resolution) {
                     _resolution = value;
                     OnPropertyChanged(nameof(Resolution));
                 }
@@ -94,14 +78,11 @@ namespace TwainWpf
         /// Gets or sets the rotation.
         /// </summary>
         /// <value>The rotation.</value>
-        public RotationSettings Rotation
-        {
+        public RotationSettings Rotation {
             get => _rotation;
 
-            set
-            {
-                if (value != _rotation)
-                {
+            set {
+                if (value != _rotation) {
                     _rotation = value;
                     OnPropertyChanged(nameof(Rotation));
                 }
@@ -111,8 +92,7 @@ namespace TwainWpf
         /// <summary>
         /// Indicates if all pages should be transferred.
         /// </summary>
-        public bool ShouldTransferAllPages
-        {
+        public bool ShouldTransferAllPages {
             get => _transferCount == TransferAllPages;
             set => TransferCount = value ? TransferAllPages : (short)1;
         }
@@ -124,14 +104,11 @@ namespace TwainWpf
         /// The Source will continue to display device-specific instructions and error messages even with the Source user interface and progress indicators turned off.
         /// </summary>
         /// <value><c>true</c> if [show progress indicator ui]; otherwise, <c>false</c>.</value>
-        public bool? ShowProgressIndicatorUi
-        {
+        public bool? ShowProgressIndicatorUi {
             get => _showProgressIndicatorUi;
 
-            set
-            {
-                if (value != _showProgressIndicatorUi)
-                {
+            set {
+                if (value != _showProgressIndicatorUi) {
                     _showProgressIndicatorUi = value;
                     OnPropertyChanged("ShowProgressIndicatorUI");
                 }
@@ -141,14 +118,11 @@ namespace TwainWpf
         /// <summary>
         /// Indicates if the TWAIN/driver user interface should be used to pick the scan settings.
         /// </summary>
-        public bool ShowTwainUi
-        {
+        public bool ShowTwainUi {
             get => _showTwainUi;
 
-            set
-            {
-                if (value != _showTwainUi)
-                {
+            set {
+                if (value != _showTwainUi) {
                     _showTwainUi = value;
                     OnPropertyChanged("ShowTwainUI");
                 }
@@ -158,14 +132,11 @@ namespace TwainWpf
         /// <summary>
         /// The number of pages to transfer.
         /// </summary>
-        public short TransferCount
-        {
+        public short TransferCount {
             get => _transferCount;
 
-            set
-            {
-                if (value != _transferCount)
-                {
+            set {
+                if (value != _transferCount) {
                     _transferCount = value;
                     OnPropertyChanged(nameof(TransferCount));
                     OnPropertyChanged("ShouldTransferAllPages");
@@ -177,14 +148,11 @@ namespace TwainWpf
         /// Indicates if the automatic document feeder (ADF) should continue feeding document(s) to scan after the negotiated number of pages are acquired.
         /// UseDocumentFeeder must be true
         /// </summary>
-        public bool? UseAutoFeeder
-        {
+        public bool? UseAutoFeeder {
             get => _useAutoFeeder;
 
-            set
-            {
-                if (value != _useAutoFeeder)
-                {
+            set {
+                if (value != _useAutoFeeder) {
                     _useAutoFeeder = value;
                     OnPropertyChanged(nameof(UseAutoFeeder));
                 }
@@ -194,14 +162,11 @@ namespace TwainWpf
         /// <summary>
         /// Indicates if the source should continue scanning without waiting for the application to request the image transfers.
         /// </summary>
-        public bool? UseAutoScanCache
-        {
+        public bool? UseAutoScanCache {
             get => _useAutoScanCache;
 
-            set
-            {
-                if (value != _useAutoScanCache)
-                {
+            set {
+                if (value != _useAutoScanCache) {
                     _useAutoScanCache = value;
                     OnPropertyChanged(nameof(UseAutoScanCache));
                 }
@@ -211,14 +176,11 @@ namespace TwainWpf
         /// <summary>
         /// Indicates if the automatic document feeder (ADF) should be the source of the document(s) to scan.
         /// </summary>
-        public bool? UseDocumentFeeder
-        {
+        public bool? UseDocumentFeeder {
             get => _useDocumentFeeder;
 
-            set
-            {
-                if (value != _useDocumentFeeder)
-                {
+            set {
+                if (value != _useDocumentFeeder) {
                     _useDocumentFeeder = value;
                     OnPropertyChanged(nameof(UseDocumentFeeder));
                 }
@@ -228,14 +190,11 @@ namespace TwainWpf
         /// <summary>
         /// Whether to use duplexing, if supported.
         /// </summary>
-        public bool? UseDuplex
-        {
+        public bool? UseDuplex {
             get => _useDuplex;
 
-            set
-            {
-                if (value != _useDuplex)
-                {
+            set {
+                if (value != _useDuplex) {
                     _useDuplex = value;
                     OnPropertyChanged(nameof(UseDuplex));
                 }
@@ -245,14 +204,11 @@ namespace TwainWpf
         /// <summary>
         /// Indicates if the transmitted light film Scanner should be used as the light source.
         /// </summary>
-        public bool? UseFilmScanner
-        {
+        public bool? UseFilmScanner {
             get => _useFilmScanner;
 
-            set
-            {
-                if (value != _useFilmScanner)
-                {
+            set {
+                if (value != _useFilmScanner) {
                     _useFilmScanner = value;
                     OnPropertyChanged(nameof(UseFilmScanner));
                 }
@@ -289,8 +245,7 @@ namespace TwainWpf
 
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
-        protected void OnPropertyChanged(string propertyName)
-        {
+        protected void OnPropertyChanged(string propertyName) {
             PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 

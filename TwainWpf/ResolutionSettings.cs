@@ -1,9 +1,7 @@
 using System.ComponentModel;
 
-namespace TwainWpf
-{
-    public enum ColourSetting
-    {
+namespace TwainWpf {
+    public enum ColourSetting {
         BlackAndWhite,
 
         GreyScale,
@@ -11,13 +9,11 @@ namespace TwainWpf
         Colour
     }
 
-    public class ResolutionSettings : INotifyPropertyChanged
-    {
+    public class ResolutionSettings : INotifyPropertyChanged {
         /// <summary>
         /// Colour photocopier quality resolution.
         /// </summary>
-        public static readonly ResolutionSettings ColourPhotocopier = new ResolutionSettings()
-        {
+        public static readonly ResolutionSettings ColourPhotocopier = new ResolutionSettings() {
             Dpi = 300,
             ColourSetting = ColourSetting.Colour
         };
@@ -25,8 +21,7 @@ namespace TwainWpf
         /// <summary>
         /// Fax quality resolution.
         /// </summary>
-        public static readonly ResolutionSettings Fax = new ResolutionSettings()
-        {
+        public static readonly ResolutionSettings Fax = new ResolutionSettings() {
             Dpi = 200,
             ColourSetting = ColourSetting.BlackAndWhite
         };
@@ -34,8 +29,7 @@ namespace TwainWpf
         /// <summary>
         /// Photocopier quality resolution.
         /// </summary>
-        public static readonly ResolutionSettings Photocopier = new ResolutionSettings()
-        {
+        public static readonly ResolutionSettings Photocopier = new ResolutionSettings() {
             Dpi = 300,
             ColourSetting = ColourSetting.GreyScale
         };
@@ -43,14 +37,11 @@ namespace TwainWpf
         /// <summary>
         /// The colour settings to use.
         /// </summary>
-        public ColourSetting ColourSetting
-        {
+        public ColourSetting ColourSetting {
             get => _colourSettings;
 
-            set
-            {
-                if (value != _colourSettings)
-                {
+            set {
+                if (value != _colourSettings) {
                     _colourSettings = value;
                     OnPropertyChanged(nameof(ColourSetting));
                 }
@@ -60,14 +51,11 @@ namespace TwainWpf
         /// <summary>
         /// The DPI to scan at. Set to null to use the current default setting.
         /// </summary>
-        public int? Dpi
-        {
+        public int? Dpi {
             get => _dpi;
 
-            set
-            {
-                if (value != _dpi)
-                {
+            set {
+                if (value != _dpi) {
                     _dpi = value;
                     OnPropertyChanged(nameof(Dpi));
                 }
@@ -82,8 +70,7 @@ namespace TwainWpf
 
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
-        protected void OnPropertyChanged(string propertyName)
-        {
+        protected void OnPropertyChanged(string propertyName) {
             PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
