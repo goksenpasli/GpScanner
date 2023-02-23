@@ -8,16 +8,20 @@ using CatenaLogic.Windows.Presentation.WebcamPlayer;
 using Extensions;
 using Microsoft.Win32;
 
-namespace TwainControl {
+namespace TwainControl
+{
     /// <summary>
     /// Interaction logic for CameraUserControl.xaml
     /// </summary>
-    public partial class CameraUserControl : UserControl, INotifyPropertyChanged {
-        public CameraUserControl() {
+    public partial class CameraUserControl : UserControl, INotifyPropertyChanged
+    {
+        public CameraUserControl()
+        {
             InitializeComponent();
             DataContext = this;
             Unloaded += CameraUserControl_Unloaded;
-            KameradanResimYükle = new RelayCommand<object>(parameter => {
+            KameradanResimYükle = new RelayCommand<object>(parameter =>
+            {
                 using MemoryStream ms = new();
                 EncodeBitmapImage(ms);
                 ResimData = ms.ToArray();
@@ -27,9 +31,11 @@ namespace TwainControl {
 
             Oynat = new RelayCommand<object>(parameter => Device?.Start(), parameter => SeçiliKamera is not null && Device?.IsRunning == false);
 
-            Kaydet = new RelayCommand<object>(parameter => {
+            Kaydet = new RelayCommand<object>(parameter =>
+            {
                 SaveFileDialog saveFileDialog = new() { Filter = "Jpg Dosyası (*.jpg)|*.jpg", AddExtension = true, Title = "Kaydet" };
-                if (saveFileDialog.ShowDialog() == true) {
+                if (saveFileDialog.ShowDialog() == true)
+                {
                     using FileStream ms = new(saveFileDialog.FileName, FileMode.Create, FileAccess.Write);
                     EncodeBitmapImage(ms);
                 }
@@ -44,7 +50,8 @@ namespace TwainControl {
             get => detectQRCode;
 
             set {
-                if (detectQRCode != value) {
+                if (detectQRCode != value)
+                {
                     detectQRCode = value;
                     OnPropertyChanged(nameof(DetectQRCode));
                 }
@@ -55,7 +62,8 @@ namespace TwainControl {
             get => device;
 
             set {
-                if (device != value) {
+                if (device != value)
+                {
                     device = value;
                     OnPropertyChanged(nameof(Device));
                 }
@@ -72,7 +80,8 @@ namespace TwainControl {
             get => liste;
 
             set {
-                if (liste != value) {
+                if (liste != value)
+                {
                     liste = value;
                     OnPropertyChanged(nameof(Liste));
                 }
@@ -85,7 +94,8 @@ namespace TwainControl {
             get => resimData;
 
             set {
-                if (resimData != value) {
+                if (resimData != value)
+                {
                     resimData = value;
                     OnPropertyChanged(nameof(ResimData));
                 }
@@ -96,7 +106,8 @@ namespace TwainControl {
             get => rotation;
 
             set {
-                if (rotation != value) {
+                if (rotation != value)
+                {
                     rotation = value;
                     OnPropertyChanged(nameof(Rotation));
                 }
@@ -107,21 +118,24 @@ namespace TwainControl {
             get => seçiliKamera;
 
             set {
-                if (seçiliKamera != value) {
+                if (seçiliKamera != value)
+                {
                     seçiliKamera = value;
                     OnPropertyChanged(nameof(SeçiliKamera));
                 }
             }
         }
 
-        public void EncodeBitmapImage(Stream ms) {
+        public void EncodeBitmapImage(Stream ms)
+        {
             JpegBitmapEncoder encoder = new();
             encoder.Frames.Add(BitmapFrame.Create(new TransformedBitmap(Device.BitmapSource, new RotateTransform(Rotation))));
             encoder.QualityLevel = 90;
             encoder.Save(ms);
         }
 
-        protected virtual void OnPropertyChanged(string propertyName = null) {
+        protected virtual void OnPropertyChanged(string propertyName = null)
+        {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
@@ -137,15 +151,19 @@ namespace TwainControl {
 
         private FilterInfo seçiliKamera;
 
-        private void CameraUserControl_PropertyChanged(object sender, PropertyChangedEventArgs e) {
-            if (e.PropertyName is "SeçiliKamera") {
-                Device = new CapDevice(SeçiliKamera.MonikerString) {
+        private void CameraUserControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName is "SeçiliKamera")
+            {
+                Device = new CapDevice(SeçiliKamera.MonikerString)
+                {
                     MaxHeightInPixels = 1080
                 };
             }
         }
 
-        private void CameraUserControl_Unloaded(object sender, System.Windows.RoutedEventArgs e) {
+        private void CameraUserControl_Unloaded(object sender, System.Windows.RoutedEventArgs e)
+        {
             Device?.Stop();
             DetectQRCode = false;
         }

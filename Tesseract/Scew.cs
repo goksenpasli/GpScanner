@@ -1,6 +1,9 @@
-﻿namespace Tesseract {
-    public readonly struct Scew {
-        public Scew(float angle, float confidence) {
+﻿namespace Tesseract
+{
+    public readonly struct Scew
+    {
+        public Scew(float angle, float confidence)
+        {
             Angle = angle;
             Confidence = confidence;
         }
@@ -11,7 +14,8 @@
 
         #region ToString
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return string.Format("Scew: {0} [conf: {1}]", Angle, Confidence);
         }
 
@@ -19,25 +23,31 @@
 
         #region Equals and GetHashCode implementation
 
-        public static bool operator !=(Scew lhs, Scew rhs) {
+        public static bool operator !=(Scew lhs, Scew rhs)
+        {
             return !(lhs == rhs);
         }
 
-        public static bool operator ==(Scew lhs, Scew rhs) {
+        public static bool operator ==(Scew lhs, Scew rhs)
+        {
             return lhs.Equals(rhs);
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             return (obj is Scew) && Equals((Scew)obj);
         }
 
-        public bool Equals(Scew other) {
+        public bool Equals(Scew other)
+        {
             return Confidence == other.Confidence && Angle == other.Angle;
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             int hashCode = 0;
-            unchecked {
+            unchecked
+            {
                 hashCode += 1000000007 * Angle.GetHashCode();
                 hashCode += 1000000009 * Confidence.GetHashCode();
             }

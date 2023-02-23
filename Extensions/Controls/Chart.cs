@@ -1,12 +1,15 @@
 ﻿using System.Windows.Media;
 
-namespace Extensions {
-    public class Chart : InpcBase {
+namespace Extensions
+{
+    public class Chart : InpcBase
+    {
         public Brush ChartBrush {
             get => chartBrush;
 
             set {
-                if (chartBrush != value) {
+                if (chartBrush != value)
+                {
                     chartBrush = value;
                     OnPropertyChanged(nameof(ChartBrush));
                 }
@@ -17,7 +20,8 @@ namespace Extensions {
             get => chartValue;
 
             set {
-                if (chartValue != value) {
+                if (chartValue != value)
+                {
                     chartValue = value;
                     OnPropertyChanged(nameof(ChartValue));
                 }
@@ -28,7 +32,8 @@ namespace Extensions {
             get => description;
 
             set {
-                if (description != value) {
+                if (description != value)
+                {
                     description = value;
                     OnPropertyChanged(nameof(Description));
                 }

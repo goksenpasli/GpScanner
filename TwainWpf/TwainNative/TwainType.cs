@@ -1,5 +1,7 @@
-namespace TwainWpf.TwainNative {
-    public enum TwainType : short {
+namespace TwainWpf.TwainNative
+{
+    public enum TwainType : short
+    {
         Int8 = 0x0000,
 
         Int16 = 0x0001,

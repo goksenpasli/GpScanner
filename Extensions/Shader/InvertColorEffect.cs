@@ -3,13 +3,17 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 
-namespace Extensions {
+namespace Extensions
+{
     /// <summary>An effect that inverts all colors.</summary>
-    public class InvertColorEffect : ShaderEffect {
+    public class InvertColorEffect : ShaderEffect
+    {
         public static readonly DependencyProperty InputProperty = RegisterPixelShaderSamplerProperty("Input", typeof(InvertColorEffect), 0);
 
-        public InvertColorEffect() {
-            PixelShader = new() {
+        public InvertColorEffect()
+        {
+            PixelShader = new()
+            {
                 UriSource = new Uri("/Extensions;component/Shader/InvertColorEffect.ps", UriKind.Relative)
             };
 

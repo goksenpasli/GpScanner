@@ -3,9 +3,12 @@ using TwainWpf.TwainNative;
 
 // ReSharper disable UnusedMember.Local
 
-namespace TwainWpf {
-    public class AreaSettings : INotifyPropertyChanged {
-        public AreaSettings(Units units, float top, float left, float bottom, float right) {
+namespace TwainWpf
+{
+    public class AreaSettings : INotifyPropertyChanged
+    {
+        public AreaSettings(Units units, float top, float left, float bottom, float right)
+        {
             _units = units;
             _top = top;
             _left = left;
@@ -72,7 +75,8 @@ namespace TwainWpf {
 
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
-        protected void OnPropertyChanged(string propertyName) {
+        protected void OnPropertyChanged(string propertyName)
+        {
             PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 

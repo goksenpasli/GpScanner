@@ -1,12 +1,15 @@
 ﻿using System.Windows;
 
-namespace Ocr {
-    public class OcrData : InpcBase {
+namespace Ocr
+{
+    public class OcrData : InpcBase
+    {
         public Rect Rect {
             get => rect;
 
             set {
-                if (rect != value) {
+                if (rect != value)
+                {
                     rect = value;
                     OnPropertyChanged(nameof(Rect));
                 }
@@ -17,7 +20,8 @@ namespace Ocr {
             get => text;
 
             set {
-                if (text != value) {
+                if (text != value)
+                {
                     text = value;
                     OnPropertyChanged(nameof(Text));
                 }

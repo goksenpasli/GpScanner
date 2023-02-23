@@ -2,8 +2,10 @@
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
-namespace Extensions {
-    public class SplitButton : Button {
+namespace Extensions
+{
+    public class SplitButton : Button
+    {
         public static readonly DependencyProperty InternalContentProperty = DependencyProperty.Register("InternalContent", typeof(object), typeof(SplitButton), new PropertyMetadata(null));
 
         public static readonly DependencyProperty IsSplitPartOpenProperty = DependencyProperty.Register("IsSplitPartOpen", typeof(bool), typeof(SplitButton), new PropertyMetadata(false));
@@ -14,7 +16,8 @@ namespace Extensions {
 
         public static readonly DependencyProperty StayOpenProperty = DependencyProperty.Register("StayOpen", typeof(bool), typeof(SplitButton), new PropertyMetadata(false));
 
-        static SplitButton() {
+        static SplitButton()
+        {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(SplitButton), new FrameworkPropertyMetadata(typeof(SplitButton)));
         }
 

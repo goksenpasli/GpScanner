@@ -14,16 +14,19 @@ using Freeware;
 using Microsoft.Win32;
 using static Extensions.ExtensionMethods;
 
-namespace PdfViewer {
+namespace PdfViewer
+{
 
-    public enum FitImageOrientation {
+    public enum FitImageOrientation
+    {
 
         Width = 0,
 
         Height = 1
     }
 
-    public class PdfViewer : Control, INotifyPropertyChanged, IDisposable {
+    public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
+    {
 
         public static readonly DependencyProperty AngleProperty = DependencyProperty.Register("Angle", typeof(double), typeof(PdfViewer), new PropertyMetadata(0.0));
 
@@ -49,21 +52,26 @@ namespace PdfViewer {
 
         public static readonly DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(PdfViewer), new PropertyMetadata(1.0));
 
-        static PdfViewer() {
+        static PdfViewer()
+        {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(PdfViewer), new FrameworkPropertyMetadata(typeof(PdfViewer)));
         }
 
-        public PdfViewer() {
+        public PdfViewer()
+        {
             PropertyChanged += PdfViewer_PropertyChanged;
             SizeChanged += PdfViewer_SizeChanged;
-            DosyaAç = new RelayCommand<object>(parameter => {
+            DosyaAç = new RelayCommand<object>(parameter =>
+            {
                 OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = "Pdf Dosyaları (*.pdf)|*.pdf" };
-                if (openFileDialog.ShowDialog() == true) {
+                if (openFileDialog.ShowDialog() == true)
+                {
                     PdfFilePath = openFileDialog.FileName;
                 }
             });
 
-            Yazdır = new RelayCommand<object>(async parameter => {
+            Yazdır = new RelayCommand<object>(async parameter =>
+            {
                 string pdfFilePath = PdfFilePath;
                 PrintPdfFile(await ReadAllFileAsync(pdfFilePath));
                 GC.Collect();
@@ -73,24 +81,31 @@ namespace PdfViewer {
 
             ViewerNext = new RelayCommand<object>(parameter => Sayfa++, parameter => Source is not null && Sayfa >= 1 && Sayfa < ToplamSayfa);
 
-            SaveImage = new RelayCommand<object>(parameter => {
-                SaveFileDialog saveFileDialog = new() {
+            SaveImage = new RelayCommand<object>(parameter =>
+            {
+                SaveFileDialog saveFileDialog = new()
+                {
                     Filter = "Jpg Dosyası(*.jpg)|*.jpg",
                     FileName = "Resim"
                 };
 
-                if (saveFileDialog.ShowDialog() == true) {
-                    try {
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    try
+                    {
                         File.WriteAllBytes(saveFileDialog.FileName, Source.ToTiffJpegByteArray(Format.Jpg));
                     }
-                    catch (Exception ex) {
+                    catch (Exception ex)
+                    {
                         _ = MessageBox.Show(ex.Message);
                     }
                 }
             }, parameter => Source is not null);
 
-            Resize = new RelayCommand<object>(delegate {
-                if (Source is not null) {
+            Resize = new RelayCommand<object>(delegate
+            {
+                if (Source is not null)
+                {
                     Zoom = (Orientation != FitImageOrientation.Width) ? ActualHeight / Source.Height : ActualWidth / Source.Width;
                 }
             }, (object parameter) => Source != null);
@@ -109,7 +124,8 @@ namespace PdfViewer {
             get => autoFitContent;
 
             set {
-                if (autoFitContent != value) {
+                if (autoFitContent != value)
+                {
                     autoFitContent = value;
                     OnPropertyChanged(nameof(AutoFitContent));
                 }
@@ -132,7 +148,8 @@ namespace PdfViewer {
             get => dpiListVisibility;
 
             set {
-                if (dpiListVisibility != value) {
+                if (dpiListVisibility != value)
+                {
                     dpiListVisibility = value;
                     OnPropertyChanged(nameof(DpiListVisibility));
                 }
@@ -143,7 +160,8 @@ namespace PdfViewer {
             get => openButtonVisibility;
 
             set {
-                if (openButtonVisibility != value) {
+                if (openButtonVisibility != value)
+                {
                     openButtonVisibility = value;
                     OnPropertyChanged(nameof(OpenButtonVisibility));
                 }
@@ -160,7 +178,8 @@ namespace PdfViewer {
             get => pages;
 
             set {
-                if (pages != value) {
+                if (pages != value)
+                {
                     pages = value;
                     OnPropertyChanged(nameof(Pages));
                 }
@@ -181,7 +200,8 @@ namespace PdfViewer {
             get => printButtonVisibility;
 
             set {
-                if (printButtonVisibility != value) {
+                if (printButtonVisibility != value)
+                {
                     printButtonVisibility = value;
                     OnPropertyChanged(nameof(PrintButtonVisibility));
                 }
@@ -196,7 +216,8 @@ namespace PdfViewer {
             get => sayfa;
 
             set {
-                if (sayfa != value) {
+                if (sayfa != value)
+                {
                     sayfa = value;
                     OnPropertyChanged(nameof(Sayfa));
                 }
@@ -212,7 +233,8 @@ namespace PdfViewer {
             get => sliderZoomAngleVisibility;
 
             set {
-                if (sliderZoomAngleVisibility != value) {
+                if (sliderZoomAngleVisibility != value)
+                {
                     sliderZoomAngleVisibility = value;
                     OnPropertyChanged(nameof(SliderZoomAngleVisibility));
                 }
@@ -238,7 +260,8 @@ namespace PdfViewer {
             get => tifNavigasyonButtonEtkin;
 
             set {
-                if (tifNavigasyonButtonEtkin != value) {
+                if (tifNavigasyonButtonEtkin != value)
+                {
                     tifNavigasyonButtonEtkin = value;
                     OnPropertyChanged(nameof(TifNavigasyonButtonEtkin));
                 }
@@ -255,7 +278,8 @@ namespace PdfViewer {
             get => toplamSayfa;
 
             set {
-                if (toplamSayfa != value) {
+                if (toplamSayfa != value)
+                {
                     toplamSayfa = value;
                     OnPropertyChanged(nameof(ToplamSayfa));
                 }
@@ -273,12 +297,17 @@ namespace PdfViewer {
             set => SetValue(ZoomProperty, value);
         }
 
-        public static async Task<BitmapImage> ConvertToImgAsync(byte[] pdffilestream, int page, int dpi) {
-            try {
-                if (pdffilestream.Length > 0) {
-                    return await Task.Run(() => {
+        public static async Task<BitmapImage> ConvertToImgAsync(byte[] pdffilestream, int page, int dpi)
+        {
+            try
+            {
+                if (pdffilestream.Length > 0)
+                {
+                    return await Task.Run(() =>
+                    {
                         byte[] imagearray = Pdf2Png.Convert(pdffilestream, page, dpi);
-                        if (imagearray is not null) {
+                        if (imagearray is not null)
+                        {
                             MemoryStream ms = new(imagearray);
                             BitmapImage bitmap = new();
                             bitmap.BeginInit();
@@ -297,18 +326,24 @@ namespace PdfViewer {
                     });
                 }
             }
-            catch (Exception) {
+            catch (Exception)
+            {
                 pdffilestream = null;
             }
             return null;
         }
 
-        public static async Task<MemoryStream> ConvertToImgStreamAsync(byte[] stream, int page, int dpi) {
-            try {
-                if (stream?.Length > 0) {
-                    return await Task.Run(() => {
+        public static async Task<MemoryStream> ConvertToImgStreamAsync(byte[] stream, int page, int dpi)
+        {
+            try
+            {
+                if (stream?.Length > 0)
+                {
+                    return await Task.Run(() =>
+                    {
                         byte[] buffer = Pdf2Png.Convert(stream, page, dpi);
-                        if (buffer != null) {
+                        if (buffer != null)
+                        {
                             MemoryStream ms = new(buffer);
                             buffer = null;
                             stream = null;
@@ -319,16 +354,21 @@ namespace PdfViewer {
                     });
                 }
             }
-            catch (Exception) {
+            catch (Exception)
+            {
                 stream = null;
             }
             return null;
         }
 
-        public static async Task<int> PdfPageCountAsync(byte[] stream) {
-            try {
-                if (stream.Length > 0) {
-                    return await Task.Run(() => {
+        public static async Task<int> PdfPageCountAsync(byte[] stream)
+        {
+            try
+            {
+                if (stream.Length > 0)
+                {
+                    return await Task.Run(() =>
+                    {
                         int pagecount = Pdf2Png.ConvertAllPages(stream, 0).Count;
                         stream = null;
                         GC.Collect();
@@ -336,24 +376,30 @@ namespace PdfViewer {
                     });
                 }
             }
-            catch (Exception) {
+            catch (Exception)
+            {
                 stream = null;
             }
             return 0;
         }
 
-        public static void PrintImageSource(ImageSource Source, int Dpi = 300, bool resize = true) {
+        public static void PrintImageSource(ImageSource Source, int Dpi = 300, bool resize = true)
+        {
             PrintDialog pd = new();
             DrawingVisual dv = new();
-            if (pd.ShowDialog() == true) {
-                using (DrawingContext dc = dv.RenderOpen()) {
+            if (pd.ShowDialog() == true)
+            {
+                using (DrawingContext dc = dv.RenderOpen())
+                {
                     BitmapSource bs;
-                    if (resize) {
+                    if (resize)
+                    {
                         bs = Source.Width > Source.Height ? ((BitmapSource)Source)?.Resize((int)pd.PrintableAreaHeight, (int)pd.PrintableAreaWidth, 90, Dpi, Dpi) : ((BitmapSource)Source)?.Resize((int)pd.PrintableAreaWidth, (int)pd.PrintableAreaHeight, 0, Dpi, Dpi);
                         bs.Freeze();
                         dc.DrawImage(bs, new Rect(0, 0, pd.PrintableAreaWidth, pd.PrintableAreaHeight));
                     }
-                    else {
+                    else
+                    {
                         bs = (BitmapSource)Source;
                         bs.Freeze();
                         dc.DrawImage(bs, new Rect(0, 0, pd.PrintableAreaWidth, pd.PrintableAreaHeight));
@@ -363,33 +409,41 @@ namespace PdfViewer {
             }
         }
 
-        public static async Task<byte[]> ReadAllFileAsync(string filename) {
-            try {
+        public static async Task<byte[]> ReadAllFileAsync(string filename)
+        {
+            try
+            {
                 using FileStream file = new(filename, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, true);
                 byte[] buffer = new byte[file.Length];
                 _ = await file.ReadAsync(buffer, 0, (int)file.Length);
                 return buffer;
             }
-            catch (Exception) {
+            catch (Exception)
+            {
             }
             return null;
         }
 
-        public void Dispose() {
+        public void Dispose()
+        {
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
 
-        protected virtual void Dispose(bool disposing) {
-            if (!disposedValue) {
-                if (disposing) {
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
                     Source = null;
                 }
                 disposedValue = true;
             }
         }
 
-        protected virtual void OnPropertyChanged(string propertyName = null) {
+        protected virtual void OnPropertyChanged(string propertyName = null)
+        {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
@@ -413,24 +467,32 @@ namespace PdfViewer {
 
         private int toplamSayfa;
 
-        private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-            if (d is PdfViewer pdfViewer && pdfViewer.Source is not null && !DesignerProperties.GetIsInDesignMode(pdfViewer)) {
+        private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is PdfViewer pdfViewer && pdfViewer.Source is not null && !DesignerProperties.GetIsInDesignMode(pdfViewer))
+            {
                 pdfViewer.Resize.Execute(null);
             }
         }
 
-        private static async void DpiChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-            if (d is PdfViewer pdfViewer && pdfViewer.PdfFilePath is not null) {
+        private static async void DpiChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is PdfViewer pdfViewer && pdfViewer.PdfFilePath is not null)
+            {
                 string pdfFilePath = pdfViewer.PdfFilePath;
                 pdfViewer.Source = await ConvertToImgAsync(await ReadAllFileAsync(pdfFilePath), pdfViewer.Sayfa, (int)e.NewValue);
                 GC.Collect();
             }
         }
 
-        private static async Task PdfFilePathChangedAsync(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-            if (d is PdfViewer pdfViewer) {
-                if (e.NewValue is not null && File.Exists(e.NewValue as string) && string.Equals(Path.GetExtension(e.NewValue as string), ".pdf", StringComparison.OrdinalIgnoreCase)) {
-                    try {
+        private static async Task PdfFilePathChangedAsync(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is PdfViewer pdfViewer)
+            {
+                if (e.NewValue is not null && File.Exists(e.NewValue as string) && string.Equals(Path.GetExtension(e.NewValue as string), ".pdf", StringComparison.OrdinalIgnoreCase))
+                {
+                    try
+                    {
                         byte[] data = await ReadAllFileAsync(e.NewValue as string);
                         pdfViewer.Sayfa = 1;
                         int dpi = pdfViewer.Dpi;
@@ -441,7 +503,8 @@ namespace PdfViewer {
                         data = null;
                         GC.Collect();
                     }
-                    catch (Exception) {
+                    catch (Exception)
+                    {
                     }
                     return;
                 }
@@ -449,49 +512,62 @@ namespace PdfViewer {
             }
         }
 
-        private static void SourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-            if (d is PdfViewer pdfViewer && e.NewValue is not null) {
+        private static void SourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is PdfViewer pdfViewer && e.NewValue is not null)
+            {
                 pdfViewer.Resize.Execute(null);
             }
         }
 
-        private async void PdfViewer_PropertyChanged(object sender, PropertyChangedEventArgs e) {
-            if (e.PropertyName is "Sayfa" && sender is PdfViewer pdfViewer && pdfViewer.PdfFilePath is not null) {
+        private async void PdfViewer_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName is "Sayfa" && sender is PdfViewer pdfViewer && pdfViewer.PdfFilePath is not null)
+            {
                 string pdfFilePath = pdfViewer.PdfFilePath;
                 Source = await ConvertToImgAsync(await ReadAllFileAsync(pdfFilePath), sayfa, pdfViewer.Dpi);
                 GC.Collect();
             }
         }
 
-        private void PdfViewer_SizeChanged(object sender, SizeChangedEventArgs e) {
-            if (AutoFitContent) {
+        private void PdfViewer_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (AutoFitContent)
+            {
                 Resize.Execute(null);
             }
         }
 
-        private async void PrintPdfFile(byte[] stream, int Dpi = 300) {
+        private async void PrintPdfFile(byte[] stream, int Dpi = 300)
+        {
             int pagecount = await PdfPageCountAsync(stream);
-            PrintDialog pd = new() {
+            PrintDialog pd = new()
+            {
                 PageRangeSelection = PageRangeSelection.AllPages,
                 UserPageRangeEnabled = true,
                 MaxPage = (uint)pagecount,
                 MinPage = 1
             };
             DrawingVisual dv = new();
-            if (pd.ShowDialog() == true) {
+            if (pd.ShowDialog() == true)
+            {
                 int başlangıç;
                 int bitiş;
-                if (pd.PageRangeSelection == PageRangeSelection.AllPages) {
+                if (pd.PageRangeSelection == PageRangeSelection.AllPages)
+                {
                     başlangıç = 1;
                     bitiş = pagecount;
                 }
-                else {
+                else
+                {
                     başlangıç = pd.PageRange.PageFrom;
                     bitiş = pd.PageRange.PageTo;
                 }
 
-                for (int i = başlangıç; i <= bitiş; i++) {
-                    using (DrawingContext dc = dv.RenderOpen()) {
+                for (int i = başlangıç; i <= bitiş; i++)
+                {
+                    using (DrawingContext dc = dv.RenderOpen())
+                    {
                         BitmapImage bitmapimage = await ConvertToImgAsync(stream, i, Dpi);
                         BitmapSource bs = bitmapimage.Width > bitmapimage.Height
                         ? bitmapimage?.Resize((int)pd.PrintableAreaHeight, (int)pd.PrintableAreaWidth, 90, Dpi, Dpi)

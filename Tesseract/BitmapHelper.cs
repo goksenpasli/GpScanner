@@ -1,15 +1,18 @@
-﻿namespace Tesseract {
+﻿namespace Tesseract
+{
     /// <summary>
     /// Description of BitmapHelper.
     /// </summary>
-    public static unsafe class BitmapHelper {
+    public static unsafe class BitmapHelper
+    {
         #region Bitmap Data Access
 
 #if Net45 || NETSTANDARD
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static byte GetDataBit(byte* data, int index) {
+        public static byte GetDataBit(byte* data, int index)
+        {
             return (byte)((*(data + (index >> 3)) >> (index & 0x7)) & 1);
         }
 
@@ -17,7 +20,8 @@
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static void SetDataBit(byte* data, int index, byte value) {
+        public static void SetDataBit(byte* data, int index, byte value)
+        {
             byte* wordPtr = data + (index >> 3);
             *wordPtr &= (byte)~(0x80 >> (index & 7)); 			// clear bit, note first pixel in the byte is most significant (1000 0000)
             *wordPtr |= (byte)((value & 1) << (7 - (index & 7)));       // set bit, if value is 1
@@ -27,7 +31,8 @@
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static byte GetDataQBit(byte* data, int index) {
+        public static byte GetDataQBit(byte* data, int index)
+        {
             return (byte)((*(data + (index >> 1)) >> (4 * (index & 1))) & 0xF);
         }
 
@@ -35,7 +40,8 @@
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static void SetDataQBit(byte* data, int index, byte value) {
+        public static void SetDataQBit(byte* data, int index, byte value)
+        {
             byte* wordPtr = data + (index >> 1);
             *wordPtr &= (byte)~(0xF0 >> (4 * (index & 1))); // clears qbit located at index, note like bit the qbit corresponding to the first pixel is the most significant (0xF0)
             *wordPtr |= (byte)((value & 0x0F) << (4 - (4 * (index & 1)))); // applys qbit to n
@@ -45,7 +51,8 @@
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static byte GetDataByte(byte* data, int index) {
+        public static byte GetDataByte(byte* data, int index)
+        {
             return *(data + index);
         }
 
@@ -53,7 +60,8 @@
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static void SetDataByte(byte* data, int index, byte value) {
+        public static void SetDataByte(byte* data, int index, byte value)
+        {
             *(data + index) = value;
         }
 
@@ -61,7 +69,8 @@
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static ushort GetDataUInt16(ushort* data, int index) {
+        public static ushort GetDataUInt16(ushort* data, int index)
+        {
             return *(data + index);
         }
 
@@ -69,7 +78,8 @@
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static void SetDataUInt16(ushort* data, int index, ushort value) {
+        public static void SetDataUInt16(ushort* data, int index, ushort value)
+        {
             *(data + index) = value;
         }
 
@@ -77,7 +87,8 @@
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static uint GetDataUInt32(uint* data, int index) {
+        public static uint GetDataUInt32(uint* data, int index)
+        {
             return *(data + index);
         }
 
@@ -85,7 +96,8 @@
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static void SetDataUInt32(uint* data, int index, uint value) {
+        public static void SetDataUInt32(uint* data, int index, uint value)
+        {
             *(data + index) = value;
         }
 
@@ -97,7 +109,8 @@
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static uint ConvertRgb555ToRGBA(uint val) {
+        public static uint ConvertRgb555ToRGBA(uint val)
+        {
             uint red = (val & 0x7C00) >> 10;
             uint green = (val & 0x3E0) >> 5;
             uint blue = val & 0x1F;
@@ -112,7 +125,8 @@
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static uint ConvertRgb565ToRGBA(uint val) {
+        public static uint ConvertRgb565ToRGBA(uint val)
+        {
             uint red = (val & 0xF800) >> 11;
             uint green = (val & 0x7E0) >> 5;
             uint blue = val & 0x1F;
@@ -127,7 +141,8 @@
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static uint ConvertArgb1555ToRGBA(uint val) {
+        public static uint ConvertArgb1555ToRGBA(uint val)
+        {
             uint alpha = (val & 0x8000) >> 15;
             uint red = (val & 0x7C00) >> 10;
             uint green = (val & 0x3E0) >> 5;
@@ -143,7 +158,8 @@
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static uint EncodeAsRGBA(byte red, byte green, byte blue, byte alpha) {
+        public static uint EncodeAsRGBA(byte red, byte green, byte blue, byte alpha)
+        {
             return (uint)((red << 24) |
                 (green << 16) |
                 (blue << 8) |

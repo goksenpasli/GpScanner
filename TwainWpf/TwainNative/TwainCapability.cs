@@ -4,7 +4,8 @@ using TwainWpf.Win32;
 
 // ReSharper disable NotAccessedField.Local
 
-namespace TwainWpf.TwainNative {
+namespace TwainWpf.TwainNative
+{
     /// <summary>
     /// /* DAT_CAPABILITY. Used by application to get/set capability from/in a data source. */
     /// typedef struct {
@@ -14,7 +15,8 @@ namespace TwainWpf.TwainNative {
     /// } TW_CAPABILITY, FAR * pTW_CAPABILITY;
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 2)]
-    public class TwainCapability : IDisposable {
+    public class TwainCapability : IDisposable
+    {
         private readonly Capabilities _capabilities;
 
         private readonly ContainerType _containerType;
@@ -23,7 +25,8 @@ namespace TwainWpf.TwainNative {
 
         private readonly object _value;
 
-        protected TwainCapability(Capabilities capabilities, ContainerType containerType, object value) {
+        protected TwainCapability(Capabilities capabilities, ContainerType containerType, object value)
+        {
             _capabilities = capabilities;
             _containerType = containerType;
             _value = value;
@@ -32,30 +35,37 @@ namespace TwainWpf.TwainNative {
 
             IntPtr p = Kernel32Native.GlobalLock(_handle);
 
-            try {
+            try
+            {
                 Marshal.StructureToPtr(value, p, false);
             }
-            finally {
+            finally
+            {
                 _ = Kernel32Native.GlobalUnlock(_handle);
             }
         }
 
-        ~TwainCapability() {
+        ~TwainCapability()
+        {
             Dispose(false);
         }
 
-        public void ReadBackValue() {
+        public void ReadBackValue()
+        {
             IntPtr p = Kernel32Native.GlobalLock(_handle);
 
-            try {
+            try
+            {
                 Marshal.PtrToStructure(p, _value);
             }
-            finally {
+            finally
+            {
                 _ = Kernel32Native.GlobalUnlock(_handle);
             }
         }
 
-        public static TwainCapability From<TValue>(Capabilities capabilities, TValue value) {
+        public static TwainCapability From<TValue>(Capabilities capabilities, TValue value)
+        {
             ContainerType containerType;
             Type structType = typeof(TValue);
 
@@ -66,12 +76,15 @@ namespace TwainWpf.TwainNative {
             return new TwainCapability(capabilities, containerType, value);
         }
 
-        public void Dispose() {
+        public void Dispose()
+        {
             Dispose(true);
         }
 
-        protected virtual void Dispose(bool disposing) {
-            if (_handle != IntPtr.Zero) {
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_handle != IntPtr.Zero)
+            {
                 _ = Kernel32Native.GlobalFree(_handle);
             }
         }

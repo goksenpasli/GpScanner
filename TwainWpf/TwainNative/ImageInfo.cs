@@ -1,8 +1,10 @@
 using System.Runtime.InteropServices;
 
-namespace TwainWpf.TwainNative {
+namespace TwainWpf.TwainNative
+{
     [StructLayout(LayoutKind.Sequential, Pack = 2)]
-    public class ImageInfo {
+    public class ImageInfo
+    {
         public int XResolution;
 
         public int YResolution;

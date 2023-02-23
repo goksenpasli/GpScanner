@@ -11,35 +11,44 @@ using System.Threading;
 using System.Windows;
 using Microsoft.Win32;
 
-namespace GpScanner.ViewModel {
-    public static class StillImageHelper {
+namespace GpScanner.ViewModel
+{
+    public static class StillImageHelper
+    {
         public const string MSG_KILL_PIPE_SERVER = "KILL_PIPE_SERVER";
 
         public static string DEVICE_PREFIX = "/StiDevice:";
 
         public static bool FirstLanuchScan { get; set; }
 
-        public static void ActivateProcess(Process process) {
-            if (process.MainWindowHandle != IntPtr.Zero) {
+        public static void ActivateProcess(Process process)
+        {
+            if (process.MainWindowHandle != IntPtr.Zero)
+            {
                 _ = SetForegroundWindow(process.MainWindowHandle);
             }
         }
 
-        public static IEnumerable<Process> GetAllGPScannerProcess() {
+        public static IEnumerable<Process> GetAllGPScannerProcess()
+        {
             Process currentProcess = Process.GetCurrentProcess();
             return Process.GetProcessesByName(currentProcess.ProcessName)
                 .Where(x => x.Id != currentProcess.Id)
                 .OrderByDescending(x => x.StartTime);
         }
 
-        public static void KillServer() {
-            if (_serverRunning) {
+        public static void KillServer()
+        {
+            if (_serverRunning)
+            {
                 _ = SendMessage(Process.GetCurrentProcess(), MSG_KILL_PIPE_SERVER);
             }
         }
 
-        public static void Register() {
-            try {
+        public static void Register()
+        {
+            try
+            {
                 string exe = Assembly.GetEntryAssembly().Location;
 
                 using RegistryKey key1 = Registry.LocalMachine.CreateSubKey(REGKEY_AUTOPLAY_HANDLER_GPSCANNER);
@@ -64,20 +73,24 @@ namespace GpScanner.ViewModel {
                 key4.SetValue("Icon", "sti.dll,0");
                 key4.SetValue("Name", "GpScanner");
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 _ = MessageBox.Show(ex.Message);
             }
         }
 
-        public static bool SendMessage(Process recipient, string msg) {
-            try {
+        public static bool SendMessage(Process recipient, string msg)
+        {
+            try
+            {
                 using NamedPipeClientStream pipeClient = new(".", GetPipeName(recipient), PipeDirection.Out);
                 pipeClient.Connect(TIMEOUT);
                 StreamString streamString = new(pipeClient);
                 _ = streamString.WriteString(msg);
                 return true;
             }
-            catch (Exception) {
+            catch (Exception)
+            {
                 return false;
             }
         }
@@ -86,25 +99,32 @@ namespace GpScanner.ViewModel {
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool SetForegroundWindow(IntPtr hWnd);
 
-        public static void StartServer(Action<string> msgCallback) {
-            if (_serverRunning) {
+        public static void StartServer(Action<string> msgCallback)
+        {
+            if (_serverRunning)
+            {
                 return;
             }
-            Thread thread = new(() => {
-                try {
+            Thread thread = new(() =>
+            {
+                try
+                {
                     using NamedPipeServerStream pipeServer = new(GetPipeName(Process.GetCurrentProcess()), PipeDirection.In);
-                    while (true) {
+                    while (true)
+                    {
                         pipeServer.WaitForConnection();
                         StreamString streamString = new(pipeServer);
                         string msg = streamString.ReadString();
-                        if (msg == MSG_KILL_PIPE_SERVER) {
+                        if (msg == MSG_KILL_PIPE_SERVER)
+                        {
                             break;
                         }
                         msgCallback(msg);
                         pipeServer.Disconnect();
                     }
                 }
-                catch (Exception) {
+                catch (Exception)
+                {
                 }
                 _serverRunning = false;
             });
@@ -112,8 +132,10 @@ namespace GpScanner.ViewModel {
             thread.Start();
         }
 
-        public static void Unregister() {
-            try {
+        public static void Unregister()
+        {
+            try
+            {
                 Registry.LocalMachine.DeleteSubKey(REGKEY_AUTOPLAY_HANDLER_GPSCANNER, false);
                 using RegistryKey key = Registry.LocalMachine.OpenSubKey(REGKEY_STI_APP, true);
                 key?.DeleteValue("GpScanner", false);
@@ -122,13 +144,16 @@ namespace GpScanner.ViewModel {
                 Registry.LocalMachine.DeleteSubKey(REGKEY_STI_EVENT_SCANBUTTON, false);
 
                 RegistryKey events = Registry.LocalMachine.OpenSubKey(REGKEY_IMAGE_EVENTS, true);
-                if (events != null) {
-                    foreach (string eventType in events.GetSubKeyNames()) {
+                if (events != null)
+                {
+                    foreach (string eventType in events.GetSubKeyNames())
+                    {
                         events.DeleteSubKey(eventType + @"\{143762b8-772a-47af-bae6-08e0a1d0ca89}", false);
                     }
                 }
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 _ = MessageBox.Show(ex.Message);
             }
         }
@@ -149,17 +174,21 @@ namespace GpScanner.ViewModel {
 
         private static bool _serverRunning;
 
-        private static string GetPipeName(Process process) {
+        private static string GetPipeName(Process process)
+        {
             return string.Format(PIPE_NAME_FORMAT, process.Id);
         }
 
-        private class StreamString {
-            public StreamString(Stream ioStream) {
+        private class StreamString
+        {
+            public StreamString(Stream ioStream)
+            {
                 this.ioStream = ioStream;
                 streamEncoding = new UnicodeEncoding();
             }
 
-            public string ReadString() {
+            public string ReadString()
+            {
                 int len = ioStream.ReadByte() * 256;
                 len += ioStream.ReadByte();
                 byte[] inBuffer = new byte[len];
@@ -168,10 +197,12 @@ namespace GpScanner.ViewModel {
                 return streamEncoding.GetString(inBuffer);
             }
 
-            public int WriteString(string outString) {
+            public int WriteString(string outString)
+            {
                 byte[] outBuffer = streamEncoding.GetBytes(outString);
                 int len = outBuffer.Length;
-                if (len > ushort.MaxValue) {
+                if (len > ushort.MaxValue)
+                {
                     len = ushort.MaxValue;
                 }
                 ioStream.WriteByte((byte)(len / 256));

@@ -3,17 +3,21 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 
-namespace Extensions {
+namespace Extensions
+{
     /// <summary>An effect that blurs the input using Poisson disk sampling.</summary>
-    public class GrowablePoissonDiskEffect : ShaderEffect {
+    public class GrowablePoissonDiskEffect : ShaderEffect
+    {
         public static readonly DependencyProperty DiskRadiusProperty = DependencyProperty.Register("DiskRadius", typeof(double), typeof(GrowablePoissonDiskEffect), new UIPropertyMetadata(5D, PixelShaderConstantCallback(0)));
 
         public static readonly DependencyProperty InputProperty = RegisterPixelShaderSamplerProperty("Input", typeof(GrowablePoissonDiskEffect), 0);
 
         public static readonly DependencyProperty InputSizeProperty = DependencyProperty.Register("InputSize", typeof(Size), typeof(GrowablePoissonDiskEffect), new UIPropertyMetadata(new Size(600D, 400D), PixelShaderConstantCallback(1)));
 
-        public GrowablePoissonDiskEffect() {
-            PixelShader = new() {
+        public GrowablePoissonDiskEffect()
+        {
+            PixelShader = new()
+            {
                 UriSource = new Uri("/Extensions;component/Shader/GrowablePoissonDiskEffect.ps", UriKind.Relative)
             };
 

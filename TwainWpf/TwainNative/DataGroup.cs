@@ -1,8 +1,10 @@
 using System;
 
-namespace TwainWpf.TwainNative {
+namespace TwainWpf.TwainNative
+{
     [Flags]
-    public enum DataGroup {
+    public enum DataGroup
+    {
         Control = 0x0001,
 
         Image = 0x0002,

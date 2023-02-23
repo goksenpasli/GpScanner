@@ -1,8 +1,10 @@
 using System.Runtime.InteropServices;
 
-namespace TwainWpf.TwainNative {
+namespace TwainWpf.TwainNative
+{
     [StructLayout(LayoutKind.Sequential, Pack = 2, CharSet = CharSet.Ansi)]
-    public class Identity {
+    public class Identity
+    {
         public int Id;
 
         public TwainVersion Version;
@@ -22,7 +24,8 @@ namespace TwainWpf.TwainNative {
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 34)]
         public string ProductName;
 
-        public Identity Clone() {
+        public Identity Clone()
+        {
             Identity id = (Identity)MemberwiseClone();
             id.Version = Version.Clone();
             return id;

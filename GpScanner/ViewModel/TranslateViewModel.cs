@@ -6,34 +6,44 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Extensions;
 
-namespace GpScanner.ViewModel {
-    public class TranslateViewModel : InpcBase {
-        public TranslateViewModel() {
+namespace GpScanner.ViewModel
+{
+    public class TranslateViewModel : InpcBase
+    {
+        public TranslateViewModel()
+        {
             SpeechSynthesizer speechSynthesizer = new();
-            if (speechSynthesizer is not null) {
+            if (speechSynthesizer is not null)
+            {
                 TtsDilleri = speechSynthesizer.GetInstalledVoices().Select(z => z.VoiceInfo.Name);
                 OkumaDili = TtsDilleri?.FirstOrDefault();
             }
             speechSynthesizer?.Dispose();
 
-            Sıfırla = new RelayCommand<object>(parameter => {
+            Sıfırla = new RelayCommand<object>(parameter =>
+            {
                 Metin = "";
                 Çeviri = "";
             }, parameter => true);
 
-            Oku = new RelayCommand<object>(parameter => {
-                if (parameter is string metin) {
+            Oku = new RelayCommand<object>(parameter =>
+            {
+                if (parameter is string metin)
+                {
                     SpeechSynthesizer speechSynthesizer = new() { Volume = 100 };
                     speechSynthesizer.SelectVoice(OkumaDili);
-                    if (speechSynthesizer.State == SynthesizerState.Speaking) {
+                    if (speechSynthesizer.State == SynthesizerState.Speaking)
+                    {
                         speechSynthesizer.Pause();
                         return;
                     }
-                    if (speechSynthesizer.State == SynthesizerState.Paused) {
+                    if (speechSynthesizer.State == SynthesizerState.Paused)
+                    {
                         speechSynthesizer.Resume();
                         return;
                     }
-                    if (speechSynthesizer.State == SynthesizerState.Ready) {
+                    if (speechSynthesizer.State == SynthesizerState.Ready)
+                    {
                         _ = speechSynthesizer.SpeakAsync(metin);
                     }
                 }
@@ -44,7 +54,8 @@ namespace GpScanner.ViewModel {
             get => çeviri;
 
             set {
-                if (çeviri != value) {
+                if (çeviri != value)
+                {
                     çeviri = value;
                     OnPropertyChanged(nameof(Çeviri));
                 }
@@ -55,7 +66,8 @@ namespace GpScanner.ViewModel {
             get => çevrilenDil;
 
             set {
-                if (çevrilenDil != value) {
+                if (çevrilenDil != value)
+                {
                     çevrilenDil = value;
                     OnPropertyChanged(nameof(ÇevrilenDil));
                     OnPropertyChanged(nameof(Metin));
@@ -65,14 +77,16 @@ namespace GpScanner.ViewModel {
 
         public string Metin {
             get {
-                if (!string.IsNullOrEmpty(metin)) {
+                if (!string.IsNullOrEmpty(metin))
+                {
                     _ = Task.Run(() => Çeviri = Extensions.TranslateViewModel.DileÇevir(metin, MevcutDil, ÇevrilenDil));
                 }
                 return metin;
             }
 
             set {
-                if (metin != value) {
+                if (metin != value)
+                {
                     metin = value;
                     OnPropertyChanged(nameof(Metin));
                     OnPropertyChanged(nameof(Çeviri));
@@ -84,7 +98,8 @@ namespace GpScanner.ViewModel {
             get => metinBoxIsreadOnly;
 
             set {
-                if (metinBoxIsreadOnly != value) {
+                if (metinBoxIsreadOnly != value)
+                {
                     metinBoxIsreadOnly = value;
                     OnPropertyChanged(nameof(MetinBoxIsreadOnly));
                 }
@@ -95,7 +110,8 @@ namespace GpScanner.ViewModel {
             get => mevcutDil;
 
             set {
-                if (mevcutDil != value) {
+                if (mevcutDil != value)
+                {
                     mevcutDil = value;
                     OnPropertyChanged(nameof(MevcutDil));
                     OnPropertyChanged(nameof(Metin));
@@ -109,7 +125,8 @@ namespace GpScanner.ViewModel {
             get => okumaDili;
 
             set {
-                if (okumaDili != value) {
+                if (okumaDili != value)
+                {
                     okumaDili = value;
                     OnPropertyChanged(nameof(OkumaDili));
                 }
@@ -122,7 +139,8 @@ namespace GpScanner.ViewModel {
             get => taramaGeçmiş;
 
             set {
-                if (taramaGeçmiş != value) {
+                if (taramaGeçmiş != value)
+                {
                     taramaGeçmiş = value;
                     OnPropertyChanged(nameof(TaramaGeçmiş));
                 }

@@ -1,7 +1,9 @@
 ﻿using Tesseract.Internal.InteropDotNet;
 
-namespace Tesseract {
-    public static class TesseractEnviornment {
+namespace Tesseract
+{
+    public static class TesseractEnviornment
+    {
         /// <summary>
         /// Gets or sets a search path that will be checked first when attempting to load the Tesseract and Leptonica dlls.
         /// </summary>

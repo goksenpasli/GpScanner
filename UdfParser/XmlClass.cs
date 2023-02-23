@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace UdfParser {
+namespace UdfParser
+{
     [XmlRoot(ElementName = "bgImage")]
-    public class BgImage {
+    public class BgImage
+    {
         [XmlAttribute(AttributeName = "bgImageBottomMargin")]
         public int BgImageBottomMargin { get; set; }
 
@@ -24,7 +26,8 @@ namespace UdfParser {
     }
 
     [XmlRoot(ElementName = "cell")]
-    public class Cell {
+    public class Cell
+    {
         [XmlElement(ElementName = "paragraph")]
         public List<Paragraph> Paragraph { get; set; }
 
@@ -33,7 +36,8 @@ namespace UdfParser {
     }
 
     [XmlRoot(ElementName = "content")]
-    public class Content {
+    public class Content
+    {
         [XmlAttribute(AttributeName = "Alignment")]
         public int Alignment { get; set; }
 
@@ -87,7 +91,8 @@ namespace UdfParser {
     }
 
     [XmlRoot(ElementName = "elements")]
-    public class Elements {
+    public class Elements
+    {
         [XmlElement(ElementName = "footer")]
         public Footer Footer { get; set; }
 
@@ -105,7 +110,8 @@ namespace UdfParser {
     }
 
     [XmlRoot(ElementName = "footer")]
-    public class Footer {
+    public class Footer
+    {
         [XmlAttribute(AttributeName = "pageNumber-color")]
         public int PageNumberColor { get; set; }
 
@@ -129,13 +135,15 @@ namespace UdfParser {
     }
 
     [XmlRoot(ElementName = "header")]
-    public class Header {
+    public class Header
+    {
         [XmlElement(ElementName = "paragraph")]
         public Paragraph Paragraph { get; set; }
     }
 
     [XmlRoot(ElementName = "image")]
-    public class Image {
+    public class Image
+    {
         [XmlAttribute(AttributeName = "height")]
         public double Height { get; set; }
 
@@ -153,7 +161,8 @@ namespace UdfParser {
     }
 
     [XmlRoot(ElementName = "pageFormat")]
-    public class PageFormat {
+    public class PageFormat
+    {
         [XmlAttribute(AttributeName = "bottomMargin")]
         public double BottomMargin { get; set; }
 
@@ -180,7 +189,8 @@ namespace UdfParser {
     }
 
     [XmlRoot(ElementName = "paragraph")]
-    public class Paragraph {
+    public class Paragraph
+    {
         [XmlAttribute(AttributeName = "Alignment")]
         public int Alignment { get; set; }
 
@@ -228,7 +238,8 @@ namespace UdfParser {
     }
 
     [XmlRoot(ElementName = "properties")]
-    public class Properties {
+    public class Properties
+    {
         [XmlElement(ElementName = "bgImage")]
         public BgImage BgImage { get; set; }
 
@@ -237,7 +248,8 @@ namespace UdfParser {
     }
 
     [XmlRoot(ElementName = "row")]
-    public class Row {
+    public class Row
+    {
         [XmlElement(ElementName = "cell")]
         public List<Cell> Cell { get; set; }
 
@@ -252,7 +264,8 @@ namespace UdfParser {
     }
 
     [XmlRoot(ElementName = "style")]
-    public class Style {
+    public class Style
+    {
         [XmlAttribute(AttributeName = "bold")]
         public bool Bold { get; set; }
 
@@ -279,13 +292,15 @@ namespace UdfParser {
     }
 
     [XmlRoot(ElementName = "styles")]
-    public class Styles {
+    public class Styles
+    {
         [XmlElement(ElementName = "style")]
         public List<Style> Style { get; set; }
     }
 
     [XmlRoot(ElementName = "table")]
-    public class Table {
+    public class Table
+    {
         [XmlAttribute(AttributeName = "border")]
         public string Border { get; set; }
 
@@ -303,7 +318,8 @@ namespace UdfParser {
     }
 
     [XmlRoot(ElementName = "template")]
-    public class Template {
+    public class Template
+    {
         [XmlElement(ElementName = "content")]
         public string Content { get; set; }
 

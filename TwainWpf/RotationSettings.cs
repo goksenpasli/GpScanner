@@ -1,12 +1,14 @@
 ﻿using System.ComponentModel;
 using TwainWpf.TwainNative;
 
-namespace TwainWpf {
+namespace TwainWpf
+{
     /// <summary>
     /// Settings for hardware image rotation.  Includes
     /// hardware deskewing detection
     /// </summary>
-    public class RotationSettings : INotifyPropertyChanged {
+    public class RotationSettings : INotifyPropertyChanged
+    {
         /// <summary>
         /// Gets or sets a value indicating whether [automatic border detection].
         /// </summary>
@@ -17,7 +19,8 @@ namespace TwainWpf {
             get => _automaticBorderDetection;
 
             set {
-                if (value != _automaticBorderDetection) {
+                if (value != _automaticBorderDetection)
+                {
                     _automaticBorderDetection = value;
                     OnPropertyChanged(nameof(AutomaticBorderDetection));
                 }
@@ -32,7 +35,8 @@ namespace TwainWpf {
             get => _automaticDeskew;
 
             set {
-                if (value != _automaticDeskew) {
+                if (value != _automaticDeskew)
+                {
                     _automaticDeskew = value;
                     OnPropertyChanged(nameof(AutomaticDeskew));
                 }
@@ -47,7 +51,8 @@ namespace TwainWpf {
             get => _automaticRotate;
 
             set {
-                if (value != _automaticRotate) {
+                if (value != _automaticRotate)
+                {
                     _automaticRotate = value;
                     OnPropertyChanged(nameof(AutomaticRotate));
                 }
@@ -62,7 +67,8 @@ namespace TwainWpf {
             get => _flipSideRotation;
 
             set {
-                if (value != _flipSideRotation) {
+                if (value != _flipSideRotation)
+                {
                     _flipSideRotation = value;
                     OnPropertyChanged(nameof(FlipSideRotation));
                 }
@@ -81,7 +87,8 @@ namespace TwainWpf {
 
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
-        protected void OnPropertyChanged(string propertyName) {
+        protected void OnPropertyChanged(string propertyName)
+        {
             PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 

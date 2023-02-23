@@ -3,17 +3,21 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 
-namespace Extensions {
+namespace Extensions
+{
     /// <summary>An effect that embosses the input.</summary>
-    public class EmbossedEffect : ShaderEffect {
+    public class EmbossedEffect : ShaderEffect
+    {
         public static readonly DependencyProperty EmbossedAmountProperty = DependencyProperty.Register("EmbossedAmount", typeof(double), typeof(EmbossedEffect), new UIPropertyMetadata(0.5D, PixelShaderConstantCallback(0)));
 
         public static readonly DependencyProperty InputProperty = RegisterPixelShaderSamplerProperty("Input", typeof(EmbossedEffect), 0);
 
         public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(double), typeof(EmbossedEffect), new UIPropertyMetadata(0.003D, PixelShaderConstantCallback(1)));
 
-        public EmbossedEffect() {
-            PixelShader = new() {
+        public EmbossedEffect()
+        {
+            PixelShader = new()
+            {
                 UriSource = new Uri("/Extensions;component/Shader/EmbossedEffect.ps", UriKind.Relative)
             };
 

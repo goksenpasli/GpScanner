@@ -11,15 +11,19 @@ using Extensions;
 using PdfSharp.Drawing;
 using TwainControl.Properties;
 
-namespace TwainControl {
-    public class Scanner : InpcBase, IDataErrorInfo {
-        public Scanner() {
+namespace TwainControl
+{
+    public class Scanner : InpcBase, IDataErrorInfo
+    {
+        public Scanner()
+        {
             PropertyChanged += Scanner_PropertyChanged;
         }
 
         public bool AllowCopy {
             get => allowCopy; set {
-                if (allowCopy != value) {
+                if (allowCopy != value)
+                {
                     allowCopy = value;
                     OnPropertyChanged(nameof(AllowCopy));
                 }
@@ -28,7 +32,8 @@ namespace TwainControl {
 
         public bool AllowEdit {
             get => allowEdit; set {
-                if (allowEdit != value) {
+                if (allowEdit != value)
+                {
                     allowEdit = value;
                     OnPropertyChanged(nameof(AllowEdit));
                 }
@@ -39,7 +44,8 @@ namespace TwainControl {
             get => allowPrint;
 
             set {
-                if (allowPrint != value) {
+                if (allowPrint != value)
+                {
                     allowPrint = value;
                     OnPropertyChanged(nameof(AllowPrint));
                 }
@@ -50,7 +56,8 @@ namespace TwainControl {
             get => applyDataBaseOcr;
 
             set {
-                if (applyDataBaseOcr != value) {
+                if (applyDataBaseOcr != value)
+                {
                     applyDataBaseOcr = value;
                     OnPropertyChanged(nameof(ApplyDataBaseOcr));
                 }
@@ -61,7 +68,8 @@ namespace TwainControl {
             get => applyPdfSaveOcr;
 
             set {
-                if (applyPdfSaveOcr != value) {
+                if (applyPdfSaveOcr != value)
+                {
                     applyPdfSaveOcr = value;
                     OnPropertyChanged(nameof(ApplyPdfSaveOcr));
                 }
@@ -72,7 +80,8 @@ namespace TwainControl {
             get => arayüzetkin;
 
             set {
-                if (arayüzetkin != value) {
+                if (arayüzetkin != value)
+                {
                     arayüzetkin = value;
                     OnPropertyChanged(nameof(ArayüzEtkin));
                 }
@@ -83,7 +92,8 @@ namespace TwainControl {
             get => autoSave;
 
             set {
-                if (autoSave != value) {
+                if (autoSave != value)
+                {
                     autoSave = value;
                     OnPropertyChanged(nameof(AutoSave));
                 }
@@ -94,7 +104,8 @@ namespace TwainControl {
             get => blueChart;
 
             set {
-                if (blueChart != value) {
+                if (blueChart != value)
+                {
                     blueChart = value;
                     OnPropertyChanged(nameof(BlueChart));
                 }
@@ -105,7 +116,8 @@ namespace TwainControl {
             get => boyAdet;
 
             set {
-                if (boyAdet != value) {
+                if (boyAdet != value)
+                {
                     boyAdet = value;
                     OnPropertyChanged(nameof(BoyAdet));
                 }
@@ -116,7 +128,8 @@ namespace TwainControl {
             get => brightness;
 
             set {
-                if (brightness != value) {
+                if (brightness != value)
+                {
                     brightness = value;
                     OnPropertyChanged(nameof(Brightness));
                 }
@@ -127,7 +140,8 @@ namespace TwainControl {
             get => caretPosition;
 
             set {
-                if (caretPosition != value) {
+                if (caretPosition != value)
+                {
                     caretPosition = value;
                     OnPropertyChanged(nameof(CaretPosition));
                 }
@@ -136,7 +150,8 @@ namespace TwainControl {
 
         public ImageSource CopyCroppedImage {
             get => copyCroppedImage; set {
-                if (copyCroppedImage != value) {
+                if (copyCroppedImage != value)
+                {
                     copyCroppedImage = value;
                     OnPropertyChanged(nameof(CopyCroppedImage));
                 }
@@ -147,7 +162,8 @@ namespace TwainControl {
             get => creatorAppName;
 
             set {
-                if (creatorAppName != value) {
+                if (creatorAppName != value)
+                {
                     creatorAppName = value;
                     OnPropertyChanged(nameof(CreatorAppName));
                 }
@@ -156,7 +172,8 @@ namespace TwainControl {
 
         public double CropBottom {
             get => cropBottom; set {
-                if (cropBottom != value) {
+                if (cropBottom != value)
+                {
                     cropBottom = value;
                     OnPropertyChanged(nameof(CropBottom));
                 }
@@ -167,7 +184,8 @@ namespace TwainControl {
             get => cropDialogExpanded;
 
             set {
-                if (cropDialogExpanded != value) {
+                if (cropDialogExpanded != value)
+                {
                     cropDialogExpanded = value;
                     OnPropertyChanged(nameof(CropDialogExpanded));
                 }
@@ -176,7 +194,8 @@ namespace TwainControl {
 
         public double CropLeft {
             get => cropLeft; set {
-                if (cropLeft != value) {
+                if (cropLeft != value)
+                {
                     cropLeft = value;
                     OnPropertyChanged(nameof(CropLeft));
                 }
@@ -187,7 +206,8 @@ namespace TwainControl {
             get => croppedImage;
 
             set {
-                if (croppedImage != value) {
+                if (croppedImage != value)
+                {
                     croppedImage = value;
                     OnPropertyChanged(nameof(CroppedImage));
                 }
@@ -198,7 +218,8 @@ namespace TwainControl {
             get => croppedImageAngle;
 
             set {
-                if (croppedImageAngle != value) {
+                if (croppedImageAngle != value)
+                {
                     croppedImageAngle = value;
                     OnPropertyChanged(nameof(CroppedImageAngle));
                 }
@@ -207,7 +228,8 @@ namespace TwainControl {
 
         public double CropRight {
             get => cropRight; set {
-                if (cropRight != value) {
+                if (cropRight != value)
+                {
                     cropRight = value;
                     OnPropertyChanged(nameof(CropRight));
                 }
@@ -218,7 +240,8 @@ namespace TwainControl {
             get => cropTop;
 
             set {
-                if (cropTop != value) {
+                if (cropTop != value)
+                {
                     cropTop = value;
                     OnPropertyChanged(nameof(CropTop));
                 }
@@ -229,7 +252,8 @@ namespace TwainControl {
             get => deskew;
 
             set {
-                if (deskew != value) {
+                if (deskew != value)
+                {
                     deskew = value;
                     OnPropertyChanged(nameof(Deskew));
                 }
@@ -240,7 +264,8 @@ namespace TwainControl {
             get => detectEmptyPage;
 
             set {
-                if (detectEmptyPage != value) {
+                if (detectEmptyPage != value)
+                {
                     detectEmptyPage = value;
                     OnPropertyChanged(nameof(DetectEmptyPage));
                 }
@@ -251,7 +276,8 @@ namespace TwainControl {
             get => detectPageSeperator;
 
             set {
-                if (detectPageSeperator != value) {
+                if (detectPageSeperator != value)
+                {
                     detectPageSeperator = value;
                     OnPropertyChanged(nameof(DetectPageSeperator));
                 }
@@ -262,7 +288,8 @@ namespace TwainControl {
             get => duplex;
 
             set {
-                if (duplex != value) {
+                if (duplex != value)
+                {
                     duplex = value;
                     OnPropertyChanged(nameof(Duplex));
                 }
@@ -273,7 +300,8 @@ namespace TwainControl {
             get => enAdet;
 
             set {
-                if (enAdet != value) {
+                if (enAdet != value)
+                {
                     enAdet = value;
                     OnPropertyChanged(nameof(EnAdet));
                 }
@@ -286,7 +314,8 @@ namespace TwainControl {
             get => fileName;
 
             set {
-                if (fileName != value) {
+                if (fileName != value)
+                {
                     fileName = value;
                     OnPropertyChanged(nameof(FileName));
                     OnPropertyChanged(nameof(SaveFileName));
@@ -298,7 +327,8 @@ namespace TwainControl {
             get => fileOcrContent;
 
             set {
-                if (fileOcrContent != value) {
+                if (fileOcrContent != value)
+                {
                     fileOcrContent = value;
                     OnPropertyChanged(nameof(FileOcrContent));
                 }
@@ -309,7 +339,8 @@ namespace TwainControl {
             get => greenChart;
 
             set {
-                if (greenChart != value) {
+                if (greenChart != value)
+                {
                     greenChart = value;
                     OnPropertyChanged(nameof(GreenChart));
                 }
@@ -318,7 +349,8 @@ namespace TwainControl {
 
         public PdfPageLayout Layout {
             get => layout; set {
-                if (layout != value) {
+                if (layout != value)
+                {
                     layout = value;
                     OnPropertyChanged(nameof(Layout));
                 }
@@ -329,7 +361,8 @@ namespace TwainControl {
             get => ExtensionMethods.GetDisplayName(Settings.Default.AutoFolder);
 
             set {
-                if (localizedPath != value) {
+                if (localizedPath != value)
+                {
                     localizedPath = value;
                     OnPropertyChanged(nameof(LocalizedPath));
                 }
@@ -340,7 +373,8 @@ namespace TwainControl {
             get => passwordProtect;
 
             set {
-                if (passwordProtect != value) {
+                if (passwordProtect != value)
+                {
                     passwordProtect = value;
                     OnPropertyChanged(nameof(PasswordProtect));
                 }
@@ -351,7 +385,8 @@ namespace TwainControl {
             get => pdfAlignTextColor;
 
             set {
-                if (pdfAlignTextColor != value) {
+                if (pdfAlignTextColor != value)
+                {
                     pdfAlignTextColor = value;
                     OnPropertyChanged(nameof(PdfAlignTextColor));
                 }
@@ -362,7 +397,8 @@ namespace TwainControl {
             get => pdfFilePath;
 
             set {
-                if (pdfFilePath != value) {
+                if (pdfFilePath != value)
+                {
                     pdfFilePath = value;
                     OnPropertyChanged(nameof(PdfFilePath));
                 }
@@ -373,7 +409,8 @@ namespace TwainControl {
             get => pdfPageNumberDraw;
 
             set {
-                if (pdfPageNumberDraw != value) {
+                if (pdfPageNumberDraw != value)
+                {
                     pdfPageNumberDraw = value;
                     OnPropertyChanged(nameof(PdfPageNumberDraw));
                 }
@@ -384,7 +421,8 @@ namespace TwainControl {
             get => pdfPassword;
 
             set {
-                if (pdfPassword != value) {
+                if (pdfPassword != value)
+                {
                     pdfPassword = value;
                     OnPropertyChanged(nameof(PdfPassword));
                 }
@@ -395,7 +433,8 @@ namespace TwainControl {
             get => pdfSaveProgressValue;
 
             set {
-                if (pdfSaveProgressValue != value) {
+                if (pdfSaveProgressValue != value)
+                {
                     pdfSaveProgressValue = value;
                     OnPropertyChanged(nameof(PdfSaveProgressValue));
                 }
@@ -406,7 +445,8 @@ namespace TwainControl {
             get => profileName;
 
             set {
-                if (profileName != value) {
+                if (profileName != value)
+                {
                     profileName = value;
                     OnPropertyChanged(nameof(ProfileName));
                 }
@@ -417,7 +457,8 @@ namespace TwainControl {
             get => progressState;
 
             set {
-                if (progressState != value) {
+                if (progressState != value)
+                {
                     progressState = value;
                     OnPropertyChanged(nameof(ProgressState));
                 }
@@ -428,7 +469,8 @@ namespace TwainControl {
             get => qrData;
 
             set {
-                if (qrData != value) {
+                if (qrData != value)
+                {
                     qrData = value;
                     OnPropertyChanged(nameof(QrData));
                 }
@@ -439,7 +481,8 @@ namespace TwainControl {
             get => redChart;
 
             set {
-                if (redChart != value) {
+                if (redChart != value)
+                {
                     redChart = value;
                     OnPropertyChanged(nameof(RedChart));
                 }
@@ -450,7 +493,8 @@ namespace TwainControl {
             get => resimler;
 
             set {
-                if (resimler != value) {
+                if (resimler != value)
+                {
                     resimler = value;
                     OnPropertyChanged(nameof(Resimler));
                 }
@@ -461,7 +505,8 @@ namespace TwainControl {
             get => rotateAngle;
 
             set {
-                if (rotateAngle != value) {
+                if (rotateAngle != value)
+                {
                     rotateAngle = value;
                     OnPropertyChanged(nameof(RotateAngle));
                 }
@@ -485,7 +530,8 @@ namespace TwainControl {
             }
 
             set {
-                if (saveFileName != value) {
+                if (saveFileName != value)
+                {
                     saveFileName = value;
                     OnPropertyChanged(nameof(SaveFileName));
                 }
@@ -494,7 +540,8 @@ namespace TwainControl {
 
         public bool SaveProgressIndeterminate {
             get => saveProgressIndeterminate; set {
-                if (saveProgressIndeterminate != value) {
+                if (saveProgressIndeterminate != value)
+                {
                     saveProgressIndeterminate = value;
                     OnPropertyChanged(nameof(SaveProgressIndeterminate));
                 }
@@ -505,7 +552,8 @@ namespace TwainControl {
             get => seçili;
 
             set {
-                if (seçili != value) {
+                if (seçili != value)
+                {
                     seçili = value;
                     OnPropertyChanged(nameof(Seçili));
                 }
@@ -516,7 +564,8 @@ namespace TwainControl {
             get => seçiliResimSayısı;
 
             set {
-                if (seçiliResimSayısı != value) {
+                if (seçiliResimSayısı != value)
+                {
                     seçiliResimSayısı = value;
                     OnPropertyChanged(nameof(SeçiliResimSayısı));
                 }
@@ -527,7 +576,8 @@ namespace TwainControl {
             get => seçiliTarayıcı;
 
             set {
-                if (seçiliTarayıcı != value) {
+                if (seçiliTarayıcı != value)
+                {
                     seçiliTarayıcı = value;
                     OnPropertyChanged(nameof(SeçiliTarayıcı));
                 }
@@ -538,7 +588,8 @@ namespace TwainControl {
             get => selectedProfile;
 
             set {
-                if (selectedProfile != value) {
+                if (selectedProfile != value)
+                {
                     selectedProfile = value;
                     OnPropertyChanged(nameof(SelectedProfile));
                 }
@@ -549,7 +600,8 @@ namespace TwainControl {
             get => selectedTtsLanguage;
 
             set {
-                if (selectedTtsLanguage != value) {
+                if (selectedTtsLanguage != value)
+                {
                     selectedTtsLanguage = value;
                     OnPropertyChanged(nameof(SelectedTtsLanguage));
                 }
@@ -560,7 +612,8 @@ namespace TwainControl {
             get => showProgress;
 
             set {
-                if (showProgress != value) {
+                if (showProgress != value)
+                {
                     showProgress = value;
                     OnPropertyChanged(nameof(ShowProgress));
                 }
@@ -571,7 +624,8 @@ namespace TwainControl {
             get => showUi;
 
             set {
-                if (showUi != value) {
+                if (showUi != value)
+                {
                     showUi = value;
                     OnPropertyChanged(nameof(ShowUi));
                 }
@@ -580,7 +634,8 @@ namespace TwainControl {
 
         public double SliceCountHeight {
             get => sliceCountHeight; set {
-                if (sliceCountHeight != value) {
+                if (sliceCountHeight != value)
+                {
                     sliceCountHeight = value;
                     OnPropertyChanged(nameof(SliceCountHeight));
                 }
@@ -591,7 +646,8 @@ namespace TwainControl {
             get => sliceCountWidth;
 
             set {
-                if (sliceCountWidth != value) {
+                if (sliceCountWidth != value)
+                {
                     sliceCountWidth = value;
                     OnPropertyChanged(nameof(SliceCountWidth));
                 }
@@ -602,7 +658,8 @@ namespace TwainControl {
             get => sourceColor;
 
             set {
-                if (sourceColor != value) {
+                if (sourceColor != value)
+                {
                     sourceColor = value;
                     OnPropertyChanged(nameof(SourceColor));
                 }
@@ -613,7 +670,8 @@ namespace TwainControl {
             get => tarayıcılar;
 
             set {
-                if (tarayıcılar != value) {
+                if (tarayıcılar != value)
+                {
                     tarayıcılar = value;
                     OnPropertyChanged(nameof(Tarayıcılar));
                 }
@@ -622,7 +680,8 @@ namespace TwainControl {
 
         public string TargetColor {
             get => targetColor; set {
-                if (targetColor != value) {
+                if (targetColor != value)
+                {
                     targetColor = value;
                     OnPropertyChanged(nameof(TargetColor));
                 }
@@ -631,7 +690,8 @@ namespace TwainControl {
 
         public double Threshold {
             get => threshold; set {
-                if (threshold != value) {
+                if (threshold != value)
+                {
                     threshold = value;
                     OnPropertyChanged(nameof(Threshold));
                 }
@@ -642,7 +702,8 @@ namespace TwainControl {
             get => unsupportedFiles;
 
             set {
-                if (unsupportedFiles != value) {
+                if (unsupportedFiles != value)
+                {
                     unsupportedFiles = value;
                     OnPropertyChanged(nameof(UnsupportedFiles));
                 }
@@ -653,7 +714,8 @@ namespace TwainControl {
             get => useMozJpegEncoding;
 
             set {
-                if (useMozJpegEncoding != value) {
+                if (useMozJpegEncoding != value)
+                {
                     useMozJpegEncoding = value;
                     OnPropertyChanged(nameof(UseMozJpegEncoding));
                 }
@@ -664,7 +726,8 @@ namespace TwainControl {
             get => userName;
 
             set {
-                if (userName != value) {
+                if (userName != value)
+                {
                     userName = value;
                     OnPropertyChanged(nameof(UserName));
                 }
@@ -675,7 +738,8 @@ namespace TwainControl {
             get => watermark;
 
             set {
-                if (watermark != value) {
+                if (watermark != value)
+                {
                     watermark = value;
                     OnPropertyChanged(nameof(Watermark));
                 }
@@ -686,7 +750,8 @@ namespace TwainControl {
             get => watermarkAngle;
 
             set {
-                if (watermarkAngle != value) {
+                if (watermarkAngle != value)
+                {
                     watermarkAngle = value;
                     OnPropertyChanged(nameof(WatermarkAngle));
                 }
@@ -697,7 +762,8 @@ namespace TwainControl {
             get => watermarkColor;
 
             set {
-                if (watermarkColor != value) {
+                if (watermarkColor != value)
+                {
                     watermarkColor = value;
                     OnPropertyChanged(nameof(WatermarkColor));
                 }
@@ -708,7 +774,8 @@ namespace TwainControl {
             get => watermarkFont;
 
             set {
-                if (watermarkFont != value) {
+                if (watermarkFont != value)
+                {
                     watermarkFont = value;
                     OnPropertyChanged(nameof(WatermarkFont));
                 }
@@ -719,14 +786,16 @@ namespace TwainControl {
             get => watermarkTextSize;
 
             set {
-                if (watermarkTextSize != value) {
+                if (watermarkTextSize != value)
+                {
                     watermarkTextSize = value;
                     OnPropertyChanged(nameof(WatermarkTextSize));
                 }
             }
         }
 
-        public string this[string columnName] => columnName switch {
+        public string this[string columnName] => columnName switch
+        {
             "FileName" when string.IsNullOrWhiteSpace(FileName) => "Dosya Adını Boş Geçmeyin.",
             "FileName" when FileName.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0 => "Dosya Adında Hatalı Karakter Var Düzeltin.",
             "ProfileName" when string.IsNullOrWhiteSpace(ProfileName) => "Profil Adını Boş Geçmeyin.",
@@ -863,8 +932,10 @@ namespace TwainControl {
 
         private double watermarkTextSize = 64;
 
-        private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e) {
-            if (e.PropertyName is "PdfSaveProgressValue" && PdfSaveProgressValue == 1) {
+        private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName is "PdfSaveProgressValue" && PdfSaveProgressValue == 1)
+            {
                 ProgressState = TaskbarItemProgressState.None;
             }
         }

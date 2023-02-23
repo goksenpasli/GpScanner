@@ -1,9 +1,11 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace TwainWpf.Win32 {
+namespace TwainWpf.Win32
+{
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
-    public struct WindowsMessage {
+    public struct WindowsMessage
+    {
         public IntPtr hwnd;
 
         public int message;

@@ -1,8 +1,10 @@
 // ReSharper disable InconsistentNaming
 using System.ComponentModel;
 
-namespace TwainWpf.TwainNative {
-    public enum Capabilities : short {
+namespace TwainWpf.TwainNative
+{
+    public enum Capabilities : short
+    {
         // all data sources are REQUIRED to support these capabilities
         XferCount = 0x0001,
 

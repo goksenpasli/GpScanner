@@ -1,14 +1,18 @@
 ﻿using System;
 
-namespace Tesseract {
+namespace Tesseract
+{
     [Serializable]
-    public class LoadLibraryException : SystemException {
+    public class LoadLibraryException : SystemException
+    {
         public LoadLibraryException() { }
 
-        public LoadLibraryException(string message) : base(message) {
+        public LoadLibraryException(string message) : base(message)
+        {
         }
 
-        public LoadLibraryException(string message, Exception inner) : base(message, inner) {
+        public LoadLibraryException(string message, Exception inner) : base(message, inner)
+        {
         }
 
         protected LoadLibraryException(

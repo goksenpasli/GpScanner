@@ -1,13 +1,16 @@
 ﻿using System.Xml.Serialization;
 using Extensions;
 
-namespace GpScanner.ViewModel {
+namespace GpScanner.ViewModel
+{
     [XmlRoot(ElementName = "Data")]
-    public class Data : InpcBase {
+    public class Data : InpcBase
+    {
         [XmlAttribute(AttributeName = "FileContent")]
         public string FileContent {
             get => fileContent; set {
-                if (fileContent != value) {
+                if (fileContent != value)
+                {
                     fileContent = value;
                     OnPropertyChanged(nameof(FileContent));
                 }
@@ -17,7 +20,8 @@ namespace GpScanner.ViewModel {
         [XmlAttribute(AttributeName = "FileName")]
         public string FileName {
             get => fileName; set {
-                if (fileName != value) {
+                if (fileName != value)
+                {
                     fileName = value;
                     OnPropertyChanged(nameof(FileName));
                 }
@@ -29,7 +33,8 @@ namespace GpScanner.ViewModel {
             get => ıd;
 
             set {
-                if (ıd != value) {
+                if (ıd != value)
+                {
                     ıd = value;
                     OnPropertyChanged(nameof(Id));
                 }
@@ -41,7 +46,8 @@ namespace GpScanner.ViewModel {
             get => qrData;
 
             set {
-                if (qrData != value) {
+                if (qrData != value)
+                {
                     qrData = value;
                     OnPropertyChanged(nameof(QrData));
                 }

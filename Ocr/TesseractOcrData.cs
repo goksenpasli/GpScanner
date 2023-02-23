@@ -1,12 +1,15 @@
 ﻿using System.Windows;
 
-namespace Ocr {
-    public class TesseractOcrData : InpcBase {
+namespace Ocr
+{
+    public class TesseractOcrData : InpcBase
+    {
         public bool IsEnabled {
             get => ısEnabled;
 
             set {
-                if (ısEnabled != value) {
+                if (ısEnabled != value)
+                {
                     ısEnabled = value;
                     OnPropertyChanged(nameof(IsEnabled));
                 }
@@ -17,7 +20,8 @@ namespace Ocr {
             get => ısVisible;
 
             set {
-                if (ısVisible != value) {
+                if (ısVisible != value)
+                {
                     ısVisible = value;
                     OnPropertyChanged(nameof(IsVisible));
                 }
@@ -26,7 +30,8 @@ namespace Ocr {
 
         public string OcrName {
             get => ocrName; set {
-                if (ocrName != value) {
+                if (ocrName != value)
+                {
                     ocrName = value;
                     OnPropertyChanged(nameof(OcrName));
                 }
@@ -37,7 +42,8 @@ namespace Ocr {
             get => progressValue;
 
             set {
-                if (progressValue != value) {
+                if (progressValue != value)
+                {
                     progressValue = value;
                     OnPropertyChanged(nameof(ProgressValue));
                 }

@@ -1,8 +1,10 @@
-﻿namespace Tesseract {
+﻿namespace Tesseract
+{
     /// <summary>
     /// Represents the parameters for a sweep search used by scew algorithms.
     /// </summary>
-    public struct ScewSweep {
+    public struct ScewSweep
+    {
         public static ScewSweep Default = new ScewSweep(DefaultReduction, DefaultRange, DefaultDelta);
 
         #region Constants and Fields
@@ -17,7 +19,8 @@
 
         #region Factory Methods + Constructor
 
-        public ScewSweep(int reduction = DefaultReduction, float range = DefaultRange, float delta = DefaultDelta) {
+        public ScewSweep(int reduction = DefaultReduction, float range = DefaultRange, float delta = DefaultDelta)
+        {
             Reduction = reduction;
             Range = range;
             Delta = delta;

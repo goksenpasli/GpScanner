@@ -1,6 +1,8 @@
 // ReSharper disable InconsistentNaming
-namespace TwainWpf.TwainNative {
-    public enum Message : short {
+namespace TwainWpf.TwainNative
+{
+    public enum Message : short
+    {
         Null = 0x0000,
 
         Get = 0x0001,

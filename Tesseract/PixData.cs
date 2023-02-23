@@ -1,10 +1,13 @@
 ﻿using System;
 
-namespace Tesseract {
-    public unsafe class PixData {
+namespace Tesseract
+{
+    public unsafe class PixData
+    {
         public Pix Pix { get; }
 
-        internal PixData(Pix pix) {
+        internal PixData(Pix pix)
+        {
             Pix = pix;
             Data = Interop.LeptonicaApi.Native.pixGetData(Pix.Handle);
             WordsPerLine = Interop.LeptonicaApi.Native.pixGetWpl(Pix.Handle);
@@ -27,7 +30,8 @@ namespace Tesseract {
         /// This is required for little-endians in situations where we convert from a serialized byte order that is in raster order,
         /// as one typically has in file formats, to one with MSB-to-the-left in each 32-bit word, or v.v. See <seealso href="http://www.leptonica.com/byte-addressing.html"/>
         /// </remarks>
-        public void EndianByteSwap() {
+        public void EndianByteSwap()
+        {
             _ = Interop.LeptonicaApi.Native.pixEndianByteSwap(Pix.Handle);
         }
 
@@ -35,7 +39,8 @@ namespace Tesseract {
        	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static uint EncodeAsRGBA(byte red, byte green, byte blue, byte alpha) {
+        public static uint EncodeAsRGBA(byte red, byte green, byte blue, byte alpha)
+        {
             return (uint)((red << 24) |
                 (green << 16) |
                 (blue << 8) |
@@ -49,7 +54,8 @@ namespace Tesseract {
       	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static uint GetDataBit(uint* data, int index) {
+        public static uint GetDataBit(uint* data, int index)
+        {
             return (*(data + (index >> 5)) >> (31 - (index & 31))) & 1;
         }
 
@@ -60,7 +66,8 @@ namespace Tesseract {
       	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static void SetDataBit(uint* data, int index, uint value) {
+        public static void SetDataBit(uint* data, int index, uint value)
+        {
             uint* wordPtr = data + (index >> 5);
             *wordPtr &= ~(0x80000000 >> (index & 31));
             *wordPtr |= value << (31 - (index & 31));
@@ -73,7 +80,8 @@ namespace Tesseract {
       	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static uint GetDataDIBit(uint* data, int index) {
+        public static uint GetDataDIBit(uint* data, int index)
+        {
             return (*(data + (index >> 4)) >> (2 * (15 - (index & 15)))) & 3;
         }
 
@@ -84,7 +92,8 @@ namespace Tesseract {
       	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static void SetDataDIBit(uint* data, int index, uint value) {
+        public static void SetDataDIBit(uint* data, int index, uint value)
+        {
             uint* wordPtr = data + (index >> 4);
             *wordPtr &= ~(0xc0000000 >> (2 * (index & 15)));
             *wordPtr |= (value & 3) << (30 - (2 * (index & 15)));
@@ -97,7 +106,8 @@ namespace Tesseract {
       	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static uint GetDataQBit(uint* data, int index) {
+        public static uint GetDataQBit(uint* data, int index)
+        {
             return (*(data + (index >> 3)) >> (4 * (7 - (index & 7)))) & 0xf;
         }
 
@@ -108,7 +118,8 @@ namespace Tesseract {
       	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static void SetDataQBit(uint* data, int index, uint value) {
+        public static void SetDataQBit(uint* data, int index, uint value)
+        {
             uint* wordPtr = data + (index >> 3);
             *wordPtr &= ~(0xf0000000 >> (4 * (index & 7)));
             *wordPtr |= (value & 15) << (28 - (4 * (index & 7)));
@@ -121,7 +132,8 @@ namespace Tesseract {
       	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static uint GetDataByte(uint* data, int index) {
+        public static uint GetDataByte(uint* data, int index)
+        {
             // Must do direct size comparison to detect x64 process, since in this will be jited out and results in a lot faster code (e.g. 6x faster for image conversion)
             return IntPtr.Size == 8 ? *(byte*)((ulong)((byte*)data + index) ^ 3) : *(byte*)((uint)((byte*)data + index) ^ 3);
 
@@ -136,12 +148,15 @@ namespace Tesseract {
       	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static void SetDataByte(uint* data, int index, uint value) {
+        public static void SetDataByte(uint* data, int index, uint value)
+        {
             // Must do direct size comparison to detect x64 process, since in this will be jited out and results in a lot faster code (e.g. 6x faster for image conversion)
-            if (IntPtr.Size == 8) {
+            if (IntPtr.Size == 8)
+            {
                 *(byte*)((ulong)((byte*)data + index) ^ 3) = (byte)value;
             }
-            else {
+            else
+            {
                 *(byte*)((uint)((byte*)data + index) ^ 3) = (byte)value;
             }
 
@@ -156,7 +171,8 @@ namespace Tesseract {
       	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static uint GetDataTwoByte(uint* data, int index) {
+        public static uint GetDataTwoByte(uint* data, int index)
+        {
             // Must do direct size comparison to detect x64 process, since in this will be jited out and results in a lot faster code (e.g. 6x faster for image conversion)
             return IntPtr.Size == 8 ? *(ushort*)((ulong)((ushort*)data + index) ^ 2) : *(ushort*)((uint)((ushort*)data + index) ^ 2);
 
@@ -171,12 +187,15 @@ namespace Tesseract {
       	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static void SetDataTwoByte(uint* data, int index, uint value) {
+        public static void SetDataTwoByte(uint* data, int index, uint value)
+        {
             // Must do direct size comparison to detect x64 process, since in this will be jited out and results in a lot faster code (e.g. 6x faster for image conversion)
-            if (IntPtr.Size == 8) {
+            if (IntPtr.Size == 8)
+            {
                 *(ushort*)((ulong)((ushort*)data + index) ^ 2) = (ushort)value;
             }
-            else {
+            else
+            {
                 *(ushort*)((uint)((ushort*)data + index) ^ 2) = (ushort)value;
             }
 
@@ -191,7 +210,8 @@ namespace Tesseract {
       	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static uint GetDataFourByte(uint* data, int index) {
+        public static uint GetDataFourByte(uint* data, int index)
+        {
             return *(data + index);
         }
 
@@ -202,7 +222,8 @@ namespace Tesseract {
       	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static void SetDataFourByte(uint* data, int index, uint value) {
+        public static void SetDataFourByte(uint* data, int index, uint value)
+        {
             *(data + index) = value;
         }
     }

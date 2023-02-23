@@ -3,8 +3,10 @@
 //  Distributed under the MIT License: http://opensource.org/licenses/MIT
 using System;
 
-namespace Tesseract.Internal.InteropDotNet {
-    internal interface ILibraryLoaderLogic {
+namespace Tesseract.Internal.InteropDotNet
+{
+    internal interface ILibraryLoaderLogic
+    {
         string FixUpLibraryName(string fileName);
 
         bool FreeLibrary(IntPtr libraryHandle);

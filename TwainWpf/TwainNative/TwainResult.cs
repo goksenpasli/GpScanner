@@ -1,6 +1,8 @@
 // ReSharper disable InconsistentNaming
-namespace TwainWpf.TwainNative {
-    public enum TwainResult : short {
+namespace TwainWpf.TwainNative
+{
+    public enum TwainResult : short
+    {
         Success = 0x0000,
 
         Failure = 0x0001,

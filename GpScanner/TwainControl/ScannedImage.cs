@@ -2,9 +2,12 @@
 using System.Windows.Media.Imaging;
 using Extensions;
 
-namespace TwainControl {
-    public class ScannedImage : InpcBase {
-        public ScannedImage() {
+namespace TwainControl
+{
+    public class ScannedImage : InpcBase
+    {
+        public ScannedImage()
+        {
             PropertyChanged += ScannedImage_PropertyChanged;
         }
 
@@ -12,7 +15,8 @@ namespace TwainControl {
             get => filePath;
 
             set {
-                if (filePath != value) {
+                if (filePath != value)
+                {
                     filePath = value;
                     OnPropertyChanged(nameof(FilePath));
                 }
@@ -23,7 +27,8 @@ namespace TwainControl {
             get => resim;
 
             set {
-                if (resim != value) {
+                if (resim != value)
+                {
                     resim = value;
                     OnPropertyChanged(nameof(Resim));
                 }
@@ -34,7 +39,8 @@ namespace TwainControl {
             get => rotationAngle;
 
             set {
-                if (rotationAngle != value) {
+                if (rotationAngle != value)
+                {
                     rotationAngle = value;
                     OnPropertyChanged(nameof(RotationAngle));
                 }
@@ -45,7 +51,8 @@ namespace TwainControl {
             get => seçili;
 
             set {
-                if (seçili != value) {
+                if (seçili != value)
+                {
                     seçili = value;
                     OnPropertyChanged(nameof(Seçili));
                 }
@@ -60,8 +67,10 @@ namespace TwainControl {
 
         private bool seçili;
 
-        private async void ScannedImage_PropertyChanged(object sender, PropertyChangedEventArgs e) {
-            if (e.PropertyName is "RotationAngle" && RotationAngle != 0) {
+        private async void ScannedImage_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName is "RotationAngle" && RotationAngle != 0)
+            {
                 Resim = await Resim.RotateImageAsync(RotationAngle);
                 RotationAngle = 0;
             }

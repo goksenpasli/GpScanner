@@ -1,12 +1,15 @@
 ﻿using System;
 
-namespace Extensions {
-    public class ArchiveData : InpcBase {
+namespace Extensions
+{
+    public class ArchiveData : InpcBase
+    {
         public long Boyut {
             get => boyut;
 
             set {
-                if (boyut != value) {
+                if (boyut != value)
+                {
                     boyut = value;
                     OnPropertyChanged(nameof(Boyut));
                 }
@@ -17,7 +20,8 @@ namespace Extensions {
             get => dosyaAdı;
 
             set {
-                if (dosyaAdı != value) {
+                if (dosyaAdı != value)
+                {
                     dosyaAdı = value;
                     OnPropertyChanged(nameof(DosyaAdı));
                 }
@@ -28,7 +32,8 @@ namespace Extensions {
             get => düzenlenmeZamanı;
 
             set {
-                if (düzenlenmeZamanı != value) {
+                if (düzenlenmeZamanı != value)
+                {
                     düzenlenmeZamanı = value;
                     OnPropertyChanged(nameof(DüzenlenmeZamanı));
                 }
@@ -39,7 +44,8 @@ namespace Extensions {
             get => oran;
 
             set {
-                if (oran != value) {
+                if (oran != value)
+                {
                     oran = value;
                     OnPropertyChanged(nameof(Oran));
                 }
@@ -50,7 +56,8 @@ namespace Extensions {
             get => sıkıştırılmışBoyut;
 
             set {
-                if (sıkıştırılmışBoyut != value) {
+                if (sıkıştırılmışBoyut != value)
+                {
                     sıkıştırılmışBoyut = value;
                     OnPropertyChanged(nameof(SıkıştırılmışBoyut));
                 }
@@ -61,7 +68,8 @@ namespace Extensions {
             get => tamYol;
 
             set {
-                if (tamYol != value) {
+                if (tamYol != value)
+                {
                     tamYol = value;
                     OnPropertyChanged(nameof(TamYol));
                 }

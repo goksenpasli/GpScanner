@@ -1,6 +1,8 @@
 // ReSharper disable InconsistentNaming
-namespace TwainWpf.TwainNative {
-    public enum PageType {
+namespace TwainWpf.TwainNative
+{
+    public enum PageType
+    {
         None = 0,
 
         /// <summary>

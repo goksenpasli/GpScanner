@@ -1,9 +1,11 @@
 ﻿// ReSharper disable InconsistentNaming
-namespace TwainWpf.TwainNative {
+namespace TwainWpf.TwainNative
+{
     /// <summary>
     /// Twain spec ICAP_COMPRESSION values.
     /// </summary>
-    public enum Compression : short {
+    public enum Compression : short
+    {
         None = 0,
 
         PackBits = 1,

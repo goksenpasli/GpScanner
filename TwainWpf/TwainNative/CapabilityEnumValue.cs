@@ -1,4 +1,5 @@
-namespace TwainWpf.TwainNative {
+namespace TwainWpf.TwainNative
+{
     /// <summary>
     /// /* TWON_ENUMERATION. Container for a collection of values. */
     /// typedef struct {
@@ -9,7 +10,8 @@ namespace TwainWpf.TwainNative {
     ///    TW_UINT8   ItemList[1];  /* Array of ItemType values starts here       */
     /// } TW_ENUMERATION, FAR * pTW_ENUMERATION;
     /// </summary>
-    public class CapabilityEnumValue {
+    public class CapabilityEnumValue
+    {
         public TwainType TwainType { get; set; }
 
         public int ItemCount { get; set; }

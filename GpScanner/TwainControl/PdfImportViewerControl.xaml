@@ -20,9 +20,18 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <StackPanel Margin="2" Orientation="Horizontal">
+            <Button Command="{Binding LoadSingleEypFile}" CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Width="16" Height="16"
+                        Source="{Binding Source='.eyp', Converter={StaticResource FilePathToIconConverter}}" />
+                    <TextBlock VerticalAlignment="Center">
+                        <Run Text="EYP" />
+                        <Run Text="{local:Loc FILE}" />
+                    </TextBlock>
+                </StackPanel>
+            </Button>
             <UniformGrid Columns="5" DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType=Window}}">
                 <Extensions:NumericUpDownControl Maximum="{Binding ElementName=PdfViewer, Path=ToplamSayfa}"
                     Minimum="1" SmallChange="1"
@@ -68,7 +77,7 @@
                     <TextBlock FontFamily="Wingdings" FontSize="16" Text="ç" />
                 </Button.Content>
             </Button>
-            <Button Command="{Binding DataContext.OcrPdfThumbnailPage, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
+            <Button Command="{Binding DataContext.OcrPdfImportViewerThumbnailPage, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
                 <Button.Content>
                     <Grid>
                         <ProgressBar IsIndeterminate="{Binding DataContext.OcrIsBusy, RelativeSource={RelativeSource AncestorType=Window}}" />
@@ -80,29 +89,6 @@
         </StackPanel>
         <Pdfviewer:PdfViewer x:Name="PdfViewer"
             Grid.Row="1"
-            PdfFilePath="{Binding SinglePdfFilePath}"
-            PrintButtonVisibility="Visible" OpenButtonVisibility="Visible" />
-        <UniformGrid Grid.Row="2" Columns="2">
-            <Button Command="{Binding LoadSingleEypFile}" CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
-                <StackPanel Orientation="Horizontal">
-                    <Image Width="32" Height="32"
-                        Source="{Binding Source='.eyp', Converter={StaticResource FilePathToIconConverter}}" />
-                    <TextBlock VerticalAlignment="Center" Text="{local:Loc FILE}" />
-                </StackPanel>
-            </Button>
-            <Button Command="{Binding AddSinglePdfPage}" CommandParameter="{Binding ElementName=PdfViewer, Path=Source}">
-                <StackPanel Orientation="Horizontal">
-                    <Image Width="32" Height="32">
-                        <Image.Source>
-                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                <Binding Source="Shell32.dll" />
-                                <Binding Source="19" />
-                            </MultiBinding>
-                        </Image.Source>
-                    </Image>
-                    <TextBlock VerticalAlignment="Center" Text="{local:Loc ADDDOC}" />
-                </StackPanel>
-            </Button>
-        </UniformGrid>
+            OpenButtonVisibility="Visible" PrintButtonVisibility="Visible" />
     </Grid>
 </UserControl>

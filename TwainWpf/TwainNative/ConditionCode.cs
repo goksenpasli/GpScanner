@@ -1,5 +1,7 @@
-namespace TwainWpf.TwainNative {
-    public enum ConditionCode : short {
+namespace TwainWpf.TwainNative
+{
+    public enum ConditionCode : short
+    {
         Success = 0,
 
         /// <summary>

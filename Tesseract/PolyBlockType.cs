@@ -1,5 +1,7 @@
-﻿namespace Tesseract {
-    public enum PolyBlockType : int {
+﻿namespace Tesseract
+{
+    public enum PolyBlockType : int
+    {
         /// <summary>
         /// The type is not known yet, keep as first element.
         /// </summary>

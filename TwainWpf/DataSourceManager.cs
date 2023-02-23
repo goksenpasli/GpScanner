@@ -4,15 +4,19 @@ using System.Runtime.InteropServices;
 using TwainWpf.TwainNative;
 using TwainWpf.Win32;
 
-namespace TwainWpf {
+namespace TwainWpf
+{
     /// <summary>
     /// DataSourceManager
     /// </summary>
     /// <seealso cref="System.IDisposable" />
-    public class DataSourceManager : IDisposable {
-        public static readonly Identity DefaultApplicationId = new Identity() {
+    public class DataSourceManager : IDisposable
+    {
+        public static readonly Identity DefaultApplicationId = new Identity()
+        {
             Id = BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0),
-            Version = new TwainVersion() {
+            Version = new TwainVersion()
+            {
                 MajorNum = 1,
                 MinorNum = 1,
                 Language = Language.USA,
@@ -27,7 +31,8 @@ namespace TwainWpf {
             ProductName = "TwainDotNet",
         };
 
-        public DataSourceManager(Identity applicationId, IWindowsMessageHook messageHook) {
+        public DataSourceManager(Identity applicationId, IWindowsMessageHook messageHook)
+        {
             // Make a copy of the identity in case it gets modified
             ApplicationId = applicationId.Clone();
 
@@ -49,13 +54,15 @@ namespace TwainWpf {
                 Message.OpenDSM,
                 ref windowHandle);
 
-            if (result == TwainResult.Success) {
+            if (result == TwainResult.Success)
+            {
                 //according to the 2.0 spec (2-10) if (applicationId.SupportedGroups | DataGroup.Dsm2) > 0
                 //then we should call DM_Entry(id, 0, DG_Control, DAT_Entrypoint, MSG_Get, wh)
                 //right here
                 DataSource = DataSource.GetDefault(ApplicationId, MessageHook);
             }
-            else {
+            else
+            {
                 throw new TwainException("Error initialising DSM: " + result, result);
             }
         }
@@ -73,7 +80,8 @@ namespace TwainWpf {
 
         public IWindowsMessageHook MessageHook { get; }
 
-        public static ConditionCode GetConditionCode(Identity applicationId, Identity sourceId) {
+        public static ConditionCode GetConditionCode(Identity applicationId, Identity sourceId)
+        {
             Status status = new Status();
 
             _ = Twain32Native.DsmStatus(
@@ -87,61 +95,75 @@ namespace TwainWpf {
             return status.ConditionCode;
         }
 
-        public void Dispose() {
+        public void Dispose()
+        {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
-        public void SelectSource() {
+        public void SelectSource()
+        {
             DataSource.Dispose();
             DataSource = DataSource.UserSelected(ApplicationId, MessageHook);
         }
 
-        public void SelectSource(DataSource dataSource) {
+        public void SelectSource(DataSource dataSource)
+        {
             DataSource.Dispose();
             DataSource = dataSource;
         }
 
-        public void StartScan(ScanSettings settings) {
+        public void StartScan(ScanSettings settings)
+        {
             bool scanning = false;
 
-            try {
+            try
+            {
                 MessageHook.UseFilter = true;
                 scanning = DataSource.Open(settings);
             }
-            catch (TwainException) {
+            catch (TwainException)
+            {
                 DataSource.Close();
                 EndingScan();
                 throw;
             }
-            finally {
+            finally
+            {
                 // Remove the message hook if scan setup failed
-                if (!scanning) {
+                if (!scanning)
+                {
                     EndingScan();
                 }
             }
         }
 
-        internal void CloseDsAndCompleteScanning(Exception exception) {
+        internal void CloseDsAndCompleteScanning(Exception exception)
+        {
             EndingScan();
             DataSource.Close();
-            try {
+            try
+            {
                 ScanningComplete?.Invoke(this, new ScanningCompleteEventArgs(exception));
             }
-            catch {
+            catch
+            {
                 //
             }
         }
 
-        protected virtual void Dispose(bool disposing) {
+        protected virtual void Dispose(bool disposing)
+        {
             Marshal.FreeHGlobal(_eventMessage.EventPtr);
 
-            if (disposing) {
+            if (disposing)
+            {
                 DataSource.Dispose();
 
                 IntPtr windowHandle = MessageHook.WindowHandle;
 
-                if (ApplicationId.Id != 0) {
+                if (ApplicationId.Id != 0)
+                {
                     // Close down the data source manager
                     _ = Twain32Native.DsmParent(
                         ApplicationId,
@@ -156,20 +178,24 @@ namespace TwainWpf {
             }
         }
 
-        protected void EndingScan() {
+        protected void EndingScan()
+        {
             MessageHook.UseFilter = false;
         }
 
         // ReSharper disable once RedundantAssignment
-        protected IntPtr FilterMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled) {
-            if (DataSource.SourceId.Id == 0) {
+        protected IntPtr FilterMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            if (DataSource.SourceId.Id == 0)
+            {
                 handled = false;
                 return IntPtr.Zero;
             }
 
             int pos = User32Native.GetMessagePos();
 
-            WindowsMessage message = new WindowsMessage {
+            WindowsMessage message = new WindowsMessage
+            {
                 hwnd = hwnd,
                 message = msg,
                 wParam = wParam,
@@ -190,18 +216,22 @@ namespace TwainWpf {
                 Message.ProcessEvent,
                 ref _eventMessage);
 
-            if (result == TwainResult.NotDSEvent) {
+            if (result == TwainResult.NotDSEvent)
+            {
                 handled = false;
                 return IntPtr.Zero;
             }
 
-            switch (_eventMessage.Message) {
+            switch (_eventMessage.Message)
+            {
                 case Message.XFerReady:
                     Exception exception = null;
-                    try {
+                    try
+                    {
                         TransferPictures();
                     }
-                    catch (Exception e) {
+                    catch (Exception e)
+                    {
                         exception = e;
                     }
                     CloseDsAndCompleteScanning(exception);
@@ -221,14 +251,18 @@ namespace TwainWpf {
             return IntPtr.Zero;
         }
 
-        protected void TransferPictures() {
-            if (DataSource.SourceId.Id == 0) {
+        protected void TransferPictures()
+        {
+            if (DataSource.SourceId.Id == 0)
+            {
                 return;
             }
 
             PendingXfers pendingTransfer = new PendingXfers();
-            try {
-                do {
+            try
+            {
+                do
+                {
                     pendingTransfer.Count = 0;
                     IntPtr hbitmap = IntPtr.Zero;
 
@@ -242,7 +276,8 @@ namespace TwainWpf {
                         Message.Get,
                         imageInfo);
 
-                    if (result != TwainResult.Success) {
+                    if (result != TwainResult.Success)
+                    {
                         DataSource.Close();
                         break;
                     }
@@ -256,7 +291,8 @@ namespace TwainWpf {
                         Message.Get,
                         ref hbitmap);
 
-                    if (result != TwainResult.XferDone) {
+                    if (result != TwainResult.XferDone)
+                    {
                         DataSource.Close();
                         break;
                     }
@@ -270,16 +306,20 @@ namespace TwainWpf {
                         Message.EndXfer,
                         pendingTransfer);
 
-                    if (result != TwainResult.Success) {
+                    if (result != TwainResult.Success)
+                    {
                         DataSource.Close();
                         break;
                     }
 
-                    if (hbitmap != IntPtr.Zero) {
-                        using (BitmapRenderer renderer = new BitmapRenderer(hbitmap)) {
+                    if (hbitmap != IntPtr.Zero)
+                    {
+                        using (BitmapRenderer renderer = new BitmapRenderer(hbitmap))
+                        {
                             TransferImageEventArgs args = new TransferImageEventArgs(renderer.RenderToBitmap(), pendingTransfer.Count != 0);
                             TransferImage?.Invoke(this, args);
-                            if (!args.ContinueScanning) {
+                            if (!args.ContinueScanning)
+                            {
                                 break;
                             }
                         }
@@ -287,7 +327,8 @@ namespace TwainWpf {
                 }
                 while (pendingTransfer.Count != 0);
             }
-            finally {
+            finally
+            {
                 // Reset any pending transfers
                 _ = Twain32Native.DsPendingTransfer(
                     ApplicationId,
@@ -301,7 +342,8 @@ namespace TwainWpf {
 
         private Event _eventMessage;
 
-        ~DataSourceManager() {
+        ~DataSourceManager()
+        {
             Dispose(false);
         }
     }

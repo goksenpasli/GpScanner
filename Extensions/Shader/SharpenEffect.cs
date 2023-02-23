@@ -3,17 +3,21 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 
-namespace Extensions {
+namespace Extensions
+{
     /// <summary>An effect that sharpens the input.</summary>
-    public class SharpenEffect : ShaderEffect {
+    public class SharpenEffect : ShaderEffect
+    {
         public static readonly DependencyProperty AmountProperty = DependencyProperty.Register("Amount", typeof(double), typeof(SharpenEffect), new UIPropertyMetadata(1D, PixelShaderConstantCallback(0)));
 
         public static readonly DependencyProperty InputProperty = RegisterPixelShaderSamplerProperty("Input", typeof(SharpenEffect), 0);
 
         public static readonly DependencyProperty InputSizeProperty = DependencyProperty.Register("InputSize", typeof(Size), typeof(SharpenEffect), new UIPropertyMetadata(new Size(800D, 600D), PixelShaderConstantCallback(1)));
 
-        public SharpenEffect() {
-            PixelShader = new() {
+        public SharpenEffect()
+        {
+            PixelShader = new()
+            {
                 UriSource = new Uri("/Extensions;component/Shader/SharpenEffect.ps", UriKind.Relative)
             };
 

@@ -1,7 +1,9 @@
 using System.ComponentModel;
 
-namespace TwainWpf {
-    public class ScanSettings : INotifyPropertyChanged {
+namespace TwainWpf
+{
+    public class ScanSettings : INotifyPropertyChanged
+    {
         /// <summary>
         /// The value to set to scan all available pages.
         /// </summary>
@@ -10,13 +12,15 @@ namespace TwainWpf {
         /// <summary>
         /// Default scan settings.
         /// </summary>
-        public static readonly ScanSettings Default = new ScanSettings() {
+        public static readonly ScanSettings Default = new ScanSettings()
+        {
             Resolution = ResolutionSettings.ColourPhotocopier,
             Page = PageSettings.Default,
             Rotation = new RotationSettings()
         };
 
-        public ScanSettings() {
+        public ScanSettings()
+        {
             ShouldTransferAllPages = true;
         }
 
@@ -27,7 +31,8 @@ namespace TwainWpf {
             get => _abortWhenNoPaperDetectable;
 
             set {
-                if (value != _abortWhenNoPaperDetectable) {
+                if (value != _abortWhenNoPaperDetectable)
+                {
                     _abortWhenNoPaperDetectable = value;
                     OnPropertyChanged(nameof(AbortWhenNoPaperDetectable));
                 }
@@ -38,7 +43,8 @@ namespace TwainWpf {
             get => _area;
 
             set {
-                if (value != _area) {
+                if (value != _area)
+                {
                     _area = value;
                     OnPropertyChanged(nameof(Area));
                 }
@@ -53,7 +59,8 @@ namespace TwainWpf {
             get => _page;
 
             set {
-                if (value != _page) {
+                if (value != _page)
+                {
                     _page = value;
                     OnPropertyChanged(nameof(Page));
                 }
@@ -67,7 +74,8 @@ namespace TwainWpf {
             get => _resolution;
 
             set {
-                if (value != _resolution) {
+                if (value != _resolution)
+                {
                     _resolution = value;
                     OnPropertyChanged(nameof(Resolution));
                 }
@@ -82,7 +90,8 @@ namespace TwainWpf {
             get => _rotation;
 
             set {
-                if (value != _rotation) {
+                if (value != _rotation)
+                {
                     _rotation = value;
                     OnPropertyChanged(nameof(Rotation));
                 }
@@ -108,7 +117,8 @@ namespace TwainWpf {
             get => _showProgressIndicatorUi;
 
             set {
-                if (value != _showProgressIndicatorUi) {
+                if (value != _showProgressIndicatorUi)
+                {
                     _showProgressIndicatorUi = value;
                     OnPropertyChanged("ShowProgressIndicatorUI");
                 }
@@ -122,7 +132,8 @@ namespace TwainWpf {
             get => _showTwainUi;
 
             set {
-                if (value != _showTwainUi) {
+                if (value != _showTwainUi)
+                {
                     _showTwainUi = value;
                     OnPropertyChanged("ShowTwainUI");
                 }
@@ -136,7 +147,8 @@ namespace TwainWpf {
             get => _transferCount;
 
             set {
-                if (value != _transferCount) {
+                if (value != _transferCount)
+                {
                     _transferCount = value;
                     OnPropertyChanged(nameof(TransferCount));
                     OnPropertyChanged("ShouldTransferAllPages");
@@ -152,7 +164,8 @@ namespace TwainWpf {
             get => _useAutoFeeder;
 
             set {
-                if (value != _useAutoFeeder) {
+                if (value != _useAutoFeeder)
+                {
                     _useAutoFeeder = value;
                     OnPropertyChanged(nameof(UseAutoFeeder));
                 }
@@ -166,7 +179,8 @@ namespace TwainWpf {
             get => _useAutoScanCache;
 
             set {
-                if (value != _useAutoScanCache) {
+                if (value != _useAutoScanCache)
+                {
                     _useAutoScanCache = value;
                     OnPropertyChanged(nameof(UseAutoScanCache));
                 }
@@ -180,7 +194,8 @@ namespace TwainWpf {
             get => _useDocumentFeeder;
 
             set {
-                if (value != _useDocumentFeeder) {
+                if (value != _useDocumentFeeder)
+                {
                     _useDocumentFeeder = value;
                     OnPropertyChanged(nameof(UseDocumentFeeder));
                 }
@@ -194,7 +209,8 @@ namespace TwainWpf {
             get => _useDuplex;
 
             set {
-                if (value != _useDuplex) {
+                if (value != _useDuplex)
+                {
                     _useDuplex = value;
                     OnPropertyChanged(nameof(UseDuplex));
                 }
@@ -208,7 +224,8 @@ namespace TwainWpf {
             get => _useFilmScanner;
 
             set {
-                if (value != _useFilmScanner) {
+                if (value != _useFilmScanner)
+                {
                     _useFilmScanner = value;
                     OnPropertyChanged(nameof(UseFilmScanner));
                 }
@@ -245,7 +262,8 @@ namespace TwainWpf {
 
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
-        protected void OnPropertyChanged(string propertyName) {
+        protected void OnPropertyChanged(string propertyName)
+        {
             PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 

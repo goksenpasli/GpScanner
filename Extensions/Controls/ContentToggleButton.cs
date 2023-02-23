@@ -1,8 +1,10 @@
 ﻿using System.Windows;
 using System.Windows.Controls.Primitives;
 
-namespace Extensions {
-    public class ContentToggleButton : ToggleButton {
+namespace Extensions
+{
+    public class ContentToggleButton : ToggleButton
+    {
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register("CornerRadius", typeof(CornerRadius), typeof(ContentToggleButton), new PropertyMetadata(new CornerRadius(0d)));
 
         public static readonly DependencyProperty OverContentProperty = DependencyProperty.Register("OverContent", typeof(object), typeof(ContentToggleButton), new PropertyMetadata(null));
@@ -11,7 +13,8 @@ namespace Extensions {
 
         public static readonly DependencyProperty StaysOpenProperty = DependencyProperty.Register("StaysOpen", typeof(bool), typeof(ContentToggleButton), new PropertyMetadata(false));
 
-        static ContentToggleButton() {
+        static ContentToggleButton()
+        {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(ContentToggleButton), new FrameworkPropertyMetadata(typeof(ContentToggleButton)));
         }
 
@@ -35,7 +38,8 @@ namespace Extensions {
             set => SetValue(StaysOpenProperty, value);
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return Content.ToString();
         }
     }

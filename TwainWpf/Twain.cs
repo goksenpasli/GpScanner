@@ -3,9 +3,12 @@ using System.Collections.Generic;
 
 // ReSharper disable PossibleNullReferenceException
 
-namespace TwainWpf {
-    public class Twain {
-        public Twain(IWindowsMessageHook messageHook) {
+namespace TwainWpf
+{
+    public class Twain
+    {
+        public Twain(IWindowsMessageHook messageHook)
+        {
             ScanningComplete += delegate { };
             TransferImage += delegate { };
 
@@ -26,7 +29,8 @@ namespace TwainWpf {
         /// </summary>
         public string DefaultSourceName {
             get {
-                using (DataSource source = DataSource.GetDefault(_dataSourceManager.ApplicationId, _dataSourceManager.MessageHook)) {
+                using (DataSource source = DataSource.GetDefault(_dataSourceManager.ApplicationId, _dataSourceManager.MessageHook))
+                {
                     return source.SourceId.ProductName;
                 }
             }
@@ -42,7 +46,8 @@ namespace TwainWpf {
                     _dataSourceManager.ApplicationId,
                     _dataSourceManager.MessageHook);
 
-                foreach (DataSource source in sources) {
+                foreach (DataSource source in sources)
+                {
                     result.Add(source.SourceId.ProductName);
                     source.Dispose();
                 }
@@ -54,7 +59,8 @@ namespace TwainWpf {
         /// <summary>
         /// Shows a dialog prompting the use to select the source to scan from.
         /// </summary>
-        public void SelectSource() {
+        public void SelectSource()
+        {
             _dataSourceManager.SelectSource();
         }
 
@@ -62,7 +68,8 @@ namespace TwainWpf {
         /// Selects a source based on the product name string.
         /// </summary>
         /// <param name="sourceName">The source product name.</param>
-        public void SelectSource(string sourceName) {
+        public void SelectSource(string sourceName)
+        {
             DataSource source = DataSource.GetSource(
                 sourceName,
                 _dataSourceManager.ApplicationId,
@@ -74,7 +81,8 @@ namespace TwainWpf {
         /// <summary>
         /// Starts scanning.
         /// </summary>
-        public void StartScanning(ScanSettings settings) {
+        public void StartScanning(ScanSettings settings)
+        {
             _dataSourceManager.StartScan(settings);
         }
 

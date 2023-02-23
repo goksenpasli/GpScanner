@@ -18,16 +18,20 @@ using TwainControl.Properties;
 using static Extensions.ExtensionMethods;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
-namespace TwainControl {
-    public static class BitmapMethods {
-        public static Bitmap AdjustBrightness(this Bitmap bitmap, int brightness) {
+namespace TwainControl
+{
+    public static class BitmapMethods
+    {
+        public static Bitmap AdjustBrightness(this Bitmap bitmap, int brightness)
+        {
             BitmapData bmpData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, bitmap.PixelFormat);
             IntPtr ptr = bmpData.Scan0;
             int bytes = bmpData.Stride * bmpData.Height;
             byte[] rgb = new byte[bytes];
             Marshal.Copy(ptr, rgb, 0, bytes);
             int step = System.Drawing.Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
-            _ = Parallel.ForEach(SteppedRange(0, bytes, step), k => {
+            _ = Parallel.ForEach(SteppedRange(0, bytes, step), k =>
+            {
                 int b = rgb[k];
                 int g = rgb[k + 1];
                 int r = rgb[k + 2];
@@ -35,7 +39,8 @@ namespace TwainControl {
                 g += brightness;
                 r += brightness;
 
-                switch (r) {
+                switch (r)
+                {
                     case > 255:
                         r = 255;
                         break;
@@ -45,7 +50,8 @@ namespace TwainControl {
                         break;
                 }
 
-                switch (g) {
+                switch (g)
+                {
                     case > 255:
                         g = 255;
                         break;
@@ -55,7 +61,8 @@ namespace TwainControl {
                         break;
                 }
 
-                switch (b) {
+                switch (b)
+                {
                     case > 255:
                         b = 255;
                         break;
@@ -75,7 +82,8 @@ namespace TwainControl {
             return bitmap;
         }
 
-        public static Bitmap BitmapSourceToBitmap(this BitmapSource bitmapsource) {
+        public static Bitmap BitmapSourceToBitmap(this BitmapSource bitmapsource)
+        {
             FormatConvertedBitmap src = new();
             src.BeginInit();
             src.Source = bitmapsource;
@@ -89,8 +97,10 @@ namespace TwainControl {
             return bitmap;
         }
 
-        public static byte[] CaptureScreen(double coordx, double coordy, double selectionwidth, double selectionheight, ScrollViewer scrollviewer, BitmapFrame bitmapFrame) {
-            try {
+        public static byte[] CaptureScreen(double coordx, double coordy, double selectionwidth, double selectionheight, ScrollViewer scrollviewer, BitmapFrame bitmapFrame)
+        {
+            try
+            {
                 coordx += scrollviewer.HorizontalOffset;
                 coordy += scrollviewer.VerticalOffset;
 
@@ -102,33 +112,42 @@ namespace TwainControl {
                 bitmapFrame = null;
                 return cb.ToTiffJpegByteArray(Format.Png);
             }
-            catch (Exception) {
+            catch (Exception)
+            {
                 return null;
             }
         }
 
-        public static ObservableCollection<Chart> GenerateHistogram(this Bitmap b, System.Windows.Media.Brush color) {
+        public static ObservableCollection<Chart> GenerateHistogram(this Bitmap b, System.Windows.Media.Brush color)
+        {
             int[] histogram = new int[256];
             BitmapData bmData = null;
             ObservableCollection<Chart> chart = new();
-            try {
+            try
+            {
                 bmData = b.LockBits(new Rectangle(0, 0, b.Width, b.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
                 int scanline = bmData.Stride;
                 IntPtr Scan0 = bmData.Scan0;
-                unsafe {
+                unsafe
+                {
                     byte* p = (byte*)(void*)Scan0;
                     int nWidth = b.Width;
                     int nHeight = b.Height;
-                    for (int y = 0; y < nHeight; y++) {
-                        for (int x = 0; x < nWidth; x++) {
+                    for (int y = 0; y < nHeight; y++)
+                    {
+                        for (int x = 0; x < nWidth; x++)
+                        {
                             long Temp = 0;
-                            if (color == System.Windows.Media.Brushes.Red) {
+                            if (color == System.Windows.Media.Brushes.Red)
+                            {
                                 histogram[Temp += p[2]]++;
                             }
-                            if (color == System.Windows.Media.Brushes.Green) {
+                            if (color == System.Windows.Media.Brushes.Green)
+                            {
                                 histogram[Temp += p[1]]++;
                             }
-                            if (color == System.Windows.Media.Brushes.Blue) {
+                            if (color == System.Windows.Media.Brushes.Blue)
+                            {
                                 histogram[Temp += p[0]]++;
                             }
                             p += 4;
@@ -136,18 +155,21 @@ namespace TwainControl {
                     }
                 }
                 b.UnlockBits(bmData);
-                foreach (int item in histogram.Take(255)) {
+                foreach (int item in histogram.Take(255))
+                {
                     chart.Add(new Chart() { ChartBrush = color, ChartValue = item });
                 }
                 bmData = null;
                 return chart;
             }
-            catch {
+            catch
+            {
             }
             return null;
         }
 
-        public static async Task<BitmapFrame> GenerateImageDocumentBitmapFrame(MemoryStream ms, Paper paper, bool deskew = false) {
+        public static async Task<BitmapFrame> GenerateImageDocumentBitmapFrame(MemoryStream ms, Paper paper, bool deskew = false)
+        {
             BitmapImage image = new();
             image.BeginInit();
             image.CacheOption = BitmapCacheOption.None;
@@ -157,10 +179,12 @@ namespace TwainControl {
             image.Freeze();
             BitmapFrame bitmapFrame;
 
-            if (deskew) {
+            if (deskew)
+            {
                 RenderTargetBitmap skewedimage = await image.RotateImageAsync((double)ToolBox.GetDeskewAngle(image, true));
                 skewedimage.Freeze();
-                if (image.PixelWidth < image.PixelHeight) {
+                if (image.PixelWidth < image.PixelHeight)
+                {
                     bitmapFrame = BitmapFrame.Create(skewedimage, image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Width * paper.Height).BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg, Settings.Default.PreviewWidth));
                     bitmapFrame.Freeze();
                     return bitmapFrame;
@@ -170,7 +194,8 @@ namespace TwainControl {
                 return bitmapFrame;
             }
 
-            if (image.PixelWidth < image.PixelHeight) {
+            if (image.PixelWidth < image.PixelHeight)
+            {
                 bitmapFrame = BitmapFrame.Create(image, image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Width * paper.Height).BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg, Settings.Default.PreviewWidth));
                 bitmapFrame.Freeze();
                 return bitmapFrame;
@@ -180,8 +205,10 @@ namespace TwainControl {
             return bitmapFrame;
         }
 
-        public static async Task<BitmapFrame> GenerateImageDocumentBitmapFrameAsync(Uri item, int decodeheight, int defaultpictureresizeratio = 100) {
-            return await Task.Run(() => {
+        public static async Task<BitmapFrame> GenerateImageDocumentBitmapFrameAsync(Uri item, int decodeheight, int defaultpictureresizeratio = 100)
+        {
+            return await Task.Run(() =>
+            {
                 BitmapImage image = new();
                 image.BeginInit();
                 image.CacheOption = BitmapCacheOption.None;
@@ -204,7 +231,8 @@ namespace TwainControl {
             });
         }
 
-        public static ObservableCollection<Paper> GetPapers() {
+        public static ObservableCollection<Paper> GetPapers()
+        {
             return new ObservableCollection<Paper>
             {
                 new Paper() { Height = 119, PaperType = "A0", Width = 84.1 },
@@ -225,29 +253,34 @@ namespace TwainControl {
             };
         }
 
-        public static unsafe Bitmap ReplaceColor(this Bitmap source, System.Windows.Media.Color toReplace, System.Windows.Media.Color replacement, int threshold) {
+        public static unsafe Bitmap ReplaceColor(this Bitmap source, System.Windows.Media.Color toReplace, System.Windows.Media.Color replacement, int threshold)
+        {
             const int pixelSize = 4; // 32 bits per pixel
 
             Bitmap target = new(source.Width, source.Height, PixelFormat.Format32bppArgb);
 
             BitmapData sourceData = null, targetData = null;
 
-            try {
+            try
+            {
                 sourceData = source.LockBits(new Rectangle(0, 0, source.Width, source.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
                 targetData = target.LockBits(new Rectangle(0, 0, target.Width, target.Height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 
-                for (int y = 0; y < source.Height; ++y) {
+                for (int y = 0; y < source.Height; ++y)
+                {
                     byte* sourceRow = (byte*)sourceData.Scan0 + (y * sourceData.Stride);
                     byte* targetRow = (byte*)targetData.Scan0 + (y * targetData.Stride);
 
-                    _ = Parallel.For(0, source.Width, x => {
+                    _ = Parallel.For(0, source.Width, x =>
+                    {
                         byte b = sourceRow[(x * pixelSize) + 0];
                         byte g = sourceRow[(x * pixelSize) + 1];
                         byte r = sourceRow[(x * pixelSize) + 2];
                         byte a = sourceRow[(x * pixelSize) + 3];
 
-                        if (toReplace.R + threshold >= r && toReplace.R - threshold <= r && toReplace.G + threshold >= g && toReplace.G - threshold <= g && toReplace.B + threshold >= b && toReplace.B - threshold <= b) {
+                        if (toReplace.R + threshold >= r && toReplace.R - threshold <= r && toReplace.G + threshold >= g && toReplace.G - threshold <= g && toReplace.B + threshold >= b && toReplace.B - threshold <= b)
+                        {
                             r = replacement.R;
                             g = replacement.G;
                             b = replacement.B;
@@ -260,12 +293,15 @@ namespace TwainControl {
                     });
                 }
             }
-            finally {
-                if (sourceData != null) {
+            finally
+            {
+                if (sourceData != null)
+                {
                     source.UnlockBits(sourceData);
                 }
 
-                if (targetData != null) {
+                if (targetData != null)
+                {
                     target.UnlockBits(targetData);
                 }
             }
@@ -273,11 +309,15 @@ namespace TwainControl {
             return target;
         }
 
-        public static async Task<RenderTargetBitmap> RotateImageAsync(this ImageSource Source, double angle) {
-            try {
-                return await Task.Run(() => {
+        public static async Task<RenderTargetBitmap> RotateImageAsync(this ImageSource Source, double angle)
+        {
+            try
+            {
+                return await Task.Run(() =>
+                {
                     DrawingVisual dv = new();
-                    using (DrawingContext dc = dv.RenderOpen()) {
+                    using (DrawingContext dc = dv.RenderOpen())
+                    {
                         dc.PushTransform(new RotateTransform(angle));
                         dc.DrawImage(Source, new Rect(0, 0, ((BitmapSource)Source).PixelWidth, ((BitmapSource)Source).PixelHeight));
                         dc.Pop();
@@ -290,35 +330,42 @@ namespace TwainControl {
                     return rtb;
                 });
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 Source = null;
                 _ = MessageBox.Show(ex.Message);
                 return null;
             }
         }
 
-        public static async Task<BitmapFrame> RotateImageAsync(this BitmapFrame bitmapFrame, double angle) {
+        public static async Task<BitmapFrame> RotateImageAsync(this BitmapFrame bitmapFrame, double angle)
+        {
             TransformedBitmap transformedBitmap = new(bitmapFrame, new RotateTransform(angle * 90));
             TransformedBitmap transformedBitmapthumb = new(bitmapFrame.Thumbnail, new RotateTransform(angle * 90));
             transformedBitmap.Freeze();
             transformedBitmapthumb.Freeze();
-            return await Task.Run(() => {
+            return await Task.Run(() =>
+            {
                 BitmapFrame frame = BitmapFrame.Create(transformedBitmap, transformedBitmapthumb);
                 frame.Freeze();
                 return frame;
             });
         }
 
-        public static IEnumerable<int> SteppedRange(int fromInclusive, int toExclusive, int step) {
-            for (int i = fromInclusive; i < toExclusive; i += step) {
+        public static IEnumerable<int> SteppedRange(int fromInclusive, int toExclusive, int step)
+        {
+            for (int i = fromInclusive; i < toExclusive; i += step)
+            {
                 yield return i;
             }
         }
 
-        public static RenderTargetBitmap ÜstüneResimÇiz(this ImageSource Source, System.Windows.Point konum, System.Windows.Media.Brush brushes, double emSize = 64, string metin = null, double angle = 315, string font = "Arial") {
+        public static RenderTargetBitmap ÜstüneResimÇiz(this ImageSource Source, System.Windows.Point konum, System.Windows.Media.Brush brushes, double emSize = 64, string metin = null, double angle = 315, string font = "Arial")
+        {
             FormattedText formattedText = new(metin, CultureInfo.GetCultureInfo("tr-TR"), FlowDirection.LeftToRight, new Typeface(font), emSize, brushes) { TextAlignment = TextAlignment.Center };
             DrawingVisual dv = new();
-            using (DrawingContext dc = dv.RenderOpen()) {
+            using (DrawingContext dc = dv.RenderOpen())
+            {
                 dc.DrawImage(Source, new Rect(0, 0, ((BitmapSource)Source).Width, ((BitmapSource)Source).Height));
                 dc.PushTransform(new RotateTransform(angle, konum.X, konum.Y));
                 dc.DrawText(formattedText, new System.Windows.Point(konum.X, konum.Y - (formattedText.Height / 2)));

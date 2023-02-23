@@ -2,7 +2,8 @@
 using System.Runtime.InteropServices;
 using Tesseract.Internal.InteropDotNet;
 
-namespace Tesseract.Interop {
+namespace Tesseract.Interop
+{
     /// <summary>
     /// The exported leptonica api signatures.
     /// </summary>
@@ -11,7 +12,8 @@ namespace Tesseract.Interop {
     /// It should be considered an internal interface and is NOT part of the public api and may have
     /// breaking changes between releases.
     /// </remarks>
-    public interface ILeptonicaApiSignatures {
+    public interface ILeptonicaApiSignatures
+    {
         #region PixA
 
         [RuntimeDllImport(Constants.LeptonicaDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "pixaAddPix")]
@@ -513,10 +515,12 @@ namespace Tesseract.Interop {
         #endregion Box
     }
 
-    internal static unsafe class LeptonicaApi {
+    internal static unsafe class LeptonicaApi
+    {
         public static ILeptonicaApiSignatures Native {
             get {
-                if (native == null) {
+                if (native == null)
+                {
                     Initialize();
                 }
 
@@ -524,8 +528,10 @@ namespace Tesseract.Interop {
             }
         }
 
-        public static void Initialize() {
-            if (native == null) {
+        public static void Initialize()
+        {
+            if (native == null)
+            {
                 native = InteropRuntimeImplementer.CreateInstance<ILeptonicaApiSignatures>();
             }
         }

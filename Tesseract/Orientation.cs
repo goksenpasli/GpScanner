@@ -1,4 +1,5 @@
-﻿namespace Tesseract {
+﻿namespace Tesseract
+{
     /// <summary>
     /// Represents orientation that the page would need to be rotated so that .
     /// </summary>
@@ -15,7 +16,8 @@
     /// 	<item>PageLeft - Page needs to be rotated so the left hand side is up, 90 degress clockwise, to be readable.</item>
     /// </list>
     /// </remarks>
-    public enum Orientation {
+    public enum Orientation
+    {
         /// <summary>
         /// Page is correctly alligned with up and no rotation is needed.
         /// </summary>

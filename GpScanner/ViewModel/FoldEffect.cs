@@ -37,14 +37,18 @@ using System.Windows.Media.Effects;
 //    return 0;
 //}
 
-namespace GpScanner.ViewModel {
-    public class FoldEffect : ShaderEffect {
+namespace GpScanner.ViewModel
+{
+    public class FoldEffect : ShaderEffect
+    {
         public static readonly DependencyProperty FoldAmountProperty = DependencyProperty.Register("FoldAmount", typeof(double), typeof(FoldEffect), new UIPropertyMetadata(0.0D, PixelShaderConstantCallback(0)));
 
         public static readonly DependencyProperty InputProperty = RegisterPixelShaderSamplerProperty("Input", typeof(FoldEffect), 0);
 
-        public FoldEffect() {
-            PixelShader = new PixelShader {
+        public FoldEffect()
+        {
+            PixelShader = new PixelShader
+            {
                 UriSource = new Uri("/GpScanner;component/Resources/FoldEffect.ps", UriKind.Relative)
             };
 

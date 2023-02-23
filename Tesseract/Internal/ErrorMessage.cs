@@ -1,10 +1,14 @@
-﻿namespace Tesseract.Internal {
-    internal static class ErrorMessage {
-        public static string ErrorPageUrl(int errorNumber) {
+﻿namespace Tesseract.Internal
+{
+    internal static class ErrorMessage
+    {
+        public static string ErrorPageUrl(int errorNumber)
+        {
             return string.Format(WikiUrlFormat, errorNumber);
         }
 
-        public static string Format(int errorNumber, string messageFormat, params object[] messageArgs) {
+        public static string Format(int errorNumber, string messageFormat, params object[] messageArgs)
+        {
             string errorMessage = string.Format(messageFormat, messageArgs);
             string errorPageUrl = ErrorPageUrl(errorNumber);
             return string.Format(ErrorMessageFormat, errorMessage, errorPageUrl);

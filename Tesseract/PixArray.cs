@@ -5,14 +5,17 @@ using System.IO;
 using System.Runtime.InteropServices;
 using Tesseract.Internal;
 
-namespace Tesseract {
+namespace Tesseract
+{
     /// <summary>
     /// Represents an array of <see cref="Pix"/>.
     /// </summary>
-    public sealed class PixArray : DisposableBase, IEnumerable<Pix> {
+    public sealed class PixArray : DisposableBase, IEnumerable<Pix>
+    {
         #region Static Constructors
 
-        public static PixArray Create(int n) {
+        public static PixArray Create(int n)
+        {
             IntPtr pixaHandle = Interop.LeptonicaApi.Native.pixaCreate(n);
             return pixaHandle == IntPtr.Zero ? throw new IOException("Failed to create PixArray") : new PixArray(pixaHandle);
         }
@@ -22,7 +25,8 @@ namespace Tesseract {
         /// </summary>
         /// <param name="filename"></param>
         /// <returns></returns>
-        public static PixArray LoadMultiPageTiffFromFile(string filename) {
+        public static PixArray LoadMultiPageTiffFromFile(string filename)
+        {
             IntPtr pixaHandle = Interop.LeptonicaApi.Native.pixaReadMultipageTiff(filename);
             return pixaHandle == IntPtr.Zero
                 ? throw new IOException(string.Format("Failed to load image '{0}'.", filename))
@@ -36,7 +40,8 @@ namespace Tesseract {
         /// <summary>
         /// Handles enumerating through the <see cref="Pix"/> in the PixArray.
         /// </summary>
-        private class PixArrayEnumerator : DisposableBase, IEnumerator<Pix> {
+        private class PixArrayEnumerator : DisposableBase, IEnumerator<Pix>
+        {
             #region Fields
 
             private readonly PixArray array;
@@ -53,7 +58,8 @@ namespace Tesseract {
 
             #region Constructor
 
-            public PixArrayEnumerator(PixArray array) {
+            public PixArrayEnumerator(PixArray array)
+            {
                 this.array = array;
                 version = array.version;
                 items = new Pix[array.Count];
@@ -83,19 +89,23 @@ namespace Tesseract {
                         : (object)Current;
 
             /// <inheritdoc/>
-            public bool MoveNext() {
+            public bool MoveNext()
+            {
                 VerifyArrayUnchanged();
                 VerifyNotDisposed();
 
-                if (index < items.Length) {
-                    if (items[index] == null) {
+                if (index < items.Length)
+                {
+                    if (items[index] == null)
+                    {
                         items[index] = array.GetPix(index);
                     }
                     current = items[index];
                     index++;
                     return true;
                 }
-                else {
+                else
+                {
                     index = items.Length + 1;
                     current = null;
                     return false;
@@ -105,7 +115,8 @@ namespace Tesseract {
             // IEnumerator imp
 
             /// <inheritdoc/>
-            void IEnumerator.Reset() {
+            void IEnumerator.Reset()
+            {
                 VerifyArrayUnchanged();
                 VerifyNotDisposed();
 
@@ -116,8 +127,10 @@ namespace Tesseract {
             // Helpers
 
             /// <inheritdoc/>
-            private void VerifyArrayUnchanged() {
-                if (version != array.version) {
+            private void VerifyArrayUnchanged()
+            {
+                if (version != array.version)
+                {
                     throw new InvalidOperationException("PixArray was modified; enumeration operation may not execute.");
                 }
             }
@@ -126,10 +139,14 @@ namespace Tesseract {
 
             #region Disposal
 
-            protected override void Dispose(bool disposing) {
-                if (disposing) {
-                    for (int i = 0; i < items.Length; i++) {
-                        if (items[i] != null) {
+            protected override void Dispose(bool disposing)
+            {
+                if (disposing)
+                {
+                    for (int i = 0; i < items.Length; i++)
+                    {
+                        if (items[i] != null)
+                        {
                             items[i].Dispose();
                             items[i] = null;
                         }
@@ -157,7 +174,8 @@ namespace Tesseract {
 
         #region Constructor
 
-        private PixArray(IntPtr handle) {
+        private PixArray(IntPtr handle)
+        {
             _handle = new HandleRef(this, handle);
             version = 1;
 
@@ -193,13 +211,15 @@ namespace Tesseract {
         /// <param name="pix">The pix to add.</param>
         /// <param name="copyflag">Determines if a clone or copy of the pix is inserted into the array.</param>
         /// <returns></returns>
-        public bool Add(Pix pix, PixArrayAccessType copyflag = PixArrayAccessType.Clone) {
+        public bool Add(Pix pix, PixArrayAccessType copyflag = PixArrayAccessType.Clone)
+        {
             Guard.RequireNotNull("pix", pix);
             Guard.Require(nameof(copyflag), copyflag == PixArrayAccessType.Clone || copyflag == PixArrayAccessType.Copy,
                 "Copy flag must be either copy or clone but was {0}.", copyflag);
 
             int result = Interop.LeptonicaApi.Native.pixaAddPix(_handle, pix.Handle, copyflag);
-            if (result == 0) {
+            if (result == 0)
+            {
                 _count = Interop.LeptonicaApi.Native.pixaGetCount(_handle);
             }
             return result == 0;
@@ -208,9 +228,11 @@ namespace Tesseract {
         /// <summary>
         /// Destroys ever pix in the array.
         /// </summary>
-        public void Clear() {
+        public void Clear()
+        {
             VerifyNotDisposed();
-            if (Interop.LeptonicaApi.Native.pixaClear(_handle) == 0) {
+            if (Interop.LeptonicaApi.Native.pixaClear(_handle) == 0)
+            {
                 _count = Interop.LeptonicaApi.Native.pixaGetCount(_handle);
             }
         }
@@ -226,7 +248,8 @@ namespace Tesseract {
         /// <see cref="Pix.Clone()"/>.
         /// </remarks>
         /// <returns>A <see cref="IEnumerator{Pix}"/> that iterates the the array of <see cref="Pix"/>.</returns>
-        public IEnumerator<Pix> GetEnumerator() {
+        public IEnumerator<Pix> GetEnumerator()
+        {
             return new PixArrayEnumerator(this);
         }
 
@@ -236,7 +259,8 @@ namespace Tesseract {
         /// <param name="index">The index of the pix (zero based).</param>
         /// <param name="accessType">The <see cref="PixArrayAccessType" /> used to retrieve the <see cref="Pix"/>, only Clone or Copy are allowed.</param>
         /// <returns>The retrieved <see cref="Pix"/>.</returns>
-        public Pix GetPix(int index, PixArrayAccessType accessType = PixArrayAccessType.Clone) {
+        public Pix GetPix(int index, PixArrayAccessType accessType = PixArrayAccessType.Clone)
+        {
             Guard.Require(nameof(accessType), accessType == PixArrayAccessType.Clone || accessType == PixArrayAccessType.Copy, "Access type must be either copy or clone but was {0}.", accessType);
             Guard.Require(nameof(index), index >= 0 && index < Count, "The index {0} must be between 0 and {1}.", index, Count);
 
@@ -258,20 +282,24 @@ namespace Tesseract {
         /// * The corresponding box is removed as well, if it exists.
         /// </remarks>
         /// <param name="index">The index of the pix to remove.</param>
-        public void Remove(int index) {
+        public void Remove(int index)
+        {
             Guard.Require(nameof(index), index >= 0 && index < Count, "The index {0} must be between 0 and {1}.", index, Count);
 
             VerifyNotDisposed();
-            if (Interop.LeptonicaApi.Native.pixaRemovePix(_handle, index) == 0) {
+            if (Interop.LeptonicaApi.Native.pixaRemovePix(_handle, index) == 0)
+            {
                 _count = Interop.LeptonicaApi.Native.pixaGetCount(_handle);
             }
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return new PixArrayEnumerator(this);
         }
 
-        protected override void Dispose(bool disposing) {
+        protected override void Dispose(bool disposing)
+        {
             IntPtr handle = _handle.Handle;
             Interop.LeptonicaApi.Native.pixaDestroy(ref handle);
             _handle = new HandleRef(this, handle);

@@ -1,4 +1,5 @@
-﻿namespace Tesseract {
+﻿namespace Tesseract
+{
     /// <summary>
     /// The text lines are read in the given sequence.
     /// </summary>
@@ -13,7 +14,8 @@
     /// <see cref="TextLineOrder.TopToBottom" />.
     /// </para>
     /// </remarks>
-    public enum TextLineOrder : int {
+    public enum TextLineOrder : int
+    {
         /// <summary>
         /// The text lines form vertical columns ordered left to right.
         /// </summary>

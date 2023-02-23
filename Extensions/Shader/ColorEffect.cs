@@ -24,8 +24,10 @@ using System.Windows.Media.Effects;
 //    return pixelColor;
 //}
 
-namespace Extensions {
-    public class ColorEffect : ShaderEffect {
+namespace Extensions
+{
+    public class ColorEffect : ShaderEffect
+    {
         public static readonly DependencyProperty BlueProperty = DependencyProperty.Register("Blue", typeof(double), typeof(ColorEffect), new UIPropertyMetadata(0D, PixelShaderConstantCallback(4)));
 
         public static readonly DependencyProperty BrightnessProperty = DependencyProperty.Register("Brightness", typeof(double), typeof(ColorEffect), new UIPropertyMetadata(0D, PixelShaderConstantCallback(0)));
@@ -38,8 +40,10 @@ namespace Extensions {
 
         public static readonly DependencyProperty RedProperty = DependencyProperty.Register("Red", typeof(double), typeof(ColorEffect), new UIPropertyMetadata(0D, PixelShaderConstantCallback(2)));
 
-        public ColorEffect() {
-            PixelShader = new() {
+        public ColorEffect()
+        {
+            PixelShader = new()
+            {
                 UriSource = new Uri("/Extensions;component/Shader/ColorEffect.ps", UriKind.Relative)
             };
 

@@ -6,11 +6,13 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
 
-namespace MozJpeg {
+namespace MozJpeg
+{
     /// <summary>
     /// JPEG colorspaces
     /// </summary>
-    public enum TJColorSpaces {
+    public enum TJColorSpaces
+    {
         /// <summary>
         /// RGB colorspace.  When compressing the JPEG image, the R, G, and B
         /// components in the source image are reordered into image planes, but no
@@ -70,7 +72,8 @@ namespace MozJpeg {
     /// Flags for turbo jpeg
     /// </summary>
     [Flags]
-    public enum TJFlags {
+    public enum TJFlags
+    {
         /// <summary>
         /// Flags not set
         /// </summary>
@@ -142,7 +145,8 @@ namespace MozJpeg {
     /// <summary>
     /// Pixel formats
     /// </summary>
-    public enum TJPixelFormats {
+    public enum TJPixelFormats
+    {
         /// <summary>
         /// RGB pixel format.  The red, green, and blue components in the image are
         /// stored in 3-byte pixels in the order R, G, B from lowest to highest byte
@@ -252,7 +256,8 @@ namespace MozJpeg {
     /// small changes in color.)  This is called "chrominance subsampling".
     /// </para>
     /// </summary>
-    public enum TJSubsamplingOptions {
+    public enum TJSubsamplingOptions
+    {
         /// <summary>
         /// 4:4:4 chrominance subsampling (no chrominance subsampling). The JPEG or * YUV image will contain one chrominance component for every pixel in the source image.
         /// </summary>
@@ -293,7 +298,8 @@ namespace MozJpeg {
         TJSAMP_411
     };
 
-    public class MozJpeg : IDisposable {
+    public class MozJpeg : IDisposable
+    {
         public static bool MozJpegDllExists { get; set; } = File.Exists("turbojpeg_x86.dll");
 
         private readonly object _lock = new object();
@@ -307,13 +313,17 @@ namespace MozJpeg {
         #region | Destruction |
 
         /// <summary>Releases resources</summary>
-        public void Dispose() {
-            if (_isDisposed) {
+        public void Dispose()
+        {
+            if (_isDisposed)
+            {
                 return;
             }
 
-            lock (_lock) {
-                if (_isDisposed) {
+            lock (_lock)
+            {
+                if (_isDisposed)
+                {
                     return;
                 }
 
@@ -323,19 +333,24 @@ namespace MozJpeg {
         }
 
         /// <summary>Finalizer</summary>
-        ~MozJpeg() {
+        ~MozJpeg()
+        {
             Dispose(false);
         }
 
-        private void Dispose(bool callFromUserCode) {
-            if (callFromUserCode) {
+        private void Dispose(bool callFromUserCode)
+        {
+            if (callFromUserCode)
+            {
                 _isDisposed = true;
             }
-            if (_decompressHandle != IntPtr.Zero) {
+            if (_decompressHandle != IntPtr.Zero)
+            {
                 _ = UnsafeNativeMethods.TjDestroy(_decompressHandle);
             }
 
-            if (_compressorHandle != IntPtr.Zero) {
+            if (_compressorHandle != IntPtr.Zero)
+            {
                 _ = UnsafeNativeMethods.TjDestroy(_compressorHandle);
             }
         }
@@ -348,25 +363,30 @@ namespace MozJpeg {
         /// <param name="pathFileName">Full path and filename of JPEG file</param>
         /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags"</param>
         /// <returns>Bitmap with image</returns>
-        public Bitmap Decode(byte[] rawJpeg, TJFlags flags = TJFlags.NONE) {
+        public Bitmap Decode(byte[] rawJpeg, TJFlags flags = TJFlags.NONE)
+        {
             Bitmap bmp = null;
             BitmapData bmpData = null;
             GCHandle pinnedRawJpeg = GCHandle.Alloc(rawJpeg, GCHandleType.Pinned);
 
             //Init decompress
-            if (_decompressHandle == IntPtr.Zero) {
+            if (_decompressHandle == IntPtr.Zero)
+            {
                 _decompressHandle = UnsafeNativeMethods.TjInitDecompress();
-                if (_decompressHandle == IntPtr.Zero) {
+                if (_decompressHandle == IntPtr.Zero)
+                {
                     throw new Exception("Can`t load dll");
                 }
             }
 
-            try {
+            try
+            {
                 //Read JPEG data and get pointer
                 IntPtr rawJpegPtr = pinnedRawJpeg.AddrOfPinnedObject();
 
                 //Decompress the JPEG header and get image info
-                if (UnsafeNativeMethods.TjDecompressHeader(_decompressHandle, rawJpegPtr, (ulong)rawJpeg.Length, out int width, out int height, out TJSubsamplingOptions subsampl, out TJColorSpaces colorspace) == -1) {
+                if (UnsafeNativeMethods.TjDecompressHeader(_decompressHandle, rawJpegPtr, (ulong)rawJpeg.Length, out int width, out int height, out TJSubsamplingOptions subsampl, out TJColorSpaces colorspace) == -1)
+                {
                     throw new Exception("Can`t decode JPEG. Bad o unknow format.");
                 }
 
@@ -375,7 +395,8 @@ namespace MozJpeg {
                 bmpData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
 
                 //Decompress JPEG data in Bitmap data
-                if (UnsafeNativeMethods.TjDecompress(_decompressHandle, rawJpegPtr, (ulong)rawJpeg.Length, bmpData.Scan0, width, bmpData.Stride, height, (int)TJPixelFormats.TJPF_BGR, (int)flags) == -1) {
+                if (UnsafeNativeMethods.TjDecompress(_decompressHandle, rawJpegPtr, (ulong)rawJpeg.Length, bmpData.Scan0, width, bmpData.Stride, height, (int)TJPixelFormats.TJPF_BGR, (int)flags) == -1)
+                {
                     throw new Exception("Can`t decode JPEG. Bad o unknow format.");
                 }
 
@@ -386,13 +407,16 @@ namespace MozJpeg {
                 return bmp;
             }
             catch (Exception ex) { throw new Exception(ex.Message + "\r\nIn MozJpeg.Decode"); }
-            finally {
-                if (bmpData != null) {
+            finally
+            {
+                if (bmpData != null)
+                {
                     bmp.UnlockBits(bmpData);
                 }
 
                 //Free memory
-                if (pinnedRawJpeg.IsAllocated) {
+                if (pinnedRawJpeg.IsAllocated)
+                {
                     pinnedRawJpeg.Free();
                 }
             }
@@ -402,25 +426,30 @@ namespace MozJpeg {
         /// <param name="pathFileName">Full path and filename of JPEG file</param>
         /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags"</param>
         /// <returns>Bitmap with image</returns>
-        public void GetInfo(byte[] rawJpeg, out int width, out int height, out float horizontalResolution, out float verticalResolution, out TJSubsamplingOptions subsampl, out TJColorSpaces colorspace) {
+        public void GetInfo(byte[] rawJpeg, out int width, out int height, out float horizontalResolution, out float verticalResolution, out TJSubsamplingOptions subsampl, out TJColorSpaces colorspace)
+        {
             horizontalResolution = 0;
             verticalResolution = 0;
             GCHandle pinnedRawJpeg = GCHandle.Alloc(rawJpeg, GCHandleType.Pinned);
 
             //Init decompress
-            if (_decompressHandle == IntPtr.Zero) {
+            if (_decompressHandle == IntPtr.Zero)
+            {
                 _decompressHandle = UnsafeNativeMethods.TjInitDecompress();
-                if (_decompressHandle == IntPtr.Zero) {
+                if (_decompressHandle == IntPtr.Zero)
+                {
                     throw new Exception("Can`t load dll");
                 }
             }
 
-            try {
+            try
+            {
                 //Read JPEG data and get pointer
                 IntPtr rawJpegPtr = pinnedRawJpeg.AddrOfPinnedObject();
 
                 //Decompress the JPEG header and get image info
-                if (UnsafeNativeMethods.TjDecompressHeader(_decompressHandle, rawJpegPtr, (ulong)rawJpeg.Length, out width, out height, out subsampl, out colorspace) == -1) {
+                if (UnsafeNativeMethods.TjDecompressHeader(_decompressHandle, rawJpegPtr, (ulong)rawJpeg.Length, out width, out height, out subsampl, out colorspace) == -1)
+                {
                     throw new Exception("Can`t decode JPEG. Bad o unknow format.");
                 }
 
@@ -428,9 +457,11 @@ namespace MozJpeg {
                 GetPixelsPerInch(ref rawJpeg, out horizontalResolution, out verticalResolution);
             }
             catch (Exception ex) { throw new Exception(ex.Message + "\r\nIn MozJpeg.GetInfo"); }
-            finally {
+            finally
+            {
                 //Free memory
-                if (pinnedRawJpeg.IsAllocated) {
+                if (pinnedRawJpeg.IsAllocated)
+                {
                     pinnedRawJpeg.Free();
                 }
             }
@@ -439,9 +470,11 @@ namespace MozJpeg {
         /// <summary>Read a JPEG file</summary>
         /// <param name="pathFileName">JPEG file to load</param>
         /// <returns>Bitmap with the JPEG image</returns>
-        public Bitmap Load(string pathFileName) {
+        public Bitmap Load(string pathFileName)
+        {
             byte[] rawJpeg;
-            try {
+            try
+            {
                 //Read webP file
                 rawJpeg = File.ReadAllBytes(pathFileName);
 
@@ -461,31 +494,38 @@ namespace MozJpeg {
         /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags"</param>
         /// <param name="subSamp">The level of chrominance subsampling to be used when generating the JPEG image (see <see cref="TJSubsamplingOptions"/> "Chrominance subsampling options".)</param>
         /// <returns>Byte array with the jpeg data</returns>
-        public byte[] Encode(Bitmap bmp, int quality = 75, bool jfif = true, TJFlags flags = TJFlags.NONE, TJSubsamplingOptions subSamp = TJSubsamplingOptions.TJSAMP_420) {
+        public byte[] Encode(Bitmap bmp, int quality = 75, bool jfif = true, TJFlags flags = TJFlags.NONE, TJSubsamplingOptions subSamp = TJSubsamplingOptions.TJSAMP_420)
+        {
             BitmapData bmpData = null;
             IntPtr buf = IntPtr.Zero;
 
-            try {
-                if (_isDisposed) {
+            try
+            {
+                if (_isDisposed)
+                {
                     throw new ObjectDisposedException("this");
                 }
 
-                if (_compressorHandle == IntPtr.Zero) {
+                if (_compressorHandle == IntPtr.Zero)
+                {
                     _compressorHandle = UnsafeNativeMethods.TjInitCompress();
-                    if (_compressorHandle == IntPtr.Zero) {
+                    if (_compressorHandle == IntPtr.Zero)
+                    {
                         throw new Exception("Can`t load dll");
                     }
                 }
 
                 TJPixelFormats tjPixelFormat = ConvertPixelFormat(bmp.PixelFormat);
-                if (tjPixelFormat == TJPixelFormats.TJPF_GRAY && subSamp != TJSubsamplingOptions.TJSAMP_GRAY) {
+                if (tjPixelFormat == TJPixelFormats.TJPF_GRAY && subSamp != TJSubsamplingOptions.TJSAMP_GRAY)
+                {
                     throw new NotSupportedException("Subsampling differ from {TJSubsamplingOptions.TJSAMP_GRAY} for pixel format {TJPixelFormats.TJPF_GRAY} is not supported");
                 }
 
                 bmpData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, bmp.PixelFormat);
 
                 ulong bufSize = 0;
-                if (UnsafeNativeMethods.TjCompress2(_compressorHandle, bmpData.Scan0, bmp.Width, bmpData.Stride, bmp.Height, (int)tjPixelFormat, ref buf, ref bufSize, (int)subSamp, quality, (int)flags) == -1) {
+                if (UnsafeNativeMethods.TjCompress2(_compressorHandle, bmpData.Scan0, bmp.Width, bmpData.Stride, bmp.Height, (int)tjPixelFormat, ref buf, ref bufSize, (int)subSamp, quality, (int)flags) == -1)
+                {
                     throw new Exception("Can`t encode JPEG.");
                 }
 
@@ -493,16 +533,19 @@ namespace MozJpeg {
                 Marshal.Copy(buf, rawJpeg, 0, (int)bufSize);
 
                 //Remove JFIF
-                if (!jfif && rawJpeg[2] == 0xff && rawJpeg[3] == 0xe0) {
+                if (!jfif && rawJpeg[2] == 0xff && rawJpeg[3] == 0xe0)
+                {
                     int jfifLength = (rawJpeg[4] << 8) | rawJpeg[5];                                    //Get TIFF length
                     byte[] tempData = new byte[rawJpeg.Length - jfifLength - 2];
                     Array.Copy(rawJpeg, jfifLength + 2, tempData, 0, rawJpeg.Length - jfifLength - 2);  //Copy all less the JFIF
                     tempData[0] = 0xff;                                                                 //Patch the header
                     tempData[1] = 0xd8;
                 }
-                else {
+                else
+                {
                     //Put the rigth pixels per inch
-                    if (rawJpeg[2] == 0xff && rawJpeg[3] == 0xe0) {
+                    if (rawJpeg[2] == 0xff && rawJpeg[3] == 0xe0)
+                    {
                         rawJpeg[0x0d] = 0x01;
                         rawJpeg[0x0e] = (byte)(bmp.HorizontalResolution / 256);
                         rawJpeg[0x0f] = (byte)(bmp.HorizontalResolution % 256);
@@ -514,7 +557,8 @@ namespace MozJpeg {
                 return rawJpeg;
             }
             catch (Exception ex) { throw new Exception(ex.Message + "\r\nIn MozJpeg.Encode"); }
-            finally {
+            finally
+            {
                 bmp.UnlockBits(bmpData);
                 UnsafeNativeMethods.TjFree(buf);
             }
@@ -524,10 +568,12 @@ namespace MozJpeg {
         /// <param name="bmp">Bitmap with the WebP image</param>
         /// <param name="pathFileName">The file to write</param>
         /// <param name="quality">Between 0 (lower quality, lowest file size) and 100 (highest quality, higher file size)</param>
-        public void Save(Bitmap bmp, string pathFileName, int quality = 75) {
+        public void Save(Bitmap bmp, string pathFileName, int quality = 75)
+        {
             byte[] rawJpeg;
 
-            try {
+            try
+            {
                 //Encode in webP format
                 rawJpeg = Encode(bmp, quality);
 
@@ -547,8 +593,10 @@ namespace MozJpeg {
         /// <param name="pixelFormat">Pixel format to convert</param>
         /// <returns>Converted value of pixel format or exception if convertion is impossible</returns>
         /// <exception cref="NotSupportedException">Convertion can not be performed</exception>
-        private TJPixelFormats ConvertPixelFormat(PixelFormat pixelFormat) {
-            switch (pixelFormat) {
+        private TJPixelFormats ConvertPixelFormat(PixelFormat pixelFormat)
+        {
+            switch (pixelFormat)
+            {
                 case PixelFormat.Format32bppArgb:
                     return TJPixelFormats.TJPF_BGRA;
 
@@ -564,15 +612,19 @@ namespace MozJpeg {
         }
 
         //Get pixels per inch
-        private void GetPixelsPerInch(ref byte[] rawJpeg, out float horizontalResolution, out float verticalResolution) {
-            try {
+        private void GetPixelsPerInch(ref byte[] rawJpeg, out float horizontalResolution, out float verticalResolution)
+        {
+            try
+            {
                 //Default resolution
                 horizontalResolution = 96;
                 verticalResolution = 96;
 
                 int[] jfif = ClsArray.Locate(ref rawJpeg, new byte[] { 0x4a, 0x46, 0x49, 0x46, 0x00 }).ToArray(); //JFIF" in ASCII, terminated by a null byte
-                if (jfif.Length == 1) {
-                    switch (rawJpeg[jfif[0] + 7]) {
+                if (jfif.Length == 1)
+                {
+                    switch (rawJpeg[jfif[0] + 7])
+                    {
                         case 0x01:      // Resolution in Pixel Per Inch
                             horizontalResolution = (rawJpeg[jfif[0] + 8] * 256) + rawJpeg[jfif[0] + 9];
                             verticalResolution = (rawJpeg[jfif[0] + 10] * 256) + rawJpeg[jfif[0] + 11];
@@ -594,17 +646,23 @@ namespace MozJpeg {
         #endregion | Private Functions |
     }
 
-    internal static class ClsArray {
-        public static List<int> Locate(ref byte[] self, byte[] candidate) {
-            try {
+    internal static class ClsArray
+    {
+        public static List<int> Locate(ref byte[] self, byte[] candidate)
+        {
+            try
+            {
                 List<int> list = new List<int>();
 
-                if (IsEmptyLocate(self, candidate)) {
+                if (IsEmptyLocate(self, candidate))
+                {
                     return list;
                 }
 
-                for (int i = 0; i < self.Length; i++) {
-                    if (!IsMatch(self, i, candidate)) {
+                for (int i = 0; i < self.Length; i++)
+                {
+                    if (!IsMatch(self, i, candidate))
+                    {
                         continue;
                     }
 
@@ -617,8 +675,10 @@ namespace MozJpeg {
             catch (Exception ex) { throw new Exception(ex.Message + "\r\nIn clsArray.Locate"); }
         }
 
-        private static bool IsEmptyLocate(byte[] array, byte[] candidate) {
-            try {
+        private static bool IsEmptyLocate(byte[] array, byte[] candidate)
+        {
+            try
+            {
                 return array == null
                     || candidate == null
                     || array.Length == 0
@@ -628,14 +688,19 @@ namespace MozJpeg {
             catch (Exception ex) { throw new Exception(ex.Message + "\r\nIn clsArray.IsEmptyLocate"); }
         }
 
-        private static bool IsMatch(byte[] array, int position, byte[] candidate) {
-            try {
-                if (candidate.Length > (array.Length - position)) {
+        private static bool IsMatch(byte[] array, int position, byte[] candidate)
+        {
+            try
+            {
+                if (candidate.Length > (array.Length - position))
+                {
                     return false;
                 }
 
-                for (int i = 0; i < candidate.Length; i++) {
-                    if (array[position + i] != candidate[i]) {
+                for (int i = 0; i < candidate.Length; i++)
+                {
+                    if (array[position + i] != candidate[i])
+                    {
                         return false;
                     }
                 }
@@ -647,7 +712,8 @@ namespace MozJpeg {
     }
 
     [SuppressUnmanagedCodeSecurity]
-    internal sealed class UnsafeNativeMethods {
+    internal sealed class UnsafeNativeMethods
+    {
         /// <summary>
         /// Allocate an image buffer for use with TurboJPEG.  You should always use
         /// this function to allocate the JPEG destination buffer(s) for <see cref="TjCompress2"/>
@@ -657,8 +723,10 @@ namespace MozJpeg {
         /// <param name="bytes">The number of bytes to allocate</param>
         /// <returns>A pointer to a newly-allocated buffer with the specified number of bytes</returns>
         /// <seealso cref="TjFree"/>
-        public static IntPtr TjAlloc(int bytes) {
-            switch (IntPtr.Size) {
+        public static IntPtr TjAlloc(int bytes)
+        {
+            switch (IntPtr.Size)
+            {
                 case 4:
                     return tjAlloc_x86(bytes);
 
@@ -713,8 +781,10 @@ namespace MozJpeg {
         /// <param name="jpegQual">The image quality of the generated JPEG image (1 = worst, 100 = best)</param>
         /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags"</param>
         /// <returns>0 if successful, or -1 if an error occurred (see <see cref="tjGetErrorStr"/>)</returns>
-        public static int TjCompress2(IntPtr handle, IntPtr srcBuf, int width, int stride, int height, int pixelFormat, ref IntPtr jpegBuf, ref ulong jpegSize, int jpegSubsamp, int jpegQual, int flags) {
-            switch (IntPtr.Size) {
+        public static int TjCompress2(IntPtr handle, IntPtr srcBuf, int width, int stride, int height, int pixelFormat, ref IntPtr jpegBuf, ref ulong jpegSize, int jpegSubsamp, int jpegQual, int flags)
+        {
+            switch (IntPtr.Size)
+            {
                 case 4:
                     return tjCompress2_x86(handle, srcBuf, width, stride, height, pixelFormat, ref jpegBuf, ref jpegSize, jpegSubsamp, jpegQual, flags);
 
@@ -757,8 +827,10 @@ namespace MozJpeg {
         /// <param name="pixelFormat">Pixel format of the destination image (see <see cref="TJPixelFormats"/> "Pixel formats".)</param>
         /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags"</param>
         /// <returns>0 if successful, or -1 if an error occurred (see <see cref="tjGetErrorStr"/>)</returns>
-        public static int TjDecompress(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, IntPtr dstBuf, int width, int stride, int height, int pixelFormat, int flags) {
-            switch (IntPtr.Size) {
+        public static int TjDecompress(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, IntPtr dstBuf, int width, int stride, int height, int pixelFormat, int flags)
+        {
+            switch (IntPtr.Size)
+            {
                 case 4:
                     return tjDecompress2_x86(handle, jpegBuf, (uint)jpegSize, dstBuf, width, stride, height, pixelFormat, flags);
 
@@ -785,8 +857,10 @@ namespace MozJpeg {
         /// <param name="jpegColorspace">Pointer to an integer variable that will receive one of the JPEG colorspace constants,
         /// indicating the colorspace of the JPEG image(see <see cref="TJColorSpaces"/> "JPEG colorspaces".)</param>
         /// <returns>0 if successful, or -1 if an error occurred (see <see cref="tjGetErrorStr"/>)</returns>
-        public static int TjDecompressHeader(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, out int width, out int height, out TJSubsamplingOptions jpegSubsamp, out TJColorSpaces jpegColorspace) {
-            switch (IntPtr.Size) {
+        public static int TjDecompressHeader(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, out int width, out int height, out TJSubsamplingOptions jpegSubsamp, out TJColorSpaces jpegColorspace)
+        {
+            switch (IntPtr.Size)
+            {
                 case 4:
                     return tjDecompressHeader3_x86(handle, jpegBuf, (uint)jpegSize, out width, out height, out jpegSubsamp, out jpegColorspace);
 
@@ -819,8 +893,10 @@ namespace MozJpeg {
         /// then an intermediate buffer copy will be performed within TurboJPEG.</param>
         /// <param name="flags">The bitwise OR of one or more of the TJFLAG_BOTTOMUP "flags"</param>
         /// <returns>0 if successful, or -1 if an error occurred</returns>
-        public static int TjDecompressToYUVPlanes(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, IntPtr[] dstPlanes, int width, int[] strides, int height, int flags) {
-            switch (IntPtr.Size) {
+        public static int TjDecompressToYUVPlanes(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, IntPtr[] dstPlanes, int width, int[] strides, int height, int flags)
+        {
+            switch (IntPtr.Size)
+            {
                 case 4:
                     return tjDecompressToYUVPlanes_x86(handle, jpegBuf, (uint)jpegSize, dstPlanes, width, strides, height, flags);
 
@@ -837,8 +913,10 @@ namespace MozJpeg {
         /// </summary>
         /// <param name="handle">a handle to a TurboJPEG compressor, decompressor or transformer instance</param>
         /// <returns>0 if successful, or -1 if an error occurred (see <see cref="tjGetErrorStr"/>)</returns>
-        public static int TjDestroy(IntPtr handle) {
-            switch (IntPtr.Size) {
+        public static int TjDestroy(IntPtr handle)
+        {
+            switch (IntPtr.Size)
+            {
                 case 4:
                     return tjDestroy_x86(handle);
 
@@ -859,8 +937,10 @@ namespace MozJpeg {
         /// <param name="buffer">Address of the buffer to free</param>
         /// <seealso cref="TjAlloc"/>
         ///
-        public static void TjFree(IntPtr buffer) {
-            switch (IntPtr.Size) {
+        public static void TjFree(IntPtr buffer)
+        {
+            switch (IntPtr.Size)
+            {
                 case 4:
                     tjFree_x86(buffer);
                     break;
@@ -880,8 +960,10 @@ namespace MozJpeg {
         /// <returns>
         /// handle to the newly-created instance, or <see cref="IntPtr.Zero"/>
         /// if an error occurred (see <see cref="tjGetErrorStr"/>)</returns>
-        public static IntPtr TjInitCompress() {
-            switch (IntPtr.Size) {
+        public static IntPtr TjInitCompress()
+        {
+            switch (IntPtr.Size)
+            {
                 case 4:
                     return tjInitCompress_x86();
 
@@ -897,8 +979,10 @@ namespace MozJpeg {
         ///  Create a TurboJPEG decompressor instance.
         /// </summary>
         /// <returns>A handle to the newly-created instance, or NULL if an error occurred(see <see cref="tjGetErrorStr"/>)</returns>
-        public static IntPtr TjInitDecompress() {
-            switch (IntPtr.Size) {
+        public static IntPtr TjInitDecompress()
+        {
+            switch (IntPtr.Size)
+            {
                 case 4:
                     return tjInitDecompress_x86();
 
@@ -919,8 +1003,10 @@ namespace MozJpeg {
         /// <param name="height">height (in pixels) of the YUV image.  NOTE: this is the height of the whole image, not the plane height.</param>
         /// <param name="subsamp">level of chrominance subsampling in the image (see @ref TJSAMP "Chrominance subsampling options".)</param>
         /// <returns>the size of the buffer (in bytes) required to hold the YUV image plane, or -1 if the arguments are out of bounds.</returns>
-        public static int TjPlaneSizeYUV(int componentID, int width, int stride, int height, TJSubsamplingOptions subsamp) {
-            switch (IntPtr.Size) {
+        public static int TjPlaneSizeYUV(int componentID, int width, int stride, int height, TJSubsamplingOptions subsamp)
+        {
+            switch (IntPtr.Size)
+            {
                 case 4:
                     return tjPlaneSizeYUV_x86(componentID, width, stride, height, subsamp);
 

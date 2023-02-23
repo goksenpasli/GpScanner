@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace Tesseract.Internal {
-    internal static class Guard {
+namespace Tesseract.Internal
+{
+    internal static class Guard
+    {
         // Generic pre-condition checks
 
         /// <summary>
@@ -12,8 +14,10 @@ namespace Tesseract.Internal {
         /// <param name="paramName">The name of the parameter, used when generating the exception.</param>
         /// <param name="condition">The value of the parameter to check.</param>
         [DebuggerHidden]
-        public static void Require(string paramName, bool condition) {
-            if (!condition) {
+        public static void Require(string paramName, bool condition)
+        {
+            if (!condition)
+            {
                 throw new ArgumentException(string.Empty, paramName);
             }
         }
@@ -26,8 +30,10 @@ namespace Tesseract.Internal {
         /// <param name="condition">The value of the parameter to check.</param>
         /// <param name="message">The error message.</param>
         [DebuggerHidden]
-        public static void Require(string paramName, bool condition, string message) {
-            if (!condition) {
+        public static void Require(string paramName, bool condition, string message)
+        {
+            if (!condition)
+            {
                 throw new ArgumentException(message, paramName);
             }
         }
@@ -41,15 +47,19 @@ namespace Tesseract.Internal {
         /// <param name="message">The error message.</param>
         /// <param name="args">The message argument used to format <paramref name="message" />.</param>
         [DebuggerHidden]
-        public static void Require(string paramName, bool condition, string message, params object[] args) {
-            if (!condition) {
+        public static void Require(string paramName, bool condition, string message, params object[] args)
+        {
+            if (!condition)
+            {
                 throw new ArgumentException(string.Format(message, args), paramName);
             }
         }
 
         [DebuggerHidden]
-        public static void RequireNotNull(string argName, object value) {
-            if (value == null) {
+        public static void RequireNotNull(string argName, object value)
+        {
+            if (value == null)
+            {
                 throw new ArgumentException(string.Format("Argument \"{0}\" must not be null.", value));
             }
         }
@@ -61,9 +71,11 @@ namespace Tesseract.Internal {
         /// <param name="paramName">The name of the parameter, used when generating the exception.</param>
         /// <param name="value">The value of the parameter to check.</param>
         [DebuggerHidden]
-        public static void RequireNotNullOrEmpty(string paramName, string value) {
+        public static void RequireNotNullOrEmpty(string paramName, string value)
+        {
             RequireNotNull(paramName, value);
-            if (value.Length == 0) {
+            if (value.Length == 0)
+            {
                 throw new ArgumentException(paramName,
                     string.Format(@"The argument ""{0}"" must not be null or empty.", paramName));
             }
@@ -76,8 +88,10 @@ namespace Tesseract.Internal {
         /// <param name="message">The error message to raise if <paramref name="condition"/> is <c>False</c>.</param>
         /// <param name="args">Optional formatting arguments.</param>
         [DebuggerHidden]
-        public static void Verify(bool condition, string message, params object[] args) {
-            if (!condition) {
+        public static void Verify(bool condition, string message, params object[] args)
+        {
+            if (!condition)
+            {
                 throw new InvalidOperationException(string.Format(message, args));
             }
         }

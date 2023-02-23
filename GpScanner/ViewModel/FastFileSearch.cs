@@ -3,22 +3,26 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace GpScanner.ViewModel {
-    public enum FileType {
+namespace GpScanner.ViewModel
+{
+    public enum FileType
+    {
         File = 0,
 
         Folder = 1
     }
 
     // TODO: Check for valid method parameter input (e.g. If provided path is a directory and exists, etc..)
-    public static class Win32FileScanner {
+    public static class Win32FileScanner
+    {
         /// <summary>
         /// Provides a enumerable of file results that contain a range of information about both files and directories discovered in the provided directory path.
         /// </summary>
         /// <param name="path">The folder path.</param>
         /// <param name="rootStats">A cumulative stat object representing total files, folder, sizes, etc for the base directory provided.</param>
         /// <param name="maxDepth">Maximum folder depth to recurse. Set -1 to disable max depth.</param>
-        public static IEnumerable<FileResult> EnumerateFileItems(string path, out DirectoryStats rootStats, int maxDepth = -1) {
+        public static IEnumerable<FileResult> EnumerateFileItems(string path, out DirectoryStats rootStats, int maxDepth = -1)
+        {
             rootStats = new DirectoryStats();
             return ScanRecursive(Path.GetFullPath(path), maxDepth, 0, rootStats);
         }
@@ -27,7 +31,8 @@ namespace GpScanner.ViewModel {
         /// A barebones version of EnumerateFiles() provides only the path and not statistics. Only provides files and not directories.
         /// </summary>
         /// <param name="maxDepth">Maximum folder depth to recurse. Set -1 to disable max depth.</param>
-        public static IEnumerable<string> EnumerateFilepaths(string path, int maxDepth = -1) {
+        public static IEnumerable<string> EnumerateFilepaths(string path, int maxDepth = -1)
+        {
             return ScanRecursiveFilepath(Path.GetFullPath(path), maxDepth, 0);
         }
 
@@ -42,24 +47,31 @@ namespace GpScanner.ViewModel {
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
         private static extern bool FindNextFile(IntPtr hFindFile, out Win32FindData lpFindFileData);
 
-        private static long GetFilesize(Win32FindData findData) {
+        private static long GetFilesize(Win32FindData findData)
+        {
             return findData.nFileSizeLow + ((long)findData.nFileSizeHigh * uint.MaxValue);
         }
 
-        private static bool IsValidFile(Win32FindData findData) {
+        private static bool IsValidFile(Win32FindData findData)
+        {
             return !findData.cFileName.Equals(".") && !findData.cFileName.Equals("..");
         }
 
-        private static IEnumerable<FileResult> ScanRecursive(string path, int maxDepth, int depth, DirectoryStats parent) {
+        private static IEnumerable<FileResult> ScanRecursive(string path, int maxDepth, int depth, DirectoryStats parent)
+        {
             IntPtr handle = invalidHandle;
 
-            try {
+            try
+            {
                 handle = FindFirstFile($@"{path}\*", out Win32FindData findData);
 
-                if (handle != invalidHandle) {
-                    do {
+                if (handle != invalidHandle)
+                {
+                    do
+                    {
                         // Skip symlink (and junction?)
-                        if (findData.dwFileAttributes.HasFlag(FileAttributes.ReparsePoint | FileAttributes.Directory) || !IsValidFile(findData)) {
+                        if (findData.dwFileAttributes.HasFlag(FileAttributes.ReparsePoint | FileAttributes.Directory) || !IsValidFile(findData))
+                        {
                             continue;
                         }
 
@@ -69,14 +81,17 @@ namespace GpScanner.ViewModel {
                         DateTime lastWriteTime = ToDateTime(findData.ftLastWriteTime);
                         DateTime lastAccessTime = ToDateTime(findData.ftLastAccessTime);
 
-                        if (findData.dwFileAttributes.HasFlag(FileAttributes.Directory)) { // Directory
-                            if (maxDepth >= 0 && depth + 1 > maxDepth) {
+                        if (findData.dwFileAttributes.HasFlag(FileAttributes.Directory))
+                        { // Directory
+                            if (maxDepth >= 0 && depth + 1 > maxDepth)
+                            {
                                 continue;
                             }
 
                             DirectoryStats stats = new();
 
-                            foreach (FileResult fileResult in ScanRecursive(fullPath, maxDepth, depth + 1, stats)) {
+                            foreach (FileResult fileResult in ScanRecursive(fullPath, maxDepth, depth + 1, stats))
+                            {
                                 yield return fileResult;
                             }
 
@@ -84,7 +99,8 @@ namespace GpScanner.ViewModel {
 
                             yield return new FileResult(fullPath, 0, findData.dwFileAttributes, creationTime, lastWriteTime, lastAccessTime, FileType.Folder, depth, stats);
                         }
-                        else { // File
+                        else
+                        { // File
                             long filesize = GetFilesize(findData);
 
                             parent.AddFile(filesize);
@@ -93,53 +109,66 @@ namespace GpScanner.ViewModel {
                         }
                     } while (FindNextFile(handle, out findData));
                 }
-                else {
+                else
+                {
                     // Removed exception, as handle can be invalid if we dont have access.
                     // throw new DirectoryNotFoundException($"Failed to find directory: {path}");
                 }
             }
-            finally {
+            finally
+            {
                 _ = FindClose(handle);
             }
         }
 
-        private static IEnumerable<string> ScanRecursiveFilepath(string path, int maxDepth, int depth) {
+        private static IEnumerable<string> ScanRecursiveFilepath(string path, int maxDepth, int depth)
+        {
             IntPtr handle = invalidHandle;
 
-            try {
+            try
+            {
                 handle = FindFirstFile($@"{path}\*", out Win32FindData findData);
 
-                if (handle != invalidHandle) {
-                    do {
+                if (handle != invalidHandle)
+                {
+                    do
+                    {
                         // Skip symlink (and junction?)
-                        if (findData.dwFileAttributes.HasFlag(FileAttributes.ReparsePoint | FileAttributes.Directory) || !IsValidFile(findData)) {
+                        if (findData.dwFileAttributes.HasFlag(FileAttributes.ReparsePoint | FileAttributes.Directory) || !IsValidFile(findData))
+                        {
                             continue;
                         }
 
                         string fullPath = Path.Combine(path, findData.cFileName);
 
-                        if (findData.dwFileAttributes.HasFlag(FileAttributes.Directory)) { // Directory
-                            if (maxDepth >= 0 && depth + 1 > maxDepth) {
+                        if (findData.dwFileAttributes.HasFlag(FileAttributes.Directory))
+                        { // Directory
+                            if (maxDepth >= 0 && depth + 1 > maxDepth)
+                            {
                                 continue;
                             }
 
-                            foreach (string filePath in ScanRecursiveFilepath(fullPath, maxDepth, depth + 1)) {
+                            foreach (string filePath in ScanRecursiveFilepath(fullPath, maxDepth, depth + 1))
+                            {
                                 yield return filePath;
                             }
 
                             // yield return fullPath;
                         }
-                        else { // File
+                        else
+                        { // File
                             yield return fullPath;
                         }
                     } while (FindNextFile(handle, out findData));
                 }
-                else {
+                else
+                {
                     // Removed exception, as handle can be invalid if we dont have access.
                     // throw new DirectoryNotFoundException($"Failed to find directory: {path}");
                 }
             }
-            finally {
+            finally
+            {
                 _ = FindClose(handle);
             }
         }
@@ -147,7 +176,8 @@ namespace GpScanner.ViewModel {
         /// <summary>
         /// Converts the provided Win32 FileTime struct into a .NET DateTime struct.
         /// </summary>
-        private static DateTime ToDateTime(FileTime fileTime) {
+        private static DateTime ToDateTime(FileTime fileTime)
+        {
             byte[] highBytes = BitConverter.GetBytes(fileTime.dwHighDateTime);
             Array.Resize(ref highBytes, 8);
 
@@ -159,14 +189,16 @@ namespace GpScanner.ViewModel {
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct FileTime {
+        private struct FileTime
+        {
             public uint dwLowDateTime;
 
             public uint dwHighDateTime;
         };
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-        private struct Win32FindData {
+        private struct Win32FindData
+        {
             public FileAttributes dwFileAttributes;
 
             public FileTime ftCreationTime;
@@ -191,7 +223,8 @@ namespace GpScanner.ViewModel {
         }
     }
 
-    public sealed class DirectoryStats {
+    public sealed class DirectoryStats
+    {
         public long Files { get; private set; }
 
         public long Items => Files + Subdirectories;
@@ -208,7 +241,8 @@ namespace GpScanner.ViewModel {
 
         public long TotalSubdirectories { get; private set; }
 
-        public void AddDirectory(ref DirectoryStats stats) {
+        public void AddDirectory(ref DirectoryStats stats)
+        {
             Subdirectories++;
 
             TotalSubdirectories += stats.TotalSubdirectories + 1;
@@ -217,7 +251,8 @@ namespace GpScanner.ViewModel {
             TotalSize += stats.TotalSize;
         }
 
-        public void AddFile(long size) {
+        public void AddFile(long size)
+        {
             Files++;
             TotalFiles++;
 
@@ -226,8 +261,10 @@ namespace GpScanner.ViewModel {
         }
     }
 
-    public sealed class FileResult {
-        public FileResult(string path, long filesize, FileAttributes attributes, DateTime creationTime, DateTime lastWriteTime, DateTime lastAccessTime, FileType type, int depth, DirectoryStats stats = null) {
+    public sealed class FileResult
+    {
+        public FileResult(string path, long filesize, FileAttributes attributes, DateTime creationTime, DateTime lastWriteTime, DateTime lastAccessTime, FileType type, int depth, DirectoryStats stats = null)
+        {
             Path = path;
             Size = filesize;
             Attributes = attributes;

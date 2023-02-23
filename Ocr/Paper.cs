@@ -1,10 +1,13 @@
-﻿namespace Ocr {
-    public class Paper : InpcBase {
+﻿namespace Ocr
+{
+    public class Paper : InpcBase
+    {
         public double Height {
             get => height;
 
             set {
-                if (height != value) {
+                if (height != value)
+                {
                     height = value;
                     OnPropertyChanged(nameof(Height));
                 }
@@ -15,7 +18,8 @@
             get => paperType;
 
             set {
-                if (paperType != value) {
+                if (paperType != value)
+                {
                     paperType = value;
                     OnPropertyChanged(nameof(PaperType));
                 }
@@ -26,7 +30,8 @@
             get => width;
 
             set {
-                if (width != value) {
+                if (width != value)
+                {
                     width = value;
                     OnPropertyChanged(nameof(Width));
                 }

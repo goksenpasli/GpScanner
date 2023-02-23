@@ -1,8 +1,10 @@
-﻿namespace Tesseract {
+﻿namespace Tesseract
+{
     /// <summary>
     /// Determines how <see cref="Pix"/> of a <see cref="PixArray"/> structure are accessed.
     /// </summary>
-    public enum PixArrayAccessType : int {
+    public enum PixArrayAccessType : int
+    {
         /// <summary>
         /// Stuff it in; no copy, clone or copy-clone.
         /// </summary>
