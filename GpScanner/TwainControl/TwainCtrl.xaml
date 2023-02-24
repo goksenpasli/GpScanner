@@ -509,19 +509,20 @@
                                             </StackPanel>
                                         </CheckBox.Content>
                                     </CheckBox>
-                                    <ComboBox Grid.Row="2" Grid.Column="1"
-                                        ItemsSource="{Binding Mode=OneWay, Source={StaticResource PageOrientation}}"
-                                        SelectedItem="{Binding SelectedOrientation}">
-                                        <ComboBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <TextBlock>
-                                                    <Run Text="{Binding Mode=OneWay, Converter={StaticResource EnumOrientationToConvertedLanguageTextConverter}}" />
-                                                    <Run FontStyle="Italic" Foreground="Red"
-                                                        Text="{Binding Mode=OneWay, Converter={StaticResource EnumOrientationToTwainVersionConverter}}" />
-                                                </TextBlock>
-                                            </DataTemplate>
-                                        </ComboBox.ItemTemplate>
-                                    </ComboBox>
+                                    <UniformGrid Grid.Row="2" Grid.Column="1"
+                                        Columns="2">
+                                        <CheckBox Grid.Column="1"
+                                            Content="{local:Loc SEPERATOR}"
+                                            IsChecked="{Binding Scanner.UsePageSeperator}" />
+                                        <ComboBox ItemsSource="{Binding Mode=OneWay, Source={StaticResource PageOrientation}}" SelectedItem="{Binding SelectedOrientation}">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock><Run Text="{Binding Converter={StaticResource EnumOrientationToConvertedLanguageTextConverter}, Mode=OneWay}" /><Run Text=" " /><Run FontStyle="Italic" Foreground="Red"
+                                                            Text="{Binding Converter={StaticResource EnumOrientationToTwainVersionConverter}, Mode=OneWay}" /></TextBlock>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                    </UniformGrid>
                                 </Grid>
                                 <Separator />
                                 <Extensions:ButtonedTextBox d:Description="SaveFileName" d:Text="FileName"
@@ -672,8 +673,8 @@
                                     Command="{Binding ListeTemizle}"
                                     DockPanel.Dock="Right">
                                     <StackPanel Orientation="Horizontal">
-                                        <Canvas Width="32" Height="24">
-                                            <Image Canvas.Left="4"
+                                        <Canvas Width="32" Height="32">
+                                            <Image Canvas.Left="4" Canvas.Top="4"
                                                 Width="24" Height="24">
                                                 <Image.Source>
                                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -682,9 +683,13 @@
                                                     </MultiBinding>
                                                 </Image.Source>
                                             </Image>
-                                            <TextBlock Canvas.Top="4"
-                                                Width="32"
-                                                d:Text="0" FontWeight="Bold" TextAlignment="Center"><Run BaselineAlignment="Center" Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" /><Run Text=" " /><Run>/</Run><Run Text=" " /><Run BaselineAlignment="Center" Text="{Binding Scanner.Resimler.Count, Mode=OneWay}" /></TextBlock>
+                                            <TextBlock Width="32"
+                                                FontWeight="Bold" TextAlignment="Center">
+                                                <Run d:Text="0" BaselineAlignment="Center"
+                                                    Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" />
+                                                <LineBreak />
+                                                <Run d:Text="0" BaselineAlignment="Center"
+                                                    Text="{Binding Scanner.Resimler.Count, Mode=OneWay}" /></TextBlock>
                                         </Canvas>
                                         <TextBlock VerticalAlignment="Center" Text="{local:Loc CLEARLIST}" />
                                     </StackPanel>

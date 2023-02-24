@@ -34,10 +34,8 @@ using Twainsettings = TwainControl.Properties;
 
 namespace GpScanner.ViewModel
 {
-
     public class GpScannerViewModel : InpcBase
     {
-
         public Task Filesavetask;
 
         public GpScannerViewModel()
@@ -325,6 +323,7 @@ namespace GpScanner.ViewModel
                 if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
                 {
                     string path = pdfviewer.PdfFilePath;
+                    int currentpage = pdfviewer.Sayfa;
                     using PdfDocument inputDocument = PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Import);
                     if ((Keyboard.IsKeyDown(Key.LeftCtrl) && Keyboard.IsKeyDown(Key.LeftAlt)) || (Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.RightAlt)))
                     {
@@ -342,6 +341,7 @@ namespace GpScanner.ViewModel
                     }
                     SavePageRotated(path, inputDocument, (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)) ? -90 : 90, pdfviewer.Sayfa - 1);
                     pdfviewer.PdfFilePath = null;
+                    pdfviewer.Sayfa = currentpage;
                     pdfviewer.PdfFilePath = path;
                 }
             }, parameter => true);
@@ -435,6 +435,7 @@ namespace GpScanner.ViewModel
                         files.GeneratePdf(paper, scannedtext).Save(filename);
                         GC.Collect();
                     });
+                    BatchDialogOpen = true;
                     BatchTxtOcrs.Add(batchTxtOcr);
                 }
             }, parameter => !string.IsNullOrWhiteSpace(BatchFolder) && !string.IsNullOrWhiteSpace(Twainsettings.Settings.Default.AutoFolder));
@@ -469,6 +470,7 @@ namespace GpScanner.ViewModel
                     }
                 }
                 Filesavetask = Task.WhenAll(Tasks);
+                BatchDialogOpen = true;
             }, parameter => !string.IsNullOrWhiteSpace(BatchFolder));
 
             DatabaseSave = new RelayCommand<object>(parameter => ScannerData.Serialize());
@@ -595,6 +597,17 @@ namespace GpScanner.ViewModel
                 {
                     barcodePosition = value;
                     OnPropertyChanged(nameof(BarcodePosition));
+                }
+            }
+        }
+
+        public bool BatchDialogOpen {
+            get => batchDialogOpen; set {
+
+                if (batchDialogOpen != value)
+                {
+                    batchDialogOpen = value;
+                    OnPropertyChanged(nameof(BatchDialogOpen));
                 }
             }
         }
@@ -1221,6 +1234,8 @@ namespace GpScanner.ViewModel
         private ObservableCollection<string> barcodeList = new();
 
         private ResultPoint[] barcodePosition;
+
+        private bool batchDialogOpen;
 
         private string batchFolder;
 

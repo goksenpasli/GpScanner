@@ -206,6 +206,20 @@ namespace GpScanner
                         TwainCtrl.CameraQRCodeData = null;
                     }
                 }
+                if (e.PropertyName is "UsePageSeperator" && TwainCtrl.Scanner.UsePageSeperator)
+                {
+                    if (Settings.Default.PatchCodes.Count <= 0)
+                    {
+                        TwainCtrl.Scanner.UsePageSeperator = false;
+                        _ = MessageBox.Show(Translation.GetResStringValue("NOPATCHCODE"));
+                        if (WindowExtensions.OpenSettings.CanExecute(null))
+                        {
+                            WindowExtensions.OpenSettings.Execute(null);
+                        }
+                        return;
+                    }
+                    ViewModel.DetectPageSeperator = TwainCtrl.Scanner.UsePageSeperator;
+                }
             }
         }
 

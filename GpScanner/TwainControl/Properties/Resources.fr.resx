@@ -314,6 +314,9 @@ RELIER</value>
   <data name="NONE" xml:space="preserve">
     <value>RIEN</value>
   </data>
+  <data name="NOPATCHCODE" xml:space="preserve">
+    <value>Aucun code de patch détecté</value>
+  </data>
   <data name="NOPROFILE" xml:space="preserve">
     <value>AUCUN PROFIL SÉLECTIONNÉ</value>
   </data>

@@ -314,6 +314,9 @@ COLLEGARE</value>
   <data name="NONE" xml:space="preserve">
     <value>NESSUNO</value>
   </data>
+  <data name="NOPATCHCODE" xml:space="preserve">
+    <value>Nessun codice patch rilevato</value>
+  </data>
   <data name="NOPROFILE" xml:space="preserve">
     <value>NESSUN PROFILO SELEZIONATO</value>
   </data>

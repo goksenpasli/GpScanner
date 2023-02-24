@@ -1814,6 +1814,10 @@ namespace TwainControl
                 Settings.Default.DefaultProfile = Scanner.SelectedProfile;
                 Settings.Default.Save();
             }
+            if (e.PropertyName is "UsePageSeperator")
+            {
+                OnPropertyChanged(nameof(Scanner.UsePageSeperator));
+            }
         }
 
         private void Twain_ScanningComplete(object sender, ScanningCompleteEventArgs e)

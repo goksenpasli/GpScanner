@@ -494,9 +494,8 @@ namespace PdfViewer
                     try
                     {
                         byte[] data = await ReadAllFileAsync(e.NewValue as string);
-                        pdfViewer.Sayfa = 1;
                         int dpi = pdfViewer.Dpi;
-                        pdfViewer.Source = await ConvertToImgAsync(data, 1, dpi);
+                        pdfViewer.Source = await ConvertToImgAsync(data, pdfViewer.Sayfa, dpi);
                         pdfViewer.ToplamSayfa = await PdfPageCountAsync(data);
                         pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
                         pdfViewer.Resize.Execute(null);

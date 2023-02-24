@@ -523,4 +523,7 @@ TO FILE</value>
   <data name="TESSLANGSELECT" xml:space="preserve">
     <value>Select Tesseract Language</value>
   </data>
+  <data name="NOPATCHCODE" xml:space="preserve">
+    <value>No Patch Code Detected</value>
+  </data>
 </root>

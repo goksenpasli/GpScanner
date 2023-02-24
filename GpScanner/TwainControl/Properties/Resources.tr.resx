@@ -529,4 +529,7 @@ BELGE EKLE</value>
   <data name="TESSLANGSELECT" xml:space="preserve">
     <value>Tesseract Dilini Seçin</value>
   </data>
+  <data name="NOPATCHCODE" xml:space="preserve">
+    <value>Yama Kodu Algılanmadı</value>
+  </data>
 </root>

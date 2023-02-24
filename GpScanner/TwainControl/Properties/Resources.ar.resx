@@ -314,6 +314,9 @@
   <data name="NONE" xml:space="preserve">
     <value>لا أحد</value>
   </data>
+  <data name="NOPATCHCODE" xml:space="preserve">
+    <value>لم يتم اكتشاف رمز تصحيح</value>
+  </data>
   <data name="NOPROFILE" xml:space="preserve">
     <value>لم يتم تحديد ملف شخصي</value>
   </data>

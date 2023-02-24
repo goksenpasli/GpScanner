@@ -160,12 +160,15 @@
                                     IsEnabled="{Binding DetectBarCode}" />
                             </StackPanel>
                             <UniformGrid Grid.Row="1" Columns="2">
-                                <StackPanel>
-                                    <Extensions:ButtonedTextBox Description="{twainctrl:Loc TAG}"
+                                <UniformGrid Rows="3">
+                                    <Extensions:ButtonedTextBox x:Name="Tb"
+                                        VerticalContentAlignment="Center"
+                                        Description="{twainctrl:Loc TAG}"
                                         IsEnabled="{Binding DetectPageSeperator}"
                                         OpenButtonVisibility="Collapsed"
                                         Text="{Binding PatchFileName, UpdateSourceTrigger=PropertyChanged}" />
-                                    <Extensions:ButtonedTextBox Description="{twainctrl:Loc FILENAME}"
+                                    <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
+                                        Description="{twainctrl:Loc FILENAME}"
                                         IsEnabled="{Binding DetectPageSeperator}"
                                         OpenButtonVisibility="Collapsed"
                                         Text="{Binding PatchTag, UpdateSourceTrigger=PropertyChanged}" />
@@ -182,7 +185,7 @@
                                             <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SAVEPROFILE}" />
                                         </StackPanel>
                                     </Button>
-                                </StackPanel>
+                                </UniformGrid>
                                 <ListBox d:ItemsSource="{d:SampleData ItemCount=5}"
                                     IsEnabled="{Binding DetectPageSeperator}"
                                     ItemsSource="{Binding PatchCodes, Source={x:Static properties:Settings.Default}}"
@@ -191,6 +194,7 @@
                                         <DataTemplate>
                                             <StackPanel Margin="1" Orientation="Horizontal">
                                                 <TextBlock Margin="0,0,5,0" VerticalAlignment="Center"
+                                                    FontStyle="Italic"
                                                     Text="{Binding Mode=OneWay}" />
                                                 <TextBlock>
                                                     <Hyperlink Command="{Binding DataContext.RemovePatchProfile, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding Mode=OneWay}">
@@ -212,9 +216,7 @@
                             <Image x:Name="Img"
                                 Width="80" Height="80"
                                 Source="{Binding ElementName=Tb, Path=Text, Converter={StaticResource StringToQrBitmapImageConverter}, Mode=OneWay}" />
-                            <UniformGrid Rows="3">
-                                <Extensions:ButtonedTextBox x:Name="Tb"
-                                    CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed" TextWrapping="Wrap" />
+                            <UniformGrid Rows="2">
                                 <Button Command="{Binding SaveQrImage}" CommandParameter="{Binding Path=Source, ElementName=Img, Mode=OneWay}">
                                     <Image Width="24" Height="24">
                                         <Image.Source>

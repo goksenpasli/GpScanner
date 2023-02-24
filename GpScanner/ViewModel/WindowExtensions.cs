@@ -98,7 +98,10 @@ namespace GpScanner.ViewModel
                         break;
 
                     case _SettingsSysMenuID:
-                        OpenSettings.Execute(null);
+                        if (OpenSettings.CanExecute(null))
+                        {
+                            OpenSettings.Execute(null);
+                        }
                         handled = true;
                         break;
                 }

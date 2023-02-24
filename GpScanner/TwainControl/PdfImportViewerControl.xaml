@@ -15,6 +15,7 @@
     <UserControl.Resources>
         <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
         <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
+        <Extensions:CloneConverter x:Key="CloneConverter" />
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
