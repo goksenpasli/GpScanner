@@ -593,7 +593,6 @@ namespace GpScanner.ViewModel
 
         public ResultPoint[] BarcodePosition {
             get => barcodePosition; set {
-
                 if (barcodePosition != value)
                 {
                     barcodePosition = value;
@@ -604,7 +603,6 @@ namespace GpScanner.ViewModel
 
         public bool BatchDialogOpen {
             get => batchDialogOpen; set {
-
                 if (batchDialogOpen != value)
                 {
                     batchDialogOpen = value;
@@ -768,7 +766,6 @@ namespace GpScanner.ViewModel
 
         public GridLength MainWindowDocumentGuiControlLength {
             get => mainWindowDocumentGuiControlLength; set {
-
                 if (mainWindowDocumentGuiControlLength != value)
                 {
                     mainWindowDocumentGuiControlLength = value;
@@ -779,7 +776,6 @@ namespace GpScanner.ViewModel
 
         public GridLength MainWindowGuiControlLength {
             get => mainWindowGuiControlLength; set {
-
                 if (mainWindowGuiControlLength != value)
                 {
                     mainWindowGuiControlLength = value;
@@ -812,7 +808,6 @@ namespace GpScanner.ViewModel
 
         public string PatchFileName {
             get => patchFileName; set {
-
                 if (patchFileName != value)
                 {
                     patchFileName = value;
@@ -849,7 +844,6 @@ namespace GpScanner.ViewModel
 
         public double PdfMergeProgressValue {
             get => pdfMergeProgressValue; set {
-
                 if (pdfMergeProgressValue != value)
                 {
                     pdfMergeProgressValue = value;
@@ -914,7 +908,6 @@ namespace GpScanner.ViewModel
 
         public int SayfaBitiş {
             get => sayfaBitiş; set {
-
                 if (sayfaBitiş != value)
                 {
                     sayfaBitiş = value;
@@ -951,7 +944,6 @@ namespace GpScanner.ViewModel
 
         public DateTime? SeçiliGün {
             get => seçiliGün; set {
-
                 if (seçiliGün != value)
                 {
                     seçiliGün = value;
@@ -1038,11 +1030,11 @@ namespace GpScanner.ViewModel
 
         public ICommand UnRegisterSti { get; }
 
-        public static void AddBarcodeToList(GpScannerViewModel ViewModel)
+        public  void AddBarcodeToList()
         {
-            if (ViewModel.BarcodeContent is not null)
+            if (BarcodeContent is not null)
             {
-                ViewModel.BarcodeList.Add(ViewModel.BarcodeContent);
+                BarcodeList.Add(BarcodeContent);
             }
         }
 
@@ -1114,10 +1106,10 @@ namespace GpScanner.ViewModel
             return null;
         }
 
-        public static void ReloadFileDatas(GpScannerViewModel ViewModel)
+        public  void ReloadFileDatas()
         {
-            ViewModel.Dosyalar = ViewModel.GetScannerFileData();
-            ViewModel.ChartData = ViewModel.GetChartsData();
+            Dosyalar = GetScannerFileData();
+            ChartData = GetChartsData();
         }
 
         public static void WriteAppExceptions(DispatcherUnhandledExceptionEventArgs e)

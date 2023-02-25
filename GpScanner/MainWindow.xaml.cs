@@ -148,14 +148,13 @@ namespace GpScanner
             {
                 if (e.PropertyName is "Resimler")
                 {
-                    GpScannerViewModel.ReloadFileDatas(ViewModel);
+                    ViewModel.ReloadFileDatas();
                 }
 
                 if (e.PropertyName is "DetectPageSeperator" && ViewModel.DetectBarCode)
                 {
-                    Result result = GpScannerViewModel.GetImageBarcodeResult(TwainCtrl?.Scanner?.Resimler?.LastOrDefault()?.Resim);
-                    ViewModel.BarcodeContent = result?.Text;
-                    GpScannerViewModel.AddBarcodeToList(ViewModel);
+                    ViewModel.BarcodeContent = GpScannerViewModel.GetImageBarcodeResult(TwainCtrl?.Scanner?.Resimler?.LastOrDefault()?.Resim)?.Text;
+                    ViewModel.AddBarcodeToList();
 
                     if (ViewModel.DetectPageSeperator && ViewModel.BarcodeContent is not null)
                     {
@@ -168,7 +167,7 @@ namespace GpScanner
                     ViewModel.ScannedText = TwainCtrl.DataBaseTextData;
                     if (ViewModel.ScannedText != null)
                     {
-                        ViewModel.ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = TwainCtrl.Scanner.PdfFilePath, FileContent = string.Join(" ", ViewModel.ScannedText.Select(z => z.Text)) });
+                        ViewModel.ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = TwainCtrl.Scanner.PdfFilePath, FileContent = string.Join(" ", ViewModel.ScannedText.Select(z => z.Text)), QrData = ViewModel.GetImageBarcodeResult(TwainCtrl?.DataBaseQrData)?.Text });
                     }
                     ViewModel.DatabaseSave.Execute(null);
                     TwainCtrl.DataBaseTextData = null;
@@ -178,7 +177,7 @@ namespace GpScanner
                 if (e.PropertyName is "ImgData" && TwainCtrl.ImgData is not null)
                 {
                     ViewModel.BarcodeContent = ViewModel.GetImageBarcodeResult(TwainCtrl?.ImgData)?.Text;
-                    GpScannerViewModel.AddBarcodeToList(ViewModel);
+                    ViewModel.AddBarcodeToList();
                     ViewModel.OcrIsBusy = true;
                     ViewModel.ScannedText = await TwainCtrl.ImgData.OcrAsyc(Settings.Default.DefaultTtsLang);
                     if (ViewModel.ScannedText != null)
@@ -200,7 +199,7 @@ namespace GpScanner
                     ViewModel.BarcodeContent = ViewModel.GetImageBarcodeResult(TwainCtrl.CameraQRCodeData)?.Text;
                     if (!string.IsNullOrWhiteSpace(ViewModel.BarcodeContent))
                     {
-                        GpScannerViewModel.AddBarcodeToList(ViewModel);
+                        ViewModel.AddBarcodeToList();
                         TwainCtrl.CameraQRCodeData = null;
                     }
                 }

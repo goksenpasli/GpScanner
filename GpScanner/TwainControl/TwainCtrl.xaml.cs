@@ -293,9 +293,15 @@ namespace TwainControl
                         for (int i = 0; i < images.Count; i++)
                         {
                             ScannedImage scannedimage = images[i];
-                            var data = await scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsyc(Scanner.SelectedTtsLanguage);
-                            Dispatcher.Invoke(() => DataBaseTextData = data);
-                            data = null;
+                            byte[] imgdata = scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg);
+                            ObservableCollection<OcrData> ocrdata = await imgdata.OcrAsyc(Scanner.SelectedTtsLanguage);
+                            Dispatcher.Invoke(() =>
+                            {
+                                DataBaseQrData = imgdata;
+                                DataBaseTextData = ocrdata;
+                            });
+                            ocrdata = null;
+                            imgdata = null;
                             Scanner.PdfSaveProgressValue = i / (double)images.Count;
                         }
                     }
@@ -668,6 +674,18 @@ namespace TwainControl
         }
 
         public ICommand CycleSelectedDocuments { get; }
+
+        public byte[] DataBaseQrData {
+            get => dataBaseQrData;
+
+            set {
+                if (dataBaseQrData != value)
+                {
+                    dataBaseQrData = value;
+                    OnPropertyChanged(nameof(DataBaseQrData));
+                }
+            }
+        }
 
         public ObservableCollection<OcrData> DataBaseTextData {
             get => dataBaseTextData; set {
@@ -1239,6 +1257,8 @@ namespace TwainControl
         private bool canUndoImage;
 
         private CroppedBitmap croppedOcrBitmap;
+
+        private byte[] dataBaseQrData;
 
         private ObservableCollection<OcrData> dataBaseTextData;
 

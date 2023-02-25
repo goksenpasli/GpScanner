@@ -16,10 +16,8 @@ using static Extensions.ExtensionMethods;
 
 namespace PdfViewer
 {
-
     public enum FitImageOrientation
     {
-
         Width = 0,
 
         Height = 1
@@ -27,7 +25,6 @@ namespace PdfViewer
 
     public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     {
-
         public static readonly DependencyProperty AngleProperty = DependencyProperty.Register("Angle", typeof(double), typeof(PdfViewer), new PropertyMetadata(0.0));
 
         public static readonly DependencyProperty ContextMenuVisibilityProperty = DependencyProperty.Register("ContextMenuVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Collapsed));

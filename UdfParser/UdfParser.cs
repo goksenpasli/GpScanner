@@ -40,7 +40,6 @@ namespace UdfParser
                 bi.Freeze();
                 System.Windows.Controls.Image v = new() { Source = bi, Margin = new Thickness(bgimage.BgImageLeftMargin * 4 / 3, bgimage.BgImageUpMargin * 4 / 3, bgimage.BgImageRigtMargin * 4 / 3, bgimage.BgImageBottomMargin * 4 / 3) };
                 flowdocument.Blocks.Add(new BlockUIContainer(v));
-                binaryData = null;
                 GC.Collect();
             }
         }
