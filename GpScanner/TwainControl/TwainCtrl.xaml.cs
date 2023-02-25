@@ -286,17 +286,19 @@ namespace TwainControl
             {
                 Filesavetask = Task.Run(async () =>
                 {
-                    Dispatcher.Invoke(() =>
+                    if (Scanner.ApplyDataBaseOcr)
                     {
-                        if (Scanner.ApplyDataBaseOcr)
+                        Scanner.PdfFilePath = PdfGeneration.GetPdfScanPath();
+                        List<ScannedImage> images = Scanner.Resimler.Where(z => z.Seçili).ToList();
+                        for (int i = 0; i < images.Count; i++)
                         {
-                            Scanner.PdfFilePath = PdfGeneration.GetPdfScanPath();
-                            foreach (ScannedImage scannedimage in Scanner.Resimler.Where(z => z.Seçili).ToList())
-                            {
-                                DataBaseTextData = scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg);
-                            }
+                            ScannedImage scannedimage = images[i];
+                            var data = await scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsyc(Scanner.SelectedTtsLanguage);
+                            Dispatcher.Invoke(() => DataBaseTextData = data);
+                            data = null;
+                            Scanner.PdfSaveProgressValue = i / (double)images.Count;
                         }
-                    });
+                    }
                     if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
                     {
                         await SavePdfImage(Scanner.Resimler.Where(z => z.Seçili).ToList(), PdfGeneration.GetPdfScanPath(), Scanner, SelectedPaper, true, (int)Settings.Default.ImgLoadResolution);
@@ -620,6 +622,7 @@ namespace TwainControl
 
         public bool CanUndoImage {
             get => canUndoImage; set {
+
                 if (canUndoImage != value)
                 {
                     canUndoImage = value;
@@ -666,8 +669,9 @@ namespace TwainControl
 
         public ICommand CycleSelectedDocuments { get; }
 
-        public byte[] DataBaseTextData {
+        public ObservableCollection<OcrData> DataBaseTextData {
             get => dataBaseTextData; set {
+
                 if (dataBaseTextData != value)
                 {
                     dataBaseTextData = value;
@@ -714,6 +718,7 @@ namespace TwainControl
 
         public bool DragMoveStarted {
             get => dragMoveStarted; set {
+
                 if (dragMoveStarted != value)
                 {
                     dragMoveStarted = value;
@@ -856,6 +861,7 @@ namespace TwainControl
 
         public TwainWpf.TwainNative.Orientation SelectedOrientation {
             get => selectedOrientation; set {
+
                 if (selectedOrientation != value)
                 {
                     selectedOrientation = value;
@@ -904,6 +910,7 @@ namespace TwainControl
 
         public ScannedImage UndoImage {
             get => undoImage; set {
+
                 if (undoImage != value)
                 {
                     undoImage = value;
@@ -1233,7 +1240,7 @@ namespace TwainControl
 
         private CroppedBitmap croppedOcrBitmap;
 
-        private byte[] dataBaseTextData;
+        private ObservableCollection<OcrData> dataBaseTextData;
 
         private int decodeHeight;
 
@@ -1494,7 +1501,7 @@ namespace TwainControl
                 Tümünüİşaretle.Execute(null);
                 foreach (ScannedImage scannedimage in Scanner.Resimler.Where(z => z.Seçili).ToList())
                 {
-                    DataBaseTextData = scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg);
+                    DataBaseTextData = await scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsyc(Scanner.SelectedTtsLanguage);
                 }
             }
             if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)

@@ -462,6 +462,7 @@ namespace GpScanner.ViewModel
                                 string content = string.Join(" ", (await image.OcrAsyc(scanner.SelectedTtsLanguage)).Select(z => z.Text));
                                 File.WriteAllText(txtfile, content);
                                 batchTxtOcr.ProgressValue = (i + 1) / (double)item.Count;
+                                batchTxtOcr.FilePath = Path.GetFileName(image);
                                 GC.Collect();
                             }
                         });

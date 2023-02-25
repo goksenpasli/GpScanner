@@ -165,16 +165,14 @@ namespace GpScanner
 
                 if (e.PropertyName is "DataBaseTextData" && TwainCtrl.DataBaseTextData is not null)
                 {
-                    ViewModel.OcrIsBusy = true;
-                    ViewModel.ScannedText = await TwainCtrl.DataBaseTextData.OcrAsyc(Settings.Default.DefaultTtsLang);
+                    ViewModel.ScannedText = TwainCtrl.DataBaseTextData;
                     if (ViewModel.ScannedText != null)
                     {
-                        ViewModel.ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = TwainCtrl.Scanner.PdfFilePath, FileContent = string.Join(" ", ViewModel.ScannedText.Select(z => z.Text)), QrData = ViewModel.GetImageBarcodeResult(TwainCtrl?.DataBaseTextData)?.Text });
+                        ViewModel.ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = TwainCtrl.Scanner.PdfFilePath, FileContent = string.Join(" ", ViewModel.ScannedText.Select(z => z.Text)) });
                     }
                     ViewModel.DatabaseSave.Execute(null);
                     TwainCtrl.DataBaseTextData = null;
                     ViewModel.ScannedText = null;
-                    ViewModel.OcrIsBusy = false;
                 }
 
                 if (e.PropertyName is "ImgData" && TwainCtrl.ImgData is not null)

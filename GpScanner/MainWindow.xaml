@@ -504,13 +504,33 @@
                     <Run Text="{Binding ElementName=TwainCtrl, Path=Scanner.SeçiliTarayıcı}" />
                 </TextBlock>
             </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock FontStyle="Italic" FontWeight="Bold" Foreground="White">
+                    <Run BaselineAlignment="Center" Text="{Binding JpegQuality, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}, StringFormat={}%{0}}" />
+                    <Image Width="16" Height="16"
+                        VerticalAlignment="Center">
+                        <Image.Source>
+                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                <Binding Source="Shell32.dll" />
+                                <Binding Source="139" />
+                            </MultiBinding>
+                        </Image.Source>
+                    </Image>
+                    <Run BaselineAlignment="Center" Text="{Binding ImgLoadResolution, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}, StringFormat={}{0}}" />
+                </TextBlock>
+            </StatusBarItem>
             <StatusBarItem HorizontalAlignment="Right">
                 <StackPanel Orientation="Horizontal">
                     <Extensions:ContentToggleButton AllowDrop="True" Background="Transparent" BorderThickness="2"
-                        Content="{twainctrl:Loc QRDETECT}"
                         Drop="QrListBox_Drop"
                         IsEnabled="{Binding DetectBarCode}"
                         Style="{StaticResource ContentToggleButtonAnimationStyle}">
+                        <Extensions:ContentToggleButton.Content>
+                            <TextBlock>
+                                <Run Text="{Binding Mode=OneWay, ElementName=QrListBox, Path=Items.Count}" />
+                                <Run Text="{twainctrl:Loc QRDETECT}" />
+                            </TextBlock>
+                        </Extensions:ContentToggleButton.Content>
                         <Extensions:ContentToggleButton.OverContent>
                             <GroupBox>
                                 <ListBox x:Name="QrListBox"
@@ -533,10 +553,12 @@
                                                     <ColumnDefinition Width="84.8" />
                                                     <ColumnDefinition Width="*" />
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock VerticalAlignment="Center"><Hyperlink Command="{Binding DataContext.TesseractViewModel.TesseractDataFilesDownloadLink, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding Mode=OneWay}">
+                                                <TextBlock VerticalAlignment="Center">
+                                                    <Hyperlink Command="{Binding DataContext.TesseractViewModel.TesseractDataFilesDownloadLink, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding Mode=OneWay}">
                                                         <Run FontFamily="Wingdings" FontSize="16" FontWeight="Bold"
                                                             Text="8" />
-                                                    </Hyperlink></TextBlock>
+                                                    </Hyperlink>
+                                                </TextBlock>
                                                 <Image Grid.Column="1"
                                                     Width="80" Height="80"
                                                     Source="{Binding Converter={StaticResource StringToQrBitmapImageConverter}, Mode=OneWay}"
@@ -577,9 +599,11 @@
                                     ItemsSource="{Binding BatchTxtOcrs}">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
-                                            <ProgressBar Height="20"
-                                                Maximum="1" Minimum="0"
-                                                Value="{Binding ProgressValue}" />
+                                            <Grid Height="20">
+                                                <ProgressBar Maximum="1" Minimum="0"
+                                                    Value="{Binding ProgressValue}" />
+                                                <TextBlock VerticalAlignment="Center" Text="{Binding FilePath, Mode=OneWay}" />
+                                            </Grid>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                 </ListBox>

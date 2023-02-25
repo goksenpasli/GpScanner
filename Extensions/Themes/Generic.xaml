@@ -221,18 +221,23 @@
                                         </Image>
                                     </Button.Content>
                                 </Button>
-                                <ComboBox Grid.Column="1"
+                                <ListBox Grid.Column="1"
                                     SelectedValue="{Binding Orientation, RelativeSource={RelativeSource TemplatedParent}}"
                                     SelectedValuePath="Tag">
-                                    <ComboBoxItem Tag="Width">
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <VirtualizingStackPanel Orientation="Horizontal" />
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                    <ListBoxItem Tag="Width">
                                         <TextBlock FontFamily="Wingdings 3" FontSize="16" FontWeight="Bold"
                                             Text="F" />
-                                    </ComboBoxItem>
-                                    <ComboBoxItem Tag="Height">
+                                    </ListBoxItem>
+                                    <ListBoxItem Tag="Height">
                                         <TextBlock FontFamily="Wingdings 3" FontSize="16" FontWeight="Bold"
                                             Text="G" />
-                                    </ComboBoxItem>
-                                </ComboBox>
+                                    </ListBoxItem>
+                                </ListBox>
                                 <Button Grid.Column="2" Command="{Binding Resize, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
                                     <Button.Content>
                                         <Image Width="16" Height="16">

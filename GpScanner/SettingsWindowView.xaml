@@ -386,9 +386,9 @@
                             Content="{twainctrl:Loc SRC}" />
                         <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
                             <ProgressBar Maximum="1" Value="{Binding PdfSaveProgressValue, Source={x:Static twainctrl:ToolBox.Scanner}}" />
-                            <TextBox d:Text="AutoFolder"
+                            <TextBlock VerticalAlignment="Center"
+                                d:Text="AutoFolder"
                                 Background="{x:Null}"
-                                IsReadOnly="True"
                                 Text="{Binding Path=AutoFolder, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}}" />
                         </Grid>
                         <UniformGrid Grid.Row="1" Grid.Column="2"
