@@ -164,7 +164,9 @@
                                     </Image.Source>
                                 </Image>
                             </RepeatButton>
-                            <ComboBox ItemsSource="{Binding Pages, RelativeSource={RelativeSource TemplatedParent}}" SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}">
+                            <ComboBox IsEditable="True"
+                                ItemsSource="{Binding Pages, RelativeSource={RelativeSource TemplatedParent}}"
+                                SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}">
                                 <ComboBox.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <VirtualizingStackPanel />

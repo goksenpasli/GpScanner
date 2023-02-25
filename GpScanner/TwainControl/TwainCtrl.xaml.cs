@@ -1513,9 +1513,9 @@ namespace TwainControl
 
         private async void Fastscan(object sender, ScanningCompleteEventArgs e)
         {
+            Scanner.ArayüzEtkin = false;
             OnPropertyChanged(nameof(Scanner.DetectPageSeperator));
             Scanner.PdfFilePath = PdfGeneration.GetPdfScanPath();
-
             if (Scanner.ApplyDataBaseOcr)
             {
                 Tümünüİşaretle.Execute(null);
@@ -1540,6 +1540,7 @@ namespace TwainControl
             OnPropertyChanged(nameof(Scanner.Resimler));
             SeçiliListeTemizle.Execute(null);
             twain.ScanningComplete -= Fastscan;
+            Scanner.ArayüzEtkin = true;
         }
 
         private void GridSplitter_MouseDoubleClick(object sender, MouseButtonEventArgs e)

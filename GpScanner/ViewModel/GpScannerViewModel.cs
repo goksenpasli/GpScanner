@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
@@ -593,6 +594,7 @@ namespace GpScanner.ViewModel
 
         public ResultPoint[] BarcodePosition {
             get => barcodePosition; set {
+
                 if (barcodePosition != value)
                 {
                     barcodePosition = value;
@@ -603,6 +605,7 @@ namespace GpScanner.ViewModel
 
         public bool BatchDialogOpen {
             get => batchDialogOpen; set {
+
                 if (batchDialogOpen != value)
                 {
                     batchDialogOpen = value;
@@ -766,6 +769,7 @@ namespace GpScanner.ViewModel
 
         public GridLength MainWindowDocumentGuiControlLength {
             get => mainWindowDocumentGuiControlLength; set {
+
                 if (mainWindowDocumentGuiControlLength != value)
                 {
                     mainWindowDocumentGuiControlLength = value;
@@ -776,6 +780,7 @@ namespace GpScanner.ViewModel
 
         public GridLength MainWindowGuiControlLength {
             get => mainWindowGuiControlLength; set {
+
                 if (mainWindowGuiControlLength != value)
                 {
                     mainWindowGuiControlLength = value;
@@ -808,6 +813,7 @@ namespace GpScanner.ViewModel
 
         public string PatchFileName {
             get => patchFileName; set {
+
                 if (patchFileName != value)
                 {
                     patchFileName = value;
@@ -844,6 +850,7 @@ namespace GpScanner.ViewModel
 
         public double PdfMergeProgressValue {
             get => pdfMergeProgressValue; set {
+
                 if (pdfMergeProgressValue != value)
                 {
                     pdfMergeProgressValue = value;
@@ -908,6 +915,7 @@ namespace GpScanner.ViewModel
 
         public int SayfaBitiş {
             get => sayfaBitiş; set {
+
                 if (sayfaBitiş != value)
                 {
                     sayfaBitiş = value;
@@ -944,6 +952,7 @@ namespace GpScanner.ViewModel
 
         public DateTime? SeçiliGün {
             get => seçiliGün; set {
+
                 if (seçiliGün != value)
                 {
                     seçiliGün = value;
@@ -1030,14 +1039,6 @@ namespace GpScanner.ViewModel
 
         public ICommand UnRegisterSti { get; }
 
-        public  void AddBarcodeToList()
-        {
-            if (BarcodeContent is not null)
-            {
-                BarcodeList.Add(BarcodeContent);
-            }
-        }
-
         public static void BackupDataXmlFile()
         {
             if (File.Exists(Settings.Default.DatabaseFile))
@@ -1106,12 +1107,6 @@ namespace GpScanner.ViewModel
             return null;
         }
 
-        public  void ReloadFileDatas()
-        {
-            Dosyalar = GetScannerFileData();
-            ChartData = GetChartsData();
-        }
-
         public static void WriteAppExceptions(DispatcherUnhandledExceptionEventArgs e)
         {
             if (IsAdministrator)
@@ -1127,6 +1122,14 @@ namespace GpScanner.ViewModel
                 File.AppendAllText(path, DateTime.Now.ToString());
                 File.AppendAllText(path, e.Exception.Message + Environment.NewLine);
                 File.AppendAllText(path, e.Exception.StackTrace + Environment.NewLine);
+            }
+        }
+
+        public void AddBarcodeToList()
+        {
+            if (BarcodeContent is not null)
+            {
+                BarcodeList.Add(BarcodeContent);
             }
         }
 
@@ -1198,7 +1201,9 @@ namespace GpScanner.ViewModel
                 ObservableCollection<Scanner> list = new();
                 try
                 {
-                    foreach (string dosya in Directory.EnumerateFiles(Twainsettings.Settings.Default.AutoFolder, "*.*", SearchOption.AllDirectories).Where(s => supportedfilesextension.Any(ext => ext == Path.GetExtension(s).ToLower())))
+                    List<string> files = Directory.EnumerateFiles(Twainsettings.Settings.Default.AutoFolder, "*.*", SearchOption.AllDirectories).Where(s => supportedfilesextension.Any(ext => ext == Path.GetExtension(s).ToLower())).ToList();
+                    files.Sort(new StrCmpLogicalComparer());
+                    foreach (string dosya in files)
                     {
                         list.Add(new Scanner() { FileName = dosya, Seçili = false });
                     }
@@ -1210,6 +1215,20 @@ namespace GpScanner.ViewModel
                 }
             }
             return null;
+        }
+
+        public void ReloadFileDatas()
+        {
+            Dosyalar = GetScannerFileData();
+            ChartData = GetChartsData();
+        }
+
+        public class StrCmpLogicalComparer : Comparer<string>
+        {
+            public override int Compare(string x, string y)
+            {
+                return StrCmpLogicalW(x, y);
+            }
         }
 
         private static DispatcherTimer timer;
@@ -1299,6 +1318,9 @@ namespace GpScanner.ViewModel
                 outputDocument.Save(savefilename);
             });
         }
+
+        [DllImport("Shlwapi.dll", CharSet = CharSet.Unicode)]
+        private static extern int StrCmpLogicalW(string x, string y);
 
         private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {

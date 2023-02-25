@@ -185,6 +185,7 @@
                                     </RepeatButton>
                                     <ComboBox Height="26"
                                         VerticalContentAlignment="Center"
+                                        IsEditable="True"
                                         ItemTemplate="{StaticResource ComboBoxItemTemplate}"
                                         ItemsSource="{Binding Pages, RelativeSource={RelativeSource TemplatedParent}}"
                                         SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"

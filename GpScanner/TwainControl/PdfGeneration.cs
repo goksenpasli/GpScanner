@@ -64,6 +64,10 @@ namespace TwainControl
 
         public static async Task<PdfDocument> GeneratePdf(this List<ScannedImage> bitmapFrames, Format format, Paper paper, int jpegquality = 80, List<ObservableCollection<OcrData>> ScannedText = null, int dpi = 120)
         {
+            if (bitmapFrames.Count == 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(bitmapFrames), "bitmap frames count should be greater than zero");
+            }
             using PdfDocument document = new();
             double index = 0;
             try
@@ -169,6 +173,10 @@ namespace TwainControl
 
         public static PdfDocument GeneratePdf(this List<string> imagefiles, Paper paper, List<ObservableCollection<OcrData>> ScannedText = null)
         {
+            if (imagefiles.Count == 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(imagefiles), "bitmap frames count should be greater than zero");
+            }
             using PdfDocument document = new();
             double index = 0;
             try
