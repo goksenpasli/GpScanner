@@ -207,7 +207,9 @@ namespace GpScanner.ViewModel
                         documentViewerWindow.Owner = Application.Current.MainWindow;
                         documentViewerModel.Scanner = ToolBox.Scanner;
                         documentViewerModel.PdfFilePath = filepath;
-                        documentViewerModel.DirectoryAllPdfFiles = Directory.EnumerateFiles(Path.GetDirectoryName(documentViewerModel.PdfFilePath), "*.*").Where(z => supportedfilesextension.Any(ext => ext == Path.GetExtension(z).ToLower()));
+                        List<string> files = Directory.EnumerateFiles(Path.GetDirectoryName(documentViewerModel.PdfFilePath), "*.*").Where(z => supportedfilesextension.Any(ext => ext == Path.GetExtension(z).ToLower())).ToList();
+                        files.Sort(new StrCmpLogicalComparer());
+                        documentViewerModel.DirectoryAllPdfFiles = files;
                         documentViewerModel.Index = Array.IndexOf(documentViewerModel.DirectoryAllPdfFiles.ToArray(), documentViewerModel.PdfFilePath);
                         documentViewerWindow.Show();
                         documentViewerWindow.Lb?.ScrollIntoView(filepath);
@@ -287,7 +289,7 @@ namespace GpScanner.ViewModel
                     SaveFileDialog saveFileDialog = new()
                     {
                         Filter = "Pdf Dosyası(*.pdf)|*.pdf",
-                        FileName = $"{Path.GetFileNameWithoutExtension(loadfilename)} {SayfaBaşlangıç}-{SayfaBitiş}.pdf"
+                        FileName = $"{Path.GetFileNameWithoutExtension(loadfilename)} {Translation.GetResStringValue("PAGENUMBER")} {SayfaBaşlangıç}-{SayfaBitiş}.pdf"
                     };
                     if (saveFileDialog.ShowDialog() == true)
                     {
@@ -304,7 +306,7 @@ namespace GpScanner.ViewModel
                 if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
                 {
                     string path = pdfviewer.PdfFilePath;
-                    if (MessageBox.Show($"{SayfaBaşlangıç}-{SayfaBitiş} {Translation.GetResStringValue("DELETE")}", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                    if (MessageBox.Show($"{Translation.GetResStringValue("PAGENUMBER")} {SayfaBaşlangıç}-{SayfaBitiş} {Translation.GetResStringValue("DELETE")}", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                     {
                         using PdfDocument inputDocument = PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Import);
                         for (int i = SayfaBitiş; i >= SayfaBaşlangıç; i--)
@@ -1205,7 +1207,7 @@ namespace GpScanner.ViewModel
                     files.Sort(new StrCmpLogicalComparer());
                     foreach (string dosya in files)
                     {
-                        list.Add(new Scanner() { FileName = dosya, Seçili = false });
+                        list.Add(new Scanner() { FileName = dosya });
                     }
                     return list;
                 }

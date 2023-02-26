@@ -75,6 +75,11 @@
                     <x:Type TypeName="TwainNative:Orientation" />
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
+            <CollectionViewSource x:Key="CompProfiles" Source="{Binding CompressionProfiles}">
+                <CollectionViewSource.GroupDescriptions>
+                    <PropertyGroupDescription PropertyName="Item1" />
+                </CollectionViewSource.GroupDescriptions>
+            </CollectionViewSource>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -347,7 +352,6 @@
                                                             </TransformGroup>
                                                         </TextBlock.RenderTransform>
                                                     </TextBlock>
-
                                                 </Grid>
                                             </ListBoxItem>
                                             <ListBoxItem HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center">
@@ -433,32 +437,55 @@
                                             </ComboBox>
                                             <ComboBox Grid.Column="1"
                                                 HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"
-                                                ItemsSource="{Binding CompressionProfiles}"
+                                                ItemsSource="{Binding Mode=OneWay, Source={StaticResource CompProfiles}}"
                                                 SelectedItem="{Binding SelectedCompressionProfile}">
+                                                <ComboBox.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <UniformGrid Columns="2" />
+                                                    </ItemsPanelTemplate>
+                                                </ComboBox.ItemsPanel>
+                                                <ComboBox.GroupStyle>
+                                                    <GroupStyle>
+                                                        <GroupStyle.Panel>
+                                                            <ItemsPanelTemplate>
+                                                                <UniformGrid Background="{StaticResource GroupBoxBackGround}" Columns="2" />
+                                                            </ItemsPanelTemplate>
+                                                        </GroupStyle.Panel>
+                                                        <GroupStyle.HeaderTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock HorizontalAlignment="Center"
+                                                                    FontStyle="Italic" FontWeight="Bold" Foreground="Black"
+                                                                    Text="{Binding Name}" />
+                                                            </DataTemplate>
+                                                        </GroupStyle.HeaderTemplate>
+                                                    </GroupStyle>
+                                                </ComboBox.GroupStyle>
                                                 <ComboBox.ItemTemplate>
                                                     <DataTemplate>
-                                                        <Grid>
-                                                            <ProgressBar Foreground="Orange" Maximum="600"
-                                                                Value="{Binding Item3, Mode=OneTime}">
-                                                                <ProgressBar.Background>
-                                                                    <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
-                                                                        <GradientStop Color="Lime" />
-                                                                        <GradientStop Offset="1" Color="Red" />
-                                                                    </LinearGradientBrush>
-                                                                </ProgressBar.Background>
-                                                            </ProgressBar>
-                                                            <StackPanel>
-                                                                <TextBlock VerticalAlignment="Center" FontWeight="Bold">
-                                                                    <Run Text="{Binding Item1, Mode=OneTime}" />
-                                                                    <LineBreak />
-                                                                    <Run Text="{Binding Item3, Mode=OneTime, StringFormat={}{0} Dpi}" />
-                                                                </TextBlock>
-                                                                <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                                                    Content="MOZJPEG" FontWeight="Bold"
-                                                                    IsChecked="{Binding Item4, Mode=OneTime}"
-                                                                    IsHitTestVisible="False" />
-                                                            </StackPanel>
-                                                        </Grid>
+                                                        <Border BorderBrush="Black" BorderThickness="2">
+                                                            <Grid>
+                                                                <ProgressBar Foreground="Orange" Maximum="600"
+                                                                    Value="{Binding Item3, Mode=OneTime}">
+                                                                    <ProgressBar.Background>
+                                                                        <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                                                            <GradientStop Color="Lime" />
+                                                                            <GradientStop Offset="1" Color="Red" />
+                                                                        </LinearGradientBrush>
+                                                                    </ProgressBar.Background>
+                                                                </ProgressBar>
+                                                                <StackPanel>
+                                                                    <TextBlock VerticalAlignment="Center" FontWeight="Bold">
+                                                                        <Run Text="{Binding Item1, Mode=OneTime}" />
+                                                                        <LineBreak />
+                                                                        <Run Text="{Binding Item3, Mode=OneTime, StringFormat={}{0} Dpi}" />
+                                                                    </TextBlock>
+                                                                    <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                                                        Content="MOZJPEG" FontWeight="Bold"
+                                                                        IsChecked="{Binding Item4, Mode=OneTime}"
+                                                                        IsHitTestVisible="False" />
+                                                                </StackPanel>
+                                                            </Grid>
+                                                        </Border>
                                                     </DataTemplate>
                                                 </ComboBox.ItemTemplate>
                                             </ComboBox>

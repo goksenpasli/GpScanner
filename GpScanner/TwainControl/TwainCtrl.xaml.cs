@@ -637,28 +637,23 @@ namespace TwainControl
             }
         }
 
-        public List<Tuple<string, int, double, bool>> CompressionProfiles => new()
+        public List<Tuple<string, int, double, bool, double>> CompressionProfiles => new()
             {
-                new Tuple<string, int, double, bool>(Translation.GetResStringValue("BW"), 0, (double)Resolution.Low, false),
-                new Tuple<string, int, double, bool>(Translation.GetResStringValue("COLOR"), 2, (double)Resolution.Low, true),
-                new Tuple<string, int, double, bool>(Translation.GetResStringValue("BW"), 0, (double)Resolution.Medium, false),
-                new Tuple<string, int, double, bool>(Translation.GetResStringValue("COLOR"), 2, (double)Resolution.Medium, true),
-                new Tuple<string, int, double, bool>(Translation.GetResStringValue("BW"), 0, (double)Resolution.Standard, false),
-                new Tuple<string, int, double, bool>(Translation.GetResStringValue("COLOR"), 2, (double)Resolution.Standard, true),
-                new Tuple<string, int, double, bool>(Translation.GetResStringValue("BW"), 0, (double)Resolution.High, false),
-                new Tuple<string, int, double, bool>(Translation.GetResStringValue("COLOR"), 2, (double)Resolution.High, true),
-                new Tuple<string, int, double, bool>(Translation.GetResStringValue("BW"), 0, (double)Resolution.Ultra, false),
-                new Tuple<string, int, double, bool>(Translation.GetResStringValue("COLOR"), 2, (double)Resolution.Ultra, true),
-                new Tuple<string, int, double, bool>(Translation.GetResStringValue("BW"), 0, (double)Resolution.Low, false),
-                new Tuple<string, int, double, bool>(Translation.GetResStringValue("COLOR"), 2, (double)Resolution.Low, false),
-                new Tuple<string, int, double, bool>(Translation.GetResStringValue("BW"), 0, (double)Resolution.Medium, false),
-                new Tuple<string, int, double, bool>(Translation.GetResStringValue("COLOR"), 2, (double)Resolution.Medium, false),
-                new Tuple<string, int, double, bool>(Translation.GetResStringValue("BW"), 0, (double)Resolution.Standard, false),
-                new Tuple<string, int, double, bool>(Translation.GetResStringValue("COLOR"), 2, (double)Resolution.Standard, false),
-                new Tuple<string, int, double, bool>(Translation.GetResStringValue("BW"), 0, (double)Resolution.High, false),
-                new Tuple<string, int, double, bool>(Translation.GetResStringValue("COLOR"), 2, (double)Resolution.High, false),
-                new Tuple<string, int, double, bool>(Translation.GetResStringValue("BW"), 0, (double)Resolution.Ultra, false),
-                new Tuple<string, int, double, bool>(Translation.GetResStringValue("COLOR"), 2, (double)Resolution.Ultra, false),
+                  new Tuple < string, int, double, bool, double > (Translation.GetResStringValue("BW"), 0, (double) Resolution.Low, false, (double) Quality.Low),
+                  new Tuple < string, int, double, bool, double > (Translation.GetResStringValue("COLOR"), 2, (double) Resolution.Low, true, (double) Quality.Low),
+                  new Tuple < string, int, double, bool, double > (Translation.GetResStringValue("BW"), 0, (double) Resolution.Medium, false, (double) Quality.Medium),
+                  new Tuple < string, int, double, bool, double > (Translation.GetResStringValue("COLOR"), 2, (double) Resolution.Medium, true, (double) Quality.Medium),
+                  new Tuple < string, int, double, bool, double > (Translation.GetResStringValue("BW"), 0, (double) Resolution.Standard, false, (double) Quality.Standard),
+                  new Tuple < string, int, double, bool, double > (Translation.GetResStringValue("COLOR"), 2, (double) Resolution.Standard, true, (double) Quality.Standard),
+                  new Tuple < string, int, double, bool, double > (Translation.GetResStringValue("BW"), 0, (double) Resolution.High, false, (double) Quality.High),
+                  new Tuple < string, int, double, bool, double > (Translation.GetResStringValue("COLOR"), 2, (double) Resolution.High, true, (double) Quality.High),
+                  new Tuple < string, int, double, bool, double > (Translation.GetResStringValue("BW"), 0, (double) Resolution.Ultra, false, (double) Quality.Ultra),
+                  new Tuple < string, int, double, bool, double > (Translation.GetResStringValue("COLOR"), 2, (double) Resolution.Ultra, true, (double) Quality.Ultra),
+                  new Tuple < string, int, double, bool, double > (Translation.GetResStringValue("COLOR"), 2, (double) Resolution.Low, false, (double) Quality.Low),
+                  new Tuple < string, int, double, bool, double > (Translation.GetResStringValue("COLOR"), 2, (double) Resolution.Medium, false, (double) Quality.Medium),
+                  new Tuple < string, int, double, bool, double > (Translation.GetResStringValue("COLOR"), 2, (double) Resolution.Standard, false, (double) Quality.Standard),
+                  new Tuple < string, int, double, bool, double > (Translation.GetResStringValue("COLOR"), 2, (double) Resolution.High, false, (double) Quality.High),
+                  new Tuple < string, int, double, bool, double > (Translation.GetResStringValue("COLOR"), 2, (double) Resolution.Ultra, false, (double) Quality.Ultra),
             };
 
         public CroppedBitmap CroppedOcrBitmap {
@@ -865,7 +860,7 @@ namespace TwainControl
             }
         }
 
-        public Tuple<string, int, double, bool> SelectedCompressionProfile {
+        public Tuple<string, int, double, bool, double> SelectedCompressionProfile {
             get => selectedCompressionProfile;
 
             set {
@@ -1294,7 +1289,7 @@ namespace TwainControl
 
         private ScannedImage seçiliResim;
 
-        private Tuple<string, int, double, bool> selectedCompressionProfile;
+        private Tuple<string, int, double, bool, double> selectedCompressionProfile;
 
         private TwainWpf.TwainNative.Orientation selectedOrientation = TwainWpf.TwainNative.Orientation.Default;
 
@@ -1881,6 +1876,7 @@ namespace TwainControl
                 Settings.Default.Mode = SelectedCompressionProfile.Item2;
                 Settings.Default.Çözünürlük = SelectedCompressionProfile.Item3;
                 Settings.Default.ImgLoadResolution = SelectedCompressionProfile.Item3;
+                Settings.Default.JpegQuality = (int)SelectedCompressionProfile.Item5;
                 Scanner.UseMozJpegEncoding = SelectedCompressionProfile.Item4 && MozJpeg.MozJpeg.MozJpegDllExists;
             }
             if (e.PropertyName is "SelectedPaper" && SelectedPaper is not null)

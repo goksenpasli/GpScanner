@@ -1,7 +1,12 @@
 ﻿namespace TwainControl
 {
+    internal enum Quality
+    {
+        Low = 50, Medium = 60, Standard = 70, High = 80, Ultra = 90
+    }
+
     internal enum Resolution
     {
-        Low = 72, Medium = 120, Standard = 200, High = 300, Ultra = 450
+        Low = 96, Medium = 120, Standard = 150, High = 200, Ultra = 300
     }
 }

@@ -53,6 +53,10 @@ namespace TwainControl
 
         public static PdfDocument ExtractPdfPages(this string filename, int startpage, int endpage)
         {
+            if (startpage > endpage)
+            {
+                throw new ArgumentOutOfRangeException(nameof(startpage), "start page should not be greater than end page");
+            }
             using PdfDocument inputDocument = PdfReader.Open(filename, PdfDocumentOpenMode.Import);
             using PdfDocument outputDocument = new();
             for (int i = startpage - 1; i <= endpage - 1; i++)
@@ -175,7 +179,7 @@ namespace TwainControl
         {
             if (imagefiles.Count == 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(imagefiles), "bitmap frames count should be greater than zero");
+                throw new ArgumentOutOfRangeException(nameof(imagefiles), "bitmapframes count should be greater than zero");
             }
             using PdfDocument document = new();
             double index = 0;
@@ -232,6 +236,10 @@ namespace TwainControl
 
         public static PdfDocument GeneratePdf(this BitmapSource bitmapframe, ObservableCollection<OcrData> ScannedText, Format format, Paper paper, int jpegquality = 80, int dpi = 120)
         {
+            if (bitmapframe is null)
+            {
+                throw new ArgumentNullException(nameof(bitmapframe), "bitmapframe can not be null");
+            }
             try
             {
                 using PdfDocument document = new();
@@ -314,7 +322,11 @@ namespace TwainControl
 
         public static bool IsValidPdfFile(this IEnumerable<byte> buffer)
         {
-            return buffer.Take(4).SequenceEqual(new byte[] { 0x25, 0x50, 0x44, 0x46 });
+            if (buffer is not null)
+            {
+                return buffer.Take(4).SequenceEqual(new byte[] { 0x25, 0x50, 0x44, 0x46 });
+            }
+            return false;
         }
 
         public static PdfDocument MergePdf(this string[] pdffiles)
@@ -483,6 +495,10 @@ namespace TwainControl
         {
             if (ScannedText is not null)
             {
+                if (bitmapframe is null)
+                {
+                    throw new ArgumentNullException(nameof(bitmapframe), "bitmapframe can not be null");
+                }
                 XTextFormatter textformatter = new(gfx);
                 foreach (OcrData item in ScannedText)
                 {
@@ -496,6 +512,10 @@ namespace TwainControl
         {
             if (ScannedText is not null)
             {
+                if (xImage is null)
+                {
+                    throw new ArgumentNullException(nameof(xImage), "bitmapframe can not be null");
+                }
                 XTextFormatter textformatter = new(gfx);
                 foreach (OcrData item in ScannedText)
                 {
