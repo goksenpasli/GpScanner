@@ -981,14 +981,12 @@ namespace TwainControl
             await Task.Run(async () =>
             {
                 string directory = Path.GetDirectoryName(filename);
-                double index = 0;
-                int filescount = images.Count;
                 Uri uri = new("pack://application:,,,/TwainControl;component/Icons/okay.png", UriKind.Absolute);
-                foreach (ScannedImage scannedimage in images)
+                for (int i = 0; i < images.Count; i++)
                 {
+                    ScannedImage scannedimage = images[i];
                     File.WriteAllBytes(directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "jpg"), scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg));
-                    index++;
-                    scanner.PdfSaveProgressValue = index / filescount;
+                    scanner.PdfSaveProgressValue = i / (double)images.Count;
                     if (uri != null)
                     {
                         scannedimage.Resim = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(uri, 0);
@@ -1017,17 +1015,15 @@ namespace TwainControl
         public static async Task SavePdfImage(List<ScannedImage> images, string filename, Scanner scanner, Paper paper, bool blackwhite = false, int dpi = 120)
         {
             List<ObservableCollection<OcrData>> scannedtext = null;
-            double index = 0;
-            int filescount = images.Count;
             if (scanner?.ApplyPdfSaveOcr == true)
             {
                 scannedtext = new List<ObservableCollection<OcrData>>();
                 scanner.ProgressState = TaskbarItemProgressState.Normal;
-                foreach (ScannedImage image in images)
+                for (int i = 0; i < images.Count; i++)
                 {
+                    ScannedImage image = images[i];
                     scannedtext.Add(await image.Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsyc(scanner.SelectedTtsLanguage));
-                    index++;
-                    scanner.PdfSaveProgressValue = index / filescount;
+                    scanner.PdfSaveProgressValue = i / (double)images.Count;
                 }
                 scanner.PdfSaveProgressValue = 0;
             }
@@ -1043,14 +1039,12 @@ namespace TwainControl
         {
             await Task.Run(() =>
             {
-                double index = 0;
-                int filescount = images.Count;
                 TiffBitmapEncoder tifccittencoder = new() { Compression = TiffCompressOption.Ccitt4 };
-                foreach (ScannedImage scannedimage in images)
+                for (int i = 0; i < images.Count; i++)
                 {
+                    ScannedImage scannedimage = images[i];
                     tifccittencoder.Frames.Add(scannedimage.Resim);
-                    index++;
-                    scanner.PdfSaveProgressValue = index / filescount;
+                    scanner.PdfSaveProgressValue = i / (double)images.Count;
                 }
                 scanner.PdfSaveProgressValue = 0;
                 GC.Collect();
@@ -1805,6 +1799,7 @@ namespace TwainControl
 
         private void ScanCommonSettings()
         {
+            Scanner.ArayüzEtkin = false;
             _settings = DefaultScanSettings();
             _settings.Rotation = new RotationSettings { AutomaticBorderDetection = true, AutomaticRotate = true, AutomaticDeskew = true };
         }
@@ -1845,6 +1840,7 @@ namespace TwainControl
 
         private void Twain_ScanningComplete(object sender, ScanningCompleteEventArgs e)
         {
+            Scanner.ArayüzEtkin = true;
         }
 
         private void Twain_TransferImage(object sender, TransferImageEventArgs e)
@@ -1920,6 +1916,7 @@ namespace TwainControl
                 }
                 catch (Exception)
                 {
+                    Scanner.ArayüzEtkin = false;
                 }
             }
         }

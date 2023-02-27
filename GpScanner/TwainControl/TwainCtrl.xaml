@@ -827,6 +827,10 @@
                                                 <ControlTemplate>
                                                     <StackPanel Background="{TemplateBinding Background}">
                                                         <TextBlock HorizontalAlignment="Center">
+                                                            <Extensions:NumericUpDownControl Height="20"
+                                                                LargeChange="1" Maximum="1" Minimum="-1"
+                                                                NumericUpdownTextBoxVisibility="Collapsed" Orientation="Horizontal" SmallChange="1"
+                                                                Value="{Binding RotationAngle}" />
                                                             <Run AllowDrop="True" Cursor="SizeAll" Drop="Run_Drop"
                                                                 FontFamily="Wingdings" FontSize="24" FontWeight="Bold"
                                                                 PreviewMouseMove="Run_PreviewMouseMove" Text="B">
@@ -879,10 +883,6 @@
                                                                 </Image>
                                                             </Hyperlink>
                                                         </TextBlock>
-                                                        <Extensions:NumericUpDownControl VerticalAlignment="Center"
-                                                            LargeChange="1" Maximum="1" Minimum="-1"
-                                                            NumericUpdownTextBoxVisibility="Collapsed" Orientation="Horizontal" SmallChange="1"
-                                                            Value="{Binding RotationAngle}" />
                                                         <ToggleButton Width="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}"
                                                             Height="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}"
                                                             VerticalAlignment="Center" VerticalContentAlignment="Center"

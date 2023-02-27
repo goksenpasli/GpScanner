@@ -79,7 +79,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="210.4" />
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
                 <TextBlock HorizontalAlignment="Center" Text="{local:Loc ABOUT}" />
                 <TextBox Grid.Row="1"

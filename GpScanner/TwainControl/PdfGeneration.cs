@@ -73,7 +73,6 @@ namespace TwainControl
                 throw new ArgumentOutOfRangeException(nameof(bitmapFrames), "bitmap frames count should be greater than zero");
             }
             using PdfDocument document = new();
-            double index = 0;
             try
             {
                 Scanner.ProgressState = TaskbarItemProgressState.Normal;
@@ -117,8 +116,7 @@ namespace TwainControl
                         {
                             gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfAlignTextColor)), (i + 1).ToString(), GetPdfTextLayout(page), 20);
                         }
-                        index++;
-                        Scanner.PdfSaveProgressValue = index / bitmapFrames.Count;
+                        Scanner.PdfSaveProgressValue = i / (double)bitmapFrames.Count;
                     }
                     else
                     {
@@ -150,8 +148,7 @@ namespace TwainControl
                         {
                             gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfAlignTextColor)), (i + 1).ToString(), GetPdfTextLayout(page), 20);
                         }
-                        index++;
-                        Scanner.PdfSaveProgressValue = index / bitmapFrames.Count;
+                        Scanner.PdfSaveProgressValue = i / (double)bitmapFrames.Count;
                     }
                     if (uri != null)
                     {
@@ -182,7 +179,6 @@ namespace TwainControl
                 throw new ArgumentOutOfRangeException(nameof(imagefiles), "bitmapframes count should be greater than zero");
             }
             using PdfDocument document = new();
-            double index = 0;
             try
             {
                 Scanner.ProgressState = TaskbarItemProgressState.Normal;
@@ -215,8 +211,7 @@ namespace TwainControl
                     {
                         gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfAlignTextColor)), (i + 1).ToString(), GetPdfTextLayout(page), 20);
                     }
-                    index++;
-                    Scanner.PdfSaveProgressValue = index / imagefiles.Count;
+                    Scanner.PdfSaveProgressValue = i / (double)imagefiles.Count;
                 }
                 if (Scanner.PasswordProtect)
                 {
