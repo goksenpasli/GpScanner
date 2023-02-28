@@ -31,6 +31,13 @@ namespace TwainControl
     {
         public static Scanner Scanner { get; set; }
 
+        public static PdfDocument ArrangePdfPages(this string filename, int oldindex, int newindex)
+        {
+            using PdfDocument inputDocument = PdfReader.Open(filename, PdfDocumentOpenMode.Modify);
+            inputDocument.Pages.MovePage(oldindex, newindex);
+            return inputDocument;
+        }
+
         public static int CalculateFontSize(this string text, XRect adjustedBounds, XGraphics gfx)
         {
             int fontSizeGuess = Math.Max(1, (int)adjustedBounds.Height);

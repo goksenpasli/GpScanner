@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Extensions;
 using GpScanner.ViewModel;
 using TwainControl;
 
@@ -113,6 +114,15 @@ namespace GpScanner
                     isMouseDown = false;
                     Cursor = Cursors.Arrow;
                 }
+            }
+        }
+
+        private void Window_Unloaded(object sender, RoutedEventArgs e)
+        {
+            if (cnt.GetFirstVisualChild<PdfViewer.PdfViewer>() is PdfViewer.PdfViewer pdfvwr)
+            {
+                pdfvwr?.Dispose();
+                GC.Collect();
             }
         }
     }

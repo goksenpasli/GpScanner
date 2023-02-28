@@ -213,7 +213,6 @@ namespace GpScanner.ViewModel
                         documentViewerModel.Index = Array.IndexOf(documentViewerModel.DirectoryAllPdfFiles.ToArray(), documentViewerModel.PdfFilePath);
                         documentViewerWindow.Show();
                         documentViewerWindow.Lb?.ScrollIntoView(filepath);
-                        documentViewerWindow.Unloaded += (s, e) => documentViewerModel.PdfFilePath = null;
                     }
                 }
             }, parameter => parameter is string filepath && File.Exists(filepath));
@@ -300,6 +299,19 @@ namespace GpScanner.ViewModel
                     }
                 }
             }, parameter => SayfaBaşlangıç <= SayfaBitiş);
+
+            ArrangePdfFile = new RelayCommand<object>(async parameter =>
+            {
+                if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
+                {
+                    string oldpdfpath = pdfviewer.PdfFilePath;
+                    int start = SayfaBaşlangıç - 1;
+                    int end = SayfaBitiş - 1;
+                    await ArrangeFile(pdfviewer.PdfFilePath, pdfviewer.PdfFilePath, start, end);
+                    pdfviewer.PdfFilePath = null;
+                    pdfviewer.PdfFilePath = oldpdfpath;
+                }
+            }, parameter => SayfaBaşlangıç != SayfaBitiş);
 
             RemoveSelectedPage = new RelayCommand<object>(parameter =>
             {
@@ -569,6 +581,8 @@ namespace GpScanner.ViewModel
                 }
             }
         }
+
+        public ICommand ArrangePdfFile { get; }
 
         public string BarcodeContent {
             get => barcodeContent;
@@ -1310,6 +1324,16 @@ namespace GpScanner.ViewModel
         private TesseractViewModel tesseractViewModel;
 
         private TranslateViewModel translateViewModel;
+
+        private static async Task ArrangeFile(string loadfilename, string savefilename, int start, int end)
+        {
+            await Task.Run(() =>
+            {
+                using PdfDocument outputDocument = loadfilename.ArrangePdfPages(start, end);
+                outputDocument.DefaultPdfCompression();
+                outputDocument.Save(savefilename);
+            });
+        }
 
         private static async Task SaveFile(string loadfilename, string savefilename, int start, int end)
         {
