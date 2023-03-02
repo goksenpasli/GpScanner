@@ -246,7 +246,7 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <StackPanel Margin="2" Orientation="Horizontal">
-                        <UniformGrid Columns="5" DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType=Window}}">
+                        <UniformGrid Columns="6" DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType=Window}}">
                             <Extensions:NumericUpDownControl Maximum="{Binding ElementName=PdfVwr, Path=ToplamSayfa}"
                                 Minimum="1" SmallChange="1"
                                 Value="{Binding SayfaBaşlangıç, UpdateSourceTrigger=PropertyChanged}" />
@@ -269,6 +269,16 @@
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                             <Binding Source="Shell32.dll" />
                                             <Binding Source="131" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                            </Button>
+                            <Button Command="{Binding ArrangePdfFile}" CommandParameter="{Binding ElementName=PdfVwr}">
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Imageres.dll" />
+                                            <Binding Source="273" />
                                         </MultiBinding>
                                     </Image.Source>
                                 </Image>
@@ -319,24 +329,10 @@
                 <Controls:ArchiveViewer ArchivePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="ImgViewerTemplate">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <TextBlock Width="{Binding ElementName=Imgvwr, Path=Width}"
-                        TextTrimming="CharacterEllipsis" TextWrapping="Wrap"
-                        ToolTip="{Binding Mode=OneWay}">
-                        <Hyperlink Command="{Binding DataContext.OpenOriginalFile, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding Mode=OneWay}">
-                            <Run Text="{Binding Mode=OneWay, Converter={StaticResource FileNameExtractConverter}}" />
-                        </Hyperlink>
-                    </TextBlock>
-                    <Extensions:ImageViewer x:Name="Imgvwr"
-                        Grid.Row="1"
-                        DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
-                        ImageFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                        PanoramaButtonVisibility="Collapsed" PrintButtonVisibility="Visible" />
-                </Grid>
+                <Extensions:ImageViewer x:Name="Imgvwr"
+                    DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
+                    ImageFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                    PanoramaButtonVisibility="Collapsed" PrintButtonVisibility="Visible" />
             </DataTemplate>
             <DataTemplate x:Key="ImgViewerTemplateFull">
                 <Extensions:ImageViewer ImageFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />

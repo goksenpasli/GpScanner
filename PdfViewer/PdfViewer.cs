@@ -23,6 +23,7 @@ namespace PdfViewer
         Height = 1
     }
 
+    [TemplatePart(Name = "ScrollVwr", Type = typeof(ScrollViewer))]
     public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     {
         public static readonly DependencyProperty AngleProperty = DependencyProperty.Register("Angle", typeof(double), typeof(PdfViewer), new PropertyMetadata(0.0));
@@ -427,6 +428,17 @@ namespace PdfViewer
             GC.SuppressFinalize(this);
         }
 
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            _scrollvwr = GetTemplateChild("ScrollVwr") as ScrollViewer;
+            if (_scrollvwr != null)
+            {
+                _scrollvwr.Drop -= _scrollvwr_Drop;
+                _scrollvwr.Drop += _scrollvwr_Drop;
+            }
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -443,6 +455,8 @@ namespace PdfViewer
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        private ScrollViewer _scrollvwr;
 
         private bool autoFitContent;
 
@@ -513,6 +527,15 @@ namespace PdfViewer
             if (d is PdfViewer pdfViewer && e.NewValue is not null)
             {
                 pdfViewer.Resize.Execute(null);
+            }
+        }
+
+        private void _scrollvwr_Drop(object sender, DragEventArgs e)
+        {
+            string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
+            if (droppedfiles?.Length > 0)
+            {
+                PdfFilePath = droppedfiles[0];
             }
         }
 

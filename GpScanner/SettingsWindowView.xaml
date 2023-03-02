@@ -243,18 +243,21 @@
                 </GroupBox>
                 <GroupBox Grid.Row="3">
                     <UniformGrid Columns="5">
-                        <TextBlock VerticalAlignment="Center">
+                        <TextBlock VerticalAlignment="Center" TextWrapping="Wrap">
                             <Run Text="{twainctrl:Loc FILE}" />
                             <Run Text="{twainctrl:Loc RES}" />
                         </TextBlock>
-                        <ComboBox ItemStringFormat="%{0}"
+                        <ComboBox VerticalContentAlignment="Center"
+                            ItemStringFormat="%{0}"
                             ItemsSource="{Binding SettingsPagePictureResizeList}"
                             SelectedItem="{Binding DefaultPictureResizeRatio, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                         <TextBlock VerticalAlignment="Center" Text="PDF DPI" />
-                        <ComboBox ItemStringFormat="{}{0} Dpi"
+                        <ComboBox VerticalContentAlignment="Center"
+                            ItemStringFormat="{}{0} Dpi"
                             ItemsSource="{Binding SettingsPagePdfDpiList}"
                             SelectedItem="{Binding DefaultThumbNailDpi, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                        <ComboBox ItemsSource="{Binding GetPreviewSize}"
+                        <ComboBox VerticalContentAlignment="Center"
+                            ItemsSource="{Binding GetPreviewSize}"
                             SelectedIndex="{Binding PreviewIndex, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
                             SelectedItem="{Binding SelectedSize}">
                             <ComboBox.ItemTemplate>

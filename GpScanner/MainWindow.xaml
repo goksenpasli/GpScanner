@@ -217,6 +217,7 @@
                         </Grid>
                         <UniformGrid Columns="3" Rows="1">
                             <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                                BorderBrush="Cyan"
                                 Command="{Binding PdfBirleştir}">
                                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                     <Image Width="32" Height="32">

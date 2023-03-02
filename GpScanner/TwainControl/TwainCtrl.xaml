@@ -655,31 +655,19 @@
                 <GroupBox Grid.Row="1">
                     <GroupBox.Header>
                         <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <UniformGrid Columns="2">
-                                <Slider Margin="0,0,2,0"
-                                    AutoToolTipPlacement="TopLeft" Maximum="300" Minimum="85"
-                                    SmallChange="1"
-                                    Style="{StaticResource Slider}"
-                                    ToolTip="{local:Loc PREVIEWSIZE}"
-                                    Value="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}" />
-                                <Grid Margin="2,0,0,0">
-                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                                        Text="{local:Loc ALL}" />
-                                    <Extensions:NumericUpDownControl Height="20"
-                                        VerticalAlignment="Center"
-                                        BorderBrush="Cyan"
-                                        IsEnabled="{Binding ElementName=BtnClearAll, Path=IsEnabled}"
-                                        LargeChange="1" Maximum="1" Minimum="-1"
-                                        NumericUpdownTextBoxVisibility="Collapsed" Orientation="Horizontal" SmallChange="1"
-                                        Value="{Binding AllImageRotationAngle}" />
-                                </Grid>
-                            </UniformGrid>
-                            <DockPanel Grid.Row="1">
-                                <Extensions:ContentToggleButton DockPanel.Dock="Left">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Slider AutoToolTipPlacement="TopLeft" Maximum="300" Minimum="85"
+                                Orientation="Vertical" SmallChange="1"
+                                Style="{StaticResource Slider}"
+                                ToolTip="{local:Loc PREVIEWSIZE}"
+                                Value="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}" />
+                            <StackPanel Grid.Column="1">
+                                <Extensions:ContentToggleButton>
                                     <Extensions:ContentToggleButton.OverContent>
                                         <local:PdfSettings />
                                     </Extensions:ContentToggleButton.OverContent>
@@ -700,102 +688,111 @@
                                     Command="{Binding ListeTemizle}"
                                     DockPanel.Dock="Right">
                                     <StackPanel Orientation="Horizontal">
-                                        <Canvas Width="32" Height="32">
-                                            <Image Canvas.Left="4" Canvas.Top="4"
-                                                Width="24" Height="24">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="131" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                            <TextBlock Width="32"
-                                                FontWeight="Bold" TextAlignment="Center">
-                                                <Run d:Text="0" BaselineAlignment="Center"
-                                                    Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" />
-                                                <LineBreak />
-                                                <Run d:Text="0" BaselineAlignment="Center"
-                                                    Text="{Binding Scanner.Resimler.Count, Mode=OneWay}" /></TextBlock>
-                                        </Canvas>
+                                        <Image Width="24" Height="24">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="131" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
                                         <TextBlock VerticalAlignment="Center" Text="{local:Loc CLEARLIST}" />
                                     </StackPanel>
                                 </Button>
-                                <StackPanel Margin="4,0,4,0">
-                                    <ScrollViewer MaxHeight="55"
-                                        HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                                        <WrapPanel>
-                                            <Button Command="{Binding ResimSilGeriAl}">
-                                                <Image Width="24" Height="24"
-                                                    Source="/TwainControl;component/Icons/undo.png" />
-                                            </Button>
-                                            <Button Command="{Binding Tümünüİşaretle}">
-                                                <Image Width="24" Height="24"
-                                                    Source="/TwainControl;component/Icons/selectall.png" />
-                                            </Button>
-                                            <Button Command="{Binding TümününİşaretiniKaldır}">
-                                                <Image Width="24" Height="24"
-                                                    Source="/TwainControl;component/Icons/none.png" />
-                                            </Button>
-                                            <Button Command="{Binding Tersiniİşaretle}">
-                                                <Image Width="24" Height="24"
-                                                    Source="/TwainControl;component/Icons/inverse.png" />
-                                            </Button>
-                                            <Button Command="{Binding TümünüİşaretleDikey}">
-                                                <Image Width="24" Height="24"
-                                                    Source="/TwainControl;component/Icons/portrait.png" />
-                                            </Button>
-                                            <Button Command="{Binding TümünüİşaretleYatay}">
-                                                <Image Width="24" Height="24"
-                                                    Source="/TwainControl;component/Icons/landscape.png" />
-                                            </Button>
-                                            <Button Command="{Binding SaveFileList}">
-                                                <Image Width="24" Height="24">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Shell32.dll" />
-                                                            <Binding Source="6" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                            </Button>
-                                            <Button Command="{Binding LoadFileList}">
-                                                <Image Width="24" Height="24">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Shell32.dll" />
-                                                            <Binding Source="70" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                            </Button>
-                                            <Button Command="{Binding CycleSelectedDocuments}" CommandParameter="{Binding ElementName=Lb}">
-                                                <Image Width="24" Height="24">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="ImageRes.dll" />
-                                                            <Binding Source="7" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                            </Button>
-                                        </WrapPanel>
-                                    </ScrollViewer>
-                                </StackPanel>
-                            </DockPanel>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2" Margin="2,0,2,0">
+                                <ScrollViewer MaxHeight="55"
+                                    HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                                    <WrapPanel>
+                                        <Button Command="{Binding ResimSilGeriAl}">
+                                            <Image Width="24" Height="24"
+                                                Source="/TwainControl;component/Icons/undo.png" />
+                                        </Button>
+                                        <Button Command="{Binding Tümünüİşaretle}">
+                                            <Image Width="24" Height="24"
+                                                Source="/TwainControl;component/Icons/selectall.png" />
+                                        </Button>
+                                        <Button Command="{Binding TümününİşaretiniKaldır}">
+                                            <Image Width="24" Height="24"
+                                                Source="/TwainControl;component/Icons/none.png" />
+                                        </Button>
+                                        <Button Command="{Binding Tersiniİşaretle}">
+                                            <Image Width="24" Height="24"
+                                                Source="/TwainControl;component/Icons/inverse.png" />
+                                        </Button>
+                                        <Button Command="{Binding TümünüİşaretleDikey}">
+                                            <Image Width="24" Height="24"
+                                                Source="/TwainControl;component/Icons/portrait.png" />
+                                        </Button>
+                                        <Button Command="{Binding TümünüİşaretleYatay}">
+                                            <Image Width="24" Height="24"
+                                                Source="/TwainControl;component/Icons/landscape.png" />
+                                        </Button>
+                                        <Button Command="{Binding SaveFileList}">
+                                            <Image Width="24" Height="24">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="6" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </Button>
+                                        <Button Command="{Binding LoadFileList}">
+                                            <Image Width="24" Height="24">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="70" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </Button>
+                                        <Button Command="{Binding CycleSelectedDocuments}" CommandParameter="{Binding ElementName=Lb}">
+                                            <Image Width="24" Height="24">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="ImageRes.dll" />
+                                                        <Binding Source="7" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </Button>
+                                    </WrapPanel>
+                                </ScrollViewer>
+                            </StackPanel>
+                            <Grid Grid.Column="3" Margin="2,0,0,0">
+                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Top"
+                                    Text="{local:Loc ALL}" />
+                                <Extensions:NumericUpDownControl Height="20"
+                                    VerticalAlignment="Center"
+                                    BorderBrush="Cyan"
+                                    IsEnabled="{Binding ElementName=BtnClearAll, Path=IsEnabled}"
+                                    LargeChange="1" Maximum="1" Minimum="-1"
+                                    NumericUpdownTextBoxVisibility="Collapsed" Orientation="Horizontal" SmallChange="1"
+                                    Value="{Binding AllImageRotationAngle}" />
+                            </Grid>
                         </Grid>
                     </GroupBox.Header>
                     <TabControl TabStripPlacement="Left">
                         <TabItem>
                             <TabItem.Header>
-                                <Image Width="16" Height="16">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="19" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
+                                <StackPanel>
+                                    <Image Width="16" Height="16">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="19" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock TextAlignment="Center">
+                                        <Run d:Text="0" BaselineAlignment="Center"
+                                            Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" />
+                                        <Run d:Text="0" BaselineAlignment="Center"
+                                            Text="{Binding Scanner.Resimler.Count, Mode=OneWay}" />
+                                    </TextBlock>
+                                </StackPanel>
                             </TabItem.Header>
                             <ListBox x:Name="Lb"
                                 Extensions:DragDropExtension.ScrollOnDragDrop="True"

@@ -93,7 +93,9 @@
                             <RowDefinition />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <ScrollViewer Grid.Row="0" Grid.Column="0"
+                        <ScrollViewer x:Name="ScrollVwr"
+                            Grid.Row="0" Grid.Column="0"
+                            AllowDrop="True"
                             HorizontalScrollBarVisibility="{Binding ScrollBarVisible, RelativeSource={RelativeSource TemplatedParent}}"
                             VerticalScrollBarVisibility="{Binding ScrollBarVisible, RelativeSource={RelativeSource TemplatedParent}}">
                             <Image RenderTransformOrigin="0.5,0.5" ScrollViewer.CanContentScroll="True"

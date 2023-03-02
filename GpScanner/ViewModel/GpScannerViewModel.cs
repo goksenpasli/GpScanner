@@ -71,6 +71,17 @@ namespace GpScanner.ViewModel
 
             PdfBirleştir = new RelayCommand<object>(async parameter =>
             {
+                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                {
+                    await Task.Run(() =>
+                    {
+                        using PdfDocument outputDocument = new();
+                        IEnumerable<string> pdffilelist = Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName);
+                        pdffilelist.ToArray().MergePdf().Save(PdfGeneration.GetPdfScanPath());
+                        ReloadFileDatas();
+                    });
+                    return;
+                }
                 SaveFileDialog saveFileDialog = new()
                 {
                     Filter = "Pdf Dosyası(*.pdf)|*.pdf",
@@ -1055,6 +1066,16 @@ namespace GpScanner.ViewModel
 
         public ICommand UnRegisterSti { get; }
 
+        public static async Task ArrangeFile(string loadfilename, string savefilename, int start, int end)
+        {
+            await Task.Run(() =>
+            {
+                using PdfDocument outputDocument = loadfilename.ArrangePdfPages(start, end);
+                outputDocument.DefaultPdfCompression();
+                outputDocument.Save(savefilename);
+            });
+        }
+
         public static void BackupDataXmlFile()
         {
             if (File.Exists(Settings.Default.DatabaseFile))
@@ -1324,16 +1345,6 @@ namespace GpScanner.ViewModel
         private TesseractViewModel tesseractViewModel;
 
         private TranslateViewModel translateViewModel;
-
-        private static async Task ArrangeFile(string loadfilename, string savefilename, int start, int end)
-        {
-            await Task.Run(() =>
-            {
-                using PdfDocument outputDocument = loadfilename.ArrangePdfPages(start, end);
-                outputDocument.DefaultPdfCompression();
-                outputDocument.Save(savefilename);
-            });
-        }
 
         private static async Task SaveFile(string loadfilename, string savefilename, int start, int end)
         {
