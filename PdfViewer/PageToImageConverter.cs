@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using System.Windows.Media.Imaging;
 
 namespace PdfViewer
 {
@@ -16,7 +17,10 @@ namespace PdfViewer
                     return Task.Run(async () =>
                     {
                         byte[] data = await PdfViewer.ReadAllFileAsync(filename);
-                        return await PdfViewer.ConvertToImgAsync(data, index, 8);
+                        BitmapImage bitmapImage = await PdfViewer.ConvertToImgAsync(data, index, 8, 48);
+                        data = null;
+                        GC.Collect();
+                        return bitmapImage;
                     });
                 }
                 catch (Exception)

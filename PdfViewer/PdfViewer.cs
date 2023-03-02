@@ -295,11 +295,11 @@ namespace PdfViewer
             set => SetValue(ZoomProperty, value);
         }
 
-        public static async Task<BitmapImage> ConvertToImgAsync(byte[] pdffilestream, int page, int dpi)
+        public static async Task<BitmapImage> ConvertToImgAsync(byte[] pdffilestream, int page, int dpi, int decodepixel = 0)
         {
             try
             {
-                if (pdffilestream.Length > 0)
+                if (pdffilestream?.Length > 0)
                 {
                     return await Task.Run(() =>
                     {
@@ -309,6 +309,7 @@ namespace PdfViewer
                             MemoryStream ms = new(imagearray);
                             BitmapImage bitmap = new();
                             bitmap.BeginInit();
+                            bitmap.DecodePixelHeight = decodepixel;
                             bitmap.CacheOption = BitmapCacheOption.None;
                             bitmap.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.DelayCreation;
                             bitmap.StreamSource = ms;
@@ -363,7 +364,7 @@ namespace PdfViewer
         {
             try
             {
-                if (stream.Length > 0)
+                if (stream?.Length > 0)
                 {
                     return await Task.Run(() =>
                     {

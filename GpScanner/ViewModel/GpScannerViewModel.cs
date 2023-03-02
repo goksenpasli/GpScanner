@@ -324,19 +324,14 @@ namespace GpScanner.ViewModel
                 }
             }, parameter => SayfaBaşlangıç != SayfaBitiş);
 
-            RemoveSelectedPage = new RelayCommand<object>(parameter =>
+            RemoveSelectedPage = new RelayCommand<object>(async parameter =>
             {
                 if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
                 {
                     string path = pdfviewer.PdfFilePath;
                     if (MessageBox.Show($"{Translation.GetResStringValue("PAGENUMBER")} {SayfaBaşlangıç}-{SayfaBitiş} {Translation.GetResStringValue("DELETE")}", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                     {
-                        using PdfDocument inputDocument = PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Import);
-                        for (int i = SayfaBitiş; i >= SayfaBaşlangıç; i--)
-                        {
-                            inputDocument.Pages.RemoveAt(i - 1);
-                        }
-                        inputDocument.Save(pdfviewer.PdfFilePath);
+                        await RemovePdfPage(path, SayfaBaşlangıç, SayfaBitiş);
                         pdfviewer.PdfFilePath = null;
                         pdfviewer.PdfFilePath = path;
                         SayfaBaşlangıç = SayfaBitiş = 1;
@@ -1142,6 +1137,19 @@ namespace GpScanner.ViewModel
                 return reader.Decode(bitmapFrame);
             }
             return null;
+        }
+
+        public static async Task RemovePdfPage(string pdffilepath, int start, int end)
+        {
+            await Task.Run(() =>
+            {
+                PdfDocument inputDocument = PdfReader.Open(pdffilepath, PdfDocumentOpenMode.Import);
+                for (int i = end; i >= start; i--)
+                {
+                    inputDocument.Pages.RemoveAt(i - 1);
+                }
+                inputDocument.Save(pdffilepath);
+            });
         }
 
         public static void WriteAppExceptions(DispatcherUnhandledExceptionEventArgs e)
