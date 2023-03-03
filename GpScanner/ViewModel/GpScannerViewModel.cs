@@ -334,6 +334,7 @@ namespace GpScanner.ViewModel
                         await RemovePdfPage(path, SayfaBaşlangıç, SayfaBitiş);
                         pdfviewer.PdfFilePath = null;
                         pdfviewer.PdfFilePath = path;
+                        pdfviewer.Sayfa = 1;
                         SayfaBaşlangıç = SayfaBitiş = 1;
                     }
                 }
