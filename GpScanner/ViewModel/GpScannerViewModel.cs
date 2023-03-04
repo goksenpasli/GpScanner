@@ -528,6 +528,26 @@ namespace GpScanner.ViewModel
                 }
             }, parameter => parameter is ListBox && MainWindow.cvs?.View?.OfType<Scanner>().Count(z => z.Seçili) > 0);
 
+            ReadPdfTag = new RelayCommand<object>(parameter =>
+            {
+                if (parameter is string filepath && File.Exists(filepath))
+                {
+                    using var reader = PdfReader.Open(filepath, PdfDocumentOpenMode.ReadOnly);
+                    StringBuilder stringBuilder = new StringBuilder();
+                    stringBuilder.Append(filepath).AppendLine().
+                    Append(string.Format("PDF {0:#.#}", reader.Version / 10d)).AppendLine().
+                    Append(reader.Info.Title).AppendLine().
+                    Append(reader.Info.Producer).AppendLine().
+                    Append(reader.Info.Keywords).AppendLine().
+                    Append(reader.Info.Creator).AppendLine().
+                    Append(reader.Info.Author).AppendLine().
+                    Append(reader.Info.CreationDate).AppendLine().
+                    Append(reader.Info.ModificationDate).AppendLine().
+                    Append(string.Format("{0:##.##} MB", reader.FileSize / 1048576d)).AppendLine();
+                    MessageBox.Show(stringBuilder.ToString(), Application.Current?.MainWindow?.Title);
+                }
+            }, parameter => true);
+
             ReadOcrDataFile = new RelayCommand<object>(parameter =>
             {
                 if (parameter is Scanner scanner)
@@ -909,6 +929,8 @@ namespace GpScanner.ViewModel
         }
 
         public ICommand ReadOcrDataFile { get; }
+
+        public ICommand ReadPdfTag { get; }
 
         public ICommand RegisterSti { get; }
 

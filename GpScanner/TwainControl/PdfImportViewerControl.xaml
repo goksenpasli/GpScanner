@@ -33,14 +33,28 @@
                     </TextBlock>
                 </StackPanel>
             </Button>
-            <UniformGrid Columns="6" DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType=Window}}">
+            <Grid DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType=Window}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
                 <Extensions:NumericUpDownControl Maximum="{Binding ElementName=PdfViewer, Path=ToplamSayfa}"
                     Minimum="1" SmallChange="1"
                     Value="{Binding SayfaBaşlangıç, UpdateSourceTrigger=PropertyChanged}" />
-                <Extensions:NumericUpDownControl Maximum="{Binding ElementName=PdfViewer, Path=ToplamSayfa}"
+                <Extensions:NumericUpDownControl Grid.Column="1"
+                    Maximum="{Binding ElementName=PdfViewer, Path=ToplamSayfa}"
                     Minimum="1" SmallChange="1"
                     Value="{Binding SayfaBitiş, UpdateSourceTrigger=PropertyChanged}" />
-                <Button Command="{Binding ExtractPdfFile}" CommandParameter="{Binding PdfFilePath, ElementName=PdfViewer, Mode=OneWay}">
+                <Button Grid.Column="2"
+                    Command="{Binding ExtractPdfFile}"
+                    CommandParameter="{Binding PdfFilePath, ElementName=PdfViewer, Mode=OneWay}">
                     <Image Width="16" Height="16">
                         <Image.Source>
                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -50,7 +64,9 @@
                         </Image.Source>
                     </Image>
                 </Button>
-                <Button Command="{Binding RemoveSelectedPage}" CommandParameter="{Binding ElementName=PdfViewer}">
+                <Button Grid.Column="3"
+                    Command="{Binding RemoveSelectedPage}"
+                    CommandParameter="{Binding ElementName=PdfViewer}">
                     <Image Width="16" Height="16">
                         <Image.Source>
                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -60,7 +76,9 @@
                         </Image.Source>
                     </Image>
                 </Button>
-                <Button Command="{Binding ArrangePdfFile}" CommandParameter="{Binding ElementName=PdfViewer}">
+                <Button Grid.Column="4"
+                    Command="{Binding ArrangePdfFile}"
+                    CommandParameter="{Binding ElementName=PdfViewer}">
                     <Image Width="16" Height="16">
                         <Image.Source>
                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -70,33 +88,45 @@
                         </Image.Source>
                     </Image>
                 </Button>
-                <Button BorderBrush="Cyan"
+                <Button Grid.Column="5"
+                    BorderBrush="Cyan"
                     Command="{Binding RotateSelectedPage}"
                     CommandParameter="{Binding ElementName=PdfViewer}">
                     <Image Width="16" Height="16"
                         Source="/TwainControl;component/Icons/rotate.png" />
                 </Button>
-            </UniformGrid>
-            <Button BorderBrush="Cyan" Command="{Binding DataContext.AddAllFileToControlPanel, RelativeSource={RelativeSource AncestorType=Window}}">
-                <Button.CommandParameter>
-                    <MultiBinding Converter="{StaticResource CloneConverter}">
-                        <Binding Mode="OneWay" Path="DataContext" />
-                        <Binding ElementName="PdfViewer" Mode="OneWay" />
-                    </MultiBinding>
-                </Button.CommandParameter>
-                <Button.Content>
-                    <TextBlock FontFamily="Wingdings" FontSize="16" Text="ç" />
-                </Button.Content>
-            </Button>
-            <Button Command="{Binding DataContext.OcrPdfImportViewerThumbnailPage, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
-                <Button.Content>
-                    <Grid>
-                        <ProgressBar IsIndeterminate="{Binding DataContext.OcrIsBusy, RelativeSource={RelativeSource AncestorType=Window}}" />
-                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                            Text="OCR" />
-                    </Grid>
-                </Button.Content>
-            </Button>
+                <Button Grid.Column="6"
+                    BorderBrush="Cyan"
+                    Command="{Binding AddAllFileToControlPanel}">
+                    <Button.CommandParameter>
+                        <MultiBinding Converter="{StaticResource CloneConverter}">
+                            <Binding Mode="OneWay" RelativeSource="{RelativeSource AncestorType=local:TwainCtrl}" />
+                            <Binding ElementName="PdfViewer" Mode="OneWay" />
+                        </MultiBinding>
+                    </Button.CommandParameter>
+                    <Button.Content>
+                        <TextBlock FontFamily="Wingdings" FontSize="16" Text="ç" />
+                    </Button.Content>
+                </Button>
+                <Button Grid.Column="7"
+                    Command="{Binding OcrPdfImportViewerThumbnailPage}"
+                    CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
+                    <Button.Content>
+                        <Grid>
+                            <ProgressBar IsIndeterminate="{Binding OcrIsBusy}" />
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                                Text="OCR" />
+                        </Grid>
+                    </Button.Content>
+                </Button>
+                <Button Grid.Column="8"
+                    Command="{Binding ReadPdfTag}"
+                    CommandParameter="{Binding ElementName=PdfViewer, Path=PdfFilePath, Mode=OneWay}">
+                    <Button.Content>
+                        <TextBlock FontFamily="Wingdings 2" FontSize="16" Text="-" />
+                    </Button.Content>
+                </Button>
+            </Grid>
         </StackPanel>
         <Pdfviewer:PdfViewer x:Name="PdfViewer"
             Grid.Row="1"
