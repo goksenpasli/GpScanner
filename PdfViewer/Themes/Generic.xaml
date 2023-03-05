@@ -191,7 +191,7 @@
                                         ItemsSource="{Binding Pages, RelativeSource={RelativeSource TemplatedParent}}"
                                         ScrollViewer.IsDeferredScrollingEnabled="True"
                                         SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
-                                        VirtualizingPanel.CacheLength="1,1" VirtualizingPanel.CacheLengthUnit="Item"
+                                        VirtualizingPanel.CacheLength="3,3" VirtualizingPanel.CacheLengthUnit="Item"
                                         VirtualizingPanel.ScrollUnit="Item" VirtualizingPanel.VirtualizationMode="Standard">
                                         <ComboBox.ItemContainerStyle>
                                             <Style TargetType="ComboBoxItem">

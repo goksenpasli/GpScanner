@@ -1255,9 +1255,7 @@ namespace GpScanner.ViewModel
             if (!string.IsNullOrWhiteSpace(barcode))
             {
                 IEnumerable<string> patchcodes = Settings.Default.PatchCodes.Cast<string>();
-                return patchcodes.Any(z => z.Split('|')[1] == barcode)
-                    ? (patchcodes?.FirstOrDefault(z => z.Split('|')[1] == barcode)?.Split('|')[0])
-                    : "Tarama";
+                return (patchcodes.Any(z => z.Split('|')[0] == barcode)) ? patchcodes?.FirstOrDefault(z => z.Split('|')[0] == barcode)?.Split('|')[1] : "Tarama";
             }
             return string.Empty;
         }
