@@ -528,15 +528,13 @@
                         Style="{StaticResource ContentToggleButtonAnimationStyle}">
                         <Extensions:ContentToggleButton.Content>
                             <TextBlock>
-                                <Run Text="{Binding Mode=OneWay, ElementName=QrListBox, Path=Items.Count}" />
+                                <Run Text="{Binding Mode=OneWay, Path=BarcodeList.Count}" />
                                 <Run Text="{twainctrl:Loc QRDETECT}" />
                             </TextBlock>
                         </Extensions:ContentToggleButton.Content>
                         <Extensions:ContentToggleButton.OverContent>
                             <GroupBox>
-                                <ListBox x:Name="QrListBox"
-                                    Grid.Row="5"
-                                    Width="310" Height="240"
+                                <ListBox Width="310" Height="240"
                                     HorizontalContentAlignment="Stretch"
                                     d:ItemsSource="{d:SampleData ItemCount=5}"
                                     Background="{StaticResource BorderBackground}"

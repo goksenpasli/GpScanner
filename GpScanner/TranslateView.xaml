@@ -199,8 +199,8 @@
                         </ItemsControl.Template>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <TextBox Height="80"
-                                    IsReadOnly="True"
+                                <Extensions:ButtonedTextBox Height="80"
+                                    IsReadOnly="True" OpenButtonVisibility="Collapsed" ResetButtonVisibility="Collapsed"
                                     Text="{Binding Mode=OneWay}"
                                     TextWrapping="Wrap" />
                             </DataTemplate>

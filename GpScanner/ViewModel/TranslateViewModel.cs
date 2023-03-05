@@ -12,13 +12,14 @@ namespace GpScanner.ViewModel
     {
         public TranslateViewModel()
         {
-            SpeechSynthesizer speechSynthesizer = new();
+            PropertyChanged += TranslateViewModel_PropertyChanged;
+
+            speechSynthesizer = new();
             if (speechSynthesizer is not null)
             {
                 TtsDilleri = speechSynthesizer.GetInstalledVoices().Select(z => z.VoiceInfo.Name);
                 OkumaDili = TtsDilleri?.FirstOrDefault();
             }
-            speechSynthesizer?.Dispose();
 
             Sıfırla = new RelayCommand<object>(parameter =>
             {
@@ -30,8 +31,6 @@ namespace GpScanner.ViewModel
             {
                 if (parameter is string metin)
                 {
-                    SpeechSynthesizer speechSynthesizer = new() { Volume = 100 };
-                    speechSynthesizer.SelectVoice(OkumaDili);
                     if (speechSynthesizer.State == SynthesizerState.Speaking)
                     {
                         speechSynthesizer.Pause();
@@ -147,7 +146,7 @@ namespace GpScanner.ViewModel
             }
         }
 
-        public IEnumerable<string> TtsDilleri { get; }
+        public IEnumerable<string> TtsDilleri { get; set; }
 
         private string çeviri;
 
@@ -161,6 +160,18 @@ namespace GpScanner.ViewModel
 
         private string okumaDili;
 
+        private SpeechSynthesizer speechSynthesizer;
+
         private ObservableCollection<string> taramaGeçmiş = new();
+
+        private void TranslateViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName is "OkumaDili" && !string.IsNullOrEmpty(OkumaDili))
+            {
+                speechSynthesizer = new();
+                TtsDilleri = speechSynthesizer.GetInstalledVoices().Select(z => z.VoiceInfo.Name);
+                speechSynthesizer.SelectVoice(OkumaDili);
+            }
+        }
     }
 }
