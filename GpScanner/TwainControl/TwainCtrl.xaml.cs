@@ -57,6 +57,7 @@ namespace TwainControl
             Settings.Default.PropertyChanged += Default_PropertyChanged;
             PropertyChanged += TwainCtrl_PropertyChanged;
 
+            SelectedTab = TbCtrl?.Items[0] as TabItem;
             Papers = BitmapMethods.GetPapers();
             ToolBox.Paper = SelectedPaper = Papers.FirstOrDefault(z => z.PaperType == "A4");
 
@@ -429,6 +430,31 @@ namespace TwainControl
                 }
             }, parameter => true);
 
+            MaximizePdfControl = new RelayCommand<object>(parameter =>
+            {
+                if (SelectedTab?.Content is PdfImportViewerControl pdfImportViewerControl)
+                {
+                    var maximizePdfWindow = new Window()
+                    {
+                        Owner = Application.Current.MainWindow,
+                        Content = pdfImportViewerControl,
+                        WindowState = WindowState.Maximized,
+                        ShowInTaskbar = false,
+                        Title = "GPSCANNER",
+                        WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                    };
+                    pdfImportViewerControl.PdfViewer.Zoom = 1;
+                    maximizePdfWindow.Closed += (s, e) =>
+                    {
+                        SelectedTab = TbCtrl?.Items[1] as TabItem;
+                        SelectedTab.Content = pdfImportViewerControl;
+                        maximizePdfWindow = null;
+                    };
+                    SelectedTab = TbCtrl?.Items[0] as TabItem;
+                    _ = maximizePdfWindow.ShowDialog();
+                }
+            }, parameter => SelectedTab?.Content is PdfImportViewerControl);
+
             LoadSingleEypFile = new RelayCommand<object>(parameter =>
             {
                 OpenFileDialog openFileDialog = new()
@@ -792,6 +818,8 @@ namespace TwainControl
             }
         }
 
+        public ICommand MaximizePdfControl { get; }
+
         public ICommand OcrPage { get; }
 
         public ObservableCollection<Paper> Papers {
@@ -891,6 +919,17 @@ namespace TwainControl
                 {
                     selectedPaper = value;
                     OnPropertyChanged(nameof(SelectedPaper));
+                }
+            }
+        }
+
+        public TabItem SelectedTab {
+            get => selectedTab; set {
+
+                if (selectedTab != value)
+                {
+                    selectedTab = value;
+                    OnPropertyChanged(nameof(SelectedTab));
                 }
             }
         }
@@ -1288,6 +1327,8 @@ namespace TwainControl
         private TwainWpf.TwainNative.Orientation selectedOrientation = TwainWpf.TwainNative.Orientation.Default;
 
         private Paper selectedPaper = new();
+
+        private TabItem selectedTab;
 
         private Twain twain;
 

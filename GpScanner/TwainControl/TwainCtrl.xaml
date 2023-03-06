@@ -776,7 +776,9 @@
                             </Grid>
                         </Grid>
                     </GroupBox.Header>
-                    <TabControl TabStripPlacement="Left">
+                    <TabControl x:Name="TbCtrl"
+                        SelectedItem="{Binding SelectedTab}"
+                        TabStripPlacement="Left">
                         <TabItem>
                             <TabItem.Header>
                                 <StackPanel>

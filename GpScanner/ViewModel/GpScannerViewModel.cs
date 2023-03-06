@@ -379,7 +379,7 @@ namespace GpScanner.ViewModel
                 _ = Settings.Default.PatchCodes.Add(profile);
                 Settings.Default.Save();
                 Settings.Default.Reload();
-            }, parameter => !string.IsNullOrWhiteSpace(PatchFileName) && !string.IsNullOrWhiteSpace(PatchTag) && !Settings.Default.PatchCodes.Cast<string>().Select(z => z.Split('|')[1]).Contains(PatchTag) && PatchFileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0);
+            }, parameter => !string.IsNullOrWhiteSpace(PatchFileName) && !string.IsNullOrWhiteSpace(PatchTag) && !Settings.Default.PatchCodes.Cast<string>().Select(z => z.Split('|')[0]).Contains(PatchFileName) && PatchTag?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0);
 
             SaveQrImage = new RelayCommand<object>(parameter =>
             {

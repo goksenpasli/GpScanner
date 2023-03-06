@@ -127,6 +127,16 @@
                     </Button.Content>
                 </Button>
             </Grid>
+            <Button Command="{Binding MaximizePdfControl}">
+                <Image Width="16" Height="16">
+                    <Image.Source>
+                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                            <Binding Source="Shell32.dll" />
+                            <Binding Source="15" />
+                        </MultiBinding>
+                    </Image.Source>
+                </Image>
+            </Button>
         </StackPanel>
         <Pdfviewer:PdfViewer x:Name="PdfViewer"
             Grid.Row="1"
