@@ -283,6 +283,9 @@ SCANSIONE</value>
   <data name="JPEGQUALITY" xml:space="preserve">
     <value>QUALITÀ JPEG</value>
   </data>
+  <data name="Left" xml:space="preserve">
+    <value>SINISTRA</value>
+  </data>
   <data name="LIMITED" xml:space="preserve">
     <value>Questo formato di file ha un supporto limitato.</value>
   </data>
@@ -386,6 +389,9 @@ INSERISCI</value>
   </data>
   <data name="REVERSE" xml:space="preserve">
     <value>INVERSIONE</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>GIUSTO</value>
   </data>
   <data name="Rotate180" xml:space="preserve">
     <value>RUOTARE DI 180 GRADI</value>

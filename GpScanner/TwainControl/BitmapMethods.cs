@@ -340,6 +340,10 @@ namespace TwainControl
 
         public static async Task<BitmapFrame> RotateImageAsync(this BitmapFrame bitmapFrame, double angle)
         {
+            if (angle != -1 && angle != 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(angle), "angle should be -1 or 1");
+            }
             TransformedBitmap transformedBitmap = new(bitmapFrame, new RotateTransform(angle * 90));
             TransformedBitmap transformedBitmapthumb = new(bitmapFrame.Thumbnail, new RotateTransform(angle * 90));
             transformedBitmap.Freeze();

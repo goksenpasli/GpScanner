@@ -443,7 +443,7 @@ namespace TwainControl
                         Title = "GPSCANNER",
                         WindowStartupLocation = WindowStartupLocation.CenterOwner,
                     };
-                    pdfImportViewerControl.PdfViewer.Zoom = 1;
+
                     maximizePdfWindow.Closed += (s, e) =>
                     {
                         SelectedTab = TbCtrl?.Items[1] as TabItem;
@@ -923,6 +923,17 @@ namespace TwainControl
             }
         }
 
+        public PageRotation SelectedRotation {
+            get => selectedRotation; set {
+
+                if (selectedRotation != value)
+                {
+                    selectedRotation = value;
+                    OnPropertyChanged(nameof(SelectedRotation));
+                }
+            }
+        }
+
         public TabItem SelectedTab {
             get => selectedTab; set {
 
@@ -1328,6 +1339,8 @@ namespace TwainControl
 
         private Paper selectedPaper = new();
 
+        private PageRotation selectedRotation = PageRotation.NONE;
+
         private TabItem selectedTab;
 
         private Twain twain;
@@ -1529,16 +1542,21 @@ namespace TwainControl
             return scansettings;
         }
 
-        private BitmapSource EvrakOluştur(Bitmap bitmap)
+        private BitmapSource EvrakOluştur(Bitmap bitmap, ColourSetting color, int decodepixelheight)
         {
-            int decodepixelheight = (int)(SelectedPaper.Height / Inch * Settings.Default.Çözünürlük);
-            return (ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite
-                ? bitmap.ConvertBlackAndWhite().ToBitmapImage(ImageFormat.Jpeg, decodepixelheight)
-                : (ColourSetting)Settings.Default.Mode == ColourSetting.GreyScale
-                    ? bitmap.ConvertBlackAndWhite(160, true).ToBitmapImage(ImageFormat.Jpeg, decodepixelheight)
-                    : (ColourSetting)Settings.Default.Mode == ColourSetting.Colour
-                                    ? bitmap.ToBitmapImage(ImageFormat.Jpeg, decodepixelheight)
-                                    : null;
+            return color switch
+            {
+                ColourSetting.BlackAndWhite => bitmap.ConvertBlackAndWhite().ToBitmapImage(ImageFormat.Jpeg, decodepixelheight),
+                _ => color switch
+                {
+                    ColourSetting.GreyScale => bitmap.ConvertBlackAndWhite(160, true).ToBitmapImage(ImageFormat.Jpeg, decodepixelheight),
+                    _ => color switch
+                    {
+                        ColourSetting.Colour => bitmap.ToBitmapImage(ImageFormat.Jpeg, decodepixelheight),
+                        _ => null
+                    }
+                }
+            };
         }
 
         private async void Fastscan(object sender, ScanningCompleteEventArgs e)
@@ -1893,13 +1911,14 @@ namespace TwainControl
                 {
                     return;
                 }
-                BitmapSource evrak = EvrakOluştur(bitmap);
+                int decodepixelheight = (int)(SelectedPaper.Height / Inch * Settings.Default.Çözünürlük);
+                BitmapSource evrak = EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight);
                 evrak.Freeze();
                 BitmapSource önizleme = evrak.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Width * SelectedPaper.Height);
                 önizleme.Freeze();
                 BitmapFrame bitmapFrame = BitmapFrame.Create(evrak, önizleme);
                 bitmapFrame.Freeze();
-                Scanner?.Resimler?.Add(new ScannedImage() { Resim = bitmapFrame });
+                Scanner?.Resimler?.Add(new ScannedImage() { Resim = bitmapFrame, RotationAngle = (double)SelectedRotation });
                 evrak = null;
                 önizleme = null;
                 bitmapFrame = null;

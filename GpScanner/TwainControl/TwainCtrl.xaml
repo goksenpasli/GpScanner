@@ -25,6 +25,7 @@
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <Converter:SplitConverter x:Key="SplitConverter" />
+            <Converter:EnumPageRotationToConvertedLanguageTextConverter x:Key="EnumPageRotationToConvertedLanguageTextConverter" />
             <Converter:EnumOrientationToConvertedLanguageTextConverter x:Key="EnumOrientationToConvertedLanguageTextConverter" />
             <Converter:EnumOrientationToTwainVersionConverter x:Key="EnumOrientationToTwainVersionConverter" />
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
@@ -75,6 +76,13 @@
                     <x:Type TypeName="TwainNative:Orientation" />
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
+            <ObjectDataProvider x:Key="PageRotations"
+                MethodName="GetValues"
+                ObjectType="{x:Type System:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="local:PageRotation" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
             <CollectionViewSource x:Key="CompProfiles" Source="{Binding CompressionProfiles}">
                 <CollectionViewSource.GroupDescriptions>
                     <PropertyGroupDescription PropertyName="Item1" />
@@ -102,6 +110,7 @@
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
@@ -187,6 +196,16 @@
                                     <TextBlock VerticalAlignment="Center" Text="{local:Loc FASTSCAN}" />
                                 </StackPanel>
                             </Button>
+                            <ComboBox Grid.Column="4"
+                                VerticalContentAlignment="Center"
+                                ItemsSource="{Binding Mode=OneWay, Source={StaticResource PageRotations}}"
+                                SelectedItem="{Binding SelectedRotation}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Converter={StaticResource EnumPageRotationToConvertedLanguageTextConverter}, Mode=OneWay}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
                         </Grid>
                     </Expander.Header>
                     <GroupBox Grid.Row="1" IsEnabled="{Binding Scanner.ArayüzEtkin}">
@@ -671,7 +690,7 @@
                             <StackPanel Grid.Column="1">
                                 <Extensions:ContentToggleButton>
                                     <Extensions:ContentToggleButton.OverContent>
-                                        <local:PdfSettings />
+                                        <local:PdfSettings Width="400" Height="380" />
                                     </Extensions:ContentToggleButton.OverContent>
                                     <StackPanel Orientation="Horizontal">
                                         <Image Width="24" Height="24">

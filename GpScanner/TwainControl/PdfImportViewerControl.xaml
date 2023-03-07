@@ -138,8 +138,12 @@
                 </Image>
             </Button>
         </StackPanel>
-        <Pdfviewer:PdfViewer x:Name="PdfViewer"
-            Grid.Row="1"
-            OpenButtonVisibility="Visible" PrintButtonVisibility="Visible" />
+        <Grid Grid.Row="1">
+            <Pdfviewer:PdfViewer x:Name="PdfViewer"
+                AutoFitContent="True" OpenButtonVisibility="Visible"
+                PreviewMouseDown="PdfImportViewerControl_MouseDown"
+                PreviewMouseMove="PdfImportViewerControl_MouseMove" PrintButtonVisibility="Visible" />
+            <Canvas x:Name="cnv" />
+        </Grid>
     </Grid>
 </UserControl>

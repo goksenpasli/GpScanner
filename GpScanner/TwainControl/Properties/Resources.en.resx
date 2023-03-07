@@ -526,4 +526,10 @@ TO FILE</value>
   <data name="NOPATCHCODE" xml:space="preserve">
     <value>No Patch Code Detected</value>
   </data>
+  <data name="Left" xml:space="preserve">
+    <value>LEFT</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>RIGHT</value>
+  </data>
 </root>

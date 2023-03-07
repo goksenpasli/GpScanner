@@ -532,4 +532,10 @@ BELGE EKLE</value>
   <data name="NOPATCHCODE" xml:space="preserve">
     <value>Yama Kodu Algılanmadı</value>
   </data>
+  <data name="Left" xml:space="preserve">
+    <value>SOL</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>SAĞ</value>
+  </data>
 </root>

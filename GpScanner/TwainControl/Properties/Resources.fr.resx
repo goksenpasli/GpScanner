@@ -283,6 +283,9 @@ ANALYSE</value>
   <data name="JPEGQUALITY" xml:space="preserve">
     <value>QUALITÉ JPEG</value>
   </data>
+  <data name="Left" xml:space="preserve">
+    <value>GAUCHE</value>
+  </data>
   <data name="LIMITED" xml:space="preserve">
     <value>Ce format de fichier a une prise en charge limitée.</value>
   </data>
@@ -386,6 +389,9 @@ AJOUTER</value>
   </data>
   <data name="REVERSE" xml:space="preserve">
     <value>INVERSE</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>DROITE</value>
   </data>
   <data name="Rotate180" xml:space="preserve">
     <value>TOURNER DE 180 DEGRÉS</value>

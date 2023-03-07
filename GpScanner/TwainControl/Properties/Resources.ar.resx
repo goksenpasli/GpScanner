@@ -283,6 +283,9 @@
   <data name="JPEGQUALITY" xml:space="preserve">
     <value>جودة JPEG</value>
   </data>
+  <data name="Left" xml:space="preserve">
+    <value>غادر</value>
+  </data>
   <data name="LIMITED" xml:space="preserve">
     <value>تنسيق الملف هذا له دعم محدود.</value>
   </data>
@@ -386,6 +389,9 @@
   </data>
   <data name="REVERSE" xml:space="preserve">
     <value>يعكس</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>يمين</value>
   </data>
   <data name="Rotate180" xml:space="preserve">
     <value>تدوير 180 درجة</value>

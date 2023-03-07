@@ -11,7 +11,7 @@
     xmlns:pdfsharpdrawing="clr-namespace:PdfSharp.Drawing;assembly=PdfSharp-wpf"
     xmlns:properties="clr-namespace:TwainControl.Properties"
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
-    d:DesignHeight="310" d:DesignWidth="550"
+    d:DesignHeight="380" d:DesignWidth="400"
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
     UseLayoutRounding="True"
     mc:Ignorable="d">
@@ -62,9 +62,11 @@
                         </MultiBinding>
                     </Image.Source>
                 </Image>
-                <TextBlock VerticalAlignment="Center"
-                    FontSize="14"
-                    Text="{local:Loc PDFWARN}" />
+                <TextBlock Width="295"
+                    VerticalAlignment="Center"
+                    FontSize="14" FontStyle="Italic" Foreground="Red"
+                    Text="{local:Loc PDFWARN}"
+                    TextWrapping="Wrap" />
             </StackPanel>
         </GroupBox.Header>
         <StackPanel>
@@ -115,7 +117,7 @@
             </CheckBox>
             <CheckBox IsChecked="{Binding Scanner.ApplyPdfSaveOcr}">
                 <CheckBox.Content>
-                    <TextBlock>
+                    <TextBlock TextWrapping="Wrap">
                         <Run Text="{local:Loc FILE}" />
                         <Run Text="{local:Loc OCR}" />
                         <Run FontWeight="Bold" Foreground="Red"
@@ -125,7 +127,7 @@
             </CheckBox>
             <CheckBox IsChecked="{Binding Scanner.ApplyDataBaseOcr}">
                 <CheckBox.Content>
-                    <TextBlock>
+                    <TextBlock TextWrapping="Wrap">
                         <Run Text="{local:Loc ADDOCRTODB}" />
                         <Run FontWeight="Bold" Foreground="Red"
                             Text="{local:Loc ADDOCRTOOLTIP}" />
