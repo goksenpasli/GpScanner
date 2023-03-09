@@ -256,6 +256,7 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <Extensions:NumericUpDownControl Maximum="{Binding ElementName=PdfVwr, Path=ToplamSayfa}"
                             Minimum="1" SmallChange="1"
@@ -336,6 +337,24 @@
                             CommandParameter="{Binding ElementName=PdfVwr, Path=PdfFilePath, Mode=OneWay}">
                             <Button.Content>
                                 <TextBlock FontFamily="Wingdings 2" FontSize="16" Text="-" />
+                            </Button.Content>
+                        </Button>
+                        <Button Grid.Column="9" Command="{Binding MergeSelectedImagesToPdfFile}">
+                            <Button.CommandParameter>
+                                <MultiBinding Converter="{StaticResource CloneConverter}">
+                                    <Binding ElementName="TwainCtrl" Mode="OneWay" Path="DataContext" />
+                                    <Binding ElementName="PdfVwr" Mode="OneWay" />
+                                </MultiBinding>
+                            </Button.CommandParameter>
+                            <Button.Content>
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="68" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
                             </Button.Content>
                         </Button>
                     </Grid>

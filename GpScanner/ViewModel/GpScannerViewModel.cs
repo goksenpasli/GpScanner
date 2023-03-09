@@ -133,6 +133,25 @@ namespace GpScanner.ViewModel
                 }
             }, parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && parameter is TwainCtrl twainCtrl && twainCtrl.SeçiliResim is not null);
 
+            MergeSelectedImagesToPdfFile = new RelayCommand<object>(async parameter =>
+            {
+                if (parameter is object[] data && data[0] is TwainCtrl twainCtrl && data[1] is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
+                {
+                    string temporarypdf = Path.GetTempPath() + Guid.NewGuid() + ".pdf";
+                    IEnumerable<ScannedImage> seçiliresimler = twainCtrl.Scanner.Resimler.Where(z => z.Seçili);
+                    if (seçiliresimler.Any())
+                    {
+                        var pdfDocument = await seçiliresimler.ToList().GeneratePdf(Format.Jpg, twainCtrl.SelectedPaper, Twainsettings.Settings.Default.JpegQuality, null, (int)TwainControl.Properties.Settings.Default.Çözünürlük);
+                        string pdfFilePath = pdfviewer.PdfFilePath;
+                        pdfDocument.Save(temporarypdf);
+                        (new string[] { temporarypdf, pdfFilePath }).MergePdf().Save(pdfFilePath);
+                        MainWindow.NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
+                        twainCtrl.SeçiliListeTemizle.Execute(null);
+                        GC.Collect();
+                    }
+                }
+            }, parameter => true);
+
             OcrPdfThumbnailPage = new RelayCommand<object>(async parameter =>
             {
                 if (parameter is PdfViewer.PdfViewer pdfviewer)
@@ -831,6 +850,8 @@ namespace GpScanner.ViewModel
                 }
             }
         }
+
+        public ICommand MergeSelectedImagesToPdfFile { get; }
 
         public ICommand ModifyGridWidth { get; }
 

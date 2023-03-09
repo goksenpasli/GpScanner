@@ -376,6 +376,18 @@ namespace TwainControl
             }
         }
 
+        public bool PaperBackScan {
+            get { return paperBackScan; }
+
+            set {
+                if (paperBackScan != value)
+                {
+                    paperBackScan = value;
+                    OnPropertyChanged(nameof(PaperBackScan));
+                }
+            }
+        }
+
         public bool PasswordProtect {
             get => passwordProtect;
 
@@ -884,6 +896,8 @@ namespace TwainControl
         private PdfPageLayout layout = PdfPageLayout.Middle;
 
         private string localizedPath;
+
+        private bool paperBackScan;
 
         private bool passwordProtect;
 

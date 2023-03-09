@@ -31,7 +31,7 @@ namespace GpScanner
             TwainCtrl.PropertyChanged += TwainCtrl_PropertyChanged;
         }
 
-        private static void NotifyPdfChange(PdfViewer.PdfViewer pdfviewer, string temporarypdf, string pdfFilePath)
+        public static void NotifyPdfChange(PdfViewer.PdfViewer pdfviewer, string temporarypdf, string pdfFilePath)
         {
             File.Delete(temporarypdf);
             pdfviewer.PdfFilePath = null;

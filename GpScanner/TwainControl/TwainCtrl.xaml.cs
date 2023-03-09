@@ -1461,6 +1461,10 @@ namespace TwainControl
                 Scanner.DetectEmptyPage = false;
                 Scanner.Duplex = false;
             }
+            if (e.PropertyName is "Mode")
+            {
+                Settings.Default.BackMode = Settings.Default.Mode;
+            }
             Settings.Default.Save();
         }
 
@@ -1895,6 +1899,10 @@ namespace TwainControl
             {
                 OnPropertyChanged(nameof(Scanner.UsePageSeperator));
             }
+            if (e.PropertyName is "Duplex" && !Scanner.Duplex)
+            {
+                Scanner.PaperBackScan = false;
+            }
         }
 
         private void Twain_ScanningComplete(object sender, ScanningCompleteEventArgs e)
@@ -1912,7 +1920,8 @@ namespace TwainControl
                     return;
                 }
                 int decodepixelheight = (int)(SelectedPaper.Height / Inch * Settings.Default.Çözünürlük);
-                BitmapSource evrak = EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight);
+                BitmapSource evrak;
+                evrak = Scanner?.PaperBackScan == true ? Scanner?.Resimler.Count % 2 == 0 ? EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight) : EvrakOluştur(bitmap, (ColourSetting)Settings.Default.BackMode, decodepixelheight) : EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight);
                 evrak.Freeze();
                 BitmapSource önizleme = evrak.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Width * SelectedPaper.Height);
                 önizleme.Freeze();
