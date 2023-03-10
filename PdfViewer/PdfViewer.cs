@@ -250,8 +250,8 @@ namespace PdfViewer
         }
 
         public bool ThumbsVisible {
-            get { return (bool)GetValue(ThumbsVisibleProperty); }
-            set { SetValue(ThumbsVisibleProperty, value); }
+            get => (bool)GetValue(ThumbsVisibleProperty);
+            set => SetValue(ThumbsVisibleProperty, value);
         }
 
         public Visibility TifNavigasyonButtonEtkin {
@@ -432,11 +432,11 @@ namespace PdfViewer
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            _scrollvwr = GetTemplateChild("ScrollVwr") as ScrollViewer;
-            if (_scrollvwr != null)
+            scrollvwr = GetTemplateChild("ScrollVwr") as ScrollViewer;
+            if (scrollvwr != null)
             {
-                _scrollvwr.Drop -= _scrollvwr_Drop;
-                _scrollvwr.Drop += _scrollvwr_Drop;
+                scrollvwr.Drop -= Scrollvwr_Drop;
+                scrollvwr.Drop += Scrollvwr_Drop;
             }
         }
 
@@ -457,7 +457,7 @@ namespace PdfViewer
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private ScrollViewer _scrollvwr;
+        private ScrollViewer scrollvwr;
 
         private bool autoFitContent;
 
@@ -531,7 +531,7 @@ namespace PdfViewer
             }
         }
 
-        private void _scrollvwr_Drop(object sender, DragEventArgs e)
+        private void Scrollvwr_Drop(object sender, DragEventArgs e)
         {
             string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
             if (droppedfiles?.Length > 0)

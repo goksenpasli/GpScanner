@@ -141,7 +141,7 @@ namespace GpScanner.ViewModel
                     IEnumerable<ScannedImage> seçiliresimler = twainCtrl.Scanner.Resimler.Where(z => z.Seçili);
                     if (seçiliresimler.Any())
                     {
-                        var pdfDocument = await seçiliresimler.ToList().GeneratePdf(Format.Jpg, twainCtrl.SelectedPaper, Twainsettings.Settings.Default.JpegQuality, null, (int)TwainControl.Properties.Settings.Default.Çözünürlük);
+                        PdfDocument pdfDocument = await seçiliresimler.ToList().GeneratePdf(Format.Jpg, twainCtrl.SelectedPaper, Twainsettings.Settings.Default.JpegQuality, null, (int)TwainControl.Properties.Settings.Default.Çözünürlük);
                         string pdfFilePath = pdfviewer.PdfFilePath;
                         pdfDocument.Save(temporarypdf);
                         (new string[] { temporarypdf, pdfFilePath }).MergePdf().Save(pdfFilePath);
@@ -322,7 +322,7 @@ namespace GpScanner.ViewModel
                     };
                     if (saveFileDialog.ShowDialog() == true)
                     {
-                        var savefilename = saveFileDialog.FileName;
+                        string savefilename = saveFileDialog.FileName;
                         int start = SayfaBaşlangıç;
                         int end = SayfaBitiş;
                         await SaveFile(loadfilename, savefilename, start, end);
@@ -488,7 +488,7 @@ namespace GpScanner.ViewModel
                 Scanner scanner = ToolBox.Scanner;
                 BatchTxtOcrs = new List<BatchTxtOcr>();
                 List<Task> Tasks = new();
-                foreach (List<string> item in ChunkBy(files, slicecount))
+                foreach (List<string> item in TwainCtrl.ChunkBy(files, slicecount))
                 {
                     if (item.Count > 0)
                     {
@@ -551,19 +551,19 @@ namespace GpScanner.ViewModel
             {
                 if (parameter is string filepath && File.Exists(filepath))
                 {
-                    using var reader = PdfReader.Open(filepath, PdfDocumentOpenMode.ReadOnly);
-                    StringBuilder stringBuilder = new StringBuilder();
-                    stringBuilder.Append(filepath).AppendLine().
-                    Append(string.Format("PDF {0:#.#}", reader.Version / 10d)).AppendLine().
-                    Append(reader.Info.Title).AppendLine().
-                    Append(reader.Info.Producer).AppendLine().
-                    Append(reader.Info.Keywords).AppendLine().
-                    Append(reader.Info.Creator).AppendLine().
-                    Append(reader.Info.Author).AppendLine().
+                    using PdfDocument reader = PdfReader.Open(filepath, PdfDocumentOpenMode.ReadOnly);
+                    StringBuilder stringBuilder = new();
+                    _ = stringBuilder.AppendLine(filepath).
+                    AppendFormat("PDF {0:#.#}", reader.Version / 10d).AppendLine().
+                    AppendLine(reader.Info.Title).
+                    AppendLine(reader.Info.Producer).
+                    AppendLine(reader.Info.Keywords).
+                    AppendLine(reader.Info.Creator).
+                    AppendLine(reader.Info.Author).
                     Append(reader.Info.CreationDate).AppendLine().
                     Append(reader.Info.ModificationDate).AppendLine().
-                    Append(string.Format("{0:##.##} MB", reader.FileSize / 1048576d)).AppendLine();
-                    MessageBox.Show(stringBuilder.ToString(), Application.Current?.MainWindow?.Title);
+                    AppendFormat("{0:##.##} MB", reader.FileSize / 1048576d).AppendLine();
+                    _ = MessageBox.Show(stringBuilder.ToString(), Application.Current?.MainWindow?.Title);
                 }
             }, parameter => true);
 
@@ -656,7 +656,6 @@ namespace GpScanner.ViewModel
 
         public ResultPoint[] BarcodePosition {
             get => barcodePosition; set {
-
                 if (barcodePosition != value)
                 {
                     barcodePosition = value;
@@ -667,7 +666,6 @@ namespace GpScanner.ViewModel
 
         public bool BatchDialogOpen {
             get => batchDialogOpen; set {
-
                 if (batchDialogOpen != value)
                 {
                     batchDialogOpen = value;
@@ -831,7 +829,6 @@ namespace GpScanner.ViewModel
 
         public GridLength MainWindowDocumentGuiControlLength {
             get => mainWindowDocumentGuiControlLength; set {
-
                 if (mainWindowDocumentGuiControlLength != value)
                 {
                     mainWindowDocumentGuiControlLength = value;
@@ -842,7 +839,6 @@ namespace GpScanner.ViewModel
 
         public GridLength MainWindowGuiControlLength {
             get => mainWindowGuiControlLength; set {
-
                 if (mainWindowGuiControlLength != value)
                 {
                     mainWindowGuiControlLength = value;
@@ -877,7 +873,6 @@ namespace GpScanner.ViewModel
 
         public string PatchFileName {
             get => patchFileName; set {
-
                 if (patchFileName != value)
                 {
                     patchFileName = value;
@@ -914,7 +909,6 @@ namespace GpScanner.ViewModel
 
         public double PdfMergeProgressValue {
             get => pdfMergeProgressValue; set {
-
                 if (pdfMergeProgressValue != value)
                 {
                     pdfMergeProgressValue = value;
@@ -981,7 +975,6 @@ namespace GpScanner.ViewModel
 
         public int SayfaBitiş {
             get => sayfaBitiş; set {
-
                 if (sayfaBitiş != value)
                 {
                     sayfaBitiş = value;
@@ -1018,7 +1011,6 @@ namespace GpScanner.ViewModel
 
         public DateTime? SeçiliGün {
             get => seçiliGün; set {
-
                 if (seçiliGün != value)
                 {
                     seçiliGün = value;
@@ -1125,15 +1117,6 @@ namespace GpScanner.ViewModel
                     File.Copy(fi.FullName, fi.FullName + DateTime.Today.DayOfWeek + ".bak", true);
                 }
             }
-        }
-
-        public static List<List<T>> ChunkBy<T>(List<T> source, int chunkSize)
-        {
-            return source
-                .Select((x, i) => new { Index = i, Value = x })
-                .GroupBy(x => x.Index / chunkSize)
-                .Select(x => x.Select(v => v.Value).ToList())
-                .ToList();
         }
 
         public static ObservableCollection<Data> DataYükle()
@@ -1276,7 +1259,7 @@ namespace GpScanner.ViewModel
             if (!string.IsNullOrWhiteSpace(barcode))
             {
                 IEnumerable<string> patchcodes = Settings.Default.PatchCodes.Cast<string>();
-                return (patchcodes.Any(z => z.Split('|')[0] == barcode)) ? patchcodes?.FirstOrDefault(z => z.Split('|')[0] == barcode)?.Split('|')[1] : "Tarama";
+                return patchcodes.Any(z => z.Split('|')[0] == barcode) ? patchcodes?.FirstOrDefault(z => z.Split('|')[0] == barcode)?.Split('|')[1] : "Tarama";
             }
             return string.Empty;
         }

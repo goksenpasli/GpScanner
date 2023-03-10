@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,24 +22,28 @@ namespace GpScanner.ViewModel
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            if (item is string dosya)
+            if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
             {
-                string[] imgext = new string[] { ".jpg", ".bmp", ".png", ".tif", ".tiff" };
-                string[] videoext = new string[] { ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg" };
-                string ext = Path.GetExtension(dosya).ToLower();
-                if (ext == ".pdf")
+                if (item is string dosya)
                 {
-                    return Pdf;
+                    string[] imgext = new string[] { ".jpg", ".bmp", ".png", ".tif", ".tiff" };
+                    string[] videoext = new string[] { ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg" };
+                    string ext = Path.GetExtension(dosya).ToLower();
+                    if (ext == ".pdf")
+                    {
+                        return Pdf;
+                    }
+                    if (ext == ".zip")
+                    {
+                        return Zip;
+                    }
+                    if (ext == ".xps")
+                    {
+                        return Xps;
+                    }
+                    return imgext.Contains(ext) ? Img : videoext.Contains(ext) ? Vid : Empty;
                 }
-                if (ext == ".zip")
-                {
-                    return Zip;
-                }
-                if (ext == ".xps")
-                {
-                    return Xps;
-                }
-                return imgext.Contains(ext) ? Img : videoext.Contains(ext) ? Vid : Empty;
+                return null;
             }
             return null;
         }

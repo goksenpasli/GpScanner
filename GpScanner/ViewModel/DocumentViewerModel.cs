@@ -90,7 +90,6 @@ namespace GpScanner.ViewModel
 
         public byte[] ImgData {
             get => ımgData; set {
-
                 if (ımgData != value)
                 {
                     ımgData = value;

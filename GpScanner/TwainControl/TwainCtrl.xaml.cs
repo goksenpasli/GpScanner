@@ -27,6 +27,7 @@ using Extensions.Controls;
 using Microsoft.Win32;
 using Ocr;
 using PdfSharp.Pdf;
+using PdfSharp.Pdf.IO;
 using TwainControl.Properties;
 using TwainWpf;
 using TwainWpf.TwainNative;
@@ -434,7 +435,7 @@ namespace TwainControl
             {
                 if (SelectedTab?.Content is PdfImportViewerControl pdfImportViewerControl)
                 {
-                    var maximizePdfWindow = new Window()
+                    Window maximizePdfWindow = new()
                     {
                         Owner = Application.Current.MainWindow,
                         Content = pdfImportViewerControl,
@@ -526,6 +527,28 @@ namespace TwainControl
                     _ = MessageBox.Show(ex.Message);
                 }
             }, parameter => !string.IsNullOrWhiteSpace(MailData));
+
+            SplitPdf = new RelayCommand<object>(parameter =>
+            {
+                if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
+                {
+                    string savefolder = ToolBox.CreateSaveFolder("SPLIT");
+                    using (PdfDocument inputDocument = PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Import))
+                    {
+                        foreach (List<int> item in ChunkBy(Enumerable.Range(0, inputDocument.PageCount).ToList(), PdfSplitCount))
+                        {
+                            using PdfDocument outputDocument = new();
+                            foreach (int pagenumber in item)
+                            {
+                                _ = outputDocument.AddPage(inputDocument.Pages[pagenumber]);
+                            }
+                            outputDocument.Save(savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "pdf"));
+                        }
+                    }
+                    WebAdreseGit.Execute(savefolder);
+                    GC.Collect();
+                }
+            }, parameter => PdfSplitCount > 0);
 
             AddFromClipBoard = new RelayCommand<object>(parameter =>
             {
@@ -654,7 +677,6 @@ namespace TwainControl
 
         public bool CanUndoImage {
             get => canUndoImage; set {
-
                 if (canUndoImage != value)
                 {
                     canUndoImage = value;
@@ -710,7 +732,6 @@ namespace TwainControl
 
         public ObservableCollection<OcrData> DataBaseTextData {
             get => dataBaseTextData; set {
-
                 if (dataBaseTextData != value)
                 {
                     dataBaseTextData = value;
@@ -757,7 +778,6 @@ namespace TwainControl
 
         public bool DragMoveStarted {
             get => dragMoveStarted; set {
-
                 if (dragMoveStarted != value)
                 {
                     dragMoveStarted = value;
@@ -846,6 +866,18 @@ namespace TwainControl
             }
         }
 
+        public int PdfSplitCount {
+            get => pdfSplitCount;
+
+            set {
+                if (pdfSplitCount != value)
+                {
+                    pdfSplitCount = value;
+                    OnPropertyChanged(nameof(PdfSplitCount));
+                }
+            }
+        }
+
         public ICommand RemoveProfile { get; }
 
         public ICommand ResimSil { get; }
@@ -902,7 +934,6 @@ namespace TwainControl
 
         public TwainWpf.TwainNative.Orientation SelectedOrientation {
             get => selectedOrientation; set {
-
                 if (selectedOrientation != value)
                 {
                     selectedOrientation = value;
@@ -925,7 +956,6 @@ namespace TwainControl
 
         public PageRotation SelectedRotation {
             get => selectedRotation; set {
-
                 if (selectedRotation != value)
                 {
                     selectedRotation = value;
@@ -936,7 +966,6 @@ namespace TwainControl
 
         public TabItem SelectedTab {
             get => selectedTab; set {
-
                 if (selectedTab != value)
                 {
                     selectedTab = value;
@@ -948,6 +977,8 @@ namespace TwainControl
         public ICommand SendMail { get; }
 
         public ICommand SinglePageSavePdf { get; }
+
+        public ICommand SplitPdf { get; }
 
         public ICommand Tersiniİşaretle { get; }
 
@@ -973,7 +1004,6 @@ namespace TwainControl
 
         public ScannedImage UndoImage {
             get => undoImage; set {
-
                 if (undoImage != value)
                 {
                     undoImage = value;
@@ -995,6 +1025,15 @@ namespace TwainControl
         }
 
         public ICommand WebAdreseGit { get; }
+
+        public static List<List<T>> ChunkBy<T>(List<T> source, int chunkSize)
+        {
+            return source
+                .Select((x, i) => new { Index = i, Value = x })
+                .GroupBy(x => x.Index / chunkSize)
+                .Select(x => x.Select(v => v.Value).ToList())
+                .ToList();
+        }
 
         public static BitmapFrame GenerateBitmapFrame(BitmapSource bitmapSource, Paper thumbnailpaper)
         {
@@ -1328,6 +1367,8 @@ namespace TwainControl
         private ObservableCollection<Paper> papers;
 
         private double pdfLoadProgressValue;
+
+        private int pdfSplitCount = 0;
 
         private Scanner scanner;
 
@@ -1920,8 +1961,7 @@ namespace TwainControl
                     return;
                 }
                 int decodepixelheight = (int)(SelectedPaper.Height / Inch * Settings.Default.Çözünürlük);
-                BitmapSource evrak;
-                evrak = Scanner?.PaperBackScan == true ? Scanner?.Resimler.Count % 2 == 0 ? EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight) : EvrakOluştur(bitmap, (ColourSetting)Settings.Default.BackMode, decodepixelheight) : EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight);
+                BitmapSource evrak = Scanner?.PaperBackScan == true ? Scanner?.Resimler.Count % 2 == 0 ? EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight) : EvrakOluştur(bitmap, (ColourSetting)Settings.Default.BackMode, decodepixelheight) : EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight);
                 evrak.Freeze();
                 BitmapSource önizleme = evrak.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Width * SelectedPaper.Height);
                 önizleme.Freeze();

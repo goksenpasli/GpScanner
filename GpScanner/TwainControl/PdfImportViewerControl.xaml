@@ -44,6 +44,7 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <Extensions:NumericUpDownControl Maximum="{Binding ElementName=PdfViewer, Path=ToplamSayfa}"
                     Minimum="1" SmallChange="1"
@@ -109,6 +110,7 @@
                     </Button.Content>
                 </Button>
                 <Button Grid.Column="7"
+                    VerticalContentAlignment="Stretch"
                     Command="{Binding OcrPdfImportViewerThumbnailPage}"
                     CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
                     <Button.Content>
@@ -126,7 +128,39 @@
                         <TextBlock FontFamily="Wingdings 2" FontSize="16" Text="-" />
                     </Button.Content>
                 </Button>
+                <Button Grid.Column="9" Command="{Binding MergeSelectedImagesToPdfFile}">
+                    <Button.CommandParameter>
+                        <MultiBinding Converter="{StaticResource CloneConverter}">
+                            <Binding Mode="OneWay" RelativeSource="{RelativeSource AncestorType=local:TwainCtrl}" />
+                            <Binding ElementName="PdfViewer" Mode="OneWay" />
+                        </MultiBinding>
+                    </Button.CommandParameter>
+                    <Button.Content>
+                        <Image Width="16" Height="16">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                    <Binding Source="Shell32.dll" />
+                                    <Binding Source="68" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                    </Button.Content>
+                </Button>
             </Grid>
+            <Extensions:NumericUpDownControl IsReadOnly="True"
+                Maximum="{Binding ElementName=PdfViewer, Path=ToplamSayfa}"
+                Minimum="0" SmallChange="1"
+                Value="{Binding PdfSplitCount}" />
+            <Button Command="{Binding SplitPdf}" CommandParameter="{Binding ElementName=PdfViewer}">
+                <Image Width="16" Height="16">
+                    <Image.Source>
+                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                            <Binding Source="Shell32.dll" />
+                            <Binding Source="96" />
+                        </MultiBinding>
+                    </Image.Source>
+                </Image>
+            </Button>
             <Button Command="{Binding MaximizePdfControl}">
                 <Image Width="16" Height="16">
                     <Image.Source>

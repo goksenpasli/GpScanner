@@ -698,8 +698,18 @@
                                                         <Button Background="Transparent" BorderBrush="Transparent"
                                                             Command="{Binding DataContext.RemoveProfile, ElementName=UserControl}"
                                                             CommandParameter="{Binding Mode=OneWay}"
-                                                            Content="{local:Loc DELETE}"
-                                                            FontWeight="Bold" Foreground="Red" />
+                                                            FontWeight="Bold" Foreground="Red">
+                                                            <Button.Content>
+                                                                <Image Width="16" Height="16">
+                                                                    <Image.Source>
+                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                            <Binding Source="Shell32.dll" />
+                                                                            <Binding Source="131" />
+                                                                        </MultiBinding>
+                                                                    </Image.Source>
+                                                                </Image>
+                                                            </Button.Content>
+                                                        </Button>
                                                     </UniformGrid>
                                                 </DataTemplate>
                                             </ComboBox.ItemTemplate>
@@ -857,7 +867,6 @@
                         </Grid>
                     </GroupBox.Header>
                     <TabControl x:Name="TbCtrl"
-                        d:SelectedIndex="0"
                         SelectedItem="{Binding SelectedTab}"
                         TabStripPlacement="Left">
                         <TabItem>
@@ -1067,7 +1076,7 @@
                                                                     FontWeight="Bold" Foreground="Red" PreviewMouseMove="Run_EypPreviewMouseMove"
                                                                     Text="B" />
                                                             </TextBlock>
-                                                            <ContentPresenter d:Height="64" d:Width="64"
+                                                            <ContentPresenter d:Content="file.pdf" d:Height="64" d:Width="64"
                                                                 Content="{Binding IsAsync=True, Mode=OneWay}"
                                                                 ContentTemplateSelector="{StaticResource PdfEypViewerSelector}" />
                                                         </StackPanel>

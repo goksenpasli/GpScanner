@@ -294,7 +294,7 @@ namespace TwainControl
 
         private double toolBoxPdfMergeProgressValue;
 
-        private static string CreateSaveFolder(string langdata)
+        public static string CreateSaveFolder(string langdata)
         {
             string savefolder = $@"{PdfGeneration.GetSaveFolder()}\{Translation.GetResStringValue(langdata)}";
             if (!Directory.Exists(savefolder))
