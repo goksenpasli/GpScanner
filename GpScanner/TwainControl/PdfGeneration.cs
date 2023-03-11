@@ -314,7 +314,7 @@ namespace TwainControl
 
         public static string GetSaveFolder()
         {
-            string datefolder = $@"{Settings.Default.AutoFolder}\{DateTime.Today.ToShortDateString()}";
+            string datefolder = $@"{Settings.Default.AutoFolder}\{DateTime.Today.ToString(Settings.Default.FolderDateFormat)}";
             if (!Directory.Exists(datefolder))
             {
                 _ = Directory.CreateDirectory(datefolder);

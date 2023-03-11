@@ -237,7 +237,29 @@
                     </Expander.Header>
                     <GroupBox Grid.Row="1" IsEnabled="{Binding Scanner.ArayüzEtkin}">
                         <GroupBox.Header>
-                            <UniformGrid Columns="2">
+                            <UniformGrid Columns="3">
+                                <ComboBox ItemsSource="{Binding Scanner.FolderDateFormats}" SelectedItem="{Binding Path=FolderDateFormat, Source={x:Static properties:Settings.Default}}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay}" />
+                                                <Button VerticalAlignment="Center"
+                                                    Background="{x:Null}"
+                                                    BorderBrush="{x:Null}"
+                                                    Command="{Binding ShowDateFolderHelp, RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}">
+                                                    <Image Width="16" Height="16">
+                                                        <Image.Source>
+                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                <Binding Source="Shell32.dll" />
+                                                                <Binding Source="23" />
+                                                            </MultiBinding>
+                                                        </Image.Source>
+                                                    </Image>
+                                                </Button>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
                                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
                                     d:Text="AutoFolder" FontWeight="Bold">
                                     <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="{Binding AutoFolder, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
@@ -252,10 +274,10 @@
                                     <TextBlock Margin="0,0,2,0" VerticalAlignment="Center"
                                         Text="DPI" />
                                     <Slider Grid.Column="1"
-                                        AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="600"
+                                        AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="4800"
                                         Minimum="72" SmallChange="1"
                                         Style="{StaticResource Slider}"
-                                        Ticks="72,96,120,150,200,300,450,600"
+                                        Ticks="72,96,120,150,200,300,450,600,1200,2400,4800"
                                         ToolTip="{local:Loc RES}"
                                         Value="{Binding Çözünürlük, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                                 </Grid>

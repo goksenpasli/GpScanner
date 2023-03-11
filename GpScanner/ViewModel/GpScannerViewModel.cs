@@ -545,7 +545,7 @@ namespace GpScanner.ViewModel
                         cycleindex = 0;
                     }
                 }
-            }, parameter => parameter is ListBox && MainWindow.cvs?.View?.OfType<Scanner>().Count(z => z.Seçili) > 0);
+            }, parameter => MainWindow.cvs?.View?.OfType<Scanner>().Count(z => z.Seçili) > 0);
 
             ReadPdfTag = new RelayCommand<object>(parameter =>
             {
@@ -556,6 +556,7 @@ namespace GpScanner.ViewModel
                     _ = stringBuilder.AppendLine(filepath).
                     AppendFormat("PDF {0:#.#}", reader.Version / 10d).AppendLine().
                     AppendLine(reader.Info.Title).
+                    Append(reader.PageCount).AppendLine().
                     AppendLine(reader.Info.Producer).
                     AppendLine(reader.Info.Keywords).
                     AppendLine(reader.Info.Creator).
@@ -1305,7 +1306,7 @@ namespace GpScanner.ViewModel
 
         private static string xmlDataPath = Settings.Default.DatabaseFile;
 
-        private readonly string[] supportedfilesextension = new string[] { ".pdf", ".tiff", ".tif", ".jpg", ".png", ".bmp", ".zip", ".xps" };
+        private readonly string[] supportedfilesextension = new string[] { ".pdf", ".tiff", ".tif", ".jpg", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg" };
 
         private bool anyDataExists;
 
@@ -1412,7 +1413,12 @@ namespace GpScanner.ViewModel
         {
             if (e.PropertyName is "SeçiliGün")
             {
-                MainWindow.cvs.Filter += (s, x) => x.Accepted = Directory.GetParent((x.Item as Scanner)?.FileName).Name.StartsWith(SeçiliGün.Value.ToShortDateString());
+                MainWindow.cvs.Filter += (s, x) =>
+                {
+                    Scanner scanner = x.Item as Scanner;
+                    string seçiligün = SeçiliGün.Value.ToString(TwainControl.Properties.Settings.Default.FolderDateFormat);
+                    x.Accepted = Directory.GetParent(scanner?.FileName).Name.StartsWith(seçiligün);
+                };
             }
             if (e.PropertyName is "Sıralama")
             {

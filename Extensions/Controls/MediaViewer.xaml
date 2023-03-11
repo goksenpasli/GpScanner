@@ -7,7 +7,7 @@
     xmlns:local="clr-namespace:Extensions"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance Type=Controls:MediaViewer}"
-    d:DesignHeight="384" d:DesignWidth="512" UseLayoutRounding="True"
+    d:DesignHeight="384" d:DesignWidth="520" UseLayoutRounding="True"
     mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -203,7 +203,7 @@
                                                 </MediaElement.RenderTransform>
                                             </MediaElement>
                                             <Viewport3D x:Name="PanoramaViewPort"
-                                                MouseLeftButtonDown="Viewport3D_MouseLeftButtonDown"
+                                                Cursor="ScrollAll" MouseLeftButtonDown="Viewport3D_MouseLeftButtonDown"
                                                 MouseLeftButtonUp="Viewport3D_MouseLeftButtonUp" MouseMove="Viewport3D_MouseMove"
                                                 MouseWheel="Viewport3D_MouseWheel">
                                                 <Viewport3D.Camera>
@@ -398,7 +398,7 @@
                     <Run Text="{Binding EndTimeSpan, Converter={StaticResource TimeSpanToStringConverter}, Mode=OneWay}" />
                 </TextBlock>
                 <StackPanel Grid.Column="4" Orientation="Horizontal">
-                    <local:ContentToggleButton Width="24" Height="24"
+                    <local:ContentToggleButton Height="24"
                         Content="(" FontFamily="Webdings" FontSize="18"
                         Foreground="Blue">
                         <local:ContentToggleButton.OverContent>

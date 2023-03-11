@@ -422,6 +422,11 @@
                     AutoPlay="False" ContextMenuVisibility="Visible" ControlVisible="Collapsed"
                     MediaDataFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
+            <DataTemplate x:Key="VideoViewerTemplateFull">
+                <Controls:MediaViewer AutoPlay="False"
+                    MediaDataFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                    OsdTextVisibility="Visible" />
+            </DataTemplate>
             <DataTemplate x:Key="EmptyTemplate">
                 <TextBlock Width="157" TextWrapping="Wrap">
                     <Image Width="32" Height="32"
@@ -505,6 +510,7 @@
             <ViewModel:ViewerTemplateSelector x:Key="DocumentViewerSelector"
                 Img="{StaticResource ImgViewerDocumentViewerTemplateFull}"
                 Pdf="{StaticResource PdfViewerDocumentViewerTemplateFull}"
+                Vid="{StaticResource VideoViewerTemplateFull}"
                 Xps="{StaticResource XpsViewerTemplate}"
                 Zip="{StaticResource ZipViewerTemplateFull}" />
             <ViewModel:ViewerTemplateSelector x:Key="ThumbViewerSelector"

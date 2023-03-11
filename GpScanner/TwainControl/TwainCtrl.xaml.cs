@@ -118,7 +118,7 @@ namespace TwainControl
                     }
                     SaveFileDialog saveFileDialog = new()
                     {
-                        Filter = "Tif Resmi (*.tif)|*.tif|Jpg Resmi (*.jpg)|*.jpg|Pdf Dosyası (*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf|Xps Dosyası (*.xps)|*.xps",
+                        Filter = "Tif Resmi (*.tif)|*.tif|Jpg Resmi (*.jpg)|*.jpg|Pdf Dosyası (*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf|Xps Dosyası (*.xps)|*.xps|Txt Dosyası (*.txt)|*.txt",
                         FileName = Scanner.SaveFileName,
                         FilterIndex = 3,
                     };
@@ -126,25 +126,31 @@ namespace TwainControl
                     {
                         Filesavetask = Task.Run(async () =>
                         {
-                            if (saveFileDialog.FilterIndex == 1)
+                            switch (saveFileDialog.FilterIndex)
                             {
-                                SaveTifImage(bitmapFrame, saveFileDialog.FileName);
-                            }
-                            if (saveFileDialog.FilterIndex == 2)
-                            {
-                                SaveJpgImage(bitmapFrame, saveFileDialog.FileName);
-                            }
-                            if (saveFileDialog.FilterIndex == 3)
-                            {
-                                await SavePdfImage(bitmapFrame, saveFileDialog.FileName, Scanner, SelectedPaper);
-                            }
-                            if (saveFileDialog.FilterIndex == 4)
-                            {
-                                await SavePdfImage(bitmapFrame, saveFileDialog.FileName, Scanner, SelectedPaper, true);
-                            }
-                            if (saveFileDialog.FilterIndex == 5)
-                            {
-                                SaveXpsImage(bitmapFrame, saveFileDialog.FileName);
+                                case 1:
+                                    SaveTifImage(bitmapFrame, saveFileDialog.FileName);
+                                    return;
+
+                                case 2:
+                                    SaveJpgImage(bitmapFrame, saveFileDialog.FileName);
+                                    return;
+
+                                case 3:
+                                    await SavePdfImage(bitmapFrame, saveFileDialog.FileName, Scanner, SelectedPaper);
+                                    return;
+
+                                case 4:
+                                    await SavePdfImage(bitmapFrame, saveFileDialog.FileName, Scanner, SelectedPaper, true);
+                                    return;
+
+                                case 5:
+                                    SaveXpsImage(bitmapFrame, saveFileDialog.FileName);
+                                    return;
+
+                                case 6:
+                                    SaveTxtFile(bitmapFrame, saveFileDialog.FileName, Scanner);
+                                    break;
                             }
                         });
                     }
@@ -263,18 +269,14 @@ namespace TwainControl
                                 return;
 
                             case 3:
-                                {
-                                    await SaveJpgImage(seçiliresimler, saveFileDialog.FileName, Scanner);
-                                    Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
-                                    return;
-                                }
+                                await SaveJpgImage(seçiliresimler, saveFileDialog.FileName, Scanner);
+                                Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
+                                return;
 
                             case 4:
-                                {
-                                    await SaveTifImage(seçiliresimler, saveFileDialog.FileName, Scanner);
-                                    Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
-                                    break;
-                                }
+                                await SaveTifImage(seçiliresimler, saveFileDialog.FileName, Scanner);
+                                Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
+                                break;
                         }
                     });
                 }
@@ -353,6 +355,16 @@ namespace TwainControl
                 ToolBox.ResetCropMargin();
                 GC.Collect();
             }, parameter => Scanner?.Resimler?.Any(z => z.Seçili) == true);
+
+            ShowDateFolderHelp = new RelayCommand<object>(parameter =>
+            {
+                StringBuilder sb = new();
+                foreach (var item in Scanner.FolderDateFormats)
+                {
+                    sb.AppendLine($"{item} {DateTime.Today.ToString(item)}");
+                }
+                MessageBox.Show(sb.ToString(), Application.Current?.MainWindow?.Title);
+            }, parameter => true);
 
             SaveProfile = new RelayCommand<object>(parameter =>
             {
@@ -677,6 +689,7 @@ namespace TwainControl
 
         public bool CanUndoImage {
             get => canUndoImage; set {
+
                 if (canUndoImage != value)
                 {
                     canUndoImage = value;
@@ -732,6 +745,7 @@ namespace TwainControl
 
         public ObservableCollection<OcrData> DataBaseTextData {
             get => dataBaseTextData; set {
+
                 if (dataBaseTextData != value)
                 {
                     dataBaseTextData = value;
@@ -778,6 +792,7 @@ namespace TwainControl
 
         public bool DragMoveStarted {
             get => dragMoveStarted; set {
+
                 if (dragMoveStarted != value)
                 {
                     dragMoveStarted = value;
@@ -934,6 +949,7 @@ namespace TwainControl
 
         public TwainWpf.TwainNative.Orientation SelectedOrientation {
             get => selectedOrientation; set {
+
                 if (selectedOrientation != value)
                 {
                     selectedOrientation = value;
@@ -956,6 +972,7 @@ namespace TwainControl
 
         public PageRotation SelectedRotation {
             get => selectedRotation; set {
+
                 if (selectedRotation != value)
                 {
                     selectedRotation = value;
@@ -966,6 +983,7 @@ namespace TwainControl
 
         public TabItem SelectedTab {
             get => selectedTab; set {
+
                 if (selectedTab != value)
                 {
                     selectedTab = value;
@@ -975,6 +993,8 @@ namespace TwainControl
         }
 
         public ICommand SendMail { get; }
+
+        public ICommand ShowDateFolderHelp { get; }
 
         public ICommand SinglePageSavePdf { get; }
 
@@ -1004,6 +1024,7 @@ namespace TwainControl
 
         public ScannedImage UndoImage {
             get => undoImage; set {
+
                 if (undoImage != value)
                 {
                     undoImage = value;
@@ -1089,7 +1110,7 @@ namespace TwainControl
         public static async Task SavePdfImage(BitmapFrame scannedImage, string filename, Scanner scanner, Paper paper, bool blackwhite = false)
         {
             ObservableCollection<OcrData> ocrtext = null;
-            if (scanner?.ApplyPdfSaveOcr == true)
+            if (scanner?.ApplyPdfSaveOcr == true && !string.IsNullOrEmpty(scanner?.SelectedTtsLanguage))
             {
                 ocrtext = await scannedImage.ToTiffJpegByteArray(Format.Jpg).OcrAsyc(scanner.SelectedTtsLanguage);
             }
@@ -1104,7 +1125,7 @@ namespace TwainControl
         public static async Task SavePdfImage(List<ScannedImage> images, string filename, Scanner scanner, Paper paper, bool blackwhite = false, int dpi = 120)
         {
             List<ObservableCollection<OcrData>> scannedtext = null;
-            if (scanner?.ApplyPdfSaveOcr == true)
+            if (scanner?.ApplyPdfSaveOcr == true && !string.IsNullOrEmpty(scanner?.SelectedTtsLanguage))
             {
                 scannedtext = new List<ObservableCollection<OcrData>>();
                 scanner.ProgressState = TaskbarItemProgressState.Normal;
@@ -1154,6 +1175,15 @@ namespace TwainControl
             if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
             {
                 File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.TiffRenkli));
+            }
+        }
+
+        public static async void SaveTxtFile(BitmapFrame bitmapFrame, string fileName, Scanner scanner)
+        {
+            if (bitmapFrame is not null && !string.IsNullOrEmpty(scanner.SelectedTtsLanguage))
+            {
+                ObservableCollection<OcrData> ocrtext = await bitmapFrame.ToTiffJpegByteArray(Format.Jpg).OcrAsyc(scanner.SelectedTtsLanguage);
+                File.WriteAllText(fileName, string.Join(" ", ocrtext.Select(z => z.Text)));
             }
         }
 

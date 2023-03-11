@@ -40,7 +40,7 @@ namespace TwainControl
                 }
                 SaveFileDialog saveFileDialog = new()
                 {
-                    Filter = "Tif Resmi (*.tif)|*.tif|Jpg Resmi (*.jpg)|*.jpg|Pdf Dosyası (*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf|Xps Dosyası (*.xps)|*.xps",
+                    Filter = "Tif Resmi (*.tif)|*.tif|Jpg Resmi (*.jpg)|*.jpg|Pdf Dosyası (*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf|Xps Dosyası (*.xps)|*.xps|Txt Dosyası (*.txt)|*.txt",
                     FileName = Scanner.FileName,
                     FilterIndex = 3
                 };
@@ -50,27 +50,38 @@ namespace TwainControl
                     {
                         BitmapFrame bitmapFrame = BitmapFrame.Create(parameter as BitmapSource);
                         bitmapFrame.Freeze();
-                        if (saveFileDialog.FilterIndex == 1)
+                        switch (saveFileDialog.FilterIndex)
                         {
-                            TwainCtrl.SaveTifImage(bitmapFrame, saveFileDialog.FileName);
+                            case 1:
+                                TwainCtrl.SaveTifImage(bitmapFrame, saveFileDialog.FileName);
+                                bitmapFrame = null;
+                                return;
+
+                            case 2:
+                                TwainCtrl.SaveJpgImage(bitmapFrame, saveFileDialog.FileName);
+                                bitmapFrame = null;
+                                return;
+
+                            case 3:
+                                await TwainCtrl.SavePdfImage(bitmapFrame, saveFileDialog.FileName, Scanner, Paper);
+                                bitmapFrame = null;
+                                return;
+
+                            case 4:
+                                await TwainCtrl.SavePdfImage(bitmapFrame, saveFileDialog.FileName, Scanner, Paper, true);
+                                bitmapFrame = null;
+                                return;
+
+                            case 5:
+                                TwainCtrl.SaveXpsImage(bitmapFrame, saveFileDialog.FileName);
+                                bitmapFrame = null;
+                                return;
+
+                            case 6:
+                                TwainCtrl.SaveTxtFile(bitmapFrame, saveFileDialog.FileName, Scanner);
+                                bitmapFrame = null;
+                                return;
                         }
-                        if (saveFileDialog.FilterIndex == 2)
-                        {
-                            TwainCtrl.SaveJpgImage(bitmapFrame, saveFileDialog.FileName);
-                        }
-                        if (saveFileDialog.FilterIndex == 3)
-                        {
-                            await TwainCtrl.SavePdfImage(bitmapFrame, saveFileDialog.FileName, Scanner, Paper);
-                        }
-                        if (saveFileDialog.FilterIndex == 4)
-                        {
-                            await TwainCtrl.SavePdfImage(bitmapFrame, saveFileDialog.FileName, Scanner, Paper, true);
-                        }
-                        if (saveFileDialog.FilterIndex == 5)
-                        {
-                            TwainCtrl.SaveXpsImage(bitmapFrame, saveFileDialog.FileName);
-                        }
-                        bitmapFrame = null;
                     });
                 }
             }, parameter => Scanner?.CroppedImage is not null);
@@ -236,6 +247,17 @@ namespace TwainControl
 
         public ICommand WebAdreseGit { get; }
 
+        public static string CreateSaveFolder(string langdata)
+        {
+            string savefolder = $@"{PdfGeneration.GetSaveFolder()}\{Translation.GetResStringValue(langdata)}";
+            if (!Directory.Exists(savefolder))
+            {
+                _ = Directory.CreateDirectory(savefolder);
+            }
+
+            return savefolder;
+        }
+
         public static double GetDeskewAngle(ImageSource ımageSource, bool fast = false)
         {
             Deskew sk = new((BitmapSource)ımageSource);
@@ -293,17 +315,6 @@ namespace TwainControl
         }
 
         private double toolBoxPdfMergeProgressValue;
-
-        public static string CreateSaveFolder(string langdata)
-        {
-            string savefolder = $@"{PdfGeneration.GetSaveFolder()}\{Translation.GetResStringValue(langdata)}";
-            if (!Directory.Exists(savefolder))
-            {
-                _ = Directory.CreateDirectory(savefolder);
-            }
-
-            return savefolder;
-        }
 
         private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {

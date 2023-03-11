@@ -203,5 +203,17 @@ namespace TwainControl.Properties {
                 this["BackMode"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("d.MM.yyyy")]
+        public string FolderDateFormat {
+            get {
+                return ((string)(this["FolderDateFormat"]));
+            }
+            set {
+                this["FolderDateFormat"] = value;
+            }
+        }
     }
 }

@@ -48,5 +48,8 @@
     <Setting Name="BackMode" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
+    <Setting Name="FolderDateFormat" Type="System.String" Scope="User">
+      <Value Profile="(Default)">d.MM.yyyy</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
