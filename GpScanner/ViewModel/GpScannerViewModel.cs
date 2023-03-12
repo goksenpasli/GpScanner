@@ -540,7 +540,7 @@ namespace GpScanner.ViewModel
                 {
                     IEnumerable<Scanner> listboxfiles = MainWindow.cvs.View.OfType<Scanner>();
                     Scanner currentfile = listboxfiles?.Where(z => z.Seçili).ElementAtOrDefault(cycleindex);
-                    if (currentfile is null)
+                    if (currentfile is not null)
                     {
                         listBox.ScrollIntoView(currentfile);
                         currentfile.BorderAnimation = true;

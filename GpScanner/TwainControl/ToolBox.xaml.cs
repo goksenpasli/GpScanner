@@ -101,6 +101,12 @@ namespace TwainControl
                 Scanner.CroppedImage = await Scanner.CroppedImage.RotateImageAsync(skewAngle);
             }, parameter => Scanner?.CroppedImage is not null);
 
+            InvertImage = new RelayCommand<object>(parameter =>
+            {
+                using Bitmap bmp = ((BitmapSource)Scanner.CopyCroppedImage).BitmapSourceToBitmap();
+                Scanner.CroppedImage = bmp.InvertBitmap().ToBitmapImage(ImageFormat.Png);
+            }, parameter => Scanner?.CroppedImage is not null);
+
             ApplyColorChange = new RelayCommand<object>(parameter => Scanner.CopyCroppedImage = Scanner.CroppedImage, parameter => Scanner?.CroppedImage is not null);
 
             ResetCroppedImage = new RelayCommand<object>(parameter => ResetCropMargin(), parameter => Scanner?.CroppedImage is not null);
@@ -214,6 +220,8 @@ namespace TwainControl
         public ICommand ApplyColorChange { get; }
 
         public ICommand DeskewImage { get; }
+
+        public ICommand InvertImage { get; }
 
         public ICommand LoadHistogram { get; }
 

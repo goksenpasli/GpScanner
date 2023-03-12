@@ -78,6 +78,7 @@ namespace TwainControl
             });
             Marshal.Copy(rgb, 0, ptr, bytes);
             bitmap.UnlockBits(bmpData);
+            bmpData = null;
             rgb = null;
             return bitmap;
         }
@@ -253,6 +254,31 @@ namespace TwainControl
             };
         }
 
+        public static Bitmap InvertBitmap(this Bitmap bitmap)
+        {
+            BitmapData bmpData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+            int stride = bmpData.Stride;
+            IntPtr Scan0 = bmpData.Scan0;
+            unsafe
+            {
+                byte* p = (byte*)(void*)Scan0;
+                int nOffset = stride - (bitmap.Width * 3);
+                int nWidth = bitmap.Width * 3;
+                for (int y = 0; y < bitmap.Height; ++y)
+                {
+                    for (int x = 0; x < nWidth; ++x)
+                    {
+                        p[0] = (byte)(255 - p[0]);
+                        ++p;
+                    }
+                    p += nOffset;
+                }
+            }
+            bitmap.UnlockBits(bmpData);
+            bmpData = null;
+            return bitmap;
+        }
+
         public static unsafe Bitmap ReplaceColor(this Bitmap source, System.Windows.Media.Color toReplace, System.Windows.Media.Color replacement, int threshold)
         {
             const int pixelSize = 4; // 32 bits per pixel
@@ -340,7 +366,7 @@ namespace TwainControl
 
         public static async Task<BitmapFrame> RotateImageAsync(this BitmapFrame bitmapFrame, double angle)
         {
-            if (angle != -1 && angle != 1)
+            if (angle is not (-1) and not 1)
             {
                 throw new ArgumentOutOfRangeException(nameof(angle), "angle should be -1 or 1");
             }

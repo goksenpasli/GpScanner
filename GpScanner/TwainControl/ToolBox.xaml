@@ -100,18 +100,21 @@
                                 Style="{StaticResource Slider}"
                                 Ticks="0, 90, 180, 270, 360"
                                 Value="{Binding Scanner.CroppedImageAngle}" />
-                            <Slider VerticalAlignment="Center"
-                                Maximum="255" Minimum="-255" Orientation="Horizontal"
-                                SmallChange="1"
-                                Style="{StaticResource Slider}"
-                                Value="{Binding Scanner.Brightness, Delay=100}">
-                                <Slider.Background>
-                                    <LinearGradientBrush ice:Freeze="true" StartPoint="0,0.5" EndPoint="1,0.5">
-                                        <GradientStop Offset="0" Color="Black" />
-                                        <GradientStop Offset="1" Color="White" />
-                                    </LinearGradientBrush>
-                                </Slider.Background>
-                            </Slider>
+                            <UniformGrid Columns="2">
+                                <Slider VerticalAlignment="Center"
+                                    Maximum="255" Minimum="-255" Orientation="Horizontal"
+                                    SmallChange="1"
+                                    Style="{StaticResource Slider}"
+                                    Value="{Binding Scanner.Brightness, Delay=100}">
+                                    <Slider.Background>
+                                        <LinearGradientBrush ice:Freeze="true" StartPoint="0,0.5" EndPoint="1,0.5">
+                                            <GradientStop Offset="0" Color="Black" />
+                                            <GradientStop Offset="1" Color="White" />
+                                        </LinearGradientBrush>
+                                    </Slider.Background>
+                                </Slider>
+                                <Button Command="{Binding InvertImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" Content="{local:Loc REVERSE}" />
+                            </UniformGrid>
                         </StackPanel>
                         <Button Background="Green" Command="{Binding LoadCroppedImage}">
                             <StackPanel Orientation="Horizontal">

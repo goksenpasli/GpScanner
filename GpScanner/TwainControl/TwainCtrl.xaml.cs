@@ -648,7 +648,7 @@ namespace TwainControl
                 if (parameter is ListBox listBox)
                 {
                     ScannedImage scannedImage = Scanner?.Resimler?.Where(z => z.Seçili).ElementAtOrDefault(cycleindex);
-                    if (scannedImage is null)
+                    if (scannedImage is not null)
                     {
                         listBox.ScrollIntoView(scannedImage);
                         scannedImage.Animate = true;
@@ -661,7 +661,7 @@ namespace TwainControl
                         scannedImage.Animate = false;
                     }
                 }
-            }, parameter => parameter is ListBox && Scanner?.Resimler?.Count(z => z.Seçili) > 0);
+            }, parameter => Scanner?.Resimler?.Count(z => z.Seçili) > 0);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
