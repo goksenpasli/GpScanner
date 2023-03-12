@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text;
@@ -400,6 +401,40 @@ namespace GpScanner.ViewModel
                 Settings.Default.Reload();
             }, parameter => !string.IsNullOrWhiteSpace(PatchFileName) && !string.IsNullOrWhiteSpace(PatchTag) && !Settings.Default.PatchCodes.Cast<string>().Select(z => z.Split('|')[0]).Contains(PatchFileName) && PatchTag?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0);
 
+            AddFtpSites = new RelayCommand<object>(parameter =>
+            {
+                StringBuilder sb = new();
+                string profile = sb
+                    .Append(FtpSite)
+                    .Append("|")
+                    .Append(FtpUserName)
+                    .Append("|")
+                    .Append(FtpPassword.Encrypt())
+                    .ToString();
+                _ = Settings.Default.FtpSites.Add(profile);
+                Settings.Default.Save();
+                Settings.Default.Reload();
+            }, parameter => !string.IsNullOrWhiteSpace(FtpSite) && Settings.Default.FtpSites.Count == 0);
+
+            RemoveSelectedFtp = new RelayCommand<object>(parameter =>
+            {
+                Settings.Default.FtpSites.Remove(parameter as string);
+                FtpSite = string.Empty;
+                FtpUserName = string.Empty;
+                FtpPassword = string.Empty;
+                Settings.Default.Save();
+                Settings.Default.Reload();
+            }, parameter => true);
+
+            UploadFtp = new RelayCommand<object>(async parameter =>
+            {
+                if (parameter is Scanner scanner && File.Exists(scanner.FileName))
+                {
+                    string[] ftpdata = Settings.Default.FtpSites.Cast<string>().FirstOrDefault()?.Split('|');
+                    await FtpUploadAsync(ftpdata[0], ftpdata[1], ftpdata[2], scanner);
+                }
+            }, parameter => Settings.Default.FtpSites.Count > 0);
+
             SaveQrImage = new RelayCommand<object>(parameter =>
             {
                 SaveFileDialog saveFileDialog = new()
@@ -613,6 +648,8 @@ namespace GpScanner.ViewModel
 
         public ICommand AddAllFileToControlPanel { get; }
 
+        public ICommand AddFtpSites { get; }
+
         public bool AnyDataExists {
             get => DataYükle()?.Count > 0;
 
@@ -665,6 +702,7 @@ namespace GpScanner.ViewModel
 
         public ResultPoint[] BarcodePosition {
             get => barcodePosition; set {
+
                 if (barcodePosition != value)
                 {
                     barcodePosition = value;
@@ -675,6 +713,7 @@ namespace GpScanner.ViewModel
 
         public bool BatchDialogOpen {
             get => batchDialogOpen; set {
+
                 if (batchDialogOpen != value)
                 {
                     batchDialogOpen = value;
@@ -720,6 +759,7 @@ namespace GpScanner.ViewModel
         }
 
         public ICommand CancelOcr { get; }
+        public ICommand UploadFtp { get; }
 
         public ICommand ChangeDataFolder { get; }
 
@@ -807,6 +847,40 @@ namespace GpScanner.ViewModel
             }
         }
 
+        public string FtpPassword {
+            get => ftpPassword; set {
+
+                if (ftpPassword != value)
+                {
+                    ftpPassword = value;
+                    OnPropertyChanged(nameof(FtpPassword));
+                }
+            }
+        }
+
+        public string FtpSite {
+            get => ftpSite;
+
+            set {
+                if (ftpSite != value)
+                {
+                    ftpSite = value;
+                    OnPropertyChanged(nameof(FtpSite));
+                }
+            }
+        }
+
+        public string FtpUserName {
+            get => ftpUserName; set {
+
+                if (ftpUserName != value)
+                {
+                    ftpUserName = value;
+                    OnPropertyChanged(nameof(FtpUserName));
+                }
+            }
+        }
+
         public ObservableCollection<Size> GetPreviewSize {
             get => new()
             {
@@ -838,6 +912,7 @@ namespace GpScanner.ViewModel
 
         public GridLength MainWindowDocumentGuiControlLength {
             get => mainWindowDocumentGuiControlLength; set {
+
                 if (mainWindowDocumentGuiControlLength != value)
                 {
                     mainWindowDocumentGuiControlLength = value;
@@ -848,6 +923,7 @@ namespace GpScanner.ViewModel
 
         public GridLength MainWindowGuiControlLength {
             get => mainWindowGuiControlLength; set {
+
                 if (mainWindowGuiControlLength != value)
                 {
                     mainWindowGuiControlLength = value;
@@ -882,6 +958,7 @@ namespace GpScanner.ViewModel
 
         public string PatchFileName {
             get => patchFileName; set {
+
                 if (patchFileName != value)
                 {
                     patchFileName = value;
@@ -918,6 +995,7 @@ namespace GpScanner.ViewModel
 
         public double PdfMergeProgressValue {
             get => pdfMergeProgressValue; set {
+
                 if (pdfMergeProgressValue != value)
                 {
                     pdfMergeProgressValue = value;
@@ -960,6 +1038,8 @@ namespace GpScanner.ViewModel
 
         public ICommand RemovePatchProfile { get; }
 
+        public ICommand RemoveSelectedFtp { get; }
+
         public ICommand RemoveSelectedPage { get; }
 
         public ICommand ResetSettings { get; }
@@ -984,6 +1064,7 @@ namespace GpScanner.ViewModel
 
         public int SayfaBitiş {
             get => sayfaBitiş; set {
+
                 if (sayfaBitiş != value)
                 {
                     sayfaBitiş = value;
@@ -1020,6 +1101,7 @@ namespace GpScanner.ViewModel
 
         public DateTime? SeçiliGün {
             get => seçiliGün; set {
+
                 if (seçiliGün != value)
                 {
                     seçiliGün = value;
@@ -1036,6 +1118,17 @@ namespace GpScanner.ViewModel
                 {
                     selectedDocument = value;
                     OnPropertyChanged(nameof(SelectedDocument));
+                }
+            }
+        }
+
+        public string SelectedFtp {
+            get => selectedFtp; set {
+
+                if (selectedFtp != value)
+                {
+                    selectedFtp = value;
+                    OnPropertyChanged(nameof(SelectedFtp));
                 }
             }
         }
@@ -1175,6 +1268,21 @@ namespace GpScanner.ViewModel
             return null;
         }
 
+        public static async Task FtpUploadAsync(string uri, string userName, string password, Scanner scanner)
+        {
+            try
+            {
+                using WebClient webClient = new();
+                webClient.Credentials = new NetworkCredential(userName, password.Decrypt());
+                webClient.UploadProgressChanged += (sender, args) => scanner.FtpLoadProgressValue = args.ProgressPercentage;
+                string address = $"{uri}/{Path.GetFileName(scanner.FileName)}";
+                _ = await webClient.UploadFileTaskAsync(address, WebRequestMethods.Ftp.UploadFile, scanner.FileName);
+            }
+            catch (Exception ex)
+            {
+                _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title);
+            }
+        }
         public static async Task RemovePdfPage(string pdffilepath, int start, int end)
         {
             await Task.Run(() =>
@@ -1346,6 +1454,12 @@ namespace GpScanner.ViewModel
 
         private double fold = 0.3;
 
+        private string ftpPassword = string.Empty;
+
+        private string ftpSite = string.Empty;
+
+        private string ftpUserName = string.Empty;
+
         private ObservableCollection<Size> getPreviewSize;
 
         private bool listBoxBorderAnimation;
@@ -1379,6 +1493,8 @@ namespace GpScanner.ViewModel
         private DateTime? seçiliGün;
 
         private Scanner selectedDocument;
+
+        private string selectedFtp;
 
         private Size selectedSize;
 

@@ -354,6 +354,18 @@ namespace TwainControl
 
         public string[] FolderDateFormats { get; set; } = new string[] { "d.MM.yyyy", "dd.MM.yyyy", "d-MM-yyyy", "dd-MM-yyyy", "dddd", "MMMM", "yyyy" };
 
+        public int FtpLoadProgressValue {
+            get => ftpLoadProgressValue;
+
+            set {
+                if (ftpLoadProgressValue != value)
+                {
+                    ftpLoadProgressValue = value;
+                    OnPropertyChanged(nameof(FtpLoadProgressValue));
+                }
+            }
+        }
+
         public ObservableCollection<Chart> GreenChart {
             get => greenChart;
 
@@ -390,7 +402,7 @@ namespace TwainControl
         }
 
         public bool PaperBackScan {
-            get { return paperBackScan; }
+            get => paperBackScan;
 
             set {
                 if (paperBackScan != value)
@@ -905,6 +917,8 @@ namespace TwainControl
         private string fileName = "Tarama";
 
         private string fileOcrContent;
+
+        private int ftpLoadProgressValue;
 
         private ObservableCollection<Chart> greenChart;
 

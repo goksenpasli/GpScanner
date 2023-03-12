@@ -122,6 +122,7 @@
     <Compile Include="ViewModel\Data.cs" />
     <Compile Include="ViewModel\DataSerialize.cs" />
     <Compile Include="ViewModel\DocumentViewerModel.cs" />
+    <Compile Include="ViewModel\EncryptString.cs" />
     <Compile Include="ViewModel\FastFileSearch.cs" />
     <Compile Include="ViewModel\FoldEffect.cs" />
     <Compile Include="ViewModel\GpScannerViewModel.cs" />

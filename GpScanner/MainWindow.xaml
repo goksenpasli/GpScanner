@@ -383,50 +383,66 @@
                                                                 <RowDefinition Height="Auto" />
                                                                 <RowDefinition />
                                                             </Grid.RowDefinitions>
-                                                            <Extensions:ContentToggleButton Grid.Row="0"
-                                                                Margin="1" HorizontalContentAlignment="Stretch"
-                                                                Command="{Binding DataContext.ReadOcrDataFile, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
-                                                                CommandParameter="{Binding Mode=OneWay}">
-                                                                <Extensions:ContentToggleButton.Style>
-                                                                    <Style TargetType="{x:Type Extensions:ContentToggleButton}">
-                                                                        <Style.Triggers>
-                                                                            <Trigger Property="IsChecked" Value="True">
-                                                                                <Setter Property="OverContent">
-                                                                                    <Setter.Value>
-                                                                                        <Extensions:ResizablePanel Width="{Binding Parent.DataContext.SelectedSize.Width, Source={x:Reference TwainCtrl}}"
-                                                                                            Height="{Binding Parent.DataContext.SelectedSize.Height, Source={x:Reference TwainCtrl}}"
-                                                                                            MinWidth="{Binding Parent.DataContext.SelectedSize.Width, Source={x:Reference TwainCtrl}}"
-                                                                                            MinHeight="{Binding Parent.DataContext.SelectedSize.Height, Source={x:Reference TwainCtrl}}">
-                                                                                            <GroupBox>
-                                                                                                <local:TranslateView ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding Parent.DataContext.FileOcrContent, RelativeSource={RelativeSource Mode=Self}}" />
-                                                                                            </GroupBox>
-                                                                                        </Extensions:ResizablePanel>
-                                                                                    </Setter.Value>
-                                                                                </Setter>
-                                                                            </Trigger>
-                                                                        </Style.Triggers>
-                                                                    </Style>
-                                                                </Extensions:ContentToggleButton.Style>
-                                                                <StackPanel Orientation="Horizontal">
-                                                                    <ItemsControl MaxHeight="120" ItemsSource="{Binding QrData}">
-                                                                        <ItemsControl.Template>
-                                                                            <ControlTemplate>
-                                                                                <ScrollViewer Padding="{TemplateBinding Padding}"
-                                                                                    CanContentScroll="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                                                                                    <ItemsPresenter />
-                                                                                </ScrollViewer>
-                                                                            </ControlTemplate>
-                                                                        </ItemsControl.Template>
-                                                                        <ItemsControl.ItemTemplate>
-                                                                            <DataTemplate>
-                                                                                <Image Source="{Binding Converter={StaticResource StringToQrBitmapImageConverter}, Mode=OneWay}" />
-                                                                            </DataTemplate>
-                                                                        </ItemsControl.ItemTemplate>
-                                                                    </ItemsControl>
-                                                                    <TextBlock Text="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}"
-                                                                        TextTrimming="CharacterEllipsis" TextWrapping="Wrap" />
-                                                                </StackPanel>
-                                                            </Extensions:ContentToggleButton>
+                                                            <Grid Grid.Row="0">
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition />
+                                                                    <ColumnDefinition Width="Auto" />
+                                                                </Grid.ColumnDefinitions>
+                                                                <Extensions:ContentToggleButton Margin="1" HorizontalContentAlignment="Stretch"
+                                                                    Command="{Binding DataContext.ReadOcrDataFile, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                                                    CommandParameter="{Binding Mode=OneWay}">
+                                                                    <Extensions:ContentToggleButton.Style>
+                                                                        <Style TargetType="{x:Type Extensions:ContentToggleButton}">
+                                                                            <Style.Triggers>
+                                                                                <Trigger Property="IsChecked" Value="True">
+                                                                                    <Setter Property="OverContent">
+                                                                                        <Setter.Value>
+                                                                                            <Extensions:ResizablePanel Width="{Binding Parent.DataContext.SelectedSize.Width, Source={x:Reference TwainCtrl}}"
+                                                                                                Height="{Binding Parent.DataContext.SelectedSize.Height, Source={x:Reference TwainCtrl}}"
+                                                                                                MinWidth="{Binding Parent.DataContext.SelectedSize.Width, Source={x:Reference TwainCtrl}}"
+                                                                                                MinHeight="{Binding Parent.DataContext.SelectedSize.Height, Source={x:Reference TwainCtrl}}">
+                                                                                                <GroupBox>
+                                                                                                    <local:TranslateView ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding Parent.DataContext.FileOcrContent, RelativeSource={RelativeSource Mode=Self}}" />
+                                                                                                </GroupBox>
+                                                                                            </Extensions:ResizablePanel>
+                                                                                        </Setter.Value>
+                                                                                    </Setter>
+                                                                                </Trigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </Extensions:ContentToggleButton.Style>
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <ItemsControl MaxHeight="120" ItemsSource="{Binding QrData}">
+                                                                            <ItemsControl.Template>
+                                                                                <ControlTemplate>
+                                                                                    <ScrollViewer Padding="{TemplateBinding Padding}"
+                                                                                        CanContentScroll="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                                                                                        <ItemsPresenter />
+                                                                                    </ScrollViewer>
+                                                                                </ControlTemplate>
+                                                                            </ItemsControl.Template>
+                                                                            <ItemsControl.ItemTemplate>
+                                                                                <DataTemplate>
+                                                                                    <Image Source="{Binding Converter={StaticResource StringToQrBitmapImageConverter}, Mode=OneWay}" />
+                                                                                </DataTemplate>
+                                                                            </ItemsControl.ItemTemplate>
+                                                                        </ItemsControl>
+                                                                        <TextBlock Text="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}"
+                                                                            TextTrimming="CharacterEllipsis" TextWrapping="Wrap" />
+                                                                    </StackPanel>
+                                                                </Extensions:ContentToggleButton>
+                                                                <Button Grid.Column="1"
+                                                                    HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                                                                    Command="{Binding DataContext.UploadFtp, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                                                    CommandParameter="{Binding Mode=OneWay}">
+                                                                    <Grid>
+                                                                        <ProgressBar Background="{x:Null}"
+                                                                            Maximum="100"
+                                                                            Value="{Binding FtpLoadProgressValue}" />
+                                                                        <TextBlock Text="FTP" />
+                                                                    </Grid>
+                                                                </Button>
+                                                            </Grid>
                                                             <ContentControl Grid.Row="1"
                                                                 d:Width="64"
                                                                 Content="{Binding FileName, IsAsync=True, Mode=OneWay}"

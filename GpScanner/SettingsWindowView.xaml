@@ -24,13 +24,14 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
+            <RowDefinition Height="180" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
-        <GroupBox>
+        <GroupBox Grid.RowSpan="2">
             <GroupBox.Header>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SETTİNGS}" />
@@ -422,7 +423,39 @@
             </Grid>
         </GroupBox>
         <local:TesseractView Grid.Column="1" />
-        <StatusBar Grid.Row="1" Grid.ColumnSpan="2"
+        <GroupBox Grid.Row="1" Grid.Column="1"
+            Header="FTP">
+            <UniformGrid Rows="2">
+                <StackPanel>
+                    <Extensions:ButtonedTextBox Description="FTP" OpenButtonVisibility="Collapsed"
+                        Text="{Binding FtpSite, UpdateSourceTrigger=PropertyChanged}"
+                        ToolTip="ftp://adress:portnumber" />
+                    <Extensions:ButtonedTextBox Description="{twainctrl:Loc USERNAME}"
+                        OpenButtonVisibility="Collapsed"
+                        Text="{Binding FtpUserName, UpdateSourceTrigger=PropertyChanged}" />
+                    <Extensions:ButtonedTextBox Description="{twainctrl:Loc PASSWORD}"
+                        OpenButtonVisibility="Collapsed"
+                        Text="{Binding FtpPassword, UpdateSourceTrigger=PropertyChanged}" />
+                    <Button Command="{Binding AddFtpSites}" Content="{twainctrl:Loc APPLY}" />
+                </StackPanel>
+                <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding FtpSites, Source={x:Static properties:Settings.Default}}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="1" Orientation="Horizontal">
+                                <TextBlock Margin="0,0,5,0" VerticalAlignment="Center"
+                                    FontStyle="Italic"
+                                    Text="{Binding Mode=OneWay}">
+                                    <Hyperlink Command="{Binding DataContext.RemoveSelectedFtp, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding Mode=OneWay}">
+                                        <Run Text="{twainctrl:Loc DELETE}" />
+                                    </Hyperlink>
+                                </TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </UniformGrid>
+        </GroupBox>
+        <StatusBar Grid.Row="2" Grid.ColumnSpan="2"
             Background="Maroon">
             <StatusBarItem>
                 <StatusBarItem.Style>
