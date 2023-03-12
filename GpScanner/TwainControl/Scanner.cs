@@ -114,6 +114,17 @@ namespace TwainControl
             }
         }
 
+        public bool BorderAnimation {
+            get => borderAnimation; set {
+
+                if (borderAnimation != value)
+                {
+                    borderAnimation = value;
+                    OnPropertyChanged(nameof(BorderAnimation));
+                }
+            }
+        }
+
         public int BoyAdet {
             get => boyAdet;
 
@@ -854,6 +865,8 @@ namespace TwainControl
         private bool autoSave = Directory.Exists(Settings.Default.AutoFolder);
 
         private ObservableCollection<Chart> blueChart;
+
+        private bool borderAnimation;
 
         private int boyAdet = 1;
 

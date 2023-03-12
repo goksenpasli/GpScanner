@@ -534,15 +534,23 @@ namespace GpScanner.ViewModel
             DateForward = new RelayCommand<object>(parameter => SeçiliGün = SeçiliGün.Value.AddDays(1), parameter => SeçiliGün < DateTime.Today);
 
             int cycleindex = 0;
-            CycleSelectedDocuments = new RelayCommand<object>(parameter =>
+            CycleSelectedDocuments = new RelayCommand<object>(async parameter =>
             {
                 if (parameter is ListBox listBox)
                 {
-                    listBox.ScrollIntoView(MainWindow.cvs.View.OfType<Scanner>().Where(z => z.Seçili).ElementAtOrDefault(cycleindex));
-                    cycleindex++;
-                    if (cycleindex >= MainWindow.cvs.View.OfType<Scanner>().Count(z => z.Seçili))
+                    IEnumerable<Scanner> listboxfiles = MainWindow.cvs.View.OfType<Scanner>();
+                    Scanner currentfile = listboxfiles?.Where(z => z.Seçili).ElementAtOrDefault(cycleindex);
+                    if (currentfile is null)
                     {
-                        cycleindex = 0;
+                        listBox.ScrollIntoView(currentfile);
+                        currentfile.BorderAnimation = true;
+                        cycleindex++;
+                        if (cycleindex >= listboxfiles.Count(z => z.Seçili))
+                        {
+                            cycleindex = 0;
+                        }
+                        await Task.Delay(900);
+                        currentfile.BorderAnimation = false;
                     }
                 }
             }, parameter => MainWindow.cvs?.View?.OfType<Scanner>().Count(z => z.Seçili) > 0);

@@ -11,6 +11,17 @@ namespace TwainControl
             PropertyChanged += ScannedImage_PropertyChanged;
         }
 
+        public bool Animate {
+            get => animate; set {
+
+                if (animate != value)
+                {
+                    animate = value;
+                    OnPropertyChanged(nameof(Animate));
+                }
+            }
+        }
+
         public string FilePath {
             get => filePath;
 
@@ -58,6 +69,8 @@ namespace TwainControl
                 }
             }
         }
+
+        private bool animate;
 
         private string filePath;
 

@@ -40,6 +40,29 @@
                 <GradientStop Offset="0.83" Color="Indigo" />
                 <GradientStop Offset="1.0" Color="Violet" />
             </LinearGradientBrush>
+            <Style x:Key="ToggleButtonAnimationStyle" TargetType="{x:Type ToggleButton}">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Animate}" Value="true">
+                        <DataTrigger.EnterActions>
+                            <BeginStoryboard x:Name="Sb">
+                                <Storyboard Timeline.DesiredFrameRate="12">
+                                    <DoubleAnimationUsingKeyFrames RepeatBehavior="1" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)">
+                                        <EasingDoubleKeyFrame KeyTime="0" Value="0" />
+                                        <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="5" />
+                                        <EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="-5" />
+                                        <EasingDoubleKeyFrame KeyTime="0:0:0.9" Value="0" />
+                                    </DoubleAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.EnterActions>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Animate}" Value="false">
+                        <DataTrigger.EnterActions>
+                            <RemoveStoryboard BeginStoryboardName="Sb" />
+                        </DataTrigger.EnterActions>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
             <Style x:Key="ScanTypeLbItem" TargetType="{x:Type ListBoxItem}">
                 <Setter Property="Margin" Value="1" />
                 <Setter Property="Template">
@@ -1001,7 +1024,17 @@
                                                             VerticalAlignment="Center" VerticalContentAlignment="Center"
                                                             Background="{x:Null}"
                                                             BorderBrush="{x:Null}"
-                                                            IsChecked="{Binding Seçili}">
+                                                            IsChecked="{Binding Seçili}"
+                                                            RenderTransformOrigin="0.5,0.5"
+                                                            Style="{StaticResource ToggleButtonAnimationStyle}">
+                                                            <ToggleButton.RenderTransform>
+                                                                <TransformGroup>
+                                                                    <ScaleTransform />
+                                                                    <SkewTransform />
+                                                                    <RotateTransform />
+                                                                    <TranslateTransform />
+                                                                </TransformGroup>
+                                                            </ToggleButton.RenderTransform>
                                                             <Viewbox>
                                                                 <Image Width="{Binding Resim.Thumbnail.Width, Mode=OneWay}"
                                                                     Height="{Binding Resim.Thumbnail.Height, Mode=OneWay}"

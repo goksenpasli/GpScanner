@@ -359,11 +359,11 @@ namespace TwainControl
             ShowDateFolderHelp = new RelayCommand<object>(parameter =>
             {
                 StringBuilder sb = new();
-                foreach (var item in Scanner.FolderDateFormats)
+                foreach (string item in Scanner.FolderDateFormats)
                 {
-                    sb.AppendLine($"{item} {DateTime.Today.ToString(item)}");
+                    _ = sb.AppendLine($"{item} {DateTime.Today.ToString(item)}");
                 }
-                MessageBox.Show(sb.ToString(), Application.Current?.MainWindow?.Title);
+                _ = MessageBox.Show(sb.ToString(), Application.Current?.MainWindow?.Title);
             }, parameter => true);
 
             SaveProfile = new RelayCommand<object>(parameter =>
@@ -643,15 +643,22 @@ namespace TwainControl
             }, parameter => true);
 
             int cycleindex = 0;
-            CycleSelectedDocuments = new RelayCommand<object>(parameter =>
+            CycleSelectedDocuments = new RelayCommand<object>(async parameter =>
             {
                 if (parameter is ListBox listBox)
                 {
-                    listBox.ScrollIntoView(Scanner?.Resimler?.Where(z => z.Seçili).ElementAtOrDefault(cycleindex));
-                    cycleindex++;
-                    if (cycleindex >= Scanner?.Resimler?.Count(z => z.Seçili))
+                    ScannedImage scannedImage = Scanner?.Resimler?.Where(z => z.Seçili).ElementAtOrDefault(cycleindex);
+                    if (scannedImage is null)
                     {
-                        cycleindex = 0;
+                        listBox.ScrollIntoView(scannedImage);
+                        scannedImage.Animate = true;
+                        cycleindex++;
+                        if (cycleindex >= Scanner?.Resimler?.Count(z => z.Seçili))
+                        {
+                            cycleindex = 0;
+                        }
+                        await Task.Delay(900);
+                        scannedImage.Animate = false;
                     }
                 }
             }, parameter => parameter is ListBox && Scanner?.Resimler?.Count(z => z.Seçili) > 0);

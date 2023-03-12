@@ -314,12 +314,13 @@ namespace TwainControl
 
         public static string GetSaveFolder()
         {
-            string datefolder = $@"{Settings.Default.AutoFolder}\{DateTime.Today.ToString(Settings.Default.FolderDateFormat)}";
-            if (!Directory.Exists(datefolder))
+            string datefolder = DateTime.Today.ToString(Settings.Default.FolderDateFormat);
+            string savefolder = $@"{Settings.Default.AutoFolder}\{datefolder}";
+            if (!Directory.Exists(savefolder))
             {
-                _ = Directory.CreateDirectory(datefolder);
+                _ = Directory.CreateDirectory(savefolder);
             }
-            return datefolder;
+            return savefolder;
         }
 
         public static bool IsValidPdfFile(this IEnumerable<byte> buffer)
@@ -338,9 +339,9 @@ namespace TwainControl
                 using PdfDocument outputDocument = new();
                 foreach (PdfDocument inputDocument in from string file in pdffiles let inputDocument = PdfReader.Open(file, PdfDocumentOpenMode.Import) select inputDocument)
                 {
-                    for (int idx = 0; idx < inputDocument.PageCount; idx++)
+                    for (int i = 0; i < inputDocument.PageCount; i++)
                     {
-                        PdfPage page = inputDocument.Pages[idx];
+                        PdfPage page = inputDocument.Pages[i];
                         _ = outputDocument.AddPage(page);
                     }
                 }
