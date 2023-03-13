@@ -39,8 +39,8 @@ namespace Extensions
         }
 
         public string Description {
-            get { return (string)GetValue(DescriptionProperty); }
-            set { SetValue(DescriptionProperty, value); }
+            get => (string)GetValue(DescriptionProperty);
+            set => SetValue(DescriptionProperty, value);
         }
 
         public ICommand Open { get; } = new RoutedCommand();
@@ -97,11 +97,11 @@ namespace Extensions
         {
             try
             {
-                Process.Start(Text);
+                _ = Process.Start(Text);
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                _ = MessageBox.Show(ex.Message);
             }
         }
 

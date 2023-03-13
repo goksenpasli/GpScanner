@@ -91,16 +91,11 @@ namespace Tesseract
                 orientationDegrees += 360;
             }
 
-            if (orientationDegrees > 315 || orientationDegrees <= 45)
-            {
-                orientation = Orientation.PageUp;
-            }
-            else
-            {
-                orientation = orientationDegrees > 45 && orientationDegrees <= 135
+            orientation = orientationDegrees > 315 || orientationDegrees <= 45
+                ? Orientation.PageUp
+                : orientationDegrees > 45 && orientationDegrees <= 135
                     ? Orientation.PageRight
                     : orientationDegrees > 135 && orientationDegrees <= 225 ? Orientation.PageDown : Orientation.PageLeft;
-            }
 
             confidence = orientationConfidence;
         }

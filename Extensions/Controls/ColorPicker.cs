@@ -124,8 +124,8 @@ namespace Extensions
         }
 
         public byte Alpha {
-            get { return (byte)GetValue(AlphaProperty); }
-            set { SetValue(AlphaProperty, value); }
+            get => (byte)GetValue(AlphaProperty);
+            set => SetValue(AlphaProperty, value);
         }
 
         public int ColorPickerColumnCount {

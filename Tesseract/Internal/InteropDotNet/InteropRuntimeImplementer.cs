@@ -53,9 +53,12 @@ namespace Tesseract.Internal.InteropDotNet
             MethodItem[] methods = new MethodItem[methodInfoArray.Length];
             for (int i = 0; i < methodInfoArray.Length; i++)
             {
-                methods[i] = new MethodItem { Info = methodInfoArray[i] };
-                methods[i].DllImportAttribute = GetRuntimeDllImportAttribute(methodInfoArray[i]) ?? throw new Exception(string.Format("Method '{0}' of interface '{1}' should be marked with the RuntimeDllImport attribute",
-                        methodInfoArray[i].Name, interfaceType.Name));
+                methods[i] = new MethodItem
+                {
+                    Info = methodInfoArray[i],
+                    DllImportAttribute = GetRuntimeDllImportAttribute(methodInfoArray[i]) ?? throw new Exception(string.Format("Method '{0}' of interface '{1}' should be marked with the RuntimeDllImport attribute",
+                        methodInfoArray[i].Name, interfaceType.Name))
+                };
             }
             return methods;
         }

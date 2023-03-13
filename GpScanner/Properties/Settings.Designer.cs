@@ -144,5 +144,17 @@ namespace GpScanner.Properties {
                 this["FtpSites"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SelectedFtp {
+            get {
+                return ((string)(this["SelectedFtp"]));
+            }
+            set {
+                this["SelectedFtp"] = value;
+            }
+        }
     }
 }

@@ -163,7 +163,8 @@ namespace Extensions
 
         public static string GetFileType(this string filename)
         {
-            SHFILEINFO shinfo = new();
+            _ = new SHFILEINFO();
+            SHFILEINFO shinfo = default;
             _ = SHGetFileInfo
                     (
                         filename,
@@ -191,8 +192,9 @@ namespace Extensions
                     flags += SHGFI_LARGEICON;
                 }
 
-                SHFILEINFO shfi = new();
-
+                _ = new
+                SHFILEINFO();
+                SHFILEINFO shfi = default;
                 IntPtr res = SHGetFileInfo(path, FILE_ATTRIBUTE_NORMAL, out shfi, (uint)Marshal.SizeOf(shfi), flags);
 
                 if (res == IntPtr.Zero)
@@ -451,8 +453,7 @@ namespace Extensions
             }
             catch (Exception ex)
             {
-                bitmapsource = null;
-                MessageBox.Show(ex.Message);
+                _ = MessageBox.Show(ex.Message);
                 return null;
             }
         }

@@ -422,6 +422,7 @@
                             AllowsTransparency="True" Focusable="False"
                             IsOpen="{TemplateBinding IsSplitPartOpen}"
                             Placement="{TemplateBinding PlacementMode}"
+                            PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:SplitButton}}}"
                             PopupAnimation="Slide"
                             StaysOpen="{TemplateBinding StayOpen}">
                             <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"

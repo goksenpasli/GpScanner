@@ -248,6 +248,7 @@
                             </Button>
                             <ComboBox Grid.Column="4"
                                 VerticalContentAlignment="Center"
+                                IsEnabled="{Binding Scanner.ArayüzEtkin}"
                                 ItemsSource="{Binding Mode=OneWay, Source={StaticResource PageRotations}}"
                                 SelectedItem="{Binding SelectedRotation}">
                                 <ComboBox.ItemTemplate>

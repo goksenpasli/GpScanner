@@ -515,12 +515,7 @@ namespace Tesseract.Interop
         public static string BaseApiGetVersion()
         {
             IntPtr versionHandle = Native.GetVersion();
-            if (versionHandle != IntPtr.Zero)
-            {
-                return MarshalHelper.PtrToString(versionHandle, Encoding.UTF8);
-            }
-
-            return null;
+            return versionHandle != IntPtr.Zero ? MarshalHelper.PtrToString(versionHandle, Encoding.UTF8) : null;
         }
 
         public static int BaseApiInit(HandleRef handle, string datapath, string language, int mode, IEnumerable<string> configFiles, IDictionary<string, object> initialValues, bool setOnlyNonDebugParams)

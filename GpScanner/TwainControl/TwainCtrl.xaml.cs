@@ -77,6 +77,11 @@ namespace TwainControl
 
             FastScanImage = new RelayCommand<object>(parameter =>
             {
+                if (Filesavetask?.IsCompleted == false)
+                {
+                    _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
+                    return;
+                }
                 GC.Collect();
                 ScanCommonSettings();
                 Scanner.Resimler = new ObservableCollection<ScannedImage>();
@@ -87,6 +92,11 @@ namespace TwainControl
 
             ResimSil = new RelayCommand<object>(parameter =>
             {
+                if (Filesavetask?.IsCompleted == false)
+                {
+                    _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
+                    return;
+                }
                 ScannedImage item = parameter as ScannedImage;
                 UndoImageIndex = Scanner.Resimler?.IndexOf(item);
                 _ = Scanner.Resimler?.Remove(item);
@@ -94,7 +104,7 @@ namespace TwainControl
                 CanUndoImage = true;
                 ToolBox.ResetCropMargin();
                 GC.Collect();
-            }, parameter => true);
+            }, parameter => Scanner.ArayüzEtkin);
 
             ResimSilGeriAl = new RelayCommand<object>(parameter =>
             {
@@ -290,13 +300,13 @@ namespace TwainControl
             {
                 Filesavetask = Task.Run(async () =>
                 {
+                    List<ScannedImage> seçiliresimler = Scanner.Resimler.Where(z => z.Seçili).ToList();
                     if (Scanner.ApplyDataBaseOcr)
                     {
                         Scanner.PdfFilePath = PdfGeneration.GetPdfScanPath();
-                        List<ScannedImage> images = Scanner.Resimler.Where(z => z.Seçili).ToList();
-                        for (int i = 0; i < images.Count; i++)
+                        for (int i = 0; i < seçiliresimler.Count; i++)
                         {
-                            ScannedImage scannedimage = images[i];
+                            ScannedImage scannedimage = seçiliresimler[i];
                             byte[] imgdata = scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg);
                             ObservableCollection<OcrData> ocrdata = await imgdata.OcrAsyc(Scanner.SelectedTtsLanguage);
                             Dispatcher.Invoke(() =>
@@ -306,16 +316,16 @@ namespace TwainControl
                             });
                             ocrdata = null;
                             imgdata = null;
-                            Scanner.PdfSaveProgressValue = i / (double)images.Count;
+                            Scanner.PdfSaveProgressValue = i / (double)seçiliresimler.Count;
                         }
                     }
                     if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
                     {
-                        await SavePdfImage(Scanner.Resimler.Where(z => z.Seçili).ToList(), PdfGeneration.GetPdfScanPath(), Scanner, SelectedPaper, true, (int)Settings.Default.ImgLoadResolution);
+                        await SavePdfImage(seçiliresimler, PdfGeneration.GetPdfScanPath(), Scanner, SelectedPaper, true, (int)Settings.Default.ImgLoadResolution);
                     }
                     if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
                     {
-                        await SavePdfImage(Scanner.Resimler.Where(z => z.Seçili).ToList(), PdfGeneration.GetPdfScanPath(), Scanner, SelectedPaper, false, (int)Settings.Default.ImgLoadResolution);
+                        await SavePdfImage(seçiliresimler, PdfGeneration.GetPdfScanPath(), Scanner, SelectedPaper, false, (int)Settings.Default.ImgLoadResolution);
                     }
                 }).ContinueWith((_) => Dispatcher.Invoke(() =>
                 {
@@ -330,6 +340,11 @@ namespace TwainControl
 
             ListeTemizle = new RelayCommand<object>(parameter =>
             {
+                if (Filesavetask?.IsCompleted == false)
+                {
+                    _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
+                    return;
+                }
                 if ((Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)) && SeçiliListeTemizle.CanExecute(null))
                 {
                     SeçiliListeTemizle.Execute(null);
@@ -343,7 +358,7 @@ namespace TwainControl
                     ToolBox.ResetCropMargin();
                     GC.Collect();
                 }
-            }, parameter => Scanner?.Resimler?.Count > 0);
+            }, parameter => Scanner?.Resimler?.Count > 0 && Scanner.ArayüzEtkin);
 
             SeçiliListeTemizle = new RelayCommand<object>(parameter =>
             {
@@ -696,7 +711,6 @@ namespace TwainControl
 
         public bool CanUndoImage {
             get => canUndoImage; set {
-
                 if (canUndoImage != value)
                 {
                     canUndoImage = value;
@@ -752,7 +766,6 @@ namespace TwainControl
 
         public ObservableCollection<OcrData> DataBaseTextData {
             get => dataBaseTextData; set {
-
                 if (dataBaseTextData != value)
                 {
                     dataBaseTextData = value;
@@ -799,7 +812,6 @@ namespace TwainControl
 
         public bool DragMoveStarted {
             get => dragMoveStarted; set {
-
                 if (dragMoveStarted != value)
                 {
                     dragMoveStarted = value;
@@ -956,7 +968,6 @@ namespace TwainControl
 
         public TwainWpf.TwainNative.Orientation SelectedOrientation {
             get => selectedOrientation; set {
-
                 if (selectedOrientation != value)
                 {
                     selectedOrientation = value;
@@ -979,7 +990,6 @@ namespace TwainControl
 
         public PageRotation SelectedRotation {
             get => selectedRotation; set {
-
                 if (selectedRotation != value)
                 {
                     selectedRotation = value;
@@ -990,7 +1000,6 @@ namespace TwainControl
 
         public TabItem SelectedTab {
             get => selectedTab; set {
-
                 if (selectedTab != value)
                 {
                     selectedTab = value;
@@ -1031,7 +1040,6 @@ namespace TwainControl
 
         public ScannedImage UndoImage {
             get => undoImage; set {
-
                 if (undoImage != value)
                 {
                     undoImage = value;
@@ -1649,9 +1657,12 @@ namespace TwainControl
             if (Scanner.ApplyDataBaseOcr)
             {
                 Tümünüİşaretle.Execute(null);
-                foreach (ScannedImage scannedimage in Scanner.Resimler.Where(z => z.Seçili).ToList())
+                List<ScannedImage> images = Scanner.Resimler.Where(z => z.Seçili).ToList();
+                for (int i = 0; i < images.Count; i++)
                 {
+                    ScannedImage scannedimage = images[i];
                     DataBaseTextData = await scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsyc(Scanner.SelectedTtsLanguage);
+                    Scanner.PdfSaveProgressValue = i / (double)Scanner.Resimler.Count;
                 }
             }
             if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)

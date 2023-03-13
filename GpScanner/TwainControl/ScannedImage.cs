@@ -13,7 +13,6 @@ namespace TwainControl
 
         public bool Animate {
             get => animate; set {
-
                 if (animate != value)
                 {
                     animate = value;

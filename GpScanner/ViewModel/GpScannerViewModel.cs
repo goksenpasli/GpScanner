@@ -235,7 +235,7 @@ namespace GpScanner.ViewModel
                     DocumentViewerWindow documentViewerWindow = new();
                     if (documentViewerWindow.DataContext is DocumentViewerModel documentViewerModel)
                     {
-                        documentViewerWindow.Owner = Application.Current.MainWindow;
+                        documentViewerWindow.Owner = Application.Current?.MainWindow;
                         documentViewerModel.Scanner = ToolBox.Scanner;
                         documentViewerModel.PdfFilePath = filepath;
                         List<string> files = Directory.EnumerateFiles(Path.GetDirectoryName(documentViewerModel.PdfFilePath), "*.*").Where(z => supportedfilesextension.Any(ext => ext == Path.GetExtension(z).ToLower())).ToList();
@@ -414,7 +414,7 @@ namespace GpScanner.ViewModel
                 _ = Settings.Default.FtpSites.Add(profile);
                 Settings.Default.Save();
                 Settings.Default.Reload();
-            }, parameter => !string.IsNullOrWhiteSpace(FtpSite) && Settings.Default.FtpSites.Count == 0);
+            }, parameter => !string.IsNullOrWhiteSpace(FtpSite));
 
             RemoveSelectedFtp = new RelayCommand<object>(parameter =>
             {
@@ -422,6 +422,7 @@ namespace GpScanner.ViewModel
                 FtpSite = string.Empty;
                 FtpUserName = string.Empty;
                 FtpPassword = string.Empty;
+                Settings.Default.SelectedFtp = string.Empty;
                 Settings.Default.Save();
                 Settings.Default.Reload();
             }, parameter => true);
@@ -430,10 +431,10 @@ namespace GpScanner.ViewModel
             {
                 if (parameter is Scanner scanner && File.Exists(scanner.FileName))
                 {
-                    string[] ftpdata = Settings.Default.FtpSites.Cast<string>().FirstOrDefault()?.Split('|');
+                    string[] ftpdata = Settings.Default.SelectedFtp.Split('|');
                     await FtpUploadAsync(ftpdata[0], ftpdata[1], ftpdata[2], scanner);
                 }
-            }, parameter => Settings.Default.FtpSites.Count > 0);
+            }, parameter => !string.IsNullOrWhiteSpace(Settings.Default.SelectedFtp));
 
             SaveQrImage = new RelayCommand<object>(parameter =>
             {
@@ -702,7 +703,6 @@ namespace GpScanner.ViewModel
 
         public ResultPoint[] BarcodePosition {
             get => barcodePosition; set {
-
                 if (barcodePosition != value)
                 {
                     barcodePosition = value;
@@ -713,7 +713,6 @@ namespace GpScanner.ViewModel
 
         public bool BatchDialogOpen {
             get => batchDialogOpen; set {
-
                 if (batchDialogOpen != value)
                 {
                     batchDialogOpen = value;
@@ -849,7 +848,6 @@ namespace GpScanner.ViewModel
 
         public string FtpPassword {
             get => ftpPassword; set {
-
                 if (ftpPassword != value)
                 {
                     ftpPassword = value;
@@ -872,7 +870,6 @@ namespace GpScanner.ViewModel
 
         public string FtpUserName {
             get => ftpUserName; set {
-
                 if (ftpUserName != value)
                 {
                     ftpUserName = value;
@@ -912,7 +909,6 @@ namespace GpScanner.ViewModel
 
         public GridLength MainWindowDocumentGuiControlLength {
             get => mainWindowDocumentGuiControlLength; set {
-
                 if (mainWindowDocumentGuiControlLength != value)
                 {
                     mainWindowDocumentGuiControlLength = value;
@@ -923,7 +919,6 @@ namespace GpScanner.ViewModel
 
         public GridLength MainWindowGuiControlLength {
             get => mainWindowGuiControlLength; set {
-
                 if (mainWindowGuiControlLength != value)
                 {
                     mainWindowGuiControlLength = value;
@@ -958,7 +953,6 @@ namespace GpScanner.ViewModel
 
         public string PatchFileName {
             get => patchFileName; set {
-
                 if (patchFileName != value)
                 {
                     patchFileName = value;
@@ -995,7 +989,6 @@ namespace GpScanner.ViewModel
 
         public double PdfMergeProgressValue {
             get => pdfMergeProgressValue; set {
-
                 if (pdfMergeProgressValue != value)
                 {
                     pdfMergeProgressValue = value;
@@ -1064,7 +1057,6 @@ namespace GpScanner.ViewModel
 
         public int SayfaBitiş {
             get => sayfaBitiş; set {
-
                 if (sayfaBitiş != value)
                 {
                     sayfaBitiş = value;
@@ -1101,7 +1093,6 @@ namespace GpScanner.ViewModel
 
         public DateTime? SeçiliGün {
             get => seçiliGün; set {
-
                 if (seçiliGün != value)
                 {
                     seçiliGün = value;
@@ -1124,7 +1115,6 @@ namespace GpScanner.ViewModel
 
         public string SelectedFtp {
             get => selectedFtp; set {
-
                 if (selectedFtp != value)
                 {
                     selectedFtp = value;
@@ -1275,7 +1265,7 @@ namespace GpScanner.ViewModel
                 using WebClient webClient = new();
                 webClient.Credentials = new NetworkCredential(userName, password.Decrypt());
                 webClient.UploadProgressChanged += (sender, args) => scanner.FtpLoadProgressValue = args.ProgressPercentage;
-                string address = $"{uri}/{Path.GetFileName(scanner.FileName)}";
+                string address = $"{uri}/{Directory.GetParent(scanner.FileName).Name}{Path.GetFileName(scanner.FileName)}";
                 _ = await webClient.UploadFileTaskAsync(address, WebRequestMethods.Ftp.UploadFile, scanner.FileName);
             }
             catch (Exception ex)

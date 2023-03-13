@@ -325,11 +325,7 @@ namespace TwainControl
 
         public static bool IsValidPdfFile(this IEnumerable<byte> buffer)
         {
-            if (buffer is not null)
-            {
-                return buffer.Take(4).SequenceEqual(new byte[] { 0x25, 0x50, 0x44, 0x46 });
-            }
-            return false;
+            return buffer is not null && buffer.Take(4).SequenceEqual(new byte[] { 0x25, 0x50, 0x44, 0x46 });
         }
 
         public static PdfDocument MergePdf(this string[] pdffiles)

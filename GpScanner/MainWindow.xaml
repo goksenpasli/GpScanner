@@ -7,6 +7,7 @@
     xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=PresentationFramework"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:GpScanner"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:properties="clr-namespace:GpScanner.Properties"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
     xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
@@ -336,7 +337,7 @@
                             SelectedItem="{Binding SelectedDocument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             SelectionMode="Extended"
                             Style="{StaticResource ListBoxAnimationStyle}"
-                            VirtualizingPanel.CacheLength="6,6" VirtualizingPanel.CacheLengthUnit="Item"
+                            VirtualizingPanel.CacheLength="4,4" VirtualizingPanel.CacheLengthUnit="Item"
                             VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.ScrollUnit="Pixel"
                             VirtualizingPanel.VirtualizationMode="Standard">
                             <ListBox.ItemsPanel>
@@ -431,17 +432,54 @@
                                                                             TextTrimming="CharacterEllipsis" TextWrapping="Wrap" />
                                                                     </StackPanel>
                                                                 </Extensions:ContentToggleButton>
-                                                                <Button Grid.Column="1"
-                                                                    HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
-                                                                    Command="{Binding DataContext.UploadFtp, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
-                                                                    CommandParameter="{Binding Mode=OneWay}">
-                                                                    <Grid>
-                                                                        <ProgressBar Background="{x:Null}"
-                                                                            Maximum="100"
-                                                                            Value="{Binding FtpLoadProgressValue}" />
-                                                                        <TextBlock Text="FTP" />
-                                                                    </Grid>
-                                                                </Button>
+                                                                <Extensions:ContentToggleButton Grid.Column="1"
+                                                                    HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                                                                    <Image Width="16" Height="16">
+                                                                        <Image.Source>
+                                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                                <Binding Source="Imageres.dll" />
+                                                                                <Binding Source="68" />
+                                                                            </MultiBinding>
+                                                                        </Image.Source>
+                                                                    </Image>
+                                                                    <Extensions:ContentToggleButton.OverContent>
+                                                                        <GroupBox>
+                                                                            <StackPanel>
+                                                                                <ProgressBar Width="400" Height="24"
+                                                                                    Background="{x:Null}"
+                                                                                    Maximum="100"
+                                                                                    Value="{Binding FtpLoadProgressValue}" />
+                                                                                <ListBox Width="400" Height="200"
+                                                                                    ItemsSource="{Binding FtpSites, Source={x:Static properties:Settings.Default}}"
+                                                                                    SelectedItem="{Binding SelectedFtp, Source={x:Static properties:Settings.Default}}">
+                                                                                    <ListBox.ItemTemplate>
+                                                                                        <DataTemplate>
+                                                                                            <TextBlock Margin="0,0,5,0" VerticalAlignment="Center"
+                                                                                                FontStyle="Italic"
+                                                                                                Text="{Binding Mode=OneWay}">
+                                                                                                <Hyperlink BaselineAlignment="Center"
+                                                                                                    Command="{Binding DataContext.UploadFtp, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                                                    CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
+                                                                                                    IsEnabled="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
+                                                                                                    TextDecorations="None">
+                                                                                                    <Image Width="16" Height="16"
+                                                                                                        VerticalAlignment="Center">
+                                                                                                        <Image.Source>
+                                                                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                                                                <Binding Source="Shell32.dll" />
+                                                                                                                <Binding Source="45" />
+                                                                                                            </MultiBinding>
+                                                                                                        </Image.Source>
+                                                                                                    </Image>
+                                                                                                </Hyperlink>
+                                                                                            </TextBlock>
+                                                                                        </DataTemplate>
+                                                                                    </ListBox.ItemTemplate>
+                                                                                </ListBox>
+                                                                            </StackPanel>
+                                                                        </GroupBox>
+                                                                    </Extensions:ContentToggleButton.OverContent>
+                                                                </Extensions:ContentToggleButton>
                                                             </Grid>
                                                             <ContentControl Grid.Row="1"
                                                                 d:Width="64"
