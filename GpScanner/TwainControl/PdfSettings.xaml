@@ -50,23 +50,30 @@
     </UserControl.Resources>
     <GroupBox Background="{StaticResource GroupBoxBackGround}">
         <GroupBox.Header>
-            <StackPanel Orientation="Horizontal">
-                <CheckBox VerticalAlignment="Center"
-                    Content="{local:Loc ENCRYPT}"
-                    IsChecked="{Binding Scanner.PasswordProtect}" />
-                <Image Width="32" Height="32">
-                    <Image.Source>
-                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                            <Binding Source="Shell32.dll" />
-                            <Binding Source="77" />
-                        </MultiBinding>
-                    </Image.Source>
-                </Image>
-                <TextBlock Width="295"
-                    VerticalAlignment="Center"
-                    FontSize="14" FontStyle="Italic" Foreground="Red"
-                    Text="{local:Loc PDFWARN}"
-                    TextWrapping="Wrap" />
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox VerticalAlignment="Center"
+                        Content="{local:Loc ENCRYPT}"
+                        IsChecked="{Binding Scanner.PasswordProtect}" />
+                    <Image Width="32" Height="32">
+                        <Image.Source>
+                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                <Binding Source="Shell32.dll" />
+                                <Binding Source="77" />
+                            </MultiBinding>
+                        </Image.Source>
+                    </Image>
+                    <TextBlock Width="295"
+                        VerticalAlignment="Center"
+                        FontSize="14" FontStyle="Italic" Foreground="Red"
+                        Text="{local:Loc PDFWARN}"
+                        TextWrapping="Wrap" />
+                </StackPanel>
+                <Separator />
+                <CheckBox VerticalContentAlignment="Center"
+                    Content="{local:Loc REMOVEPROCESSEDIMAGE}"
+                    FontStyle="Italic" Foreground="Red"
+                    IsChecked="{Binding RemoveProcessedImage, Source={x:Static properties:Settings.Default}}" />
             </StackPanel>
         </GroupBox.Header>
         <StackPanel>

@@ -51,5 +51,8 @@
     <Setting Name="FolderDateFormat" Type="System.String" Scope="User">
       <Value Profile="(Default)">d.MM.yyyy</Value>
     </Setting>
+    <Setting Name="RemoveProcessedImage" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

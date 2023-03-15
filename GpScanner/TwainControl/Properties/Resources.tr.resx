@@ -538,4 +538,7 @@ BELGE EKLE</value>
   <data name="Right" xml:space="preserve">
     <value>SAĞ</value>
   </data>
+  <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
+    <value>İşlenen Dosyaları Belge Listesinden Sil</value>
+  </data>
 </root>

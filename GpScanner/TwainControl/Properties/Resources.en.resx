@@ -532,4 +532,7 @@ TO FILE</value>
   <data name="Right" xml:space="preserve">
     <value>RIGHT</value>
   </data>
+  <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
+    <value>Delete Processed Files From Document List</value>
+  </data>
 </root>

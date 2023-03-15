@@ -215,5 +215,17 @@ namespace TwainControl.Properties {
                 this["FolderDateFormat"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool RemoveProcessedImage {
+            get {
+                return ((bool)(this["RemoveProcessedImage"]));
+            }
+            set {
+                this["RemoveProcessedImage"] = value;
+            }
+        }
     }
 }

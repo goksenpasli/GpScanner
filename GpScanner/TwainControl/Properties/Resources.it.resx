@@ -378,6 +378,9 @@ LEGGERE</value>
     <value>AL MENU DELLO SCANNER
 INSERISCI</value>
   </data>
+  <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
+    <value>Elimina i file elaborati dall'elenco</value>
+  </data>
   <data name="RES" xml:space="preserve">
     <value>RISOLUZIONE</value>
   </data>

@@ -22,6 +22,7 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
         <Converter:StringToQrBitmapImageConverter x:Key="StringToQrBitmapImageConverter" />
+        <Converter:SelectedSizeToCacheLengthConverter x:Key="SelectedSizeToCacheLengthConverter" />
         <CollectionViewSource x:Key="Veriler" Source="{Binding Dosyalar}" />
         <Style x:Key="ListBoxAnimationStyle" TargetType="{x:Type ListBox}">
             <Setter Property="BorderBrush" Value="Transparent" />
@@ -337,9 +338,9 @@
                             SelectedItem="{Binding SelectedDocument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             SelectionMode="Extended"
                             Style="{StaticResource ListBoxAnimationStyle}"
-                            VirtualizingPanel.CacheLength="4,4" VirtualizingPanel.CacheLengthUnit="Item"
-                            VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.ScrollUnit="Pixel"
-                            VirtualizingPanel.VirtualizationMode="Standard">
+                            VirtualizingPanel.CacheLength="{Binding SelectedSize, Mode=OneWay, Converter={StaticResource SelectedSizeToCacheLengthConverter}}"
+                            VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                            VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Standard">
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"

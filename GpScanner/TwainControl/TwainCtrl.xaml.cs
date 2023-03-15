@@ -123,7 +123,7 @@ namespace TwainControl
                 {
                     if (Filesavetask?.IsCompleted == false)
                     {
-                        _ = MessageBox.Show(Translation.GetResStringValue("TRANSLATEPENDING"));
+                        _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
                         return;
                     }
                     SaveFileDialog saveFileDialog = new()
@@ -166,27 +166,6 @@ namespace TwainControl
                     }
                 }
             }, parameter => !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0);
-
-            SinglePageSavePdf = new RelayCommand<object>(async parameter =>
-            {
-                if (parameter is object[] dc && dc[0] is int page && dc[1] is string filepath)
-                {
-                    SaveFileDialog saveFileDialog = new()
-                    {
-                        Filter = "Pdf Dosyası (*.pdf)|*.pdf",
-                        FileName = Scanner.SaveFileName,
-                    };
-                    if (saveFileDialog.ShowDialog() == true)
-                    {
-                        await Task.Run(() =>
-                        {
-                            using PdfDocument outputDocument = filepath.ExtractPdfPages(page, page);
-                            outputDocument.DefaultPdfCompression();
-                            outputDocument.Save(saveFileDialog.FileName);
-                        });
-                    }
-                }
-            }, parameter => true);
 
             Tümünüİşaretle = new RelayCommand<object>(parameter =>
             {
@@ -253,7 +232,7 @@ namespace TwainControl
             {
                 if (Filesavetask?.IsCompleted == false)
                 {
-                    _ = MessageBox.Show(Translation.GetResStringValue("TRANSLATEPENDING"));
+                    _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
                     return;
                 }
                 SaveFileDialog saveFileDialog = new()
@@ -270,22 +249,34 @@ namespace TwainControl
                         {
                             case 1:
                                 await SavePdfImage(seçiliresimler, saveFileDialog.FileName, Scanner, SelectedPaper, false, (int)Settings.Default.ImgLoadResolution);
-                                Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
+                                if (Properties.Settings.Default.RemoveProcessedImage)
+                                {
+                                    Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
+                                }
                                 return;
 
                             case 2:
                                 await SavePdfImage(seçiliresimler, saveFileDialog.FileName, Scanner, SelectedPaper, true, (int)Settings.Default.ImgLoadResolution);
-                                Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
+                                if (Properties.Settings.Default.RemoveProcessedImage)
+                                {
+                                    Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
+                                }
                                 return;
 
                             case 3:
                                 await SaveJpgImage(seçiliresimler, saveFileDialog.FileName, Scanner);
-                                Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
+                                if (Properties.Settings.Default.RemoveProcessedImage)
+                                {
+                                    Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
+                                }
                                 return;
 
                             case 4:
                                 await SaveTifImage(seçiliresimler, saveFileDialog.FileName, Scanner);
-                                Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
+                                if (Properties.Settings.Default.RemoveProcessedImage)
+                                {
+                                    Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
+                                }
                                 break;
                         }
                     });
@@ -330,7 +321,10 @@ namespace TwainControl
                 }).ContinueWith((_) => Dispatcher.Invoke(() =>
                 {
                     OnPropertyChanged(nameof(Scanner.Resimler));
-                    SeçiliListeTemizle.Execute(null);
+                    if (Properties.Settings.Default.RemoveProcessedImage)
+                    {
+                        SeçiliListeTemizle.Execute(null);
+                    }
                 }));
             }, parameter =>
             {
@@ -1012,8 +1006,6 @@ namespace TwainControl
 
         public ICommand ShowDateFolderHelp { get; }
 
-        public ICommand SinglePageSavePdf { get; }
-
         public ICommand SplitPdf { get; }
 
         public ICommand Tersiniİşaretle { get; }
@@ -1112,7 +1104,7 @@ namespace TwainControl
                     ScannedImage scannedimage = images[i];
                     File.WriteAllBytes(directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "jpg"), scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg));
                     scanner.PdfSaveProgressValue = i / (double)images.Count;
-                    if (uri != null)
+                    if (uri != null && Properties.Settings.Default.RemoveProcessedImage)
                     {
                         scannedimage.Resim = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(uri, 0);
                     }

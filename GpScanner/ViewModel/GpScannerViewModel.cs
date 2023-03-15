@@ -881,8 +881,8 @@ namespace GpScanner.ViewModel
         public ObservableCollection<Size> GetPreviewSize {
             get => new()
             {
-                    new Size(240,385),
-                    new Size(320,495),
+                    new Size(280,450),
+                    new Size(350,563),
                     new Size(425,645),
             };
 

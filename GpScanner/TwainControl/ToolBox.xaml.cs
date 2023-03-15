@@ -35,7 +35,7 @@ namespace TwainControl
             {
                 if (TwainCtrl.Filesavetask?.IsCompleted == false)
                 {
-                    _ = MessageBox.Show(Translation.GetResStringValue("TRANSLATEPENDING"));
+                    _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
                     return;
                 }
                 SaveFileDialog saveFileDialog = new()

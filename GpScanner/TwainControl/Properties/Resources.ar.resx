@@ -378,6 +378,9 @@
     <value>إلى قائمة الماسح
 يضيف</value>
   </data>
+  <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
+    <value>حذف الملفات المعالجة من القائمة</value>
+  </data>
   <data name="RES" xml:space="preserve">
     <value>الدقة</value>
   </data>
