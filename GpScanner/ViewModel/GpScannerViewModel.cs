@@ -335,12 +335,15 @@ namespace GpScanner.ViewModel
             {
                 if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
                 {
-                    string oldpdfpath = pdfviewer.PdfFilePath;
-                    int start = SayfaBaşlangıç - 1;
-                    int end = SayfaBitiş - 1;
-                    await ArrangeFile(pdfviewer.PdfFilePath, pdfviewer.PdfFilePath, start, end);
-                    pdfviewer.PdfFilePath = null;
-                    pdfviewer.PdfFilePath = oldpdfpath;
+                    if (MessageBox.Show($"{Translation.GetResStringValue("REPLACEPAGE")} {SayfaBaşlangıç}-{SayfaBitiş}", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                    {
+                        string oldpdfpath = pdfviewer.PdfFilePath;
+                        int start = SayfaBaşlangıç - 1;
+                        int end = SayfaBitiş - 1;
+                        await ArrangeFile(pdfviewer.PdfFilePath, pdfviewer.PdfFilePath, start, end);
+                        pdfviewer.PdfFilePath = null;
+                        pdfviewer.PdfFilePath = oldpdfpath;
+                    }
                 }
             }, parameter => SayfaBaşlangıç != SayfaBitiş);
 
@@ -881,6 +884,8 @@ namespace GpScanner.ViewModel
         public ObservableCollection<Size> GetPreviewSize {
             get => new()
             {
+                    new Size(175,280),
+                    new Size(230,370),
                     new Size(280,450),
                     new Size(350,563),
                     new Size(425,645),

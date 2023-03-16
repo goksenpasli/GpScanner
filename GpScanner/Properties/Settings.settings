@@ -28,7 +28,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="PreviewIndex" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">2</Value>
     </Setting>
     <Setting Name="FtpSites" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;

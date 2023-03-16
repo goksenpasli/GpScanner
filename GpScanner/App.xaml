@@ -245,31 +245,14 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <Grid DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType=Window}}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
+                    <WrapPanel DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType=Window}}" Orientation="Horizontal">
                         <Extensions:NumericUpDownControl Maximum="{Binding ElementName=PdfVwr, Path=ToplamSayfa}"
                             Minimum="1" SmallChange="1"
                             Value="{Binding SayfaBaşlangıç, UpdateSourceTrigger=PropertyChanged}" />
-                        <Extensions:NumericUpDownControl Grid.Column="1"
-                            Maximum="{Binding ElementName=PdfVwr, Path=ToplamSayfa}"
+                        <Extensions:NumericUpDownControl Maximum="{Binding ElementName=PdfVwr, Path=ToplamSayfa}"
                             Minimum="1" SmallChange="1"
                             Value="{Binding SayfaBitiş, UpdateSourceTrigger=PropertyChanged}" />
-                        <Button Grid.Column="2"
-                            Command="{Binding ExtractPdfFile}"
-                            CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}">
+                        <Button Command="{Binding ExtractPdfFile}" CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}">
                             <Image Width="16" Height="16">
                                 <Image.Source>
                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -279,9 +262,7 @@
                                 </Image.Source>
                             </Image>
                         </Button>
-                        <Button Grid.Column="3"
-                            Command="{Binding RemoveSelectedPage}"
-                            CommandParameter="{Binding ElementName=PdfVwr}">
+                        <Button Command="{Binding RemoveSelectedPage}" CommandParameter="{Binding ElementName=PdfVwr}">
                             <Image Width="16" Height="16">
                                 <Image.Source>
                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -291,9 +272,7 @@
                                 </Image.Source>
                             </Image>
                         </Button>
-                        <Button Grid.Column="4"
-                            Command="{Binding ArrangePdfFile}"
-                            CommandParameter="{Binding ElementName=PdfVwr}">
+                        <Button Command="{Binding ArrangePdfFile}" CommandParameter="{Binding ElementName=PdfVwr}">
                             <Image Width="16" Height="16">
                                 <Image.Source>
                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -303,16 +282,13 @@
                                 </Image.Source>
                             </Image>
                         </Button>
-                        <Button Grid.Column="5"
-                            BorderBrush="Cyan"
+                        <Button BorderBrush="Cyan"
                             Command="{Binding RotateSelectedPage}"
                             CommandParameter="{Binding ElementName=PdfVwr}">
                             <Image Width="16" Height="16"
                                 Source="/TwainControl;component/Icons/rotate.png" />
                         </Button>
-                        <Button Grid.Column="6"
-                            BorderBrush="Cyan"
-                            Command="{Binding AddAllFileToControlPanel}">
+                        <Button BorderBrush="Cyan" Command="{Binding AddAllFileToControlPanel}">
                             <Button.CommandParameter>
                                 <MultiBinding Converter="{StaticResource CloneConverter}">
                                     <Binding ElementName="TwainCtrl" Mode="OneWay" Path="DataContext" />
@@ -323,9 +299,7 @@
                                 <TextBlock FontFamily="Wingdings" FontSize="16" Text="ç" />
                             </Button.Content>
                         </Button>
-                        <Button Grid.Column="7"
-                            Command="{Binding OcrPdfThumbnailPage}"
-                            CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
+                        <Button Command="{Binding OcrPdfThumbnailPage}" CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
                             <Button.Content>
                                 <Grid>
                                     <ProgressBar IsIndeterminate="{Binding DataContext.OcrIsBusy, RelativeSource={RelativeSource AncestorType=Window}}" />
@@ -334,14 +308,12 @@
                                 </Grid>
                             </Button.Content>
                         </Button>
-                        <Button Grid.Column="8"
-                            Command="{Binding ReadPdfTag}"
-                            CommandParameter="{Binding ElementName=PdfVwr, Path=PdfFilePath, Mode=OneWay}">
+                        <Button Command="{Binding ReadPdfTag}" CommandParameter="{Binding ElementName=PdfVwr, Path=PdfFilePath, Mode=OneWay}">
                             <Button.Content>
                                 <TextBlock FontFamily="Wingdings 2" FontSize="16" Text="-" />
                             </Button.Content>
                         </Button>
-                        <Button Grid.Column="9" Command="{Binding MergeSelectedImagesToPdfFile}">
+                        <Button Command="{Binding MergeSelectedImagesToPdfFile}">
                             <Button.CommandParameter>
                                 <MultiBinding Converter="{StaticResource CloneConverter}">
                                     <Binding ElementName="TwainCtrl" Mode="OneWay" Path="DataContext" />
@@ -352,18 +324,18 @@
                                 <Image Width="16" Height="16">
                                     <Image.Source>
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="68" />
+                                            <Binding Source="Imageres.dll" />
+                                            <Binding Source="166" />
                                         </MultiBinding>
                                     </Image.Source>
                                 </Image>
                             </Button.Content>
                         </Button>
-                        <Extensions:NumericUpDownControl Grid.Column="10" IsReadOnly="True"
+                        <Extensions:NumericUpDownControl IsReadOnly="True"
                             Maximum="{Binding ElementName=PdfVwr, Path=ToplamSayfa}"
                             Minimum="0" SmallChange="1"
                             Value="{Binding PdfSplitCount, ElementName=TwainCtrl}" />
-                        <Button Grid.Column="11" Command="{Binding SplitPdf, ElementName=TwainCtrl}" CommandParameter="{Binding ElementName=PdfVwr}">
+                        <Button Command="{Binding SplitPdf, ElementName=TwainCtrl}" CommandParameter="{Binding ElementName=PdfVwr}">
                             <Image Width="16" Height="16">
                                 <Image.Source>
                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -373,7 +345,7 @@
                                 </Image.Source>
                             </Image>
                         </Button>
-                    </Grid>
+                    </WrapPanel>
                     <PdfViewer:PdfViewer x:Name="PdfVwr"
                         Grid.Row="1"
                         AllowDrop="True" AutoFitContent="True"

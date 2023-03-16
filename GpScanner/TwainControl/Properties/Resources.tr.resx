@@ -541,4 +541,7 @@ BELGE EKLE</value>
   <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
     <value>İşlenen Dosyaları Belge Listesinden Sil</value>
   </data>
+  <data name="REPLACEPAGE" xml:space="preserve">
+    <value>Sayfaları Yer Değiştir</value>
+  </data>
 </root>

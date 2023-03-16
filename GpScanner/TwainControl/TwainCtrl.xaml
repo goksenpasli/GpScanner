@@ -503,60 +503,78 @@
                                                     </DataTemplate>
                                                 </ComboBox.ItemTemplate>
                                             </ComboBox>
-                                            <ComboBox Grid.Column="1"
-                                                HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"
-                                                ItemsSource="{Binding Mode=OneWay, Source={StaticResource CompProfiles}}"
-                                                SelectedItem="{Binding SelectedCompressionProfile}">
-                                                <ComboBox.ItemsPanel>
-                                                    <ItemsPanelTemplate>
-                                                        <UniformGrid Columns="2" />
-                                                    </ItemsPanelTemplate>
-                                                </ComboBox.ItemsPanel>
-                                                <ComboBox.GroupStyle>
-                                                    <GroupStyle>
-                                                        <GroupStyle.Panel>
+                                            <Extensions:ContentToggleButton Grid.Column="1">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Width="16" Height="16">
+                                                        <Image.Source>
+                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                <Binding Source="Shell32.dll" />
+                                                                <Binding Source="43" />
+                                                            </MultiBinding>
+                                                        </Image.Source>
+                                                    </Image>
+                                                    <TextBlock>
+                                                        <Run Text="{local:Loc SCAN}" />
+                                                        <LineBreak />
+                                                        <Run Text="{local:Loc SETTİNGS}" />
+                                                    </TextBlock>
+                                                </StackPanel>
+                                                <Extensions:ContentToggleButton.OverContent>
+                                                    <ListBox HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"
+                                                        ItemsSource="{Binding Mode=OneWay, Source={StaticResource CompProfiles}}"
+                                                        SelectedItem="{Binding SelectedCompressionProfile}">
+                                                        <ListBox.ItemContainerStyle>
+                                                            <Style TargetType="ListBoxItem">
+                                                                <Style.Triggers>
+                                                                    <Trigger Property="IsSelected" Value="True">
+                                                                        <Setter Property="Foreground" Value="Blue" />
+                                                                    </Trigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </ListBox.ItemContainerStyle>
+                                                        <ListBox.ItemsPanel>
                                                             <ItemsPanelTemplate>
-                                                                <UniformGrid Background="{StaticResource GroupBoxBackGround}" Columns="2" />
+                                                                <UniformGrid Columns="2" />
                                                             </ItemsPanelTemplate>
-                                                        </GroupStyle.Panel>
-                                                        <GroupStyle.HeaderTemplate>
+                                                        </ListBox.ItemsPanel>
+                                                        <ListBox.GroupStyle>
+                                                            <GroupStyle>
+                                                                <GroupStyle.Panel>
+                                                                    <ItemsPanelTemplate>
+                                                                        <UniformGrid Background="{StaticResource GroupBoxBackGround}" Columns="2" />
+                                                                    </ItemsPanelTemplate>
+                                                                </GroupStyle.Panel>
+                                                                <GroupStyle.HeaderTemplate>
+                                                                    <DataTemplate>
+                                                                        <TextBlock HorizontalAlignment="Center"
+                                                                            FontStyle="Italic" FontWeight="Bold" Foreground="Black"
+                                                                            Text="{Binding Name}" />
+                                                                    </DataTemplate>
+                                                                </GroupStyle.HeaderTemplate>
+                                                            </GroupStyle>
+                                                        </ListBox.GroupStyle>
+                                                        <ListBox.ItemTemplate>
                                                             <DataTemplate>
-                                                                <TextBlock HorizontalAlignment="Center"
-                                                                    FontStyle="Italic" FontWeight="Bold" Foreground="Black"
-                                                                    Text="{Binding Name}" />
+                                                                <Border BorderBrush="Black" BorderThickness="2">
+                                                                    <Grid>
+                                                                        <StackPanel>
+                                                                            <TextBlock VerticalAlignment="Center" FontWeight="Bold">
+                                                                                <Run Text="{Binding Item1, Mode=OneTime}" />
+                                                                                <LineBreak />
+                                                                                <Run Text="{Binding Item3, Mode=OneTime, StringFormat={}{0} Dpi}" />
+                                                                            </TextBlock>
+                                                                            <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                                                                Content="MOZJPEG" FontWeight="Bold"
+                                                                                IsChecked="{Binding Item4, Mode=OneTime}"
+                                                                                IsHitTestVisible="False" />
+                                                                        </StackPanel>
+                                                                    </Grid>
+                                                                </Border>
                                                             </DataTemplate>
-                                                        </GroupStyle.HeaderTemplate>
-                                                    </GroupStyle>
-                                                </ComboBox.GroupStyle>
-                                                <ComboBox.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <Border BorderBrush="Black" BorderThickness="2">
-                                                            <Grid>
-                                                                <ProgressBar Foreground="Orange" Maximum="600"
-                                                                    Value="{Binding Item3, Mode=OneTime}">
-                                                                    <ProgressBar.Background>
-                                                                        <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
-                                                                            <GradientStop Color="Lime" />
-                                                                            <GradientStop Offset="1" Color="Red" />
-                                                                        </LinearGradientBrush>
-                                                                    </ProgressBar.Background>
-                                                                </ProgressBar>
-                                                                <StackPanel>
-                                                                    <TextBlock VerticalAlignment="Center" FontWeight="Bold">
-                                                                        <Run Text="{Binding Item1, Mode=OneTime}" />
-                                                                        <LineBreak />
-                                                                        <Run Text="{Binding Item3, Mode=OneTime, StringFormat={}{0} Dpi}" />
-                                                                    </TextBlock>
-                                                                    <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                                                        Content="MOZJPEG" FontWeight="Bold"
-                                                                        IsChecked="{Binding Item4, Mode=OneTime}"
-                                                                        IsHitTestVisible="False" />
-                                                                </StackPanel>
-                                                            </Grid>
-                                                        </Border>
-                                                    </DataTemplate>
-                                                </ComboBox.ItemTemplate>
-                                            </ComboBox>
+                                                        </ListBox.ItemTemplate>
+                                                    </ListBox>
+                                                </Extensions:ContentToggleButton.OverContent>
+                                            </Extensions:ContentToggleButton>
                                         </Grid>
                                     </StackPanel>
                                 </StackPanel>

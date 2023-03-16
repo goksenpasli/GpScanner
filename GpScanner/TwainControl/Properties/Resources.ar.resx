@@ -381,6 +381,9 @@
   <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
     <value>حذف الملفات المعالجة من القائمة</value>
   </data>
+  <data name="REPLACEPAGE" xml:space="preserve">
+    <value>تبديل الصفحات.</value>
+  </data>
   <data name="RES" xml:space="preserve">
     <value>الدقة</value>
   </data>

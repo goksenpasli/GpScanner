@@ -553,6 +553,16 @@
         <Setter Property="UIElement.AllowDrop" Value="True" />
     </Style>
     <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="local:ContentToggleButton">
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush ice:Freeze="true" StartPoint="0,0" EndPoint="0,1">
+                    <LinearGradientBrush.GradientStops>
+                        <GradientStop Offset="0" Color="#F0F0F0" />
+                        <GradientStop Offset="1" Color="#E5E5E5" />
+                    </LinearGradientBrush.GradientStops>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:ContentToggleButton">

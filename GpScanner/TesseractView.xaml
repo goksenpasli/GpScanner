@@ -14,7 +14,7 @@
     mc:Ignorable="d">
     <GroupBox>
         <GroupBox.Header>
-            <CheckBox Content="TESSERACT" IsChecked="{Binding ShowAllLanguages}" />
+            <CheckBox Content="{twainctrl:Loc ALL}" IsChecked="{Binding ShowAllLanguages}" />
         </GroupBox.Header>
         <Grid>
             <Grid.RowDefinitions>

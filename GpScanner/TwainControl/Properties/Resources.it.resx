@@ -381,6 +381,9 @@ INSERISCI</value>
   <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
     <value>Elimina i file elaborati dall'elenco</value>
   </data>
+  <data name="REPLACEPAGE" xml:space="preserve">
+    <value>Scambia pagine</value>
+  </data>
   <data name="RES" xml:space="preserve">
     <value>RISOLUZIONE</value>
   </data>

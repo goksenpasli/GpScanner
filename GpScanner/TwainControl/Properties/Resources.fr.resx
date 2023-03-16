@@ -381,6 +381,9 @@ AJOUTER</value>
   <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
     <value>Supprimer les fichiers traités de la liste</value>
   </data>
+  <data name="REPLACEPAGE" xml:space="preserve">
+    <value>Permuter les pages</value>
+  </data>
   <data name="RES" xml:space="preserve">
     <value>RÉSOLUTION</value>
   </data>

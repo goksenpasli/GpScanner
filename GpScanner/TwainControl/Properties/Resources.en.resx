@@ -535,4 +535,7 @@ TO FILE</value>
   <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
     <value>Delete Processed Files From Document List</value>
   </data>
+  <data name="REPLACEPAGE" xml:space="preserve">
+    <value>Replace Pages</value>
+  </data>
 </root>
