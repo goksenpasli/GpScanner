@@ -152,7 +152,7 @@ namespace TwainControl
                 {
                     string savefolder = CreateSaveFolder("SPLIT");
                     List<ScannedImage> listcroppedimages = Scanner.Resimler.Where(z => z.Seçili).SelectMany(scannedimage => CropImageToList(scannedimage.Resim, (int)Scanner.SliceCountWidth, (int)Scanner.SliceCountHeight).Select(croppedBitmap => new ScannedImage { Resim = BitmapFrame.Create(croppedBitmap) })).ToList();
-                    PdfDocument pdfdocument = await listcroppedimages.GeneratePdf(Format.Jpg, Paper, Settings.Default.JpegQuality, null, (int)Properties.Settings.Default.Çözünürlük);
+                    PdfDocument pdfdocument = await listcroppedimages.GeneratePdf(Format.Jpg, Paper, Settings.Default.JpegQuality, null, (int)Settings.Default.Çözünürlük);
                     pdfdocument.Save(savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "pdf"));
                     WebAdreseGit.Execute(savefolder);
                     listcroppedimages = null;
@@ -189,7 +189,7 @@ namespace TwainControl
                                 double y = heighindex * page.Height / Scanner.SliceCountHeight;
                                 double width = page.Width / Scanner.SliceCountWidth;
                                 double height = page.Height / Scanner.SliceCountHeight;
-                                using MemoryStream ms = new(seçiliresimler.ElementAt(imageindex).Resim.Resize(width, height).ToTiffJpegByteArray(Format.Jpg, Properties.Settings.Default.JpegQuality));
+                                using MemoryStream ms = new(seçiliresimler.ElementAt(imageindex).Resim.Resize(width, height).ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality));
                                 using XImage xImage = XImage.FromStream(ms);
                                 using XGraphics gfx = XGraphics.FromPdfPage(page);
                                 box = new XRect(x, y, width, height);

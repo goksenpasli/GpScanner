@@ -544,4 +544,7 @@ BELGE EKLE</value>
   <data name="REPLACEPAGE" xml:space="preserve">
     <value>Sayfaları Yer Değiştir</value>
   </data>
+  <data name="WATERMARK" xml:space="preserve">
+    <value>FİLİGRAN</value>
+  </data>
 </root>

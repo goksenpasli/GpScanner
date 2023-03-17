@@ -249,7 +249,7 @@ namespace TwainControl
                         {
                             case 1:
                                 await SavePdfImage(seçiliresimler, saveFileDialog.FileName, Scanner, SelectedPaper, false, (int)Settings.Default.ImgLoadResolution);
-                                if (Properties.Settings.Default.RemoveProcessedImage)
+                                if (Settings.Default.RemoveProcessedImage)
                                 {
                                     Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
                                 }
@@ -257,7 +257,7 @@ namespace TwainControl
 
                             case 2:
                                 await SavePdfImage(seçiliresimler, saveFileDialog.FileName, Scanner, SelectedPaper, true, (int)Settings.Default.ImgLoadResolution);
-                                if (Properties.Settings.Default.RemoveProcessedImage)
+                                if (Settings.Default.RemoveProcessedImage)
                                 {
                                     Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
                                 }
@@ -265,7 +265,7 @@ namespace TwainControl
 
                             case 3:
                                 await SaveJpgImage(seçiliresimler, saveFileDialog.FileName, Scanner);
-                                if (Properties.Settings.Default.RemoveProcessedImage)
+                                if (Settings.Default.RemoveProcessedImage)
                                 {
                                     Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
                                 }
@@ -273,7 +273,7 @@ namespace TwainControl
 
                             case 4:
                                 await SaveTifImage(seçiliresimler, saveFileDialog.FileName, Scanner);
-                                if (Properties.Settings.Default.RemoveProcessedImage)
+                                if (Settings.Default.RemoveProcessedImage)
                                 {
                                     Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
                                 }
@@ -321,7 +321,7 @@ namespace TwainControl
                 }).ContinueWith((_) => Dispatcher.Invoke(() =>
                 {
                     OnPropertyChanged(nameof(Scanner.Resimler));
-                    if (Properties.Settings.Default.RemoveProcessedImage)
+                    if (Settings.Default.RemoveProcessedImage)
                     {
                         SeçiliListeTemizle.Execute(null);
                     }
@@ -1090,7 +1090,7 @@ namespace TwainControl
 
         public static void SaveJpgImage(BitmapFrame scannedImage, string filename)
         {
-            File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.Jpg, Properties.Settings.Default.JpegQuality));
+            File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality));
         }
 
         public static async Task SaveJpgImage(List<ScannedImage> images, string filename, Scanner scanner)
@@ -1102,9 +1102,9 @@ namespace TwainControl
                 for (int i = 0; i < images.Count; i++)
                 {
                     ScannedImage scannedimage = images[i];
-                    File.WriteAllBytes(directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "jpg"), scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg, Properties.Settings.Default.JpegQuality));
+                    File.WriteAllBytes(directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "jpg"), scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality));
                     scanner.PdfSaveProgressValue = i / (double)images.Count;
-                    if (uri != null && Properties.Settings.Default.RemoveProcessedImage)
+                    if (uri != null && Settings.Default.RemoveProcessedImage)
                     {
                         scannedimage.Resim = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(uri, 0);
                     }

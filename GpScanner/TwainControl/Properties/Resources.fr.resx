@@ -535,6 +535,9 @@ VOIR</value>
   <data name="WARNREBOOT" xml:space="preserve">
     <value>L'arrêt ou le redémarrage est défini.</value>
   </data>
+  <data name="WATERMARK" xml:space="preserve">
+    <value>FILIGRANE</value>
+  </data>
   <data name="WIDTHCOUNT" xml:space="preserve">
     <value>LE PLUS</value>
   </data>

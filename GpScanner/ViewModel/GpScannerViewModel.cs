@@ -23,6 +23,7 @@ using Extensions;
 using GpScanner.Properties;
 using Microsoft.Win32;
 using Ocr;
+using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
 using TwainControl;
@@ -142,12 +143,15 @@ namespace GpScanner.ViewModel
                     IEnumerable<ScannedImage> seçiliresimler = twainCtrl.Scanner.Resimler.Where(z => z.Seçili);
                     if (seçiliresimler.Any())
                     {
-                        PdfDocument pdfDocument = await seçiliresimler.ToList().GeneratePdf(Format.Jpg, twainCtrl.SelectedPaper, Twainsettings.Settings.Default.JpegQuality, null, (int)TwainControl.Properties.Settings.Default.Çözünürlük);
+                        PdfDocument pdfDocument = await seçiliresimler.ToList().GeneratePdf(Format.Jpg, twainCtrl.SelectedPaper, Twainsettings.Settings.Default.JpegQuality, null, (int)Twainsettings.Settings.Default.Çözünürlük);
                         string pdfFilePath = pdfviewer.PdfFilePath;
                         pdfDocument.Save(temporarypdf);
                         (new string[] { temporarypdf, pdfFilePath }).MergePdf().Save(pdfFilePath);
                         MainWindow.NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
-                        twainCtrl.SeçiliListeTemizle.Execute(null);
+                        if (Twainsettings.Settings.Default.RemoveProcessedImage)
+                        {
+                            twainCtrl.SeçiliListeTemizle.Execute(null);
+                        }
                         GC.Collect();
                     }
                 }
@@ -615,6 +619,28 @@ namespace GpScanner.ViewModel
                 }
             }, parameter => true);
 
+            PdfWaterMark = new RelayCommand<object>(parameter =>
+            {
+                if (parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
+                {
+                    string oldpdfpath = pdfViewer.PdfFilePath;
+                    using PdfDocument reader = PdfReader.Open(pdfViewer.PdfFilePath);
+                    PdfPage page = reader.Pages[pdfViewer.Sayfa - 1];
+                    using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
+                    gfx.TranslateTransform(page.Width / 2, page.Height / 2);
+                    gfx.RotateTransform(-Math.Atan(page.Height / page.Width) * 180 / Math.PI);
+                    gfx.TranslateTransform(-page.Width / 2, -page.Height / 2);
+                    XStringFormat format = new() { Alignment = XStringAlignment.Near, LineAlignment = XLineAlignment.Near };
+                    XBrush brush = new XSolidBrush(XColor.FromArgb(128, 255, 0, 0));
+                    XFont font = new("Arial", 72);
+                    XSize size = gfx.MeasureString(PdfWaterMarkText, font);
+                    gfx.DrawString(PdfWaterMarkText, font, brush, new XPoint((page.Width - size.Width) / 2, (page.Height - size.Height) / 2), format);
+                    reader.Save(pdfViewer.PdfFilePath);
+                    pdfViewer.PdfFilePath = null;
+                    pdfViewer.PdfFilePath = oldpdfpath;
+                }
+            }, parameter => !string.IsNullOrWhiteSpace(PdfWaterMarkText));
+
             ReadOcrDataFile = new RelayCommand<object>(parameter =>
             {
                 if (parameter is Scanner scanner)
@@ -706,6 +732,7 @@ namespace GpScanner.ViewModel
 
         public ResultPoint[] BarcodePosition {
             get => barcodePosition; set {
+
                 if (barcodePosition != value)
                 {
                     barcodePosition = value;
@@ -716,6 +743,7 @@ namespace GpScanner.ViewModel
 
         public bool BatchDialogOpen {
             get => batchDialogOpen; set {
+
                 if (batchDialogOpen != value)
                 {
                     batchDialogOpen = value;
@@ -761,7 +789,6 @@ namespace GpScanner.ViewModel
         }
 
         public ICommand CancelOcr { get; }
-        public ICommand UploadFtp { get; }
 
         public ICommand ChangeDataFolder { get; }
 
@@ -851,6 +878,7 @@ namespace GpScanner.ViewModel
 
         public string FtpPassword {
             get => ftpPassword; set {
+
                 if (ftpPassword != value)
                 {
                     ftpPassword = value;
@@ -873,6 +901,7 @@ namespace GpScanner.ViewModel
 
         public string FtpUserName {
             get => ftpUserName; set {
+
                 if (ftpUserName != value)
                 {
                     ftpUserName = value;
@@ -914,6 +943,7 @@ namespace GpScanner.ViewModel
 
         public GridLength MainWindowDocumentGuiControlLength {
             get => mainWindowDocumentGuiControlLength; set {
+
                 if (mainWindowDocumentGuiControlLength != value)
                 {
                     mainWindowDocumentGuiControlLength = value;
@@ -924,6 +954,7 @@ namespace GpScanner.ViewModel
 
         public GridLength MainWindowGuiControlLength {
             get => mainWindowGuiControlLength; set {
+
                 if (mainWindowGuiControlLength != value)
                 {
                     mainWindowGuiControlLength = value;
@@ -958,6 +989,7 @@ namespace GpScanner.ViewModel
 
         public string PatchFileName {
             get => patchFileName; set {
+
                 if (patchFileName != value)
                 {
                     patchFileName = value;
@@ -994,6 +1026,7 @@ namespace GpScanner.ViewModel
 
         public double PdfMergeProgressValue {
             get => pdfMergeProgressValue; set {
+
                 if (pdfMergeProgressValue != value)
                 {
                     pdfMergeProgressValue = value;
@@ -1010,6 +1043,19 @@ namespace GpScanner.ViewModel
                 {
                     pdfOnlyText = value;
                     OnPropertyChanged(nameof(PdfOnlyText));
+                }
+            }
+        }
+
+        public ICommand PdfWaterMark { get; }
+
+        public string PdfWaterMarkText {
+            get => pdfWaterMarkText; set {
+
+                if (pdfWaterMarkText != value)
+                {
+                    pdfWaterMarkText = value;
+                    OnPropertyChanged(nameof(PdfWaterMarkText));
                 }
             }
         }
@@ -1062,6 +1108,7 @@ namespace GpScanner.ViewModel
 
         public int SayfaBitiş {
             get => sayfaBitiş; set {
+
                 if (sayfaBitiş != value)
                 {
                     sayfaBitiş = value;
@@ -1098,6 +1145,7 @@ namespace GpScanner.ViewModel
 
         public DateTime? SeçiliGün {
             get => seçiliGün; set {
+
                 if (seçiliGün != value)
                 {
                     seçiliGün = value;
@@ -1120,6 +1168,7 @@ namespace GpScanner.ViewModel
 
         public string SelectedFtp {
             get => selectedFtp; set {
+
                 if (selectedFtp != value)
                 {
                     selectedFtp = value;
@@ -1194,6 +1243,8 @@ namespace GpScanner.ViewModel
 
         public ICommand UnRegisterSti { get; }
 
+        public ICommand UploadFtp { get; }
+
         public static async Task ArrangeFile(string loadfilename, string savefilename, int start, int end)
         {
             await Task.Run(() =>
@@ -1230,6 +1281,22 @@ namespace GpScanner.ViewModel
             return new ObservableCollection<Data>();
         }
 
+        public static async Task FtpUploadAsync(string uri, string userName, string password, Scanner scanner)
+        {
+            try
+            {
+                using WebClient webClient = new();
+                webClient.Credentials = new NetworkCredential(userName, password.Decrypt());
+                webClient.UploadProgressChanged += (sender, args) => scanner.FtpLoadProgressValue = args.ProgressPercentage;
+                string address = $"{uri}/{Directory.GetParent(scanner.FileName).Name}{Path.GetFileName(scanner.FileName)}";
+                _ = await webClient.UploadFileTaskAsync(address, WebRequestMethods.Ftp.UploadFile, scanner.FileName);
+            }
+            catch (Exception ex)
+            {
+                _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title);
+            }
+        }
+
         public static WriteableBitmap GenerateQr(string text, int width = 120, int height = 120)
         {
             if (!string.IsNullOrWhiteSpace(text))
@@ -1263,21 +1330,6 @@ namespace GpScanner.ViewModel
             return null;
         }
 
-        public static async Task FtpUploadAsync(string uri, string userName, string password, Scanner scanner)
-        {
-            try
-            {
-                using WebClient webClient = new();
-                webClient.Credentials = new NetworkCredential(userName, password.Decrypt());
-                webClient.UploadProgressChanged += (sender, args) => scanner.FtpLoadProgressValue = args.ProgressPercentage;
-                string address = $"{uri}/{Directory.GetParent(scanner.FileName).Name}{Path.GetFileName(scanner.FileName)}";
-                _ = await webClient.UploadFileTaskAsync(address, WebRequestMethods.Ftp.UploadFile, scanner.FileName);
-            }
-            catch (Exception ex)
-            {
-                _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title);
-            }
-        }
         public static async Task RemovePdfPage(string pdffilepath, int start, int end)
         {
             await Task.Run(() =>
@@ -1475,6 +1527,8 @@ namespace GpScanner.ViewModel
 
         private bool pdfOnlyText;
 
+        private string pdfWaterMarkText;
+
         private Brush progressBarForegroundBrush = Brushes.Green;
 
         private int sayfaBaşlangıç = 1;
@@ -1535,7 +1589,7 @@ namespace GpScanner.ViewModel
                 MainWindow.cvs.Filter += (s, x) =>
                 {
                     Scanner scanner = x.Item as Scanner;
-                    string seçiligün = SeçiliGün.Value.ToString(TwainControl.Properties.Settings.Default.FolderDateFormat);
+                    string seçiligün = SeçiliGün.Value.ToString(Twainsettings.Settings.Default.FolderDateFormat);
                     x.Accepted = Directory.GetParent(scanner?.FileName).Name.StartsWith(seçiligün);
                 };
             }

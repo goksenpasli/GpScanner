@@ -535,6 +535,9 @@
   <data name="WARNREBOOT" xml:space="preserve">
     <value>تم ضبط إيقاف التشغيل أو إعادة التشغيل.</value>
   </data>
+  <data name="WATERMARK" xml:space="preserve">
+    <value>علامة مائية</value>
+  </data>
   <data name="WIDTHCOUNT" xml:space="preserve">
     <value>أكثر</value>
   </data>

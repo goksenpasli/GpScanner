@@ -538,4 +538,7 @@ TO FILE</value>
   <data name="REPLACEPAGE" xml:space="preserve">
     <value>Replace Pages</value>
   </data>
+  <data name="WATERMARK" xml:space="preserve">
+    <value>WATERMARK</value>
+  </data>
 </root>

@@ -535,6 +535,9 @@ VEDERE</value>
   <data name="WARNREBOOT" xml:space="preserve">
     <value>L'arresto o il riavvio è impostato.</value>
   </data>
+  <data name="WATERMARK" xml:space="preserve">
+    <value>FILIGRANA</value>
+  </data>
   <data name="WIDTHCOUNT" xml:space="preserve">
     <value>PIÙ</value>
   </data>

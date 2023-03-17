@@ -45,6 +45,7 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <Extensions:NumericUpDownControl Maximum="{Binding ElementName=PdfViewer, Path=ToplamSayfa}"
                     Minimum="1" SmallChange="1"
@@ -146,6 +147,41 @@
                         </Image>
                     </Button.Content>
                 </Button>
+                <Extensions:ContentToggleButton Grid.Column="10">
+                    <Extensions:ContentToggleButton.Content>
+                        <Image Width="16" Height="16">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                    <Binding Source="Shell32.dll" />
+                                    <Binding Source="73" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                    </Extensions:ContentToggleButton.Content>
+                    <Extensions:ContentToggleButton.OverContent>
+                        <GroupBox Header="{local:Loc WATERMARK}">
+                            <StackPanel>
+                                <TextBox VerticalContentAlignment="Center" Text="{Binding PdfWaterMarkText, UpdateSourceTrigger=PropertyChanged}" />
+                                <Button Command="{Binding PdfWaterMark}" CommandParameter="{Binding Source={x:Reference PdfViewer}}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Width="24" Height="24">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="73" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <TextBlock VerticalAlignment="Center">
+                                            <Run Text="{local:Loc WATERMARK}" />
+                                            <Run Text="{local:Loc APPLY}" />
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                        </GroupBox>
+                    </Extensions:ContentToggleButton.OverContent>
+                </Extensions:ContentToggleButton>
             </Grid>
             <Extensions:NumericUpDownControl IsReadOnly="True"
                 Maximum="{Binding ElementName=PdfViewer, Path=ToplamSayfa}"

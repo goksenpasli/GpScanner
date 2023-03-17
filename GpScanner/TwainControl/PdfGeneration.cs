@@ -157,7 +157,7 @@ namespace TwainControl
                         }
                         Scanner.PdfSaveProgressValue = i / (double)bitmapFrames.Count;
                     }
-                    if (uri != null && Properties.Settings.Default.RemoveProcessedImage)
+                    if (uri != null && Settings.Default.RemoveProcessedImage)
                     {
                         scannedimage.Resim = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(uri, 0);
                     }
