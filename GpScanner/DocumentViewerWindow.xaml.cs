@@ -61,8 +61,6 @@ namespace GpScanner
                     Fill = fill,
                     StrokeThickness = 2,
                     StrokeDashArray = new DoubleCollection(new double[] { 4, 2 }),
-                    Width = Math.Abs(mousemovecoord.X - mousedowncoord.X),
-                    Height = Math.Abs(mousemovecoord.Y - mousedowncoord.Y)
                 };
                 cnv.Children.Clear();
                 _ = cnv.Children.Add(selectionbox);

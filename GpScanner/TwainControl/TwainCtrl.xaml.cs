@@ -1090,7 +1090,7 @@ namespace TwainControl
 
         public static void SaveJpgImage(BitmapFrame scannedImage, string filename)
         {
-            File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.Jpg));
+            File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.Jpg, Properties.Settings.Default.JpegQuality));
         }
 
         public static async Task SaveJpgImage(List<ScannedImage> images, string filename, Scanner scanner)
@@ -1102,7 +1102,7 @@ namespace TwainControl
                 for (int i = 0; i < images.Count; i++)
                 {
                     ScannedImage scannedimage = images[i];
-                    File.WriteAllBytes(directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "jpg"), scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg));
+                    File.WriteAllBytes(directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "jpg"), scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg, Properties.Settings.Default.JpegQuality));
                     scanner.PdfSaveProgressValue = i / (double)images.Count;
                     if (uri != null && Properties.Settings.Default.RemoveProcessedImage)
                     {
@@ -1750,8 +1750,6 @@ namespace TwainControl
                         Fill = fill,
                         StrokeThickness = 2,
                         StrokeDashArray = new DoubleCollection(new double[] { 4, 2 }),
-                        Width = Math.Abs(mousemovecoord.X - mousedowncoord.X),
-                        Height = Math.Abs(mousemovecoord.Y - mousedowncoord.Y)
                     };
                     cnv.Children.Clear();
                     _ = cnv.Children.Add(selectionbox);
