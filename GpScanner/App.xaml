@@ -245,14 +245,14 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <WrapPanel DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType=Window}}" Orientation="Horizontal">
+                    <WrapPanel DataContext="{Binding Path=DataContext, ElementName=TwainCtrl}" Orientation="Horizontal">
                         <Extensions:NumericUpDownControl Maximum="{Binding ElementName=PdfVwr, Path=ToplamSayfa}"
                             Minimum="1" SmallChange="1"
                             Value="{Binding SayfaBaşlangıç, UpdateSourceTrigger=PropertyChanged}" />
                         <Extensions:NumericUpDownControl Maximum="{Binding ElementName=PdfVwr, Path=ToplamSayfa}"
                             Minimum="1" SmallChange="1"
                             Value="{Binding SayfaBitiş, UpdateSourceTrigger=PropertyChanged}" />
-                        <Button Command="{Binding ExtractPdfFile}" CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}">
+                        <Button Command="{Binding ExtractPdfFile}" CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid}}">
                             <Image Width="16" Height="16">
                                 <Image.Source>
                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -299,7 +299,7 @@
                                 <TextBlock FontFamily="Wingdings" FontSize="16" Text="ç" />
                             </Button.Content>
                         </Button>
-                        <Button Command="{Binding OcrPdfThumbnailPage}" CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
+                        <Button Command="{Binding DataContext.OcrPdfThumbnailPage, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
                             <Button.Content>
                                 <Grid>
                                     <ProgressBar IsIndeterminate="{Binding DataContext.OcrIsBusy, RelativeSource={RelativeSource AncestorType=Window}}" />

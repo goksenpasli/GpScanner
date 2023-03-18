@@ -26,6 +26,7 @@ using Extensions;
 using Extensions.Controls;
 using Microsoft.Win32;
 using Ocr;
+using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
 using TwainControl.Properties;
@@ -370,7 +371,7 @@ namespace TwainControl
                 StringBuilder sb = new();
                 foreach (string item in Scanner.FolderDateFormats)
                 {
-                    _ = sb.AppendLine($"{item} {DateTime.Today.ToString(item)}");
+                    _ = sb.Append(item).Append(' ').AppendLine(DateTime.Today.ToString(item));
                 }
                 _ = MessageBox.Show(sb.ToString(), Application.Current?.MainWindow?.Title);
             }, parameter => true);
@@ -671,9 +672,187 @@ namespace TwainControl
                     }
                 }
             }, parameter => Scanner?.Resimler?.Count(z => z.Seçili) > 0);
+
+            PdfWaterMark = new RelayCommand<object>(parameter =>
+            {
+                if (parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
+                {
+                    string oldpdfpath = pdfViewer.PdfFilePath;
+                    using PdfDocument reader = PdfReader.Open(pdfViewer.PdfFilePath);
+                    PdfPage page = reader.Pages[pdfViewer.Sayfa - 1];
+                    using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
+                    gfx.TranslateTransform(page.Width / 2, page.Height / 2);
+                    gfx.RotateTransform(-Math.Atan(page.Height / page.Width) * 180 / Math.PI);
+                    gfx.TranslateTransform(-page.Width / 2, -page.Height / 2);
+                    XStringFormat format = new() { Alignment = XStringAlignment.Near, LineAlignment = XLineAlignment.Near };
+                    XBrush brush = new XSolidBrush(XColor.FromArgb(128, 255, 0, 0));
+                    XFont font = new("Arial", 72);
+                    XSize size = gfx.MeasureString(PdfWaterMarkText, font);
+                    gfx.DrawString(PdfWaterMarkText, font, brush, new XPoint((page.Width - size.Width) / 2, (page.Height - size.Height) / 2), format);
+                    reader.Save(pdfViewer.PdfFilePath);
+                    pdfViewer.PdfFilePath = null;
+                    pdfViewer.PdfFilePath = oldpdfpath;
+                }
+            }, parameter => !string.IsNullOrWhiteSpace(PdfWaterMarkText));
+
+            MergeSelectedImagesToPdfFile = new RelayCommand<object>(async parameter =>
+            {
+                if (parameter is object[] data && data[0] is TwainCtrl twainCtrl && data[1] is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
+                {
+                    string temporarypdf = Path.GetTempPath() + Guid.NewGuid() + ".pdf";
+                    IEnumerable<ScannedImage> seçiliresimler = twainCtrl.Scanner.Resimler.Where(z => z.Seçili);
+                    if (seçiliresimler.Any())
+                    {
+                        PdfDocument pdfDocument = await seçiliresimler.ToList().GeneratePdf(Format.Jpg, twainCtrl.SelectedPaper, Settings.Default.JpegQuality, null, (int)Settings.Default.Çözünürlük);
+                        string pdfFilePath = pdfviewer.PdfFilePath;
+                        pdfDocument.Save(temporarypdf);
+                        (new string[] { temporarypdf, pdfFilePath }).MergePdf().Save(pdfFilePath);
+                        NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
+                        if (Settings.Default.RemoveProcessedImage)
+                        {
+                            twainCtrl.SeçiliListeTemizle.Execute(null);
+                        }
+                        GC.Collect();
+                    }
+                }
+            }, parameter => true);
+
+            ReadPdfTag = new RelayCommand<object>(parameter =>
+            {
+                if (parameter is string filepath && File.Exists(filepath))
+                {
+                    using PdfDocument reader = PdfReader.Open(filepath, PdfDocumentOpenMode.ReadOnly);
+                    StringBuilder stringBuilder = new();
+                    _ = stringBuilder.AppendLine(filepath).
+                    AppendFormat("PDF {0:#.#}", reader.Version / 10d).AppendLine().
+                    AppendLine(reader.Info.Title).
+                    Append(reader.PageCount).AppendLine().
+                    AppendLine(reader.Info.Producer).
+                    AppendLine(reader.Info.Keywords).
+                    AppendLine(reader.Info.Creator).
+                    AppendLine(reader.Info.Author).
+                    Append(reader.Info.CreationDate).AppendLine().
+                    Append(reader.Info.ModificationDate).AppendLine().
+                    AppendFormat("{0:##.##} MB", reader.FileSize / 1048576d).AppendLine();
+                    _ = MessageBox.Show(stringBuilder.ToString(), Application.Current?.MainWindow?.Title);
+                }
+            }, parameter => true);
+
+            AddAllFileToControlPanel = new RelayCommand<object>(async parameter =>
+            {
+                if (parameter is object[] data && data[0] is TwainCtrl twainCtrl && data[1] is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
+                {
+                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                    {
+                        twainCtrl.AddFiles(new string[] { pdfviewer.PdfFilePath }, twainCtrl.DecodeHeight);
+                        GC.Collect();
+                        return;
+                    }
+                    if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                    {
+                        string savefilename = Path.GetTempPath() + Guid.NewGuid() + ".pdf";
+                        await SaveFile(pdfviewer.PdfFilePath, savefilename, pdfviewer.Sayfa, pdfviewer.ToplamSayfa);
+                        twainCtrl.AddFiles(new string[] { savefilename }, twainCtrl.DecodeHeight);
+                        GC.Collect();
+                        return;
+                    }
+                    byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfviewer.PdfFilePath);
+                    MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfviewer.Sayfa, (int)Settings.Default.ImgLoadResolution);
+                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrame(ms, twainCtrl.SelectedPaper, false);
+                    bitmapFrame.Freeze();
+                    ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
+                    twainCtrl.Scanner?.Resimler.Add(scannedImage);
+                    filedata = null;
+                    bitmapFrame = null;
+                    scannedImage = null;
+                    ms = null;
+                    GC.Collect();
+                }
+            }, parameter => true);
+
+            RotateSelectedPage = new RelayCommand<object>(parameter =>
+            {
+                if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
+                {
+                    string path = pdfviewer.PdfFilePath;
+                    int currentpage = pdfviewer.Sayfa;
+                    using PdfDocument inputDocument = PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Import);
+                    if ((Keyboard.IsKeyDown(Key.LeftCtrl) && Keyboard.IsKeyDown(Key.LeftAlt)) || (Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.RightAlt)))
+                    {
+                        if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                        {
+                            SavePageRotated(path, inputDocument, -90);
+                            pdfviewer.PdfFilePath = null;
+                            pdfviewer.PdfFilePath = path;
+                            return;
+                        }
+                        SavePageRotated(path, inputDocument, 90);
+                        pdfviewer.PdfFilePath = null;
+                        pdfviewer.PdfFilePath = path;
+                        return;
+                    }
+                    SavePageRotated(path, inputDocument, (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)) ? -90 : 90, pdfviewer.Sayfa - 1);
+                    pdfviewer.PdfFilePath = null;
+                    pdfviewer.Sayfa = currentpage;
+                    pdfviewer.PdfFilePath = path;
+                }
+            }, parameter => true);
+
+            ArrangePdfFile = new RelayCommand<object>(async parameter =>
+            {
+                if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
+                {
+                    if (MessageBox.Show($"{Translation.GetResStringValue("REPLACEPAGE")} {SayfaBaşlangıç}-{SayfaBitiş}", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                    {
+                        string oldpdfpath = pdfviewer.PdfFilePath;
+                        int start = SayfaBaşlangıç - 1;
+                        int end = SayfaBitiş - 1;
+                        await ArrangeFile(pdfviewer.PdfFilePath, pdfviewer.PdfFilePath, start, end);
+                        pdfviewer.PdfFilePath = null;
+                        pdfviewer.PdfFilePath = oldpdfpath;
+                    }
+                }
+            }, parameter => SayfaBaşlangıç != SayfaBitiş);
+
+            RemoveSelectedPage = new RelayCommand<object>(async parameter =>
+            {
+                if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
+                {
+                    string path = pdfviewer.PdfFilePath;
+                    if (MessageBox.Show($"{Translation.GetResStringValue("PAGENUMBER")} {SayfaBaşlangıç}-{SayfaBitiş} {Translation.GetResStringValue("DELETE")}", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                    {
+                        await RemovePdfPage(path, SayfaBaşlangıç, SayfaBitiş);
+                        pdfviewer.PdfFilePath = null;
+                        pdfviewer.PdfFilePath = path;
+                        pdfviewer.Sayfa = 1;
+                        SayfaBaşlangıç = SayfaBitiş = 1;
+                    }
+                }
+            }, parameter => parameter is PdfViewer.PdfViewer pdfviewer && pdfviewer.ToplamSayfa > 1 && SayfaBaşlangıç <= SayfaBitiş && (SayfaBitiş - SayfaBaşlangıç + 1) < pdfviewer.ToplamSayfa);
+
+            ExtractPdfFile = new RelayCommand<object>(async parameter =>
+            {
+                if (parameter is string loadfilename && File.Exists(loadfilename))
+                {
+                    SaveFileDialog saveFileDialog = new()
+                    {
+                        Filter = "Pdf Dosyası(*.pdf)|*.pdf",
+                        FileName = $"{Path.GetFileNameWithoutExtension(loadfilename)} {Translation.GetResStringValue("PAGENUMBER")} {SayfaBaşlangıç}-{SayfaBitiş}.pdf"
+                    };
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        string savefilename = saveFileDialog.FileName;
+                        int start = SayfaBaşlangıç;
+                        int end = SayfaBitiş;
+                        await SaveFile(loadfilename, savefilename, start, end);
+                    }
+                }
+            }, parameter => SayfaBaşlangıç <= SayfaBitiş);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public ICommand AddAllFileToControlPanel { get; }
 
         public ICommand AddFromClipBoard { get; }
 
@@ -690,6 +869,8 @@ namespace TwainControl
                 }
             }
         }
+
+        public ICommand ArrangePdfFile { get; }
 
         public byte[] CameraQRCodeData {
             get => cameraQRCodeData;
@@ -816,6 +997,8 @@ namespace TwainControl
 
         public ICommand ExploreFile { get; }
 
+        public ICommand ExtractPdfFile { get; }
+
         public ICommand EypPdfDosyaEkle { get; }
 
         public ICommand EypPdfİçerikBirleştir { get; }
@@ -868,6 +1051,8 @@ namespace TwainControl
 
         public ICommand MaximizePdfControl { get; }
 
+        public ICommand MergeSelectedImagesToPdfFile { get; }
+
         public ICommand OcrPage { get; }
 
         public ObservableCollection<Paper> Papers {
@@ -906,15 +1091,57 @@ namespace TwainControl
             }
         }
 
+        public ICommand PdfWaterMark { get; }
+
+        public string PdfWaterMarkText {
+            get => pdfWaterMarkText;
+
+            set {
+                if (pdfWaterMarkText != value)
+                {
+                    pdfWaterMarkText = value;
+                    OnPropertyChanged(nameof(PdfWaterMarkText));
+                }
+            }
+        }
+
+        public ICommand ReadPdfTag { get; }
+
         public ICommand RemoveProfile { get; }
+
+        public ICommand RemoveSelectedPage { get; }
 
         public ICommand ResimSil { get; }
 
         public ICommand ResimSilGeriAl { get; }
 
+        public ICommand RotateSelectedPage { get; }
+
         public ICommand SaveFileList { get; }
 
         public ICommand SaveProfile { get; }
+
+        public int SayfaBaşlangıç {
+            get => sayfaBaşlangıç;
+
+            set {
+                if (sayfaBaşlangıç != value)
+                {
+                    sayfaBaşlangıç = value;
+                    OnPropertyChanged(nameof(SayfaBaşlangıç));
+                }
+            }
+        }
+
+        public int SayfaBitiş {
+            get => sayfaBitiş; set {
+                if (sayfaBitiş != value)
+                {
+                    sayfaBitiş = value;
+                    OnPropertyChanged(nameof(SayfaBitiş));
+                }
+            }
+        }
 
         public ICommand ScanImage { get; }
 
@@ -1054,6 +1281,16 @@ namespace TwainControl
 
         public ICommand WebAdreseGit { get; }
 
+        public static async Task ArrangeFile(string loadfilename, string savefilename, int start, int end)
+        {
+            await Task.Run(() =>
+            {
+                using PdfDocument outputDocument = loadfilename.ArrangePdfPages(start, end);
+                outputDocument.DefaultPdfCompression();
+                outputDocument.Save(savefilename);
+            });
+        }
+
         public static List<List<T>> ChunkBy<T>(List<T> source, int chunkSize)
         {
             return source
@@ -1086,6 +1323,26 @@ namespace TwainControl
                     _ = MessageBox.Show(ex.Message);
                 }
             }
+        }
+
+        public static void NotifyPdfChange(PdfViewer.PdfViewer pdfviewer, string temporarypdf, string pdfFilePath)
+        {
+            File.Delete(temporarypdf);
+            pdfviewer.PdfFilePath = null;
+            pdfviewer.PdfFilePath = pdfFilePath;
+        }
+
+        public static async Task RemovePdfPage(string pdffilepath, int start, int end)
+        {
+            await Task.Run(() =>
+            {
+                PdfDocument inputDocument = PdfReader.Open(pdffilepath, PdfDocumentOpenMode.Import);
+                for (int i = end; i >= start; i--)
+                {
+                    inputDocument.Pages.RemoveAt(i - 1);
+                }
+                inputDocument.Save(pdffilepath);
+            });
         }
 
         public static void SaveJpgImage(BitmapFrame scannedImage, string filename)
@@ -1407,6 +1664,12 @@ namespace TwainControl
 
         private int pdfSplitCount = 0;
 
+        private string pdfWaterMarkText;
+
+        private int sayfaBaşlangıç = 1;
+
+        private int sayfaBitiş = 1;
+
         private Scanner scanner;
 
         private ScannedImage seçiliResim;
@@ -1457,6 +1720,16 @@ namespace TwainControl
                 return data;
             }
             return null;
+        }
+
+        private static async Task SaveFile(string loadfilename, string savefilename, int start, int end)
+        {
+            await Task.Run(() =>
+            {
+                using PdfDocument outputDocument = loadfilename.ExtractPdfPages(start, end);
+                outputDocument.DefaultPdfCompression();
+                outputDocument.Save(savefilename);
+            });
         }
 
         private async Task AddPdfFile(byte[] filedata, string filepath = null)
@@ -1937,6 +2210,21 @@ namespace TwainControl
                 _ = DragDrop.DoDragDrop(run, run.DataContext, DragDropEffects.Move);
                 DragMoveStarted = false;
             }
+        }
+
+        private void SavePageRotated(string savepath, PdfDocument inputDocument, int angle)
+        {
+            foreach (PdfPage page in inputDocument.Pages)
+            {
+                page.Rotate += angle;
+            }
+            inputDocument.Save(savepath);
+        }
+
+        private void SavePageRotated(string savepath, PdfDocument inputDocument, int angle, int pageindex)
+        {
+            inputDocument.Pages[pageindex].Rotate += angle;
+            inputDocument.Save(savepath);
         }
 
         private void ScanCommonSettings()

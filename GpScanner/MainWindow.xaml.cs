@@ -31,13 +31,6 @@ namespace GpScanner
             TwainCtrl.PropertyChanged += TwainCtrl_PropertyChanged;
         }
 
-        public static void NotifyPdfChange(PdfViewer.PdfViewer pdfviewer, string temporarypdf, string pdfFilePath)
-        {
-            File.Delete(temporarypdf);
-            pdfviewer.PdfFilePath = null;
-            pdfviewer.PdfFilePath = pdfFilePath;
-        }
-
         private async void ContentControl_Drop(object sender, DragEventArgs e)
         {
             if (e.OriginalSource is Image image && e.Data.GetData(typeof(ScannedImage)) is ScannedImage droppedData && image.TemplatedParent is PdfViewer.PdfViewer pdfviewer)
@@ -51,24 +44,24 @@ namespace GpScanner
 
                     if ((Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.LeftShift)) || (Keyboard.IsKeyDown(Key.RightAlt) && Keyboard.IsKeyDown(Key.RightShift)))
                     {
-                        await GpScannerViewModel.RemovePdfPage(pdfFilePath, curpage, curpage);
+                        await TwainCtrl.RemovePdfPage(pdfFilePath, curpage, curpage);
                         (new string[] { temporarypdf, pdfFilePath }).MergePdf().Save(pdfFilePath);
-                        await GpScannerViewModel.ArrangeFile(pdfFilePath, pdfFilePath, 0, curpage - 1);
-                        NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
+                        await TwainCtrl.ArrangeFile(pdfFilePath, pdfFilePath, 0, curpage - 1);
+                        TwainCtrl.NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
                         return;
                     }
 
                     if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
                     {
                         (new string[] { temporarypdf, pdfFilePath }).MergePdf().Save(pdfFilePath);
-                        await GpScannerViewModel.ArrangeFile(pdfFilePath, pdfFilePath, 0, curpage - 1);
-                        NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
+                        await TwainCtrl.ArrangeFile(pdfFilePath, pdfFilePath, 0, curpage - 1);
+                        TwainCtrl.NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
                         return;
                     }
 
                     string[] pdffiles = (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)) ? new string[] { pdfFilePath, temporarypdf } : new string[] { temporarypdf, pdfFilePath };
                     pdffiles.MergePdf().Save(pdfFilePath);
-                    NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
+                    TwainCtrl.NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
                 }
                 catch (Exception ex)
                 {

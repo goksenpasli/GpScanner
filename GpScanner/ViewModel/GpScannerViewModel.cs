@@ -23,9 +23,7 @@ using Extensions;
 using GpScanner.Properties;
 using Microsoft.Win32;
 using Ocr;
-using PdfSharp.Drawing;
 using PdfSharp.Pdf;
-using PdfSharp.Pdf.IO;
 using TwainControl;
 using ZXing;
 using ZXing.Common;
@@ -135,28 +133,6 @@ namespace GpScanner.ViewModel
                 }
             }, parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && parameter is TwainCtrl twainCtrl && twainCtrl.SeçiliResim is not null);
 
-            MergeSelectedImagesToPdfFile = new RelayCommand<object>(async parameter =>
-            {
-                if (parameter is object[] data && data[0] is TwainCtrl twainCtrl && data[1] is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
-                {
-                    string temporarypdf = Path.GetTempPath() + Guid.NewGuid() + ".pdf";
-                    IEnumerable<ScannedImage> seçiliresimler = twainCtrl.Scanner.Resimler.Where(z => z.Seçili);
-                    if (seçiliresimler.Any())
-                    {
-                        PdfDocument pdfDocument = await seçiliresimler.ToList().GeneratePdf(Format.Jpg, twainCtrl.SelectedPaper, Twainsettings.Settings.Default.JpegQuality, null, (int)Twainsettings.Settings.Default.Çözünürlük);
-                        string pdfFilePath = pdfviewer.PdfFilePath;
-                        pdfDocument.Save(temporarypdf);
-                        (new string[] { temporarypdf, pdfFilePath }).MergePdf().Save(pdfFilePath);
-                        MainWindow.NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
-                        if (Twainsettings.Settings.Default.RemoveProcessedImage)
-                        {
-                            twainCtrl.SeçiliListeTemizle.Execute(null);
-                        }
-                        GC.Collect();
-                    }
-                }
-            }, parameter => true);
-
             OcrPdfThumbnailPage = new RelayCommand<object>(async parameter =>
             {
                 if (parameter is PdfViewer.PdfViewer pdfviewer)
@@ -199,38 +175,6 @@ namespace GpScanner.ViewModel
                     GC.Collect();
                 }
             }, parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && !OcrIsBusy && parameter is PdfViewer.PdfViewer pdfviewer && pdfviewer.Source is not null);
-
-            AddAllFileToControlPanel = new RelayCommand<object>(async parameter =>
-            {
-                if (parameter is object[] data && data[0] is TwainCtrl twainCtrl && data[1] is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
-                {
-                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
-                    {
-                        twainCtrl.AddFiles(new string[] { pdfviewer.PdfFilePath }, twainCtrl.DecodeHeight);
-                        GC.Collect();
-                        return;
-                    }
-                    if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
-                    {
-                        string savefilename = Path.GetTempPath() + Guid.NewGuid() + ".pdf";
-                        await SaveFile(pdfviewer.PdfFilePath, savefilename, pdfviewer.Sayfa, pdfviewer.ToplamSayfa);
-                        twainCtrl.AddFiles(new string[] { savefilename }, twainCtrl.DecodeHeight);
-                        GC.Collect();
-                        return;
-                    }
-                    byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfviewer.PdfFilePath);
-                    MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfviewer.Sayfa, (int)Twainsettings.Settings.Default.ImgLoadResolution);
-                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrame(ms, twainCtrl.SelectedPaper, false);
-                    bitmapFrame.Freeze();
-                    ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
-                    twainCtrl.Scanner?.Resimler.Add(scannedImage);
-                    filedata = null;
-                    bitmapFrame = null;
-                    scannedImage = null;
-                    ms = null;
-                    GC.Collect();
-                }
-            }, parameter => true);
 
             OpenOriginalFile = new RelayCommand<object>(parameter =>
             {
@@ -315,85 +259,6 @@ namespace GpScanner.ViewModel
             }, parameter => Dosyalar?.Count > 0);
 
             ExploreFile = new RelayCommand<object>(parameter => OpenFolderAndSelectItem(Path.GetDirectoryName(parameter as string), Path.GetFileName(parameter as string)), parameter => true);
-
-            ExtractPdfFile = new RelayCommand<object>(async parameter =>
-            {
-                if (parameter is string loadfilename && File.Exists(loadfilename))
-                {
-                    SaveFileDialog saveFileDialog = new()
-                    {
-                        Filter = "Pdf Dosyası(*.pdf)|*.pdf",
-                        FileName = $"{Path.GetFileNameWithoutExtension(loadfilename)} {Translation.GetResStringValue("PAGENUMBER")} {SayfaBaşlangıç}-{SayfaBitiş}.pdf"
-                    };
-                    if (saveFileDialog.ShowDialog() == true)
-                    {
-                        string savefilename = saveFileDialog.FileName;
-                        int start = SayfaBaşlangıç;
-                        int end = SayfaBitiş;
-                        await SaveFile(loadfilename, savefilename, start, end);
-                    }
-                }
-            }, parameter => SayfaBaşlangıç <= SayfaBitiş);
-
-            ArrangePdfFile = new RelayCommand<object>(async parameter =>
-            {
-                if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
-                {
-                    if (MessageBox.Show($"{Translation.GetResStringValue("REPLACEPAGE")} {SayfaBaşlangıç}-{SayfaBitiş}", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
-                    {
-                        string oldpdfpath = pdfviewer.PdfFilePath;
-                        int start = SayfaBaşlangıç - 1;
-                        int end = SayfaBitiş - 1;
-                        await ArrangeFile(pdfviewer.PdfFilePath, pdfviewer.PdfFilePath, start, end);
-                        pdfviewer.PdfFilePath = null;
-                        pdfviewer.PdfFilePath = oldpdfpath;
-                    }
-                }
-            }, parameter => SayfaBaşlangıç != SayfaBitiş);
-
-            RemoveSelectedPage = new RelayCommand<object>(async parameter =>
-            {
-                if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
-                {
-                    string path = pdfviewer.PdfFilePath;
-                    if (MessageBox.Show($"{Translation.GetResStringValue("PAGENUMBER")} {SayfaBaşlangıç}-{SayfaBitiş} {Translation.GetResStringValue("DELETE")}", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
-                    {
-                        await RemovePdfPage(path, SayfaBaşlangıç, SayfaBitiş);
-                        pdfviewer.PdfFilePath = null;
-                        pdfviewer.PdfFilePath = path;
-                        pdfviewer.Sayfa = 1;
-                        SayfaBaşlangıç = SayfaBitiş = 1;
-                    }
-                }
-            }, parameter => parameter is PdfViewer.PdfViewer pdfviewer && pdfviewer.ToplamSayfa > 1 && SayfaBaşlangıç <= SayfaBitiş && (SayfaBitiş - SayfaBaşlangıç + 1) < pdfviewer.ToplamSayfa);
-
-            RotateSelectedPage = new RelayCommand<object>(parameter =>
-            {
-                if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
-                {
-                    string path = pdfviewer.PdfFilePath;
-                    int currentpage = pdfviewer.Sayfa;
-                    using PdfDocument inputDocument = PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Import);
-                    if ((Keyboard.IsKeyDown(Key.LeftCtrl) && Keyboard.IsKeyDown(Key.LeftAlt)) || (Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.RightAlt)))
-                    {
-                        if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
-                        {
-                            SavePageRotated(path, inputDocument, -90);
-                            pdfviewer.PdfFilePath = null;
-                            pdfviewer.PdfFilePath = path;
-                            return;
-                        }
-                        SavePageRotated(path, inputDocument, 90);
-                        pdfviewer.PdfFilePath = null;
-                        pdfviewer.PdfFilePath = path;
-                        return;
-                    }
-                    SavePageRotated(path, inputDocument, (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)) ? -90 : 90, pdfviewer.Sayfa - 1);
-                    pdfviewer.PdfFilePath = null;
-                    pdfviewer.Sayfa = currentpage;
-                    pdfviewer.PdfFilePath = path;
-                }
-            }, parameter => true);
 
             SavePatchProfile = new RelayCommand<object>(parameter =>
             {
@@ -598,49 +463,6 @@ namespace GpScanner.ViewModel
                 }
             }, parameter => MainWindow.cvs?.View?.OfType<Scanner>().Count(z => z.Seçili) > 0);
 
-            ReadPdfTag = new RelayCommand<object>(parameter =>
-            {
-                if (parameter is string filepath && File.Exists(filepath))
-                {
-                    using PdfDocument reader = PdfReader.Open(filepath, PdfDocumentOpenMode.ReadOnly);
-                    StringBuilder stringBuilder = new();
-                    _ = stringBuilder.AppendLine(filepath).
-                    AppendFormat("PDF {0:#.#}", reader.Version / 10d).AppendLine().
-                    AppendLine(reader.Info.Title).
-                    Append(reader.PageCount).AppendLine().
-                    AppendLine(reader.Info.Producer).
-                    AppendLine(reader.Info.Keywords).
-                    AppendLine(reader.Info.Creator).
-                    AppendLine(reader.Info.Author).
-                    Append(reader.Info.CreationDate).AppendLine().
-                    Append(reader.Info.ModificationDate).AppendLine().
-                    AppendFormat("{0:##.##} MB", reader.FileSize / 1048576d).AppendLine();
-                    _ = MessageBox.Show(stringBuilder.ToString(), Application.Current?.MainWindow?.Title);
-                }
-            }, parameter => true);
-
-            PdfWaterMark = new RelayCommand<object>(parameter =>
-            {
-                if (parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
-                {
-                    string oldpdfpath = pdfViewer.PdfFilePath;
-                    using PdfDocument reader = PdfReader.Open(pdfViewer.PdfFilePath);
-                    PdfPage page = reader.Pages[pdfViewer.Sayfa - 1];
-                    using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
-                    gfx.TranslateTransform(page.Width / 2, page.Height / 2);
-                    gfx.RotateTransform(-Math.Atan(page.Height / page.Width) * 180 / Math.PI);
-                    gfx.TranslateTransform(-page.Width / 2, -page.Height / 2);
-                    XStringFormat format = new() { Alignment = XStringAlignment.Near, LineAlignment = XLineAlignment.Near };
-                    XBrush brush = new XSolidBrush(XColor.FromArgb(128, 255, 0, 0));
-                    XFont font = new("Arial", 72);
-                    XSize size = gfx.MeasureString(PdfWaterMarkText, font);
-                    gfx.DrawString(PdfWaterMarkText, font, brush, new XPoint((page.Width - size.Width) / 2, (page.Height - size.Height) / 2), format);
-                    reader.Save(pdfViewer.PdfFilePath);
-                    pdfViewer.PdfFilePath = null;
-                    pdfViewer.PdfFilePath = oldpdfpath;
-                }
-            }, parameter => !string.IsNullOrWhiteSpace(PdfWaterMarkText));
-
             ReadOcrDataFile = new RelayCommand<object>(parameter =>
             {
                 if (parameter is Scanner scanner)
@@ -676,8 +498,6 @@ namespace GpScanner.ViewModel
             }
         }
 
-        public ICommand AddAllFileToControlPanel { get; }
-
         public ICommand AddFtpSites { get; }
 
         public bool AnyDataExists {
@@ -703,8 +523,6 @@ namespace GpScanner.ViewModel
                 }
             }
         }
-
-        public ICommand ArrangePdfFile { get; }
 
         public string BarcodeContent {
             get => barcodeContent;
@@ -732,7 +550,6 @@ namespace GpScanner.ViewModel
 
         public ResultPoint[] BarcodePosition {
             get => barcodePosition; set {
-
                 if (barcodePosition != value)
                 {
                     barcodePosition = value;
@@ -743,7 +560,6 @@ namespace GpScanner.ViewModel
 
         public bool BatchDialogOpen {
             get => batchDialogOpen; set {
-
                 if (batchDialogOpen != value)
                 {
                     batchDialogOpen = value;
@@ -862,8 +678,6 @@ namespace GpScanner.ViewModel
 
         public ICommand ExploreFile { get; }
 
-        public ICommand ExtractPdfFile { get; }
-
         public double Fold {
             get => fold;
 
@@ -878,7 +692,6 @@ namespace GpScanner.ViewModel
 
         public string FtpPassword {
             get => ftpPassword; set {
-
                 if (ftpPassword != value)
                 {
                     ftpPassword = value;
@@ -901,7 +714,6 @@ namespace GpScanner.ViewModel
 
         public string FtpUserName {
             get => ftpUserName; set {
-
                 if (ftpUserName != value)
                 {
                     ftpUserName = value;
@@ -943,7 +755,6 @@ namespace GpScanner.ViewModel
 
         public GridLength MainWindowDocumentGuiControlLength {
             get => mainWindowDocumentGuiControlLength; set {
-
                 if (mainWindowDocumentGuiControlLength != value)
                 {
                     mainWindowDocumentGuiControlLength = value;
@@ -954,7 +765,6 @@ namespace GpScanner.ViewModel
 
         public GridLength MainWindowGuiControlLength {
             get => mainWindowGuiControlLength; set {
-
                 if (mainWindowGuiControlLength != value)
                 {
                     mainWindowGuiControlLength = value;
@@ -962,8 +772,6 @@ namespace GpScanner.ViewModel
                 }
             }
         }
-
-        public ICommand MergeSelectedImagesToPdfFile { get; }
 
         public ICommand ModifyGridWidth { get; }
 
@@ -989,7 +797,6 @@ namespace GpScanner.ViewModel
 
         public string PatchFileName {
             get => patchFileName; set {
-
                 if (patchFileName != value)
                 {
                     patchFileName = value;
@@ -1026,7 +833,6 @@ namespace GpScanner.ViewModel
 
         public double PdfMergeProgressValue {
             get => pdfMergeProgressValue; set {
-
                 if (pdfMergeProgressValue != value)
                 {
                     pdfMergeProgressValue = value;
@@ -1047,19 +853,6 @@ namespace GpScanner.ViewModel
             }
         }
 
-        public ICommand PdfWaterMark { get; }
-
-        public string PdfWaterMarkText {
-            get => pdfWaterMarkText; set {
-
-                if (pdfWaterMarkText != value)
-                {
-                    pdfWaterMarkText = value;
-                    OnPropertyChanged(nameof(PdfWaterMarkText));
-                }
-            }
-        }
-
         public ICommand PrintImage { get; }
 
         public Brush ProgressBarForegroundBrush {
@@ -1076,46 +869,17 @@ namespace GpScanner.ViewModel
 
         public ICommand ReadOcrDataFile { get; }
 
-        public ICommand ReadPdfTag { get; }
-
         public ICommand RegisterSti { get; }
 
         public ICommand RemovePatchProfile { get; }
 
         public ICommand RemoveSelectedFtp { get; }
 
-        public ICommand RemoveSelectedPage { get; }
-
         public ICommand ResetSettings { get; }
-
-        public ICommand RotateSelectedPage { get; }
 
         public ICommand SavePatchProfile { get; }
 
         public ICommand SaveQrImage { get; }
-
-        public int SayfaBaşlangıç {
-            get => sayfaBaşlangıç;
-
-            set {
-                if (sayfaBaşlangıç != value)
-                {
-                    sayfaBaşlangıç = value;
-                    OnPropertyChanged(nameof(SayfaBaşlangıç));
-                }
-            }
-        }
-
-        public int SayfaBitiş {
-            get => sayfaBitiş; set {
-
-                if (sayfaBitiş != value)
-                {
-                    sayfaBitiş = value;
-                    OnPropertyChanged(nameof(SayfaBitiş));
-                }
-            }
-        }
 
         public ObservableCollection<OcrData> ScannedText {
             get => scannedText;
@@ -1145,7 +909,6 @@ namespace GpScanner.ViewModel
 
         public DateTime? SeçiliGün {
             get => seçiliGün; set {
-
                 if (seçiliGün != value)
                 {
                     seçiliGün = value;
@@ -1168,7 +931,6 @@ namespace GpScanner.ViewModel
 
         public string SelectedFtp {
             get => selectedFtp; set {
-
                 if (selectedFtp != value)
                 {
                     selectedFtp = value;
@@ -1245,16 +1007,6 @@ namespace GpScanner.ViewModel
 
         public ICommand UploadFtp { get; }
 
-        public static async Task ArrangeFile(string loadfilename, string savefilename, int start, int end)
-        {
-            await Task.Run(() =>
-            {
-                using PdfDocument outputDocument = loadfilename.ArrangePdfPages(start, end);
-                outputDocument.DefaultPdfCompression();
-                outputDocument.Save(savefilename);
-            });
-        }
-
         public static void BackupDataXmlFile()
         {
             if (File.Exists(Settings.Default.DatabaseFile))
@@ -1328,19 +1080,6 @@ namespace GpScanner.ViewModel
                 return reader.Decode(bitmapFrame);
             }
             return null;
-        }
-
-        public static async Task RemovePdfPage(string pdffilepath, int start, int end)
-        {
-            await Task.Run(() =>
-            {
-                PdfDocument inputDocument = PdfReader.Open(pdffilepath, PdfDocumentOpenMode.Import);
-                for (int i = end; i >= start; i--)
-                {
-                    inputDocument.Pages.RemoveAt(i - 1);
-                }
-                inputDocument.Save(pdffilepath);
-            });
         }
 
         public static void WriteAppExceptions(DispatcherUnhandledExceptionEventArgs e)
@@ -1527,13 +1266,7 @@ namespace GpScanner.ViewModel
 
         private bool pdfOnlyText;
 
-        private string pdfWaterMarkText;
-
         private Brush progressBarForegroundBrush = Brushes.Green;
-
-        private int sayfaBaşlangıç = 1;
-
-        private int sayfaBitiş = 1;
 
         private ObservableCollection<OcrData> scannedText = new();
 
@@ -1552,16 +1285,6 @@ namespace GpScanner.ViewModel
         private TesseractViewModel tesseractViewModel;
 
         private TranslateViewModel translateViewModel;
-
-        private static async Task SaveFile(string loadfilename, string savefilename, int start, int end)
-        {
-            await Task.Run(() =>
-            {
-                using PdfDocument outputDocument = loadfilename.ExtractPdfPages(start, end);
-                outputDocument.DefaultPdfCompression();
-                outputDocument.Save(savefilename);
-            });
-        }
 
         [DllImport("Shlwapi.dll", CharSet = CharSet.Unicode)]
         private static extern int StrCmpLogicalW(string x, string y);
@@ -1689,21 +1412,6 @@ namespace GpScanner.ViewModel
                 DatabaseSave.Execute(null);
                 Dosyalar = GetScannerFileData();
             };
-        }
-
-        private void SavePageRotated(string savepath, PdfDocument inputDocument, int angle)
-        {
-            foreach (PdfPage page in inputDocument.Pages)
-            {
-                page.Rotate += angle;
-            }
-            inputDocument.Save(savepath);
-        }
-
-        private void SavePageRotated(string savepath, PdfDocument inputDocument, int angle, int pageindex)
-        {
-            inputDocument.Pages[pageindex].Rotate += angle;
-            inputDocument.Save(savepath);
         }
     }
 }
