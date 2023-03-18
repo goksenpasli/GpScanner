@@ -685,8 +685,8 @@ namespace TwainControl
                     gfx.RotateTransform(-Math.Atan(page.Height / page.Width) * 180 / Math.PI);
                     gfx.TranslateTransform(-page.Width / 2, -page.Height / 2);
                     XStringFormat format = new() { Alignment = XStringAlignment.Near, LineAlignment = XLineAlignment.Near };
-                    XBrush brush = new XSolidBrush(XColor.FromArgb(128, 255, 0, 0));
-                    XFont font = new("Arial", 72);
+                    XBrush brush = new XSolidBrush(XColor.FromArgb(PdfWatermarkColor.Color.A, PdfWatermarkColor.Color.R, PdfWatermarkColor.Color.G, PdfWatermarkColor.Color.B));
+                    XFont font = new(PdfWatermarkFont, PdfWatermarkFontSize);
                     XSize size = gfx.MeasureString(PdfWaterMarkText, font);
                     gfx.DrawString(PdfWaterMarkText, font, brush, new XPoint((page.Width - size.Width) / 2, (page.Height - size.Height) / 2), format);
                     reader.Save(pdfViewer.PdfFilePath);
@@ -886,6 +886,7 @@ namespace TwainControl
 
         public bool CanUndoImage {
             get => canUndoImage; set {
+
                 if (canUndoImage != value)
                 {
                     canUndoImage = value;
@@ -941,6 +942,7 @@ namespace TwainControl
 
         public ObservableCollection<OcrData> DataBaseTextData {
             get => dataBaseTextData; set {
+
                 if (dataBaseTextData != value)
                 {
                     dataBaseTextData = value;
@@ -987,6 +989,7 @@ namespace TwainControl
 
         public bool DragMoveStarted {
             get => dragMoveStarted; set {
+
                 if (dragMoveStarted != value)
                 {
                     dragMoveStarted = value;
@@ -1093,6 +1096,40 @@ namespace TwainControl
 
         public ICommand PdfWaterMark { get; }
 
+        public SolidColorBrush PdfWatermarkColor {
+            get => pdfWatermarkColor; set {
+
+                if (pdfWatermarkColor != value)
+                {
+                    pdfWatermarkColor = value;
+                    OnPropertyChanged(nameof(PdfWatermarkColor));
+                }
+            }
+        }
+
+        public string PdfWatermarkFont {
+            get => pdfWatermarkFont; set {
+
+                if (pdfWatermarkFont != value)
+                {
+                    pdfWatermarkFont = value;
+                    OnPropertyChanged(nameof(PdfWatermarkFont));
+                }
+            }
+        }
+
+        public double PdfWatermarkFontSize {
+            get => pdfWatermarkFontSize;
+
+            set {
+                if (pdfWatermarkFontSize != value)
+                {
+                    pdfWatermarkFontSize = value;
+                    OnPropertyChanged(nameof(PdfWatermarkFontSize));
+                }
+            }
+        }
+
         public string PdfWaterMarkText {
             get => pdfWaterMarkText;
 
@@ -1135,6 +1172,7 @@ namespace TwainControl
 
         public int SayfaBitiş {
             get => sayfaBitiş; set {
+
                 if (sayfaBitiş != value)
                 {
                     sayfaBitiş = value;
@@ -1189,6 +1227,7 @@ namespace TwainControl
 
         public TwainWpf.TwainNative.Orientation SelectedOrientation {
             get => selectedOrientation; set {
+
                 if (selectedOrientation != value)
                 {
                     selectedOrientation = value;
@@ -1211,6 +1250,7 @@ namespace TwainControl
 
         public PageRotation SelectedRotation {
             get => selectedRotation; set {
+
                 if (selectedRotation != value)
                 {
                     selectedRotation = value;
@@ -1221,6 +1261,7 @@ namespace TwainControl
 
         public TabItem SelectedTab {
             get => selectedTab; set {
+
                 if (selectedTab != value)
                 {
                     selectedTab = value;
@@ -1259,6 +1300,7 @@ namespace TwainControl
 
         public ScannedImage UndoImage {
             get => undoImage; set {
+
                 if (undoImage != value)
                 {
                     undoImage = value;
@@ -1663,6 +1705,12 @@ namespace TwainControl
         private double pdfLoadProgressValue;
 
         private int pdfSplitCount = 0;
+
+        private SolidColorBrush pdfWatermarkColor = System.Windows.Media.Brushes.Red;
+
+        private string pdfWatermarkFont = "Arial";
+
+        private double pdfWatermarkFontSize = 72d;
 
         private string pdfWaterMarkText;
 

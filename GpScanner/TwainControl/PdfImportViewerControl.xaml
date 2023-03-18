@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
     xmlns:Pdfviewer="clr-namespace:PdfViewer;assembly=PdfViewer"
+    xmlns:System="clr-namespace:System;assembly=mscorlib"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:TwainControl"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -124,6 +125,38 @@
                     <GroupBox Header="{local:Loc WATERMARK}">
                         <StackPanel>
                             <TextBox VerticalContentAlignment="Center" Text="{Binding PdfWaterMarkText, UpdateSourceTrigger=PropertyChanged}" />
+                            <UniformGrid Columns="2">
+                                <ComboBox Height="22.4"
+                                    VerticalContentAlignment="Center"
+                                    SelectedItem="{Binding PdfWatermarkFont}">
+                                    <ComboBox.Items>
+                                        <System:String>Arial</System:String>
+                                        <System:String>Calibri</System:String>
+                                        <System:String>Segoe UI</System:String>
+                                        <System:String>Times New Roman</System:String>
+                                    </ComboBox.Items>
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock FontFamily="{Binding Mode=OneWay}" Text="{Binding Mode=OneWay}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                    <ComboBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <VirtualizingStackPanel />
+                                        </ItemsPanelTemplate>
+                                    </ComboBox.ItemsPanel>
+                                </ComboBox>
+                                <Extensions:ContentToggleButton Background="{Binding PdfWatermarkColor, Mode=OneWay}">
+                                    <Extensions:ContentToggleButton.OverContent>
+                                        <Extensions:ColorPicker Width="350" Height="250"
+                                            HexCode="{Binding PdfWatermarkColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            PredefinedColorVisibility="Visible" />
+                                    </Extensions:ContentToggleButton.OverContent>
+                                </Extensions:ContentToggleButton>
+                            </UniformGrid>
+                            <Extensions:NumericUpDownControl IsReadOnly="True" Maximum="512" Minimum="1"
+                                SmallChange="1"
+                                Value="{Binding PdfWatermarkFontSize, UpdateSourceTrigger=PropertyChanged}" />
                             <Button Command="{Binding PdfWaterMark}" CommandParameter="{Binding Source={x:Reference PdfViewer}}">
                                 <StackPanel Orientation="Horizontal">
                                     <Image Width="24" Height="24">
@@ -157,17 +190,6 @@
                         </MultiBinding>
                     </Image.Source>
                 </Image>
-            </Button>
-            <Button VerticalContentAlignment="Stretch"
-                Command="{Binding DataContext.OcrPdfImportViewerThumbnailPage, RelativeSource={RelativeSource AncestorType=Window}}"
-                CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
-                <Button.Content>
-                    <Grid>
-                        <ProgressBar IsIndeterminate="{Binding DataContext.OcrIsBusy, RelativeSource={RelativeSource AncestorType=Window}}" />
-                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                            Text="OCR" />
-                    </Grid>
-                </Button.Content>
             </Button>
             <Button Command="{Binding MaximizePdfControl}">
                 <Image Width="16" Height="16">
