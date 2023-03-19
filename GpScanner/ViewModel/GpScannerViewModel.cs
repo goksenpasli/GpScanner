@@ -135,7 +135,7 @@ namespace GpScanner.ViewModel
 
             OcrPdfThumbnailPage = new RelayCommand<object>(async parameter =>
             {
-                if (parameter is PdfViewer.PdfViewer pdfviewer)
+                if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
                 {
                     OcrIsBusy = true;
                     byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfviewer.PdfFilePath);
@@ -151,30 +151,7 @@ namespace GpScanner.ViewModel
                     }
                     GC.Collect();
                 }
-            }, parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && !OcrIsBusy && parameter is PdfViewer.PdfViewer pdfviewer && pdfviewer.Source is not null);
-
-            OcrPdfImportViewerThumbnailPage = new RelayCommand<object>(async parameter =>
-            {
-                if (parameter is PdfViewer.PdfViewer pdfviewer)
-                {
-                    OcrIsBusy = true;
-                    byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfviewer.PdfFilePath);
-                    MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfviewer.Sayfa, (int)Twainsettings.Settings.Default.ImgLoadResolution);
-                    if (ms != null)
-                    {
-                        ScannedText = await ms.ToArray().OcrAsyc(Settings.Default.DefaultTtsLang);
-                        if (ScannedText != null)
-                        {
-                            TranslateViewModel.Metin = string.Join(" ", ScannedText.Select(z => z.Text));
-                            TranslateViewModel.TaramaGeçmiş.Add(TranslateViewModel.Metin);
-                            OcrIsBusy = false;
-                        }
-                        filedata = null;
-                        ms = null;
-                    }
-                    GC.Collect();
-                }
-            }, parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && !OcrIsBusy && parameter is PdfViewer.PdfViewer pdfviewer && pdfviewer.Source is not null);
+            }, parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && !OcrIsBusy);
 
             OpenOriginalFile = new RelayCommand<object>(parameter =>
             {
@@ -788,8 +765,6 @@ namespace GpScanner.ViewModel
         }
 
         public ICommand OcrPage { get; }
-
-        public ICommand OcrPdfImportViewerThumbnailPage { get; }
 
         public ICommand OcrPdfThumbnailPage { get; }
 

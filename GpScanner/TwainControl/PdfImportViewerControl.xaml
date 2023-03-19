@@ -201,6 +201,16 @@
                     </Image.Source>
                 </Image>
             </Button>
+            <Button Command="{Binding ClosePdfFile}" CommandParameter="{Binding ElementName=PdfViewer}">
+                <Image Width="16" Height="16">
+                    <Image.Source>
+                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                            <Binding Source="Shell32.dll" />
+                            <Binding Source="27" />
+                        </MultiBinding>
+                    </Image.Source>
+                </Image>
+            </Button>
         </WrapPanel>
         <Grid Grid.Row="1">
             <Pdfviewer:PdfViewer x:Name="PdfViewer"

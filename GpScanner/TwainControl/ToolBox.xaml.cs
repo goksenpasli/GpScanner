@@ -157,7 +157,10 @@ namespace TwainControl
                     WebAdreseGit.Execute(savefolder);
                     listcroppedimages = null;
                     pdfdocument = null;
-                    twainControl.SeçiliListeTemizle.Execute(null);
+                    if (Settings.Default.RemoveProcessedImage)
+                    {
+                        twainControl.SeçiliListeTemizle.Execute(null);
+                    }
                 }
             }, parameter => Scanner?.AutoSave == true && Scanner?.Resimler?.Count(z => z.Seçili) > 0);
 
@@ -206,7 +209,10 @@ namespace TwainControl
                 WebAdreseGit.Execute(savefolder);
                 pdfdocument = null;
                 page = null;
-                (DataContext as TwainCtrl)?.SeçiliListeTemizle.Execute(null);
+                if (Settings.Default.RemoveProcessedImage)
+                {
+                    (DataContext as TwainCtrl)?.SeçiliListeTemizle.Execute(null);
+                }
                 ToolBoxPdfMergeProgressValue = 0;
             }, parameter => Scanner?.AutoSave == true && Scanner?.Resimler?.Count(z => z.Seçili) > 1);
         }

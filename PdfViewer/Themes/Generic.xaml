@@ -109,6 +109,7 @@
                             </Image>
                         </ScrollViewer>
                         <ScrollBar Grid.Row="0" Grid.Column="1"
+                            IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}"
                             Maximum="{Binding Pages.Count, RelativeSource={RelativeSource TemplatedParent}}"
                             Minimum="1" Orientation="Vertical" SmallChange="1"
                             ViewportSize="1"

@@ -520,6 +520,7 @@ namespace PdfViewer
                     return;
                 }
                 pdfViewer.Source = null;
+                pdfViewer.Sayfa = 1;
             }
         }
 

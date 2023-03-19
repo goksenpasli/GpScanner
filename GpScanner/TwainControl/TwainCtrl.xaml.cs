@@ -814,6 +814,14 @@ namespace TwainControl
                 }
             }, parameter => SayfaBaşlangıç != SayfaBitiş);
 
+            ClosePdfFile = new RelayCommand<object>(parameter =>
+            {
+                if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
+                {
+                    pdfviewer.PdfFilePath = null;
+                }
+            }, parameter => parameter is PdfViewer.PdfViewer pdfviewer && pdfviewer.PdfFilePath is not null);
+
             RemoveSelectedPage = new RelayCommand<object>(async parameter =>
             {
                 if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
@@ -894,6 +902,8 @@ namespace TwainControl
                 }
             }
         }
+
+        public ICommand ClosePdfFile { get; }
 
         public List<Tuple<string, int, double, bool, double>> CompressionProfiles => new()
             {
