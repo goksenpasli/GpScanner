@@ -2260,6 +2260,24 @@ namespace TwainControl
             }
         }
 
+        private void Run_GiveFeedback(object sender, GiveFeedbackEventArgs e)
+        {
+            if (e.Effects == DragDropEffects.Move && e.Source is Run run && run.TemplatedParent is ListBoxItem listBoxItem)
+            {
+                using Cursor customCursor = CursorHelper.CreateCursor(listBoxItem);
+                if (customCursor != null)
+                {
+                    e.UseDefaultCursors = false;
+                    Mouse.SetCursor(customCursor);
+                }
+            }
+            else
+            {
+                e.UseDefaultCursors = true;
+            }
+            e.Handled = true;
+        }
+
         private void Run_PreviewMouseMove(object sender, MouseEventArgs e)
         {
             if (sender is Run run && e.LeftButton == MouseButtonState.Pressed)

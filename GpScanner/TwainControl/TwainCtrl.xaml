@@ -988,7 +988,7 @@
                                                                 Value="{Binding RotationAngle}" />
                                                             <Run AllowDrop="True" Cursor="SizeAll" Drop="Run_Drop"
                                                                 FontFamily="Wingdings" FontSize="24" FontWeight="Bold"
-                                                                PreviewMouseMove="Run_PreviewMouseMove" Text="B">
+                                                                PreviewMouseMove="Run_PreviewMouseMove" Text="B" GiveFeedback="Run_GiveFeedback">
                                                                 <Run.Style>
                                                                     <Style TargetType="Run">
                                                                         <Setter Property="Foreground" Value="Red" />
