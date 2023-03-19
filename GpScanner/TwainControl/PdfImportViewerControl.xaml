@@ -51,14 +51,8 @@
                 </Image>
             </Button>
             <Button Command="{Binding RemoveSelectedPage}" CommandParameter="{Binding ElementName=PdfViewer}">
-                <Image Width="16" Height="16">
-                    <Image.Source>
-                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                            <Binding Source="Shell32.dll" />
-                            <Binding Source="131" />
-                        </MultiBinding>
-                    </Image.Source>
-                </Image>
+                <Image Width="16" Height="16"
+                    Source="/TwainControl;component/Icons/delete.png" />
             </Button>
             <Button Command="{Binding ArrangePdfFile}" CommandParameter="{Binding ElementName=PdfViewer}">
                 <Image Width="16" Height="16">

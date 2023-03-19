@@ -38,6 +38,7 @@
                 </DataTrigger>
                 <DataTrigger Binding="{Binding ListBoxBorderAnimation}" Value="false">
                     <DataTrigger.EnterActions>
+                        <StopStoryboard BeginStoryboardName="Sb" />
                         <RemoveStoryboard BeginStoryboardName="Sb" />
                     </DataTrigger.EnterActions>
                 </DataTrigger>
@@ -61,6 +62,7 @@
                 </DataTrigger>
                 <DataTrigger Binding="{Binding BorderAnimation}" Value="false">
                     <DataTrigger.EnterActions>
+                        <StopStoryboard BeginStoryboardName="Sb" />
                         <RemoveStoryboard BeginStoryboardName="Sb" />
                     </DataTrigger.EnterActions>
                 </DataTrigger>
@@ -84,6 +86,7 @@
                 </DataTrigger>
                 <DataTrigger Binding="{Binding ListBoxBorderAnimation}" Value="false">
                     <DataTrigger.EnterActions>
+                        <StopStoryboard BeginStoryboardName="Sb" />
                         <RemoveStoryboard BeginStoryboardName="Sb" />
                     </DataTrigger.EnterActions>
                 </DataTrigger>
@@ -536,14 +539,8 @@
                             <Button Grid.Column="1"
                                 Command="{Binding CancelOcr}"
                                 IsEnabled="{Binding OcrIsBusy}">
-                                <Image Width="32" Height="32">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="131" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
+                                <Image Width="32" Height="32"
+                                    Source="/TwainControl;component/Icons/delete.png" />
                             </Button>
                         </Grid>
                         <GroupBox Grid.Row="1">

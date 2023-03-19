@@ -563,6 +563,7 @@
                 </LinearGradientBrush>
             </Setter.Value>
         </Setter>
+        <Setter Property="BorderBrush" Value="#ACACAC" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:ContentToggleButton">
@@ -626,6 +627,7 @@
             </Grid.ColumnDefinitions>
             <RepeatButton x:Name="PART_LineUpButton"
                 Grid.Row="0" Grid.Column="0"
+                Background="{TemplateBinding Background}"
                 BorderBrush="{TemplateBinding BorderBrush}"
                 Command="{x:Static ScrollBar.LineLeftCommand}"
                 Style="{StaticResource ScrollBarButton}"
@@ -654,6 +656,7 @@
                 Visibility="{Binding NumericUpdownTextBoxVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
             <RepeatButton x:Name="PART_LineDownButton"
                 Grid.Row="1" Grid.Column="2"
+                Background="{TemplateBinding Background}"
                 BorderBrush="{TemplateBinding BorderBrush}"
                 Command="{x:Static ScrollBar.LineRightCommand}"
                 Style="{StaticResource ScrollBarButton}"
@@ -694,6 +697,7 @@
             <RepeatButton x:Name="PART_LineUpButton"
                 Grid.Row="0" Grid.Column="1"
                 MinHeight="7"
+                Background="{TemplateBinding Background}"
                 BorderBrush="{TemplateBinding BorderBrush}"
                 Command="{x:Static ScrollBar.LineDownCommand}"
                 Style="{StaticResource ScrollBarButton}"
@@ -723,6 +727,7 @@
             <RepeatButton x:Name="PART_LineDownButton"
                 Grid.Row="1" Grid.Column="1"
                 MinHeight="7"
+                Background="{TemplateBinding Background}"
                 BorderBrush="{TemplateBinding BorderBrush}"
                 Command="{x:Static ScrollBar.LineUpCommand}"
                 Style="{StaticResource ScrollBarButton}"
@@ -747,7 +752,7 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
     <Style TargetType="local:NumericUpDownControl">
-        <Setter Property="Background" Value="White" />
+        <Setter Property="Background" Value="{x:Null}" />
         <Setter Property="ContextMenuService.IsEnabled" Value="False" />
         <Style.Triggers>
             <Trigger Property="Orientation" Value="Horizontal">

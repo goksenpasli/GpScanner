@@ -170,7 +170,32 @@ namespace TwainControl
 
             Tümünüİşaretle = new RelayCommand<object>(parameter =>
             {
-                foreach (ScannedImage item in Scanner.Resimler.ToList())
+                List<ScannedImage> resimler = Scanner.Resimler.ToList();
+                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                {
+                    for (int i = 0; i < resimler.Count; i++)
+                    {
+                        if (i % 2 == 1)
+                        {
+                            ScannedImage item = resimler[i];
+                            item.Seçili = true;
+                        }
+                    }
+                    return;
+                } 
+                if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                {
+                    for (int i = 0; i < resimler.Count; i++)
+                    {
+                        if (i % 2 == 0)
+                        {
+                            ScannedImage item = resimler[i];
+                            item.Seçili = true;
+                        }
+                    }
+                    return;
+                }
+                foreach (ScannedImage item in resimler)
                 {
                     item.Seçili = true;
                 }
@@ -196,6 +221,7 @@ namespace TwainControl
 
             TümününİşaretiniKaldır = new RelayCommand<object>(parameter =>
             {
+                SeçiliResim = null;
                 foreach (ScannedImage item in Scanner.Resimler.ToList())
                 {
                     item.Seçili = false;
@@ -736,7 +762,7 @@ namespace TwainControl
                     AppendFormat("{0:##.##} MB", reader.FileSize / 1048576d).AppendLine();
                     _ = MessageBox.Show(stringBuilder.ToString(), Application.Current?.MainWindow?.Title);
                 }
-            }, parameter => true);
+            }, parameter => parameter is string filepath && File.Exists(filepath));
 
             AddAllFileToControlPanel = new RelayCommand<object>(async parameter =>
             {
@@ -796,7 +822,7 @@ namespace TwainControl
                     pdfviewer.Sayfa = currentpage;
                     pdfviewer.PdfFilePath = path;
                 }
-            }, parameter => true);
+            }, parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
 
             ArrangePdfFile = new RelayCommand<object>(async parameter =>
             {
@@ -855,7 +881,7 @@ namespace TwainControl
                         await SaveFile(loadfilename, savefilename, start, end);
                     }
                 }
-            }, parameter => SayfaBaşlangıç <= SayfaBitiş);
+            }, parameter => parameter is string loadfilename && File.Exists(loadfilename) && SayfaBaşlangıç <= SayfaBitiş);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

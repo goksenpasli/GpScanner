@@ -175,14 +175,8 @@
                                         Text="{Binding PatchTag, UpdateSourceTrigger=PropertyChanged}" />
                                     <Button Command="{Binding SavePatchProfile}" IsEnabled="{Binding DetectPageSeperator}">
                                         <StackPanel Orientation="Horizontal">
-                                            <Image Width="16" Height="16">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="6" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
+                                            <Image Width="16" Height="16"
+                                                Source="/TwainControl;component/Icons/save.png" />
                                             <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SAVEPROFILE}" />
                                         </StackPanel>
                                     </Button>
@@ -218,14 +212,8 @@
                                 Source="{Binding ElementName=Tb, Path=Text, Converter={StaticResource StringToQrBitmapImageConverter}, Mode=OneWay}" />
                             <UniformGrid Rows="2">
                                 <Button Command="{Binding SaveQrImage}" CommandParameter="{Binding Path=Source, ElementName=Img, Mode=OneWay}">
-                                    <Image Width="24" Height="24">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="6" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
+                                    <Image Width="24" Height="24"
+                                        Source="/TwainControl;component/Icons/save.png" />
                                 </Button>
                                 <Button Command="{Binding PrintImage}" CommandParameter="{Binding Path=Source, ElementName=Img, Mode=OneWay}">
                                     <Image Width="24" Height="24">
@@ -305,14 +293,8 @@
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
-                                    <Image Width="32" Height="32">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="131" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
+                                    <Image Width="32" Height="32"
+                                        Source="/TwainControl;component/Icons/delete.png" />
                                     <Image Canvas.Bottom="0"
                                         Width="16" Height="16">
                                         <Image.Source>

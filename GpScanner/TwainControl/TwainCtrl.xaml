@@ -234,14 +234,8 @@
                                             </Image.Source>
                                         </Image>
                                         <Image Canvas.Left="0" Canvas.Bottom="0"
-                                            Width="20" Height="20">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="6" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
+                                            Width="20" Height="20"
+                                            Source="/TwainControl;component/Icons/save.png" />
                                     </Canvas>
                                     <TextBlock VerticalAlignment="Center" Text="{local:Loc FASTSCAN}" />
                                 </StackPanel>
@@ -737,14 +731,8 @@
                                         <TextBox VerticalContentAlignment="Center" Text="{Binding Scanner.ProfileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <Button Command="{Binding SaveProfile}">
                                             <StackPanel Orientation="Horizontal">
-                                                <Image Width="16" Height="16">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Shell32.dll" />
-                                                            <Binding Source="6" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
+                                                <Image Width="16" Height="16"
+                                                    Source="/TwainControl;component/Icons/save.png" />
                                                 <TextBlock VerticalAlignment="Center" Text="{local:Loc SAVEPROFILE}" />
                                             </StackPanel>
                                         </Button>
@@ -764,14 +752,8 @@
                                                             CommandParameter="{Binding Mode=OneWay}"
                                                             FontWeight="Bold" Foreground="Red">
                                                             <Button.Content>
-                                                                <Image Width="16" Height="16">
-                                                                    <Image.Source>
-                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                            <Binding Source="Shell32.dll" />
-                                                                            <Binding Source="131" />
-                                                                        </MultiBinding>
-                                                                    </Image.Source>
-                                                                </Image>
+                                                                <Image Width="16" Height="16"
+                                                                    Source="/TwainControl;component/Icons/delete.png" />
                                                             </Button.Content>
                                                         </Button>
                                                     </UniformGrid>
@@ -791,14 +773,8 @@
                                                     </Image.Source>
                                                 </Image>
                                                 <Image Canvas.Left="0" Canvas.Bottom="0"
-                                                    Width="20" Height="20">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Shell32.dll" />
-                                                            <Binding Source="6" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
+                                                    Width="20" Height="20"
+                                                    Source="/TwainControl;component/Icons/save.png" />
                                             </Canvas>
                                             <TextBlock VerticalAlignment="Center" Text="{local:Loc AUTOPATH}" />
                                         </StackPanel>
@@ -844,14 +820,8 @@
                                     Command="{Binding ListeTemizle}"
                                     DockPanel.Dock="Right">
                                     <StackPanel Orientation="Horizontal">
-                                        <Image Width="24" Height="24">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="131" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
+                                        <Image Width="24" Height="24"
+                                            Source="/TwainControl;component/Icons/delete.png" />
                                         <TextBlock VerticalAlignment="Center" Text="{local:Loc CLEARLIST}" />
                                     </StackPanel>
                                 </Button>
@@ -864,7 +834,7 @@
                                             <Image Width="24" Height="24"
                                                 Source="/TwainControl;component/Icons/undo.png" />
                                         </Button>
-                                        <Button Command="{Binding Tümünüİşaretle}">
+                                        <Button BorderBrush="Cyan" Command="{Binding Tümünüİşaretle}">
                                             <Image Width="24" Height="24"
                                                 Source="/TwainControl;component/Icons/selectall.png" />
                                         </Button>
@@ -885,14 +855,8 @@
                                                 Source="/TwainControl;component/Icons/landscape.png" />
                                         </Button>
                                         <Button Command="{Binding SaveFileList}">
-                                            <Image Width="24" Height="24">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="6" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
+                                            <Image Width="24" Height="24"
+                                                Source="/TwainControl;component/Icons/save.png" />
                                         </Button>
                                         <Button Command="{Binding LoadFileList}">
                                             <Image Width="24" Height="24">
@@ -930,12 +894,10 @@
                             </Grid>
                         </Grid>
                     </GroupBox.Header>
-                    <TabControl x:Name="TbCtrl"
-                        SelectedItem="{Binding SelectedTab}"
-                        TabStripPlacement="Left">
+                    <TabControl x:Name="TbCtrl" SelectedItem="{Binding SelectedTab}">
                         <TabItem>
                             <TabItem.Header>
-                                <StackPanel>
+                                <StackPanel Orientation="Horizontal">
                                     <Image Width="16" Height="16">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -944,9 +906,10 @@
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
-                                    <TextBlock TextAlignment="Center">
+                                    <TextBlock FontWeight="Bold" TextAlignment="Center">
                                         <Run d:Text="0" BaselineAlignment="Center"
                                             Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" />
+                                        <Run d:Text="/" BaselineAlignment="Center" Text="/" />
                                         <Run d:Text="0" BaselineAlignment="Center"
                                             Text="{Binding Scanner.Resimler.Count, Mode=OneWay}" />
                                     </TextBlock>
@@ -996,7 +959,7 @@
                                                                             <DataTrigger Binding="{Binding DragMoveStarted, RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}" Value="true">
                                                                                 <DataTrigger.EnterActions>
                                                                                     <BeginStoryboard x:Name="Sb">
-                                                                                        <Storyboard RepeatBehavior="Forever">
+                                                                                        <Storyboard RepeatBehavior="Forever" Timeline.DesiredFrameRate="12">
                                                                                             <ColorAnimation Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)" To="Blue" Duration="0:0:1" />
                                                                                         </Storyboard>
                                                                                     </BeginStoryboard>
@@ -1004,6 +967,7 @@
                                                                             </DataTrigger>
                                                                             <DataTrigger Binding="{Binding DragMoveStarted, RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}" Value="false">
                                                                                 <DataTrigger.EnterActions>
+                                                                                    <StopStoryboard BeginStoryboardName="Sb" />
                                                                                     <RemoveStoryboard BeginStoryboardName="Sb" />
                                                                                 </DataTrigger.EnterActions>
                                                                             </DataTrigger>
@@ -1015,27 +979,15 @@
                                                                 Command="{Binding ElementName=UserControl, Path=DataContext.Kaydet}"
                                                                 CommandParameter="{Binding Resim}"
                                                                 TextDecorations="None">
-                                                                <Image Width="24" Height="24">
-                                                                    <Image.Source>
-                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                            <Binding Source="Shell32.dll" />
-                                                                            <Binding Source="6" />
-                                                                        </MultiBinding>
-                                                                    </Image.Source>
-                                                                </Image>
+                                                                <Image Width="24" Height="24"
+                                                                    Source="/TwainControl;component/Icons/save.png" />
                                                             </Hyperlink>
                                                             <Hyperlink BaselineAlignment="Center"
                                                                 Command="{Binding ElementName=UserControl, Path=DataContext.ResimSil}"
                                                                 CommandParameter="{Binding Mode=OneWay}"
                                                                 FontFamily="Segoe UI Black" TextDecorations="None">
-                                                                <Image Width="24" Height="24">
-                                                                    <Image.Source>
-                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                            <Binding Source="Shell32.dll" />
-                                                                            <Binding Source="131" />
-                                                                        </MultiBinding>
-                                                                    </Image.Source>
-                                                                </Image>
+                                                                <Image Width="24" Height="24"
+                                                                    Source="/TwainControl;component/Icons/delete.png" />
                                                             </Hyperlink>
                                                         </TextBlock>
                                                         <ToggleButton Width="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}"
@@ -1218,14 +1170,8 @@
                                 Value="{Binding Scanner.PdfSaveProgressValue}" />
                             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                 <Canvas Width="32" Height="32">
-                                    <Image Width="32" Height="32">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="6" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
+                                    <Image Width="32" Height="32"
+                                        Source="/TwainControl;component/Icons/save.png" />
                                     <TextBlock d:Text="0" FontSize="11" FontWeight="Bold"
                                         Foreground="Red"
                                         Text="{Binding Scanner.SeçiliResimSayısı}" />
@@ -1350,14 +1296,8 @@
                             Background="{x:Null}"
                             BorderBrush="{x:Null}"
                             IsChecked="{Binding Scanner.CropDialogExpanded}">
-                            <Image Width="16" Height="16">
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Shell32.dll" />
-                                        <Binding Source="131" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
+                            <Image Width="16" Height="16"
+                                Source="/TwainControl;component/Icons/delete.png" />
                         </ToggleButton>
                     </Grid>
                 </Expander>

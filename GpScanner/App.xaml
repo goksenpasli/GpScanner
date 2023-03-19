@@ -263,14 +263,8 @@
                             </Image>
                         </Button>
                         <Button Command="{Binding RemoveSelectedPage}" CommandParameter="{Binding ElementName=PdfVwr}">
-                            <Image Width="16" Height="16">
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Shell32.dll" />
-                                        <Binding Source="131" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
+                            <Image Width="16" Height="16"
+                                Source="/TwainControl;component/Icons/delete.png" />
                         </Button>
                         <Button Command="{Binding ArrangePdfFile}" CommandParameter="{Binding ElementName=PdfVwr}">
                             <Image Width="16" Height="16">
@@ -424,14 +418,8 @@
                         Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=UserControl}}"
                         CommandParameter="{Binding Mode=OneWay}"
                         TextDecorations="None">
-                        <Image Width="16" Height="16">
-                            <Image.Source>
-                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                    <Binding Source="Shell32.dll" />
-                                    <Binding Source="131" />
-                                </MultiBinding>
-                            </Image.Source>
-                        </Image>
+                        <Image Width="16" Height="16"
+                            Source="/TwainControl;component/Icons/delete.png" />
                     </Hyperlink>
                     <Hyperlink Command="{Binding DataContext.WebAdreseGit, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding Mode=OneWay}">
                         <Run Text="{Binding Mode=OneWay}" />
@@ -449,14 +437,8 @@
                             Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=UserControl}}"
                             CommandParameter="{Binding Mode=OneWay}"
                             TextDecorations="None">
-                            <Image Width="16" Height="16">
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Shell32.dll" />
-                                        <Binding Source="131" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
+                            <Image Width="16" Height="16"
+                                Source="/TwainControl;component/Icons/delete.png" />
                         </Hyperlink>
                     </TextBlock>
                     <PdfViewer:PdfViewer Grid.Row="1"

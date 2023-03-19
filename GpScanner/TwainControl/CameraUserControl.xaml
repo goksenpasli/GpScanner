@@ -39,14 +39,8 @@
                         <Button Command="{Binding Oynat}"
                             Content="4" FontFamily="Webdings" FontSize="18" />
                         <Button Command="{Binding Kaydet}">
-                            <Image Width="16" Height="16">
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Shell32.dll" />
-                                        <Binding Source="6" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
+                            <Image Width="16" Height="16"
+                                Source="/TwainControl;component/Icons/save.png" />
                         </Button>
                         <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="360"
                             Minimum="0" SmallChange="1" Ticks="0,90,180,270,360"
