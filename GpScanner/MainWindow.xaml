@@ -286,7 +286,7 @@
                                     <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SETTİNGS}" />
                                 </StackPanel>
                             </Button>
-                            <ToggleButton Command="{Binding ModifyGridWidth}">
+                            <ToggleButton x:Name="TbExpandDocument" Command="{Binding ModifyGridWidth}">
                                 <ToggleButton.Style>
                                     <Style TargetType="{x:Type ToggleButton}">
                                         <Style.Triggers>
@@ -338,6 +338,7 @@
                             Background="{StaticResource BorderBackground}"
                             BorderThickness="2" IsSynchronizedWithCurrentItem="False"
                             ItemsSource="{Binding Mode=OneWay, Source={StaticResource Veriler}}"
+                            ScrollViewer.IsDeferredScrollingEnabled="{Binding ElementName=TbExpandDocument, Path=IsChecked}"
                             SelectedItem="{Binding SelectedDocument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             SelectionMode="Extended"
                             Style="{StaticResource ListBoxAnimationStyle}"

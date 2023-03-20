@@ -153,7 +153,12 @@ namespace TwainControl
                     string savefolder = CreateSaveFolder("SPLIT");
                     List<ScannedImage> listcroppedimages = Scanner.Resimler.Where(z => z.Seçili).SelectMany(scannedimage => CropImageToList(scannedimage.Resim, (int)Scanner.SliceCountWidth, (int)Scanner.SliceCountHeight).Select(croppedBitmap => new ScannedImage { Resim = BitmapFrame.Create(croppedBitmap) })).ToList();
                     PdfDocument pdfdocument = await listcroppedimages.GeneratePdf(Format.Jpg, Paper, Settings.Default.JpegQuality, null, (int)Settings.Default.Çözünürlük);
-                    pdfdocument.Save(savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "pdf"));
+                    string path = savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "pdf");
+                    pdfdocument.Save(path);
+                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                    {
+                        twainControl.SplitPdfPageCount(path, savefolder, 1);
+                    }
                     WebAdreseGit.Execute(savefolder);
                     listcroppedimages = null;
                     pdfdocument = null;

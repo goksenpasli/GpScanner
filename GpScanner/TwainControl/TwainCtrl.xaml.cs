@@ -182,7 +182,7 @@ namespace TwainControl
                         }
                     }
                     return;
-                } 
+                }
                 if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
                 {
                     for (int i = 0; i < resimler.Count; i++)
@@ -581,18 +581,7 @@ namespace TwainControl
                 if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
                 {
                     string savefolder = ToolBox.CreateSaveFolder("SPLIT");
-                    using (PdfDocument inputDocument = PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Import))
-                    {
-                        foreach (List<int> item in ChunkBy(Enumerable.Range(0, inputDocument.PageCount).ToList(), PdfSplitCount))
-                        {
-                            using PdfDocument outputDocument = new();
-                            foreach (int pagenumber in item)
-                            {
-                                _ = outputDocument.AddPage(inputDocument.Pages[pagenumber]);
-                            }
-                            outputDocument.Save(savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "pdf"));
-                        }
-                    }
+                    SplitPdfPageCount(pdfviewer.PdfFilePath, savefolder, PdfSplitCount);
                     WebAdreseGit.Execute(savefolder);
                     GC.Collect();
                 }
@@ -1660,6 +1649,22 @@ namespace TwainControl
         public void Dispose()
         {
             Dispose(true);
+        }
+
+        public void SplitPdfPageCount(string pdfpath, string savefolder, int pagecount)
+        {
+            using (PdfDocument inputDocument = PdfReader.Open(pdfpath, PdfDocumentOpenMode.Import))
+            {
+                foreach (List<int> item in ChunkBy(Enumerable.Range(0, inputDocument.PageCount).ToList(), pagecount))
+                {
+                    using PdfDocument outputDocument = new();
+                    foreach (int pagenumber in item)
+                    {
+                        _ = outputDocument.AddPage(inputDocument.Pages[pagenumber]);
+                    }
+                    outputDocument.Save(savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "pdf"));
+                }
+            }
         }
 
         internal static T DeSerialize<T>(string xmldatapath) where T : class, new()

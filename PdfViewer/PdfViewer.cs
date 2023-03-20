@@ -299,31 +299,32 @@ namespace PdfViewer
         {
             try
             {
-                if (pdffilestream?.Length > 0)
+                if (pdffilestream?.Length == 0)
                 {
-                    return await Task.Run(() =>
-                    {
-                        byte[] imagearray = Pdf2Png.Convert(pdffilestream, page, dpi);
-                        if (imagearray is not null)
-                        {
-                            MemoryStream ms = new(imagearray);
-                            BitmapImage bitmap = new();
-                            bitmap.BeginInit();
-                            bitmap.DecodePixelHeight = decodepixel;
-                            bitmap.CacheOption = BitmapCacheOption.None;
-                            bitmap.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.DelayCreation;
-                            bitmap.StreamSource = ms;
-                            bitmap.EndInit();
-                            bitmap.Freeze();
-                            pdffilestream = null;
-                            imagearray = null;
-                            ms = null;
-                            GC.Collect();
-                            return bitmap;
-                        }
-                        return null;
-                    });
+                    throw new ArgumentOutOfRangeException(nameof(pdffilestream), "file can not be null or length zero");
                 }
+                return await Task.Run(() =>
+                {
+                    byte[] imagearray = Pdf2Png.Convert(pdffilestream, page, dpi);
+                    if (imagearray is not null)
+                    {
+                        MemoryStream ms = new(imagearray);
+                        BitmapImage bitmap = new();
+                        bitmap.BeginInit();
+                        bitmap.DecodePixelHeight = decodepixel;
+                        bitmap.CacheOption = BitmapCacheOption.None;
+                        bitmap.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.DelayCreation;
+                        bitmap.StreamSource = ms;
+                        bitmap.EndInit();
+                        bitmap.Freeze();
+                        pdffilestream = null;
+                        imagearray = null;
+                        ms = null;
+                        GC.Collect();
+                        return bitmap;
+                    }
+                    return null;
+                });
             }
             catch (Exception)
             {
@@ -336,22 +337,23 @@ namespace PdfViewer
         {
             try
             {
-                if (stream?.Length > 0)
+                if (stream?.Length == 0)
                 {
-                    return await Task.Run(() =>
-                    {
-                        byte[] buffer = Pdf2Png.Convert(stream, page, dpi);
-                        if (buffer != null)
-                        {
-                            MemoryStream ms = new(buffer);
-                            buffer = null;
-                            stream = null;
-                            GC.Collect();
-                            return ms;
-                        }
-                        return null;
-                    });
+                    throw new ArgumentOutOfRangeException(nameof(stream), "file can not be null or length zero");
                 }
+                return await Task.Run(() =>
+                {
+                    byte[] buffer = Pdf2Png.Convert(stream, page, dpi);
+                    if (buffer != null)
+                    {
+                        MemoryStream ms = new(buffer);
+                        buffer = null;
+                        stream = null;
+                        GC.Collect();
+                        return ms;
+                    }
+                    return null;
+                });
             }
             catch (Exception)
             {
@@ -364,16 +366,17 @@ namespace PdfViewer
         {
             try
             {
-                if (stream?.Length > 0)
+                if (stream?.Length == 0)
                 {
-                    return await Task.Run(() =>
-                    {
-                        int pagecount = Pdf2Png.ConvertAllPages(stream, 0).Count;
-                        stream = null;
-                        GC.Collect();
-                        return pagecount;
-                    });
+                    throw new ArgumentOutOfRangeException(nameof(stream), "file can not be null or length zero");
                 }
+                return await Task.Run(() =>
+                {
+                    int pagecount = Pdf2Png.ConvertAllPages(stream, 0).Count;
+                    stream = null;
+                    GC.Collect();
+                    return pagecount;
+                });
             }
             catch (Exception)
             {
@@ -457,8 +460,6 @@ namespace PdfViewer
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private ScrollViewer scrollvwr;
-
         private bool autoFitContent;
 
         private bool disposedValue;
@@ -472,6 +473,8 @@ namespace PdfViewer
         private Visibility printButtonVisibility = Visibility.Collapsed;
 
         private int sayfa = 1;
+
+        private ScrollViewer scrollvwr;
 
         private Visibility sliderZoomAngleVisibility = Visibility.Visible;
 
@@ -529,15 +532,6 @@ namespace PdfViewer
             if (d is PdfViewer pdfViewer && e.NewValue is not null)
             {
                 pdfViewer.Resize.Execute(null);
-            }
-        }
-
-        private void Scrollvwr_Drop(object sender, DragEventArgs e)
-        {
-            string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
-            if (droppedfiles?.Length > 0)
-            {
-                PdfFilePath = droppedfiles[0];
             }
         }
 
@@ -600,6 +594,15 @@ namespace PdfViewer
                     }
                     pd.PrintVisual(dv, "");
                 }
+            }
+        }
+
+        private void Scrollvwr_Drop(object sender, DragEventArgs e)
+        {
+            string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
+            if (droppedfiles?.Length > 0)
+            {
+                PdfFilePath = droppedfiles[0];
             }
         }
     }
