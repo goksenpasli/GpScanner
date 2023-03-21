@@ -171,18 +171,18 @@ namespace TwainControl
 
             MergeAllImage = new RelayCommand<object>(async parameter =>
             {
+                PageOrientation pageOrientation = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt) ? PageOrientation.Portrait : PageOrientation.Landscape;
                 string savefolder = CreateSaveFolder("MERGE");
                 IEnumerable<ScannedImage> seçiliresimler = Scanner.Resimler.Where(z => z.Seçili);
                 PdfDocument pdfdocument = new();
                 XRect box;
                 PdfPage page = null;
                 int imageindex = 0;
-
                 for (int i = 0; i < seçiliresimler.Count() / (Scanner.SliceCountWidth * Scanner.SliceCountHeight); i++)
                 {
                     page = pdfdocument.AddPage();
                     Paper.SetPaperSize(page);
-                    page.Orientation = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt) ? PageOrientation.Portrait : PageOrientation.Landscape;
+                    page.Orientation = pageOrientation;
                     for (int heighindex = 0; heighindex < Scanner.SliceCountHeight; heighindex++)
                     {
                         for (int widthindex = 0; widthindex < Scanner.SliceCountWidth; widthindex++)
@@ -197,11 +197,29 @@ namespace TwainControl
                                 double y = heighindex * page.Height / Scanner.SliceCountHeight;
                                 double width = page.Width / Scanner.SliceCountWidth;
                                 double height = page.Height / Scanner.SliceCountHeight;
-                                using MemoryStream ms = new(seçiliresimler.ElementAt(imageindex).Resim.Resize(width, height).ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality));
+                                BitmapFrame currentimage = seçiliresimler.ElementAt(imageindex).Resim;
+                                double xratio = width / currentimage.PixelWidth;
+                                BitmapSource bitmapsource;
+                                if (ResizeRatioImage)
+                                {
+                                    bitmapsource = currentimage.Resize(xratio);
+                                }
+                                else
+                                {
+                                    bitmapsource = CompressImage ? currentimage.Resize(width, height) : currentimage;
+                                }
+                                using MemoryStream ms = new(bitmapsource.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality));
                                 using XImage xImage = XImage.FromStream(ms);
                                 using XGraphics gfx = XGraphics.FromPdfPage(page);
-                                box = new XRect(x, y, width, height);
-                                gfx.DrawImage(xImage, box);
+                                box = new XRect(x + BorderSize, y + BorderSize, width + (BorderSize * -2), height + (BorderSize * -2));
+                                if (ResizeRatioImage)
+                                {
+                                    gfx.DrawImage(xImage, new System.Windows.Point(x, y));
+                                }
+                                else
+                                {
+                                    gfx.DrawImage(xImage, box);
+                                }
                                 imageindex++;
                                 ToolBoxPdfMergeProgressValue = imageindex / (double)seçiliresimler.Count();
                                 GC.Collect();
@@ -230,6 +248,29 @@ namespace TwainControl
 
         public ICommand ApplyColorChange { get; }
 
+        public double BorderSize {
+            get => borderSize; set {
+
+                if (borderSize != value)
+                {
+                    borderSize = value;
+                    OnPropertyChanged(nameof(BorderSize));
+                }
+            }
+        }
+
+        public bool CompressImage {
+            get { return compressImage; }
+
+            set {
+                if (compressImage != value)
+                {
+                    compressImage = value;
+                    OnPropertyChanged(nameof(CompressImage));
+                }
+            }
+        }
+
         public ICommand DeskewImage { get; }
 
         public ICommand InvertImage { get; }
@@ -241,6 +282,18 @@ namespace TwainControl
         public ICommand PrintCroppedImage { get; }
 
         public ICommand ResetCroppedImage { get; }
+
+        public bool ResizeRatioImage {
+            get { return resizeRatioImage; }
+
+            set {
+                if (resizeRatioImage != value)
+                {
+                    resizeRatioImage = value;
+                    OnPropertyChanged(nameof(ResizeRatioImage));
+                }
+            }
+        }
 
         public ICommand SaveImage { get; }
 
@@ -332,6 +385,12 @@ namespace TwainControl
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        private double borderSize;
+
+        private bool compressImage = true;
+
+        private bool resizeRatioImage;
 
         private double toolBoxPdfMergeProgressValue;
 

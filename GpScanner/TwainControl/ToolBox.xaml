@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:properties="clr-namespace:TwainControl.Properties"
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
-    d:DesignHeight="550" d:DesignWidth="300"
+    d:DesignHeight="588" d:DesignWidth="345"
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
     Loaded="UserControl_Loaded" UseLayoutRounding="True"
     mc:Ignorable="d">
@@ -19,6 +19,7 @@
             </ResourceDictionary.MergedDictionaries>
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
+            <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -172,10 +173,10 @@
                             <Button.Content>
                                 <StackPanel Orientation="Horizontal">
                                     <Extensions:NumericUpDownControl IsReadOnly="True" LargeChange="1" Minimum="1"
-                                        Orientation="Horizontal" SmallChange="1"
+                                        SmallChange="1"
                                         Value="{Binding Scanner.SliceCountWidth}" />
                                     <Extensions:NumericUpDownControl IsReadOnly="True" LargeChange="1" Minimum="1"
-                                        Orientation="Horizontal" SmallChange="1"
+                                        SmallChange="1"
                                         Value="{Binding Scanner.SliceCountHeight}" />
                                     <TextBlock VerticalAlignment="Center">
                                         <Run FontFamily="Webdings" Text="§" />
@@ -186,16 +187,53 @@
                                 </StackPanel>
                             </Button.Content>
                         </Button>
-                        <Button BorderBrush="Cyan" Command="{Binding MergeAllImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
-                            <Button.Content>
-                                <Grid>
-                                    <StackPanel Orientation="Horizontal">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <ToggleButton BorderBrush="{x:Null}"
+                                IsChecked="{Binding CompressImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
+                                IsEnabled="{Binding ResizeRatioImage, Converter={StaticResource ReverseBooleanConverter}, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Imageres.dll" />
+                                            <Binding Source="165" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                            </ToggleButton>
+                            <ToggleButton Grid.Column="1"
+                                BorderBrush="{x:Null}"
+                                IsChecked="{Binding ResizeRatioImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Imageres.dll" />
+                                            <Binding Source="226" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                            </ToggleButton>
+                            <Button Grid.Column="2"
+                                BorderBrush="Cyan"
+                                Command="{Binding MergeAllImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
+                                <Button.Content>
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
                                         <Extensions:NumericUpDownControl IsReadOnly="True" LargeChange="1" Minimum="1"
-                                            Orientation="Horizontal" SmallChange="1"
+                                            SmallChange="1"
                                             Value="{Binding Scanner.SliceCountWidth}" />
                                         <Extensions:NumericUpDownControl IsReadOnly="True" LargeChange="1" Minimum="1"
-                                            Orientation="Horizontal" SmallChange="1"
+                                            SmallChange="1"
                                             Value="{Binding Scanner.SliceCountHeight}" />
+                                        <Border BorderBrush="White" BorderThickness="1">
+                                            <Extensions:NumericUpDownControl IsEnabled="{Binding ResizeRatioImage, Converter={StaticResource ReverseBooleanConverter}, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
+                                                IsReadOnly="True" LargeChange="1" Minimum="0"
+                                                SmallChange="1"
+                                                Value="{Binding BorderSize, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" />
+                                        </Border>
                                         <TextBlock VerticalAlignment="Center">
                                             <Run FontFamily="Webdings" Text="§" />
                                             <Run Text="{local:Loc MERGE}" />
@@ -203,9 +241,9 @@
                                         <Image Width="16" Height="16"
                                             Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
                                     </StackPanel>
-                                </Grid>
-                            </Button.Content>
-                        </Button>
+                                </Button.Content>
+                            </Button>
+                        </Grid>
                         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
                             Text="{local:Loc TEXT}" />
                         <UniformGrid Columns="2">
@@ -236,7 +274,7 @@
                         </StackPanel>
                         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
                             Text="{local:Loc FONT}" />
-                        <ComboBox Height="22.4"
+                        <ComboBox Height="25.6"
                             ItemsSource="{Binding Source={x:Static Fonts.SystemFontFamilies}}"
                             SelectedItem="{Binding Scanner.WatermarkFont}">
                             <ComboBox.ItemTemplate>

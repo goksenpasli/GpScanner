@@ -322,7 +322,7 @@ namespace Extensions
 
         public static BitmapSource Resize(this BitmapSource bfPhoto, double oran)
         {
-            ScaleTransform newTransform = new(oran, oran, 0, 0);
+            ScaleTransform newTransform = new(oran, oran);
             TransformedBitmap tb = new(bfPhoto, newTransform);
             tb.Freeze();
             return tb;
