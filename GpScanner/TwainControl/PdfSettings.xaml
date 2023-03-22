@@ -11,7 +11,7 @@
     xmlns:pdfsharpdrawing="clr-namespace:PdfSharp.Drawing;assembly=PdfSharp-wpf"
     xmlns:properties="clr-namespace:TwainControl.Properties"
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
-    d:DesignHeight="380" d:DesignWidth="400"
+    d:DesignHeight="440" d:DesignWidth="400"
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
     UseLayoutRounding="True"
     mc:Ignorable="d">
@@ -111,6 +111,19 @@
                     Ticks="72,96,120,150,200,300,450,600"
                     ToolTip="{local:Loc RES}"
                     Value="{Binding Path=ImgLoadResolution, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+            </HeaderedContentControl>
+            <HeaderedContentControl>
+                <HeaderedContentControl.Header>
+                    <TextBlock>
+                        <Run Text="{local:Loc BW}" />
+                        <Run Text="{local:Loc SETTİNGS}" />
+                    </TextBlock>
+                </HeaderedContentControl.Header>
+                <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="255"
+                    Minimum="1" SmallChange="1"
+                    Style="{StaticResource Slider}"
+                    ToolTip="{local:Loc BW}"
+                    Value="{Binding Path=BwThreshold, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
             </HeaderedContentControl>
             <Separator />
             <CheckBox IsChecked="{Binding Scanner.Deskew}">

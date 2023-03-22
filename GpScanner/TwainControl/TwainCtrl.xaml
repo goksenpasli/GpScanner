@@ -801,7 +801,7 @@
                             <StackPanel Grid.Column="1">
                                 <Extensions:ContentToggleButton>
                                     <Extensions:ContentToggleButton.OverContent>
-                                        <local:PdfSettings Width="400" Height="380" />
+                                        <local:PdfSettings Width="400" />
                                     </Extensions:ContentToggleButton.OverContent>
                                     <StackPanel Orientation="Horizontal">
                                         <Image Width="24" Height="24">

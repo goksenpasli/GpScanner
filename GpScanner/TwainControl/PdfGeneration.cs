@@ -128,7 +128,9 @@ namespace TwainControl
                     else
                     {
                         using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
-                        BitmapSource resizedimage = scannedimage.Resim.Resize(page.Width, page.Height, 0, dpi, dpi);
+                        BitmapSource resizedimage = format == Format.Tiff
+                            ? scannedimage.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Settings.Default.BwThreshold, false).ToBitmapImage(System.Drawing.Imaging.ImageFormat.Tiff).Resize(page.Width, page.Height, 0, dpi, dpi)
+                            : scannedimage.Resim.Resize(page.Width, page.Height, 0, dpi, dpi);
                         using MemoryStream ms = new(resizedimage.ToTiffJpegByteArray(format, jpegquality));
                         using XImage xImage = XImage.FromStream(ms);
                         XSize size = PageSizeConverter.ToSize(page.Size);
@@ -260,7 +262,9 @@ namespace TwainControl
                 }
                 else
                 {
-                    BitmapSource resizedimage = bitmapframe.Resize(page.Width, page.Height, 0, dpi, dpi);
+                    BitmapSource resizedimage = format == Format.Tiff
+                        ? bitmapframe.BitmapSourceToBitmap().ConvertBlackAndWhite(Settings.Default.BwThreshold, false).ToBitmapImage(System.Drawing.Imaging.ImageFormat.Tiff).Resize(page.Width, page.Height, 0, dpi, dpi)
+                        : bitmapframe.Resize(page.Width, page.Height, 0, dpi, dpi);
                     ms = new(resizedimage.ToTiffJpegByteArray(format, jpegquality));
                     resizedimage = null;
                 }

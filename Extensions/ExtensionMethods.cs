@@ -58,6 +58,22 @@ namespace Extensions
             Small = 1
         }
 
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+        public struct SHFILEINFO
+        {
+            public IntPtr hIcon;
+
+            public int iIcon;
+
+            public uint dwAttributes;
+
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
+            public string szDisplayName;
+
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)]
+            public string szTypeName;
+        }
+
         public static Bitmap BitmapChangeFormat(this Bitmap bitmap, System.Drawing.Imaging.PixelFormat format)
         {
             Rectangle rect = new(0, 0, bitmap.Width, bitmap.Height);
@@ -456,22 +472,6 @@ namespace Extensions
                 _ = MessageBox.Show(ex.Message);
                 return null;
             }
-        }
-
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-        public struct SHFILEINFO
-        {
-            public IntPtr hIcon;
-
-            public int iIcon;
-
-            public uint dwAttributes;
-
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
-            public string szDisplayName;
-
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)]
-            public string szTypeName;
         }
 
         private static readonly IntPtr hwnd = Process.GetCurrentProcess().Handle;

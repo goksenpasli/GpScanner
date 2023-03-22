@@ -169,26 +169,39 @@
                                     Source="{Binding Source='.jpg', Converter={StaticResource FilePathToIconConverter}}" />
                             </StackPanel>
                         </Button>
-                        <Button BorderBrush="Cyan" Command="{Binding SplitAllImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
-                            <Button.Content>
-                                <StackPanel Orientation="Horizontal">
-                                    <Extensions:NumericUpDownControl IsReadOnly="True" LargeChange="1" Minimum="1"
-                                        SmallChange="1"
-                                        Value="{Binding Scanner.SliceCountWidth}" />
-                                    <Extensions:NumericUpDownControl IsReadOnly="True" LargeChange="1" Minimum="1"
-                                        SmallChange="1"
-                                        Value="{Binding Scanner.SliceCountHeight}" />
-                                    <TextBlock VerticalAlignment="Center">
-                                        <Run FontFamily="Webdings" Text="§" />
-                                        <Run Text="{local:Loc SLICE}" />
-                                    </TextBlock>
-                                    <Image Width="16" Height="16"
-                                        Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
-                                </StackPanel>
-                            </Button.Content>
-                        </Button>
                         <Grid>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Extensions:NumericUpDownControl IsReadOnly="True" LargeChange="1" Minimum="1"
+                                SmallChange="1"
+                                Value="{Binding Scanner.SliceCountWidth}" />
+                            <Extensions:NumericUpDownControl Grid.Column="1"
+                                IsReadOnly="True" LargeChange="1" Minimum="1"
+                                SmallChange="1"
+                                Value="{Binding Scanner.SliceCountHeight}" />
+                            <Button Grid.Column="2"
+                                BorderBrush="Cyan"
+                                Command="{Binding SplitAllImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock VerticalAlignment="Center">
+                                            <Run FontFamily="Webdings" Text="§" />
+                                            <Run Text="{local:Loc SLICE}" />
+                                        </TextBlock>
+                                        <Image Width="16" Height="16"
+                                            Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition />
@@ -217,23 +230,26 @@
                                     </Image.Source>
                                 </Image>
                             </ToggleButton>
-                            <Button Grid.Column="2"
+                            <Extensions:NumericUpDownControl Grid.Column="2"
+                                IsReadOnly="True" LargeChange="1" Minimum="1"
+                                SmallChange="1"
+                                Value="{Binding Scanner.SliceCountWidth}" />
+                            <Extensions:NumericUpDownControl Grid.Column="3"
+                                IsReadOnly="True" LargeChange="1" Minimum="1"
+                                SmallChange="1"
+                                Value="{Binding Scanner.SliceCountHeight}" />
+                            <Border Grid.Column="4"
+                                BorderBrush="White" BorderThickness="1">
+                                <Extensions:NumericUpDownControl IsEnabled="{Binding ResizeRatioImage, Converter={StaticResource ReverseBooleanConverter}, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
+                                    IsReadOnly="True" LargeChange="1" Minimum="0"
+                                    SmallChange="1"
+                                    Value="{Binding BorderSize, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" />
+                            </Border>
+                            <Button Grid.Column="5"
                                 BorderBrush="Cyan"
                                 Command="{Binding MergeAllImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
                                 <Button.Content>
                                     <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                        <Extensions:NumericUpDownControl IsReadOnly="True" LargeChange="1" Minimum="1"
-                                            SmallChange="1"
-                                            Value="{Binding Scanner.SliceCountWidth}" />
-                                        <Extensions:NumericUpDownControl IsReadOnly="True" LargeChange="1" Minimum="1"
-                                            SmallChange="1"
-                                            Value="{Binding Scanner.SliceCountHeight}" />
-                                        <Border BorderBrush="White" BorderThickness="1">
-                                            <Extensions:NumericUpDownControl IsEnabled="{Binding ResizeRatioImage, Converter={StaticResource ReverseBooleanConverter}, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
-                                                IsReadOnly="True" LargeChange="1" Minimum="0"
-                                                SmallChange="1"
-                                                Value="{Binding BorderSize, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" />
-                                        </Border>
                                         <TextBlock VerticalAlignment="Center">
                                             <Run FontFamily="Webdings" Text="§" />
                                             <Run Text="{local:Loc MERGE}" />

@@ -227,5 +227,17 @@ namespace TwainControl.Properties {
                 this["RemoveProcessedImage"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("160")]
+        public int BwThreshold {
+            get {
+                return ((int)(this["BwThreshold"]));
+            }
+            set {
+                this["BwThreshold"] = value;
+            }
+        }
     }
 }

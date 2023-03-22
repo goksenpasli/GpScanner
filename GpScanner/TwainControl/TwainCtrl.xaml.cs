@@ -1653,17 +1653,15 @@ namespace TwainControl
 
         public void SplitPdfPageCount(string pdfpath, string savefolder, int pagecount)
         {
-            using (PdfDocument inputDocument = PdfReader.Open(pdfpath, PdfDocumentOpenMode.Import))
+            using PdfDocument inputDocument = PdfReader.Open(pdfpath, PdfDocumentOpenMode.Import);
+            foreach (List<int> item in ChunkBy(Enumerable.Range(0, inputDocument.PageCount).ToList(), pagecount))
             {
-                foreach (List<int> item in ChunkBy(Enumerable.Range(0, inputDocument.PageCount).ToList(), pagecount))
+                using PdfDocument outputDocument = new();
+                foreach (int pagenumber in item)
                 {
-                    using PdfDocument outputDocument = new();
-                    foreach (int pagenumber in item)
-                    {
-                        _ = outputDocument.AddPage(inputDocument.Pages[pagenumber]);
-                    }
-                    outputDocument.Save(savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "pdf"));
+                    _ = outputDocument.AddPage(inputDocument.Pages[pagenumber]);
                 }
+                outputDocument.Save(savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "pdf"));
             }
         }
 
@@ -1990,10 +1988,10 @@ namespace TwainControl
         {
             return color switch
             {
-                ColourSetting.BlackAndWhite => bitmap.ConvertBlackAndWhite().ToBitmapImage(ImageFormat.Jpeg, decodepixelheight),
+                ColourSetting.BlackAndWhite => bitmap.ConvertBlackAndWhite(Settings.Default.BwThreshold, false).ToBitmapImage(ImageFormat.Tiff, decodepixelheight),
                 _ => color switch
                 {
-                    ColourSetting.GreyScale => bitmap.ConvertBlackAndWhite(160, true).ToBitmapImage(ImageFormat.Jpeg, decodepixelheight),
+                    ColourSetting.GreyScale => bitmap.ConvertBlackAndWhite(Settings.Default.BwThreshold, true).ToBitmapImage(ImageFormat.Jpeg, decodepixelheight),
                     _ => color switch
                     {
                         ColourSetting.Colour => bitmap.ToBitmapImage(ImageFormat.Jpeg, decodepixelheight),
