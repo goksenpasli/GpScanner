@@ -75,7 +75,7 @@ namespace TwainControl
 
         public static async Task<PdfDocument> GeneratePdf(this List<ScannedImage> bitmapFrames, Format format, Paper paper, int jpegquality = 80, List<ObservableCollection<OcrData>> ScannedText = null, int dpi = 120)
         {
-            if (bitmapFrames.Count == 0)
+            if (bitmapFrames?.Count == 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(bitmapFrames), "bitmap frames count should be greater than zero");
             }
@@ -104,7 +104,7 @@ namespace TwainControl
 
                         if (scannedimage.Resim.PixelWidth < scannedimage.Resim.PixelHeight)
                         {
-                            if (ScannedText != null)
+                            if (ScannedText?.ElementAtOrDefault(i) != null)
                             {
                                 WritePdfTextContent(scannedimage.Resim, ScannedText[i], page, gfx, XBrushes.Transparent);
                             }
@@ -113,7 +113,7 @@ namespace TwainControl
                         else
                         {
                             page.Orientation = PageOrientation.Landscape;
-                            if (ScannedText != null)
+                            if (ScannedText?.ElementAtOrDefault(i) != null)
                             {
                                 WritePdfTextContent(scannedimage.Resim, ScannedText[i], page, gfx, XBrushes.Transparent);
                             }
@@ -138,7 +138,7 @@ namespace TwainControl
 
                         if (scannedimage.Resim.PixelWidth < scannedimage.Resim.PixelHeight)
                         {
-                            if (ScannedText != null)
+                            if (ScannedText?.ElementAtOrDefault(i) != null)
                             {
                                 WritePdfTextContent(scannedimage.Resim, ScannedText[i], page, gfx, XBrushes.Transparent);
                             }
@@ -147,7 +147,7 @@ namespace TwainControl
                         else
                         {
                             page.Orientation = PageOrientation.Landscape;
-                            if (ScannedText != null)
+                            if (ScannedText?.ElementAtOrDefault(i) != null)
                             {
                                 WritePdfTextContent(scannedimage.Resim, ScannedText[i], page, gfx, XBrushes.Transparent);
                             }
@@ -183,7 +183,7 @@ namespace TwainControl
 
         public static PdfDocument GeneratePdf(this List<string> imagefiles, Paper paper, List<ObservableCollection<OcrData>> ScannedText = null)
         {
-            if (imagefiles.Count == 0)
+            if (imagefiles?.Count == 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(imagefiles), "bitmapframes count should be greater than zero");
             }
@@ -201,7 +201,7 @@ namespace TwainControl
                     XSize size = PageSizeConverter.ToSize(page.Size);
                     if (xImage.PixelWidth < xImage.PixelHeight)
                     {
-                        if (ScannedText != null)
+                        if (ScannedText?.ElementAtOrDefault(i) != null)
                         {
                             WritePdfTextContent(xImage, ScannedText[i], page, gfx, XBrushes.Transparent);
                         }
@@ -210,7 +210,7 @@ namespace TwainControl
                     else
                     {
                         page.Orientation = PageOrientation.Landscape;
-                        if (ScannedText != null)
+                        if (ScannedText?.ElementAtOrDefault(i) != null)
                         {
                             WritePdfTextContent(xImage, ScannedText[i], page, gfx, XBrushes.Transparent);
                         }
@@ -232,6 +232,56 @@ namespace TwainControl
             catch (Exception ex)
             {
                 imagefiles = null;
+                ScannedText = null;
+                _ = MessageBox.Show(ex.Message);
+            }
+            return document;
+        }
+
+        public static PdfDocument GeneratePdf(this string imagefile, Paper paper, ObservableCollection<OcrData> ScannedText = null)
+        {
+            using PdfDocument document = new();
+            try
+            {
+                Scanner.ProgressState = TaskbarItemProgressState.Normal;
+
+                PdfPage page = document.AddPage();
+                SetPaperSize(paper, page);
+                using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
+                using XImage xImage = XImage.FromFile(imagefile);
+                XSize size = PageSizeConverter.ToSize(page.Size);
+                if (xImage.PixelWidth < xImage.PixelHeight)
+                {
+                    if (ScannedText != null)
+                    {
+                        WritePdfTextContent(xImage, ScannedText, page, gfx, XBrushes.Transparent);
+                    }
+                    gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
+                }
+                else
+                {
+                    page.Orientation = PageOrientation.Landscape;
+                    if (ScannedText != null)
+                    {
+                        WritePdfTextContent(xImage, ScannedText, page, gfx, XBrushes.Transparent);
+                    }
+                    gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
+                }
+                if (Scanner.PdfPageNumberDraw)
+                {
+                    gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfAlignTextColor)), "1", GetPdfTextLayout(page), 20);
+                }
+
+                if (Scanner.PasswordProtect)
+                {
+                    ApplyPdfSecurity(document);
+                }
+                document.DefaultPdfCompression();
+                Scanner.PdfSaveProgressValue = 0;
+            }
+            catch (Exception ex)
+            {
+                imagefile = null;
                 ScannedText = null;
                 _ = MessageBox.Show(ex.Message);
             }

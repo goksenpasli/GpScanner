@@ -334,35 +334,45 @@ namespace GpScanner.ViewModel
                 }
             }, parameter => true);
 
-            StartBatch = new RelayCommand<object>(parameter =>
+            StartPdfBatch = new RelayCommand<object>(parameter =>
             {
                 List<string> files = Win32FileScanner.EnumerateFilepaths(BatchFolder, -1).Where(s => (new string[] { ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp" }).Any(ext => ext == Path.GetExtension(s).ToLower())).ToList();
+                int slicecount = files.Count > Environment.ProcessorCount ? files.Count / Environment.ProcessorCount : 1;
+                Scanner scanner = ToolBox.Scanner;
                 BatchTxtOcrs = new List<BatchTxtOcr>();
-                if (files.Count > 0)
+                List<Task> Tasks = new();
+                foreach (List<string> item in TwainCtrl.ChunkBy(files, slicecount))
                 {
-                    Scanner scanner = ToolBox.Scanner;
-                    Paper paper = ToolBox.Paper;
-                    List<ObservableCollection<OcrData>> scannedtext = null;
-                    BatchTxtOcr batchTxtOcr = new();
-                    Filesavetask = Task.Run(async () =>
+                    if (item.Count > 0)
                     {
-                        if (scanner?.ApplyPdfSaveOcr == true)
+                        BatchTxtOcr batchTxtOcr = new();
+                        Paper paper = ToolBox.Paper;
+                        Task task = Task.Run(async () =>
                         {
-                            scannedtext = new List<ObservableCollection<OcrData>>();
-                            for (int i = 0; i < files.Count; i++)
+                            for (int i = 0; i < item.Count; i++)
                             {
-                                string image = files[i];
-                                scannedtext.Add(await image.OcrAsyc(scanner.SelectedTtsLanguage));
-                                batchTxtOcr.ProgressValue = (i + 1) / (double)files.Count;
+                                string pdffile = Path.ChangeExtension(item.ElementAtOrDefault(i), ".pdf");
+                                if (scanner?.ApplyPdfSaveOcr == true)
+                                {
+                                    ObservableCollection<OcrData> scannedText = await item.ElementAtOrDefault(i).OcrAsyc(scanner.SelectedTtsLanguage);
+                                    batchTxtOcr.ProgressValue = (i + 1) / (double)item.Count;
+                                    item.ElementAtOrDefault(i).GeneratePdf(paper, scannedText).Save(pdffile);
+                                }
+                                else
+                                {
+                                    item.ElementAtOrDefault(i).GeneratePdf(paper, null).Save(pdffile);
+                                }
                                 GC.Collect();
                             }
-                        }
-                        string filename = $"{Twainsettings.Settings.Default.AutoFolder}\\{Guid.NewGuid()}.pdf";
-                        files.GeneratePdf(paper, scannedtext).Save(filename);
-                        GC.Collect();
-                    });
+                        });
+                        BatchTxtOcrs.Add(batchTxtOcr);
+                        Tasks.Add(task);
+                    }
+                }
+                Filesavetask = Task.WhenAll(Tasks);
+                if (scanner?.ApplyPdfSaveOcr == true)
+                {
                     BatchDialogOpen = true;
-                    BatchTxtOcrs.Add(batchTxtOcr);
                 }
             }, parameter => !string.IsNullOrWhiteSpace(BatchFolder) && !string.IsNullOrWhiteSpace(Twainsettings.Settings.Default.AutoFolder));
 
@@ -527,6 +537,7 @@ namespace GpScanner.ViewModel
 
         public ResultPoint[] BarcodePosition {
             get => barcodePosition; set {
+
                 if (barcodePosition != value)
                 {
                     barcodePosition = value;
@@ -537,6 +548,7 @@ namespace GpScanner.ViewModel
 
         public bool BatchDialogOpen {
             get => batchDialogOpen; set {
+
                 if (batchDialogOpen != value)
                 {
                     batchDialogOpen = value;
@@ -669,6 +681,7 @@ namespace GpScanner.ViewModel
 
         public string FtpPassword {
             get => ftpPassword; set {
+
                 if (ftpPassword != value)
                 {
                     ftpPassword = value;
@@ -691,6 +704,7 @@ namespace GpScanner.ViewModel
 
         public string FtpUserName {
             get => ftpUserName; set {
+
                 if (ftpUserName != value)
                 {
                     ftpUserName = value;
@@ -732,6 +746,7 @@ namespace GpScanner.ViewModel
 
         public GridLength MainWindowDocumentGuiControlLength {
             get => mainWindowDocumentGuiControlLength; set {
+
                 if (mainWindowDocumentGuiControlLength != value)
                 {
                     mainWindowDocumentGuiControlLength = value;
@@ -742,6 +757,7 @@ namespace GpScanner.ViewModel
 
         public GridLength MainWindowGuiControlLength {
             get => mainWindowGuiControlLength; set {
+
                 if (mainWindowGuiControlLength != value)
                 {
                     mainWindowGuiControlLength = value;
@@ -772,6 +788,7 @@ namespace GpScanner.ViewModel
 
         public string PatchFileName {
             get => patchFileName; set {
+
                 if (patchFileName != value)
                 {
                     patchFileName = value;
@@ -808,6 +825,7 @@ namespace GpScanner.ViewModel
 
         public double PdfMergeProgressValue {
             get => pdfMergeProgressValue; set {
+
                 if (pdfMergeProgressValue != value)
                 {
                     pdfMergeProgressValue = value;
@@ -884,6 +902,7 @@ namespace GpScanner.ViewModel
 
         public DateTime? SeçiliGün {
             get => seçiliGün; set {
+
                 if (seçiliGün != value)
                 {
                     seçiliGün = value;
@@ -906,6 +925,7 @@ namespace GpScanner.ViewModel
 
         public string SelectedFtp {
             get => selectedFtp; set {
+
                 if (selectedFtp != value)
                 {
                     selectedFtp = value;
@@ -944,7 +964,7 @@ namespace GpScanner.ViewModel
             }
         }
 
-        public ICommand StartBatch { get; }
+        public ICommand StartPdfBatch { get; }
 
         public ICommand StartTxtBatch { get; }
 

@@ -343,12 +343,18 @@
                             <TextBlock VerticalAlignment="Center"
                                 FontWeight="Bold"
                                 Text="{twainctrl:Loc BATCH}" />
-                            <CheckBox VerticalAlignment="Center" IsChecked="{Binding ApplyPdfSaveOcr, Source={x:Static twainctrl:ToolBox.Scanner}}">
+                            <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                IsChecked="{Binding ApplyPdfSaveOcr, Source={x:Static twainctrl:ToolBox.Scanner}}">
                                 <CheckBox.Content>
-                                    <TextBlock>
-                                        <Run Text="{twainctrl:Loc FILE}" />
-                                        <Run Text="{twainctrl:Loc OCR}" />
-                                    </TextBlock>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock VerticalAlignment="Center">
+                                            <Run BaselineAlignment="Center" Text="{twainctrl:Loc FILE}" />
+                                            <Run BaselineAlignment="Center" Text="{twainctrl:Loc OCR}" />
+                                        </TextBlock>
+                                        <Image Width="16" Height="16"
+                                            VerticalAlignment="Center"
+                                            Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
+                                    </StackPanel>
                                 </CheckBox.Content>
                             </CheckBox>
                         </StackPanel>
@@ -378,7 +384,7 @@
                         </Grid>
                         <UniformGrid Grid.Row="1" Grid.Column="2"
                             Columns="2">
-                            <Button Command="{Binding StartBatch}">
+                            <Button Command="{Binding StartPdfBatch}">
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal">
                                         <Image Width="16" Height="16"

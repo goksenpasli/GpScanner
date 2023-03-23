@@ -197,17 +197,9 @@ namespace TwainControl
                                 double y = heighindex * page.Height / Scanner.SliceCountHeight;
                                 double width = page.Width / Scanner.SliceCountWidth;
                                 double height = page.Height / Scanner.SliceCountHeight;
-                                BitmapFrame currentimage = seçiliresimler.ElementAt(imageindex).Resim;
+                                BitmapFrame currentimage = seçiliresimler.ElementAtOrDefault(imageindex).Resim;
                                 double xratio = width / currentimage.PixelWidth;
-                                BitmapSource bitmapsource;
-                                if (ResizeRatioImage)
-                                {
-                                    bitmapsource = currentimage.Resize(xratio);
-                                }
-                                else
-                                {
-                                    bitmapsource = CompressImage ? currentimage.Resize(width, height) : currentimage;
-                                }
+                                BitmapSource bitmapsource = ResizeRatioImage ? currentimage.Resize(xratio) : CompressImage ? currentimage.Resize(width, height) : currentimage;
                                 using MemoryStream ms = new(bitmapsource.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality));
                                 using XImage xImage = XImage.FromStream(ms);
                                 using XGraphics gfx = XGraphics.FromPdfPage(page);
@@ -260,7 +252,7 @@ namespace TwainControl
         }
 
         public bool CompressImage {
-            get { return compressImage; }
+            get => compressImage;
 
             set {
                 if (compressImage != value)
@@ -284,7 +276,7 @@ namespace TwainControl
         public ICommand ResetCroppedImage { get; }
 
         public bool ResizeRatioImage {
-            get { return resizeRatioImage; }
+            get => resizeRatioImage;
 
             set {
                 if (resizeRatioImage != value)
