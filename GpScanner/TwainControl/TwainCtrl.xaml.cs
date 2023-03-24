@@ -834,6 +834,8 @@ namespace TwainControl
                 if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
                 {
                     pdfviewer.PdfFilePath = null;
+                    SayfaBaşlangıç = 1;
+                    SayfaBitiş = 1;
                 }
             }, parameter => parameter is PdfViewer.PdfViewer pdfviewer && pdfviewer.PdfFilePath is not null);
 

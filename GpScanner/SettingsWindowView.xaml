@@ -17,6 +17,7 @@
     WindowStartupLocation="CenterOwner"
     mc:Ignorable="d">
     <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Converter:StringToQrBitmapImageConverter x:Key="StringToQrBitmapImageConverter" />
         <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
         <Extensions:StringNullableToBooleanConverter x:Key="StringNullableToBooleanConverter" />
@@ -134,10 +135,11 @@
                             <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc FILE}" />
                         </StackPanel>
                     </Button>
-                    <CheckBox VerticalAlignment="Center"
-                        Content="{twainctrl:Loc PDFTRACK}"
+                    <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
                         IsChecked="{Binding WatchFolderPdfFileChange, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
-                        IsEnabled="{Binding AnyDataExists}" />
+                        IsEnabled="{Binding AnyDataExists}">
+                        <TextBlock Text="{twainctrl:Loc PDFTRACK}" TextWrapping="Wrap" />
+                    </CheckBox>
                 </UniformGrid>
                 <GroupBox Grid.Row="2">
                     <Grid>
@@ -250,7 +252,7 @@
                             SelectedItem="{Binding SelectedSize}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock><Run Text="{Binding Width, StringFormat=\{0\} Pixel}" /><Run Text=" " /><Run Text="X" /><Run Text=" " /><Run Text="{Binding Height, StringFormat=\{0\} Pixel}" /></TextBlock>
+                                    <TextBlock><Run Text="{Binding Width, StringFormat=\{0\} Pixel}" /><LineBreak /><Run Text="{Binding Height, StringFormat=\{0\} Pixel}" /></TextBlock>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
@@ -347,43 +349,44 @@
                                 IsChecked="{Binding ApplyPdfSaveOcr, Source={x:Static twainctrl:ToolBox.Scanner}}">
                                 <CheckBox.Content>
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock VerticalAlignment="Center">
+                                        <TextBlock>
                                             <Run BaselineAlignment="Center" Text="{twainctrl:Loc FILE}" />
                                             <Run BaselineAlignment="Center" Text="{twainctrl:Loc OCR}" />
                                         </TextBlock>
                                         <Image Width="16" Height="16"
-                                            VerticalAlignment="Center"
                                             Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
                                     </StackPanel>
                                 </CheckBox.Content>
                             </CheckBox>
+                            <ToggleButton IsChecked="{Binding Shutdown}">
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="27" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                            </ToggleButton>
+                            <TextBlock VerticalAlignment="Center"
+                                FontWeight="Bold" Foreground="Red"
+                                Text="{twainctrl:Loc WARNREBOOT}"
+                                Visibility="{Binding Shutdown, Converter={StaticResource BooleanToVisibilityConverter}}" />
                         </StackPanel>
                     </GroupBox.Header>
                     <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <TextBox Grid.Column="0" Grid.ColumnSpan="2"
                             IsReadOnly="True"
                             Text="{Binding BatchFolder}" />
-                        <Button Grid.Column="2"
+                        <Button Grid.Column="1"
                             Command="{Binding SetBatchFolder}"
                             Content="{twainctrl:Loc SRC}" />
-                        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-                            <ProgressBar Maximum="1" Value="{Binding PdfSaveProgressValue, Source={x:Static twainctrl:ToolBox.Scanner}}" />
-                            <TextBlock VerticalAlignment="Center"
-                                d:Text="AutoFolder"
-                                Background="{x:Null}"
-                                Text="{Binding Path=AutoFolder, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}}" />
-                        </Grid>
-                        <UniformGrid Grid.Row="1" Grid.Column="2"
-                            Columns="2">
+                        <UniformGrid Grid.Column="2" Columns="2">
                             <Button Command="{Binding StartPdfBatch}">
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal">

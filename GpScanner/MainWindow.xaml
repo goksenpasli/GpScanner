@@ -677,20 +677,26 @@
                         IsChecked="{Binding BatchDialogOpen}">
                         <Extensions:ContentToggleButton.OverContent>
                             <GroupBox>
-                                <ListBox Width="300" Height="240"
-                                    HorizontalContentAlignment="Stretch"
-                                    Background="{StaticResource BorderBackground}"
-                                    ItemsSource="{Binding BatchTxtOcrs}">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <Grid Height="20">
-                                                <ProgressBar Maximum="1" Minimum="0"
-                                                    Value="{Binding ProgressValue}" />
-                                                <TextBlock VerticalAlignment="Center" Text="{Binding FilePath, Mode=OneWay}" />
-                                            </Grid>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
+                                <StackPanel>
+                                    <ListBox Width="300" Height="240"
+                                        HorizontalContentAlignment="Stretch"
+                                        Background="{StaticResource BorderBackground}"
+                                        ItemsSource="{Binding BatchTxtOcrs}">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Height="20">
+                                                    <ProgressBar Maximum="1" Minimum="0"
+                                                        Value="{Binding ProgressValue}" />
+                                                    <TextBlock VerticalAlignment="Center" Text="{Binding FilePath, Mode=OneWay}" />
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                    <Button Grid.Column="1" Command="{Binding CancelBatchOcr}">
+                                        <Image Width="32" Height="32"
+                                            Source="/TwainControl;component/Icons/delete.png" />
+                                    </Button>
+                                </StackPanel>
                             </GroupBox>
                         </Extensions:ContentToggleButton.OverContent>
                     </Extensions:ContentToggleButton>

@@ -11,6 +11,7 @@ using System.Net;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -38,6 +39,8 @@ namespace GpScanner.ViewModel
     public class GpScannerViewModel : InpcBase
     {
         public Task Filesavetask;
+
+        public CancellationTokenSource ocrcancellationToken;
 
         public GpScannerViewModel()
         {
@@ -334,13 +337,19 @@ namespace GpScanner.ViewModel
                 }
             }, parameter => true);
 
-            StartPdfBatch = new RelayCommand<object>(parameter =>
+            StartPdfBatch = new RelayCommand<object>(async parameter =>
             {
+                if (Filesavetask?.IsCompleted == false)
+                {
+                    _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
+                    return;
+                }
                 List<string> files = Win32FileScanner.EnumerateFilepaths(BatchFolder, -1).Where(s => (new string[] { ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp" }).Any(ext => ext == Path.GetExtension(s).ToLower())).ToList();
                 int slicecount = files.Count > Environment.ProcessorCount ? files.Count / Environment.ProcessorCount : 1;
                 Scanner scanner = ToolBox.Scanner;
                 BatchTxtOcrs = new List<BatchTxtOcr>();
                 List<Task> Tasks = new();
+                ocrcancellationToken = new CancellationTokenSource();
                 foreach (List<string> item in TwainCtrl.ChunkBy(files, slicecount))
                 {
                     if (item.Count > 0)
@@ -351,38 +360,56 @@ namespace GpScanner.ViewModel
                         {
                             for (int i = 0; i < item.Count; i++)
                             {
-                                string pdffile = Path.ChangeExtension(item.ElementAtOrDefault(i), ".pdf");
-                                if (scanner?.ApplyPdfSaveOcr == true)
+                                if (ocrcancellationToken?.IsCancellationRequested == false)
                                 {
-                                    ObservableCollection<OcrData> scannedText = await item.ElementAtOrDefault(i).OcrAsyc(scanner.SelectedTtsLanguage);
-                                    batchTxtOcr.ProgressValue = (i + 1) / (double)item.Count;
-                                    item.ElementAtOrDefault(i).GeneratePdf(paper, scannedText).Save(pdffile);
+                                    string pdffile = Path.ChangeExtension(item.ElementAtOrDefault(i), ".pdf");
+                                    if (scanner?.ApplyPdfSaveOcr == true)
+                                    {
+                                        ObservableCollection<OcrData> scannedText = await item.ElementAtOrDefault(i).OcrAsyc(scanner.SelectedTtsLanguage);
+                                        batchTxtOcr.ProgressValue = (i + 1) / (double)item.Count;
+                                        batchTxtOcr.FilePath = Path.GetFileName(item.ElementAtOrDefault(i));
+                                        item.ElementAtOrDefault(i).GeneratePdf(paper, scannedText).Save(pdffile);
+                                    }
+                                    else
+                                    {
+                                        item.ElementAtOrDefault(i).GeneratePdf(paper, null).Save(pdffile);
+                                    }
+                                    GC.Collect();
                                 }
-                                else
-                                {
-                                    item.ElementAtOrDefault(i).GeneratePdf(paper, null).Save(pdffile);
-                                }
-                                GC.Collect();
                             }
-                        });
+                        }, ocrcancellationToken.Token);
                         BatchTxtOcrs.Add(batchTxtOcr);
                         Tasks.Add(task);
                     }
                 }
-                Filesavetask = Task.WhenAll(Tasks);
+
                 if (scanner?.ApplyPdfSaveOcr == true)
                 {
                     BatchDialogOpen = true;
                 }
-            }, parameter => !string.IsNullOrWhiteSpace(BatchFolder) && !string.IsNullOrWhiteSpace(Twainsettings.Settings.Default.AutoFolder));
+                Filesavetask = Task.WhenAll(Tasks);
+                await Filesavetask.ConfigureAwait(false);
+                if (Filesavetask?.IsCompleted == true && Shutdown)
+                {
+                    ViewModel.Shutdown.DoExitWin(ViewModel.Shutdown.EWX_SHUTDOWN);
+                }
+            }, parameter => !string.IsNullOrWhiteSpace(BatchFolder));
 
-            StartTxtBatch = new RelayCommand<object>(parameter =>
+            CancelBatchOcr = new RelayCommand<object>(parameter => ocrcancellationToken?.Cancel(), parameter => BatchTxtOcrs?.Count > 0);
+
+            StartTxtBatch = new RelayCommand<object>(async parameter =>
             {
+                if (Filesavetask?.IsCompleted == false)
+                {
+                    _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
+                    return;
+                }
                 List<string> files = Win32FileScanner.EnumerateFilepaths(BatchFolder, -1).Where(s => (new string[] { ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp" }).Any(ext => ext == Path.GetExtension(s).ToLower())).ToList();
                 int slicecount = files.Count > Environment.ProcessorCount ? files.Count / Environment.ProcessorCount : 1;
                 Scanner scanner = ToolBox.Scanner;
                 BatchTxtOcrs = new List<BatchTxtOcr>();
                 List<Task> Tasks = new();
+                ocrcancellationToken = new CancellationTokenSource();
                 foreach (List<string> item in TwainCtrl.ChunkBy(files, slicecount))
                 {
                     if (item.Count > 0)
@@ -393,21 +420,29 @@ namespace GpScanner.ViewModel
                             List<string> scannedtext = new();
                             for (int i = 0; i < item.Count; i++)
                             {
-                                string image = item[i];
-                                string txtfile = Path.ChangeExtension(image, ".txt");
-                                string content = string.Join(" ", (await image.OcrAsyc(scanner.SelectedTtsLanguage)).Select(z => z.Text));
-                                File.WriteAllText(txtfile, content);
-                                batchTxtOcr.ProgressValue = (i + 1) / (double)item.Count;
-                                batchTxtOcr.FilePath = Path.GetFileName(image);
-                                GC.Collect();
+                                if (ocrcancellationToken?.IsCancellationRequested == false)
+                                {
+                                    string image = item[i];
+                                    string txtfile = Path.ChangeExtension(image, ".txt");
+                                    string content = string.Join(" ", (await image.OcrAsyc(scanner.SelectedTtsLanguage)).Select(z => z.Text));
+                                    File.WriteAllText(txtfile, content);
+                                    batchTxtOcr.ProgressValue = (i + 1) / (double)item.Count;
+                                    batchTxtOcr.FilePath = Path.GetFileName(image);
+                                    GC.Collect();
+                                }
                             }
-                        });
+                        }, ocrcancellationToken.Token);
                         BatchTxtOcrs.Add(batchTxtOcr);
                         Tasks.Add(task);
                     }
                 }
-                Filesavetask = Task.WhenAll(Tasks);
                 BatchDialogOpen = true;
+                Filesavetask = Task.WhenAll(Tasks);
+                await Filesavetask.ConfigureAwait(false);
+                if (Filesavetask?.IsCompleted == true && Shutdown)
+                {
+                    ViewModel.Shutdown.DoExitWin(ViewModel.Shutdown.EWX_SHUTDOWN);
+                }
             }, parameter => !string.IsNullOrWhiteSpace(BatchFolder));
 
             DatabaseSave = new RelayCommand<object>(parameter => ScannerData.Serialize());
@@ -592,6 +627,8 @@ namespace GpScanner.ViewModel
                 }
             }
         }
+
+        public ICommand CancelBatchOcr { get; }
 
         public ICommand CancelOcr { get; }
 
@@ -952,6 +989,17 @@ namespace GpScanner.ViewModel
 
         public int[] SettingsPagePictureResizeList { get; } = new int[] { 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 };
 
+        public bool Shutdown {
+            get => shutdown; set {
+
+                if (shutdown != value)
+                {
+                    shutdown = value;
+                    OnPropertyChanged(nameof(Shutdown));
+                }
+            }
+        }
+
         public bool Sıralama {
             get => sıralama;
 
@@ -1274,6 +1322,8 @@ namespace GpScanner.ViewModel
         private string selectedFtp;
 
         private Size selectedSize;
+
+        private bool shutdown;
 
         private bool sıralama;
 

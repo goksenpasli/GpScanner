@@ -133,6 +133,7 @@
     <Compile Include="ViewModel\FoldEffect.cs" />
     <Compile Include="ViewModel\GpScannerViewModel.cs" />
     <Compile Include="ViewModel\ScannerData.cs" />
+    <Compile Include="ViewModel\Shutdown.cs" />
     <Compile Include="ViewModel\StillImageHelper.cs" />
     <Compile Include="ViewModel\TesseractViewModel.cs" />
     <Compile Include="ViewModel\ThumbnailTranslateViewModel.cs" />
