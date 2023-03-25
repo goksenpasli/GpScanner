@@ -541,4 +541,10 @@ TO FILE</value>
   <data name="WATERMARK" xml:space="preserve">
     <value>WATERMARK</value>
   </data>
+  <data name="BATCHDESC" xml:space="preserve">
+    <value>When Image Files are Added to the Folder Specified Below, Automatic Conversion to Pdf Files in the Same Folder is Made as Long as the Program is Open</value>
+  </data>
+  <data name="RESTARTAPP" xml:space="preserve">
+    <value>RESTARTAPP</value>
+  </data>
 </root>

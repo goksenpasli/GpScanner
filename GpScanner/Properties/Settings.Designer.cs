@@ -156,5 +156,29 @@ namespace GpScanner.Properties {
                 this["SelectedFtp"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RegisterBatchWatcher {
+            get {
+                return ((bool)(this["RegisterBatchWatcher"]));
+            }
+            set {
+                this["RegisterBatchWatcher"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string BatchFolder {
+            get {
+                return ((string)(this["BatchFolder"]));
+            }
+            set {
+                this["BatchFolder"] = value;
+            }
+        }
     }
 }

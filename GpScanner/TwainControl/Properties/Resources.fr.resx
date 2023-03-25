@@ -183,6 +183,9 @@ ENREGISTREMENT</value>
   <data name="BATCH" xml:space="preserve">
     <value>TRAVAIL COLLECTIF</value>
   </data>
+  <data name="BATCHDESC" xml:space="preserve">
+    <value>Lorsque des fichiers image sont ajoutés au dossier spécifié ci-dessous, la conversion automatique en fichiers PDF dans le même dossier est effectuée tant que le programme est ouvert</value>
+  </data>
   <data name="BORDERDETECT" xml:space="preserve">
     <value>DÉTECTION AUTOMATIQUE DES BORDS</value>
   </data>
@@ -389,6 +392,9 @@ AJOUTER</value>
   </data>
   <data name="RESET" xml:space="preserve">
     <value>RÉINITIALISER</value>
+  </data>
+  <data name="RESTARTAPP" xml:space="preserve">
+    <value>L'application doit être redémarrée.</value>
   </data>
   <data name="RESTARTCOMP" xml:space="preserve">
     <value>REDÉMARRER LE PC</value>

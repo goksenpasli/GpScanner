@@ -183,6 +183,9 @@ DISCO</value>
   <data name="BATCH" xml:space="preserve">
     <value>LAVORO COLLETTIVO</value>
   </data>
+  <data name="BATCHDESC" xml:space="preserve">
+    <value>Quando i file di immagine vengono aggiunti alla cartella specificata di seguito, viene eseguita la conversione automatica in file Pdf nella stessa cartella finché il programma è aperto</value>
+  </data>
   <data name="BORDERDETECT" xml:space="preserve">
     <value>RILEVAMENTO AUTOMATICO DEI BORDI</value>
   </data>
@@ -389,6 +392,9 @@ INSERISCI</value>
   </data>
   <data name="RESET" xml:space="preserve">
     <value>RIPRISTINA</value>
+  </data>
+  <data name="RESTARTAPP" xml:space="preserve">
+    <value>L'applicazione deve essere riavviata.</value>
   </data>
   <data name="RESTARTCOMP" xml:space="preserve">
     <value>RIAVVIA IL COMPUTER</value>

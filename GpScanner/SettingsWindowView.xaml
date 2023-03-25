@@ -138,7 +138,9 @@
                     <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
                         IsChecked="{Binding WatchFolderPdfFileChange, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
                         IsEnabled="{Binding AnyDataExists}">
-                        <TextBlock Text="{twainctrl:Loc PDFTRACK}" TextWrapping="Wrap" />
+                        <TextBlock Foreground="Blue"
+                            Text="{twainctrl:Loc PDFTRACK}"
+                            TextWrapping="Wrap" />
                     </CheckBox>
                 </UniformGrid>
                 <GroupBox Grid.Row="2">
@@ -339,75 +341,99 @@
                         </ListBox>
                     </UniformGrid>
                 </GroupBox>
-                <GroupBox Grid.Row="5">
-                    <GroupBox.Header>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock VerticalAlignment="Center"
-                                FontWeight="Bold"
-                                Text="{twainctrl:Loc BATCH}" />
+                <Grid Grid.Row="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="3*" />
+                    </Grid.ColumnDefinitions>
+                    <GroupBox>
+                        <GroupBox.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center"
+                                    FontWeight="Bold"
+                                    Text="{twainctrl:Loc BATCH}" />
+                                <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                    IsChecked="{Binding ApplyPdfSaveOcr, Source={x:Static twainctrl:ToolBox.Scanner}}">
+                                    <CheckBox.Content>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock>
+                                                <Run BaselineAlignment="Center" Text="{twainctrl:Loc FILE}" />
+                                                <Run BaselineAlignment="Center" Text="{twainctrl:Loc OCR}" />
+                                            </TextBlock>
+                                            <Image Width="16" Height="16"
+                                                Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
+                                        </StackPanel>
+                                    </CheckBox.Content>
+                                </CheckBox>
+                                <ToggleButton IsChecked="{Binding Shutdown}">
+                                    <Image Width="16" Height="16">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="27" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                </ToggleButton>
+                                <TextBlock Width="75"
+                                    VerticalAlignment="Center"
+                                    FontWeight="Bold" Foreground="Red"
+                                    Text="{twainctrl:Loc CLOSECOMP}"
+                                    TextTrimming="CharacterEllipsis"
+                                    ToolTip="{twainctrl:Loc WARNREBOOT}"
+                                    Visibility="{Binding Shutdown, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                            </StackPanel>
+                        </GroupBox.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0"
+                                IsReadOnly="True"
+                                Text="{Binding BatchFolder}" />
+                            <Button Grid.Column="1"
+                                Command="{Binding SetBatchFolder}"
+                                Content="{twainctrl:Loc SRC}" />
+                            <UniformGrid Grid.Column="2" Columns="2">
+                                <Button Command="{Binding StartPdfBatch}">
+                                    <Button.Content>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="16" Height="16"
+                                                Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
+                                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc START}" />
+                                        </StackPanel>
+                                    </Button.Content>
+                                </Button>
+                                <Button Command="{Binding StartTxtBatch}">
+                                    <Button.Content>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="16" Height="16"
+                                                Source="{Binding Source='.txt', Converter={StaticResource FilePathToIconConverter}}" />
+                                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc START}" />
+                                        </StackPanel>
+                                    </Button.Content>
+                                </Button>
+                            </UniformGrid>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Grid.Column="1">
+                        <UniformGrid Rows="2">
+                            <UniformGrid Columns="2">
+                                <TextBox Grid.Column="0"
+                                    IsReadOnly="True"
+                                    Text="{Binding BatchFolder, Source={x:Static properties:Settings.Default}}" />
+                                <Button Command="{Binding SetBatchWatchFolder}" Content="{twainctrl:Loc SRC}" />
+                            </UniformGrid>
                             <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                IsChecked="{Binding ApplyPdfSaveOcr, Source={x:Static twainctrl:ToolBox.Scanner}}">
-                                <CheckBox.Content>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock>
-                                            <Run BaselineAlignment="Center" Text="{twainctrl:Loc FILE}" />
-                                            <Run BaselineAlignment="Center" Text="{twainctrl:Loc OCR}" />
-                                        </TextBlock>
-                                        <Image Width="16" Height="16"
-                                            Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
-                                    </StackPanel>
-                                </CheckBox.Content>
+                                IsChecked="{Binding RegisterBatchWatcher, Source={x:Static properties:Settings.Default}}"
+                                IsEnabled="{Binding BatchFolder, Source={x:Static properties:Settings.Default}, Converter={StaticResource StringNullableToBooleanConverter}}">
+                                <TextBlock Foreground="Blue" Text="{twainctrl:Loc APPLY}" />
                             </CheckBox>
-                            <ToggleButton IsChecked="{Binding Shutdown}">
-                                <Image Width="16" Height="16">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="27" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                            </ToggleButton>
-                            <TextBlock VerticalAlignment="Center"
-                                FontWeight="Bold" Foreground="Red"
-                                Text="{twainctrl:Loc WARNREBOOT}"
-                                Visibility="{Binding Shutdown, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                        </StackPanel>
-                    </GroupBox.Header>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <TextBox Grid.Column="0" Grid.ColumnSpan="2"
-                            IsReadOnly="True"
-                            Text="{Binding BatchFolder}" />
-                        <Button Grid.Column="1"
-                            Command="{Binding SetBatchFolder}"
-                            Content="{twainctrl:Loc SRC}" />
-                        <UniformGrid Grid.Column="2" Columns="2">
-                            <Button Command="{Binding StartPdfBatch}">
-                                <Button.Content>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Width="16" Height="16"
-                                            Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
-                                        <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc START}" />
-                                    </StackPanel>
-                                </Button.Content>
-                            </Button>
-                            <Button Command="{Binding StartTxtBatch}">
-                                <Button.Content>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Width="16" Height="16"
-                                            Source="{Binding Source='.txt', Converter={StaticResource FilePathToIconConverter}}" />
-                                        <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc START}" />
-                                    </StackPanel>
-                                </Button.Content>
-                            </Button>
                         </UniformGrid>
-                    </Grid>
-                </GroupBox>
+                    </GroupBox>
+                </Grid>
                 <GroupBox Grid.Row="6">
                     <Extensions:GraphControl Series="{Binding ChartData}" />
                 </GroupBox>
@@ -463,6 +489,10 @@
                 </StatusBarItem.Style>
                 <TextBlock FontWeight="Bold" Foreground="Red"
                     Text="{twainctrl:Loc TESSLANGSELECT}" />
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock FontWeight="Bold" Foreground="Blue"
+                    Text="{twainctrl:Loc RESTARTAPP}" />
             </StatusBarItem>
         </StatusBar>
     </Grid>

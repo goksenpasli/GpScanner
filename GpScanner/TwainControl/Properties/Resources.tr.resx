@@ -547,4 +547,10 @@ BELGE EKLE</value>
   <data name="WATERMARK" xml:space="preserve">
     <value>FİLİGRAN</value>
   </data>
+  <data name="BATCHDESC" xml:space="preserve">
+    <value>Aşağıda Belirtilen Klasöre Resim Dosyaları Eklendiğinde Program Açık Olduğu Müddetçe Aynı Klasörde Pdf Dosyasına Otomatik Çevirme İşlemi Yapılır</value>
+  </data>
+  <data name="RESTARTAPP" xml:space="preserve">
+    <value>Uygulamanın Yeniden Başlatılması Gerekir.</value>
+  </data>
 </root>

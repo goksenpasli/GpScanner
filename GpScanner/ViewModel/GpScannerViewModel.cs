@@ -335,7 +335,20 @@ namespace GpScanner.ViewModel
                 {
                     BatchFolder = dialog.SelectedPath;
                 }
-            }, parameter => true);
+            }, parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
+
+            SetBatchWatchFolder = new RelayCommand<object>(parameter =>
+            {
+                System.Windows.Forms.FolderBrowserDialog dialog = new()
+                {
+                    Description = Translation.GetResStringValue("BATCHDESC")
+                };
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    Settings.Default.BatchFolder = dialog.SelectedPath;
+                    Settings.Default.Save();
+                }
+            }, parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
 
             StartPdfBatch = new RelayCommand<object>(async parameter =>
             {
@@ -344,7 +357,7 @@ namespace GpScanner.ViewModel
                     _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
                     return;
                 }
-                List<string> files = Win32FileScanner.EnumerateFilepaths(BatchFolder, -1).Where(s => (new string[] { ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp" }).Any(ext => ext == Path.GetExtension(s).ToLower())).ToList();
+                List<string> files = Win32FileScanner.EnumerateFilepaths(BatchFolder, -1).Where(s => imagefileextensions.Any(ext => ext == Path.GetExtension(s).ToLower())).ToList();
                 int slicecount = files.Count > Environment.ProcessorCount ? files.Count / Environment.ProcessorCount : 1;
                 Scanner scanner = ToolBox.Scanner;
                 BatchTxtOcrs = new List<BatchTxtOcr>();
@@ -404,7 +417,7 @@ namespace GpScanner.ViewModel
                     _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
                     return;
                 }
-                List<string> files = Win32FileScanner.EnumerateFilepaths(BatchFolder, -1).Where(s => (new string[] { ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp" }).Any(ext => ext == Path.GetExtension(s).ToLower())).ToList();
+                List<string> files = Win32FileScanner.EnumerateFilepaths(BatchFolder, -1).Where(s => imagefileextensions.Any(ext => ext == Path.GetExtension(s).ToLower())).ToList();
                 int slicecount = files.Count > Environment.ProcessorCount ? files.Count / Environment.ProcessorCount : 1;
                 Scanner scanner = ToolBox.Scanner;
                 BatchTxtOcrs = new List<BatchTxtOcr>();
@@ -985,6 +998,8 @@ namespace GpScanner.ViewModel
 
         public ICommand SetBatchFolder { get; }
 
+        public ICommand SetBatchWatchFolder { get; }
+
         public int[] SettingsPagePdfDpiList { get; } = PdfViewer.PdfViewer.DpiList;
 
         public int[] SettingsPagePictureResizeList { get; } = new int[] { 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 };
@@ -1233,6 +1248,25 @@ namespace GpScanner.ViewModel
             return null;
         }
 
+        public void RegisterBatchImageFileWatcher(Scanner scanner, Paper paper, string batchsavefolder)
+        {
+            FileSystemWatcher watcher = new(batchsavefolder)
+            {
+                NotifyFilter = NotifyFilters.FileName,
+                Filter = "*.*",
+                IncludeSubdirectories = true,
+                EnableRaisingEvents = true
+            };
+            watcher.Created += async (s, e) =>
+            {
+                if (imagefileextensions.Contains(Path.GetExtension(e.Name.ToLower())))
+                {
+                    ObservableCollection<OcrData> scannedText = await e.FullPath.OcrAsyc(scanner.SelectedTtsLanguage);
+                    e.FullPath.GeneratePdf(paper, scannedText).Save($"{batchsavefolder}\\{Path.ChangeExtension(e.Name, ".pdf")}");
+                }
+            };
+        }
+
         public void ReloadFileDatas()
         {
             Dosyalar = GetScannerFileData();
@@ -1250,6 +1284,8 @@ namespace GpScanner.ViewModel
         private static DispatcherTimer timer;
 
         private static string xmlDataPath = Settings.Default.DatabaseFile;
+
+        private readonly string[] imagefileextensions = new string[] { ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp" };
 
         private readonly string[] supportedfilesextension = new string[] { ".pdf", ".tiff", ".tif", ".jpg", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg" };
 
@@ -1336,6 +1372,12 @@ namespace GpScanner.ViewModel
 
         private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            if (e.PropertyName is "RegisterBatchWatcher" && Settings.Default.RegisterBatchWatcher && !Directory.Exists(Settings.Default.BatchFolder))
+            {
+                Settings.Default.RegisterBatchWatcher = false;
+                Settings.Default.BatchFolder = null;
+            }
+
             if (e.PropertyName is "DefaultTtsLang")
             {
                 PdfGeneration.Scanner.SelectedTtsLanguage = Settings.Default.DefaultTtsLang;

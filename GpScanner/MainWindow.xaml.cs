@@ -104,6 +104,11 @@ namespace GpScanner
         {
             WindowExtensions.SystemMenu(this);
 
+            if (DataContext is GpScannerViewModel ViewModel && Settings.Default.RegisterBatchWatcher && Directory.Exists(Settings.Default.BatchFolder))
+            {
+                ViewModel.RegisterBatchImageFileWatcher(TwainCtrl.Scanner, TwainCtrl.SelectedPaper, Settings.Default.BatchFolder);
+            }
+
             if (Settings.Default.IsFirstRun)
             {
                 WindowExtensions.OpenSettings.Execute(null);
