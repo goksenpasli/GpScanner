@@ -160,7 +160,7 @@ namespace TwainControl
                                     return;
 
                                 case 6:
-                                    SaveTxtFile(bitmapFrame, saveFileDialog.FileName, Scanner);
+                                    await SaveTxtFile(bitmapFrame, saveFileDialog.FileName, Scanner);
                                     break;
                             }
                         });
@@ -264,7 +264,7 @@ namespace TwainControl
                 }
                 SaveFileDialog saveFileDialog = new()
                 {
-                    Filter = "Pdf Dosyası (*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf|Jpg Resmi (*.jpg)|*.jpg|Tif Resmi (*.tif)|*.tif",
+                    Filter = "Pdf Dosyası (*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf|Jpg Resmi (*.jpg)|*.jpg|Tif Resmi (*.tif)|*.tif|Txt Dosyası (*.txt)|*.txt",
                     FileName = Scanner.SaveFileName
                 };
                 if (saveFileDialog.ShowDialog() == true)
@@ -300,6 +300,14 @@ namespace TwainControl
 
                             case 4:
                                 await SaveTifImage(seçiliresimler, saveFileDialog.FileName, Scanner);
+                                if (Settings.Default.RemoveProcessedImage)
+                                {
+                                    Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
+                                }
+                                return;
+
+                            case 5:
+                                await SaveTxtFile(seçiliresimler, saveFileDialog.FileName, Scanner);
                                 if (Settings.Default.RemoveProcessedImage)
                                 {
                                     Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
@@ -636,12 +644,12 @@ namespace TwainControl
                 }
             }, parameter => true);
 
-            EypPdfİçerikBirleştir = new RelayCommand<object>(parameter =>
+            EypPdfİçerikBirleştir = new RelayCommand<object>(async parameter =>
             {
                 string[] files = Scanner.UnsupportedFiles.Where(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase)).ToArray();
                 if (files.Length > 0)
                 {
-                    files.SavePdfFiles();
+                    await files.SavePdfFiles();
                 }
             }, parameter => Scanner?.UnsupportedFiles?.Count(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase)) > 1);
 
@@ -918,6 +926,7 @@ namespace TwainControl
 
         public bool CanUndoImage {
             get => canUndoImage; set {
+
                 if (canUndoImage != value)
                 {
                     canUndoImage = value;
@@ -975,6 +984,7 @@ namespace TwainControl
 
         public ObservableCollection<OcrData> DataBaseTextData {
             get => dataBaseTextData; set {
+
                 if (dataBaseTextData != value)
                 {
                     dataBaseTextData = value;
@@ -1021,6 +1031,7 @@ namespace TwainControl
 
         public bool DragMoveStarted {
             get => dragMoveStarted; set {
+
                 if (dragMoveStarted != value)
                 {
                     dragMoveStarted = value;
@@ -1129,6 +1140,7 @@ namespace TwainControl
 
         public SolidColorBrush PdfWatermarkColor {
             get => pdfWatermarkColor; set {
+
                 if (pdfWatermarkColor != value)
                 {
                     pdfWatermarkColor = value;
@@ -1139,6 +1151,7 @@ namespace TwainControl
 
         public string PdfWatermarkFont {
             get => pdfWatermarkFont; set {
+
                 if (pdfWatermarkFont != value)
                 {
                     pdfWatermarkFont = value;
@@ -1201,6 +1214,7 @@ namespace TwainControl
 
         public int SayfaBitiş {
             get => sayfaBitiş; set {
+
                 if (sayfaBitiş != value)
                 {
                     sayfaBitiş = value;
@@ -1255,6 +1269,7 @@ namespace TwainControl
 
         public TwainWpf.TwainNative.Orientation SelectedOrientation {
             get => selectedOrientation; set {
+
                 if (selectedOrientation != value)
                 {
                     selectedOrientation = value;
@@ -1277,6 +1292,7 @@ namespace TwainControl
 
         public PageRotation SelectedRotation {
             get => selectedRotation; set {
+
                 if (selectedRotation != value)
                 {
                     selectedRotation = value;
@@ -1287,6 +1303,7 @@ namespace TwainControl
 
         public TabItem SelectedTab {
             get => selectedTab; set {
+
                 if (selectedTab != value)
                 {
                     selectedTab = value;
@@ -1325,6 +1342,7 @@ namespace TwainControl
 
         public ScannedImage UndoImage {
             get => undoImage; set {
+
                 if (undoImage != value)
                 {
                     undoImage = value;
@@ -1508,12 +1526,24 @@ namespace TwainControl
             }
         }
 
-        public static async void SaveTxtFile(BitmapFrame bitmapFrame, string fileName, Scanner scanner)
+        public static async Task SaveTxtFile(BitmapFrame bitmapFrame, string fileName, Scanner scanner)
         {
             if (bitmapFrame is not null && !string.IsNullOrEmpty(scanner.SelectedTtsLanguage))
             {
                 ObservableCollection<OcrData> ocrtext = await bitmapFrame.ToTiffJpegByteArray(Format.Jpg).OcrAsyc(scanner.SelectedTtsLanguage);
                 File.WriteAllText(fileName, string.Join(" ", ocrtext.Select(z => z.Text)));
+            }
+        }
+
+        public static async Task SaveTxtFile(List<ScannedImage> images, string fileName, Scanner scanner)
+        {
+            if (images is not null && !string.IsNullOrEmpty(scanner.SelectedTtsLanguage))
+            {
+                for (int i = 0; i < images.Count; i++)
+                {
+                    ObservableCollection<OcrData> ocrtext = await images[i].Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsyc(scanner.SelectedTtsLanguage);
+                    File.WriteAllText(Path.Combine(Path.GetDirectoryName(fileName), Path.GetFileNameWithoutExtension(fileName) + i + ".txt"), string.Join(" ", ocrtext.Select(z => z.Text)));
+                }
             }
         }
 

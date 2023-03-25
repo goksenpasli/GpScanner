@@ -607,6 +607,18 @@
             </StatusBarItem>
             <StatusBarItem HorizontalAlignment="Right">
                 <StackPanel Orientation="Horizontal">
+                    <Image Width="16" Height="16"
+                        Visibility="{Binding PdfBatchRunning, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Image.Source>
+                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                <Binding Source="Shell32.dll" />
+                                <Binding Source="20" />
+                            </MultiBinding>
+                        </Image.Source>
+                    </Image>
+                    <StackPanel Orientation="Horizontal">
+                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                    </StackPanel>
                     <Extensions:ContentToggleButton AllowDrop="True" Background="Transparent" BorderThickness="2"
                         Drop="QrListBox_Drop"
                         IsEnabled="{Binding DetectBarCode}"

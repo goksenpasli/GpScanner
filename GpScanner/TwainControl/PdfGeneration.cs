@@ -407,7 +407,7 @@ namespace TwainControl
             return null;
         }
 
-        public static async void SavePdfFiles(this string[] files)
+        public static async Task SavePdfFiles(this string[] files)
         {
             SaveFileDialog saveFileDialog = new()
             {

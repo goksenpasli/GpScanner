@@ -8,7 +8,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
@@ -871,6 +870,17 @@ namespace GpScanner.ViewModel
             }
         }
 
+        public bool PdfBatchRunning {
+            get => pdfBatchRunning; set {
+
+                if (pdfBatchRunning != value)
+                {
+                    pdfBatchRunning = value;
+                    OnPropertyChanged(nameof(PdfBatchRunning));
+                }
+            }
+        }
+
         public ICommand PdfBirleştir { get; }
 
         public double PdfMergeProgressValue {
@@ -1261,8 +1271,16 @@ namespace GpScanner.ViewModel
             {
                 if (imagefileextensions.Contains(Path.GetExtension(e.Name.ToLower())))
                 {
+                    await Task.Delay(1000);
                     ObservableCollection<OcrData> scannedText = await e.FullPath.OcrAsyc(scanner.SelectedTtsLanguage);
-                    e.FullPath.GeneratePdf(paper, scannedText).Save($"{batchsavefolder}\\{Path.ChangeExtension(e.Name, ".pdf")}");
+                    await Task.Run(() =>
+                    {
+                        PdfBatchRunning = true;
+                        using PdfDocument pfdocument = e.FullPath.GeneratePdf(paper, scannedText);
+                        pfdocument.Save($"{batchsavefolder}\\{Path.ChangeExtension(e.Name, ".pdf")}");
+                        GC.Collect();
+                        PdfBatchRunning = false;
+                    });
                 }
             };
         }
@@ -1271,14 +1289,6 @@ namespace GpScanner.ViewModel
         {
             Dosyalar = GetScannerFileData();
             ChartData = GetChartsData();
-        }
-
-        public class StrCmpLogicalComparer : Comparer<string>
-        {
-            public override int Compare(string x, string y)
-            {
-                return StrCmpLogicalW(x, y);
-            }
         }
 
         private static DispatcherTimer timer;
@@ -1341,6 +1351,8 @@ namespace GpScanner.ViewModel
 
         private string patchTag;
 
+        private bool pdfBatchRunning;
+
         private double pdfMergeProgressValue;
 
         private bool pdfOnlyText;
@@ -1366,9 +1378,6 @@ namespace GpScanner.ViewModel
         private TesseractViewModel tesseractViewModel;
 
         private TranslateViewModel translateViewModel;
-
-        [DllImport("Shlwapi.dll", CharSet = CharSet.Unicode)]
-        private static extern int StrCmpLogicalW(string x, string y);
 
         private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {

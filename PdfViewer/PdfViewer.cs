@@ -71,7 +71,7 @@ namespace PdfViewer
             Yazdır = new RelayCommand<object>(async parameter =>
             {
                 string pdfFilePath = PdfFilePath;
-                PrintPdfFile(await ReadAllFileAsync(pdfFilePath));
+                await PrintPdfFile(await ReadAllFileAsync(pdfFilePath));
                 GC.Collect();
             }, parameter => PdfFilePath is not null);
 
@@ -553,7 +553,7 @@ namespace PdfViewer
             }
         }
 
-        private async void PrintPdfFile(byte[] stream, int Dpi = 300)
+        private async Task PrintPdfFile(byte[] stream, int Dpi = 300)
         {
             int pagecount = await PdfPageCountAsync(stream);
             PrintDialog pd = new()

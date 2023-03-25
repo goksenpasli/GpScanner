@@ -90,6 +90,28 @@
                                             Text="ç" />
                                     </Hyperlink>
                                 </TextBlock>
+                                <Extensions:ContentToggleButton HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                                    Background="{x:Null}"
+                                    BorderBrush="{x:Null}"
+                                    Command="{Binding LoadHistogram, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
+                                    FontFamily="Webdings">
+                                    <TextBlock FontSize="20" Text="" />
+                                    <Extensions:ContentToggleButton.OverContent>
+                                        <GroupBox>
+                                            <UniformGrid Columns="3">
+                                                <Extensions:GraphControl Width="200" Height="200"
+                                                    Series="{Binding Scanner.RedChart}"
+                                                    SeriesTextVisibility="Collapsed" ValueTextVisibility="Collapsed" />
+                                                <Extensions:GraphControl Width="200" Height="200"
+                                                    Series="{Binding Scanner.GreenChart}"
+                                                    SeriesTextVisibility="Collapsed" ValueTextVisibility="Collapsed" />
+                                                <Extensions:GraphControl Width="200" Height="200"
+                                                    Series="{Binding Scanner.BlueChart}"
+                                                    SeriesTextVisibility="Collapsed" ValueTextVisibility="Collapsed" />
+                                            </UniformGrid>
+                                        </GroupBox>
+                                    </Extensions:ContentToggleButton.OverContent>
+                                </Extensions:ContentToggleButton>
                             </Grid>
                         </Border>
                     </DockPanel>
@@ -131,37 +153,21 @@
                             </StackPanel>
                         </Button>
                     </UniformGrid>
-                    <UniformGrid Columns="2" Rows="11">
-                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                            <TextBlock VerticalAlignment="Center" Text="{local:Loc WIDTHCOUNT}" />
-                            <Extensions:NumericUpDownControl Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
-                                Minimum="1" SmallChange="1"
-                                Value="{Binding Scanner.EnAdet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        </StackPanel>
-                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                            <TextBlock VerticalAlignment="Center" Text="{local:Loc HEIGHTCOUNT}" />
-                            <Extensions:NumericUpDownControl Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
-                                Minimum="1" SmallChange="1"
-                                Value="{Binding Scanner.BoyAdet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        </StackPanel>
-                        <Extensions:ContentToggleButton Command="{Binding LoadHistogram, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
-                            <TextBlock Text="HISTOGRAM" />
-                            <Extensions:ContentToggleButton.OverContent>
-                                <GroupBox>
-                                    <UniformGrid Columns="3">
-                                        <Extensions:GraphControl Width="200" Height="200"
-                                            Series="{Binding Scanner.RedChart}"
-                                            SeriesTextVisibility="Collapsed" ValueTextVisibility="Collapsed" />
-                                        <Extensions:GraphControl Width="200" Height="200"
-                                            Series="{Binding Scanner.GreenChart}"
-                                            SeriesTextVisibility="Collapsed" ValueTextVisibility="Collapsed" />
-                                        <Extensions:GraphControl Width="200" Height="200"
-                                            Series="{Binding Scanner.BlueChart}"
-                                            SeriesTextVisibility="Collapsed" ValueTextVisibility="Collapsed" />
-                                    </UniformGrid>
-                                </GroupBox>
-                            </Extensions:ContentToggleButton.OverContent>
-                        </Extensions:ContentToggleButton>
+                    <UniformGrid Columns="2" Rows="10">
+                        <UniformGrid Columns="2">
+                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center" Text="{local:Loc WIDTHCOUNT}" />
+                                <Extensions:NumericUpDownControl Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
+                                    Minimum="1" SmallChange="1"
+                                    Value="{Binding Scanner.EnAdet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center" Text="{local:Loc HEIGHTCOUNT}" />
+                                <Extensions:NumericUpDownControl Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
+                                    Minimum="1" SmallChange="1"
+                                    Value="{Binding Scanner.BoyAdet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                        </UniformGrid>
                         <Button Command="{Binding SplitImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock VerticalAlignment="Center" Text="{local:Loc SLICE}" />

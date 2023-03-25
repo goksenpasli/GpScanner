@@ -78,7 +78,7 @@ namespace TwainControl
                                 return;
 
                             case 6:
-                                TwainCtrl.SaveTxtFile(bitmapFrame, saveFileDialog.FileName, Scanner);
+                                await TwainCtrl.SaveTxtFile(bitmapFrame, saveFileDialog.FileName, Scanner);
                                 bitmapFrame = null;
                                 return;
                         }

@@ -41,11 +41,11 @@ namespace GpScanner
                     string pdfFilePath = pdfviewer.PdfFilePath;
                     int curpage = pdfviewer.Sayfa;
                     droppedData.Resim.GeneratePdf(null, Format.Jpg, TwainCtrl.SelectedPaper).Save(temporarypdf);
-
+                    string[] processedfiles = (new string[] { temporarypdf, pdfFilePath });
                     if ((Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.LeftShift)) || (Keyboard.IsKeyDown(Key.RightAlt) && Keyboard.IsKeyDown(Key.RightShift)))
                     {
                         await TwainCtrl.RemovePdfPage(pdfFilePath, curpage, curpage);
-                        (new string[] { temporarypdf, pdfFilePath }).MergePdf().Save(pdfFilePath);
+                        processedfiles.MergePdf().Save(pdfFilePath);
                         await TwainCtrl.ArrangeFile(pdfFilePath, pdfFilePath, 0, curpage - 1);
                         TwainCtrl.NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
                         return;
@@ -53,7 +53,7 @@ namespace GpScanner
 
                     if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
                     {
-                        (new string[] { temporarypdf, pdfFilePath }).MergePdf().Save(pdfFilePath);
+                        processedfiles.MergePdf().Save(pdfFilePath);
                         await TwainCtrl.ArrangeFile(pdfFilePath, pdfFilePath, 0, curpage - 1);
                         TwainCtrl.NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
                         return;
