@@ -714,14 +714,21 @@ namespace TwainControl
             {
                 if (parameter is object[] data && data[0] is TwainCtrl twainCtrl && data[1] is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
                 {
-                    string temporarypdf = Path.GetTempPath() + Guid.NewGuid() + ".pdf";
                     IEnumerable<ScannedImage> seçiliresimler = twainCtrl.Scanner.Resimler.Where(z => z.Seçili);
                     if (seçiliresimler.Any())
                     {
-                        PdfDocument pdfDocument = await seçiliresimler.ToList().GeneratePdf(Format.Jpg, twainCtrl.SelectedPaper, Settings.Default.JpegQuality, null, (int)Settings.Default.Çözünürlük);
+                        PdfDocument pdfDocument = null;
+                        string temporarypdf = null;
                         string pdfFilePath = pdfviewer.PdfFilePath;
-                        pdfDocument.Save(temporarypdf);
-                        (new string[] { temporarypdf, pdfFilePath }).MergePdf().Save(pdfFilePath);
+                        await Task.Run(async () =>
+                        {
+                            pdfDocument = await seçiliresimler.ToList().GeneratePdf(Format.Jpg, twainCtrl.SelectedPaper, Settings.Default.JpegQuality, null, (int)Settings.Default.Çözünürlük);
+                            temporarypdf = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
+                            pdfDocument.Save(temporarypdf);
+                            string[] processedfiles = new string[] { temporarypdf, pdfFilePath };
+                            processedfiles.MergePdf().Save(pdfFilePath);
+                        });
+
                         NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
                         if (Settings.Default.RemoveProcessedImage)
                         {
