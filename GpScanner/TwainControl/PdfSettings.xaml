@@ -11,7 +11,7 @@
     xmlns:pdfsharpdrawing="clr-namespace:PdfSharp.Drawing;assembly=PdfSharp-wpf"
     xmlns:properties="clr-namespace:TwainControl.Properties"
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
-    d:DesignHeight="440" d:DesignWidth="400"
+    d:DesignHeight="440" d:DesignWidth="480"
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
     UseLayoutRounding="True"
     mc:Ignorable="d">
@@ -63,7 +63,7 @@
                             </MultiBinding>
                         </Image.Source>
                     </Image>
-                    <TextBlock Width="295"
+                    <TextBlock Width="370"
                         VerticalAlignment="Center"
                         FontSize="14" FontStyle="Italic" Foreground="Red"
                         Text="{local:Loc PDFWARN}"
@@ -72,7 +72,7 @@
                 <Separator />
                 <CheckBox VerticalContentAlignment="Center"
                     Content="{local:Loc REMOVEPROCESSEDIMAGE}"
-                    FontStyle="Italic" Foreground="Red"
+                    FontStyle="Italic" FontWeight="Bold" Foreground="Red"
                     IsChecked="{Binding RemoveProcessedImage, Source={x:Static properties:Settings.Default}}" />
             </StackPanel>
         </GroupBox.Header>

@@ -181,7 +181,7 @@
             </Image>
             <Extensions:ContentToggleButton.OverContent>
                 <GroupBox>
-                    <ItemsControl Width="200" Height="400"
+                    <ItemsControl Width="300" Height="400"
                         HorizontalContentAlignment="Stretch"
                         ItemsSource="{Binding TaramaGeçmiş}">
                         <ItemsControl.ItemsPanel>

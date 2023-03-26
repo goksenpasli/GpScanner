@@ -180,6 +180,7 @@
                                                 </Image.Source>
                                             </Image>
                                             <TextBlock Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ComboBox}}"
+                                                MaxHeight="32"
                                                 VerticalAlignment="Center"
                                                 Text="{Binding Mode=OneWay}"
                                                 TextWrapping="Wrap" />
@@ -801,7 +802,7 @@
                             <StackPanel Grid.Column="1">
                                 <Extensions:ContentToggleButton>
                                     <Extensions:ContentToggleButton.OverContent>
-                                        <local:PdfSettings Width="400" />
+                                        <local:PdfSettings Width="480" />
                                     </Extensions:ContentToggleButton.OverContent>
                                     <StackPanel Orientation="Horizontal">
                                         <Image Width="24" Height="24">
