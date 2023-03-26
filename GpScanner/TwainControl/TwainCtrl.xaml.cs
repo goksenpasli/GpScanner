@@ -405,7 +405,7 @@ namespace TwainControl
                 StringBuilder sb = new();
                 foreach (string item in Scanner.FolderDateFormats)
                 {
-                    _ = sb.Append(item).Append(' ').AppendLine(DateTime.Today.ToString(item));
+                    _ = sb.Append(item).Append(' ').AppendLine(DateTime.Today.ToString(item, TranslationSource.Instance.CurrentCulture));
                 }
                 _ = MessageBox.Show(sb.ToString(), Application.Current?.MainWindow?.Title);
             }, parameter => true);
@@ -1945,7 +1945,7 @@ namespace TwainControl
                 ShowProgressIndicatorUi = Scanner.ShowProgress,
                 UseDuplex = Scanner.Duplex,
                 ShouldTransferAllPages = true,
-                Resolution = new ResolutionSettings() { Dpi = (int)Settings.Default.Çözünürlük, ColourSetting = (ColourSetting)Settings.Default.Mode },
+                Resolution = new ResolutionSettings() { Dpi = (int)Settings.Default.Çözünürlük, ColourSetting = ColourSetting.Colour },
                 Page = new PageSettings() { Orientation = SelectedOrientation }
             };
             switch (SelectedPaper.PaperType)
@@ -2403,7 +2403,8 @@ namespace TwainControl
                     return;
                 }
                 int decodepixelheight = (int)(SelectedPaper.Height / Inch * Settings.Default.Çözünürlük);
-                BitmapSource evrak = Scanner?.PaperBackScan == true ? Scanner?.Resimler.Count % 2 == 0 ? EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight) : EvrakOluştur(bitmap, (ColourSetting)Settings.Default.BackMode, decodepixelheight) : EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight);
+                BitmapSource evrak;
+                evrak = Scanner?.Resimler.Count % 2 == 0 ? EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight) : Scanner?.PaperBackScan == true ? EvrakOluştur(bitmap, (ColourSetting)Settings.Default.BackMode, decodepixelheight) : EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight);
                 evrak.Freeze();
                 BitmapSource önizleme = evrak.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Width * SelectedPaper.Height);
                 önizleme.Freeze();

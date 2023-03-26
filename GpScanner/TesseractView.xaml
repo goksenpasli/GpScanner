@@ -14,7 +14,23 @@
     mc:Ignorable="d">
     <GroupBox>
         <GroupBox.Header>
-            <CheckBox Content="{twainctrl:Loc ALL}" IsChecked="{Binding ShowAllLanguages}" />
+            <UniformGrid Columns="2">
+                <CheckBox Content="{twainctrl:Loc ALL}" IsChecked="{Binding ShowAllLanguages}" />
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Hyperlink Command="{Binding DataContext.ExploreFile, RelativeSource={RelativeSource AncestorType=Window}}"
+                        CommandParameter="{Binding Tessdatafolder}"
+                        TextDecorations="None">
+                        <Image Width="16" Height="16">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                    <Binding Source="Shell32.dll" />
+                                    <Binding Source="4" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                    </Hyperlink>
+                </TextBlock>
+            </UniformGrid>
         </GroupBox.Header>
         <Grid>
             <Grid.RowDefinitions>

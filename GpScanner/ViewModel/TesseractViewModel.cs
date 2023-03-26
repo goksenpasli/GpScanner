@@ -17,8 +17,8 @@ namespace GpScanner.ViewModel
         public TesseractViewModel()
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            string tessdatafolder = Path.GetDirectoryName(Process.GetCurrentProcess()?.MainModule?.FileName) + @"\tessdata";
-            TesseractFiles = GetTesseractFiles(tessdatafolder);
+            Tessdatafolder = Path.GetDirectoryName(Process.GetCurrentProcess()?.MainModule?.FileName) + @"\tessdata";
+            TesseractFiles = GetTesseractFiles(Tessdatafolder);
 
             OcrDatas = TesseractDownloadData();
 
@@ -53,7 +53,7 @@ namespace GpScanner.ViewModel
                     {
                         if (e.Error is null)
                         {
-                            TesseractFiles = GetTesseractFiles(tessdatafolder);
+                            TesseractFiles = GetTesseractFiles(Tessdatafolder);
                         }
                     };
                     await client.DownloadFileTaskAsync(new Uri($"https://github.com/tesseract-ocr/tessdata_best/raw/main/{ocrData.OcrName}"), $@"{tessdatafolder}\{ocrData.OcrName}");
@@ -81,6 +81,17 @@ namespace GpScanner.ViewModel
             }
         }
 
+        public string Tessdatafolder {
+            get => tessdatafolder; set {
+
+                if (tessdatafolder != value)
+                {
+                    tessdatafolder = value;
+                    OnPropertyChanged(nameof(Tessdatafolder));
+                }
+            }
+        }
+
         public ICommand TesseractDataFilesDownloadLink { get; }
 
         public ICommand TesseractDownload { get; }
@@ -98,6 +109,8 @@ namespace GpScanner.ViewModel
         }
 
         private bool showAllLanguages;
+
+        private string tessdatafolder;
 
         private ObservableCollection<string> tesseractFiles;
 
