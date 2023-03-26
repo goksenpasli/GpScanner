@@ -7,7 +7,7 @@
     xmlns:local="clr-namespace:Extensions"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance Type=Controls:MediaViewer}"
-    d:DesignHeight="384" d:DesignWidth="520" UseLayoutRounding="True"
+    d:DesignHeight="384" d:DesignWidth="530" UseLayoutRounding="True"
     mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -466,11 +466,31 @@
                             </StackPanel>
                         </local:ContentToggleButton.OverContent>
                     </local:ContentToggleButton>
-                    <Button x:Name="Capture"
-                        Width="24" Height="24"
-                        VerticalContentAlignment="Center"
-                        Click="Capture_Click" Content="µ" FontFamily="Webdings"
-                        FontSize="20" Foreground="Blue" />
+                    <local:ContentToggleButton Content="µ" FontFamily="Webdings" FontSize="20"
+                        Foreground="Blue" PlacementMode="Top">
+                        <local:ContentToggleButton.OverContent>
+                            <StackPanel Background="{StaticResource GroupBoxBackGround}" Orientation="Horizontal">
+                                <Button x:Name="Capture"
+                                    Width="24" Height="24"
+                                    VerticalContentAlignment="Center"
+                                    Click="Capture_Click" Content="µ" FontFamily="Webdings"
+                                    FontSize="20" Foreground="Blue" />
+                                <UniformGrid Columns="3">
+                                    <local:NumericUpDownControl FontFamily="Segoe UI" Maximum="20" Minimum="1"
+                                        SmallChange="1"
+                                        Value="{Binding ThumbHeightCount}" />
+                                    <local:NumericUpDownControl FontFamily="Segoe UI" Maximum="20" Minimum="1"
+                                        SmallChange="1"
+                                        Value="{Binding ThumbWidthCount}" />
+                                    <Button x:Name="CaptureThumb"
+                                        Width="24" Height="24"
+                                        VerticalContentAlignment="Center"
+                                        Click="CaptureThumb_Click" Content="µ" FontFamily="Webdings"
+                                        FontSize="20" Foreground="Blue" />
+                                </UniformGrid>
+                            </StackPanel>
+                        </local:ContentToggleButton.OverContent>
+                    </local:ContentToggleButton>
                     <local:ContentToggleButton Content="·" FontFamily="Webdings" FontSize="20"
                         Foreground="Blue" PlacementMode="Top">
                         <local:ContentToggleButton.OverContent>

@@ -12,6 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Windows.Threading;
 using Microsoft.Win32;
@@ -102,7 +103,11 @@ namespace Extensions.Controls
 
         public static readonly DependencyProperty SubTitleVisibilityProperty = DependencyProperty.Register("SubTitleVisibility", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Collapsed));
 
+        public static readonly DependencyProperty ThumbHeightCountProperty = DependencyProperty.Register("ThumbHeightCount", typeof(int), typeof(MediaViewer), new PropertyMetadata(1));
+
         public static readonly DependencyProperty ThumbnailsVisibleProperty = DependencyProperty.Register("ThumbnailsVisible", typeof(bool), typeof(MediaViewer), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+        public static readonly DependencyProperty ThumbWidthCountProperty = DependencyProperty.Register("ThumbWidthCount", typeof(int), typeof(MediaViewer), new PropertyMetadata(1));
 
         public static readonly DependencyProperty TimeDisplayVisibilityProperty = DependencyProperty.Register("TimeDisplayVisibility", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Visible));
 
@@ -397,9 +402,21 @@ namespace Extensions.Controls
         }
 
         [Description("Video Controls"), Category("Controls")]
+        public int ThumbHeightCount {
+            get { return (int)GetValue(ThumbHeightCountProperty); }
+            set { SetValue(ThumbHeightCountProperty, value); }
+        }
+
+        [Description("Video Controls"), Category("Controls")]
         public bool ThumbnailsVisible {
             get => (bool)GetValue(ThumbnailsVisibleProperty);
             set => SetValue(ThumbnailsVisibleProperty, value);
+        }
+
+        [Description("Video Controls"), Category("Controls")]
+        public int ThumbWidthCount {
+            get { return (int)GetValue(ThumbWidthCountProperty); }
+            set { SetValue(ThumbWidthCountProperty, value); }
         }
 
         [Description("Video Controls"), Category("Controls")]
@@ -699,7 +716,7 @@ namespace Extensions.Controls
 
         private void Capture_Click(object sender, RoutedEventArgs e)
         {
-            if (Player.NaturalVideoWidth > 0)
+            if (Player.NaturalVideoWidth > 0 && MediaDataFilePath != null)
             {
                 string picturesfolder = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
                 byte[] data = grid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
@@ -707,6 +724,44 @@ namespace Extensions.Controls
                 File.WriteAllBytes(dosya, data);
                 ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, dosya);
                 OsdText = "Görüntü Yakalandı";
+                GC.Collect();
+            }
+        }
+
+        private async void CaptureThumb_Click(object sender, RoutedEventArgs e)
+        {
+            if (Player.NaturalVideoWidth > 0 && MediaDataFilePath != null)
+            {
+                string picturesfolder = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+                var uniformgrid = new UniformGrid { Rows = ThumbHeightCount, Columns = ThumbWidthCount };
+                MediaVolume = 0;
+                for (int i = 1; i <= ThumbHeightCount * ThumbWidthCount; i++)
+                {
+                    Player.Play();
+                    Player.Position = new TimeSpan(i * (EndTimeSpan.Ticks / (ThumbWidthCount * ThumbHeightCount)));
+                    await Task.Delay(250);
+                    byte[] data = grid.ToRenderTargetBitmap().Resize(0.25).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg, 60);
+                    var image = new Image();
+                    BitmapImage bitmapImage = new BitmapImage();
+                    bitmapImage.BeginInit();
+                    var ms = new MemoryStream(data);
+                    bitmapImage.StreamSource = ms;
+                    bitmapImage.EndInit();
+                    bitmapImage.Freeze();
+                    image.BeginInit();
+                    image.Source = bitmapImage;
+                    image.EndInit();
+                    uniformgrid.Children.Add(image);
+                    bitmapImage = null;
+                    data = null;
+                    image = null;
+                    ms = null;
+                }
+                string dosya = picturesfolder.SetUniqueFile("Resim", "jpg");
+                File.WriteAllBytes(dosya, uniformgrid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg));
+                ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, dosya);
+                MediaVolume = 1;
+                uniformgrid = null;
                 GC.Collect();
             }
         }

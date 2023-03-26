@@ -44,7 +44,7 @@
                         </Button>
                         <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="360"
                             Minimum="0" SmallChange="1"
-                            Style="{StaticResource Slider}"
+                            Style="{DynamicResource Slider}"
                             Ticks="0,90,180,270,360"
                             Value="{Binding Rotation}" />
                         <CheckBox VerticalAlignment="Center"
