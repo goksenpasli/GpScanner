@@ -854,6 +854,26 @@ namespace TwainControl
                 }
             }, parameter => parameter is PdfViewer.PdfViewer pdfviewer && pdfviewer.PdfFilePath is not null);
 
+            ReverseData = new RelayCommand<object>(parameter => Scanner.Resimler = new ObservableCollection<ScannedImage>(Scanner.Resimler.Reverse()), parameter => Scanner?.Resimler.Any() == true);
+
+            ReverseDataHorizontal = new RelayCommand<object>(parameter =>
+            {
+                int start = Scanner.Resimler.IndexOf(Scanner?.Resimler.Where(z => z.Seçili).FirstOrDefault());
+                int end = Scanner.Resimler.IndexOf(Scanner?.Resimler.Where(z => z.Seçili).LastOrDefault());
+                if (Scanner?.Resimler?.Count(z => z.Seçili) == end - start + 1)
+                {
+                    List<ScannedImage> scannedImages = Scanner.Resimler.ToList();
+                    scannedImages.Reverse(start, end - start + 1);
+                    Scanner.Resimler = new ObservableCollection<ScannedImage>(scannedImages);
+                    scannedImages = null;
+                }
+            }, parameter =>
+            {
+                int start = Scanner?.Resimler?.IndexOf(Scanner?.Resimler?.Where(z => z.Seçili)?.FirstOrDefault()) ?? 0;
+                int end = Scanner?.Resimler?.IndexOf(Scanner?.Resimler?.Where(z => z.Seçili)?.LastOrDefault()) ?? 0;
+                return Scanner?.Resimler?.Count(z => z.Seçili) > 1 && Scanner?.Resimler?.Count(z => z.Seçili) == end - start + 1;
+            });
+
             RemoveSelectedPage = new RelayCommand<object>(async parameter =>
             {
                 if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
@@ -1193,6 +1213,10 @@ namespace TwainControl
         public ICommand ResimSil { get; }
 
         public ICommand ResimSilGeriAl { get; }
+
+        public ICommand ReverseData { get; }
+
+        public ICommand ReverseDataHorizontal { get; }
 
         public ICommand RotateSelectedPage { get; }
 

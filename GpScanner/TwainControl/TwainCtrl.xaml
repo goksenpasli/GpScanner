@@ -899,7 +899,8 @@
                         <TabItem>
                             <TabItem.Header>
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Width="16" Height="16">
+                                    <Image Width="16" Height="16"
+                                        VerticalAlignment="Bottom">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                 <Binding Source="Shell32.dll" />
@@ -907,12 +908,23 @@
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
-                                    <TextBlock FontWeight="Bold" TextAlignment="Center">
+                                    <TextBlock VerticalAlignment="Center"
+                                        FontWeight="Bold" TextAlignment="Center">
                                         <Run d:Text="0" BaselineAlignment="Center"
                                             Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" />
                                         <Run d:Text="/" BaselineAlignment="Center" Text="/" />
                                         <Run d:Text="0" BaselineAlignment="Center"
                                             Text="{Binding Scanner.Resimler.Count, Mode=OneWay}" />
+                                        <Hyperlink BaselineAlignment="Center"
+                                            Command="{Binding ReverseData}"
+                                            TextDecorations="None">
+                                            <Run FontFamily="Wingdings 3" FontSize="16" Text="E" />
+                                        </Hyperlink> 
+                                        <Hyperlink BaselineAlignment="Center"
+                                            Command="{Binding ReverseDataHorizontal}"
+                                            TextDecorations="None">
+                                            <Run FontFamily="Wingdings 3" FontSize="16" Text="D" />
+                                        </Hyperlink>
                                     </TextBlock>
                                 </StackPanel>
                             </TabItem.Header>
