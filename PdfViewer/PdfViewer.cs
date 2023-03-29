@@ -75,9 +75,25 @@ namespace PdfViewer
                 GC.Collect();
             }, parameter => PdfFilePath is not null);
 
-            ViewerBack = new RelayCommand<object>(parameter => Sayfa--, parameter => Source is not null && Sayfa > 1 && Sayfa <= ToplamSayfa);
+            ViewerBack = new RelayCommand<object>(parameter =>
+            {
+                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                {
+                    Sayfa = 1;
+                    return;
+                }
+                Sayfa--;
+            }, parameter => Source is not null && Sayfa > 1 && Sayfa <= ToplamSayfa);
 
-            ViewerNext = new RelayCommand<object>(parameter => Sayfa++, parameter => Source is not null && Sayfa >= 1 && Sayfa < ToplamSayfa);
+            ViewerNext = new RelayCommand<object>(parameter =>
+            {
+                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                {
+                    Sayfa = ToplamSayfa;
+                    return;
+                }
+                Sayfa++;
+            }, parameter => Source is not null && Sayfa >= 1 && Sayfa < ToplamSayfa);
 
             SaveImage = new RelayCommand<object>(parameter =>
             {

@@ -716,7 +716,7 @@ namespace TwainControl
                     pdfViewer.PdfFilePath = null;
                     pdfViewer.PdfFilePath = oldpdfpath;
                 }
-            }, parameter => !string.IsNullOrWhiteSpace(PdfWaterMarkText));
+            }, parameter => parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath) && !string.IsNullOrWhiteSpace(PdfWaterMarkText));
 
             MergeSelectedImagesToPdfFile = new RelayCommand<object>(async parameter =>
             {
@@ -908,6 +908,34 @@ namespace TwainControl
                     }
                 }
             }, parameter => parameter is string loadfilename && File.Exists(loadfilename) && SayfaBaşlangıç <= SayfaBitiş);
+
+            LoadPdfExtractFile = new RelayCommand<object>(parameter =>
+            {
+                if (parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
+                {
+                    PdfPages = new();
+                    for (int i = 1; i <= pdfViewer.ToplamSayfa; i++)
+                    {
+                        PdfPages.Add(new PdfData() { PageNumber = i });
+                    }
+                }
+            }, parameter => parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
+
+            ExtractMultiplePdfFile = new RelayCommand<object>(async parameter =>
+            {
+                if (parameter is PdfViewer.PdfViewer pdfViewer)
+                {
+                    string savefolder = ToolBox.CreateSaveFolder("SPLIT");
+                    foreach (PdfData currentpage in PdfPages)
+                    {
+                        if (currentpage.Selected)
+                        {
+                            await SaveFile(pdfViewer.PdfFilePath, $"{savefolder}\\{Path.GetFileNameWithoutExtension(pdfViewer.PdfFilePath)} {currentpage.PageNumber}.pdf", currentpage.PageNumber, currentpage.PageNumber);
+                        }
+                    }
+                    WebAdreseGit.Execute(savefolder);
+                }
+            }, parameter => PdfPages?.Any(z => z.Selected) == true);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -1062,6 +1090,8 @@ namespace TwainControl
 
         public ICommand ExploreFile { get; }
 
+        public ICommand ExtractMultiplePdfFile { get; }
+
         public ICommand ExtractPdfFile { get; }
 
         public ICommand EypPdfDosyaEkle { get; }
@@ -1097,6 +1127,8 @@ namespace TwainControl
         public ICommand LoadFileList { get; }
 
         public ICommand LoadImage { get; }
+
+        public ICommand LoadPdfExtractFile { get; }
 
         public ICommand LoadSingleEypFile { get; }
 
@@ -1140,6 +1172,17 @@ namespace TwainControl
                 {
                     pdfLoadProgressValue = value;
                     OnPropertyChanged(nameof(PdfLoadProgressValue));
+                }
+            }
+        }
+
+        public ObservableCollection<PdfData> PdfPages {
+            get => pdfPages; set {
+
+                if (pdfPages != value)
+                {
+                    pdfPages = value;
+                    OnPropertyChanged(nameof(PdfPages));
                 }
             }
         }
@@ -1795,6 +1838,8 @@ namespace TwainControl
         private ObservableCollection<Paper> papers;
 
         private double pdfLoadProgressValue;
+
+        private ObservableCollection<PdfData> pdfPages;
 
         private int pdfSplitCount = 0;
 

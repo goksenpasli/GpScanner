@@ -50,6 +50,46 @@
                     </Image.Source>
                 </Image>
             </Button>
+            <Extensions:ContentToggleButton Command="{Binding LoadPdfExtractFile}" CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
+                <Image Width="16" Height="16">
+                    <Image.Source>
+                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                            <Binding Source="Shell32.dll" />
+                            <Binding Source="54" />
+                        </MultiBinding>
+                    </Image.Source>
+                </Image>
+                <Extensions:ContentToggleButton.OverContent>
+                    <GroupBox>
+                        <StackPanel>
+                            <ListBox Width="300" Height="300"
+                                ItemsSource="{Binding PdfPages}"
+                                SelectionMode="Extended">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <CheckBox IsChecked="{Binding Selected}">
+                                            <CheckBox.Content>
+                                                <TextBlock>
+                                                    <Run Text="{local:Loc PAGENUMBER}" />
+                                                    <Run Text="{Binding PageNumber}" />
+                                                </TextBlock>
+                                            </CheckBox.Content>
+                                        </CheckBox>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <Button Command="{Binding ExtractMultiplePdfFile}" CommandParameter="{Binding Source={x:Reference PdfViewer}}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="16" Height="16"
+                                        VerticalAlignment="Bottom"
+                                        Source="/TwainControl;component/Icons/save.png" />
+                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc SAVEPDF}" />
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </GroupBox>
+                </Extensions:ContentToggleButton.OverContent>
+            </Extensions:ContentToggleButton>
             <Button Command="{Binding RemoveSelectedPage}" CommandParameter="{Binding ElementName=PdfViewer}">
                 <Image Width="16" Height="16"
                     Source="/TwainControl;component/Icons/delete.png" />
