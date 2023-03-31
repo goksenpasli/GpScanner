@@ -19,6 +19,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Extensions;component/Themes/Skin.xaml" />
+                <ResourceDictionary Source="/TwainControl;component/CommonResource.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
@@ -170,32 +171,18 @@
                             SelectedItem="{Binding Scanner.Layout}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock FontFamily="WingDings 3">
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding}" Value="Left">
-                                                        <Setter Property="Text" Value="Å" />
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding}" Value="Middle">
-                                                        <Setter Property="Text" Value="È" />
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding}" Value="Right">
-                                                        <Setter Property="Text" Value="Æ" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
+                                    <TextBlock FontFamily="WingDings 3" Style="{StaticResource TextBlockPdfLayout}" />
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <VirtualizingStackPanel Orientation="Horizontal" />
+                                    <UniformGrid Columns="3" Rows="2" />
                                 </ItemsPanelTemplate>
                             </ListBox.ItemsPanel>
                         </ListBox>
-                        <ComboBox ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfColor}}" SelectedItem="{Binding Scanner.PdfAlignTextColor}">
+                        <ComboBox VerticalContentAlignment="Center"
+                            ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfColor}}"
+                            SelectedItem="{Binding Scanner.PdfAlignTextColor}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">

@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:TwainControl"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:pdfsharpdrawing="clr-namespace:PdfSharp.Drawing;assembly=PdfSharp-wpf"
     xmlns:properties="clr-namespace:TwainControl.Properties"
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
     d:DesignHeight="600" d:DesignWidth="420"
@@ -14,9 +15,28 @@
     UseLayoutRounding="True"
     mc:Ignorable="d">
     <UserControl.Resources>
-        <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
-        <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
-        <Extensions:CloneConverter x:Key="CloneConverter" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TwainControl;component/CommonResource.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
+            <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
+            <Extensions:CloneConverter x:Key="CloneConverter" />
+            <ObjectDataProvider x:Key="PdfLayout"
+                MethodName="GetValues"
+                ObjectType="{x:Type System:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="local:PdfPageLayout" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+            <ObjectDataProvider x:Key="PdfColor"
+                MethodName="GetValues"
+                ObjectType="{x:Type System:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="pdfsharpdrawing:XKnownColor" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+        </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -205,6 +225,62 @@
                                         <Run Text="{local:Loc WATERMARK}" />
                                         <Run Text="{local:Loc APPLY}" />
                                     </TextBlock>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </GroupBox>
+                </Extensions:ContentToggleButton.OverContent>
+            </Extensions:ContentToggleButton>
+            <Extensions:ContentToggleButton>
+                <Canvas Width="16" Height="16">
+                    <TextBlock Canvas.Top="0"
+                        FontSize="10" Text="1" />
+                    <TextBlock Canvas.Left="4" Canvas.Top="2"
+                        FontSize="10" Text="2" />
+                    <TextBlock Canvas.Left="8" Canvas.Top="4"
+                        FontSize="10" Text="3" />
+                </Canvas>
+                <Extensions:ContentToggleButton.OverContent>
+                    <GroupBox>
+                        <StackPanel>
+                            <ListBox d:ItemsSource="{d:SampleData ItemCount=5}"
+                                ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfLayout}}"
+                                SelectedItem="{Binding Scanner.Layout}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock FontFamily="WingDings 3" Style="{StaticResource TextBlockPdfLayout}" />
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid Columns="3" Rows="2" />
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                            </ListBox>
+                            <ComboBox ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfColor}}" SelectedItem="{Binding Scanner.PdfAlignTextColor}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Rectangle Width="16" Height="16"
+                                                Fill="{Binding ElementName=Tb, Path=Text}" />
+                                            <TextBlock x:Name="Tb"
+                                                VerticalAlignment="Center"
+                                                Text="{Binding Mode=OneWay}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <Button Command="{Binding AddPageNumber}" CommandParameter="{Binding Source={x:Reference PdfViewer}}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="16" Height="16">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="73" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc APPLY}" />
                                 </StackPanel>
                             </Button>
                         </StackPanel>

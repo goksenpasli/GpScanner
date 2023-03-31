@@ -936,6 +936,37 @@ namespace TwainControl
                     WebAdreseGit.Execute(savefolder);
                 }
             }, parameter => PdfPages?.Any(z => z.Selected) == true);
+
+            AddPageNumber = new RelayCommand<object>(parameter =>
+            {
+                if (parameter is PdfViewer.PdfViewer pdfviewer)
+                {
+                    string oldpdfpath = pdfviewer.PdfFilePath;
+                    int currentpage = pdfviewer.Sayfa;
+                    using PdfDocument document = PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Modify);
+                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                    {
+                        for (int i = 0; i < document.PageCount; i++)
+                        {
+                            var pageall = document.Pages[i];
+                            using var gfxall = XGraphics.FromPdfPage(pageall, XGraphicsPdfPageOptions.Append);
+                            gfxall.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfAlignTextColor)), (i + 1).ToString(), PdfGeneration.GetPdfTextLayout(pageall)[0], PdfGeneration.GetPdfTextLayout(pageall)[1]);
+                        }
+                        document.Save(pdfviewer.PdfFilePath);
+                        pdfviewer.PdfFilePath = null;
+                        pdfviewer.PdfFilePath = oldpdfpath;
+                        pdfviewer.Sayfa = 1;
+                        return;
+                    }
+                    var page = document.Pages[pdfviewer.Sayfa - 1];
+                    using var gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
+                    gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfAlignTextColor)), pdfviewer.Sayfa.ToString(), PdfGeneration.GetPdfTextLayout(page)[0], PdfGeneration.GetPdfTextLayout(page)[1]);
+                    document.Save(pdfviewer.PdfFilePath);
+                    pdfviewer.PdfFilePath = null;
+                    pdfviewer.PdfFilePath = oldpdfpath;
+                    pdfviewer.Sayfa = currentpage;
+                }
+            }, parameter => parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -943,6 +974,8 @@ namespace TwainControl
         public ICommand AddAllFileToControlPanel { get; }
 
         public ICommand AddFromClipBoard { get; }
+
+        public ICommand AddPageNumber { get; }
 
         public ICommand AddSinglePdfPage { get; }
 

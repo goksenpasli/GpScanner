@@ -1,0 +1,24 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style x:Key="TextBlockPdfLayout" TargetType="TextBlock">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding}" Value="Left">
+                <Setter Property="Text" Value="¡" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding}" Value="Middle">
+                <Setter Property="Text" Value="£" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding}" Value="Right">
+                <Setter Property="Text" Value="¢" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding}" Value="LeftBottom">
+                <Setter Property="Text" Value="¡" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding}" Value="MiddleBottom">
+                <Setter Property="Text" Value="¤" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding}" Value="RightBottom">
+                <Setter Property="Text" Value="¢" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

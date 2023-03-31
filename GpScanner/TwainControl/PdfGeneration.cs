@@ -24,7 +24,7 @@ namespace TwainControl
 {
     public enum PdfPageLayout
     {
-        Left = 0, Middle = 1, Right = 2,
+        Left = 0, Middle = 1, Right = 2, LeftBottom = 3, MiddleBottom = 4, RightBottom = 5,
     }
 
     public static class PdfGeneration
@@ -56,6 +56,12 @@ namespace TwainControl
             doc.Options.UseFlateDecoderForJpegImages = PdfUseFlateDecoderForJpegImages.Automatic;
             doc.Options.NoCompression = false;
             doc.Options.EnableCcittCompressionForBilevelImages = true;
+        }
+
+        public static void DrawText(this XGraphics gfx, XBrush xBrush, string item, double x, double y, double fontsize = 16)
+        {
+            XFont font = new("Times New Roman", fontsize, XFontStyle.Regular, new XPdfFontOptions(PdfFontEncoding.Unicode));
+            gfx.DrawString(item, font, xBrush, x, y);
         }
 
         public static PdfDocument ExtractPdfPages(this string filename, int startpage, int endpage)
@@ -121,7 +127,7 @@ namespace TwainControl
                         }
                         if (Scanner.PdfPageNumberDraw)
                         {
-                            gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfAlignTextColor)), (i + 1).ToString(), GetPdfTextLayout(page), 20);
+                            gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfAlignTextColor)), (i + 1).ToString(), GetPdfTextLayout(page)[0], GetPdfTextLayout(page)[1]);
                         }
                         Scanner.PdfSaveProgressValue = i / (double)bitmapFrames.Count;
                     }
@@ -155,7 +161,7 @@ namespace TwainControl
                         }
                         if (Scanner.PdfPageNumberDraw)
                         {
-                            gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfAlignTextColor)), (i + 1).ToString(), GetPdfTextLayout(page), 20);
+                            gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfAlignTextColor)), (i + 1).ToString(), GetPdfTextLayout(page)[0], GetPdfTextLayout(page)[1]);
                         }
                         Scanner.PdfSaveProgressValue = i / (double)bitmapFrames.Count;
                     }
@@ -218,7 +224,7 @@ namespace TwainControl
                     }
                     if (Scanner.PdfPageNumberDraw)
                     {
-                        gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfAlignTextColor)), (i + 1).ToString(), GetPdfTextLayout(page), 20);
+                        gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfAlignTextColor)), (i + 1).ToString(), GetPdfTextLayout(page)[0], GetPdfTextLayout(page)[1]);
                     }
                     Scanner.PdfSaveProgressValue = i / (double)imagefiles.Count;
                 }
@@ -269,7 +275,7 @@ namespace TwainControl
                 }
                 if (Scanner.PdfPageNumberDraw)
                 {
-                    gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfAlignTextColor)), "1", GetPdfTextLayout(page), 20);
+                    gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfAlignTextColor)), "1", GetPdfTextLayout(page)[0], GetPdfTextLayout(page)[1]);
                 }
 
                 if (Scanner.PasswordProtect)
@@ -340,7 +346,7 @@ namespace TwainControl
                 }
                 if (Scanner.PdfPageNumberDraw)
                 {
-                    gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfAlignTextColor)), "1", GetPdfTextLayout(page), 20);
+                    gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfAlignTextColor)), "1", GetPdfTextLayout(page)[0], GetPdfTextLayout(page)[1]);
                 }
                 if (Scanner.PasswordProtect)
                 {
@@ -527,20 +533,17 @@ namespace TwainControl
             textformatter.DrawString(item.Text, font, xBrush, adjustedBounds);
         }
 
-        private static void DrawText(this XGraphics gfx, XBrush xBrush, string item, double x, double y, double fontsize = 16)
-        {
-            XFont font = new("Times New Roman", fontsize, XFontStyle.Regular, new XPdfFontOptions(PdfFontEncoding.Unicode));
-            gfx.DrawString(item, font, xBrush, x, y);
-        }
-
-        private static double GetPdfTextLayout(PdfPage page)
+        public static double[] GetPdfTextLayout(PdfPage page)
         {
             return Scanner.Layout switch
             {
-                PdfPageLayout.Left => 30,
-                PdfPageLayout.Middle => page.Width / 2,
-                PdfPageLayout.Right => page.Width - 30,
-                _ => 0,
+                PdfPageLayout.Left => new double[] { 30, 30 },
+                PdfPageLayout.Middle => new double[] { page.Width / 2, 30 },
+                PdfPageLayout.Right => new double[] { page.Width - 30, 30 },
+                PdfPageLayout.LeftBottom => new double[] { 30, page.Height - 30 },
+                PdfPageLayout.MiddleBottom => new double[] { page.Width / 2, page.Height - 30 },
+                PdfPageLayout.RightBottom => new double[] { page.Width - 30, page.Height - 30 },
+                _ => new double[] { 0, 0 }
             };
         }
 
