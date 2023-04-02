@@ -403,8 +403,8 @@ namespace Extensions.Controls
 
         [Description("Video Controls"), Category("Controls")]
         public int ThumbHeightCount {
-            get { return (int)GetValue(ThumbHeightCountProperty); }
-            set { SetValue(ThumbHeightCountProperty, value); }
+            get => (int)GetValue(ThumbHeightCountProperty);
+            set => SetValue(ThumbHeightCountProperty, value);
         }
 
         [Description("Video Controls"), Category("Controls")]
@@ -415,8 +415,8 @@ namespace Extensions.Controls
 
         [Description("Video Controls"), Category("Controls")]
         public int ThumbWidthCount {
-            get { return (int)GetValue(ThumbWidthCountProperty); }
-            set { SetValue(ThumbWidthCountProperty, value); }
+            get => (int)GetValue(ThumbWidthCountProperty);
+            set => SetValue(ThumbWidthCountProperty, value);
         }
 
         [Description("Video Controls"), Category("Controls")]
@@ -733,7 +733,7 @@ namespace Extensions.Controls
             if (Player.NaturalVideoWidth > 0 && MediaDataFilePath != null)
             {
                 string picturesfolder = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-                var uniformgrid = new UniformGrid { Rows = ThumbHeightCount, Columns = ThumbWidthCount };
+                UniformGrid uniformgrid = new() { Rows = ThumbHeightCount, Columns = ThumbWidthCount };
                 MediaVolume = 0;
                 for (int i = 1; i <= ThumbHeightCount * ThumbWidthCount; i++)
                 {
@@ -741,27 +741,22 @@ namespace Extensions.Controls
                     Player.Position = new TimeSpan(i * (EndTimeSpan.Ticks / (ThumbWidthCount * ThumbHeightCount)));
                     await Task.Delay(250);
                     byte[] data = grid.ToRenderTargetBitmap().Resize(0.25).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg, 60);
-                    var image = new Image();
-                    BitmapImage bitmapImage = new BitmapImage();
+                    Image image = new();
+                    BitmapImage bitmapImage = new();
                     bitmapImage.BeginInit();
-                    var ms = new MemoryStream(data);
+                    MemoryStream ms = new(data);
                     bitmapImage.StreamSource = ms;
                     bitmapImage.EndInit();
                     bitmapImage.Freeze();
                     image.BeginInit();
                     image.Source = bitmapImage;
                     image.EndInit();
-                    uniformgrid.Children.Add(image);
-                    bitmapImage = null;
-                    data = null;
-                    image = null;
-                    ms = null;
+                    _ = uniformgrid.Children.Add(image);
                 }
                 string dosya = picturesfolder.SetUniqueFile("Resim", "jpg");
                 File.WriteAllBytes(dosya, uniformgrid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg));
                 ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, dosya);
                 MediaVolume = 1;
-                uniformgrid = null;
                 GC.Collect();
             }
         }

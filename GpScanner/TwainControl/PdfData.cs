@@ -18,7 +18,6 @@ namespace TwainControl
 
         public bool Selected {
             get => selected; set {
-
                 if (selected != value)
                 {
                     selected = value;

@@ -772,6 +772,12 @@ namespace TwainControl
             {
                 if (parameter is object[] data && data[0] is TwainCtrl twainCtrl && data[1] is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
                 {
+                    if (Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.LeftCtrl) && TbCtrl?.Items[1] is TabItem selectedtab)
+                    {
+                        ((PdfImportViewerControl)selectedtab.Content).PdfViewer.PdfFilePath = pdfviewer.PdfFilePath;
+                        SelectedTab = selectedtab;
+                        return;
+                    }
                     if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                     {
                         twainCtrl.AddFiles(new string[] { pdfviewer.PdfFilePath }, twainCtrl.DecodeHeight);
@@ -858,8 +864,8 @@ namespace TwainControl
 
             ReverseDataHorizontal = new RelayCommand<object>(parameter =>
             {
-                int start = Scanner.Resimler.IndexOf(Scanner?.Resimler.Where(z => z.Seçili).FirstOrDefault());
-                int end = Scanner.Resimler.IndexOf(Scanner?.Resimler.Where(z => z.Seçili).LastOrDefault());
+                int start = Scanner.Resimler.IndexOf(Scanner?.Resimler.FirstOrDefault(z => z.Seçili));
+                int end = Scanner.Resimler.IndexOf(Scanner?.Resimler.LastOrDefault(z => z.Seçili));
                 if (Scanner?.Resimler?.Count(z => z.Seçili) == end - start + 1)
                 {
                     List<ScannedImage> scannedImages = Scanner.Resimler.ToList();
@@ -1780,6 +1786,38 @@ namespace TwainControl
             Dispose(true);
         }
 
+        public void DropFile(object sender, DragEventArgs e)
+        {
+            if (sender is Run run && e.Data.GetData(typeof(ScannedImage)) is ScannedImage droppedData && run.DataContext is ScannedImage target)
+            {
+                int removedIdx = Scanner.Resimler.IndexOf(droppedData);
+                int targetIdx = Scanner.Resimler.IndexOf(target);
+
+                if (removedIdx < targetIdx)
+                {
+                    Scanner.Resimler.Insert(targetIdx + 1, droppedData);
+                    Scanner.Resimler.RemoveAt(removedIdx);
+                    return;
+                }
+                int remIdx = removedIdx + 1;
+                if (Scanner.Resimler.Count + 1 > remIdx)
+                {
+                    Scanner.Resimler.Insert(targetIdx, droppedData);
+                    Scanner.Resimler.RemoveAt(remIdx);
+                }
+            }
+        }
+
+        public void DropPreviewFile(object sender, MouseEventArgs e)
+        {
+            if (sender is Run run && e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragMoveStarted = true;
+                _ = DragDrop.DoDragDrop(run, run.DataContext, DragDropEffects.Move);
+                DragMoveStarted = false;
+            }
+        }
+
         public void SplitPdfPageCount(string pdfpath, string savefolder, int pagecount)
         {
             using PdfDocument inputDocument = PdfReader.Open(pdfpath, PdfDocumentOpenMode.Import);
@@ -2368,27 +2406,7 @@ namespace TwainControl
             }
         }
 
-        private void Run_Drop(object sender, DragEventArgs e)
-        {
-            if (sender is Run run && e.Data.GetData(typeof(ScannedImage)) is ScannedImage droppedData && run.DataContext is ScannedImage target)
-            {
-                int removedIdx = Scanner.Resimler.IndexOf(droppedData);
-                int targetIdx = Scanner.Resimler.IndexOf(target);
-
-                if (removedIdx < targetIdx)
-                {
-                    Scanner.Resimler.Insert(targetIdx + 1, droppedData);
-                    Scanner.Resimler.RemoveAt(removedIdx);
-                    return;
-                }
-                int remIdx = removedIdx + 1;
-                if (Scanner.Resimler.Count + 1 > remIdx)
-                {
-                    Scanner.Resimler.Insert(targetIdx, droppedData);
-                    Scanner.Resimler.RemoveAt(remIdx);
-                }
-            }
-        }
+        private void Run_Drop(object sender, DragEventArgs e) => DropFile(sender, e);
 
         private void Run_EypDrop(object sender, DragEventArgs e)
         {
@@ -2420,15 +2438,7 @@ namespace TwainControl
             }
         }
 
-        private void Run_PreviewMouseMove(object sender, MouseEventArgs e)
-        {
-            if (sender is Run run && e.LeftButton == MouseButtonState.Pressed)
-            {
-                DragMoveStarted = true;
-                _ = DragDrop.DoDragDrop(run, run.DataContext, DragDropEffects.Move);
-                DragMoveStarted = false;
-            }
-        }
+        private void Run_PreviewMouseMove(object sender, MouseEventArgs e) => DropPreviewFile(sender, e);
 
         private void SavePageRotated(string savepath, PdfDocument inputDocument, int angle)
         {

@@ -270,7 +270,9 @@
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
-                            <Button Command="{Binding AddPageNumber}" CommandParameter="{Binding Source={x:Reference PdfViewer}}">
+                            <Button BorderBrush="Cyan"
+                                Command="{Binding AddPageNumber}"
+                                CommandParameter="{Binding Source={x:Reference PdfViewer}}">
                                 <StackPanel Orientation="Horizontal">
                                     <Image Width="16" Height="16">
                                         <Image.Source>

@@ -164,6 +164,10 @@ namespace GpScanner
             }
         }
 
+        private void Run_Drop(object sender, DragEventArgs e) => TwainCtrl.DropFile(sender, e);
+
+        private void Run_PreviewMouseMove(object sender, MouseEventArgs e) => TwainCtrl.DropPreviewFile(sender, e);
+
         private async void TwainCtrl_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (DataContext is GpScannerViewModel ViewModel)

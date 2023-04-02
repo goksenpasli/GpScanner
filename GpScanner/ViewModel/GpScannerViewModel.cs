@@ -702,6 +702,18 @@ namespace GpScanner.ViewModel
             }
         }
 
+        public bool DocumentPanelIsExpanded {
+            get => documentPanelIsExpanded;
+
+            set {
+                if (documentPanelIsExpanded != value)
+                {
+                    documentPanelIsExpanded = value;
+                    OnPropertyChanged(nameof(DocumentPanelIsExpanded));
+                }
+            }
+        }
+
         public ObservableCollection<Scanner> Dosyalar {
             get => dosyalar;
 
@@ -1324,6 +1336,8 @@ namespace GpScanner.ViewModel
         private bool detectBarCode = true;
 
         private bool detectPageSeperator;
+
+        private bool documentPanelIsExpanded;
 
         private ObservableCollection<Scanner> dosyalar;
 

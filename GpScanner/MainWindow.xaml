@@ -286,7 +286,9 @@
                                     <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SETTİNGS}" />
                                 </StackPanel>
                             </Button>
-                            <ToggleButton x:Name="TbExpandDocument" Command="{Binding ModifyGridWidth}">
+                            <ToggleButton x:Name="TbExpandDocument"
+                                Command="{Binding ModifyGridWidth}"
+                                IsChecked="{Binding DocumentPanelIsExpanded}">
                                 <ToggleButton.Style>
                                     <Style TargetType="{x:Type ToggleButton}">
                                         <Style.Triggers>
@@ -616,6 +618,72 @@
                             </MultiBinding>
                         </Image.Source>
                     </Image>
+                    <Extensions:ContentToggleButton Background="{x:Null}"
+                        BorderBrush="{x:Null}"
+                        IsChecked="{Binding DocumentPanelIsExpanded, Mode=OneWay}"
+                        IsEnabled="{Binding DocumentPanelIsExpanded, Mode=OneWay}"
+                        StaysOpen="{Binding DocumentPanelIsExpanded, Mode=OneWay}">
+                        <Image Width="16" Height="16"
+                            VerticalAlignment="Bottom">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                    <Binding Source="Shell32.dll" />
+                                    <Binding Source="19" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                        <Extensions:ContentToggleButton.OverContent>
+                            <Extensions:ResizablePanel Width="225" Height="150" MinWidth="225"
+                                MinHeight="150">
+                                <GroupBox Header="{twainctrl:Loc DOCUMENT}">
+                                    <ListBox Extensions:DragDropExtension.ScrollOnDragDrop="True" AllowDrop="True"
+                                        Background="{StaticResource BorderBackground}"
+                                        ItemsSource="{Binding Source={x:Reference TwainCtrl}, Path=Scanner.Resimler}"
+                                        SelectionMode="Extended" VirtualizingPanel.CacheLength="3,3"
+                                        VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                                        VirtualizingPanel.ScrollUnit="Item" VirtualizingPanel.VirtualizationMode="Standard">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel>
+                                                    <TextBlock HorizontalAlignment="Center">
+                                                        <Extensions:NumericUpDownControl Height="20"
+                                                            LargeChange="1" Maximum="1" Minimum="-1"
+                                                            NumericUpdownTextBoxVisibility="Collapsed" Orientation="Horizontal" SmallChange="1"
+                                                            Value="{Binding RotationAngle}" />
+                                                        <Run AllowDrop="True" Cursor="SizeAll" Drop="Run_Drop"
+                                                            FontFamily="Wingdings" FontSize="24" FontWeight="Bold"
+                                                            PreviewMouseMove="Run_PreviewMouseMove" Text="B" />
+                                                        <Hyperlink Command="{Binding Source={x:Reference TwainCtrl}, Path=DataContext.ResimSil}"
+                                                            CommandParameter="{Binding Mode=OneWay}"
+                                                            TextDecorations="None">
+                                                            <Image Width="16" Height="16"
+                                                                Source="/TwainControl;component/Icons/delete.png" />
+                                                        </Hyperlink>
+                                                    </TextBlock>
+                                                    <Image Width="72" Height="72"
+                                                        d:Height="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}"
+                                                        d:Source="/GpScanner;component/scanner.ico"
+                                                        d:Width="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}">
+                                                        <Image.Source>
+                                                            <PriorityBinding>
+                                                                <Binding IsAsync="True" Mode="OneWay" Path="Resim.Thumbnail" />
+                                                                <Binding Converter="{StaticResource FilePathToIconConverter}" Path="FilePath" />
+                                                            </PriorityBinding>
+                                                        </Image.Source>
+                                                    </Image>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                        <ListBox.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" SpacingMode="None" />
+                                            </ItemsPanelTemplate>
+                                        </ListBox.ItemsPanel>
+                                    </ListBox>
+                                </GroupBox>
+                            </Extensions:ResizablePanel>
+                        </Extensions:ContentToggleButton.OverContent>
+                    </Extensions:ContentToggleButton>
                     <StackPanel Orientation="Horizontal">
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                     </StackPanel>
