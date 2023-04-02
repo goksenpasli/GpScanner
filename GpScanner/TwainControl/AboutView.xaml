@@ -60,11 +60,6 @@
                     </Hyperlink>
                 </TextBlock>
                 <TextBlock>
-                    <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://www.nuget.org/packages/Freeware.Pdf2Png/1.0.1">
-                        Pdf2Png
-                    </Hyperlink>
-                </TextBlock>
-                <TextBlock>
                     <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/JosePineiro/MozJpeg-wrapper">
                         MozJpeg
                     </Hyperlink>
@@ -72,6 +67,11 @@
                 <TextBlock>
                     <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://bitbucket.org/jvandezande/wpfcap/src/master/">
                         WPFCap
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock>
+                    <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/pvginkel/PdfiumViewer">
+                        PdfiumViewer
                     </Hyperlink>
                 </TextBlock>
             </StackPanel>

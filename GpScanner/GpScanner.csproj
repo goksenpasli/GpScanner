@@ -207,6 +207,10 @@
       <Project>{a9495099-87ce-4478-8555-8701f2989145}</Project>
       <Name>Ocr</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PdfiumViewer\PdfiumViewer.csproj">
+      <Project>{438914b6-5d1c-482c-b942-5c0e057eef6f}</Project>
+      <Name>PdfiumViewer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PdfViewer\PdfViewer.csproj">
       <Project>{ea1285ba-203e-4d61-a869-7567966e5367}</Project>
       <Name>PdfViewer</Name>

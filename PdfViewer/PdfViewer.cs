@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,8 +11,11 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Extensions;
-using Freeware;
+
+//using Freeware;
 using Microsoft.Win32;
+using Ocr;
+using PdfiumViewer;
 using static Extensions.ExtensionMethods;
 
 namespace PdfViewer
@@ -36,7 +40,7 @@ namespace PdfViewer
 
         public static readonly DependencyProperty PageScrollBarVisibilityProperty = DependencyProperty.Register("PageScrollBarVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Visible));
 
-        public static readonly DependencyProperty PdfFilePathProperty = DependencyProperty.Register("PdfFilePath", typeof(string), typeof(PdfViewer), new PropertyMetadata(null, async (o, e) => await PdfFilePathChangedAsync(o, e)));
+        public static readonly DependencyProperty PdfFilePathProperty = DependencyProperty.Register("PdfFilePath", typeof(string), typeof(PdfViewer), new PropertyMetadata(null, (o, e) => PdfFilePathChanged(o, e)));
 
         public static readonly DependencyProperty ScrollBarVisibleProperty = DependencyProperty.Register("ScrollBarVisible", typeof(ScrollBarVisibility), typeof(PdfViewer), new PropertyMetadata(ScrollBarVisibility.Auto));
 
@@ -121,6 +125,10 @@ namespace PdfViewer
                 if (Source is not null)
                 {
                     Zoom = (Orientation != FitImageOrientation.Width) ? ActualHeight / Source.Height : ActualWidth / Source.Width;
+                    if (Zoom == 0)
+                    {
+                        Zoom = 1;
+                    }
                 }
             }, (object parameter) => Source != null);
         }
@@ -311,7 +319,7 @@ namespace PdfViewer
             set => SetValue(ZoomProperty, value);
         }
 
-        public static async Task<BitmapImage> ConvertToImgAsync(byte[] pdffilestream, int page, int dpi, int decodepixel = 0)
+        public static async Task<BitmapImage> ConvertToImgAsync(byte[] pdffilestream, int page, int dpi)
         {
             try
             {
@@ -321,25 +329,14 @@ namespace PdfViewer
                 }
                 return await Task.Run(() =>
                 {
-                    byte[] imagearray = Pdf2Png.Convert(pdffilestream, page, dpi);
-                    if (imagearray is not null)
-                    {
-                        MemoryStream ms = new(imagearray);
-                        BitmapImage bitmap = new();
-                        bitmap.BeginInit();
-                        bitmap.DecodePixelHeight = decodepixel;
-                        bitmap.CacheOption = BitmapCacheOption.None;
-                        bitmap.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.DelayCreation;
-                        bitmap.StreamSource = ms;
-                        bitmap.EndInit();
-                        bitmap.Freeze();
-                        pdffilestream = null;
-                        imagearray = null;
-                        ms = null;
-                        GC.Collect();
-                        return bitmap;
-                    }
-                    return null;
+                    using MemoryStream ms = new(pdffilestream);
+                    using PdfDocument pdfDoc = PdfDocument.Load(ms);
+                    int width = (int)(pdfDoc.PageSizes[page - 1].Width / 72 * dpi);
+                    int height = (int)(pdfDoc.PageSizes[page - 1].Height / 72 * dpi);
+                    var image = pdfDoc.Render(page - 1, width, height, dpi, dpi, false);
+                    var bitmapImage = image.ToBitmapImage(ImageFormat.Jpeg);
+                    bitmapImage.Freeze();
+                    return bitmapImage;
                 });
             }
             catch (Exception)
@@ -359,16 +356,14 @@ namespace PdfViewer
                 }
                 return await Task.Run(() =>
                 {
-                    byte[] buffer = Pdf2Png.Convert(stream, page, dpi);
-                    if (buffer != null)
-                    {
-                        MemoryStream ms = new(buffer);
-                        buffer = null;
-                        stream = null;
-                        GC.Collect();
-                        return ms;
-                    }
-                    return null;
+                    using MemoryStream ms = new(stream);
+                    using PdfDocument pdfDoc = PdfDocument.Load(ms);
+                    int width = (int)(pdfDoc.PageSizes[page - 1].Width / 72 * dpi);
+                    int height = (int)(pdfDoc.PageSizes[page - 1].Height / 72 * dpi);
+                    var image = pdfDoc.Render(page - 1, width, height, dpi, dpi, false);
+                    var bitmapImage = image.ToBitmapImage(ImageFormat.Jpeg);
+                    bitmapImage.Freeze();
+                    return new MemoryStream(bitmapImage.ToTiffJpegByteArray(Format.Jpg));
                 });
             }
             catch (Exception)
@@ -386,12 +381,12 @@ namespace PdfViewer
                 {
                     throw new ArgumentOutOfRangeException(nameof(stream), "file can not be null or length zero");
                 }
+
                 return await Task.Run(() =>
                 {
-                    int pagecount = Pdf2Png.ConvertAllPages(stream, 0).Count;
-                    stream = null;
-                    GC.Collect();
-                    return pagecount;
+                    using MemoryStream ms = new(stream);
+                    using PdfDocument pdfDoc = PdfDocument.Load(ms);
+                    return pdfDoc.PageCount;
                 });
             }
             catch (Exception)
@@ -516,7 +511,7 @@ namespace PdfViewer
             }
         }
 
-        private static async Task PdfFilePathChangedAsync(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void PdfFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is PdfViewer pdfViewer)
             {
@@ -524,14 +519,16 @@ namespace PdfViewer
                 {
                     try
                     {
-                        byte[] data = await ReadAllFileAsync(e.NewValue as string);
+                        using PdfDocument pdfDoc = PdfDocument.Load(e.NewValue as string);
                         int dpi = pdfViewer.Dpi;
-                        pdfViewer.Source = await ConvertToImgAsync(data, pdfViewer.Sayfa, dpi);
-                        pdfViewer.ToplamSayfa = await PdfPageCountAsync(data);
+                        int page = pdfViewer.Sayfa - 1;
+                        int width = (int)(pdfDoc.PageSizes[page].Width / 72 * dpi);
+                        int height = (int)(pdfDoc.PageSizes[page].Height / 72 * dpi);
+                        var image = pdfDoc.Render(page, width, height, dpi, dpi, false);
+                        pdfViewer.Source = image.ToBitmapImage(ImageFormat.Jpeg);
+                        pdfViewer.ToplamSayfa = pdfDoc.PageCount;
                         pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
                         pdfViewer.Resize.Execute(null);
-                        data = null;
-                        GC.Collect();
                     }
                     catch (Exception)
                     {
@@ -556,6 +553,7 @@ namespace PdfViewer
             if (e.PropertyName is "Sayfa" && sender is PdfViewer pdfViewer && pdfViewer.PdfFilePath is not null)
             {
                 string pdfFilePath = pdfViewer.PdfFilePath;
+
                 Source = await ConvertToImgAsync(await ReadAllFileAsync(pdfFilePath), sayfa, pdfViewer.Dpi);
                 GC.Collect();
             }

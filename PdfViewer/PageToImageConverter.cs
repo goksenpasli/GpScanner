@@ -17,7 +17,7 @@ namespace PdfViewer
                     return Task.Run(async () =>
                     {
                         byte[] data = await PdfViewer.ReadAllFileAsync(filename);
-                        BitmapImage bitmapImage = await PdfViewer.ConvertToImgAsync(data, index, 12, 64);
+                        BitmapImage bitmapImage = await PdfViewer.ConvertToImgAsync(data, index, 12);
                         data = null;
                         GC.Collect();
                         return bitmapImage;
