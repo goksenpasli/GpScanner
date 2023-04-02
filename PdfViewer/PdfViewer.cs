@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Printing;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,10 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Extensions;
-
-//using Freeware;
 using Microsoft.Win32;
-using Ocr;
 using PdfiumViewer;
 using static Extensions.ExtensionMethods;
 
@@ -40,7 +39,7 @@ namespace PdfViewer
 
         public static readonly DependencyProperty PageScrollBarVisibilityProperty = DependencyProperty.Register("PageScrollBarVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Visible));
 
-        public static readonly DependencyProperty PdfFilePathProperty = DependencyProperty.Register("PdfFilePath", typeof(string), typeof(PdfViewer), new PropertyMetadata(null, (o, e) => PdfFilePathChanged(o, e)));
+        public static readonly DependencyProperty PdfFilePathProperty = DependencyProperty.Register("PdfFilePath", typeof(string), typeof(PdfViewer), new PropertyMetadata(null, PdfFilePathChanged));
 
         public static readonly DependencyProperty ScrollBarVisibleProperty = DependencyProperty.Register("ScrollBarVisible", typeof(ScrollBarVisibility), typeof(PdfViewer), new PropertyMetadata(ScrollBarVisibility.Auto));
 
@@ -72,11 +71,10 @@ namespace PdfViewer
                 }
             });
 
-            Yazdır = new RelayCommand<object>(async parameter =>
+            Yazdır = new RelayCommand<object>(parameter =>
             {
-                string pdfFilePath = PdfFilePath;
-                await PrintPdfFile(await ReadAllFileAsync(pdfFilePath));
-                GC.Collect();
+                using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
+                PrintPdf(pdfDocument);
             }, parameter => PdfFilePath is not null);
 
             ViewerBack = new RelayCommand<object>(parameter =>
@@ -131,6 +129,23 @@ namespace PdfViewer
                     }
                 }
             }, (object parameter) => Source != null);
+
+            ReadPdfText = new RelayCommand<object>(delegate
+            {
+                using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
+                PdfTextContent = pdfDocument.GetPdfText(Sayfa - 1);
+            }, (object parameter) => Source != null);
+
+            SearchPdfText = new RelayCommand<object>(delegate
+            {
+                using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
+                PdfMatches matches = pdfDocument.Search(SearchTextContent, false, false);
+                PdfMatches = new();
+                foreach (PdfMatch match in matches.Items)
+                {
+                    PdfMatches.Add(match);
+                }
+            }, (object parameter) => Source != null && !string.IsNullOrWhiteSpace(SearchTextContent));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -158,6 +173,8 @@ namespace PdfViewer
             get => (Visibility)GetValue(ContextMenuVisibilityProperty);
             set => SetValue(ContextMenuVisibilityProperty, value);
         }
+
+        public string DefaultPrinter { get; set; } = LocalPrintServer.GetDefaultPrintQueue().FullName;
 
         public RelayCommand<object> DosyaAç { get; }
 
@@ -218,6 +235,38 @@ namespace PdfViewer
             set => SetValue(PdfFilePathProperty, value);
         }
 
+        public ObservableCollection<PdfMatch> PdfMatches {
+            get => pdfMatches; set {
+                if (pdfMatches != value)
+                {
+                    pdfMatches = value;
+                    OnPropertyChanged(nameof(PdfMatches));
+                }
+            }
+        }
+
+        public string PdfTextContent {
+            get => pdfTextContent; set {
+                if (pdfTextContent != value)
+                {
+                    pdfTextContent = value;
+                    OnPropertyChanged(nameof(PdfTextContent));
+                }
+            }
+        }
+
+        public Visibility PdfTextContentVisibility {
+            get => pdfTextContentVisibility;
+
+            set {
+                if (pdfTextContentVisibility != value)
+                {
+                    pdfTextContentVisibility = value;
+                    OnPropertyChanged(nameof(PdfTextContentVisibility));
+                }
+            }
+        }
+
         public Visibility PrintButtonVisibility {
             get => printButtonVisibility;
 
@@ -229,6 +278,8 @@ namespace PdfViewer
                 }
             }
         }
+
+        public RelayCommand<object> ReadPdfText { get; }
 
         public RelayCommand<object> Resize { get; }
 
@@ -249,6 +300,40 @@ namespace PdfViewer
         public ScrollBarVisibility ScrollBarVisible {
             get => (ScrollBarVisibility)GetValue(ScrollBarVisibleProperty);
             set => SetValue(ScrollBarVisibleProperty, value);
+        }
+
+        public PdfMatch SearchPdfMatch {
+            get => searchPdfMatch; set {
+                if (searchPdfMatch != value)
+                {
+                    searchPdfMatch = value;
+                    OnPropertyChanged(nameof(SearchPdfMatch));
+                }
+            }
+        }
+
+        public RelayCommand<object> SearchPdfText { get; }
+
+        public string SearchTextContent {
+            get => searchTextContent;
+
+            set {
+                if (searchTextContent != value)
+                {
+                    searchTextContent = value;
+                    OnPropertyChanged(nameof(SearchTextContent));
+                }
+            }
+        }
+
+        public Visibility SearchTextContentVisibility {
+            get => searchTextContentVisibility; set {
+                if (searchTextContentVisibility != value)
+                {
+                    searchTextContentVisibility = value;
+                    OnPropertyChanged(nameof(SearchTextContentVisibility));
+                }
+            }
         }
 
         public Visibility SliderZoomAngleVisibility {
@@ -323,18 +408,16 @@ namespace PdfViewer
         {
             try
             {
-                if (pdffilestream?.Length == 0)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(pdffilestream), "file can not be null or length zero");
-                }
-                return await Task.Run(() =>
+                return pdffilestream?.Length == 0
+                    ? throw new ArgumentOutOfRangeException(nameof(pdffilestream), "file can not be null or length zero")
+                    : await Task.Run(() =>
                 {
                     using MemoryStream ms = new(pdffilestream);
                     using PdfDocument pdfDoc = PdfDocument.Load(ms);
                     int width = (int)(pdfDoc.PageSizes[page - 1].Width / 72 * dpi);
                     int height = (int)(pdfDoc.PageSizes[page - 1].Height / 72 * dpi);
-                    var image = pdfDoc.Render(page - 1, width, height, dpi, dpi, false);
-                    var bitmapImage = image.ToBitmapImage(ImageFormat.Jpeg);
+                    System.Drawing.Image image = pdfDoc.Render(page - 1, width, height, dpi, dpi, false);
+                    BitmapImage bitmapImage = image.ToBitmapImage(ImageFormat.Jpeg);
                     bitmapImage.Freeze();
                     return bitmapImage;
                 });
@@ -350,18 +433,16 @@ namespace PdfViewer
         {
             try
             {
-                if (stream?.Length == 0)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(stream), "file can not be null or length zero");
-                }
-                return await Task.Run(() =>
+                return stream?.Length == 0
+                    ? throw new ArgumentOutOfRangeException(nameof(stream), "file can not be null or length zero")
+                    : await Task.Run(() =>
                 {
                     using MemoryStream ms = new(stream);
                     using PdfDocument pdfDoc = PdfDocument.Load(ms);
                     int width = (int)(pdfDoc.PageSizes[page - 1].Width / 72 * dpi);
                     int height = (int)(pdfDoc.PageSizes[page - 1].Height / 72 * dpi);
-                    var image = pdfDoc.Render(page - 1, width, height, dpi, dpi, false);
-                    var bitmapImage = image.ToBitmapImage(ImageFormat.Jpeg);
+                    System.Drawing.Image image = pdfDoc.Render(page - 1, width, height, dpi, dpi, false);
+                    BitmapImage bitmapImage = image.ToBitmapImage(ImageFormat.Jpeg);
                     bitmapImage.Freeze();
                     return new MemoryStream(bitmapImage.ToTiffJpegByteArray(Format.Jpg));
                 });
@@ -377,12 +458,9 @@ namespace PdfViewer
         {
             try
             {
-                if (stream?.Length == 0)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(stream), "file can not be null or length zero");
-                }
-
-                return await Task.Run(() =>
+                return stream?.Length == 0
+                    ? throw new ArgumentOutOfRangeException(nameof(stream), "file can not be null or length zero")
+                    : await Task.Run(() =>
                 {
                     using MemoryStream ms = new(stream);
                     using PdfDocument pdfDoc = PdfDocument.Load(ms);
@@ -481,11 +559,23 @@ namespace PdfViewer
 
         private IEnumerable<int> pages;
 
+        private ObservableCollection<PdfMatch> pdfMatches;
+
+        private string pdfTextContent;
+
+        private Visibility pdfTextContentVisibility;
+
         private Visibility printButtonVisibility = Visibility.Collapsed;
 
         private int sayfa = 1;
 
         private ScrollViewer scrollvwr;
+
+        private PdfMatch searchPdfMatch;
+
+        private string searchTextContent;
+
+        private Visibility searchTextContentVisibility;
 
         private Visibility sliderZoomAngleVisibility = Visibility.Visible;
 
@@ -524,7 +614,7 @@ namespace PdfViewer
                         int page = pdfViewer.Sayfa - 1;
                         int width = (int)(pdfDoc.PageSizes[page].Width / 72 * dpi);
                         int height = (int)(pdfDoc.PageSizes[page].Height / 72 * dpi);
-                        var image = pdfDoc.Render(page, width, height, dpi, dpi, false);
+                        System.Drawing.Image image = pdfDoc.Render(page, width, height, dpi, dpi, false);
                         pdfViewer.Source = image.ToBitmapImage(ImageFormat.Jpeg);
                         pdfViewer.ToplamSayfa = pdfDoc.PageCount;
                         pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
@@ -557,6 +647,10 @@ namespace PdfViewer
                 Source = await ConvertToImgAsync(await ReadAllFileAsync(pdfFilePath), sayfa, pdfViewer.Dpi);
                 GC.Collect();
             }
+            if (e.PropertyName is "SearchPdfMatch" && SearchPdfMatch is not null)
+            {
+                Sayfa = SearchPdfMatch.Page + 1;
+            }
         }
 
         private void PdfViewer_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -567,46 +661,30 @@ namespace PdfViewer
             }
         }
 
-        private async Task PrintPdfFile(byte[] stream, int Dpi = 300)
+        private void PrintPdf(PdfDocument pdfDocument)
         {
-            int pagecount = await PdfPageCountAsync(stream);
-            PrintDialog pd = new()
+            using System.Windows.Forms.PrintDialog form = new();
+            using System.Drawing.Printing.PrintDocument document = pdfDocument.CreatePrintDocument(PdfPrintMode.ShrinkToMargin);
+            form.AllowSomePages = true;
+            form.Document = document;
+            form.UseEXDialog = true;
+            form.Document.PrinterSettings.FromPage = 1;
+            form.Document.PrinterSettings.ToPage = pdfDocument.PageCount;
+            if (DefaultPrinter != null)
             {
-                PageRangeSelection = PageRangeSelection.AllPages,
-                UserPageRangeEnabled = true,
-                MaxPage = (uint)pagecount,
-                MinPage = 1
-            };
-            DrawingVisual dv = new();
-            if (pd.ShowDialog() == true)
+                form.Document.PrinterSettings.PrinterName = DefaultPrinter;
+            }
+            if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                int başlangıç;
-                int bitiş;
-                if (pd.PageRangeSelection == PageRangeSelection.AllPages)
+                try
                 {
-                    başlangıç = 1;
-                    bitiş = pagecount;
-                }
-                else
-                {
-                    başlangıç = pd.PageRange.PageFrom;
-                    bitiş = pd.PageRange.PageTo;
-                }
-
-                for (int i = başlangıç; i <= bitiş; i++)
-                {
-                    using (DrawingContext dc = dv.RenderOpen())
+                    if (form.Document.PrinterSettings.FromPage <= pdfDocument.PageCount)
                     {
-                        BitmapImage bitmapimage = await ConvertToImgAsync(stream, i, Dpi);
-                        BitmapSource bs = bitmapimage.Width > bitmapimage.Height
-                        ? bitmapimage?.Resize((int)pd.PrintableAreaHeight, (int)pd.PrintableAreaWidth, 90, Dpi, Dpi)
-                        : bitmapimage?.Resize((int)pd.PrintableAreaWidth, (int)pd.PrintableAreaHeight, 0, Dpi, Dpi);
-                        bs.Freeze();
-                        dc.DrawImage(bs, new Rect(0, 0, pd.PrintableAreaWidth, pd.PrintableAreaHeight));
-                        bitmapimage = null;
-                        bs = null;
+                        form.Document.Print();
                     }
-                    pd.PrintVisual(dv, "");
+                }
+                catch
+                {
                 }
             }
         }
