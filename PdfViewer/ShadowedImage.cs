@@ -1,16 +1,11 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
-namespace TwainControl
+namespace PdfViewer
 {
     public class ShadowedImage : Image
     {
-        public static readonly DependencyProperty ImagePathProperty = DependencyProperty.Register("ImagePath", typeof(string), typeof(ShadowedImage), new PropertyMetadata(async (o, e) => await ((ShadowedImage)o).LoadImageAsync((string)e.NewValue)));
-
         public static readonly DependencyProperty LocationProperty = DependencyProperty.Register("Location", typeof(Point), typeof(ShadowedImage), new PropertyMetadata(new Point(2.5, 2.5)));
 
         public static readonly DependencyProperty OverlayColorProperty = DependencyProperty.Register("OverlayColor", typeof(SolidColorBrush), typeof(ShadowedImage), new PropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 255, 0, 0))));
@@ -25,11 +20,6 @@ namespace TwainControl
         {
             pen.Brush = OverlayColor;
             pen.Freeze();
-        }
-
-        public string ImagePath {
-            get => (string)GetValue(ImagePathProperty);
-            set => SetValue(ImagePathProperty, value);
         }
 
         public Point Location {
@@ -74,23 +64,5 @@ namespace TwainControl
         }
 
         private readonly Pen pen = new() { Thickness = 3 };
-
-        private async Task LoadImageAsync(string imagePath)
-        {
-            Source = await Task.Run(() =>
-            {
-                BitmapImage image = new();
-                image.BeginInit();
-                image.CacheOption = BitmapCacheOption.None;//onload to bypass file lock
-                image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
-                image.UriSource = new Uri(imagePath);
-                image.EndInit();
-                if (!image.IsFrozen && image.CanFreeze)
-                {
-                    image.Freeze();
-                }
-                return image;
-            });
-        }
     }
 }

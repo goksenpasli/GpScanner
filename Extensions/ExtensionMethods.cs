@@ -362,7 +362,7 @@ namespace Extensions
                 seperator = "_";
             }
             int i;
-            for (i = 0; File.Exists($@"{path}\{file}{seperator}{i}.{extension}"); i++)
+            for (i = 1; File.Exists($@"{path}\{file}{seperator}{i}.{extension}"); i++)
             {
                 _ = i + 1;
             }

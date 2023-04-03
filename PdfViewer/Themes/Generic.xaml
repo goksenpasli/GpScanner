@@ -18,9 +18,9 @@
                 </MultiBinding>
             </StackPanel.Tag>
             <TextBlock HorizontalAlignment="Center" Text="{Binding Mode=OneWay}" />
-            <Image HorizontalAlignment="Center">
-                <Image.Style>
-                    <Style TargetType="{x:Type Image}">
+            <local:ShadowedImage HorizontalAlignment="Center" ShowShadow="True">
+                <local:ShadowedImage.Style>
+                    <Style TargetType="{x:Type local:ShadowedImage}">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding ThumbsVisible, RelativeSource={RelativeSource AncestorType={x:Type local:PdfViewer}}}" Value="true">
                                 <Setter Property="Height" Value="96" />
@@ -32,8 +32,8 @@
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
-                </Image.Style>
-            </Image>
+                </local:ShadowedImage.Style>
+            </local:ShadowedImage>
         </StackPanel>
     </DataTemplate>
     <Style TargetType="{x:Type local:PdfViewer}">
@@ -289,11 +289,20 @@
                                             <Grid>
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
                                                     <RowDefinition />
                                                     <RowDefinition Height="Auto" />
                                                 </Grid.RowDefinitions>
-                                                <TextBox Text="{Binding SearchTextContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}" />
-                                                <ListBox Grid.Row="1"
+                                                <Extensions:ButtonedTextBox OpenButtonVisibility="Collapsed" Text="{Binding SearchTextContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                <UniformGrid Grid.Row="1" Columns="2">
+                                                    <CheckBox VerticalContentAlignment="Center"
+                                                        Content="Match Case"
+                                                        IsChecked="{Binding MatchCase, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                    <CheckBox VerticalContentAlignment="Center"
+                                                        Content="Whole Word"
+                                                        IsChecked="{Binding WholeWord, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                </UniformGrid>
+                                                <ListBox Grid.Row="2"
                                                     ItemsSource="{Binding PdfMatches, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
                                                     SelectedItem="{Binding SearchPdfMatch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}">
                                                     <ListBox.ItemTemplate>
@@ -305,7 +314,9 @@
                                                         </DataTemplate>
                                                     </ListBox.ItemTemplate>
                                                 </ListBox>
-                                                <Button Grid.Row="2" Command="{Binding SearchPdfText, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                                <Button Grid.Row="3"
+                                                    Command="{Binding SearchPdfText, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                    IsDefault="True">
                                                     <Image Width="16" Height="16">
                                                         <Image.Source>
                                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">

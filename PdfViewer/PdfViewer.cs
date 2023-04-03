@@ -139,7 +139,7 @@ namespace PdfViewer
             SearchPdfText = new RelayCommand<object>(delegate
             {
                 using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
-                PdfMatches matches = pdfDocument.Search(SearchTextContent, false, false);
+                PdfMatches matches = pdfDocument.Search(SearchTextContent, MatchCase, WholeWord);
                 PdfMatches = new();
                 foreach (PdfMatch match in matches.Items)
                 {
@@ -195,6 +195,17 @@ namespace PdfViewer
             }
         }
 
+        public bool MatchCase {
+            get => matchCase; set {
+
+                if (matchCase != value)
+                {
+                    matchCase = value;
+                    OnPropertyChanged(nameof(MatchCase));
+                }
+            }
+        }
+
         public Visibility OpenButtonVisibility {
             get => openButtonVisibility;
 
@@ -237,6 +248,7 @@ namespace PdfViewer
 
         public ObservableCollection<PdfMatch> PdfMatches {
             get => pdfMatches; set {
+
                 if (pdfMatches != value)
                 {
                     pdfMatches = value;
@@ -247,6 +259,7 @@ namespace PdfViewer
 
         public string PdfTextContent {
             get => pdfTextContent; set {
+
                 if (pdfTextContent != value)
                 {
                     pdfTextContent = value;
@@ -304,6 +317,7 @@ namespace PdfViewer
 
         public PdfMatch SearchPdfMatch {
             get => searchPdfMatch; set {
+
                 if (searchPdfMatch != value)
                 {
                     searchPdfMatch = value;
@@ -328,6 +342,7 @@ namespace PdfViewer
 
         public Visibility SearchTextContentVisibility {
             get => searchTextContentVisibility; set {
+
                 if (searchTextContentVisibility != value)
                 {
                     searchTextContentVisibility = value;
@@ -397,6 +412,17 @@ namespace PdfViewer
 
         public RelayCommand<object> ViewerNext { get; }
 
+        public bool WholeWord {
+            get => wholeWord; set {
+
+                if (wholeWord != value)
+                {
+                    wholeWord = value;
+                    OnPropertyChanged(nameof(WholeWord));
+                }
+            }
+        }
+
         public ICommand Yazdır { get; }
 
         public double Zoom {
@@ -411,16 +437,16 @@ namespace PdfViewer
                 return pdffilestream?.Length == 0
                     ? throw new ArgumentOutOfRangeException(nameof(pdffilestream), "file can not be null or length zero")
                     : await Task.Run(() =>
-                {
-                    using MemoryStream ms = new(pdffilestream);
-                    using PdfDocument pdfDoc = PdfDocument.Load(ms);
-                    int width = (int)(pdfDoc.PageSizes[page - 1].Width / 72 * dpi);
-                    int height = (int)(pdfDoc.PageSizes[page - 1].Height / 72 * dpi);
-                    System.Drawing.Image image = pdfDoc.Render(page - 1, width, height, dpi, dpi, false);
-                    BitmapImage bitmapImage = image.ToBitmapImage(ImageFormat.Jpeg);
-                    bitmapImage.Freeze();
-                    return bitmapImage;
-                });
+                    {
+                        using MemoryStream ms = new(pdffilestream);
+                        using PdfDocument pdfDoc = PdfDocument.Load(ms);
+                        int width = (int)(pdfDoc.PageSizes[page - 1].Width / 72 * dpi);
+                        int height = (int)(pdfDoc.PageSizes[page - 1].Height / 72 * dpi);
+                        System.Drawing.Image image = pdfDoc.Render(page - 1, width, height, dpi, dpi, false);
+                        BitmapImage bitmapImage = image.ToBitmapImage(ImageFormat.Jpeg);
+                        bitmapImage.Freeze();
+                        return bitmapImage;
+                    });
             }
             catch (Exception)
             {
@@ -436,16 +462,16 @@ namespace PdfViewer
                 return stream?.Length == 0
                     ? throw new ArgumentOutOfRangeException(nameof(stream), "file can not be null or length zero")
                     : await Task.Run(() =>
-                {
-                    using MemoryStream ms = new(stream);
-                    using PdfDocument pdfDoc = PdfDocument.Load(ms);
-                    int width = (int)(pdfDoc.PageSizes[page - 1].Width / 72 * dpi);
-                    int height = (int)(pdfDoc.PageSizes[page - 1].Height / 72 * dpi);
-                    System.Drawing.Image image = pdfDoc.Render(page - 1, width, height, dpi, dpi, false);
-                    BitmapImage bitmapImage = image.ToBitmapImage(ImageFormat.Jpeg);
-                    bitmapImage.Freeze();
-                    return new MemoryStream(bitmapImage.ToTiffJpegByteArray(Format.Jpg));
-                });
+                    {
+                        using MemoryStream ms = new(stream);
+                        using PdfDocument pdfDoc = PdfDocument.Load(ms);
+                        int width = (int)(pdfDoc.PageSizes[page - 1].Width / 72 * dpi);
+                        int height = (int)(pdfDoc.PageSizes[page - 1].Height / 72 * dpi);
+                        System.Drawing.Image image = pdfDoc.Render(page - 1, width, height, dpi, dpi, false);
+                        BitmapImage bitmapImage = image.ToBitmapImage(ImageFormat.Jpeg);
+                        bitmapImage.Freeze();
+                        return new MemoryStream(bitmapImage.ToTiffJpegByteArray(Format.Jpg));
+                    });
             }
             catch (Exception)
             {
@@ -461,11 +487,11 @@ namespace PdfViewer
                 return stream?.Length == 0
                     ? throw new ArgumentOutOfRangeException(nameof(stream), "file can not be null or length zero")
                     : await Task.Run(() =>
-                {
-                    using MemoryStream ms = new(stream);
-                    using PdfDocument pdfDoc = PdfDocument.Load(ms);
-                    return pdfDoc.PageCount;
-                });
+                    {
+                        using MemoryStream ms = new(stream);
+                        using PdfDocument pdfDoc = PdfDocument.Load(ms);
+                        return pdfDoc.PageCount;
+                    });
             }
             catch (Exception)
             {
@@ -555,6 +581,8 @@ namespace PdfViewer
 
         private Visibility dpiListVisibility = Visibility.Visible;
 
+        private bool matchCase;
+
         private Visibility openButtonVisibility = Visibility.Collapsed;
 
         private IEnumerable<int> pages;
@@ -582,6 +610,8 @@ namespace PdfViewer
         private Visibility tifNavigasyonButtonEtkin = Visibility.Visible;
 
         private int toplamSayfa;
+
+        private bool wholeWord;
 
         private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

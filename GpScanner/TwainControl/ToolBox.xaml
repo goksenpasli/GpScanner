@@ -56,9 +56,7 @@
                                 <ProgressBar Background="{x:Null}"
                                     Maximum="1"
                                     Value="{Binding ToolBoxPdfMergeProgressValue, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" />
-                                <local:ShadowedImage x:Name="Img"
-                                    ShowShadow="True"
-                                    Source="{Binding Scanner.CroppedImage}" />
+                                <Image x:Name="Img" Source="{Binding Scanner.CroppedImage}" />
                                 <Grid x:Name="LineGrid"
                                     Width="{Binding ElementName=Img, Path=ActualWidth}"
                                     Height="{Binding ElementName=Img, Path=ActualHeight}"
