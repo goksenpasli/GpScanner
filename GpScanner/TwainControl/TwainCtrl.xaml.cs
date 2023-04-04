@@ -700,17 +700,19 @@ namespace TwainControl
                 {
                     string oldpdfpath = pdfViewer.PdfFilePath;
                     using PdfDocument reader = PdfReader.Open(pdfViewer.PdfFilePath);
-                    PdfPage page = reader.Pages[pdfViewer.Sayfa - 1];
-                    using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
-                    gfx.TranslateTransform(page.Width / 2, page.Height / 2);
-                    gfx.RotateTransform(-Math.Atan(page.Height / page.Width) * 180 / Math.PI);
-                    gfx.TranslateTransform(-page.Width / 2, -page.Height / 2);
-                    XStringFormat format = new() { Alignment = XStringAlignment.Near, LineAlignment = XLineAlignment.Near };
-                    XBrush brush = new XSolidBrush(XColor.FromArgb(PdfWatermarkColor.Color.A, PdfWatermarkColor.Color.R, PdfWatermarkColor.Color.G, PdfWatermarkColor.Color.B));
-                    XFont font = new(PdfWatermarkFont, PdfWatermarkFontSize);
-                    XSize size = gfx.MeasureString(PdfWaterMarkText, font);
-                    gfx.DrawString(PdfWaterMarkText, font, brush, new XPoint((page.Width - size.Width) / 2, (page.Height - size.Height) / 2), format);
-                    reader.Save(pdfViewer.PdfFilePath);
+                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                    {
+                        for (int i = 0; i < reader.PageCount; i++)
+                        {
+                            using PdfDocument listdocument = GenerateWatermarkedPdf(reader, i);
+                            listdocument.Save(pdfViewer.PdfFilePath);
+                        }
+                        pdfViewer.PdfFilePath = null;
+                        pdfViewer.PdfFilePath = oldpdfpath;
+                        return;
+                    }
+                    using PdfDocument document = GenerateWatermarkedPdf(reader, pdfViewer.Sayfa - 1);
+                    document.Save(pdfViewer.PdfFilePath);
                     pdfViewer.PdfFilePath = null;
                     pdfViewer.PdfFilePath = oldpdfpath;
                 }
@@ -1011,6 +1013,7 @@ namespace TwainControl
 
         public bool CanUndoImage {
             get => canUndoImage; set {
+
                 if (canUndoImage != value)
                 {
                     canUndoImage = value;
@@ -1068,6 +1071,7 @@ namespace TwainControl
 
         public ObservableCollection<OcrData> DataBaseTextData {
             get => dataBaseTextData; set {
+
                 if (dataBaseTextData != value)
                 {
                     dataBaseTextData = value;
@@ -1114,6 +1118,7 @@ namespace TwainControl
 
         public bool DragMoveStarted {
             get => dragMoveStarted; set {
+
                 if (dragMoveStarted != value)
                 {
                     dragMoveStarted = value;
@@ -1212,6 +1217,7 @@ namespace TwainControl
 
         public ObservableCollection<PdfData> PdfPages {
             get => pdfPages; set {
+
                 if (pdfPages != value)
                 {
                     pdfPages = value;
@@ -1236,6 +1242,7 @@ namespace TwainControl
 
         public SolidColorBrush PdfWatermarkColor {
             get => pdfWatermarkColor; set {
+
                 if (pdfWatermarkColor != value)
                 {
                     pdfWatermarkColor = value;
@@ -1246,6 +1253,7 @@ namespace TwainControl
 
         public string PdfWatermarkFont {
             get => pdfWatermarkFont; set {
+
                 if (pdfWatermarkFont != value)
                 {
                     pdfWatermarkFont = value;
@@ -1312,6 +1320,7 @@ namespace TwainControl
 
         public int SayfaBitiş {
             get => sayfaBitiş; set {
+
                 if (sayfaBitiş != value)
                 {
                     sayfaBitiş = value;
@@ -1366,6 +1375,7 @@ namespace TwainControl
 
         public TwainWpf.TwainNative.Orientation SelectedOrientation {
             get => selectedOrientation; set {
+
                 if (selectedOrientation != value)
                 {
                     selectedOrientation = value;
@@ -1388,6 +1398,7 @@ namespace TwainControl
 
         public PageRotation SelectedRotation {
             get => selectedRotation; set {
+
                 if (selectedRotation != value)
                 {
                     selectedRotation = value;
@@ -1398,6 +1409,7 @@ namespace TwainControl
 
         public TabItem SelectedTab {
             get => selectedTab; set {
+
                 if (selectedTab != value)
                 {
                     selectedTab = value;
@@ -1436,6 +1448,7 @@ namespace TwainControl
 
         public ScannedImage UndoImage {
             get => undoImage; set {
+
                 if (undoImage != value)
                 {
                     undoImage = value;
@@ -2192,6 +2205,21 @@ namespace TwainControl
             SeçiliListeTemizle.Execute(null);
             twain.ScanningComplete -= Fastscan;
             Scanner.ArayüzEtkin = true;
+        }
+
+        private PdfDocument GenerateWatermarkedPdf(PdfDocument pdfdocument, int sayfa)
+        {
+            PdfPage page = pdfdocument.Pages[sayfa];
+            XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
+            gfx.TranslateTransform(page.Width / 2, page.Height / 2);
+            gfx.RotateTransform(-Math.Atan(page.Height / page.Width) * 180 / Math.PI);
+            gfx.TranslateTransform(-page.Width / 2, -page.Height / 2);
+            XStringFormat format = new() { Alignment = XStringAlignment.Near, LineAlignment = XLineAlignment.Near };
+            XBrush brush = new XSolidBrush(XColor.FromArgb(PdfWatermarkColor.Color.A, PdfWatermarkColor.Color.R, PdfWatermarkColor.Color.G, PdfWatermarkColor.Color.B));
+            XFont font = new(PdfWatermarkFont, PdfWatermarkFontSize);
+            XSize size = gfx.MeasureString(PdfWaterMarkText, font);
+            gfx.DrawString(PdfWaterMarkText, font, brush, new XPoint((page.Width - size.Width) / 2, (page.Height - size.Height) / 2), format);
+            return pdfdocument;
         }
 
         private void GridSplitter_MouseDoubleClick(object sender, MouseButtonEventArgs e)

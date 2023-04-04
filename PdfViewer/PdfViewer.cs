@@ -136,6 +136,20 @@ namespace PdfViewer
                 PdfTextContent = pdfDocument.GetPdfText(Sayfa - 1);
             }, (object parameter) => Source != null);
 
+            ReadPdfBookmarks = new RelayCommand<object>(delegate
+            {
+                using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
+                PdfBookmarks = pdfDocument.Bookmarks;
+            }, (object parameter) => Source != null);
+
+            GoPdfBookMarkPage = new RelayCommand<object>(parameter =>
+            {
+                if (parameter is int pagenumber)
+                {
+                    Sayfa = pagenumber + 1;
+                }
+            });
+
             SearchPdfText = new RelayCommand<object>(delegate
             {
                 using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
@@ -169,6 +183,18 @@ namespace PdfViewer
             }
         }
 
+        public Visibility BookmarkContentVisibility {
+            get => bookmarkContentVisibility;
+
+            set {
+                if (bookmarkContentVisibility != value)
+                {
+                    bookmarkContentVisibility = value;
+                    OnPropertyChanged(nameof(BookmarkContentVisibility));
+                }
+            }
+        }
+
         public Visibility ContextMenuVisibility {
             get => (Visibility)GetValue(ContextMenuVisibilityProperty);
             set => SetValue(ContextMenuVisibilityProperty, value);
@@ -194,6 +220,8 @@ namespace PdfViewer
                 }
             }
         }
+
+        public RelayCommand<object> GoPdfBookMarkPage { get; }
 
         public bool MatchCase {
             get => matchCase; set {
@@ -239,6 +267,17 @@ namespace PdfViewer
         public Visibility PageScrollBarVisibility {
             get => (Visibility)GetValue(PageScrollBarVisibilityProperty);
             set => SetValue(PageScrollBarVisibilityProperty, value);
+        }
+
+        public PdfBookmarkCollection PdfBookmarks {
+            get => pdfBookmarks; set {
+
+                if (pdfBookmarks != value)
+                {
+                    pdfBookmarks = value;
+                    OnPropertyChanged(nameof(PdfBookmarks));
+                }
+            }
         }
 
         public string PdfFilePath {
@@ -291,6 +330,8 @@ namespace PdfViewer
                 }
             }
         }
+
+        public RelayCommand<object> ReadPdfBookmarks { get; }
 
         public RelayCommand<object> ReadPdfText { get; }
 
@@ -577,6 +618,8 @@ namespace PdfViewer
 
         private bool autoFitContent;
 
+        private Visibility bookmarkContentVisibility;
+
         private bool disposedValue;
 
         private Visibility dpiListVisibility = Visibility.Visible;
@@ -586,6 +629,8 @@ namespace PdfViewer
         private Visibility openButtonVisibility = Visibility.Collapsed;
 
         private IEnumerable<int> pages;
+
+        private PdfBookmarkCollection pdfBookmarks;
 
         private ObservableCollection<PdfMatch> pdfMatches;
 

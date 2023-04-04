@@ -211,7 +211,9 @@
                             <Extensions:NumericUpDownControl IsReadOnly="True" Maximum="512" Minimum="1"
                                 SmallChange="1"
                                 Value="{Binding PdfWatermarkFontSize, UpdateSourceTrigger=PropertyChanged}" />
-                            <Button Command="{Binding PdfWaterMark}" CommandParameter="{Binding Source={x:Reference PdfViewer}}">
+                            <Button BorderBrush="Cyan"
+                                Command="{Binding PdfWaterMark}"
+                                CommandParameter="{Binding Source={x:Reference PdfViewer}}">
                                 <StackPanel Orientation="Horizontal">
                                     <Image Width="24" Height="24">
                                         <Image.Source>
