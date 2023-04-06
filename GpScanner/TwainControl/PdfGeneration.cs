@@ -424,7 +424,7 @@ namespace TwainControl
             {
                 try
                 {
-                    await Task.Run(() => MergePdf(files).Save(saveFileDialog.FileName));
+                    await Task.Run(() => files.MergePdf().Save(saveFileDialog.FileName));
                 }
                 catch (Exception ex)
                 {

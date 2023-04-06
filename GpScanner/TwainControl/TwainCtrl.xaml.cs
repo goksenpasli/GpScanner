@@ -45,7 +45,7 @@ namespace TwainControl
         public static DispatcherTimer CameraQrCodeTimer;
 
         public static Task Filesavetask;
-
+      
         public TwainCtrl()
         {
             InitializeComponent();
@@ -704,14 +704,14 @@ namespace TwainControl
                     {
                         for (int i = 0; i < reader.PageCount; i++)
                         {
-                            using PdfDocument listdocument = GenerateWatermarkedPdf(reader, i);
+                            using PdfDocument listdocument = GenerateWatermarkedPdf(reader, i, PdfWatermarkFontAngle);
                             listdocument.Save(pdfViewer.PdfFilePath);
                         }
                         pdfViewer.PdfFilePath = null;
                         pdfViewer.PdfFilePath = oldpdfpath;
                         return;
                     }
-                    using PdfDocument document = GenerateWatermarkedPdf(reader, pdfViewer.Sayfa - 1);
+                    using PdfDocument document = GenerateWatermarkedPdf(reader, pdfViewer.Sayfa - 1, PdfWatermarkFontAngle);
                     document.Save(pdfViewer.PdfFilePath);
                     pdfViewer.PdfFilePath = null;
                     pdfViewer.PdfFilePath = oldpdfpath;
@@ -932,14 +932,19 @@ namespace TwainControl
                 if (parameter is PdfViewer.PdfViewer pdfViewer)
                 {
                     string savefolder = ToolBox.CreateSaveFolder("SPLIT");
-                    foreach (PdfData currentpage in PdfPages)
+                    List<string> files = new();
+                    foreach (PdfData currentpage in PdfPages.Where(currentpage => currentpage.Selected))
                     {
-                        if (currentpage.Selected)
-                        {
-                            await SaveFile(pdfViewer.PdfFilePath, $"{savefolder}\\{Path.GetFileNameWithoutExtension(pdfViewer.PdfFilePath)} {currentpage.PageNumber}.pdf", currentpage.PageNumber, currentpage.PageNumber);
-                        }
+                        string savefilename = $"{savefolder}\\{Path.GetFileNameWithoutExtension(pdfViewer.PdfFilePath)} {currentpage.PageNumber}.pdf";
+                        await SaveFile(pdfViewer.PdfFilePath, savefilename, currentpage.PageNumber, currentpage.PageNumber);
+                        files.Add(savefilename);
+                    }
+                    if (MessageBox.Show($"{Translation.GetResStringValue("MERGEPDF")}", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                    {
+                        files.ToArray().MergePdf().Save($"{savefolder}\\{Path.GetFileNameWithoutExtension(pdfViewer.PdfFilePath)} {Translation.GetResStringValue("MERGE")}.pdf");
                     }
                     WebAdreseGit.Execute(savefolder);
+                    files = null;
                 }
             }, parameter => PdfPages?.Any(z => z.Selected) == true);
 
@@ -954,8 +959,8 @@ namespace TwainControl
                     {
                         for (int i = 0; i < document.PageCount; i++)
                         {
-                            var pageall = document.Pages[i];
-                            using var gfxall = XGraphics.FromPdfPage(pageall, XGraphicsPdfPageOptions.Append);
+                            PdfPage pageall = document.Pages[i];
+                            using XGraphics gfxall = XGraphics.FromPdfPage(pageall, XGraphicsPdfPageOptions.Append);
                             gfxall.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfAlignTextColor)), (i + 1).ToString(), PdfGeneration.GetPdfTextLayout(pageall)[0], PdfGeneration.GetPdfTextLayout(pageall)[1]);
                         }
                         document.Save(pdfviewer.PdfFilePath);
@@ -964,8 +969,8 @@ namespace TwainControl
                         pdfviewer.Sayfa = 1;
                         return;
                     }
-                    var page = document.Pages[pdfviewer.Sayfa - 1];
-                    using var gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
+                    PdfPage page = document.Pages[pdfviewer.Sayfa - 1];
+                    using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
                     gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfAlignTextColor)), pdfviewer.Sayfa.ToString(), PdfGeneration.GetPdfTextLayout(page)[0], PdfGeneration.GetPdfTextLayout(page)[1]);
                     document.Save(pdfviewer.PdfFilePath);
                     pdfviewer.PdfFilePath = null;
@@ -1013,7 +1018,6 @@ namespace TwainControl
 
         public bool CanUndoImage {
             get => canUndoImage; set {
-
                 if (canUndoImage != value)
                 {
                     canUndoImage = value;
@@ -1071,7 +1075,6 @@ namespace TwainControl
 
         public ObservableCollection<OcrData> DataBaseTextData {
             get => dataBaseTextData; set {
-
                 if (dataBaseTextData != value)
                 {
                     dataBaseTextData = value;
@@ -1118,7 +1121,6 @@ namespace TwainControl
 
         public bool DragMoveStarted {
             get => dragMoveStarted; set {
-
                 if (dragMoveStarted != value)
                 {
                     dragMoveStarted = value;
@@ -1217,7 +1219,6 @@ namespace TwainControl
 
         public ObservableCollection<PdfData> PdfPages {
             get => pdfPages; set {
-
                 if (pdfPages != value)
                 {
                     pdfPages = value;
@@ -1242,7 +1243,6 @@ namespace TwainControl
 
         public SolidColorBrush PdfWatermarkColor {
             get => pdfWatermarkColor; set {
-
                 if (pdfWatermarkColor != value)
                 {
                     pdfWatermarkColor = value;
@@ -1253,11 +1253,20 @@ namespace TwainControl
 
         public string PdfWatermarkFont {
             get => pdfWatermarkFont; set {
-
                 if (pdfWatermarkFont != value)
                 {
                     pdfWatermarkFont = value;
                     OnPropertyChanged(nameof(PdfWatermarkFont));
+                }
+            }
+        }
+
+        public double PdfWatermarkFontAngle {
+            get => pdfWatermarkFontAngle; set {
+                if (pdfWatermarkFontAngle != value)
+                {
+                    pdfWatermarkFontAngle = value;
+                    OnPropertyChanged(nameof(PdfWatermarkFontAngle));
                 }
             }
         }
@@ -1320,7 +1329,6 @@ namespace TwainControl
 
         public int SayfaBitiş {
             get => sayfaBitiş; set {
-
                 if (sayfaBitiş != value)
                 {
                     sayfaBitiş = value;
@@ -1375,7 +1383,6 @@ namespace TwainControl
 
         public TwainWpf.TwainNative.Orientation SelectedOrientation {
             get => selectedOrientation; set {
-
                 if (selectedOrientation != value)
                 {
                     selectedOrientation = value;
@@ -1398,7 +1405,6 @@ namespace TwainControl
 
         public PageRotation SelectedRotation {
             get => selectedRotation; set {
-
                 if (selectedRotation != value)
                 {
                     selectedRotation = value;
@@ -1409,7 +1415,6 @@ namespace TwainControl
 
         public TabItem SelectedTab {
             get => selectedTab; set {
-
                 if (selectedTab != value)
                 {
                     selectedTab = value;
@@ -1448,7 +1453,6 @@ namespace TwainControl
 
         public ScannedImage UndoImage {
             get => undoImage; set {
-
                 if (undoImage != value)
                 {
                     undoImage = value;
@@ -1868,7 +1872,7 @@ namespace TwainControl
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private const double Inch = 2.54;
+        private const double Inch = 2.54d;
 
         private ScanSettings _settings;
 
@@ -1919,6 +1923,8 @@ namespace TwainControl
         private SolidColorBrush pdfWatermarkColor = System.Windows.Media.Brushes.Red;
 
         private string pdfWatermarkFont = "Arial";
+
+        private double pdfWatermarkFontAngle = 315d;
 
         private double pdfWatermarkFontSize = 72d;
 
@@ -2207,12 +2213,12 @@ namespace TwainControl
             Scanner.ArayüzEtkin = true;
         }
 
-        private PdfDocument GenerateWatermarkedPdf(PdfDocument pdfdocument, int sayfa)
+        private PdfDocument GenerateWatermarkedPdf(PdfDocument pdfdocument, int sayfa, double rotation)
         {
             PdfPage page = pdfdocument.Pages[sayfa];
             XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
             gfx.TranslateTransform(page.Width / 2, page.Height / 2);
-            gfx.RotateTransform(-Math.Atan(page.Height / page.Width) * 180 / Math.PI);
+            gfx.RotateTransform(rotation);
             gfx.TranslateTransform(-page.Width / 2, -page.Height / 2);
             XStringFormat format = new() { Alignment = XStringAlignment.Near, LineAlignment = XLineAlignment.Near };
             XBrush brush = new XSolidBrush(XColor.FromArgb(PdfWatermarkColor.Color.A, PdfWatermarkColor.Color.R, PdfWatermarkColor.Color.G, PdfWatermarkColor.Color.B));
@@ -2423,7 +2429,10 @@ namespace TwainControl
             }
         }
 
-        private void Run_Drop(object sender, DragEventArgs e) => DropFile(sender, e);
+        private void Run_Drop(object sender, DragEventArgs e)
+        {
+            DropFile(sender, e);
+        }
 
         private void Run_EypDrop(object sender, DragEventArgs e)
         {
@@ -2455,7 +2464,10 @@ namespace TwainControl
             }
         }
 
-        private void Run_PreviewMouseMove(object sender, MouseEventArgs e) => DropPreviewFile(sender, e);
+        private void Run_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            DropPreviewFile(sender, e);
+        }
 
         private void SavePageRotated(string savepath, PdfDocument inputDocument, int angle)
         {
@@ -2532,8 +2544,7 @@ namespace TwainControl
                     return;
                 }
                 int decodepixelheight = (int)(SelectedPaper.Height / Inch * Settings.Default.Çözünürlük);
-                BitmapSource evrak;
-                evrak = Scanner?.Resimler.Count % 2 == 0 ? EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight) : Scanner?.PaperBackScan == true ? EvrakOluştur(bitmap, (ColourSetting)Settings.Default.BackMode, decodepixelheight) : EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight);
+                BitmapSource evrak = Scanner?.Resimler.Count % 2 == 0 ? EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight) : Scanner?.PaperBackScan == true ? EvrakOluştur(bitmap, (ColourSetting)Settings.Default.BackMode, decodepixelheight) : EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight);
                 evrak.Freeze();
                 BitmapSource önizleme = evrak.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Width * SelectedPaper.Height);
                 önizleme.Freeze();

@@ -207,8 +207,8 @@
                                         </ComboBox.ItemContainerStyle>
                                         <ComboBox.ItemsPanel>
                                             <ItemsPanelTemplate>
-                                                <Extensions:VirtualizingWrapPanel Width="400" Height="360"
-                                                    CanHorizontallyScroll="False" ItemSize="120,120" StretchItems="False" />
+                                                <Extensions:VirtualizingWrapPanel Width="460" Height="300"
+                                                    CanHorizontallyScroll="False" ItemSize="140,140" StretchItems="False" />
                                             </ItemsPanelTemplate>
                                         </ComboBox.ItemsPanel>
                                     </ComboBox>

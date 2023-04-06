@@ -225,7 +225,6 @@ namespace PdfViewer
 
         public bool MatchCase {
             get => matchCase; set {
-
                 if (matchCase != value)
                 {
                     matchCase = value;
@@ -271,7 +270,6 @@ namespace PdfViewer
 
         public PdfBookmarkCollection PdfBookmarks {
             get => pdfBookmarks; set {
-
                 if (pdfBookmarks != value)
                 {
                     pdfBookmarks = value;
@@ -287,7 +285,6 @@ namespace PdfViewer
 
         public ObservableCollection<PdfMatch> PdfMatches {
             get => pdfMatches; set {
-
                 if (pdfMatches != value)
                 {
                     pdfMatches = value;
@@ -298,7 +295,6 @@ namespace PdfViewer
 
         public string PdfTextContent {
             get => pdfTextContent; set {
-
                 if (pdfTextContent != value)
                 {
                     pdfTextContent = value;
@@ -358,7 +354,6 @@ namespace PdfViewer
 
         public PdfMatch SearchPdfMatch {
             get => searchPdfMatch; set {
-
                 if (searchPdfMatch != value)
                 {
                     searchPdfMatch = value;
@@ -383,7 +378,6 @@ namespace PdfViewer
 
         public Visibility SearchTextContentVisibility {
             get => searchTextContentVisibility; set {
-
                 if (searchTextContentVisibility != value)
                 {
                     searchTextContentVisibility = value;
@@ -455,7 +449,6 @@ namespace PdfViewer
 
         public bool WholeWord {
             get => wholeWord; set {
-
                 if (wholeWord != value)
                 {
                     wholeWord = value;

@@ -22,6 +22,7 @@
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
             <Extensions:CloneConverter x:Key="CloneConverter" />
+            <Pdfviewer:PageToImageConverter x:Key="PageToImageConverter" />
             <ObjectDataProvider x:Key="PdfLayout"
                 MethodName="GetValues"
                 ObjectType="{x:Type System:Enum}">
@@ -82,21 +83,42 @@
                 <Extensions:ContentToggleButton.OverContent>
                     <GroupBox>
                         <StackPanel>
-                            <ListBox Width="300" Height="300"
-                                ItemsSource="{Binding PdfPages}"
-                                SelectionMode="Extended">
+                            <ListBox ItemsSource="{Binding PdfPages}"
+                                ScrollViewer.IsDeferredScrollingEnabled="True" SelectionMode="Extended"
+                                VirtualizingPanel.CacheLength="3,3" VirtualizingPanel.CacheLengthUnit="Item"
+                                VirtualizingPanel.ScrollUnit="Item" VirtualizingPanel.VirtualizationMode="Standard">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <CheckBox IsChecked="{Binding Selected}">
+                                        <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding Selected}">
                                             <CheckBox.Content>
-                                                <TextBlock>
-                                                    <Run Text="{local:Loc PAGENUMBER}" />
-                                                    <Run Text="{Binding PageNumber}" />
-                                                </TextBlock>
+                                                <StackPanel>
+                                                    <TextBlock HorizontalAlignment="Center">
+                                                        <Run Text="{local:Loc PAGENUMBER}" />
+                                                        <Run Text="{Binding PageNumber}" />
+                                                    </TextBlock>
+                                                    <StackPanel x:Name="Sp" HorizontalAlignment="Center">
+                                                        <StackPanel.Tag>
+                                                            <MultiBinding Converter="{StaticResource PageToImageConverter}">
+                                                                <Binding ElementName="PdfViewer" Path="PdfFilePath" />
+                                                                <Binding Mode="OneWay" Path="PageNumber" />
+                                                            </MultiBinding>
+                                                        </StackPanel.Tag>
+                                                        <Pdfviewer:ShadowedImage Width="96" Height="96"
+                                                            HorizontalAlignment="Center"
+                                                            ShowShadow="True"
+                                                            Source="{Binding Tag.Result, ElementName=Sp, IsAsync=True, Mode=OneWay}" />
+                                                    </StackPanel>
+                                                </StackPanel>
                                             </CheckBox.Content>
                                         </CheckBox>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <Extensions:VirtualizingWrapPanel Width="460" Height="300"
+                                            CanHorizontallyScroll="False" ItemSize="140,140" StretchItems="False" />
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
                             </ListBox>
                             <Button Command="{Binding ExtractMultiplePdfFile}" CommandParameter="{Binding Source={x:Reference PdfViewer}}">
                                 <StackPanel Orientation="Horizontal">
@@ -176,7 +198,7 @@
                     </Image>
                 </Extensions:ContentToggleButton.Content>
                 <Extensions:ContentToggleButton.OverContent>
-                    <GroupBox Header="{local:Loc WATERMARK}">
+                    <GroupBox MaxWidth="250" Header="{local:Loc WATERMARK}">
                         <StackPanel>
                             <TextBox VerticalContentAlignment="Center" Text="{Binding PdfWaterMarkText, UpdateSourceTrigger=PropertyChanged}" />
                             <UniformGrid Columns="2">
@@ -208,9 +230,33 @@
                                     </Extensions:ContentToggleButton.OverContent>
                                 </Extensions:ContentToggleButton>
                             </UniformGrid>
-                            <Extensions:NumericUpDownControl IsReadOnly="True" Maximum="512" Minimum="1"
-                                SmallChange="1"
-                                Value="{Binding PdfWatermarkFontSize, UpdateSourceTrigger=PropertyChanged}" />
+                            <UniformGrid Columns="2">
+                                <StackPanel>
+                                    <TextBlock Text="{local:Loc TEXTSIZE}" />
+                                    <Extensions:NumericUpDownControl IsReadOnly="True" Maximum="512" Minimum="1"
+                                        SmallChange="1"
+                                        Value="{Binding PdfWatermarkFontSize, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock Text="{local:Loc TEXTANGLE}" />
+                                    <Slider Width="50"
+                                        AutoToolTipPlacement="TopLeft" Maximum="360" Minimum="0"
+                                        SmallChange="1"
+                                        Style="{StaticResource Slider}"
+                                        Value="{Binding PdfWatermarkFontAngle}" />
+                                </StackPanel>
+                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                                    FontWeight="Bold"
+                                    Foreground="{Binding PdfWatermarkColor, Mode=OneWay}"
+                                    RenderTransformOrigin="0.5,0.5" Text="AaBbCc">
+                                    <TextBlock.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform />
+                                            <SkewTransform />
+                                            <RotateTransform d:Angle="315" Angle="{Binding PdfWatermarkFontAngle}" />
+                                            <TranslateTransform />
+                                        </TransformGroup>
+                                    </TextBlock.RenderTransform>
+                                </TextBlock>
+                            </UniformGrid>
                             <Button BorderBrush="Cyan"
                                 Command="{Binding PdfWaterMark}"
                                 CommandParameter="{Binding Source={x:Reference PdfViewer}}">
