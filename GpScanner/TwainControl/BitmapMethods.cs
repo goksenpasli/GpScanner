@@ -5,7 +5,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
@@ -119,48 +118,95 @@ namespace TwainControl
             }
         }
 
-        public static ObservableCollection<Chart> GenerateHistogram(this Bitmap b, System.Windows.Media.Brush color)
+        public static RenderTargetBitmap CombineImages(this List<ScannedImage> images, Orientation orientation)
         {
-            int[] histogram = new int[256];
-            BitmapData bmData = null;
+            int totalWidth = 0;
+            int totalHeight = 0;
+
+            foreach (ScannedImage image in images)
+            {
+                totalWidth = Math.Max(totalWidth, image.Resim.PixelWidth);
+                totalHeight = Math.Max(totalHeight, image.Resim.PixelHeight);
+            }
+
+            if (orientation == Orientation.Horizontal)
+            {
+                totalWidth *= images.Count;
+            }
+            else
+            {
+                totalHeight *= images.Count;
+            }
+
+            DrawingVisual drawingVisual = new();
+            using (DrawingContext drawingContext = drawingVisual.RenderOpen())
+            {
+                int curWidth = 0;
+                int curHeight = 0;
+                foreach (ScannedImage image in images)
+                {
+                    Rect rect = new(new System.Windows.Point(curWidth, curHeight), new System.Windows.Size(image.Resim.PixelWidth, image.Resim.PixelHeight));
+                    drawingContext.DrawImage(image.Resim, rect);
+                    if (orientation == Orientation.Horizontal)
+                    {
+                        curWidth += image.Resim.PixelWidth;
+                    }
+                    else
+                    {
+                        curHeight += image.Resim.PixelHeight;
+                    }
+                }
+            }
+            RenderTargetBitmap renderTargetBitmap = new(totalWidth, totalHeight, 96, 96, PixelFormats.Pbgra32);
+            renderTargetBitmap.Render(drawingVisual);
+            renderTargetBitmap.Freeze();
+            return renderTargetBitmap;
+        }
+
+        public static ObservableCollection<Chart> GenerateHistogram(this Bitmap bitmap)
+        {
             ObservableCollection<Chart> chart = new();
             try
             {
-                bmData = b.LockBits(new Rectangle(0, 0, b.Width, b.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-                int scanline = bmData.Stride;
-                IntPtr Scan0 = bmData.Scan0;
+                int[] rHistogram = new int[256];
+                int[] gHistogram = new int[256];
+                int[] bHistogram = new int[256];
+                BitmapData bmpData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, bitmap.PixelFormat);
+                int bytesPerPixel = System.Drawing.Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
+                int stride = bmpData.Stride;
                 unsafe
                 {
-                    byte* p = (byte*)(void*)Scan0;
-                    int nWidth = b.Width;
-                    int nHeight = b.Height;
-                    for (int y = 0; y < nHeight; y++)
+                    byte* ptr = (byte*)bmpData.Scan0;
+                    for (int y = 0; y < bitmap.Height; y++)
                     {
-                        for (int x = 0; x < nWidth; x++)
+                        int rowIndex = y * stride;
+                        for (int x = 0; x < bitmap.Width; x++)
                         {
-                            long Temp = 0;
-                            if (color == System.Windows.Media.Brushes.Red)
-                            {
-                                histogram[Temp += p[2]]++;
-                            }
-                            if (color == System.Windows.Media.Brushes.Green)
-                            {
-                                histogram[Temp += p[1]]++;
-                            }
-                            if (color == System.Windows.Media.Brushes.Blue)
-                            {
-                                histogram[Temp += p[0]]++;
-                            }
-                            p += 4;
+                            int pixelIndex = rowIndex + (x * bytesPerPixel);
+                            int r = ptr[pixelIndex + 2];
+                            int g = ptr[pixelIndex + 1];
+                            int b = ptr[pixelIndex];
+                            rHistogram[r]++;
+                            gHistogram[g]++;
+                            bHistogram[b]++;
                         }
                     }
                 }
-                b.UnlockBits(bmData);
-                foreach (int item in histogram.Take(255))
+                bitmap.UnlockBits(bmpData);
+                foreach (int item in rHistogram)
                 {
-                    chart.Add(new Chart() { ChartBrush = color, ChartValue = item });
+                    chart.Add(new Chart() { ChartBrush = System.Windows.Media.Brushes.Red, ChartValue = item });
                 }
-                bmData = null;
+                foreach (int item in gHistogram)
+                {
+                    chart.Add(new Chart() { ChartBrush = System.Windows.Media.Brushes.Green, ChartValue = item });
+                }
+                foreach (int item in bHistogram)
+                {
+                    chart.Add(new Chart() { ChartBrush = System.Windows.Media.Brushes.Blue, ChartValue = item });
+                }
+                bmpData = null;
+                bitmap = null;
                 return chart;
             }
             catch

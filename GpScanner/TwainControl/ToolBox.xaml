@@ -114,17 +114,9 @@
                                     <TextBlock FontSize="20" Text="" />
                                     <Extensions:ContentToggleButton.OverContent>
                                         <GroupBox>
-                                            <UniformGrid Columns="3">
-                                                <Extensions:GraphControl Width="200" Height="200"
-                                                    Series="{Binding Scanner.RedChart}"
-                                                    SeriesTextVisibility="Collapsed" ValueTextVisibility="Collapsed" />
-                                                <Extensions:GraphControl Width="200" Height="200"
-                                                    Series="{Binding Scanner.GreenChart}"
-                                                    SeriesTextVisibility="Collapsed" ValueTextVisibility="Collapsed" />
-                                                <Extensions:GraphControl Width="200" Height="200"
-                                                    Series="{Binding Scanner.BlueChart}"
-                                                    SeriesTextVisibility="Collapsed" ValueTextVisibility="Collapsed" />
-                                            </UniformGrid>
+                                            <Extensions:GraphControl Width="600" Height="200"
+                                                Series="{Binding Scanner.Chart}"
+                                                SeriesTextVisibility="Collapsed" ValueTextVisibility="Collapsed" />
                                         </GroupBox>
                                     </Extensions:ContentToggleButton.OverContent>
                                 </Extensions:ContentToggleButton>
@@ -184,13 +176,22 @@
                                     Value="{Binding Scanner.BoyAdet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </StackPanel>
                         </UniformGrid>
-                        <Button Command="{Binding SplitImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock VerticalAlignment="Center" Text="{local:Loc SLICE}" />
-                                <Image Width="16" Height="16"
-                                    Source="{Binding Source='.jpg', Converter={StaticResource FilePathToIconConverter}}" />
-                            </StackPanel>
-                        </Button>
+                        <UniformGrid Columns="2">
+                            <Button Command="{Binding SplitImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc SLICE}" />
+                                    <Image Width="16" Height="16"
+                                        Source="{Binding Source='.jpg', Converter={StaticResource FilePathToIconConverter}}" />
+                                </StackPanel>
+                            </Button>
+                            <Button BorderBrush="Cyan" Command="{Binding MergeHorizontal, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc MERGE}" />
+                                    <Image Width="16" Height="16"
+                                        Source="{Binding Source='.jpg', Converter={StaticResource FilePathToIconConverter}}" />
+                                </StackPanel>
+                            </Button>
+                        </UniformGrid>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />

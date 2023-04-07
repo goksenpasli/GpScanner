@@ -100,18 +100,6 @@ namespace TwainControl
             }
         }
 
-        public ObservableCollection<Chart> BlueChart {
-            get => blueChart;
-
-            set {
-                if (blueChart != value)
-                {
-                    blueChart = value;
-                    OnPropertyChanged(nameof(BlueChart));
-                }
-            }
-        }
-
         public bool BorderAnimation {
             get => borderAnimation; set {
                 if (borderAnimation != value)
@@ -359,18 +347,6 @@ namespace TwainControl
             }
         }
 
-        public ObservableCollection<Chart> GreenChart {
-            get => greenChart;
-
-            set {
-                if (greenChart != value)
-                {
-                    greenChart = value;
-                    OnPropertyChanged(nameof(GreenChart));
-                }
-            }
-        }
-
         public PdfPageLayout Layout {
             get => layout; set {
                 if (layout != value)
@@ -513,14 +489,14 @@ namespace TwainControl
             }
         }
 
-        public ObservableCollection<Chart> RedChart {
-            get => redChart;
+        public ObservableCollection<Chart> Chart {
+            get => chart;
 
             set {
-                if (redChart != value)
+                if (chart != value)
                 {
-                    redChart = value;
-                    OnPropertyChanged(nameof(RedChart));
+                    chart = value;
+                    OnPropertyChanged(nameof(Chart));
                 }
             }
         }
@@ -864,7 +840,6 @@ namespace TwainControl
 
         private bool autoSave = Directory.Exists(Settings.Default.AutoFolder);
 
-        private ObservableCollection<Chart> blueChart;
 
         private bool borderAnimation;
 
@@ -908,8 +883,6 @@ namespace TwainControl
 
         private int ftpLoadProgressValue;
 
-        private ObservableCollection<Chart> greenChart;
-
         private PdfPageLayout layout = PdfPageLayout.Middle;
 
         private string localizedPath;
@@ -934,7 +907,7 @@ namespace TwainControl
 
         private IEnumerable<string> qrData;
 
-        private ObservableCollection<Chart> redChart;
+        private ObservableCollection<Chart> chart;
 
         private ObservableCollection<ScannedImage> resimler = new();
 

@@ -117,12 +117,17 @@
                         </ListBoxItem.Content>
                     </ListBoxItem>
                 </ListBox>
-                <UniformGrid Grid.Row="1" Columns="3">
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="175" />
+                    </Grid.ColumnDefinitions>
                     <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
                         Description="{twainctrl:Loc FILE}"
                         IsReadOnly="True" ResetButtonVisibility="Collapsed"
                         Text="{Binding DatabaseFile, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
-                    <Button Command="{Binding ChangeDataFolder}">
+                    <Button Grid.Column="1" Command="{Binding ChangeDataFolder}">
                         <StackPanel Orientation="Horizontal">
                             <Image Width="24" Height="24">
                                 <Image.Source>
@@ -135,14 +140,15 @@
                             <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc FILE}" />
                         </StackPanel>
                     </Button>
-                    <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
+                    <CheckBox Grid.Column="2"
+                        VerticalAlignment="Center" VerticalContentAlignment="Center"
                         IsChecked="{Binding WatchFolderPdfFileChange, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
                         IsEnabled="{Binding AnyDataExists}">
                         <TextBlock Foreground="Blue"
                             Text="{twainctrl:Loc PDFTRACK}"
                             TextWrapping="Wrap" />
                     </CheckBox>
-                </UniformGrid>
+                </Grid>
                 <GroupBox Grid.Row="2">
                     <Grid>
                         <Grid.ColumnDefinitions>

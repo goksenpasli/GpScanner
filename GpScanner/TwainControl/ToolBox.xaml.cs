@@ -88,12 +88,7 @@ namespace TwainControl
 
             PrintCroppedImage = new RelayCommand<object>(parameter => PdfViewer.PdfViewer.PrintImageSource(parameter as ImageSource), parameter => Scanner?.CroppedImage is not null);
 
-            LoadHistogram = new RelayCommand<object>(parameter =>
-            {
-                Scanner.RedChart = ((BitmapSource)Scanner.CroppedImage).BitmapSourceToBitmap().GenerateHistogram(System.Windows.Media.Brushes.Red);
-                Scanner.GreenChart = ((BitmapSource)Scanner.CroppedImage).BitmapSourceToBitmap().GenerateHistogram(System.Windows.Media.Brushes.Green);
-                Scanner.BlueChart = ((BitmapSource)Scanner.CroppedImage).BitmapSourceToBitmap().GenerateHistogram(System.Windows.Media.Brushes.Blue);
-            }, parameter => Scanner?.CroppedImage is not null);
+            LoadHistogram = new RelayCommand<object>(parameter => Scanner.Chart = ((BitmapSource)Scanner.CroppedImage).BitmapSourceToBitmap().GenerateHistogram(), parameter => Scanner?.CroppedImage is not null);
 
             DeskewImage = new RelayCommand<object>(async parameter =>
             {
@@ -175,6 +170,28 @@ namespace TwainControl
                 }
             }, parameter => Scanner?.AutoSave == true && Scanner?.Resimler?.Count(z => z.Seçili) > 0);
 
+            MergeHorizontal = new RelayCommand<object>(async parameter =>
+            {
+                if (DataContext is TwainCtrl twainControl)
+                {
+                    List<ScannedImage> listcroppedimages;
+                    Orientation orientation = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt) ? Orientation.Vertical : Orientation.Horizontal;
+                    string savefolder = CreateSaveFolder("MERGE");
+                    string path = savefolder.SetUniqueFile(Translation.GetResStringValue("MERGE"), "jpg");
+                    await Task.Run(() =>
+                    {
+                        listcroppedimages = Scanner.Resimler.Where(z => z.Seçili).ToList();
+                        File.WriteAllBytes(path, listcroppedimages.CombineImages(orientation).ToTiffJpegByteArray(Format.Jpg));
+                    });
+                    WebAdreseGit.Execute(savefolder);
+                    listcroppedimages = null;
+                    if (Settings.Default.RemoveProcessedImage)
+                    {
+                        twainControl.SeçiliListeTemizle.Execute(null);
+                    }
+                }
+            }, parameter => Scanner?.AutoSave == true && Scanner?.Resimler?.Count(z => z.Seçili) > 1);
+
             MergeAllImage = new RelayCommand<object>(async parameter =>
             {
                 PageOrientation pageOrientation = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt) ? PageOrientation.Portrait : PageOrientation.Landscape;
@@ -245,6 +262,7 @@ namespace TwainControl
         public static Scanner Scanner { get; set; }
 
         public ICommand ApplyColorChange { get; }
+        public ICommand MergeHorizontal { get; }
 
         public double BorderSize {
             get => borderSize; set {
@@ -347,9 +365,7 @@ namespace TwainControl
             Scanner.CroppedImageAngle = 0;
             Scanner.Threshold = 0;
             Scanner.Watermark = string.Empty;
-            Scanner.RedChart = null;
-            Scanner.BlueChart = null;
-            Scanner.GreenChart = null;
+            Scanner.Chart = null;
             GC.Collect();
         }
 
