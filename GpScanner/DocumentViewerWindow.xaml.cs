@@ -22,6 +22,14 @@ namespace GpScanner
             DataContext = new DocumentViewerModel();
         }
 
+        private static readonly Rectangle selectionbox = new()
+        {
+            Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
+            Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
+            StrokeThickness = 2,
+            StrokeDashArray = new DoubleCollection(new double[] { 4, 2 }),
+        };
+
         private double height;
 
         private bool isMouseDown;
@@ -45,24 +53,10 @@ namespace GpScanner
             if (e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer && isMouseDown && DataContext is DocumentViewerModel documentViewerModel)
             {
                 Point mousemovecoord = e.GetPosition(scrollviewer);
-                SolidColorBrush fill = new()
+                if (cnv.Children.Contains(selectionbox))
                 {
-                    Color = Color.FromArgb(80, 0, 255, 0)
-                };
-                fill.Freeze();
-                SolidColorBrush stroke = new()
-                {
-                    Color = Color.FromArgb(80, 255, 0, 0)
-                };
-                stroke.Freeze();
-                Rectangle selectionbox = new()
-                {
-                    Stroke = stroke,
-                    Fill = fill,
-                    StrokeThickness = 2,
-                    StrokeDashArray = new DoubleCollection(new double[] { 4, 2 }),
-                };
-                cnv.Children.Clear();
+                    cnv.Children.Remove(selectionbox);
+                }
                 _ = cnv.Children.Add(selectionbox);
                 if (mousedowncoord.X < mousemovecoord.X)
                 {
@@ -87,7 +81,7 @@ namespace GpScanner
                 }
                 if (e.LeftButton == MouseButtonState.Released)
                 {
-                    cnv.Children.Clear();
+                    cnv.Children.Remove(selectionbox);
                     width = Math.Abs(mousemovecoord.X - mousedowncoord.X);
                     height = Math.Abs(mousemovecoord.Y - mousedowncoord.Y);
 

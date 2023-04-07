@@ -463,8 +463,7 @@ namespace GpScanner.ViewModel
             {
                 if (MessageBox.Show($"{Translation.GetResStringValue("SETTİNGS")} {Translation.GetResStringValue("RESET")}", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
-                    Twainsettings.Settings twainsettings = parameter as Twainsettings.Settings;
-                    twainsettings.Reset();
+                    (parameter as Twainsettings.Settings)?.Reset();
                     Settings.Default.Reset();
                 }
             });
@@ -475,24 +474,19 @@ namespace GpScanner.ViewModel
 
             DateForward = new RelayCommand<object>(parameter => SeçiliGün = SeçiliGün.Value.AddDays(1), parameter => SeçiliGün < DateTime.Today);
 
-            int cycleindex = 0;
             CycleSelectedDocuments = new RelayCommand<object>(async parameter =>
             {
                 if (parameter is ListBox listBox)
                 {
-                    IEnumerable<Scanner> listboxfiles = MainWindow.cvs.View.OfType<Scanner>();
-                    Scanner currentfile = listboxfiles?.Where(z => z.Seçili).ElementAtOrDefault(cycleindex);
-                    if (currentfile is not null)
+                    List<Scanner> listboxFiles = MainWindow.cvs.View.OfType<Scanner>().ToList();
+                    Scanner currentFile = listboxFiles.Where(z => z.Seçili).ElementAtOrDefault(cycleIndex);
+                    if (currentFile is not null)
                     {
-                        listBox.ScrollIntoView(currentfile);
-                        currentfile.BorderAnimation = true;
-                        cycleindex++;
-                        if (cycleindex >= listboxfiles.Count(z => z.Seçili))
-                        {
-                            cycleindex = 0;
-                        }
+                        listBox.ScrollIntoView(currentFile);
+                        currentFile.BorderAnimation = true;
+                        cycleIndex = (cycleIndex + 1) % listboxFiles.Count(z => z.Seçili);
                         await Task.Delay(900);
-                        currentfile.BorderAnimation = false;
+                        currentFile.BorderAnimation = false;
                     }
                 }
             }, parameter => MainWindow.cvs?.View?.OfType<Scanner>().Count(z => z.Seçili) > 0);
@@ -584,6 +578,7 @@ namespace GpScanner.ViewModel
 
         public ResultPoint[] BarcodePosition {
             get => barcodePosition; set {
+
                 if (barcodePosition != value)
                 {
                     barcodePosition = value;
@@ -594,6 +589,7 @@ namespace GpScanner.ViewModel
 
         public bool BatchDialogOpen {
             get => batchDialogOpen; set {
+
                 if (batchDialogOpen != value)
                 {
                     batchDialogOpen = value;
@@ -740,6 +736,7 @@ namespace GpScanner.ViewModel
 
         public string FtpPassword {
             get => ftpPassword; set {
+
                 if (ftpPassword != value)
                 {
                     ftpPassword = value;
@@ -762,6 +759,7 @@ namespace GpScanner.ViewModel
 
         public string FtpUserName {
             get => ftpUserName; set {
+
                 if (ftpUserName != value)
                 {
                     ftpUserName = value;
@@ -803,6 +801,7 @@ namespace GpScanner.ViewModel
 
         public GridLength MainWindowDocumentGuiControlLength {
             get => mainWindowDocumentGuiControlLength; set {
+
                 if (mainWindowDocumentGuiControlLength != value)
                 {
                     mainWindowDocumentGuiControlLength = value;
@@ -813,6 +812,7 @@ namespace GpScanner.ViewModel
 
         public GridLength MainWindowGuiControlLength {
             get => mainWindowGuiControlLength; set {
+
                 if (mainWindowGuiControlLength != value)
                 {
                     mainWindowGuiControlLength = value;
@@ -843,6 +843,7 @@ namespace GpScanner.ViewModel
 
         public string PatchFileName {
             get => patchFileName; set {
+
                 if (patchFileName != value)
                 {
                     patchFileName = value;
@@ -877,6 +878,7 @@ namespace GpScanner.ViewModel
 
         public bool PdfBatchRunning {
             get => pdfBatchRunning; set {
+
                 if (pdfBatchRunning != value)
                 {
                     pdfBatchRunning = value;
@@ -889,6 +891,7 @@ namespace GpScanner.ViewModel
 
         public double PdfMergeProgressValue {
             get => pdfMergeProgressValue; set {
+
                 if (pdfMergeProgressValue != value)
                 {
                     pdfMergeProgressValue = value;
@@ -965,6 +968,7 @@ namespace GpScanner.ViewModel
 
         public DateTime? SeçiliGün {
             get => seçiliGün; set {
+
                 if (seçiliGün != value)
                 {
                     seçiliGün = value;
@@ -987,6 +991,7 @@ namespace GpScanner.ViewModel
 
         public string SelectedFtp {
             get => selectedFtp; set {
+
                 if (selectedFtp != value)
                 {
                     selectedFtp = value;
@@ -1017,6 +1022,7 @@ namespace GpScanner.ViewModel
 
         public bool Shutdown {
             get => shutdown; set {
+
                 if (shutdown != value)
                 {
                     shutdown = value;
@@ -1320,6 +1326,8 @@ namespace GpScanner.ViewModel
         private ObservableCollection<Chart> chartData;
 
         private int? checkedPdfCount = 0;
+
+        private int cycleIndex;
 
         private bool detectBarCode = true;
 

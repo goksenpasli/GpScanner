@@ -138,28 +138,28 @@ namespace Extensions
 
         public static ConcurrentBag<string> DirSearch(this string path, string pattern = "*.*")
         {
-            ConcurrentQueue<string> pendingQueue = new();
-            pendingQueue.Enqueue(path);
-
             ConcurrentBag<string> filesNames = new();
-            while (pendingQueue.Count > 0)
+
+            ConcurrentBag<string> pendingQueue = new()
+            {
+                path
+            };
+
+            _ = Parallel.ForEach(pendingQueue, currentPath =>
             {
                 try
                 {
-                    _ = pendingQueue.TryDequeue(out path);
+                    IEnumerable<string> files = Directory.EnumerateFiles(currentPath, pattern);
+                    _ = Parallel.ForEach(files, fileName => filesNames.Add(fileName));
 
-                    string[] files = Directory.GetFiles(path, pattern);
-
-                    _ = Parallel.ForEach(files, filesNames.Add);
-
-                    string[] directories = Directory.GetDirectories(path);
-
-                    _ = Parallel.ForEach(directories, pendingQueue.Enqueue);
+                    IEnumerable<string> directories = Directory.EnumerateDirectories(currentPath);
+                    _ = Parallel.ForEach(directories, directory => pendingQueue.Add(directory));
                 }
                 catch (UnauthorizedAccessException)
                 {
                 }
-            }
+            });
+
             return filesNames;
         }
 
@@ -168,7 +168,7 @@ namespace Extensions
 
         public static IEnumerable<string> FilterFiles(this string path, params string[] exts)
         {
-            return exts.Select(x => x).SelectMany(x => Directory.EnumerateFiles(path, x, SearchOption.TopDirectoryOnly));
+            return exts.SelectMany(ext => Directory.EnumerateFiles(path, ext, SearchOption.TopDirectoryOnly));
         }
 
         public static string GetDisplayName(string path)
@@ -230,20 +230,19 @@ namespace Extensions
 
         public static BitmapSource IconCreate(this string filepath, int iconindex)
         {
-            if (filepath != null)
+            if (!string.IsNullOrWhiteSpace(filepath))
             {
                 IntPtr hIcon = hwnd.ExtractIcon(filepath, iconindex);
                 if (hIcon != IntPtr.Zero)
                 {
-                    BitmapSource icon = Imaging.CreateBitmapSourceFromHIcon(hIcon, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                    using Icon icon = Icon.FromHandle(hIcon);
+                    BitmapSource bitmapsource = Imaging.CreateBitmapSourceFromHIcon(hIcon, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                    bitmapsource.Freeze();
                     _ = hIcon.DestroyIcon();
-                    icon.Freeze();
-                    return icon;
+                    return bitmapsource;
                 }
-
                 _ = hIcon.DestroyIcon();
             }
-
             return null;
         }
 
@@ -318,18 +317,20 @@ namespace Extensions
 
         public static System.Windows.Media.Brush RandomColor()
         {
-            Random rand = new(Guid.NewGuid().GetHashCode());
-            SolidColorBrush brush = new(System.Windows.Media.Color.FromRgb((byte)rand.Next(0, 256), (byte)rand.Next(0, 256), (byte)rand.Next(0, 256)));
-            brush.Freeze();
-            return brush;
+            return new SolidColorBrush(System.Windows.Media.Color.FromRgb((byte)_random.Next(0, 256), (byte)_random.Next(0, 256), (byte)_random.Next(0, 256)));
         }
 
-        public static BitmapSource Resize(this BitmapSource bfPhoto, double nWidth, double nHeight, double rotate = 0, int dpiX = 96, int dpiY = 96)
+        public static BitmapSource Resize(this BitmapSource bfPhoto, double nWidth, double nHeight, double? rotate = null, int dpiX = 96, int dpiY = 96)
         {
-            RotateTransform rotateTransform = new(rotate);
-            ScaleTransform scaleTransform = new(nWidth / 96 * dpiX / bfPhoto.PixelWidth, nHeight / 96 * dpiY / bfPhoto.PixelHeight, 0, 0);
             TransformGroup transformGroup = new();
-            transformGroup.Children.Add(rotateTransform);
+            if (rotate.HasValue)
+            {
+                RotateTransform rotateTransform = new(rotate.Value);
+                transformGroup.Children.Add(rotateTransform);
+            }
+            double scaleX = nWidth / bfPhoto.PixelWidth * dpiX / 96;
+            double scaleY = nHeight / bfPhoto.PixelHeight * dpiY / 96;
+            ScaleTransform scaleTransform = new(scaleX, scaleY);
             transformGroup.Children.Add(scaleTransform);
             TransformedBitmap tb = new(bfPhoto, transformGroup);
             tb.Freeze();
@@ -339,7 +340,12 @@ namespace Extensions
         public static BitmapSource Resize(this BitmapSource bfPhoto, double oran)
         {
             ScaleTransform newTransform = new(oran, oran);
-            TransformedBitmap tb = new(bfPhoto, newTransform);
+            newTransform.Freeze();
+            TransformedBitmap tb = new();
+            tb.BeginInit();
+            tb.Source = bfPhoto;
+            tb.Transform = newTransform;
+            tb.EndInit();
             tb.Freeze();
             return tb;
         }
@@ -406,20 +412,12 @@ namespace Extensions
         public static RenderTargetBitmap ToRenderTargetBitmap(this UIElement uiElement, double resolution = 96)
         {
             double scale = resolution / 96d;
-            System.Windows.Size availableSize = new(double.PositiveInfinity, double.PositiveInfinity);
-            uiElement.Measure(availableSize);
-            System.Windows.Size sz = uiElement.DesiredSize;
-            Rect rect = new(sz);
-            uiElement.Arrange(rect);
-            RenderTargetBitmap bmp = new((int)(scale * rect.Width), (int)(scale * rect.Height), scale * 96, scale * 96, PixelFormats.Default);
-            if (bmp != null)
-            {
-                bmp.Render(uiElement);
-                bmp.Freeze();
-                return bmp;
-            }
-
-            return null;
+            uiElement.Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
+            uiElement.Arrange(new Rect(uiElement.DesiredSize));
+            RenderTargetBitmap bmp = new((int)(scale * uiElement.RenderSize.Width), (int)(scale * uiElement.RenderSize.Height), scale * 96, scale * 96, PixelFormats.Default);
+            bmp.Render(uiElement);
+            bmp.Freeze();
+            return bmp;
         }
 
         public static byte[] ToTiffJpegByteArray(this ImageSource bitmapsource, Format format, int jpegquality = 80)
@@ -473,6 +471,8 @@ namespace Extensions
                 return null;
             }
         }
+
+        private static readonly Random _random = new();
 
         private static readonly IntPtr hwnd = Process.GetCurrentProcess().Handle;
     }

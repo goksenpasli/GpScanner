@@ -469,7 +469,7 @@ namespace PdfViewer
             try
             {
                 return pdffilestream?.Length == 0
-                    ? throw new ArgumentOutOfRangeException(nameof(pdffilestream), "file can not be null or length zero")
+                    ? throw new ArgumentNullException(nameof(pdffilestream), "file can not be null or length zero")
                     : await Task.Run(() =>
                     {
                         using MemoryStream ms = new(pdffilestream);
@@ -484,7 +484,6 @@ namespace PdfViewer
             }
             catch (Exception)
             {
-                pdffilestream = null;
             }
             return null;
         }
@@ -494,7 +493,7 @@ namespace PdfViewer
             try
             {
                 return stream?.Length == 0
-                    ? throw new ArgumentOutOfRangeException(nameof(stream), "file can not be null or length zero")
+                    ? throw new ArgumentNullException(nameof(stream), "file can not be null or length zero")
                     : await Task.Run(() =>
                     {
                         using MemoryStream ms = new(stream);
@@ -509,7 +508,6 @@ namespace PdfViewer
             }
             catch (Exception)
             {
-                stream = null;
             }
             return null;
         }
@@ -519,7 +517,7 @@ namespace PdfViewer
             try
             {
                 return stream?.Length == 0
-                    ? throw new ArgumentOutOfRangeException(nameof(stream), "file can not be null or length zero")
+                    ? throw new ArgumentNullException(nameof(stream), "file can not be null or length zero")
                     : await Task.Run(() =>
                     {
                         using MemoryStream ms = new(stream);
@@ -529,7 +527,6 @@ namespace PdfViewer
             }
             catch (Exception)
             {
-                stream = null;
             }
             return 0;
         }

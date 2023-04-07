@@ -21,7 +21,6 @@ namespace GpScanner.ViewModel
                 using (CryptoStream cs = new(ms, encryptor.CreateDecryptor(), CryptoStreamMode.Write))
                 {
                     cs.Write(cipherBytes, 0, cipherBytes.Length);
-                    cs.Close();
                 }
                 cipherText = Encoding.Unicode.GetString(ms.ToArray());
             }
@@ -41,7 +40,6 @@ namespace GpScanner.ViewModel
                 using (CryptoStream cs = new(ms, encryptor.CreateEncryptor(), CryptoStreamMode.Write))
                 {
                     cs.Write(clearBytes, 0, clearBytes.Length);
-                    cs.Close();
                 }
                 clearText = Convert.ToBase64String(ms.ToArray());
             }

@@ -22,18 +22,14 @@ namespace GpScanner.ViewModel
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+            if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && item is string dosya)
             {
-                if (item is string dosya)
-                {
-                    string[] imgext = new string[] { ".jpg", ".bmp", ".png", ".tif", ".tiff" };
-                    string[] videoext = new string[] { ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg" };
-                    string ext = Path.GetExtension(dosya).ToLower();
-                    return ext == ".pdf"
-                        ? Pdf
-                        : ext == ".zip" ? Zip : ext == ".xps" ? Xps : imgext.Contains(ext) ? Img : videoext.Contains(ext) ? Vid : Empty;
-                }
-                return null;
+                string[] imgext = new string[] { ".jpg", ".bmp", ".png", ".tif", ".tiff" };
+                string[] videoext = new string[] { ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg" };
+                string ext = Path.GetExtension(dosya).ToLower();
+                return ext == ".pdf"
+                    ? Pdf
+                    : ext == ".zip" ? Zip : ext == ".xps" ? Xps : imgext.Contains(ext) ? Img : videoext.Contains(ext) ? Vid : Empty;
             }
             return null;
         }

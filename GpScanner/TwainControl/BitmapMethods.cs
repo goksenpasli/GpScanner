@@ -163,58 +163,6 @@ namespace TwainControl
             return renderTargetBitmap;
         }
 
-        public static ObservableCollection<Chart> GenerateHistogram(this Bitmap bitmap)
-        {
-            ObservableCollection<Chart> chart = new();
-            try
-            {
-                int[] rHistogram = new int[256];
-                int[] gHistogram = new int[256];
-                int[] bHistogram = new int[256];
-                BitmapData bmpData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, bitmap.PixelFormat);
-                int bytesPerPixel = System.Drawing.Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
-                int stride = bmpData.Stride;
-                unsafe
-                {
-                    byte* ptr = (byte*)bmpData.Scan0;
-                    for (int y = 0; y < bitmap.Height; y++)
-                    {
-                        int rowIndex = y * stride;
-                        for (int x = 0; x < bitmap.Width; x++)
-                        {
-                            int pixelIndex = rowIndex + (x * bytesPerPixel);
-                            int r = ptr[pixelIndex + 2];
-                            int g = ptr[pixelIndex + 1];
-                            int b = ptr[pixelIndex];
-                            rHistogram[r]++;
-                            gHistogram[g]++;
-                            bHistogram[b]++;
-                        }
-                    }
-                }
-                bitmap.UnlockBits(bmpData);
-                foreach (int item in rHistogram)
-                {
-                    chart.Add(new Chart() { ChartBrush = System.Windows.Media.Brushes.Red, ChartValue = item });
-                }
-                foreach (int item in gHistogram)
-                {
-                    chart.Add(new Chart() { ChartBrush = System.Windows.Media.Brushes.Green, ChartValue = item });
-                }
-                foreach (int item in bHistogram)
-                {
-                    chart.Add(new Chart() { ChartBrush = System.Windows.Media.Brushes.Blue, ChartValue = item });
-                }
-                bmpData = null;
-                bitmap = null;
-                return chart;
-            }
-            catch
-            {
-            }
-            return null;
-        }
-
         public static async Task<BitmapFrame> GenerateImageDocumentBitmapFrame(MemoryStream ms, Paper paper, bool deskew = false)
         {
             BitmapImage image = new();
@@ -224,58 +172,42 @@ namespace TwainControl
             image.StreamSource = ms;
             image.EndInit();
             image.Freeze();
-            BitmapFrame bitmapFrame;
 
+            RenderTargetBitmap skewedimage = null;
             if (deskew)
             {
-                RenderTargetBitmap skewedimage = await image.RotateImageAsync((double)ToolBox.GetDeskewAngle(image, true));
+                double deskewAngle = (double)ToolBox.GetDeskewAngle(image, true);
+                skewedimage = await image.RotateImageAsync(deskewAngle).ConfigureAwait(false);
                 skewedimage.Freeze();
-                if (image.PixelWidth < image.PixelHeight)
-                {
-                    bitmapFrame = BitmapFrame.Create(skewedimage, image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Width * paper.Height).BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg, Settings.Default.PreviewWidth));
-                    bitmapFrame.Freeze();
-                    return bitmapFrame;
-                }
-                bitmapFrame = BitmapFrame.Create(skewedimage, image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Height * paper.Width).BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg, Settings.Default.PreviewWidth));
-                bitmapFrame.Freeze();
-                return bitmapFrame;
             }
 
-            if (image.PixelWidth < image.PixelHeight)
-            {
-                bitmapFrame = BitmapFrame.Create(image, image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Width * paper.Height).BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg, Settings.Default.PreviewWidth));
-                bitmapFrame.Freeze();
-                return bitmapFrame;
-            }
-            bitmapFrame = BitmapFrame.Create(image, image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Height * paper.Width).BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg, Settings.Default.PreviewWidth));
-            bitmapFrame.Freeze();
-            return bitmapFrame;
+            return deskew ?
+                CreateBitmapFrame(skewedimage, paper, image.PixelWidth < image.PixelHeight) :
+                CreateBitmapFrame(image, paper, image.PixelWidth < image.PixelHeight);
         }
 
         public static async Task<BitmapFrame> GenerateImageDocumentBitmapFrameAsync(Uri item, int decodeheight, int defaultpictureresizeratio = 100)
         {
-            return await Task.Run(() =>
-            {
-                BitmapImage image = new();
-                image.BeginInit();
-                image.CacheOption = BitmapCacheOption.None;
-                image.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.IgnoreImageCache | BitmapCreateOptions.DelayCreation;
-                image.UriSource = item;
-                image.EndInit();
-                image.Freeze();
+            BitmapImage image = new();
+            BitmapImage thumbimage = new();
 
-                BitmapImage thumbimage = new();
-                thumbimage.BeginInit();
-                thumbimage.DecodePixelHeight = decodeheight / 10;
-                thumbimage.CacheOption = BitmapCacheOption.None;
-                thumbimage.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.IgnoreImageCache | BitmapCreateOptions.DelayCreation;
-                thumbimage.UriSource = item;
-                thumbimage.EndInit();
-                thumbimage.Freeze();
-                BitmapFrame bitmapFrame = defaultpictureresizeratio != 100 ? BitmapFrame.Create(image.Resize(defaultpictureresizeratio / 100d), thumbimage) : BitmapFrame.Create(image, thumbimage);
-                bitmapFrame.Freeze();
-                return bitmapFrame;
-            });
+            image.BeginInit();
+            image.CacheOption = BitmapCacheOption.None;
+            image.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.IgnoreImageCache | BitmapCreateOptions.DelayCreation;
+            image.UriSource = item;
+            image.EndInit();
+            image.Freeze();
+
+            thumbimage.BeginInit();
+            thumbimage.DecodePixelHeight = decodeheight / 10;
+            thumbimage.CacheOption = BitmapCacheOption.None;
+            thumbimage.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.IgnoreImageCache | BitmapCreateOptions.DelayCreation;
+            thumbimage.UriSource = item;
+            thumbimage.EndInit();
+            thumbimage.Freeze();
+
+            BitmapFrame bitmapFrame = defaultpictureresizeratio != 100 ? BitmapFrame.Create(image.Resize(defaultpictureresizeratio / 100d), thumbimage) : BitmapFrame.Create(image, thumbimage);
+            return await Task.FromResult(bitmapFrame);
         }
 
         public static ObservableCollection<Paper> GetPapers()
@@ -385,16 +317,17 @@ namespace TwainControl
         {
             try
             {
+                BitmapSource bitmapSource = (BitmapSource)Source;
                 return await Task.Run(() =>
                 {
                     DrawingVisual dv = new();
                     using (DrawingContext dc = dv.RenderOpen())
                     {
                         dc.PushTransform(new RotateTransform(angle));
-                        dc.DrawImage(Source, new Rect(0, 0, ((BitmapSource)Source).PixelWidth, ((BitmapSource)Source).PixelHeight));
+                        dc.DrawImage(Source, new Rect(0, 0, bitmapSource.PixelWidth, bitmapSource.PixelHeight));
                         dc.Pop();
                     }
-                    RenderTargetBitmap rtb = new(((BitmapSource)Source).PixelWidth, ((BitmapSource)Source).PixelHeight, 96, 96, PixelFormats.Default);
+                    RenderTargetBitmap rtb = new(bitmapSource.PixelWidth, bitmapSource.PixelHeight, 96, 96, PixelFormats.Default);
                     rtb.Render(dv);
                     rtb.Freeze();
                     Source = null;
@@ -451,6 +384,16 @@ namespace TwainControl
             rtb.Render(dv);
             rtb.Freeze();
             return rtb;
+        }
+
+        private static BitmapFrame CreateBitmapFrame(BitmapSource source, Paper paper, bool isPortrait)
+        {
+            BitmapImage resizedImage = isPortrait ?
+                source.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Width * paper.Height).BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg, Settings.Default.PreviewWidth) :
+                source.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Height * paper.Width).BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg, Settings.Default.PreviewWidth);
+
+            resizedImage.Freeze();
+            return BitmapFrame.Create(source, resizedImage);
         }
     }
 }

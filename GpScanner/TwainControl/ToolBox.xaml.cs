@@ -88,8 +88,6 @@ namespace TwainControl
 
             PrintCroppedImage = new RelayCommand<object>(parameter => PdfViewer.PdfViewer.PrintImageSource(parameter as ImageSource), parameter => Scanner?.CroppedImage is not null);
 
-            LoadHistogram = new RelayCommand<object>(parameter => Scanner.Chart = ((BitmapSource)Scanner.CroppedImage).BitmapSourceToBitmap().GenerateHistogram(), parameter => Scanner?.CroppedImage is not null);
-
             DeskewImage = new RelayCommand<object>(async parameter =>
             {
                 double skewAngle = GetDeskewAngle(Scanner.CroppedImage, true);
@@ -262,10 +260,10 @@ namespace TwainControl
         public static Scanner Scanner { get; set; }
 
         public ICommand ApplyColorChange { get; }
-        public ICommand MergeHorizontal { get; }
 
         public double BorderSize {
             get => borderSize; set {
+
                 if (borderSize != value)
                 {
                     borderSize = value;
@@ -290,9 +288,9 @@ namespace TwainControl
 
         public ICommand InvertImage { get; }
 
-        public ICommand LoadHistogram { get; }
-
         public ICommand MergeAllImage { get; }
+
+        public ICommand MergeHorizontal { get; }
 
         public ICommand PrintCroppedImage { get; }
 
