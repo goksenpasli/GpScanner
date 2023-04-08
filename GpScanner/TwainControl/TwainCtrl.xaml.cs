@@ -941,7 +941,8 @@ namespace TwainControl
                     }
                     if (MessageBox.Show($"{Translation.GetResStringValue("MERGEPDF")}", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                     {
-                        files.ToArray().MergePdf().Save($"{savefolder}\\{Path.GetFileNameWithoutExtension(pdfViewer.PdfFilePath)} {Translation.GetResStringValue("MERGE")}.pdf");
+                        using PdfDocument mergedPdf = files.ToArray().MergePdf();
+                        mergedPdf.Save($"{savefolder}\\{Path.GetFileNameWithoutExtension(pdfViewer.PdfFilePath)} {Translation.GetResStringValue("MERGE")}.pdf");
                     }
                     WebAdreseGit.Execute(savefolder);
                     files = null;
@@ -1707,7 +1708,7 @@ namespace TwainControl
                             case ".eyp":
                                 {
                                     List<string> files = EypFileExtract(filename);
-                                    await Dispatcher.BeginInvoke(() => files.ForEach(z => Scanner?.UnsupportedFiles?.Add(z)));
+                                    await Dispatcher.InvokeAsync(() => files.ForEach(z => Scanner?.UnsupportedFiles?.Add(z)));
                                     AddFiles(files.ToArray(), DecodeHeight);
                                     break;
                                 }
@@ -1725,7 +1726,7 @@ namespace TwainControl
                                     BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(new Uri(filename), decodeheight, Settings.Default.DefaultPictureResizeRatio);
                                     bitmapFrame.Freeze();
                                     ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
-                                    await Dispatcher.BeginInvoke(() => Scanner?.Resimler.Add(img));
+                                    await Dispatcher.InvokeAsync(() => Scanner?.Resimler.Add(img));
                                     img = null;
                                     bitmapFrame = null;
                                     break;
@@ -1758,7 +1759,7 @@ namespace TwainControl
                                 {
                                     FixedDocumentSequence docSeq = null;
                                     DocumentPage docPage = null;
-                                    await Dispatcher.BeginInvoke(() =>
+                                    await Dispatcher.InvokeAsync(() =>
                                     {
                                         using XpsDocument xpsDoc = new(filename, FileAccess.Read);
                                         docSeq = xpsDoc.GetFixedDocumentSequence();
@@ -1766,7 +1767,7 @@ namespace TwainControl
                                     BitmapFrame bitmapframe = null;
                                     for (int i = 0; i < docSeq.DocumentPaginator.PageCount; i++)
                                     {
-                                        await Dispatcher.BeginInvoke(() =>
+                                        await Dispatcher.InvokeAsync(() =>
                                         {
                                             docPage = docSeq.DocumentPaginator.GetPage(i);
                                             RenderTargetBitmap rtb = new((int)docPage.Size.Width, (int)docPage.Size.Height, 96, 96, PixelFormats.Default);
@@ -1779,7 +1780,7 @@ namespace TwainControl
                                         BitmapFrame bitmapFrame = BitmapFrame.Create(bitmapframe, thumbimage);
                                         bitmapFrame.Freeze();
                                         ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
-                                        await Dispatcher.BeginInvoke(() => Scanner?.Resimler.Add(img));
+                                        await Dispatcher.InvokeAsync(() => Scanner?.Resimler.Add(img));
                                         img = null;
                                         bitmapFrame = null;
                                         thumbimage = null;
@@ -2018,10 +2019,10 @@ namespace TwainControl
 
         private async Task AddPdfFile(byte[] filedata, string filepath = null)
         {
-            double totalpagecount = await PdfViewer.PdfViewer.PdfPageCountAsync(filedata);
+            double totalpagecount = await PdfViewer.PdfViewer.PdfPageCountAsync(filedata).ConfigureAwait(false);
             for (int i = 1; i <= totalpagecount; i++)
             {
-                BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrame(await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, (int)Settings.Default.ImgLoadResolution), SelectedPaper, Scanner.Deskew);
+                BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrame(await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, (int)Settings.Default.ImgLoadResolution).ConfigureAwait(false), SelectedPaper, Scanner.Deskew).ConfigureAwait(false);
                 bitmapFrame.Freeze();
                 Dispatcher.Invoke(() =>
                 {
@@ -2074,11 +2075,19 @@ namespace TwainControl
             }
         }
 
-        private Int32Rect CropPreviewImage(ImageSource ımageSource)
+        private Int32Rect CropPreviewImage(ImageSource imageSource)
         {
-            int height = ((BitmapSource)ımageSource).PixelHeight - (int)Scanner.CropBottom - (int)Scanner.CropTop;
-            int width = ((BitmapSource)ımageSource).PixelWidth - (int)Scanner.CropRight - (int)Scanner.CropLeft;
-            return (width < 0 || height < 0) ? default : new((int)Scanner.CropLeft, (int)Scanner.CropTop, width, height);
+            if (imageSource is not BitmapSource bitmapSource)
+            {
+                return default;
+            }
+            int height = bitmapSource.PixelHeight - (int)Scanner.CropBottom - (int)Scanner.CropTop;
+            int width = bitmapSource.PixelWidth - (int)Scanner.CropRight - (int)Scanner.CropLeft;
+            if (width < 0 || height < 0)
+            {
+                return default;
+            }
+            return new Int32Rect((int)Scanner.CropLeft, (int)Scanner.CropTop, width, height);
         }
 
         private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -2116,68 +2125,25 @@ namespace TwainControl
                 Resolution = new ResolutionSettings() { Dpi = (int)Settings.Default.Çözünürlük, ColourSetting = ColourSetting.Colour },
                 Page = new PageSettings() { Orientation = SelectedOrientation }
             };
-            switch (SelectedPaper.PaperType)
+            scansettings.Page.Size = SelectedPaper.PaperType switch
             {
-                case "A0":
-                    scansettings.Page.Size = PageType.A0;
-                    break;
-
-                case "A1":
-                    scansettings.Page.Size = PageType.A1;
-                    break;
-
-                case "A2":
-                    scansettings.Page.Size = PageType.A2;
-                    break;
-
-                case "A3":
-                    scansettings.Page.Size = PageType.A3;
-                    break;
-
-                case "A4":
-                    scansettings.Page.Size = PageType.A4;
-                    break;
-
-                case "A5":
-                    scansettings.Page.Size = PageType.A5;
-                    break;
-
-                case "B0":
-                    scansettings.Page.Size = PageType.ISOB0;
-                    break;
-
-                case "B1":
-                    scansettings.Page.Size = PageType.ISOB1;
-                    break;
-
-                case "B2":
-                    scansettings.Page.Size = PageType.ISOB2;
-                    break;
-
-                case "B3":
-                    scansettings.Page.Size = PageType.ISOB3;
-                    break;
-
-                case "B4":
-                    scansettings.Page.Size = PageType.ISOB4;
-                    break;
-
-                case "B5":
-                    scansettings.Page.Size = PageType.ISOB5;
-                    break;
-
-                case "Letter":
-                    scansettings.Page.Size = PageType.UsLetter;
-                    break;
-
-                case "Legal":
-                    scansettings.Page.Size = PageType.UsLegal;
-                    break;
-
-                case "Executive":
-                    scansettings.Page.Size = PageType.UsExecutive;
-                    break;
-            }
+                "A0" => PageType.A0,
+                "A1" => PageType.A1,
+                "A2" => PageType.A2,
+                "A3" => PageType.A3,
+                "A4" => PageType.A4,
+                "A5" => PageType.A5,
+                "B0" => PageType.ISOB0,
+                "B1" => PageType.ISOB1,
+                "B2" => PageType.ISOB2,
+                "B3" => PageType.ISOB3,
+                "B4" => PageType.ISOB4,
+                "B5" => PageType.ISOB5,
+                "Letter" => PageType.UsLetter,
+                "Legal" => PageType.UsLegal,
+                "Executive" => PageType.UsExecutive,
+                _ => scansettings.Page.Size
+            };
             return scansettings;
         }
 
@@ -2306,54 +2272,30 @@ namespace TwainControl
                 if (isMouseDown)
                 {
                     System.Windows.Point mousemovecoord = e.GetPosition(scrollviewer);
-                    if (cnv.Children.Contains(selectionbox))
+                    if (!cnv.Children.Contains(selectionbox))
                     {
-                        cnv.Children.Remove(selectionbox);
+                        _ = cnv.Children.Add(selectionbox);
                     }
-                    _ = cnv.Children.Add(selectionbox);
-                    if (mousedowncoord.X < mousemovecoord.X)
-                    {
-                        Canvas.SetLeft(selectionbox, mousedowncoord.X);
-                        selectionbox.Width = mousemovecoord.X - mousedowncoord.X;
-                    }
-                    else
-                    {
-                        Canvas.SetLeft(selectionbox, mousemovecoord.X);
-                        selectionbox.Width = mousedowncoord.X - mousemovecoord.X;
-                    }
+                    double x1 = Math.Min(mousedowncoord.X, mousemovecoord.X);
+                    double x2 = Math.Max(mousedowncoord.X, mousemovecoord.X);
+                    double y1 = Math.Min(mousedowncoord.Y, mousemovecoord.Y);
+                    double y2 = Math.Max(mousedowncoord.Y, mousemovecoord.Y);
 
-                    if (mousedowncoord.Y < mousemovecoord.Y)
-                    {
-                        Canvas.SetTop(selectionbox, mousedowncoord.Y);
-                        selectionbox.Height = mousemovecoord.Y - mousedowncoord.Y;
-                    }
-                    else
-                    {
-                        Canvas.SetTop(selectionbox, mousemovecoord.Y);
-                        selectionbox.Height = mousedowncoord.Y - mousemovecoord.Y;
-                    }
+                    Canvas.SetLeft(selectionbox, x1);
+                    Canvas.SetTop(selectionbox, y1);
+                    selectionbox.Width = x2 - x1;
+                    selectionbox.Height = y2 - y1;
+
                     if (e.LeftButton == MouseButtonState.Released)
                     {
                         cnv.Children.Remove(selectionbox);
                         width = Math.Abs(mousemovecoord.X - mousedowncoord.X);
                         height = Math.Abs(mousemovecoord.Y - mousedowncoord.Y);
+                        double captureX, captureY;
+                        captureX = mousedowncoord.X < mousemovecoord.X ? mousedowncoord.X : mousemovecoord.X;
+                        captureY = mousedowncoord.Y < mousemovecoord.Y ? mousedowncoord.Y : mousemovecoord.Y;
+                        ImgData = BitmapMethods.CaptureScreen(captureX, captureY, width, height, scrollviewer, BitmapFrame.Create((BitmapSource)img.Source));
 
-                        if (mousedowncoord.X < mousemovecoord.X && mousedowncoord.Y < mousemovecoord.Y)
-                        {
-                            ImgData = BitmapMethods.CaptureScreen(mousedowncoord.X, mousedowncoord.Y, width, height, scrollviewer, SeçiliResim.Resim);
-                        }
-                        if (mousedowncoord.X > mousemovecoord.X && mousedowncoord.Y > mousemovecoord.Y)
-                        {
-                            ImgData = BitmapMethods.CaptureScreen(mousemovecoord.X, mousemovecoord.Y, width, height, scrollviewer, SeçiliResim.Resim);
-                        }
-                        if (mousedowncoord.X < mousemovecoord.X && mousedowncoord.Y > mousemovecoord.Y)
-                        {
-                            ImgData = BitmapMethods.CaptureScreen(mousedowncoord.X, mousemovecoord.Y, width, height, scrollviewer, SeçiliResim.Resim);
-                        }
-                        if (mousedowncoord.X > mousemovecoord.X && mousedowncoord.Y < mousemovecoord.Y)
-                        {
-                            ImgData = BitmapMethods.CaptureScreen(mousemovecoord.X, mousedowncoord.Y, width, height, scrollviewer, SeçiliResim.Resim);
-                        }
                         if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
                         {
                             if (ImgData is not null)
@@ -2403,7 +2345,7 @@ namespace TwainControl
             }
         }
 
-        private void ListBox_Drop(object sender, DragEventArgs e)
+        private async void ListBox_Drop(object sender, DragEventArgs e)
         {
             if (fileloadtask?.IsCompleted == false)
             {
@@ -2413,9 +2355,7 @@ namespace TwainControl
             string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
             if (droppedfiles?.Length > 0)
             {
-                GC.Collect();
-                AddFiles(droppedfiles, DecodeHeight);
-                GC.Collect();
+                await Task.Run(() => AddFiles(droppedfiles, DecodeHeight));
             }
         }
 

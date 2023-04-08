@@ -53,55 +53,30 @@ namespace GpScanner
             if (e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer && isMouseDown && DataContext is DocumentViewerModel documentViewerModel)
             {
                 Point mousemovecoord = e.GetPosition(scrollviewer);
-                if (cnv.Children.Contains(selectionbox))
+                if (!cnv.Children.Contains(selectionbox))
                 {
-                    cnv.Children.Remove(selectionbox);
-                }
-                _ = cnv.Children.Add(selectionbox);
-                if (mousedowncoord.X < mousemovecoord.X)
-                {
-                    Canvas.SetLeft(selectionbox, mousedowncoord.X);
-                    selectionbox.Width = mousemovecoord.X - mousedowncoord.X;
-                }
-                else
-                {
-                    Canvas.SetLeft(selectionbox, mousemovecoord.X);
-                    selectionbox.Width = mousedowncoord.X - mousemovecoord.X;
+                    _ = cnv.Children.Add(selectionbox);
                 }
 
-                if (mousedowncoord.Y < mousemovecoord.Y)
-                {
-                    Canvas.SetTop(selectionbox, mousedowncoord.Y);
-                    selectionbox.Height = mousemovecoord.Y - mousedowncoord.Y;
-                }
-                else
-                {
-                    Canvas.SetTop(selectionbox, mousemovecoord.Y);
-                    selectionbox.Height = mousedowncoord.Y - mousemovecoord.Y;
-                }
+                double x1 = Math.Min(mousedowncoord.X, mousemovecoord.X);
+                double x2 = Math.Max(mousedowncoord.X, mousemovecoord.X);
+                double y1 = Math.Min(mousedowncoord.Y, mousemovecoord.Y);
+                double y2 = Math.Max(mousedowncoord.Y, mousemovecoord.Y);
+
+                Canvas.SetLeft(selectionbox, x1);
+                Canvas.SetTop(selectionbox, y1);
+                selectionbox.Width = x2 - x1;
+                selectionbox.Height = y2 - y1;
+
                 if (e.LeftButton == MouseButtonState.Released)
                 {
                     cnv.Children.Remove(selectionbox);
                     width = Math.Abs(mousemovecoord.X - mousedowncoord.X);
                     height = Math.Abs(mousemovecoord.Y - mousedowncoord.Y);
-
-                    if (mousedowncoord.X < mousemovecoord.X && mousedowncoord.Y < mousemovecoord.Y)
-                    {
-                        documentViewerModel.ImgData = BitmapMethods.CaptureScreen(mousedowncoord.X, mousedowncoord.Y, width, height, scrollviewer, BitmapFrame.Create((BitmapSource)img.Source));
-                    }
-                    if (mousedowncoord.X > mousemovecoord.X && mousedowncoord.Y > mousemovecoord.Y)
-                    {
-                        documentViewerModel.ImgData = BitmapMethods.CaptureScreen(mousemovecoord.X, mousemovecoord.Y, width, height, scrollviewer, BitmapFrame.Create((BitmapSource)img.Source));
-                    }
-                    if (mousedowncoord.X < mousemovecoord.X && mousedowncoord.Y > mousemovecoord.Y)
-                    {
-                        documentViewerModel.ImgData = BitmapMethods.CaptureScreen(mousedowncoord.X, mousemovecoord.Y, width, height, scrollviewer, BitmapFrame.Create((BitmapSource)img.Source));
-                    }
-                    if (mousedowncoord.X > mousemovecoord.X && mousedowncoord.Y < mousemovecoord.Y)
-                    {
-                        documentViewerModel.ImgData = BitmapMethods.CaptureScreen(mousemovecoord.X, mousedowncoord.Y, width, height, scrollviewer, BitmapFrame.Create((BitmapSource)img.Source));
-                    }
-
+                    double captureX, captureY;
+                    captureX = mousedowncoord.X < mousemovecoord.X ? mousedowncoord.X : mousemovecoord.X;
+                    captureY = mousedowncoord.Y < mousemovecoord.Y ? mousedowncoord.Y : mousemovecoord.Y;
+                    documentViewerModel.ImgData = BitmapMethods.CaptureScreen(captureX, captureY, width, height, scrollviewer, BitmapFrame.Create((BitmapSource)img.Source));
                     mousedowncoord.X = mousedowncoord.Y = 0;
                     isMouseDown = false;
                     Cursor = Cursors.Arrow;

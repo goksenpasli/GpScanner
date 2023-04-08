@@ -56,7 +56,8 @@ namespace GpScanner.ViewModel
                             TesseractFiles = GetTesseractFiles(Tessdatafolder);
                         }
                     };
-                    await client.DownloadFileTaskAsync(new Uri($"https://github.com/tesseract-ocr/tessdata_best/raw/main/{ocrData.OcrName}"), $@"{tessdatafolder}\{ocrData.OcrName}");
+                    Uri address = new($"https://github.com/tesseract-ocr/tessdata_best/raw/main/{ocrData.OcrName}");
+                    await client.DownloadFileTaskAsync(address, $@"{tessdatafolder}\{ocrData.OcrName}");
                 }
                 catch (Exception ex)
                 {

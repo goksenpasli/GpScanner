@@ -124,7 +124,7 @@ namespace GpScanner.ViewModel
                         TranslateViewModel.TaramaGeçmiş.Add(TranslateViewModel.Metin);
                         OcrIsBusy = false;
                     }
-                    Result result = GetImageBarcodeResult(twainCtrl.SeçiliResim.Resim);
+                    Result result = await Task.Run(() => GetImageBarcodeResult(twainCtrl.SeçiliResim.Resim));
                     if (result != null)
                     {
                         BarcodeContent = result.Text;

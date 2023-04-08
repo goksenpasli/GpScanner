@@ -372,6 +372,20 @@ namespace TwainControl
             return GetSaveFolder().SetUniqueFile(Scanner.SaveFileName, "pdf");
         }
 
+        public static double[] GetPdfTextLayout(PdfPage page)
+        {
+            return Scanner.Layout switch
+            {
+                PdfPageLayout.Left => new double[] { 30, 30 },
+                PdfPageLayout.Middle => new double[] { page.Width / 2, 30 },
+                PdfPageLayout.Right => new double[] { page.Width - 30, 30 },
+                PdfPageLayout.LeftBottom => new double[] { 30, page.Height - 30 },
+                PdfPageLayout.MiddleBottom => new double[] { page.Width / 2, page.Height - 30 },
+                PdfPageLayout.RightBottom => new double[] { page.Width - 30, page.Height - 30 },
+                _ => new double[] { 0, 0 }
+            };
+        }
+
         public static string GetSaveFolder()
         {
             string datefolder = DateTime.Today.ToString(Settings.Default.FolderDateFormat);
@@ -436,74 +450,27 @@ namespace TwainControl
 
         public static void SetPaperSize(this Paper paper, PdfPage page)
         {
-            if (paper is null)
-            {
-                page.Size = PageSize.A4;
-                return;
-            }
-            switch (paper.PaperType)
-            {
-                case "A0":
-                    page.Size = PageSize.A0;
-                    break;
-
-                case "A1":
-                    page.Size = PageSize.A1;
-                    break;
-
-                case "A2":
-                    page.Size = PageSize.A2;
-                    break;
-
-                case "A3":
-                    page.Size = PageSize.A3;
-                    break;
-
-                case "A4":
-                    page.Size = PageSize.A4;
-                    break;
-
-                case "A5":
-                    page.Size = PageSize.A5;
-                    break;
-
-                case "B0":
-                    page.Size = PageSize.B0;
-                    break;
-
-                case "B1":
-                    page.Size = PageSize.B1;
-                    break;
-
-                case "B2":
-                    page.Size = PageSize.B2;
-                    break;
-
-                case "B3":
-                    page.Size = PageSize.B3;
-                    break;
-
-                case "B4":
-                    page.Size = PageSize.B4;
-                    break;
-
-                case "B5":
-                    page.Size = PageSize.B5;
-                    break;
-
-                case "Letter":
-                    page.Size = PageSize.Letter;
-                    break;
-
-                case "Legal":
-                    page.Size = PageSize.Legal;
-                    break;
-
-                case "Executive":
-                    page.Size = PageSize.Executive;
-                    break;
-            }
+            page.Size = paper == null || !paperSizes.TryGetValue(paper.PaperType, out PageSize pageSize) ? PageSize.A4 : pageSize;
         }
+
+        private static readonly Dictionary<string, PageSize> paperSizes = new()
+        {
+            { "A0", PageSize.A0 },
+            { "A1", PageSize.A1 },
+            { "A2", PageSize.A2 },
+            { "A3", PageSize.A3 },
+            { "A4", PageSize.A4 },
+            { "A5", PageSize.A5 },
+            { "B0", PageSize.B0 },
+            { "B1", PageSize.B1 },
+            { "B2", PageSize.B2 },
+            { "B3", PageSize.B3 },
+            { "B4", PageSize.B4 },
+            { "B5", PageSize.B5 },
+            { "Letter", PageSize.Letter },
+            { "Legal", PageSize.Legal },
+            { "Executive", PageSize.Executive },
+        };
 
         private static XRect AdjustBounds(this Rect rect, double hAdjust, double vAdjust)
         {
@@ -531,20 +498,6 @@ namespace TwainControl
             double horizontalOffset = (adjustedBounds.Width - adjustedTextSize.Width) / 2;
             adjustedBounds.Offset(horizontalOffset, verticalOffset);
             textformatter.DrawString(item.Text, font, xBrush, adjustedBounds);
-        }
-
-        public static double[] GetPdfTextLayout(PdfPage page)
-        {
-            return Scanner.Layout switch
-            {
-                PdfPageLayout.Left => new double[] { 30, 30 },
-                PdfPageLayout.Middle => new double[] { page.Width / 2, 30 },
-                PdfPageLayout.Right => new double[] { page.Width - 30, 30 },
-                PdfPageLayout.LeftBottom => new double[] { 30, page.Height - 30 },
-                PdfPageLayout.MiddleBottom => new double[] { page.Width / 2, page.Height - 30 },
-                PdfPageLayout.RightBottom => new double[] { page.Width - 30, page.Height - 30 },
-                _ => new double[] { 0, 0 }
-            };
         }
 
         private static void WritePdfTextContent(this BitmapSource bitmapframe, ObservableCollection<OcrData> ScannedText, PdfPage page, XGraphics gfx, XBrush xBrush)

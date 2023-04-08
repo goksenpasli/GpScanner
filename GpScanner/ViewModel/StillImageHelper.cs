@@ -7,7 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.Win32;
 
@@ -101,35 +101,36 @@ namespace GpScanner.ViewModel
 
         public static void StartServer(Action<string> msgCallback)
         {
-            if (_serverRunning)
+            if (!_serverRunning)
             {
-                return;
-            }
-            Thread thread = new(() =>
-            {
-                try
+                _serverRunning = true;
+                _ = Task.Run(() =>
                 {
-                    using NamedPipeServerStream pipeServer = new(GetPipeName(Process.GetCurrentProcess()), PipeDirection.In);
-                    while (true)
+                    try
                     {
-                        pipeServer.WaitForConnection();
-                        StreamString streamString = new(pipeServer);
-                        string msg = streamString.ReadString();
-                        if (msg == MSG_KILL_PIPE_SERVER)
+                        using NamedPipeServerStream pipeServer = new(GetPipeName(Process.GetCurrentProcess()), PipeDirection.In);
+                        while (_serverRunning)
                         {
-                            break;
+                            pipeServer.WaitForConnection();
+                            StreamString streamString = new(pipeServer);
+                            string msg = streamString.ReadString();
+                            if (msg == MSG_KILL_PIPE_SERVER)
+                            {
+                                break;
+                            }
+                            msgCallback(msg);
+                            pipeServer.Disconnect();
                         }
-                        msgCallback(msg);
-                        pipeServer.Disconnect();
                     }
-                }
-                catch (Exception)
-                {
-                }
-                _serverRunning = false;
-            });
-            _serverRunning = true;
-            thread.Start();
+                    catch (Exception)
+                    {
+                    }
+                    finally
+                    {
+                        _serverRunning = false;
+                    }
+                });
+            }
         }
 
         public static void Unregister()
