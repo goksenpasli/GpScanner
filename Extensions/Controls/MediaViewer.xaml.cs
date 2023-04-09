@@ -603,7 +603,7 @@ namespace Extensions.Controls
                 }
                 catch (Exception ex)
                 {
-                    _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+                    throw new ArgumentException(nameof(viewer.Player.Source), ex);
                 }
             }
         }
@@ -744,8 +744,7 @@ namespace Extensions.Controls
                     Image image = new();
                     BitmapImage bitmapImage = new();
                     bitmapImage.BeginInit();
-                    MemoryStream ms = new(data);
-                    bitmapImage.StreamSource = ms;
+                    bitmapImage.StreamSource = new MemoryStream(data);
                     bitmapImage.EndInit();
                     bitmapImage.Freeze();
                     image.BeginInit();
@@ -840,9 +839,9 @@ namespace Extensions.Controls
                 }
                 return content;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return null;
+                throw new ArgumentException(nameof(filepath), ex);
             }
         }
 

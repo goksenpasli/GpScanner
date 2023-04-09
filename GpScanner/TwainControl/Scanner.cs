@@ -15,6 +15,8 @@ namespace TwainControl
 {
     public class Scanner : InpcBase, IDataErrorInfo
     {
+        public static readonly Brush DefaultSaveProgressforegroundbrush = (Brush)new BrushConverter().ConvertFromString("#FF06B025");
+
         public Scanner()
         {
             PropertyChanged += Scanner_PropertyChanged;
@@ -22,6 +24,7 @@ namespace TwainControl
 
         public bool AllowCopy {
             get => allowCopy; set {
+
                 if (allowCopy != value)
                 {
                     allowCopy = value;
@@ -32,6 +35,7 @@ namespace TwainControl
 
         public bool AllowEdit {
             get => allowEdit; set {
+
                 if (allowEdit != value)
                 {
                     allowEdit = value;
@@ -102,6 +106,7 @@ namespace TwainControl
 
         public bool BorderAnimation {
             get => borderAnimation; set {
+
                 if (borderAnimation != value)
                 {
                     borderAnimation = value;
@@ -160,6 +165,7 @@ namespace TwainControl
 
         public ImageSource CopyCroppedImage {
             get => copyCroppedImage; set {
+
                 if (copyCroppedImage != value)
                 {
                     copyCroppedImage = value;
@@ -182,6 +188,7 @@ namespace TwainControl
 
         public double CropBottom {
             get => cropBottom; set {
+
                 if (cropBottom != value)
                 {
                     cropBottom = value;
@@ -204,6 +211,7 @@ namespace TwainControl
 
         public double CropLeft {
             get => cropLeft; set {
+
                 if (cropLeft != value)
                 {
                     cropLeft = value;
@@ -238,6 +246,7 @@ namespace TwainControl
 
         public double CropRight {
             get => cropRight; set {
+
                 if (cropRight != value)
                 {
                     cropRight = value;
@@ -361,6 +370,7 @@ namespace TwainControl
 
         public PdfPageLayout Layout {
             get => layout; set {
+
                 if (layout != value)
                 {
                     layout = value;
@@ -383,6 +393,7 @@ namespace TwainControl
 
         public int MedianValue {
             get => medianValue; set {
+
                 if (medianValue != value)
                 {
                     medianValue = value;
@@ -560,8 +571,20 @@ namespace TwainControl
             }
         }
 
+        public Brush SaveProgressBarForegroundBrush {
+            get => saveProgressBarForegroundBrush; set {
+
+                if (saveProgressBarForegroundBrush != value)
+                {
+                    saveProgressBarForegroundBrush = value;
+                    OnPropertyChanged(nameof(SaveProgressBarForegroundBrush));
+                }
+            }
+        }
+
         public bool SaveProgressIndeterminate {
             get => saveProgressIndeterminate; set {
+
                 if (saveProgressIndeterminate != value)
                 {
                     saveProgressIndeterminate = value;
@@ -656,6 +679,7 @@ namespace TwainControl
 
         public double SliceCountHeight {
             get => sliceCountHeight; set {
+
                 if (sliceCountHeight != value)
                 {
                     sliceCountHeight = value;
@@ -702,6 +726,7 @@ namespace TwainControl
 
         public string TargetColor {
             get => targetColor; set {
+
                 if (targetColor != value)
                 {
                     targetColor = value;
@@ -712,6 +737,7 @@ namespace TwainControl
 
         public double Threshold {
             get => threshold; set {
+
                 if (threshold != value)
                 {
                     threshold = value;
@@ -925,6 +951,8 @@ namespace TwainControl
         private double rotateAngle;
 
         private string saveFileName;
+
+        private Brush saveProgressBarForegroundBrush = DefaultSaveProgressforegroundbrush;
 
         private bool saveProgressIndeterminate;
 

@@ -467,8 +467,7 @@ namespace Extensions
             }
             catch (Exception ex)
             {
-                _ = MessageBox.Show(ex.Message);
-                return null;
+                throw new ArgumentException(nameof(format),ex.Message); 
             }
         }
 

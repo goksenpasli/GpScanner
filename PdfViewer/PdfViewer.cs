@@ -113,7 +113,7 @@ namespace PdfViewer
                     }
                     catch (Exception ex)
                     {
-                        _ = MessageBox.Show(ex.Message);
+                        throw new ArgumentException("saveimage", ex);
                     }
                 }
             }, parameter => Source is not null);
@@ -484,8 +484,8 @@ namespace PdfViewer
             }
             catch (Exception)
             {
-            }
             return null;
+            }
         }
 
         public static async Task<MemoryStream> ConvertToImgStreamAsync(byte[] stream, int page, int dpi)
@@ -508,8 +508,8 @@ namespace PdfViewer
             }
             catch (Exception)
             {
-            }
             return null;
+            }
         }
 
         public static async Task<int> PdfPageCountAsync(byte[] stream)
@@ -527,8 +527,8 @@ namespace PdfViewer
             }
             catch (Exception)
             {
-            }
             return 0;
+            }
         }
 
         public static void PrintImageSource(ImageSource Source, int Dpi = 300, bool resize = true)
@@ -568,8 +568,8 @@ namespace PdfViewer
             }
             catch (Exception)
             {
-            }
             return null;
+            }
         }
 
         public void Dispose()
@@ -668,30 +668,26 @@ namespace PdfViewer
 
         private static void PdfFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is PdfViewer pdfViewer)
+            if (d is PdfViewer pdfViewer && e.NewValue is not null && File.Exists(e.NewValue as string) && string.Equals(Path.GetExtension(e.NewValue as string), ".pdf", StringComparison.OrdinalIgnoreCase))
             {
-                if (e.NewValue is not null && File.Exists(e.NewValue as string) && string.Equals(Path.GetExtension(e.NewValue as string), ".pdf", StringComparison.OrdinalIgnoreCase))
+                try
                 {
-                    try
-                    {
-                        using PdfDocument pdfDoc = PdfDocument.Load(e.NewValue as string);
-                        int dpi = pdfViewer.Dpi;
-                        int page = pdfViewer.Sayfa - 1;
-                        int width = (int)(pdfDoc.PageSizes[page].Width / 72 * dpi);
-                        int height = (int)(pdfDoc.PageSizes[page].Height / 72 * dpi);
-                        System.Drawing.Image image = pdfDoc.Render(page, width, height, dpi, dpi, false);
-                        pdfViewer.Source = image.ToBitmapImage(ImageFormat.Jpeg);
-                        pdfViewer.ToplamSayfa = pdfDoc.PageCount;
-                        pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
-                        pdfViewer.Resize.Execute(null);
-                    }
-                    catch (Exception)
-                    {
-                    }
-                    return;
+                    pdfViewer.Source = null;
+                    using PdfDocument pdfDoc = PdfDocument.Load(e.NewValue as string);
+                    int dpi = pdfViewer.Dpi;
+                    int page = pdfViewer.Sayfa - 1;
+                    int width = (int)(pdfDoc.PageSizes[page].Width / 72 * dpi);
+                    int height = (int)(pdfDoc.PageSizes[page].Height / 72 * dpi);
+                    System.Drawing.Image image = pdfDoc.Render(page, width, height, dpi, dpi, false);
+                    pdfViewer.Source = image.ToBitmapImage(ImageFormat.Jpeg);
+                    pdfViewer.ToplamSayfa = pdfDoc.PageCount;
+                    pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
+                    pdfViewer.Resize.Execute(null);
                 }
-                pdfViewer.Source = null;
-                pdfViewer.Sayfa = 1;
+                catch (Exception ex)
+                {
+                    throw new ArgumentException(nameof(pdfViewer), ex);
+                }
             }
         }
 

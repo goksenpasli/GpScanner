@@ -106,8 +106,7 @@ namespace Extensions.Controls
                 }
                 catch (Exception ex)
                 {
-                    xpsViewer.Document = null;
-                    _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+                    throw new ArgumentException(nameof(xpsViewer), ex);
                 }
             }
         }

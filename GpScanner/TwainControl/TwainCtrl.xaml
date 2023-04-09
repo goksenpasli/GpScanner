@@ -919,7 +919,7 @@
                                             Command="{Binding ReverseData}"
                                             TextDecorations="None">
                                             <Run FontFamily="Wingdings 3" FontSize="16" Text="E" />
-                                        </Hyperlink> 
+                                        </Hyperlink>
                                         <Hyperlink BaselineAlignment="Center"
                                             Command="{Binding ReverseDataHorizontal}"
                                             TextDecorations="None">
@@ -1170,14 +1170,18 @@
                                 </Image>
                                 <Image Width="32" Height="32"
                                     Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
-                                <TextBlock VerticalAlignment="Center" Text="{local:Loc FILE}" />
+                                <TextBlock VerticalAlignment="Center"
+                                    FontWeight="Bold"
+                                    Text="{local:Loc FILE}" />
                             </StackPanel>
                         </Grid>
                     </Button>
                     <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
                         Command="{Binding Seçilikaydet}">
                         <Grid>
-                            <ProgressBar Background="{x:Null}"
+                            <ProgressBar d:Foreground="#FF06B025"
+                                Background="{x:Null}"
+                                Foreground="{Binding Scanner.SaveProgressBarForegroundBrush}"
                                 IsIndeterminate="{Binding Scanner.SaveProgressIndeterminate}"
                                 Maximum="1"
                                 Value="{Binding Scanner.PdfSaveProgressValue}" />
@@ -1189,14 +1193,18 @@
                                         Foreground="Red"
                                         Text="{Binding Scanner.SeçiliResimSayısı}" />
                                 </Canvas>
-                                <TextBlock VerticalAlignment="Center" Text="{local:Loc SAVESELECTED}" />
+                                <TextBlock VerticalAlignment="Center"
+                                    FontWeight="Bold"
+                                    Text="{local:Loc SAVESELECTED}" />
                             </StackPanel>
                         </Grid>
                     </Button>
                     <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
                         Command="{Binding SeçiliDirektPdfKaydet}">
                         <Grid>
-                            <ProgressBar Background="{x:Null}"
+                            <ProgressBar d:Foreground="#FF06B025"
+                                Background="{x:Null}"
+                                Foreground="{Binding Scanner.SaveProgressBarForegroundBrush}"
                                 Maximum="1"
                                 Value="{Binding Scanner.PdfSaveProgressValue}" />
                             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
@@ -1213,7 +1221,22 @@
                                         Foreground="Red"
                                         Text="{Binding Scanner.SeçiliResimSayısı}" />
                                 </Canvas>
-                                <TextBlock VerticalAlignment="Center" Text="{local:Loc AUTOPATH}" />
+                                <TextBlock VerticalAlignment="Center"
+                                    FontWeight="Bold"
+                                    Text="{local:Loc AUTOPATH}">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Mode, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Value="0">
+                                                    <Setter Property="Foreground" Value="Black" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Mode, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Value="2">
+                                                    <Setter Property="Foreground" Value="{StaticResource Colorfull}" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
                             </StackPanel>
                         </Grid>
                     </Button>
@@ -1227,7 +1250,9 @@
                                     </MultiBinding>
                                 </Image.Source>
                             </Image>
-                            <TextBlock VerticalAlignment="Center" Text="{local:Loc ABOUT}" />
+                            <TextBlock VerticalAlignment="Center"
+                                FontWeight="Bold"
+                                Text="{local:Loc ABOUT}" />
                         </StackPanel>
                         <Extensions:ContentToggleButton.OverContent>
                             <local:AboutView />

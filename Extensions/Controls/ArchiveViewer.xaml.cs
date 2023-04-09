@@ -35,7 +35,7 @@ namespace Extensions.Controls
                 }
                 catch (Exception ex)
                 {
-                    _ = MessageBox.Show($"Dosya Açılamadı.\n{ex.Message}", Application.Current.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    throw new ArgumentException(ArchivePath, ex);
                 }
             }, parameter => !string.IsNullOrWhiteSpace(ArchivePath));
         }

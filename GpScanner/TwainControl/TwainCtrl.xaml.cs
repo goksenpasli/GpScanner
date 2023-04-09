@@ -327,6 +327,7 @@ namespace TwainControl
                     List<ScannedImage> seçiliresimler = Scanner.Resimler.Where(z => z.Seçili).ToList();
                     if (Scanner.ApplyDataBaseOcr)
                     {
+                        Scanner.SaveProgressBarForegroundBrush = bluesaveprogresscolor;
                         Scanner.PdfFilePath = PdfGeneration.GetPdfScanPath();
                         for (int i = 0; i < seçiliresimler.Count; i++)
                         {
@@ -578,7 +579,7 @@ namespace TwainControl
                 }
                 catch (Exception ex)
                 {
-                    _ = MessageBox.Show(ex.Message);
+                    throw new ArgumentException(nameof(MailData), ex);
                 }
             }, parameter => !string.IsNullOrWhiteSpace(MailData));
 
@@ -1527,7 +1528,7 @@ namespace TwainControl
                 }
                 catch (Exception ex)
                 {
-                    _ = MessageBox.Show(ex.Message);
+                    throw new ArgumentException(nameof(path), ex);
                 }
             }
         }
@@ -1583,8 +1584,10 @@ namespace TwainControl
             ObservableCollection<OcrData> ocrtext = null;
             if (scanner?.ApplyPdfSaveOcr == true && !string.IsNullOrEmpty(scanner?.SelectedTtsLanguage))
             {
+                scanner.SaveProgressBarForegroundBrush = bluesaveprogresscolor;
                 ocrtext = await scannedImage.ToTiffJpegByteArray(Format.Jpg).OcrAsyc(scanner.SelectedTtsLanguage);
             }
+            scanner.SaveProgressBarForegroundBrush = Scanner.DefaultSaveProgressforegroundbrush;
             if (blackwhite)
             {
                 scannedImage.GeneratePdf(ocrtext, Format.Tiff, paper, Settings.Default.JpegQuality, (int)Settings.Default.ImgLoadResolution).Save(filename);
@@ -1598,6 +1601,7 @@ namespace TwainControl
             List<ObservableCollection<OcrData>> scannedtext = null;
             if (scanner?.ApplyPdfSaveOcr == true && !string.IsNullOrEmpty(scanner?.SelectedTtsLanguage))
             {
+                scanner.SaveProgressBarForegroundBrush = bluesaveprogresscolor;
                 scannedtext = new List<ObservableCollection<OcrData>>();
                 scanner.ProgressState = TaskbarItemProgressState.Normal;
                 for (int i = 0; i < images.Count; i++)
@@ -1608,6 +1612,7 @@ namespace TwainControl
                 }
                 scanner.PdfSaveProgressValue = 0;
             }
+            scanner.SaveProgressBarForegroundBrush = Scanner.DefaultSaveProgressforegroundbrush;
             if (blackwhite)
             {
                 (await images.GeneratePdf(Format.Tiff, paper, Settings.Default.JpegQuality, scannedtext, dpi)).Save(filename);
@@ -1793,7 +1798,7 @@ namespace TwainControl
                 catch (Exception ex)
                 {
                     filenames = null;
-                    _ = MessageBox.Show(ex.Message);
+                    throw new ArgumentException(nameof(filenames), ex);
                 }
             });
         }
@@ -1857,10 +1862,9 @@ namespace TwainControl
                 using StreamReader stream = new(xmldatapath);
                 return serializer.Deserialize(stream) as T;
             }
-            catch (Exception Ex)
+            catch (Exception ex)
             {
-                _ = MessageBox.Show(Ex.Message);
-                return null;
+                throw new ArgumentException(nameof(xmldatapath), ex);
             }
         }
 
@@ -1886,6 +1890,8 @@ namespace TwainControl
         }
 
         private const double Inch = 2.54d;
+
+        private static readonly SolidColorBrush bluesaveprogresscolor = System.Windows.Media.Brushes.DeepSkyBlue;
 
         private static readonly Rectangle selectionbox = new()
         {
@@ -2083,11 +2089,7 @@ namespace TwainControl
             }
             int height = bitmapSource.PixelHeight - (int)Scanner.CropBottom - (int)Scanner.CropTop;
             int width = bitmapSource.PixelWidth - (int)Scanner.CropRight - (int)Scanner.CropLeft;
-            if (width < 0 || height < 0)
-            {
-                return default;
-            }
-            return new Int32Rect((int)Scanner.CropLeft, (int)Scanner.CropTop, width, height);
+            return width < 0 || height < 0 ? default : new Int32Rect((int)Scanner.CropLeft, (int)Scanner.CropTop, width, height);
         }
 
         private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -2171,6 +2173,7 @@ namespace TwainControl
             Scanner.PdfFilePath = PdfGeneration.GetPdfScanPath();
             if (Scanner.ApplyDataBaseOcr)
             {
+                Scanner.SaveProgressBarForegroundBrush = bluesaveprogresscolor;
                 Tümünüİşaretle.Execute(null);
                 List<ScannedImage> images = Scanner.Resimler.Where(z => z.Seçili).ToList();
                 for (int i = 0; i < images.Count; i++)

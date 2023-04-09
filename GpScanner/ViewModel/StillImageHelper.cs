@@ -75,7 +75,7 @@ namespace GpScanner.ViewModel
             }
             catch (Exception ex)
             {
-                _ = MessageBox.Show(ex.Message);
+                throw new ArgumentException("registry write", ex);
             }
         }
 
@@ -155,7 +155,7 @@ namespace GpScanner.ViewModel
             }
             catch (Exception ex)
             {
-                _ = MessageBox.Show(ex.Message);
+                throw new ArgumentException("registrydelete", ex);
             }
         }
 

@@ -620,8 +620,10 @@
                     </Image>
                     <Extensions:ContentToggleButton Background="{x:Null}"
                         BorderBrush="{x:Null}"
+                        ContentHorizontalOffset="150" ContentVerticalOffset="-5"
                         IsChecked="{Binding DocumentPanelIsExpanded, Mode=OneWay}"
                         IsEnabled="{Binding DocumentPanelIsExpanded, Mode=OneWay}"
+                        PlacementMode="RelativePoint"
                         StaysOpen="{Binding DocumentPanelIsExpanded, Mode=OneWay}">
                         <Image Width="16" Height="16"
                             VerticalAlignment="Bottom">

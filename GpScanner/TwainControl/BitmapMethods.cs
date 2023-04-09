@@ -377,8 +377,7 @@ namespace TwainControl
             catch (Exception ex)
             {
                 Source = null;
-                _ = MessageBox.Show(ex.Message);
-                return null;
+                throw new ArgumentException(nameof(Source), ex);
             }
         }
 

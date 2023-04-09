@@ -420,11 +420,13 @@
                         <Popup x:Name="PART_Popup"
                             Grid.ColumnSpan="2"
                             AllowsTransparency="True" Focusable="False"
-                            IsOpen="{TemplateBinding IsSplitPartOpen}"
-                            Placement="{TemplateBinding PlacementMode}"
+                            HorizontalOffset="{Binding ContentHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type local:SplitButton}}}"
+                            IsOpen="{Binding IsSplitPartOpen, RelativeSource={RelativeSource AncestorType={x:Type local:SplitButton}}}"
+                            Placement="{Binding PlacementMode, RelativeSource={RelativeSource AncestorType={x:Type local:SplitButton}}}"
                             PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:SplitButton}}}"
                             PopupAnimation="Slide"
-                            StaysOpen="{TemplateBinding StayOpen}">
+                            StaysOpen="{Binding StayOpen, RelativeSource={RelativeSource AncestorType={x:Type local:SplitButton}}}"
+                            VerticalOffset="{Binding ContentVerticalOffset, RelativeSource={RelativeSource AncestorType={x:Type local:SplitButton}}}">
                             <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                 VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                 Content="{TemplateBinding InternalContent}" />
@@ -589,11 +591,13 @@
                                 Fill="#606060" Focusable="False" />
                             <Popup Grid.ColumnSpan="2"
                                 AllowsTransparency="True"
+                                HorizontalOffset="{Binding ContentHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}"
                                 IsOpen="{Binding IsChecked, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}"
-                                Placement="{TemplateBinding PlacementMode}"
+                                Placement="{Binding PlacementMode, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}"
                                 PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}"
                                 PopupAnimation="Slide"
-                                StaysOpen="{Binding StaysOpen, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}">
+                                StaysOpen="{Binding StaysOpen, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}"
+                                VerticalOffset="{Binding ContentVerticalOffset, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}">
                                 <ContentPresenter Content="{TemplateBinding OverContent}" />
                             </Popup>
                         </Grid>

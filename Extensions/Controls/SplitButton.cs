@@ -6,6 +6,10 @@ namespace Extensions
 {
     public class SplitButton : Button
     {
+        public static readonly DependencyProperty ContentHorizontalOffsetProperty = DependencyProperty.Register("ContentHorizontalOffset", typeof(double), typeof(SplitButton), new PropertyMetadata(0d));
+
+        public static readonly DependencyProperty ContentVerticalOffsetProperty = DependencyProperty.Register("ContentVerticalOffset", typeof(double), typeof(SplitButton), new PropertyMetadata(0d));
+
         public static readonly DependencyProperty InternalContentProperty = DependencyProperty.Register("InternalContent", typeof(object), typeof(SplitButton), new PropertyMetadata(null));
 
         public static readonly DependencyProperty IsSplitPartOpenProperty = DependencyProperty.Register("IsSplitPartOpen", typeof(bool), typeof(SplitButton), new PropertyMetadata(false));
@@ -21,6 +25,15 @@ namespace Extensions
             DefaultStyleKeyProperty.OverrideMetadata(typeof(SplitButton), new FrameworkPropertyMetadata(typeof(SplitButton)));
         }
 
+        public double ContentHorizontalOffset {
+            get { return (double)GetValue(ContentHorizontalOffsetProperty); }
+            set { SetValue(ContentHorizontalOffsetProperty, value); }
+        }
+
+        public double ContentVerticalOffset {
+            get { return (double)GetValue(ContentVerticalOffsetProperty); }
+            set { SetValue(ContentVerticalOffsetProperty, value); }
+        }
         public object InternalContent {
             get => GetValue(InternalContentProperty);
             set => SetValue(InternalContentProperty, value);

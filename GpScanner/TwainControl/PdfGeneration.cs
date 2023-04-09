@@ -182,7 +182,7 @@ namespace TwainControl
             {
                 bitmapFrames = null;
                 ScannedText = null;
-                _ = MessageBox.Show(ex.Message);
+                throw new ArgumentException(nameof(document), ex);
             }
             return document;
         }
@@ -239,7 +239,7 @@ namespace TwainControl
             {
                 imagefiles = null;
                 ScannedText = null;
-                _ = MessageBox.Show(ex.Message);
+                throw new ArgumentException(nameof(document), ex);
             }
             return document;
         }
@@ -289,7 +289,7 @@ namespace TwainControl
             {
                 imagefile = null;
                 ScannedText = null;
-                _ = MessageBox.Show(ex.Message);
+                throw new ArgumentException(nameof(document), ex);
             }
             return document;
         }
@@ -362,9 +362,8 @@ namespace TwainControl
             }
             catch (Exception ex)
             {
-                _ = MessageBox.Show(ex.Message);
+                throw new ArgumentException(nameof(bitmapframe), ex);
             }
-            return null;
         }
 
         public static string GetPdfScanPath()
@@ -421,10 +420,8 @@ namespace TwainControl
             catch (Exception ex)
             {
                 pdffiles = null;
-                _ = MessageBox.Show(ex.Message);
+                throw new ArgumentException(nameof(pdffiles), ex);
             }
-
-            return null;
         }
 
         public static async Task SavePdfFiles(this string[] files)
@@ -443,7 +440,7 @@ namespace TwainControl
                 catch (Exception ex)
                 {
                     files = null;
-                    _ = MessageBox.Show(ex.Message);
+                    throw new ArgumentException(nameof(files), ex);
                 }
             }
         }

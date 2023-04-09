@@ -18,10 +18,9 @@ namespace GpScanner.ViewModel
                 using StreamReader stream = new(xmldatapath);
                 return serializer.Deserialize(stream) as T;
             }
-            catch (Exception Ex)
+            catch (Exception ex)
             {
-                _ = MessageBox.Show(Ex.Message);
-                return null;
+                throw new ArgumentException(nameof(xmldatapath), ex);
             }
         }
 

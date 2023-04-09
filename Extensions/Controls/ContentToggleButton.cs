@@ -5,6 +5,10 @@ namespace Extensions
 {
     public class ContentToggleButton : ToggleButton
     {
+        public static readonly DependencyProperty ContentHorizontalOffsetProperty = DependencyProperty.Register("ContentHorizontalOffset", typeof(double), typeof(ContentToggleButton), new PropertyMetadata(0d));
+
+        public static readonly DependencyProperty ContentVerticalOffsetProperty = DependencyProperty.Register("ContentVerticalOffset", typeof(double), typeof(ContentToggleButton), new PropertyMetadata(0d));
+
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register("CornerRadius", typeof(CornerRadius), typeof(ContentToggleButton), new PropertyMetadata(new CornerRadius(0d)));
 
         public static readonly DependencyProperty OverContentProperty = DependencyProperty.Register("OverContent", typeof(object), typeof(ContentToggleButton), new PropertyMetadata(null));
@@ -16,6 +20,16 @@ namespace Extensions
         static ContentToggleButton()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(ContentToggleButton), new FrameworkPropertyMetadata(typeof(ContentToggleButton)));
+        }
+
+        public double ContentHorizontalOffset {
+            get { return (double)GetValue(ContentHorizontalOffsetProperty); }
+            set { SetValue(ContentHorizontalOffsetProperty, value); }
+        }
+
+        public double ContentVerticalOffset {
+            get { return (double)GetValue(ContentVerticalOffsetProperty); }
+            set { SetValue(ContentVerticalOffsetProperty, value); }
         }
 
         public CornerRadius CornerRadius {
