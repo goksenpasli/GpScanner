@@ -431,7 +431,7 @@
                                     Value="{Binding SubTitleSize}" />
                                 <local:ColorPicker ColorPickerColumnCount="16" FontFamily="Segoe UI"
                                     HexCode="{Binding SubTitleColor, Mode=TwoWay}"
-                                    HexCodeVisibility="Collapsed" PredefinedColorVisibility="Visible" SelectorLength="0" />
+                                    PredefinedColorVisibility="Visible" />
                                 <ToggleButton VerticalContentAlignment="Center"
                                     Content="OTOMATİK ALTYAZI ÇEVİRİ" FontFamily="Segoe UI"
                                     IsChecked="{Binding AutoTranslate}" />

@@ -81,7 +81,7 @@ namespace GpScanner.ViewModel
                         IEnumerable<string> pdffilelist = Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName);
                         pdffilelist.ToArray().MergePdf().Save(PdfGeneration.GetPdfScanPath());
                         ReloadFileDatas();
-                    });
+                    }).ConfigureAwait(false);
                     return;
                 }
                 SaveFileDialog saveFileDialog = new()
@@ -98,7 +98,7 @@ namespace GpScanner.ViewModel
                             using PdfDocument outputDocument = new();
                             IEnumerable<string> pdffilelist = Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName);
                             pdffilelist.ToArray().MergePdf().Save(saveFileDialog.FileName);
-                        });
+                        }).ConfigureAwait(false);
                     }
                     catch (Exception ex)
                     {
@@ -124,7 +124,7 @@ namespace GpScanner.ViewModel
                         TranslateViewModel.TaramaGeçmiş.Add(TranslateViewModel.Metin);
                         OcrIsBusy = false;
                     }
-                    Result result = await Task.Run(() => GetImageBarcodeResult(twainCtrl.SeçiliResim.Resim));
+                    Result result = await Task.Run(() => GetImageBarcodeResult(twainCtrl.SeçiliResim.Resim)).ConfigureAwait(false);
                     if (result != null)
                     {
                         BarcodeContent = result.Text;
@@ -1286,7 +1286,7 @@ namespace GpScanner.ViewModel
                         pfdocument.Save($"{batchsavefolder}\\{Path.ChangeExtension(e.Name, ".pdf")}");
                         GC.Collect();
                         PdfBatchRunning = false;
-                    });
+                    }).ConfigureAwait(false);
                 }
             };
         }

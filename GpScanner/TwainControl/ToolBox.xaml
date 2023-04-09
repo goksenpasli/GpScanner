@@ -111,12 +111,16 @@
                     </DockPanel>
                     <UniformGrid Columns="2">
                         <StackPanel>
-                            <Slider VerticalAlignment="Center"
-                                IsSnapToTickEnabled="True" Maximum="360" Minimum="0"
-                                Orientation="Horizontal" SmallChange="1"
-                                Style="{StaticResource Slider}"
-                                Ticks="0, 90, 180, 270, 360"
-                                Value="{Binding Scanner.CroppedImageAngle}" />
+                            <UniformGrid Columns="2">
+                                <Slider VerticalAlignment="Center"
+                                    IsSnapToTickEnabled="True" Maximum="360" Minimum="0"
+                                    Orientation="Horizontal" SmallChange="1"
+                                    Style="{StaticResource Slider}"
+                                    Ticks="0, 90, 180, 270, 360"
+                                    Value="{Binding Scanner.CroppedImageAngle}" />
+                                <Extensions:NumericUpDownControl Maximum="10" Minimum="0" SmallChange="1"
+                                    Value="{Binding Scanner.MedianValue, UpdateSourceTrigger=PropertyChanged}" />
+                            </UniformGrid>
                             <UniformGrid Columns="2">
                                 <Slider VerticalAlignment="Center"
                                     Maximum="255" Minimum="-255" Orientation="Horizontal"

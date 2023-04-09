@@ -438,7 +438,7 @@ namespace TwainControl
             {
                 try
                 {
-                    await Task.Run(() => files.MergePdf().Save(saveFileDialog.FileName));
+                    await Task.Run(() => files.MergePdf().Save(saveFileDialog.FileName)).ConfigureAwait(false);
                 }
                 catch (Exception ex)
                 {

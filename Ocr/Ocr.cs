@@ -23,7 +23,7 @@ namespace Ocr
                 throw new ArgumentNullException(nameof(TesseractPath));
             }
             ocrcancellationToken = new CancellationTokenSource();
-            return await Task.Run(() => dosya.GetOcrData(lang), ocrcancellationToken.Token);
+            return await Task.Run(() => dosya.GetOcrData(lang), ocrcancellationToken.Token).ConfigureAwait(false);
         }
 
         public static async Task<ObservableCollection<OcrData>> OcrAsyc(this string dosya, string lang)
@@ -37,7 +37,7 @@ namespace Ocr
                 throw new ArgumentNullException(nameof(TesseractPath));
             }
             ocrcancellationToken = new CancellationTokenSource();
-            return await Task.Run(() => dosya.GetOcrData(lang), ocrcancellationToken.Token);
+            return await Task.Run(() => dosya.GetOcrData(lang), ocrcancellationToken.Token).ConfigureAwait(false);
         }
 
         private static string TesseractPath { get; } = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + @"\tessdata";

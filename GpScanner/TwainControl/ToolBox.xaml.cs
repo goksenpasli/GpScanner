@@ -150,7 +150,7 @@ namespace TwainControl
                     {
                         listcroppedimages = Scanner.Resimler.Where(z => z.Seçili).SelectMany(scannedimage => CropImageToList(scannedimage.Resim, (int)Scanner.SliceCountWidth, (int)Scanner.SliceCountHeight).Select(croppedBitmap => new ScannedImage { Resim = BitmapFrame.Create(croppedBitmap) })).ToList();
                         pdfdocument = await listcroppedimages.GeneratePdf(Format.Jpg, Paper, Settings.Default.JpegQuality, null, (int)Settings.Default.Çözünürlük);
-                    });
+                    }).ConfigureAwait(false);
                     string savefolder = CreateSaveFolder("SPLIT");
                     string path = savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "pdf");
                     pdfdocument.Save(path);
@@ -180,7 +180,7 @@ namespace TwainControl
                     {
                         listcroppedimages = Scanner.Resimler.Where(z => z.Seçili).ToList();
                         File.WriteAllBytes(path, listcroppedimages.CombineImages(orientation).ToTiffJpegByteArray(Format.Jpg));
-                    });
+                    }).ConfigureAwait(false);
                     WebAdreseGit.Execute(savefolder);
                     listcroppedimages = null;
                     if (Settings.Default.RemoveProcessedImage)
@@ -236,7 +236,7 @@ namespace TwainControl
                                 imageindex++;
                                 ToolBoxPdfMergeProgressValue = imageindex / (double)seçiliresimler.Count();
                                 GC.Collect();
-                            });
+                            }).ConfigureAwait(false);
                         }
                     }
                 }
@@ -441,6 +441,12 @@ namespace TwainControl
                 using Bitmap bmp = ((BitmapSource)Scanner.CopyCroppedImage).BitmapSourceToBitmap();
                 using Bitmap replacedbmp = bmp.ReplaceColor(source, target, (int)Scanner.Threshold);
                 Scanner.CroppedImage = replacedbmp.ToBitmapImage(ImageFormat.Png);
+            }
+            if (e.PropertyName is "MedianValue" && Scanner.CopyCroppedImage is not null)
+            {
+                WriteableBitmap writeableBitmap = ((BitmapSource)Scanner.CopyCroppedImage).MedianFilterBitmap(Scanner.MedianValue);
+                writeableBitmap.Freeze();
+                Scanner.CroppedImage = writeableBitmap;
             }
         }
 

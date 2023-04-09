@@ -146,6 +146,18 @@ namespace TwainControl
             }
         }
 
+        public ObservableCollection<Chart> Chart {
+            get => chart;
+
+            set {
+                if (chart != value)
+                {
+                    chart = value;
+                    OnPropertyChanged(nameof(Chart));
+                }
+            }
+        }
+
         public ImageSource CopyCroppedImage {
             get => copyCroppedImage; set {
                 if (copyCroppedImage != value)
@@ -369,6 +381,16 @@ namespace TwainControl
             }
         }
 
+        public int MedianValue {
+            get => medianValue; set {
+                if (medianValue != value)
+                {
+                    medianValue = value;
+                    OnPropertyChanged(nameof(MedianValue));
+                }
+            }
+        }
+
         public bool PaperBackScan {
             get => paperBackScan;
 
@@ -485,18 +507,6 @@ namespace TwainControl
                 {
                     qrData = value;
                     OnPropertyChanged(nameof(QrData));
-                }
-            }
-        }
-
-        public ObservableCollection<Chart> Chart {
-            get => chart;
-
-            set {
-                if (chart != value)
-                {
-                    chart = value;
-                    OnPropertyChanged(nameof(Chart));
                 }
             }
         }
@@ -840,7 +850,6 @@ namespace TwainControl
 
         private bool autoSave = Directory.Exists(Settings.Default.AutoFolder);
 
-
         private bool borderAnimation;
 
         private int boyAdet = 1;
@@ -848,6 +857,8 @@ namespace TwainControl
         private double brightness;
 
         private int caretPosition;
+
+        private ObservableCollection<Chart> chart;
 
         private ImageSource copyCroppedImage;
 
@@ -887,6 +898,8 @@ namespace TwainControl
 
         private string localizedPath;
 
+        private int medianValue;
+
         private bool paperBackScan;
 
         private bool passwordProtect;
@@ -906,8 +919,6 @@ namespace TwainControl
         private TaskbarItemProgressState progressState = TaskbarItemProgressState.None;
 
         private IEnumerable<string> qrData;
-
-        private ObservableCollection<Chart> chart;
 
         private ObservableCollection<ScannedImage> resimler = new();
 

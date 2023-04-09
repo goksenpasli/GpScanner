@@ -735,7 +735,7 @@ namespace TwainControl
                             pdfDocument.Save(temporarypdf);
                             string[] processedfiles = new string[] { temporarypdf, pdfFilePath };
                             processedfiles.MergePdf().Save(pdfFilePath);
-                        });
+                        }).ConfigureAwait(false);
 
                         NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
                         if (Settings.Default.RemoveProcessedImage)
@@ -1495,7 +1495,7 @@ namespace TwainControl
                 using PdfDocument outputDocument = loadfilename.ArrangePdfPages(start, end);
                 outputDocument.DefaultPdfCompression();
                 outputDocument.Save(savefilename);
-            });
+            }).ConfigureAwait(false);
         }
 
         public static List<List<T>> ChunkBy<T>(List<T> source, int chunkSize)
@@ -1549,7 +1549,7 @@ namespace TwainControl
                     inputDocument.Pages.RemoveAt(i - 1);
                 }
                 inputDocument.Save(pdffilepath);
-            });
+            }).ConfigureAwait(false);
         }
 
         public static void SaveJpgImage(BitmapFrame scannedImage, string filename)
@@ -1575,7 +1575,7 @@ namespace TwainControl
                 }
                 scanner.PdfSaveProgressValue = 0;
                 GC.Collect();
-            });
+            }).ConfigureAwait(false);
         }
 
         public static async Task SavePdfImage(BitmapFrame scannedImage, string filename, Scanner scanner, Paper paper, bool blackwhite = false)
@@ -1633,7 +1633,7 @@ namespace TwainControl
                 using FileStream stream = new(filename, FileMode.Create);
                 tifccittencoder.Save(stream);
                 scanner.SaveProgressIndeterminate = false;
-            });
+            }).ConfigureAwait(false);
         }
 
         public static void SaveTifImage(BitmapFrame scannedImage, string filename)
@@ -2014,7 +2014,7 @@ namespace TwainControl
                 using PdfDocument outputDocument = loadfilename.ExtractPdfPages(start, end);
                 outputDocument.DefaultPdfCompression();
                 outputDocument.Save(savefilename);
-            });
+            }).ConfigureAwait(false);
         }
 
         private async Task AddPdfFile(byte[] filedata, string filepath = null)
@@ -2355,7 +2355,7 @@ namespace TwainControl
             string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
             if (droppedfiles?.Length > 0)
             {
-                await Task.Run(() => AddFiles(droppedfiles, DecodeHeight));
+                await Task.Run(() => AddFiles(droppedfiles, DecodeHeight)).ConfigureAwait(false);
             }
         }
 

@@ -257,6 +257,45 @@ namespace TwainControl
             return bitmap;
         }
 
+        public static WriteableBitmap MedianFilterBitmap(this BitmapSource inputBitmap, int threshold)
+        {
+            WriteableBitmap outputBitmap = new(inputBitmap);
+            int stride = inputBitmap.PixelWidth * 4;
+            byte[] inputPixels = new byte[inputBitmap.PixelHeight * stride];
+            inputBitmap.CopyPixels(inputPixels, stride, 0);
+            byte[] outputPixels = new byte[inputPixels.Length];
+            _ = Parallel.For(0, inputBitmap.PixelHeight, (y) =>
+            {
+                _ = Parallel.For(0, inputBitmap.PixelWidth, (x) =>
+                {
+                    int minX = Math.Max(x - (threshold / 2), 0);
+                    int maxX = Math.Min(x + (threshold / 2), inputBitmap.PixelWidth - 1);
+                    int minY = Math.Max(y - (threshold / 2), 0);
+                    int maxY = Math.Min(y + (threshold / 2), inputBitmap.PixelHeight - 1);
+                    List<byte> values = new();
+                    for (int wy = minY; wy <= maxY; wy++)
+                    {
+                        for (int wx = minX; wx <= maxX; wx++)
+                        {
+                            int pixelIndex = (wy * stride) + (wx * 4);
+                            byte pixelValue = inputPixels[pixelIndex];
+                            values.Add(pixelValue);
+                        }
+                    }
+                    values.Sort();
+                    byte medianValue = values[values.Count / 2];
+                    int outputIndex = (y * stride) + (x * 4);
+                    outputPixels[outputIndex] = medianValue;
+                    outputPixels[outputIndex + 1] = medianValue;
+                    outputPixels[outputIndex + 2] = medianValue;
+                    outputPixels[outputIndex + 3] = 255;
+                });
+            });
+            outputBitmap.WritePixels(new Int32Rect(0, 0, inputBitmap.PixelWidth, inputBitmap.PixelHeight), outputPixels, stride, 0);
+            outputBitmap.Freeze();
+            return outputBitmap;
+        }
+
         public static unsafe Bitmap ReplaceColor(this Bitmap source, System.Windows.Media.Color toReplace, System.Windows.Media.Color replacement, int threshold)
         {
             const int pixelSize = 4; // 32 bits per pixel
@@ -333,7 +372,7 @@ namespace TwainControl
                     Source = null;
                     dv = null;
                     return rtb;
-                });
+                }).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -358,7 +397,7 @@ namespace TwainControl
                 BitmapFrame frame = BitmapFrame.Create(transformedBitmap, transformedBitmapthumb);
                 frame.Freeze();
                 return frame;
-            });
+            }).ConfigureAwait(false);
         }
 
         public static IEnumerable<int> SteppedRange(int fromInclusive, int toExclusive, int step)
