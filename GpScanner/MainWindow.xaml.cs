@@ -65,7 +65,7 @@ namespace GpScanner
                 }
                 catch (Exception ex)
                 {
-                    throw new ArgumentException(nameof(image), ex);
+                    _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }

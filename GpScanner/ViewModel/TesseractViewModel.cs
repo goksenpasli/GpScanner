@@ -33,7 +33,7 @@ namespace GpScanner.ViewModel
                     }
                     catch (Exception ex)
                     {
-                        throw new ArgumentException(nameof(path), ex);
+                        _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
             }, parameter => true);
@@ -61,7 +61,7 @@ namespace GpScanner.ViewModel
                 }
                 catch (Exception ex)
                 {
-                    throw new ArgumentException("tesseractdownload", ex);
+                    _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }, parameter => true);
 

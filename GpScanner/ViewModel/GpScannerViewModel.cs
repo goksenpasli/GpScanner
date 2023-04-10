@@ -102,7 +102,7 @@ namespace GpScanner.ViewModel
                     }
                     catch (Exception ex)
                     {
-                        throw new ArgumentException("mergepdf", ex);
+                        _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
             }, parameter =>
@@ -1119,7 +1119,7 @@ namespace GpScanner.ViewModel
             }
             catch (Exception ex)
             {
-                throw new ArgumentException(nameof(uri), ex);
+                _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

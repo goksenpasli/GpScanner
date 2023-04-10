@@ -75,7 +75,7 @@ namespace GpScanner.ViewModel
             }
             catch (Exception ex)
             {
-                throw new ArgumentException("registry write", ex);
+                _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -89,10 +89,11 @@ namespace GpScanner.ViewModel
                 _ = streamString.WriteString(msg);
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return false;
+                _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            return false;
         }
 
         [DllImport("user32.dll")]
@@ -155,7 +156,7 @@ namespace GpScanner.ViewModel
             }
             catch (Exception ex)
             {
-                throw new ArgumentException("registrydelete", ex);
+                _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

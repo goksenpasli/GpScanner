@@ -20,8 +20,9 @@ namespace GpScanner.ViewModel
             }
             catch (Exception ex)
             {
-                throw new ArgumentException(nameof(xmldatapath), ex);
+                _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            return null;
         }
 
         internal static T DeSerialize<T>(this XElement xElement) where T : class, new()
