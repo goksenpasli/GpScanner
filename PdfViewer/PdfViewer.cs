@@ -44,6 +44,8 @@ namespace PdfViewer
 
         public static readonly DependencyProperty ScrollBarVisibleProperty = DependencyProperty.Register("ScrollBarVisible", typeof(ScrollBarVisibility), typeof(PdfViewer), new PropertyMetadata(ScrollBarVisibility.Auto));
 
+        public static readonly DependencyProperty SeekingLowerPdfDpiProperty = DependencyProperty.Register("SeekingLowerPdfDpi", typeof(bool), typeof(PdfViewer), new PropertyMetadata(false));
+
         public static readonly DependencyProperty SeekingPdfDpiProperty = DependencyProperty.Register("SeekingPdfDpi", typeof(int), typeof(PdfViewer), new PropertyMetadata(200));
 
         public static readonly DependencyProperty SnapTickProperty = DependencyProperty.Register("SnapTick", typeof(bool), typeof(PdfViewer), new PropertyMetadata(false));
@@ -393,14 +395,8 @@ namespace PdfViewer
         }
 
         public bool SeekingLowerPdfDpi {
-            get => seekingLowerPdfDpi; set {
-
-                if (seekingLowerPdfDpi != value)
-                {
-                    seekingLowerPdfDpi = value;
-                    OnPropertyChanged(nameof(SeekingLowerPdfDpi));
-                }
-            }
+            get { return (bool)GetValue(SeekingLowerPdfDpiProperty); }
+            set { SetValue(SeekingLowerPdfDpiProperty, value); }
         }
 
         public int SeekingPdfDpi {
@@ -682,8 +678,6 @@ namespace PdfViewer
 
         private Visibility searchTextContentVisibility;
 
-        private bool seekingLowerPdfDpi;
-
         private Visibility sliderZoomAngleVisibility = Visibility.Visible;
 
         private Visibility tifNavigasyonButtonEtkin = Visibility.Visible;
@@ -747,7 +741,7 @@ namespace PdfViewer
         {
             if (e.PropertyName is "Sayfa" && sender is PdfViewer pdfViewer && pdfViewer.PdfFilePath is not null)
             {
-                if (SeekingLowerPdfDpi)
+                if (SeekingLowerPdfDpi && (Mouse.DirectlyOver == next || Mouse.DirectlyOver == back))
                 {
                     Dpi = (Sayfa == 1 || Sayfa == ToplamSayfa) ? SeekingPdfDpi : DpiList.Min();
                 }
@@ -799,7 +793,7 @@ namespace PdfViewer
 
         private void RepeatButtonMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            Dpi = 200;
+            Dpi = SeekingPdfDpi;
         }
 
         private void Scrollvwr_Drop(object sender, DragEventArgs e)
