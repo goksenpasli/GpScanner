@@ -40,9 +40,11 @@ namespace GpScanner.ViewModel
 
             TesseractDownload = new RelayCommand<object>(async parameter =>
             {
+                string datafile = null;
                 try
                 {
                     TesseractOcrData ocrData = parameter as TesseractOcrData;
+                    datafile = $@"{tessdatafolder}\{ocrData.OcrName}";
                     using WebClient client = new();
                     client.DownloadProgressChanged += (s, e) =>
                     {
@@ -57,11 +59,15 @@ namespace GpScanner.ViewModel
                         }
                     };
                     Uri address = new($"https://github.com/tesseract-ocr/tessdata_best/raw/main/{ocrData.OcrName}");
-                    await client.DownloadFileTaskAsync(address, $@"{tessdatafolder}\{ocrData.OcrName}");
+                    await client.DownloadFileTaskAsync(address, datafile);
                 }
                 catch (Exception ex)
                 {
                     _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+                    if (new FileInfo(datafile)?.Length == 0)
+                    {
+                        File.Delete(datafile);
+                    }
                 }
             }, parameter => true);
 

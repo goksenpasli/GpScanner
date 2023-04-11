@@ -376,7 +376,8 @@
             <Pdfviewer:PdfViewer x:Name="PdfViewer"
                 AutoFitContent="True" OpenButtonVisibility="Visible"
                 PreviewMouseDown="PdfImportViewerControl_MouseDown"
-                PreviewMouseMove="PdfImportViewerControl_MouseMove" PrintButtonVisibility="Visible" />
+                PreviewMouseMove="PdfImportViewerControl_MouseMove" PrintButtonVisibility="Visible"
+                SeekingLowerPdfDpi="True" />
             <Canvas x:Name="cnv" />
         </Grid>
     </Grid>

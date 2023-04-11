@@ -9,6 +9,7 @@ using System.Printing;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -27,6 +28,8 @@ namespace PdfViewer
     }
 
     [TemplatePart(Name = "ScrollVwr", Type = typeof(ScrollViewer))]
+    [TemplatePart(Name = "Back", Type = typeof(RepeatButton))]
+    [TemplatePart(Name = "Next", Type = typeof(RepeatButton))]
     public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     {
         public static readonly DependencyProperty AngleProperty = DependencyProperty.Register("Angle", typeof(double), typeof(PdfViewer), new PropertyMetadata(0.0));
@@ -79,6 +82,10 @@ namespace PdfViewer
 
             ViewerBack = new RelayCommand<object>(parameter =>
             {
+                if (SeekingLowerPdfDpi)
+                {
+                    Dpi = DpiList.Min();
+                }
                 if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                 {
                     Sayfa = 1;
@@ -89,6 +96,10 @@ namespace PdfViewer
 
             ViewerNext = new RelayCommand<object>(parameter =>
             {
+                if (SeekingLowerPdfDpi)
+                {
+                    Dpi = DpiList.Min();
+                }
                 if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                 {
                     Sayfa = ToplamSayfa;
@@ -200,6 +211,8 @@ namespace PdfViewer
             set => SetValue(ContextMenuVisibilityProperty, value);
         }
 
+        public int CurrentDpi { get; set; }
+
         public string DefaultPrinter { get; set; } = LocalPrintServer.GetDefaultPrintQueue().FullName;
 
         public RelayCommand<object> DosyaAç { get; }
@@ -225,6 +238,7 @@ namespace PdfViewer
 
         public bool MatchCase {
             get => matchCase; set {
+
                 if (matchCase != value)
                 {
                     matchCase = value;
@@ -270,6 +284,7 @@ namespace PdfViewer
 
         public PdfBookmarkCollection PdfBookmarks {
             get => pdfBookmarks; set {
+
                 if (pdfBookmarks != value)
                 {
                     pdfBookmarks = value;
@@ -285,6 +300,7 @@ namespace PdfViewer
 
         public ObservableCollection<PdfMatch> PdfMatches {
             get => pdfMatches; set {
+
                 if (pdfMatches != value)
                 {
                     pdfMatches = value;
@@ -295,6 +311,7 @@ namespace PdfViewer
 
         public string PdfTextContent {
             get => pdfTextContent; set {
+
                 if (pdfTextContent != value)
                 {
                     pdfTextContent = value;
@@ -354,6 +371,7 @@ namespace PdfViewer
 
         public PdfMatch SearchPdfMatch {
             get => searchPdfMatch; set {
+
                 if (searchPdfMatch != value)
                 {
                     searchPdfMatch = value;
@@ -378,10 +396,22 @@ namespace PdfViewer
 
         public Visibility SearchTextContentVisibility {
             get => searchTextContentVisibility; set {
+
                 if (searchTextContentVisibility != value)
                 {
                     searchTextContentVisibility = value;
                     OnPropertyChanged(nameof(SearchTextContentVisibility));
+                }
+            }
+        }
+
+        public bool SeekingLowerPdfDpi {
+            get => seekingLowerPdfDpi; set {
+
+                if (seekingLowerPdfDpi != value)
+                {
+                    seekingLowerPdfDpi = value;
+                    OnPropertyChanged(nameof(SeekingLowerPdfDpi));
                 }
             }
         }
@@ -449,6 +479,7 @@ namespace PdfViewer
 
         public bool WholeWord {
             get => wholeWord; set {
+
                 if (wholeWord != value)
                 {
                     wholeWord = value;
@@ -484,7 +515,7 @@ namespace PdfViewer
             }
             catch (Exception)
             {
-            return null;
+                return null;
             }
         }
 
@@ -508,7 +539,7 @@ namespace PdfViewer
             }
             catch (Exception)
             {
-            return null;
+                return null;
             }
         }
 
@@ -527,7 +558,7 @@ namespace PdfViewer
             }
             catch (Exception)
             {
-            return 0;
+                return 0;
             }
         }
 
@@ -568,7 +599,7 @@ namespace PdfViewer
             }
             catch (Exception)
             {
-            return null;
+                return null;
             }
         }
 
@@ -586,6 +617,21 @@ namespace PdfViewer
             {
                 scrollvwr.Drop -= Scrollvwr_Drop;
                 scrollvwr.Drop += Scrollvwr_Drop;
+            }
+            if (SeekingLowerPdfDpi)
+            {
+                next = GetTemplateChild("Next") as RepeatButton;
+                back = GetTemplateChild("Back") as RepeatButton;
+                if (next != null)
+                {
+                    next.PreviewMouseLeftButtonUp -= RepeatButtonMouseLeftButtonUp;
+                    next.PreviewMouseLeftButtonUp += RepeatButtonMouseLeftButtonUp;
+                }
+                if (back != null)
+                {
+                    back.PreviewMouseLeftButtonUp -= RepeatButtonMouseLeftButtonUp;
+                    back.PreviewMouseLeftButtonUp += RepeatButtonMouseLeftButtonUp;
+                }
             }
         }
 
@@ -608,6 +654,8 @@ namespace PdfViewer
 
         private bool autoFitContent;
 
+        private RepeatButton back;
+
         private Visibility bookmarkContentVisibility;
 
         private bool disposedValue;
@@ -615,6 +663,8 @@ namespace PdfViewer
         private Visibility dpiListVisibility = Visibility.Visible;
 
         private bool matchCase;
+
+        private RepeatButton next;
 
         private Visibility openButtonVisibility = Visibility.Collapsed;
 
@@ -639,6 +689,8 @@ namespace PdfViewer
         private string searchTextContent;
 
         private Visibility searchTextContentVisibility;
+
+        private bool seekingLowerPdfDpi;
 
         private Visibility sliderZoomAngleVisibility = Visibility.Visible;
 
@@ -704,7 +756,6 @@ namespace PdfViewer
             if (e.PropertyName is "Sayfa" && sender is PdfViewer pdfViewer && pdfViewer.PdfFilePath is not null)
             {
                 string pdfFilePath = pdfViewer.PdfFilePath;
-
                 Source = await ConvertToImgAsync(await ReadAllFileAsync(pdfFilePath), sayfa, pdfViewer.Dpi);
                 GC.Collect();
             }
@@ -748,6 +799,11 @@ namespace PdfViewer
                 {
                 }
             }
+        }
+
+        private void RepeatButtonMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            Dpi = 200;
         }
 
         private void Scrollvwr_Drop(object sender, DragEventArgs e)

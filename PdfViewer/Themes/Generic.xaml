@@ -180,7 +180,7 @@
                                     IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}"
                                     Orientation="Horizontal"
                                     Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}">
-                                    <RepeatButton Command="{Binding ViewerBack, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ToolTip="Önceki Sayfa">
+                                    <RepeatButton x:Name="Back" Command="{Binding ViewerBack, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ToolTip="Önceki Sayfa">
                                         <Image Width="16" Height="16">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -212,7 +212,7 @@
                                             </ItemsPanelTemplate>
                                         </ComboBox.ItemsPanel>
                                     </ComboBox>
-                                    <RepeatButton Command="{Binding ViewerNext, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ToolTip="Sonraki Sayfa">
+                                    <RepeatButton x:Name="Next" Command="{Binding ViewerNext, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ToolTip="Sonraki Sayfa">
                                         <Image Width="16" Height="16">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">

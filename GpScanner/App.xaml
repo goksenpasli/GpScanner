@@ -8,6 +8,7 @@
     xmlns:ViewModel="clr-namespace:GpScanner.ViewModel"
     xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
     xmlns:local="clr-namespace:GpScanner" xmlns:properties="clr-namespace:GpScanner.Properties"
+    xmlns:twain="clr-namespace:TwainControl;assembly=TwainControl"
     Startup="Application_Startup" StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
@@ -154,7 +155,9 @@
                         <StackPanel IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}"
                             Orientation="Horizontal"
                             Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}">
-                            <RepeatButton Command="{Binding ViewerBack, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ToolTip="Önceki Sayfa">
+                            <RepeatButton x:Name="Back"
+                                Command="{Binding ViewerBack, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                ToolTip="Önceki Sayfa">
                                 <Image Width="16" Height="16">
                                     <Image.Source>
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -173,7 +176,9 @@
                                     </ItemsPanelTemplate>
                                 </ComboBox.ItemsPanel>
                             </ComboBox>
-                            <RepeatButton Command="{Binding ViewerNext, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ToolTip="Sonraki Sayfa">
+                            <RepeatButton x:Name="Next"
+                                Command="{Binding ViewerNext, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                ToolTip="Sonraki Sayfa">
                                 <Image Width="16" Height="16">
                                     <Image.Source>
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -230,7 +235,7 @@
                         ContextMenuVisibility="Visible" Orientation="Height"
                         PdfFilePath="{Binding Mode=OneWay}"
                         PdfTextContentVisibility="Collapsed" PrintButtonVisibility="Visible" ScrollBarVisible="Visible"
-                        SearchTextContentVisibility="Collapsed" SnapTick="True" />
+                        SearchTextContentVisibility="Collapsed" SeekingLowerPdfDpi="True" SnapTick="True" />
                     <UniformGrid Grid.Column="2" Rows="2">
                         <local:TranslateView ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding DataContext.PdfFileContent, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}" />
                         <TextBox Background="{StaticResource BorderBackground}"
@@ -452,6 +457,26 @@
                         SnapTick="True" ToolBarVisibility="Collapsed" />
                 </Grid>
             </DataTemplate>
+            <DataTemplate x:Key="XmlViewerTemplate">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock VerticalAlignment="Center">
+                        <Hyperlink BaselineAlignment="Center"
+                            Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            CommandParameter="{Binding Mode=OneWay}"
+                            TextDecorations="None">
+                            <Image Width="16" Height="16"
+                                Source="/TwainControl;component/Icons/delete.png" />
+                        </Hyperlink>
+                    </TextBlock>
+                    <twain:XmlViewerControl Grid.Row="1"
+                        Width="105" Height="150"
+                        XmlContent="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                </Grid>
+            </DataTemplate>
             <Style x:Key="ListBoxItemTemplate" TargetType="{x:Type ListBoxItem}">
                 <Setter Property="Template">
                     <Setter.Value>
@@ -494,6 +519,7 @@
                 Img="{StaticResource ImgViewerTemplate}"
                 Pdf="{StaticResource EypSimplePdfTemplate}"
                 Vid="{StaticResource VideoViewerTemplate}"
+                Xml="{StaticResource XmlViewerTemplate}"
                 Xps="{StaticResource XpsViewerTemplate}"
                 Zip="{StaticResource ZipViewerTemplate}" />
         </ResourceDictionary>

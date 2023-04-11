@@ -837,17 +837,14 @@ namespace TwainControl
 
             ArrangePdfFile = new RelayCommand<object>(async parameter =>
             {
-                if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
+                if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath) && MessageBox.Show($"{Translation.GetResStringValue("REPLACEPAGE")} {SayfaBaşlangıç}-{SayfaBitiş}", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
-                    if (MessageBox.Show($"{Translation.GetResStringValue("REPLACEPAGE")} {SayfaBaşlangıç}-{SayfaBitiş}", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
-                    {
-                        string oldpdfpath = pdfviewer.PdfFilePath;
-                        int start = SayfaBaşlangıç - 1;
-                        int end = SayfaBitiş - 1;
-                        await ArrangeFile(pdfviewer.PdfFilePath, pdfviewer.PdfFilePath, start, end);
-                        pdfviewer.PdfFilePath = null;
-                        pdfviewer.PdfFilePath = oldpdfpath;
-                    }
+                    string oldpdfpath = pdfviewer.PdfFilePath;
+                    int start = SayfaBaşlangıç - 1;
+                    int end = SayfaBitiş - 1;
+                    await ArrangeFile(pdfviewer.PdfFilePath, pdfviewer.PdfFilePath, start, end);
+                    pdfviewer.PdfFilePath = null;
+                    pdfviewer.PdfFilePath = oldpdfpath;
                 }
             }, parameter => SayfaBaşlangıç != SayfaBitiş);
 
@@ -861,7 +858,7 @@ namespace TwainControl
                 }
             }, parameter => parameter is PdfViewer.PdfViewer pdfviewer && pdfviewer.PdfFilePath is not null);
 
-            ReverseData = new RelayCommand<object>(parameter => Scanner.Resimler = new ObservableCollection<ScannedImage>(Scanner.Resimler.Reverse()), parameter => Scanner?.Resimler.Any() == true);
+            ReverseData = new RelayCommand<object>(parameter => Scanner.Resimler = new ObservableCollection<ScannedImage>(Scanner.Resimler.Reverse()), parameter => Scanner?.Resimler?.Count > 1);
 
             ReverseDataHorizontal = new RelayCommand<object>(parameter =>
             {

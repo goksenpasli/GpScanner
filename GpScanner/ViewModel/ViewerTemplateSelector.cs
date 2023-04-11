@@ -16,6 +16,8 @@ namespace GpScanner.ViewModel
 
         public DataTemplate Vid { get; set; }
 
+        public DataTemplate Xml { get; set; }
+
         public DataTemplate Xps { get; set; }
 
         public DataTemplate Zip { get; set; }
@@ -29,7 +31,9 @@ namespace GpScanner.ViewModel
                 string ext = Path.GetExtension(dosya).ToLower();
                 return ext == ".pdf"
                     ? Pdf
-                    : ext == ".zip" ? Zip : ext == ".xps" ? Xps : imgext.Contains(ext) ? Img : videoext.Contains(ext) ? Vid : Empty;
+                    : ext == ".zip"
+                    ? Zip
+                    : ext == ".xps" ? Xps : ext == ".xml" ? Xml : imgext.Contains(ext) ? Img : videoext.Contains(ext) ? Vid : Empty;
             }
             return null;
         }
