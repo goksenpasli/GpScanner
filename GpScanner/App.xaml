@@ -451,7 +451,7 @@
                         Width="105" Height="150"
                         AutoFitContent="True" ContextMenuVisibility="Visible"
                         Dpi="{Binding DefaultThumbNailDpi, Source={x:Static properties:Settings.Default}}"
-                        DpiListVisibility="Collapsed" OpenButtonVisibility="Collapsed" PageScrollBarVisibility="Collapsed"
+                        DpiListVisibility="Collapsed" OpenButtonVisibility="Collapsed"
                         PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                         PrintButtonVisibility="Collapsed" ScrollBarVisible="Hidden" SliderZoomAngleVisibility="Collapsed"
                         SnapTick="True" ToolBarVisibility="Collapsed" />

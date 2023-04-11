@@ -42,10 +42,6 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:PdfViewer}">
                     <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
                         <Grid.ContextMenu>
                             <ContextMenu Visibility="{Binding ContextMenuVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                                 <MenuItem Command="{Binding ViewerBack, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Header="GERİ">
@@ -95,7 +91,7 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <ScrollViewer x:Name="ScrollVwr"
-                            Grid.Row="0" Grid.Column="0"
+                            Grid.Row="0"
                             AllowDrop="True"
                             HorizontalScrollBarVisibility="{Binding ScrollBarVisible, RelativeSource={RelativeSource TemplatedParent}}"
                             VerticalScrollBarVisibility="{Binding ScrollBarVisible, RelativeSource={RelativeSource TemplatedParent}}">
@@ -110,15 +106,8 @@
                                 </Image.LayoutTransform>
                             </Image>
                         </ScrollViewer>
-                        <ScrollBar Grid.Row="0" Grid.Column="1"
-                            IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}"
-                            Maximum="{Binding Pages.Count, RelativeSource={RelativeSource TemplatedParent}}"
-                            Minimum="1" Orientation="Vertical" SmallChange="1"
-                            ViewportSize="1"
-                            Visibility="{Binding PageScrollBarVisibility, RelativeSource={RelativeSource TemplatedParent}}"
-                            Value="{Binding Sayfa, Delay=150, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
                         <ContentControl x:Name="Cnt"
-                            Grid.Row="1" Grid.ColumnSpan="2"
+                            Grid.Row="1"
                             Visibility="{Binding ToolBarVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -180,7 +169,9 @@
                                     IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}"
                                     Orientation="Horizontal"
                                     Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}">
-                                    <RepeatButton x:Name="Back" Command="{Binding ViewerBack, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ToolTip="Önceki Sayfa">
+                                    <RepeatButton x:Name="Back"
+                                        Command="{Binding ViewerBack, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                        ToolTip="Önceki Sayfa">
                                         <Image Width="16" Height="16">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -212,7 +203,9 @@
                                             </ItemsPanelTemplate>
                                         </ComboBox.ItemsPanel>
                                     </ComboBox>
-                                    <RepeatButton x:Name="Next" Command="{Binding ViewerNext, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ToolTip="Sonraki Sayfa">
+                                    <RepeatButton x:Name="Next"
+                                        Command="{Binding ViewerNext, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                        ToolTip="Sonraki Sayfa">
                                         <Image Width="16" Height="16">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">

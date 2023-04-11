@@ -40,11 +40,11 @@ namespace PdfViewer
 
         public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(FitImageOrientation), typeof(PdfViewer), new PropertyMetadata(FitImageOrientation.Width, Changed));
 
-        public static readonly DependencyProperty PageScrollBarVisibilityProperty = DependencyProperty.Register("PageScrollBarVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Visible));
-
         public static readonly DependencyProperty PdfFilePathProperty = DependencyProperty.Register("PdfFilePath", typeof(string), typeof(PdfViewer), new PropertyMetadata(null, PdfFilePathChanged));
 
         public static readonly DependencyProperty ScrollBarVisibleProperty = DependencyProperty.Register("ScrollBarVisible", typeof(ScrollBarVisibility), typeof(PdfViewer), new PropertyMetadata(ScrollBarVisibility.Auto));
+
+        public static readonly DependencyProperty SeekingPdfDpiProperty = DependencyProperty.Register("SeekingPdfDpi", typeof(int), typeof(PdfViewer), new PropertyMetadata(200));
 
         public static readonly DependencyProperty SnapTickProperty = DependencyProperty.Register("SnapTick", typeof(bool), typeof(PdfViewer), new PropertyMetadata(false));
 
@@ -82,10 +82,6 @@ namespace PdfViewer
 
             ViewerBack = new RelayCommand<object>(parameter =>
             {
-                if (SeekingLowerPdfDpi)
-                {
-                    Dpi = DpiList.Min();
-                }
                 if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                 {
                     Sayfa = 1;
@@ -96,10 +92,6 @@ namespace PdfViewer
 
             ViewerNext = new RelayCommand<object>(parameter =>
             {
-                if (SeekingLowerPdfDpi)
-                {
-                    Dpi = DpiList.Min();
-                }
                 if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                 {
                     Sayfa = ToplamSayfa;
@@ -277,11 +269,6 @@ namespace PdfViewer
             }
         }
 
-        public Visibility PageScrollBarVisibility {
-            get => (Visibility)GetValue(PageScrollBarVisibilityProperty);
-            set => SetValue(PageScrollBarVisibilityProperty, value);
-        }
-
         public PdfBookmarkCollection PdfBookmarks {
             get => pdfBookmarks; set {
 
@@ -414,6 +401,11 @@ namespace PdfViewer
                     OnPropertyChanged(nameof(SeekingLowerPdfDpi));
                 }
             }
+        }
+
+        public int SeekingPdfDpi {
+            get => (int)GetValue(SeekingPdfDpiProperty);
+            set => SetValue(SeekingPdfDpiProperty, value);
         }
 
         public Visibility SliderZoomAngleVisibility {
@@ -755,6 +747,10 @@ namespace PdfViewer
         {
             if (e.PropertyName is "Sayfa" && sender is PdfViewer pdfViewer && pdfViewer.PdfFilePath is not null)
             {
+                if (SeekingLowerPdfDpi)
+                {
+                    Dpi = (Sayfa == 1 || Sayfa == ToplamSayfa) ? SeekingPdfDpi : DpiList.Min();
+                }
                 string pdfFilePath = pdfViewer.PdfFilePath;
                 Source = await ConvertToImgAsync(await ReadAllFileAsync(pdfFilePath), sayfa, pdfViewer.Dpi);
                 GC.Collect();
