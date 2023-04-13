@@ -416,21 +416,9 @@
                     OsdTextVisibility="Visible" />
             </DataTemplate>
             <DataTemplate x:Key="EmptyTemplate">
-                <TextBlock Width="157" TextWrapping="Wrap">
-                    <Image Width="32" Height="32"
-                        Source="{Binding Mode=OneWay, Converter={StaticResource FilePathToIconConverter}}" />
-                    <LineBreak />
-                    <Hyperlink BaselineAlignment="Center"
-                        Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                        CommandParameter="{Binding Mode=OneWay}"
-                        TextDecorations="None">
-                        <Image Width="16" Height="16"
-                            Source="/TwainControl;component/Icons/delete.png" />
-                    </Hyperlink>
-                    <Hyperlink Command="{Binding DataContext.WebAdreseGit, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding Mode=OneWay}">
-                        <Run Text="{Binding Mode=OneWay}" />
-                    </Hyperlink>
-                </TextBlock>
+                <TextBlock Width="210"
+                    Text="{Binding Mode=OneWay}"
+                    TextWrapping="Wrap" />
             </DataTemplate>
             <DataTemplate x:Key="EypSimplePdfTemplate">
                 <Grid>
@@ -448,7 +436,7 @@
                         </Hyperlink>
                     </TextBlock>
                     <PdfViewer:PdfViewer Grid.Row="1"
-                        Width="105" Height="150"
+                        Width="305" Height="450"
                         AutoFitContent="True" ContextMenuVisibility="Visible"
                         Dpi="{Binding DefaultThumbNailDpi, Source={x:Static properties:Settings.Default}}"
                         DpiListVisibility="Collapsed" OpenButtonVisibility="Collapsed"
@@ -473,8 +461,8 @@
                         </Hyperlink>
                     </TextBlock>
                     <twain:XmlViewerControl Grid.Row="1"
-                        Width="105" Height="150"
-                        XmlContent="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        Width="305" Height="450"
+                        twain:XmlViewerControlModel.XmlContent="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                 </Grid>
             </DataTemplate>
             <Style x:Key="ListBoxItemTemplate" TargetType="{x:Type ListBoxItem}">

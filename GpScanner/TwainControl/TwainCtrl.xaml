@@ -1126,7 +1126,7 @@
                                     </ListBox.ItemContainerStyle>
                                     <ListBox.ItemsPanel>
                                         <ItemsPanelTemplate>
-                                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="170,170" SpacingMode="None" />
+                                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="335,480" SpacingMode="None" />
                                         </ItemsPanelTemplate>
                                     </ListBox.ItemsPanel>
                                 </ListBox>

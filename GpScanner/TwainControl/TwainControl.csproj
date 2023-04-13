@@ -131,6 +131,7 @@
     <Compile Include="XmlViewerControl.xaml.cs">
       <DependentUpon>XmlViewerControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="XmlViewerControlModel.cs" />
     <Page Include="AboutView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
