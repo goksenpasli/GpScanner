@@ -911,16 +911,12 @@
                                     <TextBlock VerticalAlignment="Center"
                                         FontWeight="Bold" TextAlignment="Center">
                                         <Run d:Text="0" BaselineAlignment="Center"
-                                            Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" />
-                                        <Run d:Text="/" BaselineAlignment="Center" Text="/" />
-                                        <Run d:Text="0" BaselineAlignment="Center"
-                                            Text="{Binding Scanner.Resimler.Count, Mode=OneWay}" />
-                                        <Hyperlink BaselineAlignment="Center"
+                                            Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" /><Run d:Text="/" BaselineAlignment="Center" Text="/" /><Run d:Text="0" BaselineAlignment="Center"
+                                            Text="{Binding Scanner.Resimler.Count, Mode=OneWay}" /><Hyperlink BaselineAlignment="Center"
                                             Command="{Binding ReverseData}"
                                             TextDecorations="None">
                                             <Run FontFamily="Wingdings 3" FontSize="16" Text="E" />
-                                        </Hyperlink>
-                                        <Hyperlink BaselineAlignment="Center"
+                                        </Hyperlink><Hyperlink BaselineAlignment="Center"
                                             Command="{Binding ReverseDataHorizontal}"
                                             TextDecorations="None">
                                             <Run FontFamily="Wingdings 3" FontSize="16" Text="D" />
@@ -1100,7 +1096,7 @@
                                     Background="{StaticResource BorderBackground}"
                                     Drop="LbEypContent_Drop"
                                     ItemsSource="{Binding Scanner.UnsupportedFiles}"
-                                    VirtualizingPanel.CacheLength="3,3" VirtualizingPanel.CacheLengthUnit="Item"
+                                    VirtualizingPanel.CacheLength="2,2" VirtualizingPanel.CacheLengthUnit="Pixel"
                                     VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.ScrollUnit="Item"
                                     VirtualizingPanel.VirtualizationMode="Standard">
                                     <ListBox.ItemContainerStyle>
@@ -1126,7 +1122,7 @@
                                     </ListBox.ItemContainerStyle>
                                     <ListBox.ItemsPanel>
                                         <ItemsPanelTemplate>
-                                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="335,480" SpacingMode="None" />
+                                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="175,240" SpacingMode="None" />
                                         </ItemsPanelTemplate>
                                     </ListBox.ItemsPanel>
                                 </ListBox>

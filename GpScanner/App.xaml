@@ -222,7 +222,7 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="5*" />
+                        <ColumnDefinition Width="3*" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Button Command="{Binding DataContext.AddFileToControlPanel, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}" CommandParameter="{Binding ElementName=PdfVwr, Path=Source}">
@@ -436,7 +436,7 @@
                         </Hyperlink>
                     </TextBlock>
                     <PdfViewer:PdfViewer Grid.Row="1"
-                        Width="305" Height="450"
+                        Width="157" Height="225"
                         AutoFitContent="True" ContextMenuVisibility="Visible"
                         Dpi="{Binding DefaultThumbNailDpi, Source={x:Static properties:Settings.Default}}"
                         DpiListVisibility="Collapsed" OpenButtonVisibility="Collapsed"
@@ -461,7 +461,7 @@
                         </Hyperlink>
                     </TextBlock>
                     <twain:XmlViewerControl Grid.Row="1"
-                        Width="305" Height="450"
+                        Width="157" Height="225"
                         twain:XmlViewerControlModel.XmlContent="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                 </Grid>
             </DataTemplate>

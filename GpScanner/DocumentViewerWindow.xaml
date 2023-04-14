@@ -60,6 +60,8 @@
             Content="ç" FontFamily="Wingdings" FontSize="16" />
         <Grid Grid.Row="1" Grid.ColumnSpan="3">
             <ContentControl x:Name="cnt"
+                d:ContentTemplate="{StaticResource PdfViewerDocumentViewerTemplateFull}"
+                d:ContentTemplateSelector="{StaticResource DocumentViewerSelector}"
                 Content="{Binding PdfFilePath, IsAsync=True, Mode=OneWay}"
                 ContentTemplateSelector="{StaticResource DocumentViewerSelector}"
                 PreviewMouseDown="DocumentViewer_MouseDown" PreviewMouseMove="DocumentViewer_MouseMove" />

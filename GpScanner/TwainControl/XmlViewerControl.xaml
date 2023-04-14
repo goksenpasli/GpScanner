@@ -46,29 +46,29 @@
                     Text="&lt;" /><Run x:Name="xmlTag"
                     BaselineAlignment="Center"
                     Foreground="{StaticResource xmlTagBrush}"
-                    Text="{Binding Path=Name, Mode=OneWay}" />
-                <ItemsControl Margin="0,3,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    ItemTemplate="{StaticResource attributeTemplate}"
-                    ItemsSource="{Binding Path=Attributes}">
-                    <ItemsControl.Template>
-                        <ControlTemplate TargetType="ItemsControl">
-                            <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}">
-                                <ScrollViewer CanContentScroll="True" Focusable="False" HorizontalScrollBarVisibility="Hidden"
-                                    VerticalScrollBarVisibility="Hidden">
-                                    <ItemsPresenter />
-                                </ScrollViewer>
-                            </Border>
-                        </ControlTemplate>
-                    </ItemsControl.Template>
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <VirtualizingStackPanel Orientation="Horizontal" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                </ItemsControl><Run x:Name="endTag"
+                    Text="{Binding Path=Name, Mode=OneWay}" /><InlineUIContainer>
+                    <ItemsControl HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center"
+                        ItemTemplate="{StaticResource attributeTemplate}"
+                        ItemsSource="{Binding Path=Attributes}">
+                        <ItemsControl.Template>
+                            <ControlTemplate TargetType="ItemsControl">
+                                <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}">
+                                    <ScrollViewer CanContentScroll="True" Focusable="False" HorizontalScrollBarVisibility="Hidden"
+                                        VerticalScrollBarVisibility="Hidden">
+                                        <ItemsPresenter />
+                                    </ScrollViewer>
+                                </Border>
+                            </ControlTemplate>
+                        </ItemsControl.Template>
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+                </InlineUIContainer><Run x:Name="endTag"
                     BaselineAlignment="Center"
                     Foreground="{StaticResource xmlMarkBrush}"
                     Text="&gt;" />
