@@ -935,7 +935,7 @@
                                 SelectedItem="{Binding SeçiliResim}"
                                 SelectionMode="Extended" VirtualizingPanel.CacheLength="3,3"
                                 VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                                VirtualizingPanel.ScrollUnit="Item" VirtualizingPanel.VirtualizationMode="Standard">
+                                VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Standard">
                                 <ListBox.InputBindings>
                                     <KeyBinding Key="A"
                                         Command="{Binding Tümünüİşaretle}"
@@ -1096,8 +1096,8 @@
                                     Background="{StaticResource BorderBackground}"
                                     Drop="LbEypContent_Drop"
                                     ItemsSource="{Binding Scanner.UnsupportedFiles}"
-                                    VirtualizingPanel.CacheLength="2,2" VirtualizingPanel.CacheLengthUnit="Pixel"
-                                    VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.ScrollUnit="Item"
+                                    VirtualizingPanel.CacheLength="2,2" VirtualizingPanel.CacheLengthUnit="Item"
+                                    VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.ScrollUnit="Pixel"
                                     VirtualizingPanel.VirtualizationMode="Standard">
                                     <ListBox.ItemContainerStyle>
                                         <Style TargetType="ListBoxItem">
@@ -1111,7 +1111,9 @@
                                                                     FontWeight="Bold" Foreground="Red" PreviewMouseMove="Run_EypPreviewMouseMove"
                                                                     Text="B" />
                                                             </TextBlock>
-                                                            <ContentPresenter d:Content="file.pdf" d:Height="64" d:Width="64"
+                                                            <ContentPresenter d:Content="{StaticResource EypSimplePdfTemplate}"
+                                                                d:ContentTemplateSelector="{StaticResource PdfEypViewerSelector}"
+                                                                d:Height="64" d:Width="64"
                                                                 Content="{Binding IsAsync=True, Mode=OneWay}"
                                                                 ContentTemplateSelector="{StaticResource PdfEypViewerSelector}" />
                                                         </StackPanel>

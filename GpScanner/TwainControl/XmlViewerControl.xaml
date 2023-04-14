@@ -90,9 +90,27 @@
         </HierarchicalDataTemplate>
     </UserControl.Resources>
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <ToggleButton x:Name="Tb"
+            Margin="1"
+            IsChecked="True">
+            <Image Width="16" Height="16"
+                Source="/TwainControl;component/Icons/portrait.png" />
+        </ToggleButton>
         <TreeView Name="xmlTree"
+            Grid.Row="1"
+            Margin="1"
             d:ItemsSource="{d:SampleData ItemCount=5}"
             ItemTemplate="{StaticResource treeViewTemplate}"
-            VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Standard" />
+            VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Standard">
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="{x:Type TreeViewItem}">
+                    <Setter Property="IsExpanded" Value="{Binding ElementName=Tb, Path=IsChecked}" />
+                </Style>
+            </TreeView.ItemContainerStyle>
+        </TreeView>
     </Grid>
 </UserControl>

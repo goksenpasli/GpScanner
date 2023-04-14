@@ -86,7 +86,7 @@
                             <ListBox ItemsSource="{Binding PdfPages}"
                                 ScrollViewer.IsDeferredScrollingEnabled="True" SelectionMode="Extended"
                                 VirtualizingPanel.CacheLength="3,3" VirtualizingPanel.CacheLengthUnit="Item"
-                                VirtualizingPanel.ScrollUnit="Item" VirtualizingPanel.VirtualizationMode="Standard">
+                                VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Standard">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding Selected}">

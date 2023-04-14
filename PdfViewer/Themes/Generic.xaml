@@ -189,7 +189,7 @@
                                         ScrollViewer.IsDeferredScrollingEnabled="True"
                                         SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
                                         VirtualizingPanel.CacheLength="3,3" VirtualizingPanel.CacheLengthUnit="Item"
-                                        VirtualizingPanel.ScrollUnit="Item" VirtualizingPanel.VirtualizationMode="Standard">
+                                        VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Standard">
                                         <ComboBox.ItemContainerStyle>
                                             <Style TargetType="ComboBoxItem">
                                                 <Setter Property="HorizontalContentAlignment" Value="Center" />

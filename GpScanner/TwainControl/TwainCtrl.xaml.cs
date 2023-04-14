@@ -736,7 +736,7 @@ namespace TwainControl
                             pdfDocument.Save(temporarypdf);
                             string[] processedfiles = new string[] { temporarypdf, pdfFilePath };
                             processedfiles.MergePdf().Save(pdfFilePath);
-                        }).ConfigureAwait(false);
+                        });
 
                         NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
                         if (Settings.Default.RemoveProcessedImage)

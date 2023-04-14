@@ -450,7 +450,7 @@
                                                                         </Image.Source>
                                                                     </Image>
                                                                     <Extensions:ContentToggleButton.OverContent>
-                                                                        <GroupBox>
+                                                                        <GroupBox Header="FTP">
                                                                             <StackPanel>
                                                                                 <ProgressBar Width="400" Height="24"
                                                                                     Background="{x:Null}"
@@ -643,7 +643,7 @@
                                         ItemsSource="{Binding Source={x:Reference TwainCtrl}, Path=Scanner.Resimler}"
                                         SelectionMode="Extended" VirtualizingPanel.CacheLength="3,3"
                                         VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                                        VirtualizingPanel.ScrollUnit="Item" VirtualizingPanel.VirtualizationMode="Standard">
+                                        VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Standard">
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>
                                                 <StackPanel>
