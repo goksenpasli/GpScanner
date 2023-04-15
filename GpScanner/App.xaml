@@ -467,6 +467,9 @@
                         twain:XmlViewerControlModel.XmlContent="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                 </Grid>
             </DataTemplate>
+            <DataTemplate x:Key="XmlViewerThumbTemplate">
+                <twain:XmlViewerControl Grid.Row="1" twain:XmlViewerControlModel.XmlContent="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+            </DataTemplate>
             <Style x:Key="ListBoxItemTemplate" TargetType="{x:Type ListBoxItem}">
                 <Setter Property="Template">
                     <Setter.Value>
@@ -497,11 +500,13 @@
                 Img="{StaticResource ImgViewerDocumentViewerTemplateFull}"
                 Pdf="{StaticResource PdfViewerDocumentViewerTemplateFull}"
                 Vid="{StaticResource VideoViewerTemplateFull}"
+                Xml="{StaticResource XmlViewerThumbTemplate}"
                 Xps="{StaticResource XpsViewerTemplate}"
                 Zip="{StaticResource ZipViewerTemplateFull}" />
             <ViewModel:ViewerTemplateSelector x:Key="ThumbViewerSelector"
                 Img="{StaticResource ImgViewerTemplate}"
                 Pdf="{StaticResource PdfViewerTemplateFull}"
+                Xml="{StaticResource XmlViewerThumbTemplate}"
                 Xps="{StaticResource XpsViewerTemplate}"
                 Zip="{StaticResource ZipViewerTemplate}" />
             <ViewModel:ViewerTemplateSelector x:Key="PdfEypViewerSelector"

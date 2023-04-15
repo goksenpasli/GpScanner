@@ -364,7 +364,7 @@
                                                 </ItemsPanelTemplate>
                                             </ListBox.ItemsPanel>
                                             <ListBoxItem HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center">
-                                                <Grid>
+                                                <Grid x:Name="bw">
                                                     <Image Width="32" Height="32">
                                                         <Image.Effect>
                                                             <Extensions:BlackWhiteEffect Threshold="0.95" />
@@ -391,7 +391,7 @@
                                                 </Grid>
                                             </ListBoxItem>
                                             <ListBoxItem HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center">
-                                                <Grid>
+                                                <Grid x:Name="grey">
                                                     <Image Width="32" Height="32">
                                                         <Image.Effect>
                                                             <Extensions:GrayScaleEffect />
@@ -418,7 +418,7 @@
                                                 </Grid>
                                             </ListBoxItem>
                                             <ListBoxItem HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center">
-                                                <Grid>
+                                                <Grid x:Name="color">
                                                     <Image Width="32" Height="32">
                                                         <Image.Source>
                                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -584,7 +584,9 @@
                                         <RowDefinition />
                                         <RowDefinition />
                                     </Grid.RowDefinitions>
-                                    <CheckBox IsChecked="{Binding Scanner.Duplex}" IsEnabled="{Binding Adf, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                    <CheckBox VerticalContentAlignment="Center"
+                                        IsChecked="{Binding Scanner.Duplex}"
+                                        IsEnabled="{Binding Adf, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                                         <CheckBox.Content>
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock VerticalAlignment="Center" Text="{local:Loc TWOSIDE}" />
@@ -592,53 +594,35 @@
                                                     <CheckBox.Content>
                                                         <StackPanel Orientation="Horizontal">
                                                             <TextBlock VerticalAlignment="Center" Text="{local:Loc REVERSE}" />
-                                                            <ListBox Background="{x:Null}"
+                                                            <ListBox Width="96" Height="32"
+                                                                Background="{x:Null}"
                                                                 BorderBrush="{x:Null}"
                                                                 IsEnabled="{Binding Scanner.PaperBackScan}"
                                                                 SelectedIndex="{Binding BackMode, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                                                                 <ListBox.ItemContainerStyle>
-                                                                    <Style BasedOn="{StaticResource ScanTypeLbItem}" TargetType="ListBoxItem" />
+                                                                    <Style BasedOn="{StaticResource ScanTypeLbItem}" TargetType="ListBoxItem">
+                                                                        <Setter Property="Margin" Value="0" />
+                                                                    </Style>
                                                                 </ListBox.ItemContainerStyle>
                                                                 <ListBox.ItemsPanel>
                                                                     <ItemsPanelTemplate>
-                                                                        <VirtualizingStackPanel Orientation="Horizontal" />
+                                                                        <UniformGrid Columns="3" />
                                                                     </ItemsPanelTemplate>
                                                                 </ListBox.ItemsPanel>
-                                                                <ListBoxItem HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center">
-                                                                    <Image Width="16" Height="16">
-                                                                        <Image.Effect>
-                                                                            <Extensions:BlackWhiteEffect Threshold="0.95" />
-                                                                        </Image.Effect>
-                                                                        <Image.Source>
-                                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                                <Binding Source="Imageres.dll" />
-                                                                                <Binding Source="14" />
-                                                                            </MultiBinding>
-                                                                        </Image.Source>
-                                                                    </Image>
+                                                                <ListBoxItem>
+                                                                    <ListBoxItem.Background>
+                                                                        <VisualBrush Stretch="Fill" Visual="{Binding ElementName=bw}" />
+                                                                    </ListBoxItem.Background>
                                                                 </ListBoxItem>
-                                                                <ListBoxItem HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center">
-                                                                    <Image Width="16" Height="16">
-                                                                        <Image.Effect>
-                                                                            <Extensions:GrayScaleEffect />
-                                                                        </Image.Effect>
-                                                                        <Image.Source>
-                                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                                <Binding Source="Imageres.dll" />
-                                                                                <Binding Source="14" />
-                                                                            </MultiBinding>
-                                                                        </Image.Source>
-                                                                    </Image>
+                                                                <ListBoxItem>
+                                                                    <ListBoxItem.Background>
+                                                                        <VisualBrush Stretch="Fill" Visual="{Binding ElementName=grey}" />
+                                                                    </ListBoxItem.Background>
                                                                 </ListBoxItem>
-                                                                <ListBoxItem HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center">
-                                                                    <Image Width="16" Height="16">
-                                                                        <Image.Source>
-                                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                                <Binding Source="Imageres.dll" />
-                                                                                <Binding Source="14" />
-                                                                            </MultiBinding>
-                                                                        </Image.Source>
-                                                                    </Image>
+                                                                <ListBoxItem>
+                                                                    <ListBoxItem.Background>
+                                                                        <VisualBrush Stretch="Fill" Visual="{Binding ElementName=color}" />
+                                                                    </ListBoxItem.Background>
                                                                 </ListBoxItem>
                                                             </ListBox>
                                                         </StackPanel>

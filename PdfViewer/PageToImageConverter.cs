@@ -22,7 +22,7 @@ namespace PdfViewer
                         bitmapImage.Freeze();
                         GC.Collect();
                         return bitmapImage;
-                    });
+                    }).ConfigureAwait(false).GetAwaiter().GetResult();
                 }
                 catch (Exception)
                 {

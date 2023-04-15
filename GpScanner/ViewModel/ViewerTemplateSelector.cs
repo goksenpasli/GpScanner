@@ -33,7 +33,7 @@ namespace GpScanner.ViewModel
                     ? Pdf
                     : ext == ".zip"
                     ? Zip
-                    : ext == ".xps" ? Xps : ext == ".xml" ? Xml : imgext.Contains(ext) ? Img : videoext.Contains(ext) ? Vid : Empty;
+                    : ext == ".xps" ? Xps : ext is ".xml" or ".xsl" or ".xslt" or ".xaml" ? Xml : imgext.Contains(ext) ? Img : videoext.Contains(ext) ? Vid : Empty;
             }
             return null;
         }

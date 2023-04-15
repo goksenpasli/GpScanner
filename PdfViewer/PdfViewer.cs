@@ -395,8 +395,8 @@ namespace PdfViewer
         }
 
         public bool SeekingLowerPdfDpi {
-            get { return (bool)GetValue(SeekingLowerPdfDpiProperty); }
-            set { SetValue(SeekingLowerPdfDpiProperty, value); }
+            get => (bool)GetValue(SeekingLowerPdfDpiProperty);
+            set => SetValue(SeekingLowerPdfDpiProperty, value);
         }
 
         public int SeekingPdfDpi {
@@ -495,7 +495,7 @@ namespace PdfViewer
                         using PdfDocument pdfDoc = PdfDocument.Load(ms);
                         int width = (int)(pdfDoc.PageSizes[page - 1].Width / 72 * dpi);
                         int height = (int)(pdfDoc.PageSizes[page - 1].Height / 72 * dpi);
-                        System.Drawing.Image image = pdfDoc.Render(page - 1, width, height, dpi, dpi, false);
+                        using System.Drawing.Image image = pdfDoc.Render(page - 1, width, height, dpi, dpi, false);
                         BitmapImage bitmapImage = image.ToBitmapImage(ImageFormat.Jpeg);
                         bitmapImage.Freeze();
                         return bitmapImage;
@@ -716,11 +716,12 @@ namespace PdfViewer
                     int page = pdfViewer.Sayfa - 1;
                     int width = (int)(pdfDoc.PageSizes[page].Width / 72 * dpi);
                     int height = (int)(pdfDoc.PageSizes[page].Height / 72 * dpi);
-                    System.Drawing.Image image = pdfDoc.Render(page, width, height, dpi, dpi, false);
-                    pdfViewer.Source = image.ToBitmapImage(ImageFormat.Jpeg);
+                    using (System.Drawing.Image image = pdfDoc.Render(page, width, height, dpi, dpi, false))
+                    {
+                        pdfViewer.Source = image.ToBitmapImage(ImageFormat.Jpeg);
+                    }
                     pdfViewer.ToplamSayfa = pdfDoc.PageCount;
                     pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
-                    pdfViewer.Resize.Execute(null);
                 }
                 catch (Exception ex)
                 {

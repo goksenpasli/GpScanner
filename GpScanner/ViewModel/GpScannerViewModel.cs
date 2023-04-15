@@ -81,7 +81,7 @@ namespace GpScanner.ViewModel
                         IEnumerable<string> pdffilelist = Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName);
                         pdffilelist.ToArray().MergePdf().Save(PdfGeneration.GetPdfScanPath());
                         ReloadFileDatas();
-                    }).ConfigureAwait(false);
+                    });
                     return;
                 }
                 SaveFileDialog saveFileDialog = new()
@@ -1295,6 +1295,7 @@ namespace GpScanner.ViewModel
         {
             Dosyalar = GetScannerFileData();
             ChartData = GetChartsData();
+            SeçiliGün = DateTime.Today;
         }
 
         private static DispatcherTimer timer;
@@ -1303,7 +1304,7 @@ namespace GpScanner.ViewModel
 
         private readonly string[] imagefileextensions = new string[] { ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp" };
 
-        private readonly string[] supportedfilesextension = new string[] { ".pdf", ".tiff", ".tif", ".jpg", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg" };
+        private readonly string[] supportedfilesextension = new string[] { ".pdf", ".tiff", ".tif", ".jpg", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml" };
 
         private bool anyDataExists;
 
