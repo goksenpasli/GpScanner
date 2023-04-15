@@ -83,7 +83,7 @@ namespace TwainControl
         {
             if (e.PropertyName is "RotationAngle" && RotationAngle != 0)
             {
-                Resim = await Resim.RotateImageAsync(RotationAngle);
+                Resim = await Resim.RotateImageAsync(RotationAngle).ConfigureAwait(false);
                 RotationAngle = 0;
             }
         }

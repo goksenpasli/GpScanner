@@ -582,7 +582,7 @@ namespace PdfViewer
             {
                 using FileStream file = new(filename, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, true);
                 byte[] buffer = new byte[file.Length];
-                _ = await file.ReadAsync(buffer, 0, (int)file.Length);
+                _ = await file.ReadAsync(buffer, 0, (int)file.Length).ConfigureAwait(false);
                 return buffer;
             }
             catch (Exception)

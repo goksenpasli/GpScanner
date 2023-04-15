@@ -308,7 +308,9 @@
                                 </Grid>
                             </Button.Content>
                         </Button>
-                        <Button Command="{Binding ReadPdfTag}" CommandParameter="{Binding ElementName=PdfVwr, Path=PdfFilePath, Mode=OneWay}">
+                        <Button BorderBrush="Cyan"
+                            Command="{Binding ReadPdfTag}"
+                            CommandParameter="{Binding ElementName=PdfVwr, Path=PdfFilePath, Mode=OneWay}">
                             <Button.Content>
                                 <TextBlock FontFamily="Wingdings 2" FontSize="16" Text="-" />
                             </Button.Content>

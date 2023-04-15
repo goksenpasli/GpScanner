@@ -71,7 +71,9 @@ namespace TwainControl
                     double captureX, captureY;
                     captureX = mousedowncoord.X < mousemovecoord.X ? mousedowncoord.X : mousemovecoord.X;
                     captureY = mousedowncoord.Y < mousemovecoord.Y ? mousedowncoord.Y : mousemovecoord.Y;
-                    twainctrl.ImgData = BitmapMethods.CaptureScreen(captureX, captureY, width, height, scrollviewer, BitmapFrame.Create((BitmapSource)img.Source));
+                    BitmapFrame bitmapFrame = BitmapFrame.Create((BitmapSource)img.Source);
+                    bitmapFrame.Freeze();
+                    twainctrl.ImgData = BitmapMethods.CaptureScreen(captureX, captureY, width, height, scrollviewer, bitmapFrame);
                     mousedowncoord.X = mousedowncoord.Y = 0;
                     isMouseDown = false;
                     Cursor = Cursors.Arrow;

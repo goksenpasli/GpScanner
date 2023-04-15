@@ -163,7 +163,9 @@
                     <TextBlock FontFamily="Wingdings" FontSize="16" Text="ç" />
                 </Button.Content>
             </Button>
-            <Button Command="{Binding ReadPdfTag}" CommandParameter="{Binding ElementName=PdfViewer, Path=PdfFilePath, Mode=OneWay}">
+            <Button BorderBrush="Cyan"
+                Command="{Binding ReadPdfTag}"
+                CommandParameter="{Binding ElementName=PdfViewer, Path=PdfFilePath, Mode=OneWay}">
                 <Button.Content>
                     <TextBlock FontFamily="Wingdings 2" FontSize="16" Text="-" />
                 </Button.Content>

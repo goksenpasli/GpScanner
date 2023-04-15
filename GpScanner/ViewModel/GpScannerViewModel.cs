@@ -117,7 +117,7 @@ namespace GpScanner.ViewModel
                 {
                     byte[] imgdata = twainCtrl.SeçiliResim.Resim.ToTiffJpegByteArray(Format.Jpg);
                     OcrIsBusy = true;
-                    ScannedText = await imgdata.OcrAsyc(Settings.Default.DefaultTtsLang);
+                    ScannedText = await imgdata.OcrAsyc(Settings.Default.DefaultTtsLang).ConfigureAwait(false);
                     if (ScannedText != null)
                     {
                         TranslateViewModel.Metin = string.Join(" ", ScannedText.Select(z => z.Text));

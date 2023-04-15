@@ -91,7 +91,7 @@ namespace TwainControl
             DeskewImage = new RelayCommand<object>(async parameter =>
             {
                 double skewAngle = GetDeskewAngle(Scanner.CroppedImage, true);
-                Scanner.CroppedImage = await Scanner.CroppedImage.RotateImageAsync(skewAngle);
+                Scanner.CroppedImage = await Scanner.CroppedImage.RotateImageAsync(skewAngle).ConfigureAwait(false);
             }, parameter => Scanner?.CroppedImage is not null);
 
             InvertImage = new RelayCommand<object>(parameter =>
@@ -149,7 +149,7 @@ namespace TwainControl
                     await Task.Run(async () =>
                     {
                         listcroppedimages = Scanner.Resimler.Where(z => z.Seçili).SelectMany(scannedimage => CropImageToList(scannedimage.Resim, (int)Scanner.SliceCountWidth, (int)Scanner.SliceCountHeight).Select(croppedBitmap => new ScannedImage { Resim = BitmapFrame.Create(croppedBitmap) })).ToList();
-                        pdfdocument = await listcroppedimages.GeneratePdf(Format.Jpg, Paper, Settings.Default.JpegQuality, null, (int)Settings.Default.Çözünürlük);
+                        pdfdocument = await listcroppedimages.GeneratePdf(Format.Jpg, Paper, Settings.Default.JpegQuality, null, (int)Settings.Default.Çözünürlük).ConfigureAwait(false);
                     }).ConfigureAwait(false);
                     string savefolder = CreateSaveFolder("SPLIT");
                     string path = savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "pdf");
