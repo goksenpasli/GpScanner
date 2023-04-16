@@ -96,18 +96,16 @@
                                                         <Run Text="{local:Loc PAGENUMBER}" />
                                                         <Run Text="{Binding PageNumber}" />
                                                     </TextBlock>
-                                                    <StackPanel x:Name="Sp" HorizontalAlignment="Center">
-                                                        <StackPanel.Tag>
+                                                    <Pdfviewer:ShadowedImage Width="96" Height="96"
+                                                        HorizontalAlignment="Center"
+                                                        ShowShadow="True">
+                                                        <Pdfviewer:ShadowedImage.Source>
                                                             <MultiBinding Converter="{StaticResource PageToImageConverter}">
-                                                                <Binding ElementName="PdfViewer" Path="PdfFilePath" />
+                                                                <Binding ElementName="PdfViewer" IsAsync="True" Path="PdfFilePath" />
                                                                 <Binding Mode="OneWay" Path="PageNumber" />
                                                             </MultiBinding>
-                                                        </StackPanel.Tag>
-                                                        <Pdfviewer:ShadowedImage Width="96" Height="96"
-                                                            HorizontalAlignment="Center"
-                                                            ShowShadow="True"
-                                                            Source="{Binding Tag.Result, ElementName=Sp, IsAsync=True, Mode=OneWay}" />
-                                                    </StackPanel>
+                                                        </Pdfviewer:ShadowedImage.Source>
+                                                    </Pdfviewer:ShadowedImage>
                                                 </StackPanel>
                                             </CheckBox.Content>
                                         </CheckBox>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
@@ -483,7 +484,7 @@ namespace PdfViewer
             set => SetValue(ZoomProperty, value);
         }
 
-        public static async Task<BitmapImage> ConvertToImgAsync(byte[] pdffilestream, int page, int dpi)
+        public static async Task<BitmapSource> ConvertToImgAsync(byte[] pdffilestream, int page, int dpi)
         {
             try
             {
@@ -495,8 +496,8 @@ namespace PdfViewer
                         using PdfDocument pdfDoc = PdfDocument.Load(ms);
                         int width = (int)(pdfDoc.PageSizes[page - 1].Width / 72 * dpi);
                         int height = (int)(pdfDoc.PageSizes[page - 1].Height / 72 * dpi);
-                        using System.Drawing.Image image = pdfDoc.Render(page - 1, width, height, dpi, dpi, false);
-                        BitmapImage bitmapImage = image.ToBitmapImage(ImageFormat.Jpeg);
+                        using Bitmap bitmap = pdfDoc.Render(page - 1, width, height, dpi, dpi, false) as Bitmap;
+                        BitmapSource bitmapImage = bitmap.ToBitmapSource();
                         bitmapImage.Freeze();
                         return bitmapImage;
                     }).ConfigureAwait(false);

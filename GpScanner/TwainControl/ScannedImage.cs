@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using Extensions;
 
@@ -83,6 +84,12 @@ namespace TwainControl
         {
             if (e.PropertyName is "RotationAngle" && RotationAngle != 0)
             {
+                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                {
+                    Resim = await Resim.FlipImageAsync(RotationAngle).ConfigureAwait(false);
+                    RotationAngle = 0;
+                    return;
+                }
                 Resim = await Resim.RotateImageAsync(RotationAngle).ConfigureAwait(false);
                 RotationAngle = 0;
             }

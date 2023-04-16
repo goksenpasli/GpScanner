@@ -939,8 +939,9 @@
                                                     <StackPanel Background="{TemplateBinding Background}">
                                                         <TextBlock HorizontalAlignment="Center">
                                                             <Extensions:NumericUpDownControl Height="20"
-                                                                LargeChange="1" Maximum="1" Minimum="-1"
-                                                                NumericUpdownTextBoxVisibility="Collapsed" Orientation="Horizontal" SmallChange="1"
+                                                                BorderBrush="Cyan" LargeChange="1" Maximum="1"
+                                                                Minimum="-1" NumericUpdownTextBoxVisibility="Collapsed" Orientation="Horizontal"
+                                                                SmallChange="1"
                                                                 Value="{Binding RotationAngle}" />
                                                             <Run AllowDrop="True" Cursor="SizeAll" Drop="Run_Drop"
                                                                 FontFamily="Wingdings" FontSize="24" FontWeight="Bold"

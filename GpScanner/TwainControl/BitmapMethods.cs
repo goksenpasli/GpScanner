@@ -399,6 +399,32 @@ namespace TwainControl
             }).ConfigureAwait(false);
         }
 
+        public static async Task<BitmapFrame> FlipImageAsync(this BitmapFrame bitmapFrame, double angle)
+        {
+            TransformedBitmap transformedBitmap = null;
+            TransformedBitmap transformedBitmapthumb = null;
+            switch (angle)
+            {
+                case 1:
+                    transformedBitmap = new(bitmapFrame, new ScaleTransform(angle, -1, 0, 0));
+                    transformedBitmapthumb = new(bitmapFrame.Thumbnail, new ScaleTransform(angle, -1, 0, 0));
+                    break;
+                case -1:
+                    transformedBitmap = new(bitmapFrame, new ScaleTransform(angle, 1, 0, 0));
+                    transformedBitmapthumb = new(bitmapFrame.Thumbnail, new ScaleTransform(angle, 1, 0, 0));
+                    break;
+            }
+
+            transformedBitmap.Freeze();
+            transformedBitmapthumb.Freeze();
+            return await Task.Run(() =>
+            {
+                BitmapFrame frame = BitmapFrame.Create(transformedBitmap, transformedBitmapthumb);
+                frame.Freeze();
+                return frame;
+            }).ConfigureAwait(false);
+        }
+
         public static IEnumerable<int> SteppedRange(int fromInclusive, int toExclusive, int step)
         {
             for (int i = fromInclusive; i < toExclusive; i += step)

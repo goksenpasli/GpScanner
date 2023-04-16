@@ -133,6 +133,10 @@ namespace Extensions
             return System.Drawing.Color.FromArgb(sb.Color.A, sb.Color.R, sb.Color.G, sb.Color.B);
         }
 
+        [DllImport("gdi32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool DeleteObject([In] IntPtr hObject);
+
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         public static extern bool DestroyIcon(this IntPtr handle);
 
@@ -409,6 +413,15 @@ namespace Extensions
             return null;
         }
 
+        public static BitmapSource ToBitmapSource(this Bitmap bitmap)
+        {
+            BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            BitmapSource bitmapSource = BitmapSource.Create(bitmapData.Width, bitmapData.Height, bitmap.HorizontalResolution, bitmap.VerticalResolution, PixelFormats.Bgr24, null, bitmapData.Scan0, bitmapData.Stride * bitmapData.Height, bitmapData.Stride);
+            bitmapSource.Freeze();
+            bitmap.UnlockBits(bitmapData);
+            return bitmapSource;
+        }
+
         public static RenderTargetBitmap ToRenderTargetBitmap(this UIElement uiElement, double resolution = 96)
         {
             double scale = resolution / 96d;
@@ -467,7 +480,7 @@ namespace Extensions
             }
             catch (Exception ex)
             {
-                throw new ArgumentException(nameof(format),ex.Message); 
+                throw new ArgumentException(nameof(format), ex.Message);
             }
         }
 

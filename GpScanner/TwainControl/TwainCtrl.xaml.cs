@@ -2526,6 +2526,15 @@ namespace TwainControl
             }
             if (e.PropertyName is "AllImageRotationAngle" && AllImageRotationAngle != 0)
             {
+                if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                {
+                    foreach (ScannedImage image in Scanner.Resimler.Where(z => z.Seçili).ToList())
+                    {
+                        image.Resim = await image.Resim.FlipImageAsync(AllImageRotationAngle);
+                    }
+                    AllImageRotationAngle = 0;
+                    return;
+                }
                 if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                 {
                     foreach (ScannedImage image in Scanner.Resimler.Where(z => z.Seçili).ToList())
