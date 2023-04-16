@@ -29,8 +29,7 @@ namespace PdfViewer
     }
 
     [TemplatePart(Name = "ScrollVwr", Type = typeof(ScrollViewer))]
-    [TemplatePart(Name = "Back", Type = typeof(RepeatButton))]
-    [TemplatePart(Name = "Next", Type = typeof(RepeatButton))]
+    [TemplatePart(Name = "UpDown", Type = typeof(NumericUpDownControl))]
     public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     {
         public static readonly DependencyProperty AngleProperty = DependencyProperty.Register("Angle", typeof(double), typeof(PdfViewer), new PropertyMetadata(0.0));
@@ -609,17 +608,11 @@ namespace PdfViewer
             }
             if (SeekingLowerPdfDpi)
             {
-                next = GetTemplateChild("Next") as RepeatButton;
-                back = GetTemplateChild("Back") as RepeatButton;
-                if (next != null)
+                updown = GetTemplateChild("UpDown") as NumericUpDownControl;
+                if (updown != null)
                 {
-                    next.PreviewMouseLeftButtonUp -= RepeatButtonMouseLeftButtonUp;
-                    next.PreviewMouseLeftButtonUp += RepeatButtonMouseLeftButtonUp;
-                }
-                if (back != null)
-                {
-                    back.PreviewMouseLeftButtonUp -= RepeatButtonMouseLeftButtonUp;
-                    back.PreviewMouseLeftButtonUp += RepeatButtonMouseLeftButtonUp;
+                    updown.PreviewMouseLeftButtonUp -= UpDownMouseLeftButtonUp;
+                    updown.PreviewMouseLeftButtonUp += UpDownMouseLeftButtonUp;
                 }
             }
         }
@@ -643,8 +636,6 @@ namespace PdfViewer
 
         private bool autoFitContent;
 
-        private RepeatButton back;
-
         private Visibility bookmarkContentVisibility;
 
         private bool disposedValue;
@@ -652,8 +643,6 @@ namespace PdfViewer
         private Visibility dpiListVisibility = Visibility.Visible;
 
         private bool matchCase;
-
-        private RepeatButton next;
 
         private Visibility openButtonVisibility = Visibility.Collapsed;
 
@@ -684,6 +673,8 @@ namespace PdfViewer
         private Visibility tifNavigasyonButtonEtkin = Visibility.Visible;
 
         private int toplamSayfa;
+
+        private NumericUpDownControl updown;
 
         private bool wholeWord;
 
@@ -743,10 +734,22 @@ namespace PdfViewer
         {
             if (e.PropertyName is "Sayfa" && sender is PdfViewer pdfViewer && pdfViewer.PdfFilePath is not null)
             {
-                if (SeekingLowerPdfDpi && (Mouse.DirectlyOver == next || Mouse.DirectlyOver == back))
+                if (Sayfa > ToplamSayfa)
                 {
-                    Dpi = (Sayfa == 1 || Sayfa == ToplamSayfa) ? SeekingPdfDpi : DpiList.Min();
+                    Sayfa = ToplamSayfa;
                 }
+                if (Sayfa < 1)
+                {
+                    Sayfa = 1;
+                }
+                if (SeekingLowerPdfDpi)
+                {
+                    if (updown.FindVisualChildren<RepeatButton>().Any(z => z.IsMouseOver))
+                    {
+                        Dpi = (Sayfa == 1 || Sayfa == ToplamSayfa) ? SeekingPdfDpi : DpiList.Min();
+                    }
+                }
+
                 string pdfFilePath = pdfViewer.PdfFilePath;
                 Source = await ConvertToImgAsync(await ReadAllFileAsync(pdfFilePath), sayfa, pdfViewer.Dpi);
                 GC.Collect();
@@ -793,11 +796,6 @@ namespace PdfViewer
             }
         }
 
-        private void RepeatButtonMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            Dpi = SeekingPdfDpi;
-        }
-
         private void Scrollvwr_Drop(object sender, DragEventArgs e)
         {
             string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
@@ -805,6 +803,11 @@ namespace PdfViewer
             {
                 PdfFilePath = droppedfiles[0];
             }
+        }
+
+        private void UpDownMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            Dpi = SeekingPdfDpi;
         }
     }
 }

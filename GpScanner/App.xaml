@@ -155,39 +155,10 @@
                         <StackPanel IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}"
                             Orientation="Horizontal"
                             Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}">
-                            <RepeatButton x:Name="Back"
-                                Command="{Binding ViewerBack, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                ToolTip="Önceki Sayfa">
-                                <Image Width="16" Height="16">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="246" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                            </RepeatButton>
-                            <ComboBox IsEditable="True"
-                                ItemsSource="{Binding Pages, RelativeSource={RelativeSource TemplatedParent}}"
-                                SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}">
-                                <ComboBox.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <VirtualizingStackPanel />
-                                    </ItemsPanelTemplate>
-                                </ComboBox.ItemsPanel>
-                            </ComboBox>
-                            <RepeatButton x:Name="Next"
-                                Command="{Binding ViewerNext, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                ToolTip="Sonraki Sayfa">
-                                <Image Width="16" Height="16">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="247" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                            </RepeatButton>
+                            <Extensions:NumericUpDownControl LargeChange="1"
+                                Maximum="{Binding ToplamSayfa, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                Minimum="1" Orientation="Horizontal" SmallChange="1"
+                                Value="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
                             <ComboBox ItemStringFormat="{}{0} Dpi"
                                 ItemsSource="{Binding DpiList, RelativeSource={RelativeSource TemplatedParent}}"
                                 SelectedItem="{Binding Dpi, RelativeSource={RelativeSource TemplatedParent}, StringFormat=Dpi}"

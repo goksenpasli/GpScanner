@@ -10,7 +10,7 @@
     <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
     <local:PageToImageConverter x:Key="PageToImageConverter" />
     <local:PageNumberOneUpConverter x:Key="PageNumberOneUpConverter" />
-    <DataTemplate x:Key="ComboBoxItemTemplate">
+    <DataTemplate x:Key="ItemTemplate">
         <StackPanel HorizontalAlignment="Center">
             <TextBlock HorizontalAlignment="Center" Text="{Binding Mode=OneWay}" />
             <local:ShadowedImage HorizontalAlignment="Center" ShowShadow="True">
@@ -73,7 +73,7 @@
                                 <MenuItem>
                                     <MenuItem.Template>
                                         <ControlTemplate>
-                                            <ComboBox ItemTemplate="{StaticResource ComboBoxItemTemplate}"
+                                            <ComboBox ItemTemplate="{StaticResource ItemTemplate}"
                                                 ItemsSource="{Binding Pages, RelativeSource={RelativeSource AncestorType=local:PdfViewer}}"
                                                 ScrollViewer.IsDeferredScrollingEnabled="True"
                                                 SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=local:PdfViewer}, UpdateSourceTrigger=PropertyChanged}">
@@ -171,64 +171,43 @@
                                     IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}"
                                     Orientation="Horizontal"
                                     Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}">
-                                    <RepeatButton x:Name="Back"
-                                        Command="{Binding ViewerBack, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                        ToolTip="Önceki Sayfa">
+                                    <Extensions:ContentToggleButton>
                                         <Image Width="16" Height="16">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                     <Binding Source="Shell32.dll" />
-                                                    <Binding Source="246" />
+                                                    <Binding Source="19" />
                                                 </MultiBinding>
                                             </Image.Source>
                                         </Image>
-                                    </RepeatButton>
-                                    <ComboBox Height="26"
-                                        VerticalContentAlignment="Center"
-                                        IsEditable="True"
-                                        ItemTemplate="{StaticResource ComboBoxItemTemplate}"
-                                        ItemsSource="{Binding Pages, RelativeSource={RelativeSource TemplatedParent}}"
-                                        ScrollViewer.IsDeferredScrollingEnabled="True"
-                                        SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
-                                        VirtualizingPanel.CacheLength="3,3" VirtualizingPanel.CacheLengthUnit="Item"
-                                        VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Standard">
-                                        <ComboBox.ItemContainerStyle>
-                                            <Style TargetType="ComboBoxItem">
-                                                <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                                <Setter Property="Margin" Value="1" />
-                                            </Style>
-                                        </ComboBox.ItemContainerStyle>
-                                        <ComboBox.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <Extensions:VirtualizingWrapPanel Width="460" Height="300"
-                                                    CanHorizontallyScroll="False" ItemSize="140,140" StretchItems="False" />
-                                            </ItemsPanelTemplate>
-                                        </ComboBox.ItemsPanel>
-                                    </ComboBox>
-                                    <TextBlock VerticalAlignment="Center" FontWeight="Bold">
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ToplamSayfa, RelativeSource={RelativeSource TemplatedParent}}" Value="0">
-                                                        <Setter Property="Visibility" Value="Collapsed" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                        <Run Text="/" /><Run Text="{Binding ToplamSayfa, RelativeSource={RelativeSource TemplatedParent}}" />
-                                    </TextBlock>
-                                    <RepeatButton x:Name="Next"
-                                        Command="{Binding ViewerNext, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                        ToolTip="Sonraki Sayfa">
-                                        <Image Width="16" Height="16">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="247" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                    </RepeatButton>
+                                        <Extensions:ContentToggleButton.OverContent>
+                                            <ListBox VerticalContentAlignment="Center"
+                                                ItemTemplate="{StaticResource ItemTemplate}"
+                                                ItemsSource="{Binding Pages, RelativeSource={RelativeSource TemplatedParent}}"
+                                                ScrollViewer.IsDeferredScrollingEnabled="True"
+                                                SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
+                                                VirtualizingPanel.CacheLength="3,3" VirtualizingPanel.CacheLengthUnit="Item"
+                                                VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Standard">
+                                                <ListBox.ItemContainerStyle>
+                                                    <Style TargetType="ListBoxItem">
+                                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                                        <Setter Property="Margin" Value="1" />
+                                                    </Style>
+                                                </ListBox.ItemContainerStyle>
+                                                <ListBox.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <Extensions:VirtualizingWrapPanel Width="460" Height="300"
+                                                            CanHorizontallyScroll="False" ItemSize="140,140" StretchItems="False" />
+                                                    </ItemsPanelTemplate>
+                                                </ListBox.ItemsPanel>
+                                            </ListBox>
+                                        </Extensions:ContentToggleButton.OverContent>
+                                    </Extensions:ContentToggleButton>
+                                    <Extensions:NumericUpDownControl x:Name="UpDown"
+                                        LargeChange="1"
+                                        Maximum="{Binding ToplamSayfa, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                        Minimum="1" Orientation="Horizontal" SmallChange="1"
+                                        Value="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
                                 </StackPanel>
                                 <Button Grid.Column="4"
                                     Command="{Binding Yazdır, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
