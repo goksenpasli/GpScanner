@@ -14,6 +14,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Extensions;component/Themes/Skin.xaml" />
+                <ResourceDictionary Source="/PdfViewer;component/Common.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <DrawingBrush x:Key="Tesseract" Stretch="Uniform">
                 <DrawingBrush.Drawing>
@@ -155,6 +156,38 @@
                         <StackPanel IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}"
                             Orientation="Horizontal"
                             Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}">
+                            <Extensions:ContentToggleButton>
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="19" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                                <Extensions:ContentToggleButton.OverContent>
+                                    <ListBox VerticalContentAlignment="Center"
+                                        ItemTemplate="{StaticResource ItemTemplate}"
+                                        ItemsSource="{Binding Pages, RelativeSource={RelativeSource TemplatedParent}}"
+                                        ScrollViewer.IsDeferredScrollingEnabled="True"
+                                        SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
+                                        VirtualizingPanel.CacheLength="3,3" VirtualizingPanel.CacheLengthUnit="Item"
+                                        VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Standard">
+                                        <ListBox.ItemContainerStyle>
+                                            <Style TargetType="ListBoxItem">
+                                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                                <Setter Property="Margin" Value="1" />
+                                            </Style>
+                                        </ListBox.ItemContainerStyle>
+                                        <ListBox.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <Extensions:VirtualizingWrapPanel Width="460" Height="300"
+                                                    CanHorizontallyScroll="False" ItemSize="140,140" StretchItems="False" />
+                                            </ItemsPanelTemplate>
+                                        </ListBox.ItemsPanel>
+                                    </ListBox>
+                                </Extensions:ContentToggleButton.OverContent>
+                            </Extensions:ContentToggleButton>
                             <Extensions:NumericUpDownControl LargeChange="1"
                                 Maximum="{Binding ToplamSayfa, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
                                 Minimum="1" Orientation="Horizontal" SmallChange="1"

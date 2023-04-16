@@ -230,7 +230,7 @@
                                     <Slider Width="50"
                                         AutoToolTipPlacement="TopLeft" Maximum="360" Minimum="0"
                                         SmallChange="1"
-                                        Style="{StaticResource Slider}"
+                                        Style="{DynamicResource Slider}"
                                         Value="{Binding PdfWatermarkFontAngle}" />
                                 </StackPanel>
                                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
