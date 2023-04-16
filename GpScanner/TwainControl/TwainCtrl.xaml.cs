@@ -511,22 +511,6 @@ namespace TwainControl
                 }
             }, parameter => SelectedTab?.Content is PdfImportViewerControl);
 
-            LoadSingleEypFile = new RelayCommand<object>(parameter =>
-            {
-                OpenFileDialog openFileDialog = new()
-                {
-                    Filter = "Eyp Dosyası (*.eyp)|*.eyp",
-                    Multiselect = false
-                };
-                if (openFileDialog.ShowDialog() == true && parameter is PdfViewer.PdfViewer pdfviewer)
-                {
-                    using PdfDocument document = EypFileExtract(openFileDialog.FileName).Where(z => Path.GetExtension(z.ToLower()) == ".pdf").ToArray().MergePdf();
-                    string source = Path.GetTempPath() + Guid.NewGuid() + ".pdf";
-                    document.Save(source);
-                    pdfviewer.PdfFilePath = source;
-                }
-            }, parameter => true);
-
             LoadSingleUdfFile = new RelayCommand<object>(parameter =>
             {
                 OpenFileDialog openFileDialog = new()
@@ -1178,8 +1162,6 @@ namespace TwainControl
         public ICommand LoadImage { get; }
 
         public ICommand LoadPdfExtractFile { get; }
-
-        public ICommand LoadSingleEypFile { get; }
 
         public ICommand LoadSingleUdfFile { get; }
 
@@ -1988,7 +1970,7 @@ namespace TwainControl
 
         private double width;
 
-        private static List<string> EypFileExtract(string eypfilepath)
+        public static List<string> EypFileExtract(string eypfilepath)
         {
             using ZipArchive archive = ZipFile.Open(eypfilepath, ZipArchiveMode.Read);
             if (archive != null)

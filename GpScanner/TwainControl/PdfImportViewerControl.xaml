@@ -45,16 +45,6 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <WrapPanel Margin="2" Orientation="Horizontal">
-            <Button Command="{Binding LoadSingleEypFile}" CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
-                <StackPanel Orientation="Horizontal">
-                    <Image Width="16" Height="16"
-                        Source="{Binding Source='.eyp', Converter={StaticResource FilePathToIconConverter}}" />
-                    <TextBlock VerticalAlignment="Center">
-                        <Run Text="EYP" />
-                        <Run Text="{local:Loc FILE}" />
-                    </TextBlock>
-                </StackPanel>
-            </Button>
             <Extensions:NumericUpDownControl Maximum="{Binding ElementName=PdfViewer, Path=ToplamSayfa}"
                 Minimum="1" SmallChange="1"
                 Value="{Binding SayfaBaşlangıç, UpdateSourceTrigger=PropertyChanged}" />
@@ -373,7 +363,7 @@
             </Button>
         </WrapPanel>
         <Grid Grid.Row="1">
-            <Pdfviewer:PdfViewer x:Name="PdfViewer"
+            <local:EypPdfViewer x:Name="PdfViewer"
                 AutoFitContent="True" OpenButtonVisibility="Visible"
                 PreviewMouseDown="PdfImportViewerControl_MouseDown"
                 PreviewMouseMove="PdfImportViewerControl_MouseMove" PrintButtonVisibility="Visible"
