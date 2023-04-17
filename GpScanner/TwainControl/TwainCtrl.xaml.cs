@@ -345,7 +345,7 @@ namespace TwainControl
                         {
                             ScannedImage scannedimage = seçiliresimler[i];
                             byte[] imgdata = scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg);
-                            ObservableCollection<OcrData> ocrdata = await imgdata.OcrAsyc(Scanner.SelectedTtsLanguage).ConfigureAwait(false);
+                            ObservableCollection<OcrData> ocrdata = await imgdata.OcrAsyc(Scanner.SelectedTtsLanguage);
                             Dispatcher.Invoke(() =>
                             {
                                 DataBaseQrData = imgdata;
@@ -796,7 +796,7 @@ namespace TwainControl
                     }
                     byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfviewer.PdfFilePath);
                     MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfviewer.Sayfa, (int)Settings.Default.ImgLoadResolution);
-                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrame(ms, twainCtrl.SelectedPaper, false).ConfigureAwait(false);
+                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrame(ms, twainCtrl.SelectedPaper, false);
                     bitmapFrame.Freeze();
                     ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
                     twainCtrl.Scanner?.Resimler.Add(scannedImage);
@@ -1493,7 +1493,7 @@ namespace TwainControl
                 using PdfDocument outputDocument = loadfilename.ArrangePdfPages(start, end);
                 outputDocument.DefaultPdfCompression();
                 outputDocument.Save(savefilename);
-            }).ConfigureAwait(false);
+            });
         }
 
         public static List<List<T>> ChunkBy<T>(List<T> source, int chunkSize)
@@ -1575,7 +1575,7 @@ namespace TwainControl
                     inputDocument.Pages.RemoveAt(i - 1);
                 }
                 inputDocument.Save(pdffilepath);
-            }).ConfigureAwait(false);
+            });
         }
 
         public static void SaveJpgImage(BitmapFrame scannedImage, string filename)
@@ -1596,12 +1596,12 @@ namespace TwainControl
                     scanner.PdfSaveProgressValue = i / (double)images.Count;
                     if (uri != null && Settings.Default.RemoveProcessedImage)
                     {
-                        scannedimage.Resim = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(uri, 0).ConfigureAwait(false);
+                        scannedimage.Resim = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(uri, 0);
                     }
                 }
                 scanner.PdfSaveProgressValue = 0;
                 GC.Collect();
-            }).ConfigureAwait(false);
+            });
         }
 
         public static async Task SavePdfImage(BitmapFrame scannedImage, string filename, Scanner scanner, Paper paper, bool blackwhite = false)
@@ -1663,7 +1663,7 @@ namespace TwainControl
                 using FileStream stream = new(filename, FileMode.Create);
                 tifccittencoder.Save(stream);
                 scanner.SaveProgressIndeterminate = false;
-            }).ConfigureAwait(false);
+            });
         }
 
         public static void SaveTifImage(BitmapFrame scannedImage, string filename)
@@ -1683,7 +1683,7 @@ namespace TwainControl
         {
             if (bitmapFrame is not null && !string.IsNullOrEmpty(scanner.SelectedTtsLanguage))
             {
-                ObservableCollection<OcrData> ocrtext = await bitmapFrame.ToTiffJpegByteArray(Format.Jpg).OcrAsyc(scanner.SelectedTtsLanguage).ConfigureAwait(false);
+                ObservableCollection<OcrData> ocrtext = await bitmapFrame.ToTiffJpegByteArray(Format.Jpg).OcrAsyc(scanner.SelectedTtsLanguage);
                 File.WriteAllText(fileName, string.Join(" ", ocrtext.Select(z => z.Text)));
             }
         }
@@ -1694,7 +1694,7 @@ namespace TwainControl
             {
                 for (int i = 0; i < images.Count; i++)
                 {
-                    ObservableCollection<OcrData> ocrtext = await images[i].Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsyc(scanner.SelectedTtsLanguage).ConfigureAwait(false);
+                    ObservableCollection<OcrData> ocrtext = await images[i].Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsyc(scanner.SelectedTtsLanguage);
                     File.WriteAllText(Path.Combine(Path.GetDirectoryName(fileName), Path.GetFileNameWithoutExtension(fileName) + i + ".txt"), string.Join(" ", ocrtext.Select(z => z.Text)));
                 }
             }
@@ -1727,7 +1727,7 @@ namespace TwainControl
                         {
                             case ".pdf":
                                 {
-                                    byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(filename).ConfigureAwait(false);
+                                    byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(filename);
                                     if (filedata.IsValidPdfFile())
                                     {
                                         await AddPdfFile(filedata, filename);
@@ -1753,7 +1753,7 @@ namespace TwainControl
                             case ".gıf":
                             case ".bmp":
                                 {
-                                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(new Uri(filename), decodeheight, Settings.Default.DefaultPictureResizeRatio).ConfigureAwait(false);
+                                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(new Uri(filename), decodeheight, Settings.Default.DefaultPictureResizeRatio);
                                     bitmapFrame.Freeze();
                                     ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
                                     await Dispatcher.InvokeAsync(() => Scanner?.Resimler.Add(img));
@@ -1769,7 +1769,7 @@ namespace TwainControl
                                     {
                                         byte[] data = decoder.Frames[i].ToTiffJpegByteArray(Format.Jpg);
                                         MemoryStream ms = new(data);
-                                        BitmapFrame image = await BitmapMethods.GenerateImageDocumentBitmapFrame(ms, SelectedPaper).ConfigureAwait(false);
+                                        BitmapFrame image = await BitmapMethods.GenerateImageDocumentBitmapFrame(ms, SelectedPaper);
                                         image.Freeze();
                                         BitmapSource thumbimage = image.PixelWidth < image.PixelHeight ? image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Width * SelectedPaper.Height) : image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Height * SelectedPaper.Width);
                                         thumbimage.Freeze();
@@ -2017,15 +2017,15 @@ namespace TwainControl
                 using PdfDocument outputDocument = loadfilename.ExtractPdfPages(start, end);
                 outputDocument.DefaultPdfCompression();
                 outputDocument.Save(savefilename);
-            }).ConfigureAwait(false);
+            });
         }
 
         private async Task AddPdfFile(byte[] filedata, string filepath = null)
         {
-            double totalpagecount = await PdfViewer.PdfViewer.PdfPageCountAsync(filedata).ConfigureAwait(false);
+            double totalpagecount = await PdfViewer.PdfViewer.PdfPageCountAsync(filedata);
             for (int i = 1; i <= totalpagecount; i++)
             {
-                BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrame(await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, (int)Settings.Default.ImgLoadResolution).ConfigureAwait(false), SelectedPaper, Scanner.Deskew).ConfigureAwait(false);
+                BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrame(await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, (int)Settings.Default.ImgLoadResolution), SelectedPaper, Scanner.Deskew);
                 bitmapFrame.Freeze();
                 await Dispatcher.InvokeAsync(() =>
                 {
@@ -2053,7 +2053,7 @@ namespace TwainControl
                 if (e.PropertyName is "ResimData" && cameraUserControl.ResimData is not null)
                 {
                     MemoryStream ms = new(cameraUserControl.ResimData);
-                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrame(ms, SelectedPaper).ConfigureAwait(false);
+                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrame(ms, SelectedPaper);
                     bitmapFrame.Freeze();
                     Scanner.Resimler.Add(new ScannedImage() { Resim = bitmapFrame });
                     ms = null;
@@ -2171,11 +2171,9 @@ namespace TwainControl
             if (Scanner.ApplyDataBaseOcr)
             {
                 Scanner.SaveProgressBarForegroundBrush = bluesaveprogresscolor;
-                Tümünüİşaretle.Execute(null);
-                List<ScannedImage> images = Scanner.Resimler.Where(z => z.Seçili).ToList();
-                for (int i = 0; i < images.Count; i++)
+                for (int i = 0; i < Scanner.Resimler.Count; i++)
                 {
-                    ScannedImage scannedimage = images[i];
+                    ScannedImage scannedimage = Scanner.Resimler[i];
                     DataBaseTextData = await scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsyc(Scanner.SelectedTtsLanguage);
                     Scanner.PdfSaveProgressValue = i / (double)Scanner.Resimler.Count;
                 }
@@ -2194,7 +2192,7 @@ namespace TwainControl
             }
 
             OnPropertyChanged(nameof(Scanner.Resimler));
-            SeçiliListeTemizle.Execute(null);
+            Scanner.Resimler.Clear();
             twain.ScanningComplete -= Fastscan;
             Scanner.ArayüzEtkin = true;
         }
@@ -2301,7 +2299,7 @@ namespace TwainControl
                             if (ImgData is not null)
                             {
                                 MemoryStream ms = new(ImgData);
-                                BitmapFrame bitmapframe = await BitmapMethods.GenerateImageDocumentBitmapFrame(ms, SelectedPaper).ConfigureAwait(false);
+                                BitmapFrame bitmapframe = await BitmapMethods.GenerateImageDocumentBitmapFrame(ms, SelectedPaper);
                                 bitmapframe.Freeze();
                                 ScannedImage item = new() { Resim = bitmapframe };
                                 Scanner.Resimler.Add(item);
@@ -2355,7 +2353,7 @@ namespace TwainControl
             string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
             if (droppedfiles?.Length > 0)
             {
-                await Task.Run(() => AddFiles(droppedfiles, DecodeHeight)).ConfigureAwait(false);
+                await Task.Run(() => AddFiles(droppedfiles, DecodeHeight));
             }
         }
 

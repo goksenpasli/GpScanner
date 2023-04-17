@@ -509,7 +509,7 @@ namespace PdfViewer
                         BitmapSource bitmapImage = bitmap.ToBitmapSource();
                         bitmapImage.Freeze();
                         return bitmapImage;
-                    }).ConfigureAwait(false);
+                    });
             }
             catch (Exception)
             {
@@ -533,7 +533,7 @@ namespace PdfViewer
                         BitmapImage bitmapImage = image.ToBitmapImage(ImageFormat.Jpeg);
                         bitmapImage.Freeze();
                         return new MemoryStream(bitmapImage.ToTiffJpegByteArray(Format.Jpg));
-                    }).ConfigureAwait(false);
+                    });
             }
             catch (Exception)
             {
@@ -552,7 +552,7 @@ namespace PdfViewer
                         using MemoryStream ms = new(stream);
                         using PdfDocument pdfDoc = PdfDocument.Load(ms);
                         return pdfDoc.PageCount;
-                    }).ConfigureAwait(false);
+                    });
             }
             catch (Exception)
             {
@@ -592,7 +592,7 @@ namespace PdfViewer
             {
                 using FileStream file = new(filename, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, true);
                 byte[] buffer = new byte[file.Length];
-                _ = await file.ReadAsync(buffer, 0, (int)file.Length).ConfigureAwait(false);
+                _ = await file.ReadAsync(buffer, 0, (int)file.Length);
                 return buffer;
             }
             catch (Exception)

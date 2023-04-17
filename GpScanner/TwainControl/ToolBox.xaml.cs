@@ -91,7 +91,7 @@ namespace TwainControl
             DeskewImage = new RelayCommand<object>(async parameter =>
             {
                 double skewAngle = GetDeskewAngle(Scanner.CroppedImage, true);
-                Scanner.CroppedImage = await Scanner.CroppedImage.RotateImageAsync(skewAngle).ConfigureAwait(false);
+                Scanner.CroppedImage = await Scanner.CroppedImage.RotateImageAsync(skewAngle);
             }, parameter => Scanner?.CroppedImage is not null);
 
             InvertImage = new RelayCommand<object>(parameter =>
@@ -149,8 +149,8 @@ namespace TwainControl
                     await Task.Run(async () =>
                     {
                         listcroppedimages = Scanner.Resimler.Where(z => z.Seçili).SelectMany(scannedimage => CropImageToList(scannedimage.Resim, (int)Scanner.SliceCountWidth, (int)Scanner.SliceCountHeight).Select(croppedBitmap => new ScannedImage { Resim = BitmapFrame.Create(croppedBitmap) })).ToList();
-                        pdfdocument = await listcroppedimages.GeneratePdf(Format.Jpg, Paper, Settings.Default.JpegQuality, null, (int)Settings.Default.Çözünürlük).ConfigureAwait(false);
-                    }).ConfigureAwait(false);
+                        pdfdocument = await listcroppedimages.GeneratePdf(Format.Jpg, Paper, Settings.Default.JpegQuality, null, (int)Settings.Default.Çözünürlük);
+                    });
                     string savefolder = CreateSaveFolder("SPLIT");
                     string path = savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "pdf");
                     pdfdocument.Save(path);
@@ -180,7 +180,7 @@ namespace TwainControl
                     {
                         listcroppedimages = Scanner.Resimler.Where(z => z.Seçili).ToList();
                         File.WriteAllBytes(path, listcroppedimages.CombineImages(orientation).ToTiffJpegByteArray(Format.Jpg));
-                    }).ConfigureAwait(false);
+                    });
                     WebAdreseGit.Execute(savefolder);
                     listcroppedimages = null;
                     if (Settings.Default.RemoveProcessedImage)
@@ -236,7 +236,7 @@ namespace TwainControl
                                 imageindex++;
                                 ToolBoxPdfMergeProgressValue = imageindex / (double)seçiliresimler.Count();
                                 GC.Collect();
-                            }).ConfigureAwait(false);
+                            });
                         }
                     }
                 }

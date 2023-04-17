@@ -177,7 +177,7 @@ namespace TwainControl
             if (deskew)
             {
                 double deskewAngle = (double)ToolBox.GetDeskewAngle(image, true);
-                skewedimage = await image.RotateImageAsync(deskewAngle).ConfigureAwait(false);
+                skewedimage = await image.RotateImageAsync(deskewAngle);
                 skewedimage.Freeze();
             }
 
@@ -372,7 +372,7 @@ namespace TwainControl
                     Source = null;
                     dv = null;
                     return rtb;
-                }).ConfigureAwait(false);
+                });
             }
             catch (Exception ex)
             {
@@ -396,7 +396,7 @@ namespace TwainControl
                 BitmapFrame frame = BitmapFrame.Create(transformedBitmap, transformedBitmapthumb);
                 frame.Freeze();
                 return frame;
-            }).ConfigureAwait(false);
+            });
         }
 
         public static async Task<BitmapFrame> FlipImageAsync(this BitmapFrame bitmapFrame, double angle)
@@ -422,7 +422,7 @@ namespace TwainControl
                 BitmapFrame frame = BitmapFrame.Create(transformedBitmap, transformedBitmapthumb);
                 frame.Freeze();
                 return frame;
-            }).ConfigureAwait(false);
+            });
         }
 
         public static IEnumerable<int> SteppedRange(int fromInclusive, int toExclusive, int step)

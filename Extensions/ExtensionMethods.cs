@@ -362,7 +362,7 @@ namespace Extensions
                 TransformedBitmap tb = new(bfPhoto, newTransform);
                 tb.Freeze();
                 return tb;
-            }).ConfigureAwait(false);
+            });
         }
 
         public static string SetUniqueFile(this string path, string file, string extension, string seperator = "_")

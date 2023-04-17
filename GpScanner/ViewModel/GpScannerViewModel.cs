@@ -98,7 +98,7 @@ namespace GpScanner.ViewModel
                             using PdfDocument outputDocument = new();
                             IEnumerable<string> pdffilelist = Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName);
                             pdffilelist.ToArray().MergePdf().Save(saveFileDialog.FileName);
-                        }).ConfigureAwait(false);
+                        });
                     }
                     catch (Exception ex)
                     {
@@ -400,7 +400,7 @@ namespace GpScanner.ViewModel
                     BatchDialogOpen = true;
                 }
                 Filesavetask = Task.WhenAll(Tasks);
-                await Filesavetask.ConfigureAwait(false);
+                await Filesavetask;
                 if (Filesavetask?.IsCompleted == true && Shutdown)
                 {
                     ViewModel.Shutdown.DoExitWin(ViewModel.Shutdown.EWX_SHUTDOWN);
@@ -450,7 +450,7 @@ namespace GpScanner.ViewModel
                 }
                 BatchDialogOpen = true;
                 Filesavetask = Task.WhenAll(Tasks);
-                await Filesavetask.ConfigureAwait(false);
+                await Filesavetask;
                 if (Filesavetask?.IsCompleted == true && Shutdown)
                 {
                     ViewModel.Shutdown.DoExitWin(ViewModel.Shutdown.EWX_SHUTDOWN);
@@ -1286,7 +1286,7 @@ namespace GpScanner.ViewModel
                         pfdocument.Save($"{batchsavefolder}\\{Path.ChangeExtension(e.Name, ".pdf")}");
                         GC.Collect();
                         PdfBatchRunning = false;
-                    }).ConfigureAwait(false);
+                    });
                 }
             };
         }
