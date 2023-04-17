@@ -553,4 +553,7 @@ BELGE EKLE</value>
   <data name="RESTARTAPP" xml:space="preserve">
     <value>Uygulamanın Yeniden Başlatılması Gerekir.</value>
   </data>
+  <data name="REMOVESELECTED" xml:space="preserve">
+    <value>Seçili Resimi Silmek İstiyor musun?</value>
+  </data>
 </root>

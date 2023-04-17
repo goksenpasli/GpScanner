@@ -155,6 +155,14 @@ namespace PdfViewer
                 }
             });
 
+            ScrollToCurrentPage = new RelayCommand<object>(parameter =>
+            {
+                if (parameter is ListBox listBox)
+                {
+                    listBox.ScrollIntoView(Sayfa);
+                }
+            });
+
             SearchPdfText = new RelayCommand<object>(delegate
             {
                 using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
@@ -357,6 +365,8 @@ namespace PdfViewer
             get => (ScrollBarVisibility)GetValue(ScrollBarVisibleProperty);
             set => SetValue(ScrollBarVisibleProperty, value);
         }
+
+        public RelayCommand<object> ScrollToCurrentPage { get; }
 
         public PdfMatch SearchPdfMatch {
             get => searchPdfMatch; set {

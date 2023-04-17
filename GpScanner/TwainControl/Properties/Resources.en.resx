@@ -547,4 +547,7 @@ TO FILE</value>
   <data name="RESTARTAPP" xml:space="preserve">
     <value>RESTARTAPP</value>
   </data>
+  <data name="REMOVESELECTED" xml:space="preserve">
+    <value>Do You Want to Delete the Selected Image?</value>
+  </data>
 </root>

@@ -384,6 +384,9 @@ INSERISCI</value>
   <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
     <value>Elimina i file elaborati dall'elenco</value>
   </data>
+  <data name="REMOVESELECTED" xml:space="preserve">
+    <value>Vuoi eliminare l'immagine selezionata?</value>
+  </data>
   <data name="REPLACEPAGE" xml:space="preserve">
     <value>Scambia pagine</value>
   </data>

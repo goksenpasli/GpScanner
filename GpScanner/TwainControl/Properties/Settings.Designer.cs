@@ -239,5 +239,17 @@ namespace TwainControl.Properties {
                 this["BwThreshold"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool DirectRemoveImage {
+            get {
+                return ((bool)(this["DirectRemoveImage"]));
+            }
+            set {
+                this["DirectRemoveImage"] = value;
+            }
+        }
     }
 }

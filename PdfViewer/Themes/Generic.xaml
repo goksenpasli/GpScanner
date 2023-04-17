@@ -5,7 +5,7 @@
     xmlns:pdfium="clr-namespace:PdfiumViewer;assembly=PdfiumViewer">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Extensions;component/Themes/Skin.xaml" />
-		<ResourceDictionary Source="/PdfViewer;component/Common.xaml"/>
+        <ResourceDictionary Source="/PdfViewer;component/Common.xaml" />
     </ResourceDictionary.MergedDictionaries>
     <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
     <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
@@ -142,7 +142,7 @@
                                     IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}"
                                     Orientation="Horizontal"
                                     Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}">
-                                    <Extensions:ContentToggleButton>
+                                    <Extensions:ContentToggleButton Command="{Binding ScrollToCurrentPage, RelativeSource={RelativeSource TemplatedParent}}" CommandParameter="{Binding ElementName=Lb}">
                                         <Image Width="16" Height="16">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -152,7 +152,8 @@
                                             </Image.Source>
                                         </Image>
                                         <Extensions:ContentToggleButton.OverContent>
-                                            <ListBox VerticalContentAlignment="Center"
+                                            <ListBox x:Name="Lb"
+                                                VerticalContentAlignment="Center"
                                                 ItemTemplate="{StaticResource ItemTemplate}"
                                                 ItemsSource="{Binding Pages, RelativeSource={RelativeSource TemplatedParent}}"
                                                 ScrollViewer.IsDeferredScrollingEnabled="True"

@@ -98,11 +98,23 @@ namespace TwainControl
                 }
                 ScannedImage item = parameter as ScannedImage;
                 UndoImageIndex = Scanner.Resimler?.IndexOf(item);
-                _ = Scanner.Resimler?.Remove(item);
                 UndoImage = item;
                 CanUndoImage = true;
-                ToolBox.ResetCropMargin();
-                GC.Collect();
+                if (Settings.Default.DirectRemoveImage)
+                {
+                    RemoveSelectedImage(item);
+                    return;
+                }
+                if (MessageBox.Show(Translation.GetResStringValue("REMOVESELECTED"), Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                {
+                    RemoveSelectedImage(item);
+                }
+                void RemoveSelectedImage(ScannedImage item)
+                {
+                    _ = Scanner.Resimler?.Remove(item);
+                    ToolBox.ResetCropMargin();
+                    GC.Collect();
+                }
             }, parameter => Scanner.ArayüzEtkin);
 
             ResimSilGeriAl = new RelayCommand<object>(parameter =>
@@ -1493,6 +1505,34 @@ namespace TwainControl
                 .ToList();
         }
 
+        public static List<string> EypFileExtract(string eypfilepath)
+        {
+            using ZipArchive archive = ZipFile.Open(eypfilepath, ZipArchiveMode.Read);
+            if (archive != null)
+            {
+                List<string> data = new();
+                ZipArchiveEntry üstveri = archive.Entries.FirstOrDefault(entry => entry.Name == "NihaiOzet.xml");
+                string source = Path.GetTempPath() + Guid.NewGuid() + ".xml";
+                üstveri?.ExtractToFile(source, true);
+                XDocument xdoc = XDocument.Load(source);
+                if (xdoc != null)
+                {
+                    foreach (string file in xdoc.Descendants().Select(z => Path.GetFileName((string)z.Attribute("URI"))).Where(z => !string.IsNullOrEmpty(z)))
+                    {
+                        ZipArchiveEntry zipArchiveEntry = archive.Entries.FirstOrDefault(entry => entry.Name == file);
+                        if (zipArchiveEntry != null)
+                        {
+                            string destinationFileName = Path.GetTempPath() + Guid.NewGuid() + Path.GetExtension(file.ToLower());
+                            zipArchiveEntry.ExtractToFile(destinationFileName, true);
+                            data.Add(destinationFileName);
+                        }
+                    }
+                }
+                return data;
+            }
+            return null;
+        }
+
         public static BitmapFrame GenerateBitmapFrame(BitmapSource bitmapSource, Paper thumbnailpaper)
         {
             bitmapSource.Freeze();
@@ -1970,34 +2010,6 @@ namespace TwainControl
 
         private double width;
 
-        public static List<string> EypFileExtract(string eypfilepath)
-        {
-            using ZipArchive archive = ZipFile.Open(eypfilepath, ZipArchiveMode.Read);
-            if (archive != null)
-            {
-                List<string> data = new();
-                ZipArchiveEntry üstveri = archive.Entries.FirstOrDefault(entry => entry.Name == "NihaiOzet.xml");
-                string source = Path.GetTempPath() + Guid.NewGuid() + ".xml";
-                üstveri?.ExtractToFile(source, true);
-                XDocument xdoc = XDocument.Load(source);
-                if (xdoc != null)
-                {
-                    foreach (string file in xdoc.Descendants().Select(z => Path.GetFileName((string)z.Attribute("URI"))).Where(z => !string.IsNullOrEmpty(z)))
-                    {
-                        ZipArchiveEntry zipArchiveEntry = archive.Entries.FirstOrDefault(entry => entry.Name == file);
-                        if (zipArchiveEntry != null)
-                        {
-                            string destinationFileName = Path.GetTempPath() + Guid.NewGuid() + Path.GetExtension(file.ToLower());
-                            zipArchiveEntry.ExtractToFile(destinationFileName, true);
-                            data.Add(destinationFileName);
-                        }
-                    }
-                }
-                return data;
-            }
-            return null;
-        }
-
         private static async Task SaveFile(string loadfilename, string savefilename, int start, int end)
         {
             await Task.Run(() =>
@@ -2024,7 +2036,7 @@ namespace TwainControl
                 });
                 bitmapFrame = null;
             }
-            await Dispatcher.InvokeAsync(() => PdfLoadProgressValue = 0);
+            _ = await Dispatcher.InvokeAsync(() => PdfLoadProgressValue = 0);
             filedata = null;
             GC.Collect();
         }

@@ -384,6 +384,9 @@
   <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
     <value>حذف الملفات المعالجة من القائمة</value>
   </data>
+  <data name="REMOVESELECTED" xml:space="preserve">
+    <value>هل تريد حذف الصورة المختارة؟</value>
+  </data>
   <data name="REPLACEPAGE" xml:space="preserve">
     <value>تبديل الصفحات.</value>
   </data>

@@ -4,7 +4,6 @@
     xmlns:Controls="clr-namespace:Extensions.Controls;assembly=Extensions"
     xmlns:Converter="clr-namespace:TwainControl.Converter"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
-    xmlns:PresentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
     xmlns:System="clr-namespace:System;assembly=mscorlib"
     xmlns:TwainNative="clr-namespace:TwainWpf.TwainNative;assembly=TwainWpf"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -22,6 +21,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/TwainControl;component/Slider.xaml" />
                 <ResourceDictionary Source="/Extensions;component/Themes/Skin.xaml" />
+                <ResourceDictionary Source="/TwainControl;component/CommonResource.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <Converter:SplitConverter x:Key="SplitConverter" />
@@ -31,15 +31,6 @@
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
-            <LinearGradientBrush x:Key="Colorfull" PresentationOptions:Freeze="true" StartPoint="0,0.5" EndPoint="1,0.5">
-                <GradientStop Offset="0.0" Color="Red" />
-                <GradientStop Offset="0.17" Color="Orange" />
-                <GradientStop Offset="0.33" Color="Yellow" />
-                <GradientStop Offset="0.5" Color="Green" />
-                <GradientStop Offset="0.67" Color="Blue" />
-                <GradientStop Offset="0.83" Color="Indigo" />
-                <GradientStop Offset="1.0" Color="Violet" />
-            </LinearGradientBrush>
             <Style x:Key="ToggleButtonAnimationStyle" TargetType="{x:Type ToggleButton}">
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding Animate}" Value="true">
