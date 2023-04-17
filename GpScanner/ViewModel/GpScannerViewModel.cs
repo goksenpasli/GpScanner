@@ -117,14 +117,14 @@ namespace GpScanner.ViewModel
                 {
                     byte[] imgdata = twainCtrl.SeçiliResim.Resim.ToTiffJpegByteArray(Format.Jpg);
                     OcrIsBusy = true;
-                    ScannedText = await imgdata.OcrAsyc(Settings.Default.DefaultTtsLang).ConfigureAwait(false);
+                    ScannedText = await imgdata.OcrAsyc(Settings.Default.DefaultTtsLang);
                     if (ScannedText != null)
                     {
                         TranslateViewModel.Metin = string.Join(" ", ScannedText.Select(z => z.Text));
                         TranslateViewModel.TaramaGeçmiş.Add(TranslateViewModel.Metin);
                         OcrIsBusy = false;
                     }
-                    Result result = await Task.Run(() => GetImageBarcodeResult(twainCtrl.SeçiliResim.Resim)).ConfigureAwait(false);
+                    Result result = await Task.Run(() => GetImageBarcodeResult(twainCtrl.SeçiliResim.Resim));
                     if (result != null)
                     {
                         BarcodeContent = result.Text;
