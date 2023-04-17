@@ -725,9 +725,8 @@ namespace PdfViewer
                     pdfViewer.ToplamSayfa = pdfDoc.PageCount;
                     pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    throw new ArgumentException(nameof(pdfViewer), ex);
                 }
             }
         }

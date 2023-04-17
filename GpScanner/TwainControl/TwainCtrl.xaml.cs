@@ -286,45 +286,31 @@ namespace TwainControl
                         {
                             case 1:
                                 await SavePdfImage(seçiliresimler, saveFileDialog.FileName, Scanner, SelectedPaper, false, (int)Settings.Default.ImgLoadResolution);
-                                if (Settings.Default.RemoveProcessedImage)
-                                {
-                                    Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
-                                }
-                                return;
+                                break;
 
                             case 2:
                                 await SavePdfImage(seçiliresimler, saveFileDialog.FileName, Scanner, SelectedPaper, true, (int)Settings.Default.ImgLoadResolution);
-                                if (Settings.Default.RemoveProcessedImage)
-                                {
-                                    Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
-                                }
-                                return;
+                                break;
 
                             case 3:
                                 await SaveJpgImage(seçiliresimler, saveFileDialog.FileName, Scanner);
-                                if (Settings.Default.RemoveProcessedImage)
-                                {
-                                    Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
-                                }
-                                return;
+                                break;
 
                             case 4:
                                 await SaveTifImage(seçiliresimler, saveFileDialog.FileName, Scanner);
-                                if (Settings.Default.RemoveProcessedImage)
-                                {
-                                    Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
-                                }
-                                return;
+                                break;
 
                             case 5:
                                 await SaveTxtFile(seçiliresimler, saveFileDialog.FileName, Scanner);
-                                if (Settings.Default.RemoveProcessedImage)
-                                {
-                                    Dispatcher.Invoke(() => SeçiliListeTemizle.Execute(null));
-                                }
                                 break;
                         }
-                    });
+                    }).ContinueWith((_) => Dispatcher.Invoke(() =>
+                    {
+                        if (Settings.Default.RemoveProcessedImage)
+                        {
+                            SeçiliListeTemizle.Execute(null);
+                        }
+                    }));
                 }
             }, parameter =>
             {
