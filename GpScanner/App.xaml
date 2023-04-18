@@ -8,6 +8,7 @@
     xmlns:ViewModel="clr-namespace:GpScanner.ViewModel"
     xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
     xmlns:local="clr-namespace:GpScanner" xmlns:properties="clr-namespace:GpScanner.Properties"
+    xmlns:tesseract="clr-namespace:Ocr;assembly=Ocr"
     xmlns:twain="clr-namespace:TwainControl;assembly=TwainControl"
     Startup="Application_Startup" StartupUri="MainWindow.xaml">
     <Application.Resources>
@@ -306,7 +307,9 @@
                                 <TextBlock FontFamily="Wingdings" FontSize="16" Text="ç" />
                             </Button.Content>
                         </Button>
-                        <Button Command="{Binding DataContext.OcrPdfThumbnailPage, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
+                        <Button Command="{Binding DataContext.OcrPdfThumbnailPage, RelativeSource={RelativeSource AncestorType=Window}}"
+                            CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}"
+                            IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">
                             <Button.Content>
                                 <Grid>
                                     <ProgressBar IsIndeterminate="{Binding DataContext.OcrIsBusy, RelativeSource={RelativeSource AncestorType=Window}}" />

@@ -9,7 +9,7 @@ namespace TwainWpf
     /// <summary>
     /// DataSourceManager
     /// </summary>
-    /// <seealso cref="System.IDisposable" />
+    /// <seealso cref="IDisposable" />
     public class DataSourceManager : IDisposable
     {
         public static readonly Identity DefaultApplicationId = new Identity()

@@ -252,9 +252,9 @@ namespace Tesseract
         ///
         /// The general usage protocol is:
         /// <list type="number">
-        /// 	<item>Whenever you want a new reference to an existing <see cref="Pix" /> call <see cref="Pix.Clone" />.</item>
+        /// 	<item>Whenever you want a new reference to an existing <see cref="Pix" /> call <see cref="Clone" />.</item>
         ///     <item>
-        /// 		Always call <see cref="Pix.Dispose" /> on all references. This decrements the reference count and
+        /// 		Always call <see cref="Dispose" /> on all references. This decrements the reference count and
         /// 		will destroy the pix when the reference count reaches zero.
         /// 	</item>
         /// </list>

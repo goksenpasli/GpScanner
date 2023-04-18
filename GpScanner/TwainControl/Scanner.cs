@@ -868,7 +868,7 @@ namespace TwainControl
 
         private bool allowPrint = true;
 
-        private bool applyDataBaseOcr = true;
+        private bool applyDataBaseOcr = Ocr.Ocr.TesseractDataExists;
 
         private bool applyPdfSaveOcr;
 

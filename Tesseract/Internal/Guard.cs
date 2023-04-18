@@ -10,7 +10,7 @@ namespace Tesseract.Internal
         /// <summary>
         /// Ensures the given <paramref name="condition"/> is true.
         /// </summary>
-        /// <exception cref="System.ArgumentException">The <paramref name="condition"/> is not true.</exception>
+        /// <exception cref="ArgumentException">The <paramref name="condition"/> is not true.</exception>
         /// <param name="paramName">The name of the parameter, used when generating the exception.</param>
         /// <param name="condition">The value of the parameter to check.</param>
         [DebuggerHidden]
@@ -25,7 +25,7 @@ namespace Tesseract.Internal
         /// <summary>
         /// Ensures the given <paramref name="condition"/> is true.
         /// </summary>
-        /// <exception cref="System.ArgumentException">The <paramref name="condition"/> is not true.</exception>
+        /// <exception cref="ArgumentException">The <paramref name="condition"/> is not true.</exception>
         /// <param name="paramName">The name of the parameter, used when generating the exception.</param>
         /// <param name="condition">The value of the parameter to check.</param>
         /// <param name="message">The error message.</param>
@@ -41,7 +41,7 @@ namespace Tesseract.Internal
         /// <summary>
         /// Ensures the given <paramref name="condition"/> is true.
         /// </summary>
-        /// <exception cref="System.ArgumentException">The <paramref name="condition"/> is not true.</exception>
+        /// <exception cref="ArgumentException">The <paramref name="condition"/> is not true.</exception>
         /// <param name="paramName">The name of the parameter, used when generating the exception.</param>
         /// <param name="condition">The value of the parameter to check.</param>
         /// <param name="message">The error message.</param>
@@ -67,7 +67,7 @@ namespace Tesseract.Internal
         /// <summary>
         /// Ensures the given <paramref name="value"/> is not null or empty.
         /// </summary>
-        /// <exception cref="System.ArgumentException">The <paramref name="value"/> is null or empty.</exception>
+        /// <exception cref="ArgumentException">The <paramref name="value"/> is null or empty.</exception>
         /// <param name="paramName">The name of the parameter, used when generating the exception.</param>
         /// <param name="value">The value of the parameter to check.</param>
         [DebuggerHidden]

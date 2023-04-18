@@ -107,7 +107,7 @@ namespace UdfParser
 
                 inline.FontSize = xmlparagraphcontent.Size == 0 ? 16 : xmlparagraphcontent.Size * 4 / 3;
 
-                inline.FontFamily = string.IsNullOrWhiteSpace(xmlparagraphcontent.Family) ? new System.Windows.Media.FontFamily("Times New Roman") : new System.Windows.Media.FontFamily(xmlparagraphcontent.Family);
+                inline.FontFamily = string.IsNullOrWhiteSpace(xmlparagraphcontent.Family) ? new FontFamily("Times New Roman") : new FontFamily(xmlparagraphcontent.Family);
                 if (xmlparagraphcontent.Bold)
                 {
                     inline.FontWeight = FontWeights.Bold;

@@ -8,7 +8,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:GpScanner"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:properties="clr-namespace:GpScanner.Properties"
-    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:tesseract="clr-namespace:Ocr;assembly=Ocr"
     xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
     xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
     Title="GPSCANNER"
@@ -522,8 +522,19 @@
                             </Grid.ColumnDefinitions>
                             <Button HorizontalContentAlignment="Stretch"
                                 Command="{Binding OcrPage, Mode=OneWay}"
-                                CommandParameter="{Binding DataContext, ElementName=TwainCtrl}"
-                                IsEnabled="{Binding OcrIsBusy, Converter={StaticResource ReverseBooleanConverter}}">
+                                CommandParameter="{Binding DataContext, ElementName=TwainCtrl}">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding OcrIsBusy}" Value="true">
+                                                <Setter Property="IsEnabled" Value="False" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}" Value="false">
+                                                <Setter Property="IsEnabled" Value="False" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
                                 <Grid>
                                     <ProgressBar Background="{x:Null}" IsIndeterminate="{Binding OcrIsBusy}" />
                                     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">

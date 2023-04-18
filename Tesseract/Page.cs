@@ -58,7 +58,7 @@ namespace Tesseract
         }
 
         /// <summary>
-        /// Creates a <see cref="PageIterator"/> object that is used to iterate over the page's layout as defined by the current <see cref="Page.RegionOfInterest"/>.
+        /// Creates a <see cref="PageIterator"/> object that is used to iterate over the page's layout as defined by the current <see cref="RegionOfInterest"/>.
         /// </summary>
         /// <returns></returns>
         public PageIterator AnalyseLayout()
@@ -179,7 +179,7 @@ namespace Tesseract
         }
 
         /// <summary>
-        /// Creates a <see cref="ResultIterator"/> object that is used to iterate over the page as defined by the current <see cref="Page.RegionOfInterest"/>.
+        /// Creates a <see cref="ResultIterator"/> object that is used to iterate over the page as defined by the current <see cref="RegionOfInterest"/>.
         /// </summary>
         /// <returns></returns>
         public ResultIterator GetIterator()

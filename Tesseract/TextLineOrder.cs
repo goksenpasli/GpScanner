@@ -11,7 +11,7 @@
     /// </para>
     /// <para>
     /// Note that only some combinations makes sense for example <see cref="WritingDirection.LeftToRight"/> implies
-    /// <see cref="TextLineOrder.TopToBottom" />.
+    /// <see cref="TopToBottom" />.
     /// </para>
     /// </remarks>
     public enum TextLineOrder : int

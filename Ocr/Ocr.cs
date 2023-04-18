@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Tesseract;
@@ -11,6 +12,14 @@ namespace Ocr
     public static class Ocr
     {
         public static CancellationTokenSource ocrcancellationToken;
+
+        static Ocr()
+        {
+            TesseractPath = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + @"\tessdata";
+            TesseractDataExists = Directory.EnumerateFiles(TesseractPath).Any(z => string.Equals(Path.GetExtension(z), ".traineddata", StringComparison.OrdinalIgnoreCase));
+        }
+
+        public static bool TesseractDataExists { get; }
 
         public static async Task<ObservableCollection<OcrData>> OcrAsyc(this byte[] dosya, string lang)
         {
@@ -40,7 +49,7 @@ namespace Ocr
             return await Task.Run(() => dosya.GetOcrData(lang), ocrcancellationToken.Token);
         }
 
-        private static string TesseractPath { get; } = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + @"\tessdata";
+        private static string TesseractPath { get; }
 
         private static ObservableCollection<OcrData> GetOcrData(this byte[] dosya, string lang)
         {
@@ -80,7 +89,7 @@ namespace Ocr
             ObservableCollection<OcrData> ocrdata = new();
             do
             {
-                if (iterator.TryGetBoundingBox(pageIteratorLevel, out Tesseract.Rect rect))
+                if (iterator.TryGetBoundingBox(pageIteratorLevel, out Rect rect))
                 {
                     System.Windows.Rect imgrect = new(rect.X1, rect.Y1, rect.Width, rect.Height);
                     OcrData item = new() { Text = iterator.GetText(pageIteratorLevel), Rect = imgrect };

@@ -280,7 +280,7 @@ namespace Tesseract
 
             private readonly Pix pix;
 
-            private void OnPageDisposed(object sender, System.EventArgs e)
+            private void OnPageDisposed(object sender, EventArgs e)
             {
                 page.Disposed -= OnPageDisposed;
 
@@ -334,7 +334,7 @@ namespace Tesseract
         #region Config
 
         /// <summary>
-        /// Gets or sets default <see cref="PageSegMode" /> mode used by <see cref="Tesseract.TesseractEngine.Process(Pix, Rect, PageSegMode?)" />.
+        /// Gets or sets default <see cref="PageSegMode" /> mode used by <see cref="TesseractEngine.Process(Pix, Rect, PageSegMode?)" />.
         /// </summary>
         public PageSegMode DefaultPageSegMode {
             get;
