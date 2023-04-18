@@ -286,23 +286,23 @@ namespace TwainControl
                         {
                             case 1:
                                 await SavePdfImage(seçiliresimler, saveFileDialog.FileName, Scanner, SelectedPaper, false, (int)Settings.Default.ImgLoadResolution);
-                                break;
+                                return;
 
                             case 2:
                                 await SavePdfImage(seçiliresimler, saveFileDialog.FileName, Scanner, SelectedPaper, true, (int)Settings.Default.ImgLoadResolution);
-                                break;
+                                return;
 
                             case 3:
                                 await SaveJpgImage(seçiliresimler, saveFileDialog.FileName, Scanner);
-                                break;
+                                return;
 
                             case 4:
                                 await SaveTifImage(seçiliresimler, saveFileDialog.FileName, Scanner);
-                                break;
+                                return;
 
                             case 5:
                                 await SaveTxtFile(seçiliresimler, saveFileDialog.FileName, Scanner);
-                                break;
+                                return;
                         }
                     }).ContinueWith((_) => Dispatcher.Invoke(() =>
                     {
