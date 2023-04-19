@@ -141,7 +141,7 @@ namespace TwainControl
                     {
                         Filter = "Tif Resmi (*.tif)|*.tif|Jpg Resmi (*.jpg)|*.jpg|Pdf Dosyası (*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf|Xps Dosyası (*.xps)|*.xps|Txt Dosyası (*.txt)|*.txt",
                         FileName = Scanner.SaveFileName,
-                        FilterIndex = 3,
+                        FilterIndex = SaveIndex + 1,
                     };
                     if (saveFileDialog.ShowDialog() == true)
                     {
@@ -1305,6 +1305,17 @@ namespace TwainControl
 
         public ICommand SaveFileList { get; }
 
+        public int SaveIndex {
+            get => saveIndex; set {
+
+                if (saveIndex != value)
+                {
+                    saveIndex = value;
+                    OnPropertyChanged(nameof(SaveIndex));
+                }
+            }
+        }
+
         public ICommand SaveProfile { get; }
 
         public int SayfaBaşlangıç {
@@ -1967,6 +1978,8 @@ namespace TwainControl
         private double pdfWatermarkFontSize = 72d;
 
         private string pdfWaterMarkText;
+
+        private int saveIndex = 2;
 
         private int sayfaBaşlangıç = 1;
 

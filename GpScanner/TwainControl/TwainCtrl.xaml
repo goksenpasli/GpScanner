@@ -960,13 +960,27 @@
                                                                     </Style>
                                                                 </Run.Style>
                                                             </Run>
-                                                            <Hyperlink BaselineAlignment="Center"
-                                                                Command="{Binding ElementName=UserControl, Path=DataContext.Kaydet}"
-                                                                CommandParameter="{Binding Resim}"
-                                                                TextDecorations="None">
-                                                                <Image Width="24" Height="24"
-                                                                    Source="/TwainControl;component/Icons/save.png" />
-                                                            </Hyperlink>
+                                                            <InlineUIContainer BaselineAlignment="Center">
+                                                                <Extensions:ContentToggleButton Background="{x:Null}"
+                                                                    BorderBrush="{x:Null}"
+                                                                    IsEnabled="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}">
+                                                                    <Image Width="24" Height="24"
+                                                                        Source="/TwainControl;component/Icons/save.png" />
+                                                                    <Extensions:ContentToggleButton.Style>
+                                                                        <Style TargetType="Extensions:ContentToggleButton">
+                                                                            <Style.Triggers>
+                                                                                <Trigger Property="IsChecked" Value="True">
+                                                                                    <Setter Property="OverContent">
+                                                                                        <Setter.Value>
+                                                                                            <local:SaveDialogUserControl DataContext="{Binding Path=DataContext, Source={x:Reference UserControl}}" />
+                                                                                        </Setter.Value>
+                                                                                    </Setter>
+                                                                                </Trigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </Extensions:ContentToggleButton.Style>
+                                                                </Extensions:ContentToggleButton>
+                                                            </InlineUIContainer>
                                                             <Hyperlink BaselineAlignment="Center"
                                                                 Command="{Binding ElementName=UserControl, Path=DataContext.ResimSil}"
                                                                 CommandParameter="{Binding Mode=OneWay}"

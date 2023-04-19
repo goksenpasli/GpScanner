@@ -76,7 +76,9 @@
                 </GroupBox>
                 <GroupBox>
                     <StackPanel>
-                        <Extensions:ButtonedTextBox CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed"
+                        <Extensions:ButtonedTextBox CopyButtonVisibility="Collapsed"
+                            Description="{local:Loc USERNAME}"
+                            OpenButtonVisibility="Collapsed"
                             Text="{Binding Scanner.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <Extensions:ButtonedTextBox CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed"
                             Text="{Binding Scanner.CreatorAppName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
