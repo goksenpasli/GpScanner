@@ -900,9 +900,7 @@
                                 </StackPanel>
                             </TabItem.Header>
                             <ListBox x:Name="Lb"
-                                Extensions:DragDropExtension.ScrollOnDragDrop="True"
-                                d:ItemsSource="{d:SampleData ItemCount=5}"
-                                AllowDrop="True"
+                                Extensions:DragDropExtension.ScrollOnDragDrop="True" AllowDrop="True"
                                 Background="{StaticResource BorderBackground}"
                                 Drop="ListBox_Drop" IsSynchronizedWithCurrentItem="False"
                                 ItemsSource="{Binding Scanner.Resimler, Mode=OneWay}"
@@ -975,6 +973,9 @@
                                                                                             <local:SaveDialogUserControl DataContext="{Binding Path=DataContext, Source={x:Reference UserControl}}" />
                                                                                         </Setter.Value>
                                                                                     </Setter>
+                                                                                </Trigger>
+                                                                                <Trigger Property="IsChecked" Value="False">
+                                                                                    <Setter Property="OverContent" Value="{x:Null}" />
                                                                                 </Trigger>
                                                                             </Style.Triggers>
                                                                         </Style>

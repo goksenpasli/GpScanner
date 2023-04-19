@@ -114,6 +114,9 @@
     <Compile Include="DocumentViewerWindow.xaml.cs">
       <DependentUpon>DocumentViewerWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FtpUserControl.xaml.cs">
+      <DependentUpon>FtpUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -146,6 +149,10 @@
     <Compile Include="ViewModel\ViewerTemplateSelector.cs" />
     <Compile Include="ViewModel\WindowExtensions.cs" />
     <Page Include="DocumentViewerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FtpUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
