@@ -89,7 +89,7 @@
             <HeaderedContentControl Header="{local:Loc JPEGQUALITY}">
                 <Slider AutoToolTipPlacement="TopLeft" Maximum="95" Minimum="10"
                     SmallChange="1"
-                    Style="{StaticResource Slider}"
+                    Style="{DynamicResource Slider}"
                     Value="{Binding Path=JpegQuality, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
             </HeaderedContentControl>
             <HeaderedContentControl Header="{local:Loc RES}">
@@ -109,7 +109,7 @@
                 </HeaderedContentControl.Header>
                 <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="255"
                     Minimum="1" SmallChange="1"
-                    Style="{StaticResource Slider}"
+                    Style="{DynamicResource Slider}"
                     ToolTip="{local:Loc BW}"
                     Value="{Binding Path=BwThreshold, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
             </HeaderedContentControl>

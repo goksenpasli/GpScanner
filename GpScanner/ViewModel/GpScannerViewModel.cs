@@ -1156,24 +1156,6 @@ namespace GpScanner.ViewModel
             return null;
         }
 
-        public static void WriteAppExceptions(DispatcherUnhandledExceptionEventArgs e)
-        {
-            if (IsAdministrator)
-            {
-                using EventLog eventLog = new("GPSCANNER");
-                eventLog.Source = "GPSCANNER";
-                eventLog.WriteEntry(e.Exception.Message, EventLogEntryType.Error, 101, 1);
-                eventLog.WriteEntry(e.Exception.StackTrace, EventLogEntryType.Error, 101, 1);
-            }
-            else
-            {
-                string path = $@"{Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName)}\error.log";
-                File.AppendAllText(path, DateTime.Now.ToString());
-                File.AppendAllText(path, e.Exception.Message + Environment.NewLine);
-                File.AppendAllText(path, e.Exception.StackTrace + Environment.NewLine);
-            }
-        }
-
         public void AddBarcodeToList()
         {
             if (BarcodeContent is not null)

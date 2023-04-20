@@ -10,11 +10,12 @@
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
     d:DesignHeight="200" d:DesignWidth="450"
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
-    UseLayoutRounding="True"
+    Loaded="UserControl_Loaded" UseLayoutRounding="True"
     mc:Ignorable="d">
     <UserControl.Resources>
         <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
         <Extensions:FilePathToFileDescriptionConverter x:Key="FilePathToFileDescriptionConverter" />
+        <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
     </UserControl.Resources>
     <GroupBox>
         <Grid>
@@ -22,7 +23,12 @@
                 <RowDefinition />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <ListBox Background="{x:Null}"
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <ListBox x:Name="Lb"
+                Background="{x:Null}"
                 BorderBrush="{x:Null}"
                 SelectedIndex="{Binding SaveIndex}">
                 <ListBox.ItemContainerStyle>
@@ -99,15 +105,40 @@
                     </StackPanel>
                 </ListBoxItem>
             </ListBox>
+            <Image x:Name="Img"
+                Grid.Column="1"
+                Width="128" Height="128"
+                Source="{Binding RelativeSource={RelativeSource AncestorType=local:SaveDialogUserControl}, Path=PreviewImage, Mode=OneWay}">
+                <Image.ToolTip>
+                    <ToolTip DataContext="{Binding PlacementTarget.Source, RelativeSource={RelativeSource Mode=Self}}">
+                        <Image Source="{Binding Mode=OneWay}" />
+                    </ToolTip>
+                </Image.ToolTip>
+            </Image>
             <Button Grid.Row="1"
                 Command="{Binding Kaydet}"
-                CommandParameter="{Binding SeçiliResim.Resim, Mode=OneWay}">
+                CommandParameter="{Binding SeçiliResim.Resim, Mode=OneWay}"
+                IsEnabled="{Binding ElementName=Lb, Path=SelectedItem, Converter={StaticResource NullableToBooleanConverter}}">
                 <StackPanel Orientation="Horizontal">
                     <Image Width="32" Height="32"
                         Source="/TwainControl;component/Icons/save.png" />
                     <TextBlock VerticalAlignment="Center" Text="{local:Loc SAVESELECTED}" />
                 </StackPanel>
             </Button>
+            <HeaderedContentControl Grid.Row="1" Grid.Column="1"
+                IsEnabled="{Binding ElementName=Img, Path=Source, Converter={StaticResource NullableToBooleanConverter}}">
+                <HeaderedContentControl.Header>
+                    <TextBlock>
+                        <Run Text="{local:Loc BW}" />
+                        <Run Text="{local:Loc SETTİNGS}" />
+                    </TextBlock>
+                </HeaderedContentControl.Header>
+                <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="255"
+                    Minimum="1" SmallChange="1"
+                    Style="{DynamicResource Slider}"
+                    ToolTip="{local:Loc BW}"
+                    Value="{Binding Path=BwThreshold, Mode=TwoWay, Delay=100, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+            </HeaderedContentControl>
         </Grid>
     </GroupBox>
 </UserControl>

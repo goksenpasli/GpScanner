@@ -46,7 +46,7 @@ namespace GpScanner
 
         private void Current_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            GpScannerViewModel.WriteAppExceptions(e);
+            _ = MessageBox.Show(e.Exception.Message);
             e.Handled = true;
         }
     }
