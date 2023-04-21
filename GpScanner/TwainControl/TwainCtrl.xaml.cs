@@ -2344,6 +2344,11 @@ namespace TwainControl
 
         private async void ListBox_Drop(object sender, DragEventArgs e)
         {
+            await ListBoxDropFile(e);
+        }
+
+        public async Task ListBoxDropFile(DragEventArgs e)
+        {
             if (fileloadtask?.IsCompleted == false)
             {
                 _ = MessageBox.Show(Application.Current.MainWindow, Translation.GetResStringValue("TRANSLATEPENDING"));

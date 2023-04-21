@@ -202,6 +202,9 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="tessdata\placeholder.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="yardım.chm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -247,9 +250,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\FoldEffect.ps" />
-    <None Include="tessdata\placeholder.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\flag-of-France.png" />

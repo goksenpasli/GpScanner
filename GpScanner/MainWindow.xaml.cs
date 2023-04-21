@@ -100,6 +100,11 @@ namespace GpScanner
             }
         }
 
+        private async void ListBox_Drop(object sender, DragEventArgs e)
+        {
+            await TwainCtrl.ListBoxDropFile(e);
+        }
+
         private void MW_ContentRendered(object sender, EventArgs e)
         {
             WindowExtensions.SystemMenu(this);

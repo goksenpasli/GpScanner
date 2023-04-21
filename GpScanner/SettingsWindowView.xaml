@@ -354,40 +354,43 @@
                     </Grid.ColumnDefinitions>
                     <GroupBox>
                         <GroupBox.Header>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock VerticalAlignment="Center"
-                                    FontWeight="Bold"
-                                    Text="{twainctrl:Loc BATCH}" />
-                                <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                    IsChecked="{Binding ApplyPdfSaveOcr, Source={x:Static twainctrl:ToolBox.Scanner}}">
-                                    <CheckBox.Content>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock>
-                                                <Run BaselineAlignment="Center" Text="{twainctrl:Loc FILE}" />
-                                                <Run BaselineAlignment="Center" Text="{twainctrl:Loc OCR}" />
-                                            </TextBlock>
-                                            <Image Width="16" Height="16"
-                                                Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
-                                        </StackPanel>
-                                    </CheckBox.Content>
-                                </CheckBox>
-                                <ToggleButton IsChecked="{Binding Shutdown}">
-                                    <Image Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="27" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                </ToggleButton>
-                                <TextBlock Width="75"
-                                    VerticalAlignment="Center"
-                                    FontWeight="Bold" Foreground="Red"
-                                    Text="{twainctrl:Loc CLOSECOMP}"
-                                    TextTrimming="CharacterEllipsis"
-                                    ToolTip="{twainctrl:Loc WARNREBOOT}"
-                                    Visibility="{Binding Shutdown, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center"
+                                        FontWeight="Bold"
+                                        Text="{twainctrl:Loc BATCH}" />
+                                    <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                        IsChecked="{Binding ApplyPdfSaveOcr, Source={x:Static twainctrl:ToolBox.Scanner}}">
+                                        <CheckBox.Content>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock>
+                                                    <Run BaselineAlignment="Center" Text="{twainctrl:Loc FILE}" />
+                                                    <Run BaselineAlignment="Center" Text="{twainctrl:Loc OCR}" />
+                                                </TextBlock>
+                                                <Image Width="16" Height="16"
+                                                    Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
+                                            </StackPanel>
+                                        </CheckBox.Content>
+                                    </CheckBox>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <ToggleButton IsChecked="{Binding Shutdown}">
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="27" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </ToggleButton>
+                                    <TextBlock VerticalAlignment="Center"
+                                        FontWeight="Bold" Foreground="Red"
+                                        Text="{twainctrl:Loc CLOSECOMP}"
+                                        TextTrimming="CharacterEllipsis"
+                                        ToolTip="{twainctrl:Loc WARNREBOOT}"
+                                        Visibility="{Binding Shutdown, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                </StackPanel>
                             </StackPanel>
                         </GroupBox.Header>
                         <Grid>
@@ -439,45 +442,42 @@
                             </CheckBox>
                         </UniformGrid>
                     </GroupBox>
+
                 </Grid>
-                <GroupBox Grid.Row="6">
-                    <Extensions:GraphControl Series="{Binding ChartData}" />
+                <GroupBox Grid.Row="6" Header="FTP">
+                    <UniformGrid Rows="2">
+                        <StackPanel>
+                            <Extensions:ButtonedTextBox Description="FTP" OpenButtonVisibility="Collapsed"
+                                Text="{Binding FtpSite, UpdateSourceTrigger=PropertyChanged}"
+                                ToolTip="ftp://adress:portnumber" />
+                            <Extensions:ButtonedTextBox Description="{twainctrl:Loc USERNAME}"
+                                OpenButtonVisibility="Collapsed"
+                                Text="{Binding FtpUserName, UpdateSourceTrigger=PropertyChanged}" />
+                            <Extensions:ButtonedTextBox Description="{twainctrl:Loc PASSWORD}"
+                                OpenButtonVisibility="Collapsed"
+                                Text="{Binding FtpPassword, UpdateSourceTrigger=PropertyChanged}" />
+                            <Button Command="{Binding AddFtpSites}" Content="{twainctrl:Loc APPLY}" />
+                        </StackPanel>
+                        <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding FtpSites, Source={x:Static properties:Settings.Default}}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="1" Orientation="Horizontal">
+                                        <TextBlock Margin="0,0,5,0" VerticalAlignment="Center"
+                                            FontStyle="Italic"
+                                            Text="{Binding Mode=OneWay}">
+                                            <Hyperlink Command="{Binding DataContext.RemoveSelectedFtp, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding Mode=OneWay}">
+                                                <Run Text="{twainctrl:Loc DELETE}" />
+                                            </Hyperlink>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </UniformGrid>
                 </GroupBox>
             </Grid>
         </GroupBox>
-        <local:TesseractView Grid.Column="1" />
-        <GroupBox Grid.Row="1" Grid.Column="1"
-            Header="FTP">
-            <UniformGrid Rows="2">
-                <StackPanel>
-                    <Extensions:ButtonedTextBox Description="FTP" OpenButtonVisibility="Collapsed"
-                        Text="{Binding FtpSite, UpdateSourceTrigger=PropertyChanged}"
-                        ToolTip="ftp://adress:portnumber" />
-                    <Extensions:ButtonedTextBox Description="{twainctrl:Loc USERNAME}"
-                        OpenButtonVisibility="Collapsed"
-                        Text="{Binding FtpUserName, UpdateSourceTrigger=PropertyChanged}" />
-                    <Extensions:ButtonedTextBox Description="{twainctrl:Loc PASSWORD}"
-                        OpenButtonVisibility="Collapsed"
-                        Text="{Binding FtpPassword, UpdateSourceTrigger=PropertyChanged}" />
-                    <Button Command="{Binding AddFtpSites}" Content="{twainctrl:Loc APPLY}" />
-                </StackPanel>
-                <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding FtpSites, Source={x:Static properties:Settings.Default}}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Margin="1" Orientation="Horizontal">
-                                <TextBlock Margin="0,0,5,0" VerticalAlignment="Center"
-                                    FontStyle="Italic"
-                                    Text="{Binding Mode=OneWay}">
-                                    <Hyperlink Command="{Binding DataContext.RemoveSelectedFtp, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding Mode=OneWay}">
-                                        <Run Text="{twainctrl:Loc DELETE}" />
-                                    </Hyperlink>
-                                </TextBlock>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </UniformGrid>
-        </GroupBox>
+        <local:TesseractView Grid.RowSpan="2" Grid.Column="1" />
         <StatusBar Grid.Row="2" Grid.ColumnSpan="2"
             Background="Maroon">
             <StatusBarItem>

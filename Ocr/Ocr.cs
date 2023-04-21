@@ -15,8 +15,13 @@ namespace Ocr
 
         static Ocr()
         {
-            TesseractPath = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + @"\tessdata";
-            TesseractDataExists = Directory.EnumerateFiles(TesseractPath).Any(z => string.Equals(Path.GetExtension(z), ".traineddata", StringComparison.OrdinalIgnoreCase));
+            TesseractPath = $@"{Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName)}\tessdata";
+            if (Directory.Exists(TesseractPath))
+            {
+                TesseractDataExists = Directory.EnumerateFiles(TesseractPath).Any(z => string.Equals(Path.GetExtension(z), ".traineddata", StringComparison.OrdinalIgnoreCase));
+                return;
+            }
+            TesseractDataExists = false;
         }
 
         public static bool TesseractDataExists { get; }

@@ -611,6 +611,16 @@
                             </MultiBinding>
                         </Image.Source>
                     </Image>
+                    <Extensions:ContentToggleButton Background="{x:Null}" BorderBrush="{x:Null}">
+                        <TextBlock FontFamily="Webdings" FontSize="16" Foreground="GreenYellow"
+                            Text="" />
+                        <Extensions:ContentToggleButton.OverContent>
+                            <GroupBox>
+                                <Extensions:GraphControl Width="530" Height="240"
+                                    Series="{Binding ChartData}" />
+                            </GroupBox>
+                        </Extensions:ContentToggleButton.OverContent>
+                    </Extensions:ContentToggleButton>
                     <Extensions:ContentToggleButton Background="{x:Null}"
                         BorderBrush="{x:Null}"
                         ContentHorizontalOffset="150" ContentVerticalOffset="-5"
@@ -633,6 +643,7 @@
                                 <GroupBox Header="{twainctrl:Loc DOCUMENT}">
                                     <ListBox Extensions:DragDropExtension.ScrollOnDragDrop="True" AllowDrop="True"
                                         Background="{StaticResource BorderBackground}"
+                                        Drop="ListBox_Drop"
                                         ItemsSource="{Binding Source={x:Reference TwainCtrl}, Path=Scanner.Resimler}"
                                         SelectionMode="Extended" VirtualizingPanel.CacheLength="3,3"
                                         VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.IsVirtualizingWhenGrouping="True"

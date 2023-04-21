@@ -172,7 +172,7 @@ namespace Extensions
                 Point point1 = default;
                 StreamGeometry geometry = new();
                 using StreamGeometryContext gc = geometry.Open();
-                gc.BeginFigure(new Point(thickness / 2, ActualHeight - (Series[0].ChartValue / max * ActualHeight)), false, false);
+                gc.BeginFigure(new Point(thickness / 2, ActualHeight - (Series[0].ChartValue / max * ActualHeight * 9 / 10)), false, false);
                 for (int i = 1; i <= Series.Count; i++)
                 {
                     graphdrawinggroup = new();
