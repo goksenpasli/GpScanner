@@ -239,6 +239,8 @@ namespace GpScanner.ViewModel
 
             ExploreFile = new RelayCommand<object>(parameter => OpenFolderAndSelectItem(Path.GetDirectoryName(parameter as string), Path.GetFileName(parameter as string)), parameter => true);
 
+            CheckUpdate = new RelayCommand<object>(parameter => _ = Process.Start("twux32.exe", "https://github.com/goksenpasli/GpScanner/releases/download/2.0/GpScanner-Setup.txt"), parameter => File.Exists("twux32.exe"));
+
             SavePatchProfile = new RelayCommand<object>(parameter =>
             {
                 StringBuilder sb = new();
@@ -663,6 +665,8 @@ namespace GpScanner.ViewModel
                 }
             }
         }
+
+        public ICommand CheckUpdate { get; }
 
         public ICommand CycleSelectedDocuments { get; }
 

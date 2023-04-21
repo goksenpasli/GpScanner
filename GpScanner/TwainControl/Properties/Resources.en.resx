@@ -550,4 +550,7 @@ TO FILE</value>
   <data name="REMOVESELECTED" xml:space="preserve">
     <value>Do You Want to Delete the Selected Image?</value>
   </data>
+  <data name="UPDATE" xml:space="preserve">
+    <value>UPDATE</value>
+  </data>
 </root>

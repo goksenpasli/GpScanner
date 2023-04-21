@@ -556,4 +556,7 @@ BELGE EKLE</value>
   <data name="REMOVESELECTED" xml:space="preserve">
     <value>Seçili Resimi Silmek İstiyor musun?</value>
   </data>
+  <data name="UPDATE" xml:space="preserve">
+    <value>GÜNCELLE</value>
+  </data>
 </root>

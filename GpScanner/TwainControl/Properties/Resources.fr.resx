@@ -531,6 +531,9 @@ AJOUTER</value>
   <data name="UNREGSTI" xml:space="preserve">
     <value>SUPPRIMER DU MENU DU NAVIGATEUR</value>
   </data>
+  <data name="UPDATE" xml:space="preserve">
+    <value>MISE À JOUR</value>
+  </data>
   <data name="USERNAME" xml:space="preserve">
     <value>[NOM D'UTILISATEUR]</value>
   </data>

@@ -531,6 +531,9 @@ INSERISCI</value>
   <data name="UNREGSTI" xml:space="preserve">
     <value>RIMUOVI DAL MENU' DEL BROWSER</value>
   </data>
+  <data name="UPDATE" xml:space="preserve">
+    <value>AGGIORNAMENTO</value>
+  </data>
   <data name="USERNAME" xml:space="preserve">
     <value>[NOME UTENTE]</value>
   </data>

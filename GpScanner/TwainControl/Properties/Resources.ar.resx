@@ -531,6 +531,9 @@
   <data name="UNREGSTI" xml:space="preserve">
     <value>إزالة من قائمة المتصفح</value>
   </data>
+  <data name="UPDATE" xml:space="preserve">
+    <value>تحديث</value>
+  </data>
   <data name="USERNAME" xml:space="preserve">
     <value>[اسم االمستخدم]</value>
   </data>
