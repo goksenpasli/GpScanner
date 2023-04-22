@@ -213,6 +213,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DvdBurner\DvdBurner.csproj">
+      <Project>{c6c8a1de-a0cc-4a51-9c5c-41a5bd328d9f}</Project>
+      <Name>DvdBurner</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Extensions\Extensions.csproj">
       <Project>{22b9a127-5e74-4534-bfc4-a3349544c52c}</Project>
       <Name>Extensions</Name>

@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -239,7 +240,7 @@ namespace GpScanner.ViewModel
 
             ExploreFile = new RelayCommand<object>(parameter => OpenFolderAndSelectItem(Path.GetDirectoryName(parameter as string), Path.GetFileName(parameter as string)), parameter => true);
 
-            CheckUpdate = new RelayCommand<object>(parameter => _ = Process.Start("twux32.exe", "https://github.com/goksenpasli/GpScanner/releases/download/2.0/GpScanner-Setup.txt"), parameter => File.Exists("twux32.exe"));
+            CheckUpdate = new RelayCommand<object>(parameter => _ = Process.Start("twux32.exe", $"/w:{new WindowInteropHelper(Application.Current.MainWindow).Handle} https://github.com/goksenpasli/GpScanner/releases/download/2.0/GpScanner-Setup.txt"), parameter => File.Exists("twux32.exe"));
 
             SavePatchProfile = new RelayCommand<object>(parameter =>
             {
