@@ -260,7 +260,7 @@ namespace Extensions
 
         private RenderTargetBitmap RenderVisual(FrameworkElement frameworkElement)
         {
-            RenderTargetBitmap rtb = new((int)frameworkElement.ActualWidth, (int)frameworkElement.ActualHeight, 96, 96, PixelFormats.Default);
+            RenderTargetBitmap rtb = new((int)frameworkElement.ActualWidth, (int)frameworkElement.ActualHeight, 72, 72, PixelFormats.Default);
             rtb.Render(frameworkElement);
             rtb.Freeze();
             return rtb;

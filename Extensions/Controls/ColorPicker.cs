@@ -95,6 +95,8 @@ namespace Extensions
 
         public static readonly DependencyProperty PredefinedColorVisibilityProperty = DependencyProperty.Register("PredefinedColorVisibility", typeof(Visibility), typeof(ColorPicker), new PropertyMetadata(Visibility.Collapsed));
 
+        public static readonly DependencyProperty SliderVisibilityProperty = DependencyProperty.Register("SliderVisibility", typeof(Visibility), typeof(ColorPicker), new PropertyMetadata(Visibility.Visible));
+
         public static readonly DependencyProperty SpectrumGridBackgroundProperty = DependencyProperty.Register("SpectrumGridBackground", typeof(Brush), typeof(ColorPicker), new PropertyMetadata(Brushes.Transparent));
 
         public RGB Selected = new();
@@ -154,6 +156,11 @@ namespace Extensions
         }
 
         public GridLength SelectorLength { get; set; } = new(1, GridUnitType.Star);
+
+        public Visibility SliderVisibility {
+            get { return (Visibility)GetValue(SliderVisibilityProperty); }
+            set { SetValue(SliderVisibilityProperty, value); }
+        }
 
         public Brush SpectrumGridBackground {
             get => (Brush)GetValue(SpectrumGridBackgroundProperty);

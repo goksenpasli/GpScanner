@@ -616,8 +616,28 @@
                             Text="" />
                         <Extensions:ContentToggleButton.OverContent>
                             <GroupBox>
-                                <Extensions:GraphControl Width="530" Height="240"
-                                    Series="{Binding ChartData}" />
+                                <StackPanel>
+                                    <UniformGrid Columns="4">
+                                        <Extensions:ColorPicker x:Name="Dot"
+                                            Height="60"
+                                            HexCode="#FF0000FF" SliderVisibility="Collapsed" />
+                                        <Extensions:ColorPicker x:Name="Line"
+                                            Height="60"
+                                            HexCode="#FF0000FF" SliderVisibility="Collapsed" />
+                                        <Extensions:ColorPicker x:Name="Text"
+                                            Height="60"
+                                            HexCode="#FF000000" SliderVisibility="Collapsed" />
+                                        <Extensions:ColorPicker x:Name="Value"
+                                            Height="60"
+                                            HexCode="#FFFF0000" SliderVisibility="Collapsed" />
+                                    </UniformGrid>
+                                    <Extensions:GraphControl Width="530" Height="240"
+                                        DotColor="{Binding Source={x:Reference Dot}, Path=HexCode, Mode=OneWay}"
+                                        LineColor="{Binding Source={x:Reference Line}, Path=HexCode, Mode=OneWay}"
+                                        Series="{Binding ChartData}"
+                                        TextColor="{Binding Source={x:Reference Text}, Path=HexCode, Mode=OneWay}"
+                                        ValueColor="{Binding Source={x:Reference Value}, Path=HexCode, Mode=OneWay}" />
+                                </StackPanel>
                             </GroupBox>
                         </Extensions:ContentToggleButton.OverContent>
                     </Extensions:ContentToggleButton>

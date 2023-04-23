@@ -16,6 +16,7 @@
             </ResourceDictionary.MergedDictionaries>
             <local:FilePathToFileNameConverter x:Key="FilePathToFileNameConverter" />
             <local:TimespanToSecondsConverter x:Key="TimespanToSecondsConverter" />
+            <local:DoubleToThicknessConverter x:Key="DoubleToThicknessConverter" />
             <local:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter" />
             <local:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -471,19 +472,24 @@
                         <local:ContentToggleButton.OverContent>
                             <StackPanel Background="{StaticResource GroupBoxBackGround}" Orientation="Horizontal">
                                 <Button x:Name="Capture"
-                                    Width="24" Height="24"
                                     VerticalContentAlignment="Center"
                                     Click="Capture_Click" Content="µ" FontFamily="Webdings"
                                     FontSize="20" Foreground="Blue" />
-                                <UniformGrid Columns="3">
+                                <UniformGrid Columns="5">
                                     <local:NumericUpDownControl FontFamily="Segoe UI" Maximum="20" Minimum="1"
                                         SmallChange="1"
                                         Value="{Binding ThumbHeightCount}" />
                                     <local:NumericUpDownControl FontFamily="Segoe UI" Maximum="20" Minimum="1"
                                         SmallChange="1"
                                         Value="{Binding ThumbWidthCount}" />
+                                    <ToggleButton Content="" FontFamily="Webdings"
+                                        IsChecked="{Binding ThumbShowTime}" />
+                                    <Border BorderBrush="White" BorderThickness="2">
+                                        <local:NumericUpDownControl FontFamily="Segoe UI" FontSize="20" Maximum="30"
+                                            Minimum="0" SmallChange="1"
+                                            Value="{Binding ThumbMargin, Converter={StaticResource DoubleToThicknessConverter}}" />
+                                    </Border>
                                     <Button x:Name="CaptureThumb"
-                                        Width="24" Height="24"
                                         VerticalContentAlignment="Center"
                                         Click="CaptureThumb_Click" Content="µ" FontFamily="Webdings"
                                         FontSize="20" Foreground="Blue" />

@@ -100,8 +100,9 @@
                             Grid.Row="1" Grid.Column="0"
                             Fill="{Binding SpectrumGridBackground, RelativeSource={RelativeSource TemplatedParent}}"
                             Opacity="1" />
-                        <TextBox Grid.Row="2" Grid.Column="0"
-                            IsReadOnly="True"
+                        <local:ButtonedTextBox Grid.Row="2" Grid.Column="0"
+                            IsReadOnly="True" OpenButtonVisibility="Collapsed" PasteButtonVisibility="Collapsed"
+                            ResetButtonVisibility="Collapsed"
                             Text="{Binding HexCode, RelativeSource={RelativeSource TemplatedParent}}"
                             TextBlock.Foreground="{Binding HexCode, RelativeSource={RelativeSource TemplatedParent}}"
                             Visibility="{Binding HexCodeVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
@@ -125,6 +126,7 @@
                         <Slider Grid.Row="3" Grid.ColumnSpan="2"
                             Maximum="255" Minimum="0"
                             Style="{StaticResource Slider}"
+                            Visibility="{Binding SliderVisibility, RelativeSource={RelativeSource TemplatedParent}}"
                             Value="{Binding Alpha, RelativeSource={RelativeSource TemplatedParent}}" />
                     </Grid>
                     <ControlTemplate.Triggers>

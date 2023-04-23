@@ -33,7 +33,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-      <LangVersion>preview</LangVersion>
+    <LangVersion>preview</LangVersion>
     <Prefer32Bit>false</Prefer32Bit>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
@@ -74,6 +74,7 @@
     </Compile>
     <Compile Include="Controls\VirtualizingWrapPanel.cs" />
     <Compile Include="Converters\CloneConverter.cs" />
+    <Compile Include="Converters\DoubleToThicknessConverter.cs" />
     <Compile Include="Converters\FilePathToFileNameConverter.cs" />
     <Compile Include="Converters\TimespanToTickConverter.cs" />
     <Compile Include="Converters\VisibilityToBooleanConverter.cs" />

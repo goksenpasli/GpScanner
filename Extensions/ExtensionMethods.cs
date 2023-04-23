@@ -427,7 +427,7 @@ namespace Extensions
             double scale = resolution / 96d;
             uiElement.Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
             uiElement.Arrange(new Rect(uiElement.DesiredSize));
-            RenderTargetBitmap bmp = new((int)(scale * uiElement.RenderSize.Width), (int)(scale * uiElement.RenderSize.Height), scale * 96, scale * 96, PixelFormats.Default);
+            RenderTargetBitmap bmp = new((int)(scale * uiElement.RenderSize.Width), (int)(scale * uiElement.RenderSize.Height), scale * 96, scale * 96, PixelFormats.Pbgra32);
             bmp.Render(uiElement);
             bmp.Freeze();
             return bmp;

@@ -105,7 +105,11 @@ namespace Extensions.Controls
 
         public static readonly DependencyProperty ThumbHeightCountProperty = DependencyProperty.Register("ThumbHeightCount", typeof(int), typeof(MediaViewer), new PropertyMetadata(1));
 
+        public static readonly DependencyProperty ThumbMarginProperty = DependencyProperty.Register("ThumbMargin", typeof(Thickness), typeof(MediaViewer), new PropertyMetadata(new Thickness(5)));
+
         public static readonly DependencyProperty ThumbnailsVisibleProperty = DependencyProperty.Register("ThumbnailsVisible", typeof(bool), typeof(MediaViewer), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+        public static readonly DependencyProperty ThumbShowTimeProperty = DependencyProperty.Register("ThumbShowTime", typeof(bool), typeof(MediaViewer), new PropertyMetadata(true));
 
         public static readonly DependencyProperty ThumbWidthCountProperty = DependencyProperty.Register("ThumbWidthCount", typeof(int), typeof(MediaViewer), new PropertyMetadata(1));
 
@@ -408,9 +412,21 @@ namespace Extensions.Controls
         }
 
         [Description("Video Controls"), Category("Controls")]
+        public Thickness ThumbMargin {
+            get => (Thickness)GetValue(ThumbMarginProperty);
+            set => SetValue(ThumbMarginProperty, value);
+        }
+
+        [Description("Video Controls"), Category("Controls")]
         public bool ThumbnailsVisible {
             get => (bool)GetValue(ThumbnailsVisibleProperty);
             set => SetValue(ThumbnailsVisibleProperty, value);
+        }
+
+        [Description("Video Controls"), Category("Controls")]
+        public bool ThumbShowTime {
+            get => (bool)GetValue(ThumbShowTimeProperty);
+            set => SetValue(ThumbShowTimeProperty, value);
         }
 
         [Description("Video Controls"), Category("Controls")]
@@ -735,22 +751,51 @@ namespace Extensions.Controls
                 string picturesfolder = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
                 UniformGrid uniformgrid = new() { Rows = ThumbHeightCount, Columns = ThumbWidthCount };
                 MediaVolume = 0;
+
                 for (int i = 1; i <= ThumbHeightCount * ThumbWidthCount; i++)
                 {
                     Player.Play();
                     Player.Position = new TimeSpan(i * (EndTimeSpan.Ticks / (ThumbWidthCount * ThumbHeightCount)));
-                    await Task.Delay(250);
-                    byte[] data = grid.ToRenderTargetBitmap().Resize(0.25).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg, 60);
+                    byte[] screendata = null;
+                    RenderTargetBitmap rtb = grid.ToRenderTargetBitmap();
+                    _ = await Task.Delay(500).ContinueWith((_) => screendata = rtb.Resize(0.25).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg, 60));
+                    Grid visualgrid = new();
+                    visualgrid.RowDefinitions.Add(new RowDefinition()
+                    {
+                        Height = new GridLength(1, GridUnitType.Star)
+                    });
+                    visualgrid.RowDefinitions.Add(new RowDefinition()
+                    {
+                        Height = new GridLength(1, GridUnitType.Star)
+                    });
+
                     Image image = new();
                     BitmapImage bitmapImage = new();
                     bitmapImage.BeginInit();
-                    bitmapImage.StreamSource = new MemoryStream(data);
+                    bitmapImage.StreamSource = new MemoryStream(screendata);
                     bitmapImage.EndInit();
                     bitmapImage.Freeze();
                     image.BeginInit();
+                    image.Margin = ThumbMargin;
                     image.Source = bitmapImage;
                     image.EndInit();
-                    _ = uniformgrid.Children.Add(image);
+                    image.SetValue(Grid.RowProperty, 0);
+                    _ = visualgrid.Children.Add(image);
+
+                    if (ThumbShowTime)
+                    {
+                        TextBlock textBlock = new()
+                        {
+                            Text = Player.Position.ToString(),
+                            Foreground = Brushes.White,
+                            HorizontalAlignment = HorizontalAlignment.Center
+                        };
+                        textBlock.SetValue(Grid.RowProperty, 1);
+                        _ = visualgrid.Children.Add(textBlock);
+                    }
+
+                    _ = uniformgrid.Children.Add(visualgrid);
+                    screendata = null;
                 }
                 string dosya = picturesfolder.SetUniqueFile("Resim", "jpg");
                 File.WriteAllBytes(dosya, uniformgrid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg));
