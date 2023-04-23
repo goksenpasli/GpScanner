@@ -751,14 +751,14 @@ namespace Extensions.Controls
                 string picturesfolder = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
                 UniformGrid uniformgrid = new() { Rows = ThumbHeightCount, Columns = ThumbWidthCount };
                 MediaVolume = 0;
-
+                long timemultiplier = EndTimeSpan.Ticks / (ThumbWidthCount * ThumbHeightCount);
+                double oran = 1d / ThumbWidthCount;
                 for (int i = 1; i <= ThumbHeightCount * ThumbWidthCount; i++)
                 {
                     Player.Play();
-                    Player.Position = new TimeSpan(i * (EndTimeSpan.Ticks / (ThumbWidthCount * ThumbHeightCount)));
-                    byte[] screendata = null;
-                    RenderTargetBitmap rtb = grid.ToRenderTargetBitmap();
-                    _ = await Task.Delay(500).ContinueWith((_) => screendata = rtb.Resize(0.25).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg, 60));
+                    Player.Position = new TimeSpan(i * timemultiplier);
+                    await Task.Delay(500);
+                    byte[] screendata = grid.ToRenderTargetBitmap().Resize(oran).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg, 80);
                     Grid visualgrid = new();
                     visualgrid.RowDefinitions.Add(new RowDefinition()
                     {
@@ -769,12 +769,12 @@ namespace Extensions.Controls
                         Height = new GridLength(1, GridUnitType.Star)
                     });
 
-                    Image image = new();
                     BitmapImage bitmapImage = new();
                     bitmapImage.BeginInit();
                     bitmapImage.StreamSource = new MemoryStream(screendata);
                     bitmapImage.EndInit();
                     bitmapImage.Freeze();
+                    Image image = new();
                     image.BeginInit();
                     image.Margin = ThumbMargin;
                     image.Source = bitmapImage;
@@ -795,7 +795,6 @@ namespace Extensions.Controls
                     }
 
                     _ = uniformgrid.Children.Add(visualgrid);
-                    screendata = null;
                 }
                 string dosya = picturesfolder.SetUniqueFile("Resim", "jpg");
                 File.WriteAllBytes(dosya, uniformgrid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg));
