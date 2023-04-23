@@ -464,6 +464,7 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Name="description"
                             VerticalAlignment="Center"
@@ -490,8 +491,22 @@
                                 </Hyperlink>
                             </TextBlock>
                         </Border>
-                        <Border Name="clearborder"
+                        <Border Name="pasteborder"
                             Grid.Column="3"
+                            Width="16"
+                            Background="{TemplateBinding Panel.Background}"
+                            BorderBrush="{TemplateBinding Border.BorderBrush}"
+                            BorderThickness="0,1,1,1" SnapsToDevicePixels="True"
+                            Visibility="{Binding PasteButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                                FontSize="14">
+                                <Hyperlink Command="{Binding Paste, RelativeSource={RelativeSource TemplatedParent}}" TextDecorations="None">
+                                    <Run FontFamily="Wingdings 2" FontWeight="Bold" Text="2" />
+                                </Hyperlink>
+                            </TextBlock>
+                        </Border>
+                        <Border Name="clearborder"
+                            Grid.Column="4"
                             Width="16"
                             Background="{TemplateBinding Panel.Background}"
                             BorderBrush="{TemplateBinding Border.BorderBrush}"
@@ -504,7 +519,7 @@
                             </TextBlock>
                         </Border>
                         <Border Name="openborder"
-                            Grid.Column="4"
+                            Grid.Column="5"
                             Width="16"
                             Background="{TemplateBinding Panel.Background}"
                             BorderBrush="{TemplateBinding Border.BorderBrush}"
@@ -525,18 +540,21 @@
                             <Setter TargetName="copyborder" Property="UIElement.Opacity" Value="0.56" />
                             <Setter TargetName="description" Property="UIElement.Opacity" Value="0.56" />
                             <Setter TargetName="openborder" Property="UIElement.Opacity" Value="0.56" />
+                            <Setter TargetName="pasteborder" Property="UIElement.Opacity" Value="0.56" />
                         </Trigger>
                         <Trigger Property="UIElement.IsMouseOver" Value="True">
                             <Setter TargetName="border" Property="Border.BorderBrush" Value="#7EB4EA" />
                             <Setter TargetName="clearborder" Property="Border.BorderBrush" Value="#7EB4EA" />
                             <Setter TargetName="copyborder" Property="Border.BorderBrush" Value="#7EB4EA" />
                             <Setter TargetName="openborder" Property="Border.BorderBrush" Value="#7EB4EA" />
+                            <Setter TargetName="pasteborder" Property="Border.BorderBrush" Value="#7EB4EA" />
                         </Trigger>
                         <Trigger Property="UIElement.IsKeyboardFocused" Value="True">
                             <Setter TargetName="border" Property="Border.BorderBrush" Value="#569DE5" />
                             <Setter TargetName="clearborder" Property="Border.BorderBrush" Value="#569DE5" />
                             <Setter TargetName="copyborder" Property="Border.BorderBrush" Value="#569DE5" />
                             <Setter TargetName="openborder" Property="Border.BorderBrush" Value="#569DE5" />
+                            <Setter TargetName="pasteborder" Property="Border.BorderBrush" Value="#569DE5" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

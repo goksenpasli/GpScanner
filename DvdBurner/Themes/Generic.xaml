@@ -8,7 +8,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:Burner}">
                     <StackPanel>
-                        <UniformGrid Columns="2">
+                        <UniformGrid Columns="3">
                             <Button Command="{Binding SelectBurnDir, RelativeSource={RelativeSource TemplatedParent}}">
                                 <Image Width="32" Height="32">
                                     <Image.Source>
@@ -28,6 +28,16 @@
                                         </MultiBinding>
                                     </Image.Source>
                                 </Image>
+                            </Button>  
+                            <Button Command="{Binding EraseDvd, RelativeSource={RelativeSource TemplatedParent}}">
+                                <Image Width="32" Height="32">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="151" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
                             </Button>
                         </UniformGrid>
                         <Grid>
@@ -38,6 +48,9 @@
                                 Text="{Binding ActionText, RelativeSource={RelativeSource TemplatedParent}}"
                                 TextWrapping="Wrap" />
                         </Grid>
+                        <Extensions:ButtonedTextBox CopyButtonVisibility="Visible" Description="ETİKET" OpenButtonVisibility="Collapsed"
+                            ResetButtonVisibility="Visible"
+                            Text="{Binding CdLabel, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}" />
                         <CheckBox Content="BİTİNCE CDYİ ÇIKAR" IsChecked="{Binding Eject, RelativeSource={RelativeSource TemplatedParent}}" />
                     </StackPanel>
                 </ControlTemplate>

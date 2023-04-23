@@ -165,7 +165,7 @@
                             </Grid>
                             <Extensions:ButtonedTextBox Grid.Column="1"
                                 VerticalContentAlignment="Center"
-                                CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed"
+                                CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed" PasteButtonVisibility="Collapsed"
                                 Text="{Binding AramaMetni, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <StackPanel Grid.Column="2" Orientation="Horizontal">
                                 <ComboBox ItemsSource="{Binding GetPreviewSize}" SelectedItem="{Binding SelectedSize}">

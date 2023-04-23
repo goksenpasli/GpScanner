@@ -19,7 +19,8 @@ namespace Extensions
         {
             _ = CommandBindings.Add(new CommandBinding(Reset, ResetCommand, CanExecute)); //handle reset
             _ = CommandBindings.Add(new CommandBinding(Copy, CopyCommand, CanExecute)); //handle copy
-            _ = CommandBindings.Add(new CommandBinding(Open, OpenCommand, CanExecute)); //handle copy
+            _ = CommandBindings.Add(new CommandBinding(Open, OpenCommand, CanExecute)); //handle open
+            _ = CommandBindings.Add(new CommandBinding(Paste, PasteCommand, PasteCanExecute)); //handle paste
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -57,10 +58,25 @@ namespace Extensions
             }
         }
 
+        public new ICommand Paste { get; } = new RoutedCommand();
+
+        public Visibility PasteButtonVisibility {
+            get => pasteButtonVisibility;
+
+            set {
+                if (pasteButtonVisibility != value)
+                {
+                    pasteButtonVisibility = value;
+                    OnPropertyChanged(nameof(PasteButtonVisibility));
+                }
+            }
+        }
+
         public ICommand Reset { get; } = new RoutedCommand();
 
         public Visibility ResetButtonVisibility {
             get => resetButtonVisibility; set {
+
                 if (resetButtonVisibility != value)
                 {
                     resetButtonVisibility = value;
@@ -77,6 +93,8 @@ namespace Extensions
         private Visibility copyButtonVisibility = Visibility.Visible;
 
         private Visibility openButtonVisibility = Visibility.Visible;
+
+        private Visibility pasteButtonVisibility = Visibility.Visible;
 
         private Visibility resetButtonVisibility = Visibility.Visible;
 
@@ -103,6 +121,19 @@ namespace Extensions
             {
                 _ = MessageBox.Show(ex.Message);
             }
+        }
+
+        private void PasteCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if (Clipboard.ContainsText() && !IsReadOnly)
+            {
+                e.CanExecute = true;
+            }
+        }
+
+        private void PasteCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            Text = Clipboard.GetText();
         }
 
         private void ResetCommand(object sender, ExecutedRoutedEventArgs e)

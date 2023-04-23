@@ -126,7 +126,7 @@
                     </Grid.ColumnDefinitions>
                     <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
                         Description="{twainctrl:Loc FILE}"
-                        IsReadOnly="True" ResetButtonVisibility="Collapsed"
+                        IsReadOnly="True" IsReadOnlyCaretVisible="True" ResetButtonVisibility="Collapsed"
                         Text="{Binding DatabaseFile, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
                     <Button Grid.Column="1" Command="{Binding ChangeDataFolder}">
                         <StackPanel Orientation="Horizontal">

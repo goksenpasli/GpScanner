@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Extensions;
+using IMAPI2;
 
 namespace DvdBurner
 {
@@ -22,9 +23,9 @@ namespace DvdBurner
         {
             BurnDvd = new RelayCommand<object>(parameter =>
             {
-                if (Burntask?.IsCompleted == false)
+                if (Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
                 {
-                    _ = MessageBox.Show("Yazma İşlemi Sürüyor. Bitmesini Bekleyin.");
+                    _ = MessageBox.Show(WarnText);
                     return;
                 }
                 dynamic Index;              // Index to recording drive.
@@ -38,11 +39,11 @@ namespace DvdBurner
                     // Create a DiscMaster2 object to connect to optical drives.
                     try
                     {
-                        dynamic g_DiscMaster = new IMAPI2.MsftDiscMaster2();
+                        dynamic g_DiscMaster = new MsftDiscMaster2();
                         if (g_DiscMaster.Count > 0)
                         {
                             dynamic uniqueId;
-                            recorder = new IMAPI2.MsftDiscRecorder2();
+                            recorder = new MsftDiscRecorder2();
                             uniqueId = g_DiscMaster.Item(Index);
                             recorder.InitializeDiscRecorder(uniqueId);
 
@@ -56,12 +57,12 @@ namespace DvdBurner
                             Dir = FSI.Root;
 
                             //Create the new disc format and set the recorder
-                            dataWriter = new IMAPI2.MsftDiscFormat2Data();
+                            dataWriter = new MsftDiscFormat2Data();
                             dataWriter.Recorder = recorder;
-                            dataWriter.ClientName = "IMAPIv2 TEST";
-
+                            dataWriter.ClientName = AppName;
+                            FSI.VolumeName = CdLabel;
                             FSI.ChooseImageDefaults(recorder);
-                            dataWriter.Update += new IMAPI2.DDiscFormat2DataEvents_UpdateEventHandler(DataWriter_Update);
+                            dataWriter.Update += new DDiscFormat2DataEvents_UpdateEventHandler(DataWriter_Update);
                             Dir.AddTree(FolderPath, false);
                             dynamic result = FSI.CreateResultImage();
                             Stream = result.ImageStream;
@@ -77,22 +78,66 @@ namespace DvdBurner
                     {
                         if (Eject)
                         {
-                            recorder.EjectMedia();
+                            recorder?.EjectMedia();
                         }
                     }
                 });
-            }, parameter => !string.IsNullOrEmpty(BurnDirectory) && Directory.EnumerateFiles(BurnDirectory)?.Any() == true);
+            }, parameter => !string.IsNullOrEmpty(BurnDirectory) && !string.IsNullOrWhiteSpace(CdLabel) && Directory.EnumerateFiles(BurnDirectory)?.Any() == true);
 
             SelectBurnDir = new RelayCommand<object>(parameter =>
             {
                 System.Windows.Forms.FolderBrowserDialog dialog = new System.Windows.Forms.FolderBrowserDialog()
                 {
-                    Description = "Yazılacak Klasörü Seçin"
+                    Description = "Yazılacak Klasörü Seçin."
                 };
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     BurnDirectory = dialog.SelectedPath;
                 }
+            }, parameter => true);
+
+            EraseDvd = new RelayCommand<object>(parameter =>
+            {
+                if (Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
+                {
+                    _ = MessageBox.Show(WarnText);
+                    return;
+                }
+                Erasetask = Task.Run(() =>
+                {
+                    MsftDiscRecorder2 recorder = null;
+                    try
+                    {
+                        dynamic g_DiscMaster = new MsftDiscMaster2();
+                        dynamic uniqueId;
+                        dynamic Index = 0;
+                        MsftDiscFormat2Erase discFormatErase = null;
+                        if (g_DiscMaster.Count > 0)
+                        {
+                            recorder = new MsftDiscRecorder2();
+                            uniqueId = g_DiscMaster.Item(Index);
+                            recorder.InitializeDiscRecorder(uniqueId);
+                            discFormatErase = new MsftDiscFormat2Erase
+                            {
+                                Recorder = recorder,
+                                ClientName = AppName,
+                                FullErase = false
+                            };
+                            discFormatErase.EraseMedia();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        ActionText = ex.Message;
+                    }
+                    finally
+                    {
+                        if (Eject)
+                        {
+                            recorder?.EjectMedia();
+                        }
+                    }
+                });
             }, parameter => true);
         }
 
@@ -117,6 +162,18 @@ namespace DvdBurner
 
         public RelayCommand<object> BurnDvd { get; }
 
+        public string CdLabel {
+            get => cdLabel;
+
+            set {
+                if (cdLabel != value)
+                {
+                    cdLabel = value;
+                    OnPropertyChanged(nameof(CdLabel));
+                }
+            }
+        }
+
         public bool Eject {
             get => eject;
 
@@ -128,6 +185,8 @@ namespace DvdBurner
                 }
             }
         }
+
+        public RelayCommand<object> EraseDvd { get; }
 
         public bool ProgressIndeterminate {
             get => progressIndeterminate;
@@ -159,9 +218,17 @@ namespace DvdBurner
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        private readonly string AppName = Application.Current?.MainWindow?.Title;
+
+        private const string WarnText = "İşlem Sürüyor. Bitmesini Bekleyin.";
+
         private static Task Burntask;
 
+        private static Task Erasetask;
+
         private string actionText;
+
+        private string cdLabel = DateTime.Now.ToString();
 
         private bool eject = true;
 
@@ -175,37 +242,37 @@ namespace DvdBurner
             {
                 switch ((int)progress.CurrentAction)
                 {
-                    case (int)IMAPI2.IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_CALIBRATING_POWER:
-                        ActionText = "Kalibrasyon Gücü (OPC)";
+                    case (int)IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_CALIBRATING_POWER:
+                        ActionText = "Kalibrasyon Gücü (OPC).";
                         break;
 
-                    case (int)IMAPI2.IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_COMPLETED:
-                        ActionText = "Bitti";
+                    case (int)IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_COMPLETED:
+                        ActionText = "Bitti.";
                         ProgressIndeterminate = false;
                         break;
 
-                    case (int)IMAPI2.IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_FINALIZATION:
+                    case (int)IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_FINALIZATION:
                         ProgressIndeterminate = true;
                         ActionText = "Sonlandırılıyor.";
                         break;
 
-                    case (int)IMAPI2.IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_FORMATTING_MEDIA:
-                        ActionText = "Medya Biçimlendiriliyor";
+                    case (int)IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_FORMATTING_MEDIA:
+                        ActionText = "Medya Biçimlendiriliyor.";
                         break;
 
-                    case (int)IMAPI2.IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_INITIALIZING_HARDWARE:
-                        ActionText = "Başlatılıyor";
+                    case (int)IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_INITIALIZING_HARDWARE:
+                        ActionText = "Başlatılıyor.";
                         break;
 
-                    case (int)IMAPI2.IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_VALIDATING_MEDIA:
-                        ActionText = "Medya Doğrulanıyor";
+                    case (int)IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_VALIDATING_MEDIA:
+                        ActionText = "Medya Doğrulanıyor.";
                         break;
 
-                    case (int)IMAPI2.IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_VERIFYING:
-                        ActionText = "Veri Doğrulanıyor";
+                    case (int)IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_VERIFYING:
+                        ActionText = "Veri Doğrulanıyor.";
                         break;
 
-                    case (int)IMAPI2.IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_WRITING_DATA:
+                    case (int)IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_WRITING_DATA:
                         dynamic totalSectors;
                         dynamic writtenSectors;
                         dynamic startLba;
@@ -220,7 +287,7 @@ namespace DvdBurner
                         break;
 
                     default:
-                        ActionText = "Bilinmeyen İşlem" + progress.CurrentAction.ToString();
+                        ActionText = "Bilinmeyen İşlem." + progress.CurrentAction.ToString();
                         break;
                 }
             }
