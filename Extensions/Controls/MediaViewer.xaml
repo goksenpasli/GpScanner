@@ -470,31 +470,33 @@
                     <local:ContentToggleButton Content="µ" FontFamily="Webdings" FontSize="20"
                         Foreground="Blue" PlacementMode="Top">
                         <local:ContentToggleButton.OverContent>
-                            <StackPanel Background="{StaticResource GroupBoxBackGround}" Orientation="Horizontal">
+                            <UniformGrid Margin="1"
+                                Background="{StaticResource GroupBoxBackGround}"
+                                Columns="7">
                                 <Button x:Name="Capture"
                                     VerticalContentAlignment="Center"
                                     Click="Capture_Click" Content="µ" FontFamily="Webdings"
                                     FontSize="20" Foreground="Blue" />
-                                <UniformGrid Columns="5">
-                                    <local:NumericUpDownControl FontFamily="Segoe UI" Maximum="20" Minimum="1"
-                                        SmallChange="1"
-                                        Value="{Binding ThumbHeightCount}" />
-                                    <local:NumericUpDownControl FontFamily="Segoe UI" Maximum="20" Minimum="1"
-                                        SmallChange="1"
-                                        Value="{Binding ThumbWidthCount}" />
-                                    <ToggleButton Content="" FontFamily="Webdings"
-                                        IsChecked="{Binding ThumbShowTime}" />
-                                    <Border BorderBrush="White" BorderThickness="2">
-                                        <local:NumericUpDownControl FontFamily="Segoe UI" FontSize="20" Maximum="30"
-                                            Minimum="0" SmallChange="1"
-                                            Value="{Binding ThumbMargin, Converter={StaticResource DoubleToThicknessConverter}}" />
-                                    </Border>
-                                    <Button x:Name="CaptureThumb"
-                                        VerticalContentAlignment="Center"
-                                        Click="CaptureThumb_Click" Content="µ" FontFamily="Webdings"
-                                        FontSize="20" Foreground="Blue" />
-                                </UniformGrid>
-                            </StackPanel>
+                                <local:NumericUpDownControl FontFamily="Segoe UI" Maximum="20" Minimum="1"
+                                    SmallChange="1"
+                                    Value="{Binding ThumbWidthCount}" />
+                                <local:NumericUpDownControl FontFamily="Segoe UI" Maximum="20" Minimum="1"
+                                    SmallChange="1"
+                                    Value="{Binding ThumbHeightCount}" />
+                                <local:NumericUpDownControl BorderBrush="White" BorderThickness="2" FontFamily="Segoe UI"
+                                    FontSize="20" Maximum="30" Minimum="0"
+                                    SmallChange="1"
+                                    Value="{Binding ThumbMargin, Converter={StaticResource DoubleToThicknessConverter}}" />
+                                <ToggleButton Content="" FontFamily="Webdings" Foreground="Blue"
+                                    IsChecked="{Binding ThumbShowTime}" />
+                                <ToggleButton Content="·" FontFamily="Webdings" Foreground="Blue"
+                                    IsChecked="{Binding ThumbApplyEffects}" />
+                                <Button x:Name="CaptureThumb"
+                                    VerticalContentAlignment="Center"
+                                    BorderBrush="Cyan" BorderThickness="2" Click="CaptureThumb_Click"
+                                    Content="µ" FontFamily="Webdings" FontSize="20"
+                                    Foreground="Blue" />
+                            </UniformGrid>
                         </local:ContentToggleButton.OverContent>
                     </local:ContentToggleButton>
                     <local:ContentToggleButton Content="·" FontFamily="Webdings" FontSize="20"

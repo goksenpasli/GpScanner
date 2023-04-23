@@ -103,6 +103,8 @@ namespace Extensions.Controls
 
         public static readonly DependencyProperty SubTitleVisibilityProperty = DependencyProperty.Register("SubTitleVisibility", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Collapsed));
 
+        public static readonly DependencyProperty ThumbApplyEffectsProperty = DependencyProperty.Register("ThumbApplyEffects", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
+
         public static readonly DependencyProperty ThumbHeightCountProperty = DependencyProperty.Register("ThumbHeightCount", typeof(int), typeof(MediaViewer), new PropertyMetadata(1));
 
         public static readonly DependencyProperty ThumbMarginProperty = DependencyProperty.Register("ThumbMargin", typeof(Thickness), typeof(MediaViewer), new PropertyMetadata(new Thickness(5)));
@@ -406,6 +408,12 @@ namespace Extensions.Controls
         }
 
         [Description("Video Controls"), Category("Controls")]
+        public bool ThumbApplyEffects {
+            get => (bool)GetValue(ThumbApplyEffectsProperty);
+            set => SetValue(ThumbApplyEffectsProperty, value);
+        }
+
+        [Description("Video Controls"), Category("Controls")]
         public int ThumbHeightCount {
             get => (int)GetValue(ThumbHeightCountProperty);
             set => SetValue(ThumbHeightCountProperty, value);
@@ -504,6 +512,8 @@ namespace Extensions.Controls
             return new Point3D(x, y, z);
         }
 
+        private const int MillisecondsDelay = 500;
+
         private static readonly Image image = new();
 
         private static readonly DispatcherTimer osdtimer = new();
@@ -560,6 +570,20 @@ namespace Extensions.Controls
                     viewer.Fov = 140;
                 }
             }
+        }
+
+        private static Grid GenerateImageGrid()
+        {
+            Grid visualgrid = new();
+            visualgrid.RowDefinitions.Add(new RowDefinition()
+            {
+                Height = new GridLength(1, GridUnitType.Star)
+            });
+            visualgrid.RowDefinitions.Add(new RowDefinition()
+            {
+                Height = new GridLength(1, GridUnitType.Star)
+            });
+            return visualgrid;
         }
 
         private static string GetAutoSubtitlePath(string uriString)
@@ -749,52 +773,51 @@ namespace Extensions.Controls
             if (Player.NaturalVideoWidth > 0 && MediaDataFilePath != null)
             {
                 string picturesfolder = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-                UniformGrid uniformgrid = new() { Rows = ThumbHeightCount, Columns = ThumbWidthCount };
                 MediaVolume = 0;
                 long timemultiplier = EndTimeSpan.Ticks / (ThumbWidthCount * ThumbHeightCount);
+                byte[] imgdata;
+
+                Player.Play();
+
+                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                {
+                    string singlefile = null;
+                    for (int i = 1; i <= ThumbHeightCount * ThumbWidthCount; i++)
+                    {
+                        Player.Position = new TimeSpan(i * timemultiplier);
+                        await Task.Delay(MillisecondsDelay);
+                        imgdata = grid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg, 80);
+                        singlefile = picturesfolder.SetUniqueFile("Resim", "jpg");
+                        File.WriteAllBytes(singlefile, imgdata);
+                    }
+                    ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, singlefile);
+                    GC.Collect();
+                    return;
+                }
+
+                UniformGrid uniformgrid = new() { Rows = ThumbHeightCount, Columns = ThumbWidthCount };
                 double oran = 1d / ThumbWidthCount;
                 for (int i = 1; i <= ThumbHeightCount * ThumbWidthCount; i++)
                 {
-                    Player.Play();
                     Player.Position = new TimeSpan(i * timemultiplier);
-                    await Task.Delay(500);
-                    byte[] screendata = grid.ToRenderTargetBitmap().Resize(oran).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg, 80);
-                    Grid visualgrid = new();
-                    visualgrid.RowDefinitions.Add(new RowDefinition()
-                    {
-                        Height = new GridLength(1, GridUnitType.Star)
-                    });
-                    visualgrid.RowDefinitions.Add(new RowDefinition()
-                    {
-                        Height = new GridLength(1, GridUnitType.Star)
-                    });
+                    await Task.Delay(MillisecondsDelay);
 
-                    BitmapImage bitmapImage = new();
-                    bitmapImage.BeginInit();
-                    bitmapImage.StreamSource = new MemoryStream(screendata);
-                    bitmapImage.EndInit();
-                    bitmapImage.Freeze();
-                    Image image = new();
-                    image.BeginInit();
-                    image.Margin = ThumbMargin;
-                    image.Source = bitmapImage;
-                    image.EndInit();
+                    imgdata = ThumbApplyEffects
+                        ? grid.ToRenderTargetBitmap().Resize(oran).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg, 80)
+                        : Player.ToRenderTargetBitmap().Resize(oran).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg, 80);
+
+                    Grid imagegrid = GenerateImageGrid();
+                    Image image = GenerateImage(imgdata, ThumbMargin);
                     image.SetValue(Grid.RowProperty, 0);
-                    _ = visualgrid.Children.Add(image);
+                    _ = imagegrid.Children.Add(image);
 
                     if (ThumbShowTime)
                     {
-                        TextBlock textBlock = new()
-                        {
-                            Text = Player.Position.ToString(),
-                            Foreground = Brushes.White,
-                            HorizontalAlignment = HorizontalAlignment.Center
-                        };
+                        TextBlock textBlock = GenerateWhiteTextBlock(Player.Position.ToString());
                         textBlock.SetValue(Grid.RowProperty, 1);
-                        _ = visualgrid.Children.Add(textBlock);
+                        _ = imagegrid.Children.Add(textBlock);
                     }
-
-                    _ = uniformgrid.Children.Add(visualgrid);
+                    _ = uniformgrid.Children.Add(imagegrid);
                 }
                 string dosya = picturesfolder.SetUniqueFile("Resim", "jpg");
                 File.WriteAllBytes(dosya, uniformgrid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg));
@@ -821,6 +844,31 @@ namespace Extensions.Controls
                 Player.Position = Player.Position.Add(new TimeSpan(0, 0, ForwardBackwardSkipSecond));
                 OsdText = "İleri";
             }
+        }
+
+        private Image GenerateImage(byte[] imgdata, Thickness thickness)
+        {
+            BitmapImage bitmapImage = new();
+            bitmapImage.BeginInit();
+            bitmapImage.StreamSource = new MemoryStream(imgdata);
+            bitmapImage.EndInit();
+            bitmapImage.Freeze();
+            Image image = new();
+            image.BeginInit();
+            image.Margin = thickness;
+            image.Source = bitmapImage;
+            image.EndInit();
+            return image;
+        }
+
+        private TextBlock GenerateWhiteTextBlock(string text)
+        {
+            return new()
+            {
+                Text = text,
+                Foreground = Brushes.White,
+                HorizontalAlignment = HorizontalAlignment.Center
+            };
         }
 
         private MediaState GetMediaState(MediaElement myMedia)
