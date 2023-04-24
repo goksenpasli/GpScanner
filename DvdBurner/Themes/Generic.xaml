@@ -30,14 +30,24 @@
                                 </Image>
                             </Button>  
                             <Button Command="{Binding EraseDvd, RelativeSource={RelativeSource TemplatedParent}}">
-                                <Image Width="32" Height="32">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="151" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
+                                <Canvas Width="32" Height="32">
+                                    <Image Width="32" Height="32">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="151" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <Image Canvas.Left="16" Canvas.Top="16" Width="16" Height="16">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="131" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                </Canvas>
                             </Button>
                         </UniformGrid>
                         <Grid>

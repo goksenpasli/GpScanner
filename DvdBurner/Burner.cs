@@ -82,7 +82,7 @@ namespace DvdBurner
                         }
                     }
                 });
-            }, parameter => !string.IsNullOrEmpty(BurnDirectory) && !string.IsNullOrWhiteSpace(CdLabel) && Directory.EnumerateFiles(BurnDirectory)?.Any() == true);
+            }, parameter => Directory.Exists(BurnDirectory) && !string.IsNullOrWhiteSpace(CdLabel) && Directory.EnumerateFiles(BurnDirectory)?.Any() == true);
 
             SelectBurnDir = new RelayCommand<object>(parameter =>
             {

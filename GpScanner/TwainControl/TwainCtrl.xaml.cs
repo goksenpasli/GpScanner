@@ -2254,11 +2254,18 @@ namespace TwainControl
                     double heightmultiply = SeçiliResim.Resim.PixelHeight / (double)((img.DesiredSize.Height < img.ActualHeight) ? img.ActualHeight : img.DesiredSize.Height);
 
                     Int32Rect sourceRect = new((int)(mousemovecoord.X * widthmultiply), (int)(mousemovecoord.Y * heightmultiply), 1, 1);
-                    CroppedBitmap croppedbitmap = new(SeçiliResim.Resim, sourceRect);
-                    byte[] pixels = new byte[4];
-                    croppedbitmap.CopyPixels(pixels, 4, 0);
-                    croppedbitmap.Freeze();
-                    Scanner.SourceColor = System.Windows.Media.Color.FromRgb(pixels[2], pixels[1], pixels[0]).ToString();
+                    if (sourceRect.X < SeçiliResim.Resim.PixelWidth && sourceRect.Y < SeçiliResim.Resim.PixelHeight)
+                    {
+                        CroppedBitmap croppedbitmap = new(SeçiliResim.Resim, sourceRect);
+                        if (croppedbitmap != null)
+                        {
+                            byte[] pixels = new byte[4];
+                            croppedbitmap.CopyPixels(pixels, 4, 0);
+                            croppedbitmap.Freeze();
+                            Scanner.SourceColor = System.Windows.Media.Color.FromRgb(pixels[2], pixels[1], pixels[0]).ToString();
+                        }
+                    }
+
                     if (e.RightButton == MouseButtonState.Released)
                     {
                         isRightMouseDown = false;

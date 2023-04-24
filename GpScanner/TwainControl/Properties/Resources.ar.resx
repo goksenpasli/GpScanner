@@ -249,6 +249,9 @@
   <data name="ENCRYPT" xml:space="preserve">
     <value>التشفير</value>
   </data>
+  <data name="EYPOPEN" xml:space="preserve">
+    <value>افتح ملفات Eyp مباشرة.</value>
+  </data>
   <data name="FASTSCAN" xml:space="preserve">
     <value>سريع
 مسح</value>

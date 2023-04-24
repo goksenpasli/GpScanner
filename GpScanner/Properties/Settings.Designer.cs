@@ -180,5 +180,17 @@ namespace GpScanner.Properties {
                 this["BatchFolder"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool DirectOpenEypFile {
+            get {
+                return ((bool)(this["DirectOpenEypFile"]));
+            }
+            set {
+                this["DirectOpenEypFile"] = value;
+            }
+        }
     }
 }

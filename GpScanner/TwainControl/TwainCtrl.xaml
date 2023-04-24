@@ -870,7 +870,9 @@
                             </Grid>
                         </Grid>
                     </GroupBox.Header>
-                    <TabControl x:Name="TbCtrl" SelectedItem="{Binding SelectedTab}">
+                    <TabControl x:Name="TbCtrl"
+                        x:FieldModifier="public"
+                        SelectedItem="{Binding SelectedTab}">
                         <TabItem>
                             <TabItem.Header>
                                 <StackPanel Orientation="Horizontal">
@@ -1039,7 +1041,7 @@
                                 <Image Width="16" Height="16"
                                     Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
                             </TabItem.Header>
-                            <local:PdfImportViewerControl />
+                            <local:PdfImportViewerControl x:Name="PdfImportViewer" x:FieldModifier="public" />
                         </TabItem>
                         <TabItem>
                             <TabItem.Header>

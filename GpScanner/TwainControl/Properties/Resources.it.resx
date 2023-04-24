@@ -249,6 +249,9 @@ DISCO</value>
   <data name="ENCRYPT" xml:space="preserve">
     <value>CRITTOGRAFIA</value>
   </data>
+  <data name="EYPOPEN" xml:space="preserve">
+    <value>Apri i file Eyp direttamente.</value>
+  </data>
   <data name="FASTSCAN" xml:space="preserve">
     <value>VELOCE
 SCANSIONE</value>

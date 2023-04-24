@@ -24,10 +24,7 @@ namespace TwainControl
                 {
                     if (Path.GetExtension(openFileDialog.FileName.ToLower()) == ".eyp")
                     {
-                        using PdfDocument document = TwainCtrl.EypFileExtract(openFileDialog.FileName).Where(z => Path.GetExtension(z.ToLower()) == ".pdf").ToArray().MergePdf();
-                        string source = Path.GetTempPath() + Guid.NewGuid() + ".pdf";
-                        document.Save(source);
-                        PdfFilePath = source;
+                        PdfFilePath = ExtractEypFilesToPdf(openFileDialog.FileName);
                         return;
                     }
                     PdfFilePath = openFileDialog.FileName;
@@ -36,5 +33,13 @@ namespace TwainControl
         }
 
         public new RelayCommand<object> DosyaAç { get; }
+
+        public string ExtractEypFilesToPdf(string filename)
+        {
+            using PdfDocument document = TwainCtrl.EypFileExtract(filename).Where(z => Path.GetExtension(z.ToLower()) == ".pdf").ToArray().MergePdf();
+            string source = Path.GetTempPath() + Guid.NewGuid() + ".pdf";
+            document.Save(source);
+            return source;
+        }
     }
 }

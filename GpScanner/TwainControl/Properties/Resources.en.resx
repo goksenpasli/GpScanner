@@ -553,4 +553,7 @@ TO FILE</value>
   <data name="UPDATE" xml:space="preserve">
     <value>UPDATE</value>
   </data>
+  <data name="EYPOPEN" xml:space="preserve">
+    <value>Open Eyp Files Directly.</value>
+  </data>
 </root>

@@ -241,31 +241,37 @@
                     </Grid>
                 </GroupBox>
                 <GroupBox Grid.Row="3">
-                    <UniformGrid Columns="5">
-                        <TextBlock VerticalAlignment="Center" TextWrapping="Wrap">
-                            <Run Text="{twainctrl:Loc FILE}" />
-                            <Run Text="{twainctrl:Loc RES}" />
-                        </TextBlock>
-                        <ComboBox VerticalContentAlignment="Center"
-                            ItemStringFormat="%{0}"
-                            ItemsSource="{Binding SettingsPagePictureResizeList}"
-                            SelectedItem="{Binding DefaultPictureResizeRatio, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                        <TextBlock VerticalAlignment="Center" Text="PDF DPI" />
-                        <ComboBox VerticalContentAlignment="Center"
-                            ItemStringFormat="{}{0} Dpi"
-                            ItemsSource="{Binding SettingsPagePdfDpiList}"
-                            SelectedItem="{Binding DefaultThumbNailDpi, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                        <ComboBox VerticalContentAlignment="Center"
-                            ItemsSource="{Binding GetPreviewSize}"
-                            SelectedIndex="{Binding PreviewIndex, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
-                            SelectedItem="{Binding SelectedSize}">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock><Run Text="{Binding Width, StringFormat=\{0\} Pixel}" /><LineBreak /><Run Text="{Binding Height, StringFormat=\{0\} Pixel}" /></TextBlock>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
-                    </UniformGrid>
+                    <StackPanel>
+                        <UniformGrid Columns="5">
+                            <TextBlock VerticalAlignment="Center" TextWrapping="Wrap">
+                                <Run Text="{twainctrl:Loc FILE}" />
+                                <Run Text="{twainctrl:Loc RES}" />
+                            </TextBlock>
+                            <ComboBox VerticalContentAlignment="Center"
+                                ItemStringFormat="%{0}"
+                                ItemsSource="{Binding SettingsPagePictureResizeList}"
+                                SelectedItem="{Binding DefaultPictureResizeRatio, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock VerticalAlignment="Center" Text="PDF DPI" />
+                            <ComboBox VerticalContentAlignment="Center"
+                                ItemStringFormat="{}{0} Dpi"
+                                ItemsSource="{Binding SettingsPagePdfDpiList}"
+                                SelectedItem="{Binding DefaultThumbNailDpi, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                            <ComboBox VerticalContentAlignment="Center"
+                                ItemsSource="{Binding GetPreviewSize}"
+                                SelectedIndex="{Binding PreviewIndex, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
+                                SelectedItem="{Binding SelectedSize}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock><Run Text="{Binding Width, StringFormat=\{0\} Pixel}" /><LineBreak /><Run Text="{Binding Height, StringFormat=\{0\} Pixel}" /></TextBlock>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </UniformGrid>
+                        <Separator />
+                        <CheckBox VerticalContentAlignment="Center"
+                            Content="{twainctrl:Loc EYPOPEN}"
+                            IsChecked="{Binding DirectOpenEypFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                    </StackPanel>
                 </GroupBox>
                 <GroupBox Grid.Row="4">
                     <UniformGrid Columns="3" IsEnabled="{Binding Path=SeçiliTarayıcı, Source={x:Static twainctrl:ToolBox.Scanner}, Converter={StaticResource NullableToBooleanConverter}}">
@@ -447,7 +453,11 @@
                 </Grid>
                 <UniformGrid Grid.Row="6" Columns="2">
                     <GroupBox Header="FTP">
-                        <UniformGrid Rows="2">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
                             <StackPanel>
                                 <Extensions:ButtonedTextBox Description="FTP" OpenButtonVisibility="Collapsed"
                                     Text="{Binding FtpSite, UpdateSourceTrigger=PropertyChanged}"
@@ -460,7 +470,9 @@
                                     Text="{Binding FtpPassword, UpdateSourceTrigger=PropertyChanged}" />
                                 <Button Command="{Binding AddFtpSites}" Content="{twainctrl:Loc APPLY}" />
                             </StackPanel>
-                            <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding FtpSites, Source={x:Static properties:Settings.Default}}">
+                            <ListBox Grid.Row="1"
+                                d:ItemsSource="{d:SampleData ItemCount=5}"
+                                ItemsSource="{Binding FtpSites, Source={x:Static properties:Settings.Default}}">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Margin="1" Orientation="Horizontal">
@@ -473,9 +485,13 @@
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
-                        </UniformGrid>
+                        </Grid>
                     </GroupBox>
-                    <UniformGrid Rows="2">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
                         <Button Command="{Binding CheckUpdate}" CommandParameter="https://github.com/goksenpasli/GpScanner/releases/download/2.0/GpScanner-Setup.txt">
                             <Button.Content>
                                 <StackPanel Orientation="Horizontal">
@@ -487,12 +503,17 @@
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
-                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc UPDATE}" />
+                                    <TextBlock VerticalAlignment="Center">
+                                        <Run Text="{Binding Path=Title, RelativeSource={RelativeSource AncestorType=Window}}" />
+                                        <Run Text="{twainctrl:Loc UPDATE}" />
+                                    </TextBlock>
                                 </StackPanel>
                             </Button.Content>
                         </Button>
-                        <dvd:Burner />
-                    </UniformGrid>
+                        <GroupBox Grid.Row="1">
+                            <dvd:Burner />
+                        </GroupBox>
+                    </Grid>
                 </UniformGrid>
             </Grid>
         </GroupBox>

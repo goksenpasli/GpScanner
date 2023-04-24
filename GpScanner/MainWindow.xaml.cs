@@ -41,7 +41,7 @@ namespace GpScanner
                     string pdfFilePath = pdfviewer.PdfFilePath;
                     int curpage = pdfviewer.Sayfa;
                     droppedData.Resim.GeneratePdf(null, Format.Jpg, TwainCtrl.SelectedPaper).Save(temporarypdf);
-                    string[] processedfiles = (new string[] { temporarypdf, pdfFilePath });
+                    string[] processedfiles = new string[] { temporarypdf, pdfFilePath };
                     if ((Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.LeftShift)) || (Keyboard.IsKeyDown(Key.RightAlt) && Keyboard.IsKeyDown(Key.RightShift)))
                     {
                         await TwainCtrl.RemovePdfPage(pdfFilePath, curpage, curpage);
@@ -122,6 +122,18 @@ namespace GpScanner
 
             if (Environment.GetCommandLineArgs().Length > 1)
             {
+                if (Settings.Default.DirectOpenEypFile)
+                {
+                    string eypfilepath = Environment.GetCommandLineArgs()[1];
+                    if (File.Exists(eypfilepath) && Path.GetExtension(eypfilepath.ToLower()) == ".eyp")
+                    {
+                        EypPdfViewer eypPdfViewer = TwainCtrl.PdfImportViewer.PdfViewer;
+                        eypPdfViewer.PdfFilePath = eypPdfViewer.ExtractEypFilesToPdf(eypfilepath);
+                        TwainCtrl.TbCtrl.SelectedIndex = 1;
+                        TwainCtrl.MaximizePdfControl.Execute(null);
+                        return;
+                    }
+                }
                 TwainCtrl.AddFiles(Environment.GetCommandLineArgs(), TwainCtrl.DecodeHeight);
                 GC.Collect();
             }
@@ -169,9 +181,15 @@ namespace GpScanner
             }
         }
 
-        private void Run_Drop(object sender, DragEventArgs e) => TwainCtrl.DropFile(sender, e);
+        private void Run_Drop(object sender, DragEventArgs e)
+        {
+            TwainCtrl.DropFile(sender, e);
+        }
 
-        private void Run_PreviewMouseMove(object sender, MouseEventArgs e) => TwainCtrl.DropPreviewFile(sender, e);
+        private void Run_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            TwainCtrl.DropPreviewFile(sender, e);
+        }
 
         private async void TwainCtrl_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {

@@ -559,4 +559,7 @@ BELGE EKLE</value>
   <data name="UPDATE" xml:space="preserve">
     <value>GÜNCELLE</value>
   </data>
+  <data name="EYPOPEN" xml:space="preserve">
+    <value>Eyp Dosyalarını Direkt Aç</value>
+  </data>
 </root>
