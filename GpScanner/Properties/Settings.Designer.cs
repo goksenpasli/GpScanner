@@ -192,5 +192,17 @@ namespace GpScanner.Properties {
                 this["DirectOpenEypFile"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool DirectOpenPdfFile {
+            get {
+                return ((bool)(this["DirectOpenPdfFile"]));
+            }
+            set {
+                this["DirectOpenPdfFile"] = value;
+            }
+        }
     }
 }

@@ -268,9 +268,14 @@
                             </ComboBox>
                         </UniformGrid>
                         <Separator />
-                        <CheckBox VerticalContentAlignment="Center"
-                            Content="{twainctrl:Loc EYPOPEN}"
-                            IsChecked="{Binding DirectOpenEypFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                        <UniformGrid Columns="2">
+                            <CheckBox VerticalContentAlignment="Center"
+                                Content="{twainctrl:Loc PDFOPEN}"
+                                IsChecked="{Binding DirectOpenPdfFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                            <CheckBox VerticalContentAlignment="Center"
+                                Content="{twainctrl:Loc EYPOPEN}"
+                                IsChecked="{Binding DirectOpenEypFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                        </UniformGrid>
                     </StackPanel>
                 </GroupBox>
                 <GroupBox Grid.Row="4">

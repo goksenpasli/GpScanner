@@ -356,6 +356,9 @@
   <data name="PASSWORD" xml:space="preserve">
     <value>كلمه السر</value>
   </data>
+  <data name="PDFOPEN" xml:space="preserve">
+    <value>افتح ملفات Pdf مباشرة.</value>
+  </data>
   <data name="PDFPROTECT" xml:space="preserve">
     <value>حماية ملفات PDF</value>
   </data>

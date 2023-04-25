@@ -496,7 +496,10 @@ namespace TwainControl
                         ShowInTaskbar = false,
                         Title = "GPSCANNER",
                         WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                        DataContext = this
                     };
+                    SelectedTab = TbCtrl?.Items[0] as TabItem;
+                    _ = maximizePdfWindow.ShowDialog();
 
                     maximizePdfWindow.Closed += (s, e) =>
                     {
@@ -504,8 +507,6 @@ namespace TwainControl
                         SelectedTab.Content = pdfImportViewerControl;
                         maximizePdfWindow = null;
                     };
-                    SelectedTab = TbCtrl?.Items[0] as TabItem;
-                    _ = maximizePdfWindow.ShowDialog();
                 }
             }, parameter => SelectedTab?.Content is PdfImportViewerControl);
 
@@ -1862,6 +1863,20 @@ namespace TwainControl
             }
         }
 
+        public async Task ListBoxDropFile(DragEventArgs e)
+        {
+            if (fileloadtask?.IsCompleted == false)
+            {
+                _ = MessageBox.Show(Application.Current.MainWindow, Translation.GetResStringValue("TRANSLATEPENDING"));
+                return;
+            }
+            string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
+            if (droppedfiles?.Length > 0)
+            {
+                await Task.Run(() => AddFiles(droppedfiles, DecodeHeight));
+            }
+        }
+
         public void SplitPdfPageCount(string pdfpath, string savefolder, int pagecount)
         {
             using PdfDocument inputDocument = PdfReader.Open(pdfpath, PdfDocumentOpenMode.Import);
@@ -2352,20 +2367,6 @@ namespace TwainControl
         private async void ListBox_Drop(object sender, DragEventArgs e)
         {
             await ListBoxDropFile(e);
-        }
-
-        public async Task ListBoxDropFile(DragEventArgs e)
-        {
-            if (fileloadtask?.IsCompleted == false)
-            {
-                _ = MessageBox.Show(Application.Current.MainWindow, Translation.GetResStringValue("TRANSLATEPENDING"));
-                return;
-            }
-            string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
-            if (droppedfiles?.Length > 0)
-            {
-                await Task.Run(() => AddFiles(droppedfiles, DecodeHeight));
-            }
         }
 
         private void ListBox_PreviewMouseWheel(object sender, MouseWheelEventArgs e)

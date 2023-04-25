@@ -556,4 +556,7 @@ TO FILE</value>
   <data name="EYPOPEN" xml:space="preserve">
     <value>Open Eyp Files Directly.</value>
   </data>
+  <data name="PDFOPEN" xml:space="preserve">
+    <value>Open Pdf Files Directly.</value>
+  </data>
 </root>

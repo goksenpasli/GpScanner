@@ -562,4 +562,7 @@ BELGE EKLE</value>
   <data name="EYPOPEN" xml:space="preserve">
     <value>Eyp Dosyalarını Direkt Aç</value>
   </data>
+  <data name="PDFOPEN" xml:space="preserve">
+    <value>Pdf Dosyalarını Direkt Aç</value>
+  </data>
 </root>

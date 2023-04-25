@@ -356,6 +356,9 @@ RELIER</value>
   <data name="PASSWORD" xml:space="preserve">
     <value>LE MOT DE PASSE</value>
   </data>
+  <data name="PDFOPEN" xml:space="preserve">
+    <value>Ouvrez Pdf Files directement.</value>
+  </data>
   <data name="PDFPROTECT" xml:space="preserve">
     <value>PDF PROTÉGER</value>
   </data>

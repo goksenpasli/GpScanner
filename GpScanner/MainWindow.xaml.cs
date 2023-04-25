@@ -134,6 +134,19 @@ namespace GpScanner
                         return;
                     }
                 }
+
+                if (Settings.Default.DirectOpenPdfFile)
+                {
+                    string pdffilepath = Environment.GetCommandLineArgs()[1];
+                    if (File.Exists(pdffilepath) && Path.GetExtension(pdffilepath.ToLower()) == ".pdf")
+                    {
+                        EypPdfViewer eypPdfViewer = TwainCtrl.PdfImportViewer.PdfViewer;
+                        eypPdfViewer.PdfFilePath = pdffilepath;
+                        TwainCtrl.TbCtrl.SelectedIndex = 1;
+                        TwainCtrl.MaximizePdfControl.Execute(null);
+                        return;
+                    }
+                }
                 TwainCtrl.AddFiles(Environment.GetCommandLineArgs(), TwainCtrl.DecodeHeight);
                 GC.Collect();
             }
