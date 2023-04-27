@@ -204,7 +204,6 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition />
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="Auto" />
@@ -231,6 +230,10 @@
                                             <VirtualizingStackPanel Orientation="Horizontal" />
                                         </ItemsPanelTemplate>
                                     </ListBox.ItemsPanel>
+                                    <ListBoxItem Tag="None">
+                                        <TextBlock FontFamily="Webdings" FontSize="16" FontWeight="Bold"
+                                            Text="1" />
+                                    </ListBoxItem>
                                     <ListBoxItem Tag="Width">
                                         <TextBlock FontFamily="Wingdings 3" FontSize="16" FontWeight="Bold"
                                             Text="F" />
@@ -240,19 +243,7 @@
                                             Text="G" />
                                     </ListBoxItem>
                                 </ListBox>
-                                <Button Grid.Column="2" Command="{Binding Resize, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
-                                    <Button.Content>
-                                        <Image Width="16" Height="16">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Imageres.dll" />
-                                                    <Binding Source="226" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                    </Button.Content>
-                                </Button>
-                                <StackPanel Grid.Column="3"
+                                <StackPanel Grid.Column="2"
                                     Orientation="Horizontal"
                                     Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}">
                                     <RepeatButton Command="{Binding ViewerBack, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ToolTip="Önceki Sayfa">
@@ -283,7 +274,7 @@
                                         </Image>
                                     </RepeatButton>
                                 </StackPanel>
-                                <Button Grid.Column="4"
+                                <Button Grid.Column="3"
                                     Command="{Binding Yazdır, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
                                     Visibility="{Binding PrintButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                                     <Button.Content>
@@ -297,14 +288,14 @@
                                         </Image>
                                     </Button.Content>
                                 </Button>
-                                <Slider Grid.Column="5"
+                                <Slider Grid.Column="4"
                                     Margin="2"
                                     AutoToolTipPlacement="TopLeft"
                                     IsEnabled="{Binding Source, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource NullableToBooleanConverter}}"
                                     Minimum="0.01" SmallChange="1"
                                     Style="{StaticResource Slider}"
                                     Value="{Binding Zoom, RelativeSource={RelativeSource TemplatedParent}}" />
-                                <Slider Grid.Column="6"
+                                <Slider Grid.Column="5"
                                     Margin="2"
                                     AutoToolTipPlacement="TopLeft"
                                     IsEnabled="{Binding Source, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource NullableToBooleanConverter}}"
@@ -313,7 +304,7 @@
                                     Style="{StaticResource Slider}"
                                     Ticks="0, 90, 180, 270, 360"
                                     Value="{Binding Angle, RelativeSource={RelativeSource TemplatedParent}}" />
-                                <ToggleButton Grid.Column="7"
+                                <ToggleButton Grid.Column="6"
                                     Content="360°"
                                     IsChecked="{Binding PanoramaMode, RelativeSource={RelativeSource TemplatedParent}}"
                                     Visibility="{Binding PanoramaButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}" />

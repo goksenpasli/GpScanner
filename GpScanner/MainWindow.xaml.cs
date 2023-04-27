@@ -147,6 +147,17 @@ namespace GpScanner
                         return;
                     }
                 }
+
+                if (Settings.Default.DirectOpenUdfFile)
+                {
+                    string udffilepath = Environment.GetCommandLineArgs()[1];
+                    if (File.Exists(udffilepath) && Path.GetExtension(udffilepath.ToLower()) == ".udf")
+                    {
+                        TwainCtrl.xpsViewer.XpsDataFilePath = TwainCtrl.LoadUdfFile(udffilepath);
+                        TwainCtrl.TbCtrl.SelectedIndex = 2;
+                        return;
+                    }
+                }
                 TwainCtrl.AddFiles(Environment.GetCommandLineArgs(), TwainCtrl.DecodeHeight);
                 GC.Collect();
             }

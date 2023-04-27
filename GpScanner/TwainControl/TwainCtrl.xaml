@@ -1017,7 +1017,8 @@
                                                                     <Image.Source>
                                                                         <PriorityBinding>
                                                                             <Binding IsAsync="True" Mode="OneWay" Path="Resim.Thumbnail" />
-                                                                            <Binding Converter="{StaticResource FilePathToIconConverter}" Path="FilePath" />
+                                                                            <Binding Converter="{StaticResource FilePathToIconConverter}"
+                                                                                IsAsync="True" Path="FilePath" />
                                                                         </PriorityBinding>
                                                                     </Image.Source>
                                                                 </Image>
@@ -1053,7 +1054,7 @@
                                     <RowDefinition />
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
-                                <Controls:XpsViewer x:Name="xpsViewer" />
+                                <Controls:XpsViewer x:Name="xpsViewer" x:FieldModifier="public" />
                                 <UniformGrid Grid.Row="1" Columns="2">
                                     <Button Command="{Binding LoadSingleUdfFile}" CommandParameter="{Binding ElementName=xpsViewer}">
                                         <StackPanel Orientation="Horizontal">
@@ -1309,10 +1310,10 @@
                         <Extensions:ImageViewer x:Name="ImgViewer"
                             d:Source="/GpScanner;component/splash.png" d:Zoom="1"
                             Angle="{Binding Scanner.RotateAngle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            OpenButtonVisibility="Collapsed" Orientation="Height" PanoramaButtonVisibility="Collapsed"
+                            OpenButtonVisibility="Collapsed" PanoramaButtonVisibility="Collapsed"
                             PreviewMouseDown="ImgViewer_MouseDown" PreviewMouseMove="ImgViewer_MouseMove"
                             PreviewMouseWheel="ImgViewer_PreviewMouseWheel" PrintButtonVisibility="Visible" SnapTick="True"
-                            Source="{Binding SeçiliResim.Resim}" />
+                            Source="{Binding SeçiliResim.Resim, Mode=OneWay}" />
                         <Canvas x:Name="cnv" />
                     </Grid>
                 </DockPanel>

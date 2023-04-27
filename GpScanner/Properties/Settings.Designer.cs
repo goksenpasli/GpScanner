@@ -204,5 +204,17 @@ namespace GpScanner.Properties {
                 this["DirectOpenPdfFile"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool DirectOpenUdfFile {
+            get {
+                return ((bool)(this["DirectOpenUdfFile"]));
+            }
+            set {
+                this["DirectOpenUdfFile"] = value;
+            }
+        }
     }
 }

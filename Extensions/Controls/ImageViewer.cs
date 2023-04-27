@@ -17,9 +17,11 @@ namespace Extensions
 {
     public enum FitImageOrientation
     {
-        Width = 0,
+        None = 0,
 
-        Height = 1
+        Width = 1,
+
+        Height = 2
     }
 
     [TemplatePart(Name = "PanoramaViewPort", Type = typeof(Viewport3D))]
@@ -34,7 +36,7 @@ namespace Extensions
 
         public static readonly DependencyProperty ImageFilePathProperty = DependencyProperty.Register("ImageFilePath", typeof(string), typeof(ImageViewer), new PropertyMetadata(null, ImageFilePathChanged));
 
-        public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(FitImageOrientation), typeof(ImageViewer), new PropertyMetadata(FitImageOrientation.Width, OrientationChanged));
+        public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(FitImageOrientation), typeof(ImageViewer), new PropertyMetadata(FitImageOrientation.None, OrientationChanged));
 
         public static readonly DependencyProperty OriginalPixelHeightProperty = DependencyProperty.Register("OriginalPixelHeight", typeof(int), typeof(ImageViewer), new PropertyMetadata(0));
 
@@ -79,7 +81,20 @@ namespace Extensions
             {
                 if (Source is not null)
                 {
-                    Zoom = (Orientation != FitImageOrientation.Width) ? ActualHeight / Source.Height : ActualWidth / Source.Width;
+                    switch (Orientation)
+                    {
+                        case FitImageOrientation.Width:
+                            Zoom = ActualHeight / Source.Height;
+                            return;
+
+                        case FitImageOrientation.Height:
+                            Zoom = ActualWidth / Source.Width;
+                            return;
+
+                        case FitImageOrientation.None:
+                            Zoom = 1;
+                            break;
+                    }
                 }
             }, parameter => Source is not null);
 
@@ -409,13 +424,13 @@ namespace Extensions
 
         private bool toolBarIsEnabled = true;
 
-        private static void DecodeHeightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static async void DecodeHeightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is ImageViewer imageViewer)
             {
                 string path = imageViewer.ImageFilePath;
                 imageViewer.DecodeHeight = (int)e.NewValue;
-                LoadImage(path, imageViewer);
+                await LoadImage(path, imageViewer);
             }
         }
 
@@ -453,14 +468,14 @@ namespace Extensions
                     int[] size = await GetImagePixelSize(filepath);
                     imageViewer.OriginalPixelHeight = size[0];
                     imageViewer.OriginalPixelWidth = size[1];
-                    LoadImage(filepath, imageViewer);
+                    await LoadImage(filepath, imageViewer);
                     return;
                 }
                 imageViewer.Source = null;
             }
         }
 
-        private static void LoadImage(string filepath, ImageViewer imageViewer)
+        private static async Task LoadImage(string filepath, ImageViewer imageViewer)
         {
             if (filepath is not null && File.Exists(filepath))
             {
@@ -481,22 +496,30 @@ namespace Extensions
                     case ".png" or ".jpg" or ".jpeg" or ".bmp":
                         {
                             imageViewer.TifNavigasyonButtonEtkin = Visibility.Collapsed;
-                            BitmapImage image = new();
-                            image.BeginInit();
-                            image.DecodePixelHeight = imageViewer.DecodeHeight;
-                            image.CacheOption = BitmapCacheOption.None;
-                            image.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.IgnoreImageCache | BitmapCreateOptions.DelayCreation;
-                            image.UriSource = new Uri(filepath);
-                            image.EndInit();
-                            if (!image.IsFrozen && image.CanFreeze)
-                            {
-                                image.Freeze();
-                            }
-                            imageViewer.Source = image;
+                            imageViewer.Source = await LoadImageAsync(filepath, imageViewer.DecodeHeight);
                             return;
                         }
                 }
             }
+        }
+
+        private static async Task<BitmapImage> LoadImageAsync(string imagePath, int decodepixelheight)
+        {
+            return await Task.Run(() =>
+               {
+                   BitmapImage image = new();
+                   image.BeginInit();
+                   image.CacheOption = BitmapCacheOption.None;
+                   image.DecodePixelHeight = decodepixelheight;
+                   image.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.IgnoreImageCache | BitmapCreateOptions.DelayCreation;
+                   image.UriSource = new Uri(imagePath);
+                   image.EndInit();
+                   if (!image.IsFrozen && image.CanFreeze)
+                   {
+                       image.Freeze();
+                   }
+                   return image;
+               });
         }
 
         private static void OrientationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -528,11 +551,7 @@ namespace Extensions
         {
             if (d is ImageViewer imageViewer && e.NewValue is not null && e.NewValue is BitmapFrame bitmapFrame)
             {
-                imageViewer.Resize.Execute(null);
-                if (bitmapFrame.PixelHeight < bitmapFrame.PixelWidth)
-                {
-                    imageViewer.Orientation = FitImageOrientation.Width;
-                }
+                imageViewer.Orientation = bitmapFrame.PixelHeight < bitmapFrame.PixelWidth ? FitImageOrientation.Width : FitImageOrientation.Height;
                 if (bitmapFrame.PixelHeight * 2 == bitmapFrame.PixelWidth)
                 {
                     imageViewer.PanoramaButtonVisibility = Visibility.Visible;

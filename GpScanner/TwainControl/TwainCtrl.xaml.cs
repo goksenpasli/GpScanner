@@ -518,24 +518,9 @@ namespace TwainControl
                     Multiselect = false
                 };
 
-                if (openFileDialog.ShowDialog() == true)
+                if (openFileDialog.ShowDialog() == true && parameter is XpsViewer xpsViewer)
                 {
-                    using ZipArchive archive = ZipFile.Open(openFileDialog.FileName, ZipArchiveMode.Read);
-                    if (archive != null && parameter is XpsViewer xpsViewer)
-                    {
-                        ZipArchiveEntry üstveri = archive.Entries.FirstOrDefault(entry => entry.Name == "content.xml");
-                        string source = Path.GetTempPath() + Guid.NewGuid() + ".xml";
-                        string xpssource = Path.GetTempPath() + Guid.NewGuid() + ".xps";
-                        üstveri?.ExtractToFile(source, true);
-                        Template xmldata = DeSerialize<Template>(source);
-                        IDocumentPaginatorSource flowDocument = UdfParser.UdfParser.RenderDocument(xmldata);
-                        using (XpsDocument xpsDocument = new(xpssource, FileAccess.ReadWrite))
-                        {
-                            XpsDocumentWriter xw = XpsDocument.CreateXpsDocumentWriter(xpsDocument);
-                            xw.Write(flowDocument.DocumentPaginator);
-                        }
-                        xpsViewer.XpsDataFilePath = xpssource;
-                    }
+                    xpsViewer.XpsDataFilePath = LoadUdfFile(openFileDialog.FileName);
                 }
             }, parameter => true);
 
@@ -1875,6 +1860,23 @@ namespace TwainControl
             {
                 await Task.Run(() => AddFiles(droppedfiles, DecodeHeight));
             }
+        }
+
+        public string LoadUdfFile(string filename)
+        {
+            ZipArchive archive = ZipFile.Open(filename, ZipArchiveMode.Read);
+            ZipArchiveEntry üstveri = archive.Entries.FirstOrDefault(entry => entry.Name == "content.xml");
+            string source = Path.GetTempPath() + Guid.NewGuid() + ".xml";
+            string xpssource = Path.GetTempPath() + Guid.NewGuid() + ".xps";
+            üstveri?.ExtractToFile(source, true);
+            Template xmldata = DeSerialize<Template>(source);
+            IDocumentPaginatorSource flowDocument = UdfParser.UdfParser.RenderDocument(xmldata);
+            using (XpsDocument xpsDocument = new(xpssource, FileAccess.ReadWrite))
+            {
+                XpsDocumentWriter xw = XpsDocument.CreateXpsDocumentWriter(xpsDocument);
+                xw.Write(flowDocument.DocumentPaginator);
+            }
+            return xpssource;
         }
 
         public void SplitPdfPageCount(string pdfpath, string savefolder, int pagecount)
