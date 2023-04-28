@@ -1017,8 +1017,7 @@
                                                                     <Image.Source>
                                                                         <PriorityBinding>
                                                                             <Binding IsAsync="True" Mode="OneWay" Path="Resim.Thumbnail" />
-                                                                            <Binding Converter="{StaticResource FilePathToIconConverter}"
-                                                                                IsAsync="True" Path="FilePath" />
+                                                                            <Binding Converter="{StaticResource FilePathToIconConverter}" Path="FilePath" />
                                                                         </PriorityBinding>
                                                                     </Image.Source>
                                                                 </Image>

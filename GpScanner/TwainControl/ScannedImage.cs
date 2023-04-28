@@ -86,11 +86,11 @@ namespace TwainControl
             {
                 if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                 {
-                    Resim = await Resim.FlipImageAsync(RotationAngle).ConfigureAwait(false);
+                    Resim = await Resim.FlipImageAsync(RotationAngle);
                     RotationAngle = 0;
                     return;
                 }
-                Resim = await Resim.RotateImageAsync(RotationAngle).ConfigureAwait(false);
+                Resim = await Resim.RotateImageAsync(RotationAngle);
                 RotationAngle = 0;
             }
         }

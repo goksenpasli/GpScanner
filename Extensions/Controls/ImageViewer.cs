@@ -503,7 +503,7 @@ namespace Extensions
             }
         }
 
-        private static async Task<BitmapImage> LoadImageAsync(string imagePath, int decodepixelheight)
+        public static async Task<BitmapImage> LoadImageAsync(string imagePath, int decodepixelheight = 0)
         {
             return await Task.Run(() =>
                {

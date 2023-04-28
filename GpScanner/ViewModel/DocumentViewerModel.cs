@@ -37,7 +37,7 @@ namespace GpScanner.ViewModel
                 if (parameter is ImageSource imageSource)
                 {
                     MemoryStream ms = new(imageSource.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg));
-                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrame(ms, ToolBox.Paper).ConfigureAwait(false);
+                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrame(ms, ToolBox.Paper);
                     bitmapFrame.Freeze();
                     ScannedImage scannedImage = new() { Seçili = false, FilePath = PdfFilePath, Resim = bitmapFrame };
                     Scanner?.Resimler.Add(scannedImage);

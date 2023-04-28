@@ -79,7 +79,7 @@ namespace TwainControl
             return outputDocument;
         }
 
-        public static async Task<PdfDocument> GeneratePdf(this List<ScannedImage> bitmapFrames, Format format, Paper paper, int jpegquality = 80, List<ObservableCollection<OcrData>> ScannedText = null, int dpi = 120)
+        public static Task<PdfDocument> GeneratePdf(this List<ScannedImage> bitmapFrames, Format format, Paper paper, int jpegquality = 80, List<ObservableCollection<OcrData>> ScannedText = null, int dpi = 120)
         {
             if (bitmapFrames?.Count == 0)
             {
@@ -89,7 +89,6 @@ namespace TwainControl
             try
             {
                 Scanner.ProgressState = TaskbarItemProgressState.Normal;
-                Uri uri = new("pack://application:,,,/TwainControl;component/Icons/okay.png", UriKind.Absolute);
                 for (int i = 0; i < bitmapFrames.Count; i++)
                 {
                     ScannedImage scannedimage = bitmapFrames[i];
@@ -165,9 +164,9 @@ namespace TwainControl
                         }
                         Scanner.PdfSaveProgressValue = i / (double)bitmapFrames.Count;
                     }
-                    if (uri != null && Settings.Default.RemoveProcessedImage)
+                    if (Settings.Default.RemoveProcessedImage)
                     {
-                        scannedimage.Resim = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(uri, 0);
+                        scannedimage.Resim =null;
                     }
                     GC.Collect();
                 }
@@ -184,7 +183,7 @@ namespace TwainControl
                 ScannedText = null;
                 throw new ArgumentException(nameof(document), ex);
             }
-            return document;
+            return Task.FromResult(document);
         }
 
         public static PdfDocument GeneratePdf(this List<string> imagefiles, Paper paper, List<ObservableCollection<OcrData>> ScannedText = null)

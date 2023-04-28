@@ -186,32 +186,6 @@ namespace TwainControl
                 CreateBitmapFrame(image, paper, image.PixelWidth < image.PixelHeight);
         }
 
-        public static async Task<BitmapFrame> GenerateImageDocumentBitmapFrameAsync(Uri item, int decodeheight, int defaultpictureresizeratio = 100)
-        {
-            return await Task.Run(() =>
-            {
-                BitmapImage image = new();
-                image.BeginInit();
-                image.CacheOption = BitmapCacheOption.None;
-                image.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.IgnoreImageCache | BitmapCreateOptions.DelayCreation;
-                image.UriSource = item;
-                image.EndInit();
-                image.Freeze();
-
-                BitmapImage thumbimage = new();
-                thumbimage.BeginInit();
-                thumbimage.DecodePixelHeight = decodeheight / 10;
-                thumbimage.CacheOption = BitmapCacheOption.None;
-                thumbimage.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.IgnoreImageCache | BitmapCreateOptions.DelayCreation;
-                thumbimage.UriSource = item;
-                thumbimage.EndInit();
-                thumbimage.Freeze();
-                BitmapFrame bitmapFrame = defaultpictureresizeratio != 100 ? BitmapFrame.Create(image.Resize(defaultpictureresizeratio / 100d), thumbimage) : BitmapFrame.Create(image, thumbimage);
-                bitmapFrame.Freeze();
-                return bitmapFrame;
-            });
-        }
-
         public static ObservableCollection<Paper> GetPapers()
         {
             return new ObservableCollection<Paper>

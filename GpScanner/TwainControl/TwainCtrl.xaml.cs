@@ -1568,18 +1568,17 @@ namespace TwainControl
 
         public static async Task SaveJpgImage(List<ScannedImage> images, string filename, Scanner scanner)
         {
-            await Task.Run(async () =>
+            await Task.Run(() =>
             {
                 string directory = Path.GetDirectoryName(filename);
-                Uri uri = new("pack://application:,,,/TwainControl;component/Icons/okay.png", UriKind.Absolute);
                 for (int i = 0; i < images.Count; i++)
                 {
                     ScannedImage scannedimage = images[i];
                     File.WriteAllBytes(directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "jpg"), scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality));
                     scanner.PdfSaveProgressValue = i / (double)images.Count;
-                    if (uri != null && Settings.Default.RemoveProcessedImage)
+                    if (Settings.Default.RemoveProcessedImage)
                     {
-                        scannedimage.Resim = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(uri, 0);
+                        scannedimage.Resim = null;
                     }
                 }
                 scanner.PdfSaveProgressValue = 0;
@@ -1736,7 +1735,9 @@ namespace TwainControl
                             case ".gıf":
                             case ".bmp":
                                 {
-                                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(new Uri(filename), decodeheight, Settings.Default.DefaultPictureResizeRatio);
+                                    BitmapImage main = await ImageViewer.LoadImageAsync(filename);
+                                    BitmapImage thumb = await ImageViewer.LoadImageAsync(filename, decodeheight / 10);
+                                    BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(main.Resize(Settings.Default.DefaultPictureResizeRatio / 100d), thumb) : BitmapFrame.Create(main, thumb);
                                     bitmapFrame.Freeze();
                                     ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
                                     await Dispatcher.InvokeAsync(() => Scanner?.Resimler.Add(img));

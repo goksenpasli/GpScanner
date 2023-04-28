@@ -283,9 +283,6 @@
     <Resource Include="Icons\rotate.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Icons\okay.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Icons\delete.png" />
     <Resource Include="Icons\save.png" />
   </ItemGroup>
