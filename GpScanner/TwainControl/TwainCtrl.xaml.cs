@@ -689,9 +689,9 @@ namespace TwainControl
 
             MergeSelectedImagesToPdfFile = new RelayCommand<object>(async parameter =>
             {
-                if (parameter is object[] data && data[0] is TwainCtrl twainCtrl && data[1] is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
+                if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
                 {
-                    IEnumerable<ScannedImage> seçiliresimler = twainCtrl.Scanner.Resimler.Where(z => z.Seçili);
+                    IEnumerable<ScannedImage> seçiliresimler = Scanner.Resimler.Where(z => z.Seçili);
                     if (seçiliresimler.Any())
                     {
                         PdfDocument pdfDocument = null;
@@ -699,7 +699,7 @@ namespace TwainControl
                         string pdfFilePath = pdfviewer.PdfFilePath;
                         await Task.Run(async () =>
                         {
-                            pdfDocument = await seçiliresimler.ToList().GeneratePdf(Format.Jpg, twainCtrl.SelectedPaper, Settings.Default.JpegQuality, null, (int)Settings.Default.Çözünürlük);
+                            pdfDocument = await seçiliresimler.ToList().GeneratePdf(Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, null, (int)Settings.Default.Çözünürlük);
                             temporarypdf = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
                             pdfDocument.Save(temporarypdf);
                             string[] processedfiles = new string[] { temporarypdf, pdfFilePath };
@@ -709,7 +709,7 @@ namespace TwainControl
                         NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
                         if (Settings.Default.RemoveProcessedImage)
                         {
-                            twainCtrl.SeçiliListeTemizle.Execute(null);
+                            SeçiliListeTemizle.Execute(null);
                         }
                         GC.Collect();
                     }
@@ -744,7 +744,7 @@ namespace TwainControl
 
             AddAllFileToControlPanel = new RelayCommand<object>(async parameter =>
             {
-                if (parameter is object[] data && data[0] is TwainCtrl twainCtrl && data[1] is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
+                if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
                 {
                     if (Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.LeftCtrl) && TbCtrl?.Items[1] is TabItem selectedtab)
                     {
@@ -754,7 +754,7 @@ namespace TwainControl
                     }
                     if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                     {
-                        twainCtrl.AddFiles(new string[] { pdfviewer.PdfFilePath }, twainCtrl.DecodeHeight);
+                        AddFiles(new string[] { pdfviewer.PdfFilePath }, DecodeHeight);
                         GC.Collect();
                         return;
                     }
@@ -762,16 +762,16 @@ namespace TwainControl
                     {
                         string savefilename = Path.GetTempPath() + Guid.NewGuid() + ".pdf";
                         await SaveFile(pdfviewer.PdfFilePath, savefilename, pdfviewer.Sayfa, pdfviewer.ToplamSayfa);
-                        twainCtrl.AddFiles(new string[] { savefilename }, twainCtrl.DecodeHeight);
+                        AddFiles(new string[] { savefilename }, DecodeHeight);
                         GC.Collect();
                         return;
                     }
                     byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfviewer.PdfFilePath);
                     MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfviewer.Sayfa, (int)Settings.Default.ImgLoadResolution);
-                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrame(ms, twainCtrl.SelectedPaper, false);
+                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrame(ms, SelectedPaper, false);
                     bitmapFrame.Freeze();
                     ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
-                    twainCtrl.Scanner?.Resimler.Add(scannedImage);
+                    Scanner?.Resimler.Add(scannedImage);
                     filedata = null;
                     bitmapFrame = null;
                     scannedImage = null;

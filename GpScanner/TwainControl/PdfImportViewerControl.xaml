@@ -20,7 +20,6 @@
             </ResourceDictionary.MergedDictionaries>
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
-            <Extensions:CloneConverter x:Key="CloneConverter" />
             <Pdfviewer:PageToImageConverter x:Key="PageToImageConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
@@ -127,13 +126,9 @@
                 <Image Width="16" Height="16"
                     Source="/TwainControl;component/Icons/rotate.png" />
             </Button>
-            <Button BorderBrush="Cyan" Command="{Binding AddAllFileToControlPanel}">
-                <Button.CommandParameter>
-                    <MultiBinding Converter="{StaticResource CloneConverter}">
-                        <Binding Mode="OneWay" RelativeSource="{RelativeSource AncestorType=local:TwainCtrl}" />
-                        <Binding ElementName="PdfViewer" Mode="OneWay" />
-                    </MultiBinding>
-                </Button.CommandParameter>
+            <Button BorderBrush="Cyan"
+                Command="{Binding AddAllFileToControlPanel}"
+                CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
                 <Button.Content>
                     <TextBlock FontFamily="Wingdings" FontSize="16" Text="ç" />
                 </Button.Content>
@@ -145,13 +140,7 @@
                     <TextBlock FontFamily="Wingdings 2" FontSize="16" Text="-" />
                 </Button.Content>
             </Button>
-            <Button Command="{Binding MergeSelectedImagesToPdfFile}">
-                <Button.CommandParameter>
-                    <MultiBinding Converter="{StaticResource CloneConverter}">
-                        <Binding Mode="OneWay" RelativeSource="{RelativeSource AncestorType=local:TwainCtrl}" />
-                        <Binding ElementName="PdfViewer" Mode="OneWay" />
-                    </MultiBinding>
-                </Button.CommandParameter>
+            <Button Command="{Binding MergeSelectedImagesToPdfFile}" CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
                 <Button.Content>
                     <Image Width="16" Height="16">
                         <Image.Source>

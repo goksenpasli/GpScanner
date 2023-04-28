@@ -28,7 +28,6 @@
                 </DrawingBrush.Drawing>
             </DrawingBrush>
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
-            <Extensions:CloneConverter x:Key="CloneConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Converter:FilePathCheckConverter x:Key="FilePathCheckConverter" />
@@ -296,13 +295,9 @@
                             <Image Width="16" Height="16"
                                 Source="/TwainControl;component/Icons/rotate.png" />
                         </Button>
-                        <Button BorderBrush="Cyan" Command="{Binding AddAllFileToControlPanel}">
-                            <Button.CommandParameter>
-                                <MultiBinding Converter="{StaticResource CloneConverter}">
-                                    <Binding ElementName="TwainCtrl" Mode="OneWay" Path="DataContext" />
-                                    <Binding ElementName="PdfVwr" Mode="OneWay" />
-                                </MultiBinding>
-                            </Button.CommandParameter>
+                        <Button BorderBrush="Cyan"
+                            Command="{Binding AddAllFileToControlPanel}"
+                            CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
                             <Button.Content>
                                 <TextBlock FontFamily="Wingdings" FontSize="16" Text="ç" />
                             </Button.Content>
@@ -325,13 +320,7 @@
                                 <TextBlock FontFamily="Wingdings 2" FontSize="16" Text="-" />
                             </Button.Content>
                         </Button>
-                        <Button Command="{Binding MergeSelectedImagesToPdfFile}">
-                            <Button.CommandParameter>
-                                <MultiBinding Converter="{StaticResource CloneConverter}">
-                                    <Binding ElementName="TwainCtrl" Mode="OneWay" Path="DataContext" />
-                                    <Binding ElementName="PdfVwr" Mode="OneWay" />
-                                </MultiBinding>
-                            </Button.CommandParameter>
+                        <Button Command="{Binding MergeSelectedImagesToPdfFile}" CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
                             <Button.Content>
                                 <Image Width="16" Height="16">
                                     <Image.Source>
@@ -444,14 +433,16 @@
                                 Source="/TwainControl;component/Icons/delete.png" />
                         </Hyperlink>
                     </TextBlock>
-                    <PdfViewer:PdfViewer Grid.Row="1"
+                    <twain:SimplePdfViewer Grid.Row="1"
                         Width="157" Height="225"
-                        AutoFitContent="True" ContextMenuVisibility="Visible"
+                        AutoFitContent="True"
                         Dpi="{Binding DefaultThumbNailDpi, Source={x:Static properties:Settings.Default}}"
                         DpiListVisibility="Collapsed" OpenButtonVisibility="Collapsed"
                         PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                         PrintButtonVisibility="Collapsed" ScrollBarVisible="Hidden" SliderZoomAngleVisibility="Collapsed"
-                        SnapTick="True" ToolBarVisibility="Collapsed" />
+                        SnapTick="True"
+                        Tag="{Binding RelativeSource={RelativeSource AncestorType=twain:TwainCtrl}}"
+                        ToolBarVisibility="Collapsed" />
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="XmlViewerTemplate">
