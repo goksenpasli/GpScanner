@@ -128,7 +128,9 @@
       <DependentUpon>SaveDialogUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ScannedImage.cs" />
+    <Compile Include="SimpleImageViewer.cs" />
     <Compile Include="SimplePdfViewer.cs" />
+    <Compile Include="SimpleXmlViewer.cs" />
     <Compile Include="ToolBox.xaml.cs">
       <DependentUpon>ToolBox.xaml</DependentUpon>
     </Compile>

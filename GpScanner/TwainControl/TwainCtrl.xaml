@@ -196,6 +196,7 @@
                                 </Extensions:ContentToggleButton.OverContent>
                             </Extensions:ContentToggleButton>
                             <Button Grid.Column="2"
+                                BorderBrush="Cyan"
                                 Command="{Binding ScanImage}"
                                 IsEnabled="{Binding Scanner.ArayüzEtkin}">
                                 <StackPanel Orientation="Horizontal">
@@ -211,7 +212,7 @@
                                 </StackPanel>
                             </Button>
                             <Button Grid.Column="3"
-                                Background="Green"
+                                Background="Green" BorderBrush="Cyan"
                                 Command="{Binding FastScanImage}"
                                 IsDefault="True"
                                 IsEnabled="{Binding Scanner.ArayüzEtkin}">

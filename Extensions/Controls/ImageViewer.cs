@@ -481,7 +481,7 @@ namespace Extensions
             {
                 switch (Path.GetExtension(filepath).ToLower())
                 {
-                    case ".tiff" or ".tif":
+                    case ".tiff" or ".tif" or ".tıff" or ".tıf":
                         imageViewer.Sayfa = 1;
                         imageViewer.Decoder = new TiffBitmapDecoder(new Uri(filepath), BitmapCreateOptions.None, BitmapCacheOption.None);
                         imageViewer.TifNavigasyonButtonEtkin = Visibility.Visible;

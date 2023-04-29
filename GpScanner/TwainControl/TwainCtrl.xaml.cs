@@ -68,6 +68,10 @@ namespace TwainControl
 
             ScanImage = new RelayCommand<object>(parameter =>
             {
+                if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite && (!Keyboard.IsKeyDown(Key.LeftAlt) && !Keyboard.IsKeyDown(Key.RightAlt)))
+                {
+                    Settings.Default.BwThreshold = 160;
+                }
                 GC.Collect();
                 ScanCommonSettings();
                 twain.SelectSource(Scanner.SeçiliTarayıcı);
@@ -80,6 +84,10 @@ namespace TwainControl
                 {
                     _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
                     return;
+                }
+                if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite && (!Keyboard.IsKeyDown(Key.LeftAlt) && !Keyboard.IsKeyDown(Key.RightAlt)))
+                {
+                    Settings.Default.BwThreshold = 160;
                 }
                 GC.Collect();
                 ScanCommonSettings();

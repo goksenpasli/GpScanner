@@ -370,6 +370,13 @@
                     ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                     PanoramaButtonVisibility="Collapsed" PrintButtonVisibility="Visible" />
             </DataTemplate>
+            <DataTemplate x:Key="EypImgViewerTemplate">
+                <twain:SimpleImageViewer 
+                    DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
+                    ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                    PanoramaButtonVisibility="Collapsed" PrintButtonVisibility="Visible"
+                    Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" />
+            </DataTemplate>
             <DataTemplate x:Key="ImgViewerDocumentViewerTemplateFull">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -460,9 +467,10 @@
                                 Source="/TwainControl;component/Icons/delete.png" />
                         </Hyperlink>
                     </TextBlock>
-                    <twain:XmlViewerControl Grid.Row="1"
+                    <twain:SimpleXmlViewer Grid.Row="1"
                         Width="157" Height="225"
-                        twain:XmlViewerControlModel.XmlContent="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        twain:XmlViewerControlModel.XmlContent="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                        Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" />
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="XmlViewerThumbTemplate">
@@ -509,7 +517,7 @@
                 Zip="{StaticResource ZipViewerTemplate}" />
             <ViewModel:ViewerTemplateSelector x:Key="PdfEypViewerSelector"
                 Empty="{StaticResource EmptyTemplate}"
-                Img="{StaticResource ImgViewerTemplate}"
+                Img="{StaticResource EypImgViewerTemplate}"
                 Pdf="{StaticResource EypSimplePdfTemplate}"
                 Vid="{StaticResource VideoViewerTemplate}"
                 Xml="{StaticResource XmlViewerTemplate}"

@@ -3,24 +3,25 @@ using System.Windows.Input;
 
 namespace TwainControl
 {
-    public class SimplePdfViewer : PdfViewer.PdfViewer
+    public class SimpleXmlViewer : XmlViewerControl
     {
         protected override void OnMouseDoubleClick(MouseButtonEventArgs e)
         {
-            PdfImportViewerControl pdfImportViewerControl = new();
-            pdfImportViewerControl.PdfViewer.PdfFilePath = (string)DataContext;
+            XmlViewerControl xmlViewerControl = new();
+            XmlViewerControlModel.SetXmlContent(xmlViewerControl, (string)Tag);
             Window maximizePdfWindow = new()
             {
-                Content = pdfImportViewerControl,
+                Content = xmlViewerControl,
                 WindowState = WindowState.Maximized,
                 ShowInTaskbar = true,
                 Title = "GPSCANNER",
+                DataContext = Tag,
                 WindowStartupLocation = WindowStartupLocation.CenterOwner,
             };
             _ = maximizePdfWindow.ShowDialog();
             maximizePdfWindow.Closed += (s, e) =>
             {
-                pdfImportViewerControl?.PdfViewer?.Dispose();
+                xmlViewerControl = null;
                 maximizePdfWindow = null;
             };
             base.OnMouseDoubleClick(e);
