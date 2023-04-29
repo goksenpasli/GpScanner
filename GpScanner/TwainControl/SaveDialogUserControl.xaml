@@ -36,8 +36,8 @@
                         <Setter Property="Margin" Value="2" />
                         <Style.Triggers>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" Value="{StaticResource BorderBackground}" />
-                                <Setter Property="BorderBrush" Value="{StaticResource GroupBoxBackGround}" />
+                                <Setter Property="Background" Value="{DynamicResource BorderBackground}" />
+                                <Setter Property="BorderBrush" Value="{DynamicResource GroupBoxBackGround}" />
                             </Trigger>
                         </Style.Triggers>
                     </Style>

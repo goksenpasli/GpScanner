@@ -448,10 +448,10 @@ namespace Extensions
                             {
                                 InsertInternalChild(childIndex, child);
                             }
-                            if (!System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
-                            {
+                            //if (!System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
+                            //{
                                 ItemContainerGenerator.PrepareItemContainer(child);
-                            }
+                            //}
                             child.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
                         }
 

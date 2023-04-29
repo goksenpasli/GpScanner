@@ -413,7 +413,28 @@
                                                                                                 MinWidth="{Binding Parent.DataContext.SelectedSize.Width, Source={x:Reference TwainCtrl}}"
                                                                                                 MinHeight="{Binding Parent.DataContext.SelectedSize.Height, Source={x:Reference TwainCtrl}}">
                                                                                                 <GroupBox>
-                                                                                                    <local:TranslateView ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding Parent.DataContext.FileOcrContent, RelativeSource={RelativeSource Mode=Self}}" />
+                                                                                                    <Grid>
+                                                                                                        <Grid.RowDefinitions>
+                                                                                                            <RowDefinition Height="Auto" />
+                                                                                                            <RowDefinition />
+                                                                                                        </Grid.RowDefinitions>
+                                                                                                        <ItemsControl MaxHeight="120" ItemsSource="{Binding QrData}">
+                                                                                                            <ItemsControl.Template>
+                                                                                                                <ControlTemplate>
+                                                                                                                    <ScrollViewer Padding="{TemplateBinding Padding}"
+                                                                                                                        CanContentScroll="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                                                                                                                        <ItemsPresenter />
+                                                                                                                    </ScrollViewer>
+                                                                                                                </ControlTemplate>
+                                                                                                            </ItemsControl.Template>
+                                                                                                            <ItemsControl.ItemTemplate>
+                                                                                                                <DataTemplate>
+                                                                                                                    <Image Source="{Binding Converter={StaticResource StringToQrBitmapImageConverter}, Mode=OneWay}" />
+                                                                                                                </DataTemplate>
+                                                                                                            </ItemsControl.ItemTemplate>
+                                                                                                        </ItemsControl>
+                                                                                                        <local:TranslateView Grid.Row="1" ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding Parent.DataContext.FileOcrContent, RelativeSource={RelativeSource Mode=Self}}" />
+                                                                                                    </Grid>
                                                                                                 </GroupBox>
                                                                                             </Extensions:ResizablePanel>
                                                                                         </Setter.Value>
@@ -422,25 +443,8 @@
                                                                             </Style.Triggers>
                                                                         </Style>
                                                                     </Extensions:ContentToggleButton.Style>
-                                                                    <StackPanel Orientation="Horizontal">
-                                                                        <ItemsControl MaxHeight="120" ItemsSource="{Binding QrData}">
-                                                                            <ItemsControl.Template>
-                                                                                <ControlTemplate>
-                                                                                    <ScrollViewer Padding="{TemplateBinding Padding}"
-                                                                                        CanContentScroll="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                                                                                        <ItemsPresenter />
-                                                                                    </ScrollViewer>
-                                                                                </ControlTemplate>
-                                                                            </ItemsControl.Template>
-                                                                            <ItemsControl.ItemTemplate>
-                                                                                <DataTemplate>
-                                                                                    <Image Source="{Binding Converter={StaticResource StringToQrBitmapImageConverter}, Mode=OneWay}" />
-                                                                                </DataTemplate>
-                                                                            </ItemsControl.ItemTemplate>
-                                                                        </ItemsControl>
-                                                                        <TextBlock Text="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}"
-                                                                            TextTrimming="CharacterEllipsis" TextWrapping="Wrap" />
-                                                                    </StackPanel>
+                                                                    <TextBlock Text="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}"
+                                                                        TextTrimming="CharacterEllipsis" TextWrapping="Wrap" />
                                                                 </Extensions:ContentToggleButton>
                                                                 <Extensions:ContentToggleButton Grid.Column="1"
                                                                     HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
