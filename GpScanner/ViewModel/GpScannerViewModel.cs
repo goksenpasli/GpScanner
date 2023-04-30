@@ -500,7 +500,6 @@ namespace GpScanner.ViewModel
                 {
                     IEnumerable<Data> data = DataYükle()?.Where(z => z.FileName == scanner.FileName);
                     scanner.FileOcrContent = string.Join(" ", data?.Select(z => z.FileContent));
-                    scanner.QrData = data.Select(z => z.QrData);
                 }
             }, parameter => true);
 

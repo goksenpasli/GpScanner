@@ -412,30 +412,7 @@
                                                                                                 Height="{Binding Parent.DataContext.SelectedSize.Height, Source={x:Reference TwainCtrl}}"
                                                                                                 MinWidth="{Binding Parent.DataContext.SelectedSize.Width, Source={x:Reference TwainCtrl}}"
                                                                                                 MinHeight="{Binding Parent.DataContext.SelectedSize.Height, Source={x:Reference TwainCtrl}}">
-                                                                                                <GroupBox>
-                                                                                                    <Grid>
-                                                                                                        <Grid.RowDefinitions>
-                                                                                                            <RowDefinition Height="Auto" />
-                                                                                                            <RowDefinition />
-                                                                                                        </Grid.RowDefinitions>
-                                                                                                        <ItemsControl MaxHeight="120" ItemsSource="{Binding QrData}">
-                                                                                                            <ItemsControl.Template>
-                                                                                                                <ControlTemplate>
-                                                                                                                    <ScrollViewer Padding="{TemplateBinding Padding}"
-                                                                                                                        CanContentScroll="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                                                                                                                        <ItemsPresenter />
-                                                                                                                    </ScrollViewer>
-                                                                                                                </ControlTemplate>
-                                                                                                            </ItemsControl.Template>
-                                                                                                            <ItemsControl.ItemTemplate>
-                                                                                                                <DataTemplate>
-                                                                                                                    <Image Source="{Binding Converter={StaticResource StringToQrBitmapImageConverter}, Mode=OneWay}" />
-                                                                                                                </DataTemplate>
-                                                                                                            </ItemsControl.ItemTemplate>
-                                                                                                        </ItemsControl>
-                                                                                                        <local:TranslateView Grid.Row="1" ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding Parent.DataContext.FileOcrContent, RelativeSource={RelativeSource Mode=Self}}" />
-                                                                                                    </Grid>
-                                                                                                </GroupBox>
+                                                                                                <local:TranslateView Grid.Row="1" ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding Parent.DataContext.FileOcrContent, RelativeSource={RelativeSource Mode=Self}}" />
                                                                                             </Extensions:ResizablePanel>
                                                                                         </Setter.Value>
                                                                                     </Setter>
