@@ -999,7 +999,6 @@ namespace TwainControl
 
         public bool CanUndoImage {
             get => canUndoImage; set {
-
                 if (canUndoImage != value)
                 {
                     canUndoImage = value;
@@ -1057,7 +1056,6 @@ namespace TwainControl
 
         public ObservableCollection<OcrData> DataBaseTextData {
             get => dataBaseTextData; set {
-
                 if (dataBaseTextData != value)
                 {
                     dataBaseTextData = value;
@@ -1104,7 +1102,6 @@ namespace TwainControl
 
         public bool DragMoveStarted {
             get => dragMoveStarted; set {
-
                 if (dragMoveStarted != value)
                 {
                     dragMoveStarted = value;
@@ -1201,7 +1198,6 @@ namespace TwainControl
 
         public ObservableCollection<PdfData> PdfPages {
             get => pdfPages; set {
-
                 if (pdfPages != value)
                 {
                     pdfPages = value;
@@ -1226,7 +1222,6 @@ namespace TwainControl
 
         public SolidColorBrush PdfWatermarkColor {
             get => pdfWatermarkColor; set {
-
                 if (pdfWatermarkColor != value)
                 {
                     pdfWatermarkColor = value;
@@ -1237,7 +1232,6 @@ namespace TwainControl
 
         public string PdfWatermarkFont {
             get => pdfWatermarkFont; set {
-
                 if (pdfWatermarkFont != value)
                 {
                     pdfWatermarkFont = value;
@@ -1248,7 +1242,6 @@ namespace TwainControl
 
         public double PdfWatermarkFontAngle {
             get => pdfWatermarkFontAngle; set {
-
                 if (pdfWatermarkFontAngle != value)
                 {
                     pdfWatermarkFontAngle = value;
@@ -1301,7 +1294,6 @@ namespace TwainControl
 
         public int SaveIndex {
             get => saveIndex; set {
-
                 if (saveIndex != value)
                 {
                     saveIndex = value;
@@ -1326,7 +1318,6 @@ namespace TwainControl
 
         public int SayfaBitiş {
             get => sayfaBitiş; set {
-
                 if (sayfaBitiş != value)
                 {
                     sayfaBitiş = value;
@@ -1381,7 +1372,6 @@ namespace TwainControl
 
         public TwainWpf.TwainNative.Orientation SelectedOrientation {
             get => selectedOrientation; set {
-
                 if (selectedOrientation != value)
                 {
                     selectedOrientation = value;
@@ -1404,7 +1394,6 @@ namespace TwainControl
 
         public PageRotation SelectedRotation {
             get => selectedRotation; set {
-
                 if (selectedRotation != value)
                 {
                     selectedRotation = value;
@@ -1415,7 +1404,6 @@ namespace TwainControl
 
         public TabItem SelectedTab {
             get => selectedTab; set {
-
                 if (selectedTab != value)
                 {
                     selectedTab = value;
@@ -1454,7 +1442,6 @@ namespace TwainControl
 
         public ScannedImage UndoImage {
             get => undoImage; set {
-
                 if (undoImage != value)
                 {
                     undoImage = value;

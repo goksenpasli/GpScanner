@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("UdfParser")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("UdfParser")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Gok$en")]
 [assembly: AssemblyProduct("UdfParser")]
-[assembly: AssemblyCopyright("Copyright ©  2023")]
+[assembly: AssemblyCopyright("Copyright © 2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

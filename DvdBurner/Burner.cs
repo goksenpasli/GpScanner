@@ -202,7 +202,6 @@ namespace DvdBurner
 
         public double ProgressValue {
             get => progressValue; set {
-
                 if (progressValue != value)
                 {
                     progressValue = value;

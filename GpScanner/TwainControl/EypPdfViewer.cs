@@ -11,7 +11,6 @@ namespace TwainControl
     /// Interaction logic for PdfImportViewerControl.xaml
     /// </summary>
     ///
-
     public class EypPdfViewer : PdfViewer.PdfViewer
     {
         public EypPdfViewer()

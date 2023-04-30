@@ -263,7 +263,6 @@ namespace TwainControl
 
         public double BorderSize {
             get => borderSize; set {
-
                 if (borderSize != value)
                 {
                     borderSize = value;

@@ -6,11 +6,11 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("TwainControl")]
-[assembly: AssemblyDescription("GpTwainControl")]
+[assembly: AssemblyDescription("TwainControl")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Gok$en")]
 [assembly: AssemblyProduct("TwainControl")]
-[assembly: AssemblyCopyright("Copyright © 2021")]
+[assembly: AssemblyCopyright("Copyright © 2023")]
 [assembly: AssemblyTrademark("Gok$en")]
 [assembly: AssemblyCulture("")]
 

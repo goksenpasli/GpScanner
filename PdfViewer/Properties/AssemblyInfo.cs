@@ -6,11 +6,11 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("PdfViewer")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("PdfViewer")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Gok$en")]
 [assembly: AssemblyProduct("PdfViewer")]
-[assembly: AssemblyCopyright("Copyright ©  2022")]
+[assembly: AssemblyCopyright("Copyright © 2023")]
 [assembly: AssemblyTrademark("Gok$en")]
 [assembly: AssemblyCulture("")]
 

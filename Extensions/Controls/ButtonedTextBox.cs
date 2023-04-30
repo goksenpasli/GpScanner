@@ -76,7 +76,6 @@ namespace Extensions
 
         public Visibility ResetButtonVisibility {
             get => resetButtonVisibility; set {
-
                 if (resetButtonVisibility != value)
                 {
                     resetButtonVisibility = value;
