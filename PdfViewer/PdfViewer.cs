@@ -288,6 +288,16 @@ namespace PdfViewer
             }
         }
 
+        public byte[] PdfData {
+            get => pdfData; set {
+                if (pdfData != value)
+                {
+                    pdfData = value;
+                    OnPropertyChanged(nameof(PdfData));
+                }
+            }
+        }
+
         public string PdfFilePath {
             get => (string)GetValue(PdfFilePathProperty);
             set => SetValue(PdfFilePathProperty, value);
@@ -428,6 +438,16 @@ namespace PdfViewer
         public ImageSource Source {
             get => (ImageSource)GetValue(SourceProperty);
             set => SetValue(SourceProperty, value);
+        }
+
+        public bool ThumbPanelOpen {
+            get => thumbPanelOpen; set {
+                if (thumbPanelOpen != value)
+                {
+                    thumbPanelOpen = value;
+                    OnPropertyChanged(nameof(ThumbPanelOpen));
+                }
+            }
         }
 
         public bool ThumbsVisible {
@@ -653,6 +673,8 @@ namespace PdfViewer
 
         private PdfBookmarkCollection pdfBookmarks;
 
+        private byte[] pdfData;
+
         private ObservableCollection<PdfMatch> pdfMatches;
 
         private string pdfTextContent;
@@ -672,6 +694,8 @@ namespace PdfViewer
         private Visibility searchTextContentVisibility;
 
         private Visibility sliderZoomAngleVisibility = Visibility.Visible;
+
+        private bool thumbPanelOpen;
 
         private Visibility tifNavigasyonButtonEtkin = Visibility.Visible;
 
@@ -745,12 +769,9 @@ namespace PdfViewer
                 {
                     Sayfa = 1;
                 }
-                if (SeekingLowerPdfDpi)
+                if (SeekingLowerPdfDpi && updown.FindVisualChildren<RepeatButton>().Any(z => z.IsMouseOver))
                 {
-                    if (updown.FindVisualChildren<RepeatButton>().Any(z => z.IsMouseOver))
-                    {
-                        Dpi = (Sayfa == 1 || Sayfa == ToplamSayfa) ? SeekingPdfDpi : DpiList.Min();
-                    }
+                    Dpi = (Sayfa == 1 || Sayfa == ToplamSayfa) ? SeekingPdfDpi : DpiList.Min();
                 }
 
                 string pdfFilePath = pdfViewer.PdfFilePath;
@@ -760,6 +781,11 @@ namespace PdfViewer
             if (e.PropertyName is "SearchPdfMatch" && SearchPdfMatch is not null)
             {
                 Sayfa = SearchPdfMatch.Page + 1;
+            }
+            if (e.PropertyName is "ThumbPanelOpen")
+            {
+                PdfData = ThumbPanelOpen ? await ReadAllFileAsync(PdfFilePath).ConfigureAwait(false) : null;
+                GC.Collect();
             }
         }
 

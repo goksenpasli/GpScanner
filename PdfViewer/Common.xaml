@@ -14,7 +14,7 @@
                                 <Setter Property="Source">
                                     <Setter.Value>
                                         <MultiBinding Converter="{StaticResource PageToImageConverter}">
-                                            <Binding IsAsync="True" Path="PdfFilePath"
+                                            <Binding IsAsync="True" Path="PdfData"
                                                 RelativeSource="{RelativeSource AncestorType={x:Type local:PdfViewer}}" />
                                             <Binding Mode="OneWay" />
                                         </MultiBinding>

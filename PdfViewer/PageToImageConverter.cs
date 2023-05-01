@@ -10,18 +10,20 @@ namespace PdfViewer
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values[0] is string filename && values[1] is int index)
+            if (values[0] is byte[] PdfData && values[1] is int index)
             {
                 try
                 {
                     return Task.Run(async () =>
                     {
-                        byte[] data = await PdfViewer.ReadAllFileAsync(filename).ConfigureAwait(false);
-                        BitmapSource bitmapImage = await PdfViewer.ConvertToImgAsync(data, index, 9).ConfigureAwait(false);
-                        data = null;
-                        bitmapImage.Freeze();
-                        GC.Collect();
-                        return bitmapImage;
+                        if (PdfData != null)
+                        {
+                            BitmapSource bitmapImage = await PdfViewer.ConvertToImgAsync(PdfData, index, 9).ConfigureAwait(false);
+                            bitmapImage.Freeze();
+                            GC.Collect();
+                            return bitmapImage;
+                        }
+                        return null;
                     }).ConfigureAwait(false).GetAwaiter().GetResult();
                 }
                 catch (Exception)
