@@ -3,11 +3,24 @@ using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
+using Extensions;
 
 namespace PdfViewer
 {
-    public sealed class PageToImageConverter : IMultiValueConverter
+    public sealed class PdfPageToThumbImageConverter : InpcBase, IMultiValueConverter
     {
+        public int Dpi {
+            get => dpi;
+
+            set {
+                if (dpi != value)
+                {
+                    dpi = value;
+                    OnPropertyChanged(nameof(Dpi));
+                }
+            }
+        }
+
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             if (values[0] is byte[] PdfData && values[1] is int index)
@@ -18,7 +31,7 @@ namespace PdfViewer
                     {
                         if (PdfData != null)
                         {
-                            BitmapSource bitmapImage = await PdfViewer.ConvertToImgAsync(PdfData, index, 9).ConfigureAwait(false);
+                            BitmapSource bitmapImage = await PdfViewer.ConvertToImgAsync(PdfData, index, Dpi).ConfigureAwait(false);
                             bitmapImage.Freeze();
                             GC.Collect();
                             return bitmapImage;
@@ -38,5 +51,7 @@ namespace PdfViewer
         {
             throw new NotImplementedException();
         }
+
+        private int dpi = 9;
     }
 }

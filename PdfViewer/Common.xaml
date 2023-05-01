@@ -1,8 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:PdfViewer">
-    <local:PageToImageConverter x:Key="PageToImageConverter" />
-    <DataTemplate x:Key="ItemTemplate">
+    <local:PdfPageToThumbImageConverter x:Key="PdfPageToThumbImageConverter" />
+    <DataTemplate x:Key="PdfThumbItemTemplate">
         <StackPanel HorizontalAlignment="Center">
             <TextBlock HorizontalAlignment="Center" Text="{Binding Mode=OneWay}" />
             <local:ShadowedImage HorizontalAlignment="Center" ShowShadow="True">
@@ -13,7 +13,7 @@
                                 <Setter Property="Height" Value="96" />
                                 <Setter Property="Source">
                                     <Setter.Value>
-                                        <MultiBinding Converter="{StaticResource PageToImageConverter}">
+                                        <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
                                             <Binding IsAsync="True" Path="PdfData"
                                                 RelativeSource="{RelativeSource AncestorType={x:Type local:PdfViewer}}" />
                                             <Binding Mode="OneWay" />

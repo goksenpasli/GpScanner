@@ -21,7 +21,7 @@
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
-            <Pdfviewer:PageToImageConverter x:Key="PageToImageConverter" />
+            <Pdfviewer:PdfPageToThumbImageConverter x:Key="PdfPageToThumbImageConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -48,7 +48,9 @@
                     </Image.Source>
                 </Image>
             </Button>
-            <Extensions:ContentToggleButton  IsChecked="{Binding PdfImportThumbPanelOpen}" Command="{Binding LoadPdfExtractFile}" CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
+            <Extensions:ContentToggleButton Command="{Binding LoadPdfExtractFile}"
+                CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}"
+                IsChecked="{Binding PdfImportThumbPanelOpen}">
                 <Image Width="16" Height="16">
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -77,7 +79,7 @@
                                                         HorizontalAlignment="Center"
                                                         ShowShadow="True">
                                                         <Pdfviewer:ShadowedImage.Source>
-                                                            <MultiBinding Converter="{StaticResource PageToImageConverter}">
+                                                            <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
                                                                 <Binding ElementName="PdfViewer" IsAsync="True" Path="PdfData" />
                                                                 <Binding Mode="OneWay" Path="PageNumber" />
                                                             </MultiBinding>

@@ -77,7 +77,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PageNumberOneUpConverter.cs" />
-    <Compile Include="PageToImageConverter.cs" />
+    <Compile Include="PdfPageToThumbImageConverter.cs" />
     <Compile Include="PdfViewer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

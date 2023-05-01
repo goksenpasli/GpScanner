@@ -170,7 +170,7 @@
                                 <Extensions:ContentToggleButton.OverContent>
                                     <ListBox x:Name="Lb"
                                         VerticalContentAlignment="Center"
-                                        ItemTemplate="{StaticResource ItemTemplate}"
+                                        ItemTemplate="{StaticResource PdfThumbItemTemplate}"
                                         ItemsSource="{Binding Pages, RelativeSource={RelativeSource TemplatedParent}}"
                                         ScrollViewer.IsDeferredScrollingEnabled="True"
                                         SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"

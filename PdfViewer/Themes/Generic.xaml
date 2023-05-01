@@ -41,22 +41,6 @@
                                         </Image>
                                     </MenuItem.Icon>
                                 </MenuItem>
-                                <MenuItem>
-                                    <MenuItem.Template>
-                                        <ControlTemplate>
-                                            <ComboBox ItemTemplate="{StaticResource ItemTemplate}"
-                                                ItemsSource="{Binding Pages, RelativeSource={RelativeSource AncestorType=local:PdfViewer}}"
-                                                ScrollViewer.IsDeferredScrollingEnabled="True"
-                                                SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=local:PdfViewer}, UpdateSourceTrigger=PropertyChanged}">
-                                                <ComboBox.ItemsPanel>
-                                                    <ItemsPanelTemplate>
-                                                        <VirtualizingStackPanel />
-                                                    </ItemsPanelTemplate>
-                                                </ComboBox.ItemsPanel>
-                                            </ComboBox>
-                                        </ControlTemplate>
-                                    </MenuItem.Template>
-                                </MenuItem>
                             </ContextMenu>
                         </Grid.ContextMenu>
                         <Grid.RowDefinitions>
@@ -156,7 +140,7 @@
                                         <Extensions:ContentToggleButton.OverContent>
                                             <ListBox x:Name="Lb"
                                                 VerticalContentAlignment="Center"
-                                                ItemTemplate="{StaticResource ItemTemplate}"
+                                                ItemTemplate="{StaticResource PdfThumbItemTemplate}"
                                                 ItemsSource="{Binding Pages, RelativeSource={RelativeSource TemplatedParent}}"
                                                 ScrollViewer.IsDeferredScrollingEnabled="True"
                                                 SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"

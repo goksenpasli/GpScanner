@@ -44,8 +44,6 @@ namespace PdfViewer
 
         public static readonly DependencyProperty ScrollBarVisibleProperty = DependencyProperty.Register("ScrollBarVisible", typeof(ScrollBarVisibility), typeof(PdfViewer), new PropertyMetadata(ScrollBarVisibility.Auto));
 
-        public static readonly DependencyProperty SeekingLowerPdfDpiProperty = DependencyProperty.Register("SeekingLowerPdfDpi", typeof(bool), typeof(PdfViewer), new PropertyMetadata(false));
-
         public static readonly DependencyProperty SeekingPdfDpiProperty = DependencyProperty.Register("SeekingPdfDpi", typeof(int), typeof(PdfViewer), new PropertyMetadata(200));
 
         public static readonly DependencyProperty SnapTickProperty = DependencyProperty.Register("SnapTick", typeof(bool), typeof(PdfViewer), new PropertyMetadata(false));
@@ -409,8 +407,15 @@ namespace PdfViewer
         }
 
         public bool SeekingLowerPdfDpi {
-            get => (bool)GetValue(SeekingLowerPdfDpiProperty);
-            set => SetValue(SeekingLowerPdfDpiProperty, value);
+            get => seekingLowerPdfDpi;
+
+            set {
+                if (seekingLowerPdfDpi != value)
+                {
+                    seekingLowerPdfDpi = value;
+                    OnPropertyChanged(nameof(SeekingLowerPdfDpi));
+                }
+            }
         }
 
         public int SeekingPdfDpi {
@@ -506,7 +511,7 @@ namespace PdfViewer
             set => SetValue(ZoomProperty, value);
         }
 
-        public static async Task<BitmapSource> ConvertToImgAsync(byte[] pdffilestream, int page, int dpi)
+        public static async Task<BitmapSource> ConvertToImgAsync(byte[] pdffilestream, int page, int dpi = 96)
         {
             try
             {
@@ -692,6 +697,8 @@ namespace PdfViewer
         private string searchTextContent;
 
         private Visibility searchTextContentVisibility;
+
+        private bool seekingLowerPdfDpi;
 
         private Visibility sliderZoomAngleVisibility = Visibility.Visible;
 
