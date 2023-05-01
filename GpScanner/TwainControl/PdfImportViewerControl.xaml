@@ -141,7 +141,9 @@
                     <TextBlock FontFamily="Wingdings 2" FontSize="16" Text="-" />
                 </Button.Content>
             </Button>
-            <Button Command="{Binding MergeSelectedImagesToPdfFile}" CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
+            <Button BorderBrush="Cyan"
+                Command="{Binding MergeSelectedImagesToPdfFile}"
+                CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
                 <Button.Content>
                     <Image Width="16" Height="16">
                         <Image.Source>

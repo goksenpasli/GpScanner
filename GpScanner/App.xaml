@@ -302,7 +302,8 @@
                                 <TextBlock FontFamily="Wingdings" FontSize="16" Text="ç" />
                             </Button.Content>
                         </Button>
-                        <Button Command="{Binding DataContext.OcrPdfThumbnailPage, RelativeSource={RelativeSource AncestorType=Window}}"
+                        <Button BorderBrush="Cyan"
+                            Command="{Binding DataContext.OcrPdfThumbnailPage, RelativeSource={RelativeSource AncestorType=Window}}"
                             CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}"
                             IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">
                             <Button.Content>
@@ -320,7 +321,9 @@
                                 <TextBlock FontFamily="Wingdings 2" FontSize="16" Text="-" />
                             </Button.Content>
                         </Button>
-                        <Button Command="{Binding MergeSelectedImagesToPdfFile}" CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
+                        <Button BorderBrush="Cyan"
+                            Command="{Binding MergeSelectedImagesToPdfFile}"
+                            CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
                             <Button.Content>
                                 <Image Width="16" Height="16">
                                     <Image.Source>
@@ -371,8 +374,7 @@
                     PanoramaButtonVisibility="Collapsed" PrintButtonVisibility="Visible" />
             </DataTemplate>
             <DataTemplate x:Key="EypImgViewerTemplate">
-                <twain:SimpleImageViewer 
-                    DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
+                <twain:SimpleImageViewer DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
                     ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                     PanoramaButtonVisibility="Collapsed" PrintButtonVisibility="Visible"
                     Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" />

@@ -68,7 +68,7 @@ namespace TwainControl
 
             ScanImage = new RelayCommand<object>(parameter =>
             {
-                if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite && (!Keyboard.IsKeyDown(Key.LeftAlt) && !Keyboard.IsKeyDown(Key.RightAlt)))
+                if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite && !Keyboard.IsKeyDown(Key.LeftAlt) && !Keyboard.IsKeyDown(Key.RightAlt))
                 {
                     Settings.Default.BwThreshold = 160;
                 }
@@ -85,7 +85,7 @@ namespace TwainControl
                     _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
                     return;
                 }
-                if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite && (!Keyboard.IsKeyDown(Key.LeftAlt) && !Keyboard.IsKeyDown(Key.RightAlt)))
+                if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite && !Keyboard.IsKeyDown(Key.LeftAlt) && !Keyboard.IsKeyDown(Key.RightAlt))
                 {
                     Settings.Default.BwThreshold = 160;
                 }
@@ -580,10 +580,24 @@ namespace TwainControl
                     if (image != null)
                     {
                         BitmapFrame bitmapFrame = GenerateBitmapFrame(image, SelectedPaper);
-                        bitmapFrame.Freeze();
-                        ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
+                        ScannedImage scannedImage = new() { Seçili = true, Resim = bitmapFrame };
                         Scanner?.Resimler.Add(scannedImage);
                         scannedImage = null;
+                    }
+                }
+            }, parameter => true);
+
+            InsertClipBoardImage = new RelayCommand<object>(parameter =>
+            {
+                if (AddFromClipBoard.CanExecute(null))
+                {
+                    AddFromClipBoard.Execute(null);
+                }
+                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                {
+                    if (SeçiliDirektPdfKaydet.CanExecute(null))
+                    {
+                        SeçiliDirektPdfKaydet.Execute(null);
                     }
                 }
             }, parameter => true);
@@ -705,12 +719,15 @@ namespace TwainControl
                         PdfDocument pdfDocument = null;
                         string temporarypdf = null;
                         string pdfFilePath = pdfviewer.PdfFilePath;
+                        string[] processedfiles;
+                        temporarypdf = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
+                        processedfiles = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)
+                            ? (new string[] { pdfFilePath, temporarypdf })
+                            : (new string[] { temporarypdf, pdfFilePath });
                         await Task.Run(async () =>
                         {
                             pdfDocument = await seçiliresimler.ToList().GeneratePdf(Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, null, (int)Settings.Default.Çözünürlük);
-                            temporarypdf = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
                             pdfDocument.Save(temporarypdf);
-                            string[] processedfiles = new string[] { temporarypdf, pdfFilePath };
                             processedfiles.MergePdf().Save(pdfFilePath);
                         });
 
@@ -1135,6 +1152,8 @@ namespace TwainControl
                 }
             }
         }
+
+        public ICommand InsertClipBoardImage { get; }
 
         public ICommand InsertFileNamePlaceHolder { get; }
 

@@ -140,19 +140,39 @@ namespace GpScanner.ViewModel
             {
                 if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
                 {
-                    OcrIsBusy = true;
                     byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfviewer.PdfFilePath);
-                    MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfviewer.Sayfa, (int)Twainsettings.Settings.Default.ImgLoadResolution);
-                    if (ms != null)
+                    if (filedata != null)
                     {
-                        ObservableCollection<OcrData> ocrdata = await ms.ToArray().OcrAsyc(Settings.Default.DefaultTtsLang);
+                        OcrIsBusy = true;
+                        ObservableCollection<OcrData> ocrdata;
+                        MemoryStream ms;
+                        if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                        {
+                            for (int i = 1; i <= pdfviewer.ToplamSayfa; i++)
+                            {
+                                ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, (int)Twainsettings.Settings.Default.ImgLoadResolution);
+                                ocrdata = await ms.ToArray().OcrAsyc(Settings.Default.DefaultTtsLang);
+                                ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = pdfviewer.PdfFilePath, FileContent = string.Join(" ", ocrdata?.Select(z => z.Text)) });
+                            }
+                            DatabaseSave.Execute(null);
+                            filedata = null;
+                            ocrdata = null;
+                            ms = null;
+                            OcrIsBusy = false;
+                            GC.Collect();
+                            return;
+                        }
+                        ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfviewer.Sayfa, (int)Twainsettings.Settings.Default.ImgLoadResolution);
+                        ocrdata = await ms.ToArray().OcrAsyc(Settings.Default.DefaultTtsLang);
                         ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = pdfviewer.PdfFilePath, FileContent = string.Join(" ", ocrdata?.Select(z => z.Text)) });
                         DatabaseSave.Execute(null);
-                        OcrIsBusy = false;
                         filedata = null;
+                        ocrdata = null;
                         ms = null;
+                        OcrIsBusy = false;
+                        GC.Collect();
                     }
-                    GC.Collect();
+
                 }
             }, parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && !OcrIsBusy);
 

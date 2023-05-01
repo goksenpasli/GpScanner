@@ -641,7 +641,28 @@
                         <Extensions:ContentToggleButton.OverContent>
                             <Extensions:ResizablePanel Width="225" Height="150" MinWidth="225"
                                 MinHeight="150">
-                                <GroupBox Header="{twainctrl:Loc DOCUMENT}">
+                                <GroupBox>
+                                    <GroupBox.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc DOCUMENT}" />
+                                            <Button Command="{Binding ResimSilGeriAl, Source={x:Reference TwainCtrl}}">
+                                                <Image Width="16" Height="16"
+                                                    Source="/TwainControl;component/Icons/undo.png" />
+                                            </Button>
+                                            <Button BorderBrush="Cyan" Command="{Binding Tümünüİşaretle, Source={x:Reference TwainCtrl}}">
+                                                <Image Width="16" Height="16"
+                                                    Source="/TwainControl;component/Icons/selectall.png" />
+                                            </Button>
+                                            <Button Command="{Binding TümününİşaretiniKaldır, Source={x:Reference TwainCtrl}}">
+                                                <Image Width="16" Height="16"
+                                                    Source="/TwainControl;component/Icons/none.png" />
+                                            </Button>
+                                            <Button Command="{Binding Tersiniİşaretle, Source={x:Reference TwainCtrl}}">
+                                                <Image Width="16" Height="16"
+                                                    Source="/TwainControl;component/Icons/inverse.png" />
+                                            </Button>
+                                        </StackPanel>
+                                    </GroupBox.Header>
                                     <ListBox Extensions:DragDropExtension.ScrollOnDragDrop="True" AllowDrop="True"
                                         Background="{StaticResource BorderBackground}"
                                         Drop="ListBox_Drop"
@@ -649,6 +670,15 @@
                                         SelectionMode="Extended" VirtualizingPanel.CacheLength="3,3"
                                         VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                         VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Standard">
+                                        <ListBox.ItemContainerStyle>
+                                            <Style TargetType="ListBoxItem">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Seçili}" Value="true">
+                                                        <Setter Property="IsSelected" Value="True" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ListBox.ItemContainerStyle>
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>
                                                 <StackPanel>
