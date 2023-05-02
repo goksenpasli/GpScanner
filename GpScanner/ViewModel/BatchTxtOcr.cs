@@ -6,6 +6,7 @@ namespace GpScanner.ViewModel
     {
         public string FilePath {
             get => filePath; set {
+
                 if (filePath != value)
                 {
                     filePath = value;

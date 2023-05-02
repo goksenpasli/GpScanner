@@ -343,6 +343,25 @@ namespace Extensions
             set => SetValue(ZoomProperty, value);
         }
 
+        public static async Task<BitmapImage> LoadImageAsync(string imagePath, int decodepixelheight = 0)
+        {
+            return await Task.Run(() =>
+               {
+                   BitmapImage image = new();
+                   image.BeginInit();
+                   image.CacheOption = BitmapCacheOption.None;
+                   image.DecodePixelHeight = decodepixelheight;
+                   image.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.IgnoreImageCache | BitmapCreateOptions.DelayCreation;
+                   image.UriSource = new Uri(imagePath);
+                   image.EndInit();
+                   if (!image.IsFrozen && image.CanFreeze)
+                   {
+                       image.Freeze();
+                   }
+                   return image;
+               });
+        }
+
         public void Dispose()
         {
             Dispose(disposing: true);
@@ -501,25 +520,6 @@ namespace Extensions
                         }
                 }
             }
-        }
-
-        public static async Task<BitmapImage> LoadImageAsync(string imagePath, int decodepixelheight = 0)
-        {
-            return await Task.Run(() =>
-               {
-                   BitmapImage image = new();
-                   image.BeginInit();
-                   image.CacheOption = BitmapCacheOption.None;
-                   image.DecodePixelHeight = decodepixelheight;
-                   image.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.IgnoreImageCache | BitmapCreateOptions.DelayCreation;
-                   image.UriSource = new Uri(imagePath);
-                   image.EndInit();
-                   if (!image.IsFrozen && image.CanFreeze)
-                   {
-                       image.Freeze();
-                   }
-                   return image;
-               });
         }
 
         private static void OrientationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

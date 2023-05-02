@@ -30,6 +30,7 @@ namespace Ocr
 
         public string OcrName {
             get => ocrName; set {
+
                 if (ocrName != value)
                 {
                     ocrName = value;

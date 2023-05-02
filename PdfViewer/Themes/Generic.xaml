@@ -1,8 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
-    xmlns:local="clr-namespace:PdfViewer"
-    xmlns:pdfium="clr-namespace:PdfiumViewer;assembly=PdfiumViewer">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
+                    xmlns:pdfium="clr-namespace:PdfiumViewer;assembly=PdfiumViewer"
+                    xmlns:local="clr-namespace:PdfViewer">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Extensions;component/Themes/Skin.xaml" />
         <ResourceDictionary Source="/PdfViewer;component/Common.xaml" />
@@ -308,7 +308,6 @@
                                                         </TextBlock>
                                                     </HierarchicalDataTemplate>
                                                 </TreeView.Resources>
-
                                             </TreeView>
                                         </Extensions:ResizablePanel>
                                     </Extensions:ContentToggleButton.OverContent>

@@ -176,6 +176,7 @@ namespace Tesseract
         }
 
         public string Version =>
+
                 // Get version doesn't work for x64, might be compilation related for now just
                 // return constant so we don't crash.
                 TessApi.BaseApiGetVersion();

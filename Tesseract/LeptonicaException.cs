@@ -5,7 +5,8 @@ namespace Tesseract
     [Serializable]
     public class LeptonicaException : Exception
     {
-        public LeptonicaException() { }
+        public LeptonicaException()
+        { }
 
         public LeptonicaException(string message) : base(message)
         {

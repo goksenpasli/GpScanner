@@ -132,6 +132,7 @@ namespace Tesseract
         }
 
         private IDisposable _currentDocumentHandle;
+
         private List<IResultRenderer> _resultRenderers;
 
         /// <summary>

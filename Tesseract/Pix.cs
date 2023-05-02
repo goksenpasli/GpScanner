@@ -877,16 +877,16 @@ namespace Tesseract
 
         #region Disposal
 
+        public override int GetHashCode()
+        {
+            throw new NotImplementedException();
+        }
+
         protected override void Dispose(bool disposing)
         {
             IntPtr tmpHandle = handle.Handle;
             Interop.LeptonicaApi.Native.pixDestroy(ref tmpHandle);
             handle = new HandleRef(this, IntPtr.Zero);
-        }
-
-        public override int GetHashCode()
-        {
-            throw new NotImplementedException();
         }
 
         #endregion Disposal

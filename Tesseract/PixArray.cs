@@ -83,6 +83,7 @@ namespace Tesseract
 
             /// <inheritdoc/>
             object IEnumerator.Current =>
+
                     // note: Only the non-generic requires an exception check according the MSDN docs (Generic version just undefined if it's not currently pointing to an item). Go figure.
                     index == 0 || index == items.Length + 1
                         ? throw new InvalidOperationException("The enumerator is positioned either before the first item or after the last item .")

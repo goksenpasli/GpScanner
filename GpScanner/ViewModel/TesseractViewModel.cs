@@ -90,6 +90,7 @@ namespace GpScanner.ViewModel
 
         public string Tessdatafolder {
             get => tessdatafolder; set {
+
                 if (tessdatafolder != value)
                 {
                     tessdatafolder = value;

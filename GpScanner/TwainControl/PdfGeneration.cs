@@ -166,7 +166,7 @@ namespace TwainControl
                     }
                     if (Settings.Default.RemoveProcessedImage)
                     {
-                        scannedimage.Resim =null;
+                        scannedimage.Resim = null;
                     }
                     GC.Collect();
                 }

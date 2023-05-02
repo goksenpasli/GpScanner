@@ -5,7 +5,8 @@ namespace Tesseract
     [Serializable]
     public class LoadLibraryException : SystemException
     {
-        public LoadLibraryException() { }
+        public LoadLibraryException()
+        { }
 
         public LoadLibraryException(string message) : base(message)
         {

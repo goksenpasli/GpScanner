@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UdfParser", "UdfParser\UdfP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DvdBurner", "DvdBurner\DvdBurner.csproj", "{C6C8A1DE-A0CC-4A51-9C5C-41A5BD328D9F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QrCode", "QrCode\QrCode.csproj", "{5CD77884-4A3B-4D3F-A760-8C76B85CBBDD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -153,6 +155,18 @@ Global
 		{C6C8A1DE-A0CC-4A51-9C5C-41A5BD328D9F}.x64|Any CPU.Build.0 = Debug|Any CPU
 		{C6C8A1DE-A0CC-4A51-9C5C-41A5BD328D9F}.x64|x86.ActiveCfg = Debug|Any CPU
 		{C6C8A1DE-A0CC-4A51-9C5C-41A5BD328D9F}.x64|x86.Build.0 = Debug|Any CPU
+		{5CD77884-4A3B-4D3F-A760-8C76B85CBBDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CD77884-4A3B-4D3F-A760-8C76B85CBBDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CD77884-4A3B-4D3F-A760-8C76B85CBBDD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5CD77884-4A3B-4D3F-A760-8C76B85CBBDD}.Debug|x86.Build.0 = Debug|Any CPU
+		{5CD77884-4A3B-4D3F-A760-8C76B85CBBDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CD77884-4A3B-4D3F-A760-8C76B85CBBDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CD77884-4A3B-4D3F-A760-8C76B85CBBDD}.Release|x86.ActiveCfg = Release|Any CPU
+		{5CD77884-4A3B-4D3F-A760-8C76B85CBBDD}.Release|x86.Build.0 = Release|Any CPU
+		{5CD77884-4A3B-4D3F-A760-8C76B85CBBDD}.x64|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CD77884-4A3B-4D3F-A760-8C76B85CBBDD}.x64|Any CPU.Build.0 = Debug|Any CPU
+		{5CD77884-4A3B-4D3F-A760-8C76B85CBBDD}.x64|x86.ActiveCfg = Debug|Any CPU
+		{5CD77884-4A3B-4D3F-A760-8C76B85CBBDD}.x64|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

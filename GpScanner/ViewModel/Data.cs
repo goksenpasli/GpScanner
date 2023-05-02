@@ -9,6 +9,7 @@ namespace GpScanner.ViewModel
         [XmlAttribute(AttributeName = "FileContent")]
         public string FileContent {
             get => fileContent; set {
+
                 if (fileContent != value)
                 {
                     fileContent = value;
@@ -20,6 +21,7 @@ namespace GpScanner.ViewModel
         [XmlAttribute(AttributeName = "FileName")]
         public string FileName {
             get => fileName; set {
+
                 if (fileName != value)
                 {
                     fileName = value;

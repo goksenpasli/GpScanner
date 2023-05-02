@@ -454,7 +454,6 @@
                             </CheckBox>
                         </UniformGrid>
                     </GroupBox>
-
                 </Grid>
                 <UniformGrid Grid.Row="6" Columns="2">
                     <GroupBox Header="FTP">

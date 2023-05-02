@@ -4,13 +4,13 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("UdfParser")]
-[assembly: AssemblyDescription("UdfParser")]
+[assembly: AssemblyTitle("QrCode")]
+[assembly: AssemblyDescription("QrCode")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Gok$en")]
-[assembly: AssemblyProduct("UdfParser")]
+[assembly: AssemblyProduct("QrCode")]
 [assembly: AssemblyCopyright("Copyright © 2023")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyTrademark("Gok$en")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("39ace1c2-42eb-4bdd-89bf-2b73c82b7925")]
+[assembly: Guid("5cd77884-4a3b-4d3f-a760-8c76b85cbbdd")]
 
 // Version information for an assembly consists of the following four values:
 //

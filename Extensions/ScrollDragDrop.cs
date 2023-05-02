@@ -12,6 +12,38 @@ namespace Extensions
     {
         public static readonly DependencyProperty ScrollOnDragDropProperty = DependencyProperty.RegisterAttached("ScrollOnDragDrop", typeof(bool), typeof(DragDropExtension), new PropertyMetadata(false, HandleScrollOnDragDropChanged));
 
+        public static IEnumerable<T> FindVisualChildren<T>(this DependencyObject parent) where T : DependencyObject
+        {
+            if (parent == null)
+            {
+                throw new ArgumentNullException(nameof(parent));
+            }
+
+            return FindChildren();
+
+            IEnumerable<T> FindChildren()
+            {
+                Queue<DependencyObject> queue = new(new[] { parent });
+
+                while (queue.Any())
+                {
+                    DependencyObject reference = queue.Dequeue();
+                    int count = VisualTreeHelper.GetChildrenCount(reference);
+
+                    for (int i = 0; i < count; i++)
+                    {
+                        DependencyObject child = VisualTreeHelper.GetChild(reference, i);
+                        if (child is T children)
+                        {
+                            yield return children;
+                        }
+
+                        queue.Enqueue(child);
+                    }
+                }
+            }
+        }
+
         public static T GetFirstVisualChild<T>(this DependencyObject depObj) where T : DependencyObject
         {
             if (depObj != null)
@@ -33,33 +65,6 @@ namespace Extensions
             }
 
             return null;
-        }
-
-        public static IEnumerable<T> FindVisualChildren<T>(this DependencyObject parent) where T : DependencyObject
-        {
-            if (parent == null)
-            {
-                throw new ArgumentNullException(nameof(parent));
-            }
-
-            Queue<DependencyObject> queue = new(new[] { parent });
-
-            while (queue.Any())
-            {
-                DependencyObject reference = queue.Dequeue();
-                int count = VisualTreeHelper.GetChildrenCount(reference);
-
-                for (int i = 0; i < count; i++)
-                {
-                    DependencyObject child = VisualTreeHelper.GetChild(reference, i);
-                    if (child is T children)
-                    {
-                        yield return children;
-                    }
-
-                    queue.Enqueue(child);
-                }
-            }
         }
 
         public static bool GetScrollOnDragDrop(DependencyObject element)

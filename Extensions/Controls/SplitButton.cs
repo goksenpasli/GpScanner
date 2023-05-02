@@ -34,6 +34,7 @@ namespace Extensions
             get { return (double)GetValue(ContentVerticalOffsetProperty); }
             set { SetValue(ContentVerticalOffsetProperty, value); }
         }
+
         public object InternalContent {
             get => GetValue(InternalContentProperty);
             set => SetValue(InternalContentProperty, value);

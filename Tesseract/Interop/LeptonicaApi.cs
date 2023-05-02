@@ -379,7 +379,7 @@ namespace Tesseract.Interop
         int pixcmapGetCount(HandleRef cmap);
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns>Returns color maps depth, or 0 on error.</returns>
         [RuntimeDllImport(Constants.LeptonicaDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "pixcmapGetDepth")]

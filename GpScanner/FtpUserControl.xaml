@@ -10,8 +10,8 @@
     <GroupBox Header="FTP">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
             </Grid.RowDefinitions>
             <ProgressBar Height="24"
                 Background="{x:Null}"

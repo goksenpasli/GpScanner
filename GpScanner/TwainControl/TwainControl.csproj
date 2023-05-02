@@ -262,6 +262,10 @@
       <Project>{ea1285ba-203e-4d61-a869-7567966e5367}</Project>
       <Name>PdfViewer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\QrCode\QrCode.csproj">
+      <Project>{5CD77884-4A3B-4D3F-A760-8C76B85CBBDD}</Project>
+      <Name>QrCode</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\TwainWpf\TwainWpf.csproj">
       <Project>{8304c254-e3d2-4553-b596-f028b8d9b740}</Project>
       <Name>TwainWpf</Name>

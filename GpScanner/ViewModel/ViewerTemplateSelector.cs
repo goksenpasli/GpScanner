@@ -26,7 +26,7 @@ namespace GpScanner.ViewModel
         {
             if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && item is string dosya)
             {
-                string[] imgext = new string[] { ".jpg", ".bmp", ".png", ".tif", ".tiff" ,".tıf", ".tıff" };
+                string[] imgext = new string[] { ".jpg", ".bmp", ".png", ".tif", ".tiff", ".tıf", ".tıff" };
                 string[] videoext = new string[] { ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg" };
                 string ext = Path.GetExtension(dosya).ToLower();
                 return ext == ".pdf"

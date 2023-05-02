@@ -38,6 +38,40 @@ namespace GpScanner.ViewModel
 
         private static readonly IntPtr invalidHandle = new(-1);
 
+        [StructLayout(LayoutKind.Sequential)]
+        private struct FileTime
+        {
+            public uint dwLowDateTime;
+
+            public uint dwHighDateTime;
+        };
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+        private struct Win32FindData
+        {
+            public FileAttributes dwFileAttributes;
+
+            public FileTime ftCreationTime;
+
+            public FileTime ftLastAccessTime;
+
+            public FileTime ftLastWriteTime;
+
+            public uint nFileSizeHigh;
+
+            public uint nFileSizeLow;
+
+            public uint dwReserved0;
+
+            public uint dwReserved1;
+
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
+            public string cFileName;
+
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 14)]
+            public string cAlternateFileName;
+        }
+
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern bool FindClose(IntPtr hFindFile);
 
@@ -186,40 +220,6 @@ namespace GpScanner.ViewModel
             longValue |= fileTime.dwLowDateTime;
             highBytes = null;
             return DateTime.FromFileTime(longValue);
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct FileTime
-        {
-            public uint dwLowDateTime;
-
-            public uint dwHighDateTime;
-        };
-
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-        private struct Win32FindData
-        {
-            public FileAttributes dwFileAttributes;
-
-            public FileTime ftCreationTime;
-
-            public FileTime ftLastAccessTime;
-
-            public FileTime ftLastWriteTime;
-
-            public uint nFileSizeHigh;
-
-            public uint nFileSizeLow;
-
-            public uint dwReserved0;
-
-            public uint dwReserved1;
-
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
-            public string cFileName;
-
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 14)]
-            public string cAlternateFileName;
         }
     }
 

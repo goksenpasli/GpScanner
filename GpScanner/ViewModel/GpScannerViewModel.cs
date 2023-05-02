@@ -26,10 +26,6 @@ using Microsoft.Win32;
 using Ocr;
 using PdfSharp.Pdf;
 using TwainControl;
-using ZXing;
-using ZXing.Common;
-using ZXing.QrCode.Internal;
-using ZXing.Rendering;
 using static Extensions.ExtensionMethods;
 using InpcBase = Extensions.InpcBase;
 using Twainsettings = TwainControl.Properties;
@@ -125,11 +121,13 @@ namespace GpScanner.ViewModel
                         TranslateViewModel.TaramaGeçmiş.Add(TranslateViewModel.Metin);
                         OcrIsBusy = false;
                     }
-                    Result result = await Task.Run(() => GetImageBarcodeResult(twainCtrl.SeçiliResim.Resim));
-                    if (result != null)
+                    if (DetectBarCode)
                     {
-                        BarcodeContent = result.Text;
-                        BarcodeList.Add(BarcodeContent);
+                        string result = await Task.Run(() => QrCode.QrCode.GetImageBarcodeResult(twainCtrl.SeçiliResim.Resim));
+                        if (result != null)
+                        {
+                            BarcodeList.Add(result);
+                        }
                     }
                     imgdata = null;
                     GC.Collect();
@@ -172,7 +170,6 @@ namespace GpScanner.ViewModel
                         OcrIsBusy = false;
                         GC.Collect();
                     }
-
                 }
             }, parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && !OcrIsBusy);
 
@@ -598,18 +595,9 @@ namespace GpScanner.ViewModel
             }
         }
 
-        public ResultPoint[] BarcodePosition {
-            get => barcodePosition; set {
-                if (barcodePosition != value)
-                {
-                    barcodePosition = value;
-                    OnPropertyChanged(nameof(BarcodePosition));
-                }
-            }
-        }
-
         public bool BatchDialogOpen {
             get => batchDialogOpen; set {
+
                 if (batchDialogOpen != value)
                 {
                     batchDialogOpen = value;
@@ -758,6 +746,7 @@ namespace GpScanner.ViewModel
 
         public string FtpPassword {
             get => ftpPassword; set {
+
                 if (ftpPassword != value)
                 {
                     ftpPassword = value;
@@ -780,6 +769,7 @@ namespace GpScanner.ViewModel
 
         public string FtpUserName {
             get => ftpUserName; set {
+
                 if (ftpUserName != value)
                 {
                     ftpUserName = value;
@@ -821,6 +811,7 @@ namespace GpScanner.ViewModel
 
         public GridLength MainWindowDocumentGuiControlLength {
             get => mainWindowDocumentGuiControlLength; set {
+
                 if (mainWindowDocumentGuiControlLength != value)
                 {
                     mainWindowDocumentGuiControlLength = value;
@@ -831,6 +822,7 @@ namespace GpScanner.ViewModel
 
         public GridLength MainWindowGuiControlLength {
             get => mainWindowGuiControlLength; set {
+
                 if (mainWindowGuiControlLength != value)
                 {
                     mainWindowGuiControlLength = value;
@@ -861,6 +853,7 @@ namespace GpScanner.ViewModel
 
         public string PatchFileName {
             get => patchFileName; set {
+
                 if (patchFileName != value)
                 {
                     patchFileName = value;
@@ -895,6 +888,7 @@ namespace GpScanner.ViewModel
 
         public bool PdfBatchRunning {
             get => pdfBatchRunning; set {
+
                 if (pdfBatchRunning != value)
                 {
                     pdfBatchRunning = value;
@@ -907,6 +901,7 @@ namespace GpScanner.ViewModel
 
         public double PdfMergeProgressValue {
             get => pdfMergeProgressValue; set {
+
                 if (pdfMergeProgressValue != value)
                 {
                     pdfMergeProgressValue = value;
@@ -983,6 +978,7 @@ namespace GpScanner.ViewModel
 
         public DateTime? SeçiliGün {
             get => seçiliGün; set {
+
                 if (seçiliGün != value)
                 {
                     seçiliGün = value;
@@ -1005,6 +1001,7 @@ namespace GpScanner.ViewModel
 
         public string SelectedFtp {
             get => selectedFtp; set {
+
                 if (selectedFtp != value)
                 {
                     selectedFtp = value;
@@ -1035,6 +1032,7 @@ namespace GpScanner.ViewModel
 
         public bool Shutdown {
             get => shutdown; set {
+
                 if (shutdown != value)
                 {
                     shutdown = value;
@@ -1135,44 +1133,11 @@ namespace GpScanner.ViewModel
             }
         }
 
-        public static WriteableBitmap GenerateQr(string text, int width = 120, int height = 120)
+        public void AddBarcodeToList(string barcodecontent)
         {
-            if (!string.IsNullOrWhiteSpace(text))
+            if (!string.IsNullOrWhiteSpace(barcodecontent))
             {
-                BarcodeWriter barcodeWriter = new()
-                {
-                    Format = BarcodeFormat.QR_CODE,
-                    Renderer = new BitmapRenderer()
-                };
-                EncodingOptions encodingOptions = new()
-                {
-                    Width = width,
-                    Height = height,
-                    Margin = 0
-                };
-                encodingOptions.Hints.Add(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
-                barcodeWriter.Options = encodingOptions;
-                return barcodeWriter.WriteAsWriteableBitmap(text);
-            }
-            return null;
-        }
-
-        public static Result GetImageBarcodeResult(BitmapFrame bitmapFrame)
-        {
-            if (bitmapFrame is not null)
-            {
-                BarcodeReader reader = new();
-                reader.Options.TryHarder = true;
-                return reader.Decode(bitmapFrame);
-            }
-            return null;
-        }
-
-        public void AddBarcodeToList()
-        {
-            if (BarcodeContent is not null)
-            {
-                BarcodeList.Add(BarcodeContent);
+                BarcodeList.Add(barcodecontent);
             }
         }
 
@@ -1191,38 +1156,6 @@ namespace GpScanner.ViewModel
             {
                 return list;
             }
-        }
-
-        public Result GetImageBarcodeResult(byte[] imgbyte)
-        {
-            if (imgbyte != null)
-            {
-                using MemoryStream ms = new(imgbyte);
-                BitmapImage bitmapImage = new();
-                bitmapImage.BeginInit();
-                bitmapImage.StreamSource = ms;
-                bitmapImage.EndInit();
-                bitmapImage.Freeze();
-                BarcodeReader reader = new();
-                reader.Options.TryHarder = true;
-                Result result = reader.Decode(bitmapImage);
-                imgbyte = null;
-                bitmapImage = null;
-                GC.Collect();
-                return result;
-            }
-            return null;
-        }
-
-        public Result[] GetMultipleImageBarcodeResult(BitmapFrame bitmapFrame)
-        {
-            if (bitmapFrame is not null)
-            {
-                BarcodeReader reader = new();
-                reader.Options.TryHarder = true;
-                return reader.DecodeMultiple(bitmapFrame);
-            }
-            return null;
         }
 
         public string GetPatchCodeResult(string barcode)
@@ -1307,8 +1240,6 @@ namespace GpScanner.ViewModel
         private string barcodeContent;
 
         private ObservableCollection<string> barcodeList = new();
-
-        private ResultPoint[] barcodePosition;
 
         private bool batchDialogOpen;
 

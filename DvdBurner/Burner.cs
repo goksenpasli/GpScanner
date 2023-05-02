@@ -202,6 +202,7 @@ namespace DvdBurner
 
         public double ProgressValue {
             get => progressValue; set {
+
                 if (progressValue != value)
                 {
                     progressValue = value;
@@ -217,13 +218,13 @@ namespace DvdBurner
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private readonly string AppName = Application.Current?.MainWindow?.Title;
-
         private const string WarnText = "İşlem Sürüyor. Bitmesini Bekleyin.";
 
         private static Task Burntask;
 
         private static Task Erasetask;
+
+        private readonly string AppName = Application.Current?.MainWindow?.Title;
 
         private string actionText;
 

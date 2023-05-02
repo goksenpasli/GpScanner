@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -11,7 +12,6 @@ using GpScanner.Properties;
 using GpScanner.ViewModel;
 using Ocr;
 using TwainControl;
-using ZXing;
 using static Extensions.ExtensionMethods;
 
 namespace GpScanner
@@ -196,11 +196,11 @@ namespace GpScanner
 
         private void QrListBox_Drop(object sender, DragEventArgs e)
         {
-            if (e.Data.GetData(typeof(ScannedImage)) is ScannedImage scannedImage && DataContext is GpScannerViewModel ViewModel && ViewModel.GetMultipleImageBarcodeResult(scannedImage.Resim) is Result[] barcodes)
+            if (e.Data.GetData(typeof(ScannedImage)) is ScannedImage scannedImage && DataContext is GpScannerViewModel ViewModel && QrCode.QrCode.GetMultipleImageBarcodeResult(scannedImage.Resim) is IEnumerable<string> barcodes)
             {
-                foreach (Result barcode in barcodes)
+                foreach (string barcode in barcodes)
                 {
-                    ViewModel.BarcodeList.Add(barcode.Text);
+                    ViewModel.BarcodeList.Add(barcode);
                 }
             }
         }
@@ -226,12 +226,11 @@ namespace GpScanner
 
                 if (e.PropertyName is "DetectPageSeperator" && ViewModel.DetectBarCode)
                 {
-                    ViewModel.BarcodeContent = GpScannerViewModel.GetImageBarcodeResult(TwainCtrl?.Scanner?.Resimler?.LastOrDefault()?.Resim)?.Text;
-                    ViewModel.AddBarcodeToList();
+                    ViewModel.AddBarcodeToList(TwainCtrl?.Scanner?.BarcodeContent);
 
                     if (ViewModel.DetectPageSeperator && ViewModel.BarcodeContent is not null)
                     {
-                        TwainCtrl.Scanner.FileName = ViewModel.GetPatchCodeResult(ViewModel.BarcodeContent);
+                        TwainCtrl.Scanner.FileName = ViewModel.GetPatchCodeResult(TwainCtrl?.Scanner?.BarcodeContent);
                     }
                 }
 
@@ -240,17 +239,19 @@ namespace GpScanner
                     ViewModel.ScannedText = TwainCtrl.DataBaseTextData;
                     if (ViewModel.ScannedText != null)
                     {
-                        ViewModel.ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = TwainCtrl.Scanner.PdfFilePath, FileContent = string.Join(" ", ViewModel.ScannedText.Select(z => z.Text)), QrData = ViewModel.GetImageBarcodeResult(TwainCtrl?.DataBaseQrData)?.Text });
+                        ViewModel.ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = TwainCtrl.Scanner.PdfFilePath, FileContent = string.Join(" ", ViewModel.ScannedText.Select(z => z.Text)), QrData = TwainCtrl?.Scanner?.BarcodeContent });
                     }
                     ViewModel.DatabaseSave.Execute(null);
-                    TwainCtrl.DataBaseTextData = null;
                     ViewModel.ScannedText = null;
+                    TwainCtrl.DataBaseTextData = null;
                 }
 
                 if (e.PropertyName is "ImgData" && TwainCtrl.ImgData is not null)
                 {
-                    ViewModel.BarcodeContent = ViewModel.GetImageBarcodeResult(TwainCtrl?.ImgData)?.Text;
-                    ViewModel.AddBarcodeToList();
+                    if (ViewModel.DetectBarCode)
+                    {
+                        ViewModel.AddBarcodeToList(QrCode.QrCode.GetImageBarcodeResult(TwainCtrl?.ImgData));
+                    }
                     ViewModel.OcrIsBusy = true;
                     ViewModel.ScannedText = await TwainCtrl.ImgData.OcrAsyc(Settings.Default.DefaultTtsLang);
                     if (ViewModel.ScannedText != null)
@@ -269,12 +270,8 @@ namespace GpScanner
 
                 if (e.PropertyName is "CameraQRCodeData" && TwainCtrl.CameraQRCodeData is not null)
                 {
-                    ViewModel.BarcodeContent = ViewModel.GetImageBarcodeResult(TwainCtrl.CameraQRCodeData)?.Text;
-                    if (!string.IsNullOrWhiteSpace(ViewModel.BarcodeContent))
-                    {
-                        ViewModel.AddBarcodeToList();
-                        TwainCtrl.CameraQRCodeData = null;
-                    }
+                    ViewModel.AddBarcodeToList(TwainCtrl?.Scanner?.BarcodeContent);
+                    TwainCtrl.CameraQRCodeData = null;
                 }
                 if (e.PropertyName is "UsePageSeperator" && TwainCtrl.Scanner.UsePageSeperator)
                 {

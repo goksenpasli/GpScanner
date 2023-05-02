@@ -95,12 +95,6 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="zxing, Version=0.16.9.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
-      <HintPath>..\packages\ZXing.Net.0.16.9\lib\net45\zxing.dll</HintPath>
-    </Reference>
-    <Reference Include="zxing.presentation, Version=0.16.9.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
-      <HintPath>..\packages\ZXing.Net.0.16.9\lib\net45\zxing.presentation.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -228,6 +222,10 @@
     <ProjectReference Include="..\PdfViewer\PdfViewer.csproj">
       <Project>{ea1285ba-203e-4d61-a869-7567966e5367}</Project>
       <Name>PdfViewer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\QrCode\QrCode.csproj">
+      <Project>{5cd77884-4a3b-4d3f-a760-8c76b85cbbdd}</Project>
+      <Name>QrCode</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwainWpf\TwainWpf.csproj">
       <Project>{8304C254-E3D2-4553-B596-F028B8D9B740}</Project>
