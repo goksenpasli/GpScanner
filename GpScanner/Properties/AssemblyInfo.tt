@@ -11,7 +11,7 @@ using System.Windows;
 [assembly: AssemblyTitle("GpScanner")]
 [assembly: AssemblyDescription("GpScanner")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Gok$en")]
+[assembly: AssemblyCompany("Goksen")]
 [assembly: AssemblyProduct("GpScanner")]
 [assembly: AssemblyCopyright("Copyright © 2023")]
 [assembly: AssemblyTrademark("Gok$en")]
