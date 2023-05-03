@@ -1146,9 +1146,13 @@ namespace GpScanner.ViewModel
             ObservableCollection<Chart> list = new();
             try
             {
-                foreach (IGrouping<int, Scanner> chart in Dosyalar.Where(z => DateTime.TryParse(Directory.GetParent(z.FileName).Name, out DateTime _)).GroupBy(z => DateTime.Parse(Directory.GetParent(z.FileName).Name).Day).OrderBy(z => z.Key))
+                IOrderedEnumerable<IGrouping<int, Scanner>> chartdata = Dosyalar?.Where(z => DateTime.TryParse(Directory.GetParent(z.FileName).Name, out DateTime _))?.GroupBy(z => DateTime.Parse(Directory.GetParent(z.FileName).Name).Day)?.OrderBy(z => z.Key);
+                if (chartdata != null)
                 {
-                    list.Add(new Chart() { Description = chart.Key.ToString(), ChartBrush = RandomColor(), ChartValue = chart.Count() });
+                    foreach (IGrouping<int, Scanner> chart in chartdata)
+                    {
+                        list.Add(new Chart() { Description = chart.Key.ToString(), ChartBrush = RandomColor(), ChartValue = chart.Count() });
+                    }
                 }
                 return list;
             }
