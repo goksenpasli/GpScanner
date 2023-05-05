@@ -4,6 +4,7 @@ using System.Linq;
 using Extensions;
 using Microsoft.Win32;
 using PdfSharp.Pdf;
+using PdfSharp.Pdf.IO;
 
 namespace TwainControl
 {
@@ -23,10 +24,17 @@ namespace TwainControl
                 {
                     if (Path.GetExtension(openFileDialog.FileName.ToLower()) == ".eyp")
                     {
-                        PdfFilePath = ExtractEypFilesToPdf(openFileDialog.FileName);
+                        string eyppath = ExtractEypFilesToPdf(openFileDialog.FileName);
+                        if (PdfReader.TestPdfFile(eyppath) != 0)
+                        {
+                            PdfFilePath = eyppath;
+                        }
                         return;
                     }
-                    PdfFilePath = openFileDialog.FileName;
+                    if (PdfReader.TestPdfFile(openFileDialog.FileName) != 0)
+                    {
+                        PdfFilePath = openFileDialog.FileName;
+                    }
                 }
             });
         }

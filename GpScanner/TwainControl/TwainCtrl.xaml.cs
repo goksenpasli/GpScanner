@@ -846,6 +846,37 @@ namespace TwainControl
                 }
             }, parameter => SayfaBaşlangıç != SayfaBitiş);
 
+            ReversePdfFile = new RelayCommand<object>(async parameter =>
+            {
+                if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath) && MessageBox.Show($"{Translation.GetResStringValue("SAVEPDF")} {Translation.GetResStringValue("REVERSE")}", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                {
+                    string oldpdfpath = pdfviewer.PdfFilePath;
+                    using PdfDocument inputDocument = PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Import);
+                    await ReverseFile(pdfviewer.PdfFilePath, pdfviewer.PdfFilePath);
+                    pdfviewer.PdfFilePath = null;
+                    pdfviewer.PdfFilePath = oldpdfpath;
+                }
+            }, parameter => true);
+
+            AddPdfAttachmentFile = new RelayCommand<object>(async parameter =>
+            {
+                if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath) && MessageBox.Show($"{Translation.GetResStringValue("ADDDOC")}", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                {
+                    OpenFileDialog openFileDialog = new()
+                    {
+                        Filter = "Tüm Dosyalar (*.*)|*.*",
+                        Multiselect = true
+                    };
+                    if (openFileDialog.ShowDialog() == true)
+                    {
+                        string oldpdfpath = pdfviewer.PdfFilePath;
+                        await AddAttachmentFile(openFileDialog.FileNames, pdfviewer.PdfFilePath, pdfviewer.PdfFilePath);
+                        pdfviewer.PdfFilePath = null;
+                        pdfviewer.PdfFilePath = oldpdfpath;
+                    }
+                }
+            }, parameter => true);
+
             ClosePdfFile = new RelayCommand<object>(parameter =>
             {
                 if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
@@ -858,7 +889,12 @@ namespace TwainControl
                 }
             }, parameter => parameter is PdfViewer.PdfViewer pdfviewer && pdfviewer.PdfFilePath is not null);
 
-            ReverseData = new RelayCommand<object>(parameter => Scanner.Resimler = new ObservableCollection<ScannedImage>(Scanner.Resimler.Reverse()), parameter => Scanner?.Resimler?.Count > 1);
+            ReverseData = new RelayCommand<object>(parameter =>
+            {
+                IEnumerable<ScannedImage> scannedImages = Scanner.Resimler.Reverse();
+                Scanner.Resimler = new ObservableCollection<ScannedImage>(scannedImages);
+                scannedImages = null;
+            }, parameter => Scanner?.Resimler?.Count > 1);
 
             ReverseDataHorizontal = new RelayCommand<object>(parameter =>
             {
@@ -986,6 +1022,8 @@ namespace TwainControl
         public ICommand AddFromClipBoard { get; }
 
         public ICommand AddPageNumber { get; }
+
+        public ICommand AddPdfAttachmentFile { get; }
 
         public ICommand AddSinglePdfPage { get; }
 
@@ -1327,6 +1365,8 @@ namespace TwainControl
 
         public ICommand ReverseDataHorizontal { get; }
 
+        public ICommand ReversePdfFile { get; }
+
         public ICommand RotateSelectedPage { get; }
 
         public ICommand SaveFileList { get; }
@@ -1509,6 +1549,19 @@ namespace TwainControl
 
         public ICommand WebAdreseGit { get; }
 
+        public static async Task AddAttachmentFile(string[] files, string loadfilename, string savefilename)
+        {
+            await Task.Run(() =>
+            {
+                using PdfDocument inputDocument = PdfReader.Open(loadfilename, PdfDocumentOpenMode.Modify);
+                foreach (string item in files)
+                {
+                    inputDocument.AddEmbeddedFile(Path.GetFileNameWithoutExtension(item), item);
+                }
+                inputDocument.Save(savefilename);
+            });
+        }
+
         public static async Task ArrangeFile(string loadfilename, string savefilename, int start, int end)
         {
             await Task.Run(() =>
@@ -1598,6 +1651,20 @@ namespace TwainControl
                     inputDocument.Pages.RemoveAt(i - 1);
                 }
                 inputDocument.Save(pdffilepath);
+            });
+        }
+
+        public static async Task ReverseFile(string loadfilename, string savefilename)
+        {
+            await Task.Run(() =>
+            {
+                using PdfDocument inputDocument = PdfReader.Open(loadfilename, PdfDocumentOpenMode.Import);
+                using PdfDocument outputdocument = new();
+                for (int i = inputDocument.PageCount - 1; i >= 0; i--)
+                {
+                    _ = outputdocument.AddPage(inputDocument.Pages[i]);
+                }
+                outputdocument.Save(savefilename);
             });
         }
 
@@ -1749,12 +1816,12 @@ namespace TwainControl
                         {
                             case ".pdf":
                                 {
-                                    byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(filename);
-                                    if (filedata.IsValidPdfFile())
+                                    if (PdfViewer.PdfViewer.IsValidPdfFile(filename))
                                     {
+                                        byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(filename);
                                         await AddPdfFile(filedata, filename);
+                                        filedata = null;
                                     }
-                                    filedata = null;
                                     break;
                                 }
                             case ".eyp":
