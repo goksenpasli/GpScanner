@@ -230,34 +230,34 @@ namespace GpScanner
 
                     if (ViewModel.DetectPageSeperator && ViewModel.BarcodeContent is not null)
                     {
-                        TwainCtrl.Scanner.FileName = ViewModel.GetPatchCodeResult(TwainCtrl?.Scanner?.BarcodeContent);
+                        TwainCtrl.Scanner.FileName = ViewModel.GetPatchCodeResult(TwainCtrl.Scanner.BarcodeContent);
                     }
                 }
 
-                if (e.PropertyName is "DataBaseTextData" && TwainCtrl.DataBaseTextData is not null)
+                if (e.PropertyName is "DataBaseTextData" && TwainCtrl?.DataBaseTextData is not null)
                 {
                     ViewModel.ScannedText = TwainCtrl.DataBaseTextData;
                     if (ViewModel.ScannedText != null)
                     {
-                        ViewModel.ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = TwainCtrl.Scanner.PdfFilePath, FileContent = string.Join(" ", ViewModel.ScannedText.Select(z => z.Text)), QrData = TwainCtrl?.Scanner?.BarcodeContent });
+                        ViewModel.ScannerData?.Data?.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = TwainCtrl?.Scanner?.PdfFilePath, FileContent = string.Join(" ", ViewModel.ScannedText?.Select(z => z.Text)), QrData = TwainCtrl?.Scanner?.BarcodeContent });
                     }
                     ViewModel.DatabaseSave.Execute(null);
                     ViewModel.ScannedText = null;
                     TwainCtrl.DataBaseTextData = null;
                 }
 
-                if (e.PropertyName is "ImgData" && TwainCtrl.ImgData is not null)
+                if (e.PropertyName is "ImgData" && TwainCtrl?.ImgData is not null)
                 {
                     if (ViewModel.DetectBarCode)
                     {
-                        ViewModel.AddBarcodeToList(QrCode.QrCode.GetImageBarcodeResult(TwainCtrl?.ImgData));
+                        ViewModel.AddBarcodeToList(QrCode.QrCode.GetImageBarcodeResult(TwainCtrl.ImgData));
                     }
                     ViewModel.OcrIsBusy = true;
                     ViewModel.ScannedText = await TwainCtrl.ImgData.OcrAsyc(Settings.Default.DefaultTtsLang);
                     if (ViewModel.ScannedText != null)
                     {
-                        ViewModel.TranslateViewModel.Metin = string.Join(" ", ViewModel.ScannedText.Select(z => z.Text));
-                        ViewModel.TranslateViewModel.TaramaGeçmiş.Add(ViewModel.TranslateViewModel.Metin);
+                        ViewModel.TranslateViewModel.Metin = string.Join(" ", ViewModel.ScannedText?.Select(z => z.Text));
+                        ViewModel.TranslateViewModel.TaramaGeçmiş.Add(ViewModel.TranslateViewModel?.Metin);
                         ViewModel.OcrIsBusy = false;
                     }
                     TwainCtrl.ImgData = null;
@@ -268,12 +268,12 @@ namespace GpScanner
                     ViewModel.ListBoxBorderAnimation = TwainCtrl.DragMoveStarted;
                 }
 
-                if (e.PropertyName is "CameraQRCodeData" && TwainCtrl.CameraQRCodeData is not null)
+                if (e.PropertyName is "CameraQRCodeData" && TwainCtrl?.CameraQRCodeData is not null)
                 {
                     ViewModel.AddBarcodeToList(TwainCtrl?.Scanner?.BarcodeContent);
                     TwainCtrl.CameraQRCodeData = null;
                 }
-                if (e.PropertyName is "UsePageSeperator" && TwainCtrl.Scanner.UsePageSeperator)
+                if (e.PropertyName is "UsePageSeperator" && TwainCtrl?.Scanner?.UsePageSeperator == true)
                 {
                     if (Settings.Default.PatchCodes.Count <= 0)
                     {

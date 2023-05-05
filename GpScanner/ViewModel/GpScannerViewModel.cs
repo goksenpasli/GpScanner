@@ -1105,16 +1105,24 @@ namespace GpScanner.ViewModel
 
         public static ObservableCollection<Data> DataYükle()
         {
-            if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+            try
             {
+                if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+                {
+                    return null;
+                }
+                if (File.Exists(XmlDataPath))
+                {
+                    return XmlDataPath.DeSerialize<ScannerData>().Data;
+                }
+                _ = Directory.CreateDirectory(Path.GetDirectoryName(XmlDataPath));
+                return new ObservableCollection<Data>();
+            }
+            catch (Exception ex)
+            {
+                _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
                 return null;
             }
-            if (File.Exists(XmlDataPath))
-            {
-                return XmlDataPath.DeSerialize<ScannerData>().Data;
-            }
-            _ = Directory.CreateDirectory(Path.GetDirectoryName(XmlDataPath));
-            return new ObservableCollection<Data>();
         }
 
         public static async Task FtpUploadAsync(string uri, string userName, string password, Scanner scanner)
