@@ -72,7 +72,7 @@
                                             <CheckBox.Content>
                                                 <StackPanel>
                                                     <TextBlock HorizontalAlignment="Center">
-                                                        <Run Text="{local:Loc PAGENUMBER}" />
+                                                        <Run d:Text="PAGENUMBER" Text="{local:Loc PAGENUMBER}" />
                                                         <Run Text="{Binding PageNumber}" />
                                                     </TextBlock>
                                                     <Pdfviewer:ShadowedImage Width="96" Height="96"
@@ -362,10 +362,144 @@
                     </Image.Source>
                 </Image>
             </Button>
+            <Expander VerticalContentAlignment="Top"
+                d:IsExpanded="True" ExpandDirection="Right">
+                <WrapPanel Orientation="Horizontal">
+                    <ComboBox VerticalContentAlignment="Center"
+                        ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfColor}}"
+                        SelectedItem="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Rectangle Width="16" Height="16"
+                                        Fill="{Binding ElementName=Tb, Path=Text}" />
+                                    <TextBlock x:Name="Tb"
+                                        VerticalAlignment="Center"
+                                        Text="{Binding Mode=OneWay}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <ComboBox VerticalContentAlignment="Center"
+                        ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfDashLayout}}"
+                        SelectedItem="{Binding PenDashStyle, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
+                    <ComboBox VerticalContentAlignment="Center"
+                        ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfColor}}"
+                        SelectedItem="{Binding GraphObjectFillColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Rectangle Width="16" Height="16"
+                                        Fill="{Binding ElementName=Tb, Path=Text}" />
+                                    <TextBlock x:Name="Tb"
+                                        VerticalAlignment="Center"
+                                        Text="{Binding Mode=OneWay}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <StackPanel Orientation="Horizontal">
+                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                    </StackPanel>
+                    <ToggleButton IsChecked="{Binding DrawEllipse, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                        <ToggleButton.Content>
+                            <Ellipse Width="16" Height="16"
+                                Stroke="Black" />
+                        </ToggleButton.Content>
+                    </ToggleButton>
+                    <ToggleButton IsChecked="{Binding DrawLine, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                        <ToggleButton.Content>
+                            <Line Stroke="Black" X1="0" X2="16"
+                                Y1="0" Y2="16" />
+                        </ToggleButton.Content>
+                    </ToggleButton>
+                    <ToggleButton IsChecked="{Binding DrawRect, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                        <ToggleButton.Content>
+                            <Rectangle Width="16" Height="16"
+                                Stroke="Black" />
+                        </ToggleButton.Content>
+                    </ToggleButton>
+                    <ToggleButton IsChecked="{Binding DrawRoundedRect, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                        <ToggleButton.Content>
+                            <Rectangle Width="16" Height="16"
+                                RadiusX="3" RadiusY="3" Stroke="Black" />
+                        </ToggleButton.Content>
+                    </ToggleButton>
+                    <StackPanel Orientation="Horizontal">
+                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                    </StackPanel>
+                    <TextBlock VerticalAlignment="Center" Text="{local:Loc GRAPH}" />
+                    <ToggleButton IsChecked="{Binding DrawImage, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" IsEnabled="{Binding DrawnImage, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                        <ToggleButton.Content>
+                            <Image Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="117" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                        </ToggleButton.Content>
+                    </ToggleButton>
+                    <Button Command="{Binding LoadDrawImage, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                        <Button.Content>
+                            <Image Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="3" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                        </Button.Content>
+                    </Button>
+                    <StackPanel Orientation="Horizontal">
+                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                    </StackPanel>
+                    <TextBlock VerticalAlignment="Center" Text="{local:Loc DRAWTEXT}" />
+                    <TextBox Width="64"
+                        VerticalContentAlignment="Center"
+                        Text="{Binding Text, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
+                    <Extensions:NumericUpDownControl Maximum="512" Minimum="1" SmallChange="1"
+                        Value="{Binding TextSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
+                    <ToggleButton IsChecked="{Binding DrawString, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                        <ToggleButton.Content>
+                            <Image Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="70" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                        </ToggleButton.Content>
+                    </ToggleButton>
+                    <StackPanel Orientation="Horizontal">
+                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                    </StackPanel>
+                    <TextBlock VerticalAlignment="Center" Text="{local:Loc TAG}" />
+                    <TextBox Width="64"
+                        VerticalContentAlignment="Center"
+                        Text="{Binding AnnotationText, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
+                    <ToggleButton IsChecked="{Binding DrawAnnotation, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                        <ToggleButton.Content>
+                            <Image Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="156" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                        </ToggleButton.Content>
+                    </ToggleButton>
+                </WrapPanel>
+            </Expander>
         </WrapPanel>
         <Grid Grid.Row="1">
             <local:EypPdfViewer x:Name="PdfViewer"
                 x:FieldModifier="public" AutoFitContent="True" OpenButtonVisibility="Visible"
+                PreviewKeyDown="PdfViewer_PreviewKeyDown" PreviewKeyUp="PdfViewer_PreviewKeyUp"
                 PreviewMouseDown="PdfImportViewerControl_MouseDown"
                 PreviewMouseMove="PdfImportViewerControl_MouseMove" PrintButtonVisibility="Visible"
                 SeekingLowerPdfDpi="True" />

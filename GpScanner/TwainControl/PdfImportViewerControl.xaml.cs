@@ -1,21 +1,223 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Extensions;
+using Microsoft.Win32;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
+using PdfSharp.Pdf.Annotations;
+using PdfSharp.Pdf.IO;
 
 namespace TwainControl
 {
     /// <summary>
     /// Interaction logic for PdfImportViewerControl.xaml
     /// </summary>
-    public partial class PdfImportViewerControl : UserControl
+    public partial class PdfImportViewerControl : UserControl, INotifyPropertyChanged
     {
         public PdfImportViewerControl()
         {
             InitializeComponent();
+            LoadDrawImage = new RelayCommand<object>(parameter =>
+            {
+                try
+                {
+                    OpenFileDialog openFileDialog = new()
+                    {
+                        Filter = "Resim Dosyası (*.pdf;*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle)|*.pdf;*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle",
+                        Multiselect = false
+                    };
+                    if (openFileDialog.ShowDialog() == true)
+                    {
+                        DrawnImage = XImage.FromFile(openFileDialog.FileName);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _ = MessageBox.Show(ex.Message);
+                }
+            }, parameter => true);
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public string AnnotationText {
+            get => annotationText;
+
+            set {
+                if (annotationText != value)
+                {
+                    annotationText = value;
+                    OnPropertyChanged(nameof(AnnotationText));
+                }
+            }
+        }
+
+        public bool DrawAnnotation {
+            get => drawAnnotation;
+
+            set {
+                if (drawAnnotation != value)
+                {
+                    drawAnnotation = value;
+                    OnPropertyChanged(nameof(DrawAnnotation));
+                }
+            }
+        }
+
+        public bool DrawEllipse {
+            get => drawEllipse;
+
+            set {
+                if (drawEllipse != value)
+                {
+                    drawEllipse = value;
+                    OnPropertyChanged(nameof(DrawEllipse));
+                }
+            }
+        }
+
+        public bool DrawImage {
+            get => drawImage;
+
+            set {
+                if (drawImage != value)
+                {
+                    drawImage = value;
+                    OnPropertyChanged(nameof(DrawImage));
+                }
+            }
+        }
+
+        public bool DrawLine {
+            get => drawLine;
+
+            set {
+                if (drawLine != value)
+                {
+                    drawLine = value;
+                    OnPropertyChanged(nameof(DrawLine));
+                }
+            }
+        }
+
+        public XImage DrawnImage {
+            get => drawnImage; set {
+
+                if (drawnImage != value)
+                {
+                    drawnImage = value;
+                    OnPropertyChanged(nameof(DrawnImage));
+                }
+            }
+        }
+
+        public bool DrawRect {
+            get => drawRect;
+
+            set {
+                if (drawRect != value)
+                {
+                    drawRect = value;
+                    OnPropertyChanged(nameof(DrawRect));
+                }
+            }
+        }
+
+        public bool DrawRoundedRect {
+            get => drawRoundedRect;
+
+            set {
+                if (drawRoundedRect != value)
+                {
+                    drawRoundedRect = value;
+                    OnPropertyChanged(nameof(DrawRoundedRect));
+                }
+            }
+        }
+
+        public bool DrawString {
+            get => drawString;
+
+            set {
+                if (drawString != value)
+                {
+                    drawString = value;
+                    OnPropertyChanged(nameof(DrawString));
+                }
+            }
+        }
+
+        public XKnownColor GraphObjectColor {
+            get => graphObjectColor;
+
+            set {
+                if (graphObjectColor != value)
+                {
+                    graphObjectColor = value;
+                    OnPropertyChanged(nameof(GraphObjectColor));
+                }
+            }
+        }
+
+        public XKnownColor GraphObjectFillColor {
+            get => graphObjectFillColor;
+
+            set {
+                if (graphObjectFillColor != value)
+                {
+                    graphObjectFillColor = value;
+                    OnPropertyChanged(nameof(GraphObjectFillColor));
+                }
+            }
+        }
+
+        public RelayCommand<object> LoadDrawImage { get; }
+
+        public XDashStyle PenDashStyle {
+            get => penDashStyle;
+
+            set {
+                if (penDashStyle != value)
+                {
+                    penDashStyle = value;
+                    OnPropertyChanged(nameof(PenDashStyle));
+                }
+            }
+        }
+
+        public string Text {
+            get => text;
+
+            set {
+                if (text != value)
+                {
+                    text = value;
+                    OnPropertyChanged(nameof(Text));
+                }
+            }
+        }
+
+        public double TextSize {
+            get => textSize;
+
+            set {
+                if (textSize != value)
+                {
+                    textSize = value;
+                    OnPropertyChanged(nameof(TextSize));
+                }
+            }
+        }
+
+        protected virtual void OnPropertyChanged(string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private static readonly Rectangle selectionbox = new()
@@ -26,59 +228,216 @@ namespace TwainControl
             StrokeDashArray = new DoubleCollection(new double[] { 4, 2 }),
         };
 
+        private string annotationText = string.Empty;
+
+        private bool drawAnnotation;
+
+        private bool drawEllipse;
+
+        private bool drawImage;
+
+        private bool drawLine;
+
+        private XImage drawnImage;
+
+        private bool drawRect;
+
+        private bool drawRoundedRect;
+
+        private bool drawString;
+
+        private XKnownColor graphObjectColor = XKnownColor.Black;
+
+        private XKnownColor graphObjectFillColor = XKnownColor.Transparent;
+
         private double height;
+
+        private bool isDrawMouseDown;
 
         private bool isMouseDown;
 
         private Point mousedowncoord;
 
+        private XDashStyle penDashStyle = XDashStyle.Solid;
+
+        private string text = string.Empty;
+
+        private double textSize = 12d;
+
         private double width;
 
         private void PdfImportViewerControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer && e.LeftButton == MouseButtonState.Pressed && Keyboard.IsKeyDown(Key.LeftCtrl))
+            if (e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer && e.LeftButton == MouseButtonState.Pressed)
             {
-                isMouseDown = true;
-                Cursor = Cursors.Cross;
-                mousedowncoord = e.GetPosition(scrollviewer);
+                if (Keyboard.IsKeyDown(Key.LeftCtrl))
+                {
+                    isMouseDown = true;
+                    mousedowncoord = e.GetPosition(scrollviewer);
+                }
+
+                if (Keyboard.IsKeyDown(Key.LeftShift) && (DrawAnnotation || DrawString || DrawImage || DrawEllipse || DrawRect || DrawLine || DrawRoundedRect))
+                {
+                    isDrawMouseDown = true;
+                    mousedowncoord = e.GetPosition(scrollviewer);
+                }
             }
         }
 
         private void PdfImportViewerControl_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer && isMouseDown && DataContext is TwainCtrl twainctrl)
+            if (e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer && DataContext is TwainCtrl twainctrl)
             {
-                Point mousemovecoord = e.GetPosition(scrollviewer);
-                if (!cnv.Children.Contains(selectionbox))
+                if (isDrawMouseDown)
                 {
-                    _ = cnv.Children.Add(selectionbox);
+                    if (e.LeftButton == MouseButtonState.Released)
+                    {
+                        using PdfDocument reader = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.Modify);
+                        PdfPage page = reader.Pages[PdfViewer.Sayfa - 1];
+                        using XGraphics gfx = XGraphics.FromPdfPage(page);
+                        string oldpdfpath = PdfViewer.PdfFilePath;
+
+                        Point mousemovecoord = e.GetPosition(scrollviewer);
+                        double coordx = 0, coordy = 0;
+                        width = Math.Abs(mousemovecoord.X - mousedowncoord.X);
+                        height = Math.Abs(mousemovecoord.Y - mousedowncoord.Y);
+                        double X, Y;
+                        X = mousedowncoord.X < mousemovecoord.X ? mousedowncoord.X : mousemovecoord.X;
+                        Y = mousedowncoord.Y < mousemovecoord.Y ? mousedowncoord.Y : mousemovecoord.Y;
+                        coordx += X + scrollviewer.HorizontalOffset;
+                        coordy += Y + scrollviewer.VerticalOffset;
+                        double widthmultiply = page.Width / (double)((scrollviewer.ExtentWidth < scrollviewer.ViewportWidth) ? scrollviewer.ViewportWidth : scrollviewer.ExtentWidth);
+                        double heightmultiply = page.Height / (double)((scrollviewer.ExtentHeight < scrollviewer.ViewportHeight) ? scrollviewer.ViewportHeight : scrollviewer.ExtentHeight);
+                        Rect rect = new(coordx * widthmultiply, coordy * heightmultiply, width * widthmultiply, height * heightmultiply);
+
+                        XPen pen = new(XColor.FromKnownColor(GraphObjectColor))
+                        {
+                            DashStyle = PenDashStyle
+                        };
+                        XBrush brush = new XSolidBrush(XColor.FromKnownColor(GraphObjectFillColor));
+
+                        if (DrawRect)
+                        {
+                            if (GraphObjectFillColor == XKnownColor.Transparent)
+                            {
+                                gfx.DrawRectangle(pen, rect);
+                            }
+                            else
+                            {
+                                gfx.DrawRectangle(pen, brush, rect);
+                            }
+                        }
+                        if (DrawEllipse)
+                        {
+                            if (GraphObjectFillColor == XKnownColor.Transparent)
+                            {
+                                gfx.DrawEllipse(pen, rect);
+                            }
+                            else
+                            {
+                                gfx.DrawEllipse(pen, brush, rect);
+                            }
+                        }
+                        if (DrawLine)
+                        {
+                            gfx.DrawLine(pen, new Point(mousedowncoord.X * widthmultiply, mousedowncoord.Y * heightmultiply), new Point(mousemovecoord.X * widthmultiply, mousemovecoord.Y * heightmultiply));
+                        }
+                        if (DrawImage && DrawnImage is not null)
+                        {
+                            gfx.DrawImage(DrawnImage, rect);
+                        }
+                        if (DrawString && !string.IsNullOrWhiteSpace(Text))
+                        {
+                            XFont font = new("Times New Roman", TextSize, XFontStyle.Regular);
+                            if (GraphObjectFillColor == XKnownColor.Transparent)
+                            {
+                                gfx.DrawString(Text, font, XBrushes.Black, rect, XStringFormats.TopLeft);
+                            }
+                            else
+                            {
+                                gfx.DrawString(Text, font, brush, rect, XStringFormats.TopLeft);
+                            }
+                        }
+                        if (DrawRoundedRect)
+                        {
+                            if (GraphObjectFillColor == XKnownColor.Transparent)
+                            {
+                                gfx.DrawRoundedRectangle(pen, rect, new Size(2, 2));
+                            }
+                            else
+                            {
+                                gfx.DrawRoundedRectangle(pen, brush, rect, new Size(2, 2));
+                            }
+                        }
+                        if (DrawAnnotation && !string.IsNullOrWhiteSpace(AnnotationText))
+                        {
+                            PdfTextAnnotation pdftextannotaiton = new()
+                            {
+                                Contents = AnnotationText,
+                                Icon = PdfTextAnnotationIcon.Note,
+                            };
+                            XRect annotrect = gfx.Transformer.WorldToDefaultPage(rect);
+                            pdftextannotaiton.Rectangle = new PdfRectangle(annotrect);
+                            page.Annotations.Add(pdftextannotaiton);
+                        }
+
+                        reader.Save(PdfViewer.PdfFilePath);
+                        PdfViewer.PdfFilePath = null;
+                        PdfViewer.PdfFilePath = oldpdfpath;
+
+                        mousedowncoord.X = mousedowncoord.Y = 0;
+                        isDrawMouseDown = false;
+                        Cursor = Cursors.Arrow;
+                    }
                 }
-                double x1 = Math.Min(mousedowncoord.X, mousemovecoord.X);
-                double x2 = Math.Max(mousedowncoord.X, mousemovecoord.X);
-                double y1 = Math.Min(mousedowncoord.Y, mousemovecoord.Y);
-                double y2 = Math.Max(mousedowncoord.Y, mousemovecoord.Y);
 
-                Canvas.SetLeft(selectionbox, x1);
-                Canvas.SetTop(selectionbox, y1);
-                selectionbox.Width = x2 - x1;
-                selectionbox.Height = y2 - y1;
-
-                if (e.LeftButton == MouseButtonState.Released)
+                if (isMouseDown)
                 {
-                    cnv.Children.Remove(selectionbox);
-                    width = Math.Abs(mousemovecoord.X - mousedowncoord.X);
-                    height = Math.Abs(mousemovecoord.Y - mousedowncoord.Y);
-                    double captureX, captureY;
-                    captureX = mousedowncoord.X < mousemovecoord.X ? mousedowncoord.X : mousemovecoord.X;
-                    captureY = mousedowncoord.Y < mousemovecoord.Y ? mousedowncoord.Y : mousemovecoord.Y;
-                    BitmapFrame bitmapFrame = BitmapFrame.Create((BitmapSource)img.Source);
-                    bitmapFrame.Freeze();
-                    twainctrl.ImgData = BitmapMethods.CaptureScreen(captureX, captureY, width, height, scrollviewer, bitmapFrame);
-                    mousedowncoord.X = mousedowncoord.Y = 0;
-                    isMouseDown = false;
-                    Cursor = Cursors.Arrow;
+                    Point mousemovecoord = e.GetPosition(scrollviewer);
+                    if (!cnv.Children.Contains(selectionbox))
+                    {
+                        _ = cnv.Children.Add(selectionbox);
+                    }
+                    double x1 = Math.Min(mousedowncoord.X, mousemovecoord.X);
+                    double x2 = Math.Max(mousedowncoord.X, mousemovecoord.X);
+                    double y1 = Math.Min(mousedowncoord.Y, mousemovecoord.Y);
+                    double y2 = Math.Max(mousedowncoord.Y, mousemovecoord.Y);
+
+                    Canvas.SetLeft(selectionbox, x1);
+                    Canvas.SetTop(selectionbox, y1);
+                    selectionbox.Width = x2 - x1;
+                    selectionbox.Height = y2 - y1;
+
+                    if (e.LeftButton == MouseButtonState.Released)
+                    {
+                        cnv.Children.Remove(selectionbox);
+                        width = Math.Abs(mousemovecoord.X - mousedowncoord.X);
+                        height = Math.Abs(mousemovecoord.Y - mousedowncoord.Y);
+                        double captureX, captureY;
+                        captureX = mousedowncoord.X < mousemovecoord.X ? mousedowncoord.X : mousemovecoord.X;
+                        captureY = mousedowncoord.Y < mousemovecoord.Y ? mousedowncoord.Y : mousemovecoord.Y;
+                        BitmapFrame bitmapFrame = BitmapFrame.Create((BitmapSource)img.Source);
+                        bitmapFrame.Freeze();
+                        twainctrl.ImgData = BitmapMethods.CaptureScreen(captureX, captureY, width, height, scrollviewer, bitmapFrame);
+                        mousedowncoord.X = mousedowncoord.Y = 0;
+                        isMouseDown = false;
+                        Cursor = Cursors.Arrow;
+                    }
                 }
             }
+        }
+
+        private void PdfViewer_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.LeftCtrl))
+            {
+                Cursor = Cursors.Cross;
+            }
+        }
+
+        private void PdfViewer_PreviewKeyUp(object sender, KeyEventArgs e)
+        {
+            Cursor = Cursors.Arrow;
         }
     }
 }
