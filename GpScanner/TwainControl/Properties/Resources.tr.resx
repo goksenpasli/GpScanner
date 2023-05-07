@@ -565,4 +565,7 @@ BELGE EKLE</value>
   <data name="PDFOPEN" xml:space="preserve">
     <value>Pdf Dosyalarını Direkt Aç</value>
   </data>
+  <data name="COMPRESS" xml:space="preserve">
+    <value>SIKIŞTIR</value>
+  </data>
 </root>

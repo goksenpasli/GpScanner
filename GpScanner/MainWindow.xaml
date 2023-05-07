@@ -395,6 +395,7 @@
                                                                 <Grid.ColumnDefinitions>
                                                                     <ColumnDefinition />
                                                                     <ColumnDefinition Width="Auto" />
+                                                                    <ColumnDefinition Width="Auto" />
                                                                 </Grid.ColumnDefinitions>
                                                                 <Extensions:ContentToggleButton Margin="1" HorizontalContentAlignment="Stretch"
                                                                     Command="{Binding DataContext.ReadOcrDataFile, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
@@ -449,6 +450,19 @@
                                                                             </MultiBinding>
                                                                         </Image.Source>
                                                                     </Image>
+                                                                </Extensions:ContentToggleButton>
+                                                                <Extensions:ContentToggleButton Grid.Column="2">
+                                                                    <Extensions:ContentToggleButton.OverContent>
+                                                                        <GroupBox>
+                                                                            <GroupBox.Header>
+                                                                                <TextBlock>
+                                                                                    <Run Text="PDF" />
+                                                                                    <Run Text="{twainctrl:Loc COMPRESS}" />
+                                                                                </TextBlock>
+                                                                            </GroupBox.Header>
+                                                                            <ViewModel:PdfCompressorControl LoadedPdfPath="{Binding Path=FileName, Mode=OneWay}" />
+                                                                        </GroupBox>
+                                                                    </Extensions:ContentToggleButton.OverContent>
                                                                 </Extensions:ContentToggleButton>
                                                             </Grid>
                                                             <ContentControl Grid.Row="1"

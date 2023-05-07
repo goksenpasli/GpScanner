@@ -210,6 +210,9 @@
   <data name="COLORCHANGETIP" xml:space="preserve">
     <value>إذا قمت بالنقر فوق هذا بعد تعيين قيمة الحد ، يمكنك إجراء تحديد لون ثانٍ.</value>
   </data>
+  <data name="COMPRESS" xml:space="preserve">
+    <value>ضغط</value>
+  </data>
   <data name="CONTENT" xml:space="preserve">
     <value>قراءة المحتوى</value>
   </data>

@@ -559,4 +559,7 @@ TO FILE</value>
   <data name="PDFOPEN" xml:space="preserve">
     <value>Open Pdf Files Directly.</value>
   </data>
+  <data name="COMPRESS" xml:space="preserve">
+    <value>COMPRESS</value>
+  </data>
 </root>

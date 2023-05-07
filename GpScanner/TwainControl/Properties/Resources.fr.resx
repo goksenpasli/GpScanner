@@ -210,6 +210,9 @@ ENREGISTREMENT</value>
   <data name="COLORCHANGETIP" xml:space="preserve">
     <value>Si vous cliquez dessus après avoir défini la valeur seuil, vous pouvez effectuer une deuxième sélection de couleur.</value>
   </data>
+  <data name="COMPRESS" xml:space="preserve">
+    <value>COMPRESSE</value>
+  </data>
   <data name="CONTENT" xml:space="preserve">
     <value>CONTENU LU</value>
   </data>

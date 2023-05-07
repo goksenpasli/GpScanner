@@ -133,6 +133,7 @@
     <Compile Include="ViewModel\FastFileSearch.cs" />
     <Compile Include="ViewModel\FoldEffect.cs" />
     <Compile Include="ViewModel\GpScannerViewModel.cs" />
+    <Compile Include="ViewModel\PdfCompressorControl.cs" />
     <Compile Include="ViewModel\ScannerData.cs" />
     <Compile Include="ViewModel\Shutdown.cs" />
     <Compile Include="ViewModel\StillImageHelper.cs" />
@@ -218,6 +219,10 @@
     <ProjectReference Include="..\Ocr\Ocr.csproj">
       <Project>{a9495099-87ce-4478-8555-8701f2989145}</Project>
       <Name>Ocr</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PdfCompressor\PdfCompressor.csproj">
+      <Project>{b24cd58d-ff54-427f-bb73-e687a04f0006}</Project>
+      <Name>PdfCompressor</Name>
     </ProjectReference>
     <ProjectReference Include="..\PdfViewer\PdfViewer.csproj">
       <Project>{ea1285ba-203e-4d61-a869-7567966e5367}</Project>

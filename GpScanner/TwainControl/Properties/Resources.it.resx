@@ -210,6 +210,9 @@ DISCO</value>
   <data name="COLORCHANGETIP" xml:space="preserve">
     <value>Se si fa clic su questo dopo aver impostato il valore di soglia, è possibile effettuare una seconda selezione di colore.</value>
   </data>
+  <data name="COMPRESS" xml:space="preserve">
+    <value>COMPRIMERE</value>
+  </data>
   <data name="CONTENT" xml:space="preserve">
     <value>CONTENUTI LEGGI</value>
   </data>
