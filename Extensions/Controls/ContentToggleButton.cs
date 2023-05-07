@@ -54,7 +54,7 @@ namespace Extensions
 
         public override string ToString()
         {
-            return Content.ToString();
+            return Content?.ToString();
         }
     }
 }

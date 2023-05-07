@@ -11,9 +11,6 @@
     Unloaded="Window_Unloaded" UseLayoutRounding="True" WindowStartupLocation="CenterOwner"
     WindowState="Maximized"
     mc:Ignorable="d">
-    <Window.Resources>
-        <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
-    </Window.Resources>
     <Window.InputBindings>
         <KeyBinding Key="S"
             Command="{Binding SaveImageAsPdfFile}"

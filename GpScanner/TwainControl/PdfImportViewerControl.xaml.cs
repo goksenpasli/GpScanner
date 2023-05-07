@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -35,6 +36,23 @@ namespace TwainControl
                     if (openFileDialog.ShowDialog() == true)
                     {
                         DrawnImage = XImage.FromFile(openFileDialog.FileName);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _ = MessageBox.Show(ex.Message);
+                }
+            }, parameter => true);
+
+            ReadAnnotation = new RelayCommand<object>(parameter =>
+            {
+                try
+                {
+                    if (DataContext is TwainCtrl twainCtrl)
+                    {
+                        using PdfDocument reader = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.ReadOnly);
+                        PdfPage page = reader.Pages[PdfViewer.Sayfa - 1];
+                        twainCtrl.Annotations = page?.Annotations?.Select(z => z);
                     }
                 }
                 catch (Exception ex)
@@ -179,17 +197,42 @@ namespace TwainControl
 
         public RelayCommand<object> LoadDrawImage { get; }
 
-        public XDashStyle PenDashStyle {
-            get => penDashStyle;
+        public XDashStyle PenDash {
+            get => penDash;
 
             set {
-                if (penDashStyle != value)
+                if (penDash != value)
                 {
-                    penDashStyle = value;
-                    OnPropertyChanged(nameof(PenDashStyle));
+                    penDash = value;
+                    OnPropertyChanged(nameof(PenDash));
                 }
             }
         }
+
+        public XLineCap PenLineCap {
+            get => penLineCap;
+
+            set {
+                if (penLineCap != value)
+                {
+                    penLineCap = value;
+                    OnPropertyChanged(nameof(PenLineCap));
+                }
+            }
+        }
+
+        public XLineJoin PenLineJoin {
+            get => penLineJoin; set {
+
+                if (penLineJoin != value)
+                {
+                    penLineJoin = value;
+                    OnPropertyChanged(nameof(PenLineJoin));
+                }
+            }
+        }
+
+        public RelayCommand<object> ReadAnnotation { get; }
 
         public string Text {
             get => text;
@@ -258,7 +301,11 @@ namespace TwainControl
 
         private Point mousedowncoord;
 
-        private XDashStyle penDashStyle = XDashStyle.Solid;
+        private XDashStyle penDash = XDashStyle.Solid;
+
+        private XLineCap penLineCap = XLineCap.Flat;
+
+        private XLineJoin penLineJoin = XLineJoin.Miter;
 
         private string text = string.Empty;
 
@@ -312,7 +359,9 @@ namespace TwainControl
 
                         XPen pen = new(XColor.FromKnownColor(GraphObjectColor))
                         {
-                            DashStyle = PenDashStyle
+                            DashStyle = PenDash,
+                            LineCap = PenLineCap,
+                            LineJoin = PenLineJoin
                         };
                         XBrush brush = new XSolidBrush(XColor.FromKnownColor(GraphObjectFillColor));
 

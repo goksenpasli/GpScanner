@@ -362,8 +362,7 @@
                     </Image.Source>
                 </Image>
             </Button>
-            <Expander VerticalContentAlignment="Top"
-                d:IsExpanded="True" ExpandDirection="Right">
+            <Expander d:IsExpanded="True" ExpandDirection="Right">
                 <WrapPanel Orientation="Horizontal">
                     <ComboBox VerticalContentAlignment="Center"
                         ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfColor}}"
@@ -371,7 +370,7 @@
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Rectangle Width="16" Height="16"
+                                    <Rectangle Width="12" Height="12"
                                         Fill="{Binding ElementName=Tb, Path=Text}" />
                                     <TextBlock x:Name="Tb"
                                         VerticalAlignment="Center"
@@ -380,16 +379,13 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <ComboBox VerticalContentAlignment="Center"
-                        ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfDashLayout}}"
-                        SelectedItem="{Binding PenDashStyle, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
                     <ComboBox VerticalContentAlignment="Center"
                         ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfColor}}"
                         SelectedItem="{Binding GraphObjectFillColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Rectangle Width="16" Height="16"
+                                    <Rectangle Width="12" Height="12"
                                         Fill="{Binding ElementName=Tb, Path=Text}" />
                                     <TextBlock x:Name="Tb"
                                         VerticalAlignment="Center"
@@ -398,6 +394,19 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
+                    <Expander d:IsExpanded="True" ExpandDirection="Right">
+                        <StackPanel Orientation="Horizontal">
+                            <ComboBox VerticalContentAlignment="Center"
+                                ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfDashLayout}}"
+                                SelectedItem="{Binding PenDash, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
+                            <ComboBox VerticalContentAlignment="Center"
+                                ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfPenLineLayout}}"
+                                SelectedItem="{Binding PenLineCap, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
+                            <ComboBox VerticalContentAlignment="Center"
+                                ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfPenLineJoinLayout}}"
+                                SelectedItem="{Binding PenLineJoin, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
+                        </StackPanel>
+                    </Expander>
                     <StackPanel Orientation="Horizontal">
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                     </StackPanel>
@@ -493,6 +502,24 @@
                             </Image>
                         </ToggleButton.Content>
                     </ToggleButton>
+                    <Extensions:ContentToggleButton Command="{Binding ReadAnnotation, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                        <Extensions:ContentToggleButton.OverContent>
+                            <GroupBox Width="200" Height="200"
+                                Header="{local:Loc TAG}">
+                                <ListBox ItemsSource="{Binding Annotations}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock>
+                                                <Run Text="{Binding Mode=OneWay, Path=Contents}" />
+                                                <Run Foreground="Red" Text="{Binding Mode=OneWay, Path=Subject}" />
+                                                <Run Foreground="Blue" Text="{Binding Mode=OneWay, Path=Title}" />
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </GroupBox>
+                        </Extensions:ContentToggleButton.OverContent>
+                    </Extensions:ContentToggleButton>
                 </WrapPanel>
             </Expander>
         </WrapPanel>

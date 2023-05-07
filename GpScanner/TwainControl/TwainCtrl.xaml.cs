@@ -1039,6 +1039,17 @@ namespace TwainControl
             }
         }
 
+        public IEnumerable<PdfItem> Annotations {
+            get => annotations; set {
+
+                if (annotations != value)
+                {
+                    annotations = value;
+                    OnPropertyChanged(nameof(Annotations));
+                }
+            }
+        }
+
         public ICommand ArrangePdfFile { get; }
 
         public byte[] CameraQRCodeData {
@@ -2051,6 +2062,8 @@ namespace TwainControl
         private ScanSettings _settings;
 
         private double allImageRotationAngle;
+
+        private IEnumerable<PdfItem> annotations;
 
         private byte[] cameraQRCodeData;
 

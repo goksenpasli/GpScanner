@@ -148,7 +148,7 @@
                     Background="{StaticResource GroupBoxBackGround}"
                     BorderBrush="Black" IsExpanded="True">
                     <Expander.Header>
-                        <Grid>
+                        <Grid HorizontalAlignment="{Binding HorizontalAlignment, RelativeSource={RelativeSource AncestorType=ContentPresenter}, Mode=OneWayToSource}">
                             <Grid.RowDefinitions>
                                 <RowDefinition />
                                 <RowDefinition />
@@ -167,11 +167,7 @@
                                                     </MultiBinding>
                                                 </Image.Source>
                                             </Image>
-                                            <TextBlock Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ComboBox}}"
-                                                MaxHeight="32"
-                                                VerticalAlignment="Center"
-                                                Text="{Binding Mode=OneWay}"
-                                                TextWrapping="Wrap" />
+                                            <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay}" />
                                         </StackPanel>
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>

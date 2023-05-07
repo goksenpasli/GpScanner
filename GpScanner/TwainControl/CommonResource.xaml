@@ -48,6 +48,20 @@
             <x:Type TypeName="pdfsharpdrawing:XDashStyle" />
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
+    <ObjectDataProvider x:Key="PdfPenLineLayout"
+        MethodName="GetValues"
+        ObjectType="{x:Type System:Enum}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="pdfsharpdrawing:XLineCap" />
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+    <ObjectDataProvider x:Key="PdfPenLineJoinLayout"
+        MethodName="GetValues"
+        ObjectType="{x:Type System:Enum}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="pdfsharpdrawing:XLineJoin" />
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
     <ObjectDataProvider x:Key="PdfColor"
         MethodName="GetValues"
         ObjectType="{x:Type System:Enum}">
