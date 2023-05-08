@@ -405,7 +405,8 @@
                             <ComboBox VerticalContentAlignment="Center"
                                 ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfPenLineJoinLayout}}"
                                 SelectedItem="{Binding PenLineJoin, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
-                            <Extensions:NumericUpDownControl Maximum="512" Minimum="0.5" SmallChange="0.5"
+                            <Extensions:NumericUpDownControl Width="40"
+                                Maximum="512" Minimum="0.5" SmallChange="0.5"
                                 Value="{Binding PenWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
                         </StackPanel>
                     </Expander>
@@ -471,7 +472,8 @@
                     <TextBox Width="64"
                         VerticalContentAlignment="Center"
                         Text="{Binding Text, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
-                    <Extensions:NumericUpDownControl Maximum="512" Minimum="1" SmallChange="1"
+                    <Extensions:NumericUpDownControl Width="40"
+                        Maximum="512" Minimum="1" SmallChange="1"
                         Value="{Binding TextSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
                     <ToggleButton IsChecked="{Binding DrawString, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <ToggleButton.Content>

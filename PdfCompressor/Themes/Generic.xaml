@@ -32,7 +32,7 @@
                                 </Image>
                             </Button>
                             <UniformGrid Grid.Row="1" Grid.Column="0"
-                                Rows="2">
+                                Rows="3">
                                 <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="4800"
                                     Minimum="12" SmallChange="1"
                                     Style="{DynamicResource Slider}"

@@ -284,7 +284,7 @@ SCANSIONE</value>
     <value>MOSTRA INTERFACCIA</value>
   </data>
   <data name="GUID" xml:space="preserve">
-    <value>[GUIDA]</value>
+    <value>[GUID]</value>
   </data>
   <data name="HEIGHTCOUNT" xml:space="preserve">
     <value>TAGLIA QUANTITÀ</value>

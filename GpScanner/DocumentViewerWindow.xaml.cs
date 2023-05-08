@@ -27,7 +27,7 @@ namespace GpScanner
             Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
             Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
             StrokeThickness = 2,
-            StrokeDashArray = new DoubleCollection(new double[] { 4, 2 }),
+            StrokeDashArray = new DoubleCollection(new double[] { 1 }),
         };
 
         private double height;

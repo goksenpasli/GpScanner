@@ -279,16 +279,14 @@ namespace TwainControl
         {
             Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
             Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
-            StrokeThickness = 2,
-            StrokeDashArray = new DoubleCollection(new double[] { 4, 2 }),
+            StrokeDashArray = new DoubleCollection(new double[] { 1 }),
         };
 
         private static readonly Rectangle rectangleselectionbox = new()
         {
             Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
             Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
-            StrokeThickness = 2,
-            StrokeDashArray = new DoubleCollection(new double[] { 4, 2 }),
+            StrokeDashArray = new DoubleCollection(new double[] { 1 }),
         };
 
         private string annotationText = string.Empty;
@@ -372,6 +370,7 @@ namespace TwainControl
 
                     if (DrawRect || DrawLine || DrawImage || DrawRoundedRect || DrawAnnotation)
                     {
+                        rectangleselectionbox.StrokeThickness = PenWidth * 2.54;
                         Canvas.SetLeft(rectangleselectionbox, x1);
                         Canvas.SetTop(rectangleselectionbox, y1);
                         rectangleselectionbox.Width = x2 - x1;
@@ -379,6 +378,7 @@ namespace TwainControl
                     }
                     else
                     {
+                        ellipseselectionbox.StrokeThickness = PenWidth * 2.54;
                         Canvas.SetLeft(ellipseselectionbox, x1);
                         Canvas.SetTop(ellipseselectionbox, y1);
                         ellipseselectionbox.Width = x2 - x1;
