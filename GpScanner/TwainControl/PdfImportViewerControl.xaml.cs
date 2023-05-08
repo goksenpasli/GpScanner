@@ -232,6 +232,18 @@ namespace TwainControl
             }
         }
 
+        public double PenWidth {
+            get => penWidth;
+
+            set {
+                if (penWidth != value)
+                {
+                    penWidth = value;
+                    OnPropertyChanged(nameof(PenWidth));
+                }
+            }
+        }
+
         public RelayCommand<object> ReadAnnotation { get; }
 
         public string Text {
@@ -263,7 +275,15 @@ namespace TwainControl
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private static readonly Rectangle selectionbox = new()
+        private static readonly Ellipse ellipseselectionbox = new()
+        {
+            Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
+            Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
+            StrokeThickness = 2,
+            StrokeDashArray = new DoubleCollection(new double[] { 4, 2 }),
+        };
+
+        private static readonly Rectangle rectangleselectionbox = new()
         {
             Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
             Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
@@ -307,6 +327,8 @@ namespace TwainControl
 
         private XLineJoin penLineJoin = XLineJoin.Miter;
 
+        private double penWidth = 0.5d;
+
         private string text = string.Empty;
 
         private double textSize = 12d;
@@ -337,14 +359,40 @@ namespace TwainControl
             {
                 if (isDrawMouseDown)
                 {
+                    Point mousemovecoord = e.GetPosition(scrollviewer);
+                    cnv.Children.Clear();
+                    _ = DrawRect || DrawLine || DrawImage || DrawRoundedRect || DrawAnnotation
+                        ? cnv.Children.Add(rectangleselectionbox)
+                        : cnv.Children.Add(ellipseselectionbox);
+
+                    double x1 = Math.Min(mousedowncoord.X, mousemovecoord.X);
+                    double x2 = Math.Max(mousedowncoord.X, mousemovecoord.X);
+                    double y1 = Math.Min(mousedowncoord.Y, mousemovecoord.Y);
+                    double y2 = Math.Max(mousedowncoord.Y, mousemovecoord.Y);
+
+                    if (DrawRect || DrawLine || DrawImage || DrawRoundedRect || DrawAnnotation)
+                    {
+                        Canvas.SetLeft(rectangleselectionbox, x1);
+                        Canvas.SetTop(rectangleselectionbox, y1);
+                        rectangleselectionbox.Width = x2 - x1;
+                        rectangleselectionbox.Height = y2 - y1;
+                    }
+                    else
+                    {
+                        Canvas.SetLeft(ellipseselectionbox, x1);
+                        Canvas.SetTop(ellipseselectionbox, y1);
+                        ellipseselectionbox.Width = x2 - x1;
+                        ellipseselectionbox.Height = y2 - y1;
+                    }
+
                     if (e.LeftButton == MouseButtonState.Released)
                     {
+                        cnv.Children?.Remove(rectangleselectionbox);
+                        cnv.Children?.Remove(ellipseselectionbox);
                         using PdfDocument reader = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.Modify);
                         PdfPage page = reader.Pages[PdfViewer.Sayfa - 1];
                         using XGraphics gfx = XGraphics.FromPdfPage(page);
                         string oldpdfpath = PdfViewer.PdfFilePath;
-
-                        Point mousemovecoord = e.GetPosition(scrollviewer);
                         double coordx = 0, coordy = 0;
                         width = Math.Abs(mousemovecoord.X - mousedowncoord.X);
                         height = Math.Abs(mousemovecoord.Y - mousedowncoord.Y);
@@ -361,7 +409,8 @@ namespace TwainControl
                         {
                             DashStyle = PenDash,
                             LineCap = PenLineCap,
-                            LineJoin = PenLineJoin
+                            LineJoin = PenLineJoin,
+                            Width = PenWidth,
                         };
                         XBrush brush = new XSolidBrush(XColor.FromKnownColor(GraphObjectFillColor));
 
@@ -443,23 +492,23 @@ namespace TwainControl
                 if (isMouseDown)
                 {
                     Point mousemovecoord = e.GetPosition(scrollviewer);
-                    if (!cnv.Children.Contains(selectionbox))
+                    if (!cnv.Children.Contains(rectangleselectionbox))
                     {
-                        _ = cnv.Children.Add(selectionbox);
+                        _ = cnv.Children.Add(rectangleselectionbox);
                     }
                     double x1 = Math.Min(mousedowncoord.X, mousemovecoord.X);
                     double x2 = Math.Max(mousedowncoord.X, mousemovecoord.X);
                     double y1 = Math.Min(mousedowncoord.Y, mousemovecoord.Y);
                     double y2 = Math.Max(mousedowncoord.Y, mousemovecoord.Y);
 
-                    Canvas.SetLeft(selectionbox, x1);
-                    Canvas.SetTop(selectionbox, y1);
-                    selectionbox.Width = x2 - x1;
-                    selectionbox.Height = y2 - y1;
+                    Canvas.SetLeft(rectangleselectionbox, x1);
+                    Canvas.SetTop(rectangleselectionbox, y1);
+                    rectangleselectionbox.Width = x2 - x1;
+                    rectangleselectionbox.Height = y2 - y1;
 
                     if (e.LeftButton == MouseButtonState.Released)
                     {
-                        cnv.Children.Remove(selectionbox);
+                        cnv.Children.Remove(rectangleselectionbox);
                         width = Math.Abs(mousemovecoord.X - mousedowncoord.X);
                         height = Math.Abs(mousemovecoord.Y - mousedowncoord.Y);
                         double captureX, captureY;

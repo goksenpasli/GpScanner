@@ -21,7 +21,8 @@ namespace GpScanner.ViewModel
                     List<BitmapImage> images = await AddToList(loadedpdfdoc, Dpi);
                     using PdfDocument pdfDocument = await GeneratePdf(images, UseMozJpeg, Quality, Dpi);
                     images = null;
-                    pdfDocument.Save($"{Path.GetDirectoryName(LoadedPdfPath)}\\{Path.GetFileNameWithoutExtension(LoadedPdfPath) + "_Compressed.pdf"}");
+                    string savefilename = $"{Path.GetDirectoryName(LoadedPdfPath)}\\{Path.GetFileNameWithoutExtension(LoadedPdfPath) + "_Compressed.pdf"}";
+                    pdfDocument.Save(savefilename);
                     if (Application.Current?.MainWindow?.DataContext is GpScannerViewModel gpScannerViewModel)
                     {
                         gpScannerViewModel.ReloadFileDatas();

@@ -445,9 +445,6 @@
                                                 </Grid>
                                             </ListBoxItem>
                                         </ListBox>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                        </StackPanel>
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="75" />
@@ -511,6 +508,18 @@
                                                         </Image.Source>
                                                     </Image>
                                                     <TextBlock>
+                                                        <TextBlock.Style>
+                                                            <Style TargetType="TextBlock">
+                                                                <Setter Property="FontWeight" Value="Normal" />
+                                                                <Setter Property="Foreground" Value="Black" />
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding UseSelectedProfile, Source={x:Static properties:Settings.Default}, Mode=OneWay}" Value="true">
+                                                                        <Setter Property="FontWeight" Value="Bold" />
+                                                                        <Setter Property="Foreground" Value="Green" />
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </TextBlock.Style>
                                                         <Run Text="{local:Loc SCAN}" />
                                                         <LineBreak />
                                                         <Run Text="{local:Loc SETTİNGS}" />

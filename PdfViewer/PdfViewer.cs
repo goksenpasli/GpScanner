@@ -570,11 +570,15 @@ namespace PdfViewer
 
         public static bool IsValidPdfFile(string filename)
         {
-            byte[] buffer = new byte[4];
-            using FileStream fs = new(filename, FileMode.Open, FileAccess.Read);
-            int bytes_read = fs.Read(buffer, 0, buffer.Length);
-            byte[] pdfheader = new byte[] { 0x25, 0x50, 0x44, 0x46 };
-            return buffer?.SequenceEqual(pdfheader) == true;
+            if (File.Exists(filename))
+            {
+                byte[] buffer = new byte[4];
+                using FileStream fs = new(filename, FileMode.Open, FileAccess.Read);
+                int bytes_read = fs.Read(buffer, 0, buffer.Length);
+                byte[] pdfheader = new byte[] { 0x25, 0x50, 0x44, 0x46 };
+                return buffer?.SequenceEqual(pdfheader) == true;
+            }
+            return false;
         }
 
         public static async Task<int> PdfPageCountAsync(byte[] stream)

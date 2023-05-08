@@ -48,6 +48,26 @@
                             </TextBlock>
                         </Button.Content>
                     </Button>
+                    <Button Background="Green"
+                        Command="{Binding CheckUpdate}"
+                        CommandParameter="https://github.com/goksenpasli/GpScanner/releases/download/2.0/GpScanner-Setup.txt">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="24" Height="24">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="13" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock VerticalAlignment="Center">
+                                    <Run Text="{Binding Path=Title, RelativeSource={RelativeSource AncestorType=Window}}" />
+                                    <Run Text="{twainctrl:Loc UPDATE}" />
+                                </TextBlock>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
                 </StackPanel>
             </GroupBox.Header>
             <Grid>
@@ -491,44 +511,20 @@
                             </ListBox>
                         </Grid>
                     </GroupBox>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Button Command="{Binding CheckUpdate}" CommandParameter="https://github.com/goksenpasli/GpScanner/releases/download/2.0/GpScanner-Setup.txt">
-                            <Button.Content>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Width="32" Height="32">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="13" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                    <TextBlock VerticalAlignment="Center">
-                                        <Run Text="{Binding Path=Title, RelativeSource={RelativeSource AncestorType=Window}}" />
-                                        <Run Text="{twainctrl:Loc UPDATE}" />
-                                    </TextBlock>
-                                </StackPanel>
-                            </Button.Content>
-                        </Button>
-                        <TabControl Grid.Row="1">
-                            <TabItem Header="DVD">
-                                <dvd:Burner />
-                            </TabItem>
-                            <TabItem>
-                                <TabItem.Header>
-                                    <TextBlock>
-                                        <Run Text="PDF" />
-                                        <Run Text="{twainctrl:Loc COMPRESS}" />
-                                    </TextBlock>
-                                </TabItem.Header>
-                                <PdfCompressor:Compressor />
-                            </TabItem>
-                        </TabControl>
-                    </Grid>
+                    <TabControl Grid.Row="1">
+                        <TabItem Header="DVD">
+                            <dvd:Burner />
+                        </TabItem>
+                        <TabItem>
+                            <TabItem.Header>
+                                <TextBlock>
+                                    <Run Text="PDF" />
+                                    <Run Text="{twainctrl:Loc COMPRESS}" />
+                                </TextBlock>
+                            </TabItem.Header>
+                            <PdfCompressor:Compressor />
+                        </TabItem>
+                    </TabControl>
                 </UniformGrid>
             </Grid>
         </GroupBox>

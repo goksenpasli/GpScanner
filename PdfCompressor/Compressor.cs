@@ -44,7 +44,15 @@ namespace PdfCompressor
                     List<BitmapImage> images = await AddToList(loadedpdfdoc, Dpi);
                     using PdfDocument pdfDocument = await GeneratePdf(images, UseMozJpeg, Quality, Dpi);
                     images = null;
-                    pdfDocument.Save($"{Path.GetDirectoryName(LoadedPdfPath)}\\{Path.GetFileNameWithoutExtension(LoadedPdfPath) + "_Compressed.pdf"}");
+                    SaveFileDialog saveFileDialog = new()
+                    {
+                        Filter = "Pdf Dosyası (*.pdf)|*.pdf",
+                        FileName = $"{Path.GetFileNameWithoutExtension(LoadedPdfPath)}_Compressed.pdf"
+                    };
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        pdfDocument.Save(saveFileDialog.FileName);
+                    }
                     GC.Collect();
                 }
             }, parameter => !string.IsNullOrWhiteSpace(LoadedPdfPath));
@@ -123,11 +131,32 @@ namespace PdfCompressor
 
         public static bool IsValidPdfFile(string filename)
         {
-            byte[] buffer = new byte[4];
-            using FileStream fs = new(filename, FileMode.Open, FileAccess.Read);
-            int bytes_read = fs.Read(buffer, 0, buffer.Length);
-            byte[] pdfheader = new byte[] { 0x25, 0x50, 0x44, 0x46 };
-            return buffer?.SequenceEqual(pdfheader) == true;
+            if (File.Exists(filename))
+            {
+                byte[] buffer = new byte[4];
+                using FileStream fs = new(filename, FileMode.Open, FileAccess.Read);
+                int bytes_read = fs.Read(buffer, 0, buffer.Length);
+                byte[] pdfheader = new byte[] { 0x25, 0x50, 0x44, 0x46 };
+                return buffer?.SequenceEqual(pdfheader) == true;
+            }
+            return false;
+        }
+
+        public async Task<List<BitmapImage>> AddToList(PdfiumViewer.PdfDocument pdfDoc, int dpi)
+        {
+            List<BitmapImage> images = new();
+            await Task.Run(() =>
+            {
+                for (int i = 0; i < pdfDoc.PageCount; i++)
+                {
+                    int width = (int)(pdfDoc.PageSizes[i].Width / 72 * dpi);
+                    int height = (int)(pdfDoc.PageSizes[i].Height / 72 * dpi);
+                    using System.Drawing.Image image = pdfDoc.Render(i, width, height, dpi, dpi, false);
+                    images.Add(image.ToBitmapImage(ImageFormat.Jpeg));
+                    CompressionProgress = (i + 1) / (double)pdfDoc.PageCount;
+                }
+            });
+            return images;
         }
 
         public async Task<PdfDocument> GeneratePdf(List<BitmapImage> bitmapFrames, bool UseMozJpegEncoding, int jpegquality = 80, int dpi = 200)
@@ -208,22 +237,5 @@ namespace PdfCompressor
         }
 
         private double compressionProgress;
-
-        public async Task<List<BitmapImage>> AddToList(PdfiumViewer.PdfDocument pdfDoc, int dpi)
-        {
-            List<BitmapImage> images = new();
-            await Task.Run(() =>
-            {
-                for (int i = 0; i < pdfDoc.PageCount; i++)
-                {
-                    int width = (int)(pdfDoc.PageSizes[i].Width / 72 * dpi);
-                    int height = (int)(pdfDoc.PageSizes[i].Height / 72 * dpi);
-                    using System.Drawing.Image image = pdfDoc.Render(i, width, height, dpi, dpi, false);
-                    images.Add(image.ToBitmapImage(ImageFormat.Jpeg));
-                    CompressionProgress = (i + 1) / (double)pdfDoc.PageCount;
-                }
-            });
-            return images;
-        }
     }
 }
