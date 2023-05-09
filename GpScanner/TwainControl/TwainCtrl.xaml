@@ -735,22 +735,22 @@
                                     <Extensions:ButtonedTextBox.ContextMenu>
                                         <ContextMenu>
                                             <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
-                                                CommandParameter="[GÜN]"
+                                                CommandParameter="[DATE]"
                                                 Header="{local:Loc DAY}" />
                                             <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
-                                                CommandParameter="[AY]"
+                                                CommandParameter="[MONTH]"
                                                 Header="{local:Loc MONTH}" />
                                             <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
-                                                CommandParameter="[YIL]"
+                                                CommandParameter="[YEAR]"
                                                 Header="{local:Loc YEAR}" />
                                             <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
-                                                CommandParameter="[SAAT]"
+                                                CommandParameter="[HOUR]"
                                                 Header="{local:Loc TIME}" />
                                             <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
-                                                CommandParameter="[DAKİKA]"
+                                                CommandParameter="[MINUTE]"
                                                 Header="{local:Loc MINUTE}" />
                                             <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
-                                                CommandParameter="[SANİYE]"
+                                                CommandParameter="[SECOND]"
                                                 Header="{local:Loc SECOND}" />
                                             <MenuItem Command="{Binding InsertFileNamePlaceHolder}"
                                                 CommandParameter="[GUID]"

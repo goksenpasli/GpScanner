@@ -353,6 +353,9 @@
   <data name="OTHERTESSERACTLINK" xml:space="preserve">
     <value>بيانات لغة tesseract الأخرى</value>
   </data>
+  <data name="OVERWRITECOMPRESSED" xml:space="preserve">
+    <value>الكتابة مباشرة فوق الملف المضغوط في المستندات الممسوحة ضوئيًا</value>
+  </data>
   <data name="PAGENUMBER" xml:space="preserve">
     <value>رقم الصفحة</value>
   </data>

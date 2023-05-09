@@ -562,4 +562,7 @@ TO FILE</value>
   <data name="COMPRESS" xml:space="preserve">
     <value>COMPRESS</value>
   </data>
+  <data name="OVERWRITECOMPRESSED" xml:space="preserve">
+    <value>Directly Overwrite Compressed File in Scanned Documents</value>
+  </data>
 </root>

@@ -353,6 +353,9 @@ RELIER</value>
   <data name="OTHERTESSERACTLINK" xml:space="preserve">
     <value>Autres données de langue tesseract</value>
   </data>
+  <data name="OVERWRITECOMPRESSED" xml:space="preserve">
+    <value>Remplacer directement le fichier compressé dans les documents numérisés</value>
+  </data>
   <data name="PAGENUMBER" xml:space="preserve">
     <value>NUMÉRO DE PAGE</value>
   </data>

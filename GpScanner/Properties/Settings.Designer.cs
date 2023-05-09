@@ -216,5 +216,17 @@ namespace GpScanner.Properties {
                 this["DirectOpenUdfFile"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DirectlyOverwriteCompressedPdf {
+            get {
+                return ((bool)(this["DirectlyOverwriteCompressedPdf"]));
+            }
+            set {
+                this["DirectlyOverwriteCompressedPdf"] = value;
+            }
+        }
     }
 }

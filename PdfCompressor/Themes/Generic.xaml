@@ -32,7 +32,7 @@
                                 </Image>
                             </Button>
                             <UniformGrid Grid.Row="1" Grid.Column="0"
-                                Rows="3">
+                                Rows="2">
                                 <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="4800"
                                     Minimum="12" SmallChange="1"
                                     Style="{DynamicResource Slider}"
@@ -42,10 +42,6 @@
                                     Minimum="1" SmallChange="1"
                                     Style="{DynamicResource Slider}"
                                     Value="{Binding Quality, RelativeSource={RelativeSource TemplatedParent}}" />
-                                <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                    Content="MOZJPEG"
-                                    IsChecked="{Binding UseMozJpeg, RelativeSource={RelativeSource TemplatedParent}}"
-                                    IsEnabled="{Binding Source={x:Static mozjpeg:MozJpeg.MozJpegDllExists}}" />
                             </UniformGrid>
                             <Button Grid.Row="1" Grid.Column="1"
                                 Command="{Binding CompressFile, RelativeSource={RelativeSource TemplatedParent}}">
@@ -58,10 +54,16 @@
                                     </Image.Source>
                                 </Image>
                             </Button>
-                            <ProgressBar Grid.Row="2" Grid.ColumnSpan="2"
-                                Height="16"
-                                Maximum="1" Minimum="0"
-                                Value="{Binding CompressionProgress, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <UniformGrid Grid.Row="2" Grid.ColumnSpan="2"
+                                Columns="2">
+                                <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                    Content="MOZJPEG"
+                                    IsChecked="{Binding UseMozJpeg, RelativeSource={RelativeSource TemplatedParent}}"
+                                    IsEnabled="{Binding Source={x:Static mozjpeg:MozJpeg.MozJpegDllExists}}" />
+                                <ProgressBar Height="16"
+                                    Maximum="1" Minimum="0"
+                                    Value="{Binding CompressionProgress, RelativeSource={RelativeSource TemplatedParent}}" />
+                            </UniformGrid>
                         </Grid>
                     </Border>
                 </ControlTemplate>

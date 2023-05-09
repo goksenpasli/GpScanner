@@ -353,6 +353,9 @@ COLLEGARE</value>
   <data name="OTHERTESSERACTLINK" xml:space="preserve">
     <value>Altri dati sulla lingua tesseract</value>
   </data>
+  <data name="OVERWRITECOMPRESSED" xml:space="preserve">
+    <value>Sovrascrivi direttamente il file compresso nei documenti scansionati</value>
+  </data>
   <data name="PAGENUMBER" xml:space="preserve">
     <value>NUMERO DI PAGINA</value>
   </data>

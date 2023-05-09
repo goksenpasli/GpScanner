@@ -561,12 +561,12 @@ namespace TwainControl
             get {
                 saveFileName = new string[] { "[", "]" }.Any(FileName.Contains)
                     ? FileName.
-                       Replace("[GÜN]", DateTime.Now.Day.ToString()).
-                       Replace("[AY]", DateTime.Now.Month.ToString()).
-                       Replace("[YIL]", DateTime.Now.Year.ToString()).
-                       Replace("[SAAT]", DateTime.Now.Hour.ToString()).
-                       Replace("[DAKİKA]", DateTime.Now.Minute.ToString()).
-                       Replace("[SANİYE]", DateTime.Now.Second.ToString()).
+                       Replace("[DATE]", DateTime.Now.Day.ToString()).
+                       Replace("[MONTH]", DateTime.Now.Month.ToString()).
+                       Replace("[YEAR]", DateTime.Now.Year.ToString()).
+                       Replace("[HOUR]", DateTime.Now.Hour.ToString()).
+                       Replace("[MINUTE]", DateTime.Now.Minute.ToString()).
+                       Replace("[SECOND]", DateTime.Now.Second.ToString()).
                        Replace("[GUID]", Guid.NewGuid().ToString()).
                        Replace("[USERNAME]", Environment.UserName)
                     : FileName;

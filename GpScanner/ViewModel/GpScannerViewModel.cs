@@ -1387,6 +1387,7 @@ namespace GpScanner.ViewModel
 
             if (e.PropertyName is "SeçiliDil")
             {
+                Application.Current?.Windows?.Cast<Window>()?.ToList()?.ForEach(z => z.FlowDirection = FlowDirection.LeftToRight);
                 switch (SeçiliDil)
                 {
                     case "TÜRKÇE":
@@ -1412,18 +1413,19 @@ namespace GpScanner.ViewModel
                     case "عربي":
                         TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("ar-AR");
                         CalendarLang = XmlLanguage.GetLanguage("ar-AR");
-                        break; 
-                    
+                        Application.Current?.Windows?.Cast<Window>()?.ToList()?.ForEach(z => z.FlowDirection = FlowDirection.RightToLeft);
+                        break;
+
                     case "РУССКИЙ":
                         TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("ru-RU");
                         CalendarLang = XmlLanguage.GetLanguage("ru-RU");
-                        break; 
-                    
+                        break;
+
                     case "DEUTSCH":
                         TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("de-DE");
                         CalendarLang = XmlLanguage.GetLanguage("de-DE");
-                        break;  
-                    
+                        break;
+
                     case "日本":
                         TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("ja-JP");
                         CalendarLang = XmlLanguage.GetLanguage("ja-JP");

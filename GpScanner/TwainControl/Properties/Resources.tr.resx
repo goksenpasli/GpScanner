@@ -568,4 +568,7 @@ BELGE EKLE</value>
   <data name="COMPRESS" xml:space="preserve">
     <value>SIKIŞTIR</value>
   </data>
+  <data name="OVERWRITECOMPRESSED" xml:space="preserve">
+    <value>Taranan Belgelerde Sıkıştırılan Dosyayı Direkt Üzerine Yaz</value>
+  </data>
 </root>

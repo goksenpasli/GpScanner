@@ -539,7 +539,9 @@
                     </GroupBox>
                     <TabControl Grid.Row="1">
                         <TabItem Header="DVD">
-                            <dvd:Burner />
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <dvd:Burner />
+                            </ScrollViewer>
                         </TabItem>
                         <TabItem>
                             <TabItem.Header>
@@ -548,7 +550,32 @@
                                     <Run Text="{twainctrl:Loc COMPRESS}" />
                                 </TextBlock>
                             </TabItem.Header>
-                            <PdfCompressor:Compressor />
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="85.6" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <PdfCompressor:Compressor />
+                                    <StackPanel Grid.Row="1" Orientation="Horizontal">
+                                        <Image Width="24" Height="24">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="77" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                            FontWeight="Bold" Foreground="Red"
+                                            IsChecked="{Binding DirectlyOverwriteCompressedPdf, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                            <TextBlock Width="180"
+                                                Text="{twainctrl:Loc OVERWRITECOMPRESSED}"
+                                                TextWrapping="Wrap" />
+                                        </CheckBox>
+                                    </StackPanel>
+                                </Grid>
+                            </ScrollViewer>
                         </TabItem>
                     </TabControl>
                 </UniformGrid>

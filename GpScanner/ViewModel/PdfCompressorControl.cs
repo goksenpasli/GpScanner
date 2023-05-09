@@ -4,6 +4,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using Extensions;
+using GpScanner.Properties;
 using PdfCompressor;
 using PdfSharp.Pdf;
 
@@ -17,15 +18,23 @@ namespace GpScanner.ViewModel
             {
                 if (IsValidPdfFile(LoadedPdfPath))
                 {
-                    PdfiumViewer.PdfDocument loadedpdfdoc = PdfiumViewer.PdfDocument.Load(LoadedPdfPath);
-                    List<BitmapImage> images = await AddToList(loadedpdfdoc, Dpi);
-                    using PdfDocument pdfDocument = await GeneratePdf(images, UseMozJpeg, Quality, Dpi);
-                    images = null;
-                    string savefilename = $"{Path.GetDirectoryName(LoadedPdfPath)}\\{Path.GetFileNameWithoutExtension(LoadedPdfPath) + "_Compressed.pdf"}";
-                    pdfDocument.Save(savefilename);
+                    PdfDocument pdfDocument;
+                    using (PdfiumViewer.PdfDocument loadedpdfdoc = PdfiumViewer.PdfDocument.Load(LoadedPdfPath))
+                    {
+                        List<BitmapImage> images = await AddToList(loadedpdfdoc, Dpi);
+                        pdfDocument = await GeneratePdf(images, UseMozJpeg, Quality, Dpi);
+                        images = null;
+                    }
+                    string savefilename = Settings.Default.DirectlyOverwriteCompressedPdf
+                        ? LoadedPdfPath
+                        : $"{Path.GetDirectoryName(LoadedPdfPath)}\\{Path.GetFileNameWithoutExtension(LoadedPdfPath) + "_Compressed.pdf"}";
+                    pdfDocument?.Save(savefilename);
+                    pdfDocument?.Dispose();
                     if (Application.Current?.MainWindow?.DataContext is GpScannerViewModel gpScannerViewModel)
                     {
+                        DateTime? date = gpScannerViewModel.SeçiliGün;
                         gpScannerViewModel.ReloadFileDatas();
+                        gpScannerViewModel.SeçiliGün = date;
                     }
                     GC.Collect();
                 }
