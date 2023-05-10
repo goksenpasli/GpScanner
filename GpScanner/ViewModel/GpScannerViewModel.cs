@@ -1430,6 +1430,16 @@ namespace GpScanner.ViewModel
                         TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("ja-JP");
                         CalendarLang = XmlLanguage.GetLanguage("ja-JP");
                         break;
+
+                    case "DUTCH":
+                        TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("nl-NL");
+                        CalendarLang = XmlLanguage.GetLanguage("nl-NL");
+                        break;
+
+                    case "CZECH":
+                        TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("cs-CZ");
+                        CalendarLang = XmlLanguage.GetLanguage("cs-CZ");
+                        break;
                 }
                 Settings.Default.DefaultLang = SeçiliDil;
             }

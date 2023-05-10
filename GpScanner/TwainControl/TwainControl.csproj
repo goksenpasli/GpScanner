@@ -108,6 +108,16 @@
     <Compile Include="PdfSettings.xaml.cs">
       <DependentUpon>PdfSettings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Resources.cs.Designer.cs">
+      <DependentUpon>Resources.cs.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Properties\Resources.nl.Designer.cs">
+      <DependentUpon>Resources.nl.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Properties\Resources.ja.Designer.cs">
       <DependentUpon>Resources.ja.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -226,6 +236,14 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Properties\Resources.cs.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.cs.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.nl.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.nl.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.ja.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.ja.Designer.cs</LastGenOutput>

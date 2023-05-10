@@ -359,7 +359,7 @@ namespace TwainControl
                 {
                     Point mousemovecoord = e.GetPosition(scrollviewer);
                     cnv.Children.Clear();
-                    _ = DrawRect || DrawLine || DrawImage || DrawRoundedRect || DrawAnnotation
+                    _ = DrawRect || DrawLine || DrawImage || DrawRoundedRect || DrawAnnotation || DrawString
                         ? cnv.Children.Add(rectangleselectionbox)
                         : cnv.Children.Add(ellipseselectionbox);
 
@@ -368,7 +368,7 @@ namespace TwainControl
                     double y1 = Math.Min(mousedowncoord.Y, mousemovecoord.Y);
                     double y2 = Math.Max(mousedowncoord.Y, mousemovecoord.Y);
 
-                    if (DrawRect || DrawLine || DrawImage || DrawRoundedRect || DrawAnnotation)
+                    if (DrawRect || DrawLine || DrawImage || DrawRoundedRect || DrawAnnotation || DrawString)
                     {
                         rectangleselectionbox.StrokeThickness = PenWidth * 2.54;
                         Canvas.SetLeft(rectangleselectionbox, x1);

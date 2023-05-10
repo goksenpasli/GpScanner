@@ -163,6 +163,24 @@
                             </StackPanel>
                         </ListBoxItem.Content>
                     </ListBoxItem>
+                    <ListBoxItem Tag="DUTCH">
+                        <ListBoxItem.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="51" Height="30"
+                                    RenderOptions.BitmapScalingMode="Fant" Source="/Resources/flag-of-Netherlands.png" />
+                                <TextBlock VerticalAlignment="Center" Text="DUTCH" />
+                            </StackPanel>
+                        </ListBoxItem.Content>
+                    </ListBoxItem>
+                    <ListBoxItem Tag="CZECH">
+                        <ListBoxItem.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="51" Height="30"
+                                    RenderOptions.BitmapScalingMode="Fant" Source="/Resources/flag-of-Czech.png" />
+                                <TextBlock VerticalAlignment="Center" Text="CZECH" />
+                            </StackPanel>
+                        </ListBoxItem.Content>
+                    </ListBoxItem>
                 </ListBox>
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
