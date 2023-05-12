@@ -129,6 +129,12 @@
                     <PropertyGroupDescription PropertyName="Item1" />
                 </CollectionViewSource.GroupDescriptions>
             </CollectionViewSource>
+            <Style TargetType="Button">
+                <Setter Property="local:Policy.PolicyEnabled" Value="True" />
+            </Style>
+            <Style TargetType="Hyperlink">
+                <Setter Property="local:Policy.PolicyEnabled" Value="True" />
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -192,7 +198,7 @@
                                         </Extensions:ResizablePanel>
                                     </Extensions:ContentToggleButton.OverContent>
                                 </Extensions:ContentToggleButton>
-                                <Button BorderBrush="Cyan"
+                                <Button local:Policy.PolicyName="ScanImage" BorderBrush="Cyan"
                                     Command="{Binding ScanImage}"
                                     IsEnabled="{Binding Scanner.ArayüzEtkin}">
                                     <StackPanel Orientation="Horizontal">
@@ -207,7 +213,7 @@
                                         <TextBlock VerticalAlignment="Center" Text="{local:Loc SCAN}" />
                                     </StackPanel>
                                 </Button>
-                                <Button Background="Green" BorderBrush="Cyan"
+                                <Button local:Policy.PolicyName="FastScanImage" Background="Green" BorderBrush="Cyan"
                                     Command="{Binding FastScanImage}"
                                     IsDefault="True"
                                     IsEnabled="{Binding Scanner.ArayüzEtkin}">
@@ -228,7 +234,7 @@
                                         <TextBlock VerticalAlignment="Center" Text="{local:Loc FASTSCAN}" />
                                     </StackPanel>
                                 </Button>
-                                <Button Command="{Binding KayıtYoluBelirle}">
+                                <Button local:Policy.PolicyName="KayıtYoluBelirle" Command="{Binding KayıtYoluBelirle}">
                                     <StackPanel Orientation="Horizontal">
                                         <Canvas Width="32" Height="32">
                                             <Image Width="32" Height="32">
@@ -584,7 +590,7 @@
                                                             <UniformGrid Columns="2">
                                                                 <StackPanel>
                                                                     <TextBox VerticalContentAlignment="Center" Text="{Binding Scanner.ProfileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                                    <Button Command="{Binding SaveProfile}">
+                                                                    <Button local:Policy.PolicyName="SaveProfile" Command="{Binding SaveProfile}">
                                                                         <StackPanel Orientation="Horizontal">
                                                                             <Image Width="16" Height="16"
                                                                                 Source="/TwainControl;component/Icons/save.png" />
@@ -602,7 +608,7 @@
                                                                             <DataTemplate>
                                                                                 <UniformGrid Columns="2">
                                                                                     <TextBlock VerticalAlignment="Center" Text="{Binding Converter={StaticResource SplitConverter}, Mode=OneWay}" />
-                                                                                    <Button Background="Transparent" BorderBrush="Transparent"
+                                                                                    <Button local:Policy.PolicyName="RemoveProfile" Background="Transparent" BorderBrush="Transparent"
                                                                                         Command="{Binding DataContext.RemoveProfile, ElementName=UserControl}"
                                                                                         CommandParameter="{Binding Mode=OneWay}"
                                                                                         FontWeight="Bold" Foreground="Red">
@@ -797,7 +803,7 @@
                                     </StackPanel>
                                 </Extensions:ContentToggleButton>
                                 <Button x:Name="BtnClearAll"
-                                    BorderBrush="Cyan"
+                                    local:Policy.PolicyName="ListeTemizle" BorderBrush="Cyan"
                                     Command="{Binding ListeTemizle}"
                                     DockPanel.Dock="Right">
                                     <StackPanel Orientation="Horizontal">
@@ -811,35 +817,36 @@
                                 <ScrollViewer MaxHeight="55"
                                     HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                                     <WrapPanel>
-                                        <Button Command="{Binding ResimSilGeriAl}">
+                                        <Button local:Policy.PolicyName="ResimSilGeriAl" Command="{Binding ResimSilGeriAl}">
                                             <Image Width="24" Height="24"
                                                 Source="/TwainControl;component/Icons/undo.png" />
                                         </Button>
-                                        <Button BorderBrush="Cyan" Command="{Binding Tümünüİşaretle}">
+                                        <Button local:Policy.PolicyName="Tümünüİşaretle" BorderBrush="Cyan"
+                                            Command="{Binding Tümünüİşaretle}">
                                             <Image Width="24" Height="24"
                                                 Source="/TwainControl;component/Icons/selectall.png" />
                                         </Button>
-                                        <Button Command="{Binding TümününİşaretiniKaldır}">
+                                        <Button local:Policy.PolicyName="TümününİşaretiniKaldır" Command="{Binding TümününİşaretiniKaldır}">
                                             <Image Width="24" Height="24"
                                                 Source="/TwainControl;component/Icons/none.png" />
                                         </Button>
-                                        <Button Command="{Binding Tersiniİşaretle}">
+                                        <Button local:Policy.PolicyName="Tersiniİşaretle" Command="{Binding Tersiniİşaretle}">
                                             <Image Width="24" Height="24"
                                                 Source="/TwainControl;component/Icons/inverse.png" />
                                         </Button>
-                                        <Button Command="{Binding TümünüİşaretleDikey}">
+                                        <Button local:Policy.PolicyName="TümünüİşaretleDikey" Command="{Binding TümünüİşaretleDikey}">
                                             <Image Width="24" Height="24"
                                                 Source="/TwainControl;component/Icons/portrait.png" />
                                         </Button>
-                                        <Button Command="{Binding TümünüİşaretleYatay}">
+                                        <Button local:Policy.PolicyName="TümünüİşaretleYatay" Command="{Binding TümünüİşaretleYatay}">
                                             <Image Width="24" Height="24"
                                                 Source="/TwainControl;component/Icons/landscape.png" />
                                         </Button>
-                                        <Button Command="{Binding SaveFileList}">
+                                        <Button local:Policy.PolicyName="SaveFileList" Command="{Binding SaveFileList}">
                                             <Image Width="24" Height="24"
                                                 Source="/TwainControl;component/Icons/save.png" />
                                         </Button>
-                                        <Button Command="{Binding LoadFileList}">
+                                        <Button local:Policy.PolicyName="LoadFileList" Command="{Binding LoadFileList}">
                                             <Image Width="24" Height="24">
                                                 <Image.Source>
                                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -849,7 +856,9 @@
                                                 </Image.Source>
                                             </Image>
                                         </Button>
-                                        <Button Command="{Binding CycleSelectedDocuments}" CommandParameter="{Binding ElementName=Lb}">
+                                        <Button local:Policy.PolicyName="CycleSelectedDocuments"
+                                            Command="{Binding CycleSelectedDocuments}"
+                                            CommandParameter="{Binding ElementName=Lb}">
                                             <Image Width="24" Height="24">
                                                 <Image.Source>
                                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -989,7 +998,7 @@
                                                                     </Extensions:ContentToggleButton.Style>
                                                                 </Extensions:ContentToggleButton>
                                                             </InlineUIContainer>
-                                                            <Hyperlink BaselineAlignment="Center"
+                                                            <Hyperlink local:Policy.PolicyName="ResimSil" BaselineAlignment="Center"
                                                                 Command="{Binding ElementName=UserControl, Path=DataContext.ResimSil}"
                                                                 CommandParameter="{Binding Mode=OneWay}"
                                                                 FontFamily="Segoe UI Black" TextDecorations="None">
@@ -1060,7 +1069,9 @@
                                 </Grid.RowDefinitions>
                                 <Controls:XpsViewer x:Name="xpsViewer" x:FieldModifier="public" />
                                 <UniformGrid Grid.Row="1" Columns="2">
-                                    <Button Command="{Binding LoadSingleUdfFile}" CommandParameter="{Binding ElementName=xpsViewer}">
+                                    <Button local:Policy.PolicyName="LoadSingleUdfFile"
+                                        Command="{Binding LoadSingleUdfFile}"
+                                        CommandParameter="{Binding ElementName=xpsViewer}">
                                         <StackPanel Orientation="Horizontal">
                                             <Image Width="32" Height="32"
                                                 Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.udf}" />
@@ -1127,7 +1138,7 @@
                                     </ListBox.ItemsPanel>
                                 </ListBox>
                                 <UniformGrid Grid.Row="1" Columns="2">
-                                    <Button Command="{Binding EypPdfDosyaEkle}">
+                                    <Button local:Policy.PolicyName="EypPdfDosyaEkle" Command="{Binding EypPdfDosyaEkle}">
                                         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                             <Image Width="32" Height="32"
                                                 Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
@@ -1135,6 +1146,7 @@
                                         </StackPanel>
                                     </Button>
                                     <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                                        local:Policy.PolicyName="EypPdfİçerikBirleştir"
                                         Command="{Binding EypPdfİçerikBirleştir}">
                                         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                             <Image Width="32" Height="32"
@@ -1150,6 +1162,7 @@
                 <UniformGrid Grid.Row="2"
                     Columns="2" Rows="2">
                     <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                        local:Policy.PolicyName="LoadImage"
                         Command="{Binding LoadImage}">
                         <Grid>
                             <ProgressBar Background="{x:Null}"
@@ -1173,6 +1186,7 @@
                         </Grid>
                     </Button>
                     <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                        local:Policy.PolicyName="Seçilikaydet"
                         Command="{Binding Seçilikaydet}">
                         <Grid>
                             <ProgressBar d:Foreground="#FF06B025"
@@ -1196,6 +1210,7 @@
                         </Grid>
                     </Button>
                     <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                        local:Policy.PolicyName="SeçiliDirektPdfKaydet"
                         Command="{Binding SeçiliDirektPdfKaydet}">
                         <Grid>
                             <ProgressBar d:Foreground="#FF06B025"
@@ -1270,7 +1285,8 @@
             <GroupBox.Header>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock VerticalAlignment="Center" Text="{local:Loc DOCUMENT}" />
-                    <Button BorderBrush="Cyan" Command="{Binding InsertClipBoardImage}">
+                    <Button local:Policy.PolicyName="InsertClipBoardImage" BorderBrush="Cyan"
+                        Command="{Binding InsertClipBoardImage}">
                         <Image Width="16" Height="16">
                             <Image.Source>
                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">

@@ -31,14 +31,17 @@
                         ItemsSource="{Binding Liste}"
                         SelectedItem="{Binding SeçiliKamera}" />
                     <UniformGrid Columns="6" IsEnabled="{Binding SeçiliKamera, Converter={StaticResource NullableToBooleanConverter}}">
-                        <Button Command="{Binding KameradanResimYükle}"
+                        <Button local:Policy.PolicyName="KameradanResimYükle"
+                            Command="{Binding KameradanResimYükle}"
                             CommandParameter="{Binding Parent.DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
                             Content="ç" FontFamily="Wingdings" FontSize="16" />
-                        <Button Command="{Binding Durdur}"
+                        <Button local:Policy.PolicyName="Durdur"
+                            Command="{Binding Durdur}"
                             Content="&lt;" FontFamily="Webdings" FontSize="18" />
-                        <Button Command="{Binding Oynat}"
+                        <Button local:Policy.PolicyName="Oynat"
+                            Command="{Binding Oynat}"
                             Content="4" FontFamily="Webdings" FontSize="18" />
-                        <Button Command="{Binding Kaydet}">
+                        <Button local:Policy.PolicyName="Kaydet" Command="{Binding Kaydet}">
                             <Image Width="16" Height="16"
                                 Source="/TwainControl;component/Icons/save.png" />
                         </Button>

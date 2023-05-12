@@ -27,7 +27,9 @@
             </Grid.ColumnDefinitions>
             <StackPanel Margin="2,0,0,0">
                 <TextBlock FontSize="20" TextWrapping="Wrap">
-                    <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/goksenpasli?tab=repositories">
+                    <Hyperlink local:Policy.PolicyName="WebAdreseGit"
+                        Command="{Binding WebAdreseGit}"
+                        CommandParameter="https://github.com/goksenpasli?tab=repositories">
                         <Run Text="{local:Loc OTHERAPPS}" />
                     </Hyperlink>
                 </TextBlock>
@@ -87,7 +89,9 @@
                     Text="{Binding MailData, UpdateSourceTrigger=PropertyChanged}"
                     TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" />
                 <UniformGrid Grid.Row="2" Columns="2">
-                    <Button Command="{Binding WebAdreseGit}" CommandParameter="eventvwr.msc">
+                    <Button local:Policy.PolicyName="WebAdreseGit"
+                        Command="{Binding WebAdreseGit}"
+                        CommandParameter="eventvwr.msc">
                         <Image Width="32" Height="32">
                             <Image.Source>
                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -97,7 +101,7 @@
                             </Image.Source>
                         </Image>
                     </Button>
-                    <Button Command="{Binding SendMail}">
+                    <Button local:Policy.PolicyName="SendMail" Command="{Binding SendMail}">
                         <Image Width="32" Height="32">
                             <Image.Source>
                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">

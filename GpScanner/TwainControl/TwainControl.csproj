@@ -108,6 +108,7 @@
     <Compile Include="PdfSettings.xaml.cs">
       <DependentUpon>PdfSettings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Policy.cs" />
     <Compile Include="Properties\Resources.cs.Designer.cs">
       <DependentUpon>Resources.cs.resx</DependentUpon>
       <AutoGen>True</AutoGen>

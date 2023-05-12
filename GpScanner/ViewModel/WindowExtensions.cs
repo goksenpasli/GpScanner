@@ -38,8 +38,7 @@ namespace GpScanner.ViewModel
         public static void SystemMenu(this MainWindow form)
         {
             IntPtr systemMenuHandle = GetSystemMenu(new WindowInteropHelper(form).Handle, false);
-            _ = InsertMenu(systemMenuHandle, 7, MF_BYPOSITION, _SettingsSysMenuID, Translation.GetResStringValue("SETTİNGS"));
-            _ = InsertMenu(systemMenuHandle, 8, MF_BYPOSITION, _AboutSysMenuID, Translation.GetResStringValue("ABOUT"));
+            _ = InsertMenu(systemMenuHandle, 7, MF_BYPOSITION, _AboutSysMenuID, Translation.GetResStringValue("ABOUT"));
             HwndSource source = HwndSource.FromHwnd(new WindowInteropHelper(form).Handle);
             source.AddHook(WndProc);
         }
@@ -94,14 +93,6 @@ namespace GpScanner.ViewModel
                 {
                     case _AboutSysMenuID:
                         _ = Process.Start("https://github.com/goksenpasli");
-                        handled = true;
-                        break;
-
-                    case _SettingsSysMenuID:
-                        if (OpenSettings.CanExecute(null))
-                        {
-                            OpenSettings.Execute(null);
-                        }
                         handled = true;
                         break;
                 }

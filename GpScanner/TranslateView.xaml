@@ -153,6 +153,7 @@
             Text="{Binding Metin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             TextWrapping="Wrap" />
         <ToggleButton Grid.Row="2" Grid.Column="2"
+            twainctrl:Policy.PolicyName="Oku"
             Command="{Binding Oku}"
             CommandParameter="{Binding ElementName=BtnTxtMetin, Path=Text}"
             Style="{StaticResource ToggleButtonPlayPauseStyle}" />
@@ -164,10 +165,12 @@
             Text="{Binding Çeviri}"
             TextWrapping="Wrap" />
         <ToggleButton Grid.Row="3" Grid.Column="2"
+            twainctrl:Policy.PolicyName="Oku"
             Command="{Binding Oku}"
             CommandParameter="{Binding ElementName=BtnTxtÇeviri, Path=Text}"
             Style="{StaticResource ToggleButtonPlayPauseStyle}" />
         <Button Grid.Row="4" Grid.ColumnSpan="2"
+            twainctrl:Policy.PolicyName="Sıfırla"
             Command="{Binding Sıfırla}"
             Content="{twainctrl:Loc RESET}" />
         <Extensions:ContentToggleButton Grid.Row="4" Grid.Column="3">

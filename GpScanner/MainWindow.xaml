@@ -92,6 +92,12 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+        <Style TargetType="Button">
+            <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
+        </Style>
+        <Style TargetType="Hyperlink">
+            <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
+        </Style>
     </Window.Resources>
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo ProgressState="{Binding Scanner.ProgressState, ElementName=TwainCtrl}" ProgressValue="{Binding Scanner.PdfSaveProgressValue, ElementName=TwainCtrl}" />
@@ -191,7 +197,9 @@
                                         </Style>
                                     </ToggleButton.Style>
                                 </ToggleButton>
-                                <Button Command="{Binding CycleSelectedDocuments}" CommandParameter="{Binding ElementName=LbDoc}">
+                                <Button twainctrl:Policy.PolicyName="CycleSelectedDocuments"
+                                    Command="{Binding CycleSelectedDocuments}"
+                                    CommandParameter="{Binding ElementName=LbDoc}">
                                     <Image Width="16" Height="16">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -208,21 +216,24 @@
                                                 <TextBlock VerticalAlignment="Center"
                                                     d:Text="0"
                                                     Text="{Binding CheckedPdfCount}" />
-                                                <Button BorderBrush="Cyan" Command="{Binding Tümünüİşaretle}">
+                                                <Button twainctrl:Policy.PolicyName="Tümünüİşaretle" BorderBrush="Cyan"
+                                                    Command="{Binding Tümünüİşaretle}">
                                                     <StackPanel Orientation="Horizontal">
                                                         <Image Width="32" Height="32"
                                                             Source="/TwainControl;component/Icons/selectall.png" />
                                                         <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc ALL}" />
                                                     </StackPanel>
                                                 </Button>
-                                                <Button BorderBrush="Cyan" Command="{Binding TümününİşaretiniKaldır}">
+                                                <Button twainctrl:Policy.PolicyName="TümününİşaretiniKaldır" BorderBrush="Cyan"
+                                                    Command="{Binding TümününİşaretiniKaldır}">
                                                     <StackPanel Orientation="Horizontal">
                                                         <Image Width="32" Height="32"
                                                             Source="/TwainControl;component/Icons/none.png" />
                                                         <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc NONE}" />
                                                     </StackPanel>
                                                 </Button>
-                                                <Button BorderBrush="Cyan" Command="{Binding Tersiniİşaretle}">
+                                                <Button twainctrl:Policy.PolicyName="Tersiniİşaretle" BorderBrush="Cyan"
+                                                    Command="{Binding Tersiniİşaretle}">
                                                     <StackPanel Orientation="Horizontal">
                                                         <Image Width="32" Height="32"
                                                             Source="/TwainControl;component/Icons/inverse.png" />
@@ -245,7 +256,7 @@
                         </Grid>
                         <UniformGrid Columns="3" Rows="1">
                             <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
-                                BorderBrush="Cyan"
+                                twainctrl:Policy.PolicyName="PdfBirleştir" BorderBrush="Cyan"
                                 Command="{Binding PdfBirleştir}">
                                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                     <Image Width="32" Height="32">
@@ -273,7 +284,7 @@
                                     </TextBlock>
                                 </StackPanel>
                             </Button>
-                            <Button Command="{Binding Source={x:Static ViewModel:WindowExtensions.OpenSettings}}">
+                            <Button twainctrl:Policy.PolicyName="OpenSettings" Command="{Binding Source={x:Static ViewModel:WindowExtensions.OpenSettings}}">
                                 <StackPanel Orientation="Horizontal">
                                     <Image Width="32" Height="32">
                                         <Image.Source>
@@ -498,6 +509,7 @@
                                 <ColumnDefinition Width="35.2" />
                             </Grid.ColumnDefinitions>
                             <Button HorizontalContentAlignment="Stretch"
+                                twainctrl:Policy.PolicyName="OcrPage"
                                 Command="{Binding OcrPage, Mode=OneWay}"
                                 CommandParameter="{Binding DataContext, ElementName=TwainCtrl}">
                                 <Button.Style>
@@ -528,6 +540,7 @@
                                 </Grid>
                             </Button>
                             <Button Grid.Column="1"
+                                twainctrl:Policy.PolicyName="CancelOcr"
                                 Command="{Binding CancelOcr}"
                                 IsEnabled="{Binding OcrIsBusy}">
                                 <Image Width="32" Height="32"
@@ -659,19 +672,20 @@
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc DOCUMENT}" />
-                                            <Button Command="{Binding ResimSilGeriAl, Source={x:Reference TwainCtrl}}">
+                                            <Button twainctrl:Policy.PolicyName="ResimSilGeriAl" Command="{Binding ResimSilGeriAl, Source={x:Reference TwainCtrl}}">
                                                 <Image Width="16" Height="16"
                                                     Source="/TwainControl;component/Icons/undo.png" />
                                             </Button>
-                                            <Button BorderBrush="Cyan" Command="{Binding Tümünüİşaretle, Source={x:Reference TwainCtrl}}">
+                                            <Button twainctrl:Policy.PolicyName="Tümünüİşaretle" BorderBrush="Cyan"
+                                                Command="{Binding Tümünüİşaretle, Source={x:Reference TwainCtrl}}">
                                                 <Image Width="16" Height="16"
                                                     Source="/TwainControl;component/Icons/selectall.png" />
                                             </Button>
-                                            <Button Command="{Binding TümününİşaretiniKaldır, Source={x:Reference TwainCtrl}}">
+                                            <Button twainctrl:Policy.PolicyName="TümününİşaretiniKaldır" Command="{Binding TümününİşaretiniKaldır, Source={x:Reference TwainCtrl}}">
                                                 <Image Width="16" Height="16"
                                                     Source="/TwainControl;component/Icons/none.png" />
                                             </Button>
-                                            <Button Command="{Binding Tersiniİşaretle, Source={x:Reference TwainCtrl}}">
+                                            <Button twainctrl:Policy.PolicyName="Tersiniİşaretle" Command="{Binding Tersiniİşaretle, Source={x:Reference TwainCtrl}}">
                                                 <Image Width="16" Height="16"
                                                     Source="/TwainControl;component/Icons/inverse.png" />
                                             </Button>
@@ -823,7 +837,9 @@
                                             </DataTemplate>
                                         </ListBox.ItemTemplate>
                                     </ListBox>
-                                    <Button Grid.Column="1" Command="{Binding CancelBatchOcr}">
+                                    <Button Grid.Column="1"
+                                        twainctrl:Policy.PolicyName="CancelBatchOcr"
+                                        Command="{Binding CancelBatchOcr}">
                                         <Image Width="32" Height="32"
                                             Source="/TwainControl;component/Icons/delete.png" />
                                     </Button>

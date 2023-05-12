@@ -116,6 +116,7 @@
                 </Image.ToolTip>
             </Image>
             <Button Grid.Row="1"
+                local:Policy.PolicyName="Kaydet"
                 Command="{Binding Kaydet}"
                 CommandParameter="{Binding SeçiliResim.Resim, Mode=OneWay}"
                 IsEnabled="{Binding ElementName=Lb, Path=SelectedItem, Converter={StaticResource NullableToBooleanConverter}}">

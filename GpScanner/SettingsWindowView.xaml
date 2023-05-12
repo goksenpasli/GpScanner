@@ -22,6 +22,12 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Converter:StringToQrBitmapImageConverter x:Key="StringToQrBitmapImageConverter" />
         <Extensions:StringNullableToBooleanConverter x:Key="StringNullableToBooleanConverter" />
+        <Style TargetType="Button">
+            <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
+        </Style>
+        <Style TargetType="Hyperlink">
+            <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -36,7 +42,7 @@
             <GroupBox.Header>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SETTİNGS}" />
-                    <Button Background="Red"
+                    <Button twainctrl:Policy.PolicyName="ResetSettings" Background="Red"
                         Command="{Binding ResetSettings}"
                         CommandParameter="{Binding Source={x:Static twainproperties:Settings.Default}}"
                         FontWeight="Bold">
@@ -47,7 +53,7 @@
                             </TextBlock>
                         </Button.Content>
                     </Button>
-                    <Button Background="Green"
+                    <Button twainctrl:Policy.PolicyName="CheckUpdate" Background="Green"
                         Command="{Binding CheckUpdate}"
                         CommandParameter="https://github.com/goksenpasli/GpScanner/releases/download/2.0/GpScanner-Setup.txt">
                         <Button.Content>
@@ -192,7 +198,9 @@
                         Description="{twainctrl:Loc FILE}"
                         IsReadOnly="True" IsReadOnlyCaretVisible="True" ResetButtonVisibility="Collapsed"
                         Text="{Binding DatabaseFile, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
-                    <Button Grid.Column="1" Command="{Binding ChangeDataFolder}">
+                    <Button Grid.Column="1"
+                        twainctrl:Policy.PolicyName="ChangeDataFolder"
+                        Command="{Binding ChangeDataFolder}">
                         <StackPanel Orientation="Horizontal">
                             <Image Width="24" Height="24">
                                 <Image.Source>
@@ -248,7 +256,9 @@
                                         IsEnabled="{Binding DetectPageSeperator}"
                                         OpenButtonVisibility="Collapsed"
                                         Text="{Binding PatchTag, UpdateSourceTrigger=PropertyChanged}" />
-                                    <Button Command="{Binding SavePatchProfile}" IsEnabled="{Binding DetectPageSeperator}">
+                                    <Button twainctrl:Policy.PolicyName="SavePatchProfile"
+                                        Command="{Binding SavePatchProfile}"
+                                        IsEnabled="{Binding DetectPageSeperator}">
                                         <StackPanel Orientation="Horizontal">
                                             <Image Width="16" Height="16"
                                                 Source="/TwainControl;component/Icons/save.png" />
@@ -286,11 +296,15 @@
                                 Width="80" Height="80"
                                 Source="{Binding ElementName=Tb, Path=Text, Converter={StaticResource StringToQrBitmapImageConverter}, Mode=OneWay}" />
                             <UniformGrid Rows="2">
-                                <Button Command="{Binding SaveQrImage}" CommandParameter="{Binding Path=Source, ElementName=Img, Mode=OneWay}">
+                                <Button twainctrl:Policy.PolicyName="SaveQrImage"
+                                    Command="{Binding SaveQrImage}"
+                                    CommandParameter="{Binding Path=Source, ElementName=Img, Mode=OneWay}">
                                     <Image Width="24" Height="24"
                                         Source="/TwainControl;component/Icons/save.png" />
                                 </Button>
-                                <Button Command="{Binding PrintImage}" CommandParameter="{Binding Path=Source, ElementName=Img, Mode=OneWay}">
+                                <Button twainctrl:Policy.PolicyName="PrintImage"
+                                    Command="{Binding PrintImage}"
+                                    CommandParameter="{Binding Path=Source, ElementName=Img, Mode=OneWay}">
                                     <Image Width="24" Height="24">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -344,7 +358,9 @@
                 </GroupBox>
                 <GroupBox Grid.Row="4">
                     <UniformGrid Columns="3" IsEnabled="{Binding Path=SeçiliTarayıcı, Source={x:Static twainctrl:ToolBox.Scanner}, Converter={StaticResource NullableToBooleanConverter}}">
-                        <Button Command="{Binding RegisterSti, Mode=OneWay}" IsEnabled="{Binding Source={x:Static viewmodel:GpScannerViewModel.IsAdministrator}}">
+                        <Button twainctrl:Policy.PolicyName="RegisterSti"
+                            Command="{Binding RegisterSti, Mode=OneWay}"
+                            IsEnabled="{Binding Source={x:Static viewmodel:GpScannerViewModel.IsAdministrator}}">
                             <StackPanel Orientation="Horizontal">
                                 <Canvas Width="32" Height="32">
                                     <Image Width="32" Height="32">
@@ -368,7 +384,9 @@
                                 <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc REGSTI}" />
                             </StackPanel>
                         </Button>
-                        <Button Command="{Binding UnRegisterSti, Mode=OneWay}" IsEnabled="{Binding Source={x:Static viewmodel:GpScannerViewModel.IsAdministrator}}">
+                        <Button twainctrl:Policy.PolicyName="UnRegisterSti"
+                            Command="{Binding UnRegisterSti, Mode=OneWay}"
+                            IsEnabled="{Binding Source={x:Static viewmodel:GpScannerViewModel.IsAdministrator}}">
                             <StackPanel Orientation="Horizontal">
                                 <Canvas Width="32" Height="32">
                                     <Image Width="32" Height="32">
@@ -479,10 +497,11 @@
                                 IsReadOnly="True"
                                 Text="{Binding BatchFolder}" />
                             <Button Grid.Column="1"
+                                twainctrl:Policy.PolicyName="SetBatchFolder"
                                 Command="{Binding SetBatchFolder}"
                                 Content="{twainctrl:Loc SRC}" />
                             <UniformGrid Grid.Column="2" Columns="2">
-                                <Button Command="{Binding StartPdfBatch}">
+                                <Button twainctrl:Policy.PolicyName="StartPdfBatch" Command="{Binding StartPdfBatch}">
                                     <Button.Content>
                                         <StackPanel Orientation="Horizontal">
                                             <Image Width="16" Height="16"
@@ -491,7 +510,7 @@
                                         </StackPanel>
                                     </Button.Content>
                                 </Button>
-                                <Button Command="{Binding StartTxtBatch}">
+                                <Button twainctrl:Policy.PolicyName="StartTxtBatch" Command="{Binding StartTxtBatch}">
                                     <Button.Content>
                                         <StackPanel Orientation="Horizontal">
                                             <Image Width="16" Height="16"
@@ -509,7 +528,9 @@
                                 <TextBox Grid.Column="0"
                                     IsReadOnly="True"
                                     Text="{Binding BatchFolder, Source={x:Static properties:Settings.Default}}" />
-                                <Button Command="{Binding SetBatchWatchFolder}" Content="{twainctrl:Loc SRC}" />
+                                <Button twainctrl:Policy.PolicyName="SetBatchWatchFolder"
+                                    Command="{Binding SetBatchWatchFolder}"
+                                    Content="{twainctrl:Loc SRC}" />
                             </UniformGrid>
                             <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
                                 IsChecked="{Binding RegisterBatchWatcher, Source={x:Static properties:Settings.Default}}"
@@ -536,7 +557,9 @@
                                 <Extensions:ButtonedTextBox Description="{twainctrl:Loc PASSWORD}"
                                     OpenButtonVisibility="Collapsed"
                                     Text="{Binding FtpPassword, UpdateSourceTrigger=PropertyChanged}" />
-                                <Button Command="{Binding AddFtpSites}" Content="{twainctrl:Loc APPLY}" />
+                                <Button twainctrl:Policy.PolicyName="AddFtpSites"
+                                    Command="{Binding AddFtpSites}"
+                                    Content="{twainctrl:Loc APPLY}" />
                             </StackPanel>
                             <ListBox Grid.Row="1"
                                 d:ItemsSource="{d:SampleData ItemCount=5}"
@@ -546,7 +569,9 @@
                                         <StackPanel Margin="1" Orientation="Horizontal">
                                             <TextBlock Margin="0,0,5,0" VerticalAlignment="Center"
                                                 FontStyle="Italic"
-                                                Text="{Binding Mode=OneWay}"><Hyperlink Command="{Binding DataContext.RemoveSelectedFtp, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}" CommandParameter="{Binding Mode=OneWay}">
+                                                Text="{Binding Mode=OneWay}"><Hyperlink twainctrl:Policy.PolicyName="RemoveSelectedFtp"
+                                                    Command="{Binding DataContext.RemoveSelectedFtp, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                                                    CommandParameter="{Binding Mode=OneWay}">
                                                     <Run Text="{twainctrl:Loc DELETE}" />
                                                 </Hyperlink></TextBlock>
                                         </StackPanel>
