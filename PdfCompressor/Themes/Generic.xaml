@@ -37,11 +37,11 @@
                                     Minimum="12" SmallChange="1"
                                     Style="{DynamicResource Slider}"
                                     Ticks="12,24,36,48,72,96,120,150,200,300,450,600,1200,2400,4800"
-                                    Value="{Binding Dpi, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    Value="{Binding Dpi, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}" />
                                 <Slider AutoToolTipPlacement="TopLeft" LargeChange="1" Maximum="100"
                                     Minimum="1" SmallChange="1"
                                     Style="{DynamicResource Slider}"
-                                    Value="{Binding Quality, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    Value="{Binding Quality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}" />
                             </UniformGrid>
                             <Button Grid.Row="1" Grid.Column="1"
                                 Command="{Binding CompressFile, RelativeSource={RelativeSource TemplatedParent}}">
