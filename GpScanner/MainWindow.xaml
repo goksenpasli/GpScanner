@@ -95,6 +95,12 @@
         <Style TargetType="Button">
             <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
         </Style>
+        <Style TargetType="ListBox">
+            <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
+        </Style>
         <Style TargetType="Hyperlink">
             <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
         </Style>
@@ -159,13 +165,15 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <Button Command="{Binding DateBack}"
+                                <Button twainctrl:Policy.PolicyName="DateBack"
+                                    Command="{Binding DateBack}"
                                     Content="ç" FontFamily="Wingdings" FontSize="16" />
                                 <DatePicker Grid.Column="1"
                                     DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}"
                                     Language="{Binding CalendarLang}"
                                     SelectedDate="{Binding SeçiliGün}" />
                                 <Button Grid.Column="2"
+                                    twainctrl:Policy.PolicyName="DateForward"
                                     Command="{Binding DateForward}"
                                     Content="è" FontFamily="Wingdings" FontSize="16" />
                             </Grid>
@@ -174,7 +182,9 @@
                                 CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed" PasteButtonVisibility="Collapsed"
                                 Text="{Binding AramaMetni, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <StackPanel Grid.Column="2" Orientation="Horizontal">
-                                <ComboBox ItemsSource="{Binding GetPreviewSize}" SelectedItem="{Binding SelectedSize}">
+                                <ComboBox twainctrl:Policy.PolicyName="SelectedSize"
+                                    ItemsSource="{Binding GetPreviewSize}"
+                                    SelectedItem="{Binding SelectedSize}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock><Run Text="{Binding Width}" /><Run Text="X" /><Run Text="{Binding Height}" /></TextBlock>
@@ -348,6 +358,7 @@
                             Grid.Row="2"
                             HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
                             d:ItemsSource="{d:SampleData ItemCount=5}"
+                            twainctrl:Policy.PolicyName="SelectedDocument"
                             Background="{StaticResource BorderBackground}"
                             BorderThickness="2" IsSynchronizedWithCurrentItem="False"
                             ItemsSource="{Binding Mode=OneWay, Source={StaticResource Veriler}}"
@@ -691,7 +702,8 @@
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
-                                    <ListBox Extensions:DragDropExtension.ScrollOnDragDrop="True" AllowDrop="True"
+                                    <ListBox Extensions:DragDropExtension.ScrollOnDragDrop="True" twainctrl:Policy.PolicyName="LoadImage"
+                                        AllowDrop="True"
                                         Background="{StaticResource BorderBackground}"
                                         Drop="ListBox_Drop"
                                         ItemsSource="{Binding Source={x:Reference TwainCtrl}, Path=Scanner.Resimler}"
@@ -718,7 +730,8 @@
                                                         <Run AllowDrop="True" Cursor="SizeAll" Drop="Run_Drop"
                                                             FontFamily="Wingdings" FontSize="24" FontWeight="Bold"
                                                             PreviewMouseMove="Run_PreviewMouseMove" Text="B" />
-                                                        <Hyperlink Command="{Binding Source={x:Reference TwainCtrl}, Path=DataContext.ResimSil}"
+                                                        <Hyperlink twainctrl:Policy.PolicyName="ResimSil"
+                                                            Command="{Binding Source={x:Reference TwainCtrl}, Path=DataContext.ResimSil}"
                                                             CommandParameter="{Binding Mode=OneWay}"
                                                             TextDecorations="None">
                                                             <Image Width="16" Height="16"

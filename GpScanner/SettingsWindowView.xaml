@@ -25,6 +25,12 @@
         <Style TargetType="Button">
             <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
         </Style>
+        <Style TargetType="ListBox">
+            <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
+        </Style>
         <Style TargetType="Hyperlink">
             <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
         </Style>
@@ -86,7 +92,7 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <ListBox VerticalContentAlignment="Center"
-                    d:SelectedValue="TÜRKÇE"
+                    d:SelectedValue="TÜRKÇE" twainctrl:Policy.PolicyName="SeçiliDil"
                     SelectedValue="{Binding SeçiliDil}"
                     SelectedValuePath="Tag" VirtualizingPanel.ScrollUnit="Pixel">
                     <ListBox.Resources>
@@ -267,6 +273,7 @@
                                     </Button>
                                 </UniformGrid>
                                 <ListBox d:ItemsSource="{d:SampleData ItemCount=5}"
+                                    twainctrl:Policy.PolicyName="PatchProfileName"
                                     IsEnabled="{Binding DetectPageSeperator}"
                                     ItemsSource="{Binding PatchCodes, Source={x:Static properties:Settings.Default}}"
                                     SelectedItem="{Binding PatchProfileName}">
@@ -326,15 +333,16 @@
                                 <Run Text="{twainctrl:Loc RES}" />
                             </TextBlock>
                             <ComboBox VerticalContentAlignment="Center"
-                                ItemStringFormat="%{0}"
+                                twainctrl:Policy.PolicyName="DefaultPictureResizeRatio" ItemStringFormat="%{0}"
                                 ItemsSource="{Binding SettingsPagePictureResizeList}"
                                 SelectedItem="{Binding DefaultPictureResizeRatio, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBlock VerticalAlignment="Center" Text="PDF DPI" />
                             <ComboBox VerticalContentAlignment="Center"
-                                ItemStringFormat="{}{0} Dpi"
+                                twainctrl:Policy.PolicyName="DefaultThumbNailDpi" ItemStringFormat="{}{0} Dpi"
                                 ItemsSource="{Binding SettingsPagePdfDpiList}"
                                 SelectedItem="{Binding DefaultThumbNailDpi, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                             <ComboBox VerticalContentAlignment="Center"
+                                twainctrl:Policy.PolicyName="SelectedSize"
                                 ItemsSource="{Binding GetPreviewSize}"
                                 SelectedIndex="{Binding PreviewIndex, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
                                 SelectedItem="{Binding SelectedSize}">
@@ -563,6 +571,7 @@
                             </StackPanel>
                             <ListBox Grid.Row="1"
                                 d:ItemsSource="{d:SampleData ItemCount=5}"
+                                twainctrl:Policy.PolicyName="FtpSites"
                                 ItemsSource="{Binding FtpSites, Source={x:Static properties:Settings.Default}}">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>

@@ -131,6 +131,12 @@
             </CollectionViewSource>
             <Style TargetType="Button">
                 <Setter Property="local:Policy.PolicyEnabled" Value="True" />
+            </Style>  
+            <Style TargetType="ListBox">
+                <Setter Property="local:Policy.PolicyEnabled" Value="True" />
+            </Style>
+            <Style TargetType="ComboBox">
+                <Setter Property="local:Policy.PolicyEnabled" Value="True" />
             </Style>
             <Style TargetType="Hyperlink">
                 <Setter Property="local:Policy.PolicyEnabled" Value="True" />
@@ -159,7 +165,8 @@
                                 <RowDefinition />
                                 <RowDefinition />
                             </Grid.RowDefinitions>
-                            <ComboBox IsEnabled="{Binding Scanner.ArayüzEtkin}"
+                            <ComboBox local:Policy.PolicyName="SeçiliTarayıcı"
+                                IsEnabled="{Binding Scanner.ArayüzEtkin}"
                                 ItemsSource="{Binding Scanner.Tarayıcılar}"
                                 SelectedItem="{Binding Scanner.SeçiliTarayıcı, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <ComboBox.ItemTemplate>
@@ -258,7 +265,9 @@
                     <GroupBox Grid.Row="1" IsEnabled="{Binding Scanner.ArayüzEtkin}">
                         <GroupBox.Header>
                             <UniformGrid Margin="1" Columns="4">
-                                <ComboBox ItemsSource="{Binding Scanner.FolderDateFormats}" SelectedItem="{Binding Path=FolderDateFormat, Source={x:Static properties:Settings.Default}}">
+                                <ComboBox local:Policy.PolicyName="FolderDateFormat"
+                                    ItemsSource="{Binding Scanner.FolderDateFormats}"
+                                    SelectedItem="{Binding Path=FolderDateFormat, Source={x:Static properties:Settings.Default}}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
@@ -282,7 +291,9 @@
                                 </ComboBox>
                                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
                                     d:Text="AutoFolder" FontWeight="Bold">
-                                    <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="{Binding AutoFolder, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
+                                    <Hyperlink local:Policy.PolicyName="WebAdreseGit"
+                                        Command="{Binding WebAdreseGit}"
+                                        CommandParameter="{Binding AutoFolder, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
                                         <Run Text="{Binding Scanner.LocalizedPath, Mode=OneWay}" />
                                     </Hyperlink>
                                 </TextBlock>
@@ -302,6 +313,7 @@
                                         Value="{Binding Çözünürlük, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                                 </Grid>
                                 <ComboBox VerticalContentAlignment="Center"
+                                    local:Policy.PolicyName="SelectedRotation"
                                     IsEnabled="{Binding Scanner.ArayüzEtkin}"
                                     ItemsSource="{Binding Mode=OneWay, Source={StaticResource PageRotations}}"
                                     SelectedItem="{Binding SelectedRotation}">
@@ -360,7 +372,8 @@
                                                 </Style>
                                             </ToggleButton.Style>
                                         </ToggleButton>
-                                        <ListBox Background="{x:Null}"
+                                        <ListBox local:Policy.PolicyName="Mode"
+                                            Background="{x:Null}"
                                             BorderBrush="{x:Null}"
                                             SelectedIndex="{Binding Mode, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                                             <ListBox.ItemContainerStyle>
@@ -457,6 +470,7 @@
                                                 <ColumnDefinition />
                                             </Grid.ColumnDefinitions>
                                             <ComboBox VerticalContentAlignment="Center"
+                                                local:Policy.PolicyName="SelectedPaper"
                                                 ItemsSource="{Binding Papers}"
                                                 SelectedItem="{Binding SelectedPaper}"
                                                 SelectedValue="{Binding SelectedPaper.PaperType}"
@@ -723,7 +737,9 @@
                                         <CheckBox Grid.Column="1"
                                             Content="{local:Loc SEPERATOR}"
                                             IsChecked="{Binding Scanner.UsePageSeperator}" />
-                                        <ComboBox ItemsSource="{Binding Mode=OneWay, Source={StaticResource PageOrientation}}" SelectedItem="{Binding SelectedOrientation}">
+                                        <ComboBox local:Policy.PolicyName="SelectedOrientation"
+                                            ItemsSource="{Binding Mode=OneWay, Source={StaticResource PageOrientation}}"
+                                            SelectedItem="{Binding SelectedOrientation}">
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate>
                                                     <TextBlock><Run Text="{Binding Converter={StaticResource EnumOrientationToConvertedLanguageTextConverter}, Mode=OneWay}" /><Run FontStyle="Italic" Foreground="Red"
@@ -916,7 +932,8 @@
                                 </StackPanel>
                             </TabItem.Header>
                             <ListBox x:Name="Lb"
-                                Extensions:DragDropExtension.ScrollOnDragDrop="True" AllowDrop="True"
+                                Extensions:DragDropExtension.ScrollOnDragDrop="True" local:Policy.PolicyName="LoadImage"
+                                AllowDrop="True"
                                 Background="{StaticResource BorderBackground}"
                                 Drop="ListBox_Drop" IsSynchronizedWithCurrentItem="False"
                                 ItemsSource="{Binding Scanner.Resimler, Mode=OneWay}"
@@ -1101,7 +1118,7 @@
                                 <ListBox x:Name="LbEypContent"
                                     Extensions:DragDropExtension.ScrollOnDragDrop="True"
                                     d:ItemsSource="{d:SampleData ItemCount=5}"
-                                    AllowDrop="True"
+                                    local:Policy.PolicyName="EypPdfDosyaEkle" AllowDrop="True"
                                     Background="{StaticResource BorderBackground}"
                                     Drop="LbEypContent_Drop"
                                     ItemsSource="{Binding Scanner.UnsupportedFiles}"

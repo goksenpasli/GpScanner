@@ -88,6 +88,7 @@
             </ItemsControl>
             <ListBox Grid.Column="1"
                 d:ItemsSource="{d:SampleData ItemCount=5}"
+                twainctrl:Policy.PolicyName="DefaultTtsLang"
                 Background="{StaticResource BorderBackground}"
                 ItemsSource="{Binding TesseractFiles}"
                 SelectedItem="{Binding DefaultTtsLang, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">

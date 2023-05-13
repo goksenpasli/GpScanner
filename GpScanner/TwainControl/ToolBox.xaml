@@ -315,6 +315,7 @@
                             Text="{local:Loc FONT}" />
                         <ComboBox Height="25.6"
                             VerticalContentAlignment="Center"
+                            local:Policy.PolicyName="WatermarkFont"
                             ItemsSource="{Binding Source={x:Static Fonts.SystemFontFamilies}}"
                             SelectedValue="{Binding Scanner.WatermarkFont}"
                             SelectedValuePath="Source">

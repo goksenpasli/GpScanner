@@ -154,6 +154,7 @@
                     <StackPanel IsEnabled="{Binding Scanner.PdfPageNumberDraw}" Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center" Text="{local:Loc PAGENUMBER}" />
                         <ListBox d:ItemsSource="{d:SampleData ItemCount=5}"
+                            local:Policy.PolicyName="Layout"
                             ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfLayout}}"
                             SelectedItem="{Binding Scanner.Layout}">
                             <ListBox.ItemTemplate>
@@ -168,6 +169,7 @@
                             </ListBox.ItemsPanel>
                         </ListBox>
                         <ComboBox VerticalContentAlignment="Center"
+                            local:Policy.PolicyName="PdfAlignTextColor"
                             ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfColor}}"
                             SelectedItem="{Binding Scanner.PdfAlignTextColor}">
                             <ComboBox.ItemTemplate>

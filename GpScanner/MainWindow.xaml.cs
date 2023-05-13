@@ -279,7 +279,7 @@ namespace GpScanner
                     {
                         TwainCtrl.Scanner.UsePageSeperator = false;
                         _ = MessageBox.Show(Translation.GetResStringValue("NOPATCHCODE"));
-                        if (WindowExtensions.OpenSettings.CanExecute(null))
+                        if (WindowExtensions.OpenSettings.CanExecute(null) && Policy.CheckPolicy("OpenSettings"))
                         {
                             WindowExtensions.OpenSettings.Execute(null);
                         }

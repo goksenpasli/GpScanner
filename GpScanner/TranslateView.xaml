@@ -120,7 +120,7 @@
             HorizontalAlignment="Center"
             Text="{twainctrl:Loc DESTLANG}" />
         <ComboBox Grid.Row="1" Grid.Column="0"
-            DisplayMemberPath="Key"
+            twainctrl:Policy.PolicyName="MevcutDil" DisplayMemberPath="Key"
             ItemsSource="{StaticResource Diller}"
             SelectedValue="{Binding MevcutDil, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             SelectedValuePath="Value">
@@ -131,7 +131,7 @@
             </ComboBox.ItemsPanel>
         </ComboBox>
         <ComboBox Grid.Row="1" Grid.Column="1"
-            DisplayMemberPath="Key"
+            twainctrl:Policy.PolicyName="ÇevrilenDil" DisplayMemberPath="Key"
             ItemsSource="{StaticResource Diller}"
             SelectedValue="{Binding ÇevrilenDil, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             SelectedValuePath="Value">
@@ -142,6 +142,7 @@
             </ComboBox.ItemsPanel>
         </ComboBox>
         <ComboBox Grid.Row="1" Grid.Column="2"
+            twainctrl:Policy.PolicyName="OkumaDili"
             ItemsSource="{Binding TtsDilleri}"
             SelectedItem="{Binding OkumaDili}" />
         <Extensions:ButtonedTextBox x:Name="BtnTxtMetin"
