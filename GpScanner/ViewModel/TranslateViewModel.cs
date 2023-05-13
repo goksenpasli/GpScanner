@@ -27,6 +27,14 @@ namespace GpScanner.ViewModel
                 Çeviri = "";
             }, parameter => true);
 
+            Değiştir = new RelayCommand<object>(parameter =>
+            {
+                string current = MevcutDil;
+                string translated = ÇevrilenDil;
+                ÇevrilenDil = current;
+                MevcutDil = translated;
+            }, parameter => ÇevrilenDil != MevcutDil);
+
             Oku = new RelayCommand<object>(parameter =>
             {
                 if (parameter is string metin)
@@ -73,6 +81,8 @@ namespace GpScanner.ViewModel
                 }
             }
         }
+
+        public ICommand Değiştir { get; }
 
         public string Metin {
             get {

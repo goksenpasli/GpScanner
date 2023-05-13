@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using GpScanner.Properties;
 using GpScanner.ViewModel;
+using Microsoft.Win32;
 using Ocr;
 using TwainControl;
 using static Extensions.ExtensionMethods;
@@ -279,7 +280,9 @@ namespace GpScanner
                     {
                         TwainCtrl.Scanner.UsePageSeperator = false;
                         _ = MessageBox.Show(Translation.GetResStringValue("NOPATCHCODE"));
-                        if (WindowExtensions.OpenSettings.CanExecute(null) && Policy.CheckPolicy("OpenSettings"))
+                        if (WindowExtensions.OpenSettings.CanExecute(null)
+                            && Policy.CheckPolicy("OpenSettings", Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\GpScanner"))
+                            && Policy.CheckPolicy("OpenSettings", Registry.CurrentUser.OpenSubKey(@"Software\Policies\GpScanner")))
                         {
                             WindowExtensions.OpenSettings.Execute(null);
                         }

@@ -11,11 +11,11 @@ namespace TwainControl
 
         public static readonly DependencyProperty PolicyNameProperty = DependencyProperty.RegisterAttached("PolicyName", typeof(string), typeof(Policy), new PropertyMetadata(string.Empty));
 
-        public static bool CheckPolicy(string searchvalue)
+        public static bool CheckPolicy(string searchvalue, RegistryKey registryKey)
         {
             try
             {
-                using RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\GpScanner");
+                using RegistryKey key = registryKey;
                 if (key is not null)
                 {
                     foreach (string value in key.GetValueNames())
@@ -59,11 +59,13 @@ namespace TwainControl
         {
             if (d is UIElement uIElement && (bool)e.NewValue)
             {
-                uIElement.IsEnabled = CheckPolicy(GetPolicyName(uIElement));
+                uIElement.IsEnabled = CheckPolicy(GetPolicyName(uIElement), Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\GpScanner"))
+                                      && CheckPolicy(GetPolicyName(uIElement), Registry.CurrentUser.OpenSubKey(@"Software\Policies\GpScanner"));
             }
             if (d is Hyperlink hyperlink && (bool)e.NewValue)
             {
-                hyperlink.IsEnabled = CheckPolicy(GetPolicyName(hyperlink));
+                hyperlink.IsEnabled = CheckPolicy(GetPolicyName(hyperlink), Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\GpScanner"))
+                                      && CheckPolicy(GetPolicyName(hyperlink), Registry.CurrentUser.OpenSubKey(@"Software\Policies\GpScanner"));
             }
         }
     }
