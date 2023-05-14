@@ -131,7 +131,7 @@
             </CollectionViewSource>
             <Style TargetType="Button">
                 <Setter Property="local:Policy.PolicyEnabled" Value="True" />
-            </Style>  
+            </Style>
             <Style TargetType="ListBox">
                 <Setter Property="local:Policy.PolicyEnabled" Value="True" />
             </Style>
@@ -172,7 +172,7 @@
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
-                                            <Image Width="16" Height="16">
+                                            <Image Width="24" Height="24">
                                                 <Image.Source>
                                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                         <Binding Source="Shell32.dll" />
@@ -180,7 +180,9 @@
                                                     </MultiBinding>
                                                 </Image.Source>
                                             </Image>
-                                            <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay}" />
+                                            <TextBlock VerticalAlignment="Center"
+                                                FontWeight="Bold"
+                                                Text="{Binding Mode=OneWay}" />
                                         </StackPanel>
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>

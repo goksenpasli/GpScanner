@@ -474,6 +474,14 @@
                                                                     </Image>
                                                                 </Extensions:ContentToggleButton>
                                                                 <Extensions:ContentToggleButton Grid.Column="2">
+                                                                    <Image Width="16" Height="16">
+                                                                        <Image.Source>
+                                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                                <Binding Source="Zipfldr.dll" />
+                                                                                <Binding Source="0" />
+                                                                            </MultiBinding>
+                                                                        </Image.Source>
+                                                                    </Image>
                                                                     <Extensions:ContentToggleButton.OverContent>
                                                                         <GroupBox>
                                                                             <GroupBox.Header>

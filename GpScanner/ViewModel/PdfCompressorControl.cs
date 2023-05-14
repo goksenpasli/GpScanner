@@ -7,6 +7,7 @@ using Extensions;
 using GpScanner.Properties;
 using PdfCompressor;
 using PdfSharp.Pdf;
+using TwainControl;
 
 namespace GpScanner.ViewModel
 {
@@ -27,7 +28,7 @@ namespace GpScanner.ViewModel
                     }
                     string savefilename = Settings.Default.DirectlyOverwriteCompressedPdf
                         ? LoadedPdfPath
-                        : $"{Path.GetDirectoryName(LoadedPdfPath)}\\{Path.GetFileNameWithoutExtension(LoadedPdfPath) + "_Compressed.pdf"}";
+                        : $"{Path.GetDirectoryName(LoadedPdfPath)}\\{Path.GetFileNameWithoutExtension(LoadedPdfPath)}{Translation.GetResStringValue("COMPRESS")}.pdf";
                     pdfDocument?.Save(savefilename);
                     pdfDocument?.Dispose();
                     if (Application.Current?.MainWindow?.DataContext is GpScannerViewModel gpScannerViewModel)

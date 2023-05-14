@@ -108,6 +108,10 @@ namespace PdfCompressor
 
         public static Bitmap BitmapSourceToBitmap(BitmapSource bitmapsource)
         {
+            if (bitmapsource is null)
+            {
+                throw new ArgumentNullException(nameof(bitmapsource));
+            }
             FormatConvertedBitmap src = new();
             src.BeginInit();
             src.Source = bitmapsource;
@@ -123,6 +127,10 @@ namespace PdfCompressor
 
         public static void DefaultPdfCompression(PdfDocument doc)
         {
+            if (doc is null)
+            {
+                throw new ArgumentNullException(nameof(doc));
+            }
             doc.Options.FlateEncodeMode = PdfFlateEncodeMode.BestCompression;
             doc.Options.CompressContentStreams = true;
             doc.Options.UseFlateDecoderForJpegImages = PdfUseFlateDecoderForJpegImages.Automatic;
