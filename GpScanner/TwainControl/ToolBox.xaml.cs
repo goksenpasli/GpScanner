@@ -55,32 +55,32 @@ namespace TwainControl
                             case 1:
                                 TwainCtrl.SaveTifImage(bitmapFrame, saveFileDialog.FileName);
                                 bitmapFrame = null;
-                                return;
+                                break;
 
                             case 2:
                                 TwainCtrl.SaveJpgImage(bitmapFrame, saveFileDialog.FileName);
                                 bitmapFrame = null;
-                                return;
+                                break;
 
                             case 3:
                                 await TwainCtrl.SavePdfImage(bitmapFrame, saveFileDialog.FileName, Scanner, Paper);
                                 bitmapFrame = null;
-                                return;
+                                break;
 
                             case 4:
                                 await TwainCtrl.SavePdfImage(bitmapFrame, saveFileDialog.FileName, Scanner, Paper, true);
                                 bitmapFrame = null;
-                                return;
+                                break;
 
                             case 5:
                                 TwainCtrl.SaveXpsImage(bitmapFrame, saveFileDialog.FileName);
                                 bitmapFrame = null;
-                                return;
+                                break;
 
                             case 6:
                                 await TwainCtrl.SaveTxtFile(bitmapFrame, saveFileDialog.FileName, Scanner);
                                 bitmapFrame = null;
-                                return;
+                                break;
                         }
                     });
                 }
@@ -108,11 +108,11 @@ namespace TwainControl
 
             WebAdreseGit = new RelayCommand<object>(parameter => TwainCtrl.GotoPage(parameter as string), parameter => true);
 
-            SplitImage = new RelayCommand<object>(parameter =>
+            SplitImage = new RelayCommand<object>(async parameter =>
             {
                 string savefolder = CreateSaveFolder("SPLIT");
                 List<CroppedBitmap> croppedBitmaps = CropImageToList(Scanner.CroppedImage, Scanner.EnAdet, Scanner.BoyAdet);
-                _ = Task.Run(() =>
+                await Task.Run(() =>
                 {
                     for (int i = 0; i < croppedBitmaps.Count; i++)
                     {
@@ -123,11 +123,9 @@ namespace TwainControl
                             ToolBoxPdfMergeProgressValue = (i + 1) / (double)croppedBitmaps.Count;
                         });
                     }
-                }).ContinueWith((_) =>
-                {
-                    WebAdreseGit.Execute(savefolder);
-                    ToolBoxPdfMergeProgressValue = 0;
                 });
+                WebAdreseGit.Execute(savefolder);
+                ToolBoxPdfMergeProgressValue = 0;
             }, parameter => Scanner?.AutoSave == true && Scanner?.CroppedImage is not null && (Scanner?.EnAdet > 1 || Scanner?.BoyAdet > 1));
 
             TransferImage = new RelayCommand<object>(parameter =>

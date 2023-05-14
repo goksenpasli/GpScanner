@@ -326,19 +326,23 @@ namespace Extensions
 
         public static BitmapSource Resize(this BitmapSource bfPhoto, double nWidth, double nHeight, double? rotate = null, int dpiX = 96, int dpiY = 96)
         {
-            TransformGroup transformGroup = new();
-            if (rotate.HasValue)
+            if (bfPhoto is not null)
             {
-                RotateTransform rotateTransform = new(rotate.Value);
-                transformGroup.Children.Add(rotateTransform);
+                TransformGroup transformGroup = new();
+                if (rotate.HasValue)
+                {
+                    RotateTransform rotateTransform = new(rotate.Value);
+                    transformGroup.Children.Add(rotateTransform);
+                }
+                double scaleX = nWidth / bfPhoto.PixelWidth * dpiX / 96;
+                double scaleY = nHeight / bfPhoto.PixelHeight * dpiY / 96;
+                ScaleTransform scaleTransform = new(scaleX, scaleY);
+                transformGroup.Children.Add(scaleTransform);
+                TransformedBitmap tb = new(bfPhoto, transformGroup);
+                tb.Freeze();
+                return tb;
             }
-            double scaleX = nWidth / bfPhoto.PixelWidth * dpiX / 96;
-            double scaleY = nHeight / bfPhoto.PixelHeight * dpiY / 96;
-            ScaleTransform scaleTransform = new(scaleX, scaleY);
-            transformGroup.Children.Add(scaleTransform);
-            TransformedBitmap tb = new(bfPhoto, transformGroup);
-            tb.Freeze();
-            return tb;
+            return null;
         }
 
         public static BitmapSource Resize(this BitmapSource bfPhoto, double oran)

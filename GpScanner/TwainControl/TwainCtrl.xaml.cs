@@ -159,23 +159,23 @@ namespace TwainControl
                             {
                                 case 1:
                                     SaveTifImage(bitmapFrame, saveFileDialog.FileName);
-                                    return;
+                                    break;
 
                                 case 2:
                                     SaveJpgImage(bitmapFrame, saveFileDialog.FileName);
-                                    return;
+                                    break;
 
                                 case 3:
                                     await SavePdfImage(bitmapFrame, saveFileDialog.FileName, Scanner, SelectedPaper);
-                                    return;
+                                    break;
 
                                 case 4:
                                     await SavePdfImage(bitmapFrame, saveFileDialog.FileName, Scanner, SelectedPaper, true);
-                                    return;
+                                    break;
 
                                 case 5:
                                     SaveXpsImage(bitmapFrame, saveFileDialog.FileName);
-                                    return;
+                                    break;
 
                                 case 6:
                                     await SaveTxtFile(bitmapFrame, saveFileDialog.FileName, Scanner);
@@ -294,31 +294,32 @@ namespace TwainControl
                         {
                             case 1:
                                 await SavePdfImage(seçiliresimler, saveFileDialog.FileName, Scanner, SelectedPaper, false, (int)Settings.Default.ImgLoadResolution);
-                                return;
+                                break;
 
                             case 2:
                                 await SavePdfImage(seçiliresimler, saveFileDialog.FileName, Scanner, SelectedPaper, true, (int)Settings.Default.ImgLoadResolution);
-                                return;
+                                break;
 
                             case 3:
                                 await SaveJpgImage(seçiliresimler, saveFileDialog.FileName, Scanner);
-                                return;
+                                break;
 
                             case 4:
                                 await SaveTifImage(seçiliresimler, saveFileDialog.FileName, Scanner);
-                                return;
+                                break;
 
                             case 5:
                                 await SaveTxtFile(seçiliresimler, saveFileDialog.FileName, Scanner);
-                                return;
+                                break;
                         }
-                    }).ContinueWith((_) => Dispatcher.Invoke(() =>
-                    {
-                        if (Settings.Default.RemoveProcessedImage)
+                        await Dispatcher.InvokeAsync(() =>
                         {
-                            SeçiliListeTemizle.Execute(null);
-                        }
-                    }));
+                            if (Settings.Default.RemoveProcessedImage)
+                            {
+                                SeçiliListeTemizle.Execute(null);
+                            }
+                        });
+                    });
                 }
             }, parameter =>
             {
@@ -358,14 +359,15 @@ namespace TwainControl
                     {
                         await SavePdfImage(seçiliresimler, PdfGeneration.GetPdfScanPath(), Scanner, SelectedPaper, false, (int)Settings.Default.ImgLoadResolution);
                     }
-                }).ContinueWith((_) => Dispatcher.Invoke(() =>
-                {
-                    OnPropertyChanged(nameof(Scanner.Resimler));
-                    if (Settings.Default.RemoveProcessedImage)
+                    await Dispatcher.InvokeAsync(() =>
                     {
-                        SeçiliListeTemizle.Execute(null);
-                    }
-                }));
+                        OnPropertyChanged(nameof(Scanner.Resimler));
+                        if (Settings.Default.RemoveProcessedImage)
+                        {
+                            SeçiliListeTemizle.Execute(null);
+                        }
+                    });
+                });
             }, parameter =>
             {
                 Scanner.SeçiliResimSayısı = Scanner?.Resimler.Count(z => z.Seçili) ?? 0;
@@ -498,7 +500,7 @@ namespace TwainControl
                 {
                     Window maximizePdfWindow = new()
                     {
-                        Owner = Application.Current.MainWindow,
+                        Owner = Application.Current?.MainWindow,
                         Content = pdfImportViewerControl,
                         WindowState = WindowState.Maximized,
                         ShowInTaskbar = false,
