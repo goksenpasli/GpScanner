@@ -381,12 +381,6 @@ namespace TwainControl
                     _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
                     return;
                 }
-                if ((Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)) && SeçiliListeTemizle.CanExecute(null))
-                {
-                    SeçiliListeTemizle.Execute(null);
-                    return;
-                }
-
                 if (MessageBox.Show(Translation.GetResStringValue("LISTREMOVEWARN"), Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     Scanner.Resimler?.Clear();
@@ -398,6 +392,11 @@ namespace TwainControl
 
             SeçiliListeTemizle = new RelayCommand<object>(parameter =>
             {
+                if (Filesavetask?.IsCompleted == false)
+                {
+                    _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
+                    return;
+                }
                 foreach (ScannedImage item in Scanner.Resimler.Where(z => z.Seçili).ToList())
                 {
                     _ = Scanner.Resimler?.Remove(item);

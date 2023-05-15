@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Documents;
 using Microsoft.Win32;
@@ -57,6 +58,10 @@ namespace TwainControl
 
         private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
+            if (DesignerProperties.GetIsInDesignMode(d))
+            {
+                return;
+            }
             if (d is UIElement uIElement && (bool)e.NewValue)
             {
                 uIElement.IsEnabled = CheckPolicy(GetPolicyName(uIElement), Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\GpScanner"))

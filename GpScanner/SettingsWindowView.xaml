@@ -193,6 +193,24 @@
                             </StackPanel>
                         </ListBoxItem.Content>
                     </ListBoxItem>
+                    <ListBoxItem Tag="ESPAÑOL">
+                        <ListBoxItem.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="51" Height="30"
+                                    RenderOptions.BitmapScalingMode="Fant" Source="/Resources/flag-of-Spain.png" />
+                                <TextBlock VerticalAlignment="Center" Text="ESPAÑOL" />
+                            </StackPanel>
+                        </ListBoxItem.Content>
+                    </ListBoxItem>
+                    <ListBoxItem Tag="中國人">
+                        <ListBoxItem.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="51" Height="30"
+                                    RenderOptions.BitmapScalingMode="Fant" Source="/Resources/flag-of-China.png" />
+                                <TextBlock VerticalAlignment="Center" Text="中國人" />
+                            </StackPanel>
+                        </ListBoxItem.Content>
+                    </ListBoxItem>
                 </ListBox>
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>

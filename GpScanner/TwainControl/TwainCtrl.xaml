@@ -803,103 +803,117 @@
                                 Style="{StaticResource Slider}"
                                 ToolTip="{local:Loc PREVIEWSIZE}"
                                 Value="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}" />
-                            <StackPanel Grid.Column="1">
-                                <Extensions:ContentToggleButton>
-                                    <Extensions:ContentToggleButton.OverContent>
-                                        <local:PdfSettings Width="480" />
-                                    </Extensions:ContentToggleButton.OverContent>
-                                    <StackPanel Orientation="Horizontal">
+                            <Extensions:ContentToggleButton Grid.Column="1">
+                                <Extensions:ContentToggleButton.OverContent>
+                                    <local:PdfSettings Width="480" />
+                                </Extensions:ContentToggleButton.OverContent>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="24" Height="24">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="21" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc SETTİNGS}" />
+                                </StackPanel>
+                            </Extensions:ContentToggleButton>
+                            <ScrollViewer Grid.Column="2"
+                                MaxHeight="55"
+                                Margin="2,0,2,0"
+                                HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                                <WrapPanel>
+                                    <Button local:Policy.PolicyName="ResimSilGeriAl" Command="{Binding ResimSilGeriAl}">
+                                        <Image Width="24" Height="24"
+                                            Source="/TwainControl;component/Icons/undo.png" />
+                                    </Button>
+                                    <Button local:Policy.PolicyName="Tümünüİşaretle" BorderBrush="Cyan"
+                                        Command="{Binding Tümünüİşaretle}">
+                                        <Image Width="24" Height="24"
+                                            Source="/TwainControl;component/Icons/selectall.png" />
+                                    </Button>
+                                    <Button local:Policy.PolicyName="TümününİşaretiniKaldır" Command="{Binding TümününİşaretiniKaldır}">
+                                        <Image Width="24" Height="24"
+                                            Source="/TwainControl;component/Icons/none.png" />
+                                    </Button>
+                                    <Button local:Policy.PolicyName="Tersiniİşaretle" Command="{Binding Tersiniİşaretle}">
+                                        <Image Width="24" Height="24"
+                                            Source="/TwainControl;component/Icons/inverse.png" />
+                                    </Button>
+                                    <Button local:Policy.PolicyName="TümünüİşaretleDikey" Command="{Binding TümünüİşaretleDikey}">
+                                        <Image Width="24" Height="24"
+                                            Source="/TwainControl;component/Icons/portrait.png" />
+                                    </Button>
+                                    <Button local:Policy.PolicyName="TümünüİşaretleYatay" Command="{Binding TümünüİşaretleYatay}">
+                                        <Image Width="24" Height="24"
+                                            Source="/TwainControl;component/Icons/landscape.png" />
+                                    </Button>
+                                    <Button local:Policy.PolicyName="SaveFileList" Command="{Binding SaveFileList}">
+                                        <Image Width="24" Height="24"
+                                            Source="/TwainControl;component/Icons/save.png" />
+                                    </Button>
+                                    <Button local:Policy.PolicyName="LoadFileList" Command="{Binding LoadFileList}">
                                         <Image Width="24" Height="24">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                     <Binding Source="Shell32.dll" />
-                                                    <Binding Source="21" />
+                                                    <Binding Source="70" />
                                                 </MultiBinding>
                                             </Image.Source>
                                         </Image>
-                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc SETTİNGS}" />
-                                    </StackPanel>
-                                </Extensions:ContentToggleButton>
-                                <Button x:Name="BtnClearAll"
-                                    local:Policy.PolicyName="ListeTemizle" BorderBrush="Cyan"
-                                    Command="{Binding ListeTemizle}"
-                                    DockPanel.Dock="Right">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Width="24" Height="24"
-                                            Source="/TwainControl;component/Icons/delete.png" />
-                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc CLEARLIST}" />
-                                    </StackPanel>
-                                </Button>
-                            </StackPanel>
-                            <StackPanel Grid.Column="2" Margin="2,0,2,0">
-                                <ScrollViewer MaxHeight="55"
-                                    HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                                    <WrapPanel>
-                                        <Button local:Policy.PolicyName="ResimSilGeriAl" Command="{Binding ResimSilGeriAl}">
-                                            <Image Width="24" Height="24"
-                                                Source="/TwainControl;component/Icons/undo.png" />
-                                        </Button>
-                                        <Button local:Policy.PolicyName="Tümünüİşaretle" BorderBrush="Cyan"
-                                            Command="{Binding Tümünüİşaretle}">
-                                            <Image Width="24" Height="24"
-                                                Source="/TwainControl;component/Icons/selectall.png" />
-                                        </Button>
-                                        <Button local:Policy.PolicyName="TümününİşaretiniKaldır" Command="{Binding TümününİşaretiniKaldır}">
-                                            <Image Width="24" Height="24"
-                                                Source="/TwainControl;component/Icons/none.png" />
-                                        </Button>
-                                        <Button local:Policy.PolicyName="Tersiniİşaretle" Command="{Binding Tersiniİşaretle}">
-                                            <Image Width="24" Height="24"
-                                                Source="/TwainControl;component/Icons/inverse.png" />
-                                        </Button>
-                                        <Button local:Policy.PolicyName="TümünüİşaretleDikey" Command="{Binding TümünüİşaretleDikey}">
-                                            <Image Width="24" Height="24"
-                                                Source="/TwainControl;component/Icons/portrait.png" />
-                                        </Button>
-                                        <Button local:Policy.PolicyName="TümünüİşaretleYatay" Command="{Binding TümünüİşaretleYatay}">
-                                            <Image Width="24" Height="24"
-                                                Source="/TwainControl;component/Icons/landscape.png" />
-                                        </Button>
-                                        <Button local:Policy.PolicyName="SaveFileList" Command="{Binding SaveFileList}">
-                                            <Image Width="24" Height="24"
-                                                Source="/TwainControl;component/Icons/save.png" />
-                                        </Button>
-                                        <Button local:Policy.PolicyName="LoadFileList" Command="{Binding LoadFileList}">
-                                            <Image Width="24" Height="24">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="70" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                        </Button>
-                                        <Button local:Policy.PolicyName="CycleSelectedDocuments"
-                                            Command="{Binding CycleSelectedDocuments}"
-                                            CommandParameter="{Binding ElementName=Lb}">
-                                            <Image Width="24" Height="24">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="55" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                        </Button>
-                                    </WrapPanel>
-                                </ScrollViewer>
-                            </StackPanel>
-                            <Grid Grid.Column="3" Margin="2,0,0,0">
+                                    </Button>
+                                    <Button local:Policy.PolicyName="CycleSelectedDocuments"
+                                        Command="{Binding CycleSelectedDocuments}"
+                                        CommandParameter="{Binding ElementName=Lb}">
+                                        <Image Width="24" Height="24">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="55" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </Button>
+                                    <Extensions:ContentToggleButton>
+                                        <TextBlock Text="{local:Loc CLEARLIST}" />
+                                        <Extensions:ContentToggleButton.OverContent>
+                                            <Menu>
+                                                <MenuItem Command="{Binding ListeTemizle}">
+                                                    <MenuItem.Header>
+                                                        <TextBlock VerticalAlignment="Center">
+                                                            <Run Text="{local:Loc ALL}" />
+                                                            <Run Text="{local:Loc CLEARLIST}" />
+                                                        </TextBlock>
+                                                    </MenuItem.Header>
+                                                    <MenuItem.Icon>
+                                                        <Image Width="16" Height="16"
+                                                            Source="/TwainControl;component/Icons/delete.png" />
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem Command="{Binding SeçiliListeTemizle}">
+                                                    <MenuItem.Header>
+                                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc CLEARLIST}" />
+                                                    </MenuItem.Header>
+                                                    <MenuItem.Icon>
+                                                        <Image Width="16" Height="16"
+                                                            Source="/TwainControl;component/Icons/delete.png" />
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                            </Menu>
+                                        </Extensions:ContentToggleButton.OverContent>
+                                    </Extensions:ContentToggleButton>
+                                </WrapPanel>
+                            </ScrollViewer>
+                            <StackPanel Grid.Column="3">
                                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Top"
                                     Text="{local:Loc ALL}" />
-                                <Extensions:NumericUpDownControl Height="20"
-                                    VerticalAlignment="Center"
-                                    BorderBrush="Cyan"
-                                    IsEnabled="{Binding ElementName=BtnClearAll, Path=IsEnabled}"
-                                    LargeChange="1" Maximum="1" Minimum="-1"
-                                    NumericUpdownTextBoxVisibility="Collapsed" Orientation="Horizontal" SmallChange="1"
+                                <Extensions:NumericUpDownControl VerticalAlignment="Center"
+                                    BorderBrush="Cyan" LargeChange="1" Maximum="1"
+                                    Minimum="-1" NumericUpdownTextBoxVisibility="Collapsed" Orientation="Horizontal"
+                                    SmallChange="1"
                                     Value="{Binding AllImageRotationAngle}" />
-                            </Grid>
+                            </StackPanel>
                         </Grid>
                     </GroupBox.Header>
                     <TabControl x:Name="TbCtrl"

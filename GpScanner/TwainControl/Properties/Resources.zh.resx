@@ -118,452 +118,455 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="SRC" xml:space="preserve">
-    <value>VYBERTE ZDROJ</value>
+    <value>资源</value>
   </data>
   <data name="SETTİNGS" xml:space="preserve">
-    <value>NASTAVENÍ</value>
+    <value>设置</value>
   </data>
   <data name="RES" xml:space="preserve">
-    <value>ROZLIŠENÍ</value>
+    <value>分辨率</value>
   </data>
   <data name="ADF" xml:space="preserve">
-    <value>PODAVAČ
-DOKUMENTŮ</value>
+    <value>文档
+馈线</value>
   </data>
   <data name="BW" xml:space="preserve">
-    <value>ČERNOBÍLE</value>
+    <value>黑与白</value>
   </data>
   <data name="GRAY" xml:space="preserve">
-    <value>GRAYI</value>
+    <value>灰色</value>
   </data>
   <data name="COLOR" xml:space="preserve">
-    <value>BAREVNÉ</value>
+    <value>五彩缤纷</value>
   </data>
   <data name="TWOSIDE" xml:space="preserve">
-    <value>OBOUSMĚRNĚ</value>
+    <value>双向</value>
   </data>
   <data name="GUI" xml:space="preserve">
-    <value>ZOBRAZIT ROZHRANÍ</value>
+    <value>显示界面</value>
   </data>
   <data name="SEPERATESCAN" xml:space="preserve">
-    <value>SKENUJTE KAŽDOU STRÁNKU ZVLÁŠŤ</value>
+    <value>分别扫描每一页</value>
   </data>
   <data name="SHOWFILE" xml:space="preserve">
-    <value>ZOBRAZIT SOUBOR PO RYCHLÉM SKENOVÁNÍ</value>
+    <value>快速扫描后显示文件</value>
   </data>
   <data name="OTHERSETTINGS" xml:space="preserve">
-    <value>DALŠÍ NASTAVENÍ</value>
+    <value>其他设置</value>
   </data>
   <data name="DESKEW" xml:space="preserve">
-    <value>OPRAVTE ZAKŘIVENÍ</value>
+    <value>校正曲率</value>
   </data>
   <data name="BORDERDETECT" xml:space="preserve">
-    <value>AUTOMATICKÁ DETEKCE HRAN</value>
+    <value>自动边缘检测</value>
   </data>
   <data name="SHOWPROGRESS" xml:space="preserve">
-    <value>UKAŽTE MI PROCENTO</value>
+    <value>显示百分比</value>
   </data>
   <data name="AUTOROTATE" xml:space="preserve">
-    <value>AUTOMATICKÉ OTÁČENÍ</value>
+    <value>自动旋转</value>
   </data>
   <data name="NO ACTION" xml:space="preserve">
-    <value>ŽÁDNÁ AKCE</value>
+    <value>不采取行动</value>
   </data>
   <data name="CLOSECOMP" xml:space="preserve">
-    <value>VYPNĚTE POČÍTAČ</value>
+    <value>关掉电脑</value>
   </data>
   <data name="RESTARTCOMP" xml:space="preserve">
-    <value>RESTARTUJTE POČÍTAČ</value>
+    <value>重新启动电脑</value>
   </data>
   <data name="FILENAME" xml:space="preserve">
-    <value>NÁZEV SOUBORU:</value>
+    <value>文件名：!</value>
   </data>
   <data name="DAY" xml:space="preserve">
-    <value>[DEN]</value>
+    <value>[天]</value>
   </data>
   <data name="MONTH" xml:space="preserve">
-    <value>[MONTH]</value>
+    <value>[月]</value>
   </data>
   <data name="YEAR" xml:space="preserve">
-    <value>[ROK]</value>
+    <value>[年]</value>
   </data>
   <data name="TIME" xml:space="preserve">
-    <value>Hodiny</value>
+    <value>小时</value>
   </data>
   <data name="MINUTE" xml:space="preserve">
-    <value>[MINUTY]</value>
+    <value>[分钟]</value>
   </data>
   <data name="SECOND" xml:space="preserve">
-    <value>[SEKUNDY]</value>
+    <value>[秒]</value>
   </data>
   <data name="GUID" xml:space="preserve">
-    <value>[GUID]</value>
+    <value>[GUID] </value>
   </data>
   <data name="USERNAME" xml:space="preserve">
-    <value>[UŽIVATELSKÉ JMÉNO]</value>
+    <value>[用戶名] </value>
   </data>
   <data name="SAVEPROFILE" xml:space="preserve">
-    <value>SKRÝT PROFIL</value>
+    <value>隐藏个人资料</value>
   </data>
   <data name="DELETE" xml:space="preserve">
-    <value>SMAZAT</value>
+    <value>删除</value>
   </data>
   <data name="SCAN" xml:space="preserve">
-    <value>Hledat</value>
+    <value>扫一扫</value>
   </data>
   <data name="FASTSCAN" xml:space="preserve">
-    <value>RYCHLÉ
-SKENOVÁNÍ</value>
+    <value>快速
+扫描</value>
   </data>
   <data name="AUTOPATH" xml:space="preserve">
-    <value>AUTOMATICKÉ
-ULOŽENÍ</value>
+    <value>自动
+保存</value>
   </data>
   <data name="ALL" xml:space="preserve">
-    <value>Celkem</value>
+    <value>全部</value>
   </data>
   <data name="NONE" xml:space="preserve">
-    <value>NIKDO Z NICH</value>
+    <value>没有一个</value>
   </data>
   <data name="REVERSE" xml:space="preserve">
-    <value>ZPÁTEČKA</value>
+    <value>倒车</value>
   </data>
   <data name="PREVIEWSIZE" xml:space="preserve">
-    <value>VELIKOST NÁHLEDU OBRÁZKU</value>
+    <value>图像预览大小</value>
   </data>
   <data name="PDFPROTECT" xml:space="preserve">
-    <value>Pdf Protect</value>
+    <value>保存PDF </value>
   </data>
   <data name="ENCRYPT" xml:space="preserve">
-    <value>ŠIFROVAT</value>
+    <value>加密</value>
   </data>
   <data name="PDFWARN" xml:space="preserve">
-    <value>ZDE PROVEDENÁ NASTAVENÍ OVLIVŇUJÍ VŠECHNY ZÁZNAMY PDF.
-TAKÉ OCHRANA PDF MŮŽE BÝT PORUŠENA APLIKACEMI TŘETÍCH STRAN.</value>
+    <value>此处所做的设置会影响所有PDF记录。
+PDF保护也可以被第三方应用程序破坏。</value>
   </data>
   <data name="ALLOWPRINT" xml:space="preserve">
-    <value>POVOLIT TISK</value>
+    <value>允许打印</value>
   </data>
   <data name="ALLOWCOPY" xml:space="preserve">
-    <value>POVOLIT KOPÍROVÁNÍ OBSAHU</value>
+    <value>允许内容复制</value>
   </data>
   <data name="ALLOWEDIT" xml:space="preserve">
-    <value>POVOLIT EDITACI DOKUMENTU</value>
+    <value>允许文档编辑!</value>
   </data>
   <data name="SAVESELECTED" xml:space="preserve">
-    <value>ZACHRAŇTE VÝBĚRY</value>
+    <value>保存精选</value>
   </data>
   <data name="CLEARLIST" xml:space="preserve">
-    <value>VYČISTĚTE SEZNAM</value>
+    <value>清除列表</value>
   </data>
   <data name="MERGEPDF" xml:space="preserve">
-    <value>SLOUČIT PDF</value>
+    <value>合并PDF </value>
   </data>
   <data name="ABOUT" xml:space="preserve">
-    <value>O NÁS</value>
+    <value>关于</value>
   </data>
   <data name="DOCUMENT" xml:space="preserve">
-    <value>PAPÍROVÁNÍ</value>
+    <value>文书工作</value>
   </data>
   <data name="TRIMIMAGE" xml:space="preserve">
-    <value>OŘÍZNOUT OBRÁZEK</value>
+    <value>裁剪图片</value>
   </data>
   <data name="RESET" xml:space="preserve">
-    <value>RESET</value>
+    <value>重置</value>
   </data>
   <data name="WIDTHCOUNT" xml:space="preserve">
-    <value>POČET NEJVÍCE</value>
+    <value>人数最多</value>
   </data>
   <data name="HEIGHTCOUNT" xml:space="preserve">
-    <value>POČET VÝŠEK</value>
+    <value>高度数</value>
   </data>
   <data name="SLICE" xml:space="preserve">
-    <value>ROZBIJ TO</value>
+    <value>砸碎它</value>
   </data>
   <data name="TEXT" xml:space="preserve">
-    <value>METINE</value>
+    <value>梅廷</value>
   </data>
   <data name="TEXTSIZE" xml:space="preserve">
-    <value>VELIKOST TEXTU</value>
+    <value>文本大小</value>
   </data>
   <data name="TEXTANGLE" xml:space="preserve">
-    <value>ÚHEL TEXTU</value>
+    <value>文字角度</value>
   </data>
   <data name="FONT" xml:space="preserve">
-    <value>PÍSMO</value>
+    <value>字体</value>
   </data>
   <data name="DRAWTEXT" xml:space="preserve">
-    <value>NAKRESLETE TEXT</value>
+    <value>绘制文本</value>
   </data>
   <data name="SAVEPDF" xml:space="preserve">
-    <value>Uložit</value>
+    <value>保存</value>
   </data>
   <data name="FIX" xml:space="preserve">
     <value />
   </data>
   <data name="OCR" xml:space="preserve">
-    <value>OCR</value>
+    <value>OCR!</value>
   </data>
   <data name="FILE" xml:space="preserve">
-    <value>Soubor</value>
+    <value>電腦檔案</value>
   </data>
   <data name="CALENDAR" xml:space="preserve">
-    <value>KALENDÁŘ</value>
+    <value>日历</value>
   </data>
   <data name="GRAPH" xml:space="preserve">
-    <value>GRAFIKA</value>
+    <value>图形</value>
   </data>
   <data name="VIEWALL" xml:space="preserve">
-    <value>ZOBRAZIT VŠE</value>
+    <value>查看全部</value>
   </data>
   <data name="PREVIEWFILE" xml:space="preserve">
-    <value>NÁHLED SOUBORU</value>
+    <value>文件
+预览</value>
   </data>
   <data name="TESSERACT" xml:space="preserve">
-    <value>TESSERACT</value>
+    <value>正方体</value>
   </data>
   <data name="MERGE" xml:space="preserve">
-    <value>DEJ TO DOHROMADY</value>
+    <value>把它放在一起</value>
   </data>
   <data name="MERGESELECTED" xml:space="preserve">
-    <value>SLOUČIT OZNAČENÉ
-SOUBORY PDF</value>
+    <value>合并标记
+的PDF </value>
   </data>
   <data name="SELECTTWOPDF" xml:space="preserve">
-    <value>VYBERTE ALESPOŇ DVA SOUBORY PDF</value>
+    <value>选择至少两个PDF
+文件</value>
   </data>
   <data name="READACTIVEPAGE" xml:space="preserve">
-    <value>PŘEČTĚTE SI AKTIVNÍ STRÁNKU</value>
+    <value>阅读活动页面</value>
   </data>
   <data name="CONTENT" xml:space="preserve">
-    <value>NÁPOJE SE ČTOU</value>
+    <value>饮料阅读</value>
   </data>
   <data name="SHOWFOLDER" xml:space="preserve">
-    <value>ZOBRAZIT VE SLOŽCE</value>
+    <value>在文件夹中显示</value>
   </data>
   <data name="CRUNTIME" xml:space="preserve">
-    <value>Vzhledem k tomu, že binární soubory Tesseract a leptonica jsou kompilovány s Visual Studio 2019, musíte se ujistit, že je nainstalován Visual Studio 2019 Runtime</value>
+    <value>由于Tesseract和leptonica二进制文件是使用Visual Studio 2019编译的，因此您需要确保已安装Visual Studio 2019运行时</value>
   </data>
   <data name="OTHERTESSERACT" xml:space="preserve">
-    <value>V případě potřeby stáhněte také další jazykové datové soubory pro tesseract 4.1.0 z tesseract-ocr. Dejte to do složky Tessdata</value>
+    <value>如果需要，还可以从tesseract-ocr下载tesseract 4.1.0的其他语言数据文件。把它放在Tessdata文件夹</value>
   </data>
   <data name="VC" xml:space="preserve">
-    <value>Visual Studio 2019 x86 a x64 Runtime</value>
+    <value>Visual Studio 2019 x86和x64运行时</value>
   </data>
   <data name="OTHERTESSERACTLINK" xml:space="preserve">
-    <value>Další tesseract jazyková data</value>
+    <value>其他tesseract语言数据</value>
   </data>
   <data name="SCANNER" xml:space="preserve">
-    <value>SKENER</value>
+    <value>扫描仪</value>
   </data>
   <data name="PASSWORD" xml:space="preserve">
-    <value>HESLO</value>
+    <value>密码</value>
   </data>
   <data name="WARNREBOOT" xml:space="preserve">
-    <value>Vypnout nebo restartovat nastavení!</value>
+    <value>关机或重新启动设置！ </value>
   </data>
   <data name="FASTSCANAFTER" xml:space="preserve">
-    <value>Akce, která má být provedena po dokončení rychlého skenování</value>
+    <value>快速扫描完成后要采取的操作</value>
   </data>
   <data name="AUTOFOLDER" xml:space="preserve">
-    <value>Zadat automatické uložení složky.</value>
+    <value>指定自动保存文件夹。!</value>
   </data>
   <data name="AUTOFOLDERCHANGE" xml:space="preserve">
-    <value>Automaticky uložená cesta změněna. Staré soubory nebudou přesunuty do nové složky.</value>
+    <value>自动保存路径已更改。旧文件不会移动到新文件夹。</value>
   </data>
   <data name="LISTREMOVEWARN" xml:space="preserve">
-    <value>Všechny naskenované dokumenty ve výše uvedeném seznamu budou smazány. Chcete pokračovat?</value>
+    <value>上面列表中的所有扫描文档都将被删除。是否要继续?!</value>
   </data>
   <data name="DEFAULTSCANNAME" xml:space="preserve">
-    <value>Neskenujte</value>
+    <value>不要扫描</value>
   </data>
   <data name="ROTSAVE" xml:space="preserve">
-    <value>Ušetřete s Rotation Applied?</value>
+    <value>应用旋转保存？ </value>
   </data>
   <data name="APPRUNNING" xml:space="preserve">
-    <value>Aplikace je již spuštěna</value>
+    <value>该应用程序已经在运行</value>
   </data>
   <data name="REGSTI" xml:space="preserve">
-    <value>PŘIDAT DO MENU PROHLÍŽEČE</value>
+    <value>添加到浏览器菜单</value>
   </data>
   <data name="TRANSLATE" xml:space="preserve">
-    <value>PŘEKLAD</value>
+    <value>翻译</value>
   </data>
   <data name="SOURCELANG" xml:space="preserve">
-    <value>ZDROJOVÝ JAZYK</value>
+    <value>资源</value>
   </data>
   <data name="DESTLANG" xml:space="preserve">
-    <value>CÍLOVÁ ŘEČ</value>
+    <value>目标语言</value>
   </data>
   <data name="UNREGSTI" xml:space="preserve">
-    <value>ODEBRAT Z NABÍDKY PROHLÍŽEČE</value>
+    <value>从浏览器菜单
+中删除</value>
   </data>
   <data name="SEPERATESCANTOOLTIP" xml:space="preserve">
-    <value>Každá stránka se uloží do samostatného souboru Soubory se uloží do níže uvedené složky.</value>
+    <value>将每个页面保存到单独的文件文件保存到下面指定的文件夹。</value>
   </data>
   <data name="OCRPDFSAVE" xml:space="preserve">
-    <value>ULOŽIT OCR PDF</value>
+    <value>保存OCR PDF </value>
   </data>
   <data name="ADDDOC" xml:space="preserve">
-    <value>PŘILOŽTE DOKUMENTY K SOUBORU</value>
+    <value>将文档附加到文件!</value>
   </data>
   <data name="ADDOCRTODB" xml:space="preserve">
-    <value>ULOŽIT DATA OCR</value>
+    <value>保存OCR数据</value>
   </data>
   <data name="ADDOCRTOOLTIP" xml:space="preserve">
-    <value>Pokud je zaškrtnuto, text aktivního dokumentu vlevo se uloží do databáze.</value>
+    <value>如果选中此选项，则左侧活动文档的文本将保存在数据库中。</value>
   </data>
   <data name="APPDESC" xml:space="preserve">
-    <value>Tato aplikace byla vyvinuta pro usnadnění skenování a sledování dokumentů</value>
+    <value>此应用程序的开发是为了方便扫描和文档跟踪</value>
   </data>
   <data name="APPLY" xml:space="preserve">
-    <value>Použít</value>
+    <value>应用</value>
   </data>
   <data name="APPLYCOLOR" xml:space="preserve">
-    <value>POUŽÍT BARVU</value>
+    <value>应用颜色</value>
   </data>
   <data name="Auto" xml:space="preserve">
-    <value>AUTOMATICKY</value>
+    <value>自动</value>
   </data>
   <data name="AutoPicture" xml:space="preserve">
-    <value>AUTO-PICTURE</value>
+    <value>自动图片</value>
   </data>
   <data name="AutoText" xml:space="preserve">
-    <value>AUTOMATICKÝ TEXT</value>
+    <value>自动文本</value>
   </data>
   <data name="BATCH" xml:space="preserve">
-    <value>KOLEKTIVNÍ PRÁCE</value>
+    <value>集体工作</value>
   </data>
   <data name="BATCHDESC" xml:space="preserve">
-    <value>Když jsou soubory obrázků přidány do složky níže, provádí se automatický překlad do souboru PDF ve stejné složce, dokud je program otevřen</value>
+    <value>当图片文件添加到下面的文件夹时，只要程序打开，就会自动翻译到同一文件夹中的PDF文件</value>
   </data>
   <data name="CAMERA" xml:space="preserve">
-    <value>Kamera</value>
+    <value>摄影机</value>
   </data>
   <data name="COLORCHANGETIP" xml:space="preserve">
-    <value>Pokud na něj kliknete po nastavení prahové hodnoty, můžete zvolit druhou barvu</value>
+    <value>如果您在设置阈值后单击此项，则可以选择第二种颜色</value>
   </data>
   <data name="COMPRESS" xml:space="preserve">
-    <value>ZMÁČKNI TO</value>
+    <value>挤</value>
   </data>
   <data name="Default" xml:space="preserve">
-    <value>VÝCHOZÍ</value>
+    <value>默认</value>
   </data>
   <data name="DSTCOLOR" xml:space="preserve">
-    <value>CÍLOVÁ BARVA</value>
+    <value>目标颜色</value>
   </data>
   <data name="EMPTYPAGE" xml:space="preserve">
-    <value>PŘESKOČTE PRÁZDNÉ STRÁNKY</value>
+    <value>跳过空白页</value>
   </data>
   <data name="EYPOPEN" xml:space="preserve">
-    <value>Otevřete soubory EYP přímo</value>
+    <value>直接打开EYP文件</value>
   </data>
   <data name="FLATBED" xml:space="preserve">
-    <value>PLOCHÁ POSTEL</value>
+    <value>平床</value>
   </data>
   <data name="JPEGQUALITY" xml:space="preserve">
-    <value>RYCHLOST KVALITY JPEG</value>
+    <value>JPEG质量速率</value>
   </data>
   <data name="Left" xml:space="preserve">
-    <value>Zbývá</value>
+    <value>左</value>
   </data>
   <data name="LIMITED" xml:space="preserve">
-    <value>Tento formát souboru má omezenou podporu.</value>
+    <value>此文件格式的支持有限。</value>
   </data>
   <data name="LOAD" xml:space="preserve">
-    <value>Naинst</value>
+    <value>載入</value>
   </data>
   <data name="NOPATCHCODE" xml:space="preserve">
-    <value>Kód opravy nebyl zjištěn</value>
+    <value>未检测到修补程序代码</value>
   </data>
   <data name="NOPROFILE" xml:space="preserve">
-    <value>NEBYL VYBRÁN ŽÁDNÝ PROFIL</value>
+    <value>未选择个人资料</value>
   </data>
   <data name="OCRTIME" xml:space="preserve">
-    <value>Pdf OCR trvá hodně času</value>
+    <value>PDF OCR需要很长时间</value>
   </data>
   <data name="OTHERAPPS" xml:space="preserve">
-    <value>MOJE DALŠÍ APLIKACE</value>
+    <value>我的其他应用程序!</value>
   </data>
   <data name="OVERWRITECOMPRESSED" xml:space="preserve">
-    <value>Přepsat komprimovaný soubor v naskenovaných dokumentech přímo</value>
+    <value>直接覆盖扫描文档中的压缩文件</value>
   </data>
   <data name="PAGENUMBER" xml:space="preserve">
-    <value>STRANA Č.</value>
+    <value>页码</value>
   </data>
   <data name="PDFOPEN" xml:space="preserve">
-    <value>Otevřete soubory PDF přímo.</value>
+    <value>直接打开PDF文件。</value>
   </data>
   <data name="PDFTRACK" xml:space="preserve">
-    <value>PODÍVEJTE SE NA ZMĚNU SLOŽKY PDF</value>
+    <value>观看PDF文件夹更改</value>
   </data>
   <data name="QRDETECT" xml:space="preserve">
-    <value>DETEKUJTE QR</value>
+    <value>检测二维码</value>
   </data>
   <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
-    <value>Smazat zpracované soubory ze seznamu dokumentů</value>
+    <value>从文档列表中删除已处理的文件!</value>
   </data>
   <data name="REMOVESELECTED" xml:space="preserve">
-    <value>Chcete smazat vybraný obrázek?</value>
+    <value>是否要删除所选图像?</value>
   </data>
   <data name="REPLACEPAGE" xml:space="preserve">
-    <value>Nahradit stránky</value>
+    <value>替换页面</value>
   </data>
   <data name="RESTARTAPP" xml:space="preserve">
-    <value>Aplikaci je třeba restartovat</value>
+    <value>需要重新启动应用程序</value>
   </data>
   <data name="Right" xml:space="preserve">
-    <value>Šipka doprava</value>
+    <value>右</value>
   </data>
   <data name="Rotate180" xml:space="preserve">
-    <value>OTOČIT O 180 STUPŇŮ</value>
+    <value>旋转180度</value>
   </data>
   <data name="Rotate270" xml:space="preserve">
-    <value>OTOČIT O 270 STUPŇŮ</value>
+    <value>旋转270度</value>
   </data>
   <data name="Rotate90" xml:space="preserve">
-    <value>OTOČIT O 90 STUPŇŮ</value>
+    <value>旋转90度</value>
   </data>
   <data name="SEPERATOR" xml:space="preserve">
-    <value>Oddělovač</value>
+    <value>分隔符</value>
   </data>
   <data name="SPLIT" xml:space="preserve">
-    <value>Je to rozbité</value>
+    <value>它被砸碎了</value>
   </data>
   <data name="SPLITTERTOOLTIP" xml:space="preserve">
-    <value>Dvakrát klikněte pro obnovení, klikněte pravým tlačítkem myši pro rozbalení</value>
+    <value>双击可恢复，右键单击可展开</value>
   </data>
   <data name="SRCCOLOR" xml:space="preserve">
-    <value>BARVA ZDROJE</value>
+    <value>资源</value>
   </data>
   <data name="SRCCOLORTIP" xml:space="preserve">
-    <value>Klikněte pravým tlačítkem myši a vyberte si barvu</value>
+    <value>右键单击并选择您的颜色</value>
   </data>
   <data name="START" xml:space="preserve">
-    <value>Spustit</value>
+    <value>启动</value>
   </data>
   <data name="TAG" xml:space="preserve">
-    <value>ŠTÍTEK</value>
+    <value>标签</value>
   </data>
   <data name="TASKSRUNNING" xml:space="preserve">
-    <value>Počkejte na dokončení některých úkolů</value>
+    <value>等待一些任务完成</value>
   </data>
   <data name="TESSLANGSELECT" xml:space="preserve">
-    <value>Vyberte jazyk Tesseract</value>
+    <value>选择Tesseract语言</value>
   </data>
   <data name="THIRDPARTY" xml:space="preserve">
-    <value>KNIHOVNY TŘETÍCH STRAN POUŽÍVANÉ V PRAXI</value>
+    <value>第三方图书馆在实践中使用</value>
   </data>
   <data name="THRESHOLD" xml:space="preserve">
-    <value>PRAHOVÁ HODNOTA</value>
+    <value>门槛</value>
   </data>
   <data name="TRANSLATEPENDING" xml:space="preserve">
-    <value>Operace probíhá, počkejte, až to skončí</value>
+    <value>操作正在进行。请等待操作完成</value>
   </data>
   <data name="UPDATE" xml:space="preserve">
-    <value>Aktualizace</value>
+    <value>更新</value>
   </data>
   <data name="WATERMARK" xml:space="preserve">
-    <value>VODOZNAK</value>
+    <value>水印</value>
   </data>
 </root>

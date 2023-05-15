@@ -118,185 +118,182 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="SRC" xml:space="preserve">
-    <value>VYBERTE ZDROJ</value>
+    <value>Seleccionar fuente</value>
   </data>
   <data name="SETTİNGS" xml:space="preserve">
-    <value>NASTAVENÍ</value>
+    <value>CONFIGURACIÓN</value>
   </data>
   <data name="RES" xml:space="preserve">
-    <value>ROZLIŠENÍ</value>
+    <value>RESOLUCIÓN</value>
   </data>
   <data name="ADF" xml:space="preserve">
-    <value>PODAVAČ
-DOKUMENTŮ</value>
+    <value>Alimentador automático de documentos (ADF)</value>
   </data>
   <data name="BW" xml:space="preserve">
-    <value>ČERNOBÍLE</value>
+    <value>NEGRO/BLANCO</value>
   </data>
   <data name="GRAY" xml:space="preserve">
-    <value>GRAYI</value>
+    <value>Gris</value>
   </data>
   <data name="COLOR" xml:space="preserve">
-    <value>BAREVNÉ</value>
+    <value>COLOR</value>
   </data>
   <data name="TWOSIDE" xml:space="preserve">
-    <value>OBOUSMĚRNĚ</value>
+    <value>DOS LADOS</value>
   </data>
   <data name="GUI" xml:space="preserve">
-    <value>ZOBRAZIT ROZHRANÍ</value>
+    <value>MOSTRAR INTERFAZ</value>
   </data>
   <data name="SEPERATESCAN" xml:space="preserve">
-    <value>SKENUJTE KAŽDOU STRÁNKU ZVLÁŠŤ</value>
+    <value>Separado</value>
   </data>
   <data name="SHOWFILE" xml:space="preserve">
-    <value>ZOBRAZIT SOUBOR PO RYCHLÉM SKENOVÁNÍ</value>
+    <value>MOSTRAR ARCHIVO DESPUÉS DE UN ESCANEO RÁPIDO</value>
   </data>
   <data name="OTHERSETTINGS" xml:space="preserve">
-    <value>DALŠÍ NASTAVENÍ</value>
+    <value>Otros ajustes</value>
   </data>
   <data name="DESKEW" xml:space="preserve">
-    <value>OPRAVTE ZAKŘIVENÍ</value>
+    <value>DESKEW</value>
   </data>
   <data name="BORDERDETECT" xml:space="preserve">
-    <value>AUTOMATICKÁ DETEKCE HRAN</value>
+    <value>DETECCIÓN AUTOMÁTICA DE BORDES</value>
   </data>
   <data name="SHOWPROGRESS" xml:space="preserve">
-    <value>UKAŽTE MI PROCENTO</value>
+    <value>Ver el avance</value>
   </data>
   <data name="AUTOROTATE" xml:space="preserve">
-    <value>AUTOMATICKÉ OTÁČENÍ</value>
+    <value>Reproducción automática</value>
   </data>
   <data name="NO ACTION" xml:space="preserve">
-    <value>ŽÁDNÁ AKCE</value>
+    <value>Sin acción</value>
   </data>
   <data name="CLOSECOMP" xml:space="preserve">
-    <value>VYPNĚTE POČÍTAČ</value>
+    <value>CIERRE EL ORDENADOR</value>
   </data>
   <data name="RESTARTCOMP" xml:space="preserve">
-    <value>RESTARTUJTE POČÍTAČ</value>
+    <value>Reiniciar el equipo</value>
   </data>
   <data name="FILENAME" xml:space="preserve">
-    <value>NÁZEV SOUBORU:</value>
+    <value>Nombre de archivo</value>
   </data>
   <data name="DAY" xml:space="preserve">
-    <value>[DEN]</value>
+    <value>[Día]</value>
   </data>
   <data name="MONTH" xml:space="preserve">
-    <value>[MONTH]</value>
+    <value>[Mes]</value>
   </data>
   <data name="YEAR" xml:space="preserve">
-    <value>[ROK]</value>
+    <value>[Año]</value>
   </data>
   <data name="TIME" xml:space="preserve">
-    <value>Hodiny</value>
+    <value>[HORA]</value>
   </data>
   <data name="MINUTE" xml:space="preserve">
-    <value>[MINUTY]</value>
+    <value>[Minuto]</value>
   </data>
   <data name="SECOND" xml:space="preserve">
-    <value>[SEKUNDY]</value>
+    <value>[Secundario]</value>
   </data>
   <data name="GUID" xml:space="preserve">
     <value>[GUID]</value>
   </data>
   <data name="USERNAME" xml:space="preserve">
-    <value>[UŽIVATELSKÉ JMÉNO]</value>
+    <value>Nombre de usuario</value>
   </data>
   <data name="SAVEPROFILE" xml:space="preserve">
-    <value>SKRÝT PROFIL</value>
+    <value>Guardar perfil</value>
   </data>
   <data name="DELETE" xml:space="preserve">
-    <value>SMAZAT</value>
+    <value>Borrar</value>
   </data>
   <data name="SCAN" xml:space="preserve">
-    <value>Hledat</value>
+    <value>ESCANEO</value>
   </data>
   <data name="FASTSCAN" xml:space="preserve">
-    <value>RYCHLÉ
-SKENOVÁNÍ</value>
+    <value>Eco FAST</value>
   </data>
   <data name="AUTOPATH" xml:space="preserve">
-    <value>AUTOMATICKÉ
-ULOŽENÍ</value>
+    <value>Escaneo automático</value>
   </data>
   <data name="ALL" xml:space="preserve">
-    <value>Celkem</value>
+    <value>TODO</value>
   </data>
   <data name="NONE" xml:space="preserve">
-    <value>NIKDO Z NICH</value>
+    <value>NINGUNO</value>
   </data>
   <data name="REVERSE" xml:space="preserve">
-    <value>ZPÁTEČKA</value>
+    <value>REVERSO</value>
   </data>
   <data name="PREVIEWSIZE" xml:space="preserve">
-    <value>VELIKOST NÁHLEDU OBRÁZKU</value>
+    <value>Vista previa de la imagen</value>
   </data>
   <data name="PDFPROTECT" xml:space="preserve">
-    <value>Pdf Protect</value>
+    <value>PDF ¡PROTEGE</value>
   </data>
   <data name="ENCRYPT" xml:space="preserve">
-    <value>ŠIFROVAT</value>
+    <value>CÍFRALO</value>
   </data>
   <data name="PDFWARN" xml:space="preserve">
-    <value>ZDE PROVEDENÁ NASTAVENÍ OVLIVŇUJÍ VŠECHNY ZÁZNAMY PDF.
-TAKÉ OCHRANA PDF MŮŽE BÝT PORUŠENA APLIKACEMI TŘETÍCH STRAN.</value>
+    <value>LA CONFIGURACIÓN REALIZADA AQUÍ AFECTA A TODAS LAS GRABACIONES EN PDF. 
+TAMBIÉN LA PROTECCIÓN PDF PUEDE ser ROTA por APLICACIONES DE TERCEROS.</value>
   </data>
   <data name="ALLOWPRINT" xml:space="preserve">
-    <value>POVOLIT TISK</value>
+    <value>PERMITIR IMPRESIÓN</value>
   </data>
   <data name="ALLOWCOPY" xml:space="preserve">
-    <value>POVOLIT KOPÍROVÁNÍ OBSAHU</value>
+    <value>PERMITIR COPIA</value>
   </data>
   <data name="ALLOWEDIT" xml:space="preserve">
-    <value>POVOLIT EDITACI DOKUMENTU</value>
+    <value>Permitir edición</value>
   </data>
   <data name="SAVESELECTED" xml:space="preserve">
-    <value>ZACHRAŇTE VÝBĚRY</value>
+    <value>Guardar selección</value>
   </data>
   <data name="CLEARLIST" xml:space="preserve">
-    <value>VYČISTĚTE SEZNAM</value>
+    <value>Limpiar</value>
   </data>
   <data name="MERGEPDF" xml:space="preserve">
-    <value>SLOUČIT PDF</value>
+    <value>Unir un PDF</value>
   </data>
   <data name="ABOUT" xml:space="preserve">
-    <value>O NÁS</value>
+    <value>ACERCA DE</value>
   </data>
   <data name="DOCUMENT" xml:space="preserve">
-    <value>PAPÍROVÁNÍ</value>
+    <value>DOCUMENTAR</value>
   </data>
   <data name="TRIMIMAGE" xml:space="preserve">
-    <value>OŘÍZNOUT OBRÁZEK</value>
+    <value>RECORTA LA IMAGEN</value>
   </data>
   <data name="RESET" xml:space="preserve">
-    <value>RESET</value>
+    <value>Contraseña restaurada</value>
   </data>
   <data name="WIDTHCOUNT" xml:space="preserve">
-    <value>POČET NEJVÍCE</value>
+    <value>RECUENTO DE ANCHO</value>
   </data>
   <data name="HEIGHTCOUNT" xml:space="preserve">
-    <value>POČET VÝŠEK</value>
+    <value>CUENTA LA ALTURA</value>
   </data>
   <data name="SLICE" xml:space="preserve">
-    <value>ROZBIJ TO</value>
+    <value>CORTAR</value>
   </data>
   <data name="TEXT" xml:space="preserve">
-    <value>METINE</value>
+    <value>TEXTO</value>
   </data>
   <data name="TEXTSIZE" xml:space="preserve">
-    <value>VELIKOST TEXTU</value>
+    <value>Tamaño del texto</value>
   </data>
   <data name="TEXTANGLE" xml:space="preserve">
-    <value>ÚHEL TEXTU</value>
+    <value>Ángulo de texto</value>
   </data>
   <data name="FONT" xml:space="preserve">
-    <value>PÍSMO</value>
+    <value>Fuente</value>
   </data>
   <data name="DRAWTEXT" xml:space="preserve">
-    <value>NAKRESLETE TEXT</value>
+    <value>herramienta Inserción de texto</value>
   </data>
   <data name="SAVEPDF" xml:space="preserve">
-    <value>Uložit</value>
+    <value>Guardar PDF</value>
   </data>
   <data name="FIX" xml:space="preserve">
     <value />
@@ -305,265 +302,265 @@ TAKÉ OCHRANA PDF MŮŽE BÝT PORUŠENA APLIKACEMI TŘETÍCH STRAN.</value>
     <value>OCR</value>
   </data>
   <data name="FILE" xml:space="preserve">
-    <value>Soubor</value>
+    <value>ARCHIVO</value>
   </data>
   <data name="CALENDAR" xml:space="preserve">
-    <value>KALENDÁŘ</value>
+    <value>CALENDARIO</value>
   </data>
   <data name="GRAPH" xml:space="preserve">
-    <value>GRAFIKA</value>
+    <value>Gráfico</value>
   </data>
   <data name="VIEWALL" xml:space="preserve">
-    <value>ZOBRAZIT VŠE</value>
+    <value>VER TODOS</value>
   </data>
   <data name="PREVIEWFILE" xml:space="preserve">
-    <value>NÁHLED SOUBORU</value>
+    <value>Previsualizar archivo</value>
   </data>
   <data name="TESSERACT" xml:space="preserve">
-    <value>TESSERACT</value>
+    <value>Teseracto</value>
   </data>
   <data name="MERGE" xml:space="preserve">
-    <value>DEJ TO DOHROMADY</value>
+    <value>Combinar</value>
   </data>
   <data name="MERGESELECTED" xml:space="preserve">
-    <value>SLOUČIT OZNAČENÉ
-SOUBORY PDF</value>
+    <value>COMBINE EL PDF SELECCIONADO</value>
   </data>
   <data name="SELECTTWOPDF" xml:space="preserve">
-    <value>VYBERTE ALESPOŇ DVA SOUBORY PDF</value>
+    <value>SELECCIONE AL MENOS DOS ARCHIVOS PDF</value>
   </data>
   <data name="READACTIVEPAGE" xml:space="preserve">
-    <value>PŘEČTĚTE SI AKTIVNÍ STRÁNKU</value>
+    <value>Página activa</value>
   </data>
   <data name="CONTENT" xml:space="preserve">
-    <value>NÁPOJE SE ČTOU</value>
+    <value>CONTENIDO</value>
   </data>
   <data name="SHOWFOLDER" xml:space="preserve">
-    <value>ZOBRAZIT VE SLOŽCE</value>
+    <value>Mostrar en la carpeta</value>
   </data>
   <data name="CRUNTIME" xml:space="preserve">
-    <value>Vzhledem k tomu, že binární soubory Tesseract a leptonica jsou kompilovány s Visual Studio 2019, musíte se ujistit, že je nainstalován Visual Studio 2019 Runtime</value>
+    <value>Dado que los binarios tesseract y leptonica se compilan con Visual Studio 2019, ¡debe asegurarse de tener instalado Visual Studio 2019 Runtime</value>
   </data>
   <data name="OTHERTESSERACT" xml:space="preserve">
-    <value>V případě potřeby stáhněte také další jazykové datové soubory pro tesseract 4.1.0 z tesseract-ocr. Dejte to do složky Tessdata</value>
+    <value>También descargue otros archivos de datos de idioma para tesseract 4.1.0 de tesseract-ocr si es necesario. Ponlo en la carpeta tessdata.</value>
   </data>
   <data name="VC" xml:space="preserve">
-    <value>Visual Studio 2019 x86 a x64 Runtime</value>
+    <value>Visual Studio 2019 x86 y x64 Runtimes</value>
   </data>
   <data name="OTHERTESSERACTLINK" xml:space="preserve">
-    <value>Další tesseract jazyková data</value>
+    <value>Otros datos de lenguaje tesseract</value>
   </data>
   <data name="SCANNER" xml:space="preserve">
-    <value>SKENER</value>
+    <value>SCANNER</value>
   </data>
   <data name="PASSWORD" xml:space="preserve">
-    <value>HESLO</value>
+    <value>CONTRASEÑA</value>
   </data>
   <data name="WARNREBOOT" xml:space="preserve">
-    <value>Vypnout nebo restartovat nastavení!</value>
+    <value>El apagado o reinicio está establecido</value>
   </data>
   <data name="FASTSCANAFTER" xml:space="preserve">
-    <value>Akce, která má být provedena po dokončení rychlého skenování</value>
+    <value>Después del trabajo de escaneo rápido</value>
   </data>
   <data name="AUTOFOLDER" xml:space="preserve">
-    <value>Zadat automatické uložení složky.</value>
+    <value>Establecer carpeta de guardado automático</value>
   </data>
   <data name="AUTOFOLDERCHANGE" xml:space="preserve">
-    <value>Automaticky uložená cesta změněna. Staré soubory nebudou přesunuty do nové složky.</value>
+    <value>Se ha cambiado la ruta de guardado automático. Los archivos antiguos no se moverán a la carpeta recién determinada.</value>
   </data>
   <data name="LISTREMOVEWARN" xml:space="preserve">
-    <value>Všechny naskenované dokumenty ve výše uvedeném seznamu budou smazány. Chcete pokračovat?</value>
+    <value>Todos los documentos escaneados en la lista superior se eliminarán. ¿Desea continuar?</value>
   </data>
   <data name="DEFAULTSCANNAME" xml:space="preserve">
-    <value>Neskenujte</value>
+    <value>Escanear</value>
   </data>
   <data name="ROTSAVE" xml:space="preserve">
-    <value>Ušetřete s Rotation Applied?</value>
+    <value>Aplicar rotación</value>
   </data>
   <data name="APPRUNNING" xml:space="preserve">
-    <value>Aplikace je již spuštěna</value>
+    <value>La aplicación ya se está ejecutando</value>
   </data>
   <data name="REGSTI" xml:space="preserve">
-    <value>PŘIDAT DO MENU PROHLÍŽEČE</value>
+    <value>REGISTRAR DISPOSITIVO STI</value>
   </data>
   <data name="TRANSLATE" xml:space="preserve">
-    <value>PŘEKLAD</value>
+    <value>TRANSLATE</value>
   </data>
   <data name="SOURCELANG" xml:space="preserve">
-    <value>ZDROJOVÝ JAZYK</value>
+    <value>SOURCE LANGUAGE</value>
   </data>
   <data name="DESTLANG" xml:space="preserve">
-    <value>CÍLOVÁ ŘEČ</value>
+    <value>idioma de destino</value>
   </data>
   <data name="UNREGSTI" xml:space="preserve">
-    <value>ODEBRAT Z NABÍDKY PROHLÍŽEČE</value>
+    <value>ANULE EL REGISTRO DEL DISPOSITIVO STI</value>
   </data>
   <data name="SEPERATESCANTOOLTIP" xml:space="preserve">
-    <value>Každá stránka se uloží do samostatného souboru Soubory se uloží do níže uvedené složky.</value>
+    <value>Guardar cada página en archivos separados se guardan en la carpeta especificada a continuación.</value>
   </data>
   <data name="OCRPDFSAVE" xml:space="preserve">
-    <value>ULOŽIT OCR PDF</value>
+    <value>GUARDAR OCR PDF</value>
   </data>
   <data name="ADDDOC" xml:space="preserve">
-    <value>PŘILOŽTE DOKUMENTY K SOUBORU</value>
+    <value>AÑADIR DOCUMENTO
+AL ARCHIVO</value>
   </data>
   <data name="ADDOCRTODB" xml:space="preserve">
-    <value>ULOŽIT DATA OCR</value>
+    <value>AÑADIR OCR A LA BASE DE DATOS</value>
   </data>
   <data name="ADDOCRTOOLTIP" xml:space="preserve">
-    <value>Pokud je zaškrtnuto, text aktivního dokumentu vlevo se uloží do databáze.</value>
+    <value>Si esto está marcado, el documento marcado a continuación se guarda en la base de datos como el texto del documento activo a la izquierda.</value>
   </data>
   <data name="APPDESC" xml:space="preserve">
-    <value>Tato aplikace byla vyvinuta pro usnadnění skenování a sledování dokumentů</value>
+    <value>Esta aplicación ha sido desarrollada para facilitar el escaneo y el seguimiento de documentos.</value>
   </data>
   <data name="APPLY" xml:space="preserve">
-    <value>Použít</value>
+    <value>APLICAR</value>
   </data>
   <data name="APPLYCOLOR" xml:space="preserve">
-    <value>POUŽÍT BARVU</value>
+    <value>Cambiar el color</value>
   </data>
   <data name="Auto" xml:space="preserve">
-    <value>AUTOMATICKY</value>
+    <value>AUTOMÁTICO</value>
   </data>
   <data name="AutoPicture" xml:space="preserve">
-    <value>AUTO-PICTURE</value>
+    <value>IMAGEN AUTOMÁTICA</value>
   </data>
   <data name="AutoText" xml:space="preserve">
-    <value>AUTOMATICKÝ TEXT</value>
+    <value>TEXTO AUTOMÁTICO</value>
   </data>
   <data name="BATCH" xml:space="preserve">
-    <value>KOLEKTIVNÍ PRÁCE</value>
+    <value>BATCH</value>
   </data>
   <data name="BATCHDESC" xml:space="preserve">
-    <value>Když jsou soubory obrázků přidány do složky níže, provádí se automatický překlad do souboru PDF ve stejné složce, dokud je program otevřen</value>
+    <value>Cuando se agregan archivos de imagen a la carpeta especificada a continuación, la conversión automática a archivos PDF en la misma carpeta se realiza siempre que el programa esté abierto.</value>
   </data>
   <data name="CAMERA" xml:space="preserve">
-    <value>Kamera</value>
+    <value>CÁMARA</value>
   </data>
   <data name="COLORCHANGETIP" xml:space="preserve">
-    <value>Pokud na něj kliknete po nastavení prahové hodnoty, můžete zvolit druhou barvu</value>
+    <value>Si hace clic en esto después de establecer el valor umbral, puede hacer una segunda selección de color.</value>
   </data>
   <data name="COMPRESS" xml:space="preserve">
-    <value>ZMÁČKNI TO</value>
+    <value>Comprimir</value>
   </data>
   <data name="Default" xml:space="preserve">
-    <value>VÝCHOZÍ</value>
+    <value>POR DEFECTO</value>
   </data>
   <data name="DSTCOLOR" xml:space="preserve">
-    <value>CÍLOVÁ BARVA</value>
+    <value>Color de destino</value>
   </data>
   <data name="EMPTYPAGE" xml:space="preserve">
-    <value>PŘESKOČTE PRÁZDNÉ STRÁNKY</value>
+    <value>Pagina vacia</value>
   </data>
   <data name="EYPOPEN" xml:space="preserve">
-    <value>Otevřete soubory EYP přímo</value>
+    <value>Abra los archivos Eyp directamente</value>
   </data>
   <data name="FLATBED" xml:space="preserve">
-    <value>PLOCHÁ POSTEL</value>
+    <value>ES Flatbed</value>
   </data>
   <data name="JPEGQUALITY" xml:space="preserve">
-    <value>RYCHLOST KVALITY JPEG</value>
+    <value>Calidad JPEG</value>
   </data>
   <data name="Left" xml:space="preserve">
-    <value>Zbývá</value>
+    <value>IZQUIERDA</value>
   </data>
   <data name="LIMITED" xml:space="preserve">
-    <value>Tento formát souboru má omezenou podporu.</value>
+    <value>Este formato de archivo tiene soporte limitado.</value>
   </data>
   <data name="LOAD" xml:space="preserve">
-    <value>Naинst</value>
+    <value>CARGA</value>
   </data>
   <data name="NOPATCHCODE" xml:space="preserve">
-    <value>Kód opravy nebyl zjištěn</value>
+    <value>No se ha detectado ningún código de parche</value>
   </data>
   <data name="NOPROFILE" xml:space="preserve">
-    <value>NEBYL VYBRÁN ŽÁDNÝ PROFIL</value>
+    <value>No hay perfil seleccionado.</value>
   </data>
   <data name="OCRTIME" xml:space="preserve">
-    <value>Pdf OCR trvá hodně času</value>
+    <value>El proceso Ocr en PDF requiere tiempo adicional.</value>
   </data>
   <data name="OTHERAPPS" xml:space="preserve">
-    <value>MOJE DALŠÍ APLIKACE</value>
+    <value>Otras aplicaciones</value>
   </data>
   <data name="OVERWRITECOMPRESSED" xml:space="preserve">
-    <value>Přepsat komprimovaný soubor v naskenovaných dokumentech přímo</value>
+    <value>Sobrescriba directamente el archivo comprimido en los documentos escaneados</value>
   </data>
   <data name="PAGENUMBER" xml:space="preserve">
-    <value>STRANA Č.</value>
+    <value>NÚMERO DE PÁGINA</value>
   </data>
   <data name="PDFOPEN" xml:space="preserve">
-    <value>Otevřete soubory PDF přímo.</value>
+    <value>Abrir archivos pdf directamente</value>
   </data>
   <data name="PDFTRACK" xml:space="preserve">
-    <value>PODÍVEJTE SE NA ZMĚNU SLOŽKY PDF</value>
+    <value>VER EL CAMBIO DE CARPETA PDF</value>
   </data>
   <data name="QRDETECT" xml:space="preserve">
-    <value>DETEKUJTE QR</value>
+    <value>DETECTE QR</value>
   </data>
   <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
-    <value>Smazat zpracované soubory ze seznamu dokumentů</value>
+    <value>Eliminar archivos procesados de la lista de documentos</value>
   </data>
   <data name="REMOVESELECTED" xml:space="preserve">
-    <value>Chcete smazat vybraný obrázek?</value>
+    <value>¿Desea eliminar el cuestionario seleccionado?</value>
   </data>
   <data name="REPLACEPAGE" xml:space="preserve">
-    <value>Nahradit stránky</value>
+    <value>Reemplazar páginas</value>
   </data>
   <data name="RESTARTAPP" xml:space="preserve">
-    <value>Aplikaci je třeba restartovat</value>
+    <value>RESTARTAPP</value>
   </data>
   <data name="Right" xml:space="preserve">
-    <value>Šipka doprava</value>
+    <value>Exacto</value>
   </data>
   <data name="Rotate180" xml:space="preserve">
-    <value>OTOČIT O 180 STUPŇŮ</value>
+    <value>Rotar 180 grados</value>
   </data>
   <data name="Rotate270" xml:space="preserve">
-    <value>OTOČIT O 270 STUPŇŮ</value>
+    <value>Rotar 270 grados</value>
   </data>
   <data name="Rotate90" xml:space="preserve">
-    <value>OTOČIT O 90 STUPŇŮ</value>
+    <value>Rotar 90 grados</value>
   </data>
   <data name="SEPERATOR" xml:space="preserve">
-    <value>Oddělovač</value>
+    <value>Separador</value>
   </data>
   <data name="SPLIT" xml:space="preserve">
-    <value>Je to rozbité</value>
+    <value>Fraccionado</value>
   </data>
   <data name="SPLITTERTOOLTIP" xml:space="preserve">
-    <value>Dvakrát klikněte pro obnovení, klikněte pravým tlačítkem myši pro rozbalení</value>
+    <value>Haga doble clic para restaurar, haga clic derecho para expandir</value>
   </data>
   <data name="SRCCOLOR" xml:space="preserve">
-    <value>BARVA ZDROJE</value>
+    <value>Lista de colores de fuente</value>
   </data>
   <data name="SRCCOLORTIP" xml:space="preserve">
-    <value>Klikněte pravým tlačítkem myši a vyberte si barvu</value>
+    <value>Haga clic derecho para seleccionar el color de origen.</value>
   </data>
   <data name="START" xml:space="preserve">
-    <value>Spustit</value>
+    <value>COMENZAR</value>
   </data>
   <data name="TAG" xml:space="preserve">
-    <value>ŠTÍTEK</value>
+    <value>TAG</value>
   </data>
   <data name="TASKSRUNNING" xml:space="preserve">
-    <value>Počkejte na dokončení některých úkolů</value>
+    <value>Algunas tareas se ejecutan a la espera de que termine.</value>
   </data>
   <data name="TESSLANGSELECT" xml:space="preserve">
-    <value>Vyberte jazyk Tesseract</value>
+    <value>Seleccione Tesseract Language</value>
   </data>
   <data name="THIRDPARTY" xml:space="preserve">
-    <value>KNIHOVNY TŘETÍCH STRAN POUŽÍVANÉ V PRAXI</value>
+    <value>BIBLIOTECAS DE TERCEROS UTILIZADAS EN LA APLICACIÓN</value>
   </data>
   <data name="THRESHOLD" xml:space="preserve">
-    <value>PRAHOVÁ HODNOTA</value>
+    <value>UMBRAL</value>
   </data>
   <data name="TRANSLATEPENDING" xml:space="preserve">
-    <value>Operace probíhá, počkejte, až to skončí</value>
+    <value>El proceso está en progreso. ¡Espera a que termine</value>
   </data>
   <data name="UPDATE" xml:space="preserve">
-    <value>Aktualizace</value>
+    <value>ACTUALIZAR</value>
   </data>
   <data name="WATERMARK" xml:space="preserve">
-    <value>VODOZNAK</value>
+    <value>MARCA DE AGUA</value>
   </data>
 </root>
