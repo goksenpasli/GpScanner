@@ -40,33 +40,39 @@ namespace GpScanner.ViewModel
 
             TesseractDownload = new RelayCommand<object>(async parameter =>
             {
-                string datafile = null;
-                try
+                if (parameter is TesseractOcrData ocrData)
                 {
-                    TesseractOcrData ocrData = parameter as TesseractOcrData;
-                    datafile = $@"{tessdatafolder}\{ocrData.OcrName}";
-                    using WebClient client = new();
-                    client.DownloadProgressChanged += (s, e) =>
+                    string datafile = null;
+                    try
                     {
-                        ocrData.ProgressValue = e.ProgressPercentage;
-                        ocrData.IsEnabled = ocrData.ProgressValue == 100;
-                    };
-                    client.DownloadFileCompleted += (s, e) =>
-                    {
-                        if (e.Error is null)
+                        datafile = $@"{tessdatafolder}\{ocrData.OcrName}";
+                        using WebClient client = new();
+                        client.DownloadProgressChanged += (s, e) =>
                         {
-                            TesseractFiles = GetTesseractFiles(Tessdatafolder);
-                        }
-                    };
-                    Uri address = new($"https://github.com/tesseract-ocr/tessdata_best/raw/main/{ocrData.OcrName}");
-                    await client.DownloadFileTaskAsync(address, datafile);
-                }
-                catch (Exception ex)
-                {
-                    _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
-                    if (new FileInfo(datafile)?.Length == 0)
+                            ocrData.ProgressValue = e.ProgressPercentage;
+                            ocrData.IsEnabled = ocrData.ProgressValue == 100;
+                        };
+                        client.DownloadFileCompleted += (s, e) =>
+                        {
+                            if (e.Error is null)
+                            {
+                                TesseractFiles = GetTesseractFiles(Tessdatafolder);
+                            }
+                        };
+                        Uri address = new($"https://github.com/tesseract-ocr/tessdata_best/raw/main/{ocrData.OcrName}");
+                        await client.DownloadFileTaskAsync(address, datafile);
+                    }
+                    catch (Exception ex)
                     {
-                        File.Delete(datafile);
+                        _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+                        if (new FileInfo(datafile)?.Length == 0)
+                        {
+                            File.Delete(datafile);
+                        }
+                    }
+                    finally
+                    {
+                        ocrData.IsEnabled = true;
                     }
                 }
             }, parameter => true);

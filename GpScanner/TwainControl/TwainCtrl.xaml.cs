@@ -742,6 +742,47 @@ namespace TwainControl
                 }
             }, parameter => true);
 
+            PasteFileToPdfFile = new RelayCommand<object>(async parameter =>
+            {
+                if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
+                {
+                    System.Windows.Forms.IDataObject clipboardData = System.Windows.Forms.Clipboard.GetDataObject();
+                    string pdfFilePath = pdfviewer.PdfFilePath;
+                    if (clipboardData?.GetDataPresent(System.Windows.Forms.DataFormats.FileDrop) == true)
+                    {
+                        List<string> clipboardpdffiles = ((string[])clipboardData.GetData(System.Windows.Forms.DataFormats.FileDrop)).Where(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase)).ToList();
+                        clipboardpdffiles.Add(pdfFilePath);
+                        await Task.Run(() => clipboardpdffiles.ToArray().MergePdf().Save(pdfFilePath));
+                        pdfviewer.PdfFilePath = null;
+                        pdfviewer.PdfFilePath = pdfFilePath;
+                        clipboardpdffiles = null;
+                        GC.Collect();
+                        return;
+                    }
+                    if (clipboardData?.GetDataPresent(System.Windows.Forms.DataFormats.Bitmap) == true)
+                    {
+                        using Bitmap bitmap = (Bitmap)clipboardData.GetData(System.Windows.Forms.DataFormats.Bitmap);
+                        BitmapSource image = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                        if (image != null)
+                        {
+                            string temporarypdf = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
+                            BitmapFrame bitmapFrame = GenerateBitmapFrame(image, SelectedPaper);
+                            string[] processedfiles = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)
+                                ? (new string[] { pdfFilePath, temporarypdf })
+                                : (new string[] { temporarypdf, pdfFilePath });
+                            await Task.Run(() =>
+                            {
+                                using PdfDocument pdfDocument = bitmapFrame.GeneratePdf(null, Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, (int)Settings.Default.Çözünürlük);
+                                pdfDocument.Save(temporarypdf);
+                                processedfiles.MergePdf().Save(pdfFilePath);
+                            });
+                            NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
+                            GC.Collect();
+                        }
+                    }
+                }
+            }, parameter => true);
+
             ReadPdfTag = new RelayCommand<object>(parameter =>
             {
                 if (parameter is string filepath && File.Exists(filepath))
@@ -1256,6 +1297,8 @@ namespace TwainControl
                 }
             }
         }
+
+        public ICommand PasteFileToPdfFile { get; }
 
         public bool PdfImportThumbPanelOpen {
             get => pdfImportThumbPanelOpen;

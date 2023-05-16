@@ -828,27 +828,82 @@
                                         <Image Width="24" Height="24"
                                             Source="/TwainControl;component/Icons/undo.png" />
                                     </Button>
-                                    <Button local:Policy.PolicyName="Tümünüİşaretle" BorderBrush="Cyan"
-                                        Command="{Binding Tümünüİşaretle}">
+                                    <Extensions:ContentToggleButton>
                                         <Image Width="24" Height="24"
-                                            Source="/TwainControl;component/Icons/selectall.png" />
-                                    </Button>
-                                    <Button local:Policy.PolicyName="TümününİşaretiniKaldır" Command="{Binding TümününİşaretiniKaldır}">
-                                        <Image Width="24" Height="24"
-                                            Source="/TwainControl;component/Icons/none.png" />
-                                    </Button>
-                                    <Button local:Policy.PolicyName="Tersiniİşaretle" Command="{Binding Tersiniİşaretle}">
-                                        <Image Width="24" Height="24"
-                                            Source="/TwainControl;component/Icons/inverse.png" />
-                                    </Button>
-                                    <Button local:Policy.PolicyName="TümünüİşaretleDikey" Command="{Binding TümünüİşaretleDikey}">
-                                        <Image Width="24" Height="24"
-                                            Source="/TwainControl;component/Icons/portrait.png" />
-                                    </Button>
-                                    <Button local:Policy.PolicyName="TümünüİşaretleYatay" Command="{Binding TümünüİşaretleYatay}">
-                                        <Image Width="24" Height="24"
-                                            Source="/TwainControl;component/Icons/landscape.png" />
-                                    </Button>
+                                            Source="/TwainControl;component/Icons/delete.png" />
+                                        <Extensions:ContentToggleButton.OverContent>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button Command="{Binding ListeTemizle}">
+                                                    <Button.Content>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Image Width="16" Height="16"
+                                                                Source="/TwainControl;component/Icons/delete.png" />
+                                                            <TextBlock VerticalAlignment="Center">
+                                                                <Run Text="{local:Loc ALL}" />
+                                                                <Run Text="{local:Loc CLEARLIST}" />
+                                                            </TextBlock>
+                                                        </StackPanel>
+                                                    </Button.Content>
+                                                </Button>
+                                                <Button Command="{Binding SeçiliListeTemizle}">
+                                                    <Button.Content>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Image Width="16" Height="16"
+                                                                Source="/TwainControl;component/Icons/delete.png" />
+                                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc CLEARLIST}" />
+                                                        </StackPanel>
+                                                    </Button.Content>
+                                                </Button>
+                                            </StackPanel>
+                                        </Extensions:ContentToggleButton.OverContent>
+                                    </Extensions:ContentToggleButton>
+                                    <Extensions:ContentToggleButton>
+                                        <Image Width="24" Height="24">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="127" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <Extensions:ContentToggleButton.OverContent>
+                                            <StackPanel Background="{StaticResource BorderBackground}" Orientation="Horizontal">
+                                                <Button local:Policy.PolicyName="Tümünüİşaretle" BorderBrush="Cyan"
+                                                    Command="{Binding Tümünüİşaretle}">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Image Width="32" Height="32"
+                                                            Source="/TwainControl;component/Icons/selectall.png" />
+                                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc ALL}" />
+                                                    </StackPanel>
+                                                </Button>
+                                                <Button local:Policy.PolicyName="TümününİşaretiniKaldır" Command="{Binding TümününİşaretiniKaldır}">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Image Width="32" Height="32"
+                                                            Source="/TwainControl;component/Icons/none.png" />
+                                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc NONE}" />
+                                                    </StackPanel>
+                                                </Button>
+                                                <Button local:Policy.PolicyName="Tersiniİşaretle" Command="{Binding Tersiniİşaretle}">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Image Width="32" Height="32"
+                                                            Source="/TwainControl;component/Icons/inverse.png" />
+                                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc REVERSE}" />
+                                                    </StackPanel>
+                                                </Button>
+                                                <Rectangle Width="1"
+                                                    VerticalAlignment="Stretch"
+                                                    Fill="Black" />
+                                                <Button local:Policy.PolicyName="TümünüİşaretleDikey" Command="{Binding TümünüİşaretleDikey}">
+                                                    <Image Width="32" Height="32"
+                                                        Source="/TwainControl;component/Icons/portrait.png" />
+                                                </Button>
+                                                <Button local:Policy.PolicyName="TümünüİşaretleYatay" Command="{Binding TümünüİşaretleYatay}">
+                                                    <Image Width="32" Height="32"
+                                                        Source="/TwainControl;component/Icons/landscape.png" />
+                                                </Button>
+                                            </StackPanel>
+                                        </Extensions:ContentToggleButton.OverContent>
+                                    </Extensions:ContentToggleButton>
                                     <Button local:Policy.PolicyName="SaveFileList" Command="{Binding SaveFileList}">
                                         <Image Width="24" Height="24"
                                             Source="/TwainControl;component/Icons/save.png" />
@@ -875,34 +930,6 @@
                                             </Image.Source>
                                         </Image>
                                     </Button>
-                                    <Extensions:ContentToggleButton>
-                                        <TextBlock Text="{local:Loc CLEARLIST}" />
-                                        <Extensions:ContentToggleButton.OverContent>
-                                            <Menu>
-                                                <MenuItem Command="{Binding ListeTemizle}">
-                                                    <MenuItem.Header>
-                                                        <TextBlock VerticalAlignment="Center">
-                                                            <Run Text="{local:Loc ALL}" />
-                                                            <Run Text="{local:Loc CLEARLIST}" />
-                                                        </TextBlock>
-                                                    </MenuItem.Header>
-                                                    <MenuItem.Icon>
-                                                        <Image Width="16" Height="16"
-                                                            Source="/TwainControl;component/Icons/delete.png" />
-                                                    </MenuItem.Icon>
-                                                </MenuItem>
-                                                <MenuItem Command="{Binding SeçiliListeTemizle}">
-                                                    <MenuItem.Header>
-                                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc CLEARLIST}" />
-                                                    </MenuItem.Header>
-                                                    <MenuItem.Icon>
-                                                        <Image Width="16" Height="16"
-                                                            Source="/TwainControl;component/Icons/delete.png" />
-                                                    </MenuItem.Icon>
-                                                </MenuItem>
-                                            </Menu>
-                                        </Extensions:ContentToggleButton.OverContent>
-                                    </Extensions:ContentToggleButton>
                                 </WrapPanel>
                             </ScrollViewer>
                             <StackPanel Grid.Column="3">
@@ -1324,7 +1351,7 @@
                             <Image.Source>
                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                     <Binding Source="Shell32.dll" />
-                                    <Binding Source="54" />
+                                    <Binding Source="260" />
                                 </MultiBinding>
                             </Image.Source>
                         </Image>

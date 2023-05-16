@@ -56,7 +56,7 @@
                             twainctrl:Policy.PolicyName="TesseractDownload"
                             Command="{Binding DataContext.TesseractDownload, RelativeSource={RelativeSource AncestorType=UserControl}}"
                             CommandParameter="{Binding Mode=OneWay}"
-                            IsEnabled="{Binding IsEnabled}"
+                            IsEnabled="{Binding IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             Visibility="{Binding IsVisible}">
                             <Button.Content>
                                 <Grid>
