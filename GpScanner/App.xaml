@@ -327,9 +327,7 @@
                                 </Image>
                             </Button.Content>
                         </Button>
-                        <Button BorderBrush="Cyan"
-                            Command="{Binding PasteFileToPdfFile}"
-                            CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
+                        <Button Command="{Binding PasteFileToPdfFile}" CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
                             <Button.Content>
                                 <Image Width="16" Height="16">
                                     <Image.Source>

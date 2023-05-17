@@ -584,6 +584,11 @@ namespace TwainControl
                         ScannedImage scannedImage = new() { Seçili = true, Resim = bitmapFrame };
                         Scanner?.Resimler.Add(scannedImage);
                         scannedImage = null;
+                        image = null;
+                        clipboardData = null;
+                        bitmapFrame = null;
+                        System.Windows.Forms.Clipboard.Clear();
+                        GC.Collect();
                     }
                 }
             }, parameter => true);
@@ -751,14 +756,35 @@ namespace TwainControl
                     if (clipboardData?.GetDataPresent(System.Windows.Forms.DataFormats.FileDrop) == true)
                     {
                         List<string> clipboardpdffiles = ((string[])clipboardData.GetData(System.Windows.Forms.DataFormats.FileDrop)).Where(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase)).ToList();
-                        clipboardpdffiles.Add(pdfFilePath);
-                        await Task.Run(() => clipboardpdffiles.ToArray().MergePdf().Save(pdfFilePath));
-                        pdfviewer.PdfFilePath = null;
-                        pdfviewer.PdfFilePath = pdfFilePath;
-                        clipboardpdffiles = null;
+                        if (clipboardpdffiles?.Any() == true)
+                        {
+                            clipboardpdffiles.Add(pdfFilePath);
+                            await Task.Run(() => clipboardpdffiles.ToArray().MergePdf().Save(pdfFilePath));
+                            pdfviewer.Sayfa = 1;
+                            pdfviewer.PdfFilePath = null;
+                            pdfviewer.PdfFilePath = pdfFilePath;
+                            clipboardpdffiles = null;
+                        }
+
+                        List<string> clipboardimagefiles = ((string[])clipboardData.GetData(System.Windows.Forms.DataFormats.FileDrop)).Where(z => imagefileextensions.Any(ext => ext == Path.GetExtension(z).ToLower())).ToList();
+                        if (clipboardimagefiles?.Any() == true)
+                        {
+                            string temporarypdf = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
+                            using PdfDocument document = clipboardimagefiles.GeneratePdf(SelectedPaper, null);
+                            document.Save(temporarypdf);
+                            string[] processedfiles = new string[] { temporarypdf, pdfFilePath };
+                            await Task.Run(() => processedfiles.MergePdf().Save(pdfFilePath));
+                            pdfviewer.Sayfa = 1;
+                            pdfviewer.PdfFilePath = null;
+                            pdfviewer.PdfFilePath = pdfFilePath;
+                            clipboardimagefiles = null;
+                        }
+                        clipboardData = null;
+                        System.Windows.Forms.Clipboard.Clear();
                         GC.Collect();
                         return;
                     }
+
                     if (clipboardData?.GetDataPresent(System.Windows.Forms.DataFormats.Bitmap) == true)
                     {
                         using Bitmap bitmap = (Bitmap)clipboardData.GetData(System.Windows.Forms.DataFormats.Bitmap);
@@ -767,16 +793,20 @@ namespace TwainControl
                         {
                             string temporarypdf = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
                             BitmapFrame bitmapFrame = GenerateBitmapFrame(image, SelectedPaper);
-                            string[] processedfiles = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)
-                                ? (new string[] { pdfFilePath, temporarypdf })
-                                : (new string[] { temporarypdf, pdfFilePath });
+                            string[] processedfiles = new string[] { temporarypdf, pdfFilePath };
                             await Task.Run(() =>
                             {
                                 using PdfDocument pdfDocument = bitmapFrame.GeneratePdf(null, Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, (int)Settings.Default.Çözünürlük);
                                 pdfDocument.Save(temporarypdf);
                                 processedfiles.MergePdf().Save(pdfFilePath);
                             });
+                            pdfviewer.Sayfa = 1;
                             NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
+                            clipboardData = null;
+                            image = null;
+                            processedfiles = null;
+                            bitmapFrame = null;
+                            System.Windows.Forms.Clipboard.Clear();
                             GC.Collect();
                         }
                     }
@@ -2732,6 +2762,7 @@ namespace TwainControl
                 GC.Collect();
             }
         }
+        private readonly string[] imagefileextensions = new string[] { ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp" };
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {

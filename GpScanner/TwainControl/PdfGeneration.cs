@@ -407,6 +407,7 @@ namespace TwainControl
                         PdfPage page = inputDocument.Pages[i];
                         _ = outputDocument.AddPage(page);
                     }
+                    inputDocument?.Dispose();
                 }
 
                 return outputDocument;
