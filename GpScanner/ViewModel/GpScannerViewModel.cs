@@ -9,7 +9,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security.Principal;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -74,7 +73,6 @@ namespace GpScanner.ViewModel
                 {
                     await Task.Run(() =>
                     {
-                        using PdfDocument outputDocument = new();
                         IEnumerable<string> pdffilelist = Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName);
                         pdffilelist.ToArray().MergePdf().Save(PdfGeneration.GetPdfScanPath());
                         ReloadFileDatas();
@@ -92,7 +90,6 @@ namespace GpScanner.ViewModel
                     {
                         await Task.Run(() =>
                         {
-                            using PdfDocument outputDocument = new();
                             IEnumerable<string> pdffilelist = Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName);
                             pdffilelist.ToArray().MergePdf().Save(saveFileDialog.FileName);
                         });
@@ -115,11 +112,11 @@ namespace GpScanner.ViewModel
                     byte[] imgdata = twainCtrl.SeçiliResim.Resim.ToTiffJpegByteArray(Format.Jpg);
                     OcrIsBusy = true;
                     ScannedText = await imgdata.OcrAsyc(Settings.Default.DefaultTtsLang);
+                    OcrIsBusy = false;
                     if (ScannedText != null)
                     {
                         TranslateViewModel.Metin = string.Join(" ", ScannedText.Select(z => z.Text));
                         TranslateViewModel.TaramaGeçmiş.Add(TranslateViewModel.Metin);
-                        OcrIsBusy = false;
                     }
                     if (DetectBarCode)
                     {
@@ -152,17 +149,13 @@ namespace GpScanner.ViewModel
                                 ocrdata = await ms.ToArray().OcrAsyc(Settings.Default.DefaultTtsLang);
                                 ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = pdfviewer.PdfFilePath, FileContent = string.Join(" ", ocrdata?.Select(z => z.Text)) });
                             }
-                            DatabaseSave.Execute(null);
-                            filedata = null;
-                            ocrdata = null;
-                            ms = null;
-                            OcrIsBusy = false;
-                            GC.Collect();
-                            return;
                         }
-                        ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfviewer.Sayfa, (int)Twainsettings.Settings.Default.ImgLoadResolution);
-                        ocrdata = await ms.ToArray().OcrAsyc(Settings.Default.DefaultTtsLang);
-                        ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = pdfviewer.PdfFilePath, FileContent = string.Join(" ", ocrdata?.Select(z => z.Text)) });
+                        else
+                        {
+                            ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfviewer.Sayfa, (int)Twainsettings.Settings.Default.ImgLoadResolution);
+                            ocrdata = await ms.ToArray().OcrAsyc(Settings.Default.DefaultTtsLang);
+                            ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = pdfviewer.PdfFilePath, FileContent = string.Join(" ", ocrdata?.Select(z => z.Text)) });
+                        }
                         DatabaseSave.Execute(null);
                         filedata = null;
                         ocrdata = null;
@@ -183,7 +176,8 @@ namespace GpScanner.ViewModel
                         documentViewerWindow.Owner = Application.Current?.MainWindow;
                         documentViewerModel.Scanner = ToolBox.Scanner;
                         documentViewerModel.PdfFilePath = filepath;
-                        List<string> files = Directory.EnumerateFiles(Path.GetDirectoryName(documentViewerModel.PdfFilePath), "*.*").Where(z => supportedfilesextension.Any(ext => ext == Path.GetExtension(z).ToLower())).ToList();
+                        string path = Path.GetDirectoryName(documentViewerModel.PdfFilePath);
+                        List<string> files = Directory.EnumerateFiles(path, "*.*").Where(z => supportedfilesextension.Any(ext => ext == Path.GetExtension(z).ToLower())).ToList();
                         files.Sort(new StrCmpLogicalComparer());
                         documentViewerModel.DirectoryAllPdfFiles = files;
                         documentViewerModel.Index = Array.IndexOf(documentViewerModel.DirectoryAllPdfFiles.ToArray(), documentViewerModel.PdfFilePath);
@@ -261,12 +255,7 @@ namespace GpScanner.ViewModel
 
             SavePatchProfile = new RelayCommand<object>(parameter =>
             {
-                StringBuilder sb = new();
-                string profile = sb
-                    .Append(PatchFileName)
-                    .Append("|")
-                    .Append(PatchTag)
-                    .ToString();
+                string profile = $"{PatchFileName}|{PatchTag}";
                 _ = Settings.Default.PatchCodes.Add(profile);
                 Settings.Default.Save();
                 Settings.Default.Reload();
@@ -274,14 +263,7 @@ namespace GpScanner.ViewModel
 
             AddFtpSites = new RelayCommand<object>(parameter =>
             {
-                StringBuilder sb = new();
-                string profile = sb
-                    .Append(FtpSite)
-                    .Append("|")
-                    .Append(FtpUserName)
-                    .Append("|")
-                    .Append(FtpPassword.Encrypt())
-                    .ToString();
+                string profile = $"{FtpSite}|{FtpUserName}|{FtpPassword.Encrypt()}";
                 _ = Settings.Default.FtpSites.Add(profile);
                 Settings.Default.Save();
                 Settings.Default.Reload();
@@ -289,11 +271,9 @@ namespace GpScanner.ViewModel
 
             RemoveSelectedFtp = new RelayCommand<object>(parameter =>
             {
-                Settings.Default.FtpSites.Remove(parameter as string);
-                FtpSite = string.Empty;
-                FtpUserName = string.Empty;
-                FtpPassword = string.Empty;
-                Settings.Default.SelectedFtp = string.Empty;
+                string ftpSiteToRemove = parameter as string;
+                Settings.Default.FtpSites.Remove(ftpSiteToRemove);
+                FtpSite = FtpUserName = FtpPassword = Settings.Default.SelectedFtp = string.Empty;
                 Settings.Default.Save();
                 Settings.Default.Reload();
             }, parameter => true);
@@ -395,17 +375,14 @@ namespace GpScanner.ViewModel
                                 if (ocrcancellationToken?.IsCancellationRequested == false)
                                 {
                                     string pdffile = Path.ChangeExtension(item.ElementAtOrDefault(i), ".pdf");
-                                    if (scanner?.ApplyPdfSaveOcr == true)
-                                    {
-                                        ObservableCollection<OcrData> scannedText = await item.ElementAtOrDefault(i).OcrAsyc(scanner.SelectedTtsLanguage);
-                                        batchTxtOcr.ProgressValue = (i + 1) / (double)item.Count;
-                                        batchTxtOcr.FilePath = Path.GetFileName(item.ElementAtOrDefault(i));
-                                        item.ElementAtOrDefault(i).GeneratePdf(paper, scannedText).Save(pdffile);
-                                    }
-                                    else
-                                    {
-                                        item.ElementAtOrDefault(i).GeneratePdf(paper, null).Save(pdffile);
-                                    }
+                                    ObservableCollection<OcrData> scannedText = scanner?.ApplyPdfSaveOcr == true
+                                        ? await item.ElementAtOrDefault(i).OcrAsyc(scanner.SelectedTtsLanguage)
+                                        : null;
+
+                                    batchTxtOcr.ProgressValue = (i + 1) / (double)item.Count;
+                                    batchTxtOcr.FilePath = Path.GetFileName(item.ElementAtOrDefault(i));
+                                    item.ElementAtOrDefault(i).GeneratePdf(paper, scannedText).Save(pdffile);
+
                                     GC.Collect();
                                 }
                             }
@@ -1154,7 +1131,10 @@ namespace GpScanner.ViewModel
             ObservableCollection<Chart> list = new();
             try
             {
-                IOrderedEnumerable<IGrouping<int, Scanner>> chartdata = Dosyalar?.Where(z => DateTime.TryParse(Directory.GetParent(z.FileName).Name, out DateTime _))?.GroupBy(z => DateTime.Parse(Directory.GetParent(z.FileName).Name).Day)?.OrderBy(z => z.Key);
+                IOrderedEnumerable<IGrouping<int, Scanner>> chartdata = Dosyalar?
+                    .Where(z => DateTime.TryParse(Directory.GetParent(z.FileName).Name, out DateTime _))?
+                    .GroupBy(z => DateTime.Parse(Directory.GetParent(z.FileName).Name).Day)?
+                    .OrderBy(z => z.Key);
                 if (chartdata != null)
                 {
                     foreach (IGrouping<int, Scanner> chart in chartdata)
@@ -1162,12 +1142,11 @@ namespace GpScanner.ViewModel
                         list.Add(new Chart() { Description = chart.Key.ToString(), ChartBrush = RandomColor(), ChartValue = chart.Count() });
                     }
                 }
-                return list;
             }
             catch (Exception)
             {
-                return list;
             }
+            return list;
         }
 
         public string GetPatchCodeResult(string barcode)
@@ -1175,7 +1154,8 @@ namespace GpScanner.ViewModel
             if (!string.IsNullOrWhiteSpace(barcode))
             {
                 IEnumerable<string> patchcodes = Settings.Default.PatchCodes.Cast<string>();
-                return patchcodes.Any(z => z.Split('|')[0] == barcode) ? patchcodes?.FirstOrDefault(z => z.Split('|')[0] == barcode)?.Split('|')[1] : "Tarama";
+                string matchingPatchCode = patchcodes.FirstOrDefault(z => z.Split('|')[0] == barcode);
+                return matchingPatchCode != null ? matchingPatchCode.Split('|')[1] : "Tarama";
             }
             return string.Empty;
         }
@@ -1187,7 +1167,7 @@ namespace GpScanner.ViewModel
                 ObservableCollection<Scanner> list = new();
                 try
                 {
-                    List<string> files = Directory.EnumerateFiles(Twainsettings.Settings.Default.AutoFolder, "*.*", SearchOption.AllDirectories).Where(s => supportedfilesextension.Any(ext => ext == Path.GetExtension(s).ToLower())).ToList();
+                    List<string> files = Directory.EnumerateFiles(Twainsettings.Settings.Default.AutoFolder, "*.*", SearchOption.AllDirectories).Where(s => supportedfilesextension.Contains(Path.GetExtension(s).ToLower())).ToList();
                     files.Sort(new StrCmpLogicalComparer());
                     foreach (string dosya in files)
                     {

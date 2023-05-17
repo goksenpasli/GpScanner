@@ -42,7 +42,7 @@ namespace GpScanner
                     string pdfFilePath = pdfviewer.PdfFilePath;
                     int curpage = pdfviewer.Sayfa;
                     droppedData.Resim.GeneratePdf(null, Format.Jpg, TwainCtrl.SelectedPaper).Save(temporarypdf);
-                    string[] processedfiles = new string[] { temporarypdf, pdfFilePath };
+                    string[] processedfiles = { temporarypdf, pdfFilePath };
                     if ((Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.LeftShift)) || (Keyboard.IsKeyDown(Key.RightAlt) && Keyboard.IsKeyDown(Key.RightShift)))
                     {
                         await TwainCtrl.RemovePdfPage(pdfFilePath, curpage, curpage);
@@ -120,46 +120,38 @@ namespace GpScanner
                 WindowExtensions.OpenSettings.Execute(null);
                 Settings.Default.IsFirstRun = false;
             }
-
-            if (Environment.GetCommandLineArgs().Length > 1)
+            string[] commandLineArgs = Environment.GetCommandLineArgs();
+            if (commandLineArgs.Length > 1)
             {
-                if (Settings.Default.DirectOpenEypFile)
+                string filePath = commandLineArgs[1];
+                string extension = Path.GetExtension(filePath)?.ToLower();
+
+                if (Settings.Default.DirectOpenEypFile && extension == ".eyp" && File.Exists(filePath))
                 {
-                    string eypfilepath = Environment.GetCommandLineArgs()[1];
-                    if (File.Exists(eypfilepath) && Path.GetExtension(eypfilepath.ToLower()) == ".eyp")
-                    {
-                        EypPdfViewer eypPdfViewer = TwainCtrl.PdfImportViewer.PdfViewer;
-                        eypPdfViewer.PdfFilePath = eypPdfViewer.ExtractEypFilesToPdf(eypfilepath);
-                        TwainCtrl.TbCtrl.SelectedIndex = 1;
-                        TwainCtrl.MaximizePdfControl.Execute(null);
-                        return;
-                    }
+                    EypPdfViewer eypPdfViewer = TwainCtrl.PdfImportViewer.PdfViewer;
+                    eypPdfViewer.PdfFilePath = eypPdfViewer.ExtractEypFilesToPdf(filePath);
+                    TwainCtrl.TbCtrl.SelectedIndex = 1;
+                    TwainCtrl.MaximizePdfControl.Execute(null);
+                    return;
                 }
 
-                if (Settings.Default.DirectOpenPdfFile)
+                if (Settings.Default.DirectOpenPdfFile && extension == ".pdf" && File.Exists(filePath))
                 {
-                    string pdffilepath = Environment.GetCommandLineArgs()[1];
-                    if (File.Exists(pdffilepath) && Path.GetExtension(pdffilepath.ToLower()) == ".pdf")
-                    {
-                        EypPdfViewer eypPdfViewer = TwainCtrl.PdfImportViewer.PdfViewer;
-                        eypPdfViewer.PdfFilePath = pdffilepath;
-                        TwainCtrl.TbCtrl.SelectedIndex = 1;
-                        TwainCtrl.MaximizePdfControl.Execute(null);
-                        return;
-                    }
+                    EypPdfViewer eypPdfViewer = TwainCtrl.PdfImportViewer.PdfViewer;
+                    eypPdfViewer.PdfFilePath = filePath;
+                    TwainCtrl.TbCtrl.SelectedIndex = 1;
+                    TwainCtrl.MaximizePdfControl.Execute(null);
+                    return;
                 }
 
-                if (Settings.Default.DirectOpenUdfFile)
+                if (Settings.Default.DirectOpenUdfFile && extension == ".udf" && File.Exists(filePath))
                 {
-                    string udffilepath = Environment.GetCommandLineArgs()[1];
-                    if (File.Exists(udffilepath) && Path.GetExtension(udffilepath.ToLower()) == ".udf")
-                    {
-                        TwainCtrl.xpsViewer.XpsDataFilePath = TwainCtrl.LoadUdfFile(udffilepath);
-                        TwainCtrl.TbCtrl.SelectedIndex = 2;
-                        return;
-                    }
+                    TwainCtrl.xpsViewer.XpsDataFilePath = TwainCtrl.LoadUdfFile(filePath);
+                    TwainCtrl.TbCtrl.SelectedIndex = 2;
+                    return;
                 }
-                TwainCtrl.AddFiles(Environment.GetCommandLineArgs(), TwainCtrl.DecodeHeight);
+
+                TwainCtrl.AddFiles(commandLineArgs, TwainCtrl.DecodeHeight);
                 GC.Collect();
             }
 
