@@ -144,8 +144,22 @@
                 </Image>
             </Button>
             <Button BorderBrush="Cyan"
+                Command="{Binding PasteFileToPdfFile}"
+                CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
+                <Button.Content>
+                    <Image Width="16" Height="16">
+                        <Image.Source>
+                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                <Binding Source="Shell32.dll" />
+                                <Binding Source="260" />
+                            </MultiBinding>
+                        </Image.Source>
+                    </Image>
+                </Button.Content>
+            </Button>
+            <Button BorderBrush="Cyan"
                 Command="{Binding RotateSelectedPage}"
-                CommandParameter="{Binding ElementName=PdfViewer}">
+                CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
                 <Image Width="16" Height="16"
                     Source="/TwainControl;component/Icons/rotate.png" />
             </Button>

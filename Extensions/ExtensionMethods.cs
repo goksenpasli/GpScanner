@@ -443,22 +443,19 @@ namespace Extensions
             {
                 using MemoryStream outStream = new();
                 BitmapFrame frame = BitmapFrame.Create((BitmapSource)bitmapsource);
+                frame.Freeze();
                 switch (format)
                 {
                     case Format.TiffRenkli:
                         TiffBitmapEncoder tifzipencoder = new() { Compression = TiffCompressOption.Zip };
                         tifzipencoder.Frames.Add(frame);
                         tifzipencoder.Save(outStream);
-                        tifzipencoder = null;
-                        bitmapsource = null;
                         return outStream.ToArray();
 
                     case Format.Tiff:
                         TiffBitmapEncoder tifccittencoder = new() { Compression = TiffCompressOption.Ccitt4 };
                         tifccittencoder.Frames.Add(frame);
                         tifccittencoder.Save(outStream);
-                        tifccittencoder = null;
-                        bitmapsource = null;
                         return outStream.ToArray();
 
                     case Format.Jpg:
@@ -466,16 +463,12 @@ namespace Extensions
                         BitmapFrame item = frame;
                         jpgencoder.Frames.Add(item);
                         jpgencoder.Save(outStream);
-                        jpgencoder = null;
-                        bitmapsource = null;
                         return outStream.ToArray();
 
                     case Format.Png:
                         PngBitmapEncoder pngencoder = new();
                         pngencoder.Frames.Add(frame);
                         pngencoder.Save(outStream);
-                        pngencoder = null;
-                        bitmapsource = null;
                         return outStream.ToArray();
 
                     default:
