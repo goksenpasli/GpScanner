@@ -75,7 +75,7 @@ namespace GpScanner.ViewModel
                     {
                         IEnumerable<string> pdffilelist = Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName);
                         pdffilelist.ToArray().MergePdf().Save(PdfGeneration.GetPdfScanPath());
-                        await Dispatcher.CurrentDispatcher.InvokeAsync(()=> ReloadFileDatas());
+                        await Application.Current?.Dispatcher?.InvokeAsync(() => ReloadFileDatas());
                     });
                     return;
                 }
@@ -140,26 +140,24 @@ namespace GpScanner.ViewModel
                     {
                         OcrIsBusy = true;
                         ObservableCollection<OcrData> ocrdata;
-                        MemoryStream ms;
                         if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                         {
                             for (int i = 1; i <= pdfviewer.ToplamSayfa; i++)
                             {
-                                ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, (int)Twainsettings.Settings.Default.ImgLoadResolution);
+                                using MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, (int)Twainsettings.Settings.Default.ImgLoadResolution);
                                 ocrdata = await ms.ToArray().OcrAsyc(Settings.Default.DefaultTtsLang);
                                 ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = pdfviewer.PdfFilePath, FileContent = string.Join(" ", ocrdata?.Select(z => z.Text)) });
                             }
                         }
                         else
                         {
-                            ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfviewer.Sayfa, (int)Twainsettings.Settings.Default.ImgLoadResolution);
+                            using MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfviewer.Sayfa, (int)Twainsettings.Settings.Default.ImgLoadResolution);
                             ocrdata = await ms.ToArray().OcrAsyc(Settings.Default.DefaultTtsLang);
                             ScannerData.Data.Add(new Data() { Id = DataSerialize.RandomNumber(), FileName = pdfviewer.PdfFilePath, FileContent = string.Join(" ", ocrdata?.Select(z => z.Text)) });
                         }
                         DatabaseSave.Execute(null);
                         filedata = null;
                         ocrdata = null;
-                        ms = null;
                         OcrIsBusy = false;
                         GC.Collect();
                     }

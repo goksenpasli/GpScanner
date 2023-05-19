@@ -831,6 +831,7 @@ namespace TwainControl
                     bitmapFrame.Freeze();
                     ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
                     Scanner?.Resimler.Add(scannedImage);
+                    ms = null;
                     GC.Collect();
                 }
             }, parameter => true);
@@ -2180,9 +2181,11 @@ namespace TwainControl
         private async Task AddPdfFile(byte[] filedata, string filepath = null)
         {
             double totalpagecount = await PdfViewer.PdfViewer.PdfPageCountAsync(filedata);
+            MemoryStream ms;
             for (int i = 1; i <= totalpagecount; i++)
             {
-                BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrame(await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, (int)Settings.Default.ImgLoadResolution), SelectedPaper, Scanner.Deskew);
+                ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, (int)Settings.Default.ImgLoadResolution);
+                BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrame(ms, SelectedPaper, Scanner.Deskew);
                 bitmapFrame.Freeze();
                 await Dispatcher.InvokeAsync(() =>
                 {
@@ -2192,6 +2195,7 @@ namespace TwainControl
             }
             _ = await Dispatcher.InvokeAsync(() => PdfLoadProgressValue = 0);
             filedata = null;
+            ms = null;
             GC.Collect();
         }
 
