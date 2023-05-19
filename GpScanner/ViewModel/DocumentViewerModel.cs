@@ -43,7 +43,6 @@ namespace GpScanner.ViewModel
                     Scanner?.Resimler.Add(scannedImage);
                     bitmapFrame = null;
                     scannedImage = null;
-                    imageSource = null;
                     ms = null;
                     GC.Collect();
                 }
@@ -197,7 +196,6 @@ namespace GpScanner.ViewModel
             {
                 ObservableCollection<Ocr.OcrData> ocrtext = await Ocr.Ocr.OcrAsyc(ImgData, Settings.Default.DefaultTtsLang);
                 OcrText = string.Join(" ", ocrtext?.Select(z => z.Text));
-                ImgData = null;
             }
         }
     }

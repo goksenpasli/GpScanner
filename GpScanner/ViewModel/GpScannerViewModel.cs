@@ -71,11 +71,11 @@ namespace GpScanner.ViewModel
             {
                 if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                 {
-                    await Task.Run(() =>
+                    await Task.Run(async () =>
                     {
                         IEnumerable<string> pdffilelist = Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName);
                         pdffilelist.ToArray().MergePdf().Save(PdfGeneration.GetPdfScanPath());
-                        ReloadFileDatas();
+                        await Dispatcher.CurrentDispatcher.InvokeAsync(()=> ReloadFileDatas());
                     });
                     return;
                 }
@@ -482,7 +482,7 @@ namespace GpScanner.ViewModel
                         listBox.ScrollIntoView(currentFile);
                         currentFile.BorderAnimation = true;
                         cycleIndex = (cycleIndex + 1) % listboxFiles.Count(z => z.Seçili);
-                        await Task.Delay(900);
+                        await Task.Delay(1000);
                         currentFile.BorderAnimation = false;
                     }
                 }

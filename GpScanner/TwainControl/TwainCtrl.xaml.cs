@@ -333,16 +333,13 @@ namespace TwainControl
                         Scanner.PdfFilePath = PdfGeneration.GetPdfScanPath();
                         for (int i = 0; i < seçiliresimler.Count; i++)
                         {
-                            ScannedImage scannedimage = seçiliresimler[i];
-                            byte[] imgdata = scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg);
+                            byte[] imgdata = seçiliresimler[i].Resim.ToTiffJpegByteArray(Format.Jpg);
                             ObservableCollection<OcrData> ocrdata = await imgdata.OcrAsyc(Scanner.SelectedTtsLanguage);
                             await Dispatcher.InvokeAsync(() =>
                             {
                                 DataBaseQrData = imgdata;
                                 DataBaseTextData = ocrdata;
                             });
-                            ocrdata = null;
-                            imgdata = null;
                             Scanner.PdfSaveProgressValue = i / (double)seçiliresimler.Count;
                         }
                     }
@@ -644,7 +641,7 @@ namespace TwainControl
                         scannedImage.Animate = true;
                         cycleindex++;
                         cycleindex %= Scanner?.Resimler?.Count(z => z.Seçili) ?? 0;
-                        await Task.Delay(900);
+                        await Task.Delay(1000);
                         scannedImage.Animate = false;
                     }
                 }
@@ -926,7 +923,6 @@ namespace TwainControl
             {
                 IEnumerable<ScannedImage> scannedImages = Scanner.Resimler.Reverse();
                 Scanner.Resimler = new ObservableCollection<ScannedImage>(scannedImages);
-                scannedImages = null;
             }, parameter => Scanner?.Resimler?.Count > 1);
 
             ReverseDataHorizontal = new RelayCommand<object>(parameter =>
@@ -938,13 +934,13 @@ namespace TwainControl
                     List<ScannedImage> scannedImages = Scanner.Resimler.ToList();
                     scannedImages.Reverse(start, end - start + 1);
                     Scanner.Resimler = new ObservableCollection<ScannedImage>(scannedImages);
-                    scannedImages = null;
                 }
             }, parameter =>
             {
-                int start = Scanner?.Resimler?.IndexOf(Scanner?.Resimler?.Where(z => z.Seçili)?.FirstOrDefault()) ?? 0;
-                int end = Scanner?.Resimler?.IndexOf(Scanner?.Resimler?.Where(z => z.Seçili)?.LastOrDefault()) ?? 0;
-                return Scanner?.Resimler?.Count(z => z.Seçili) > 1 && Scanner?.Resimler?.Count(z => z.Seçili) == end - start + 1;
+                IEnumerable<ScannedImage> selected = Scanner?.Resimler?.Where(z => z.Seçili);
+                int start = Scanner?.Resimler?.IndexOf(selected?.FirstOrDefault()) ?? 0;
+                int end = Scanner?.Resimler?.IndexOf(selected?.LastOrDefault()) ?? 0;
+                return Scanner?.Resimler?.Count(z => z.Seçili) > 1 && selected?.Count() == end - start + 1;
             });
 
             RemoveSelectedPage = new RelayCommand<object>(async parameter =>
@@ -1793,11 +1789,11 @@ namespace TwainControl
                     scanner.PdfSaveProgressValue = i / (double)images.Count;
                 }
                 scanner.PdfSaveProgressValue = 0;
-                GC.Collect();
                 scanner.SaveProgressIndeterminate = true;
                 using FileStream stream = new(filename, FileMode.Create);
                 tifccittencoder.Save(stream);
                 scanner.SaveProgressIndeterminate = false;
+                GC.Collect();
             });
         }
 
@@ -2204,12 +2200,9 @@ namespace TwainControl
                 bitmapFrame.Freeze();
                 await Dispatcher.InvokeAsync(() =>
                 {
-                    ScannedImage item = new() { Resim = bitmapFrame, FilePath = filepath };
-                    Scanner?.Resimler.Add(item);
-                    item = null;
+                    Scanner?.Resimler.Add(new ScannedImage() { Resim = bitmapFrame, FilePath = filepath });
                     PdfLoadProgressValue = i / totalpagecount;
                 });
-                bitmapFrame = null;
             }
             _ = await Dispatcher.InvokeAsync(() => PdfLoadProgressValue = 0);
             filedata = null;
@@ -2671,9 +2664,6 @@ namespace TwainControl
                 BitmapFrame bitmapFrame = BitmapFrame.Create(evrak, önizleme);
                 bitmapFrame.Freeze();
                 Scanner?.Resimler?.Add(new ScannedImage() { Resim = bitmapFrame, RotationAngle = (double)SelectedRotation });
-                evrak = null;
-                önizleme = null;
-                bitmapFrame = null;
             }
         }
 
