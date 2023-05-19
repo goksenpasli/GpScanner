@@ -25,27 +25,26 @@ namespace Tesseract
         public static PixColor FromRgba(uint value)
         {
             return new PixColor(
-               (byte)((value >> 24) & 0xFF),
-               (byte)((value >> 16) & 0xFF),
-               (byte)((value >> 8) & 0xFF),
-               (byte)(value & 0xFF));
+                (byte)((value >> 24) & 0xFF),
+                (byte)((value >> 16) & 0xFF),
+                (byte)((value >> 8) & 0xFF),
+                (byte)(value & 0xFF));
         }
 
         public static PixColor FromRgb(uint value)
         {
             return new PixColor(
-               (byte)((value >> 24) & 0xFF),
-               (byte)((value >> 16) & 0xFF),
-               (byte)((value >> 8) & 0xFF),
-               0xFF);
+                (byte)((value >> 24) & 0xFF),
+                (byte)((value >> 16) & 0xFF),
+                (byte)((value >> 8) & 0xFF));
         }
 
         public uint ToRGBA()
         {
             return (uint)((Red << 24) |
-               (Green << 16) |
-               (Blue << 8) |
-               Alpha);
+                          (Green << 16) |
+                          (Blue << 8) |
+                          Alpha);
         }
 
 #if NETFULL
@@ -64,7 +63,7 @@ namespace Tesseract
 
         public override bool Equals(object obj)
         {
-            return (obj is PixColor) && Equals((PixColor)obj);
+            return obj is PixColor && Equals((PixColor)obj);
         }
 
         public bool Equals(PixColor other)
@@ -82,6 +81,7 @@ namespace Tesseract
                 hashCode += 1000000021 * Green.GetHashCode();
                 hashCode += 1000000033 * Alpha.GetHashCode();
             }
+
             return hashCode;
         }
 

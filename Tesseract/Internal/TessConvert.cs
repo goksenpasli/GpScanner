@@ -3,7 +3,7 @@
 namespace Tesseract.Internal
 {
     /// <summary>
-    /// Utility helpers to handle converting variable values.
+    ///     Utility helpers to handle converting variable values.
     /// </summary>
     internal static class TessConvert
     {
@@ -108,6 +108,7 @@ namespace Tesseract.Internal
                 result = null;
                 return false;
             }
+
             return true;
         }
     }

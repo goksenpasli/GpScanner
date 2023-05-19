@@ -1,572 +1,577 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-    <xsd:element name="root" msdata:IsDataSet="true">
-      <xsd:complexType>
-        <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="metadata">
+    <!-- 
+      Microsoft ResX Schema 
+      
+      Version 2.0
+      
+      The primary goals of this format is to allow a simple XML format 
+      that is mostly human readable. The generation and parsing of the 
+      various data types are done through the TypeConverter classes 
+      associated with the data types.
+      
+      Example:
+      
+      ... ado.net/XML headers & schema ...
+      <resheader name="resmimetype">text/microsoft-resx</resheader>
+      <resheader name="version">2.0</resheader>
+      <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+      <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+      <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+      <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+      <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+          <value>[base64 mime encoded serialized .NET Framework object]</value>
+      </data>
+      <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+          <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+          <comment>This is a comment</comment>
+      </data>
+                  
+      There are any number of "resheader" rows that contain simple 
+      name/value pairs.
+      
+      Each data row contains a name, and value. The row also contains a 
+      type or mimetype. Type corresponds to a .NET class that support 
+      text/value conversion through the TypeConverter architecture. 
+      Classes that don't support this are serialized and stored with the 
+      mimetype set.
+      
+      The mimetype is used for serialized objects, and tells the 
+      ResXResourceReader how to depersist the object. This is currently not 
+      extensible. For a given mimetype the value must be set accordingly:
+      
+      Note - application/x-microsoft.net.object.binary.base64 is the format 
+      that the ResXResourceWriter will generate, however the reader can 
+      read any of the formats listed below.
+      
+      mimetype: application/x-microsoft.net.object.binary.base64
+      value   : The object must be serialized with 
+              : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+              : and then encoded with base64 encoding.
+      
+      mimetype: application/x-microsoft.net.object.soap.base64
+      value   : The object must be serialized with 
+              : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+              : and then encoded with base64 encoding.
+  
+      mimetype: application/x-microsoft.net.object.bytearray.base64
+      value   : The object must be serialized into a byte array 
+              : using a System.ComponentModel.TypeConverter
+              : and then encoded with base64 encoding.
+      -->
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root"
+                xmlns="">
+        <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+        <xsd:element name="root" msdata:IsDataSet="true">
             <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
-              </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+                <xsd:choice maxOccurs="unbounded">
+                    <xsd:element name="metadata">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                            </xsd:sequence>
+                            <xsd:attribute name="name" use="required" type="xsd:string"/>
+                            <xsd:attribute name="type" type="xsd:string"/>
+                            <xsd:attribute name="mimetype" type="xsd:string"/>
+                            <xsd:attribute ref="xml:space"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="assembly">
+                        <xsd:complexType>
+                            <xsd:attribute name="alias" type="xsd:string"/>
+                            <xsd:attribute name="name" type="xsd:string"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="data">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+                            </xsd:sequence>
+                            <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+                            <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+                            <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+                            <xsd:attribute ref="xml:space"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="resheader">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                            </xsd:sequence>
+                            <xsd:attribute name="name" type="xsd:string" use="required"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:choice>
             </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="assembly">
-            <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="data">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="resheader">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:choice>
-      </xsd:complexType>
-    </xsd:element>
-  </xsd:schema>
-  <resheader name="resmimetype">
-    <value>text/microsoft-resx</value>
-  </resheader>
-  <resheader name="version">
-    <value>2.0</value>
-  </resheader>
-  <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <data name="SRC" xml:space="preserve">
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>2.0</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <data name="SRC" xml:space="preserve">
     <value>资源</value>
   </data>
-  <data name="SETTİNGS" xml:space="preserve">
+    <data name="SETTİNGS" xml:space="preserve">
     <value>设置</value>
   </data>
-  <data name="RES" xml:space="preserve">
+    <data name="RES" xml:space="preserve">
     <value>分辨率</value>
   </data>
-  <data name="ADF" xml:space="preserve">
+    <data name="ADF" xml:space="preserve">
     <value>文档
 馈线</value>
   </data>
-  <data name="BW" xml:space="preserve">
+    <data name="BW" xml:space="preserve">
     <value>黑与白</value>
   </data>
-  <data name="GRAY" xml:space="preserve">
+    <data name="GRAY" xml:space="preserve">
     <value>灰色</value>
   </data>
-  <data name="COLOR" xml:space="preserve">
+    <data name="COLOR" xml:space="preserve">
     <value>五彩缤纷</value>
   </data>
-  <data name="TWOSIDE" xml:space="preserve">
+    <data name="TWOSIDE" xml:space="preserve">
     <value>双向</value>
   </data>
-  <data name="GUI" xml:space="preserve">
+    <data name="GUI" xml:space="preserve">
     <value>显示界面</value>
   </data>
-  <data name="SEPERATESCAN" xml:space="preserve">
+    <data name="SEPERATESCAN" xml:space="preserve">
     <value>分别扫描每一页</value>
   </data>
-  <data name="SHOWFILE" xml:space="preserve">
+    <data name="SHOWFILE" xml:space="preserve">
     <value>快速扫描后显示文件</value>
   </data>
-  <data name="OTHERSETTINGS" xml:space="preserve">
+    <data name="OTHERSETTINGS" xml:space="preserve">
     <value>其他设置</value>
   </data>
-  <data name="DESKEW" xml:space="preserve">
+    <data name="DESKEW" xml:space="preserve">
     <value>校正曲率</value>
   </data>
-  <data name="BORDERDETECT" xml:space="preserve">
+    <data name="BORDERDETECT" xml:space="preserve">
     <value>自动边缘检测</value>
   </data>
-  <data name="SHOWPROGRESS" xml:space="preserve">
+    <data name="SHOWPROGRESS" xml:space="preserve">
     <value>显示百分比</value>
   </data>
-  <data name="AUTOROTATE" xml:space="preserve">
+    <data name="AUTOROTATE" xml:space="preserve">
     <value>自动旋转</value>
   </data>
-  <data name="NO ACTION" xml:space="preserve">
+    <data name="NO ACTION" xml:space="preserve">
     <value>不采取行动</value>
   </data>
-  <data name="CLOSECOMP" xml:space="preserve">
+    <data name="CLOSECOMP" xml:space="preserve">
     <value>关掉电脑</value>
   </data>
-  <data name="RESTARTCOMP" xml:space="preserve">
+    <data name="RESTARTCOMP" xml:space="preserve">
     <value>重新启动电脑</value>
   </data>
-  <data name="FILENAME" xml:space="preserve">
+    <data name="FILENAME" xml:space="preserve">
     <value>文件名：!</value>
   </data>
-  <data name="DAY" xml:space="preserve">
+    <data name="DAY" xml:space="preserve">
     <value>[天]</value>
   </data>
-  <data name="MONTH" xml:space="preserve">
+    <data name="MONTH" xml:space="preserve">
     <value>[月]</value>
   </data>
-  <data name="YEAR" xml:space="preserve">
+    <data name="YEAR" xml:space="preserve">
     <value>[年]</value>
   </data>
-  <data name="TIME" xml:space="preserve">
+    <data name="TIME" xml:space="preserve">
     <value>小时</value>
   </data>
-  <data name="MINUTE" xml:space="preserve">
+    <data name="MINUTE" xml:space="preserve">
     <value>[分钟]</value>
   </data>
-  <data name="SECOND" xml:space="preserve">
+    <data name="SECOND" xml:space="preserve">
     <value>[秒]</value>
   </data>
-  <data name="GUID" xml:space="preserve">
+    <data name="GUID" xml:space="preserve">
     <value>[GUID] </value>
   </data>
-  <data name="USERNAME" xml:space="preserve">
+    <data name="USERNAME" xml:space="preserve">
     <value>[用戶名] </value>
   </data>
-  <data name="SAVEPROFILE" xml:space="preserve">
+    <data name="SAVEPROFILE" xml:space="preserve">
     <value>隐藏个人资料</value>
   </data>
-  <data name="DELETE" xml:space="preserve">
+    <data name="DELETE" xml:space="preserve">
     <value>删除</value>
   </data>
-  <data name="SCAN" xml:space="preserve">
+    <data name="SCAN" xml:space="preserve">
     <value>扫一扫</value>
   </data>
-  <data name="FASTSCAN" xml:space="preserve">
+    <data name="FASTSCAN" xml:space="preserve">
     <value>快速
 扫描</value>
   </data>
-  <data name="AUTOPATH" xml:space="preserve">
+    <data name="AUTOPATH" xml:space="preserve">
     <value>自动
 保存</value>
   </data>
-  <data name="ALL" xml:space="preserve">
+    <data name="ALL" xml:space="preserve">
     <value>全部</value>
   </data>
-  <data name="NONE" xml:space="preserve">
+    <data name="NONE" xml:space="preserve">
     <value>没有一个</value>
   </data>
-  <data name="REVERSE" xml:space="preserve">
+    <data name="REVERSE" xml:space="preserve">
     <value>倒车</value>
   </data>
-  <data name="PREVIEWSIZE" xml:space="preserve">
+    <data name="PREVIEWSIZE" xml:space="preserve">
     <value>图像预览大小</value>
   </data>
-  <data name="PDFPROTECT" xml:space="preserve">
+    <data name="PDFPROTECT" xml:space="preserve">
     <value>保存PDF </value>
   </data>
-  <data name="ENCRYPT" xml:space="preserve">
+    <data name="ENCRYPT" xml:space="preserve">
     <value>加密</value>
   </data>
-  <data name="PDFWARN" xml:space="preserve">
+    <data name="PDFWARN" xml:space="preserve">
     <value>此处所做的设置会影响所有PDF记录。
 PDF保护也可以被第三方应用程序破坏。</value>
   </data>
-  <data name="ALLOWPRINT" xml:space="preserve">
+    <data name="ALLOWPRINT" xml:space="preserve">
     <value>允许打印</value>
   </data>
-  <data name="ALLOWCOPY" xml:space="preserve">
+    <data name="ALLOWCOPY" xml:space="preserve">
     <value>允许内容复制</value>
   </data>
-  <data name="ALLOWEDIT" xml:space="preserve">
+    <data name="ALLOWEDIT" xml:space="preserve">
     <value>允许文档编辑!</value>
   </data>
-  <data name="SAVESELECTED" xml:space="preserve">
+    <data name="SAVESELECTED" xml:space="preserve">
     <value>保存精选</value>
   </data>
-  <data name="CLEARLIST" xml:space="preserve">
+    <data name="CLEARLIST" xml:space="preserve">
     <value>清除列表</value>
   </data>
-  <data name="MERGEPDF" xml:space="preserve">
+    <data name="MERGEPDF" xml:space="preserve">
     <value>合并PDF </value>
   </data>
-  <data name="ABOUT" xml:space="preserve">
+    <data name="ABOUT" xml:space="preserve">
     <value>关于</value>
   </data>
-  <data name="DOCUMENT" xml:space="preserve">
+    <data name="DOCUMENT" xml:space="preserve">
     <value>文书工作</value>
   </data>
-  <data name="TRIMIMAGE" xml:space="preserve">
+    <data name="TRIMIMAGE" xml:space="preserve">
     <value>裁剪图片</value>
   </data>
-  <data name="RESET" xml:space="preserve">
+    <data name="RESET" xml:space="preserve">
     <value>重置</value>
   </data>
-  <data name="WIDTHCOUNT" xml:space="preserve">
+    <data name="WIDTHCOUNT" xml:space="preserve">
     <value>人数最多</value>
   </data>
-  <data name="HEIGHTCOUNT" xml:space="preserve">
+    <data name="HEIGHTCOUNT" xml:space="preserve">
     <value>高度数</value>
   </data>
-  <data name="SLICE" xml:space="preserve">
+    <data name="SLICE" xml:space="preserve">
     <value>砸碎它</value>
   </data>
-  <data name="TEXT" xml:space="preserve">
+    <data name="TEXT" xml:space="preserve">
     <value>梅廷</value>
   </data>
-  <data name="TEXTSIZE" xml:space="preserve">
+    <data name="TEXTSIZE" xml:space="preserve">
     <value>文本大小</value>
   </data>
-  <data name="TEXTANGLE" xml:space="preserve">
+    <data name="TEXTANGLE" xml:space="preserve">
     <value>文字角度</value>
   </data>
-  <data name="FONT" xml:space="preserve">
+    <data name="FONT" xml:space="preserve">
     <value>字体</value>
   </data>
-  <data name="DRAWTEXT" xml:space="preserve">
+    <data name="DRAWTEXT" xml:space="preserve">
     <value>绘制文本</value>
   </data>
-  <data name="SAVEPDF" xml:space="preserve">
+    <data name="SAVEPDF" xml:space="preserve">
     <value>保存</value>
   </data>
-  <data name="FIX" xml:space="preserve">
-    <value />
+    <data name="FIX" xml:space="preserve">
+    <value/>
   </data>
-  <data name="OCR" xml:space="preserve">
+    <data name="OCR" xml:space="preserve">
     <value>OCR!</value>
   </data>
-  <data name="FILE" xml:space="preserve">
+    <data name="FILE" xml:space="preserve">
     <value>電腦檔案</value>
   </data>
-  <data name="CALENDAR" xml:space="preserve">
+    <data name="CALENDAR" xml:space="preserve">
     <value>日历</value>
   </data>
-  <data name="GRAPH" xml:space="preserve">
+    <data name="GRAPH" xml:space="preserve">
     <value>图形</value>
   </data>
-  <data name="VIEWALL" xml:space="preserve">
+    <data name="VIEWALL" xml:space="preserve">
     <value>查看全部</value>
   </data>
-  <data name="PREVIEWFILE" xml:space="preserve">
+    <data name="PREVIEWFILE" xml:space="preserve">
     <value>文件
 预览</value>
   </data>
-  <data name="TESSERACT" xml:space="preserve">
+    <data name="TESSERACT" xml:space="preserve">
     <value>正方体</value>
   </data>
-  <data name="MERGE" xml:space="preserve">
+    <data name="MERGE" xml:space="preserve">
     <value>把它放在一起</value>
   </data>
-  <data name="MERGESELECTED" xml:space="preserve">
+    <data name="MERGESELECTED" xml:space="preserve">
     <value>合并标记
 的PDF </value>
   </data>
-  <data name="SELECTTWOPDF" xml:space="preserve">
+    <data name="SELECTTWOPDF" xml:space="preserve">
     <value>选择至少两个PDF
 文件</value>
   </data>
-  <data name="READACTIVEPAGE" xml:space="preserve">
+    <data name="READACTIVEPAGE" xml:space="preserve">
     <value>阅读活动页面</value>
   </data>
-  <data name="CONTENT" xml:space="preserve">
+    <data name="CONTENT" xml:space="preserve">
     <value>饮料阅读</value>
   </data>
-  <data name="SHOWFOLDER" xml:space="preserve">
+    <data name="SHOWFOLDER" xml:space="preserve">
     <value>在文件夹中显示</value>
   </data>
-  <data name="CRUNTIME" xml:space="preserve">
+    <data name="CRUNTIME" xml:space="preserve">
     <value>由于Tesseract和leptonica二进制文件是使用Visual Studio 2019编译的，因此您需要确保已安装Visual Studio 2019运行时</value>
   </data>
-  <data name="OTHERTESSERACT" xml:space="preserve">
+    <data name="OTHERTESSERACT" xml:space="preserve">
     <value>如果需要，还可以从tesseract-ocr下载tesseract 4.1.0的其他语言数据文件。把它放在Tessdata文件夹</value>
   </data>
-  <data name="VC" xml:space="preserve">
+    <data name="VC" xml:space="preserve">
     <value>Visual Studio 2019 x86和x64运行时</value>
   </data>
-  <data name="OTHERTESSERACTLINK" xml:space="preserve">
+    <data name="OTHERTESSERACTLINK" xml:space="preserve">
     <value>其他tesseract语言数据</value>
   </data>
-  <data name="SCANNER" xml:space="preserve">
+    <data name="SCANNER" xml:space="preserve">
     <value>扫描仪</value>
   </data>
-  <data name="PASSWORD" xml:space="preserve">
+    <data name="PASSWORD" xml:space="preserve">
     <value>密码</value>
   </data>
-  <data name="WARNREBOOT" xml:space="preserve">
+    <data name="WARNREBOOT" xml:space="preserve">
     <value>关机或重新启动设置！ </value>
   </data>
-  <data name="FASTSCANAFTER" xml:space="preserve">
+    <data name="FASTSCANAFTER" xml:space="preserve">
     <value>快速扫描完成后要采取的操作</value>
   </data>
-  <data name="AUTOFOLDER" xml:space="preserve">
+    <data name="AUTOFOLDER" xml:space="preserve">
     <value>指定自动保存文件夹。!</value>
   </data>
-  <data name="AUTOFOLDERCHANGE" xml:space="preserve">
+    <data name="AUTOFOLDERCHANGE" xml:space="preserve">
     <value>自动保存路径已更改。旧文件不会移动到新文件夹。</value>
   </data>
-  <data name="LISTREMOVEWARN" xml:space="preserve">
+    <data name="LISTREMOVEWARN" xml:space="preserve">
     <value>上面列表中的所有扫描文档都将被删除。是否要继续?!</value>
   </data>
-  <data name="DEFAULTSCANNAME" xml:space="preserve">
+    <data name="DEFAULTSCANNAME" xml:space="preserve">
     <value>不要扫描</value>
   </data>
-  <data name="ROTSAVE" xml:space="preserve">
+    <data name="ROTSAVE" xml:space="preserve">
     <value>应用旋转保存？ </value>
   </data>
-  <data name="APPRUNNING" xml:space="preserve">
+    <data name="APPRUNNING" xml:space="preserve">
     <value>该应用程序已经在运行</value>
   </data>
-  <data name="REGSTI" xml:space="preserve">
+    <data name="REGSTI" xml:space="preserve">
     <value>添加到浏览器菜单</value>
   </data>
-  <data name="TRANSLATE" xml:space="preserve">
+    <data name="TRANSLATE" xml:space="preserve">
     <value>翻译</value>
   </data>
-  <data name="SOURCELANG" xml:space="preserve">
+    <data name="SOURCELANG" xml:space="preserve">
     <value>资源</value>
   </data>
-  <data name="DESTLANG" xml:space="preserve">
+    <data name="DESTLANG" xml:space="preserve">
     <value>目标语言</value>
   </data>
-  <data name="UNREGSTI" xml:space="preserve">
+    <data name="UNREGSTI" xml:space="preserve">
     <value>从浏览器菜单
 中删除</value>
   </data>
-  <data name="SEPERATESCANTOOLTIP" xml:space="preserve">
+    <data name="SEPERATESCANTOOLTIP" xml:space="preserve">
     <value>将每个页面保存到单独的文件文件保存到下面指定的文件夹。</value>
   </data>
-  <data name="OCRPDFSAVE" xml:space="preserve">
+    <data name="OCRPDFSAVE" xml:space="preserve">
     <value>保存OCR PDF </value>
   </data>
-  <data name="ADDDOC" xml:space="preserve">
+    <data name="ADDDOC" xml:space="preserve">
     <value>将文档附加到文件!</value>
   </data>
-  <data name="ADDOCRTODB" xml:space="preserve">
+    <data name="ADDOCRTODB" xml:space="preserve">
     <value>保存OCR数据</value>
   </data>
-  <data name="ADDOCRTOOLTIP" xml:space="preserve">
+    <data name="ADDOCRTOOLTIP" xml:space="preserve">
     <value>如果选中此选项，则左侧活动文档的文本将保存在数据库中。</value>
   </data>
-  <data name="APPDESC" xml:space="preserve">
+    <data name="APPDESC" xml:space="preserve">
     <value>此应用程序的开发是为了方便扫描和文档跟踪</value>
   </data>
-  <data name="APPLY" xml:space="preserve">
+    <data name="APPLY" xml:space="preserve">
     <value>应用</value>
   </data>
-  <data name="APPLYCOLOR" xml:space="preserve">
+    <data name="APPLYCOLOR" xml:space="preserve">
     <value>应用颜色</value>
   </data>
-  <data name="Auto" xml:space="preserve">
+    <data name="Auto" xml:space="preserve">
     <value>自动</value>
   </data>
-  <data name="AutoPicture" xml:space="preserve">
+    <data name="AutoPicture" xml:space="preserve">
     <value>自动图片</value>
   </data>
-  <data name="AutoText" xml:space="preserve">
+    <data name="AutoText" xml:space="preserve">
     <value>自动文本</value>
   </data>
-  <data name="BATCH" xml:space="preserve">
+    <data name="BATCH" xml:space="preserve">
     <value>集体工作</value>
   </data>
-  <data name="BATCHDESC" xml:space="preserve">
+    <data name="BATCHDESC" xml:space="preserve">
     <value>当图片文件添加到下面的文件夹时，只要程序打开，就会自动翻译到同一文件夹中的PDF文件</value>
   </data>
-  <data name="CAMERA" xml:space="preserve">
+    <data name="CAMERA" xml:space="preserve">
     <value>摄影机</value>
   </data>
-  <data name="COLORCHANGETIP" xml:space="preserve">
+    <data name="COLORCHANGETIP" xml:space="preserve">
     <value>如果您在设置阈值后单击此项，则可以选择第二种颜色</value>
   </data>
-  <data name="COMPRESS" xml:space="preserve">
+    <data name="COMPRESS" xml:space="preserve">
     <value>挤</value>
   </data>
-  <data name="Default" xml:space="preserve">
+    <data name="Default" xml:space="preserve">
     <value>默认</value>
   </data>
-  <data name="DSTCOLOR" xml:space="preserve">
+    <data name="DSTCOLOR" xml:space="preserve">
     <value>目标颜色</value>
   </data>
-  <data name="EMPTYPAGE" xml:space="preserve">
+    <data name="EMPTYPAGE" xml:space="preserve">
     <value>跳过空白页</value>
   </data>
-  <data name="EYPOPEN" xml:space="preserve">
+    <data name="EYPOPEN" xml:space="preserve">
     <value>直接打开EYP文件</value>
   </data>
-  <data name="FLATBED" xml:space="preserve">
+    <data name="FLATBED" xml:space="preserve">
     <value>平床</value>
   </data>
-  <data name="JPEGQUALITY" xml:space="preserve">
+    <data name="JPEGQUALITY" xml:space="preserve">
     <value>JPEG质量速率</value>
   </data>
-  <data name="Left" xml:space="preserve">
+    <data name="Left" xml:space="preserve">
     <value>左</value>
   </data>
-  <data name="LIMITED" xml:space="preserve">
+    <data name="LIMITED" xml:space="preserve">
     <value>此文件格式的支持有限。</value>
   </data>
-  <data name="LOAD" xml:space="preserve">
+    <data name="LOAD" xml:space="preserve">
     <value>載入</value>
   </data>
-  <data name="NOPATCHCODE" xml:space="preserve">
+    <data name="NOPATCHCODE" xml:space="preserve">
     <value>未检测到修补程序代码</value>
   </data>
-  <data name="NOPROFILE" xml:space="preserve">
+    <data name="NOPROFILE" xml:space="preserve">
     <value>未选择个人资料</value>
   </data>
-  <data name="OCRTIME" xml:space="preserve">
+    <data name="OCRTIME" xml:space="preserve">
     <value>PDF OCR需要很长时间</value>
   </data>
-  <data name="OTHERAPPS" xml:space="preserve">
+    <data name="OTHERAPPS" xml:space="preserve">
     <value>我的其他应用程序!</value>
   </data>
-  <data name="OVERWRITECOMPRESSED" xml:space="preserve">
+    <data name="OVERWRITECOMPRESSED" xml:space="preserve">
     <value>直接覆盖扫描文档中的压缩文件</value>
   </data>
-  <data name="PAGENUMBER" xml:space="preserve">
+    <data name="PAGENUMBER" xml:space="preserve">
     <value>页码</value>
   </data>
-  <data name="PDFOPEN" xml:space="preserve">
+    <data name="PDFOPEN" xml:space="preserve">
     <value>直接打开PDF文件。</value>
   </data>
-  <data name="PDFTRACK" xml:space="preserve">
+    <data name="PDFTRACK" xml:space="preserve">
     <value>观看PDF文件夹更改</value>
   </data>
-  <data name="QRDETECT" xml:space="preserve">
+    <data name="QRDETECT" xml:space="preserve">
     <value>检测二维码</value>
   </data>
-  <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
+    <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
     <value>从文档列表中删除已处理的文件!</value>
   </data>
-  <data name="REMOVESELECTED" xml:space="preserve">
+    <data name="REMOVESELECTED" xml:space="preserve">
     <value>是否要删除所选图像?</value>
   </data>
-  <data name="REPLACEPAGE" xml:space="preserve">
+    <data name="REPLACEPAGE" xml:space="preserve">
     <value>替换页面</value>
   </data>
-  <data name="RESTARTAPP" xml:space="preserve">
+    <data name="RESTARTAPP" xml:space="preserve">
     <value>需要重新启动应用程序</value>
   </data>
-  <data name="Right" xml:space="preserve">
+    <data name="Right" xml:space="preserve">
     <value>右</value>
   </data>
-  <data name="Rotate180" xml:space="preserve">
+    <data name="Rotate180" xml:space="preserve">
     <value>旋转180度</value>
   </data>
-  <data name="Rotate270" xml:space="preserve">
+    <data name="Rotate270" xml:space="preserve">
     <value>旋转270度</value>
   </data>
-  <data name="Rotate90" xml:space="preserve">
+    <data name="Rotate90" xml:space="preserve">
     <value>旋转90度</value>
   </data>
-  <data name="SEPERATOR" xml:space="preserve">
+    <data name="SEPERATOR" xml:space="preserve">
     <value>分隔符</value>
   </data>
-  <data name="SPLIT" xml:space="preserve">
+    <data name="SPLIT" xml:space="preserve">
     <value>它被砸碎了</value>
   </data>
-  <data name="SPLITTERTOOLTIP" xml:space="preserve">
+    <data name="SPLITTERTOOLTIP" xml:space="preserve">
     <value>双击可恢复，右键单击可展开</value>
   </data>
-  <data name="SRCCOLOR" xml:space="preserve">
+    <data name="SRCCOLOR" xml:space="preserve">
     <value>资源</value>
   </data>
-  <data name="SRCCOLORTIP" xml:space="preserve">
+    <data name="SRCCOLORTIP" xml:space="preserve">
     <value>右键单击并选择您的颜色</value>
   </data>
-  <data name="START" xml:space="preserve">
+    <data name="START" xml:space="preserve">
     <value>启动</value>
   </data>
-  <data name="TAG" xml:space="preserve">
+    <data name="TAG" xml:space="preserve">
     <value>标签</value>
   </data>
-  <data name="TASKSRUNNING" xml:space="preserve">
+    <data name="TASKSRUNNING" xml:space="preserve">
     <value>等待一些任务完成</value>
   </data>
-  <data name="TESSLANGSELECT" xml:space="preserve">
+    <data name="TESSLANGSELECT" xml:space="preserve">
     <value>选择Tesseract语言</value>
   </data>
-  <data name="THIRDPARTY" xml:space="preserve">
+    <data name="THIRDPARTY" xml:space="preserve">
     <value>第三方图书馆在实践中使用</value>
   </data>
-  <data name="THRESHOLD" xml:space="preserve">
+    <data name="THRESHOLD" xml:space="preserve">
     <value>门槛</value>
   </data>
-  <data name="TRANSLATEPENDING" xml:space="preserve">
+    <data name="TRANSLATEPENDING" xml:space="preserve">
     <value>操作正在进行。请等待操作完成</value>
   </data>
-  <data name="UPDATE" xml:space="preserve">
+    <data name="UPDATE" xml:space="preserve">
     <value>更新</value>
   </data>
-  <data name="WATERMARK" xml:space="preserve">
+    <data name="WATERMARK" xml:space="preserve">
     <value>水印</value>
   </data>
 </root>

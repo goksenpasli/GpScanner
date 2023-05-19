@@ -1,569 +1,574 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-    <xsd:element name="root" msdata:IsDataSet="true">
-      <xsd:complexType>
-        <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="metadata">
+    <!-- 
+      Microsoft ResX Schema 
+      
+      Version 2.0
+      
+      The primary goals of this format is to allow a simple XML format 
+      that is mostly human readable. The generation and parsing of the 
+      various data types are done through the TypeConverter classes 
+      associated with the data types.
+      
+      Example:
+      
+      ... ado.net/XML headers & schema ...
+      <resheader name="resmimetype">text/microsoft-resx</resheader>
+      <resheader name="version">2.0</resheader>
+      <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+      <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+      <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+      <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+      <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+          <value>[base64 mime encoded serialized .NET Framework object]</value>
+      </data>
+      <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+          <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+          <comment>This is a comment</comment>
+      </data>
+                  
+      There are any number of "resheader" rows that contain simple 
+      name/value pairs.
+      
+      Each data row contains a name, and value. The row also contains a 
+      type or mimetype. Type corresponds to a .NET class that support 
+      text/value conversion through the TypeConverter architecture. 
+      Classes that don't support this are serialized and stored with the 
+      mimetype set.
+      
+      The mimetype is used for serialized objects, and tells the 
+      ResXResourceReader how to depersist the object. This is currently not 
+      extensible. For a given mimetype the value must be set accordingly:
+      
+      Note - application/x-microsoft.net.object.binary.base64 is the format 
+      that the ResXResourceWriter will generate, however the reader can 
+      read any of the formats listed below.
+      
+      mimetype: application/x-microsoft.net.object.binary.base64
+      value   : The object must be serialized with 
+              : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+              : and then encoded with base64 encoding.
+      
+      mimetype: application/x-microsoft.net.object.soap.base64
+      value   : The object must be serialized with 
+              : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+              : and then encoded with base64 encoding.
+  
+      mimetype: application/x-microsoft.net.object.bytearray.base64
+      value   : The object must be serialized into a byte array 
+              : using a System.ComponentModel.TypeConverter
+              : and then encoded with base64 encoding.
+      -->
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root"
+                xmlns="">
+        <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+        <xsd:element name="root" msdata:IsDataSet="true">
             <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
-              </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+                <xsd:choice maxOccurs="unbounded">
+                    <xsd:element name="metadata">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                            </xsd:sequence>
+                            <xsd:attribute name="name" use="required" type="xsd:string"/>
+                            <xsd:attribute name="type" type="xsd:string"/>
+                            <xsd:attribute name="mimetype" type="xsd:string"/>
+                            <xsd:attribute ref="xml:space"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="assembly">
+                        <xsd:complexType>
+                            <xsd:attribute name="alias" type="xsd:string"/>
+                            <xsd:attribute name="name" type="xsd:string"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="data">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+                            </xsd:sequence>
+                            <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+                            <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+                            <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+                            <xsd:attribute ref="xml:space"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="resheader">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                            </xsd:sequence>
+                            <xsd:attribute name="name" type="xsd:string" use="required"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:choice>
             </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="assembly">
-            <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="data">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="resheader">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:choice>
-      </xsd:complexType>
-    </xsd:element>
-  </xsd:schema>
-  <resheader name="resmimetype">
-    <value>text/microsoft-resx</value>
-  </resheader>
-  <resheader name="version">
-    <value>2.0</value>
-  </resheader>
-  <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <data name="SRC" xml:space="preserve">
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>2.0</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <data name="SRC" xml:space="preserve">
     <value>VYBERTE ZDROJ</value>
   </data>
-  <data name="SETTİNGS" xml:space="preserve">
+    <data name="SETTİNGS" xml:space="preserve">
     <value>NASTAVENÍ</value>
   </data>
-  <data name="RES" xml:space="preserve">
+    <data name="RES" xml:space="preserve">
     <value>ROZLIŠENÍ</value>
   </data>
-  <data name="ADF" xml:space="preserve">
+    <data name="ADF" xml:space="preserve">
     <value>PODAVAČ
 DOKUMENTŮ</value>
   </data>
-  <data name="BW" xml:space="preserve">
+    <data name="BW" xml:space="preserve">
     <value>ČERNOBÍLE</value>
   </data>
-  <data name="GRAY" xml:space="preserve">
+    <data name="GRAY" xml:space="preserve">
     <value>GRAYI</value>
   </data>
-  <data name="COLOR" xml:space="preserve">
+    <data name="COLOR" xml:space="preserve">
     <value>BAREVNÉ</value>
   </data>
-  <data name="TWOSIDE" xml:space="preserve">
+    <data name="TWOSIDE" xml:space="preserve">
     <value>OBOUSMĚRNĚ</value>
   </data>
-  <data name="GUI" xml:space="preserve">
+    <data name="GUI" xml:space="preserve">
     <value>ZOBRAZIT ROZHRANÍ</value>
   </data>
-  <data name="SEPERATESCAN" xml:space="preserve">
+    <data name="SEPERATESCAN" xml:space="preserve">
     <value>SKENUJTE KAŽDOU STRÁNKU ZVLÁŠŤ</value>
   </data>
-  <data name="SHOWFILE" xml:space="preserve">
+    <data name="SHOWFILE" xml:space="preserve">
     <value>ZOBRAZIT SOUBOR PO RYCHLÉM SKENOVÁNÍ</value>
   </data>
-  <data name="OTHERSETTINGS" xml:space="preserve">
+    <data name="OTHERSETTINGS" xml:space="preserve">
     <value>DALŠÍ NASTAVENÍ</value>
   </data>
-  <data name="DESKEW" xml:space="preserve">
+    <data name="DESKEW" xml:space="preserve">
     <value>OPRAVTE ZAKŘIVENÍ</value>
   </data>
-  <data name="BORDERDETECT" xml:space="preserve">
+    <data name="BORDERDETECT" xml:space="preserve">
     <value>AUTOMATICKÁ DETEKCE HRAN</value>
   </data>
-  <data name="SHOWPROGRESS" xml:space="preserve">
+    <data name="SHOWPROGRESS" xml:space="preserve">
     <value>UKAŽTE MI PROCENTO</value>
   </data>
-  <data name="AUTOROTATE" xml:space="preserve">
+    <data name="AUTOROTATE" xml:space="preserve">
     <value>AUTOMATICKÉ OTÁČENÍ</value>
   </data>
-  <data name="NO ACTION" xml:space="preserve">
+    <data name="NO ACTION" xml:space="preserve">
     <value>ŽÁDNÁ AKCE</value>
   </data>
-  <data name="CLOSECOMP" xml:space="preserve">
+    <data name="CLOSECOMP" xml:space="preserve">
     <value>VYPNĚTE POČÍTAČ</value>
   </data>
-  <data name="RESTARTCOMP" xml:space="preserve">
+    <data name="RESTARTCOMP" xml:space="preserve">
     <value>RESTARTUJTE POČÍTAČ</value>
   </data>
-  <data name="FILENAME" xml:space="preserve">
+    <data name="FILENAME" xml:space="preserve">
     <value>NÁZEV SOUBORU:</value>
   </data>
-  <data name="DAY" xml:space="preserve">
+    <data name="DAY" xml:space="preserve">
     <value>[DEN]</value>
   </data>
-  <data name="MONTH" xml:space="preserve">
+    <data name="MONTH" xml:space="preserve">
     <value>[MONTH]</value>
   </data>
-  <data name="YEAR" xml:space="preserve">
+    <data name="YEAR" xml:space="preserve">
     <value>[ROK]</value>
   </data>
-  <data name="TIME" xml:space="preserve">
+    <data name="TIME" xml:space="preserve">
     <value>Hodiny</value>
   </data>
-  <data name="MINUTE" xml:space="preserve">
+    <data name="MINUTE" xml:space="preserve">
     <value>[MINUTY]</value>
   </data>
-  <data name="SECOND" xml:space="preserve">
+    <data name="SECOND" xml:space="preserve">
     <value>[SEKUNDY]</value>
   </data>
-  <data name="GUID" xml:space="preserve">
+    <data name="GUID" xml:space="preserve">
     <value>[GUID]</value>
   </data>
-  <data name="USERNAME" xml:space="preserve">
+    <data name="USERNAME" xml:space="preserve">
     <value>[UŽIVATELSKÉ JMÉNO]</value>
   </data>
-  <data name="SAVEPROFILE" xml:space="preserve">
+    <data name="SAVEPROFILE" xml:space="preserve">
     <value>SKRÝT PROFIL</value>
   </data>
-  <data name="DELETE" xml:space="preserve">
+    <data name="DELETE" xml:space="preserve">
     <value>SMAZAT</value>
   </data>
-  <data name="SCAN" xml:space="preserve">
+    <data name="SCAN" xml:space="preserve">
     <value>Hledat</value>
   </data>
-  <data name="FASTSCAN" xml:space="preserve">
+    <data name="FASTSCAN" xml:space="preserve">
     <value>RYCHLÉ
 SKENOVÁNÍ</value>
   </data>
-  <data name="AUTOPATH" xml:space="preserve">
+    <data name="AUTOPATH" xml:space="preserve">
     <value>AUTOMATICKÉ
 ULOŽENÍ</value>
   </data>
-  <data name="ALL" xml:space="preserve">
+    <data name="ALL" xml:space="preserve">
     <value>Celkem</value>
   </data>
-  <data name="NONE" xml:space="preserve">
+    <data name="NONE" xml:space="preserve">
     <value>NIKDO Z NICH</value>
   </data>
-  <data name="REVERSE" xml:space="preserve">
+    <data name="REVERSE" xml:space="preserve">
     <value>ZPÁTEČKA</value>
   </data>
-  <data name="PREVIEWSIZE" xml:space="preserve">
+    <data name="PREVIEWSIZE" xml:space="preserve">
     <value>VELIKOST NÁHLEDU OBRÁZKU</value>
   </data>
-  <data name="PDFPROTECT" xml:space="preserve">
+    <data name="PDFPROTECT" xml:space="preserve">
     <value>Pdf Protect</value>
   </data>
-  <data name="ENCRYPT" xml:space="preserve">
+    <data name="ENCRYPT" xml:space="preserve">
     <value>ŠIFROVAT</value>
   </data>
-  <data name="PDFWARN" xml:space="preserve">
+    <data name="PDFWARN" xml:space="preserve">
     <value>ZDE PROVEDENÁ NASTAVENÍ OVLIVŇUJÍ VŠECHNY ZÁZNAMY PDF.
 TAKÉ OCHRANA PDF MŮŽE BÝT PORUŠENA APLIKACEMI TŘETÍCH STRAN.</value>
   </data>
-  <data name="ALLOWPRINT" xml:space="preserve">
+    <data name="ALLOWPRINT" xml:space="preserve">
     <value>POVOLIT TISK</value>
   </data>
-  <data name="ALLOWCOPY" xml:space="preserve">
+    <data name="ALLOWCOPY" xml:space="preserve">
     <value>POVOLIT KOPÍROVÁNÍ OBSAHU</value>
   </data>
-  <data name="ALLOWEDIT" xml:space="preserve">
+    <data name="ALLOWEDIT" xml:space="preserve">
     <value>POVOLIT EDITACI DOKUMENTU</value>
   </data>
-  <data name="SAVESELECTED" xml:space="preserve">
+    <data name="SAVESELECTED" xml:space="preserve">
     <value>ZACHRAŇTE VÝBĚRY</value>
   </data>
-  <data name="CLEARLIST" xml:space="preserve">
+    <data name="CLEARLIST" xml:space="preserve">
     <value>VYČISTĚTE SEZNAM</value>
   </data>
-  <data name="MERGEPDF" xml:space="preserve">
+    <data name="MERGEPDF" xml:space="preserve">
     <value>SLOUČIT PDF</value>
   </data>
-  <data name="ABOUT" xml:space="preserve">
+    <data name="ABOUT" xml:space="preserve">
     <value>O NÁS</value>
   </data>
-  <data name="DOCUMENT" xml:space="preserve">
+    <data name="DOCUMENT" xml:space="preserve">
     <value>PAPÍROVÁNÍ</value>
   </data>
-  <data name="TRIMIMAGE" xml:space="preserve">
+    <data name="TRIMIMAGE" xml:space="preserve">
     <value>OŘÍZNOUT OBRÁZEK</value>
   </data>
-  <data name="RESET" xml:space="preserve">
+    <data name="RESET" xml:space="preserve">
     <value>RESET</value>
   </data>
-  <data name="WIDTHCOUNT" xml:space="preserve">
+    <data name="WIDTHCOUNT" xml:space="preserve">
     <value>POČET NEJVÍCE</value>
   </data>
-  <data name="HEIGHTCOUNT" xml:space="preserve">
+    <data name="HEIGHTCOUNT" xml:space="preserve">
     <value>POČET VÝŠEK</value>
   </data>
-  <data name="SLICE" xml:space="preserve">
+    <data name="SLICE" xml:space="preserve">
     <value>ROZBIJ TO</value>
   </data>
-  <data name="TEXT" xml:space="preserve">
+    <data name="TEXT" xml:space="preserve">
     <value>METINE</value>
   </data>
-  <data name="TEXTSIZE" xml:space="preserve">
+    <data name="TEXTSIZE" xml:space="preserve">
     <value>VELIKOST TEXTU</value>
   </data>
-  <data name="TEXTANGLE" xml:space="preserve">
+    <data name="TEXTANGLE" xml:space="preserve">
     <value>ÚHEL TEXTU</value>
   </data>
-  <data name="FONT" xml:space="preserve">
+    <data name="FONT" xml:space="preserve">
     <value>PÍSMO</value>
   </data>
-  <data name="DRAWTEXT" xml:space="preserve">
+    <data name="DRAWTEXT" xml:space="preserve">
     <value>NAKRESLETE TEXT</value>
   </data>
-  <data name="SAVEPDF" xml:space="preserve">
+    <data name="SAVEPDF" xml:space="preserve">
     <value>Uložit</value>
   </data>
-  <data name="FIX" xml:space="preserve">
-    <value />
+    <data name="FIX" xml:space="preserve">
+    <value/>
   </data>
-  <data name="OCR" xml:space="preserve">
+    <data name="OCR" xml:space="preserve">
     <value>OCR</value>
   </data>
-  <data name="FILE" xml:space="preserve">
+    <data name="FILE" xml:space="preserve">
     <value>Soubor</value>
   </data>
-  <data name="CALENDAR" xml:space="preserve">
+    <data name="CALENDAR" xml:space="preserve">
     <value>KALENDÁŘ</value>
   </data>
-  <data name="GRAPH" xml:space="preserve">
+    <data name="GRAPH" xml:space="preserve">
     <value>GRAFIKA</value>
   </data>
-  <data name="VIEWALL" xml:space="preserve">
+    <data name="VIEWALL" xml:space="preserve">
     <value>ZOBRAZIT VŠE</value>
   </data>
-  <data name="PREVIEWFILE" xml:space="preserve">
+    <data name="PREVIEWFILE" xml:space="preserve">
     <value>NÁHLED SOUBORU</value>
   </data>
-  <data name="TESSERACT" xml:space="preserve">
+    <data name="TESSERACT" xml:space="preserve">
     <value>TESSERACT</value>
   </data>
-  <data name="MERGE" xml:space="preserve">
+    <data name="MERGE" xml:space="preserve">
     <value>DEJ TO DOHROMADY</value>
   </data>
-  <data name="MERGESELECTED" xml:space="preserve">
+    <data name="MERGESELECTED" xml:space="preserve">
     <value>SLOUČIT OZNAČENÉ
 SOUBORY PDF</value>
   </data>
-  <data name="SELECTTWOPDF" xml:space="preserve">
+    <data name="SELECTTWOPDF" xml:space="preserve">
     <value>VYBERTE ALESPOŇ DVA SOUBORY PDF</value>
   </data>
-  <data name="READACTIVEPAGE" xml:space="preserve">
+    <data name="READACTIVEPAGE" xml:space="preserve">
     <value>PŘEČTĚTE SI AKTIVNÍ STRÁNKU</value>
   </data>
-  <data name="CONTENT" xml:space="preserve">
+    <data name="CONTENT" xml:space="preserve">
     <value>NÁPOJE SE ČTOU</value>
   </data>
-  <data name="SHOWFOLDER" xml:space="preserve">
+    <data name="SHOWFOLDER" xml:space="preserve">
     <value>ZOBRAZIT VE SLOŽCE</value>
   </data>
-  <data name="CRUNTIME" xml:space="preserve">
+    <data name="CRUNTIME" xml:space="preserve">
     <value>Vzhledem k tomu, že binární soubory Tesseract a leptonica jsou kompilovány s Visual Studio 2019, musíte se ujistit, že je nainstalován Visual Studio 2019 Runtime</value>
   </data>
-  <data name="OTHERTESSERACT" xml:space="preserve">
+    <data name="OTHERTESSERACT" xml:space="preserve">
     <value>V případě potřeby stáhněte také další jazykové datové soubory pro tesseract 4.1.0 z tesseract-ocr. Dejte to do složky Tessdata</value>
   </data>
-  <data name="VC" xml:space="preserve">
+    <data name="VC" xml:space="preserve">
     <value>Visual Studio 2019 x86 a x64 Runtime</value>
   </data>
-  <data name="OTHERTESSERACTLINK" xml:space="preserve">
+    <data name="OTHERTESSERACTLINK" xml:space="preserve">
     <value>Další tesseract jazyková data</value>
   </data>
-  <data name="SCANNER" xml:space="preserve">
+    <data name="SCANNER" xml:space="preserve">
     <value>SKENER</value>
   </data>
-  <data name="PASSWORD" xml:space="preserve">
+    <data name="PASSWORD" xml:space="preserve">
     <value>HESLO</value>
   </data>
-  <data name="WARNREBOOT" xml:space="preserve">
+    <data name="WARNREBOOT" xml:space="preserve">
     <value>Vypnout nebo restartovat nastavení!</value>
   </data>
-  <data name="FASTSCANAFTER" xml:space="preserve">
+    <data name="FASTSCANAFTER" xml:space="preserve">
     <value>Akce, která má být provedena po dokončení rychlého skenování</value>
   </data>
-  <data name="AUTOFOLDER" xml:space="preserve">
+    <data name="AUTOFOLDER" xml:space="preserve">
     <value>Zadat automatické uložení složky.</value>
   </data>
-  <data name="AUTOFOLDERCHANGE" xml:space="preserve">
+    <data name="AUTOFOLDERCHANGE" xml:space="preserve">
     <value>Automaticky uložená cesta změněna. Staré soubory nebudou přesunuty do nové složky.</value>
   </data>
-  <data name="LISTREMOVEWARN" xml:space="preserve">
+    <data name="LISTREMOVEWARN" xml:space="preserve">
     <value>Všechny naskenované dokumenty ve výše uvedeném seznamu budou smazány. Chcete pokračovat?</value>
   </data>
-  <data name="DEFAULTSCANNAME" xml:space="preserve">
+    <data name="DEFAULTSCANNAME" xml:space="preserve">
     <value>Neskenujte</value>
   </data>
-  <data name="ROTSAVE" xml:space="preserve">
+    <data name="ROTSAVE" xml:space="preserve">
     <value>Ušetřete s Rotation Applied?</value>
   </data>
-  <data name="APPRUNNING" xml:space="preserve">
+    <data name="APPRUNNING" xml:space="preserve">
     <value>Aplikace je již spuštěna</value>
   </data>
-  <data name="REGSTI" xml:space="preserve">
+    <data name="REGSTI" xml:space="preserve">
     <value>PŘIDAT DO MENU PROHLÍŽEČE</value>
   </data>
-  <data name="TRANSLATE" xml:space="preserve">
+    <data name="TRANSLATE" xml:space="preserve">
     <value>PŘEKLAD</value>
   </data>
-  <data name="SOURCELANG" xml:space="preserve">
+    <data name="SOURCELANG" xml:space="preserve">
     <value>ZDROJOVÝ JAZYK</value>
   </data>
-  <data name="DESTLANG" xml:space="preserve">
+    <data name="DESTLANG" xml:space="preserve">
     <value>CÍLOVÁ ŘEČ</value>
   </data>
-  <data name="UNREGSTI" xml:space="preserve">
+    <data name="UNREGSTI" xml:space="preserve">
     <value>ODEBRAT Z NABÍDKY PROHLÍŽEČE</value>
   </data>
-  <data name="SEPERATESCANTOOLTIP" xml:space="preserve">
+    <data name="SEPERATESCANTOOLTIP" xml:space="preserve">
     <value>Každá stránka se uloží do samostatného souboru Soubory se uloží do níže uvedené složky.</value>
   </data>
-  <data name="OCRPDFSAVE" xml:space="preserve">
+    <data name="OCRPDFSAVE" xml:space="preserve">
     <value>ULOŽIT OCR PDF</value>
   </data>
-  <data name="ADDDOC" xml:space="preserve">
+    <data name="ADDDOC" xml:space="preserve">
     <value>PŘILOŽTE DOKUMENTY K SOUBORU</value>
   </data>
-  <data name="ADDOCRTODB" xml:space="preserve">
+    <data name="ADDOCRTODB" xml:space="preserve">
     <value>ULOŽIT DATA OCR</value>
   </data>
-  <data name="ADDOCRTOOLTIP" xml:space="preserve">
+    <data name="ADDOCRTOOLTIP" xml:space="preserve">
     <value>Pokud je zaškrtnuto, text aktivního dokumentu vlevo se uloží do databáze.</value>
   </data>
-  <data name="APPDESC" xml:space="preserve">
+    <data name="APPDESC" xml:space="preserve">
     <value>Tato aplikace byla vyvinuta pro usnadnění skenování a sledování dokumentů</value>
   </data>
-  <data name="APPLY" xml:space="preserve">
+    <data name="APPLY" xml:space="preserve">
     <value>Použít</value>
   </data>
-  <data name="APPLYCOLOR" xml:space="preserve">
+    <data name="APPLYCOLOR" xml:space="preserve">
     <value>POUŽÍT BARVU</value>
   </data>
-  <data name="Auto" xml:space="preserve">
+    <data name="Auto" xml:space="preserve">
     <value>AUTOMATICKY</value>
   </data>
-  <data name="AutoPicture" xml:space="preserve">
+    <data name="AutoPicture" xml:space="preserve">
     <value>AUTO-PICTURE</value>
   </data>
-  <data name="AutoText" xml:space="preserve">
+    <data name="AutoText" xml:space="preserve">
     <value>AUTOMATICKÝ TEXT</value>
   </data>
-  <data name="BATCH" xml:space="preserve">
+    <data name="BATCH" xml:space="preserve">
     <value>KOLEKTIVNÍ PRÁCE</value>
   </data>
-  <data name="BATCHDESC" xml:space="preserve">
+    <data name="BATCHDESC" xml:space="preserve">
     <value>Když jsou soubory obrázků přidány do složky níže, provádí se automatický překlad do souboru PDF ve stejné složce, dokud je program otevřen</value>
   </data>
-  <data name="CAMERA" xml:space="preserve">
+    <data name="CAMERA" xml:space="preserve">
     <value>Kamera</value>
   </data>
-  <data name="COLORCHANGETIP" xml:space="preserve">
+    <data name="COLORCHANGETIP" xml:space="preserve">
     <value>Pokud na něj kliknete po nastavení prahové hodnoty, můžete zvolit druhou barvu</value>
   </data>
-  <data name="COMPRESS" xml:space="preserve">
+    <data name="COMPRESS" xml:space="preserve">
     <value>ZMÁČKNI TO</value>
   </data>
-  <data name="Default" xml:space="preserve">
+    <data name="Default" xml:space="preserve">
     <value>VÝCHOZÍ</value>
   </data>
-  <data name="DSTCOLOR" xml:space="preserve">
+    <data name="DSTCOLOR" xml:space="preserve">
     <value>CÍLOVÁ BARVA</value>
   </data>
-  <data name="EMPTYPAGE" xml:space="preserve">
+    <data name="EMPTYPAGE" xml:space="preserve">
     <value>PŘESKOČTE PRÁZDNÉ STRÁNKY</value>
   </data>
-  <data name="EYPOPEN" xml:space="preserve">
+    <data name="EYPOPEN" xml:space="preserve">
     <value>Otevřete soubory EYP přímo</value>
   </data>
-  <data name="FLATBED" xml:space="preserve">
+    <data name="FLATBED" xml:space="preserve">
     <value>PLOCHÁ POSTEL</value>
   </data>
-  <data name="JPEGQUALITY" xml:space="preserve">
+    <data name="JPEGQUALITY" xml:space="preserve">
     <value>RYCHLOST KVALITY JPEG</value>
   </data>
-  <data name="Left" xml:space="preserve">
+    <data name="Left" xml:space="preserve">
     <value>Zbývá</value>
   </data>
-  <data name="LIMITED" xml:space="preserve">
+    <data name="LIMITED" xml:space="preserve">
     <value>Tento formát souboru má omezenou podporu.</value>
   </data>
-  <data name="LOAD" xml:space="preserve">
+    <data name="LOAD" xml:space="preserve">
     <value>Naинst</value>
   </data>
-  <data name="NOPATCHCODE" xml:space="preserve">
+    <data name="NOPATCHCODE" xml:space="preserve">
     <value>Kód opravy nebyl zjištěn</value>
   </data>
-  <data name="NOPROFILE" xml:space="preserve">
+    <data name="NOPROFILE" xml:space="preserve">
     <value>NEBYL VYBRÁN ŽÁDNÝ PROFIL</value>
   </data>
-  <data name="OCRTIME" xml:space="preserve">
+    <data name="OCRTIME" xml:space="preserve">
     <value>Pdf OCR trvá hodně času</value>
   </data>
-  <data name="OTHERAPPS" xml:space="preserve">
+    <data name="OTHERAPPS" xml:space="preserve">
     <value>MOJE DALŠÍ APLIKACE</value>
   </data>
-  <data name="OVERWRITECOMPRESSED" xml:space="preserve">
+    <data name="OVERWRITECOMPRESSED" xml:space="preserve">
     <value>Přepsat komprimovaný soubor v naskenovaných dokumentech přímo</value>
   </data>
-  <data name="PAGENUMBER" xml:space="preserve">
+    <data name="PAGENUMBER" xml:space="preserve">
     <value>STRANA Č.</value>
   </data>
-  <data name="PDFOPEN" xml:space="preserve">
+    <data name="PDFOPEN" xml:space="preserve">
     <value>Otevřete soubory PDF přímo.</value>
   </data>
-  <data name="PDFTRACK" xml:space="preserve">
+    <data name="PDFTRACK" xml:space="preserve">
     <value>PODÍVEJTE SE NA ZMĚNU SLOŽKY PDF</value>
   </data>
-  <data name="QRDETECT" xml:space="preserve">
+    <data name="QRDETECT" xml:space="preserve">
     <value>DETEKUJTE QR</value>
   </data>
-  <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
+    <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
     <value>Smazat zpracované soubory ze seznamu dokumentů</value>
   </data>
-  <data name="REMOVESELECTED" xml:space="preserve">
+    <data name="REMOVESELECTED" xml:space="preserve">
     <value>Chcete smazat vybraný obrázek?</value>
   </data>
-  <data name="REPLACEPAGE" xml:space="preserve">
+    <data name="REPLACEPAGE" xml:space="preserve">
     <value>Nahradit stránky</value>
   </data>
-  <data name="RESTARTAPP" xml:space="preserve">
+    <data name="RESTARTAPP" xml:space="preserve">
     <value>Aplikaci je třeba restartovat</value>
   </data>
-  <data name="Right" xml:space="preserve">
+    <data name="Right" xml:space="preserve">
     <value>Šipka doprava</value>
   </data>
-  <data name="Rotate180" xml:space="preserve">
+    <data name="Rotate180" xml:space="preserve">
     <value>OTOČIT O 180 STUPŇŮ</value>
   </data>
-  <data name="Rotate270" xml:space="preserve">
+    <data name="Rotate270" xml:space="preserve">
     <value>OTOČIT O 270 STUPŇŮ</value>
   </data>
-  <data name="Rotate90" xml:space="preserve">
+    <data name="Rotate90" xml:space="preserve">
     <value>OTOČIT O 90 STUPŇŮ</value>
   </data>
-  <data name="SEPERATOR" xml:space="preserve">
+    <data name="SEPERATOR" xml:space="preserve">
     <value>Oddělovač</value>
   </data>
-  <data name="SPLIT" xml:space="preserve">
+    <data name="SPLIT" xml:space="preserve">
     <value>Je to rozbité</value>
   </data>
-  <data name="SPLITTERTOOLTIP" xml:space="preserve">
+    <data name="SPLITTERTOOLTIP" xml:space="preserve">
     <value>Dvakrát klikněte pro obnovení, klikněte pravým tlačítkem myši pro rozbalení</value>
   </data>
-  <data name="SRCCOLOR" xml:space="preserve">
+    <data name="SRCCOLOR" xml:space="preserve">
     <value>BARVA ZDROJE</value>
   </data>
-  <data name="SRCCOLORTIP" xml:space="preserve">
+    <data name="SRCCOLORTIP" xml:space="preserve">
     <value>Klikněte pravým tlačítkem myši a vyberte si barvu</value>
   </data>
-  <data name="START" xml:space="preserve">
+    <data name="START" xml:space="preserve">
     <value>Spustit</value>
   </data>
-  <data name="TAG" xml:space="preserve">
+    <data name="TAG" xml:space="preserve">
     <value>ŠTÍTEK</value>
   </data>
-  <data name="TASKSRUNNING" xml:space="preserve">
+    <data name="TASKSRUNNING" xml:space="preserve">
     <value>Počkejte na dokončení některých úkolů</value>
   </data>
-  <data name="TESSLANGSELECT" xml:space="preserve">
+    <data name="TESSLANGSELECT" xml:space="preserve">
     <value>Vyberte jazyk Tesseract</value>
   </data>
-  <data name="THIRDPARTY" xml:space="preserve">
+    <data name="THIRDPARTY" xml:space="preserve">
     <value>KNIHOVNY TŘETÍCH STRAN POUŽÍVANÉ V PRAXI</value>
   </data>
-  <data name="THRESHOLD" xml:space="preserve">
+    <data name="THRESHOLD" xml:space="preserve">
     <value>PRAHOVÁ HODNOTA</value>
   </data>
-  <data name="TRANSLATEPENDING" xml:space="preserve">
+    <data name="TRANSLATEPENDING" xml:space="preserve">
     <value>Operace probíhá, počkejte, až to skončí</value>
   </data>
-  <data name="UPDATE" xml:space="preserve">
+    <data name="UPDATE" xml:space="preserve">
     <value>Aktualizace</value>
   </data>
-  <data name="WATERMARK" xml:space="preserve">
+    <data name="WATERMARK" xml:space="preserve">
     <value>VODOZNAK</value>
   </data>
 </root>

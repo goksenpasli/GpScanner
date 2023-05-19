@@ -366,7 +366,10 @@
                                 SelectedItem="{Binding SelectedSize}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBlock><Run Text="{Binding Width, StringFormat=\{0\} Pixel}" /><LineBreak /><Run Text="{Binding Height, StringFormat=\{0\} Pixel}" /></TextBlock>
+                                        <TextBlock>
+                                            <Run Text="{Binding Width, StringFormat=\{0\} Pixel}" /><LineBreak />
+                                            <Run Text="{Binding Height, StringFormat=\{0\} Pixel}" />
+                                        </TextBlock>
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
@@ -551,9 +554,7 @@
                     <GroupBox Grid.Column="1">
                         <UniformGrid Rows="2">
                             <UniformGrid Columns="2">
-                                <TextBox Grid.Column="0"
-                                    IsReadOnly="True"
-                                    Text="{Binding BatchFolder, Source={x:Static properties:Settings.Default}}" />
+                                <TextBox IsReadOnly="True" Text="{Binding BatchFolder, Source={x:Static properties:Settings.Default}}" />
                                 <Button twainctrl:Policy.PolicyName="SetBatchWatchFolder"
                                     Command="{Binding SetBatchWatchFolder}"
                                     Content="{twainctrl:Loc SRC}" />
@@ -596,18 +597,20 @@
                                         <StackPanel Margin="1" Orientation="Horizontal">
                                             <TextBlock Margin="0,0,5,0" VerticalAlignment="Center"
                                                 FontStyle="Italic"
-                                                Text="{Binding Mode=OneWay}"><Hyperlink twainctrl:Policy.PolicyName="RemoveSelectedFtp"
+                                                Text="{Binding Mode=OneWay}">
+                                                <Hyperlink twainctrl:Policy.PolicyName="RemoveSelectedFtp"
                                                     Command="{Binding DataContext.RemoveSelectedFtp, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
                                                     CommandParameter="{Binding Mode=OneWay}">
                                                     <Run Text="{twainctrl:Loc DELETE}" />
-                                                </Hyperlink></TextBlock>
+                                                </Hyperlink>
+                                            </TextBlock>
                                         </StackPanel>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
                         </Grid>
                     </GroupBox>
-                    <TabControl Grid.Row="1">
+                    <TabControl>
                         <TabItem Header="DVD">
                             <ScrollViewer VerticalScrollBarVisibility="Auto">
                                 <dvd:Burner />

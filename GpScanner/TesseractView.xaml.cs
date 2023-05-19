@@ -1,17 +1,16 @@
 ﻿using System.Windows.Controls;
 using GpScanner.ViewModel;
 
-namespace GpScanner
+namespace GpScanner;
+
+/// <summary>
+///     Interaction logic for TesseractView.xaml
+/// </summary>
+public partial class TesseractView : UserControl
 {
-    /// <summary>
-    /// Interaction logic for TesseractView.xaml
-    /// </summary>
-    public partial class TesseractView : UserControl
+    public TesseractView()
     {
-        public TesseractView()
-        {
-            InitializeComponent();
-            DataContext = new TesseractViewModel();
-        }
+        InitializeComponent();
+        DataContext = new TesseractViewModel();
     }
 }

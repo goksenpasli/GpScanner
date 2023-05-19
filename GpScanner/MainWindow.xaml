@@ -20,7 +20,6 @@
     mc:Ignorable="d">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
         <Converter:StringToQrBitmapImageConverter x:Key="StringToQrBitmapImageConverter" />
         <Converter:SelectedSizeToCacheLengthConverter x:Key="SelectedSizeToCacheLengthConverter" />
         <CollectionViewSource x:Key="Veriler" Source="{Binding Dosyalar}" />
@@ -187,7 +186,10 @@
                                     SelectedItem="{Binding SelectedSize}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
-                                            <TextBlock><Run Text="{Binding Width}" /><Run Text="X" /><Run Text="{Binding Height}" /></TextBlock>
+                                            <TextBlock>
+                                                <Run Text="{Binding Width}" /><Run Text="X" />
+                                                <Run Text="{Binding Height}" />
+                                            </TextBlock>
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
@@ -435,7 +437,7 @@
                                                                                                 Height="{Binding Parent.DataContext.SelectedSize.Height, Source={x:Reference TwainCtrl}}"
                                                                                                 MinWidth="{Binding Parent.DataContext.SelectedSize.Width, Source={x:Reference TwainCtrl}}"
                                                                                                 MinHeight="{Binding Parent.DataContext.SelectedSize.Height, Source={x:Reference TwainCtrl}}">
-                                                                                                <local:TranslateView Grid.Row="1" ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding Parent.DataContext.FileOcrContent, RelativeSource={RelativeSource Mode=Self}}" />
+                                                                                                <local:TranslateView ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding Parent.DataContext.FileOcrContent, RelativeSource={RelativeSource Mode=Self}}" />
                                                                                             </Extensions:ResizablePanel>
                                                                                         </Setter.Value>
                                                                                     </Setter>
@@ -858,9 +860,7 @@
                                             </DataTemplate>
                                         </ListBox.ItemTemplate>
                                     </ListBox>
-                                    <Button Grid.Column="1"
-                                        twainctrl:Policy.PolicyName="CancelBatchOcr"
-                                        Command="{Binding CancelBatchOcr}">
+                                    <Button twainctrl:Policy.PolicyName="CancelBatchOcr" Command="{Binding CancelBatchOcr}">
                                         <Image Width="32" Height="32"
                                             Source="/TwainControl;component/Icons/delete.png" />
                                     </Button>

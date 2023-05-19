@@ -26,11 +26,14 @@
             <TextBlock Margin="3,0,0,0" VerticalAlignment="Center">
                 <Run BaselineAlignment="Center"
                     Foreground="{StaticResource xmAttributeBrush}"
-                    Text="{Binding Path=Name, Mode=OneWay}" /><Run BaselineAlignment="Center"
+                    Text="{Binding Path=Name, Mode=OneWay}" />
+                <Run BaselineAlignment="Center"
                     Foreground="{StaticResource xmlMarkBrush}"
-                    Text="=&quot;" /><Run BaselineAlignment="Center"
+                    Text="=&quot;" />
+                <Run BaselineAlignment="Center"
                     Foreground="{StaticResource xmlValueBrush}"
-                    Text="{Binding Path=Value, Mode=OneWay}" /><Run BaselineAlignment="Center"
+                    Text="{Binding Path=Value, Mode=OneWay}" />
+                <Run BaselineAlignment="Center"
                     Foreground="{StaticResource xmlMarkBrush}"
                     Text="&quot;" />
             </TextBlock>
@@ -43,10 +46,12 @@
                 <Run x:Name="startTag"
                     BaselineAlignment="Center"
                     Foreground="{StaticResource xmlMarkBrush}"
-                    Text="&lt;" /><Run x:Name="xmlTag"
+                    Text="&lt;" />
+                <Run x:Name="xmlTag"
                     BaselineAlignment="Center"
                     Foreground="{StaticResource xmlTagBrush}"
-                    Text="{Binding Path=Name, Mode=OneWay}" /><InlineUIContainer>
+                    Text="{Binding Path=Name, Mode=OneWay}" />
+                <InlineUIContainer>
                     <ItemsControl HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center"
                         ItemTemplate="{StaticResource attributeTemplate}"
                         ItemsSource="{Binding Path=Attributes}">
@@ -68,7 +73,8 @@
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                     </ItemsControl>
-                </InlineUIContainer><Run x:Name="endTag"
+                </InlineUIContainer>
+                <Run x:Name="endTag"
                     BaselineAlignment="Center"
                     Foreground="{StaticResource xmlMarkBrush}"
                     Text="&gt;" />

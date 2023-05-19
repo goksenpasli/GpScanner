@@ -1,7 +1,7 @@
 ﻿namespace Tesseract.Interop
 {
     /// <summary>
-    /// Description of Constants.
+    ///     Description of Constants.
     /// </summary>
     internal static class Constants
     {

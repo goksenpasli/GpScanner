@@ -53,7 +53,7 @@ namespace Tesseract
 
         public override bool Equals(object obj)
         {
-            return (obj is Rect) && Equals((Rect)obj);
+            return obj is Rect && Equals((Rect)obj);
         }
 
         public bool Equals(Rect other)
@@ -71,6 +71,7 @@ namespace Tesseract
                 hashCode += 1000000021 * Width.GetHashCode();
                 hashCode += 1000000033 * Height.GetHashCode();
             }
+
             return hashCode;
         }
 

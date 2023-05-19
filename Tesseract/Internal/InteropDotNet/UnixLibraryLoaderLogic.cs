@@ -1,6 +1,7 @@
 ﻿//  Copyright (c) 2014 Andrey Akinshin
 //  Project URL: https://github.com/AndreyAkinshin/InteropDotNet
 //  Distributed under the MIT License: http://opensource.org/licenses/MIT
+
 using System;
 using System.Runtime.InteropServices;
 
@@ -22,6 +23,7 @@ namespace Tesseract.Internal.InteropDotNet
                     fileName = "lib" + fileName;
                 }
             }
+
             return fileName;
         }
 
@@ -66,7 +68,8 @@ namespace Tesseract.Internal.InteropDotNet
                 libraryHandle = UnixLoadLibrary(fileName, RTLD_NOW);
                 if (libraryHandle != IntPtr.Zero)
                 {
-                    Logger.TraceInformation("Successfully loaded native library \"{0}\", handle = {1}.", fileName, libraryHandle);
+                    Logger.TraceInformation("Successfully loaded native library \"{0}\", handle = {1}.", fileName,
+                        libraryHandle);
                 }
                 else
                 {
@@ -76,7 +79,9 @@ namespace Tesseract.Internal.InteropDotNet
             catch (Exception e)
             {
                 IntPtr lastError = UnixGetLastError();
-                Logger.TraceError("Failed to load native library \"{0}\".\r\nLast Error:{1}\r\nCheck inner exception and\\or windows event log.\r\nInner Exception: {2}", fileName, lastError, e.ToString());
+                Logger.TraceError(
+                    "Failed to load native library \"{0}\".\r\nLast Error:{1}\r\nCheck inner exception and\\or windows event log.\r\nInner Exception: {2}",
+                    fileName, lastError, e.ToString());
             }
 
             return libraryHandle;
@@ -84,12 +89,15 @@ namespace Tesseract.Internal.InteropDotNet
 
         private const int RTLD_NOW = 2;
 
-        private static readonly string FileExtension = SystemManager.GetOperatingSystem() == OperatingSystem.MacOSX ? ".dylib" : ".so";
+        private static readonly string FileExtension =
+            SystemManager.GetOperatingSystem() == OperatingSystem.MacOSX ? ".dylib" : ".so";
 
-        [DllImport("libdl", EntryPoint = "dlclose", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("libdl", EntryPoint = "dlclose", CallingConvention = CallingConvention.Cdecl,
+            CharSet = CharSet.Ansi)]
         private static extern int UnixFreeLibrary(IntPtr handle);
 
-        [DllImport("libdl", EntryPoint = "dlerror", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("libdl", EntryPoint = "dlerror", CallingConvention = CallingConvention.Cdecl,
+            CharSet = CharSet.Ansi)]
         private static extern IntPtr UnixGetLastError();
 
         [DllImport("libdl", EntryPoint = "dlsym", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]

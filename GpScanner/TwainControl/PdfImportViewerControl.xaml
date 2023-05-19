@@ -19,7 +19,6 @@
                 <ResourceDictionary Source="/TwainControl;component/CommonResource.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
-            <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
             <Pdfviewer:PdfPageToThumbImageConverter x:Key="PdfPageToThumbImageConverter" />
         </ResourceDictionary>

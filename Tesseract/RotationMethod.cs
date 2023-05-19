@@ -1,22 +1,22 @@
 ﻿namespace Tesseract
 {
     /// <summary>
-    /// Represents the method used to rotate an image.
+    ///     Represents the method used to rotate an image.
     /// </summary>
-    public enum RotationMethod : int
+    public enum RotationMethod
     {
         /// <summary>
-        /// Use area map rotation, if possible.
+        ///     Use area map rotation, if possible.
         /// </summary>
         AreaMap = 1,
 
         /// <summary>
-        /// Use shear rotation.
+        ///     Use shear rotation.
         /// </summary>
         Shear = 2,
 
         /// <summary>
-        /// Use sampling.
+        ///     Use sampling.
         /// </summary>
         Sampling = 3
     }

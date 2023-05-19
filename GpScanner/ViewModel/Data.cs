@@ -1,67 +1,68 @@
 ﻿using System.Xml.Serialization;
 using Extensions;
 
-namespace GpScanner.ViewModel
+namespace GpScanner.ViewModel;
+
+[XmlRoot(ElementName = "Data")]
+public class Data : InpcBase
 {
-    [XmlRoot(ElementName = "Data")]
-    public class Data : InpcBase
-    {
-        [XmlAttribute(AttributeName = "FileContent")]
-        public string FileContent {
-            get => fileContent; set {
+    [XmlAttribute(AttributeName = "FileContent")]
+    public string FileContent {
+        get => fileContent;
 
-                if (fileContent != value)
-                {
-                    fileContent = value;
-                    OnPropertyChanged(nameof(FileContent));
-                }
+        set {
+            if (fileContent != value)
+            {
+                fileContent = value;
+                OnPropertyChanged(nameof(FileContent));
             }
         }
-
-        [XmlAttribute(AttributeName = "FileName")]
-        public string FileName {
-            get => fileName; set {
-
-                if (fileName != value)
-                {
-                    fileName = value;
-                    OnPropertyChanged(nameof(FileName));
-                }
-            }
-        }
-
-        [XmlAttribute(AttributeName = "Id")]
-        public int Id {
-            get => ıd;
-
-            set {
-                if (ıd != value)
-                {
-                    ıd = value;
-                    OnPropertyChanged(nameof(Id));
-                }
-            }
-        }
-
-        [XmlAttribute(AttributeName = "QrData")]
-        public string QrData {
-            get => qrData;
-
-            set {
-                if (qrData != value)
-                {
-                    qrData = value;
-                    OnPropertyChanged(nameof(QrData));
-                }
-            }
-        }
-
-        private string fileContent;
-
-        private string fileName;
-
-        private int ıd;
-
-        private string qrData;
     }
+
+    [XmlAttribute(AttributeName = "FileName")]
+    public string FileName {
+        get => fileName;
+
+        set {
+            if (fileName != value)
+            {
+                fileName = value;
+                OnPropertyChanged(nameof(FileName));
+            }
+        }
+    }
+
+    [XmlAttribute(AttributeName = "Id")]
+    public int Id {
+        get => ıd;
+
+        set {
+            if (ıd != value)
+            {
+                ıd = value;
+                OnPropertyChanged(nameof(Id));
+            }
+        }
+    }
+
+    [XmlAttribute(AttributeName = "QrData")]
+    public string QrData {
+        get => qrData;
+
+        set {
+            if (qrData != value)
+            {
+                qrData = value;
+                OnPropertyChanged(nameof(QrData));
+            }
+        }
+    }
+
+    private string fileContent;
+
+    private string fileName;
+
+    private int ıd;
+
+    private string qrData;
 }

@@ -1,6 +1,6 @@
 ﻿namespace Tesseract
 {
-    public enum ImageFormat : int
+    public enum ImageFormat
     {
         Unknown = 0,
 

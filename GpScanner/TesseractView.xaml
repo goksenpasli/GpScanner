@@ -64,8 +64,7 @@
                                         Maximum="100" Minimum="0"
                                         Value="{Binding ProgressValue}" />
                                     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                        <Image Canvas.Bottom="0"
-                                            Width="16" Height="16">
+                                        <Image Width="16" Height="16">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                     <Binding Source="User32.dll" />

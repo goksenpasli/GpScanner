@@ -1,144 +1,147 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace Extensions
+namespace Extensions;
+
+public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 {
-    public class ButtonedTextBox : TextBox, INotifyPropertyChanged
+    public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register("Description",
+        typeof(string), typeof(ButtonedTextBox), new PropertyMetadata(string.Empty));
+
+    static ButtonedTextBox()
     {
-        public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register("Description", typeof(string), typeof(ButtonedTextBox), new PropertyMetadata(string.Empty));
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(ButtonedTextBox),
+            new FrameworkPropertyMetadata(typeof(ButtonedTextBox)));
+    }
 
-        static ButtonedTextBox()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(ButtonedTextBox), new FrameworkPropertyMetadata(typeof(ButtonedTextBox)));
-        }
+    public ButtonedTextBox()
+    {
+        _ = CommandBindings.Add(new CommandBinding(Reset, ResetCommand, CanExecute)); //handle reset
+        _ = CommandBindings.Add(new CommandBinding(Copy, CopyCommand, CanExecute)); //handle copy
+        _ = CommandBindings.Add(new CommandBinding(Open, OpenCommand, CanExecute)); //handle open
+        _ = CommandBindings.Add(new CommandBinding(Paste, PasteCommand, PasteCanExecute)); //handle paste
+    }
 
-        public ButtonedTextBox()
-        {
-            _ = CommandBindings.Add(new CommandBinding(Reset, ResetCommand, CanExecute)); //handle reset
-            _ = CommandBindings.Add(new CommandBinding(Copy, CopyCommand, CanExecute)); //handle copy
-            _ = CommandBindings.Add(new CommandBinding(Open, OpenCommand, CanExecute)); //handle open
-            _ = CommandBindings.Add(new CommandBinding(Paste, PasteCommand, PasteCanExecute)); //handle paste
-        }
+    public event PropertyChangedEventHandler PropertyChanged;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+    public new ICommand Copy { get; } = new RoutedCommand();
 
-        public new ICommand Copy { get; } = new RoutedCommand();
+    public Visibility CopyButtonVisibility {
+        get => copyButtonVisibility;
 
-        public Visibility CopyButtonVisibility {
-            get => copyButtonVisibility;
-
-            set {
-                if (copyButtonVisibility != value)
-                {
-                    copyButtonVisibility = value;
-                    OnPropertyChanged(nameof(CopyButtonVisibility));
-                }
-            }
-        }
-
-        public string Description {
-            get => (string)GetValue(DescriptionProperty);
-            set => SetValue(DescriptionProperty, value);
-        }
-
-        public ICommand Open { get; } = new RoutedCommand();
-
-        public Visibility OpenButtonVisibility {
-            get => openButtonVisibility;
-
-            set {
-                if (openButtonVisibility != value)
-                {
-                    openButtonVisibility = value;
-                    OnPropertyChanged(nameof(OpenButtonVisibility));
-                }
-            }
-        }
-
-        public new ICommand Paste { get; } = new RoutedCommand();
-
-        public Visibility PasteButtonVisibility {
-            get => pasteButtonVisibility;
-
-            set {
-                if (pasteButtonVisibility != value)
-                {
-                    pasteButtonVisibility = value;
-                    OnPropertyChanged(nameof(PasteButtonVisibility));
-                }
-            }
-        }
-
-        public ICommand Reset { get; } = new RoutedCommand();
-
-        public Visibility ResetButtonVisibility {
-            get => resetButtonVisibility; set {
-
-                if (resetButtonVisibility != value)
-                {
-                    resetButtonVisibility = value;
-                    OnPropertyChanged(nameof(ResetButtonVisibility));
-                }
-            }
-        }
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private Visibility copyButtonVisibility = Visibility.Visible;
-
-        private Visibility openButtonVisibility = Visibility.Visible;
-
-        private Visibility pasteButtonVisibility = Visibility.Visible;
-
-        private Visibility resetButtonVisibility = Visibility.Visible;
-
-        private void CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(Text))
+        set {
+            if (copyButtonVisibility != value)
             {
-                e.CanExecute = true;
+                copyButtonVisibility = value;
+                OnPropertyChanged(nameof(CopyButtonVisibility));
             }
         }
+    }
 
-        private void CopyCommand(object sender, ExecutedRoutedEventArgs e)
-        {
-            Clipboard.SetText(Text);
-        }
+    public string Description {
+        get => (string)GetValue(DescriptionProperty);
+        set => SetValue(DescriptionProperty, value);
+    }
 
-        private void OpenCommand(object sender, ExecutedRoutedEventArgs e)
-        {
-            try
+    public ICommand Open { get; } = new RoutedCommand();
+
+    public Visibility OpenButtonVisibility {
+        get => openButtonVisibility;
+
+        set {
+            if (openButtonVisibility != value)
             {
-                _ = Process.Start(Text);
+                openButtonVisibility = value;
+                OnPropertyChanged(nameof(OpenButtonVisibility));
             }
-            catch (System.Exception ex)
+        }
+    }
+
+    public new ICommand Paste { get; } = new RoutedCommand();
+
+    public Visibility PasteButtonVisibility {
+        get => pasteButtonVisibility;
+
+        set {
+            if (pasteButtonVisibility != value)
             {
-                _ = MessageBox.Show(ex.Message);
+                pasteButtonVisibility = value;
+                OnPropertyChanged(nameof(PasteButtonVisibility));
             }
         }
+    }
 
-        private void PasteCanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            if (Clipboard.ContainsText() && !IsReadOnly)
+    public ICommand Reset { get; } = new RoutedCommand();
+
+    public Visibility ResetButtonVisibility {
+        get => resetButtonVisibility;
+
+        set {
+            if (resetButtonVisibility != value)
             {
-                e.CanExecute = true;
+                resetButtonVisibility = value;
+                OnPropertyChanged(nameof(ResetButtonVisibility));
             }
         }
+    }
 
-        private void PasteCommand(object sender, ExecutedRoutedEventArgs e)
-        {
-            Text = Clipboard.GetText();
-        }
+    protected virtual void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
 
-        private void ResetCommand(object sender, ExecutedRoutedEventArgs e)
+    private Visibility copyButtonVisibility = Visibility.Visible;
+
+    private Visibility openButtonVisibility = Visibility.Visible;
+
+    private Visibility pasteButtonVisibility = Visibility.Visible;
+
+    private Visibility resetButtonVisibility = Visibility.Visible;
+
+    private void CanExecute(object sender, CanExecuteRoutedEventArgs e)
+    {
+        if (!string.IsNullOrWhiteSpace(Text))
         {
-            Text = string.Empty;
+            e.CanExecute = true;
         }
+    }
+
+    private void CopyCommand(object sender, ExecutedRoutedEventArgs e)
+    {
+        Clipboard.SetText(Text);
+    }
+
+    private void OpenCommand(object sender, ExecutedRoutedEventArgs e)
+    {
+        try
+        {
+            _ = Process.Start(Text);
+        }
+        catch (Exception ex)
+        {
+            _ = MessageBox.Show(ex.Message);
+        }
+    }
+
+    private void PasteCanExecute(object sender, CanExecuteRoutedEventArgs e)
+    {
+        if (Clipboard.ContainsText() && !IsReadOnly)
+        {
+            e.CanExecute = true;
+        }
+    }
+
+    private void PasteCommand(object sender, ExecutedRoutedEventArgs e)
+    {
+        Text = Clipboard.GetText();
+    }
+
+    private void ResetCommand(object sender, ExecutedRoutedEventArgs e)
+    {
+        Text = string.Empty;
     }
 }

@@ -1,16 +1,15 @@
 ﻿using System.Windows.Controls;
 
-namespace TwainControl
+namespace TwainControl;
+
+/// <summary>
+///     Interaction logic for XmlViewerControl.xaml
+/// </summary>
+public partial class XmlViewerControl : UserControl
 {
-    /// <summary>
-    /// Interaction logic for XmlViewerControl.xaml
-    /// </summary>
-    public partial class XmlViewerControl : UserControl
+    public XmlViewerControl()
     {
-        public XmlViewerControl()
-        {
-            InitializeComponent();
-            DataContext = new XmlViewerControlModel();
-        }
+        InitializeComponent();
+        DataContext = new XmlViewerControlModel();
     }
 }

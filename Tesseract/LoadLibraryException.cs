@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Serialization;
 
 namespace Tesseract
 {
@@ -6,7 +7,8 @@ namespace Tesseract
     public class LoadLibraryException : SystemException
     {
         public LoadLibraryException()
-        { }
+        {
+        }
 
         public LoadLibraryException(string message) : base(message)
         {
@@ -17,8 +19,10 @@ namespace Tesseract
         }
 
         protected LoadLibraryException(
-          System.Runtime.Serialization.SerializationInfo info,
-          System.Runtime.Serialization.StreamingContext context)
-            : base(info, context) { }
+            SerializationInfo info,
+            StreamingContext context)
+            : base(info, context)
+        {
+        }
     }
 }

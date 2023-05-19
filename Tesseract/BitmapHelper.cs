@@ -1,7 +1,7 @@
 ﻿namespace Tesseract
 {
     /// <summary>
-    /// Description of BitmapHelper.
+    ///     Description of BitmapHelper.
     /// </summary>
     public static unsafe class BitmapHelper
     {
@@ -23,8 +23,9 @@
         public static void SetDataBit(byte* data, int index, byte value)
         {
             byte* wordPtr = data + (index >> 3);
-            *wordPtr &= (byte)~(0x80 >> (index & 7)); 			// clear bit, note first pixel in the byte is most significant (1000 0000)
-            *wordPtr |= (byte)((value & 1) << (7 - (index & 7)));       // set bit, if value is 1
+            *wordPtr &= (byte)~(0x80 >>
+                                (index & 7)); // clear bit, note first pixel in the byte is most significant (1000 0000)
+            *wordPtr |= (byte)((value & 1) << (7 - (index & 7))); // set bit, if value is 1
         }
 
 #if Net45 || NETSTANDARD
@@ -43,7 +44,9 @@
         public static void SetDataQBit(byte* data, int index, byte value)
         {
             byte* wordPtr = data + (index >> 1);
-            *wordPtr &= (byte)~(0xF0 >> (4 * (index & 1))); // clears qbit located at index, note like bit the qbit corresponding to the first pixel is the most significant (0xF0)
+            *wordPtr &= (byte)~(0xF0 >>
+                                (4 * (index &
+                                      1))); // clears qbit located at index, note like bit the qbit corresponding to the first pixel is the most significant (0xF0)
             *wordPtr |= (byte)((value & 0x0F) << (4 - (4 * (index & 1)))); // applys qbit to n
         }
 
@@ -116,9 +119,9 @@
             uint blue = val & 0x1F;
 
             return (((red << 3) | (red >> 2)) << 24) |
-                (((green << 3) | (green >> 2)) << 16) |
-                (((blue << 3) | (blue >> 2)) << 8) |
-                0xFF;
+                   (((green << 3) | (green >> 2)) << 16) |
+                   (((blue << 3) | (blue >> 2)) << 8) |
+                   0xFF;
         }
 
 #if Net45 || NETSTANDARD
@@ -132,9 +135,9 @@
             uint blue = val & 0x1F;
 
             return (((red << 3) | (red >> 2)) << 24) |
-                (((green << 2) | (green >> 4)) << 16) |
-                (((blue << 3) | (blue >> 2)) << 8) |
-                0xFF;
+                   (((green << 2) | (green >> 4)) << 16) |
+                   (((blue << 3) | (blue >> 2)) << 8) |
+                   0xFF;
         }
 
 #if Net45 || NETSTANDARD
@@ -149,9 +152,9 @@
             uint blue = val & 0x1F;
 
             return (((red << 3) | (red >> 2)) << 24) |
-                (((green << 3) | (green >> 2)) << 16) |
-                (((blue << 3) | (blue >> 2)) << 8) |
-                ((alpha << 8) - alpha); // effectively alpha * 255, only works as alpha will be either 0 or 1
+                   (((green << 3) | (green >> 2)) << 16) |
+                   (((blue << 3) | (blue >> 2)) << 8) |
+                   ((alpha << 8) - alpha); // effectively alpha * 255, only works as alpha will be either 0 or 1
         }
 
 #if Net45 || NETSTANDARD
@@ -161,9 +164,9 @@
         public static uint EncodeAsRGBA(byte red, byte green, byte blue, byte alpha)
         {
             return (uint)((red << 24) |
-                (green << 16) |
-                (blue << 8) |
-                alpha);
+                          (green << 16) |
+                          (blue << 8) |
+                          alpha);
         }
 
         #endregion PixelFormat conversion

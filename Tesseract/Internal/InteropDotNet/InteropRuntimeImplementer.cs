@@ -1,6 +1,7 @@
 ﻿//  Copyright (c) 2014 Andrey Akinshin
 //  Project URL: https://github.com/AndreyAkinshin/InteropDotNet
 //  Distributed under the MIT License: http://opensource.org/licenses/MIT
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -27,7 +28,8 @@ namespace Tesseract.Internal.InteropDotNet
 
             string assemblyName = GetAssemblyName(interfaceType);
 
-            AssemblyBuilder assemblyBuilder = Thread.GetDomain().DefineDynamicAssembly(new AssemblyName(assemblyName), AssemblyBuilderAccess.Run);
+            AssemblyBuilder assemblyBuilder = Thread.GetDomain()
+                .DefineDynamicAssembly(new AssemblyName(assemblyName), AssemblyBuilderAccess.Run);
 
             ModuleBuilder moduleBuilder = assemblyBuilder.DefineDynamicModule(assemblyName);
 
@@ -56,10 +58,13 @@ namespace Tesseract.Internal.InteropDotNet
                 methods[i] = new MethodItem
                 {
                     Info = methodInfoArray[i],
-                    DllImportAttribute = GetRuntimeDllImportAttribute(methodInfoArray[i]) ?? throw new Exception(string.Format("Method '{0}' of interface '{1}' should be marked with the RuntimeDllImport attribute",
-                        methodInfoArray[i].Name, interfaceType.Name))
+                    DllImportAttribute = GetRuntimeDllImportAttribute(methodInfoArray[i]) ?? throw new Exception(
+                        string.Format(
+                            "Method '{0}' of interface '{1}' should be marked with the RuntimeDllImport attribute",
+                            methodInfoArray[i].Name, interfaceType.Name))
                 };
             }
+
             return methods;
         }
 
@@ -74,7 +79,8 @@ namespace Tesseract.Internal.InteropDotNet
                 throw new Exception("There is no a BaseType of typeBuilder");
             }
 
-            ConstructorInfo baseCtor = typeBuilder.BaseType.GetConstructor(new Type[0]) ?? throw new Exception("There is no a default constructor of BaseType of typeBuilder");
+            ConstructorInfo baseCtor = typeBuilder.BaseType.GetConstructor(new Type[0]) ??
+                           throw new Exception("There is no a default constructor of BaseType of typeBuilder");
 
             // Build list of library names
             List<string> libraries = new List<string>();
@@ -124,6 +130,7 @@ namespace Tesseract.Internal.InteropDotNet
                 // Store libraryHandle in locals[i]
                 ilGen.Emit(OpCodes.Stloc, i);
             }
+
             foreach (MethodItem method in methods)
             {
                 // Preparing
@@ -172,7 +179,8 @@ namespace Tesseract.Internal.InteropDotNet
             ilGen.Emit(OpCodes.Ret);
         }
 
-        private static void ImplementDelegates(string assemblyName, ModuleBuilder moduleBuilder, IEnumerable<MethodItem> methods)
+        private static void ImplementDelegates(string assemblyName, ModuleBuilder moduleBuilder,
+            IEnumerable<MethodItem> methods)
         {
             foreach (MethodItem method in methods)
             {
@@ -193,7 +201,7 @@ namespace Tesseract.Internal.InteropDotNet
         {
             // Consts
             const MethodAttributes methodAttributes = MethodAttributes.Public | MethodAttributes.HideBySig |
-                MethodAttributes.NewSlot | MethodAttributes.Virtual;
+                                                      MethodAttributes.NewSlot | MethodAttributes.Virtual;
 
             // Initial
             string delegateName = GetDelegateName(assemblyName, method.Info);
@@ -202,8 +210,11 @@ namespace Tesseract.Internal.InteropDotNet
 
             // UnmanagedFunctionPointer
             RuntimeDllImportAttribute importAttribute = method.DllImportAttribute;
-            ConstructorInfo attributeCtor = typeof(UnmanagedFunctionPointerAttribute).GetConstructor(new[] { typeof(CallingConvention) }) ?? throw new Exception("There is no the target constructor of the UnmanagedFunctionPointerAttribute");
-            CustomAttributeBuilder attributeBuilder = new CustomAttributeBuilder(attributeCtor, new object[] { importAttribute.CallingConvention },
+            ConstructorInfo attributeCtor =
+                typeof(UnmanagedFunctionPointerAttribute).GetConstructor(new[] { typeof(CallingConvention) }) ??
+                throw new Exception("There is no the target constructor of the UnmanagedFunctionPointerAttribute");
+            CustomAttributeBuilder attributeBuilder = new CustomAttributeBuilder(attributeCtor,
+                new object[] { importAttribute.CallingConvention },
                 new[]
                 {
                     typeof(UnmanagedFunctionPointerAttribute).GetField("CharSet"),
@@ -222,7 +233,9 @@ namespace Tesseract.Internal.InteropDotNet
 
             // ctor
             ConstructorBuilder ctorBuilder = delegateBuilder.DefineConstructor(MethodAttributes.Public | MethodAttributes.HideBySig |
-                MethodAttributes.SpecialName | MethodAttributes.RTSpecialName, CallingConventions.Standard,
+                                                                MethodAttributes.SpecialName |
+                                                                MethodAttributes.RTSpecialName,
+                CallingConventions.Standard,
                 new[] { typeof(object), typeof(IntPtr) });
             ctorBuilder.SetImplementationFlags(MethodImplAttributes.CodeTypeMask);
             _ = ctorBuilder.DefineParameter(1, ParameterAttributes.HasDefault, "object");
@@ -230,12 +243,14 @@ namespace Tesseract.Internal.InteropDotNet
 
             // Invoke
             LightParameterInfo[] parameters = GetParameterInfoArray(method.Info);
-            MethodBuilder methodBuilder = DefineMethod(delegateBuilder, "Invoke", methodAttributes, method.ReturnType, parameters);
+            MethodBuilder methodBuilder =
+                DefineMethod(delegateBuilder, "Invoke", methodAttributes, method.ReturnType, parameters);
             methodBuilder.SetImplementationFlags(MethodImplAttributes.CodeTypeMask);
 
             // BeginInvoke
             parameters = GetParameterInfoArray(method.Info, InfoArrayMode.BeginInvoke);
-            methodBuilder = DefineMethod(delegateBuilder, "BeginInvoke", methodAttributes, typeof(IAsyncResult), parameters);
+            methodBuilder = DefineMethod(delegateBuilder, "BeginInvoke", methodAttributes, typeof(IAsyncResult),
+                parameters);
             methodBuilder.SetImplementationFlags(MethodImplAttributes.CodeTypeMask);
 
             // EndInvoke
@@ -288,9 +303,10 @@ namespace Tesseract.Internal.InteropDotNet
         #region Reflection and emit helpers
 
         private static MethodBuilder DefineMethod(TypeBuilder typeBuilder, string name,
-           MethodAttributes attributes, Type returnType, LightParameterInfo[] infoArray)
+            MethodAttributes attributes, Type returnType, LightParameterInfo[] infoArray)
         {
-            MethodBuilder methodBuilder = typeBuilder.DefineMethod(name, attributes, returnType, GetParameterTypeArray(infoArray));
+            MethodBuilder methodBuilder =
+                typeBuilder.DefineMethod(name, attributes, returnType, GetParameterTypeArray(infoArray));
             for (int parameterIndex = 0; parameterIndex < infoArray.Length; parameterIndex++)
             {
                 _ = methodBuilder.DefineParameter(parameterIndex + 1,
@@ -304,7 +320,8 @@ namespace Tesseract.Internal.InteropDotNet
         {
             object[] attributes = methodInfo.GetCustomAttributes(typeof(RuntimeDllImportAttribute), true);
             return attributes.Length == 0
-                ? throw new Exception(string.Format("RuntimeDllImportAttribute for method '{0}' not found", methodInfo.Name))
+                ? throw new Exception(string.Format("RuntimeDllImportAttribute for method '{0}' not found",
+                    methodInfo.Name))
                 : (RuntimeDllImportAttribute)attributes[0];
         }
 
@@ -340,10 +357,15 @@ namespace Tesseract.Internal.InteropDotNet
 
         private enum InfoArrayMode
         {
-            Invoke, BeginInvoke, EndInvoke
+            Invoke,
+
+            BeginInvoke,
+
+            EndInvoke
         }
 
-        private static LightParameterInfo[] GetParameterInfoArray(MethodInfo methodInfo, InfoArrayMode mode = InfoArrayMode.Invoke)
+        private static LightParameterInfo[] GetParameterInfoArray(MethodInfo methodInfo,
+            InfoArrayMode mode = InfoArrayMode.Invoke)
         {
             ParameterInfo[] parameters = methodInfo.GetParameters();
             List<LightParameterInfo> infoList = new List<LightParameterInfo>();
@@ -360,6 +382,7 @@ namespace Tesseract.Internal.InteropDotNet
                 infoList.Add(new LightParameterInfo(typeof(AsyncCallback), "callback"));
                 infoList.Add(new LightParameterInfo(typeof(object), "object"));
             }
+
             if (mode == InfoArrayMode.EndInvoke)
             {
                 infoList.Add(new LightParameterInfo(typeof(IAsyncResult), "result"));

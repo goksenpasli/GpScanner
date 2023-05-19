@@ -4,58 +4,49 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using Tesseract.Internal;
+using Tesseract.Interop;
 
 namespace Tesseract
 {
     /// <summary>
-    /// Represents an array of <see cref="Pix"/>.
+    ///     Represents an array of <see cref="Pix" />.
     /// </summary>
     public sealed class PixArray : DisposableBase, IEnumerable<Pix>
     {
-        #region Static Constructors
+        #region Constructor
 
-        public static PixArray Create(int n)
+        private PixArray(IntPtr handle)
         {
-            IntPtr pixaHandle = Interop.LeptonicaApi.Native.pixaCreate(n);
-            return pixaHandle == IntPtr.Zero ? throw new IOException("Failed to create PixArray") : new PixArray(pixaHandle);
+            _handle = new HandleRef(this, handle);
+            version = 1;
+
+            // These will need to be updated whenever the PixA structure changes (i.e. a Pix is added or removed) though at the moment that isn't a problem.
+            _count = LeptonicaApi.Native.pixaGetCount(_handle);
         }
+
+        #endregion Constructor
+
+        #region Properties
 
         /// <summary>
-        /// Loads the multi-page tiff located at <paramref name="filename"/>.
+        ///     Gets the number of <see cref="Pix" /> contained in the array.
         /// </summary>
-        /// <param name="filename"></param>
-        /// <returns></returns>
-        public static PixArray LoadMultiPageTiffFromFile(string filename)
-        {
-            IntPtr pixaHandle = Interop.LeptonicaApi.Native.pixaReadMultipageTiff(filename);
-            return pixaHandle == IntPtr.Zero
-                ? throw new IOException(string.Format("Failed to load image '{0}'.", filename))
-                : new PixArray(pixaHandle);
+        public int Count {
+            get {
+                VerifyNotDisposed();
+                return _count;
+            }
         }
 
-        #endregion Static Constructors
+        #endregion Properties
 
         #region Enumerator implementation
 
         /// <summary>
-        /// Handles enumerating through the <see cref="Pix"/> in the PixArray.
+        ///     Handles enumerating through the <see cref="Pix" /> in the PixArray.
         /// </summary>
         private class PixArrayEnumerator : DisposableBase, IEnumerator<Pix>
         {
-            #region Fields
-
-            private readonly PixArray array;
-
-            private readonly Pix[] items;
-
-            private readonly int version;
-
-            private Pix current;
-
-            private int index;
-
-            #endregion Fields
-
             #region Constructor
 
             public PixArrayEnumerator(PixArray array)
@@ -68,75 +59,6 @@ namespace Tesseract
             }
 
             #endregion Constructor
-
-            #region Enumerator Implementation
-
-            /// <inheritdoc/>
-            public Pix Current {
-                get {
-                    VerifyArrayUnchanged();
-                    VerifyNotDisposed();
-
-                    return current;
-                }
-            }
-
-            /// <inheritdoc/>
-            object IEnumerator.Current =>
-
-                    // note: Only the non-generic requires an exception check according the MSDN docs (Generic version just undefined if it's not currently pointing to an item). Go figure.
-                    index == 0 || index == items.Length + 1
-                        ? throw new InvalidOperationException("The enumerator is positioned either before the first item or after the last item .")
-                        : (object)Current;
-
-            /// <inheritdoc/>
-            public bool MoveNext()
-            {
-                VerifyArrayUnchanged();
-                VerifyNotDisposed();
-
-                if (index < items.Length)
-                {
-                    if (items[index] == null)
-                    {
-                        items[index] = array.GetPix(index);
-                    }
-                    current = items[index];
-                    index++;
-                    return true;
-                }
-                else
-                {
-                    index = items.Length + 1;
-                    current = null;
-                    return false;
-                }
-            }
-
-            // IEnumerator imp
-
-            /// <inheritdoc/>
-            void IEnumerator.Reset()
-            {
-                VerifyArrayUnchanged();
-                VerifyNotDisposed();
-
-                index = 0;
-                current = null;
-            }
-
-            // Helpers
-
-            /// <inheritdoc/>
-            private void VerifyArrayUnchanged()
-            {
-                if (version != array.version)
-                {
-                    throw new InvalidOperationException("PixArray was modified; enumeration operation may not execute.");
-                }
-            }
-
-            #endregion Enumerator Implementation
 
             #region Disposal
 
@@ -156,9 +78,118 @@ namespace Tesseract
             }
 
             #endregion Disposal
+
+            #region Fields
+
+            private readonly PixArray array;
+
+            private readonly Pix[] items;
+
+            private readonly int version;
+
+            private Pix current;
+
+            private int index;
+
+            #endregion Fields
+
+            #region Enumerator Implementation
+
+            /// <inheritdoc />
+            public Pix Current {
+                get {
+                    VerifyArrayUnchanged();
+                    VerifyNotDisposed();
+
+                    return current;
+                }
+            }
+
+            /// <inheritdoc />
+            object IEnumerator.Current =>
+
+                // note: Only the non-generic requires an exception check according the MSDN docs (Generic version just undefined if it's not currently pointing to an item). Go figure.
+                index == 0 || index == items.Length + 1
+                    ? throw new InvalidOperationException(
+                        "The enumerator is positioned either before the first item or after the last item .")
+                    : (object)Current;
+
+            /// <inheritdoc />
+            public bool MoveNext()
+            {
+                VerifyArrayUnchanged();
+                VerifyNotDisposed();
+
+                if (index < items.Length)
+                {
+                    if (items[index] == null)
+                    {
+                        items[index] = array.GetPix(index);
+                    }
+
+                    current = items[index];
+                    index++;
+                    return true;
+                }
+
+                index = items.Length + 1;
+                current = null;
+                return false;
+            }
+
+            // IEnumerator imp
+
+            /// <inheritdoc />
+            void IEnumerator.Reset()
+            {
+                VerifyArrayUnchanged();
+                VerifyNotDisposed();
+
+                index = 0;
+                current = null;
+            }
+
+            // Helpers
+
+            /// <inheritdoc />
+            private void VerifyArrayUnchanged()
+            {
+                if (version != array.version)
+                {
+                    throw new InvalidOperationException(
+                        "PixArray was modified; enumeration operation may not execute.");
+                }
+            }
+
+            #endregion Enumerator Implementation
         }
 
         #endregion Enumerator implementation
+
+        #region Static Constructors
+
+        public static PixArray Create(int n)
+        {
+            IntPtr pixaHandle = LeptonicaApi.Native.pixaCreate(n);
+            return pixaHandle == IntPtr.Zero
+                ? throw new IOException("Failed to create PixArray")
+                : new PixArray(pixaHandle);
+        }
+
+        /// <summary>
+        ///     Loads the multi-page tiff located at <paramref name="filename" />.
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
+        public static PixArray LoadMultiPageTiffFromFile(string filename)
+        {
+            IntPtr pixaHandle = LeptonicaApi.Native.pixaReadMultipageTiff(filename);
+            return pixaHandle == IntPtr.Zero
+                ? throw new IOException(string.Format("Failed to load image '{0}'.", filename))
+                : new PixArray(pixaHandle);
+        }
+
+        #endregion Static Constructors
 
         #region Fields
 
@@ -167,47 +198,20 @@ namespace Tesseract
         private int _count;
 
         /// <summary>
-        /// Gets the handle to the underlying PixA structure.
+        ///     Gets the handle to the underlying PixA structure.
         /// </summary>
         private HandleRef _handle;
 
         #endregion Fields
 
-        #region Constructor
-
-        private PixArray(IntPtr handle)
-        {
-            _handle = new HandleRef(this, handle);
-            version = 1;
-
-            // These will need to be updated whenever the PixA structure changes (i.e. a Pix is added or removed) though at the moment that isn't a problem.
-            _count = Interop.LeptonicaApi.Native.pixaGetCount(_handle);
-        }
-
-        #endregion Constructor
-
-        #region Properties
-
-        /// <summary>
-        /// Gets the number of <see cref="Pix"/> contained in the array.
-        /// </summary>
-        public int Count {
-            get {
-                VerifyNotDisposed();
-                return _count;
-            }
-        }
-
-        #endregion Properties
-
         #region Methods
 
         /// <summary>
-        /// Add the specified pix to the end of the pix array.
+        ///     Add the specified pix to the end of the pix array.
         /// </summary>
         /// <remarks>
-        /// PixArrayAccessType.Insert is not supported as the managed Pix object will attempt to release the pix when
-        /// it goes out of scope creating an access exception.
+        ///     PixArrayAccessType.Insert is not supported as the managed Pix object will attempt to release the pix when
+        ///     it goes out of scope creating an access exception.
         /// </remarks>
         /// <param name="pix">The pix to add.</param>
         /// <param name="copyflag">Determines if a clone or copy of the pix is inserted into the array.</param>
@@ -218,79 +222,90 @@ namespace Tesseract
             Guard.Require(nameof(copyflag), copyflag == PixArrayAccessType.Clone || copyflag == PixArrayAccessType.Copy,
                 "Copy flag must be either copy or clone but was {0}.", copyflag);
 
-            int result = Interop.LeptonicaApi.Native.pixaAddPix(_handle, pix.Handle, copyflag);
+            int result = LeptonicaApi.Native.pixaAddPix(_handle, pix.Handle, copyflag);
             if (result == 0)
             {
-                _count = Interop.LeptonicaApi.Native.pixaGetCount(_handle);
+                _count = LeptonicaApi.Native.pixaGetCount(_handle);
             }
+
             return result == 0;
         }
 
         /// <summary>
-        /// Destroys ever pix in the array.
+        ///     Destroys ever pix in the array.
         /// </summary>
         public void Clear()
         {
             VerifyNotDisposed();
-            if (Interop.LeptonicaApi.Native.pixaClear(_handle) == 0)
+            if (LeptonicaApi.Native.pixaClear(_handle) == 0)
             {
-                _count = Interop.LeptonicaApi.Native.pixaGetCount(_handle);
+                _count = LeptonicaApi.Native.pixaGetCount(_handle);
             }
         }
 
         /// <summary>
-        /// Returns a <see cref="IEnumerator{Pix}"/> that iterates the the array of <see cref="Pix"/>.
+        ///     Returns a <see cref="IEnumerator{Pix}" /> that iterates the the array of <see cref="Pix" />.
         /// </summary>
         /// <remarks>
-        /// When done with the enumerator you must call <see cref="Dispose"/> to release any unmanaged resources.
-        /// However if your using the enumerator in a foreach loop, this is done for you automatically by .Net. This also means
-        /// that any <see cref="Pix"/> returned from the enumerator cannot safely be used outside a foreach loop (or after Dispose has been
-        /// called on the enumerator). If you do indeed need the pix after the enumerator has been disposed of you must clone it using
-        /// <see cref="Pix.Clone()"/>.
+        ///     When done with the enumerator you must call <see cref="Dispose" /> to release any unmanaged resources.
+        ///     However if your using the enumerator in a foreach loop, this is done for you automatically by .Net. This also means
+        ///     that any <see cref="Pix" /> returned from the enumerator cannot safely be used outside a foreach loop (or after
+        ///     Dispose has been
+        ///     called on the enumerator). If you do indeed need the pix after the enumerator has been disposed of you must clone
+        ///     it using
+        ///     <see cref="Pix.Clone()" />.
         /// </remarks>
-        /// <returns>A <see cref="IEnumerator{Pix}"/> that iterates the the array of <see cref="Pix"/>.</returns>
+        /// <returns>A <see cref="IEnumerator{Pix}" /> that iterates the the array of <see cref="Pix" />.</returns>
         public IEnumerator<Pix> GetEnumerator()
         {
             return new PixArrayEnumerator(this);
         }
 
         /// <summary>
-        /// Gets the <see cref="Pix"/> located at <paramref name="index"/> using the specified <paramref name="accessType"/>.
+        ///     Gets the <see cref="Pix" /> located at <paramref name="index" /> using the specified <paramref name="accessType" />
+        ///     .
         /// </summary>
         /// <param name="index">The index of the pix (zero based).</param>
-        /// <param name="accessType">The <see cref="PixArrayAccessType" /> used to retrieve the <see cref="Pix"/>, only Clone or Copy are allowed.</param>
-        /// <returns>The retrieved <see cref="Pix"/>.</returns>
+        /// <param name="accessType">
+        ///     The <see cref="PixArrayAccessType" /> used to retrieve the <see cref="Pix" />, only Clone or
+        ///     Copy are allowed.
+        /// </param>
+        /// <returns>The retrieved <see cref="Pix" />.</returns>
         public Pix GetPix(int index, PixArrayAccessType accessType = PixArrayAccessType.Clone)
         {
-            Guard.Require(nameof(accessType), accessType == PixArrayAccessType.Clone || accessType == PixArrayAccessType.Copy, "Access type must be either copy or clone but was {0}.", accessType);
-            Guard.Require(nameof(index), index >= 0 && index < Count, "The index {0} must be between 0 and {1}.", index, Count);
+            Guard.Require(nameof(accessType),
+                accessType == PixArrayAccessType.Clone || accessType == PixArrayAccessType.Copy,
+                "Access type must be either copy or clone but was {0}.", accessType);
+            Guard.Require(nameof(index), index >= 0 && index < Count, "The index {0} must be between 0 and {1}.", index,
+                Count);
 
             VerifyNotDisposed();
 
-            IntPtr pixHandle = Interop.LeptonicaApi.Native.pixaGetPix(_handle, index, accessType);
+            IntPtr pixHandle = LeptonicaApi.Native.pixaGetPix(_handle, index, accessType);
             return pixHandle == IntPtr.Zero
                 ? throw new InvalidOperationException(string.Format("Failed to retrieve pix {0}.", pixHandle))
                 : Pix.Create(pixHandle);
         }
 
         /// <summary>
-        /// Removes the pix located at index.
+        ///     Removes the pix located at index.
         /// </summary>
         /// <remarks>
-        /// Notes:
-        /// * This shifts pixa[i] --> pixa[i - 1] for all i > index.
-        /// * Do not use on large arrays as the functionality is O(n).
-        /// * The corresponding box is removed as well, if it exists.
+        ///     Notes:
+        ///     * This shifts pixa[i] --> pixa[i - 1] for all i > index.
+        ///     * Do not use on large arrays as the functionality is O(n).
+        ///     * The corresponding box is removed as well, if it exists.
         /// </remarks>
         /// <param name="index">The index of the pix to remove.</param>
         public void Remove(int index)
         {
-            Guard.Require(nameof(index), index >= 0 && index < Count, "The index {0} must be between 0 and {1}.", index, Count);
+            Guard.Require(nameof(index), index >= 0 && index < Count, "The index {0} must be between 0 and {1}.", index,
+                Count);
 
             VerifyNotDisposed();
-            if (Interop.LeptonicaApi.Native.pixaRemovePix(_handle, index) == 0)
+            if (LeptonicaApi.Native.pixaRemovePix(_handle, index) == 0)
             {
-                _count = Interop.LeptonicaApi.Native.pixaGetCount(_handle);
+                _count = LeptonicaApi.Native.pixaGetCount(_handle);
             }
         }
 
@@ -302,7 +317,7 @@ namespace Tesseract
         protected override void Dispose(bool disposing)
         {
             IntPtr handle = _handle.Handle;
-            Interop.LeptonicaApi.Native.pixaDestroy(ref handle);
+            LeptonicaApi.Native.pixaDestroy(ref handle);
             _handle = new HandleRef(this, handle);
         }
 

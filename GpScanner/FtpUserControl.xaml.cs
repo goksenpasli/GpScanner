@@ -1,15 +1,14 @@
 ﻿using System.Windows.Controls;
 
-namespace GpScanner
+namespace GpScanner;
+
+/// <summary>
+///     Interaction logic for FtpUserControl.xaml
+/// </summary>
+public partial class FtpUserControl : UserControl
 {
-    /// <summary>
-    /// Interaction logic for FtpUserControl.xaml
-    /// </summary>
-    public partial class FtpUserControl : UserControl
+    public FtpUserControl()
     {
-        public FtpUserControl()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

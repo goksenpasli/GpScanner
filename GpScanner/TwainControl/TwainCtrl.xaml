@@ -264,7 +264,7 @@
                             </UniformGrid>
                         </Grid>
                     </Expander.Header>
-                    <GroupBox Grid.Row="1" IsEnabled="{Binding Scanner.ArayüzEtkin}">
+                    <GroupBox IsEnabled="{Binding Scanner.ArayüzEtkin}">
                         <GroupBox.Header>
                             <UniformGrid Margin="1" Columns="4">
                                 <ComboBox local:Policy.PolicyName="FolderDateFormat"
@@ -736,16 +736,17 @@
                                     </CheckBox>
                                     <StackPanel Grid.Row="2" Grid.Column="1"
                                         Orientation="Horizontal">
-                                        <CheckBox Grid.Column="1"
-                                            Content="{local:Loc SEPERATOR}"
-                                            IsChecked="{Binding Scanner.UsePageSeperator}" />
+                                        <CheckBox Content="{local:Loc SEPERATOR}" IsChecked="{Binding Scanner.UsePageSeperator}" />
                                         <ComboBox local:Policy.PolicyName="SelectedOrientation"
                                             ItemsSource="{Binding Mode=OneWay, Source={StaticResource PageOrientation}}"
                                             SelectedItem="{Binding SelectedOrientation}">
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock><Run Text="{Binding Converter={StaticResource EnumOrientationToConvertedLanguageTextConverter}, Mode=OneWay}" /><Run FontStyle="Italic" Foreground="Red"
-                                                            Text="{Binding Converter={StaticResource EnumOrientationToTwainVersionConverter}, Mode=OneWay}" /></TextBlock>
+                                                    <TextBlock>
+                                                        <Run Text="{Binding Converter={StaticResource EnumOrientationToConvertedLanguageTextConverter}, Mode=OneWay}" />
+                                                        <Run FontStyle="Italic" Foreground="Red"
+                                                            Text="{Binding Converter={StaticResource EnumOrientationToTwainVersionConverter}, Mode=OneWay}" />
+                                                    </TextBlock>
                                                 </DataTemplate>
                                             </ComboBox.ItemTemplate>
                                         </ComboBox>
@@ -961,12 +962,16 @@
                                     <TextBlock VerticalAlignment="Center"
                                         FontWeight="Bold" TextAlignment="Center">
                                         <Run d:Text="0" BaselineAlignment="Center"
-                                            Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" /><Run d:Text="/" BaselineAlignment="Center" Text="/" /><Run d:Text="0" BaselineAlignment="Center"
-                                            Text="{Binding Scanner.Resimler.Count, Mode=OneWay}" /><Hyperlink BaselineAlignment="Center"
+                                            Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" />
+                                        <Run d:Text="/" BaselineAlignment="Center" Text="/" />
+                                        <Run d:Text="0" BaselineAlignment="Center"
+                                            Text="{Binding Scanner.Resimler.Count, Mode=OneWay}" />
+                                        <Hyperlink BaselineAlignment="Center"
                                             Command="{Binding ReverseData}"
                                             TextDecorations="None">
                                             <Run FontFamily="Wingdings 3" FontSize="16" Text="E" />
-                                        </Hyperlink><Hyperlink BaselineAlignment="Center"
+                                        </Hyperlink>
+                                        <Hyperlink BaselineAlignment="Center"
                                             Command="{Binding ReverseDataHorizontal}"
                                             TextDecorations="None">
                                             <Run FontFamily="Wingdings 3" FontSize="16" Text="D" />
@@ -1211,7 +1216,10 @@
                                         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                             <Image Width="32" Height="32"
                                                 Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
-                                            <TextBlock VerticalAlignment="Center"><Run Text="{local:Loc ALL}" /><Run Text=" " /><Run Text="{local:Loc MERGE}" /></TextBlock>
+                                            <TextBlock VerticalAlignment="Center">
+                                                <Run Text="{local:Loc ALL}" /><Run Text=" " />
+                                                <Run Text="{local:Loc MERGE}" />
+                                            </TextBlock>
                                         </StackPanel>
                                     </Button>
                                 </UniformGrid>

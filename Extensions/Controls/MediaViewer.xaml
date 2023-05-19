@@ -380,13 +380,11 @@
                     <TextBlock VerticalAlignment="Center"
                         FontFamily="Webdings" FontSize="20" Foreground="Blue"
                         Text="W" />
-                    <Slider Grid.Column="3"
-                        Width="45"
+                    <Slider Width="45"
                         VerticalAlignment="Center"
                         IsMoveToPointEnabled="True" Maximum="1" Minimum="-1"
                         Value="{Binding ElementName=Player, Path=Balance}" />
-                    <TextBlock Grid.Column="4"
-                        VerticalAlignment="Center"
+                    <TextBlock VerticalAlignment="Center"
                         FontFamily="Webdings" FontSize="20" Foreground="Blue"
                         Text="X" />
                 </StackPanel>

@@ -4,9 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
+using System.Windows.Forms;
 using Extensions;
 using IMAPI2;
+using Application = System.Windows.Application;
+using Control = System.Windows.Controls.Control;
+using MessageBox = System.Windows.MessageBox;
 
 namespace DvdBurner
 {
@@ -22,75 +25,78 @@ namespace DvdBurner
         public Burner()
         {
             BurnDvd = new RelayCommand<object>(parameter =>
-            {
-                if (Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
                 {
-                    _ = MessageBox.Show(WarnText);
-                    return;
-                }
-                dynamic Index;              // Index to recording drive.
-                dynamic recorder = null;           // Recorder object
-                dynamic FolderPath;             // Directory of files to burn
-                dynamic Stream;              // Data stream for burning device
-                Index = 0;            // First drive on the system
-                FolderPath = BurnDirectory;     // Files to transfer to disc
-                Burntask = Task.Run(() =>
-                {
-                    // Create a DiscMaster2 object to connect to optical drives.
-                    try
+                    if (Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
                     {
-                        dynamic g_DiscMaster = new MsftDiscMaster2();
-                        if (g_DiscMaster.Count > 0)
+                        _ = MessageBox.Show(WarnText);
+                        return;
+                    }
+
+                    dynamic Index; // Index to recording drive.
+                    dynamic recorder = null; // Recorder object
+                    dynamic FolderPath; // Directory of files to burn
+                    dynamic Stream; // Data stream for burning device
+                    Index = 0; // First drive on the system
+                    FolderPath = BurnDirectory; // Files to transfer to disc
+                    Burntask = Task.Run(() =>
+                    {
+                        // Create a DiscMaster2 object to connect to optical drives.
+                        try
                         {
-                            dynamic uniqueId;
-                            recorder = new MsftDiscRecorder2();
-                            uniqueId = g_DiscMaster.Item(Index);
-                            recorder.InitializeDiscRecorder(uniqueId);
+                            dynamic g_DiscMaster = new MsftDiscMaster2();
+                            if (g_DiscMaster.Count > 0)
+                            {
+                                dynamic uniqueId;
+                                recorder = new MsftDiscRecorder2();
+                                uniqueId = g_DiscMaster.Item(Index);
+                                recorder.InitializeDiscRecorder(uniqueId);
 
-                            // Create an image stream for a specified directory.
-                            dynamic FSI;                 // Disc file system
-                            dynamic Dir;                 // Root directory of the disc file system
-                            dynamic dataWriter;
+                                // Create an image stream for a specified directory.
+                                dynamic FSI; // Disc file system
+                                dynamic Dir; // Root directory of the disc file system
+                                dynamic dataWriter;
 
-                            // Create a new file system image and retrieve root directory
-                            FSI = new IMAPI2FS.MsftFileSystemImage();
-                            Dir = FSI.Root;
+                                // Create a new file system image and retrieve root directory
+                                FSI = new IMAPI2FS.MsftFileSystemImage();
+                                Dir = FSI.Root;
 
-                            //Create the new disc format and set the recorder
-                            dataWriter = new MsftDiscFormat2Data();
-                            dataWriter.Recorder = recorder;
-                            dataWriter.ClientName = AppName;
-                            FSI.VolumeName = CdLabel;
-                            FSI.ChooseImageDefaults(recorder);
-                            dataWriter.Update += new DDiscFormat2DataEvents_UpdateEventHandler(DataWriter_Update);
-                            Dir.AddTree(FolderPath, false);
-                            dynamic result = FSI.CreateResultImage();
-                            Stream = result.ImageStream;
-                            dataWriter.ForceOverwrite = true;
-                            dataWriter.Write(Stream);
+                                //Create the new disc format and set the recorder
+                                dataWriter = new MsftDiscFormat2Data();
+                                dataWriter.Recorder = recorder;
+                                dataWriter.ClientName = AppName;
+                                FSI.VolumeName = CdLabel;
+                                FSI.ChooseImageDefaults(recorder);
+                                dataWriter.Update += new DDiscFormat2DataEvents_UpdateEventHandler(DataWriter_Update);
+                                Dir.AddTree(FolderPath, false);
+                                dynamic result = FSI.CreateResultImage();
+                                Stream = result.ImageStream;
+                                dataWriter.ForceOverwrite = true;
+                                dataWriter.Write(Stream);
+                            }
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        ActionText = ex.Message;
-                    }
-                    finally
-                    {
-                        if (Eject)
+                        catch (Exception ex)
                         {
-                            recorder?.EjectMedia();
+                            ActionText = ex.Message;
                         }
-                    }
-                });
-            }, parameter => Directory.Exists(BurnDirectory) && !string.IsNullOrWhiteSpace(CdLabel) && Directory.EnumerateFiles(BurnDirectory)?.Any() == true);
+                        finally
+                        {
+                            if (Eject)
+                            {
+                                recorder?.EjectMedia();
+                            }
+                        }
+                    });
+                },
+                parameter => Directory.Exists(BurnDirectory) && !string.IsNullOrWhiteSpace(CdLabel) &&
+                             Directory.EnumerateFiles(BurnDirectory)?.Any() == true);
 
             SelectBurnDir = new RelayCommand<object>(parameter =>
             {
-                System.Windows.Forms.FolderBrowserDialog dialog = new System.Windows.Forms.FolderBrowserDialog()
+                FolderBrowserDialog dialog = new FolderBrowserDialog
                 {
                     Description = "Yazılacak Klasörü Seçin."
                 };
-                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     BurnDirectory = dialog.SelectedPath;
                 }
@@ -103,6 +109,7 @@ namespace DvdBurner
                     _ = MessageBox.Show(WarnText);
                     return;
                 }
+
                 Erasetask = Task.Run(() =>
                 {
                     MsftDiscRecorder2 recorder = null;
@@ -201,8 +208,9 @@ namespace DvdBurner
         }
 
         public double ProgressValue {
-            get => progressValue; set {
+            get => progressValue;
 
+            set {
                 if (progressValue != value)
                 {
                     progressValue = value;
@@ -282,7 +290,8 @@ namespace DvdBurner
                         startLba = progress.StartLba;
                         lastWrittenLba = progress.LastWrittenLba;
                         writtenSectors = lastWrittenLba - startLba;
-                        percentDone = FormatPercent(Convert.ToDecimal(writtenSectors) / Convert.ToDecimal(totalSectors));
+                        percentDone =
+                            FormatPercent(Convert.ToDecimal(writtenSectors) / Convert.ToDecimal(totalSectors));
                         ActionText = percentDone;
                         break;
 

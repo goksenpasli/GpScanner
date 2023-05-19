@@ -8,10 +8,6 @@
     <Setting Name="DefaultLang" Type="System.String" Scope="User">
       <Value Profile="(Default)">TÜRKÇE</Value>
     </Setting>
-    <Setting Name="PatchCodes" Type="System.Collections.Specialized.StringCollection" Scope="User">
-      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;ArrayOfString xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" /&gt;</Value>
-    </Setting>
     <Setting Name="DatabaseFile" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
@@ -29,10 +25,6 @@
     </Setting>
     <Setting Name="PreviewIndex" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">2</Value>
-    </Setting>
-    <Setting Name="FtpSites" Type="System.Collections.Specialized.StringCollection" Scope="User">
-      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;ArrayOfString xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" /&gt;</Value>
     </Setting>
     <Setting Name="SelectedFtp" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
@@ -54,6 +46,14 @@
     </Setting>
     <Setting Name="DirectlyOverwriteCompressedPdf" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="PatchCodes" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" /&gt;</Value>
+    </Setting>
+    <Setting Name="FtpSites" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" /&gt;</Value>
     </Setting>
   </Settings>
 </SettingsFile>
