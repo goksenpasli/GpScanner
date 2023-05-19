@@ -509,30 +509,6 @@ namespace PdfViewer
             set => SetValue(ZoomProperty, value);
         }
 
-        public static async Task<BitmapSource> ConvertToImgAsync(byte[] pdffilestream, int page, int dpi = 96)
-        {
-            try
-            {
-                return pdffilestream?.Length == 0
-                    ? throw new ArgumentNullException(nameof(pdffilestream), "file can not be null or length zero")
-                    : await Task.Run(() =>
-                    {
-                        using MemoryStream ms = new(pdffilestream);
-                        using PdfDocument pdfDoc = PdfDocument.Load(ms);
-                        int width = (int)(pdfDoc.PageSizes[page - 1].Width / 72 * dpi);
-                        int height = (int)(pdfDoc.PageSizes[page - 1].Height / 72 * dpi);
-                        using Bitmap bitmap = pdfDoc.Render(page - 1, width, height, dpi, dpi, false) as Bitmap;
-                        BitmapSource bitmapImage = bitmap.ToBitmapSource();
-                        bitmapImage.Freeze();
-                        return bitmapImage;
-                    });
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
-
         public static async Task<BitmapSource> ConvertToImgAsync(string pdffilepath, int page, int dpi = 96)
         {
             try
@@ -758,7 +734,7 @@ namespace PdfViewer
             if (d is PdfViewer pdfViewer && pdfViewer.PdfFilePath is not null)
             {
                 string pdfFilePath = pdfViewer.PdfFilePath;
-                pdfViewer.Source = await ConvertToImgAsync(await ReadAllFileAsync(pdfFilePath), pdfViewer.Sayfa, (int)e.NewValue);
+                pdfViewer.Source = await ConvertToImgAsync(pdfFilePath, pdfViewer.Sayfa, (int)e.NewValue);
                 GC.Collect();
             }
         }

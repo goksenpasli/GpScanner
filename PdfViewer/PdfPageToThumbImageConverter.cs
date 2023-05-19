@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
@@ -23,20 +24,16 @@ namespace PdfViewer
 
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values[0] is string PdfFilePath && values[1] is int index)
+            if (values[0] is string PdfFilePath && values[1] is int index && File.Exists(PdfFilePath))
             {
                 try
                 {
                     return Task.Run(async () =>
                     {
-                        if (PdfFilePath != null)
-                        {
-                            BitmapSource bitmapImage = await PdfViewer.ConvertToImgAsync(PdfFilePath, index, Dpi).ConfigureAwait(false);
-                            bitmapImage.Freeze();
-                            GC.Collect();
-                            return bitmapImage;
-                        }
-                        return null;
+                        BitmapSource bitmapImage = await PdfViewer.ConvertToImgAsync(PdfFilePath, index, Dpi).ConfigureAwait(false);
+                        bitmapImage.Freeze();
+                        GC.Collect();
+                        return bitmapImage;
                     }).ConfigureAwait(false).GetAwaiter().GetResult();
                 }
                 catch (Exception)
