@@ -23,15 +23,15 @@ namespace PdfViewer
 
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values[0] is byte[] PdfData && values[1] is int index)
+            if (values[0] is string PdfFilePath && values[1] is int index)
             {
                 try
                 {
                     return Task.Run(async () =>
                     {
-                        if (PdfData != null)
+                        if (PdfFilePath != null)
                         {
-                            BitmapSource bitmapImage = await PdfViewer.ConvertToImgAsync(PdfData, index, Dpi).ConfigureAwait(false);
+                            BitmapSource bitmapImage = await PdfViewer.ConvertToImgAsync(PdfFilePath, index, Dpi).ConfigureAwait(false);
                             bitmapImage.Freeze();
                             GC.Collect();
                             return bitmapImage;

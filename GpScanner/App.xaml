@@ -146,9 +146,7 @@
                         <StackPanel IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}"
                             Orientation="Horizontal"
                             Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}">
-                            <Extensions:ContentToggleButton Command="{Binding ScrollToCurrentPage, RelativeSource={RelativeSource TemplatedParent}}"
-                                CommandParameter="{Binding ElementName=Lb}"
-                                IsChecked="{Binding ThumbPanelOpen, RelativeSource={RelativeSource TemplatedParent}}">
+                            <Extensions:ContentToggleButton Command="{Binding ScrollToCurrentPage, RelativeSource={RelativeSource TemplatedParent}}" CommandParameter="{Binding ElementName=Lb}">
                                 <Image Width="16" Height="16">
                                     <Image.Source>
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">

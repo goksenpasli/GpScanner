@@ -452,17 +452,6 @@ namespace PdfViewer
             set => SetValue(SourceProperty, value);
         }
 
-        public bool ThumbPanelOpen {
-            get => thumbPanelOpen; set {
-
-                if (thumbPanelOpen != value)
-                {
-                    thumbPanelOpen = value;
-                    OnPropertyChanged(nameof(ThumbPanelOpen));
-                }
-            }
-        }
-
         public bool ThumbsVisible {
             get => (bool)GetValue(ThumbsVisibleProperty);
             set => SetValue(ThumbsVisibleProperty, value);
@@ -530,6 +519,29 @@ namespace PdfViewer
                     {
                         using MemoryStream ms = new(pdffilestream);
                         using PdfDocument pdfDoc = PdfDocument.Load(ms);
+                        int width = (int)(pdfDoc.PageSizes[page - 1].Width / 72 * dpi);
+                        int height = (int)(pdfDoc.PageSizes[page - 1].Height / 72 * dpi);
+                        using Bitmap bitmap = pdfDoc.Render(page - 1, width, height, dpi, dpi, false) as Bitmap;
+                        BitmapSource bitmapImage = bitmap.ToBitmapSource();
+                        bitmapImage.Freeze();
+                        return bitmapImage;
+                    });
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public static async Task<BitmapSource> ConvertToImgAsync(string pdffilepath, int page, int dpi = 96)
+        {
+            try
+            {
+                return !File.Exists(pdffilepath)
+                    ? throw new ArgumentNullException(nameof(pdffilepath), "filepath can not be null")
+                    : await Task.Run(() =>
+                    {
+                        using PdfDocument pdfDoc = PdfDocument.Load(pdffilepath);
                         int width = (int)(pdfDoc.PageSizes[page - 1].Width / 72 * dpi);
                         int height = (int)(pdfDoc.PageSizes[page - 1].Height / 72 * dpi);
                         using Bitmap bitmap = pdfDoc.Render(page - 1, width, height, dpi, dpi, false) as Bitmap;
@@ -724,7 +736,6 @@ namespace PdfViewer
 
         private Visibility sliderZoomAngleVisibility = Visibility.Visible;
 
-        private bool thumbPanelOpen;
 
         private Visibility tifNavigasyonButtonEtkin = Visibility.Visible;
 
@@ -804,17 +815,12 @@ namespace PdfViewer
                 }
 
                 string pdfFilePath = pdfViewer.PdfFilePath;
-                Source = await ConvertToImgAsync(await ReadAllFileAsync(pdfFilePath), sayfa, pdfViewer.Dpi);
+                Source = await ConvertToImgAsync(pdfFilePath, sayfa, pdfViewer.Dpi);
                 GC.Collect();
             }
             if (e.PropertyName is "SearchPdfMatch" && SearchPdfMatch is not null)
             {
                 Sayfa = SearchPdfMatch.Page + 1;
-            }
-            if (e.PropertyName is "ThumbPanelOpen")
-            {
-                PdfData = ThumbPanelOpen ? await ReadAllFileAsync(PdfFilePath).ConfigureAwait(false) : null;
-                GC.Collect();
             }
         }
 

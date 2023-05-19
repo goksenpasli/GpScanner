@@ -48,9 +48,7 @@
                     </Image.Source>
                 </Image>
             </Button>
-            <Extensions:ContentToggleButton Command="{Binding LoadPdfExtractFile}"
-                CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}"
-                IsChecked="{Binding PdfImportThumbPanelOpen}">
+            <Extensions:ContentToggleButton Command="{Binding LoadPdfExtractFile}" CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
                 <Image Width="16" Height="16">
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -80,7 +78,7 @@
                                                         ShowShadow="True">
                                                         <Pdfviewer:ShadowedImage.Source>
                                                             <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
-                                                                <Binding ElementName="PdfViewer" IsAsync="True" Path="PdfData" />
+                                                                <Binding ElementName="PdfViewer" Path="PdfFilePath" />
                                                                 <Binding Mode="OneWay" Path="PageNumber" />
                                                             </MultiBinding>
                                                         </Pdfviewer:ShadowedImage.Source>

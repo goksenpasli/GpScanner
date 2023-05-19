@@ -1287,18 +1287,6 @@ namespace TwainControl
 
         public ICommand PasteFileToPdfFile { get; }
 
-        public bool PdfImportThumbPanelOpen {
-            get => pdfImportThumbPanelOpen;
-
-            set {
-                if (pdfImportThumbPanelOpen != value)
-                {
-                    pdfImportThumbPanelOpen = value;
-                    OnPropertyChanged(nameof(PdfImportThumbPanelOpen));
-                }
-            }
-        }
-
         public double PdfLoadProgressValue {
             get => pdfLoadProgressValue;
 
@@ -2133,8 +2121,6 @@ namespace TwainControl
 
         private ObservableCollection<Paper> papers;
 
-        private bool pdfImportThumbPanelOpen;
-
         private double pdfLoadProgressValue;
 
         private ObservableCollection<PdfData> pdfPages;
@@ -2707,11 +2693,6 @@ namespace TwainControl
                     image.Resim = await image.Resim.RotateImageAsync(AllImageRotationAngle);
                 }
                 AllImageRotationAngle = 0;
-            }
-            if (e.PropertyName is "PdfImportThumbPanelOpen")
-            {
-                PdfImportViewer.PdfViewer.PdfData = PdfImportThumbPanelOpen ? await PdfViewer.PdfViewer.ReadAllFileAsync(PdfImportViewer.PdfViewer.PdfFilePath).ConfigureAwait(false) : null;
-                GC.Collect();
             }
         }
 
