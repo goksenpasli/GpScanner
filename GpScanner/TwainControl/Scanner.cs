@@ -349,6 +349,18 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public string Error => string.Empty;
 
+    public bool FileIsPdfFile {
+        get => string.Equals(Path.GetExtension(FileName), ".pdf", StringComparison.OrdinalIgnoreCase);
+
+        set {
+            if (fileisPdfFile != value)
+            {
+                fileisPdfFile = value;
+                OnPropertyChanged(nameof(FileIsPdfFile));
+            }
+        }
+    }
+
     public string FileName {
         get => fileName;
 
@@ -940,6 +952,8 @@ public class Scanner : InpcBase, IDataErrorInfo
     private bool duplex;
 
     private int enAdet = 1;
+
+    private bool fileisPdfFile;
 
     private string fileName = "Tarama";
 

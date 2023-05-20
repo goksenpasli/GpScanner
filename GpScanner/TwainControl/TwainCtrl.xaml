@@ -1185,9 +1185,9 @@
                                                                     FontWeight="Bold" Foreground="Red" PreviewMouseMove="Run_EypPreviewMouseMove"
                                                                     Text="B" />
                                                             </TextBlock>
-                                                            <ContentPresenter d:Content="{StaticResource EypSimplePdfTemplate}"
+                                                            <ContentPresenter d:ContentTemplate="{StaticResource XmlViewerTemplate}"
                                                                 d:ContentTemplateSelector="{StaticResource PdfEypViewerSelector}"
-                                                                d:Height="64" d:Width="64"
+                                                                d:Height="315" d:Width="315"
                                                                 Content="{Binding IsAsync=True, Mode=OneWay}"
                                                                 ContentTemplateSelector="{StaticResource PdfEypViewerSelector}" />
                                                         </StackPanel>
@@ -1198,7 +1198,7 @@
                                     </ListBox.ItemContainerStyle>
                                     <ListBox.ItemsPanel>
                                         <ItemsPanelTemplate>
-                                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="180,240" SpacingMode="None" />
+                                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="315,315" SpacingMode="None" />
                                         </ItemsPanelTemplate>
                                     </ListBox.ItemsPanel>
                                 </ListBox>

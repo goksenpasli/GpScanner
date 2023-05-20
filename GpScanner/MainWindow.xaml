@@ -422,6 +422,7 @@
                                                                     <ColumnDefinition Width="Auto" />
                                                                 </Grid.ColumnDefinitions>
                                                                 <Extensions:ContentToggleButton Margin="1" HorizontalContentAlignment="Stretch"
+                                                                    d:Content="FileOcrContent"
                                                                     Command="{Binding DataContext.ReadOcrDataFile, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                                                                     CommandParameter="{Binding Mode=OneWay}">
                                                                     <Extensions:ContentToggleButton.Style>
@@ -475,7 +476,7 @@
                                                                         </Image.Source>
                                                                     </Image>
                                                                 </Extensions:ContentToggleButton>
-                                                                <Extensions:ContentToggleButton Grid.Column="2">
+                                                                <Extensions:ContentToggleButton Grid.Column="2" IsEnabled="{Binding FileIsPdfFile, Mode=OneWay}">
                                                                     <Image Width="16" Height="16">
                                                                         <Image.Source>
                                                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -498,7 +499,8 @@
                                                                 </Extensions:ContentToggleButton>
                                                             </Grid>
                                                             <ContentControl Grid.Row="1"
-                                                                d:Width="64"
+                                                                d:ContentTemplate="{StaticResource PdfViewerTemplateFull}"
+                                                                d:ContentTemplateSelector="{StaticResource ThumbViewerSelector}"
                                                                 Content="{Binding FileName, IsAsync=True, Mode=OneWay}"
                                                                 ContentTemplateSelector="{StaticResource ThumbViewerSelector}"
                                                                 MouseDoubleClick="ContentControl_MouseDoubleClick" />
