@@ -1,6 +1,7 @@
 ﻿<UserControl x:Class="TwainControl.PdfImportViewerControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Converter="clr-namespace:TwainControl.Converter"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
     xmlns:Pdfviewer="clr-namespace:PdfViewer;assembly=PdfViewer"
     xmlns:System="clr-namespace:System;assembly=mscorlib"
@@ -18,6 +19,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/TwainControl;component/CommonResource.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <Converter:XKnownColorToBrushConverter x:Key="XKnownColorToBrushConverter" />
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
             <Pdfviewer:PdfPageToThumbImageConverter x:Key="PdfPageToThumbImageConverter" />
@@ -427,25 +429,50 @@
                     <ToggleButton IsChecked="{Binding DrawEllipse, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <ToggleButton.Content>
                             <Ellipse Width="16" Height="16"
-                                Stroke="Black" />
+                                d:Stroke="Black">
+                                <Ellipse.Stroke>
+                                    <SolidColorBrush Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                                </Ellipse.Stroke>
+                                <Ellipse.Fill>
+                                    <SolidColorBrush Color="{Binding GraphObjectFillColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                                </Ellipse.Fill>
+                            </Ellipse>
                         </ToggleButton.Content>
                     </ToggleButton>
                     <ToggleButton IsChecked="{Binding DrawLine, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <ToggleButton.Content>
-                            <Line Stroke="Black" X1="0" X2="16"
-                                Y1="0" Y2="16" />
+                            <Line d:Stroke="Black" X1="0" X2="16"
+                                Y1="0" Y2="16">
+                                <Line.Stroke>
+                                    <SolidColorBrush Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                                </Line.Stroke>
+                            </Line>
                         </ToggleButton.Content>
                     </ToggleButton>
                     <ToggleButton IsChecked="{Binding DrawRect, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <ToggleButton.Content>
                             <Rectangle Width="16" Height="16"
-                                Stroke="Black" />
+                                d:Stroke="Black">
+                                <Rectangle.Stroke>
+                                    <SolidColorBrush Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                                </Rectangle.Stroke>
+                                <Rectangle.Fill>
+                                    <SolidColorBrush Color="{Binding GraphObjectFillColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                                </Rectangle.Fill>
+                            </Rectangle>
                         </ToggleButton.Content>
                     </ToggleButton>
                     <ToggleButton IsChecked="{Binding DrawRoundedRect, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <ToggleButton.Content>
                             <Rectangle Width="16" Height="16"
-                                RadiusX="3" RadiusY="3" Stroke="Black" />
+                                d:Stroke="Black" RadiusX="3" RadiusY="3">
+                                <Rectangle.Stroke>
+                                    <SolidColorBrush Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                                </Rectangle.Stroke>
+                                <Rectangle.Fill>
+                                    <SolidColorBrush Color="{Binding GraphObjectFillColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                                </Rectangle.Fill>
+                            </Rectangle>
                         </ToggleButton.Content>
                     </ToggleButton>
                     <StackPanel Orientation="Horizontal">
@@ -482,7 +509,11 @@
                     <TextBlock VerticalAlignment="Center" Text="{local:Loc DRAWTEXT}" />
                     <TextBox Width="64"
                         VerticalContentAlignment="Center"
-                        Text="{Binding Text, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
+                        Text="{Binding Text, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                        <TextBox.Background>
+                            <SolidColorBrush Color="{Binding GraphObjectFillColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                        </TextBox.Background>
+                    </TextBox>
                     <Extensions:NumericUpDownControl Width="40"
                         Maximum="512" Minimum="1" SmallChange="1"
                         Value="{Binding TextSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />

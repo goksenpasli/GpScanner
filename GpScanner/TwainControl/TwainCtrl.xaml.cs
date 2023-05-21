@@ -536,7 +536,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     Content = pdfImportViewerControl,
                     WindowState = WindowState.Maximized,
                     ShowInTaskbar = false,
-                    Title = "GPSCANNER",
+                    Title = Application.Current?.MainWindow?.Title,
                     WindowStartupLocation = WindowStartupLocation.CenterOwner,
                     DataContext = this
                 };

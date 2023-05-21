@@ -14,7 +14,7 @@ public class SimplePdfViewer : PdfViewer.PdfViewer
             Content = pdfImportViewerControl,
             WindowState = WindowState.Maximized,
             ShowInTaskbar = true,
-            Title = "GPSCANNER",
+            Title = Application.Current?.MainWindow?.Title,
             WindowStartupLocation = WindowStartupLocation.CenterOwner
         };
         _ = maximizePdfWindow.ShowDialog();

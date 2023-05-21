@@ -99,6 +99,7 @@
     <Compile Include="Converter\EnumOrientationToConvertedLanguageTextConverter.cs" />
     <Compile Include="Converter\EnumOrientationToTwainVersionConverter.cs" />
     <Compile Include="Converter\FontSizeConverter.cs" />
+    <Compile Include="Converter\XKnownColorToBrushConverter.cs" />
     <Compile Include="EypPdfViewer.cs" />
     <Compile Include="PdfData.cs" />
     <Compile Include="PdfGeneration.cs" />

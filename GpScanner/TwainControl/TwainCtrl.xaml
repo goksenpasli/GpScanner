@@ -950,7 +950,7 @@
                         <TabItem>
                             <TabItem.Header>
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Width="16" Height="16"
+                                    <Image Width="32" Height="32"
                                         VerticalAlignment="Bottom">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -1117,14 +1117,14 @@
                         </TabItem>
                         <TabItem>
                             <TabItem.Header>
-                                <Image Width="16" Height="16"
+                                <Image Width="32" Height="32"
                                     Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
                             </TabItem.Header>
                             <local:PdfImportViewerControl x:Name="PdfImportViewer" x:FieldModifier="public" />
                         </TabItem>
                         <TabItem>
                             <TabItem.Header>
-                                <Image Width="16" Height="16"
+                                <Image Width="32" Height="32"
                                     Source="{Binding Source='.udf', Converter={StaticResource FilePathToIconConverter}}" />
                             </TabItem.Header>
                             <Grid>
@@ -1149,7 +1149,7 @@
                         </TabItem>
                         <TabItem>
                             <TabItem.Header>
-                                <Image Width="16" Height="16">
+                                <Image Width="32" Height="32">
                                     <Image.Source>
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                             <Binding Source="Shell32.dll" />

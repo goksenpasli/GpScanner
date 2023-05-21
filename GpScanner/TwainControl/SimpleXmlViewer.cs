@@ -14,7 +14,7 @@ public class SimpleXmlViewer : XmlViewerControl
             Content = xmlViewerControl,
             WindowState = WindowState.Maximized,
             ShowInTaskbar = true,
-            Title = "GPSCANNER",
+            Title = Application.Current?.MainWindow?.Title,
             DataContext = Tag,
             WindowStartupLocation = WindowStartupLocation.CenterOwner
         };

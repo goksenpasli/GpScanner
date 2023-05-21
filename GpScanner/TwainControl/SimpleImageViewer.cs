@@ -20,7 +20,7 @@ public class SimpleImageViewer : ImageViewer
                 Content = imageViewer,
                 WindowState = WindowState.Maximized,
                 ShowInTaskbar = true,
-                Title = "GPSCANNER",
+                Title = Application.Current?.MainWindow?.Title,
                 DataContext = Tag,
                 WindowStartupLocation = WindowStartupLocation.CenterOwner
             };

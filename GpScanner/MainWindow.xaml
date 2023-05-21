@@ -424,7 +424,8 @@
                                                                 <Extensions:ContentToggleButton Margin="1" HorizontalContentAlignment="Stretch"
                                                                     d:Content="FileOcrContent"
                                                                     Command="{Binding DataContext.ReadOcrDataFile, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
-                                                                    CommandParameter="{Binding Mode=OneWay}">
+                                                                    CommandParameter="{Binding Mode=OneWay}"
+                                                                    IsEnabled="{Binding FileIsPdfFile, Mode=OneWay}">
                                                                     <Extensions:ContentToggleButton.Style>
                                                                         <Style TargetType="{x:Type Extensions:ContentToggleButton}">
                                                                             <Style.Triggers>
@@ -693,26 +694,42 @@
                                 MinHeight="150">
                                 <GroupBox>
                                     <GroupBox.Header>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc DOCUMENT}" />
-                                            <Button twainctrl:Policy.PolicyName="ResimSilGeriAl" Command="{Binding ResimSilGeriAl, Source={x:Reference TwainCtrl}}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc DOCUMENT}" />
+                                                <Button twainctrl:Policy.PolicyName="ResimSilGeriAl" Command="{Binding ResimSilGeriAl, Source={x:Reference TwainCtrl}}">
+                                                    <Image Width="16" Height="16"
+                                                        Source="/TwainControl;component/Icons/undo.png" />
+                                                </Button>
+                                                <Button twainctrl:Policy.PolicyName="Tümünüİşaretle" BorderBrush="Cyan"
+                                                    Command="{Binding Tümünüİşaretle, Source={x:Reference TwainCtrl}}">
+                                                    <Image Width="16" Height="16"
+                                                        Source="/TwainControl;component/Icons/selectall.png" />
+                                                </Button>
+                                                <Button twainctrl:Policy.PolicyName="TümününİşaretiniKaldır" Command="{Binding TümününİşaretiniKaldır, Source={x:Reference TwainCtrl}}">
+                                                    <Image Width="16" Height="16"
+                                                        Source="/TwainControl;component/Icons/none.png" />
+                                                </Button>
+                                                <Button twainctrl:Policy.PolicyName="Tersiniİşaretle" Command="{Binding Tersiniİşaretle, Source={x:Reference TwainCtrl}}">
+                                                    <Image Width="16" Height="16"
+                                                        Source="/TwainControl;component/Icons/inverse.png" />
+                                                </Button>
+                                            </StackPanel>
+                                            <ToggleButton Grid.Column="1"
+                                                HorizontalAlignment="Right" VerticalAlignment="Top"
+                                                Background="{x:Null}"
+                                                BorderBrush="{x:Null}"
+                                                Command="{Binding ModifyGridWidth}"
+                                                CommandParameter="0"
+                                                IsChecked="{Binding DocumentPanelIsExpanded}">
                                                 <Image Width="16" Height="16"
-                                                    Source="/TwainControl;component/Icons/undo.png" />
-                                            </Button>
-                                            <Button twainctrl:Policy.PolicyName="Tümünüİşaretle" BorderBrush="Cyan"
-                                                Command="{Binding Tümünüİşaretle, Source={x:Reference TwainCtrl}}">
-                                                <Image Width="16" Height="16"
-                                                    Source="/TwainControl;component/Icons/selectall.png" />
-                                            </Button>
-                                            <Button twainctrl:Policy.PolicyName="TümününİşaretiniKaldır" Command="{Binding TümününİşaretiniKaldır, Source={x:Reference TwainCtrl}}">
-                                                <Image Width="16" Height="16"
-                                                    Source="/TwainControl;component/Icons/none.png" />
-                                            </Button>
-                                            <Button twainctrl:Policy.PolicyName="Tersiniİşaretle" Command="{Binding Tersiniİşaretle, Source={x:Reference TwainCtrl}}">
-                                                <Image Width="16" Height="16"
-                                                    Source="/TwainControl;component/Icons/inverse.png" />
-                                            </Button>
-                                        </StackPanel>
+                                                    Source="/TwainControl;component/Icons/delete.png" />
+                                            </ToggleButton>
+                                        </Grid>
                                     </GroupBox.Header>
                                     <ListBox Extensions:DragDropExtension.ScrollOnDragDrop="True" twainctrl:Policy.PolicyName="LoadImage"
                                         AllowDrop="True"
