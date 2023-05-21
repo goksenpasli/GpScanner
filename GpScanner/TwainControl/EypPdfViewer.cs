@@ -39,17 +39,22 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                     }
                     PdfFilePath = openFileDialog.FileName;
                 }
-                if (!Settings.Default.PdfLoadHistory.Contains(PdfFilePath))
-                {
-                    _ = Settings.Default.PdfLoadHistory.Add(PdfFilePath);
-                    Settings.Default.Save();
-                    Settings.Default.Reload();
-                }
+                AddToHistoryList(PdfFilePath);
             }
         });
     }
 
     public new RelayCommand<object> DosyaAç { get; }
+
+    public void AddToHistoryList(string pdffilepath)
+    {
+        if (!Settings.Default.PdfLoadHistory.Contains(PdfFilePath))
+        {
+            _ = Settings.Default.PdfLoadHistory.Add(pdffilepath);
+            Settings.Default.Save();
+            Settings.Default.Reload();
+        }
+    }
 
     public string ExtractEypFilesToPdf(string filename)
     {

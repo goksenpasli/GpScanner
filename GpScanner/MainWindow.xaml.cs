@@ -138,6 +138,7 @@ public partial class MainWindow : Window
             {
                 EypPdfViewer eypPdfViewer = TwainCtrl.PdfImportViewer.PdfViewer;
                 eypPdfViewer.PdfFilePath = eypPdfViewer.ExtractEypFilesToPdf(filePath);
+                eypPdfViewer.AddToHistoryList(eypPdfViewer.PdfFilePath);
                 TwainCtrl.TbCtrl.SelectedIndex = 1;
                 TwainCtrl.MaximizePdfControl.Execute(null);
                 return;
@@ -147,6 +148,7 @@ public partial class MainWindow : Window
             {
                 EypPdfViewer eypPdfViewer = TwainCtrl.PdfImportViewer.PdfViewer;
                 eypPdfViewer.PdfFilePath = filePath;
+                eypPdfViewer.AddToHistoryList(eypPdfViewer.PdfFilePath);
                 TwainCtrl.TbCtrl.SelectedIndex = 1;
                 TwainCtrl.MaximizePdfControl.Execute(null);
                 return;

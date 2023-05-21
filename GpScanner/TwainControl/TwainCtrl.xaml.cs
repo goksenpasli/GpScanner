@@ -28,6 +28,7 @@ using Extensions.Controls;
 using Ocr;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
+using PdfSharp.Pdf.Annotations;
 using PdfSharp.Pdf.IO;
 using TwainControl.Properties;
 using TwainWpf;
@@ -1030,7 +1031,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 SayfaBaşlangıç = 1;
                 SayfaBitiş = 1;
             }
-        }, parameter => parameter is PdfViewer.PdfViewer pdfviewer  && File.Exists(pdfviewer.PdfFilePath));
+        }, parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
 
         ReverseData = new RelayCommand<object>(parameter =>
         {
@@ -1173,6 +1174,18 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 pdfviewer.Sayfa = currentpage;
             }
         }, parameter => parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
+
+        ClearPdfHistory = new RelayCommand<object>(parameter =>
+        {
+            if (MessageBox.Show($"{Translation.GetResStringValue("CLEARLIST")}",
+              Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question,
+              MessageBoxResult.No) == MessageBoxResult.Yes)
+            {
+                Settings.Default.PdfLoadHistory.Clear();
+                Settings.Default.Save();
+                Settings.Default.Reload();
+            }
+        }, parameter => Settings.Default.PdfLoadHistory.Count > 0);
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -1199,7 +1212,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public IEnumerable<PdfItem> Annotations {
+    public PdfAnnotations Annotations {
         get => annotations;
 
         set {
@@ -1284,6 +1297,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
         }
     }
+
+    public ICommand ClearPdfHistory { get; }
 
     public ICommand CycleSelectedDocuments { get; }
 
@@ -1828,7 +1843,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                _ = MessageBox.Show(ex.Message);
             }
         }
     }
@@ -2293,7 +2308,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private double allImageRotationAngle;
 
-    private IEnumerable<PdfItem> annotations;
+    private PdfAnnotations annotations;
 
     private byte[] cameraQRCodeData;
 

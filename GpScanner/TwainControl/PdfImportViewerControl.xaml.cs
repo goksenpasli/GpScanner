@@ -55,7 +55,27 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 {
                     using PdfDocument reader = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.ReadOnly);
                     PdfPage page = reader.Pages[PdfViewer.Sayfa - 1];
-                    twainCtrl.Annotations = page?.Annotations?.Select(z => z);
+                    twainCtrl.Annotations = page?.Annotations;
+                }
+            }
+            catch (Exception ex)
+            {
+                _ = MessageBox.Show(ex.Message);
+            }
+        }, parameter => true);
+
+        RemoveAnnotation = new RelayCommand<object>(parameter =>
+        {
+            try
+            {
+                if (parameter is PdfAnnotation selectedannotation && File.Exists(PdfViewer.PdfFilePath) && DataContext is TwainCtrl twainCtrl)
+                {
+                    using PdfDocument reader = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.Modify);
+                    PdfPage page = reader.Pages[PdfViewer.Sayfa - 1];
+                    PdfAnnotation annotation = page.Annotations.ToList().OfType<PdfAnnotation>().FirstOrDefault(z => z.Contents == selectedannotation.Contents);
+                    page?.Annotations?.Remove(annotation);
+                    twainCtrl?.Annotations?.Remove(selectedannotation);
+                    reader.Save(PdfViewer.PdfFilePath);
                 }
             }
             catch (Exception ex)
@@ -269,6 +289,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     }
 
     public RelayCommand<object> ReadAnnotation { get; }
+
+    public RelayCommand<object> RemoveAnnotation { get; }
 
     public string Text {
         get => text;

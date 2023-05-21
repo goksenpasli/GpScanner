@@ -32,7 +32,19 @@
         </Grid.RowDefinitions>
         <WrapPanel Orientation="Horizontal">
             <Menu Background="{x:Null}">
-                <MenuItem ItemsSource="{Binding PdfLoadHistory, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
+                <MenuItem>
+                    <MenuItem.ItemsSource>
+                        <CompositeCollection>
+                            <MenuItem Command="{Binding ClearPdfHistory, Mode=OneWay}" Header="{local:Loc CLEARLIST}">
+                                <MenuItem.Icon>
+                                    <Image Width="16" Height="16"
+                                        Source="/TwainControl;component/Icons/delete.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <Separator />
+                            <CollectionContainer Collection="{Binding PdfLoadHistory, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
+                        </CompositeCollection>
+                    </MenuItem.ItemsSource>
                     <MenuItem.Header>
                         <Image Width="20" Height="20">
                             <Image.Source>
@@ -575,6 +587,13 @@
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock>
+                                                <Hyperlink BaselineAlignment="Center"
+                                                    Command="{Binding RemoveAnnotation, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}"
+                                                    CommandParameter="{Binding Path=Content, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
+                                                    TextDecorations="None">
+                                                    <Image Width="16" Height="16"
+                                                        Source="/TwainControl;component/Icons/delete.png" />
+                                                </Hyperlink>
                                                 <Run Text="{Binding Mode=OneWay, Path=Contents}" />
                                                 <Run Foreground="Red" Text="{Binding Mode=OneWay, Path=Subject}" />
                                                 <Run Foreground="Blue" Text="{Binding Mode=OneWay, Path=Title}" />
