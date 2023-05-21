@@ -30,9 +30,27 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <WrapPanel Margin="2"
-            IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}"
-            Orientation="Horizontal">
+        <WrapPanel Orientation="Horizontal">
+            <Menu Background="{x:Null}">
+                <MenuItem ItemsSource="{Binding PdfLoadHistory, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
+                    <MenuItem.Header>
+                        <Image Width="20" Height="20">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                    <Binding Source="Shell32.dll" />
+                                    <Binding Source="239" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                    </MenuItem.Header>
+                    <MenuItem.ItemContainerStyle>
+                        <Style TargetType="MenuItem">
+                            <Setter Property="Command" Value="{Binding OpenPdfHistoryFile, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
+                            <Setter Property="CommandParameter" Value="{Binding Mode=OneWay}" />
+                        </Style>
+                    </MenuItem.ItemContainerStyle>
+                </MenuItem>
+            </Menu>
             <Extensions:NumericUpDownControl Maximum="{Binding ElementName=PdfViewer, Path=ToplamSayfa}"
                 Minimum="1" SmallChange="1"
                 Value="{Binding SayfaBaşlangıç, UpdateSourceTrigger=PropertyChanged}" />
@@ -190,7 +208,7 @@
                     </Image>
                 </Button.Content>
             </Button>
-            <Extensions:ContentToggleButton>
+            <Extensions:ContentToggleButton IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
                 <Extensions:ContentToggleButton.Content>
                     <Image Width="16" Height="16">
                         <Image.Source>
@@ -283,7 +301,7 @@
                     </GroupBox>
                 </Extensions:ContentToggleButton.OverContent>
             </Extensions:ContentToggleButton>
-            <Extensions:ContentToggleButton>
+            <Extensions:ContentToggleButton IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
                 <Canvas Width="16" Height="16">
                     <TextBlock Canvas.Top="0"
                         FontSize="10" Text="1" />
@@ -355,7 +373,7 @@
                     </Image.Source>
                 </Image>
             </Button>
-            <Button Command="{Binding MaximizePdfControl}">
+            <Button Command="{Binding MaximizePdfControl}" IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
                 <Image Width="16" Height="16">
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -375,7 +393,8 @@
                     </Image.Source>
                 </Image>
             </Button>
-            <Expander d:IsExpanded="True" ExpandDirection="Right">
+            <Expander d:IsExpanded="True" ExpandDirection="Right"
+                IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
                 <WrapPanel Orientation="Horizontal">
                     <ComboBox VerticalContentAlignment="Center"
                         ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfColor}}"

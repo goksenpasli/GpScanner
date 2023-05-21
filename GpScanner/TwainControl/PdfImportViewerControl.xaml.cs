@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,6 +14,7 @@ using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.Annotations;
 using PdfSharp.Pdf.IO;
+using TwainControl.Properties;
 
 namespace TwainControl;
 
@@ -49,7 +51,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         {
             try
             {
-                if (DataContext is TwainCtrl twainCtrl)
+                if (File.Exists(PdfViewer.PdfFilePath) && DataContext is TwainCtrl twainCtrl)
                 {
                     using PdfDocument reader = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.ReadOnly);
                     PdfPage page = reader.Pages[PdfViewer.Sayfa - 1];
@@ -59,6 +61,23 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             catch (Exception ex)
             {
                 _ = MessageBox.Show(ex.Message);
+            }
+        }, parameter => true);
+
+        OpenPdfHistoryFile = new RelayCommand<object>(parameter =>
+        {
+            if (parameter is string filepath)
+            {
+                if (File.Exists(filepath))
+                {
+                    PdfViewer.PdfFilePath = filepath;
+                }
+                else
+                {
+                    Settings.Default.PdfLoadHistory.Remove(filepath);
+                    Settings.Default.Save();
+                    Settings.Default.Reload();
+                }
             }
         }, parameter => true);
     }
@@ -198,6 +217,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     }
 
     public RelayCommand<object> LoadDrawImage { get; }
+
+    public RelayCommand<object> OpenPdfHistoryFile { get; }
 
     public XDashStyle PenDash {
         get => penDash;
@@ -459,6 +480,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     if (DrawImage && DrawnImage is not null)
                     {
                         gfx.DrawImage(DrawnImage, rect);
+                        DrawnImage = null;
+                        GC.Collect();
                     }
 
                     if (DrawString && !string.IsNullOrWhiteSpace(Text))

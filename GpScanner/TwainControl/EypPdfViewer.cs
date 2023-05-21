@@ -5,6 +5,7 @@ using System.Windows;
 using Extensions;
 using Microsoft.Win32;
 using PdfSharp.Pdf.IO;
+using TwainControl.Properties;
 
 namespace TwainControl;
 
@@ -23,18 +24,26 @@ public class EypPdfViewer : PdfViewer.PdfViewer
             {
                 if (Path.GetExtension(openFileDialog.FileName.ToLower()) == ".eyp")
                 {
-                    string eyppath = ExtractEypFilesToPdf(openFileDialog.FileName);
-                    if (PdfReader.TestPdfFile(eyppath) != 0)
+                    string eypfile = ExtractEypFilesToPdf(openFileDialog.FileName);
+                    if (PdfReader.TestPdfFile(eypfile) == 0)
                     {
-                        PdfFilePath = eyppath;
+                        return;
                     }
-
-                    return;
+                    PdfFilePath = eypfile;
                 }
-
-                if (PdfReader.TestPdfFile(openFileDialog.FileName) != 0)
+                if (Path.GetExtension(openFileDialog.FileName.ToLower()) == ".pdf")
                 {
+                    if (PdfReader.TestPdfFile(openFileDialog.FileName) == 0)
+                    {
+                        return;
+                    }
                     PdfFilePath = openFileDialog.FileName;
+                }
+                if (!Settings.Default.PdfLoadHistory.Contains(PdfFilePath))
+                {
+                    _ = Settings.Default.PdfLoadHistory.Add(PdfFilePath);
+                    Settings.Default.Save();
+                    Settings.Default.Reload();
                 }
             }
         });

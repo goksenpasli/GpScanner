@@ -549,7 +549,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     SelectedTab.Content = pdfImportViewerControl;
                 };
             }
-        }, parameter => SelectedTab?.Content is PdfImportViewerControl);
+        }, parameter => true);
 
         LoadSingleUdfFile = new RelayCommand<object>(parameter =>
         {
@@ -789,7 +789,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     GC.Collect();
                 }
             }
-        }, parameter => true);
+        }, parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
 
         PasteFileToPdfFile = new RelayCommand<object>(async parameter =>
         {
@@ -871,7 +871,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 Clipboard.Clear();
                 GC.Collect();
             }
-        }, parameter => true);
+        }, parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
 
         ReadPdfTag = new RelayCommand<object>(parameter =>
         {
@@ -933,7 +933,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 ms = null;
                 GC.Collect();
             }
-        }, parameter => true);
+        }, parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
 
         RotateSelectedPage = new RelayCommand<object>(parameter =>
         {
@@ -997,7 +997,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 pdfviewer.PdfFilePath = null;
                 pdfviewer.PdfFilePath = oldpdfpath;
             }
-        }, parameter => true);
+        }, parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
 
         AddPdfAttachmentFile = new RelayCommand<object>(async parameter =>
         {
@@ -1018,7 +1018,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     pdfviewer.PdfFilePath = oldpdfpath;
                 }
             }
-        }, parameter => true);
+        }, parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
 
         ClosePdfFile = new RelayCommand<object>(parameter =>
         {
@@ -1030,7 +1030,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 SayfaBaşlangıç = 1;
                 SayfaBitiş = 1;
             }
-        }, parameter => parameter is PdfViewer.PdfViewer pdfviewer && pdfviewer.PdfFilePath is not null);
+        }, parameter => parameter is PdfViewer.PdfViewer pdfviewer  && File.Exists(pdfviewer.PdfFilePath));
 
         ReverseData = new RelayCommand<object>(parameter =>
         {
@@ -1828,7 +1828,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
             catch (Exception ex)
             {
-                throw new ArgumentException(nameof(path), ex);
+                MessageBox.Show(ex.Message);
             }
         }
     }
