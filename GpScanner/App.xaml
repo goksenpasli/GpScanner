@@ -382,7 +382,7 @@
                     ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                     OpenButtonVisibility="Collapsed" PanoramaButtonVisibility="Collapsed"
                     PrintButtonVisibility="Collapsed"
-                    Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" />
+                    Tag="{Binding RelativeSource={RelativeSource AncestorType=twain:TwainCtrl}}"/>
             </DataTemplate>
             <DataTemplate x:Key="ImgViewerDocumentViewerTemplateFull">
                 <Grid>

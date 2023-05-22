@@ -1,33 +1,52 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Input;
 using Extensions;
 
-namespace TwainControl;
-
-public class SimpleImageViewer : ImageViewer
+namespace TwainControl
 {
-    protected override void OnMouseDoubleClick(MouseButtonEventArgs e)
+    public class SimpleImageViewer : ImageViewer
     {
-        using (ImageViewer imageViewer = new()
+        protected override void OnMouseDoubleClick(MouseButtonEventArgs e)
         {
-            PanoramaButtonVisibility = Visibility.Collapsed,
-            PrintButtonVisibility = Visibility.Visible,
-            ImageFilePath = (string)Tag
-        })
-        {
-            Window maximizePdfWindow = new()
+            imageViewer ??= new ImageViewer
             {
-                Content = imageViewer,
-                WindowState = WindowState.Maximized,
-                ShowInTaskbar = true,
-                Title = Application.Current?.MainWindow?.Title,
-                DataContext = Tag,
-                WindowStartupLocation = WindowStartupLocation.CenterOwner
+                PanoramaButtonVisibility = Visibility.Collapsed,
+                PrintButtonVisibility = Visibility.Visible
             };
+
+            imageViewer.ImageFilePath = (e.Source as System.Windows.Controls.Image).DataContext as string;
+            imageViewer.DataContext = Tag;
+
+            if (maximizePdfWindow == null)
+            {
+                maximizePdfWindow = new Window
+                {
+                    WindowState = WindowState.Maximized,
+                    ShowInTaskbar = true,
+                    Title = Application.Current?.MainWindow?.Title,
+                    WindowStartupLocation = WindowStartupLocation.CenterOwner
+                };
+                maximizePdfWindow.Closed += MaximizePdfWindow_Closed;
+            }
+
+            maximizePdfWindow.Content = imageViewer;
+            maximizePdfWindow.DataContext = imageViewer.ImageFilePath;
             _ = maximizePdfWindow.ShowDialog();
-            maximizePdfWindow.Closed += (s, e) => maximizePdfWindow = null;
+
+            base.OnMouseDoubleClick(e);
         }
 
-        base.OnMouseDoubleClick(e);
+        private ImageViewer imageViewer;
+
+        private Window maximizePdfWindow;
+
+        private void MaximizePdfWindow_Closed(object sender, EventArgs e)
+        {
+            maximizePdfWindow.Closed -= MaximizePdfWindow_Closed;
+            maximizePdfWindow = null;
+            imageViewer?.Dispose();
+            imageViewer = null;
+        }
     }
 }
