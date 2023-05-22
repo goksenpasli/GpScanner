@@ -58,8 +58,11 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     public static readonly DependencyProperty ScrollBarVisibleProperty = DependencyProperty.Register("ScrollBarVisible",
         typeof(ScrollBarVisibility), typeof(PdfViewer), new PropertyMetadata(ScrollBarVisibility.Auto));
 
+    public static readonly DependencyProperty SeekingLowerPdfDpiProperty =
+        DependencyProperty.Register("SeekingLowerPdfDpi", typeof(bool), typeof(PdfViewer), new PropertyMetadata(false));
+
     public static readonly DependencyProperty SeekingPdfDpiProperty =
-        DependencyProperty.Register("SeekingPdfDpi", typeof(int), typeof(PdfViewer), new PropertyMetadata(200));
+            DependencyProperty.Register("SeekingPdfDpi", typeof(int), typeof(PdfViewer), new PropertyMetadata(200));
 
     public static readonly DependencyProperty SnapTickProperty =
         DependencyProperty.Register("SnapTick", typeof(bool), typeof(PdfViewer), new PropertyMetadata(false));
@@ -446,15 +449,8 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     }
 
     public bool SeekingLowerPdfDpi {
-        get => seekingLowerPdfDpi;
-
-        set {
-            if (seekingLowerPdfDpi != value)
-            {
-                seekingLowerPdfDpi = value;
-                OnPropertyChanged(nameof(SeekingLowerPdfDpi));
-            }
-        }
+        get => (bool)GetValue(SeekingLowerPdfDpiProperty);
+        set => SetValue(SeekingLowerPdfDpiProperty, value);
     }
 
     public int SeekingPdfDpi {
@@ -749,8 +745,6 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     private Visibility searchTextContentVisibility;
 
-    private bool seekingLowerPdfDpi;
-
     private Visibility sliderZoomAngleVisibility = Visibility.Visible;
 
     private Visibility tifNavigasyonButtonEtkin = Visibility.Visible;
@@ -894,6 +888,9 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     private void UpDownMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
     {
-        Dpi = SeekingPdfDpi;
+        if (SeekingLowerPdfDpi)
+        {
+            Dpi = SeekingPdfDpi;
+        }
     }
 }

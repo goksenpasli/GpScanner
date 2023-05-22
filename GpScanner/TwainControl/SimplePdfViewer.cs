@@ -8,7 +8,9 @@ public class SimplePdfViewer : PdfViewer.PdfViewer
     protected override void OnMouseDoubleClick(MouseButtonEventArgs e)
     {
         PdfImportViewerControl pdfImportViewerControl = new();
-        pdfImportViewerControl.PdfViewer.PdfFilePath = (string)DataContext;
+        string pdffilepath = (string)DataContext;
+        pdfImportViewerControl.PdfViewer.PdfFilePath = pdffilepath;
+        pdfImportViewerControl.PdfViewer.AddToHistoryList(pdffilepath);
         Window maximizePdfWindow = new()
         {
             Content = pdfImportViewerControl,

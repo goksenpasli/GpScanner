@@ -7,6 +7,7 @@
         <ResourceDictionary Source="/Extensions;component/Themes/Skin.xaml" />
         <ResourceDictionary Source="/PdfViewer;component/Common.xaml" />
     </ResourceDictionary.MergedDictionaries>
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
     <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
     <local:PageNumberOneUpConverter x:Key="PageNumberOneUpConverter" />
@@ -69,16 +70,6 @@
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
                                 <Button Command="{Binding DosyaAç, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Visibility="{Binding OpenButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
@@ -91,243 +82,265 @@
                                         </Image.Source>
                                     </Image>
                                 </Button>
-                                <ListBox Grid.Column="1"
-                                    VerticalContentAlignment="Center"
-                                    IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}"
-                                    SelectedValue="{Binding Orientation, RelativeSource={RelativeSource TemplatedParent}}"
-                                    SelectedValuePath="Tag">
-                                    <ListBox.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <VirtualizingStackPanel Orientation="Horizontal" />
-                                        </ItemsPanelTemplate>
-                                    </ListBox.ItemsPanel>
-                                    <ListBoxItem Tag="Width">
-                                        <TextBlock FontFamily="Wingdings 3" FontSize="16" FontWeight="Bold"
-                                            Text="F" />
-                                    </ListBoxItem>
-                                    <ListBoxItem Tag="Height">
-                                        <TextBlock FontFamily="Wingdings 3" FontSize="16" FontWeight="Bold"
-                                            Text="G" />
-                                    </ListBoxItem>
-                                </ListBox>
-                                <Button Grid.Column="2"
-                                    Command="{Binding Resize, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                    IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}">
-                                    <Image Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="140" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                </Button>
-                                <StackPanel Grid.Column="3"
-                                    IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}"
-                                    Orientation="Horizontal"
-                                    Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}">
-                                    <Extensions:ContentToggleButton Command="{Binding ScrollToCurrentPage, RelativeSource={RelativeSource TemplatedParent}}" CommandParameter="{Binding ElementName=Lb}">
+                                <Grid Grid.Column="1" IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <ListBox Grid.Column="0"
+                                        VerticalContentAlignment="Center"
+                                        SelectedValue="{Binding Orientation, RelativeSource={RelativeSource TemplatedParent}}"
+                                        SelectedValuePath="Tag">
+                                        <ListBox.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <VirtualizingStackPanel Orientation="Horizontal" />
+                                            </ItemsPanelTemplate>
+                                        </ListBox.ItemsPanel>
+                                        <ListBoxItem Tag="Width">
+                                            <TextBlock FontFamily="Wingdings 3" FontSize="16" FontWeight="Bold"
+                                                Text="F" />
+                                        </ListBoxItem>
+                                        <ListBoxItem Tag="Height">
+                                            <TextBlock FontFamily="Wingdings 3" FontSize="16" FontWeight="Bold"
+                                                Text="G" />
+                                        </ListBoxItem>
+                                    </ListBox>
+                                    <Button Grid.Column="1" Command="{Binding Resize, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
                                         <Image Width="16" Height="16">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                     <Binding Source="Shell32.dll" />
-                                                    <Binding Source="19" />
+                                                    <Binding Source="140" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </Button>
+                                    <StackPanel Grid.Column="2"
+                                        Orientation="Horizontal"
+                                        Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}">
+                                        <Extensions:ContentToggleButton Command="{Binding ScrollToCurrentPage, RelativeSource={RelativeSource TemplatedParent}}" CommandParameter="{Binding OverContent, RelativeSource={RelativeSource Mode=Self}}">
+                                            <Image Width="16" Height="16">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="19" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                            <Extensions:ContentToggleButton.OverContent>
+                                                <ListBox VerticalContentAlignment="Center"
+                                                    ItemTemplate="{StaticResource PdfThumbItemTemplate}"
+                                                    ItemsSource="{Binding Pages, RelativeSource={RelativeSource TemplatedParent}}"
+                                                    ScrollViewer.IsDeferredScrollingEnabled="True"
+                                                    SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
+                                                    VirtualizingPanel.CacheLength="3,3" VirtualizingPanel.CacheLengthUnit="Item"
+                                                    VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Standard">
+                                                    <ListBox.ItemContainerStyle>
+                                                        <Style TargetType="ListBoxItem">
+                                                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                                            <Setter Property="Margin" Value="1" />
+                                                        </Style>
+                                                    </ListBox.ItemContainerStyle>
+                                                    <ListBox.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <Extensions:VirtualizingWrapPanel Width="460" Height="300"
+                                                                CanHorizontallyScroll="False" ItemSize="140,140" StretchItems="False" />
+                                                        </ItemsPanelTemplate>
+                                                    </ListBox.ItemsPanel>
+                                                </ListBox>
+                                            </Extensions:ContentToggleButton.OverContent>
+                                        </Extensions:ContentToggleButton>
+                                        <Extensions:NumericUpDownControl x:Name="UpDown"
+                                            LargeChange="1"
+                                            Maximum="{Binding ToplamSayfa, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                            Minimum="1" Orientation="Horizontal" SmallChange="1"
+                                            Value="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
+                                        <ToggleButton IsChecked="{Binding SeekingLowerPdfDpi, RelativeSource={RelativeSource TemplatedParent}}">
+                                            <Canvas Width="16" Height="16">
+                                                <Image Width="16" Height="16">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="1" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                                <Image Canvas.Left="4" Canvas.Top="4"
+                                                    Width="12" Height="12"
+                                                    Visibility="{Binding SeekingLowerPdfDpi, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource TemplatedParent}}">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="47" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                            </Canvas>
+                                        </ToggleButton>
+                                    </StackPanel>
+                                    <Button Grid.Column="3"
+                                        Command="{Binding Yazdır, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                        Visibility="{Binding PrintButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="16" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </Button>
+                                    <ComboBox Grid.Column="4"
+                                        VerticalContentAlignment="Center"
+                                        ItemStringFormat="{}{0} Dpi"
+                                        ItemsSource="{Binding DpiList, RelativeSource={RelativeSource TemplatedParent}}"
+                                        SelectedItem="{Binding Dpi, RelativeSource={RelativeSource TemplatedParent}, StringFormat=Dpi}"
+                                        Visibility="{Binding DpiListVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    <Button Grid.Column="5" Command="{Binding SaveImage, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="6" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </Button>
+                                    <Extensions:ContentToggleButton Grid.Column="6"
+                                        Command="{Binding ReadPdfText, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                        Visibility="{Binding PdfTextContentVisibility, RelativeSource={RelativeSource TemplatedParent}}">
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="1" />
                                                 </MultiBinding>
                                             </Image.Source>
                                         </Image>
                                         <Extensions:ContentToggleButton.OverContent>
-                                            <ListBox x:Name="Lb"
-                                                VerticalContentAlignment="Center"
-                                                ItemTemplate="{StaticResource PdfThumbItemTemplate}"
-                                                ItemsSource="{Binding Pages, RelativeSource={RelativeSource TemplatedParent}}"
-                                                ScrollViewer.IsDeferredScrollingEnabled="True"
-                                                SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
-                                                VirtualizingPanel.CacheLength="3,3" VirtualizingPanel.CacheLengthUnit="Item"
-                                                VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Standard">
-                                                <ListBox.ItemContainerStyle>
-                                                    <Style TargetType="ListBoxItem">
-                                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                                        <Setter Property="Margin" Value="1" />
-                                                    </Style>
-                                                </ListBox.ItemContainerStyle>
-                                                <ListBox.ItemsPanel>
-                                                    <ItemsPanelTemplate>
-                                                        <Extensions:VirtualizingWrapPanel Width="460" Height="300"
-                                                            CanHorizontallyScroll="False" ItemSize="140,140" StretchItems="False" />
-                                                    </ItemsPanelTemplate>
-                                                </ListBox.ItemsPanel>
-                                            </ListBox>
+                                            <Extensions:ResizablePanel Width="320" Height="240" MinWidth="320"
+                                                MinHeight="240">
+                                                <Extensions:ButtonedTextBox IsReadOnly="True" OpenButtonVisibility="Collapsed" ResetButtonVisibility="Collapsed"
+                                                    Text="{Binding PdfTextContent, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                    TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" />
+                                            </Extensions:ResizablePanel>
                                         </Extensions:ContentToggleButton.OverContent>
                                     </Extensions:ContentToggleButton>
-                                    <Extensions:NumericUpDownControl x:Name="UpDown"
-                                        LargeChange="1"
-                                        Maximum="{Binding ToplamSayfa, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                        Minimum="1" Orientation="Horizontal" SmallChange="1"
-                                        Value="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
-                                </StackPanel>
-                                <Button Grid.Column="4"
-                                    Command="{Binding Yazdır, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                    IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}"
-                                    Visibility="{Binding PrintButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
-                                    <Image Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="16" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                </Button>
-                                <ComboBox Grid.Column="5"
-                                    VerticalContentAlignment="Center"
-                                    IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}"
-                                    ItemStringFormat="{}{0} Dpi"
-                                    ItemsSource="{Binding DpiList, RelativeSource={RelativeSource TemplatedParent}}"
-                                    SelectedItem="{Binding Dpi, RelativeSource={RelativeSource TemplatedParent}, StringFormat=Dpi}"
-                                    Visibility="{Binding DpiListVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
-                                <Button x:Name="BtnSave"
-                                    Grid.Column="6"
-                                    Command="{Binding SaveImage, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                    IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}">
-                                    <Image Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="6" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                </Button>
-                                <Extensions:ContentToggleButton Grid.Column="7"
-                                    Command="{Binding ReadPdfText, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                    Visibility="{Binding PdfTextContentVisibility, RelativeSource={RelativeSource TemplatedParent}}">
-                                    <Image Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="1" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                    <Extensions:ContentToggleButton.OverContent>
-                                        <Extensions:ResizablePanel Width="320" Height="240" MinWidth="320"
-                                            MinHeight="240">
-                                            <Extensions:ButtonedTextBox IsReadOnly="True" OpenButtonVisibility="Collapsed" ResetButtonVisibility="Collapsed"
-                                                Text="{Binding PdfTextContent, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                                TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" />
-                                        </Extensions:ResizablePanel>
-                                    </Extensions:ContentToggleButton.OverContent>
-                                </Extensions:ContentToggleButton>
-                                <Extensions:ContentToggleButton Grid.Column="8"
-                                    IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource AncestorType=local:PdfViewer}}"
-                                    Visibility="{Binding SearchTextContentVisibility, RelativeSource={RelativeSource TemplatedParent}}">
-                                    <Image Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="22" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                    <Extensions:ContentToggleButton.OverContent>
-                                        <Extensions:ResizablePanel Width="320" Height="240" MinWidth="320"
-                                            MinHeight="240">
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="Auto" />
-                                                    <RowDefinition Height="Auto" />
-                                                    <RowDefinition />
-                                                    <RowDefinition Height="Auto" />
-                                                </Grid.RowDefinitions>
-                                                <Extensions:ButtonedTextBox OpenButtonVisibility="Collapsed" Text="{Binding SearchTextContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}" />
-                                                <UniformGrid Grid.Row="1" Columns="2">
-                                                    <CheckBox VerticalContentAlignment="Center"
-                                                        Content="Match Case"
-                                                        IsChecked="{Binding MatchCase, RelativeSource={RelativeSource TemplatedParent}}" />
-                                                    <CheckBox VerticalContentAlignment="Center"
-                                                        Content="Whole Word"
-                                                        IsChecked="{Binding WholeWord, RelativeSource={RelativeSource TemplatedParent}}" />
-                                                </UniformGrid>
-                                                <ListBox Grid.Row="2"
-                                                    ItemsSource="{Binding PdfMatches, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                                    SelectedItem="{Binding SearchPdfMatch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}">
-                                                    <ListBox.ItemTemplate>
-                                                        <DataTemplate>
+                                    <Extensions:ContentToggleButton Grid.Column="7" Visibility="{Binding SearchTextContentVisibility, RelativeSource={RelativeSource TemplatedParent}}">
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="22" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <Extensions:ContentToggleButton.OverContent>
+                                            <Extensions:ResizablePanel Width="320" Height="240" MinWidth="320"
+                                                MinHeight="240">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition />
+                                                        <RowDefinition Height="Auto" />
+                                                    </Grid.RowDefinitions>
+                                                    <Extensions:ButtonedTextBox OpenButtonVisibility="Collapsed" Text="{Binding SearchTextContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                    <UniformGrid Grid.Row="1" Columns="2">
+                                                        <CheckBox VerticalContentAlignment="Center"
+                                                            Content="Match Case"
+                                                            IsChecked="{Binding MatchCase, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                        <CheckBox VerticalContentAlignment="Center"
+                                                            Content="Whole Word"
+                                                            IsChecked="{Binding WholeWord, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                    </UniformGrid>
+                                                    <ListBox Grid.Row="2"
+                                                        ItemsSource="{Binding PdfMatches, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                        SelectedItem="{Binding SearchPdfMatch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}">
+                                                        <ListBox.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock>
+                                                                    <Run Text="{Binding Text, Mode=OneWay}" />
+                                                                    <Run Text="{Binding Page, Mode=OneWay, Converter={StaticResource PageNumberOneUpConverter}}" />
+                                                                </TextBlock>
+                                                            </DataTemplate>
+                                                        </ListBox.ItemTemplate>
+                                                    </ListBox>
+                                                    <Button Grid.Row="3"
+                                                        Command="{Binding SearchPdfText, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                        IsDefault="True">
+                                                        <Image Width="16" Height="16">
+                                                            <Image.Source>
+                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                    <Binding Source="Shell32.dll" />
+                                                                    <Binding Source="22" />
+                                                                </MultiBinding>
+                                                            </Image.Source>
+                                                        </Image>
+                                                    </Button>
+                                                </Grid>
+                                            </Extensions:ResizablePanel>
+                                        </Extensions:ContentToggleButton.OverContent>
+                                    </Extensions:ContentToggleButton>
+                                    <Extensions:ContentToggleButton Grid.Column="8"
+                                        Command="{Binding ReadPdfBookmarks, RelativeSource={RelativeSource TemplatedParent}}"
+                                        Visibility="{Binding BookmarkContentVisibility, RelativeSource={RelativeSource TemplatedParent}}">
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="39" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <Extensions:ContentToggleButton.OverContent>
+                                            <Extensions:ResizablePanel Width="320" Height="240" MinWidth="320"
+                                                MinHeight="240">
+                                                <TreeView ItemsSource="{Binding PdfBookmarks, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                                    <TreeView.ItemContainerStyle>
+                                                        <Style TargetType="{x:Type TreeViewItem}">
+                                                            <Setter Property="IsSelected" Value="{Binding Isselected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                        </Style>
+                                                    </TreeView.ItemContainerStyle>
+                                                    <TreeView.Resources>
+                                                        <HierarchicalDataTemplate DataType="{x:Type pdfium:PdfBookmark}" ItemsSource="{Binding Children}">
                                                             <TextBlock>
-                                                                <Run Text="{Binding Text, Mode=OneWay}" />
-                                                                <Run Text="{Binding Page, Mode=OneWay, Converter={StaticResource PageNumberOneUpConverter}}" />
+                                                                <Hyperlink Command="{Binding GoPdfBookMarkPage, Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:PdfViewer}}" CommandParameter="{Binding PageIndex}">
+                                                                    <Run Text="{Binding Title, Mode=OneWay}" />
+                                                                    <Run FontWeight="Bold" Text="{Binding PageIndex, Mode=OneWay, Converter={StaticResource PageNumberOneUpConverter}}" />
+                                                                </Hyperlink>
                                                             </TextBlock>
-                                                        </DataTemplate>
-                                                    </ListBox.ItemTemplate>
-                                                </ListBox>
-                                                <Button Grid.Row="3"
-                                                    Command="{Binding SearchPdfText, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                                    IsDefault="True">
-                                                    <Image Width="16" Height="16">
-                                                        <Image.Source>
-                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                <Binding Source="Shell32.dll" />
-                                                                <Binding Source="22" />
-                                                            </MultiBinding>
-                                                        </Image.Source>
-                                                    </Image>
-                                                </Button>
-                                            </Grid>
-                                        </Extensions:ResizablePanel>
-                                    </Extensions:ContentToggleButton.OverContent>
-                                </Extensions:ContentToggleButton>
-                                <Extensions:ContentToggleButton Grid.Column="9"
-                                    Command="{Binding ReadPdfBookmarks, RelativeSource={RelativeSource TemplatedParent}}"
-                                    Visibility="{Binding BookmarkContentVisibility, RelativeSource={RelativeSource TemplatedParent}}">
-                                    <Image Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="39" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                    <Extensions:ContentToggleButton.OverContent>
-                                        <Extensions:ResizablePanel Width="320" Height="240" MinWidth="320"
-                                            MinHeight="240">
-                                            <TreeView ItemsSource="{Binding PdfBookmarks, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
-                                                <TreeView.ItemContainerStyle>
-                                                    <Style TargetType="{x:Type TreeViewItem}">
-                                                        <Setter Property="IsSelected" Value="{Binding Isselected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}" />
-                                                    </Style>
-                                                </TreeView.ItemContainerStyle>
-                                                <TreeView.Resources>
-                                                    <HierarchicalDataTemplate DataType="{x:Type pdfium:PdfBookmark}" ItemsSource="{Binding Children}">
-                                                        <TextBlock>
-                                                            <Hyperlink Command="{Binding GoPdfBookMarkPage, Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:PdfViewer}}" CommandParameter="{Binding PageIndex}">
-                                                                <Run Text="{Binding Title, Mode=OneWay}" />
-                                                                <Run FontWeight="Bold" Text="{Binding PageIndex, Mode=OneWay, Converter={StaticResource PageNumberOneUpConverter}}" />
-                                                            </Hyperlink>
-                                                        </TextBlock>
-                                                    </HierarchicalDataTemplate>
-                                                </TreeView.Resources>
-                                            </TreeView>
-                                        </Extensions:ResizablePanel>
-                                    </Extensions:ContentToggleButton.OverContent>
-                                </Extensions:ContentToggleButton>
-                                <Slider Grid.Column="10"
-                                    Margin="2" VerticalAlignment="Center"
-                                    AutoToolTipPlacement="TopLeft"
-                                    IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}"
-                                    Minimum="0.01" SmallChange="1"
-                                    Style="{StaticResource Slider}"
-                                    Visibility="{Binding SliderZoomAngleVisibility, RelativeSource={RelativeSource TemplatedParent}}"
-                                    Value="{Binding Zoom, RelativeSource={RelativeSource TemplatedParent}}" />
-                                <Slider Grid.Column="11"
-                                    Margin="2" VerticalAlignment="Center"
-                                    AutoToolTipPlacement="TopLeft"
-                                    IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}"
-                                    IsSnapToTickEnabled="{Binding SnapTick, RelativeSource={RelativeSource TemplatedParent}}"
-                                    Maximum="360" SmallChange="1"
-                                    Style="{StaticResource Slider}"
-                                    Ticks="0, 90, 180, 270, 360"
-                                    Visibility="{Binding SliderZoomAngleVisibility, RelativeSource={RelativeSource TemplatedParent}}"
-                                    Value="{Binding Angle, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                        </HierarchicalDataTemplate>
+                                                    </TreeView.Resources>
+                                                </TreeView>
+                                            </Extensions:ResizablePanel>
+                                        </Extensions:ContentToggleButton.OverContent>
+                                    </Extensions:ContentToggleButton>
+                                    <Slider Grid.Column="9"
+                                        Margin="2" VerticalAlignment="Center"
+                                        AutoToolTipPlacement="TopLeft" Minimum="0.01" SmallChange="1"
+                                        Style="{StaticResource Slider}"
+                                        Visibility="{Binding SliderZoomAngleVisibility, RelativeSource={RelativeSource TemplatedParent}}"
+                                        Value="{Binding Zoom, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    <Slider Grid.Column="10"
+                                        Margin="2" VerticalAlignment="Center"
+                                        AutoToolTipPlacement="TopLeft"
+                                        IsSnapToTickEnabled="{Binding SnapTick, RelativeSource={RelativeSource TemplatedParent}}"
+                                        Maximum="360" SmallChange="1"
+                                        Style="{StaticResource Slider}"
+                                        Ticks="0, 90, 180, 270, 360"
+                                        Visibility="{Binding SliderZoomAngleVisibility, RelativeSource={RelativeSource TemplatedParent}}"
+                                        Value="{Binding Angle, RelativeSource={RelativeSource TemplatedParent}}" />
+                                </Grid>
                             </Grid>
                         </ContentControl>
                     </Grid>
@@ -336,7 +349,6 @@
                             <Setter Property="Opacity" Value="0.56" />
                         </Trigger>
                         <DataTrigger Binding="{Binding Visibility, ElementName=Cnt}" Value="Collapsed">
-                            <Setter TargetName="BtnSave" Property="CommandParameter" Value="{x:Null}" />
                             <Setter TargetName="Cnt" Property="Content" Value="{x:Null}" />
                         </DataTrigger>
                     </ControlTemplate.Triggers>
