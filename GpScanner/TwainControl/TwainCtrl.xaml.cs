@@ -983,7 +983,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 pdfviewer.PdfFilePath = null;
                 pdfviewer.PdfFilePath = oldpdfpath;
             }
-        }, parameter => SayfaBaşlangıç != SayfaBitiş);
+        }, parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath) && SayfaBaşlangıç != SayfaBitiş);
 
         ReversePdfFile = new RelayCommand<object>(async parameter =>
         {
@@ -1075,7 +1075,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     }
                 }
             },
-            parameter => parameter is PdfViewer.PdfViewer pdfviewer && pdfviewer.ToplamSayfa > 1 &&
+            parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath) &&  pdfviewer.ToplamSayfa > 1 &&
                          SayfaBaşlangıç <= SayfaBitiş && SayfaBitiş - SayfaBaşlangıç + 1 < pdfviewer.ToplamSayfa);
 
         ExtractPdfFile = new RelayCommand<object>(async parameter =>

@@ -379,7 +379,7 @@ OKU</value>
     <value>Otomatik Kayıt Yolu Değişti. Eski Dosyalar Yeni Belirlenen Klasöre Taşınmayacaktır.</value>
   </data>
     <data name="LISTREMOVEWARN" xml:space="preserve">
-    <value>Üstteki Listede Bulunan Tüm Taranan Evrak Silinecek Devam Etmek İstiyor Musun?</value>
+    <value>Alttaki Listede Bulunan Tüm Taranan Evrak Silinecek Devam Etmek İstiyor Musun?</value>
   </data>
     <data name="DEFAULTSCANNAME" xml:space="preserve">
     <value>Tarama</value>

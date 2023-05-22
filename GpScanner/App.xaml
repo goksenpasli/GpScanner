@@ -229,8 +229,8 @@
                         Grid.Column="1"
                         ContextMenuVisibility="Visible" Orientation="Height"
                         PdfFilePath="{Binding Mode=OneWay}"
-                        PdfTextContentVisibility="Collapsed" PrintButtonVisibility="Visible" ScrollBarVisible="Visible"
-                        SearchTextContentVisibility="Collapsed" SeekingLowerPdfDpi="True" SnapTick="True" />
+                        PrintButtonVisibility="Visible" ScrollBarVisible="Visible" SearchTextContentVisibility="Collapsed"
+                        SeekingLowerPdfDpi="True" SnapTick="True" />
                     <UniformGrid Grid.Column="2" Rows="2">
                         <local:TranslateView ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding DataContext.PdfFileContent, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}" />
                         <TextBox Background="{StaticResource BorderBackground}"

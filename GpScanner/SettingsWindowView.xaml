@@ -385,63 +385,66 @@
                         </UniformGrid>
                     </StackPanel>
                 </GroupBox>
-                <GroupBox Grid.Row="4">
-                    <UniformGrid Columns="3" IsEnabled="{Binding Path=SeçiliTarayıcı, Source={x:Static twainctrl:ToolBox.Scanner}, Converter={StaticResource NullableToBooleanConverter}}">
-                        <Button twainctrl:Policy.PolicyName="RegisterSti"
-                            Command="{Binding RegisterSti, Mode=OneWay}"
-                            IsEnabled="{Binding Source={x:Static viewmodel:GpScannerViewModel.IsAdministrator}}">
-                            <StackPanel Orientation="Horizontal">
-                                <Canvas Width="32" Height="32">
-                                    <Image Width="32" Height="32">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="sti.dll" />
-                                                <Binding Source="0" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                    <Image Canvas.Bottom="0"
-                                        Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="User32.dll" />
-                                                <Binding Source="6" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                </Canvas>
-                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc REGSTI}" />
-                            </StackPanel>
-                        </Button>
-                        <Button twainctrl:Policy.PolicyName="UnRegisterSti"
-                            Command="{Binding UnRegisterSti, Mode=OneWay}"
-                            IsEnabled="{Binding Source={x:Static viewmodel:GpScannerViewModel.IsAdministrator}}">
-                            <StackPanel Orientation="Horizontal">
-                                <Canvas Width="32" Height="32">
-                                    <Image Width="32" Height="32">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="sti.dll" />
-                                                <Binding Source="0" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                    <Image Width="32" Height="32"
-                                        Source="/TwainControl;component/Icons/delete.png" />
-                                    <Image Canvas.Bottom="0"
-                                        Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="User32.dll" />
-                                                <Binding Source="6" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                </Canvas>
-                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc UNREGSTI}" />
-                            </StackPanel>
-                        </Button>
-                        <ListBox Background="{x:Null}"
+                <GroupBox Grid.Row="4" IsEnabled="{Binding Path=SeçiliTarayıcı, Source={x:Static twainctrl:ToolBox.Scanner}, Converter={StaticResource NullableToBooleanConverter}}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <UniformGrid Columns="2" IsEnabled="{Binding Source={x:Static viewmodel:GpScannerViewModel.IsAdministrator}}">
+                            <Button twainctrl:Policy.PolicyName="RegisterSti" Command="{Binding RegisterSti, Mode=OneWay}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Canvas Width="32" Height="32">
+                                        <Image Width="32" Height="32">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="sti.dll" />
+                                                    <Binding Source="0" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <Image Canvas.Bottom="0"
+                                            Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="User32.dll" />
+                                                    <Binding Source="6" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </Canvas>
+                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc REGSTI}" />
+                                </StackPanel>
+                            </Button>
+                            <Button twainctrl:Policy.PolicyName="UnRegisterSti" Command="{Binding UnRegisterSti, Mode=OneWay}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Canvas Width="32" Height="32">
+                                        <Image Width="32" Height="32">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="sti.dll" />
+                                                    <Binding Source="0" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <Image Width="32" Height="32"
+                                            Source="/TwainControl;component/Icons/delete.png" />
+                                        <Image Canvas.Bottom="0"
+                                            Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="User32.dll" />
+                                                    <Binding Source="6" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </Canvas>
+                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc UNREGSTI}" />
+                                </StackPanel>
+                            </Button>
+                        </UniformGrid>
+                        <ListBox Grid.Column="1"
+                            Background="{x:Null}"
                             BorderBrush="{x:Null}"
                             SelectedIndex="{Binding ButtonScanMode, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                             <ListBox.Resources>
@@ -468,7 +471,7 @@
                                 Content="{twainctrl:Loc FASTSCAN}"
                                 IsEnabled="{Binding Path=AutoSave, Source={x:Static twainctrl:ToolBox.Scanner}}" />
                         </ListBox>
-                    </UniformGrid>
+                    </Grid>
                 </GroupBox>
                 <Grid Grid.Row="5">
                     <Grid.ColumnDefinitions>

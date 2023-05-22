@@ -129,7 +129,7 @@
     <value>SETTINGS</value>
   </data>
     <data name="RES" xml:space="preserve">
-    <value>RESOLUTİON</value>
+    <value>RESOLUTION</value>
   </data>
     <data name="ADF" xml:space="preserve">
     <value>ADF</value>
@@ -331,7 +331,7 @@ ALSO PDF PROTECTION CAN BE BROKEN BY 3rd PARTY APPLICATIONS.</value>
 PDF</value>
   </data>
     <data name="SELECTTWOPDF" xml:space="preserve">
-    <value>SELECT AT LEAST TWO PDF FILE</value>
+    <value>SELECT AT LEAST TWO PDF FILES</value>
   </data>
     <data name="READACTIVEPAGE" xml:space="preserve">
     <value>READ ACTIVE
@@ -374,7 +374,7 @@ PAGE</value>
     <value>Auto Save Path Changed. Old Files Will Not Be Moved To The Newly Determined Folder.</value>
   </data>
     <data name="LISTREMOVEWARN" xml:space="preserve">
-    <value>All Scanned Documents in the Top List Will Be Deleted Do you want to continue?</value>
+    <value>All Scanned Documents in the Bottom List Will Be Deleted Do you want to continue?</value>
   </data>
     <data name="DEFAULTSCANNAME" xml:space="preserve">
     <value>Scan</value>
