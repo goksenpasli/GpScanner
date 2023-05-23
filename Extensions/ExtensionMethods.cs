@@ -126,6 +126,49 @@ public static class ExtensionMethods
         return bitmap;
     }
 
+    public static WriteableBitmap ConvertBlackAndWhite(this BitmapSource bitmapSource, int threshold = 160, bool grayscale = false)
+    {
+        if (bitmapSource.Format != PixelFormats.Bgr24 && bitmapSource.Format != PixelFormats.Bgra32)
+        {
+            return (WriteableBitmap)bitmapSource;
+        }
+        WriteableBitmap writableBitmap = new(bitmapSource.PixelWidth, bitmapSource.PixelHeight, bitmapSource.DpiX, bitmapSource.DpiY, PixelFormats.Gray8, null);
+        int bytesPerPixel = (bitmapSource.Format.BitsPerPixel + 7) / 8;
+        int stride = bitmapSource.PixelWidth * bytesPerPixel;
+        byte[] pixelData = new byte[bitmapSource.PixelHeight * stride];
+        bitmapSource.CopyPixels(pixelData, stride, 0);
+        writableBitmap.Lock();
+        unsafe
+        {
+            byte* outputPtr = (byte*)writableBitmap.BackBuffer;
+
+            byte thresholdByte = (byte)Math.Min(255, Math.Max(0, threshold));
+
+            for (int y = 0; y < bitmapSource.PixelHeight; y++)
+            {
+                for (int x = 0; x < bitmapSource.PixelWidth; x++)
+                {
+                    int index = (y * stride) + (x * bytesPerPixel);
+
+                    byte blue = pixelData[index];
+                    byte green = pixelData[index + 1];
+                    byte red = pixelData[index + 2];
+
+                    byte grayValue = grayscale ? GetGrayscaleValue(red, green, blue) : pixelData[index];
+
+                    outputPtr[0] = grayValue > thresholdByte ? (byte)255 : (byte)0;
+
+                    outputPtr++;
+                }
+            }
+        }
+
+        writableBitmap.AddDirtyRect(new Int32Rect(0, 0, writableBitmap.PixelWidth, writableBitmap.PixelHeight));
+        writableBitmap.Unlock();
+        writableBitmap.Freeze();
+        return writableBitmap;
+    }
+
     public static Brush ConvertToBrush(this Color color)
     {
         System.Windows.Media.Color convertedcolor = System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B);
@@ -514,4 +557,9 @@ public static class ExtensionMethods
     private static readonly Random _random = new();
 
     private static readonly IntPtr hwnd = Process.GetCurrentProcess().Handle;
+
+    private static byte GetGrayscaleValue(byte red, byte green, byte blue)
+    {
+        return (byte)Math.Round((double)((0.299 * red) + (0.587 * green) + (0.114 * blue)));
+    }
 }

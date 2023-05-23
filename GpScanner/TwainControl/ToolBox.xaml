@@ -143,20 +143,32 @@
                                     Content="{local:Loc REVERSE}" />
                             </UniformGrid>
                         </StackPanel>
-                        <Button local:Policy.PolicyName="LoadCroppedImage" Background="Green"
-                            Command="{Binding LoadCroppedImage}">
-                            <StackPanel Orientation="Horizontal">
-                                <Image Width="32" Height="32">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="1" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                                <TextBlock VerticalAlignment="Center" Text="{local:Loc PREVIEWFILE}" />
+                        <UniformGrid Columns="2">
+                            <StackPanel>
+                                <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="255"
+                                    Minimum="1" SmallChange="1"
+                                    Style="{StaticResource Slider}"
+                                    ToolTip="{local:Loc BW}"
+                                    Value="{Binding Scanner.ToolBarBwThreshold, UpdateSourceTrigger=PropertyChanged}" />
+                                <Button local:Policy.PolicyName="InvertImage"
+                                    Command="{Binding BlackAndWhiteImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
+                                    Content="{local:Loc BW}" />
                             </StackPanel>
-                        </Button>
+                            <Button local:Policy.PolicyName="LoadCroppedImage" Background="Green"
+                                Command="{Binding LoadCroppedImage}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="32" Height="32">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="1" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc PREVIEWFILE}" />
+                                </StackPanel>
+                            </Button>
+                        </UniformGrid>
                     </UniformGrid>
                     <UniformGrid Columns="2" Rows="10">
                         <UniformGrid Columns="2">

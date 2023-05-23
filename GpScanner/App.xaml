@@ -377,12 +377,28 @@
                     PanoramaButtonVisibility="Collapsed" PrintButtonVisibility="Visible" />
             </DataTemplate>
             <DataTemplate x:Key="EypImgViewerTemplate">
-                <twain:SimpleImageViewer Width="210" Height="297"
-                    DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=StackPanel}}"
-                    ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                    OpenButtonVisibility="Collapsed" PanoramaButtonVisibility="Collapsed"
-                    PrintButtonVisibility="Collapsed"
-                    Tag="{Binding RelativeSource={RelativeSource AncestorType=twain:TwainCtrl}}"/>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock VerticalAlignment="Center">
+                        <Hyperlink BaselineAlignment="Center"
+                            Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            CommandParameter="{Binding Mode=OneWay}"
+                            TextDecorations="None">
+                            <Image Width="16" Height="16"
+                                Source="/TwainControl;component/Icons/delete.png" />
+                        </Hyperlink>
+                    </TextBlock>
+                    <twain:SimpleImageViewer Grid.Row="1"
+                        Width="210" Height="297"
+                        DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=StackPanel}}"
+                        ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                        OpenButtonVisibility="Collapsed" PanoramaButtonVisibility="Collapsed"
+                        PrintButtonVisibility="Collapsed"
+                        Tag="{Binding RelativeSource={RelativeSource AncestorType=twain:TwainCtrl}}" />
+                </Grid>
             </DataTemplate>
             <DataTemplate x:Key="ImgViewerDocumentViewerTemplateFull">
                 <Grid>
@@ -428,9 +444,25 @@
                     OsdTextVisibility="Visible" />
             </DataTemplate>
             <DataTemplate x:Key="EmptyTemplate">
-                <TextBlock Width="210"
-                    Text="{Binding Mode=OneWay}"
-                    TextWrapping="Wrap" />
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock VerticalAlignment="Center">
+                        <Hyperlink BaselineAlignment="Center"
+                            Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            CommandParameter="{Binding Mode=OneWay}"
+                            TextDecorations="None">
+                            <Image Width="16" Height="16"
+                                Source="/TwainControl;component/Icons/delete.png" />
+                        </Hyperlink>
+                    </TextBlock>
+                    <TextBlock Grid.Row="1"
+                        Width="210"
+                        Text="{Binding Mode=OneWay}"
+                        TextWrapping="Wrap" />
+                </Grid>
             </DataTemplate>
             <DataTemplate x:Key="EypSimplePdfTemplate">
                 <Grid>

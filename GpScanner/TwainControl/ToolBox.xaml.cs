@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -97,11 +96,9 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
             Scanner.CroppedImage = await Scanner.CroppedImage.RotateImageAsync(skewAngle);
         }, parameter => Scanner?.CroppedImage is not null);
 
-        InvertImage = new RelayCommand<object>(parameter =>
-        {
-            using System.Drawing.Bitmap bmp = ((BitmapSource)Scanner.CopyCroppedImage).BitmapSourceToBitmap();
-            Scanner.CroppedImage = bmp.InvertBitmap().ToBitmapImage(ImageFormat.Png);
-        }, parameter => Scanner?.CroppedImage is not null);
+        InvertImage = new RelayCommand<object>(parameter => Scanner.CroppedImage = ((BitmapSource)Scanner.CroppedImage).InvertBitmap(), parameter => Scanner?.CroppedImage is not null);
+
+        BlackAndWhiteImage = new RelayCommand<object>(parameter => Scanner.CroppedImage = ((BitmapSource)Scanner.CroppedImage).ConvertBlackAndWhite(Scanner.ToolBarBwThreshold), parameter => Scanner?.CroppedImage is not null);
 
         ApplyColorChange = new RelayCommand<object>(parameter => Scanner.CopyCroppedImage = Scanner.CroppedImage,
             parameter => Scanner?.CroppedImage is not null);
@@ -291,6 +288,8 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
 
     public ICommand ApplyColorChange { get; }
 
+    public ICommand BlackAndWhiteImage { get; }
+
     public double BorderSize {
         get => borderSize;
 
@@ -458,8 +457,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
 
         if (e.PropertyName is "Brightness" && Scanner.CopyCroppedImage is not null)
         {
-            using System.Drawing.Bitmap bmp = ((BitmapSource)Scanner.CopyCroppedImage).BitmapSourceToBitmap();
-            Scanner.CroppedImage = bmp.AdjustBrightness((int)Scanner.Brightness).ToBitmapImage(ImageFormat.Png);
+            Scanner.CroppedImage = ((BitmapSource)Scanner.CopyCroppedImage).AdjustBrightness((int)Scanner.Brightness);
         }
 
         if (e.PropertyName is "CroppedImageAngle" && Scanner.CopyCroppedImage is not null)
@@ -474,9 +472,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
         {
             Color source = (Color)ColorConverter.ConvertFromString(Scanner.SourceColor);
             Color target = (Color)ColorConverter.ConvertFromString(Scanner.TargetColor);
-            using System.Drawing.Bitmap bmp = ((BitmapSource)Scanner.CopyCroppedImage).BitmapSourceToBitmap();
-            using System.Drawing.Bitmap replacedbmp = bmp.ReplaceColor(source, target, (int)Scanner.Threshold);
-            Scanner.CroppedImage = replacedbmp.ToBitmapImage(ImageFormat.Png);
+            Scanner.CroppedImage = ((BitmapSource)Scanner.CopyCroppedImage).ReplaceColor(source, target, (int)Scanner.Threshold);
         }
 
         if (e.PropertyName is "MedianValue" && Scanner.CopyCroppedImage is not null)

@@ -5,7 +5,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,7 +15,6 @@ using TwainControl.Properties;
 using static Extensions.ExtensionMethods;
 using Brush = System.Windows.Media.Brush;
 using Color = System.Windows.Media.Color;
-using Image = System.Drawing.Image;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
 using Point = System.Windows.Point;
 using Size = System.Windows.Size;
@@ -25,66 +23,47 @@ namespace TwainControl;
 
 public static class BitmapMethods
 {
-    public static Bitmap AdjustBrightness(this Bitmap bitmap, int brightness)
+    public static WriteableBitmap AdjustBrightness(this BitmapSource bitmap, int brightness)
     {
-        BitmapData bmpData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly,
-            bitmap.PixelFormat);
-        IntPtr ptr = bmpData.Scan0;
-        int bytes = bmpData.Stride * bmpData.Height;
-        byte[] rgb = new byte[bytes];
-        Marshal.Copy(ptr, rgb, 0, bytes);
-        int step = Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
-        _ = Parallel.ForEach(SteppedRange(0, bytes, step), k =>
+        int width = bitmap.PixelWidth;
+        int height = bitmap.PixelHeight;
+        int stride = ((width * bitmap.Format.BitsPerPixel) + 7) / 8;
+        int bytesPerPixel = bitmap.Format.BitsPerPixel / 8;
+        int totalBytes = height * stride;
+
+        byte[] pixelData = new byte[totalBytes];
+        bitmap.CopyPixels(pixelData, stride, 0);
+
+        _ = Parallel.For(0, height, y =>
         {
-            int b = rgb[k];
-            int g = rgb[k + 1];
-            int r = rgb[k + 2];
-            b += brightness;
-            g += brightness;
-            r += brightness;
+            int rowOffset = y * stride;
 
-            switch (r)
+            for (int x = 0; x < width; x++)
             {
-                case > 255:
-                    r = 255;
-                    break;
+                int offset = rowOffset + (x * bytesPerPixel);
 
-                case < 0:
-                    r = 0;
-                    break;
+                for (int i = 0; i < bytesPerPixel; i++)
+                {
+                    int value = pixelData[offset + i] + brightness;
+
+                    if (value < 0)
+                    {
+                        value = 0;
+                    }
+                    else if (value > 255)
+                    {
+                        value = 255;
+                    }
+
+                    pixelData[offset + i] = (byte)value;
+                }
             }
-
-            switch (g)
-            {
-                case > 255:
-                    g = 255;
-                    break;
-
-                case < 0:
-                    g = 0;
-                    break;
-            }
-
-            switch (b)
-            {
-                case > 255:
-                    b = 255;
-                    break;
-
-                case < 0:
-                    b = 0;
-                    break;
-            }
-
-            rgb[k] = (byte)b;
-            rgb[k + 1] = (byte)g;
-            rgb[k + 2] = (byte)r;
         });
-        Marshal.Copy(rgb, 0, ptr, bytes);
-        bitmap.UnlockBits(bmpData);
-        bmpData = null;
-        rgb = null;
-        return bitmap;
+
+        WriteableBitmap adjustedBitmap = new(width, height, bitmap.DpiX, bitmap.DpiY, bitmap.Format, bitmap.Palette);
+        adjustedBitmap.WritePixels(new Int32Rect(0, 0, width, height), pixelData, stride, 0);
+        adjustedBitmap.Freeze();
+        return adjustedBitmap;
     }
 
     public static Bitmap BitmapSourceToBitmap(this BitmapSource bitmapsource)
@@ -252,55 +231,59 @@ public static class BitmapMethods
         };
     }
 
-    public static Bitmap InvertBitmap(this Bitmap bitmap)
+    public static WriteableBitmap InvertBitmap(this BitmapSource bitmap)
     {
-        BitmapData bmpData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite,
-            PixelFormat.Format24bppRgb);
-        int stride = bmpData.Stride;
-        IntPtr Scan0 = bmpData.Scan0;
-        unsafe
+        int width = bitmap.PixelWidth;
+        int height = bitmap.PixelHeight;
+        int stride = ((width * bitmap.Format.BitsPerPixel) + 7) / 8;
+        int bytesPerPixel = bitmap.Format.BitsPerPixel / 8;
+        int totalBytes = height * stride;
+
+        byte[] pixelData = new byte[totalBytes];
+        bitmap.CopyPixels(pixelData, stride, 0);
+
+        _ = Parallel.For(0, height, y =>
         {
-            byte* p = (byte*)(void*)Scan0;
-            int nOffset = stride - (bitmap.Width * 3);
-            int nWidth = bitmap.Width * 3;
-            for (int y = 0; y < bitmap.Height; ++y)
+            int offset = y * stride;
+
+            for (int x = 0; x < width * bytesPerPixel; x++)
             {
-                for (int x = 0; x < nWidth; ++x)
-                {
-                    p[0] = (byte)(255 - p[0]);
-                    ++p;
-                }
-
-                p += nOffset;
+                pixelData[offset + x] = (byte)(255 - pixelData[offset + x]);
             }
-        }
+        });
 
-        bitmap.UnlockBits(bmpData);
-        bmpData = null;
-        return bitmap;
+        WriteableBitmap invertedBitmap = new(width, height, bitmap.DpiX, bitmap.DpiY, bitmap.Format, bitmap.Palette);
+        invertedBitmap.WritePixels(new Int32Rect(0, 0, width, height), pixelData, stride, 0);
+        invertedBitmap.Freeze();
+        return invertedBitmap;
     }
 
     public static WriteableBitmap MedianFilterBitmap(this BitmapSource inputBitmap, int threshold)
     {
-        WriteableBitmap outputBitmap = new(inputBitmap);
-        int stride = inputBitmap.PixelWidth * 4;
-        byte[] inputPixels = new byte[inputBitmap.PixelHeight * stride];
+        int width = inputBitmap.PixelWidth;
+        int height = inputBitmap.PixelHeight;
+        int bytesPerPixel = (inputBitmap.Format.BitsPerPixel + 7) / 8;
+        int stride = width * bytesPerPixel;
+        WriteableBitmap outputBitmap = new(width, height, inputBitmap.DpiX, inputBitmap.DpiY, inputBitmap.Format, null);
+        byte[] inputPixels = new byte[height * stride];
         inputBitmap.CopyPixels(inputPixels, stride, 0);
+
         byte[] outputPixels = new byte[inputPixels.Length];
-        _ = Parallel.For(0, inputBitmap.PixelHeight, y =>
+        _ = Parallel.For(0, height, y =>
         {
-            _ = Parallel.For(0, inputBitmap.PixelWidth, x =>
+            for (int x = 0; x < width; x++)
             {
                 int minX = Math.Max(x - (threshold / 2), 0);
-                int maxX = Math.Min(x + (threshold / 2), inputBitmap.PixelWidth - 1);
+                int maxX = Math.Min(x + (threshold / 2), width - 1);
                 int minY = Math.Max(y - (threshold / 2), 0);
-                int maxY = Math.Min(y + (threshold / 2), inputBitmap.PixelHeight - 1);
+                int maxY = Math.Min(y + (threshold / 2), height - 1);
+
                 List<byte> values = new();
                 for (int wy = minY; wy <= maxY; wy++)
                 {
                     for (int wx = minX; wx <= maxX; wx++)
                     {
-                        int pixelIndex = (wy * stride) + (wx * 4);
+                        int pixelIndex = (wy * stride) + (wx * bytesPerPixel);
                         byte pixelValue = inputPixels[pixelIndex];
                         values.Add(pixelValue);
                     }
@@ -308,75 +291,63 @@ public static class BitmapMethods
 
                 values.Sort();
                 byte medianValue = values[values.Count / 2];
-                int outputIndex = (y * stride) + (x * 4);
+                int outputIndex = (y * stride) + (x * bytesPerPixel);
                 outputPixels[outputIndex] = medianValue;
                 outputPixels[outputIndex + 1] = medianValue;
                 outputPixels[outputIndex + 2] = medianValue;
-                outputPixels[outputIndex + 3] = 255;
-            });
+                if (bytesPerPixel == 4)
+                {
+                    outputPixels[outputIndex + 3] = 255;
+                }
+            }
         });
-        outputBitmap.WritePixels(new Int32Rect(0, 0, inputBitmap.PixelWidth, inputBitmap.PixelHeight), outputPixels,
-            stride, 0);
+
+        outputBitmap.WritePixels(new Int32Rect(0, 0, width, height), outputPixels, stride, 0);
         outputBitmap.Freeze();
         return outputBitmap;
     }
 
-    public static unsafe Bitmap ReplaceColor(this Bitmap source, Color toReplace, Color replacement, int threshold)
+    public static WriteableBitmap ReplaceColor(this BitmapSource source, Color toReplace, Color replacement, int threshold)
     {
-        const int pixelSize = 4; // 32 bits per pixel
+        int width = source.PixelWidth;
+        int height = source.PixelHeight;
+        int bytesPerPixel = (source.Format.BitsPerPixel + 7) / 8;
+        int stride = width * bytesPerPixel;
 
-        Bitmap target = new(source.Width, source.Height, PixelFormat.Format32bppArgb);
+        byte[] sourcePixels = new byte[height * stride];
+        source.CopyPixels(new Int32Rect(0, 0, width, height), sourcePixels, stride, 0);
 
-        BitmapData sourceData = null, targetData = null;
+        byte[] targetPixels = new byte[height * stride];
+        Buffer.BlockCopy(sourcePixels, 0, targetPixels, 0, sourcePixels.Length);
 
-        try
+        int pixelSize = bytesPerPixel;
+
+        _ = Parallel.For(0, height, y =>
         {
-            sourceData = source.LockBits(new Rectangle(0, 0, source.Width, source.Height), ImageLockMode.ReadOnly,
-                PixelFormat.Format32bppArgb);
+            int rowOffset = y * stride;
 
-            targetData = target.LockBits(new Rectangle(0, 0, target.Width, target.Height), ImageLockMode.WriteOnly,
-                PixelFormat.Format32bppArgb);
-
-            for (int y = 0; y < source.Height; ++y)
+            for (int x = 0; x < width; x++)
             {
-                byte* sourceRow = (byte*)sourceData.Scan0 + (y * sourceData.Stride);
-                byte* targetRow = (byte*)targetData.Scan0 + (y * targetData.Stride);
+                int offset = rowOffset + (x * pixelSize);
 
-                _ = Parallel.For(0, source.Width, x =>
+                byte b = targetPixels[offset];
+                byte g = targetPixels[offset + 1];
+                byte r = targetPixels[offset + 2];
+
+                if (Math.Abs(toReplace.R - r) <= threshold &&
+                    Math.Abs(toReplace.G - g) <= threshold &&
+                    Math.Abs(toReplace.B - b) <= threshold)
                 {
-                    byte b = sourceRow[(x * pixelSize) + 0];
-                    byte g = sourceRow[(x * pixelSize) + 1];
-                    byte r = sourceRow[(x * pixelSize) + 2];
-                    byte a = sourceRow[(x * pixelSize) + 3];
-
-                    if (toReplace.R + threshold >= r && toReplace.R - threshold <= r && toReplace.G + threshold >= g &&
-                        toReplace.G - threshold <= g && toReplace.B + threshold >= b && toReplace.B - threshold <= b)
-                    {
-                        r = replacement.R;
-                        g = replacement.G;
-                        b = replacement.B;
-                    }
-
-                    targetRow[(x * pixelSize) + 0] = b;
-                    targetRow[(x * pixelSize) + 1] = g;
-                    targetRow[(x * pixelSize) + 2] = r;
-                    targetRow[(x * pixelSize) + 3] = a;
-                });
+                    targetPixels[offset] = replacement.B;
+                    targetPixels[offset + 1] = replacement.G;
+                    targetPixels[offset + 2] = replacement.R;
+                }
             }
-        }
-        finally
-        {
-            if (sourceData != null)
-            {
-                source.UnlockBits(sourceData);
-            }
+        });
 
-            if (targetData != null)
-            {
-                target.UnlockBits(targetData);
-            }
-        }
-
+        WriteableBitmap target = new(width, height, source.DpiX, source.DpiY, source.Format, null);
+        target.WritePixels(new Int32Rect(0, 0, width, height), targetPixels, stride, 0);
+        target.Freeze();
         return target;
     }
 

@@ -782,6 +782,18 @@ public class Scanner : InpcBase, IDataErrorInfo
         }
     }
 
+    public int ToolBarBwThreshold {
+        get => toolBarBwThreshold;
+
+        set {
+            if (toolBarBwThreshold != value)
+            {
+                toolBarBwThreshold = value;
+                OnPropertyChanged(nameof(ToolBarBwThreshold));
+            }
+        }
+    }
+
     public ObservableCollection<string> UnsupportedFiles {
         get => unsupportedFiles;
 
@@ -1022,6 +1034,8 @@ public class Scanner : InpcBase, IDataErrorInfo
     private string targetColor = "Transparent";
 
     private double threshold = 1;
+
+    private int toolBarBwThreshold = 160;
 
     private ObservableCollection<string> unsupportedFiles = new();
 

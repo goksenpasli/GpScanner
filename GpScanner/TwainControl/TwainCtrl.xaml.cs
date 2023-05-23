@@ -1075,7 +1075,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     }
                 }
             },
-            parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath) &&  pdfviewer.ToplamSayfa > 1 &&
+            parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath) && pdfviewer.ToplamSayfa > 1 &&
                          SayfaBaşlangıç <= SayfaBitiş && SayfaBitiş - SayfaBaşlangıç + 1 < pdfviewer.ToplamSayfa);
 
         ExtractPdfFile = new RelayCommand<object>(async parameter =>
@@ -2656,7 +2656,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     {
         if (e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer)
         {
-            if (isRightMouseDown)
+            if (isRightMouseDown && SeçiliResim.Resim is not null)
             {
                 Point mousemovecoord = img.DesiredSize.Width < img.ActualWidth
                     ? e.GetPosition(img)
@@ -2674,13 +2674,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (sourceRect.X < SeçiliResim.Resim.PixelWidth && sourceRect.Y < SeçiliResim.Resim.PixelHeight)
                 {
                     CroppedBitmap croppedbitmap = new(SeçiliResim.Resim, sourceRect);
-                    if (croppedbitmap != null)
-                    {
-                        byte[] pixels = new byte[4];
-                        croppedbitmap.CopyPixels(pixels, 4, 0);
-                        croppedbitmap.Freeze();
-                        Scanner.SourceColor = Color.FromRgb(pixels[2], pixels[1], pixels[0]).ToString();
-                    }
+                    byte[] pixels = new byte[4];
+                    croppedbitmap.CopyPixels(pixels, 4, 0);
+                    croppedbitmap.Freeze();
+                    Scanner.SourceColor = Color.FromRgb(pixels[2], pixels[1], pixels[0]).ToString();
                 }
 
                 if (e.RightButton == MouseButtonState.Released)
@@ -2914,15 +2911,20 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
 
             int decodepixelheight = (int)(SelectedPaper.Height / Inch * Settings.Default.Çözünürlük);
-            BitmapSource evrak = Scanner?.Resimler.Count % 2 == 0
-                ?
-                EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight)
-                : Scanner?.PaperBackScan == true
+            BitmapSource evrak;
+            if (Scanner?.Resimler.Count % 2 == 0)
+            {
+                evrak = EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight);
+            }
+            else
+            {
+                evrak = Scanner?.PaperBackScan == true
                     ? EvrakOluştur(bitmap, (ColourSetting)Settings.Default.BackMode, decodepixelheight)
                     : EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight);
+            }
+
             evrak.Freeze();
-            BitmapSource önizleme = evrak.Resize(Settings.Default.PreviewWidth,
-                Settings.Default.PreviewWidth / SelectedPaper.Width * SelectedPaper.Height);
+            BitmapSource önizleme = evrak.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Width * SelectedPaper.Height);
             önizleme.Freeze();
             BitmapFrame bitmapFrame = BitmapFrame.Create(evrak, önizleme);
             bitmapFrame.Freeze();
