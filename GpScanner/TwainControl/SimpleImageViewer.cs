@@ -15,7 +15,7 @@ namespace TwainControl
                 PrintButtonVisibility = Visibility.Visible
             };
 
-            imageViewer.ImageFilePath = (e.Source as System.Windows.Controls.Image).DataContext as string;
+            imageViewer.ImageFilePath = (e.OriginalSource as System.Windows.Controls.Image).DataContext as string;
             imageViewer.DataContext = Tag;
 
             if (maximizePdfWindow == null)
