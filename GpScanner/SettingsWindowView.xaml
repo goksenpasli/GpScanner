@@ -556,17 +556,20 @@
                     </GroupBox>
                     <GroupBox Grid.Column="1">
                         <UniformGrid Rows="2">
+                            <TextBox VerticalContentAlignment="Center"
+                                IsReadOnly="True"
+                                Text="{Binding BatchFolder, Source={x:Static properties:Settings.Default}}"
+                                ToolTip="{Binding BatchFolder, Source={x:Static properties:Settings.Default}}" />
                             <UniformGrid Columns="2">
-                                <TextBox IsReadOnly="True" Text="{Binding BatchFolder, Source={x:Static properties:Settings.Default}}" />
                                 <Button twainctrl:Policy.PolicyName="SetBatchWatchFolder"
                                     Command="{Binding SetBatchWatchFolder}"
                                     Content="{twainctrl:Loc SRC}" />
+                                <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                    IsChecked="{Binding RegisterBatchWatcher, Source={x:Static properties:Settings.Default}}"
+                                    IsEnabled="{Binding BatchFolder, Source={x:Static properties:Settings.Default}, Converter={StaticResource StringNullableToBooleanConverter}}">
+                                    <TextBlock Foreground="Blue" Text="{twainctrl:Loc APPLY}" />
+                                </CheckBox>
                             </UniformGrid>
-                            <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                IsChecked="{Binding RegisterBatchWatcher, Source={x:Static properties:Settings.Default}}"
-                                IsEnabled="{Binding BatchFolder, Source={x:Static properties:Settings.Default}, Converter={StaticResource StringNullableToBooleanConverter}}">
-                                <TextBlock Foreground="Blue" Text="{twainctrl:Loc APPLY}" />
-                            </CheckBox>
                         </UniformGrid>
                     </GroupBox>
                 </Grid>

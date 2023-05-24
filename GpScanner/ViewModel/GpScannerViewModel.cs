@@ -456,8 +456,16 @@ public class GpScannerViewModel : InpcBase
             }
         }, parameter => !string.IsNullOrWhiteSpace(BatchFolder));
 
-        CancelBatchOcr = new RelayCommand<object>(parameter => ocrcancellationToken?.Cancel(),
-            parameter => BatchTxtOcrs?.Count > 0);
+        CancelBatchOcr = new RelayCommand<object>(parameter =>
+        {
+            if (MessageBox.Show($"{Translation.GetResStringValue("TRANSLATEPENDING")}\n{Translation.GetResStringValue("RESET")}",
+            Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question,
+            MessageBoxResult.No) == MessageBoxResult.Yes)
+            {
+                ocrcancellationToken?.Cancel();
+                BatchTxtOcrs = null;
+            }
+        }, parameter => BatchTxtOcrs?.Count > 0);
 
         StartTxtBatch = new RelayCommand<object>(async parameter =>
         {
@@ -1289,8 +1297,8 @@ public class GpScannerViewModel : InpcBase
                     PdfBatchRunning = true;
                     using PdfSharp.Pdf.PdfDocument pfdocument = e.FullPath.GeneratePdf(paper, scannedText);
                     pfdocument.Save($"{batchsavefolder}\\{Path.ChangeExtension(e.Name, ".pdf")}");
-                    GC.Collect();
                     PdfBatchRunning = false;
+                    GC.Collect();
                 });
             }
         };
