@@ -483,6 +483,16 @@
                             </Line>
                         </ToggleButton.Content>
                     </ToggleButton>
+                    <ToggleButton IsChecked="{Binding DrawReverseLine, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                        <ToggleButton.Content>
+                            <Line d:Stroke="Black" X1="16" X2="0"
+                                Y1="0" Y2="16">
+                                <Line.Stroke>
+                                    <SolidColorBrush Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                                </Line.Stroke>
+                            </Line>
+                        </ToggleButton.Content>
+                    </ToggleButton>
                     <ToggleButton IsChecked="{Binding DrawRect, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <ToggleButton.Content>
                             <Rectangle Width="16" Height="16"

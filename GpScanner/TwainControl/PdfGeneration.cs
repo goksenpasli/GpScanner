@@ -126,6 +126,7 @@ public static class PdfGeneration
 
                     if (scannedimage.Resim.PixelWidth < scannedimage.Resim.PixelHeight)
                     {
+                        page.Orientation = PageOrientation.Portrait;
                         if (ScannedText?.ElementAtOrDefault(i) != null)
                         {
                             WritePdfTextContent(scannedimage.Resim, ScannedText[i], page, gfx, XBrushes.Transparent);
@@ -166,6 +167,7 @@ public static class PdfGeneration
 
                     if (scannedimage.Resim.PixelWidth < scannedimage.Resim.PixelHeight)
                     {
+                        page.Orientation = PageOrientation.Portrait;
                         if (ScannedText?.ElementAtOrDefault(i) != null)
                         {
                             WritePdfTextContent(scannedimage.Resim, ScannedText[i], page, gfx, XBrushes.Transparent);
@@ -241,6 +243,7 @@ public static class PdfGeneration
                 XSize size = PageSizeConverter.ToSize(page.Size);
                 if (xImage.PixelWidth < xImage.PixelHeight)
                 {
+                    page.Orientation = PageOrientation.Portrait;
                     if (ScannedText?.ElementAtOrDefault(i) != null)
                     {
                         WritePdfTextContent(xImage, ScannedText[i], page, gfx, XBrushes.Transparent);
@@ -301,6 +304,7 @@ public static class PdfGeneration
             XSize size = PageSizeConverter.ToSize(page.Size);
             if (xImage.PixelWidth < xImage.PixelHeight)
             {
+                page.Orientation = PageOrientation.Portrait;
                 if (ScannedText != null)
                 {
                     WritePdfTextContent(xImage, ScannedText, page, gfx, XBrushes.Transparent);
@@ -383,6 +387,7 @@ public static class PdfGeneration
 
             if (bitmapframe.PixelWidth < bitmapframe.PixelHeight)
             {
+                page.Orientation = PageOrientation.Portrait;
                 if (ScannedText is not null)
                 {
                     WritePdfTextContent(bitmapframe, ScannedText, page, gfx, XBrushes.Transparent);

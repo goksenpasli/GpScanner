@@ -188,6 +188,18 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
+    public bool DrawReverseLine {
+        get => drawReverseLine;
+
+        set {
+            if (drawReverseLine != value)
+            {
+                drawReverseLine = value;
+                OnPropertyChanged(nameof(DrawReverseLine));
+            }
+        }
+    }
+
     public bool DrawRoundedRect {
         get => drawRoundedRect;
 
@@ -349,6 +361,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     private bool drawRect;
 
+    private bool drawReverseLine;
+
     private bool drawRoundedRect;
 
     private bool drawString;
@@ -391,7 +405,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             }
 
             if (Keyboard.IsKeyDown(Key.LeftShift) && (DrawAnnotation || DrawString || DrawImage || DrawEllipse ||
-                                                      DrawRect || DrawLine || DrawRoundedRect))
+                                                      DrawRect || DrawLine || DrawReverseLine || DrawRoundedRect))
             {
                 isDrawMouseDown = true;
                 mousedowncoord = e.GetPosition(scrollviewer);
@@ -401,23 +415,22 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     private void PdfImportViewerControl_MouseMove(object sender, MouseEventArgs e)
     {
-        if (e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer &&
-            DataContext is TwainCtrl twainctrl)
+        if (e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer && DataContext is TwainCtrl twainctrl)
         {
+            Point mousemovecoord = e.GetPosition(scrollviewer);
+            double x1 = Math.Min(mousedowncoord.X, mousemovecoord.X);
+            double x2 = Math.Max(mousedowncoord.X, mousemovecoord.X);
+            double y1 = Math.Min(mousedowncoord.Y, mousemovecoord.Y);
+            double y2 = Math.Max(mousedowncoord.Y, mousemovecoord.Y);
+
             if (isDrawMouseDown)
             {
-                Point mousemovecoord = e.GetPosition(scrollviewer);
                 cnv.Children.Clear();
-                _ = DrawRect || DrawLine || DrawImage || DrawRoundedRect || DrawAnnotation || DrawString
+                _ = DrawRect || DrawLine || DrawReverseLine || DrawImage || DrawRoundedRect || DrawAnnotation || DrawString
                     ? cnv.Children.Add(rectangleselectionbox)
                     : cnv.Children.Add(ellipseselectionbox);
 
-                double x1 = Math.Min(mousedowncoord.X, mousemovecoord.X);
-                double x2 = Math.Max(mousedowncoord.X, mousemovecoord.X);
-                double y1 = Math.Min(mousedowncoord.Y, mousemovecoord.Y);
-                double y2 = Math.Max(mousedowncoord.Y, mousemovecoord.Y);
-
-                if (DrawRect || DrawLine || DrawImage || DrawRoundedRect || DrawAnnotation || DrawString)
+                if (DrawRect || DrawLine || DrawReverseLine || DrawImage || DrawRoundedRect || DrawAnnotation || DrawString)
                 {
                     rectangleselectionbox.StrokeThickness = PenWidth * 2.54;
                     Canvas.SetLeft(rectangleselectionbox, x1);
@@ -443,22 +456,20 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     using XGraphics gfx = XGraphics.FromPdfPage(page);
                     string oldpdfpath = PdfViewer.PdfFilePath;
                     double coordx = 0, coordy = 0;
-                    width = Math.Abs(mousemovecoord.X - mousedowncoord.X);
-                    height = Math.Abs(mousemovecoord.Y - mousedowncoord.Y);
-                    double X, Y;
-                    X = mousedowncoord.X < mousemovecoord.X ? mousedowncoord.X : mousemovecoord.X;
-                    Y = mousedowncoord.Y < mousemovecoord.Y ? mousedowncoord.Y : mousemovecoord.Y;
-                    coordx += X + scrollviewer.HorizontalOffset;
-                    coordy += Y + scrollviewer.VerticalOffset;
+                    width = Math.Abs(x2 - x1);
+                    height = Math.Abs(y2 - y1);
+                    coordx = x1 + scrollviewer.HorizontalOffset;
+                    coordy = y1 + scrollviewer.VerticalOffset;
                     double widthmultiply = page.Width / (scrollviewer.ExtentWidth < scrollviewer.ViewportWidth
                         ? scrollviewer.ViewportWidth
                         : scrollviewer.ExtentWidth);
                     double heightmultiply = page.Height / (scrollviewer.ExtentHeight < scrollviewer.ViewportHeight
                         ? scrollviewer.ViewportHeight
                         : scrollviewer.ExtentHeight);
-                    Rect rect = new(coordx * widthmultiply, coordy * heightmultiply, width * widthmultiply,
-                        height * heightmultiply);
 
+                    Rect rect = page.Orientation == PdfSharp.PageOrientation.Portrait
+                        ? new(coordx * widthmultiply, coordy * heightmultiply, width * widthmultiply, height * heightmultiply)
+                        : new(coordy * widthmultiply, page.Height - (coordx * heightmultiply) - (width * widthmultiply), height * widthmultiply, width * heightmultiply);
                     XPen pen = new(XColor.FromKnownColor(GraphObjectColor))
                     {
                         DashStyle = PenDash,
@@ -494,9 +505,26 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
                     if (DrawLine)
                     {
-                        gfx.DrawLine(pen,
-                            new Point(mousedowncoord.X * widthmultiply, mousedowncoord.Y * heightmultiply),
-                            new Point(mousemovecoord.X * widthmultiply, mousemovecoord.Y * heightmultiply));
+                        if (page.Orientation == PdfSharp.PageOrientation.Portrait)
+                        {
+                            gfx.DrawLine(pen, rect.TopLeft, rect.BottomRight);
+                        }
+                        else
+                        {
+                            gfx.DrawLine(pen, rect.TopRight, rect.BottomLeft);
+                        }
+                    }
+
+                    if (DrawReverseLine)
+                    {
+                        if (page.Orientation == PdfSharp.PageOrientation.Portrait)
+                        {
+                            gfx.DrawLine(pen, rect.TopRight, rect.BottomLeft);
+                        }
+                        else
+                        {
+                            gfx.DrawLine(pen, rect.TopLeft, rect.BottomRight);
+                        }
                     }
 
                     if (DrawImage && DrawnImage is not null)
@@ -504,19 +532,6 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                         gfx.DrawImage(DrawnImage, rect);
                         DrawnImage = null;
                         GC.Collect();
-                    }
-
-                    if (DrawString && !string.IsNullOrWhiteSpace(Text))
-                    {
-                        XFont font = new("Times New Roman", TextSize, XFontStyle.Regular);
-                        if (GraphObjectFillColor == XKnownColor.Transparent)
-                        {
-                            gfx.DrawString(Text, font, XBrushes.Black, rect, XStringFormats.TopLeft);
-                        }
-                        else
-                        {
-                            gfx.DrawString(Text, font, brush, rect, XStringFormats.TopLeft);
-                        }
                     }
 
                     if (DrawRoundedRect)
@@ -528,6 +543,36 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                         else
                         {
                             gfx.DrawRoundedRectangle(pen, brush, rect, new Size(2, 2));
+                        }
+                    }
+
+                    if (DrawString && !string.IsNullOrWhiteSpace(Text))
+                    {
+                        XFont font = new("Times New Roman", TextSize, XFontStyle.Regular);
+
+                        if (GraphObjectFillColor == XKnownColor.Transparent)
+                        {
+                            if (page.Orientation == PdfSharp.PageOrientation.Portrait)
+                            {
+                                gfx.DrawString(Text, font, XBrushes.Black, rect, XStringFormats.TopLeft);
+                            }
+                            else
+                            {
+                                gfx.RotateAtTransform(-90, rect.Location);
+                                gfx.DrawString(Text, font, XBrushes.Black, rect, XStringFormats.TopLeft);
+                            }
+                        }
+                        else
+                        {
+                            if (page.Orientation == PdfSharp.PageOrientation.Portrait)
+                            {
+                                gfx.DrawString(Text, font, brush, rect, XStringFormats.TopLeft);
+                            }
+                            else
+                            {
+                                gfx.RotateAtTransform(-90, rect.Location);
+                                gfx.DrawString(Text, font, brush, rect, XStringFormats.TopLeft);
+                            }
                         }
                     }
 
@@ -555,16 +600,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
             if (isMouseDown)
             {
-                Point mousemovecoord = e.GetPosition(scrollviewer);
                 if (!cnv.Children.Contains(rectangleselectionbox))
                 {
                     _ = cnv.Children.Add(rectangleselectionbox);
                 }
-
-                double x1 = Math.Min(mousedowncoord.X, mousemovecoord.X);
-                double x2 = Math.Max(mousedowncoord.X, mousemovecoord.X);
-                double y1 = Math.Min(mousedowncoord.Y, mousemovecoord.Y);
-                double y2 = Math.Max(mousedowncoord.Y, mousemovecoord.Y);
 
                 Canvas.SetLeft(rectangleselectionbox, x1);
                 Canvas.SetTop(rectangleselectionbox, y1);
@@ -581,8 +620,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     captureY = mousedowncoord.Y < mousemovecoord.Y ? mousedowncoord.Y : mousemovecoord.Y;
                     BitmapFrame bitmapFrame = BitmapFrame.Create((BitmapSource)img.Source);
                     bitmapFrame.Freeze();
-                    twainctrl.ImgData =
-                        BitmapMethods.CaptureScreen(captureX, captureY, width, height, scrollviewer, bitmapFrame);
+                    twainctrl.ImgData = BitmapMethods.CaptureScreen(captureX, captureY, width, height, scrollviewer, bitmapFrame);
                     mousedowncoord.X = mousedowncoord.Y = 0;
                     isMouseDown = false;
                     Cursor = Cursors.Arrow;
