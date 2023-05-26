@@ -25,13 +25,12 @@ namespace TwainWpf.Win32
                 _bitmapInfo.SizeImage = ((((_bitmapInfo.Width * _bitmapInfo.BitCount) + 31) & ~31) >> 3) * _bitmapInfo.Height;
             }
 
-            // The following code only works on x86
             Debug.Assert(Marshal.SizeOf(typeof(IntPtr)) == 4);
 
             int pixelInfoPointer = _bitmapInfo.ClrUsed;
             if (pixelInfoPointer == 0 && _bitmapInfo.BitCount <= 8)
             {
-                pixelInfoPointer = 1 << (_bitmapInfo.BitCount); // & 31);
+                pixelInfoPointer = 1 << (_bitmapInfo.BitCount);
             }
             pixelInfoPointer = (pixelInfoPointer * 4) + _bitmapInfo.Size + _bitmapPointer.ToInt32();
 

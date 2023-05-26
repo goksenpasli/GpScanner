@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Extensions;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Media.Imaging;
-using Extensions;
 using ZXing;
 using ZXing.Common;
 using ZXing.QrCode.Internal;

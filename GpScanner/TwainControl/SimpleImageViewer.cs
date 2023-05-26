@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Extensions;
+using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
-using Extensions;
 
 namespace TwainControl
 {
@@ -15,7 +16,7 @@ namespace TwainControl
                 PrintButtonVisibility = Visibility.Visible
             };
 
-            imageViewer.ImageFilePath = (e.OriginalSource as System.Windows.Controls.Image).DataContext as string;
+            imageViewer.ImageFilePath = (e.OriginalSource as Image).DataContext as string;
             imageViewer.DataContext = Tag;
 
             if (maximizePdfWindow == null)

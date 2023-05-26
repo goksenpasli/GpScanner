@@ -3,27 +3,6 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 
-//float Brightness : register(C0);
-//float Contrast : register(C1);
-//float Red: register(C2);
-//float Green: register(C3);
-//float Blue: register(C4);
-
-//sampler2D Texture1Sampler : register(S0);
-//float4 main(float2 uv : TEXCOORD) : COLOR
-//{
-//    float4 pixelColor = tex2D(Texture1Sampler, uv);
-//    pixelColor.rgb /= pixelColor.a;
-//    pixelColor.rgb = ((pixelColor.rgb - 0.5f) * max(Contrast + 1, 0)) + 0.5f;
-//    pixelColor.rgb += Brightness;
-//    pixelColor.rgb *= pixelColor.a;
-
-//    pixelColor.r += Red;
-//    pixelColor.g += Green;
-//    pixelColor.b += Blue;
-//    return pixelColor;
-//}
-
 namespace Extensions;
 
 public class ColorEffect : ShaderEffect

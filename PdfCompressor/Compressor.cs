@@ -1,4 +1,11 @@
-﻿using System;
+﻿using Extensions;
+using Microsoft.Win32;
+using MozJpeg;
+using PdfCompressor.Properties;
+using PdfSharp;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -10,13 +17,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Extensions;
-using Microsoft.Win32;
-using MozJpeg;
-using PdfCompressor.Properties;
-using PdfSharp;
-using PdfSharp.Drawing;
-using PdfSharp.Pdf;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
 using Point = System.Drawing.Point;
 
@@ -48,7 +48,7 @@ public class Compressor : Control, INotifyPropertyChanged
             if (IsValidPdfFile(LoadedPdfPath))
             {
                 PdfiumViewer.PdfDocument loadedpdfdoc = PdfiumViewer.PdfDocument.Load(LoadedPdfPath);
-                List<BitmapImage> images = await AddToList(loadedpdfdoc, Dpi);
+                List<BitmapImage> images = await AddToListAsync(loadedpdfdoc, Dpi);
                 using PdfDocument pdfDocument = await GeneratePdf(images, UseMozJpeg, Quality, Dpi);
                 images = null;
                 SaveFileDialog saveFileDialog = new()
@@ -154,7 +154,7 @@ public class Compressor : Control, INotifyPropertyChanged
         {
             byte[] buffer = new byte[4];
             using FileStream fs = new(filename, FileMode.Open, FileAccess.Read);
-            int bytes_read = fs.Read(buffer, 0, buffer.Length);
+            fs.Read(buffer, 0, buffer.Length);
             byte[] pdfheader = { 0x25, 0x50, 0x44, 0x46 };
             return buffer?.SequenceEqual(pdfheader) == true;
         }
@@ -162,7 +162,7 @@ public class Compressor : Control, INotifyPropertyChanged
         return false;
     }
 
-    public async Task<List<BitmapImage>> AddToList(PdfiumViewer.PdfDocument pdfDoc, int dpi)
+    public async Task<List<BitmapImage>> AddToListAsync(PdfiumViewer.PdfDocument pdfDoc, int dpi)
     {
         List<BitmapImage> images = new();
         await Task.Run(() =>

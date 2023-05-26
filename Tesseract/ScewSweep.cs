@@ -13,7 +13,7 @@
 
         public const float DefaultRange = 7.0F;
 
-        public const int DefaultReduction = 4; // Sweep part; 4 is good
+        public const int DefaultReduction = 4;
 
         #endregion Constants and Fields
 

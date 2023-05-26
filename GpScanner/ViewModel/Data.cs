@@ -1,5 +1,5 @@
-﻿using System.Xml.Serialization;
-using Extensions;
+﻿using Extensions;
+using System.Xml.Serialization;
 
 namespace GpScanner.ViewModel;
 

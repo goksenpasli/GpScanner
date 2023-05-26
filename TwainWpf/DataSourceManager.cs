@@ -33,7 +33,6 @@ namespace TwainWpf
 
         public DataSourceManager(Identity applicationId, IWindowsMessageHook messageHook)
         {
-            // Make a copy of the identity in case it gets modified
             ApplicationId = applicationId.Clone();
 
             ScanningComplete += delegate { };
@@ -45,7 +44,6 @@ namespace TwainWpf
 
             _eventMessage.EventPtr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(WindowsMessage)));
 
-            // Initialise the data source manager
             TwainResult result = Twain32Native.DsmParent(
                 ApplicationId,
                 IntPtr.Zero,
@@ -56,14 +54,11 @@ namespace TwainWpf
 
             if (result == TwainResult.Success)
             {
-                //according to the 2.0 spec (2-10) if (applicationId.SupportedGroups | DataGroup.Dsm2) > 0
-                //then we should call DM_Entry(id, 0, DG_Control, DAT_Entrypoint, MSG_Get, wh)
-                //right here
                 DataSource = DataSource.GetDefault(ApplicationId, MessageHook);
             }
             else
             {
-                throw new TwainException("Error initialising DSM: " + result, result);
+                throw new TwainException($"Error initialising DSM: {result}", result);
             }
         }
 
@@ -130,7 +125,6 @@ namespace TwainWpf
             }
             finally
             {
-                // Remove the message hook if scan setup failed
                 if (!scanning)
                 {
                     EndingScan();
@@ -148,7 +142,6 @@ namespace TwainWpf
             }
             catch
             {
-                //
             }
         }
 
@@ -164,7 +157,6 @@ namespace TwainWpf
 
                 if (ApplicationId.Id != 0)
                 {
-                    // Close down the data source manager
                     _ = Twain32Native.DsmParent(
                         ApplicationId,
                         IntPtr.Zero,
@@ -183,7 +175,6 @@ namespace TwainWpf
             MessageHook.UseFilter = false;
         }
 
-        // ReSharper disable once RedundantAssignment
         protected IntPtr FilterMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             if (DataSource.SourceId.Id == 0)
@@ -266,7 +257,6 @@ namespace TwainWpf
                     pendingTransfer.Count = 0;
                     IntPtr hbitmap = IntPtr.Zero;
 
-                    // Get the image info
                     ImageInfo imageInfo = new ImageInfo();
                     TwainResult result = Twain32Native.DsImageInfo(
                         ApplicationId,
@@ -282,7 +272,6 @@ namespace TwainWpf
                         break;
                     }
 
-                    // Transfer the image from the device
                     result = Twain32Native.DsImageTransfer(
                         ApplicationId,
                         DataSource.SourceId,
@@ -297,7 +286,6 @@ namespace TwainWpf
                         break;
                     }
 
-                    // End pending transfers
                     result = Twain32Native.DsPendingTransfer(
                         ApplicationId,
                         DataSource.SourceId,
@@ -329,7 +317,6 @@ namespace TwainWpf
             }
             finally
             {
-                // Reset any pending transfers
                 _ = Twain32Native.DsPendingTransfer(
                     ApplicationId,
                     DataSource.SourceId,

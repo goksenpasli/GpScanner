@@ -1,9 +1,12 @@
-﻿using System;
+﻿using Extensions;
+using PdfiumViewer;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
 using System.Printing;
@@ -15,8 +18,6 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Extensions;
-using PdfiumViewer;
 using static Extensions.ExtensionMethods;
 using Control = System.Windows.Controls.Control;
 using DataFormats = System.Windows.DataFormats;
@@ -645,7 +646,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 }
             }
 
-            pd.PrintVisual(dv, "");
+            pd.PrintVisual(dv, string.Empty);
         }
     }
 
@@ -851,7 +852,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     private void PrintPdf(PdfDocument pdfDocument)
     {
         using System.Windows.Forms.PrintDialog form = new();
-        using System.Drawing.Printing.PrintDocument document = pdfDocument.CreatePrintDocument(PdfPrintMode.ShrinkToMargin);
+        using PrintDocument document = pdfDocument.CreatePrintDocument(PdfPrintMode.ShrinkToMargin);
         form.AllowSomePages = true;
         form.Document = document;
         form.UseEXDialog = true;

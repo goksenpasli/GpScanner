@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Extensions;
+using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
-using Extensions;
 using TwainControl;
 
 namespace GpScanner.ViewModel;

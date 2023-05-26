@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 
-// ReSharper disable PossibleNullReferenceException
-
 namespace TwainWpf
 {
     public class Twain

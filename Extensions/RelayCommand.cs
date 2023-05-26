@@ -36,7 +36,7 @@ public class RelayAsyncCommand<T> : RelayCommand<T>
             IsExecuting = true;
             Started?.Invoke(this, EventArgs.Empty);
 
-            Task task = Task.Factory.StartNew(() => _execute((T)parameter));
+            Task task = Task.Run(() => _execute((T)parameter));
             _ = task.ContinueWith(_ => OnRunWorkerCompleted(EventArgs.Empty),
                 TaskScheduler.FromCurrentSynchronizationContext());
         }

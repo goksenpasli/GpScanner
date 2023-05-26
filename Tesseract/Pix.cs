@@ -27,7 +27,6 @@ namespace Tesseract
                 string extension = Path.GetExtension(filename).ToLowerInvariant();
                 if (!imageFomatLookup.TryGetValue(extension, out actualFormat))
                 {
-                    // couldn't find matching format, perhaps there is no extension or it's not recognised, fallback to default.
                     actualFormat = ImageFormat.Default;
                 }
             }
@@ -38,7 +37,7 @@ namespace Tesseract
 
             if (LeptonicaApi.Native.pixWrite(filename, handle, actualFormat) != 0)
             {
-                throw new IOException(string.Format("Failed to save image '{0}'.", filename));
+                throw new IOException($"Failed to save image '{filename}'.");
             }
         }
 
@@ -204,14 +203,12 @@ namespace Tesseract
 
         #region Constants
 
-        // Skew Defaults
         public const int DefaultBinarySearchReduction = 2;
 
         public const int DefaultBinaryThreshold = 130;
 
         public const float Deg2Rad = (float)(Math.PI / 180.0);
 
-        // binary search part
         /// <summary>
         ///     A small angle, in radians, for threshold checking. Equal to about 0.06 degrees.
         /// </summary>
@@ -280,7 +277,7 @@ namespace Tesseract
         {
             IntPtr pixHandle = LeptonicaApi.Native.pixRead(filename);
             return pixHandle == IntPtr.Zero
-                ? throw new IOException(string.Format("Failed to load image '{0}'.", filename))
+                ? throw new IOException($"Failed to load image '{filename}'.")
                 : Create(pixHandle);
         }
 
@@ -311,8 +308,7 @@ namespace Tesseract
             IntPtr handle = LeptonicaApi.Native.pixReadFromMultipageTiff(filename, ref offset);
 
             return handle == IntPtr.Zero
-                ? throw new IOException(string.Format("Failed to load image from multi-page Tiff at offset {0}.",
-                    offset))
+                ? throw new IOException($"Failed to load image from multi-page Tiff at offset {offset}.")
                 : Create(handle);
         }
 
@@ -396,7 +392,6 @@ namespace Tesseract
 
         public override bool Equals(object obj)
         {
-            // Check for null values and compare run-time types.
             return obj != null && GetType() == obj.GetType() && Equals((Pix)obj);
         }
 
@@ -450,7 +445,6 @@ namespace Tesseract
 
             if (ppixth != IntPtr.Zero)
             {
-                // free memory held by ppixth, an array of threshold values found for each tile
                 LeptonicaApi.Native.pixDestroy(ref ppixth);
             }
 
@@ -511,8 +505,6 @@ namespace Tesseract
             int result = LeptonicaApi.Native.pixSauvolaBinarize(handle, whsize, factor, addborder ? 1 : 0,
                 out IntPtr ppixm, out IntPtr ppixsd, out IntPtr ppixth, out IntPtr ppixd);
 
-            // Free memory held by other unused pix's
-
             if (ppixm != IntPtr.Zero)
             {
                 LeptonicaApi.Native.pixDestroy(ref ppixm);
@@ -566,7 +558,6 @@ namespace Tesseract
                 LeptonicaApi.Native.pixSauvolaBinarizeTiled(handle, whsize, factor, nx, ny, out IntPtr ppixth,
                     out IntPtr ppixd);
 
-            // Free memory held by other unused pix's
             if (ppixth != IntPtr.Zero)
             {
                 LeptonicaApi.Native.pixDestroy(ref ppixth);
@@ -708,18 +699,14 @@ namespace Tesseract
             IntPtr pix4, pix5, pix6;
             IntPtr sel1, sel2;
 
-            /*  Normalize for rapidly varying background */
             pix1 = LeptonicaApi.Native.pixBackgroundNormFlex(handle, 7, 7, 1, 1, 10);
 
-            /* Remove the background */
             pix2 = LeptonicaApi.Native.pixGammaTRCMasked(new HandleRef(this, IntPtr.Zero), new HandleRef(this, pix1),
                 new HandleRef(this, IntPtr.Zero), 1.0f, 100, 175);
 
-            /* Binarize */
             pix3 = LeptonicaApi.Native.pixThresholdToBinary(new HandleRef(this, pix2), 180);
 
-            /* Remove the speckle noise up to selSize x selSize */
-            sel1 = LeptonicaApi.Native.selCreateFromString(selStr, selSize + 2, selSize + 2, "speckle" + selSize);
+            sel1 = LeptonicaApi.Native.selCreateFromString(selStr, selSize + 2, selSize + 2, $"speckle{selSize}");
             pix4 = LeptonicaApi.Native.pixHMT(new HandleRef(this, IntPtr.Zero), new HandleRef(this, pix3),
                 new HandleRef(this, sel1));
             sel2 = LeptonicaApi.Native.selCreateBrick(selSize, selSize, 0, 0, SelType.SEL_HIT);
@@ -767,34 +754,23 @@ namespace Tesseract
 
             try
             {
-                /* threshold to binary, extracting much of the lines */
                 pix1 = LeptonicaApi.Native.pixThresholdToBinary(handle, 170);
 
-                /* find the skew angle and deskew using an interpolated
-                 * rotator for anti-aliasing (to avoid jaggies) */
                 _ = LeptonicaApi.Native.pixFindSkew(new HandleRef(this, pix1), out float angle, out float conf);
                 pix2 = LeptonicaApi.Native.pixRotateAMGray(handle, Deg2Rad * angle, 255);
 
-                /* extract the lines to be removed */
                 pix3 = LeptonicaApi.Native.pixCloseGray(new HandleRef(this, pix2), 51, 1);
 
-                /* solidify the lines to be removed */
                 pix4 = LeptonicaApi.Native.pixErodeGray(new HandleRef(this, pix3), 1, 5);
 
-                /* clean the background of those lines */
                 pix5 = LeptonicaApi.Native.pixThresholdToValue(new HandleRef(this, IntPtr.Zero),
                     new HandleRef(this, pix4), 210, 255);
 
                 pix6 = LeptonicaApi.Native.pixThresholdToValue(new HandleRef(this, IntPtr.Zero),
                     new HandleRef(this, pix5), 200, 0);
 
-                /* get paint-through mask for changed pixels */
                 pix7 = LeptonicaApi.Native.pixThresholdToBinary(new HandleRef(this, pix6), 210);
 
-                /* add the inverted, cleaned lines to orig.  Because
-                 * the background was cleaned, the inversion is 0,
-                 * so when you add, it doesn't lighten those pixels.
-                 * It only lightens (to white) the pixels in the lines! */
                 _ = LeptonicaApi.Native.pixInvert(new HandleRef(this, pix6), new HandleRef(this, pix6));
                 pix8 = LeptonicaApi.Native.pixAddGray(new HandleRef(this, IntPtr.Zero), new HandleRef(this, pix2),
                     new HandleRef(this, pix6));
@@ -809,8 +785,6 @@ namespace Tesseract
             }
             finally
             {
-                // destroy any created intermediate pix's, regardless of if the process
-                // failed for any reason.
                 if (pix1 != IntPtr.Zero)
                 {
                     LeptonicaApi.Native.pixDestroy(ref pix1);
@@ -904,12 +878,10 @@ namespace Tesseract
             double rotations = 2 * angleInRadians / Math.PI;
             if (Math.Abs(rotations - Math.Floor(rotations)) < VerySmallAngle)
             {
-                // handle special case of orthoganal rotations (90, 180, 270)
                 resultHandle = LeptonicaApi.Native.pixRotateOrth(handle, (int)rotations);
             }
             else
             {
-                // handle general case
                 resultHandle = LeptonicaApi.Native.pixRotate(handle, angleInRadians, method, fillColor, width.Value,
                     height.Value);
             }

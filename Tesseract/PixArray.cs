@@ -20,7 +20,6 @@ namespace Tesseract
             _handle = new HandleRef(this, handle);
             version = 1;
 
-            // These will need to be updated whenever the PixA structure changes (i.e. a Pix is added or removed) though at the moment that isn't a problem.
             _count = LeptonicaApi.Native.pixaGetCount(_handle);
         }
 
@@ -108,7 +107,6 @@ namespace Tesseract
             /// <inheritdoc />
             object IEnumerator.Current =>
 
-                // note: Only the non-generic requires an exception check according the MSDN docs (Generic version just undefined if it's not currently pointing to an item). Go figure.
                 index == 0 || index == items.Length + 1
                     ? throw new InvalidOperationException(
                         "The enumerator is positioned either before the first item or after the last item .")
@@ -137,8 +135,6 @@ namespace Tesseract
                 return false;
             }
 
-            // IEnumerator imp
-
             /// <inheritdoc />
             void IEnumerator.Reset()
             {
@@ -148,8 +144,6 @@ namespace Tesseract
                 index = 0;
                 current = null;
             }
-
-            // Helpers
 
             /// <inheritdoc />
             private void VerifyArrayUnchanged()
@@ -185,7 +179,7 @@ namespace Tesseract
         {
             IntPtr pixaHandle = LeptonicaApi.Native.pixaReadMultipageTiff(filename);
             return pixaHandle == IntPtr.Zero
-                ? throw new IOException(string.Format("Failed to load image '{0}'.", filename))
+                ? throw new IOException($"Failed to load image '{filename}'.")
                 : new PixArray(pixaHandle);
         }
 
@@ -283,7 +277,7 @@ namespace Tesseract
 
             IntPtr pixHandle = LeptonicaApi.Native.pixaGetPix(_handle, index, accessType);
             return pixHandle == IntPtr.Zero
-                ? throw new InvalidOperationException(string.Format("Failed to retrieve pix {0}.", pixHandle))
+                ? throw new InvalidOperationException($"Failed to retrieve pix {pixHandle}.")
                 : Pix.Create(pixHandle);
         }
 

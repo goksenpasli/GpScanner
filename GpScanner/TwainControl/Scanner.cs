@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Extensions;
+using PdfSharp.Drawing;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -7,8 +9,6 @@ using System.Linq;
 using System.Security;
 using System.Windows.Media;
 using System.Windows.Shell;
-using Extensions;
-using PdfSharp.Drawing;
 using TwainControl.Properties;
 
 namespace TwainControl;

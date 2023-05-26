@@ -11,7 +11,6 @@ namespace TwainWpf.TwainNative
 
         Memory = 2,
 
-        // Value 3 was removed
         MemFile = 4
     }
 }

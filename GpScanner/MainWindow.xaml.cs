@@ -1,4 +1,8 @@
-﻿using System;
+﻿using GpScanner.Properties;
+using GpScanner.ViewModel;
+using Microsoft.Win32;
+using Ocr;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -7,10 +11,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using GpScanner.Properties;
-using GpScanner.ViewModel;
-using Microsoft.Win32;
-using Ocr;
 using TwainControl;
 using static Extensions.ExtensionMethods;
 
@@ -38,7 +38,7 @@ public partial class MainWindow : Window
         {
             try
             {
-                string temporarypdf = Path.GetTempPath() + Guid.NewGuid() + ".pdf";
+                string temporarypdf = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
                 string pdfFilePath = pdfviewer.PdfFilePath;
                 int curpage = pdfviewer.Sayfa;
                 droppedData.Resim.GeneratePdf(null, Format.Jpg, TwainCtrl.SelectedPaper).Save(temporarypdf);

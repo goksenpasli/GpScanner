@@ -218,8 +218,6 @@ namespace Tesseract
 
         public string Version =>
 
-            // Get version doesn't work for x64, might be compilation related for now just
-            // return constant so we don't crash.
             TessApi.BaseApiGetVersion();
 
         /// <summary>
@@ -329,7 +327,6 @@ namespace Tesseract
             {
                 page.Disposed -= OnPageDisposed;
 
-                // dispose the pix when the page is disposed.
                 pix.Dispose();
             }
         }
@@ -354,13 +351,10 @@ namespace Tesseract
         {
             Guard.RequireNotNullOrEmpty(nameof(language), language);
 
-            // do some minor processing on datapath to fix some common errors (this basically mirrors what tesseract does as of 3.04)
             if (!string.IsNullOrEmpty(datapath))
             {
-                // remove any excess whitespace
                 datapath = datapath.Trim();
 
-                // remove any trialing '\' or '/' characters
                 if (datapath.EndsWith("\\", StringComparison.Ordinal) ||
                     datapath.EndsWith("/", StringComparison.Ordinal))
                 {
@@ -371,7 +365,6 @@ namespace Tesseract
             if (TessApi.BaseApiInit(handle, datapath, language, (int)engineMode, configFiles ?? new List<string>(),
                     initialValues ?? new Dictionary<string, object>(), setOnlyNonDebugVariables) != 0)
             {
-                // Special case logic to handle cleaning up as init has already released the handle if it fails.
                 handle = new HandleRef(this, IntPtr.Zero);
                 GC.SuppressFinalize(this);
 

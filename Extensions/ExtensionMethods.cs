@@ -352,7 +352,6 @@ public static class ExtensionMethods
 
         if (nativeFolder == IntPtr.Zero)
         {
-            // Log error, can't find folder
             return;
         }
 
@@ -361,7 +360,6 @@ public static class ExtensionMethods
         IntPtr[] fileArray;
         if (nativeFile == IntPtr.Zero)
         {
-            // Open the folder without the file selected if we can't find the file
             fileArray = new IntPtr[0];
         }
         else
@@ -560,6 +558,6 @@ public static class ExtensionMethods
 
     private static byte GetGrayscaleValue(byte red, byte green, byte blue)
     {
-        return (byte)Math.Round((double)((0.299 * red) + (0.587 * green) + (0.114 * blue)));
+        return (byte)Math.Round(((0.299 * red) + (0.587 * green) + (0.114 * blue)));
     }
 }

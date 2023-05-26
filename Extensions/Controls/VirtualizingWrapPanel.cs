@@ -251,7 +251,6 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
 
     protected Size Extent { get; private set; } = new(0, 0);
 
-    // https://referencesource.microsoft.com/#PresentationFramework/src/Framework/System/Windows/Controls/ScrollViewer.cs,278cafe26a902287,references
     /// <summary>
     ///     Returns true if the panel is in VirtualizationMode.Recycling, otherwise false.
     /// </summary>
@@ -263,8 +262,6 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
         get {
             if (_itemContainerGenerator == null)
             {
-                /* Because of a bug in the framework the ItemContainerGenerator
-* is null until InternalChildren accessed at least one time. */
                 _ = InternalChildren;
                 _itemContainerGenerator = (IRecyclingItemContainerGenerator)base.ItemContainerGenerator;
             }
@@ -290,9 +287,6 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     /// </summary>
     protected DependencyObject ItemsOwner {
         get {
-            /* Use reflection to access internal method because the public
-* GetItemsOwner method does always return the itmes control instead
-* of the real items owner for example the group item when grouping */
             _itemsOwner ??= (DependencyObject)typeof(ItemsControl).GetMethod(
                 "GetItemsOwnerInternal",
                 BindingFlags.Static | BindingFlags.NonPublic,
@@ -311,7 +305,6 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
 
     protected Point Offset { get; private set; } = new(0, 0);
 
-    // https://referencesource.microsoft.com/#PresentationFramework/src/Framework/System/Windows/Controls/ScrollViewer.cs,278cafe26a902287,references
     protected ScrollUnit ScrollUnit => GetScrollUnit(ItemsControl);
 
     protected Size Viewport { get; private set; } = new(0, 0);
@@ -367,11 +360,9 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
 
         if (groupItem != null)
         {
-            /* If the ItemsOwner is a group item the availableSize is ifinity.
-             * Therfore the vieport size provided by the group item is used. */
             Size viewportSize = groupItem.Constraints.Viewport.Size;
             Size headerSize = groupItem.HeaderDesiredSizes.PixelSize;
-            double availableWidth = Math.Max(viewportSize.Width - 5, 0); // left margin of 5 dp
+            double availableWidth = Math.Max(viewportSize.Width - 5, 0);
             double availableHeight = Math.Max(viewportSize.Height - headerSize.Height, 0);
             availableSize = new Size(availableWidth, availableHeight);
 
@@ -394,13 +385,13 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
             Offset = groupItem.Constraints.Viewport.Location;
             Viewport = groupItem.Constraints.Viewport.Size;
             CacheLength = groupItem.Constraints.CacheLength;
-            CacheLengthUnit = groupItem.Constraints.CacheLengthUnit; // can be Item or Pixel
+            CacheLengthUnit = groupItem.Constraints.CacheLengthUnit;
         }
         else
         {
             UpdateScrollInfo(desiredSize, extent);
             CacheLength = GetCacheLength(ItemsOwner);
-            CacheLengthUnit = GetCacheLengthUnit(ItemsOwner); // can be Page, Item or Pixel
+            CacheLengthUnit = GetCacheLengthUnit(ItemsOwner);
         }
 
         ItemRange = UpdateItemRange();
@@ -442,7 +433,7 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
                 UIElement child = (UIElement)ItemContainerGenerator.GenerateNext(out bool isNewlyRealized);
                 if (child != null)
                 {
-                    if (isNewlyRealized || /*recycled*/!InternalChildren.Contains(child))
+                    if (isNewlyRealized || !InternalChildren.Contains(child))
                     {
                         if (childIndex >= InternalChildren.Count)
                         {
@@ -453,11 +444,8 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
                             InsertInternalChild(childIndex, child);
                         }
 
-                        //if (!System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
-                        //{
                         ItemContainerGenerator.PrepareItemContainer(child);
 
-                        //}
                         child.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
                     }
 
@@ -622,7 +610,6 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
         double offsetX = GetX(Offset);
         double offsetY = GetY(Offset);
 
-        /* When the items owner is a group item offset is handled by the parent panel. */
         if (ItemsOwner is IHierarchicalVirtualizationAndScrollInfo)
         {
             offsetY = 0;
@@ -646,10 +633,6 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
 
             if (GetHeight(finalSize) == 0.0)
             {
-                /* When the parent panel is grouping and a cached group item is not
-    * in the viewport it has no valid arrangement. That means that the
-    * height/width is 0. Therefore the items should not be visible so
-    * that they are not falsely displayed. */
                 child.Arrange(new Rect(0, 0, 0, 0));
             }
             else
@@ -868,7 +851,7 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
             int rowCountInViewport;
             if (ScrollUnit == ScrollUnit.Item)
             {
-                offsetRowIndex = GetY(Offset) >= 1 ? (int)GetY(Offset) - 1 : 0; // ignore header
+                offsetRowIndex = GetY(Offset) >= 1 ? (int)GetY(Offset) - 1 : 0;
                 offsetInPixel = offsetRowIndex * GetHeight(childSize);
             }
             else
@@ -1047,5 +1030,4 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
 
     #endregion Deprecated properties
 
-    /* orientation aware helper methods */
 }

@@ -373,7 +373,6 @@ namespace MozJpeg
             BitmapData bmpData = null;
             GCHandle pinnedRawJpeg = GCHandle.Alloc(rawJpeg, GCHandleType.Pinned);
 
-            //Init decompress
             if (_decompressHandle == IntPtr.Zero)
             {
                 _decompressHandle = UnsafeNativeMethods.TjInitDecompress();
@@ -385,10 +384,8 @@ namespace MozJpeg
 
             try
             {
-                //Read JPEG data and get pointer
                 IntPtr rawJpegPtr = pinnedRawJpeg.AddrOfPinnedObject();
 
-                //Decompress the JPEG header and get image info
                 if (UnsafeNativeMethods.TjDecompressHeader(_decompressHandle, rawJpegPtr, (ulong)rawJpeg.Length,
                         out int width, out int height, out TJSubsamplingOptions subsampl, out TJColorSpaces colorspace) ==
                     -1)
@@ -396,12 +393,10 @@ namespace MozJpeg
                     throw new Exception("Can`t decode JPEG. Bad o unknow format.");
                 }
 
-                //Create bitmap and lock data bits
                 bmp = new Bitmap(width, height, PixelFormat.Format24bppRgb);
                 bmpData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite,
                     PixelFormat.Format24bppRgb);
 
-                //Decompress JPEG data in Bitmap data
                 if (UnsafeNativeMethods.TjDecompress(_decompressHandle, rawJpegPtr, (ulong)rawJpeg.Length,
                         bmpData.Scan0, width, bmpData.Stride, height, (int)TJPixelFormats.TJPF_BGR, (int)flags) ==
                     -1)
@@ -409,7 +404,6 @@ namespace MozJpeg
                     throw new Exception("Can`t decode JPEG. Bad o unknow format.");
                 }
 
-                //Get pixels per inch
                 GetPixelsPerInch(ref rawJpeg, out float horizontalResolution, out float verticalResolution);
                 bmp.SetResolution(horizontalResolution, verticalResolution);
 
@@ -417,7 +411,7 @@ namespace MozJpeg
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message + "\r\nIn MozJpeg.Decode");
+                throw new Exception($"{ex.Message}\r\nIn MozJpeg.Decode");
             }
             finally
             {
@@ -426,7 +420,6 @@ namespace MozJpeg
                     bmp.UnlockBits(bmpData);
                 }
 
-                //Free memory
                 if (pinnedRawJpeg.IsAllocated)
                 {
                     pinnedRawJpeg.Free();
@@ -445,7 +438,6 @@ namespace MozJpeg
             verticalResolution = 0;
             GCHandle pinnedRawJpeg = GCHandle.Alloc(rawJpeg, GCHandleType.Pinned);
 
-            //Init decompress
             if (_decompressHandle == IntPtr.Zero)
             {
                 _decompressHandle = UnsafeNativeMethods.TjInitDecompress();
@@ -457,10 +449,8 @@ namespace MozJpeg
 
             try
             {
-                //Read JPEG data and get pointer
                 IntPtr rawJpegPtr = pinnedRawJpeg.AddrOfPinnedObject();
 
-                //Decompress the JPEG header and get image info
                 if (UnsafeNativeMethods.TjDecompressHeader(_decompressHandle, rawJpegPtr, (ulong)rawJpeg.Length,
                         out width, out height, out subsampl, out colorspace) ==
                     -1)
@@ -468,16 +458,14 @@ namespace MozJpeg
                     throw new Exception("Can`t decode JPEG. Bad o unknow format.");
                 }
 
-                //Get pixels per inch
                 GetPixelsPerInch(ref rawJpeg, out horizontalResolution, out verticalResolution);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message + "\r\nIn MozJpeg.GetInfo");
+                throw new Exception($"{ex.Message}\r\nIn MozJpeg.GetInfo");
             }
             finally
             {
-                //Free memory
                 if (pinnedRawJpeg.IsAllocated)
                 {
                     pinnedRawJpeg.Free();
@@ -493,14 +481,13 @@ namespace MozJpeg
             byte[] rawJpeg;
             try
             {
-                //Read webP file
                 rawJpeg = File.ReadAllBytes(pathFileName);
 
                 return Decode(rawJpeg);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message + "\r\nIn MozJpeg.Load");
+                throw new Exception($"{ex.Message}\r\nIn MozJpeg.Load");
             }
         }
 
@@ -561,19 +548,17 @@ namespace MozJpeg
                 byte[] rawJpeg = new byte[bufSize];
                 Marshal.Copy(buf, rawJpeg, 0, (int)bufSize);
 
-                //Remove JFIF
                 if (!jfif && rawJpeg[2] == 0xff && rawJpeg[3] == 0xe0)
                 {
-                    int jfifLength = (rawJpeg[4] << 8) | rawJpeg[5]; //Get TIFF length
+                    int jfifLength = (rawJpeg[4] << 8) | rawJpeg[5];
                     byte[] tempData = new byte[rawJpeg.Length - jfifLength - 2];
                     Array.Copy(rawJpeg, jfifLength + 2, tempData, 0,
-                        rawJpeg.Length - jfifLength - 2); //Copy all less the JFIF
-                    tempData[0] = 0xff; //Patch the header
+                        rawJpeg.Length - jfifLength - 2);
+                    tempData[0] = 0xff;
                     tempData[1] = 0xd8;
                 }
                 else
                 {
-                    //Put the rigth pixels per inch
                     if (rawJpeg[2] == 0xff && rawJpeg[3] == 0xe0)
                     {
                         rawJpeg[0x0d] = 0x01;
@@ -588,7 +573,7 @@ namespace MozJpeg
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message + "\r\nIn MozJpeg.Encode");
+                throw new Exception($"{ex.Message}\r\nIn MozJpeg.Encode");
             }
             finally
             {
@@ -607,15 +592,13 @@ namespace MozJpeg
 
             try
             {
-                //Encode in webP format
                 rawJpeg = Encode(bmp, quality);
 
-                //Write webP file
                 File.WriteAllBytes(pathFileName, rawJpeg);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message + "\r\nIn MozJpeg.Save");
+                throw new Exception($"{ex.Message}\r\nIn MozJpeg.Save");
             }
         }
 
@@ -647,27 +630,25 @@ namespace MozJpeg
             }
         }
 
-        //Get pixels per inch
         private void GetPixelsPerInch(ref byte[] rawJpeg, out float horizontalResolution, out float verticalResolution)
         {
             try
             {
-                //Default resolution
                 horizontalResolution = 96;
                 verticalResolution = 96;
 
                 int[] jfif = ClsArray.Locate(ref rawJpeg, new byte[] { 0x4a, 0x46, 0x49, 0x46, 0x00 })
-                    .ToArray(); //JFIF" in ASCII, terminated by a null byte
+                    .ToArray();
                 if (jfif.Length == 1)
                 {
                     switch (rawJpeg[jfif[0] + 7])
                     {
-                        case 0x01: // Resolution in Pixel Per Inch
+                        case 0x01:
                             horizontalResolution = (rawJpeg[jfif[0] + 8] * 256) + rawJpeg[jfif[0] + 9];
                             verticalResolution = (rawJpeg[jfif[0] + 10] * 256) + rawJpeg[jfif[0] + 11];
                             break;
 
-                        case 0x02: // Resolution in Pixel Per Centimeter
+                        case 0x02:
                             horizontalResolution = ((rawJpeg[jfif[0] + 8] * 256) + rawJpeg[jfif[0] + 9]) * 2.54F;
                             verticalResolution = ((rawJpeg[jfif[0] + 10] * 256) + rawJpeg[jfif[0] + 11]) * 2.54F;
                             break;
@@ -676,7 +657,7 @@ namespace MozJpeg
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message + "\r\nIn MozJpeg.GetPixelsPerInch");
+                throw new Exception($"{ex.Message}\r\nIn MozJpeg.GetPixelsPerInch");
             }
         }
 
@@ -706,12 +687,11 @@ namespace MozJpeg
                     list.Add(i);
                 }
 
-                //return list.Count == 0 ? Empty : list.ToArray();
                 return list;
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message + "\r\nIn clsArray.Locate");
+                throw new Exception($"{ex.Message}\r\nIn clsArray.Locate");
             }
         }
 
@@ -727,7 +707,7 @@ namespace MozJpeg
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message + "\r\nIn clsArray.IsEmptyLocate");
+                throw new Exception($"{ex.Message}\r\nIn clsArray.IsEmptyLocate");
             }
         }
 
@@ -752,7 +732,7 @@ namespace MozJpeg
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message + "\r\nIn clsArray.IsMatch");
+                throw new Exception($"{ex.Message}\r\nIn clsArray.IsMatch");
             }
         }
     }

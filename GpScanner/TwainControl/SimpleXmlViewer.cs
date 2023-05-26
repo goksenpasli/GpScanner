@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Input;
 
 namespace TwainControl
@@ -34,7 +35,7 @@ namespace TwainControl
 
         private XmlViewerControl xmlViewerControl;
 
-        private void MaximizePdfWindow_Closed(object sender, System.EventArgs e)
+        private void MaximizePdfWindow_Closed(object sender, EventArgs e)
         {
             maximizePdfWindow.Closed -= MaximizePdfWindow_Closed;
             xmlViewerControl = null;

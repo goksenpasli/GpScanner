@@ -99,7 +99,7 @@ namespace Tesseract
 
         public override string ToString()
         {
-            return string.Format("Color(0x{0:X})", ToRGBA());
+            return $"Color(0x{ToRGBA():X})";
         }
     }
 }

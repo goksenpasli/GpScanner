@@ -50,11 +50,9 @@ namespace Tesseract
                 {
                     regionOfInterest = value;
 
-                    // update region of interest in image
                     TessApi.Native.BaseApiSetRectangle(Engine.Handle, regionOfInterest.X1, regionOfInterest.Y1,
                         regionOfInterest.Width, regionOfInterest.Height);
 
-                    // request rerun of recognition on the next call that requires recognition
                     runRecognitionPhase = false;
                 }
             }
@@ -90,7 +88,6 @@ namespace Tesseract
         {
             DetectBestOrientation(out int orientationDegrees, out float orientationConfidence);
 
-            // convert angle to 0-360 (shouldn't be required but do it just o be safe).
             orientationDegrees %= 360;
             if (orientationDegrees < 0)
             {
@@ -188,7 +185,6 @@ namespace Tesseract
         /// <returns>The OCR'd output as an HOCR text string.</returns>
         public string GetHOCRText(int pageNum, bool useXHtml = false)
         {
-            //Why Not Use 'nameof(pageNum)' instead of '"pageNum"'
             Guard.Require(nameof(pageNum), pageNum >= 0, "Page number must be greater than or equal to zero (0).");
             Recognize();
             return useXHtml
@@ -344,7 +340,6 @@ namespace Tesseract
 
                 runRecognitionPhase = true;
 
-                // now write out the thresholded image if required to do so
                 if (Engine.TryGetBoolVariable("tessedit_write_images", out bool tesseditWriteImages) &&
                     tesseditWriteImages)
                 {

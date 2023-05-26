@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ocr;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
@@ -10,7 +11,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Ocr;
 using TwainControl.Properties;
 using static Extensions.ExtensionMethods;
 using Brush = System.Windows.Media.Brush;

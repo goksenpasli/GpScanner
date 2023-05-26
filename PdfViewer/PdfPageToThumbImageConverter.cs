@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Extensions;
+using System;
 using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Data;
-using Extensions;
+using System.Windows.Media.Imaging;
 
 namespace PdfViewer;
 
@@ -29,7 +30,7 @@ public sealed class PdfPageToThumbImageConverter : InpcBase, IMultiValueConverte
             {
                 return Task.Run(async () =>
                 {
-                    System.Windows.Media.Imaging.BitmapSource bitmapImage = await PdfViewer.ConvertToImgAsync(PdfFilePath, index, Dpi).ConfigureAwait(false);
+                    BitmapSource bitmapImage = await PdfViewer.ConvertToImgAsync(PdfFilePath, index, Dpi).ConfigureAwait(false);
                     bitmapImage.Freeze();
                     GC.Collect();
                     return bitmapImage;

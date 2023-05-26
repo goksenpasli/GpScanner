@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 
 namespace DvdBurner
 {
@@ -6,7 +7,7 @@ namespace DvdBurner
     {
         public static string GetName(int value)
         {
-            System.Type t = typeof(IMAPIReturnValues);
+            Type t = typeof(IMAPIReturnValues);
             foreach (FieldInfo field in t.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance))
             {
                 ulong constValue = (ulong)field.GetValue(null);
@@ -20,8 +21,6 @@ namespace DvdBurner
 
             return string.Empty;
         }
-
-        // Parsed with an IronPython, information taken from  http://msdn.microsoft.com/en-us/library/cc835244%28VS.85%29.aspx
 
         #region Constants
 

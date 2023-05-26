@@ -5,8 +5,6 @@ namespace Tesseract.Internal
 {
     internal static class Guard
     {
-        // Generic pre-condition checks
-
         /// <summary>
         ///     Ensures the given <paramref name="condition" /> is true.
         /// </summary>
@@ -60,7 +58,7 @@ namespace Tesseract.Internal
         {
             if (value == null)
             {
-                throw new ArgumentException(string.Format("Argument \"{0}\" must not be null.", value));
+                throw new ArgumentException($"Argument \"{value}\" must not be null.");
             }
         }
 
@@ -77,7 +75,7 @@ namespace Tesseract.Internal
             if (value.Length == 0)
             {
                 throw new ArgumentException(paramName,
-                    string.Format(@"The argument ""{0}"" must not be null or empty.", paramName));
+                    $@"The argument ""{paramName}"" must not be null or empty.");
             }
         }
 

@@ -2,8 +2,6 @@ using System;
 using System.Runtime.InteropServices;
 using TwainWpf.Win32;
 
-// ReSharper disable NotAccessedField.Local
-
 namespace TwainWpf.TwainNative
 {
     /// <summary>
@@ -71,7 +69,7 @@ namespace TwainWpf.TwainNative
 
             containerType = structType == typeof(CapabilityOneValue)
                 ? ContainerType.One
-                : throw new NotSupportedException("Unsupported type: " + structType);
+                : throw new NotSupportedException($"Unsupported type: {structType}");
 
             return new TwainCapability(capabilities, containerType, value);
         }

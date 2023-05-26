@@ -48,7 +48,6 @@ namespace TwainWpf
                 {
                     Capability cap = new Capability(Capabilities.Lightpath, TwainType.Int16, _applicationId, SourceId);
 
-                    //return ((Lightpath)cap.GetBasicValue().Int16Value) != Lightpath.Transmissive;
                     return true;
                 }
                 catch
@@ -63,7 +62,6 @@ namespace TwainWpf
             List<DataSource> sources = new List<DataSource>();
             Identity id = new Identity();
 
-            // Get the first source
             TwainResult result = Twain32Native.DsmIdentity(
                 applicationId,
                 IntPtr.Zero,
@@ -87,7 +85,6 @@ namespace TwainWpf
 
             while (true)
             {
-                // Get the next source
                 result = Twain32Native.DsmIdentity(
                     applicationId,
                     IntPtr.Zero,
@@ -115,7 +112,6 @@ namespace TwainWpf
         {
             Identity defaultSourceId = new Identity();
 
-            // Attempt to get information about the system default source
             TwainResult result = Twain32Native.DsmIdentity(
                 applicationId,
                 IntPtr.Zero,
@@ -127,7 +123,7 @@ namespace TwainWpf
             if (result != TwainResult.Success)
             {
                 ConditionCode status = DataSourceManager.GetConditionCode(applicationId, null);
-                throw new TwainException("Error getting information about the default source: " + result, result, status);
+                throw new TwainException($"Error getting information about the default source: {result}", result, status);
             }
 
             return new DataSource(applicationId, defaultSourceId, messageHook);
@@ -135,7 +131,6 @@ namespace TwainWpf
 
         public static DataSource GetSource(string sourceProductName, Identity applicationId, IWindowsMessageHook messageHook)
         {
-            // A little slower than it could be, if enumerating unnecessary sources is slow. But less code duplication.
             foreach (DataSource source in GetAllSources(applicationId, messageHook))
             {
                 if (sourceProductName.Equals(source.SourceId.ProductName, StringComparison.InvariantCultureIgnoreCase))
@@ -151,7 +146,6 @@ namespace TwainWpf
         {
             Identity defaultSourceId = new Identity();
 
-            // Show the TWAIN interface to allow the user to select a source
             _ = Twain32Native.DsmIdentity(
                 applicationId,
                 IntPtr.Zero,
@@ -192,7 +186,6 @@ namespace TwainWpf
                 }
                 catch
                 {
-                    // ignore this is bypass an error that if trigerd needs the whole twain classto be reinitialised
                 }
             }
         }
@@ -277,7 +270,6 @@ namespace TwainWpf
             }
             catch
             {
-                // Do nothing if the data source does not support the requested capability
             }
         }
 
@@ -296,7 +288,6 @@ namespace TwainWpf
             }
             catch
             {
-                // Do nothing if the data source does not support the requested capability
             }
         }
 
@@ -308,7 +299,6 @@ namespace TwainWpf
             }
             catch
             {
-                // Do nothing if the data source does not support the requested capability
             }
 
             // TODO: Also set this for colour scanning
@@ -321,7 +311,6 @@ namespace TwainWpf
             }
             catch
             {
-                // Do nothing if the data source does not support the requested capability
             }
         }
 
@@ -336,7 +325,6 @@ namespace TwainWpf
             }
             catch
             {
-                // Do nothing if the data source does not support the requested capability
             }
         }
 
@@ -351,7 +339,6 @@ namespace TwainWpf
             }
             catch
             {
-                // Do nothing if the data source does not support the requested capability
             }
 
             try
@@ -363,7 +350,6 @@ namespace TwainWpf
             }
             catch
             {
-                // Do nothing if the data source does not support the requested capability
             }
 
             try
@@ -375,7 +361,6 @@ namespace TwainWpf
             }
             catch
             {
-                // Do nothing if the data source does not support the requested capability
             }
         }
 
@@ -391,13 +376,11 @@ namespace TwainWpf
             }
             catch
             {
-                // Do nothing if the data source does not support the requested capability
             }
         }
 
         public void NegotiateOrientation(ScanSettings scanSettings)
         {
-            // Set orientation (default is portrait)
             try
             {
                 Capability cap = new Capability(Capabilities.Orientation, TwainType.Int16, _applicationId, SourceId);
@@ -408,7 +391,6 @@ namespace TwainWpf
             }
             catch
             {
-                // Do nothing if the data source does not support the requested capability
             }
         }
 
@@ -428,7 +410,6 @@ namespace TwainWpf
             }
             catch
             {
-                // Do nothing if the data source does not support the requested capability
             }
         }
 
@@ -447,7 +428,6 @@ namespace TwainWpf
             }
             catch
             {
-                // Do nothing if the data source does not support the requested capability
             }
         }
 
@@ -464,7 +444,6 @@ namespace TwainWpf
             }
             catch
             {
-                // Do nothing if the data source does not support the requested capability
             }
         }
 
@@ -480,7 +459,6 @@ namespace TwainWpf
             }
             catch
             {
-                // Do nothing if the data source does not support the requested capability
             }
         }
 
@@ -493,7 +471,6 @@ namespace TwainWpf
                 throw new FeederEmptyException();
             }
 
-            // Set whether or not to show progress window
             NegotiateProgressIndicator(settings);
             NegotiateTransferCount(settings);
             NegotiateFeeder(settings);
@@ -518,7 +495,6 @@ namespace TwainWpf
                 NegotiateResolution(settings);
             }
 
-            // Configure automatic rotation and image border detection
             if (settings.Rotation != null)
             {
                 NegotiateAutomaticRotate(settings);
@@ -580,7 +556,6 @@ namespace TwainWpf
             }
             catch
             {
-                // Do nothing if the data source does not support the requested capability
             }
 
             ImageLayout imageLayout = new ImageLayout

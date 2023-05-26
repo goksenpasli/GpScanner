@@ -1,4 +1,13 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using MozJpeg;
+using Ocr;
+using PdfSharp;
+using PdfSharp.Drawing;
+using PdfSharp.Drawing.Layout;
+using PdfSharp.Pdf;
+using PdfSharp.Pdf.IO;
+using PdfSharp.Pdf.Security;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing.Imaging;
@@ -8,14 +17,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Shell;
-using Microsoft.Win32;
-using MozJpeg;
-using Ocr;
-using PdfSharp;
-using PdfSharp.Drawing;
-using PdfSharp.Drawing.Layout;
-using PdfSharp.Pdf;
-using PdfSharp.Pdf.IO;
 using TwainControl.Properties;
 using static Extensions.ExtensionMethods;
 
@@ -542,7 +543,7 @@ public static class PdfGeneration
 
     private static void ApplyPdfSecurity(this PdfDocument document)
     {
-        PdfSharp.Pdf.Security.PdfSecuritySettings securitySettings = document.SecuritySettings;
+        PdfSecuritySettings securitySettings = document.SecuritySettings;
         if (Scanner.PdfPassword is not null)
         {
             securitySettings.OwnerPassword = Scanner.PdfPassword.ToString();

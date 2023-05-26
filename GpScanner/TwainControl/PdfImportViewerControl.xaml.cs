@@ -1,4 +1,11 @@
-﻿using System;
+﻿using Extensions;
+using Microsoft.Win32;
+using PdfSharp;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
+using PdfSharp.Pdf.Annotations;
+using PdfSharp.Pdf.IO;
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -8,12 +15,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Extensions;
-using Microsoft.Win32;
-using PdfSharp.Drawing;
-using PdfSharp.Pdf;
-using PdfSharp.Pdf.Annotations;
-using PdfSharp.Pdf.IO;
 using TwainControl.Properties;
 
 namespace TwainControl;
@@ -340,7 +341,21 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         StrokeDashArray = new DoubleCollection(new double[] { 1 })
     };
 
+    private static readonly Line linebox = new()
+    {
+        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
+        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
+        StrokeDashArray = new DoubleCollection(new double[] { 1 })
+    };
+
     private static readonly Rectangle rectangleselectionbox = new()
+    {
+        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
+        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
+        StrokeDashArray = new DoubleCollection(new double[] { 1 })
+    };
+
+    private static readonly Line reverselinebox = new()
     {
         Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
         Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
@@ -425,21 +440,48 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
             if (isDrawMouseDown)
             {
-                cnv.Children.Clear();
-                _ = DrawRect || DrawLine || DrawReverseLine || DrawImage || DrawRoundedRect || DrawAnnotation || DrawString
-                    ? cnv.Children.Add(rectangleselectionbox)
-                    : cnv.Children.Add(ellipseselectionbox);
-
-                if (DrawRect || DrawLine || DrawReverseLine || DrawImage || DrawRoundedRect || DrawAnnotation || DrawString)
+                if (DrawRect || DrawImage || DrawRoundedRect || DrawAnnotation || DrawString)
                 {
+                    if (!cnv.Children.Contains(rectangleselectionbox))
+                    {
+                        _ = cnv.Children.Add(rectangleselectionbox);
+                    }
                     rectangleselectionbox.StrokeThickness = PenWidth * 2.54;
                     Canvas.SetLeft(rectangleselectionbox, x1);
                     Canvas.SetTop(rectangleselectionbox, y1);
                     rectangleselectionbox.Width = x2 - x1;
                     rectangleselectionbox.Height = y2 - y1;
                 }
-                else
+                if (DrawLine)
                 {
+                    if (!cnv.Children.Contains(linebox))
+                    {
+                        _ = cnv.Children.Add(linebox);
+                    }
+                    linebox.StrokeThickness = PenWidth * 2.54;
+                    linebox.X1 = x1;
+                    linebox.Y1 = y1;
+                    linebox.X2 = x2;
+                    linebox.Y2 = y2;
+                }
+                if (DrawReverseLine)
+                {
+                    if (!cnv.Children.Contains(reverselinebox))
+                    {
+                        _ = cnv.Children.Add(reverselinebox);
+                    }
+                    reverselinebox.StrokeThickness = PenWidth * 2.54;
+                    reverselinebox.X1 = x2;
+                    reverselinebox.Y1 = y1;
+                    reverselinebox.X2 = x1;
+                    reverselinebox.Y2 = y2;
+                }
+                if (DrawEllipse)
+                {
+                    if (!cnv.Children.Contains(ellipseselectionbox))
+                    {
+                        _ = cnv.Children.Add(ellipseselectionbox);
+                    }
                     ellipseselectionbox.StrokeThickness = PenWidth * 2.54;
                     Canvas.SetLeft(ellipseselectionbox, x1);
                     Canvas.SetTop(ellipseselectionbox, y1);
@@ -449,12 +491,12 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
                 if (e.LeftButton == MouseButtonState.Released)
                 {
-                    cnv.Children?.Remove(rectangleselectionbox);
-                    cnv.Children?.Remove(ellipseselectionbox);
+                    cnv.Children?.Clear();
+
                     using PdfDocument reader = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.Modify);
                     PdfPage page = reader.Pages[PdfViewer.Sayfa - 1];
                     using XGraphics gfx = XGraphics.FromPdfPage(page);
-                    string oldpdfpath = PdfViewer.PdfFilePath;
+
                     double coordx = 0, coordy = 0;
                     width = Math.Abs(x2 - x1);
                     height = Math.Abs(y2 - y1);
@@ -467,9 +509,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                         ? scrollviewer.ViewportHeight
                         : scrollviewer.ExtentHeight);
 
-                    Rect rect = page.Orientation == PdfSharp.PageOrientation.Portrait
+                    Rect rect = page.Orientation == PageOrientation.Portrait
                         ? new(coordx * widthmultiply, coordy * heightmultiply, width * widthmultiply, height * heightmultiply)
                         : new(coordy * widthmultiply, page.Height - (coordx * heightmultiply) - (width * widthmultiply), height * widthmultiply, width * heightmultiply);
+
                     XPen pen = new(XColor.FromKnownColor(GraphObjectColor))
                     {
                         DashStyle = PenDash,
@@ -505,7 +548,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
                     if (DrawLine)
                     {
-                        if (page.Orientation == PdfSharp.PageOrientation.Portrait)
+                        if (page.Orientation == PageOrientation.Portrait)
                         {
                             gfx.DrawLine(pen, rect.TopLeft, rect.BottomRight);
                         }
@@ -517,7 +560,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
                     if (DrawReverseLine)
                     {
-                        if (page.Orientation == PdfSharp.PageOrientation.Portrait)
+                        if (page.Orientation == PageOrientation.Portrait)
                         {
                             gfx.DrawLine(pen, rect.TopRight, rect.BottomLeft);
                         }
@@ -552,7 +595,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
                         if (GraphObjectFillColor == XKnownColor.Transparent)
                         {
-                            if (page.Orientation == PdfSharp.PageOrientation.Portrait)
+                            if (page.Orientation == PageOrientation.Portrait)
                             {
                                 gfx.DrawString(Text, font, XBrushes.Black, rect, XStringFormats.TopLeft);
                             }
@@ -564,7 +607,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                         }
                         else
                         {
-                            if (page.Orientation == PdfSharp.PageOrientation.Portrait)
+                            if (page.Orientation == PageOrientation.Portrait)
                             {
                                 gfx.DrawString(Text, font, brush, rect, XStringFormats.TopLeft);
                             }
@@ -588,10 +631,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                         page.Annotations.Add(pdftextannotaiton);
                     }
 
+                    string oldpdfpath = PdfViewer.PdfFilePath;
                     reader.Save(PdfViewer.PdfFilePath);
                     PdfViewer.PdfFilePath = null;
                     PdfViewer.PdfFilePath = oldpdfpath;
-
                     mousedowncoord.X = mousedowncoord.Y = 0;
                     isDrawMouseDown = false;
                     Cursor = Cursors.Arrow;
@@ -604,7 +647,6 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 {
                     _ = cnv.Children.Add(rectangleselectionbox);
                 }
-
                 Canvas.SetLeft(rectangleselectionbox, x1);
                 Canvas.SetTop(rectangleselectionbox, y1);
                 rectangleselectionbox.Width = x2 - x1;
@@ -612,7 +654,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
                 if (e.LeftButton == MouseButtonState.Released)
                 {
-                    cnv.Children.Remove(rectangleselectionbox);
+                    cnv.Children?.Clear();
                     width = Math.Abs(mousemovecoord.X - mousedowncoord.X);
                     height = Math.Abs(mousemovecoord.Y - mousedowncoord.Y);
                     double captureX, captureY;

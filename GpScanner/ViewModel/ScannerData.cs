@@ -1,6 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using Extensions;
+using System.Collections.ObjectModel;
 using System.Xml.Serialization;
-using Extensions;
 
 namespace GpScanner.ViewModel;
 

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Extensions;
+using Ocr;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -7,8 +9,6 @@ using System.Linq;
 using System.Net;
 using System.Windows;
 using System.Windows.Input;
-using Extensions;
-using Ocr;
 using InpcBase = Extensions.InpcBase;
 
 namespace GpScanner.ViewModel;
@@ -18,7 +18,7 @@ public class TesseractViewModel : InpcBase
     public TesseractViewModel()
     {
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-        Tessdatafolder = Path.GetDirectoryName(Process.GetCurrentProcess()?.MainModule?.FileName) + @"\tessdata";
+        Tessdatafolder = $@"{Path.GetDirectoryName(Process.GetCurrentProcess()?.MainModule?.FileName)}\tessdata";
         TesseractFiles = GetTesseractFiles(Tessdatafolder);
 
         OcrDatas = TesseractDownloadData();

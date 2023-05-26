@@ -111,15 +111,15 @@ public static class DragDropExtension
                 double verticalPos = e.GetPosition(container).Y;
                 const double offset = 20;
 
-                if (verticalPos < tolerance) // Top of visible list?
+                if (verticalPos < tolerance)
                 {
-                    scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - offset); //Scroll up.
+                    scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - offset);
                     return;
                 }
 
-                if (verticalPos > container.ActualHeight - tolerance) //Bottom of visible list?
+                if (verticalPos > container.ActualHeight - tolerance)
                 {
-                    scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset + offset); //Scroll down.
+                    scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset + offset);
                 }
             }
         }

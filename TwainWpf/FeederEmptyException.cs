@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.Serialization;
+using TwainWpf.TwainNative;
 
 namespace TwainWpf
 {
@@ -20,11 +21,11 @@ namespace TwainWpf
         {
         }
 
-        public FeederEmptyException(string message, TwainNative.TwainResult returnCode) : base(message, returnCode)
+        public FeederEmptyException(string message, TwainResult returnCode) : base(message, returnCode)
         {
         }
 
-        public FeederEmptyException(string message, TwainNative.TwainResult returnCode, TwainNative.ConditionCode conditionCode) : base(message, returnCode, conditionCode)
+        public FeederEmptyException(string message, TwainResult returnCode, ConditionCode conditionCode) : base(message, returnCode, conditionCode)
         {
         }
 

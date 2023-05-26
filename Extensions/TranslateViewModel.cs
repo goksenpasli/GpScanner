@@ -21,7 +21,7 @@ public class TranslateViewModel : InpcBase
             string page = wc.DownloadString(url);
             JavaScriptSerializer JSS = new();
             object parsedObj = JSS.DeserializeObject(page);
-            string çeviri = "";
+            string çeviri = string.Empty;
             object[] data = parsedObj as object[];
             object firstnode = data.FirstOrDefault();
             for (int i = 0; i < (firstnode as object[])?.Length; i++)

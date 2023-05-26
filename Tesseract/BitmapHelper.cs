@@ -24,8 +24,8 @@
         {
             byte* wordPtr = data + (index >> 3);
             *wordPtr &= (byte)~(0x80 >>
-                                (index & 7)); // clear bit, note first pixel in the byte is most significant (1000 0000)
-            *wordPtr |= (byte)((value & 1) << (7 - (index & 7))); // set bit, if value is 1
+                                (index & 7));
+            *wordPtr |= (byte)((value & 1) << (7 - (index & 7)));
         }
 
 #if Net45 || NETSTANDARD
@@ -46,8 +46,8 @@
             byte* wordPtr = data + (index >> 1);
             *wordPtr &= (byte)~(0xF0 >>
                                 (4 * (index &
-                                      1))); // clears qbit located at index, note like bit the qbit corresponding to the first pixel is the most significant (0xF0)
-            *wordPtr |= (byte)((value & 0x0F) << (4 - (4 * (index & 1)))); // applys qbit to n
+                                      1)));
+            *wordPtr |= (byte)((value & 0x0F) << (4 - (4 * (index & 1))));
         }
 
 #if Net45 || NETSTANDARD
@@ -154,7 +154,7 @@
             return (((red << 3) | (red >> 2)) << 24) |
                    (((green << 3) | (green >> 2)) << 16) |
                    (((blue << 3) | (blue >> 2)) << 8) |
-                   ((alpha << 8) - alpha); // effectively alpha * 255, only works as alpha will be either 0 or 1
+                   ((alpha << 8) - alpha);
         }
 
 #if Net45 || NETSTANDARD

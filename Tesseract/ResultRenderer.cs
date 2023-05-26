@@ -83,7 +83,6 @@ namespace Tesseract
         {
             base.Dispose(disposing);
 
-            // dispose of font
             if (_fontDirectoryHandle != IntPtr.Zero)
             {
                 Marshal.FreeHGlobal(_fontDirectoryHandle);
@@ -123,8 +122,6 @@ namespace Tesseract
             VerifyNotDisposed();
 
             // TODO: Force page to do a recognise run to ensure the underlying base api is full of state note if
-            // your implementing your own renderer you won't need to do this since all the page operations will do it
-            // implicitly if required. This is why I've only made Page.Recognise internal not public.
             page.Recognize();
 
             return TessApi.Native.ResultRendererAddImage(Handle, page.Engine.Handle) != 0;
@@ -146,10 +143,9 @@ namespace Tesseract
             IntPtr titlePtr = Marshal.StringToHGlobalAnsi(title);
             if (TessApi.Native.ResultRendererBeginDocument(Handle, titlePtr) == 0)
             {
-                // release the pointer first before throwing an error.
                 Marshal.FreeHGlobal(titlePtr);
 
-                throw new InvalidOperationException(string.Format("Failed to begin document \"{0}\".", title));
+                throw new InvalidOperationException($"Failed to begin document \"{title}\".");
             }
 
             _currentDocumentHandle = new EndDocumentOnDispose(this, titlePtr);
@@ -169,7 +165,6 @@ namespace Tesseract
             {
                 if (disposing)
                 {
-                    // Ensure that if the renderer has an active document when disposed it too is disposed off.
                     if (_currentDocumentHandle != null)
                     {
                         _currentDocumentHandle.Dispose();
@@ -223,14 +218,12 @@ namespace Tesseract
                         Guard.Verify(_renderer._currentDocumentHandle == this,
                             "Expected the Result Render's active document to be this document.");
 
-                        // End the renderer
                         _ = TessApi.Native.ResultRendererEndDocument(_renderer._handle);
                         _renderer._currentDocumentHandle = null;
                     }
                 }
                 finally
                 {
-                    // free title ptr
                     if (_titlePtr != IntPtr.Zero)
                     {
                         Marshal.FreeHGlobal(_titlePtr);

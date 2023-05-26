@@ -1,8 +1,4 @@
-﻿//  Copyright (c) 2014 Andrey Akinshin
-//  Project URL: https://github.com/AndreyAkinshin/InteropDotNet
-//  Distributed under the MIT License: http://opensource.org/licenses/MIT
-
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace Tesseract.Internal.InteropDotNet
@@ -12,7 +8,7 @@ namespace Tesseract.Internal.InteropDotNet
         public string FixUpLibraryName(string fileName)
         {
             return !string.IsNullOrEmpty(fileName) && !fileName.EndsWith(".dll", StringComparison.OrdinalIgnoreCase)
-                ? fileName + ".dll"
+                ? $"{fileName}.dll"
                 : fileName;
         }
 
@@ -58,9 +54,7 @@ namespace Tesseract.Internal.InteropDotNet
                 }
                 else
                 {
-                    throw new LoadLibraryException(string.Format(
-                        "Failed to load native function \"{0}\" from library with handle  {1}.",
-                        functionName, libraryHandle));
+                    throw new LoadLibraryException($"Failed to load native function \"{functionName}\" from library with handle  {libraryHandle}.");
                 }
 
                 return functionHandle;

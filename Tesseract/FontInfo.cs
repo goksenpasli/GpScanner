@@ -1,9 +1,5 @@
 namespace Tesseract
 {
-    // The .NET equivalent of the ccstruct/fontinfo.h
-    // FontInfo struct. It's missing spacing info
-    // since we don't have any way of getting it (and
-    // it's probably not all that useful anyway)
     public class FontInfo
     {
         public int Id { get; }

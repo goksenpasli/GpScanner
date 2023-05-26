@@ -1,4 +1,11 @@
-﻿using System;
+﻿using Extensions;
+using Extensions.Controls;
+using Ocr;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
+using PdfSharp.Pdf.Annotations;
+using PdfSharp.Pdf.IO;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -20,16 +27,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shell;
 using System.Windows.Threading;
+using System.Windows.Xps;
 using System.Windows.Xps.Packaging;
 using System.Xml.Linq;
 using System.Xml.Serialization;
-using Extensions;
-using Extensions.Controls;
-using Ocr;
-using PdfSharp.Drawing;
-using PdfSharp.Pdf;
-using PdfSharp.Pdf.Annotations;
-using PdfSharp.Pdf.IO;
 using TwainControl.Properties;
 using TwainWpf;
 using TwainWpf.TwainNative;
@@ -468,7 +469,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 _ = Settings.Default.Profile.Add(profile);
                 Settings.Default.Save();
                 Settings.Default.Reload();
-                Scanner.ProfileName = "";
+                Scanner.ProfileName = string.Empty;
             },
             parameter => !string.IsNullOrWhiteSpace(Scanner?.ProfileName) &&
                          !Settings.Default.Profile.Cast<string>().Select(z => z.Split('|')[0])
@@ -886,12 +887,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
                 using PdfDocument reader = PdfReader.Open(filepath, PdfDocumentOpenMode.ReadOnly);
                 StringBuilder stringBuilder = new();
-                _ = stringBuilder.AppendLine(filepath).AppendFormat("PDF {0:#.#}", reader.Version / 10d).AppendLine()
+                _ = stringBuilder.AppendLine(filepath).Append($"PDF {reader.Version / 10d:#.#}").AppendLine()
                     .AppendLine(reader.Info.Title).Append(reader.PageCount).AppendLine()
                     .AppendLine(reader.Info.Producer).AppendLine(reader.Info.Keywords).AppendLine(reader.Info.Creator)
                     .AppendLine(reader.Info.Author).Append(reader.Info.CreationDate).AppendLine()
                     .Append(reader.Info.ModificationDate).AppendLine()
-                    .AppendFormat("{0:##.##} MB", reader.FileSize / 1048576d).AppendLine();
+                    .Append($"{reader.FileSize / 1048576d:##.##} MB").AppendLine();
                 _ = MessageBox.Show(stringBuilder.ToString(), Application.Current?.MainWindow?.Title);
             }
         }, parameter => parameter is string filepath && File.Exists(filepath));
@@ -917,7 +918,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
                 if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
                 {
-                    string savefilename = Path.GetTempPath() + Guid.NewGuid() + ".pdf";
+                    string savefilename = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
                     await SaveFile(pdfviewer.PdfFilePath, savefilename, pdfviewer.Sayfa, pdfviewer.ToplamSayfa);
                     AddFiles(new[] { savefilename }, DecodeHeight);
                     GC.Collect();
@@ -1250,6 +1251,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
+    public ICommand ClearPdfHistory { get; }
+
     public ICommand ClosePdfFile { get; }
 
     public List<Tuple<string, int, double, bool, double>> CompressionProfiles => new()
@@ -1297,8 +1300,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
         }
     }
-
-    public ICommand ClearPdfHistory { get; }
 
     public ICommand CycleSelectedDocuments { get; }
 
@@ -1794,7 +1795,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         {
             List<string> data = new();
             ZipArchiveEntry üstveri = archive.Entries.FirstOrDefault(entry => entry.Name == "NihaiOzet.xml");
-            string source = Path.GetTempPath() + Guid.NewGuid() + ".xml";
+            string source = $"{Path.GetTempPath()}{Guid.NewGuid()}.xml";
             üstveri?.ExtractToFile(source, true);
             XDocument xdoc = XDocument.Load(source);
             if (xdoc != null)
@@ -1806,7 +1807,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     if (zipArchiveEntry != null)
                     {
                         string destinationFileName =
-                            Path.GetTempPath() + Guid.NewGuid() + Path.GetExtension(file.ToLower());
+                            $"{Path.GetTempPath()}{Guid.NewGuid()}{Path.GetExtension(file.ToLower())}";
                         zipArchiveEntry.ExtractToFile(destinationFileName, true);
                         data.Add(destinationFileName);
                     }
@@ -2017,7 +2018,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     .OcrAsyc(scanner.SelectedTtsLanguage);
                 File.WriteAllText(
                     Path.Combine(Path.GetDirectoryName(fileName),
-                        Path.GetFileNameWithoutExtension(fileName) + i + ".txt"),
+                        $"{Path.GetFileNameWithoutExtension(fileName)}{i}.txt"),
                     string.Join(" ", ocrtext.Select(z => z.Text)));
             }
         }
@@ -2032,7 +2033,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             image.Source = scannedImage;
             image.EndInit();
             using XpsDocument xpsd = new(filename, FileAccess.Write);
-            System.Windows.Xps.XpsDocumentWriter xw = XpsDocument.CreateXpsDocumentWriter(xpsd);
+            XpsDocumentWriter xw = XpsDocument.CreateXpsDocumentWriter(xpsd);
             xw.Write(image);
             image = null;
         });
@@ -2225,14 +2226,14 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     {
         ZipArchive archive = ZipFile.Open(filename, ZipArchiveMode.Read);
         ZipArchiveEntry üstveri = archive.Entries.FirstOrDefault(entry => entry.Name == "content.xml");
-        string source = Path.GetTempPath() + Guid.NewGuid() + ".xml";
-        string xpssource = Path.GetTempPath() + Guid.NewGuid() + ".xps";
+        string source = $"{Path.GetTempPath()}{Guid.NewGuid()}.xml";
+        string xpssource = $"{Path.GetTempPath()}{Guid.NewGuid()}.xps";
         üstveri?.ExtractToFile(source, true);
         Template xmldata = DeSerialize<Template>(source);
         IDocumentPaginatorSource flowDocument = UdfParser.UdfParser.RenderDocument(xmldata);
         using (XpsDocument xpsDocument = new(xpssource, FileAccess.ReadWrite))
         {
-            System.Windows.Xps.XpsDocumentWriter xw = XpsDocument.CreateXpsDocumentWriter(xpsDocument);
+            XpsDocumentWriter xw = XpsDocument.CreateXpsDocumentWriter(xpsDocument);
             xw.Write(flowDocument.DocumentPaginator);
         }
 
@@ -2663,14 +2664,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     : e.GetPosition(scrollviewer);
                 mousemovecoord.X += scrollviewer.HorizontalOffset;
                 mousemovecoord.Y += scrollviewer.VerticalOffset;
-                double widthmultiply = SeçiliResim.Resim.PixelWidth /
-                                    (img.DesiredSize.Width < img.ActualWidth ? img.ActualWidth : img.DesiredSize.Width);
-                double heightmultiply = SeçiliResim.Resim.PixelHeight / (img.DesiredSize.Height < img.ActualHeight
-                    ? img.ActualHeight
-                    : img.DesiredSize.Height);
+                double widthmultiply = SeçiliResim.Resim.PixelWidth / (img.DesiredSize.Width < img.ActualWidth ? img.ActualWidth : img.DesiredSize.Width);
+                double heightmultiply = SeçiliResim.Resim.PixelHeight / (img.DesiredSize.Height < img.ActualHeight ? img.ActualHeight : img.DesiredSize.Height);
 
-                Int32Rect sourceRect = new((int)(mousemovecoord.X * widthmultiply),
-                    (int)(mousemovecoord.Y * heightmultiply), 1, 1);
+                Int32Rect sourceRect = new((int)(mousemovecoord.X * widthmultiply), (int)(mousemovecoord.Y * heightmultiply), 1, 1);
                 if (sourceRect.X < SeçiliResim.Resim.PixelWidth && sourceRect.Y < SeçiliResim.Resim.PixelHeight)
                 {
                     CroppedBitmap croppedbitmap = new(SeçiliResim.Resim, sourceRect);
@@ -2911,18 +2908,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
 
             int decodepixelheight = (int)(SelectedPaper.Height / Inch * Settings.Default.Çözünürlük);
-            BitmapSource evrak;
-            if (Scanner?.Resimler.Count % 2 == 0)
-            {
-                evrak = EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight);
-            }
-            else
-            {
-                evrak = Scanner?.PaperBackScan == true
+            BitmapSource evrak = Scanner?.Resimler.Count % 2 == 0
+                ? EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight)
+                : Scanner?.PaperBackScan == true
                     ? EvrakOluştur(bitmap, (ColourSetting)Settings.Default.BackMode, decodepixelheight)
                     : EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight);
-            }
-
             evrak.Freeze();
             BitmapSource önizleme = evrak.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Width * SelectedPaper.Height);
             önizleme.Freeze();

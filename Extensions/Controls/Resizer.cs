@@ -1,21 +1,4 @@
-﻿/****************************** Module Header ******************************\
-Module Name:  Resizer.cs
-Project:      RuntimeResizablePanel
-Copyright (c) Microsoft Corporation.
-
-Resizer is a class to represent the Thumb used for resizing.
-This helps us to object for each Thumb direction and resize only sides where the change is made.
-
-This source is subject to the Microsoft Public License.
-See http://www.microsoft.com/opensource/licenses.mspx#Ms-PL.
-All other rights reserved.
-
-THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
-EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
-\***************************************************************************/
-
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;

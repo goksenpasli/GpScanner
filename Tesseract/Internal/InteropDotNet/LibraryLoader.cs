@@ -1,8 +1,4 @@
-﻿//  Copyright (c) 2014 Andrey Akinshin
-//  Project URL: https://github.com/AndreyAkinshin/InteropDotNet
-//  Distributed under the MIT License: http://opensource.org/licenses/MIT
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -38,7 +34,7 @@ namespace Tesseract.Internal.InteropDotNet
         {
             IntPtr procAddress = logic.GetProcAddress(dllHandle, name);
             return procAddress == IntPtr.Zero
-                ? throw new LoadLibraryException(string.Format("Failed to load proc {0}", name))
+                ? throw new LoadLibraryException($"Failed to load proc {name}")
                 : procAddress;
         }
 
@@ -63,7 +59,7 @@ namespace Tesseract.Internal.InteropDotNet
                         platformName = SystemManager.GetPlatformName();
                     }
 
-                    Logger.TraceInformation("Current platform: " + platformName);
+                    Logger.TraceInformation($"Current platform: {platformName}");
 
                     IntPtr dllHandle = CheckCustomSearchPath(fileName, platformName);
                     if (dllHandle == IntPtr.Zero)
@@ -89,7 +85,7 @@ namespace Tesseract.Internal.InteropDotNet
                     loadedAssemblies[fileName] = dllHandle != IntPtr.Zero
                         ? dllHandle
                         : throw new DllNotFoundException(
-                            string.Format("Failed to find library \"{0}\" for platform {1}.", fileName, platformName));
+                            $"Failed to find library \"{fileName}\" for platform {platformName}.");
                 }
 
                 return loadedAssemblies[fileName];
@@ -169,7 +165,6 @@ namespace Tesseract.Internal.InteropDotNet
             Assembly executingAssembly = Assembly.GetExecutingAssembly();
             if (executingAssembly == null)
             {
-                // #591 Executing assembly may be null in some cases
                 return IntPtr.Zero;
             }
 

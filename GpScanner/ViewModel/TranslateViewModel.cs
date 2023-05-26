@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using Extensions;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Speech.Synthesis;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Extensions;
 
 namespace GpScanner.ViewModel;
 
@@ -24,8 +24,8 @@ public class TranslateViewModel : InpcBase
 
         Sıfırla = new RelayCommand<object>(parameter =>
         {
-            Metin = "";
-            Çeviri = "";
+            Metin = string.Empty;
+            Çeviri = string.Empty;
         }, parameter => true);
 
         Değiştir = new RelayCommand<object>(parameter =>

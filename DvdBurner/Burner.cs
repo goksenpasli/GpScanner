@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Extensions;
+using IMAPI2;
+using IMAPI2FS;
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
-using Extensions;
-using IMAPI2;
 using Application = System.Windows.Application;
 using Control = System.Windows.Controls.Control;
 using MessageBox = System.Windows.MessageBox;
@@ -32,15 +33,14 @@ namespace DvdBurner
                         return;
                     }
 
-                    dynamic Index; // Index to recording drive.
-                    dynamic recorder = null; // Recorder object
-                    dynamic FolderPath; // Directory of files to burn
-                    dynamic Stream; // Data stream for burning device
-                    Index = 0; // First drive on the system
-                    FolderPath = BurnDirectory; // Files to transfer to disc
+                    dynamic Index;
+                    dynamic recorder = null;
+                    dynamic FolderPath;
+                    dynamic Stream;
+                    Index = 0;
+                    FolderPath = BurnDirectory;
                     Burntask = Task.Run(() =>
                     {
-                        // Create a DiscMaster2 object to connect to optical drives.
                         try
                         {
                             dynamic g_DiscMaster = new MsftDiscMaster2();
@@ -51,25 +51,22 @@ namespace DvdBurner
                                 uniqueId = g_DiscMaster.Item(Index);
                                 recorder.InitializeDiscRecorder(uniqueId);
 
-                                // Create an image stream for a specified directory.
-                                dynamic FSI; // Disc file system
-                                dynamic Dir; // Root directory of the disc file system
+                                dynamic FSI;
+                                dynamic Dir;
                                 dynamic dataWriter;
 
-                                // Create a new file system image and retrieve root directory
-                                FSI = new IMAPI2FS.MsftFileSystemImage();
+                                FSI = new MsftFileSystemImage();
                                 Dir = FSI.Root;
 
-                                //Create the new disc format and set the recorder
                                 dataWriter = new MsftDiscFormat2Data();
                                 dataWriter.Recorder = recorder;
                                 dataWriter.ClientName = AppName;
                                 FSI.VolumeName = CdLabel;
                                 FSI.ChooseImageDefaults(recorder);
                                 dataWriter.Update += new DDiscFormat2DataEvents_UpdateEventHandler(DataWriter_Update);
-                                Dir.AddTree(FolderPath, false);
+                                Dir?.AddTree(FolderPath, false);
                                 dynamic result = FSI.CreateResultImage();
-                                Stream = result.ImageStream;
+                                Stream = result?.ImageStream;
                                 dataWriter.ForceOverwrite = true;
                                 dataWriter.Write(Stream);
                             }
@@ -296,13 +293,13 @@ namespace DvdBurner
                         break;
 
                     default:
-                        ActionText = "Bilinmeyen İşlem." + progress.CurrentAction.ToString();
+                        ActionText = "Bilinmeyen İşlem." + progress?.CurrentAction.ToString();
                         break;
                 }
             }
             catch (Exception ex)
             {
-                ActionText = "Hata" + ex.Message;
+                ActionText = $"Hata{ex.Message}";
             }
         }
 

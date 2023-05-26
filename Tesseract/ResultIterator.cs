@@ -57,8 +57,6 @@ namespace Tesseract
                 return null;
             }
 
-            // per docs (ltrresultiterator.h:104 as of 4897796 in github:tesseract-ocr/tesseract)
-            // this return value points to an internal table and should not be deleted.
             IntPtr nameHandle =
                 TessApi.Native.ResultIteratorWordFontAttributes(
                     handle,
@@ -66,7 +64,6 @@ namespace Tesseract
                     out bool isMonospace, out bool isSerif, out bool isSmallCaps,
                     out int pointSize, out int fontId);
 
-            // This can happen in certain error conditions
             if (nameHandle == IntPtr.Zero)
             {
                 return null;

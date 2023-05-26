@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -52,7 +53,7 @@ public static class UdfParser
 
     private static Run[,] Getcellcontent(Table table, Template content, int genişlik, int yükseklik)
     {
-        System.Collections.Generic.IEnumerable<Content> cellparagrafcontent = table.Row.SelectMany(z => z.Cell).SelectMany(z => z.Paragraph).Select(z => new Content
+        IEnumerable<Content> cellparagrafcontent = table.Row.SelectMany(z => z.Cell).SelectMany(z => z.Paragraph).Select(z => new Content
         {
             Background = z.Content.FirstOrDefault().Background,
             Alignment = z.Alignment,
@@ -100,21 +101,21 @@ public static class UdfParser
         {
             if (xmlparagraphcontent.Bulleted)
             {
-                inline.Text = "\t•" + inline.Text;
+                inline.Text = $"\t•{inline.Text}";
             }
 
             if (xmlparagraphcontent.Foreground != 0)
             {
                 inline.Foreground =
                     new SolidColorBrush(
-                        (Color)ColorConverter.ConvertFromString("#" + xmlparagraphcontent.Foreground.ToString("X")));
+                        (Color)ColorConverter.ConvertFromString($"#{xmlparagraphcontent.Foreground:X}"));
             }
 
             if (xmlparagraphcontent.Background != 0)
             {
                 inline.Background =
                     new SolidColorBrush(
-                        (Color)ColorConverter.ConvertFromString("#" + xmlparagraphcontent.Background.ToString("X")));
+                        (Color)ColorConverter.ConvertFromString($"#{xmlparagraphcontent.Background:X}"));
             }
 
             inline.FontSize = xmlparagraphcontent.Size == 0 ? 16 : xmlparagraphcontent.Size * 4 / 3;
@@ -214,7 +215,7 @@ public static class UdfParser
 
     private static void Textcreate(Template content, FlowDocument flowdocument)
     {
-        System.Collections.Generic.IEnumerable<Content> documentcontent = content.Elements.Paragraph.Select(z => new Content
+        IEnumerable<Content> documentcontent = content.Elements.Paragraph.Select(z => new Content
         {
             Background = z.Content.FirstOrDefault().Background,
             Alignment = z.Alignment,

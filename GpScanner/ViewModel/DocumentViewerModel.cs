@@ -1,15 +1,17 @@
-﻿using System;
+﻿using Extensions;
+using GpScanner.Properties;
+using Microsoft.Win32;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
 using System.Windows.Media;
-using Extensions;
-using GpScanner.Properties;
-using Microsoft.Win32;
-using PdfSharp.Drawing;
-using PdfSharp.Pdf;
+using System.Windows.Media.Imaging;
 using TwainControl;
 
 namespace GpScanner.ViewModel;
@@ -36,7 +38,7 @@ public class DocumentViewerModel : InpcBase
             if (parameter is ImageSource imageSource)
             {
                 MemoryStream ms = new(imageSource.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg));
-                System.Windows.Media.Imaging.BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrame(ms, ToolBox.Paper);
+                BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrame(ms, ToolBox.Paper);
                 bitmapFrame.Freeze();
                 ScannedImage scannedImage = new() { Seçili = false, FilePath = PdfFilePath, Resim = bitmapFrame };
                 Scanner?.Resimler.Add(scannedImage);
@@ -196,7 +198,7 @@ public class DocumentViewerModel : InpcBase
         if (e.PropertyName is "ImgData" && ImgData is not null &&
             !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang))
         {
-            System.Collections.ObjectModel.ObservableCollection<Ocr.OcrData> ocrtext = await Ocr.Ocr.OcrAsyc(ImgData, Settings.Default.DefaultTtsLang);
+            ObservableCollection<Ocr.OcrData> ocrtext = await Ocr.Ocr.OcrAsyc(ImgData, Settings.Default.DefaultTtsLang);
             OcrText = string.Join(" ", ocrtext?.Select(z => z.Text));
         }
     }

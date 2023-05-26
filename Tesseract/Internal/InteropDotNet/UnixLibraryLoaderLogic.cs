@@ -1,8 +1,4 @@
-﻿//  Copyright (c) 2014 Andrey Akinshin
-//  Project URL: https://github.com/AndreyAkinshin/InteropDotNet
-//  Distributed under the MIT License: http://opensource.org/licenses/MIT
-
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace Tesseract.Internal.InteropDotNet
@@ -20,7 +16,7 @@ namespace Tesseract.Internal.InteropDotNet
 
                 if (!fileName.StartsWith("lib", StringComparison.OrdinalIgnoreCase))
                 {
-                    fileName = "lib" + fileName;
+                    fileName = $"lib{fileName}";
                 }
             }
 
@@ -34,14 +30,14 @@ namespace Tesseract.Internal.InteropDotNet
 
         public IntPtr GetProcAddress(IntPtr libraryHandle, string functionName)
         {
-            _ = UnixGetLastError(); // Clearing previous errors
+            _ = UnixGetLastError();
             Logger.TraceInformation("Trying to load native function \"{0}\" from the library with handle {1}...",
                 functionName, libraryHandle);
             IntPtr functionHandle = UnixGetProcAddress(libraryHandle, functionName);
             IntPtr errorPointer = UnixGetLastError();
             if (errorPointer != IntPtr.Zero)
             {
-                throw new Exception("dlsym: " + Marshal.PtrToStringAnsi(errorPointer));
+                throw new Exception($"dlsym: {Marshal.PtrToStringAnsi(errorPointer)}");
             }
 
             if (functionHandle != IntPtr.Zero && errorPointer == IntPtr.Zero)

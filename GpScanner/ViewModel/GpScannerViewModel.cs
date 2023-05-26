@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Extensions;
+using GpScanner.Properties;
+using Ocr;
+using PdfSharp.Pdf;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -19,9 +23,6 @@ using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using Extensions;
-using GpScanner.Properties;
-using Ocr;
 using TwainControl;
 using static Extensions.ExtensionMethods;
 using Application = System.Windows.Application;
@@ -45,8 +46,12 @@ public class GpScannerViewModel : InpcBase
     {
         if (string.IsNullOrWhiteSpace(Settings.Default.DatabaseFile))
         {
-            XmlDataPath = Settings.Default.DatabaseFile = Path.GetDirectoryName(ConfigurationManager
-                .OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath) + @"\Data.xml";
+            XmlDataPath = Settings.Default.DatabaseFile =
+                Path.GetDirectoryName(
+                        ConfigurationManager
+                .OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal)
+                            .FilePath) +
+                    @"\Data.xml";
             Settings.Default.Save();
         }
 
@@ -73,51 +78,69 @@ public class GpScannerViewModel : InpcBase
 
         UnRegisterSti = new RelayCommand<object>(parameter => StillImageHelper.Unregister(), parameter => true);
 
-        PdfBirleştir = new RelayCommand<object>(async parameter =>
-        {
-            if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+        PdfBirleştir = new RelayCommand<object>(
+            async parameter =>
             {
-                await Task.Run(async () =>
+                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                 {
-                    IEnumerable<string> pdffilelist = Dosyalar.Where(z =>
-                        z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf",
-                            StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName);
-                    pdffilelist.ToArray().MergePdf().Save(PdfGeneration.GetPdfScanPath());
-                    await Application.Current?.Dispatcher?.InvokeAsync(() => ReloadFileDatas());
-                });
-                return;
-            }
+                    await Task.Run(
+                        async () =>
+                        {
+                            IEnumerable<string> pdffilelist = Dosyalar.Where(
+                                z => z.Seçili &&
+                                        string.Equals(
+                                            Path.GetExtension(z.FileName),
+                                            ".pdf",
+                                            StringComparison.OrdinalIgnoreCase))
+                                .Select(z => z.FileName);
+                            pdffilelist.ToArray().MergePdf().Save(PdfGeneration.GetPdfScanPath());
+                            await Application.Current?.Dispatcher?.InvokeAsync(() => ReloadFileDatas());
+                        });
+                    return;
+                }
 
-            SaveFileDialog saveFileDialog = new()
-            {
-                Filter = "Pdf Dosyası(*.pdf)|*.pdf",
-                FileName = Translation.GetResStringValue("MERGE")
-            };
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                try
+                SaveFileDialog saveFileDialog = new()
                 {
-                    await Task.Run(() =>
+                    Filter = "Pdf Dosyası(*.pdf)|*.pdf",
+                    FileName = Translation.GetResStringValue("MERGE")
+                };
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    try
                     {
-                        IEnumerable<string> pdffilelist = Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName),
-                            ".pdf", StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName);
-                        pdffilelist.ToArray().MergePdf().Save(saveFileDialog.FileName);
-                    });
+                        await Task.Run(
+                            () =>
+                            {
+                                IEnumerable<string> pdffilelist = Dosyalar.Where(
+                                    z => z.Seçili &&
+                                            string.Equals(
+                                                Path.GetExtension(z.FileName),
+                                                ".pdf",
+                                                StringComparison.OrdinalIgnoreCase))
+                                    .Select(z => z.FileName);
+                                pdffilelist.ToArray().MergePdf().Save(saveFileDialog.FileName);
+                            });
+                    }
+                    catch (Exception ex)
+                    {
+                        _ = MessageBox.Show(
+                            ex.Message,
+                            Application.Current?.MainWindow?.Title,
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error);
+                    }
                 }
-                catch (Exception ex)
-                {
-                    _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK,
-                        MessageBoxImage.Error);
-                }
-            }
-        }, parameter =>
-        {
-            CheckedPdfCount = Dosyalar?.Count(z =>
-                z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase));
-            return CheckedPdfCount > 1;
-        });
+            },
+            parameter =>
+            {
+                CheckedPdfCount = Dosyalar?.Count(
+                    z => z.Seçili &&
+                            string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase));
+                return CheckedPdfCount > 1;
+            });
 
-        OcrPage = new RelayCommand<object>(async parameter =>
+        OcrPage = new RelayCommand<object>(
+            async parameter =>
             {
                 if (parameter is TwainCtrl twainCtrl)
                 {
@@ -133,8 +156,8 @@ public class GpScannerViewModel : InpcBase
 
                     if (DetectBarCode)
                     {
-                        string result = await Task.Run(() =>
-                            QrCode.QrCode.GetImageBarcodeResult(twainCtrl.SeçiliResim.Resim));
+                        string result = await Task.Run(
+                            () => QrCode.QrCode.GetImageBarcodeResult(twainCtrl.SeçiliResim.Resim));
                         if (result != null)
                         {
                             BarcodeList.Add(result);
@@ -146,430 +169,494 @@ public class GpScannerViewModel : InpcBase
                 }
             },
             parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) &&
-                         parameter is TwainCtrl twainCtrl &&
-                         twainCtrl.SeçiliResim is not null);
+                parameter is TwainCtrl twainCtrl &&
+                twainCtrl.SeçiliResim is not null);
 
-        OcrPdfThumbnailPage = new RelayCommand<object>(async parameter =>
-        {
-            if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
+        OcrPdfThumbnailPage = new RelayCommand<object>(
+            async parameter =>
             {
-                byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfviewer.PdfFilePath);
-                if (filedata != null)
+                if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
                 {
-                    OcrIsBusy = true;
-                    ObservableCollection<OcrData> ocrdata;
-                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                    byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfviewer.PdfFilePath);
+                    if (filedata != null)
                     {
-                        for (int i = 1; i <= pdfviewer.ToplamSayfa; i++)
+                        OcrIsBusy = true;
+                        ObservableCollection<OcrData> ocrdata;
+                        if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                         {
-                            using MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i,
-                                (int)Twainsettings.Settings.Default.ImgLoadResolution);
-                            ocrdata = await ms.ToArray().OcrAsyc(Settings.Default.DefaultTtsLang);
-                            ScannerData.Data.Add(new Data
+                            for (int i = 1; i <= pdfviewer.ToplamSayfa; i++)
                             {
-                                Id = DataSerialize.RandomNumber(),
-                                FileName = pdfviewer.PdfFilePath,
-                                FileContent = string.Join(" ", ocrdata?.Select(z => z.Text))
-                            });
+                                using MemoryStream ms = await PdfViewer.PdfViewer
+                                    .ConvertToImgStreamAsync(
+                                        filedata,
+                                        i,
+                                        (int)Twainsettings.Settings.Default.ImgLoadResolution);
+                                ocrdata = await ms.ToArray().OcrAsyc(Settings.Default.DefaultTtsLang);
+                                ScannerData.Data
+                                    .Add(
+                                        new Data
+                                        {
+                                            Id = DataSerialize.RandomNumber(),
+                                            FileName = pdfviewer.PdfFilePath,
+                                            FileContent = string.Join(" ", ocrdata?.Select(z => z.Text))
+                                        });
+                            }
                         }
-                    }
-                    else
-                    {
-                        using MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfviewer.Sayfa,
-                            (int)Twainsettings.Settings.Default.ImgLoadResolution);
-                        ocrdata = await ms.ToArray().OcrAsyc(Settings.Default.DefaultTtsLang);
-                        ScannerData.Data.Add(new Data
+                        else
                         {
-                            Id = DataSerialize.RandomNumber(),
-                            FileName = pdfviewer.PdfFilePath,
-                            FileContent = string.Join(" ", ocrdata?.Select(z => z.Text))
-                        });
+                            using MemoryStream ms = await PdfViewer.PdfViewer
+                                .ConvertToImgStreamAsync(
+                                    filedata,
+                                    pdfviewer.Sayfa,
+                                    (int)Twainsettings.Settings.Default.ImgLoadResolution);
+                            ocrdata = await ms.ToArray().OcrAsyc(Settings.Default.DefaultTtsLang);
+                            ScannerData.Data
+                                .Add(
+                                    new Data
+                                    {
+                                        Id = DataSerialize.RandomNumber(),
+                                        FileName = pdfviewer.PdfFilePath,
+                                        FileContent = string.Join(" ", ocrdata?.Select(z => z.Text))
+                                    });
+                        }
+
+                        DatabaseSave.Execute(null);
+                        filedata = null;
+                        ocrdata = null;
+                        OcrIsBusy = false;
+                        GC.Collect();
+                    }
+                }
+            },
+            parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && !OcrIsBusy);
+
+        OpenOriginalFile = new RelayCommand<object>(
+            parameter =>
+            {
+                if (parameter is string filepath)
+                {
+                    DocumentViewerWindow documentViewerWindow = new();
+                    if (documentViewerWindow.DataContext is DocumentViewerModel documentViewerModel)
+                    {
+                        documentViewerWindow.Owner = Application.Current?.MainWindow;
+                        documentViewerModel.Scanner = ToolBox.Scanner;
+                        documentViewerModel.PdfFilePath = filepath;
+                        string path = Path.GetDirectoryName(documentViewerModel.PdfFilePath);
+                        List<string> files = Directory.EnumerateFiles(path, "*.*")
+                            .Where(z => supportedfilesextension.Any(ext => ext == Path.GetExtension(z).ToLower()))
+                            .ToList();
+                        files.Sort(new StrCmpLogicalComparer());
+                        documentViewerModel.DirectoryAllPdfFiles = files;
+                        documentViewerModel.Index = Array.IndexOf(
+                            documentViewerModel.DirectoryAllPdfFiles.ToArray(),
+                            documentViewerModel.PdfFilePath);
+                        documentViewerWindow.Show();
+                        documentViewerWindow.Lb?.ScrollIntoView(filepath);
+                    }
+                }
+            },
+            parameter => parameter is string filepath && File.Exists(filepath));
+
+        ChangeDataFolder = new RelayCommand<object>(
+            parameter =>
+            {
+                OpenFileDialog openFileDialog = new() { Filter = "Xml Dosyası(*.xml)|*.xml", FileName = "Data.xml" };
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    XmlDataPath = Settings.Default.DatabaseFile = openFileDialog.FileName;
+                    Settings.Default.Save();
+                }
+            },
+            parameter => true);
+
+        Tümünüİşaretle = new RelayCommand<object>(
+            parameter =>
+            {
+                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                {
+                    foreach (Scanner item in Dosyalar)
+                    {
+                        item.Seçili = true;
                     }
 
-                    DatabaseSave.Execute(null);
-                    filedata = null;
-                    ocrdata = null;
-                    OcrIsBusy = false;
-                    GC.Collect();
+                    return;
                 }
-            }
-        }, parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && !OcrIsBusy);
 
-        OpenOriginalFile = new RelayCommand<object>(parameter =>
-        {
-            if (parameter is string filepath)
-            {
-                DocumentViewerWindow documentViewerWindow = new();
-                if (documentViewerWindow.DataContext is DocumentViewerModel documentViewerModel)
-                {
-                    documentViewerWindow.Owner = Application.Current?.MainWindow;
-                    documentViewerModel.Scanner = ToolBox.Scanner;
-                    documentViewerModel.PdfFilePath = filepath;
-                    string path = Path.GetDirectoryName(documentViewerModel.PdfFilePath);
-                    List<string> files = Directory.EnumerateFiles(path, "*.*").Where(z =>
-                        supportedfilesextension.Any(ext => ext == Path.GetExtension(z).ToLower())).ToList();
-                    files.Sort(new StrCmpLogicalComparer());
-                    documentViewerModel.DirectoryAllPdfFiles = files;
-                    documentViewerModel.Index = Array.IndexOf(documentViewerModel.DirectoryAllPdfFiles.ToArray(),
-                        documentViewerModel.PdfFilePath);
-                    documentViewerWindow.Show();
-                    documentViewerWindow.Lb?.ScrollIntoView(filepath);
-                }
-            }
-        }, parameter => parameter is string filepath && File.Exists(filepath));
-
-        ChangeDataFolder = new RelayCommand<object>(parameter =>
-        {
-            OpenFileDialog openFileDialog = new()
-            {
-                Filter = "Xml Dosyası(*.xml)|*.xml",
-                FileName = "Data.xml"
-            };
-            if (openFileDialog.ShowDialog() == true)
-            {
-                XmlDataPath = Settings.Default.DatabaseFile = openFileDialog.FileName;
-                Settings.Default.Save();
-            }
-        }, parameter => true);
-
-        Tümünüİşaretle = new RelayCommand<object>(parameter =>
-        {
-            if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
-            {
-                foreach (Scanner item in Dosyalar)
+                foreach (Scanner item in MainWindow.cvs.View
+                    .OfType<Scanner>()
+                    .Where(z => Path.GetExtension(z.FileName.ToLower()) == ".pdf"))
                 {
                     item.Seçili = true;
                 }
+            },
+            parameter => Dosyalar?.Count > 0);
 
-                return;
-            }
-
-            foreach (Scanner item in MainWindow.cvs.View.OfType<Scanner>()
-                         .Where(z => Path.GetExtension(z.FileName.ToLower()) == ".pdf"))
+        TümününİşaretiniKaldır = new RelayCommand<object>(
+            parameter =>
             {
-                item.Seçili = true;
-            }
-        }, parameter => Dosyalar?.Count > 0);
+                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                {
+                    foreach (Scanner item in Dosyalar)
+                    {
+                        item.Seçili = false;
+                    }
 
-        TümününİşaretiniKaldır = new RelayCommand<object>(parameter =>
-        {
-            if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
-            {
-                foreach (Scanner item in Dosyalar)
+                    return;
+                }
+
+                foreach (Scanner item in MainWindow.cvs.View)
                 {
                     item.Seçili = false;
                 }
+            },
+            parameter => Dosyalar?.Count > 0);
 
-                return;
-            }
-
-            foreach (Scanner item in MainWindow.cvs.View)
+        Tersiniİşaretle = new RelayCommand<object>(
+            parameter =>
             {
-                item.Seçili = false;
-            }
-        }, parameter => Dosyalar?.Count > 0);
+                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                {
+                    foreach (Scanner item in Dosyalar)
+                    {
+                        item.Seçili = !item.Seçili;
+                    }
 
-        Tersiniİşaretle = new RelayCommand<object>(parameter =>
-        {
-            if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
-            {
-                foreach (Scanner item in Dosyalar)
+                    return;
+                }
+
+                foreach (Scanner item in MainWindow.cvs.View
+                    .OfType<Scanner>()
+                    .Where(z => Path.GetExtension(z.FileName.ToLower()) == ".pdf"))
                 {
                     item.Seçili = !item.Seçili;
                 }
-
-                return;
-            }
-
-            foreach (Scanner item in MainWindow.cvs.View.OfType<Scanner>()
-                         .Where(z => Path.GetExtension(z.FileName.ToLower()) == ".pdf"))
-            {
-                item.Seçili = !item.Seçili;
-            }
-        }, parameter => Dosyalar?.Count > 0);
+            },
+            parameter => Dosyalar?.Count > 0);
 
         ExploreFile =
             new RelayCommand<object>(
-                parameter => OpenFolderAndSelectItem(Path.GetDirectoryName(parameter as string),
-                    Path.GetFileName(parameter as string)), parameter => true);
+            parameter => OpenFolderAndSelectItem(
+                Path.GetDirectoryName(parameter as string),
+                Path.GetFileName(parameter as string)),
+            parameter => true);
 
         CheckUpdate = new RelayCommand<object>(
-            parameter => _ = Process.Start("twux32.exe",
-                $"/w:{new WindowInteropHelper(Application.Current.MainWindow).Handle} https://github.com/goksenpasli/GpScanner/releases/download/2.0/GpScanner-Setup.txt"),
+            parameter => _ =
+                Process.Start(
+                    "twux32.exe",
+                    $"/w:{new WindowInteropHelper(Application.Current.MainWindow).Handle} https://github.com/goksenpasli/GpScanner/releases/download/2.0/GpScanner-Setup.txt"),
             parameter => File.Exists("twux32.exe"));
 
-        SavePatchProfile = new RelayCommand<object>(parameter =>
+        SavePatchProfile = new RelayCommand<object>(
+            parameter =>
             {
                 string profile = $"{PatchFileName}|{PatchTag}";
                 _ = Settings.Default.PatchCodes.Add(profile);
                 Settings.Default.Save();
                 Settings.Default.Reload();
             },
-            parameter => !string.IsNullOrWhiteSpace(PatchFileName) && !string.IsNullOrWhiteSpace(PatchTag) &&
-                         !Settings.Default.PatchCodes.Cast<string>().Select(z => z.Split('|')[0])
-                             .Contains(PatchFileName) &&
-                         PatchTag?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0);
+            parameter => !string.IsNullOrWhiteSpace(PatchFileName) &&
+                !string.IsNullOrWhiteSpace(PatchTag) &&
+                !Settings.Default.PatchCodes.Cast<string>().Select(z => z.Split('|')[0]).Contains(PatchFileName) &&
+                PatchTag?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0);
 
-        AddFtpSites = new RelayCommand<object>(parameter =>
-        {
-            string profile = $"{FtpSite}|{FtpUserName}|{FtpPassword.Encrypt()}";
-            _ = Settings.Default.FtpSites.Add(profile);
-            Settings.Default.Save();
-            Settings.Default.Reload();
-        }, parameter => !string.IsNullOrWhiteSpace(FtpSite));
-
-        RemoveSelectedFtp = new RelayCommand<object>(parameter =>
-        {
-            string ftpSiteToRemove = parameter as string;
-            Settings.Default.FtpSites.Remove(ftpSiteToRemove);
-            FtpSite = FtpUserName = FtpPassword = Settings.Default.SelectedFtp = string.Empty;
-            Settings.Default.Save();
-            Settings.Default.Reload();
-        }, parameter => true);
-
-        UploadFtp = new RelayCommand<object>(async parameter =>
-        {
-            if (parameter is Scanner scanner && File.Exists(scanner.FileName))
+        AddFtpSites = new RelayCommand<object>(
+            parameter =>
             {
-                string[] ftpdata = Settings.Default.SelectedFtp.Split('|');
-                await FtpUploadAsync(ftpdata[0], ftpdata[1], ftpdata[2], scanner);
-            }
-        }, parameter => !string.IsNullOrWhiteSpace(Settings.Default.SelectedFtp));
-
-        SaveQrImage = new RelayCommand<object>(parameter =>
-        {
-            SaveFileDialog saveFileDialog = new()
-            {
-                Filter = "Jpg Resmi (*.jpg)|*.jpg",
-                FileName = "QR"
-            };
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                TwainCtrl.SaveJpgImage(BitmapFrame.Create(parameter as WriteableBitmap), saveFileDialog.FileName);
-            }
-        }, parameter => parameter is WriteableBitmap writeableBitmap && writeableBitmap is not null);
-
-        RemovePatchProfile = new RelayCommand<object>(parameter =>
-        {
-            Settings.Default.PatchCodes.Remove(parameter as string);
-            PatchProfileName = null;
-            Settings.Default.Save();
-            Settings.Default.Reload();
-        }, parameter => true);
-
-        ModifyGridWidth = new RelayCommand<object>(parameter =>
-        {
-            switch (parameter)
-            {
-                case "0":
-                    MainWindowDocumentGuiControlLength = new GridLength(1, GridUnitType.Star);
-                    MainWindowGuiControlLength = new GridLength(3, GridUnitType.Star);
-                    return;
-
-                case "1":
-                    MainWindowDocumentGuiControlLength = new GridLength(1, GridUnitType.Star);
-                    MainWindowGuiControlLength = new GridLength(0, GridUnitType.Star);
-                    return;
-            }
-        }, parameter => true);
-
-        SetBatchFolder = new RelayCommand<object>(parameter =>
-        {
-            FolderBrowserDialog dialog = new()
-            {
-                Description = $"{Translation.GetResStringValue("GRAPH")} {Translation.GetResStringValue("FILE")}"
-            };
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
-                BatchFolder = dialog.SelectedPath;
-            }
-        }, parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
-
-        SetBatchWatchFolder = new RelayCommand<object>(parameter =>
-        {
-            FolderBrowserDialog dialog = new()
-            {
-                Description = Translation.GetResStringValue("BATCHDESC")
-            };
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
-                Settings.Default.BatchFolder = dialog.SelectedPath;
+                string profile = $"{FtpSite}|{FtpUserName}|{FtpPassword.Encrypt()}";
+                _ = Settings.Default.FtpSites.Add(profile);
                 Settings.Default.Save();
-            }
-        }, parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
+                Settings.Default.Reload();
+            },
+            parameter => !string.IsNullOrWhiteSpace(FtpSite));
 
-        StartPdfBatch = new RelayCommand<object>(async parameter =>
-        {
-            if (Filesavetask?.IsCompleted == false)
+        RemoveSelectedFtp = new RelayCommand<object>(
+            parameter =>
             {
-                _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
-                return;
-            }
+                string ftpSiteToRemove = parameter as string;
+                Settings.Default.FtpSites.Remove(ftpSiteToRemove);
+                FtpSite = FtpUserName = FtpPassword = Settings.Default.SelectedFtp = string.Empty;
+                Settings.Default.Save();
+                Settings.Default.Reload();
+            },
+            parameter => true);
 
-            List<string> files = Win32FileScanner.EnumerateFilepaths(BatchFolder)
-                .Where(s => imagefileextensions.Any(ext => ext == Path.GetExtension(s).ToLower())).ToList();
-            int slicecount = files.Count > Environment.ProcessorCount ? files.Count / Environment.ProcessorCount : 1;
-            Scanner scanner = ToolBox.Scanner;
-            BatchTxtOcrs = new List<BatchTxtOcr>();
-            List<Task> Tasks = new();
-            ocrcancellationToken = new CancellationTokenSource();
-            foreach (List<string> item in TwainCtrl.ChunkBy(files, slicecount))
+        UploadFtp = new RelayCommand<object>(
+            async parameter =>
             {
-                if (item.Count > 0)
+                if (parameter is Scanner scanner && File.Exists(scanner.FileName))
                 {
-                    BatchTxtOcr batchTxtOcr = new();
-                    Paper paper = ToolBox.Paper;
-                    Task task = Task.Run(async () =>
-                    {
-                        for (int i = 0; i < item.Count; i++)
-                        {
-                            if (ocrcancellationToken?.IsCancellationRequested == false)
-                            {
-                                string pdffile = Path.ChangeExtension(item.ElementAtOrDefault(i), ".pdf");
-                                ObservableCollection<OcrData> scannedText = scanner?.ApplyPdfSaveOcr == true
-                                    ? await item.ElementAtOrDefault(i).OcrAsyc(scanner.SelectedTtsLanguage)
-                                    : null;
-
-                                batchTxtOcr.ProgressValue = (i + 1) / (double)item.Count;
-                                batchTxtOcr.FilePath = Path.GetFileName(item.ElementAtOrDefault(i));
-                                item.ElementAtOrDefault(i).GeneratePdf(paper, scannedText).Save(pdffile);
-
-                                GC.Collect();
-                            }
-                        }
-                    }, ocrcancellationToken.Token);
-                    BatchTxtOcrs.Add(batchTxtOcr);
-                    Tasks.Add(task);
+                    string[] ftpdata = Settings.Default.SelectedFtp.Split('|');
+                    await FtpUploadAsync(ftpdata[0], ftpdata[1], ftpdata[2], scanner);
                 }
-            }
+            },
+            parameter => !string.IsNullOrWhiteSpace(Settings.Default.SelectedFtp));
 
-            if (scanner?.ApplyPdfSaveOcr == true)
+        SaveQrImage = new RelayCommand<object>(
+            parameter =>
             {
+                SaveFileDialog saveFileDialog = new() { Filter = "Jpg Resmi (*.jpg)|*.jpg", FileName = "QR" };
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    TwainCtrl.SaveJpgImage(BitmapFrame.Create(parameter as WriteableBitmap), saveFileDialog.FileName);
+                }
+            },
+            parameter => parameter is WriteableBitmap writeableBitmap && writeableBitmap is not null);
+
+        RemovePatchProfile = new RelayCommand<object>(
+            parameter =>
+            {
+                Settings.Default.PatchCodes.Remove(parameter as string);
+                PatchProfileName = null;
+                Settings.Default.Save();
+                Settings.Default.Reload();
+            },
+            parameter => true);
+
+        ModifyGridWidth = new RelayCommand<object>(
+            parameter =>
+            {
+                switch (parameter)
+                {
+                    case "0":
+                        MainWindowDocumentGuiControlLength = new GridLength(1, GridUnitType.Star);
+                        MainWindowGuiControlLength = new GridLength(3, GridUnitType.Star);
+                        return;
+
+                    case "1":
+                        MainWindowDocumentGuiControlLength = new GridLength(1, GridUnitType.Star);
+                        MainWindowGuiControlLength = new GridLength(0, GridUnitType.Star);
+                        return;
+                }
+            },
+            parameter => true);
+
+        SetBatchFolder = new RelayCommand<object>(
+            parameter =>
+            {
+                FolderBrowserDialog dialog = new()
+                {
+                    Description = $"{Translation.GetResStringValue("GRAPH")} {Translation.GetResStringValue("FILE")}"
+                };
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    BatchFolder = dialog.SelectedPath;
+                }
+            },
+            parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
+
+        SetBatchWatchFolder = new RelayCommand<object>(
+            parameter =>
+            {
+                FolderBrowserDialog dialog = new() { Description = Translation.GetResStringValue("BATCHDESC") };
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    Settings.Default.BatchFolder = dialog.SelectedPath;
+                    Settings.Default.Save();
+                }
+            },
+            parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
+
+        StartPdfBatch = new RelayCommand<object>(
+            async parameter =>
+            {
+                if (Filesavetask?.IsCompleted == false)
+                {
+                    _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
+                    return;
+                }
+
+                List<string> files = Win32FileScanner.EnumerateFilepaths(BatchFolder)
+                    .Where(s => imagefileextensions.Any(ext => ext == Path.GetExtension(s).ToLower()))
+                    .ToList();
+                int slicecount = files.Count > Environment.ProcessorCount ? files.Count / Environment.ProcessorCount : 1;
+                Scanner scanner = ToolBox.Scanner;
+                BatchTxtOcrs = new List<BatchTxtOcr>();
+                List<Task> Tasks = new();
+                ocrcancellationToken = new CancellationTokenSource();
+                foreach (List<string> item in TwainCtrl.ChunkBy(files, slicecount))
+                {
+                    if (item.Count > 0)
+                    {
+                        BatchTxtOcr batchTxtOcr = new();
+                        Paper paper = ToolBox.Paper;
+                        Task task = Task.Run(
+                            async () =>
+                            {
+                                for (int i = 0; i < item.Count; i++)
+                                {
+                                    if (ocrcancellationToken?.IsCancellationRequested == false)
+                                    {
+                                        string pdffile = Path.ChangeExtension(item.ElementAtOrDefault(i), ".pdf");
+                                        ObservableCollection<OcrData> scannedText = scanner?.ApplyPdfSaveOcr == true
+                                            ? await item.ElementAtOrDefault(i).OcrAsyc(scanner.SelectedTtsLanguage)
+                                            : null;
+
+                                        batchTxtOcr.ProgressValue = (i + 1) / (double)item.Count;
+                                        batchTxtOcr.FilePath = Path.GetFileName(item.ElementAtOrDefault(i));
+                                        item.ElementAtOrDefault(i).GeneratePdf(paper, scannedText).Save(pdffile);
+
+                                        GC.Collect();
+                                    }
+                                }
+                            },
+                            ocrcancellationToken.Token);
+                        BatchTxtOcrs.Add(batchTxtOcr);
+                        Tasks.Add(task);
+                    }
+                }
+
+                if (scanner?.ApplyPdfSaveOcr == true)
+                {
+                    BatchDialogOpen = true;
+                }
+
+                Filesavetask = Task.WhenAll(Tasks);
+                await Filesavetask;
+                if (Filesavetask?.IsCompleted == true && Shutdown)
+                {
+                    ViewModel.Shutdown.DoExitWin(ViewModel.Shutdown.EWX_SHUTDOWN);
+                }
+            },
+            parameter => !string.IsNullOrWhiteSpace(BatchFolder));
+
+        CancelBatchOcr = new RelayCommand<object>(
+            parameter =>
+            {
+                if (MessageBox.Show(
+                    $"{Translation.GetResStringValue("TRANSLATEPENDING")}\n{Translation.GetResStringValue("RESET")}",
+                    Application.Current.MainWindow.Title,
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question,
+                    MessageBoxResult.No) ==
+                    MessageBoxResult.Yes)
+                {
+                    ocrcancellationToken?.Cancel();
+                    BatchTxtOcrs = null;
+                }
+            },
+            parameter => BatchTxtOcrs?.Count > 0);
+
+        StartTxtBatch = new RelayCommand<object>(
+            async parameter =>
+            {
+                if (Filesavetask?.IsCompleted == false)
+                {
+                    _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
+                    return;
+                }
+
+                List<string> files = Win32FileScanner.EnumerateFilepaths(BatchFolder)
+                    .Where(s => imagefileextensions.Any(ext => ext == Path.GetExtension(s).ToLower()))
+                    .ToList();
+                int slicecount = files.Count > Environment.ProcessorCount ? files.Count / Environment.ProcessorCount : 1;
+                Scanner scanner = ToolBox.Scanner;
+                BatchTxtOcrs = new List<BatchTxtOcr>();
+                List<Task> Tasks = new();
+                ocrcancellationToken = new CancellationTokenSource();
+                foreach (List<string> item in TwainCtrl.ChunkBy(files, slicecount))
+                {
+                    if (item.Count > 0)
+                    {
+                        BatchTxtOcr batchTxtOcr = new();
+                        Task task = Task.Run(
+                            async () =>
+                            {
+                                List<string> scannedtext = new();
+                                for (int i = 0; i < item.Count; i++)
+                                {
+                                    if (ocrcancellationToken?.IsCancellationRequested == false)
+                                    {
+                                        string image = item[i];
+                                        string txtfile = Path.ChangeExtension(image, ".txt");
+                                        string content = string.Join(
+                                            " ",
+                                            (await image.OcrAsyc(scanner.SelectedTtsLanguage)).Select(z => z.Text));
+                                        File.WriteAllText(txtfile, content);
+                                        batchTxtOcr.ProgressValue = (i + 1) / (double)item.Count;
+                                        batchTxtOcr.FilePath = Path.GetFileName(image);
+                                        GC.Collect();
+                                    }
+                                }
+                            },
+                            ocrcancellationToken.Token);
+                        BatchTxtOcrs.Add(batchTxtOcr);
+                        Tasks.Add(task);
+                    }
+                }
+
                 BatchDialogOpen = true;
-            }
-
-            Filesavetask = Task.WhenAll(Tasks);
-            await Filesavetask;
-            if (Filesavetask?.IsCompleted == true && Shutdown)
-            {
-                ViewModel.Shutdown.DoExitWin(ViewModel.Shutdown.EWX_SHUTDOWN);
-            }
-        }, parameter => !string.IsNullOrWhiteSpace(BatchFolder));
-
-        CancelBatchOcr = new RelayCommand<object>(parameter =>
-        {
-            if (MessageBox.Show($"{Translation.GetResStringValue("TRANSLATEPENDING")}\n{Translation.GetResStringValue("RESET")}",
-            Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question,
-            MessageBoxResult.No) == MessageBoxResult.Yes)
-            {
-                ocrcancellationToken?.Cancel();
-                BatchTxtOcrs = null;
-            }
-        }, parameter => BatchTxtOcrs?.Count > 0);
-
-        StartTxtBatch = new RelayCommand<object>(async parameter =>
-        {
-            if (Filesavetask?.IsCompleted == false)
-            {
-                _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
-                return;
-            }
-
-            List<string> files = Win32FileScanner.EnumerateFilepaths(BatchFolder)
-                .Where(s => imagefileextensions.Any(ext => ext == Path.GetExtension(s).ToLower())).ToList();
-            int slicecount = files.Count > Environment.ProcessorCount ? files.Count / Environment.ProcessorCount : 1;
-            Scanner scanner = ToolBox.Scanner;
-            BatchTxtOcrs = new List<BatchTxtOcr>();
-            List<Task> Tasks = new();
-            ocrcancellationToken = new CancellationTokenSource();
-            foreach (List<string> item in TwainCtrl.ChunkBy(files, slicecount))
-            {
-                if (item.Count > 0)
+                Filesavetask = Task.WhenAll(Tasks);
+                await Filesavetask;
+                if (Filesavetask?.IsCompleted == true && Shutdown)
                 {
-                    BatchTxtOcr batchTxtOcr = new();
-                    Task task = Task.Run(async () =>
-                    {
-                        List<string> scannedtext = new();
-                        for (int i = 0; i < item.Count; i++)
-                        {
-                            if (ocrcancellationToken?.IsCancellationRequested == false)
-                            {
-                                string image = item[i];
-                                string txtfile = Path.ChangeExtension(image, ".txt");
-                                string content = string.Join(" ",
-                                    (await image.OcrAsyc(scanner.SelectedTtsLanguage)).Select(z => z.Text));
-                                File.WriteAllText(txtfile, content);
-                                batchTxtOcr.ProgressValue = (i + 1) / (double)item.Count;
-                                batchTxtOcr.FilePath = Path.GetFileName(image);
-                                GC.Collect();
-                            }
-                        }
-                    }, ocrcancellationToken.Token);
-                    BatchTxtOcrs.Add(batchTxtOcr);
-                    Tasks.Add(task);
+                    ViewModel.Shutdown.DoExitWin(ViewModel.Shutdown.EWX_SHUTDOWN);
                 }
-            }
-
-            BatchDialogOpen = true;
-            Filesavetask = Task.WhenAll(Tasks);
-            await Filesavetask;
-            if (Filesavetask?.IsCompleted == true && Shutdown)
-            {
-                ViewModel.Shutdown.DoExitWin(ViewModel.Shutdown.EWX_SHUTDOWN);
-            }
-        }, parameter => !string.IsNullOrWhiteSpace(BatchFolder));
+            },
+            parameter => !string.IsNullOrWhiteSpace(BatchFolder));
 
         DatabaseSave = new RelayCommand<object>(parameter => ScannerData.Serialize());
 
-        ResetSettings = new RelayCommand<object>(parameter =>
-        {
-            if (MessageBox.Show($"{Translation.GetResStringValue("SETTİNGS")} {Translation.GetResStringValue("RESET")}",
-                    Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question,
-                    MessageBoxResult.No) == MessageBoxResult.Yes)
+        ResetSettings = new RelayCommand<object>(
+            parameter =>
             {
-                (parameter as Twainsettings.Settings)?.Reset();
-                Settings.Default.Reset();
-            }
-        });
+                if (MessageBox.Show(
+                    $"{Translation.GetResStringValue("SETTİNGS")} {Translation.GetResStringValue("RESET")}",
+                    Application.Current.MainWindow.Title,
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question,
+                    MessageBoxResult.No) ==
+                    MessageBoxResult.Yes)
+                {
+                    (parameter as Twainsettings.Settings)?.Reset();
+                    Settings.Default.Reset();
+                }
+            });
 
         CancelOcr = new RelayCommand<object>(parameter => Ocr.Ocr.ocrcancellationToken?.Cancel());
 
-        DateBack = new RelayCommand<object>(parameter => SeçiliGün = SeçiliGün.Value.AddDays(-1),
+        DateBack = new RelayCommand<object>(
+            parameter => SeçiliGün = SeçiliGün.Value.AddDays(-1),
             parameter => SeçiliGün > DateTime.MinValue);
 
-        DateForward = new RelayCommand<object>(parameter => SeçiliGün = SeçiliGün.Value.AddDays(1),
+        DateForward = new RelayCommand<object>(
+            parameter => SeçiliGün = SeçiliGün.Value.AddDays(1),
             parameter => SeçiliGün < DateTime.Today);
 
-        CycleSelectedDocuments = new RelayCommand<object>(async parameter =>
-        {
-            if (parameter is ListBox listBox)
+        CycleSelectedDocuments = new RelayCommand<object>(
+            async parameter =>
             {
-                List<Scanner> listboxFiles = MainWindow.cvs.View.OfType<Scanner>().ToList();
-                Scanner currentFile = listboxFiles.Where(z => z.Seçili).ElementAtOrDefault(cycleIndex);
-                if (currentFile is not null)
+                if (parameter is ListBox listBox)
                 {
-                    listBox.ScrollIntoView(currentFile);
-                    currentFile.BorderAnimation = true;
-                    cycleIndex = (cycleIndex + 1) % listboxFiles.Count(z => z.Seçili);
-                    await Task.Delay(1000);
-                    currentFile.BorderAnimation = false;
+                    List<Scanner> listboxFiles = MainWindow.cvs.View.OfType<Scanner>().ToList();
+                    Scanner currentFile = listboxFiles.Where(z => z.Seçili).ElementAtOrDefault(cycleIndex);
+                    if (currentFile is not null)
+                    {
+                        listBox.ScrollIntoView(currentFile);
+                        currentFile.BorderAnimation = true;
+                        cycleIndex = (cycleIndex + 1) % listboxFiles.Count(z => z.Seçili);
+                        await Task.Delay(1000);
+                        currentFile.BorderAnimation = false;
+                    }
                 }
-            }
-        }, parameter => MainWindow.cvs?.View?.OfType<Scanner>().Count(z => z.Seçili) > 0);
+            },
+            parameter => MainWindow.cvs?.View?.OfType<Scanner>().Count(z => z.Seçili) > 0);
 
-        ReadOcrDataFile = new RelayCommand<object>(parameter =>
-        {
-            if (parameter is Scanner scanner)
+        ReadOcrDataFile = new RelayCommand<object>(
+            parameter =>
             {
-                IEnumerable<Data> data = DataYükle()?.Where(z => z.FileName == scanner.FileName);
-                scanner.FileOcrContent = string.Join(" ", data?.Select(z => z.FileContent));
-            }
-        }, parameter => true);
+                if (parameter is Scanner scanner)
+                {
+                    IEnumerable<Data> data = DataYükle()?.Where(z => z.FileName == scanner.FileName);
+                    scanner.FileOcrContent = string.Join(" ", data?.Select(z => z.FileContent));
+                }
+            },
+            parameter => true);
 
         PrintImage =
             new RelayCommand<object>(
-                parameter => PdfViewer.PdfViewer.PrintImageSource(parameter as ImageSource, 300, false),
-                parameter => parameter is ImageSource);
+            parameter => PdfViewer.PdfViewer.PrintImageSource(parameter as ImageSource, 300, false),
+            parameter => parameter is ImageSource);
     }
 
     public static event EventHandler<PropertyChangedEventArgs> StaticPropertyChanged;
@@ -1158,7 +1245,7 @@ public class GpScannerViewModel : InpcBase
             FileInfo fi = new(Settings.Default.DatabaseFile);
             if (fi.Length > 0)
             {
-                File.Copy(fi.FullName, fi.FullName + DateTime.Today.DayOfWeek + ".bak", true);
+                File.Copy(fi.FullName, $"{fi.FullName}{DateTime.Today.DayOfWeek}.bak", true);
             }
         }
     }
@@ -1182,7 +1269,10 @@ public class GpScannerViewModel : InpcBase
         }
         catch (Exception ex)
         {
-            _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK,
+            _ = MessageBox.Show(
+                ex.Message,
+                Application.Current?.MainWindow?.Title,
+                MessageBoxButton.OK,
                 MessageBoxImage.Error);
             return null;
         }
@@ -1200,7 +1290,10 @@ public class GpScannerViewModel : InpcBase
         }
         catch (Exception ex)
         {
-            _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK,
+            _ = MessageBox.Show(
+                ex.Message,
+                Application.Current?.MainWindow?.Title,
+                MessageBoxButton.OK,
                 MessageBoxImage.Error);
         }
     }
@@ -1226,8 +1319,13 @@ public class GpScannerViewModel : InpcBase
             {
                 foreach (IGrouping<int, Scanner> chart in chartdata)
                 {
-                    list.Add(new Chart
-                    { Description = chart.Key.ToString(), ChartBrush = RandomColor(), ChartValue = chart.Count() });
+                    list.Add(
+                        new Chart
+                        {
+                            Description = chart?.Key.ToString(),
+                            ChartBrush = RandomColor(),
+                            ChartValue = chart.Count()
+                        });
                 }
             }
         }
@@ -1259,7 +1357,8 @@ public class GpScannerViewModel : InpcBase
             {
                 List<string> files = Directory
                     .EnumerateFiles(Twainsettings.Settings.Default.AutoFolder, "*.*", SearchOption.AllDirectories)
-                    .Where(s => supportedfilesextension.Contains(Path.GetExtension(s).ToLower())).ToList();
+                    .Where(s => supportedfilesextension.Contains(Path.GetExtension(s).ToLower()))
+                    .ToList();
                 files.Sort(new StrCmpLogicalComparer());
                 foreach (string dosya in files)
                 {
@@ -1292,14 +1391,15 @@ public class GpScannerViewModel : InpcBase
             {
                 await Task.Delay(1000);
                 ObservableCollection<OcrData> scannedText = await e.FullPath.OcrAsyc(scanner.SelectedTtsLanguage);
-                await Task.Run(() =>
-                {
-                    PdfBatchRunning = true;
-                    using PdfSharp.Pdf.PdfDocument pfdocument = e.FullPath.GeneratePdf(paper, scannedText);
-                    pfdocument.Save($"{batchsavefolder}\\{Path.ChangeExtension(e.Name, ".pdf")}");
-                    PdfBatchRunning = false;
-                    GC.Collect();
-                });
+                await Task.Run(
+                    () =>
+                    {
+                        PdfBatchRunning = true;
+                        using PdfDocument pfdocument = e.FullPath.GeneratePdf(paper, scannedText);
+                        pfdocument.Save($"{batchsavefolder}\\{Path.ChangeExtension(e.Name, ".pdf")}");
+                        PdfBatchRunning = false;
+                        GC.Collect();
+                    });
             }
         };
     }
@@ -1316,12 +1416,44 @@ public class GpScannerViewModel : InpcBase
     private static string xmlDataPath = Settings.Default.DatabaseFile;
 
     private readonly string[] imagefileextensions =
-        { ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp" };
+    {
+        ".tiff",
+        ".tıf",
+        ".tıff",
+        ".tif",
+        ".jpg",
+        ".jpe",
+        ".gif",
+        ".jpeg",
+        ".jfif",
+        ".jfıf",
+        ".png",
+        ".bmp"
+    };
 
     private readonly string[] supportedfilesextension =
     {
-        ".pdf", ".tıff", ".tıf", ".tiff", ".tif", ".jpg", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv",
-        ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml"
+        ".pdf",
+        ".tıff",
+        ".tıf",
+        ".tiff",
+        ".tif",
+        ".jpg",
+        ".png",
+        ".bmp",
+        ".zip",
+        ".xps",
+        ".mp4",
+        ".3gp",
+        ".wmv",
+        ".mpg",
+        ".mov",
+        ".avi",
+        ".mpeg",
+        ".xml",
+        ".xsl",
+        ".xslt",
+        ".xaml"
     };
 
     private bool anyDataExists;
@@ -1408,7 +1540,8 @@ public class GpScannerViewModel : InpcBase
 
     private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName is "RegisterBatchWatcher" && Settings.Default.RegisterBatchWatcher &&
+        if (e.PropertyName is "RegisterBatchWatcher" &&
+            Settings.Default.RegisterBatchWatcher &&
             !Directory.Exists(Settings.Default.BatchFolder))
         {
             Settings.Default.RegisterBatchWatcher = false;
@@ -1466,10 +1599,11 @@ public class GpScannerViewModel : InpcBase
             {
                 Scanner scanner = x.Item as Scanner;
                 x.Accepted = Path.GetFileNameWithoutExtension(scanner?.FileName)
-                                 .Contains(AramaMetni, StringComparison.OrdinalIgnoreCase) ||
-                             ScannerData.Data.Any(z =>
-                                 z.FileName == scanner?.FileName &&
-                                 z.FileContent?.Contains(AramaMetni, StringComparison.OrdinalIgnoreCase) == true);
+                        .Contains(AramaMetni, StringComparison.OrdinalIgnoreCase) ||
+                    ScannerData.Data
+                        .Any(
+                            z => z.FileName == scanner?.FileName &&
+                                    z.FileContent?.Contains(AramaMetni, StringComparison.OrdinalIgnoreCase) == true);
             };
         }
 

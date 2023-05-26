@@ -76,7 +76,6 @@ namespace Tesseract.Interop
             EntryPoint = "pixConvertRGBToGray")]
         IntPtr pixConvertRGBToGray(HandleRef pix, float rwt, float gwt, float bwt);
 
-        // pixconv.h functions
         [RuntimeDllImport(Constants.LeptonicaDllName, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "pixConvertTo8")]
         IntPtr pixConvertTo8(HandleRef pix, int cmapflag);
@@ -114,12 +113,10 @@ namespace Tesseract.Interop
             EntryPoint = "pixEqual")]
         int pixEqual(HandleRef pix1, HandleRef pix2, out int same);
 
-        // Grayscale
         [RuntimeDllImport(Constants.LeptonicaDllName, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "pixErodeGray")]
         IntPtr pixErodeGray(HandleRef pixs, int hsize, int vsize);
 
-        // skew
         [RuntimeDllImport(Constants.LeptonicaDllName, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "pixFindSkew")]
         int pixFindSkew(HandleRef pixs, out float pangle, out float pconf);
@@ -214,13 +211,10 @@ namespace Tesseract.Interop
             EntryPoint = "pixRotateAMGray")]
         IntPtr pixRotateAMGray(HandleRef pixs, float angle, byte grayval);
 
-        // image analysis and manipulation functions
-        // rotation
         [RuntimeDllImport(Constants.LeptonicaDllName, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "pixRotateOrth")]
         IntPtr pixRotateOrth(HandleRef pixs, int quads);
 
-        // Binarization - src/binarize.c
         [RuntimeDllImport(Constants.LeptonicaDllName, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "pixSauvolaBinarize")]
         int pixSauvolaBinarize(HandleRef pix, int whsize, float factor, int addborder, out IntPtr ppixm,
@@ -275,9 +269,6 @@ namespace Tesseract.Interop
             EntryPoint = "pixWrite")]
         int pixWrite(string filename, HandleRef handle, ImageFormat format);
 
-        // Threshold
-        // Sel
-
         [RuntimeDllImport(Constants.LeptonicaDllName, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "selCreateBrick")]
         IntPtr selCreateBrick(int h, int w, int cy, int cx, SelType type);
@@ -290,13 +281,9 @@ namespace Tesseract.Interop
             EntryPoint = "selDestroy")]
         void selDestroy(ref IntPtr psel);
 
-        // Scaling - src/scale.c
-
         #endregion Pix
 
         #region Color map
-
-        // Color map creation and deletion
 
         /// <summary>
         ///     Adds a color (black\white) if not already there returning it's index through <paramref name="index" />.
@@ -423,8 +410,6 @@ namespace Tesseract.Interop
             EntryPoint = "pixcmapDestroy")]
         void pixcmapDestroy(ref IntPtr cmap);
 
-        // colormap metadata (depth, count, etc)
-
         [RuntimeDllImport(Constants.LeptonicaDllName, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "pixcmapGammaTRC")]
         int pixcmapGammaTRC(HandleRef cmap, float gamma, int minVal, int maxVal);
@@ -442,7 +427,6 @@ namespace Tesseract.Interop
             EntryPoint = "pixcmapGetColor")]
         int pixcmapGetColor(HandleRef cmap, int index, out int redValue, out int blueValue, out int greenValue);
 
-        // color access - color entry access
         /// <summary>
         ///     Gets the color at the specified index.
         /// </summary>
@@ -568,7 +552,6 @@ namespace Tesseract.Interop
             EntryPoint = "pixcmapSetBlackAndWhite")]
         int pixcmapSetBlackAndWhite(HandleRef cmap, int setBlack, int setWhite);
 
-        // colormap transformations
         [RuntimeDllImport(Constants.LeptonicaDllName, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "pixcmapShiftIntensity")]
         int pixcmapShiftIntensity(HandleRef cmap, float fraction);
@@ -577,13 +560,10 @@ namespace Tesseract.Interop
             EntryPoint = "pixcmapColorToGray")]
         int pixcmapToArrays(HandleRef cmap, out IntPtr redMap, out IntPtr blueMap, out IntPtr greenMap);
 
-        // color map conversion
-        // colormap serialization
         [RuntimeDllImport(Constants.LeptonicaDllName, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "pixcmapToRGBTable")]
         int pixcmapToRGBTable(HandleRef cmap, out IntPtr colorTable, out int colorCount);
 
-        // colormap - color addition\clearing
         /// <summary>
         ///     Checks if the color already exists or if their is enough room to add it.
         /// </summary>

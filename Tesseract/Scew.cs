@@ -16,7 +16,7 @@
 
         public override string ToString()
         {
-            return string.Format("Scew: {0} [conf: {1}]", Angle, Confidence);
+            return $"Scew: {Angle} [conf: {Confidence}]";
         }
 
         #endregion ToString

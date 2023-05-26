@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Extensions;
+using Microsoft.Win32;
+using PdfSharp.Pdf;
+using PdfSharp.Pdf.IO;
+using System;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using Extensions;
-using Microsoft.Win32;
-using PdfSharp.Pdf.IO;
 using TwainControl.Properties;
 
 namespace TwainControl;
@@ -58,9 +59,9 @@ public class EypPdfViewer : PdfViewer.PdfViewer
 
     public string ExtractEypFilesToPdf(string filename)
     {
-        using PdfSharp.Pdf.PdfDocument document = TwainCtrl.EypFileExtract(filename).Where(z => Path.GetExtension(z.ToLower()) == ".pdf")
+        using PdfDocument document = TwainCtrl.EypFileExtract(filename).Where(z => Path.GetExtension(z.ToLower()) == ".pdf")
             .ToArray().MergePdf();
-        string source = Path.GetTempPath() + Guid.NewGuid() + ".pdf";
+        string source = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
         document.Save(source);
         return source;
     }

@@ -20,10 +20,10 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     public ButtonedTextBox()
     {
-        _ = CommandBindings.Add(new CommandBinding(Reset, ResetCommand, CanExecute)); //handle reset
-        _ = CommandBindings.Add(new CommandBinding(Copy, CopyCommand, CanExecute)); //handle copy
-        _ = CommandBindings.Add(new CommandBinding(Open, OpenCommand, CanExecute)); //handle open
-        _ = CommandBindings.Add(new CommandBinding(Paste, PasteCommand, PasteCanExecute)); //handle paste
+        _ = CommandBindings.Add(new CommandBinding(Reset, ResetCommand, CanExecute));
+        _ = CommandBindings.Add(new CommandBinding(Copy, CopyCommand, CanExecute));
+        _ = CommandBindings.Add(new CommandBinding(Open, OpenCommand, CanExecute));
+        _ = CommandBindings.Add(new CommandBinding(Paste, PasteCommand, PasteCanExecute));
     }
 
     public event PropertyChangedEventHandler PropertyChanged;

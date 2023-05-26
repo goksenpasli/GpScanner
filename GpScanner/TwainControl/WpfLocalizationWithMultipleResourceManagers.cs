@@ -22,24 +22,22 @@ public class LocExtension : MarkupExtension
 
     public override object ProvideValue(IServiceProvider serviceProvider)
     {
-        // targetObject is the control that is using the LocExtension
         object targetObject = (serviceProvider as IProvideValueTarget)?.TargetObject;
 
-        if (targetObject?.GetType().Name == "SharedDp") // is extension used in a control template?
+        if (targetObject?.GetType().Name == "SharedDp")
         {
-            return targetObject; // required for template re-binding
+            return targetObject;
         }
 
         string baseName = GetResourceManager(targetObject)?.BaseName ?? string.Empty;
 
         if (string.IsNullOrEmpty(baseName))
         {
-            // rootObject is the root control of the visual tree (the top parent of targetObject)
             object rootObject = (serviceProvider as IRootObjectProvider)?.RootObject;
             baseName = GetResourceManager(rootObject)?.BaseName ?? string.Empty;
         }
 
-        if (string.IsNullOrEmpty(baseName) && targetObject is FrameworkElement frameworkElement) // template re-binding
+        if (string.IsNullOrEmpty(baseName) && targetObject is FrameworkElement frameworkElement)
         {
             baseName = GetResourceManager(frameworkElement.TemplatedParent)?.BaseName ?? string.Empty;
         }
@@ -61,7 +59,6 @@ public class LocExtension : MarkupExtension
         {
             object localValue = dependencyObject.ReadLocalValue(Translation.ResourceManagerProperty);
 
-            // does this control have a "Translation.ResourceManager" attached property with a set value?
             if (localValue != DependencyProperty.UnsetValue && localValue is ResourceManager resourceManager)
             {
                 TranslationSource.Instance.AddResourceManager(resourceManager);
@@ -99,7 +96,6 @@ public class Translation : DependencyObject
 
 public class TranslationSource : INotifyPropertyChanged
 {
-    // WPF bindings register PropertyChanged event if the object supports it and update themselves when it is raised
     public event PropertyChangedEventHandler PropertyChanged;
 
     public static TranslationSource Instance { get; } = new();
@@ -112,7 +108,6 @@ public class TranslationSource : INotifyPropertyChanged
             {
                 currentCulture = value;
 
-                // string.Empty/null indicates that all properties have changed
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(string.Empty));
             }
         }

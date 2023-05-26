@@ -1,9 +1,9 @@
-﻿using System.ComponentModel;
+﻿using Extensions;
+using System.ComponentModel;
 using System.Drawing.Imaging;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using Extensions;
 using TwainControl.Properties;
 
 namespace TwainControl;

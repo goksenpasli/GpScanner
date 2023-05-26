@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Extensions.Controls;
+using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -10,8 +12,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
-using Extensions.Controls;
-using Microsoft.Win32;
 
 namespace Extensions;
 
@@ -140,7 +140,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
                         dc.DrawImage(imagesource, new Rect(0, 0, pd.PrintableAreaWidth, pd.PrintableAreaHeight));
                     }
 
-                    pd.PrintVisual(dv, "");
+                    pd.PrintVisual(dv, string.Empty);
                 }
 
                 return;
@@ -178,7 +178,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
                         dc.DrawImage(imagesource, new Rect(0, 0, pd.PrintableAreaWidth, pd.PrintableAreaHeight));
                     }
 
-                    pd.PrintVisual(dv, "");
+                    pd.PrintVisual(dv, string.Empty);
                 }
             }
         }, parameter => Source is not null);

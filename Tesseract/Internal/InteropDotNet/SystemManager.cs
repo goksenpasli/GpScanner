@@ -1,8 +1,4 @@
-﻿//  Copyright (c) 2014 Andrey Akinshin
-//  Project URL: https://github.com/AndreyAkinshin/InteropDotNet
-//  Distributed under the MIT License: http://opensource.org/licenses/MIT
-
-using System;
+﻿using System;
 
 namespace Tesseract.Internal.InteropDotNet
 {
@@ -15,7 +11,6 @@ namespace Tesseract.Internal.InteropDotNet
 
         public static OperatingSystem GetOperatingSystem()
         {
-            // Environment.OSVersion.Platform detects MacOS as Unix in .net core environment
 #if NETCORE || NETSTANDARD
             if(RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 return OperatingSystem.Windows;

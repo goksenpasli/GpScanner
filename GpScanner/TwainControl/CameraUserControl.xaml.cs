@@ -1,13 +1,13 @@
-﻿using System.ComponentModel;
+﻿using CatenaLogic.Windows.Presentation.WebcamPlayer;
+using Extensions;
+using Microsoft.Win32;
+using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using CatenaLogic.Windows.Presentation.WebcamPlayer;
-using Extensions;
-using Microsoft.Win32;
 
 namespace TwainControl;
 

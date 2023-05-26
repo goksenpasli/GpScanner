@@ -45,9 +45,9 @@ public class MaskedTextBox : TextBox
 
     public MaskedTextBox()
     {
-        _ = CommandBindings.Add(new CommandBinding(Reset, ResetCommand)); //handle reset
-        _ = CommandBindings.Add(new CommandBinding(ApplicationCommands.Paste, Paste)); //handle paste
-        _ = CommandBindings.Add(new CommandBinding(ApplicationCommands.Cut, null, CanCut)); //surpress cut
+        _ = CommandBindings.Add(new CommandBinding(Reset, ResetCommand));
+        _ = CommandBindings.Add(new CommandBinding(ApplicationCommands.Paste, Paste));
+        _ = CommandBindings.Add(new CommandBinding(ApplicationCommands.Cut, null, CanCut));
     }
 
     public event RoutedPropertyChangedEventHandler<object> ValueChanged {
@@ -282,7 +282,6 @@ public class MaskedTextBox : TextBox
         }
         catch
         {
-            //if an excpetion occurs revert back to original value
             _convertExceptionOccurred = true;
             return Value;
         }
@@ -300,7 +299,6 @@ public class MaskedTextBox : TextBox
             _convertExceptionOccurred = false;
         }
 
-        //I have only seen this occur while in Blend, but we need it here so the Blend designer doesn't crash.
         if (MaskProvider == null)
         {
             return value.ToString();
@@ -435,13 +433,10 @@ public class MaskedTextBox : TextBox
                 InsertText("\r");
             }
 
-            // We don't want the OnPreviewTextInput to be triggered for the Return/Enter key
-            // when it is not accepted.
             e.Handled = true;
         }
         else if (e.Key == Key.Escape)
         {
-            // We don't want the OnPreviewTextInput to be triggered at all for the Escape key.
             e.Handled = true;
         }
         else if (e.Key == Key.Tab)
@@ -552,7 +547,6 @@ public class MaskedTextBox : TextBox
 
     private void SyncTextAndValueProperties(DependencyProperty p, object newValue)
     {
-        //prevents recursive syncing properties
         if (_isSyncingTextAndValueProperties)
         {
             return;
@@ -560,7 +554,6 @@ public class MaskedTextBox : TextBox
 
         _isSyncingTextAndValueProperties = true;
 
-        //this only occures when the user typed in the value
         if (TextProperty == p && newValue != null)
         {
             SetValue(ValueProperty, ConvertTextToValue());
@@ -572,8 +565,6 @@ public class MaskedTextBox : TextBox
 
     private void UpdateMaskProvider(string mask)
     {
-        //do not create a mask provider if the Mask is empty, which can occur if the IncludePrompt and IncludeLiterals properties
-        //are set prior to the Mask.
         if (string.IsNullOrEmpty(mask))
         {
             return;
@@ -584,7 +575,7 @@ public class MaskedTextBox : TextBox
             IncludePrompt = IncludePrompt,
             IncludeLiterals = IncludeLiterals,
             PromptChar = PromptChar,
-            ResetOnSpace = false //should make this a property
+            ResetOnSpace = false
         };
     }
 

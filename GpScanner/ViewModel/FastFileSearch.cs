@@ -109,7 +109,6 @@ public static class Win32FileScanner
             {
                 do
                 {
-                    // Skip symlink (and junction?)
                     if (findData.dwFileAttributes.HasFlag(FileAttributes.ReparsePoint | FileAttributes.Directory) ||
                         !IsValidFile(findData))
                     {
@@ -124,7 +123,6 @@ public static class Win32FileScanner
 
                     if (findData.dwFileAttributes.HasFlag(FileAttributes.Directory))
                     {
-                        // Directory
                         if (maxDepth >= 0 && depth + 1 > maxDepth)
                         {
                             continue;
@@ -144,7 +142,6 @@ public static class Win32FileScanner
                     }
                     else
                     {
-                        // File
                         long filesize = GetFilesize(findData);
 
                         parent.AddFile(filesize);
@@ -155,8 +152,6 @@ public static class Win32FileScanner
                 } while (FindNextFile(handle, out findData));
             }
 
-            // Removed exception, as handle can be invalid if we dont have access.
-            // throw new DirectoryNotFoundException($"Failed to find directory: {path}");
         }
         finally
         {
@@ -176,7 +171,6 @@ public static class Win32FileScanner
             {
                 do
                 {
-                    // Skip symlink (and junction?)
                     if (findData.dwFileAttributes.HasFlag(FileAttributes.ReparsePoint | FileAttributes.Directory) ||
                         !IsValidFile(findData))
                     {
@@ -187,7 +181,6 @@ public static class Win32FileScanner
 
                     if (findData.dwFileAttributes.HasFlag(FileAttributes.Directory))
                     {
-                        // Directory
                         if (maxDepth >= 0 && depth + 1 > maxDepth)
                         {
                             continue;
@@ -198,18 +191,14 @@ public static class Win32FileScanner
                             yield return filePath;
                         }
 
-                        // yield return fullPath;
                     }
                     else
                     {
-                        // File
                         yield return fullPath;
                     }
                 } while (FindNextFile(handle, out findData));
             }
 
-            // Removed exception, as handle can be invalid if we dont have access.
-            // throw new DirectoryNotFoundException($"Failed to find directory: {path}");
         }
         finally
         {

@@ -81,7 +81,7 @@ namespace Tesseract
 
         public override string ToString()
         {
-            return string.Format("[Rect X={0}, Y={1}, Width={2}, Height={3}]", X1, Y1, Width, Height);
+            return $"[Rect X={X1}, Y={Y1}, Width={Width}, Height={Height}]";
         }
 
         #endregion ToString

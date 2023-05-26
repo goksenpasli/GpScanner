@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -9,7 +10,6 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using Microsoft.Win32;
 
 namespace GpScanner.ViewModel;
 
@@ -155,7 +155,7 @@ public static class StillImageHelper
             {
                 foreach (string eventType in events.GetSubKeyNames())
                 {
-                    events.DeleteSubKey(eventType + @"\{143762b8-772a-47af-bae6-08e0a1d0ca89}", false);
+                    events.DeleteSubKey($@"{eventType}\{{143762b8-772a-47af-bae6-08e0a1d0ca89}}", false);
                 }
             }
         }

@@ -1,10 +1,11 @@
-﻿using System;
-using System.IO;
-using System.Windows;
-using Extensions;
+﻿using Extensions;
 using GpScanner.Properties;
 using PdfCompressor;
 using PdfSharp.Pdf;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Windows;
 using TwainControl;
 
 namespace GpScanner.ViewModel;
@@ -20,7 +21,7 @@ public class PdfCompressorControl : Compressor
                 PdfDocument pdfDocument;
                 using (PdfiumViewer.PdfDocument loadedpdfdoc = PdfiumViewer.PdfDocument.Load(LoadedPdfPath))
                 {
-                    System.Collections.Generic.List<System.Windows.Media.Imaging.BitmapImage> images = await AddToList(loadedpdfdoc, Dpi);
+                    List<System.Windows.Media.Imaging.BitmapImage> images = await AddToListAsync(loadedpdfdoc, Dpi);
                     pdfDocument = await GeneratePdf(images, UseMozJpeg, Quality, Dpi);
                     images = null;
                 }

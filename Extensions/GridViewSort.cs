@@ -125,7 +125,7 @@ public class GridViewSort
                 {
                     if (o is ListView listView)
                     {
-                        if (GetCommand(listView) == null) // Don't change click handler if a command is set
+                        if (GetCommand(listView) == null)
                         {
                             bool oldValue = (bool)e.OldValue;
                             bool newValue = (bool)e.NewValue;
@@ -156,7 +156,7 @@ public class GridViewSort
                 {
                     if (o is ItemsControl listView)
                     {
-                        if (!GetAutoSort(listView)) // Don't change click handler if AutoSort enabled
+                        if (!GetAutoSort(listView))
                         {
                             if (e.OldValue != null && e.NewValue == null)
                             {

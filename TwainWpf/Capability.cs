@@ -19,9 +19,8 @@ namespace TwainWpf
             Capability c = new Capability(capability, TwainType.Int16, applicationId, sourceId);
             BasicCapabilityResult capResult = c.GetBasicValue();
 
-            // Check that the device supports the capability
             return capResult.ConditionCode != ConditionCode.Success
-                ? throw new TwainException(string.Format("Unsupported capability {0}", capability),
+                ? throw new TwainException($"Unsupported capability {capability}",
                     capResult.ErrorCode, capResult.ConditionCode)
                 : capResult.BoolValue;
         }
@@ -31,32 +30,22 @@ namespace TwainWpf
             Capability c = new Capability(capability, twainType, applicationId, sourceId);
             BasicCapabilityResult basicValue = c.GetBasicValue();
 
-            // Check that the device supports the capability
             if (basicValue.ConditionCode != ConditionCode.Success)
             {
-                throw new TwainException(string.Format("Unsupported capability {0}", capability), basicValue.ErrorCode, basicValue.ConditionCode);
+                throw new TwainException($"Unsupported capability {capability}", basicValue.ErrorCode, basicValue.ConditionCode);
             }
             if (basicValue.RawBasicValue == rawValue)
             {
-                // Value is already set
                 return rawValue;
             }
 
             // TODO: Check the set of Available Values that are supported by the Source for that
-            // capability.
-
-            //if (value in set of available values)
-            //{
             c.SetValue(rawValue);
 
-            //}
-
-            // Verify that the new values have been accepted by the Source.
             basicValue = c.GetBasicValue();
 
-            // Check that the device supports the capability
             return basicValue.ConditionCode != ConditionCode.Success
-                ? throw new TwainException(string.Format("Unexpected failure verifying capability {0}", capability), basicValue.ErrorCode, basicValue.ConditionCode)
+                ? throw new TwainException($"Unexpected failure verifying capability {capability}", basicValue.ErrorCode, basicValue.ConditionCode)
                 : basicValue.RawBasicValue;
         }
 
@@ -70,33 +59,29 @@ namespace TwainWpf
             Capability c = new Capability(capability, TwainType.Bool, applicationId, sourceId);
             BasicCapabilityResult capResult = c.GetBasicValue();
 
-            // Check that the device supports the capability
             if (capResult.ConditionCode != ConditionCode.Success)
             {
-                throw new TwainException(string.Format("Unsupported capability {0}", capability),
+                throw new TwainException($"Unsupported capability {capability}",
                     capResult.ErrorCode, capResult.ConditionCode);
             }
 
             if (capResult.BoolValue == value)
             {
-                // Value is already set
                 return;
             }
 
             c.SetValue(value);
 
-            // Verify that the new values have been accepted by the Source.
             capResult = c.GetBasicValue();
 
-            // Check that the device supports the capability
             if (capResult.ConditionCode != ConditionCode.Success)
             {
-                throw new TwainException(string.Format("Unexpected failure verifying capability {0}", capability),
+                throw new TwainException($"Unexpected failure verifying capability {capability}",
                     capResult.ErrorCode, capResult.ConditionCode);
             }
             else if (capResult.BoolValue != value)
             {
-                throw new TwainException(string.Format("Failed to set value for capability {0}", capability),
+                throw new TwainException($"Failed to set value for capability {capability}",
                     capResult.ErrorCode, capResult.ConditionCode);
             }
         }
