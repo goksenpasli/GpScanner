@@ -60,6 +60,14 @@
                                     Content="MOZJPEG"
                                     IsChecked="{Binding UseMozJpeg, RelativeSource={RelativeSource TemplatedParent}}"
                                     IsEnabled="{Binding Source={x:Static mozjpeg:MozJpeg.MozJpegDllExists}}" />
+                                <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                    IsChecked="{Binding BlackAndWhite, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <CheckBox.Content>
+                                        <TextBlock>
+                                            <Run Text="B" /><Run Foreground="White" Text="W" />
+                                        </TextBlock>
+                                    </CheckBox.Content>
+                                </CheckBox>
                                 <ProgressBar Height="16"
                                     Maximum="1" Minimum="0"
                                     Value="{Binding CompressionProgress, RelativeSource={RelativeSource TemplatedParent}}" />
