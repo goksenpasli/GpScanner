@@ -252,6 +252,13 @@
                                                         <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc REVERSE}" />
                                                     </StackPanel>
                                                 </Button>
+                                                <TextBlock VerticalAlignment="Center">
+                                                    <Run Text="{twainctrl:Loc ALL}" />
+                                                    <LineBreak />
+                                                    <Run Text="{twainctrl:Loc PAGENUMBER}" />
+                                                </TextBlock>
+                                                <Extensions:NumericUpDownControl Minimum="1" Orientation="Horizontal" SmallChange="1"
+                                                    Value="{Binding AllPdfPage, Mode=OneWayToSource}" />
                                             </StackPanel>
                                         </GroupBox>
                                     </Extensions:ContentToggleButton.OverContent>

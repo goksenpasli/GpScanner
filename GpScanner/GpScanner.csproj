@@ -125,6 +125,7 @@
     <Compile Include="TranslateView.xaml.cs">
       <DependentUpon>TranslateView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\AllPdfViewerControl.cs" />
     <Compile Include="ViewModel\BatchTxtOcr.cs" />
     <Compile Include="ViewModel\Data.cs" />
     <Compile Include="ViewModel\DataSerialize.cs" />

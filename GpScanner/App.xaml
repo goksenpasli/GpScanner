@@ -356,6 +356,7 @@
                     </WrapPanel>
                     <PdfViewer:PdfViewer x:Name="PdfVwr"
                         Grid.Row="1"
+                        ViewModel:AllPdfViewerControl.AllPageNumber="{Binding DataContext.AllPdfPage, RelativeSource={RelativeSource AncestorType=Window}}"
                         AllowDrop="True" AutoFitContent="True"
                         Dpi="{Binding DefaultThumbNailDpi, Source={x:Static properties:Settings.Default}}"
                         OpenButtonVisibility="Collapsed"
