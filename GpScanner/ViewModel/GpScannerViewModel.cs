@@ -300,10 +300,13 @@ public class GpScannerViewModel : InpcBase
             parameter => true);
 
         CheckUpdate = new RelayCommand<object>(
-            parameter => _ =
-                Process.Start(
+            parameter =>
+            {
+                FileVersionInfo version = FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess().MainModule.FileName);
+                _ = Process.Start(
                     "twux32.exe",
-                    $"/w:{new WindowInteropHelper(Application.Current.MainWindow).Handle} https://github.com/goksenpasli/GpScanner/releases/download/2.0/GpScanner-Setup.txt"),
+                    $"/w:{new WindowInteropHelper(Application.Current.MainWindow).Handle} https://github.com/goksenpasli/GpScanner/releases/download/{version.FileMajorPart}.{version.FileMinorPart}/GpScanner-Setup.txt");
+            },
             parameter => File.Exists("twux32.exe"));
 
         SavePatchProfile = new RelayCommand<object>(
