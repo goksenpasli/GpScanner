@@ -16,7 +16,7 @@ public class ThumbnailTranslateViewModel : TranslateViewModel
 
     private static void AttachedTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is TranslateView translateView && translateView.DataContext is TranslateViewModel translateViewModel)
+        if(d is TranslateView translateView && translateView.DataContext is TranslateViewModel translateViewModel)
         {
             translateViewModel.MetinBoxIsreadOnly = true;
             translateViewModel.Çeviri = string.Empty;

@@ -12,7 +12,7 @@ public partial class PdfSettings : UserControl
 
     private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
     {
-        if (DataContext is TwainCtrl twainCtrl)
+        if(DataContext is TwainCtrl twainCtrl)
         {
             twainCtrl.Scanner.PdfPassword = ((PasswordBox)sender).SecurePassword;
         }

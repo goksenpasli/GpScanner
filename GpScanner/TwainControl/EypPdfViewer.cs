@@ -1,11 +1,11 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Windows;
-using Extensions;
+﻿using Extensions;
 using Microsoft.Win32;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
+using System;
+using System.IO;
+using System.Linq;
+using System.Windows;
 using TwainControl.Properties;
 
 namespace TwainControl;
@@ -22,20 +22,20 @@ public class EypPdfViewer : PdfViewer.PdfViewer
             {
                 OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = "Doküman (*.pdf;*.eyp)|*.pdf;*.eyp" };
                 openFileDialog.Multiselect = false;
-                if (openFileDialog.ShowDialog() == true)
+                if(openFileDialog.ShowDialog() == true)
                 {
-                    if (Path.GetExtension(openFileDialog.FileName.ToLower()) == ".eyp")
+                    if(Path.GetExtension(openFileDialog.FileName.ToLower()) == ".eyp")
                     {
                         string eypfile = ExtractEypFilesToPdf(openFileDialog.FileName);
-                        if (PdfReader.TestPdfFile(eypfile) == 0)
+                        if(PdfReader.TestPdfFile(eypfile) == 0)
                         {
                             return;
                         }
                         PdfFilePath = eypfile;
                     }
-                    if (Path.GetExtension(openFileDialog.FileName.ToLower()) == ".pdf")
+                    if(Path.GetExtension(openFileDialog.FileName.ToLower()) == ".pdf")
                     {
-                        if (PdfReader.TestPdfFile(openFileDialog.FileName) == 0)
+                        if(PdfReader.TestPdfFile(openFileDialog.FileName) == 0)
                         {
                             return;
                         }
@@ -50,7 +50,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
 
     public void AddToHistoryList(string pdffilepath)
     {
-        if (!Settings.Default.PdfLoadHistory.Contains(PdfFilePath))
+        if(!Settings.Default.PdfLoadHistory.Contains(PdfFilePath))
         {
             _ = Settings.Default.PdfLoadHistory.Add(pdffilepath);
             Settings.Default.Save();
@@ -69,12 +69,12 @@ public class EypPdfViewer : PdfViewer.PdfViewer
     protected override void OnDrop(DragEventArgs e)
     {
         string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
-        if (droppedfiles?.Length > 0)
+        if(droppedfiles?.Length > 0)
         {
-            if (Path.GetExtension(droppedfiles[0]) == ".eyp")
+            if(Path.GetExtension(droppedfiles[0]) == ".eyp")
             {
                 string eyppath = ExtractEypFilesToPdf(droppedfiles[0]);
-                if (PdfReader.TestPdfFile(eyppath) != 0)
+                if(PdfReader.TestPdfFile(eyppath) != 0)
                 {
                     PdfFilePath = eyppath;
                 }
@@ -82,7 +82,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                 return;
             }
 
-            if (PdfReader.TestPdfFile(droppedfiles[0]) != 0)
+            if(PdfReader.TestPdfFile(droppedfiles[0]) != 0)
             {
                 PdfFilePath = droppedfiles[0];
             }

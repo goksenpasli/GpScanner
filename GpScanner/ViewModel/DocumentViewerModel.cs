@@ -1,4 +1,9 @@
-﻿using System;
+﻿using Extensions;
+using GpScanner.Properties;
+using Microsoft.Win32;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -7,11 +12,6 @@ using System.Linq;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Extensions;
-using GpScanner.Properties;
-using Microsoft.Win32;
-using PdfSharp.Drawing;
-using PdfSharp.Pdf;
 using TwainControl;
 
 namespace GpScanner.ViewModel;
@@ -40,7 +40,7 @@ public class DocumentViewerModel : InpcBase
         AddFileToControlPanel = new RelayCommand<object>(
             async parameter =>
             {
-                if (parameter is ImageSource imageSource)
+                if(parameter is ImageSource imageSource)
                 {
                     MemoryStream ms = new(imageSource.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg));
                     BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrame(ms, ToolBox.Paper);
@@ -59,7 +59,7 @@ public class DocumentViewerModel : InpcBase
             parameter =>
             {
                 SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası (*.pdf)|*.pdf", FileName = "File.pdf" };
-                if (saveFileDialog.ShowDialog() == true)
+                if(saveFileDialog.ShowDialog() == true)
                 {
                     using PdfDocument document = new();
                     PdfPage page = document.AddPage();
@@ -78,11 +78,13 @@ public class DocumentViewerModel : InpcBase
 
     public ICommand Back { get; }
 
-    public IEnumerable<string> DirectoryAllPdfFiles {
+    public IEnumerable<string> DirectoryAllPdfFiles
+    {
         get => directoryAllPdfFiles;
 
-        set {
-            if (directoryAllPdfFiles != value)
+        set
+        {
+            if(directoryAllPdfFiles != value)
             {
                 directoryAllPdfFiles = value;
                 OnPropertyChanged(nameof(DirectoryAllPdfFiles));
@@ -92,11 +94,13 @@ public class DocumentViewerModel : InpcBase
 
     public ICommand Forward { get; }
 
-    public byte[] ImgData {
+    public byte[] ImgData
+    {
         get => ımgData;
 
-        set {
-            if (ımgData != value)
+        set
+        {
+            if(ımgData != value)
             {
                 ımgData = value;
                 OnPropertyChanged(nameof(ImgData));
@@ -104,11 +108,13 @@ public class DocumentViewerModel : InpcBase
         }
     }
 
-    public int Index {
+    public int Index
+    {
         get => ındex;
 
-        set {
-            if (ındex != value)
+        set
+        {
+            if(ındex != value)
             {
                 ındex = value;
                 OnPropertyChanged(nameof(Index));
@@ -116,11 +122,13 @@ public class DocumentViewerModel : InpcBase
         }
     }
 
-    public string OcrText {
+    public string OcrText
+    {
         get => ocrText;
 
-        set {
-            if (ocrText != value)
+        set
+        {
+            if(ocrText != value)
             {
                 ocrText = value;
                 OnPropertyChanged(nameof(OcrText));
@@ -128,11 +136,13 @@ public class DocumentViewerModel : InpcBase
         }
     }
 
-    public string PdfFileContent {
+    public string PdfFileContent
+    {
         get => string.Join(" ", GpScannerViewModel.DataYükle()?.Where(z => z.FileName == PdfFilePath).Select(z => z.FileContent));
 
-        set {
-            if (pdfFileContent != value)
+        set
+        {
+            if(pdfFileContent != value)
             {
                 pdfFileContent = value;
                 OnPropertyChanged(nameof(PdfFileContent));
@@ -140,11 +150,13 @@ public class DocumentViewerModel : InpcBase
         }
     }
 
-    public string PdfFilePath {
+    public string PdfFilePath
+    {
         get => pdfFilePath;
 
-        set {
-            if (pdfFilePath != value)
+        set
+        {
+            if(pdfFilePath != value)
             {
                 pdfFilePath = value;
                 OnPropertyChanged(nameof(PdfFilePath));
@@ -156,11 +168,13 @@ public class DocumentViewerModel : InpcBase
 
     public ICommand SaveImageAsPdfFile { get; }
 
-    public Scanner Scanner {
+    public Scanner Scanner
+    {
         get => scanner;
 
-        set {
-            if (scanner != value)
+        set
+        {
+            if(scanner != value)
             {
                 scanner = value;
                 OnPropertyChanged(nameof(Scanner));
@@ -168,11 +182,13 @@ public class DocumentViewerModel : InpcBase
         }
     }
 
-    public string Title {
+    public string Title
+    {
         get => Path.GetFileName(PdfFilePath);
 
-        set {
-            if (title != value)
+        set
+        {
+            if(title != value)
             {
                 title = value;
                 OnPropertyChanged(nameof(Title));
@@ -198,7 +214,7 @@ public class DocumentViewerModel : InpcBase
 
     private async void DocumentViewerModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName is "ImgData" && ImgData is not null && !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang))
+        if(e.PropertyName is "ImgData" && ImgData is not null && !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang))
         {
             ObservableCollection<Ocr.OcrData> ocrtext = await Ocr.Ocr.OcrAsyc(ImgData, Settings.Default.DefaultTtsLang);
             OcrText = string.Join(" ", ocrtext?.Select(z => z.Text));

@@ -12,12 +12,12 @@ namespace Tesseract.Internal.InteropDotNet
         public static T CreateInstance<T>() where T : class
         {
             Type interfaceType = typeof(T);
-            if (!typeof(T).IsInterface)
+            if(!typeof(T).IsInterface)
             {
                 throw new Exception($"The type {interfaceType.Name} should be an interface");
             }
 
-            if (!interfaceType.IsPublic)
+            if(!interfaceType.IsPublic)
             {
                 throw new Exception($"The interface {interfaceType.Name} should be public");
             }
@@ -46,7 +46,7 @@ namespace Tesseract.Internal.InteropDotNet
         {
             MethodInfo[] methodInfoArray = interfaceType.GetMethods();
             MethodItem[] methods = new MethodItem[methodInfoArray.Length];
-            for (int i = 0; i < methodInfoArray.Length; i++)
+            for(int i = 0; i < methodInfoArray.Length; i++)
             {
                 methods[i] = new MethodItem
                 {
@@ -68,7 +68,7 @@ namespace Tesseract.Internal.InteropDotNet
                 CallingConventions.Standard,
                 new[] { typeof(LibraryLoader) });
             _ = ctorBuilder.DefineParameter(1, ParameterAttributes.HasDefault, "loader");
-            if (typeBuilder.BaseType == null)
+            if(typeBuilder.BaseType == null)
             {
                 throw new Exception("There is no a BaseType of typeBuilder");
             }
@@ -77,10 +77,10 @@ namespace Tesseract.Internal.InteropDotNet
                 throw new Exception("There is no a default constructor of BaseType of typeBuilder");
 
             List<string> libraries = new List<string>();
-            foreach (MethodItem method in methods)
+            foreach(MethodItem method in methods)
             {
                 string libraryName = method.DllImportAttribute.LibraryFileName;
-                if (!libraries.Contains(libraryName))
+                if(!libraries.Contains(libraryName))
                 {
                     libraries.Add(libraryName);
                 }
@@ -88,7 +88,7 @@ namespace Tesseract.Internal.InteropDotNet
 
             ILGenerator ilGen = ctorBuilder.GetILGenerator();
 
-            for (int i = 0; i < libraries.Count; i++)
+            for(int i = 0; i < libraries.Count; i++)
             {
                 _ = ilGen.DeclareLocal(typeof(IntPtr));
             }
@@ -98,7 +98,7 @@ namespace Tesseract.Internal.InteropDotNet
             ilGen.Emit(OpCodes.Ldarg_0);
 
             ilGen.Emit(OpCodes.Call, baseCtor);
-            for (int i = 0; i < libraries.Count; i++)
+            for(int i = 0; i < libraries.Count; i++)
             {
                 string library = libraries[i];
 
@@ -113,7 +113,7 @@ namespace Tesseract.Internal.InteropDotNet
                 ilGen.Emit(OpCodes.Stloc, i);
             }
 
-            foreach (MethodItem method in methods)
+            foreach(MethodItem method in methods)
             {
                 int libraryIndex = libraries.IndexOf(method.DllImportAttribute.LibraryFileName);
                 string methodName = method.DllImportAttribute.EntryPoint ?? method.Info.Name;
@@ -148,7 +148,7 @@ namespace Tesseract.Internal.InteropDotNet
 
         private static void ImplementDelegates(string assemblyName, ModuleBuilder moduleBuilder, IEnumerable<MethodItem> methods)
         {
-            foreach (MethodItem method in methods)
+            foreach(MethodItem method in methods)
             {
                 method.DelegateType = ImplementMethodDelegate(assemblyName, moduleBuilder, method);
             }
@@ -156,7 +156,7 @@ namespace Tesseract.Internal.InteropDotNet
 
         private static void ImplementFields(TypeBuilder typeBuilder, IEnumerable<MethodItem> methods)
         {
-            foreach (MethodItem method in methods)
+            foreach(MethodItem method in methods)
             {
                 string fieldName = $"{method.Info.Name}Field";
                 method.FieldInfo = typeBuilder.DefineField(fieldName, method.DelegateType, FieldAttributes.Private);
@@ -216,7 +216,7 @@ namespace Tesseract.Internal.InteropDotNet
 
         private static void ImplementMethods(TypeBuilder typeBuilder, IEnumerable<MethodItem> methods)
         {
-            foreach (MethodItem method in methods)
+            foreach(MethodItem method in methods)
             {
                 LightParameterInfo[] infoArray = GetParameterInfoArray(method.Info);
                 MethodBuilder methodBuilder = DefineMethod(
@@ -232,7 +232,7 @@ namespace Tesseract.Internal.InteropDotNet
 
                 ilGen.Emit(OpCodes.Ldfld, method.FieldInfo);
 
-                for (int i = 0; i < infoArray.Length; i++)
+                for(int i = 0; i < infoArray.Length; i++)
                 {
                     LdArg(ilGen, i + 1);
                 }
@@ -256,7 +256,7 @@ namespace Tesseract.Internal.InteropDotNet
         {
             MethodBuilder methodBuilder =
                 typeBuilder.DefineMethod(name, attributes, returnType, GetParameterTypeArray(infoArray));
-            for (int parameterIndex = 0; parameterIndex < infoArray.Length; parameterIndex++)
+            for(int parameterIndex = 0; parameterIndex < infoArray.Length; parameterIndex++)
             {
                 _ = methodBuilder.DefineParameter(parameterIndex + 1, infoArray[parameterIndex].Attributes, infoArray[parameterIndex].Name);
             }
@@ -274,7 +274,7 @@ namespace Tesseract.Internal.InteropDotNet
 
         private static void LdArg(ILGenerator ilGen, int index)
         {
-            switch (index)
+            switch(index)
             {
                 case 0:
                     ilGen.Emit(OpCodes.Ldarg_0);
@@ -313,27 +313,27 @@ namespace Tesseract.Internal.InteropDotNet
         {
             ParameterInfo[] parameters = methodInfo.GetParameters();
             List<LightParameterInfo> infoList = new List<LightParameterInfo>();
-            for (int i = 0; i < parameters.Length; i++)
+            for(int i = 0; i < parameters.Length; i++)
             {
-                if (mode != InfoArrayMode.EndInvoke || parameters[i].ParameterType.IsByRef)
+                if(mode != InfoArrayMode.EndInvoke || parameters[i].ParameterType.IsByRef)
                 {
                     infoList.Add(new LightParameterInfo(parameters[i]));
                 }
             }
 
-            if (mode == InfoArrayMode.BeginInvoke)
+            if(mode == InfoArrayMode.BeginInvoke)
             {
                 infoList.Add(new LightParameterInfo(typeof(AsyncCallback), "callback"));
                 infoList.Add(new LightParameterInfo(typeof(object), "object"));
             }
 
-            if (mode == InfoArrayMode.EndInvoke)
+            if(mode == InfoArrayMode.EndInvoke)
             {
                 infoList.Add(new LightParameterInfo(typeof(IAsyncResult), "result"));
             }
 
             LightParameterInfo[] infoArray = new LightParameterInfo[infoList.Count];
-            for (int i = 0; i < infoList.Count; i++)
+            for(int i = 0; i < infoList.Count; i++)
             {
                 infoArray[i] = infoList[i];
             }
@@ -344,7 +344,7 @@ namespace Tesseract.Internal.InteropDotNet
         private static Type[] GetParameterTypeArray(LightParameterInfo[] infoArray)
         {
             Type[] typeArray = new Type[infoArray.Length];
-            for (int i = 0; i < infoArray.Length; i++)
+            for(int i = 0; i < infoArray.Length; i++)
             {
                 typeArray[i] = infoArray[i].Type;
             }
@@ -402,7 +402,7 @@ namespace Tesseract.Internal.InteropDotNet
         private static string GetSubstantialName(Type interfaceType)
         {
             string name = interfaceType.Name;
-            if (name.StartsWith("I"))
+            if(name.StartsWith("I"))
             {
                 name = name.Substring(1);
             }

@@ -8,12 +8,12 @@ namespace DvdBurner
         public static string GetName(int value)
         {
             Type t = typeof(IMAPIReturnValues);
-            foreach (FieldInfo field in t.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance))
+            foreach(FieldInfo field in t.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance))
             {
                 ulong constValue = (ulong)field.GetValue(null);
                 ulong errorValue = unchecked((uint)value);
 
-                if (constValue == errorValue)
+                if(constValue == errorValue)
                 {
                     return field.Name;
                 }

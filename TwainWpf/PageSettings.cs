@@ -23,11 +23,13 @@ namespace TwainWpf
         /// Gets or sets the page orientation.
         /// </summary>
         /// <value>The orientation.</value>
-        public Orientation Orientation {
+        public Orientation Orientation
+        {
             get => _orientation;
 
-            set {
-                if (value != _orientation)
+            set
+            {
+                if(value != _orientation)
                 {
                     _orientation = value;
                     OnPropertyChanged(nameof(Orientation));
@@ -39,11 +41,13 @@ namespace TwainWpf
         /// Gets or sets the Page Size.
         /// </summary>
         /// <value>The size.</value>
-        public PageType Size {
+        public PageType Size
+        {
             get => _size;
 
-            set {
-                if (value != _size)
+            set
+            {
+                if(value != _size)
                 {
                     _size = value;
                     OnPropertyChanged("PaperSize");

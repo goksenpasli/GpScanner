@@ -42,7 +42,8 @@ public class SplitButton : Button
 
     public PlacementMode PlacementMode { get => (PlacementMode)GetValue(PlacementModeProperty); set => SetValue(PlacementModeProperty, value); }
 
-    public bool SplitContentPartIsEnabled {
+    public bool SplitContentPartIsEnabled
+    {
         get => (bool)GetValue(SplitContentPartIsEnabledProperty);
         set => SetValue(SplitContentPartIsEnabledProperty, value);
     }

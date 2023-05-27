@@ -129,11 +129,10 @@ namespace Tesseract
 
         public static void SetDataByte(uint* data, int index, uint value)
         {
-            if (IntPtr.Size == 8)
+            if(IntPtr.Size == 8)
             {
                 *(byte*)((ulong)((byte*)data + index) ^ 3) = (byte)value;
-            }
-            else
+            } else
             {
                 *(byte*)((uint)((byte*)data + index) ^ 3) = (byte)value;
             }
@@ -158,11 +157,10 @@ namespace Tesseract
 
         public static void SetDataTwoByte(uint* data, int index, uint value)
         {
-            if (IntPtr.Size == 8)
+            if(IntPtr.Size == 8)
             {
                 *(ushort*)((ulong)((ushort*)data + index) ^ 2) = (ushort)value;
-            }
-            else
+            } else
             {
                 *(ushort*)((uint)((ushort*)data + index) ^ 2) = (ushort)value;
             }

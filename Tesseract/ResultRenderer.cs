@@ -83,7 +83,7 @@ namespace Tesseract
         {
             base.Dispose(disposing);
 
-            if (_fontDirectoryHandle != IntPtr.Zero)
+            if(_fontDirectoryHandle != IntPtr.Zero)
             {
                 Marshal.FreeHGlobal(_fontDirectoryHandle);
                 _fontDirectoryHandle = IntPtr.Zero;
@@ -102,8 +102,10 @@ namespace Tesseract
     /// </remarks>
     public abstract class ResultRenderer : DisposableBase, IResultRenderer
     {
-        public int PageNumber {
-            get {
+        public int PageNumber
+        {
+            get
+            {
                 VerifyNotDisposed();
 
                 return TessApi.Native.ResultRendererImageNum(Handle);
@@ -141,7 +143,7 @@ namespace Tesseract
                 title);
 
             IntPtr titlePtr = Marshal.StringToHGlobalAnsi(title);
-            if (TessApi.Native.ResultRendererBeginDocument(Handle, titlePtr) == 0)
+            if(TessApi.Native.ResultRendererBeginDocument(Handle, titlePtr) == 0)
             {
                 Marshal.FreeHGlobal(titlePtr);
 
@@ -160,18 +162,17 @@ namespace Tesseract
         {
             try
             {
-                if (disposing)
+                if(disposing)
                 {
-                    if (_currentDocumentHandle != null)
+                    if(_currentDocumentHandle != null)
                     {
                         _currentDocumentHandle.Dispose();
                         _currentDocumentHandle = null;
                     }
                 }
-            }
-            finally
+            } finally
             {
-                if (_handle.Handle != IntPtr.Zero)
+                if(_handle.Handle != IntPtr.Zero)
                 {
                     TessApi.Native.DeleteResultRenderer(_handle);
                     _handle = new HandleRef(this, IntPtr.Zero);
@@ -210,17 +211,16 @@ namespace Tesseract
             {
                 try
                 {
-                    if (disposing)
+                    if(disposing)
                     {
                         Guard.Verify(_renderer._currentDocumentHandle == this, "Expected the Result Render's active document to be this document.");
 
                         _ = TessApi.Native.ResultRendererEndDocument(_renderer._handle);
                         _renderer._currentDocumentHandle = null;
                     }
-                }
-                finally
+                } finally
                 {
-                    if (_titlePtr != IntPtr.Zero)
+                    if(_titlePtr != IntPtr.Zero)
                     {
                         Marshal.FreeHGlobal(_titlePtr);
                         _titlePtr = IntPtr.Zero;
@@ -291,11 +291,11 @@ namespace Tesseract
         {
             List<IResultRenderer> renderers = new List<IResultRenderer>();
 
-            foreach (RenderedFormat format in outputFormats)
+            foreach(RenderedFormat format in outputFormats)
             {
                 IResultRenderer renderer = null;
 
-                switch (format)
+                switch(format)
                 {
                     case RenderedFormat.TEXT:
                         renderer = CreateTextRenderer(outputbase);

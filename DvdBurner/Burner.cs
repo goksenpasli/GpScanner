@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Extensions;
+using IMAPI2;
+using IMAPI2FS;
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
-using Extensions;
-using IMAPI2;
-using IMAPI2FS;
 using Application = System.Windows.Application;
 using Control = System.Windows.Controls.Control;
 using MessageBox = System.Windows.MessageBox;
@@ -29,7 +29,7 @@ namespace DvdBurner
             BurnDvd = new RelayCommand<object>(
                 parameter =>
                 {
-                    if (Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
+                    if(Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
                     {
                         _ = MessageBox.Show(WarnText);
                         return;
@@ -47,7 +47,7 @@ namespace DvdBurner
                             try
                             {
                                 dynamic g_DiscMaster = new MsftDiscMaster2();
-                                if (g_DiscMaster.Count > 0)
+                                if(g_DiscMaster.Count > 0)
                                 {
                                     dynamic uniqueId;
                                     recorder = new MsftDiscRecorder2();
@@ -73,14 +73,12 @@ namespace DvdBurner
                                     dataWriter.ForceOverwrite = true;
                                     dataWriter.Write(Stream);
                                 }
-                            }
-                            catch (Exception ex)
+                            } catch(Exception ex)
                             {
                                 ActionText = ex.Message;
-                            }
-                            finally
+                            } finally
                             {
-                                if (Eject)
+                                if(Eject)
                                 {
                                     recorder?.EjectMedia();
                                 }
@@ -93,7 +91,7 @@ namespace DvdBurner
                 parameter =>
                 {
                     FolderBrowserDialog dialog = new FolderBrowserDialog { Description = "Yazılacak Klasörü Seçin." };
-                    if (dialog.ShowDialog() == DialogResult.OK)
+                    if(dialog.ShowDialog() == DialogResult.OK)
                     {
                         BurnDirectory = dialog.SelectedPath;
                     }
@@ -103,7 +101,7 @@ namespace DvdBurner
             EraseDvd = new RelayCommand<object>(
                 parameter =>
                 {
-                    if (Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
+                    if(Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
                     {
                         _ = MessageBox.Show(WarnText);
                         return;
@@ -119,7 +117,7 @@ namespace DvdBurner
                                 dynamic uniqueId;
                                 dynamic Index = 0;
                                 MsftDiscFormat2Erase discFormatErase = null;
-                                if (g_DiscMaster.Count > 0)
+                                if(g_DiscMaster.Count > 0)
                                 {
                                     recorder = new MsftDiscRecorder2();
                                     uniqueId = g_DiscMaster.Item(Index);
@@ -127,14 +125,12 @@ namespace DvdBurner
                                     discFormatErase = new MsftDiscFormat2Erase { Recorder = recorder, ClientName = AppName, FullErase = false };
                                     discFormatErase.EraseMedia();
                                 }
-                            }
-                            catch (Exception ex)
+                            } catch(Exception ex)
                             {
                                 ActionText = ex.Message;
-                            }
-                            finally
+                            } finally
                             {
-                                if (Eject)
+                                if(Eject)
                                 {
                                     recorder?.EjectMedia();
                                 }
@@ -146,11 +142,13 @@ namespace DvdBurner
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public string ActionText {
+        public string ActionText
+        {
             get => actionText;
 
-            set {
-                if (actionText != value)
+            set
+            {
+                if(actionText != value)
                 {
                     actionText = value;
                     OnPropertyChanged(nameof(ActionText));
@@ -162,11 +160,13 @@ namespace DvdBurner
 
         public RelayCommand<object> BurnDvd { get; }
 
-        public string CdLabel {
+        public string CdLabel
+        {
             get => cdLabel;
 
-            set {
-                if (cdLabel != value)
+            set
+            {
+                if(cdLabel != value)
                 {
                     cdLabel = value;
                     OnPropertyChanged(nameof(CdLabel));
@@ -174,11 +174,13 @@ namespace DvdBurner
             }
         }
 
-        public bool Eject {
+        public bool Eject
+        {
             get => eject;
 
-            set {
-                if (eject != value)
+            set
+            {
+                if(eject != value)
                 {
                     eject = value;
                     OnPropertyChanged(nameof(Eject));
@@ -188,11 +190,13 @@ namespace DvdBurner
 
         public RelayCommand<object> EraseDvd { get; }
 
-        public bool ProgressIndeterminate {
+        public bool ProgressIndeterminate
+        {
             get => progressIndeterminate;
 
-            set {
-                if (progressIndeterminate != value)
+            set
+            {
+                if(progressIndeterminate != value)
                 {
                     progressIndeterminate = value;
                     OnPropertyChanged(nameof(ProgressIndeterminate));
@@ -200,11 +204,13 @@ namespace DvdBurner
             }
         }
 
-        public double ProgressValue {
+        public double ProgressValue
+        {
             get => progressValue;
 
-            set {
-                if (progressValue != value)
+            set
+            {
+                if(progressValue != value)
                 {
                     progressValue = value;
                     OnPropertyChanged(nameof(ProgressValue));
@@ -238,7 +244,7 @@ namespace DvdBurner
         {
             try
             {
-                switch ((int)progress.CurrentAction)
+                switch((int)progress.CurrentAction)
                 {
                     case (int)IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_CALIBRATING_POWER:
                         ActionText = "Kalibrasyon Gücü (OPC).";
@@ -289,8 +295,7 @@ namespace DvdBurner
                         ActionText = "Bilinmeyen İşlem." + progress?.CurrentAction.ToString();
                         break;
                 }
-            }
-            catch (Exception ex)
+            } catch(Exception ex)
             {
                 ActionText = $"Hata{ex.Message}";
             }

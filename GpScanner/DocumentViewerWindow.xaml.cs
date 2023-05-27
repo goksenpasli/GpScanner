@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Extensions;
+using GpScanner.ViewModel;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Extensions;
-using GpScanner.ViewModel;
 using TwainControl;
 
 namespace GpScanner;
@@ -40,7 +40,7 @@ public partial class DocumentViewerWindow : Window
 
     private void DocumentViewer_MouseDown(object sender, MouseButtonEventArgs e)
     {
-        if (e.OriginalSource is Image img &&
+        if(e.OriginalSource is Image img &&
             img.Parent is ScrollViewer scrollviewer &&
             e.LeftButton == MouseButtonState.Pressed &&
             Keyboard.IsKeyDown(Key.LeftCtrl))
@@ -53,10 +53,10 @@ public partial class DocumentViewerWindow : Window
 
     private void DocumentViewer_MouseMove(object sender, MouseEventArgs e)
     {
-        if (e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer && isMouseDown && DataContext is DocumentViewerModel documentViewerModel)
+        if(e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer && isMouseDown && DataContext is DocumentViewerModel documentViewerModel)
         {
             Point mousemovecoord = e.GetPosition(scrollviewer);
-            if (!cnv.Children.Contains(selectionbox))
+            if(!cnv.Children.Contains(selectionbox))
             {
                 _ = cnv.Children.Add(selectionbox);
             }
@@ -71,7 +71,7 @@ public partial class DocumentViewerWindow : Window
             selectionbox.Width = x2 - x1;
             selectionbox.Height = y2 - y1;
 
-            if (e.LeftButton == MouseButtonState.Released)
+            if(e.LeftButton == MouseButtonState.Released)
             {
                 cnv.Children.Remove(selectionbox);
                 width = Math.Abs(mousemovecoord.X - mousedowncoord.X);
@@ -95,7 +95,7 @@ public partial class DocumentViewerWindow : Window
 
     private void Window_Unloaded(object sender, RoutedEventArgs e)
     {
-        if (cnt.GetFirstVisualChild<PdfViewer.PdfViewer>() is PdfViewer.PdfViewer pdfvwr)
+        if(cnt.GetFirstVisualChild<PdfViewer.PdfViewer>() is PdfViewer.PdfViewer pdfvwr)
         {
             pdfvwr?.Dispose();
             GC.Collect();

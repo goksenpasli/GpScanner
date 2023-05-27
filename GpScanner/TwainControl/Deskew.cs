@@ -32,7 +32,7 @@ public class Deskew
         HougLine[] hl = GetTop(20);
         int i;
 
-        for (i = 0; i <= 19; i++)
+        for(i = 0; i <= 19; i++)
         {
             sum += hl[i].Alpha;
             count++;
@@ -92,12 +92,12 @@ public class Deskew
         WriteableBitmap wb = new(cBmp);
         Init();
         int y;
-        for (y = hMin; y <= hMax; y++)
+        for(y = hMin; y <= hMax; y++)
         {
             int x;
-            for (x = 1; x <= pixelwidth - 2; x++)
+            for(x = 1; x <= pixelwidth - 2; x++)
             {
-                if (IsBlack(x, y, wb) && !IsBlack(x, y + 1, wb))
+                if(IsBlack(x, y, wb) && !IsBlack(x, y + 1, wb))
                 {
                     Calc(x, y);
                 }
@@ -108,7 +108,7 @@ public class Deskew
     private void Calc(int x, int y)
     {
         int alpha;
-        for (alpha = 0; alpha <= cSteps - 1; alpha++)
+        for(alpha = 0; alpha <= cSteps - 1; alpha++)
         {
             double d = (y * cCosA[alpha]) - (x * cSinA[alpha]);
             int dIndex = CalcDIndex(d);
@@ -116,8 +116,7 @@ public class Deskew
             try
             {
                 cHMatrix[Index]++;
-            }
-            catch (Exception ex)
+            } catch(Exception ex)
             {
                 Debug.WriteLine(ex.ToString());
             }
@@ -130,19 +129,19 @@ public class Deskew
     {
         HougLine[] hl = new HougLine[Count + 1];
         int i;
-        for (i = 0; i <= Count - 1; i++)
+        for(i = 0; i <= Count - 1; i++)
         {
             hl[i] = new HougLine();
         }
 
-        for (i = 0; i <= cHMatrix.Length - 1; i++)
+        for(i = 0; i <= cHMatrix.Length - 1; i++)
         {
-            if (cHMatrix[i] > hl[Count - 1].Count)
+            if(cHMatrix[i] > hl[Count - 1].Count)
             {
                 hl[Count - 1].Count = cHMatrix[i];
                 hl[Count - 1].Index = i;
                 int j = Count - 1;
-                while (j > 0 && hl[j].Count > hl[j - 1].Count)
+                while(j > 0 && hl[j].Count > hl[j - 1].Count)
                 {
                     HougLine tmp = hl[j];
                     hl[j] = hl[j - 1];
@@ -152,7 +151,7 @@ public class Deskew
             }
         }
 
-        for (i = 0; i <= Count - 1; i++)
+        for(i = 0; i <= Count - 1; i++)
         {
             int dIndex = hl[i].Index / cSteps;
             int AlphaIndex = hl[i].Index - (dIndex * cSteps);
@@ -168,7 +167,7 @@ public class Deskew
         cSinA = new double[cSteps];
         cCosA = new double[cSteps];
         int i;
-        for (i = 0; i <= cSteps - 1; i++)
+        for(i = 0; i <= cSteps - 1; i++)
         {
             double angle = GetAlpha(i) * Math.PI / 180.0;
             cSinA[i] = Math.Sin(angle);

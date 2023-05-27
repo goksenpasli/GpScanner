@@ -29,9 +29,11 @@ namespace TwainWpf
         /// <summary>
         /// Gets the product name for the default source.
         /// </summary>
-        public string DefaultSourceName {
-            get {
-                using (DataSource source = DataSource.GetDefault(_dataSourceManager.ApplicationId, _dataSourceManager.MessageHook))
+        public string DefaultSourceName
+        {
+            get
+            {
+                using(DataSource source = DataSource.GetDefault(_dataSourceManager.ApplicationId, _dataSourceManager.MessageHook))
                 {
                     return source.SourceId.ProductName;
                 }
@@ -41,12 +43,14 @@ namespace TwainWpf
         /// <summary>
         /// Gets a list of source product names.
         /// </summary>
-        public IList<string> SourceNames {
-            get {
+        public IList<string> SourceNames
+        {
+            get
+            {
                 List<string> result = new List<string>();
                 List<DataSource> sources = DataSource.GetAllSources(_dataSourceManager.ApplicationId, _dataSourceManager.MessageHook);
 
-                foreach (DataSource source in sources)
+                foreach(DataSource source in sources)
                 {
                     result.Add(source.SourceId.ProductName);
                     source.Dispose();

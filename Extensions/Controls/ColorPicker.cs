@@ -13,7 +13,7 @@ public static class HSV
     {
         RGB[] rgbs = new RGB[360];
 
-        for (int h = 0; h < 360; h++)
+        for(int h = 0; h < 360; h++)
         {
             rgbs[h] = RGBFromHSV(h, 1f, 1f);
         }
@@ -25,7 +25,7 @@ public static class HSV
     {
         RGB[] rgbs = new RGB[7];
 
-        for (int h = 0; h < 7; h++)
+        for(int h = 0; h < 7; h++)
         {
             rgbs[h] = RGBFromHSV(h * 60, 1f, 1f);
         }
@@ -35,7 +35,7 @@ public static class HSV
 
     public static RGB RGBFromHSV(double h, double s, double v)
     {
-        if (h > 360 || h < 0 || s > 1 || s < 0 || v > 1 || v < 0)
+        if(h > 360 || h < 0 || s > 1 || s < 0 || v > 1 || v < 0)
         {
             return null;
         }
@@ -46,32 +46,27 @@ public static class HSV
 
         double r = 0, g = 0, b = 0;
 
-        if (h < 60)
+        if(h < 60)
         {
             r = c;
             g = x;
-        }
-        else if (h < 120)
+        } else if(h < 120)
         {
             r = x;
             g = c;
-        }
-        else if (h < 180)
+        } else if(h < 180)
         {
             g = c;
             b = x;
-        }
-        else if (h < 240)
+        } else if(h < 240)
         {
             g = x;
             b = c;
-        }
-        else if (h < 300)
+        } else if(h < 300)
         {
             r = x;
             b = c;
-        }
-        else if (h <= 360)
+        } else if(h <= 360)
         {
             r = c;
             b = x;
@@ -130,7 +125,7 @@ public class ColorPicker : Control
         RGB[] g6 = HSV.GradientSpectrum();
 
         LinearGradientBrush gradientBrush = new() { StartPoint = new Point(0, 0), EndPoint = new Point(1, 0) };
-        for (int i = 0; i < g6.Length; i++)
+        for(int i = 0; i < g6.Length; i++)
         {
             GradientStop stop = new(g6[i].Color(), i * 0.16);
             gradientBrush.GradientStops.Add(stop);
@@ -150,7 +145,8 @@ public class ColorPicker : Control
 
     public Color MiddleStopColor { get => (Color)GetValue(MiddleStopColorProperty); set => SetValue(MiddleStopColorProperty, value); }
 
-    public Visibility PredefinedColorVisibility {
+    public Visibility PredefinedColorVisibility
+    {
         get => (Visibility)GetValue(PredefinedColorVisibilityProperty);
         set => SetValue(PredefinedColorVisibilityProperty, value);
     }
@@ -165,7 +161,7 @@ public class ColorPicker : Control
     {
         base.OnApplyTemplate();
         _spectrumgrid = GetTemplateChild("SpectrumGrid") as Rectangle;
-        if (_spectrumgrid != null)
+        if(_spectrumgrid != null)
         {
             _spectrumgrid.MouseMove -= Spectrumgrid_MouseMove;
             _spectrumgrid.MouseMove += Spectrumgrid_MouseMove;
@@ -174,7 +170,7 @@ public class ColorPicker : Control
         }
 
         _rgbgrid = GetTemplateChild("RgbGrid") as Rectangle;
-        if (_rgbgrid != null)
+        if(_rgbgrid != null)
         {
             _rgbgrid.MouseMove -= Rgbgrid_MouseMove;
             _rgbgrid.MouseMove += Rgbgrid_MouseMove;
@@ -191,7 +187,7 @@ public class ColorPicker : Control
 
     private static void AlphaChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is ColorPicker colorPicker)
+        if(d is ColorPicker colorPicker)
         {
             colorPicker._rgbgrid.Opacity = (double)colorPicker.Alpha / 255;
         }
@@ -199,7 +195,7 @@ public class ColorPicker : Control
 
     private void Rgbgrid_MouseMove(object sender, MouseEventArgs e)
     {
-        if (e.LeftButton == MouseButtonState.Pressed)
+        if(e.LeftButton == MouseButtonState.Pressed)
         {
             Point pos = e.GetPosition(_rgbgrid);
             double x = pos.X;
@@ -215,7 +211,7 @@ public class ColorPicker : Control
 
     private void Spectrumgrid_MouseMove(object sender, MouseEventArgs e)
     {
-        if (e.LeftButton == MouseButtonState.Pressed)
+        if(e.LeftButton == MouseButtonState.Pressed)
         {
             double x = e.GetPosition(_spectrumgrid).X;
             currH = 360 * (x / _spectrumgrid.ActualWidth);
@@ -235,7 +231,7 @@ public class RGB
 
     public RGB(double r, double g, double b)
     {
-        if (r > 255 || g > 255 || b > 255)
+        if(r > 255 || g > 255 || b > 255)
         {
             throw new ArgumentException("RGB must be under 255 (1byte)");
         }

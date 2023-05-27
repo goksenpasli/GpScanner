@@ -1,4 +1,11 @@
-﻿using System;
+﻿using Extensions;
+using Microsoft.Win32;
+using MozJpeg;
+using PdfCompressor.Properties;
+using PdfSharp;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -10,13 +17,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Extensions;
-using Microsoft.Win32;
-using MozJpeg;
-using PdfCompressor.Properties;
-using PdfSharp;
-using PdfSharp.Drawing;
-using PdfSharp.Pdf;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
 using Point = System.Drawing.Point;
 
@@ -58,7 +58,7 @@ public class Compressor : Control, INotifyPropertyChanged
         CompressFile = new RelayCommand<object>(
             async parameter =>
             {
-                if (IsValidPdfFile(LoadedPdfPath))
+                if(IsValidPdfFile(LoadedPdfPath))
                 {
                     PdfiumViewer.PdfDocument loadedpdfdoc = PdfiumViewer.PdfDocument.Load(LoadedPdfPath);
                     List<BitmapImage> images = await AddToListAsync(loadedpdfdoc, Dpi);
@@ -69,7 +69,7 @@ public class Compressor : Control, INotifyPropertyChanged
                         Filter = "Pdf Dosyası (*.pdf)|*.pdf",
                         FileName = $"{Path.GetFileNameWithoutExtension(LoadedPdfPath)}_Compressed.pdf"
                     };
-                    if (saveFileDialog.ShowDialog() == true)
+                    if(saveFileDialog.ShowDialog() == true)
                     {
                         pdfDocument.Save(saveFileDialog.FileName);
                     }
@@ -83,7 +83,7 @@ public class Compressor : Control, INotifyPropertyChanged
             parameter =>
             {
                 OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = "Pdf Dosyaları (*.pdf)|*.pdf" };
-                if (openFileDialog.ShowDialog() == true && IsValidPdfFile(openFileDialog.FileName))
+                if(openFileDialog.ShowDialog() == true && IsValidPdfFile(openFileDialog.FileName))
                 {
                     LoadedPdfPath = openFileDialog.FileName;
                 }
@@ -98,11 +98,13 @@ public class Compressor : Control, INotifyPropertyChanged
 
     public RelayCommand<object> CompressFile { get; }
 
-    public double CompressionProgress {
+    public double CompressionProgress
+    {
         get => compressionProgress;
 
-        set {
-            if (compressionProgress != value)
+        set
+        {
+            if(compressionProgress != value)
             {
                 compressionProgress = value;
                 OnPropertyChanged(nameof(CompressionProgress));
@@ -128,7 +130,7 @@ public class Compressor : Control, INotifyPropertyChanged
         await Task.Run(
             () =>
             {
-                for (int i = 0; i < pdfDoc.PageCount; i++)
+                for(int i = 0; i < pdfDoc.PageCount; i++)
                 {
                     int width = (int)(pdfDoc.PageSizes[i].Width / 72 * dpi);
                     int height = (int)(pdfDoc.PageSizes[i].Height / 72 * dpi);
@@ -142,7 +144,7 @@ public class Compressor : Control, INotifyPropertyChanged
 
     public static Bitmap BitmapSourceToBitmap(BitmapSource bitmapsource)
     {
-        if (bitmapsource is null)
+        if(bitmapsource is null)
         {
             throw new ArgumentNullException(nameof(bitmapsource));
         }
@@ -162,7 +164,7 @@ public class Compressor : Control, INotifyPropertyChanged
 
     public static void DefaultPdfCompression(PdfDocument doc)
     {
-        if (doc is null)
+        if(doc is null)
         {
             throw new ArgumentNullException(nameof(doc));
         }
@@ -176,7 +178,7 @@ public class Compressor : Control, INotifyPropertyChanged
 
     public async Task<PdfDocument> GeneratePdf(List<BitmapImage> bitmapFrames, bool UseMozJpegEncoding, bool bw, int jpegquality = 80, int dpi = 200)
     {
-        if (bitmapFrames?.Count == 0)
+        if(bitmapFrames?.Count == 0)
         {
             throw new ArgumentOutOfRangeException(nameof(bitmapFrames), "bitmap frames count should be greater than zero");
         }
@@ -187,12 +189,12 @@ public class Compressor : Control, INotifyPropertyChanged
             await Task.Run(
                 () =>
                 {
-                    for (int i = 0; i < bitmapFrames.Count; i++)
+                    for(int i = 0; i < bitmapFrames.Count; i++)
                     {
                         BitmapImage pdfimage = bitmapFrames[i];
                         PdfPage page = document.AddPage();
 
-                        if (UseMozJpegEncoding)
+                        if(UseMozJpegEncoding)
                         {
                             using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
                             using MozJpeg.MozJpeg mozJpeg = new();
@@ -208,19 +210,17 @@ public class Compressor : Control, INotifyPropertyChanged
                             resizedimage = null;
                             data = null;
 
-                            if (pdfimage.PixelWidth < pdfimage.PixelHeight)
+                            if(pdfimage.PixelWidth < pdfimage.PixelHeight)
                             {
                                 gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
-                            }
-                            else
+                            } else
                             {
                                 page.Orientation = PageOrientation.Landscape;
                                 gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
                             }
 
                             CompressionProgress = (i + 1) / (double)bitmapFrames.Count;
-                        }
-                        else
+                        } else
                         {
                             using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
                             BitmapSource resizedimage = bw
@@ -232,11 +232,10 @@ public class Compressor : Control, INotifyPropertyChanged
                             XSize size = PageSizeConverter.ToSize(page.Size);
                             resizedimage = null;
 
-                            if (pdfimage.PixelWidth < pdfimage.PixelHeight)
+                            if(pdfimage.PixelWidth < pdfimage.PixelHeight)
                             {
                                 gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
-                            }
-                            else
+                            } else
                             {
                                 page.Orientation = PageOrientation.Landscape;
                                 gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
@@ -250,8 +249,7 @@ public class Compressor : Control, INotifyPropertyChanged
 
                     DefaultPdfCompression(document);
                 });
-        }
-        catch (Exception ex)
+        } catch(Exception ex)
         {
             bitmapFrames = null;
             throw new ArgumentException(nameof(document), ex);
@@ -262,7 +260,7 @@ public class Compressor : Control, INotifyPropertyChanged
 
     public static bool IsValidPdfFile(string filename)
     {
-        if (File.Exists(filename))
+        if(File.Exists(filename))
         {
             byte[] buffer = new byte[4];
             using FileStream fs = new(filename, FileMode.Open, FileAccess.Read);
@@ -276,9 +274,9 @@ public class Compressor : Control, INotifyPropertyChanged
 
     private static void BwChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is Compressor compressor)
+        if(d is Compressor compressor)
         {
-            if (!compressor.UseMozJpeg)
+            if(!compressor.UseMozJpeg)
             {
                 compressor.BlackAndWhite = Settings.Default.Bw = (bool)e.NewValue;
                 Settings.Default.Save();
@@ -303,7 +301,7 @@ public class Compressor : Control, INotifyPropertyChanged
 
     private static void MozpegChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is Compressor compressor && (bool)e.NewValue)
+        if(d is Compressor compressor && (bool)e.NewValue)
         {
             compressor.BlackAndWhite = false;
         }

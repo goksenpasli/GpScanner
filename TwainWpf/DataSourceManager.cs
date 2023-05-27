@@ -110,16 +110,14 @@ namespace TwainWpf
             {
                 MessageHook.UseFilter = true;
                 scanning = DataSource.Open(settings);
-            }
-            catch (TwainException)
+            } catch(TwainException)
             {
                 DataSource.Close();
                 EndingScan();
                 throw;
-            }
-            finally
+            } finally
             {
-                if (!scanning)
+                if(!scanning)
                 {
                     EndingScan();
                 }
@@ -133,8 +131,7 @@ namespace TwainWpf
             try
             {
                 ScanningComplete?.Invoke(this, new ScanningCompleteEventArgs(exception));
-            }
-            catch
+            } catch
             {
             }
         }
@@ -143,13 +140,13 @@ namespace TwainWpf
         {
             Marshal.FreeHGlobal(_eventMessage.EventPtr);
 
-            if (disposing)
+            if(disposing)
             {
                 DataSource.Dispose();
 
                 IntPtr windowHandle = MessageHook.WindowHandle;
 
-                if (ApplicationId.Id != 0)
+                if(ApplicationId.Id != 0)
                 {
                     _ = Twain32Native.DsmParent(ApplicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Parent, Message.CloseDSM, ref windowHandle);
                 }
@@ -162,7 +159,7 @@ namespace TwainWpf
 
         protected IntPtr FilterMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
-            if (DataSource.SourceId.Id == 0)
+            if(DataSource.SourceId.Id == 0)
             {
                 handled = false;
                 return IntPtr.Zero;
@@ -192,21 +189,20 @@ namespace TwainWpf
                 Message.ProcessEvent,
                 ref _eventMessage);
 
-            if (result == TwainResult.NotDSEvent)
+            if(result == TwainResult.NotDSEvent)
             {
                 handled = false;
                 return IntPtr.Zero;
             }
 
-            switch (_eventMessage.Message)
+            switch(_eventMessage.Message)
             {
                 case Message.XFerReady:
                     Exception exception = null;
                     try
                     {
                         TransferPictures();
-                    }
-                    catch (Exception e)
+                    } catch(Exception e)
                     {
                         exception = e;
                     }
@@ -229,7 +225,7 @@ namespace TwainWpf
 
         protected void TransferPictures()
         {
-            if (DataSource.SourceId.Id == 0)
+            if(DataSource.SourceId.Id == 0)
             {
                 return;
             }
@@ -251,7 +247,7 @@ namespace TwainWpf
                         Message.Get,
                         imageInfo);
 
-                    if (result != TwainResult.Success)
+                    if(result != TwainResult.Success)
                     {
                         DataSource.Close();
                         break;
@@ -265,7 +261,7 @@ namespace TwainWpf
                         Message.Get,
                         ref hbitmap);
 
-                    if (result != TwainResult.XferDone)
+                    if(result != TwainResult.XferDone)
                     {
                         DataSource.Close();
                         break;
@@ -279,27 +275,26 @@ namespace TwainWpf
                         Message.EndXfer,
                         pendingTransfer);
 
-                    if (result != TwainResult.Success)
+                    if(result != TwainResult.Success)
                     {
                         DataSource.Close();
                         break;
                     }
 
-                    if (hbitmap != IntPtr.Zero)
+                    if(hbitmap != IntPtr.Zero)
                     {
-                        using (BitmapRenderer renderer = new BitmapRenderer(hbitmap))
+                        using(BitmapRenderer renderer = new BitmapRenderer(hbitmap))
                         {
                             TransferImageEventArgs args = new TransferImageEventArgs(renderer.RenderToBitmap(), pendingTransfer.Count != 0);
                             TransferImage?.Invoke(this, args);
-                            if (!args.ContinueScanning)
+                            if(!args.ContinueScanning)
                             {
                                 break;
                             }
                         }
                     }
                 } while (pendingTransfer.Count != 0);
-            }
-            finally
+            } finally
             {
                 _ = Twain32Native.DsPendingTransfer(
                     ApplicationId,

@@ -13,23 +13,22 @@ public class GridViewSort
     #region Column header click event handler
     private static void ColumnHeader_Click(object sender, RoutedEventArgs e)
     {
-        if (e.OriginalSource is GridViewColumnHeader headerClicked && headerClicked.Column != null)
+        if(e.OriginalSource is GridViewColumnHeader headerClicked && headerClicked.Column != null)
         {
             string propertyName = GetPropertyName(headerClicked.Column);
-            if (!string.IsNullOrEmpty(propertyName))
+            if(!string.IsNullOrEmpty(propertyName))
             {
                 ListView listView = GetAncestor<ListView>(headerClicked);
-                if (listView != null)
+                if(listView != null)
                 {
                     ICommand command = GetCommand(listView);
-                    if (command != null)
+                    if(command != null)
                     {
-                        if (command.CanExecute(propertyName))
+                        if(command.CanExecute(propertyName))
                         {
                             command.Execute(propertyName);
                         }
-                    }
-                    else if (GetAutoSort(listView))
+                    } else if(GetAutoSort(listView))
                     {
                         ApplySort(listView.Items, propertyName, listView, headerClicked);
                     }
@@ -53,7 +52,7 @@ public class GridViewSort
         {
             base.OnRender(drawingContext);
 
-            if (_sortGlyph != null)
+            if(_sortGlyph != null)
             {
                 double x = _columnHeader.ActualWidth - 13;
                 double y = (_columnHeader.ActualHeight / 2) - 5;
@@ -79,7 +78,7 @@ public class GridViewSort
             int y1 = 0;
             int y2 = y1 + 5;
 
-            if (_direction == ListSortDirection.Ascending)
+            if(_direction == ListSortDirection.Ascending)
             {
                 int tmp = y1;
                 y1 = y2;
@@ -107,18 +106,18 @@ public class GridViewSort
             false,
             (o, e) =>
             {
-                if (o is ListView listView)
+                if(o is ListView listView)
                 {
-                    if (GetCommand(listView) == null)
+                    if(GetCommand(listView) == null)
                     {
                         bool oldValue = (bool)e.OldValue;
                         bool newValue = (bool)e.NewValue;
-                        if (oldValue && !newValue)
+                        if(oldValue && !newValue)
                         {
                             listView.RemoveHandler(ButtonBase.ClickEvent, new RoutedEventHandler(ColumnHeader_Click));
                         }
 
-                        if (!oldValue && newValue)
+                        if(!oldValue && newValue)
                         {
                             listView.AddHandler(ButtonBase.ClickEvent, new RoutedEventHandler(ColumnHeader_Click));
                         }
@@ -135,16 +134,16 @@ public class GridViewSort
             null,
             (o, e) =>
             {
-                if (o is ItemsControl listView)
+                if(o is ItemsControl listView)
                 {
-                    if (!GetAutoSort(listView))
+                    if(!GetAutoSort(listView))
                     {
-                        if (e.OldValue != null && e.NewValue == null)
+                        if(e.OldValue != null && e.NewValue == null)
                         {
                             listView.RemoveHandler(ButtonBase.ClickEvent, new RoutedEventHandler(ColumnHeader_Click));
                         }
 
-                        if (e.OldValue == null && e.NewValue != null)
+                        if(e.OldValue == null && e.NewValue != null)
                         {
                             listView.AddHandler(ButtonBase.ClickEvent, new RoutedEventHandler(ColumnHeader_Click));
                         }
@@ -202,10 +201,10 @@ public class GridViewSort
     public static void ApplySort(ICollectionView view, string propertyName, ListView listView, GridViewColumnHeader sortedColumnHeader)
     {
         ListSortDirection direction = ListSortDirection.Ascending;
-        if (view.SortDescriptions.Count > 0)
+        if(view.SortDescriptions.Count > 0)
         {
             SortDescription currentSort = view.SortDescriptions[0];
-            if (currentSort.PropertyName == propertyName)
+            if(currentSort.PropertyName == propertyName)
             {
                 direction = currentSort.Direction == ListSortDirection.Ascending ? ListSortDirection.Descending : ListSortDirection.Ascending;
             }
@@ -213,16 +212,16 @@ public class GridViewSort
             view.SortDescriptions.Clear();
 
             GridViewColumnHeader currentSortedColumnHeader = GetSortedColumnHeader(listView);
-            if (currentSortedColumnHeader != null)
+            if(currentSortedColumnHeader != null)
             {
                 RemoveSortGlyph(currentSortedColumnHeader);
             }
         }
 
-        if (!string.IsNullOrEmpty(propertyName))
+        if(!string.IsNullOrEmpty(propertyName))
         {
             view.SortDescriptions.Add(new SortDescription(propertyName, direction));
-            if (GetShowSortGlyph(listView))
+            if(GetShowSortGlyph(listView))
             {
                 AddSortGlyph(
                     sortedColumnHeader,
@@ -237,7 +236,7 @@ public class GridViewSort
     public static T GetAncestor<T>(DependencyObject reference) where T : DependencyObject
     {
         DependencyObject parent = VisualTreeHelper.GetParent(reference);
-        while (parent is not T)
+        while(parent is not T)
         {
             parent = VisualTreeHelper.GetParent(parent);
         }
@@ -255,11 +254,11 @@ public class GridViewSort
     {
         AdornerLayer adornerLayer = AdornerLayer.GetAdornerLayer(columnHeader);
         Adorner[] adorners = adornerLayer.GetAdorners(columnHeader);
-        if (adorners != null)
+        if(adorners != null)
         {
-            foreach (Adorner adorner in adorners)
+            foreach(Adorner adorner in adorners)
             {
-                if (adorner is SortGlyphAdorner)
+                if(adorner is SortGlyphAdorner)
                 {
                     adornerLayer.Remove(adorner);
                 }

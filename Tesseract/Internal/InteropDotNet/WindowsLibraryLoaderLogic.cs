@@ -14,18 +14,16 @@ namespace Tesseract.Internal.InteropDotNet
             {
                 Logger.TraceInformation("Trying to free native library with handle {0} ...", libraryHandle);
                 bool isSuccess = WindowsFreeLibrary(libraryHandle);
-                if (isSuccess)
+                if(isSuccess)
                 {
                     Logger.TraceInformation("Successfully freed native library with handle {0}.", libraryHandle);
-                }
-                else
+                } else
                 {
                     Logger.TraceError("Failed to free native library with handle {0}.\r\nCheck windows event log.", libraryHandle);
                 }
 
                 return isSuccess;
-            }
-            catch (Exception e)
+            } catch(Exception e)
             {
                 int lastError = WindowsGetLastError();
                 Logger.TraceError(
@@ -43,18 +41,16 @@ namespace Tesseract.Internal.InteropDotNet
             {
                 Logger.TraceInformation("Trying to load native function \"{0}\" from the library with handle {1}...", functionName, libraryHandle);
                 IntPtr functionHandle = WindowsGetProcAddress(libraryHandle, functionName);
-                if (functionHandle != IntPtr.Zero)
+                if(functionHandle != IntPtr.Zero)
                 {
                     Logger.TraceInformation("Successfully loaded native function \"{0}\", function handle = {1}.", functionName, functionHandle);
-                }
-                else
+                } else
                 {
                     throw new LoadLibraryException($"Failed to load native function \"{functionName}\" from library with handle  {libraryHandle}.");
                 }
 
                 return functionHandle;
-            }
-            catch (Exception e)
+            } catch(Exception e)
             {
                 int lastError = WindowsGetLastError();
                 throw new LoadLibraryException(
@@ -76,16 +72,14 @@ namespace Tesseract.Internal.InteropDotNet
             {
                 Logger.TraceInformation("Trying to load native library \"{0}\"...", fileName);
                 libraryHandle = WindowsLoadLibrary(fileName);
-                if (libraryHandle != IntPtr.Zero)
+                if(libraryHandle != IntPtr.Zero)
                 {
                     Logger.TraceInformation("Successfully loaded native library \"{0}\", handle = {1}.", fileName, libraryHandle);
-                }
-                else
+                } else
                 {
                     Logger.TraceError("Failed to load native library \"{0}\".\r\nCheck windows event log.", fileName);
                 }
-            }
-            catch (Exception e)
+            } catch(Exception e)
             {
                 int lastError = WindowsGetLastError();
                 Logger.TraceError(

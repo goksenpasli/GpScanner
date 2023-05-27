@@ -273,17 +273,17 @@ namespace Tesseract
         /// <returns>A result iterator</returns>
         public Page Process(Pix image, string inputName, Rect region, PageSegMode? pageSegMode = null)
         {
-            if (image == null)
+            if(image == null)
             {
                 throw new ArgumentNullException(nameof(image));
             }
 
-            if (region.X1 < 0 || region.Y1 < 0 || region.X2 > image.Width || region.Y2 > image.Height)
+            if(region.X1 < 0 || region.Y1 < 0 || region.X2 > image.Width || region.Y2 > image.Height)
             {
                 throw new ArgumentException("The image region to be processed must be within the image bounds.", nameof(region));
             }
 
-            if (processCount > 0)
+            if(processCount > 0)
             {
                 throw new InvalidOperationException(
                     "Only one image can be processed at once. Please make sure you dispose of the page once your finished with it.");
@@ -294,7 +294,7 @@ namespace Tesseract
             PageSegMode actualPageSegmentMode = pageSegMode ?? DefaultPageSegMode;
             TessApi.Native.BaseAPISetPageSegMode(handle, actualPageSegmentMode);
             TessApi.Native.BaseApiSetImage(handle, image.Handle);
-            if (!string.IsNullOrEmpty(inputName))
+            if(!string.IsNullOrEmpty(inputName))
             {
                 TessApi.Native.BaseApiSetInputName(handle, inputName);
             }
@@ -332,7 +332,7 @@ namespace Tesseract
 
         protected override void Dispose(bool disposing)
         {
-            if (handle.Handle != IntPtr.Zero)
+            if(handle.Handle != IntPtr.Zero)
             {
                 TessApi.Native.BaseApiDelete(handle);
                 handle = new HandleRef(this, IntPtr.Zero);
@@ -353,17 +353,17 @@ namespace Tesseract
         {
             Guard.RequireNotNullOrEmpty(nameof(language), language);
 
-            if (!string.IsNullOrEmpty(datapath))
+            if(!string.IsNullOrEmpty(datapath))
             {
                 datapath = datapath.Trim();
 
-                if (datapath.EndsWith("\\", StringComparison.Ordinal) || datapath.EndsWith("/", StringComparison.Ordinal))
+                if(datapath.EndsWith("\\", StringComparison.Ordinal) || datapath.EndsWith("/", StringComparison.Ordinal))
                 {
                     datapath = datapath.Substring(0, datapath.Length - 1);
                 }
             }
 
-            if (TessApi.BaseApiInit(
+            if(TessApi.BaseApiInit(
                     handle,
                     datapath,
                     language,
@@ -446,7 +446,7 @@ namespace Tesseract
         /// <returns>Returns <c>True</c> if successful; otherwise <c>False</c>.</returns>
         public bool TryGetBoolVariable(string name, out bool value)
         {
-            if (TessApi.Native.BaseApiGetBoolVariable(handle, name, out int val) != 0)
+            if(TessApi.Native.BaseApiGetBoolVariable(handle, name, out int val) != 0)
             {
                 value = val != 0;
                 return true;

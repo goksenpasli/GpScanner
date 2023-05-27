@@ -28,8 +28,10 @@ namespace Tesseract
         /// <summary>
         /// Gets the number of <see cref="Pix"/> contained in the array.
         /// </summary>
-        public int Count {
-            get {
+        public int Count
+        {
+            get
+            {
                 VerifyNotDisposed();
                 return _count;
             }
@@ -57,11 +59,11 @@ namespace Tesseract
             #region Disposal
             protected override void Dispose(bool disposing)
             {
-                if (disposing)
+                if(disposing)
                 {
-                    for (int i = 0; i < items.Length; i++)
+                    for(int i = 0; i < items.Length; i++)
                     {
-                        if (items[i] != null)
+                        if(items[i] != null)
                         {
                             items[i].Dispose();
                             items[i] = null;
@@ -86,8 +88,10 @@ namespace Tesseract
             #region Enumerator Implementation
 
             /// <inheritdoc/>
-            public Pix Current {
-                get {
+            public Pix Current
+            {
+                get
+                {
                     VerifyArrayUnchanged();
                     VerifyNotDisposed();
 
@@ -106,9 +110,9 @@ namespace Tesseract
                 VerifyArrayUnchanged();
                 VerifyNotDisposed();
 
-                if (index < items.Length)
+                if(index < items.Length)
                 {
-                    if (items[index] == null)
+                    if(items[index] == null)
                     {
                         items[index] = array.GetPix(index);
                     }
@@ -136,7 +140,7 @@ namespace Tesseract
             /// <inheritdoc/>
             private void VerifyArrayUnchanged()
             {
-                if (version != array.version)
+                if(version != array.version)
                 {
                     throw new InvalidOperationException("PixArray was modified; enumeration operation may not execute.");
                 }
@@ -197,7 +201,7 @@ namespace Tesseract
                 copyflag);
 
             int result = LeptonicaApi.Native.pixaAddPix(_handle, pix.Handle, copyflag);
-            if (result == 0)
+            if(result == 0)
             {
                 _count = LeptonicaApi.Native.pixaGetCount(_handle);
             }
@@ -211,7 +215,7 @@ namespace Tesseract
         public void Clear()
         {
             VerifyNotDisposed();
-            if (LeptonicaApi.Native.pixaClear(_handle) == 0)
+            if(LeptonicaApi.Native.pixaClear(_handle) == 0)
             {
                 _count = LeptonicaApi.Native.pixaGetCount(_handle);
             }
@@ -267,7 +271,7 @@ namespace Tesseract
             Guard.Require(nameof(index), index >= 0 && index < Count, "The index {0} must be between 0 and {1}.", index, Count);
 
             VerifyNotDisposed();
-            if (LeptonicaApi.Native.pixaRemovePix(_handle, index) == 0)
+            if(LeptonicaApi.Native.pixaRemovePix(_handle, index) == 0)
             {
                 _count = LeptonicaApi.Native.pixaGetCount(_handle);
             }

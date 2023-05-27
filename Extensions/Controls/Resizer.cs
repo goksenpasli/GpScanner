@@ -72,9 +72,9 @@ public class Resizer : Thumb
 
     private void Resizer_DragDelta(object sender, DragDeltaEventArgs e)
     {
-        if (DataContext is Control designerItem)
+        if(DataContext is Control designerItem)
         {
-            switch (ThumbDirection)
+            switch(ThumbDirection)
             {
                 case ResizeDirections.TopLeft:
                     _ = ResizeTop(e, designerItem);

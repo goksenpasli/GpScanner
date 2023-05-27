@@ -14,7 +14,7 @@ namespace Tesseract.Internal
         [DebuggerHidden]
         public static void Require(string paramName, bool condition)
         {
-            if (!condition)
+            if(!condition)
             {
                 throw new ArgumentException(string.Empty, paramName);
             }
@@ -30,7 +30,7 @@ namespace Tesseract.Internal
         [DebuggerHidden]
         public static void Require(string paramName, bool condition, string message)
         {
-            if (!condition)
+            if(!condition)
             {
                 throw new ArgumentException(message, paramName);
             }
@@ -47,7 +47,7 @@ namespace Tesseract.Internal
         [DebuggerHidden]
         public static void Require(string paramName, bool condition, string message, params object[] args)
         {
-            if (!condition)
+            if(!condition)
             {
                 throw new ArgumentException(string.Format(message, args), paramName);
             }
@@ -56,7 +56,7 @@ namespace Tesseract.Internal
         [DebuggerHidden]
         public static void RequireNotNull(string argName, object value)
         {
-            if (value == null)
+            if(value == null)
             {
                 throw new ArgumentException($"Argument \"{value}\" must not be null.");
             }
@@ -72,7 +72,7 @@ namespace Tesseract.Internal
         public static void RequireNotNullOrEmpty(string paramName, string value)
         {
             RequireNotNull(paramName, value);
-            if (value.Length == 0)
+            if(value.Length == 0)
             {
                 throw new ArgumentException(paramName, $@"The argument ""{paramName}"" must not be null or empty.");
             }
@@ -88,7 +88,7 @@ namespace Tesseract.Internal
         [DebuggerHidden]
         public static void Verify(bool condition, string message, params object[] args)
         {
-            if (!condition)
+            if(!condition)
             {
                 throw new InvalidOperationException(string.Format(message, args));
             }

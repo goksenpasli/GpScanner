@@ -556,8 +556,9 @@
                     </GroupBox>
                     <GroupBox Grid.Column="1">
                         <UniformGrid Rows="2">
-                            <TextBox VerticalContentAlignment="Center"
-                                IsReadOnly="True"
+                            <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
+                                CopyButtonVisibility="Collapsed" IsReadOnly="True" OpenButtonVisibility="Collapsed"
+                                PasteButtonVisibility="Collapsed"
                                 Text="{Binding BatchFolder, Source={x:Static properties:Settings.Default}}"
                                 ToolTip="{Binding BatchFolder, Source={x:Static properties:Settings.Default}}" />
                             <UniformGrid Columns="2">
@@ -617,11 +618,6 @@
                         </Grid>
                     </GroupBox>
                     <TabControl>
-                        <TabItem Header="DVD">
-                            <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                <dvd:Burner />
-                            </ScrollViewer>
-                        </TabItem>
                         <TabItem>
                             <TabItem.Header>
                                 <TextBlock>
@@ -629,10 +625,10 @@
                                     <Run Text="{twainctrl:Loc COMPRESS}" />
                                 </TextBlock>
                             </TabItem.Header>
-                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <ScrollViewer Background="{StaticResource BorderBackground}" VerticalScrollBarVisibility="Auto">
                                 <Grid>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="85.6" />
+                                        <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <PdfCompressor:Compressor />
@@ -654,6 +650,11 @@
                                         </CheckBox>
                                     </StackPanel>
                                 </Grid>
+                            </ScrollViewer>
+                        </TabItem>
+                        <TabItem Header="DVD">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <dvd:Burner />
                             </ScrollViewer>
                         </TabItem>
                     </TabControl>

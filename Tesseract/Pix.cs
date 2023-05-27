@@ -21,20 +21,19 @@ namespace Tesseract
         public void Save(string filename, ImageFormat? format = null)
         {
             ImageFormat actualFormat;
-            if (!format.HasValue)
+            if(!format.HasValue)
             {
                 string extension = Path.GetExtension(filename).ToLowerInvariant();
-                if (!imageFomatLookup.TryGetValue(extension, out actualFormat))
+                if(!imageFomatLookup.TryGetValue(extension, out actualFormat))
                 {
                     actualFormat = ImageFormat.Default;
                 }
-            }
-            else
+            } else
             {
                 actualFormat = format.Value;
             }
 
-            if (LeptonicaApi.Native.pixWrite(filename, handle, actualFormat) != 0)
+            if(LeptonicaApi.Native.pixWrite(filename, handle, actualFormat) != 0)
             {
                 throw new IOException($"Failed to save image '{filename}'.");
             }
@@ -157,17 +156,17 @@ namespace Tesseract
         #region Create\Load methods
         public static Pix Create(int width, int height, int depth)
         {
-            if (!AllowedDepths.Contains(depth))
+            if(!AllowedDepths.Contains(depth))
             {
                 throw new ArgumentException("Depth must be 1, 2, 4, 8, 16, or 32 bits.", nameof(depth));
             }
 
-            if (width <= 0)
+            if(width <= 0)
             {
                 throw new ArgumentException("Width must be greater than zero", nameof(width));
             }
 
-            if (height <= 0)
+            if(height <= 0)
             {
                 throw new ArgumentException("Height must be greater than zero", nameof(height));
             }
@@ -191,7 +190,7 @@ namespace Tesseract
         public static Pix LoadFromMemory(byte[] bytes)
         {
             IntPtr handle;
-            fixed (byte* ptr = bytes)
+            fixed(byte* ptr = bytes)
             {
                 handle = LeptonicaApi.Native.pixReadMem(ptr, bytes.Length);
             }
@@ -202,7 +201,7 @@ namespace Tesseract
         public static Pix LoadTiffFromMemory(byte[] bytes)
         {
             IntPtr handle;
-            fixed (byte* ptr = bytes)
+            fixed(byte* ptr = bytes)
             {
                 handle = LeptonicaApi.Native.pixReadMemTiff(ptr, bytes.Length, 0);
             }
@@ -226,7 +225,7 @@ namespace Tesseract
         /// <param name="handle"></param>
         private Pix(IntPtr handle)
         {
-            if (handle == IntPtr.Zero)
+            if(handle == IntPtr.Zero)
             {
                 throw new ArgumentNullException(nameof(handle));
             }
@@ -237,7 +236,7 @@ namespace Tesseract
             Depth = LeptonicaApi.Native.pixGetDepth(this.handle);
 
             IntPtr colorMapHandle = LeptonicaApi.Native.pixGetColormap(this.handle);
-            if (colorMapHandle != IntPtr.Zero)
+            if(colorMapHandle != IntPtr.Zero)
             {
                 colormap = new PixColormap(colorMapHandle);
             }
@@ -245,20 +244,21 @@ namespace Tesseract
         #endregion Create\Load methods
 
         #region Properties
-        public PixColormap Colormap {
+        public PixColormap Colormap
+        {
             get => colormap;
 
-            set {
-                if (value != null)
+            set
+            {
+                if(value != null)
                 {
-                    if (LeptonicaApi.Native.pixSetColormap(handle, value.Handle) == 0)
+                    if(LeptonicaApi.Native.pixSetColormap(handle, value.Handle) == 0)
                     {
                         colormap = value;
                     }
-                }
-                else
+                } else
                 {
-                    if (LeptonicaApi.Native.pixDestroyColormap(handle) == 0)
+                    if(LeptonicaApi.Native.pixDestroyColormap(handle) == 0)
                     {
                         colormap = null;
                     }
@@ -320,7 +320,7 @@ namespace Tesseract
 
             int result = LeptonicaApi.Native.pixOtsuAdaptiveThreshold(handle, sx, sy, smoothx, smoothy, scorefract, out IntPtr ppixth, out IntPtr ppixd);
 
-            if (ppixth != IntPtr.Zero)
+            if(ppixth != IntPtr.Zero)
             {
                 LeptonicaApi.Native.pixDestroy(ref ppixth);
             }
@@ -364,17 +364,17 @@ namespace Tesseract
             int result = LeptonicaApi.Native
                 .pixSauvolaBinarize(handle, whsize, factor, addborder ? 1 : 0, out IntPtr ppixm, out IntPtr ppixsd, out IntPtr ppixth, out IntPtr ppixd);
 
-            if (ppixm != IntPtr.Zero)
+            if(ppixm != IntPtr.Zero)
             {
                 LeptonicaApi.Native.pixDestroy(ref ppixm);
             }
 
-            if (ppixsd != IntPtr.Zero)
+            if(ppixsd != IntPtr.Zero)
             {
                 LeptonicaApi.Native.pixDestroy(ref ppixsd);
             }
 
-            if (ppixth != IntPtr.Zero)
+            if(ppixth != IntPtr.Zero)
             {
                 LeptonicaApi.Native.pixDestroy(ref ppixth);
             }
@@ -412,7 +412,7 @@ namespace Tesseract
             int result =
                 LeptonicaApi.Native.pixSauvolaBinarizeTiled(handle, whsize, factor, nx, ny, out IntPtr ppixth, out IntPtr ppixd);
 
-            if (ppixth != IntPtr.Zero)
+            if(ppixth != IntPtr.Zero)
             {
                 LeptonicaApi.Native.pixDestroy(ref ppixth);
             }
@@ -510,7 +510,7 @@ namespace Tesseract
         {
             IntPtr resultPixHandle = LeptonicaApi.Native
                 .pixDeskewGeneral(handle, sweep.Reduction, sweep.Range, sweep.Delta, redSearch, thresh, out float pAngle, out float pConf);
-            if (resultPixHandle == IntPtr.Zero)
+            if(resultPixHandle == IntPtr.Zero)
             {
                 throw new TesseractException("Failed to deskew image.");
             }
@@ -604,45 +604,44 @@ namespace Tesseract
 
                 _ = LeptonicaApi.Native.pixCombineMasked(new HandleRef(this, pix8), new HandleRef(this, pix9), new HandleRef(this, pix7));
                 return pix8 == IntPtr.Zero ? throw new TesseractException("Failed to remove lines from image.") : new Pix(pix8);
-            }
-            finally
+            } finally
             {
-                if (pix1 != IntPtr.Zero)
+                if(pix1 != IntPtr.Zero)
                 {
                     LeptonicaApi.Native.pixDestroy(ref pix1);
                 }
 
-                if (pix2 != IntPtr.Zero)
+                if(pix2 != IntPtr.Zero)
                 {
                     LeptonicaApi.Native.pixDestroy(ref pix2);
                 }
 
-                if (pix3 != IntPtr.Zero)
+                if(pix3 != IntPtr.Zero)
                 {
                     LeptonicaApi.Native.pixDestroy(ref pix3);
                 }
 
-                if (pix4 != IntPtr.Zero)
+                if(pix4 != IntPtr.Zero)
                 {
                     LeptonicaApi.Native.pixDestroy(ref pix4);
                 }
 
-                if (pix5 != IntPtr.Zero)
+                if(pix5 != IntPtr.Zero)
                 {
                     LeptonicaApi.Native.pixDestroy(ref pix5);
                 }
 
-                if (pix6 != IntPtr.Zero)
+                if(pix6 != IntPtr.Zero)
                 {
                     LeptonicaApi.Native.pixDestroy(ref pix6);
                 }
 
-                if (pix7 != IntPtr.Zero)
+                if(pix7 != IntPtr.Zero)
                 {
                     LeptonicaApi.Native.pixDestroy(ref pix7);
                 }
 
-                if (pix9 != IntPtr.Zero)
+                if(pix9 != IntPtr.Zero)
                 {
                     LeptonicaApi.Native.pixDestroy(ref pix9);
                 }
@@ -674,17 +673,17 @@ namespace Tesseract
             int? width = null,
             int? height = null)
         {
-            if (width == null)
+            if(width == null)
             {
                 width = Width;
             }
 
-            if (height == null)
+            if(height == null)
             {
                 height = Height;
             }
 
-            if (Math.Abs(angleInRadians) < VerySmallAngle)
+            if(Math.Abs(angleInRadians) < VerySmallAngle)
             {
                 return Clone();
             }

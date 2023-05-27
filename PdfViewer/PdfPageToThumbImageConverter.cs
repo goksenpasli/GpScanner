@@ -1,20 +1,22 @@
-﻿using System;
+﻿using Extensions;
+using System;
 using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
-using Extensions;
 
 namespace PdfViewer;
 
 public sealed class PdfPageToThumbImageConverter : InpcBase, IMultiValueConverter
 {
-    public int Dpi {
+    public int Dpi
+    {
         get => dpi;
 
-        set {
-            if (dpi != value)
+        set
+        {
+            if(dpi != value)
             {
                 dpi = value;
                 OnPropertyChanged(nameof(Dpi));
@@ -24,7 +26,7 @@ public sealed class PdfPageToThumbImageConverter : InpcBase, IMultiValueConverte
 
     public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {
-        if (values[0] is string PdfFilePath && values[1] is int index && File.Exists(PdfFilePath))
+        if(values[0] is string PdfFilePath && values[1] is int index && File.Exists(PdfFilePath))
         {
             try
             {
@@ -39,8 +41,7 @@ public sealed class PdfPageToThumbImageConverter : InpcBase, IMultiValueConverte
                     .ConfigureAwait(false)
                     .GetAwaiter()
                     .GetResult();
-            }
-            catch (Exception)
+            } catch(Exception)
             {
                 return null;
             }

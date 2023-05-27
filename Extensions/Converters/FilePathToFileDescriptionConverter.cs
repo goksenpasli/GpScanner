@@ -11,8 +11,7 @@ public sealed class FilePathToFileDescriptionConverter : IValueConverter
         try
         {
             return (value as string).GetFileType();
-        }
-        catch (Exception)
+        } catch(Exception)
         {
             return null;
         }

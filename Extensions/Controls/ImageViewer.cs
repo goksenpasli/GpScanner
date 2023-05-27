@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Extensions.Controls;
+using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -10,8 +12,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
-using Extensions.Controls;
-using Microsoft.Win32;
 
 namespace Extensions;
 
@@ -104,7 +104,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
                     Multiselect = false,
                     Filter = "Resim Dosyaları (*.jpg;*.jpeg;*.tif;*.tiff;*.png)|*.jpg;*.jpeg;*.tif;*.tiff;*.png"
                 };
-                if (openFileDialog.ShowDialog() == true)
+                if(openFileDialog.ShowDialog() == true)
                 {
                     ImageFilePath = openFileDialog.FileName;
                     PanoramaMode = false;
@@ -118,9 +118,9 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         Resize = new RelayCommand<object>(
             parameter =>
             {
-                if (Source is not null)
+                if(Source is not null)
                 {
-                    switch (Orientation)
+                    switch(Orientation)
                     {
                         case FitImageOrientation.Width:
                             Zoom = ActualHeight / Source.Height;
@@ -143,11 +143,11 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
             {
                 PrintDialog pd = new();
                 DrawingVisual dv = new();
-                if (Decoder == null)
+                if(Decoder == null)
                 {
-                    if (pd.ShowDialog() == true)
+                    if(pd.ShowDialog() == true)
                     {
-                        using (DrawingContext dc = dv.RenderOpen())
+                        using(DrawingContext dc = dv.RenderOpen())
                         {
                             BitmapSource imagesource = Source.Width > Source.Height
                                 ? ((BitmapSource)Source)?.Resize((int)pd.PrintableAreaHeight, (int)pd.PrintableAreaWidth, 90, 300, 300)
@@ -166,24 +166,23 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
                 pd.UserPageRangeEnabled = true;
                 pd.MaxPage = (uint)Decoder.Frames.Count;
                 pd.MinPage = 1;
-                if (pd.ShowDialog() == true)
+                if(pd.ShowDialog() == true)
                 {
                     int başlangıç;
                     int bitiş;
-                    if (pd.PageRangeSelection == PageRangeSelection.AllPages)
+                    if(pd.PageRangeSelection == PageRangeSelection.AllPages)
                     {
                         başlangıç = 0;
                         bitiş = Decoder.Frames.Count - 1;
-                    }
-                    else
+                    } else
                     {
                         başlangıç = pd.PageRange.PageFrom - 1;
                         bitiş = pd.PageRange.PageTo - 1;
                     }
 
-                    for (int i = başlangıç; i <= bitiş; i++)
+                    for(int i = başlangıç; i <= bitiş; i++)
                     {
-                        using (DrawingContext dc = dv.RenderOpen())
+                        using(DrawingContext dc = dv.RenderOpen())
                         {
                             BitmapSource imagesource = Source.Width > Source.Height
                                 ? Decoder.Frames[i]?.Resize((int)pd.PrintableAreaHeight, (int)pd.PrintableAreaWidth, 90, 300, 300)
@@ -208,11 +207,13 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
     public int DecodeHeight { get => (int)GetValue(DecodeHeightProperty); set => SetValue(DecodeHeightProperty, value); }
 
     [Browsable(false)]
-    public TiffBitmapDecoder Decoder {
+    public TiffBitmapDecoder Decoder
+    {
         get => decoder;
 
-        set {
-            if (decoder != value)
+        set
+        {
+            if(decoder != value)
             {
                 decoder = value;
                 OnPropertyChanged(nameof(Decoder));
@@ -226,11 +227,13 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     public string ImageFilePath { get => (string)GetValue(ImageFilePathProperty); set => SetValue(ImageFilePathProperty, value); }
 
-    public Visibility OpenButtonVisibility {
+    public Visibility OpenButtonVisibility
+    {
         get => openButtonVisibility;
 
-        set {
-            if (openButtonVisibility != value)
+        set
+        {
+            if(openButtonVisibility != value)
             {
                 openButtonVisibility = value;
                 OnPropertyChanged(nameof(OpenButtonVisibility));
@@ -244,11 +247,13 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     public int OriginalPixelWidth { get => (int)GetValue(OriginalPixelWidthProperty); set => SetValue(OriginalPixelWidthProperty, value); }
 
-    public Visibility OrijinalResimDosyaAçButtonVisibility {
+    public Visibility OrijinalResimDosyaAçButtonVisibility
+    {
         get => orijinalResimDosyaAçButtonVisibility;
 
-        set {
-            if (orijinalResimDosyaAçButtonVisibility != value)
+        set
+        {
+            if(orijinalResimDosyaAçButtonVisibility != value)
             {
                 orijinalResimDosyaAçButtonVisibility = value;
                 OnPropertyChanged(nameof(OrijinalResimDosyaAçButtonVisibility));
@@ -257,11 +262,13 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
     }
 
     [Browsable(false)]
-    public IEnumerable<int> Pages {
+    public IEnumerable<int> Pages
+    {
         get => pages;
 
-        set {
-            if (pages != value)
+        set
+        {
+            if(pages != value)
             {
                 pages = value;
                 OnPropertyChanged(nameof(Pages));
@@ -269,11 +276,13 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public Visibility PanoramaButtonVisibility {
+    public Visibility PanoramaButtonVisibility
+    {
         get => panoramaButtonVisibility;
 
-        set {
-            if (panoramaButtonVisibility != value)
+        set
+        {
+            if(panoramaButtonVisibility != value)
             {
                 panoramaButtonVisibility = value;
                 OnPropertyChanged(nameof(PanoramaButtonVisibility));
@@ -283,11 +292,13 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     public bool PanoramaMode { get => (bool)GetValue(PanoramaModeProperty); set => SetValue(PanoramaModeProperty, value); }
 
-    public Visibility PrintButtonVisibility {
+    public Visibility PrintButtonVisibility
+    {
         get => printButtonVisibility;
 
-        set {
-            if (printButtonVisibility != value)
+        set
+        {
+            if(printButtonVisibility != value)
             {
                 printButtonVisibility = value;
                 OnPropertyChanged(nameof(PrintButtonVisibility));
@@ -301,11 +312,13 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     public double RotateY { get => (double)GetValue(RotateYProperty); set => SetValue(RotateYProperty, value); }
 
-    public int Sayfa {
+    public int Sayfa
+    {
         get => sayfa;
 
-        set {
-            if (sayfa != value)
+        set
+        {
+            if(sayfa != value)
             {
                 sayfa = value;
                 OnPropertyChanged(nameof(Sayfa));
@@ -319,11 +332,13 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     public Geometry3D SphereModel { get; set; } = MediaViewer.CreateGeometry();
 
-    public Visibility TifNavigasyonButtonEtkin {
+    public Visibility TifNavigasyonButtonEtkin
+    {
         get => tifNavigasyonButtonEtkin;
 
-        set {
-            if (tifNavigasyonButtonEtkin != value)
+        set
+        {
+            if(tifNavigasyonButtonEtkin != value)
             {
                 tifNavigasyonButtonEtkin = value;
                 OnPropertyChanged(nameof(TifNavigasyonButtonEtkin));
@@ -331,11 +346,13 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public bool ToolBarIsEnabled {
+    public bool ToolBarIsEnabled
+    {
         get => toolBarIsEnabled;
 
-        set {
-            if (toolBarIsEnabled != value)
+        set
+        {
+            if(toolBarIsEnabled != value)
             {
                 toolBarIsEnabled = value;
                 OnPropertyChanged(nameof(ToolBarIsEnabled));
@@ -365,7 +382,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
                 image.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.IgnoreImageCache | BitmapCreateOptions.DelayCreation;
                 image.UriSource = new Uri(imagePath);
                 image.EndInit();
-                if (!image.IsFrozen && image.CanFreeze)
+                if(!image.IsFrozen && image.CanFreeze)
                 {
                     image.Freeze();
                 }
@@ -385,7 +402,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         base.OnApplyTemplate();
         _viewport = GetTemplateChild("PanoramaViewPort") as Viewport3D;
         _panoramaBrush = GetTemplateChild("panoramaBrush") as DiffuseMaterial;
-        if (_viewport != null)
+        if(_viewport != null)
         {
             _viewport.MouseLeftButtonDown -= Viewport3D_MouseLeftButtonDown;
             _viewport.MouseLeftButtonDown += Viewport3D_MouseLeftButtonDown;
@@ -408,9 +425,9 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     protected virtual void Dispose(bool disposing)
     {
-        if (!disposedValue)
+        if(!disposedValue)
         {
-            if (disposing)
+            if(disposing)
             {
                 ImageFilePath = null;
             }
@@ -455,7 +472,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     private static async void DecodeHeightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is ImageViewer imageViewer)
+        if(d is ImageViewer imageViewer)
         {
             string path = imageViewer.ImageFilePath;
             imageViewer.DecodeHeight = (int)e.NewValue;
@@ -465,14 +482,14 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     private static void FovChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is ImageViewer viewer && e.NewValue != null)
+        if(d is ImageViewer viewer && e.NewValue != null)
         {
-            if ((double)e.NewValue < 1)
+            if((double)e.NewValue < 1)
             {
                 viewer.Fov = 1;
             }
 
-            if ((double)e.NewValue > 140)
+            if((double)e.NewValue > 140)
             {
                 viewer.Fov = 140;
             }
@@ -494,9 +511,9 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     private static async void ImageFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is ImageViewer imageViewer)
+        if(d is ImageViewer imageViewer)
         {
-            if (e.NewValue is string filepath && File.Exists(filepath))
+            if(e.NewValue is string filepath && File.Exists(filepath))
             {
                 int[] size = await GetImagePixelSize(filepath);
                 imageViewer.OriginalPixelHeight = size[0];
@@ -511,9 +528,9 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     private static async Task LoadImage(string filepath, ImageViewer imageViewer)
     {
-        if (filepath is not null && File.Exists(filepath))
+        if(filepath is not null && File.Exists(filepath))
         {
-            switch (Path.GetExtension(filepath).ToLower())
+            switch(Path.GetExtension(filepath).ToLower())
             {
                 case ".tiff" or ".tif" or ".tıff" or ".tıf":
                     imageViewer.Sayfa = 1;
@@ -521,7 +538,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
                     imageViewer.TifNavigasyonButtonEtkin = Visibility.Visible;
                     imageViewer.Source = imageViewer.Decoder.Frames[0];
                     imageViewer.Pages = Enumerable.Range(1, imageViewer.Decoder.Frames.Count);
-                    if (imageViewer.TemplatedParent is ContentPresenter contentpresenter)
+                    if(imageViewer.TemplatedParent is ContentPresenter contentpresenter)
                     {
                         imageViewer.Zoom = imageViewer.Orientation != FitImageOrientation.Width
                             ? contentpresenter.ActualHeight / imageViewer.Source.Height
@@ -531,18 +548,18 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
                     return;
 
                 case ".png" or ".jpg" or ".jpeg" or ".bmp":
-                    {
-                        imageViewer.TifNavigasyonButtonEtkin = Visibility.Collapsed;
-                        imageViewer.Source = await LoadImageAsync(filepath, imageViewer.DecodeHeight);
-                        return;
-                    }
+                {
+                    imageViewer.TifNavigasyonButtonEtkin = Visibility.Collapsed;
+                    imageViewer.Source = await LoadImageAsync(filepath, imageViewer.DecodeHeight);
+                    return;
+                }
             }
         }
     }
 
     private static void OrientationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is ImageViewer imageViewer)
+        if(d is ImageViewer imageViewer)
         {
             imageViewer.Resize.Execute(null);
         }
@@ -550,9 +567,9 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     private static void PanoramaModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is ImageViewer viewer)
+        if(!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is ImageViewer viewer)
         {
-            if ((bool)e.NewValue)
+            if((bool)e.NewValue)
             {
                 viewer._viewport.Visibility = Visibility.Visible;
                 viewer._panoramaBrush.Brush = null;
@@ -568,10 +585,10 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     private static void SourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is ImageViewer imageViewer && e.NewValue is not null && e.NewValue is BitmapFrame bitmapFrame)
+        if(d is ImageViewer imageViewer && e.NewValue is not null && e.NewValue is BitmapFrame bitmapFrame)
         {
             imageViewer.Orientation = bitmapFrame.PixelHeight < bitmapFrame.PixelWidth ? FitImageOrientation.Width : FitImageOrientation.Height;
-            if (bitmapFrame.PixelHeight * 2 == bitmapFrame.PixelWidth)
+            if(bitmapFrame.PixelHeight * 2 == bitmapFrame.PixelWidth)
             {
                 imageViewer.PanoramaButtonVisibility = Visibility.Visible;
             }
@@ -586,7 +603,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     private void ImageViewer_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName is "Sayfa" && Decoder is not null)
+        if(e.PropertyName is "Sayfa" && Decoder is not null)
         {
             Source = Decoder.Frames[Sayfa - 1];
         }
@@ -604,7 +621,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     private void Viewport3D_MouseMove(object sender, MouseEventArgs e)
     {
-        if (_isOnDrag && e.LeftButton == MouseButtonState.Pressed)
+        if(_isOnDrag && e.LeftButton == MouseButtonState.Pressed)
         {
             Vector delta = _startPoint - e.GetPosition(this);
             RotateX = _startRotateX + (delta.X / ActualWidth * 360);
