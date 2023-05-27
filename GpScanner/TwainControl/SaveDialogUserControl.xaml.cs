@@ -1,9 +1,9 @@
-﻿using Extensions;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing.Imaging;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using Extensions;
 using TwainControl.Properties;
 
 namespace TwainControl;
@@ -17,13 +17,11 @@ public partial class SaveDialogUserControl : UserControl, INotifyPropertyChanged
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public BitmapSource PreviewImage
-    {
+    public BitmapSource PreviewImage {
         get => previewImage;
 
-        set
-        {
-            if(previewImage != value)
+        set {
+            if (previewImage != value)
             {
                 previewImage = value;
                 OnPropertyChanged(nameof(PreviewImage));
@@ -31,8 +29,7 @@ public partial class SaveDialogUserControl : UserControl, INotifyPropertyChanged
         }
     }
 
-    protected virtual void OnPropertyChanged(string propertyName = null)
-    { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
+    protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
 
     private BitmapSource previewImage;
 
@@ -40,7 +37,7 @@ public partial class SaveDialogUserControl : UserControl, INotifyPropertyChanged
 
     private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if(e.PropertyName is "BwThreshold")
+        if (e.PropertyName is "BwThreshold")
         {
             GenerateImage();
         }

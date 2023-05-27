@@ -28,10 +28,8 @@ namespace Tesseract
         /// <summary>
         /// Gets the number of <see cref="Pix"/> contained in the array.
         /// </summary>
-        public int Count
-        {
-            get
-            {
+        public int Count {
+            get {
                 VerifyNotDisposed();
                 return _count;
             }
@@ -59,11 +57,11 @@ namespace Tesseract
             #region Disposal
             protected override void Dispose(bool disposing)
             {
-                if(disposing)
+                if (disposing)
                 {
-                    for(int i = 0; i < items.Length; i++)
+                    for (int i = 0; i < items.Length; i++)
                     {
-                        if(items[i] != null)
+                        if (items[i] != null)
                         {
                             items[i].Dispose();
                             items[i] = null;
@@ -88,10 +86,8 @@ namespace Tesseract
             #region Enumerator Implementation
 
             /// <inheritdoc/>
-            public Pix Current
-            {
-                get
-                {
+            public Pix Current {
+                get {
                     VerifyArrayUnchanged();
                     VerifyNotDisposed();
 
@@ -101,8 +97,7 @@ namespace Tesseract
 
             /// <inheritdoc/>
             object IEnumerator.Current => index == 0 || index == items.Length + 1
-                ? throw new InvalidOperationException(
-                    "The enumerator is positioned either before the first item or after the last item .")
+                ? throw new InvalidOperationException("The enumerator is positioned either before the first item or after the last item .")
                 : (object)Current;
 
             /// <inheritdoc/>
@@ -111,9 +106,9 @@ namespace Tesseract
                 VerifyArrayUnchanged();
                 VerifyNotDisposed();
 
-                if(index < items.Length)
+                if (index < items.Length)
                 {
-                    if(items[index] == null)
+                    if (items[index] == null)
                     {
                         items[index] = array.GetPix(index);
                     }
@@ -141,7 +136,7 @@ namespace Tesseract
             /// <inheritdoc/>
             private void VerifyArrayUnchanged()
             {
-                if(version != array.version)
+                if (version != array.version)
                 {
                     throw new InvalidOperationException("PixArray was modified; enumeration operation may not execute.");
                 }
@@ -154,9 +149,7 @@ namespace Tesseract
         public static PixArray Create(int n)
         {
             IntPtr pixaHandle = LeptonicaApi.Native.pixaCreate(n);
-            return pixaHandle == IntPtr.Zero
-                ? throw new IOException("Failed to create PixArray")
-                : new PixArray(pixaHandle);
+            return pixaHandle == IntPtr.Zero ? throw new IOException("Failed to create PixArray") : new PixArray(pixaHandle);
         }
 
         /// <summary>
@@ -167,9 +160,7 @@ namespace Tesseract
         public static PixArray LoadMultiPageTiffFromFile(string filename)
         {
             IntPtr pixaHandle = LeptonicaApi.Native.pixaReadMultipageTiff(filename);
-            return pixaHandle == IntPtr.Zero
-                ? throw new IOException($"Failed to load image '{filename}'.")
-                : new PixArray(pixaHandle);
+            return pixaHandle == IntPtr.Zero ? throw new IOException($"Failed to load image '{filename}'.") : new PixArray(pixaHandle);
         }
         #endregion Static Constructors
 
@@ -206,7 +197,7 @@ namespace Tesseract
                 copyflag);
 
             int result = LeptonicaApi.Native.pixaAddPix(_handle, pix.Handle, copyflag);
-            if(result == 0)
+            if (result == 0)
             {
                 _count = LeptonicaApi.Native.pixaGetCount(_handle);
             }
@@ -220,7 +211,7 @@ namespace Tesseract
         public void Clear()
         {
             VerifyNotDisposed();
-            if(LeptonicaApi.Native.pixaClear(_handle) == 0)
+            if (LeptonicaApi.Native.pixaClear(_handle) == 0)
             {
                 _count = LeptonicaApi.Native.pixaGetCount(_handle);
             }
@@ -255,19 +246,12 @@ namespace Tesseract
                 accessType == PixArrayAccessType.Clone || accessType == PixArrayAccessType.Copy,
                 "Access type must be either copy or clone but was {0}.",
                 accessType);
-            Guard.Require(
-                nameof(index),
-                index >= 0 && index < Count,
-                "The index {0} must be between 0 and {1}.",
-                index,
-                Count);
+            Guard.Require(nameof(index), index >= 0 && index < Count, "The index {0} must be between 0 and {1}.", index, Count);
 
             VerifyNotDisposed();
 
             IntPtr pixHandle = LeptonicaApi.Native.pixaGetPix(_handle, index, accessType);
-            return pixHandle == IntPtr.Zero
-                ? throw new InvalidOperationException($"Failed to retrieve pix {pixHandle}.")
-                : Pix.Create(pixHandle);
+            return pixHandle == IntPtr.Zero ? throw new InvalidOperationException($"Failed to retrieve pix {pixHandle}.") : Pix.Create(pixHandle);
         }
 
         /// <summary>
@@ -280,15 +264,10 @@ namespace Tesseract
         /// <param name="index">The index of the pix to remove.</param>
         public void Remove(int index)
         {
-            Guard.Require(
-                nameof(index),
-                index >= 0 && index < Count,
-                "The index {0} must be between 0 and {1}.",
-                index,
-                Count);
+            Guard.Require(nameof(index), index >= 0 && index < Count, "The index {0} must be between 0 and {1}.", index, Count);
 
             VerifyNotDisposed();
-            if(LeptonicaApi.Native.pixaRemovePix(_handle, index) == 0)
+            if (LeptonicaApi.Native.pixaRemovePix(_handle, index) == 0)
             {
                 _count = LeptonicaApi.Native.pixaGetCount(_handle);
             }

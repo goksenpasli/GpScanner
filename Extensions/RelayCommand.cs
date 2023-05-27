@@ -32,10 +32,9 @@ public class RelayAsyncCommand<T> : RelayCommand<T>
             Started?.Invoke(this, EventArgs.Empty);
 
             Task task = Task.Run(() => _execute((T)parameter));
-            _ = task.ContinueWith(
-                _ => OnRunWorkerCompleted(EventArgs.Empty),
-                TaskScheduler.FromCurrentSynchronizationContext());
-        } catch(Exception ex)
+            _ = task.ContinueWith(_ => OnRunWorkerCompleted(EventArgs.Empty), TaskScheduler.FromCurrentSynchronizationContext());
+        }
+        catch (Exception ex)
         {
             OnRunWorkerCompleted(new RunWorkerCompletedEventArgs(null, ex, true));
         }
@@ -69,11 +68,7 @@ public class RelayCommand<T> : ICommand
     #endregion Constructors
 
     #region ICommand Members
-    public event EventHandler CanExecuteChanged
-    {
-        add => CommandManager.RequerySuggested += value;
-        remove => CommandManager.RequerySuggested -= value;
-    }
+    public event EventHandler CanExecuteChanged { add => CommandManager.RequerySuggested += value; remove => CommandManager.RequerySuggested -= value; }
 
     [DebuggerStepThrough]
     public virtual bool CanExecute(object parameter) { return _canExecute == null || _canExecute((T)parameter); }
@@ -95,19 +90,16 @@ public class RelayCommand : ICommand
     {
     }
 
-    public event EventHandler CanExecuteChanged
-    {
-        add
-        {
-            if(canExecute != null)
+    public event EventHandler CanExecuteChanged {
+        add {
+            if (canExecute != null)
             {
                 CommandManager.RequerySuggested += value;
             }
         }
 
-        remove
-        {
-            if(canExecute != null)
+        remove {
+            if (canExecute != null)
             {
                 CommandManager.RequerySuggested -= value;
             }

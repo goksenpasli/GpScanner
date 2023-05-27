@@ -1,6 +1,4 @@
-﻿using Extensions;
-using PdfiumViewer;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -18,6 +16,8 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Extensions;
+using PdfiumViewer;
 using static Extensions.ExtensionMethods;
 using Control = System.Windows.Controls.Control;
 using DataFormats = System.Windows.DataFormats;
@@ -44,11 +44,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         DependencyProperty.Register("Angle", typeof(double), typeof(PdfViewer), new PropertyMetadata(0.0));
 
     public static readonly DependencyProperty ContextMenuVisibilityProperty =
-        DependencyProperty.Register(
-        "ContextMenuVisibility",
-        typeof(Visibility),
-        typeof(PdfViewer),
-        new PropertyMetadata(Visibility.Collapsed));
+        DependencyProperty.Register("ContextMenuVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Collapsed));
 
     public static readonly DependencyProperty DpiProperty =
         DependencyProperty.Register("Dpi", typeof(int), typeof(PdfViewer), new PropertyMetadata(200, DpiChanged));
@@ -90,17 +86,12 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         DependencyProperty.Register("ThumbsVisible", typeof(bool), typeof(PdfViewer), new PropertyMetadata(true));
 
     public static readonly DependencyProperty ToolBarVisibilityProperty =
-        DependencyProperty.Register(
-        "ToolBarVisibility",
-        typeof(Visibility),
-        typeof(PdfViewer),
-        new PropertyMetadata(Visibility.Visible));
+        DependencyProperty.Register("ToolBarVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Visible));
 
     public static readonly DependencyProperty ZoomProperty =
         DependencyProperty.Register("Zoom", typeof(double), typeof(PdfViewer), new PropertyMetadata(1.0));
 
-    static PdfViewer()
-    { DefaultStyleKeyProperty.OverrideMetadata(typeof(PdfViewer), new FrameworkPropertyMetadata(typeof(PdfViewer))); }
+    static PdfViewer() { DefaultStyleKeyProperty.OverrideMetadata(typeof(PdfViewer), new FrameworkPropertyMetadata(typeof(PdfViewer))); }
 
     public PdfViewer()
     {
@@ -110,7 +101,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             parameter =>
             {
                 OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = "Pdf Dosyaları (*.pdf)|*.pdf" };
-                if(openFileDialog.ShowDialog() == true && IsValidPdfFile(openFileDialog.FileName))
+                if (openFileDialog.ShowDialog() == true && IsValidPdfFile(openFileDialog.FileName))
                 {
                     PdfFilePath = openFileDialog.FileName;
                 }
@@ -127,7 +118,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         ViewerBack = new RelayCommand<object>(
             parameter =>
             {
-                if(Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                 {
                     Sayfa = 1;
                     return;
@@ -140,7 +131,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         ViewerNext = new RelayCommand<object>(
             parameter =>
             {
-                if(Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                 {
                     Sayfa = ToplamSayfa;
                     return;
@@ -155,12 +146,13 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             {
                 SaveFileDialog saveFileDialog = new() { Filter = "Jpg Dosyası(*.jpg)|*.jpg", FileName = "Resim" };
 
-                if(saveFileDialog.ShowDialog() == true)
+                if (saveFileDialog.ShowDialog() == true)
                 {
                     try
                     {
                         File.WriteAllBytes(saveFileDialog.FileName, Source.ToTiffJpegByteArray(Format.Jpg));
-                    } catch(Exception ex)
+                    }
+                    catch (Exception ex)
                     {
                         throw new ArgumentException("saveimage", ex);
                     }
@@ -171,12 +163,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         Resize = new RelayCommand<object>(
             delegate
             {
-                if(Source is not null)
+                if (Source is not null)
                 {
-                    Zoom = Orientation != FitImageOrientation.Width
-                        ? ActualHeight / Source.Height
-                        : ActualWidth / Source.Width;
-                    if(Zoom == 0)
+                    Zoom = Orientation != FitImageOrientation.Width ? ActualHeight / Source.Height : ActualWidth / Source.Width;
+                    if (Zoom == 0)
                     {
                         Zoom = 1;
                     }
@@ -203,7 +193,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         GoPdfBookMarkPage = new RelayCommand<object>(
             parameter =>
             {
-                if(parameter is int pagenumber)
+                if (parameter is int pagenumber)
                 {
                     Sayfa = pagenumber + 1;
                 }
@@ -212,7 +202,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         ScrollToCurrentPage = new RelayCommand<object>(
             parameter =>
             {
-                if(parameter is ListBox listBox)
+                if (parameter is ListBox listBox)
                 {
                     listBox.ScrollIntoView(Sayfa);
                 }
@@ -224,7 +214,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
                 PdfMatches matches = pdfDocument.Search(SearchTextContent, MatchCase, WholeWord);
                 PdfMatches = new ObservableCollection<PdfMatch>();
-                foreach(PdfMatch match in matches.Items)
+                foreach (PdfMatch match in matches.Items)
                 {
                     PdfMatches.Add(match);
                 }
@@ -238,13 +228,11 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public double Angle { get => (double)GetValue(AngleProperty); set => SetValue(AngleProperty, value); }
 
-    public bool AutoFitContent
-    {
+    public bool AutoFitContent {
         get => autoFitContent;
 
-        set
-        {
-            if(autoFitContent != value)
+        set {
+            if (autoFitContent != value)
             {
                 autoFitContent = value;
                 OnPropertyChanged(nameof(AutoFitContent));
@@ -252,13 +240,11 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public Visibility BookmarkContentVisibility
-    {
+    public Visibility BookmarkContentVisibility {
         get => bookmarkContentVisibility;
 
-        set
-        {
-            if(bookmarkContentVisibility != value)
+        set {
+            if (bookmarkContentVisibility != value)
             {
                 bookmarkContentVisibility = value;
                 OnPropertyChanged(nameof(BookmarkContentVisibility));
@@ -266,8 +252,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public Visibility ContextMenuVisibility
-    {
+    public Visibility ContextMenuVisibility {
         get => (Visibility)GetValue(ContextMenuVisibilityProperty);
         set => SetValue(ContextMenuVisibilityProperty, value);
     }
@@ -280,13 +265,11 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public int Dpi { get => (int)GetValue(DpiProperty); set => SetValue(DpiProperty, value); }
 
-    public Visibility DpiListVisibility
-    {
+    public Visibility DpiListVisibility {
         get => dpiListVisibility;
 
-        set
-        {
-            if(dpiListVisibility != value)
+        set {
+            if (dpiListVisibility != value)
             {
                 dpiListVisibility = value;
                 OnPropertyChanged(nameof(DpiListVisibility));
@@ -296,13 +279,11 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public RelayCommand<object> GoPdfBookMarkPage { get; }
 
-    public bool MatchCase
-    {
+    public bool MatchCase {
         get => matchCase;
 
-        set
-        {
-            if(matchCase != value)
+        set {
+            if (matchCase != value)
             {
                 matchCase = value;
                 OnPropertyChanged(nameof(MatchCase));
@@ -310,13 +291,11 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public Visibility OpenButtonVisibility
-    {
+    public Visibility OpenButtonVisibility {
         get => openButtonVisibility;
 
-        set
-        {
-            if(openButtonVisibility != value)
+        set {
+            if (openButtonVisibility != value)
             {
                 openButtonVisibility = value;
                 OnPropertyChanged(nameof(OpenButtonVisibility));
@@ -324,20 +303,14 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public FitImageOrientation Orientation
-    {
-        get => (FitImageOrientation)GetValue(OrientationProperty);
-        set => SetValue(OrientationProperty, value);
-    }
+    public FitImageOrientation Orientation { get => (FitImageOrientation)GetValue(OrientationProperty); set => SetValue(OrientationProperty, value); }
 
     [Browsable(false)]
-    public IEnumerable<int> Pages
-    {
+    public IEnumerable<int> Pages {
         get => pages;
 
-        set
-        {
-            if(pages != value)
+        set {
+            if (pages != value)
             {
                 pages = value;
                 OnPropertyChanged(nameof(Pages));
@@ -345,13 +318,11 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public PdfBookmarkCollection PdfBookmarks
-    {
+    public PdfBookmarkCollection PdfBookmarks {
         get => pdfBookmarks;
 
-        set
-        {
-            if(pdfBookmarks != value)
+        set {
+            if (pdfBookmarks != value)
             {
                 pdfBookmarks = value;
                 OnPropertyChanged(nameof(PdfBookmarks));
@@ -359,13 +330,11 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public byte[] PdfData
-    {
+    public byte[] PdfData {
         get => pdfData;
 
-        set
-        {
-            if(pdfData != value)
+        set {
+            if (pdfData != value)
             {
                 pdfData = value;
                 OnPropertyChanged(nameof(PdfData));
@@ -373,19 +342,13 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public string PdfFilePath
-    {
-        get => (string)GetValue(PdfFilePathProperty);
-        set => SetValue(PdfFilePathProperty, value);
-    }
+    public string PdfFilePath { get => (string)GetValue(PdfFilePathProperty); set => SetValue(PdfFilePathProperty, value); }
 
-    public ObservableCollection<PdfMatch> PdfMatches
-    {
+    public ObservableCollection<PdfMatch> PdfMatches {
         get => pdfMatches;
 
-        set
-        {
-            if(pdfMatches != value)
+        set {
+            if (pdfMatches != value)
             {
                 pdfMatches = value;
                 OnPropertyChanged(nameof(PdfMatches));
@@ -393,13 +356,11 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public string PdfTextContent
-    {
+    public string PdfTextContent {
         get => pdfTextContent;
 
-        set
-        {
-            if(pdfTextContent != value)
+        set {
+            if (pdfTextContent != value)
             {
                 pdfTextContent = value;
                 OnPropertyChanged(nameof(PdfTextContent));
@@ -407,13 +368,11 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public Visibility PdfTextContentVisibility
-    {
+    public Visibility PdfTextContentVisibility {
         get => pdfTextContentVisibility;
 
-        set
-        {
-            if(pdfTextContentVisibility != value)
+        set {
+            if (pdfTextContentVisibility != value)
             {
                 pdfTextContentVisibility = value;
                 OnPropertyChanged(nameof(PdfTextContentVisibility));
@@ -421,13 +380,11 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public Visibility PrintButtonVisibility
-    {
+    public Visibility PrintButtonVisibility {
         get => printButtonVisibility;
 
-        set
-        {
-            if(printButtonVisibility != value)
+        set {
+            if (printButtonVisibility != value)
             {
                 printButtonVisibility = value;
                 OnPropertyChanged(nameof(PrintButtonVisibility));
@@ -443,13 +400,11 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public ICommand SaveImage { get; }
 
-    public int Sayfa
-    {
+    public int Sayfa {
         get => sayfa;
 
-        set
-        {
-            if(sayfa != value)
+        set {
+            if (sayfa != value)
             {
                 sayfa = value;
                 OnPropertyChanged(nameof(Sayfa));
@@ -457,21 +412,18 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public ScrollBarVisibility ScrollBarVisible
-    {
+    public ScrollBarVisibility ScrollBarVisible {
         get => (ScrollBarVisibility)GetValue(ScrollBarVisibleProperty);
         set => SetValue(ScrollBarVisibleProperty, value);
     }
 
     public RelayCommand<object> ScrollToCurrentPage { get; }
 
-    public PdfMatch SearchPdfMatch
-    {
+    public PdfMatch SearchPdfMatch {
         get => searchPdfMatch;
 
-        set
-        {
-            if(searchPdfMatch != value)
+        set {
+            if (searchPdfMatch != value)
             {
                 searchPdfMatch = value;
                 OnPropertyChanged(nameof(SearchPdfMatch));
@@ -481,13 +433,11 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public RelayCommand<object> SearchPdfText { get; }
 
-    public string SearchTextContent
-    {
+    public string SearchTextContent {
         get => searchTextContent;
 
-        set
-        {
-            if(searchTextContent != value)
+        set {
+            if (searchTextContent != value)
             {
                 searchTextContent = value;
                 OnPropertyChanged(nameof(SearchTextContent));
@@ -495,13 +445,11 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public Visibility SearchTextContentVisibility
-    {
+    public Visibility SearchTextContentVisibility {
         get => searchTextContentVisibility;
 
-        set
-        {
-            if(searchTextContentVisibility != value)
+        set {
+            if (searchTextContentVisibility != value)
             {
                 searchTextContentVisibility = value;
                 OnPropertyChanged(nameof(SearchTextContentVisibility));
@@ -509,25 +457,15 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public bool SeekingLowerPdfDpi
-    {
-        get => (bool)GetValue(SeekingLowerPdfDpiProperty);
-        set => SetValue(SeekingLowerPdfDpiProperty, value);
-    }
+    public bool SeekingLowerPdfDpi { get => (bool)GetValue(SeekingLowerPdfDpiProperty); set => SetValue(SeekingLowerPdfDpiProperty, value); }
 
-    public int SeekingPdfDpi
-    {
-        get => (int)GetValue(SeekingPdfDpiProperty);
-        set => SetValue(SeekingPdfDpiProperty, value);
-    }
+    public int SeekingPdfDpi { get => (int)GetValue(SeekingPdfDpiProperty); set => SetValue(SeekingPdfDpiProperty, value); }
 
-    public Visibility SliderZoomAngleVisibility
-    {
+    public Visibility SliderZoomAngleVisibility {
         get => sliderZoomAngleVisibility;
 
-        set
-        {
-            if(sliderZoomAngleVisibility != value)
+        set {
+            if (sliderZoomAngleVisibility != value)
             {
                 sliderZoomAngleVisibility = value;
                 OnPropertyChanged(nameof(SliderZoomAngleVisibility));
@@ -539,19 +477,13 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public ImageSource Source { get => (ImageSource)GetValue(SourceProperty); set => SetValue(SourceProperty, value); }
 
-    public bool ThumbsVisible
-    {
-        get => (bool)GetValue(ThumbsVisibleProperty);
-        set => SetValue(ThumbsVisibleProperty, value);
-    }
+    public bool ThumbsVisible { get => (bool)GetValue(ThumbsVisibleProperty); set => SetValue(ThumbsVisibleProperty, value); }
 
-    public Visibility TifNavigasyonButtonEtkin
-    {
+    public Visibility TifNavigasyonButtonEtkin {
         get => tifNavigasyonButtonEtkin;
 
-        set
-        {
-            if(tifNavigasyonButtonEtkin != value)
+        set {
+            if (tifNavigasyonButtonEtkin != value)
             {
                 tifNavigasyonButtonEtkin = value;
                 OnPropertyChanged(nameof(TifNavigasyonButtonEtkin));
@@ -559,20 +491,14 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public Visibility ToolBarVisibility
-    {
-        get => (Visibility)GetValue(ToolBarVisibilityProperty);
-        set => SetValue(ToolBarVisibilityProperty, value);
-    }
+    public Visibility ToolBarVisibility { get => (Visibility)GetValue(ToolBarVisibilityProperty); set => SetValue(ToolBarVisibilityProperty, value); }
 
     [Browsable(false)]
-    public int ToplamSayfa
-    {
+    public int ToplamSayfa {
         get => toplamSayfa;
 
-        set
-        {
-            if(toplamSayfa != value)
+        set {
+            if (toplamSayfa != value)
             {
                 toplamSayfa = value;
                 OnPropertyChanged(nameof(ToplamSayfa));
@@ -584,13 +510,11 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public RelayCommand<object> ViewerNext { get; }
 
-    public bool WholeWord
-    {
+    public bool WholeWord {
         get => wholeWord;
 
-        set
-        {
-            if(wholeWord != value)
+        set {
+            if (wholeWord != value)
             {
                 wholeWord = value;
                 OnPropertyChanged(nameof(WholeWord));
@@ -619,7 +543,8 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                         bitmapImage.Freeze();
                         return bitmapImage;
                     });
-        } catch(Exception)
+        }
+        catch (Exception)
         {
             return null;
         }
@@ -643,7 +568,8 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                         bitmapImage.Freeze();
                         return new MemoryStream(bitmapImage.ToTiffJpegByteArray(Format.Jpg));
                     });
-        } catch(Exception)
+        }
+        catch (Exception)
         {
             return null;
         }
@@ -651,7 +577,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public static bool IsValidPdfFile(string filename)
     {
-        if(File.Exists(filename))
+        if (File.Exists(filename))
         {
             byte[] buffer = new byte[4];
             using FileStream fs = new(filename, FileMode.Open, FileAccess.Read);
@@ -676,7 +602,8 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                         using PdfDocument pdfDoc = PdfDocument.Load(ms);
                         return pdfDoc.PageCount;
                     });
-        } catch(Exception)
+        }
+        catch (Exception)
         {
             return 0;
         }
@@ -686,29 +613,20 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     {
         PrintDialog pd = new();
         DrawingVisual dv = new();
-        if(pd.ShowDialog() == true)
+        if (pd.ShowDialog() == true)
         {
-            using(DrawingContext dc = dv.RenderOpen())
+            using (DrawingContext dc = dv.RenderOpen())
             {
                 BitmapSource bs;
-                if(resize)
+                if (resize)
                 {
                     bs = Source.Width > Source.Height
-                        ? ((BitmapSource)Source)?.Resize(
-                            (int)pd.PrintableAreaHeight,
-                            (int)pd.PrintableAreaWidth,
-                            90,
-                            Dpi,
-                            Dpi)
-                        : ((BitmapSource)Source)?.Resize(
-                            (int)pd.PrintableAreaWidth,
-                            (int)pd.PrintableAreaHeight,
-                            0,
-                            Dpi,
-                            Dpi);
+                        ? ((BitmapSource)Source)?.Resize((int)pd.PrintableAreaHeight, (int)pd.PrintableAreaWidth, 90, Dpi, Dpi)
+                        : ((BitmapSource)Source)?.Resize((int)pd.PrintableAreaWidth, (int)pd.PrintableAreaHeight, 0, Dpi, Dpi);
                     bs.Freeze();
                     dc.DrawImage(bs, new Rect(0, 0, pd.PrintableAreaWidth, pd.PrintableAreaHeight));
-                } else
+                }
+                else
                 {
                     bs = (BitmapSource)Source;
                     bs.Freeze();
@@ -728,7 +646,8 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             byte[] buffer = new byte[file.Length];
             _ = await file.ReadAsync(buffer, 0, (int)file.Length);
             return buffer;
-        } catch(Exception)
+        }
+        catch (Exception)
         {
             return null;
         }
@@ -744,16 +663,16 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     {
         base.OnApplyTemplate();
         scrollvwr = GetTemplateChild("ScrollVwr") as ScrollViewer;
-        if(scrollvwr != null)
+        if (scrollvwr != null)
         {
             scrollvwr.Drop -= Scrollvwr_Drop;
             scrollvwr.Drop += Scrollvwr_Drop;
         }
 
-        if(SeekingLowerPdfDpi)
+        if (SeekingLowerPdfDpi)
         {
             updown = GetTemplateChild("UpDown") as NumericUpDownControl;
-            if(updown != null)
+            if (updown != null)
             {
                 updown.PreviewMouseLeftButtonUp -= UpDownMouseLeftButtonUp;
                 updown.PreviewMouseLeftButtonUp += UpDownMouseLeftButtonUp;
@@ -763,9 +682,9 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     protected virtual void Dispose(bool disposing)
     {
-        if(!disposedValue)
+        if (!disposedValue)
         {
-            if(disposing)
+            if (disposing)
             {
                 Source = null;
             }
@@ -774,8 +693,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    protected virtual void OnPropertyChanged(string propertyName = null)
-    { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
+    protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
 
     private bool autoFitContent;
 
@@ -825,7 +743,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if(d is PdfViewer pdfViewer && pdfViewer.Source is not null && !DesignerProperties.GetIsInDesignMode(pdfViewer))
+        if (d is PdfViewer pdfViewer && pdfViewer.Source is not null && !DesignerProperties.GetIsInDesignMode(pdfViewer))
         {
             pdfViewer.Resize.Execute(null);
         }
@@ -833,7 +751,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     private static async void DpiChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if(d is PdfViewer pdfViewer && pdfViewer.PdfFilePath is not null)
+        if (d is PdfViewer pdfViewer && pdfViewer.PdfFilePath is not null)
         {
             string pdfFilePath = pdfViewer.PdfFilePath;
             pdfViewer.Source = await ConvertToImgAsync(pdfFilePath, pdfViewer.Sayfa, (int)e.NewValue);
@@ -843,7 +761,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     private static void PdfFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if(d is PdfViewer pdfViewer &&
+        if (d is PdfViewer pdfViewer &&
             e.NewValue is not null &&
             File.Exists(e.NewValue as string) &&
             string.Equals(Path.GetExtension(e.NewValue as string), ".pdf", StringComparison.OrdinalIgnoreCase))
@@ -856,14 +774,15 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 int page = pdfViewer.Sayfa - 1;
                 int width = (int)(pdfDoc.PageSizes[page].Width / 72 * dpi);
                 int height = (int)(pdfDoc.PageSizes[page].Height / 72 * dpi);
-                using(System.Drawing.Image image = pdfDoc.Render(page, width, height, dpi, dpi, false))
+                using (System.Drawing.Image image = pdfDoc.Render(page, width, height, dpi, dpi, false))
                 {
                     pdfViewer.Source = image.ToBitmapImage(ImageFormat.Jpeg);
                 }
 
                 pdfViewer.ToplamSayfa = pdfDoc.PageCount;
                 pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
-            } catch(Exception)
+            }
+            catch (Exception)
             {
                 pdfViewer.Source = null;
             }
@@ -872,7 +791,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     private static void SourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if(d is PdfViewer pdfViewer && e.NewValue is not null)
+        if (d is PdfViewer pdfViewer && e.NewValue is not null)
         {
             pdfViewer.Resize.Execute(null);
         }
@@ -880,19 +799,19 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     private async void PdfViewer_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if(e.PropertyName is "Sayfa" && sender is PdfViewer pdfViewer && pdfViewer.PdfFilePath is not null)
+        if (e.PropertyName is "Sayfa" && sender is PdfViewer pdfViewer && pdfViewer.PdfFilePath is not null)
         {
-            if(Sayfa > ToplamSayfa)
+            if (Sayfa > ToplamSayfa)
             {
                 Sayfa = ToplamSayfa;
             }
 
-            if(Sayfa < 1)
+            if (Sayfa < 1)
             {
                 Sayfa = 1;
             }
 
-            if(SeekingLowerPdfDpi && updown.FindVisualChildren<RepeatButton>().Any(z => z.IsMouseOver))
+            if (SeekingLowerPdfDpi && updown.FindVisualChildren<RepeatButton>().Any(z => z.IsMouseOver))
             {
                 Dpi = Sayfa == 1 || Sayfa == ToplamSayfa ? SeekingPdfDpi : DpiList.Min();
             }
@@ -902,7 +821,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             GC.Collect();
         }
 
-        if(e.PropertyName is "SearchPdfMatch" && SearchPdfMatch is not null)
+        if (e.PropertyName is "SearchPdfMatch" && SearchPdfMatch is not null)
         {
             Sayfa = SearchPdfMatch.Page + 1;
         }
@@ -910,7 +829,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     private void PdfViewer_SizeChanged(object sender, SizeChangedEventArgs e)
     {
-        if(AutoFitContent)
+        if (AutoFitContent)
         {
             Resize.Execute(null);
         }
@@ -925,20 +844,21 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         form.UseEXDialog = true;
         form.Document.PrinterSettings.FromPage = 1;
         form.Document.PrinterSettings.ToPage = pdfDocument.PageCount;
-        if(DefaultPrinter != null)
+        if (DefaultPrinter != null)
         {
             form.Document.PrinterSettings.PrinterName = DefaultPrinter;
         }
 
-        if(form.ShowDialog() == DialogResult.OK)
+        if (form.ShowDialog() == DialogResult.OK)
         {
             try
             {
-                if(form.Document.PrinterSettings.FromPage <= pdfDocument.PageCount)
+                if (form.Document.PrinterSettings.FromPage <= pdfDocument.PageCount)
                 {
                     form.Document.Print();
                 }
-            } catch
+            }
+            catch
             {
             }
         }
@@ -947,7 +867,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     private void Scrollvwr_Drop(object sender, DragEventArgs e)
     {
         string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
-        if(droppedfiles?.Length > 0)
+        if (droppedfiles?.Length > 0)
         {
             PdfFilePath = droppedfiles[0];
         }
@@ -955,7 +875,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     private void UpDownMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
     {
-        if(SeekingLowerPdfDpi)
+        if (SeekingLowerPdfDpi)
         {
             Dpi = SeekingPdfDpi;
         }

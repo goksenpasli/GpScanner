@@ -36,30 +36,20 @@ namespace Tesseract
         /// <summary>
         /// The current region of interest being parsed.
         /// </summary>
-        public Rect RegionOfInterest
-        {
+        public Rect RegionOfInterest {
             get => regionOfInterest;
 
-            set
-            {
-                if(value.X1 < 0 || value.Y1 < 0 || value.X2 > Image.Width || value.Y2 > Image.Height)
+            set {
+                if (value.X1 < 0 || value.Y1 < 0 || value.X2 > Image.Width || value.Y2 > Image.Height)
                 {
-                    throw new ArgumentException(
-                        "The region of interest to be processed must be within the image bounds.",
-                        nameof(value));
+                    throw new ArgumentException("The region of interest to be processed must be within the image bounds.", nameof(value));
                 }
 
-                if(regionOfInterest != value)
+                if (regionOfInterest != value)
                 {
                     regionOfInterest = value;
 
-                    TessApi.Native
-                        .BaseApiSetRectangle(
-                            Engine.Handle,
-                            regionOfInterest.X1,
-                            regionOfInterest.Y1,
-                            regionOfInterest.Width,
-                            regionOfInterest.Height);
+                    TessApi.Native.BaseApiSetRectangle(Engine.Handle, regionOfInterest.X1, regionOfInterest.Y1, regionOfInterest.Width, regionOfInterest.Height);
 
                     runRecognitionPhase = false;
                 }
@@ -90,14 +80,13 @@ namespace Tesseract
         /// </remarks>
         /// <param name="orientation">The page orientation.</param>
         /// <param name="confidence">The confidence level of the orientation (15 is reasonably confident).</param>
-        [Obsolete(
-            "Use DetectBestOrientation(int orientationDegrees, float confidence) that returns orientation in degrees instead.")]
+        [Obsolete("Use DetectBestOrientation(int orientationDegrees, float confidence) that returns orientation in degrees instead.")]
         public void DetectBestOrientation(out Orientation orientation, out float confidence)
         {
             DetectBestOrientation(out int orientationDegrees, out float orientationConfidence);
 
             orientationDegrees %= 360;
-            if(orientationDegrees < 0)
+            if (orientationDegrees < 0)
             {
                 orientationDegrees += 360;
             }
@@ -106,9 +95,7 @@ namespace Tesseract
                 ? Orientation.PageUp
                 : orientationDegrees > 45 && orientationDegrees <= 135
                     ? Orientation.PageRight
-                    : orientationDegrees > 135 && orientationDegrees <= 225
-                        ? Orientation.PageDown
-                        : Orientation.PageLeft;
+                    : orientationDegrees > 135 && orientationDegrees <= 225 ? Orientation.PageDown : Orientation.PageLeft;
 
             confidence = orientationConfidence;
         }
@@ -139,13 +126,9 @@ namespace Tesseract
         ///     The name of the script (e.g. Latin)
         ///     <param>
         ///         <param name="scriptConfidence">The confidence level in the script</param>
-        public void DetectBestOrientationAndScript(
-            out int orientation,
-            out float confidence,
-            out string scriptName,
-            out float scriptConfidence)
+        public void DetectBestOrientationAndScript(out int orientation, out float confidence, out string scriptName, out float scriptConfidence)
         {
-            if(TessApi.Native
+            if (TessApi.Native
                     .TessBaseAPIDetectOrientationScript(
                         Engine.Handle,
                         out int orient_deg,
@@ -156,11 +139,10 @@ namespace Tesseract
             {
                 orientation = orient_deg;
                 confidence = orient_conf;
-                scriptName = script_nameHandle != IntPtr.Zero
-                    ? MarshalHelper.PtrToString(script_nameHandle, Encoding.ASCII)
-                    : null;
+                scriptName = script_nameHandle != IntPtr.Zero ? MarshalHelper.PtrToString(script_nameHandle, Encoding.ASCII) : null;
                 scriptConfidence = script_conf;
-            } else
+            }
+            else
             {
                 throw new TesseractException("Failed to detect image orientation.");
             }
@@ -200,9 +182,7 @@ namespace Tesseract
         {
             Guard.Require(nameof(pageNum), pageNum >= 0, "Page number must be greater than or equal to zero (0).");
             Recognize();
-            return useXHtml
-                ? TessApi.BaseAPIGetHOCRText2(Engine.Handle, pageNum)
-                : TessApi.BaseAPIGetHOCRText(Engine.Handle, pageNum);
+            return useXHtml ? TessApi.BaseAPIGetHOCRText2(Engine.Handle, pageNum) : TessApi.BaseAPIGetHOCRText(Engine.Handle, pageNum);
         }
 
         /// <summary>
@@ -246,22 +226,20 @@ namespace Tesseract
         /// <returns></returns>
         public List<Rectangle> GetSegmentedRegions(PageIteratorLevel pageIteratorLevel)
         {
-            IntPtr boxArray = TessApi.Native
-                .BaseAPIGetComponentImages(Engine.Handle, pageIteratorLevel, Constants.TRUE, IntPtr.Zero, IntPtr.Zero);
+            IntPtr boxArray = TessApi.Native.BaseAPIGetComponentImages(Engine.Handle, pageIteratorLevel, Constants.TRUE, IntPtr.Zero, IntPtr.Zero);
             int boxCount = LeptonicaApi.Native.boxaGetCount(new HandleRef(this, boxArray));
 
             List<Rectangle> boxList = new List<Rectangle>();
 
-            for(int i = 0; i < boxCount; i++)
+            for (int i = 0; i < boxCount; i++)
             {
                 IntPtr box = LeptonicaApi.Native.boxaGetBox(new HandleRef(this, boxArray), i, PixArrayAccessType.Clone);
-                if(box == IntPtr.Zero)
+                if (box == IntPtr.Zero)
                 {
                     continue;
                 }
 
-                _ = LeptonicaApi.Native
-                    .boxGetGeometry(new HandleRef(this, box), out int px, out int py, out int pw, out int ph);
+                _ = LeptonicaApi.Native.boxGetGeometry(new HandleRef(this, box), out int px, out int py, out int pw, out int ph);
                 boxList.Add(new Rectangle(px, py, pw, ph));
                 LeptonicaApi.Native.boxDestroy(ref box);
             }
@@ -290,9 +268,7 @@ namespace Tesseract
             Recognize();
 
             IntPtr pixHandle = TessApi.Native.BaseAPIGetThresholdedImage(Engine.Handle);
-            return pixHandle == IntPtr.Zero
-                ? throw new TesseractException("Failed to get thresholded image.")
-                : Pix.Create(pixHandle);
+            return pixHandle == IntPtr.Zero ? throw new TesseractException("Failed to get thresholded image.") : Pix.Create(pixHandle);
         }
 
         /// <summary>
@@ -330,12 +306,7 @@ namespace Tesseract
             return TessApi.BaseAPIGetWordStrBoxText(Engine.Handle, pageNum);
         }
 
-        internal Page(
-            TesseractEngine engine,
-            Pix image,
-            string imageName,
-            Rect regionOfInterest,
-            PageSegMode pageSegmentMode)
+        internal Page(TesseractEngine engine, Pix image, string imageName, Rect regionOfInterest, PageSegMode pageSegmentMode)
         {
             Engine = engine;
             Image = image;
@@ -349,37 +320,28 @@ namespace Tesseract
             Guard.Verify(
                 PageSegmentMode != PageSegMode.OsdOnly,
                 "Cannot OCR image when using OSD only page segmentation, please use DetectBestOrientation instead.");
-            if(!runRecognitionPhase)
+            if (!runRecognitionPhase)
             {
-                if(TessApi.Native.BaseApiRecognize(Engine.Handle, new HandleRef(this, IntPtr.Zero)) != 0)
+                if (TessApi.Native.BaseApiRecognize(Engine.Handle, new HandleRef(this, IntPtr.Zero)) != 0)
                 {
                     throw new InvalidOperationException("Recognition of image failed.");
                 }
 
                 runRecognitionPhase = true;
 
-                if(Engine.TryGetBoolVariable("tessedit_write_images", out bool tesseditWriteImages) &&
-                    tesseditWriteImages)
+                if (Engine.TryGetBoolVariable("tessedit_write_images", out bool tesseditWriteImages) && tesseditWriteImages)
                 {
-                    using(Pix thresholdedImage = GetThresholdedImage())
+                    using (Pix thresholdedImage = GetThresholdedImage())
                     {
                         string filePath = Path.Combine(Environment.CurrentDirectory, "tessinput.tif");
                         try
                         {
                             thresholdedImage.Save(filePath, ImageFormat.TiffG4);
-                            trace.TraceEvent(
-                                TraceEventType.Information,
-                                2,
-                                "Successfully saved the thresholded image to '{0}'",
-                                filePath);
-                        } catch(Exception error)
+                            trace.TraceEvent(TraceEventType.Information, 2, "Successfully saved the thresholded image to '{0}'", filePath);
+                        }
+                        catch (Exception error)
                         {
-                            trace.TraceEvent(
-                                TraceEventType.Error,
-                                2,
-                                "Failed to save the thresholded image to '{0}'.\nError: {1}",
-                                filePath,
-                                error.Message);
+                            trace.TraceEvent(TraceEventType.Error, 2, "Failed to save the thresholded image to '{0}'.\nError: {1}", filePath, error.Message);
                         }
                     }
                 }
@@ -388,7 +350,7 @@ namespace Tesseract
 
         protected override void Dispose(bool disposing)
         {
-            if(disposing)
+            if (disposing)
             {
                 TessApi.Native.BaseAPIClear(Engine.Handle);
             }

@@ -21,20 +21,20 @@ public class LocExtension : MarkupExtension
     {
         object targetObject = (serviceProvider as IProvideValueTarget)?.TargetObject;
 
-        if(targetObject?.GetType().Name == "SharedDp")
+        if (targetObject?.GetType().Name == "SharedDp")
         {
             return targetObject;
         }
 
         string baseName = GetResourceManager(targetObject)?.BaseName ?? string.Empty;
 
-        if(string.IsNullOrEmpty(baseName))
+        if (string.IsNullOrEmpty(baseName))
         {
             object rootObject = (serviceProvider as IRootObjectProvider)?.RootObject;
             baseName = GetResourceManager(rootObject)?.BaseName ?? string.Empty;
         }
 
-        if(string.IsNullOrEmpty(baseName) && targetObject is FrameworkElement frameworkElement)
+        if (string.IsNullOrEmpty(baseName) && targetObject is FrameworkElement frameworkElement)
         {
             baseName = GetResourceManager(frameworkElement.TemplatedParent)?.BaseName ?? string.Empty;
         }
@@ -52,11 +52,11 @@ public class LocExtension : MarkupExtension
 
     private ResourceManager GetResourceManager(object control)
     {
-        if(control is DependencyObject dependencyObject)
+        if (control is DependencyObject dependencyObject)
         {
             object localValue = dependencyObject.ReadLocalValue(Translation.ResourceManagerProperty);
 
-            if(localValue != DependencyProperty.UnsetValue && localValue is ResourceManager resourceManager)
+            if (localValue != DependencyProperty.UnsetValue && localValue is ResourceManager resourceManager)
             {
                 TranslationSource.Instance.AddResourceManager(resourceManager);
 
@@ -93,13 +93,11 @@ public class TranslationSource : INotifyPropertyChanged
 
     public static TranslationSource Instance { get; } = new();
 
-    public CultureInfo CurrentCulture
-    {
+    public CultureInfo CurrentCulture {
         get => currentCulture;
 
-        set
-        {
-            if(currentCulture != value)
+        set {
+            if (currentCulture != value)
             {
                 currentCulture = value;
 
@@ -108,12 +106,10 @@ public class TranslationSource : INotifyPropertyChanged
         }
     }
 
-    public string this[string key]
-    {
-        get
-        {
+    public string this[string key] {
+        get {
             string translation = null;
-            if(resourceManagerDictionary.ContainsKey(SplitName(key).Item1))
+            if (resourceManagerDictionary.ContainsKey(SplitName(key).Item1))
             {
                 translation = resourceManagerDictionary[SplitName(key).Item1]
                     .GetString(SplitName(key).Item2, currentCulture);
@@ -131,7 +127,7 @@ public class TranslationSource : INotifyPropertyChanged
 
     public void AddResourceManager(ResourceManager resourceManager)
     {
-        if(!resourceManagerDictionary.ContainsKey(resourceManager.BaseName))
+        if (!resourceManagerDictionary.ContainsKey(resourceManager.BaseName))
         {
             resourceManagerDictionary.Add(resourceManager.BaseName, resourceManager);
         }

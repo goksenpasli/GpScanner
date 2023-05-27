@@ -25,11 +25,7 @@ public class MaskedTextBlock : TextBlock
 
     public char PromptChar { get => (char)GetValue(PromptCharProperty); set => SetValue(PromptCharProperty, value); }
 
-    public string UnmaskedText
-    {
-        get => (string)GetValue(UnmaskedTextProperty);
-        set => SetValue(UnmaskedTextProperty, value);
-    }
+    public string UnmaskedText { get => (string)GetValue(UnmaskedTextProperty); set => SetValue(UnmaskedTextProperty, value); }
 
     private MaskedTextProvider _provider;
 
@@ -37,8 +33,7 @@ public class MaskedTextBlock : TextBlock
     {
         MaskedTextBlock maskedTextBlock = d as MaskedTextBlock;
         maskedTextBlock._provider = new MaskedTextProvider(maskedTextBlock.Mask, CultureInfo.CurrentCulture);
-        _ = maskedTextBlock._provider
-            .Set(string.IsNullOrWhiteSpace(maskedTextBlock.UnmaskedText) ? string.Empty : e.NewValue as string);
+        _ = maskedTextBlock._provider.Set(string.IsNullOrWhiteSpace(maskedTextBlock.UnmaskedText) ? string.Empty : e.NewValue as string);
         maskedTextBlock.Text = maskedTextBlock._provider.ToDisplayString();
     }
 

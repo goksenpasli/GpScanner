@@ -42,10 +42,7 @@ public class ColorEffect : ShaderEffect
 
     public ColorEffect()
     {
-        PixelShader = new PixelShader
-        {
-            UriSource = new Uri("/Extensions;component/Shader/ColorEffect.ps", UriKind.Relative)
-        };
+        PixelShader = new PixelShader { UriSource = new Uri("/Extensions;component/Shader/ColorEffect.ps", UriKind.Relative) };
 
         UpdateShaderValue(InputProperty);
         UpdateShaderValue(BrightnessProperty);
@@ -57,11 +54,7 @@ public class ColorEffect : ShaderEffect
 
     public double Blue { get => (double)GetValue(BlueProperty); set => SetValue(BlueProperty, value); }
 
-    public double Brightness
-    {
-        get => (double)GetValue(BrightnessProperty);
-        set => SetValue(BrightnessProperty, value);
-    }
+    public double Brightness { get => (double)GetValue(BrightnessProperty); set => SetValue(BrightnessProperty, value); }
 
     public double Contrast { get => (double)GetValue(ContrastProperty); set => SetValue(ContrastProperty, value); }
 

@@ -1,10 +1,10 @@
-﻿using Extensions;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
+using Extensions;
 using TwainControl;
 
 namespace GpScanner.ViewModel;
@@ -16,11 +16,7 @@ public static class WindowExtensions
         OpenSettings = new RelayCommand<object>(
             parameter =>
             {
-                SettingsWindowView settingswindow = new()
-                {
-                    Owner = Application.Current.MainWindow,
-                    DataContext = Application.Current.MainWindow.DataContext
-                };
+                SettingsWindowView settingswindow = new() { Owner = Application.Current.MainWindow, DataContext = Application.Current.MainWindow.DataContext };
                 _ = settingswindow.ShowDialog();
             });
     }
@@ -31,9 +27,7 @@ public static class WindowExtensions
     {
         IntPtr hwnd = new WindowInteropHelper(window).Handle;
         IntPtr sysMenu = GetSystemMenu(hwnd, false);
-        _ = disable
-            ? EnableMenuItem(sysMenu, SC_CLOSE, MF_BYCOMMAND | MF_GRAYED)
-            : EnableMenuItem(sysMenu, SC_CLOSE, MF_BYCOMMAND | MF_ENABLED);
+        _ = disable ? EnableMenuItem(sysMenu, SC_CLOSE, MF_BYCOMMAND | MF_GRAYED) : EnableMenuItem(sysMenu, SC_CLOSE, MF_BYCOMMAND | MF_ENABLED);
     }
 
     public static void SystemMenu(this MainWindow form)
@@ -88,9 +82,9 @@ public static class WindowExtensions
     [DebuggerStepThrough]
     private static IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
     {
-        if(msg == WM_SYSCOMMAND)
+        if (msg == WM_SYSCOMMAND)
         {
-            switch(wParam.ToInt32())
+            switch (wParam.ToInt32())
             {
                 case _AboutSysMenuID:
                     _ = Process.Start("https://github.com/goksenpasli");

@@ -41,36 +41,24 @@ public class ShadowedImage : Image
 
     public Point Location { get => (Point)GetValue(LocationProperty); set => SetValue(LocationProperty, value); }
 
-    public SolidColorBrush OverlayColor
-    {
-        get => (SolidColorBrush)GetValue(OverlayColorProperty);
-        set => SetValue(OverlayColorProperty, value);
-    }
+    public SolidColorBrush OverlayColor { get => (SolidColorBrush)GetValue(OverlayColorProperty); set => SetValue(OverlayColorProperty, value); }
 
-    public SolidColorBrush ShadowColor
-    {
-        get => (SolidColorBrush)GetValue(ShadowColorProperty);
-        set => SetValue(ShadowColorProperty, value);
-    }
+    public SolidColorBrush ShadowColor { get => (SolidColorBrush)GetValue(ShadowColorProperty); set => SetValue(ShadowColorProperty, value); }
 
-    public bool ShowOverlayColor
-    {
-        get => (bool)GetValue(ShowOverlayColorProperty);
-        set => SetValue(ShowOverlayColorProperty, value);
-    }
+    public bool ShowOverlayColor { get => (bool)GetValue(ShowOverlayColorProperty); set => SetValue(ShowOverlayColorProperty, value); }
 
     public bool ShowShadow { get => (bool)GetValue(ShowShadowProperty); set => SetValue(ShowShadowProperty, value); }
 
     protected override void OnRender(DrawingContext dc)
     {
-        if(ShowShadow)
+        if (ShowShadow)
         {
             dc.DrawRectangle(ShadowColor, null, new Rect(Location, new Size(ActualWidth, ActualHeight)));
         }
 
         base.OnRender(dc);
 
-        if(ShowOverlayColor)
+        if (ShowOverlayColor)
         {
             dc.DrawLine(pen, new Point(ActualWidth, 0), new Point(0, ActualHeight));
             dc.DrawLine(pen, new Point(0, 0), new Point(ActualWidth, ActualHeight));

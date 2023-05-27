@@ -24,10 +24,7 @@ public static class Win32FileScanner
     /// A cumulative stat object representing total files, folder, sizes, etc for the base directory provided.
     /// </param>
     /// <param name="maxDepth">Maximum folder depth to recurse. Set -1 to disable max depth.</param>
-    public static IEnumerable<FileResult> EnumerateFileItems(
-        string path,
-        out DirectoryStats rootStats,
-        int maxDepth = -1)
+    public static IEnumerable<FileResult> EnumerateFileItems(string path, out DirectoryStats rootStats, int maxDepth = -1)
     {
         rootStats = new DirectoryStats();
         return ScanRecursive(Path.GetFullPath(path), maxDepth, 0, rootStats);
@@ -38,8 +35,7 @@ public static class Win32FileScanner
     /// directories.
     /// </summary>
     /// <param name="maxDepth">Maximum folder depth to recurse. Set -1 to disable max depth.</param>
-    public static IEnumerable<string> EnumerateFilepaths(string path, int maxDepth = -1)
-    { return ScanRecursiveFilepath(Path.GetFullPath(path), maxDepth, 0); }
+    public static IEnumerable<string> EnumerateFilepaths(string path, int maxDepth = -1) { return ScanRecursiveFilepath(Path.GetFullPath(path), maxDepth, 0); }
 
     private static readonly IntPtr invalidHandle = new(-1);
 
@@ -86,11 +82,9 @@ public static class Win32FileScanner
     [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
     private static extern bool FindNextFile(IntPtr hFindFile, out Win32FindData lpFindFileData);
 
-    private static long GetFilesize(Win32FindData findData)
-    { return findData.nFileSizeLow + ((long)findData.nFileSizeHigh * uint.MaxValue); }
+    private static long GetFilesize(Win32FindData findData) { return findData.nFileSizeLow + ((long)findData.nFileSizeHigh * uint.MaxValue); }
 
-    private static bool IsValidFile(Win32FindData findData)
-    { return !findData.cFileName.Equals(".") && !findData.cFileName.Equals(".."); }
+    private static bool IsValidFile(Win32FindData findData) { return !findData.cFileName.Equals(".") && !findData.cFileName.Equals(".."); }
 
     private static IEnumerable<FileResult> ScanRecursive(string path, int maxDepth, int depth, DirectoryStats parent)
     {
@@ -100,12 +94,11 @@ public static class Win32FileScanner
         {
             handle = FindFirstFile($@"{path}\*", out Win32FindData findData);
 
-            if(handle != invalidHandle)
+            if (handle != invalidHandle)
             {
                 do
                 {
-                    if(findData.dwFileAttributes.HasFlag(FileAttributes.ReparsePoint | FileAttributes.Directory) ||
-                        !IsValidFile(findData))
+                    if (findData.dwFileAttributes.HasFlag(FileAttributes.ReparsePoint | FileAttributes.Directory) || !IsValidFile(findData))
                     {
                         continue;
                     }
@@ -116,16 +109,16 @@ public static class Win32FileScanner
                     DateTime lastWriteTime = ToDateTime(findData.ftLastWriteTime);
                     DateTime lastAccessTime = ToDateTime(findData.ftLastAccessTime);
 
-                    if(findData.dwFileAttributes.HasFlag(FileAttributes.Directory))
+                    if (findData.dwFileAttributes.HasFlag(FileAttributes.Directory))
                     {
-                        if(maxDepth >= 0 && depth + 1 > maxDepth)
+                        if (maxDepth >= 0 && depth + 1 > maxDepth)
                         {
                             continue;
                         }
 
                         DirectoryStats stats = new();
 
-                        foreach(FileResult fileResult in ScanRecursive(fullPath, maxDepth, depth + 1, stats))
+                        foreach (FileResult fileResult in ScanRecursive(fullPath, maxDepth, depth + 1, stats))
                         {
                             yield return fileResult;
                         }
@@ -142,7 +135,8 @@ public static class Win32FileScanner
                             FileType.Folder,
                             depth,
                             stats);
-                    } else
+                    }
+                    else
                     {
                         long filesize = GetFilesize(findData);
 
@@ -160,7 +154,8 @@ public static class Win32FileScanner
                     }
                 } while (FindNextFile(handle, out findData));
             }
-        } finally
+        }
+        finally
         {
             _ = FindClose(handle);
         }
@@ -174,36 +169,37 @@ public static class Win32FileScanner
         {
             handle = FindFirstFile($@"{path}\*", out Win32FindData findData);
 
-            if(handle != invalidHandle)
+            if (handle != invalidHandle)
             {
                 do
                 {
-                    if(findData.dwFileAttributes.HasFlag(FileAttributes.ReparsePoint | FileAttributes.Directory) ||
-                        !IsValidFile(findData))
+                    if (findData.dwFileAttributes.HasFlag(FileAttributes.ReparsePoint | FileAttributes.Directory) || !IsValidFile(findData))
                     {
                         continue;
                     }
 
                     string fullPath = Path.Combine(path, findData.cFileName);
 
-                    if(findData.dwFileAttributes.HasFlag(FileAttributes.Directory))
+                    if (findData.dwFileAttributes.HasFlag(FileAttributes.Directory))
                     {
-                        if(maxDepth >= 0 && depth + 1 > maxDepth)
+                        if (maxDepth >= 0 && depth + 1 > maxDepth)
                         {
                             continue;
                         }
 
-                        foreach(string filePath in ScanRecursiveFilepath(fullPath, maxDepth, depth + 1))
+                        foreach (string filePath in ScanRecursiveFilepath(fullPath, maxDepth, depth + 1))
                         {
                             yield return filePath;
                         }
-                    } else
+                    }
+                    else
                     {
                         yield return fullPath;
                     }
                 } while (FindNextFile(handle, out findData));
             }
-        } finally
+        }
+        finally
         {
             _ = FindClose(handle);
         }

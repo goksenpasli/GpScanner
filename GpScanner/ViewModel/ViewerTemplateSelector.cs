@@ -24,7 +24,7 @@ public class ViewerTemplateSelector : DataTemplateSelector
 
     public override DataTemplate SelectTemplate(object item, DependencyObject container)
     {
-        if(!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && item is string dosya)
+        if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && item is string dosya)
         {
             string[] imgext = { ".jpg", ".bmp", ".png", ".tif", ".tiff", ".tıf", ".tıff" };
             string[] videoext = { ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg" };

@@ -18,20 +18,13 @@ public class FoldEffect : ShaderEffect
 
     public FoldEffect()
     {
-        PixelShader = new PixelShader
-        {
-            UriSource = new Uri("/GpScanner;component/Resources/FoldEffect.ps", UriKind.Relative)
-        };
+        PixelShader = new PixelShader { UriSource = new Uri("/GpScanner;component/Resources/FoldEffect.ps", UriKind.Relative) };
 
         UpdateShaderValue(InputProperty);
         UpdateShaderValue(FoldAmountProperty);
     }
 
-    public double FoldAmount
-    {
-        get => (double)GetValue(FoldAmountProperty);
-        set => SetValue(FoldAmountProperty, value);
-    }
+    public double FoldAmount { get => (double)GetValue(FoldAmountProperty); set => SetValue(FoldAmountProperty, value); }
 
     public Brush Input { get => (Brush)GetValue(InputProperty); set => SetValue(InputProperty, value); }
 }

@@ -12,10 +12,6 @@ namespace Tesseract
         /// This search path should not include the platform component as this will automatically be appended to the
         /// string based on the detected platform.
         /// </remarks>
-        public static string CustomSearchPath
-        {
-            get => LibraryLoader.Instance.CustomSearchPath;
-            set => LibraryLoader.Instance.CustomSearchPath = value;
-        }
+        public static string CustomSearchPath { get => LibraryLoader.Instance.CustomSearchPath; set => LibraryLoader.Instance.CustomSearchPath = value; }
     }
 }

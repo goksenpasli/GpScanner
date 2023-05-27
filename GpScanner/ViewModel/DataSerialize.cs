@@ -17,13 +17,10 @@ internal static class DataSerialize
             XmlSerializer serializer = new(typeof(T));
             using StreamReader stream = new(xmldatapath);
             return serializer.Deserialize(stream) as T;
-        } catch(Exception ex)
+        }
+        catch (Exception ex)
         {
-            _ = MessageBox.Show(
-                ex.Message,
-                Application.Current?.MainWindow?.Title,
-                MessageBoxButton.OK,
-                MessageBoxImage.Error);
+            _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         return null;
@@ -38,7 +35,7 @@ internal static class DataSerialize
     internal static ObservableCollection<T> DeSerialize<T>(this IEnumerable<XElement> xElement) where T : class, new()
     {
         ObservableCollection<T> list = new();
-        foreach(XElement element in xElement)
+        foreach (XElement element in xElement)
         {
             list.Add(element.DeSerialize<T>());
         }

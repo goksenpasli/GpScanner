@@ -27,10 +27,7 @@ public class GrowablePoissonDiskEffect : ShaderEffect
 
     public GrowablePoissonDiskEffect()
     {
-        PixelShader = new PixelShader
-        {
-            UriSource = new Uri("/Extensions;component/Shader/GrowablePoissonDiskEffect.ps", UriKind.Relative)
-        };
+        PixelShader = new PixelShader { UriSource = new Uri("/Extensions;component/Shader/GrowablePoissonDiskEffect.ps", UriKind.Relative) };
 
         UpdateShaderValue(InputProperty);
         UpdateShaderValue(DiskRadiusProperty);
@@ -40,11 +37,7 @@ public class GrowablePoissonDiskEffect : ShaderEffect
     /// <summary>
     /// The radius of the Poisson disk (in pixels).
     /// </summary>
-    public double DiskRadius
-    {
-        get => (double)GetValue(DiskRadiusProperty);
-        set => SetValue(DiskRadiusProperty, value);
-    }
+    public double DiskRadius { get => (double)GetValue(DiskRadiusProperty); set => SetValue(DiskRadiusProperty, value); }
 
     public Brush Input { get => (Brush)GetValue(InputProperty); set => SetValue(InputProperty, value); }
 

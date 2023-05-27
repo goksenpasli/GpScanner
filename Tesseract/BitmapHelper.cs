@@ -11,8 +11,7 @@
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static byte GetDataBit(byte* data, int index)
-        { return (byte)((*(data + (index >> 3)) >> (index & 0x7)) & 1); }
+        public static byte GetDataBit(byte* data, int index) { return (byte)((*(data + (index >> 3)) >> (index & 0x7)) & 1); }
 
 #if Net45 || NETSTANDARD
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -29,8 +28,7 @@
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static byte GetDataQBit(byte* data, int index)
-        { return (byte)((*(data + (index >> 1)) >> (4 * (index & 1))) & 0xF); }
+        public static byte GetDataQBit(byte* data, int index) { return (byte)((*(data + (index >> 1)) >> (4 * (index & 1))) & 0xF); }
 
 #if Net45 || NETSTANDARD
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -92,10 +90,7 @@
             uint green = (val & 0x3E0) >> 5;
             uint blue = val & 0x1F;
 
-            return (((red << 3) | (red >> 2)) << 24) |
-                (((green << 3) | (green >> 2)) << 16) |
-                (((blue << 3) | (blue >> 2)) << 8) |
-                0xFF;
+            return (((red << 3) | (red >> 2)) << 24) | (((green << 3) | (green >> 2)) << 16) | (((blue << 3) | (blue >> 2)) << 8) | 0xFF;
         }
 
 #if Net45 || NETSTANDARD
@@ -108,10 +103,7 @@
             uint green = (val & 0x7E0) >> 5;
             uint blue = val & 0x1F;
 
-            return (((red << 3) | (red >> 2)) << 24) |
-                (((green << 2) | (green >> 4)) << 16) |
-                (((blue << 3) | (blue >> 2)) << 8) |
-                0xFF;
+            return (((red << 3) | (red >> 2)) << 24) | (((green << 2) | (green >> 4)) << 16) | (((blue << 3) | (blue >> 2)) << 8) | 0xFF;
         }
 
 #if Net45 || NETSTANDARD
@@ -125,18 +117,14 @@
             uint green = (val & 0x3E0) >> 5;
             uint blue = val & 0x1F;
 
-            return (((red << 3) | (red >> 2)) << 24) |
-                (((green << 3) | (green >> 2)) << 16) |
-                (((blue << 3) | (blue >> 2)) << 8) |
-                ((alpha << 8) - alpha);
+            return (((red << 3) | (red >> 2)) << 24) | (((green << 3) | (green >> 2)) << 16) | (((blue << 3) | (blue >> 2)) << 8) | ((alpha << 8) - alpha);
         }
 
 #if Net45 || NETSTANDARD
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static uint EncodeAsRGBA(byte red, byte green, byte blue, byte alpha)
-        { return (uint)((red << 24) | (green << 16) | (blue << 8) | alpha); }
+        public static uint EncodeAsRGBA(byte red, byte green, byte blue, byte alpha) { return (uint)((red << 24) | (green << 16) | (blue << 8) | alpha); }
         #endregion PixelFormat conversion
     }
 }

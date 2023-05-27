@@ -4,13 +4,11 @@ namespace TwainControl;
 
 public class PdfData : InpcBase
 {
-    public int PageNumber
-    {
+    public int PageNumber {
         get => pageNumber;
 
-        set
-        {
-            if(pageNumber != value)
+        set {
+            if (pageNumber != value)
             {
                 pageNumber = value;
                 OnPropertyChanged(nameof(PageNumber));
@@ -18,13 +16,11 @@ public class PdfData : InpcBase
         }
     }
 
-    public bool Selected
-    {
+    public bool Selected {
         get => selected;
 
-        set
-        {
-            if(selected != value)
+        set {
+            if (selected != value)
             {
                 selected = value;
                 OnPropertyChanged(nameof(Selected));

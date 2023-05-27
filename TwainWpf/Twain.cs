@@ -15,12 +15,8 @@ namespace TwainWpf
             };
 
             _dataSourceManager = new DataSourceManager(DataSourceManager.DefaultApplicationId, messageHook);
-            _dataSourceManager.ScanningComplete += (object sender, ScanningCompleteEventArgs args) => ScanningComplete(
-                this,
-                args);
-            _dataSourceManager.TransferImage += (object sender, TransferImageEventArgs args) => TransferImage(
-                this,
-                args);
+            _dataSourceManager.ScanningComplete += (object sender, ScanningCompleteEventArgs args) => ScanningComplete(this, args);
+            _dataSourceManager.TransferImage += (object sender, TransferImageEventArgs args) => TransferImage(this, args);
         }
 
         /// <summary>
@@ -33,13 +29,9 @@ namespace TwainWpf
         /// <summary>
         /// Gets the product name for the default source.
         /// </summary>
-        public string DefaultSourceName
-        {
-            get
-            {
-                using(DataSource source = DataSource.GetDefault(
-                    _dataSourceManager.ApplicationId,
-                    _dataSourceManager.MessageHook))
+        public string DefaultSourceName {
+            get {
+                using (DataSource source = DataSource.GetDefault(_dataSourceManager.ApplicationId, _dataSourceManager.MessageHook))
                 {
                     return source.SourceId.ProductName;
                 }
@@ -49,16 +41,12 @@ namespace TwainWpf
         /// <summary>
         /// Gets a list of source product names.
         /// </summary>
-        public IList<string> SourceNames
-        {
-            get
-            {
+        public IList<string> SourceNames {
+            get {
                 List<string> result = new List<string>();
-                List<DataSource> sources = DataSource.GetAllSources(
-                    _dataSourceManager.ApplicationId,
-                    _dataSourceManager.MessageHook);
+                List<DataSource> sources = DataSource.GetAllSources(_dataSourceManager.ApplicationId, _dataSourceManager.MessageHook);
 
-                foreach(DataSource source in sources)
+                foreach (DataSource source in sources)
                 {
                     result.Add(source.SourceId.ProductName);
                     source.Dispose();
@@ -79,10 +67,7 @@ namespace TwainWpf
         /// <param name="sourceName">The source product name.</param>
         public void SelectSource(string sourceName)
         {
-            DataSource source = DataSource.GetSource(
-                sourceName,
-                _dataSourceManager.ApplicationId,
-                _dataSourceManager.MessageHook);
+            DataSource source = DataSource.GetSource(sourceName, _dataSourceManager.ApplicationId, _dataSourceManager.MessageHook);
 
             _dataSourceManager.SelectSource(source);
         }

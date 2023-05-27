@@ -25,7 +25,7 @@ namespace Tesseract
 
         protected virtual void VerifyNotDisposed()
         {
-            if(IsDisposed)
+            if (IsDisposed)
             {
                 throw new ObjectDisposedException(ToString());
             }

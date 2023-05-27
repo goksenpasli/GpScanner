@@ -39,8 +39,7 @@ namespace Tesseract
        	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static uint EncodeAsRGBA(byte red, byte green, byte blue, byte alpha)
-        { return (uint)((red << 24) | (green << 16) | (blue << 8) | alpha); }
+        public static uint EncodeAsRGBA(byte red, byte green, byte blue, byte alpha) { return (uint)((red << 24) | (green << 16) | (blue << 8) | alpha); }
 
         /// <summary>
         /// Gets the pixel value for a 1bpp image.
@@ -49,8 +48,7 @@ namespace Tesseract
       	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static uint GetDataBit(uint* data, int index)
-        { return (*(data + (index >> 5)) >> (31 - (index & 31))) & 1; }
+        public static uint GetDataBit(uint* data, int index) { return (*(data + (index >> 5)) >> (31 - (index & 31))) & 1; }
 
         /// <summary>
         /// Sets the pixel value for a 1bpp image.
@@ -73,8 +71,7 @@ namespace Tesseract
       	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static uint GetDataDIBit(uint* data, int index)
-        { return (*(data + (index >> 4)) >> (2 * (15 - (index & 15)))) & 3; }
+        public static uint GetDataDIBit(uint* data, int index) { return (*(data + (index >> 4)) >> (2 * (15 - (index & 15)))) & 3; }
 
         /// <summary>
         /// Sets the pixel value for a 2bpp image.
@@ -97,8 +94,7 @@ namespace Tesseract
       	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static uint GetDataQBit(uint* data, int index)
-        { return (*(data + (index >> 3)) >> (4 * (7 - (index & 7)))) & 0xf; }
+        public static uint GetDataQBit(uint* data, int index) { return (*(data + (index >> 3)) >> (4 * (7 - (index & 7)))) & 0xf; }
 
         /// <summary>
         /// Sets the pixel value for a 4bpp image.
@@ -122,11 +118,7 @@ namespace Tesseract
 #endif
 
         public static uint GetDataByte(uint* data, int index)
-        {
-            return IntPtr.Size == 8
-                ? *(byte*)((ulong)((byte*)data + index) ^ 3)
-                : *(byte*)((uint)((byte*)data + index) ^ 3);
-        }
+        { return IntPtr.Size == 8 ? *(byte*)((ulong)((byte*)data + index) ^ 3) : *(byte*)((uint)((byte*)data + index) ^ 3); }
 
         /// <summary>
         /// Sets the pixel value for a 8bpp image.
@@ -137,10 +129,11 @@ namespace Tesseract
 
         public static void SetDataByte(uint* data, int index, uint value)
         {
-            if(IntPtr.Size == 8)
+            if (IntPtr.Size == 8)
             {
                 *(byte*)((ulong)((byte*)data + index) ^ 3) = (byte)value;
-            } else
+            }
+            else
             {
                 *(byte*)((uint)((byte*)data + index) ^ 3) = (byte)value;
             }
@@ -154,11 +147,7 @@ namespace Tesseract
 #endif
 
         public static uint GetDataTwoByte(uint* data, int index)
-        {
-            return IntPtr.Size == 8
-                ? *(ushort*)((ulong)((ushort*)data + index) ^ 2)
-                : *(ushort*)((uint)((ushort*)data + index) ^ 2);
-        }
+        { return IntPtr.Size == 8 ? *(ushort*)((ulong)((ushort*)data + index) ^ 2) : *(ushort*)((uint)((ushort*)data + index) ^ 2); }
 
         /// <summary>
         /// Sets the pixel value for a 16bpp image.
@@ -169,10 +158,11 @@ namespace Tesseract
 
         public static void SetDataTwoByte(uint* data, int index, uint value)
         {
-            if(IntPtr.Size == 8)
+            if (IntPtr.Size == 8)
             {
                 *(ushort*)((ulong)((ushort*)data + index) ^ 2) = (ushort)value;
-            } else
+            }
+            else
             {
                 *(ushort*)((uint)((ushort*)data + index) ^ 2) = (ushort)value;
             }

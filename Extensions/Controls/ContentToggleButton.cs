@@ -6,18 +6,10 @@ namespace Extensions;
 public class ContentToggleButton : ToggleButton
 {
     public static readonly DependencyProperty ContentHorizontalOffsetProperty =
-        DependencyProperty.Register(
-        "ContentHorizontalOffset",
-        typeof(double),
-        typeof(ContentToggleButton),
-        new PropertyMetadata(0d));
+        DependencyProperty.Register("ContentHorizontalOffset", typeof(double), typeof(ContentToggleButton), new PropertyMetadata(0d));
 
     public static readonly DependencyProperty ContentVerticalOffsetProperty =
-        DependencyProperty.Register(
-        "ContentVerticalOffset",
-        typeof(double),
-        typeof(ContentToggleButton),
-        new PropertyMetadata(0d));
+        DependencyProperty.Register("ContentVerticalOffset", typeof(double), typeof(ContentToggleButton), new PropertyMetadata(0d));
 
     public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
         "CornerRadius",
@@ -44,37 +36,17 @@ public class ContentToggleButton : ToggleButton
         new PropertyMetadata(false));
 
     static ContentToggleButton()
-    {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(ContentToggleButton),
-            new FrameworkPropertyMetadata(typeof(ContentToggleButton)));
-    }
+    { DefaultStyleKeyProperty.OverrideMetadata(typeof(ContentToggleButton), new FrameworkPropertyMetadata(typeof(ContentToggleButton))); }
 
-    public double ContentHorizontalOffset
-    {
-        get => (double)GetValue(ContentHorizontalOffsetProperty);
-        set => SetValue(ContentHorizontalOffsetProperty, value);
-    }
+    public double ContentHorizontalOffset { get => (double)GetValue(ContentHorizontalOffsetProperty); set => SetValue(ContentHorizontalOffsetProperty, value); }
 
-    public double ContentVerticalOffset
-    {
-        get => (double)GetValue(ContentVerticalOffsetProperty);
-        set => SetValue(ContentVerticalOffsetProperty, value);
-    }
+    public double ContentVerticalOffset { get => (double)GetValue(ContentVerticalOffsetProperty); set => SetValue(ContentVerticalOffsetProperty, value); }
 
-    public CornerRadius CornerRadius
-    {
-        get => (CornerRadius)GetValue(CornerRadiusProperty);
-        set => SetValue(CornerRadiusProperty, value);
-    }
+    public CornerRadius CornerRadius { get => (CornerRadius)GetValue(CornerRadiusProperty); set => SetValue(CornerRadiusProperty, value); }
 
     public object OverContent { get => GetValue(OverContentProperty); set => SetValue(OverContentProperty, value); }
 
-    public PlacementMode PlacementMode
-    {
-        get => (PlacementMode)GetValue(PlacementModeProperty);
-        set => SetValue(PlacementModeProperty, value);
-    }
+    public PlacementMode PlacementMode { get => (PlacementMode)GetValue(PlacementModeProperty); set => SetValue(PlacementModeProperty, value); }
 
     public bool StaysOpen { get => (bool)GetValue(StaysOpenProperty); set => SetValue(StaysOpenProperty, value); }
 

@@ -1,8 +1,8 @@
-﻿using Extensions;
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Extensions;
 
 namespace TwainControl
 {
@@ -10,16 +10,12 @@ namespace TwainControl
     {
         protected override void OnMouseDoubleClick(MouseButtonEventArgs e)
         {
-            imageViewer ??= new ImageViewer
-            {
-                PanoramaButtonVisibility = Visibility.Collapsed,
-                PrintButtonVisibility = Visibility.Visible
-            };
+            imageViewer ??= new ImageViewer { PanoramaButtonVisibility = Visibility.Collapsed, PrintButtonVisibility = Visibility.Visible };
 
             imageViewer.ImageFilePath = (e.OriginalSource as Image).DataContext as string;
             imageViewer.DataContext = Tag;
 
-            if(maximizePdfWindow == null)
+            if (maximizePdfWindow == null)
             {
                 maximizePdfWindow = new Window
                 {

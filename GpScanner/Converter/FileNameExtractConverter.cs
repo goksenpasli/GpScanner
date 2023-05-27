@@ -11,13 +11,10 @@ public sealed class FileNameExtractConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        return !DesignerProperties.GetIsInDesignMode(new DependencyObject()) &&
-                value is string filename &&
-                File.Exists(filename)
+        return !DesignerProperties.GetIsInDesignMode(new DependencyObject()) && value is string filename && File.Exists(filename)
             ? Path.GetFileName(filename)
             : null;
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    { throw new NotImplementedException(); }
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) { throw new NotImplementedException(); }
 }

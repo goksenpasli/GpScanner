@@ -22,10 +22,7 @@ namespace TwainWpf
         {
         }
 
-        public FeederEmptyException(string message, TwainResult returnCode, ConditionCode conditionCode) : base(
-            message,
-            returnCode,
-            conditionCode)
+        public FeederEmptyException(string message, TwainResult returnCode, ConditionCode conditionCode) : base(message, returnCode, conditionCode)
         {
         }
 

@@ -21,10 +21,7 @@ public class BlackWhiteEffect : ShaderEffect
 
     public BlackWhiteEffect()
     {
-        PixelShader = new PixelShader
-        {
-            UriSource = new Uri("/Extensions;component/Shader/BlackWhiteEffect.ps", UriKind.Relative)
-        };
+        PixelShader = new PixelShader { UriSource = new Uri("/Extensions;component/Shader/BlackWhiteEffect.ps", UriKind.Relative) };
 
         UpdateShaderValue(InputProperty);
         UpdateShaderValue(ThresholdProperty);

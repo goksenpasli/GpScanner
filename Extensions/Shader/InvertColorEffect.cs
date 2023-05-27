@@ -15,10 +15,7 @@ public class InvertColorEffect : ShaderEffect
 
     public InvertColorEffect()
     {
-        PixelShader = new PixelShader
-        {
-            UriSource = new Uri("/Extensions;component/Shader/InvertColorEffect.ps", UriKind.Relative)
-        };
+        PixelShader = new PixelShader { UriSource = new Uri("/Extensions;component/Shader/InvertColorEffect.ps", UriKind.Relative) };
 
         UpdateShaderValue(InputProperty);
     }

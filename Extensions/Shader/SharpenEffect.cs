@@ -27,10 +27,7 @@ public class SharpenEffect : ShaderEffect
 
     public SharpenEffect()
     {
-        PixelShader = new PixelShader
-        {
-            UriSource = new Uri("/Extensions;component/Shader/SharpenEffect.ps", UriKind.Relative)
-        };
+        PixelShader = new PixelShader { UriSource = new Uri("/Extensions;component/Shader/SharpenEffect.ps", UriKind.Relative) };
 
         UpdateShaderValue(InputProperty);
         UpdateShaderValue(AmountProperty);

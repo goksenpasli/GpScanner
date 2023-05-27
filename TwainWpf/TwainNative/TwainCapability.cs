@@ -34,7 +34,8 @@ namespace TwainWpf.TwainNative
             try
             {
                 Marshal.StructureToPtr(value, p, false);
-            } finally
+            }
+            finally
             {
                 _ = Kernel32Native.GlobalUnlock(_handle);
             }
@@ -49,7 +50,8 @@ namespace TwainWpf.TwainNative
             try
             {
                 Marshal.PtrToStructure(p, _value);
-            } finally
+            }
+            finally
             {
                 _ = Kernel32Native.GlobalUnlock(_handle);
             }
@@ -60,9 +62,7 @@ namespace TwainWpf.TwainNative
             ContainerType containerType;
             Type structType = typeof(TValue);
 
-            containerType = structType == typeof(CapabilityOneValue)
-                ? ContainerType.One
-                : throw new NotSupportedException($"Unsupported type: {structType}");
+            containerType = structType == typeof(CapabilityOneValue) ? ContainerType.One : throw new NotSupportedException($"Unsupported type: {structType}");
 
             return new TwainCapability(capabilities, containerType, value);
         }
@@ -71,7 +71,7 @@ namespace TwainWpf.TwainNative
 
         protected virtual void Dispose(bool disposing)
         {
-            if(_handle != IntPtr.Zero)
+            if (_handle != IntPtr.Zero)
             {
                 _ = Kernel32Native.GlobalFree(_handle);
             }

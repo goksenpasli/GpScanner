@@ -27,10 +27,7 @@ public class EmbossedEffect : ShaderEffect
 
     public EmbossedEffect()
     {
-        PixelShader = new PixelShader
-        {
-            UriSource = new Uri("/Extensions;component/Shader/EmbossedEffect.ps", UriKind.Relative)
-        };
+        PixelShader = new PixelShader { UriSource = new Uri("/Extensions;component/Shader/EmbossedEffect.ps", UriKind.Relative) };
 
         UpdateShaderValue(InputProperty);
         UpdateShaderValue(EmbossedAmountProperty);
@@ -40,12 +37,7 @@ public class EmbossedEffect : ShaderEffect
     /// <summary>
     /// The amplitude of the embossing.
     /// </summary>
-    public double EmbossedAmount
-    {
-        get => (double)GetValue(EmbossedAmountProperty);
-
-        set => SetValue(EmbossedAmountProperty, value);
-    }
+    public double EmbossedAmount { get => (double)GetValue(EmbossedAmountProperty); set => SetValue(EmbossedAmountProperty, value); }
 
     public Brush Input { get => (Brush)GetValue(InputProperty); set => SetValue(InputProperty, value); }
 

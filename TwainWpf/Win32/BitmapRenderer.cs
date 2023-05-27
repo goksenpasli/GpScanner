@@ -20,16 +20,15 @@ namespace TwainWpf.Win32
             _rectangle.Width = _bitmapInfo.Width;
             _rectangle.Height = _bitmapInfo.Height;
 
-            if(_bitmapInfo.SizeImage == 0)
+            if (_bitmapInfo.SizeImage == 0)
             {
-                _bitmapInfo.SizeImage = ((((_bitmapInfo.Width * _bitmapInfo.BitCount) + 31) & ~31) >> 3) *
-                    _bitmapInfo.Height;
+                _bitmapInfo.SizeImage = ((((_bitmapInfo.Width * _bitmapInfo.BitCount) + 31) & ~31) >> 3) * _bitmapInfo.Height;
             }
 
             Debug.Assert(Marshal.SizeOf(typeof(IntPtr)) == 4);
 
             int pixelInfoPointer = _bitmapInfo.ClrUsed;
-            if(pixelInfoPointer == 0 && _bitmapInfo.BitCount <= 8)
+            if (pixelInfoPointer == 0 && _bitmapInfo.BitCount <= 8)
             {
                 pixelInfoPointer = 1 << (_bitmapInfo.BitCount);
             }
@@ -48,7 +47,7 @@ namespace TwainWpf.Win32
         {
             Bitmap bitmap = new Bitmap(_rectangle.Width, _rectangle.Height);
 
-            using(Graphics graphics = Graphics.FromImage(bitmap))
+            using (Graphics graphics = Graphics.FromImage(bitmap))
             {
                 IntPtr hdc = graphics.GetHdc();
 
@@ -67,7 +66,8 @@ namespace TwainWpf.Win32
                         _pixelInfoPointer,
                         _bitmapPointer,
                         0);
-                } finally
+                }
+                finally
                 {
                     graphics.ReleaseHdc(hdc);
                 }

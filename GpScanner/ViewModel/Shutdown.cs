@@ -50,13 +50,7 @@ internal static class Shutdown
     }
 
     [DllImport("advapi32.dll", ExactSpelling = true, SetLastError = true)]
-    internal static extern bool AdjustTokenPrivileges(
-        IntPtr htok,
-        bool disall,
-        ref TokPriv1Luid newst,
-        int len,
-        IntPtr prev,
-        IntPtr relen);
+    internal static extern bool AdjustTokenPrivileges(IntPtr htok, bool disall, ref TokPriv1Luid newst, int len, IntPtr prev, IntPtr relen);
 
     [DllImport("user32.dll", ExactSpelling = true, SetLastError = true)]
     internal static extern bool ExitWindowsEx(int flg, int rea);

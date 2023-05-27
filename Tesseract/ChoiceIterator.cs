@@ -46,7 +46,7 @@ namespace Tesseract
 
         protected override void Dispose(bool disposing)
         {
-            if(_handleRef.Handle != IntPtr.Zero)
+            if (_handleRef.Handle != IntPtr.Zero)
             {
                 TessApi.Native.ChoiceIteratorDelete(_handleRef);
             }

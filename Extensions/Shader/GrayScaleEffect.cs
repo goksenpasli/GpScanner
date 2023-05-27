@@ -15,10 +15,7 @@ public class GrayScaleEffect : ShaderEffect
 
     public GrayScaleEffect()
     {
-        PixelShader = new PixelShader
-        {
-            UriSource = new Uri("/Extensions;component/Shader/GrayScaleEffect.ps", UriKind.Relative)
-        };
+        PixelShader = new PixelShader { UriSource = new Uri("/Extensions;component/Shader/GrayScaleEffect.ps", UriKind.Relative) };
 
         UpdateShaderValue(InputProperty);
     }

@@ -5,11 +5,7 @@
     /// </summary>
     public readonly struct ElementProperties
     {
-        public ElementProperties(
-            Orientation orientation,
-            TextLineOrder textLineOrder,
-            WritingDirection writingDirection,
-            float deskewAngle)
+        public ElementProperties(Orientation orientation, TextLineOrder textLineOrder, WritingDirection writingDirection, float deskewAngle)
         {
             Orientation = orientation;
             TextLineOrder = textLineOrder;

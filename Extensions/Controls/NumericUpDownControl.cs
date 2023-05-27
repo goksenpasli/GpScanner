@@ -49,9 +49,7 @@ public class NumericUpDownControl : ScrollBar
 
     static NumericUpDownControl()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(NumericUpDownControl),
-            new FrameworkPropertyMetadata(typeof(NumericUpDownControl)));
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(NumericUpDownControl), new FrameworkPropertyMetadata(typeof(NumericUpDownControl)));
         MaximumProperty.OverrideMetadata(typeof(NumericUpDownControl), new FrameworkPropertyMetadata(double.MaxValue));
         MinimumProperty.OverrideMetadata(typeof(NumericUpDownControl), new FrameworkPropertyMetadata(double.MinValue));
     }
@@ -65,22 +63,16 @@ public class NumericUpDownControl : ScrollBar
         DateTimeMode = 2
     }
 
-    public DateTime? DateValue
-    {
-        get => (DateTime?)GetValue(DateValueProperty);
-        set => SetValue(DateValueProperty, value);
-    }
+    public DateTime? DateValue { get => (DateTime?)GetValue(DateValueProperty); set => SetValue(DateValueProperty, value); }
 
     public bool IsReadOnly { get => (bool)GetValue(IsReadOnlyProperty); set => SetValue(IsReadOnlyProperty, value); }
 
-    public Visibility NumericUpDownButtonsVisibility
-    {
+    public Visibility NumericUpDownButtonsVisibility {
         get => (Visibility)GetValue(NumericUpDownButtonsVisibilityProperty);
         set => SetValue(NumericUpDownButtonsVisibilityProperty, value);
     }
 
-    public Visibility NumericUpdownTextBoxVisibility
-    {
+    public Visibility NumericUpdownTextBoxVisibility {
         get => (Visibility)GetValue(NumericUpdownTextBoxVisibilityProperty);
         set => SetValue(NumericUpdownTextBoxVisibilityProperty, value);
     }
@@ -91,18 +83,18 @@ public class NumericUpDownControl : ScrollBar
 
     protected override void OnPreviewKeyDown(KeyEventArgs e)
     {
-        if(!IsReadOnly)
+        if (!IsReadOnly)
         {
-            if(e.Key is not ((>= Key.NumPad0 and <= Key.NumPad9) or (>= Key.D0 and <= Key.D9) or Key.OemComma
+            if (e.Key is not ((>= Key.NumPad0 and <= Key.NumPad9) or (>= Key.D0 and <= Key.D9) or Key.OemComma
                 or Key.Back or Key.Tab or Key.Enter or Key.Left or Key.Right))
             {
                 e.Handled = true;
             }
 
-            switch(e.Key)
+            switch (e.Key)
             {
                 case Key.Up:
-                    if(ShowMode == Mode.DateTimeMode && DateValue.HasValue && DateValue < DateTime.MaxValue)
+                    if (ShowMode == Mode.DateTimeMode && DateValue.HasValue && DateValue < DateTime.MaxValue)
                     {
                         DateValue = DateValue.Value.AddDays(1);
                     }
@@ -110,7 +102,7 @@ public class NumericUpDownControl : ScrollBar
                     break;
 
                 case Key.Down:
-                    if(ShowMode == Mode.DateTimeMode && DateValue.HasValue && DateValue > DateTime.MinValue)
+                    if (ShowMode == Mode.DateTimeMode && DateValue.HasValue && DateValue > DateTime.MinValue)
                     {
                         DateValue = DateValue.Value.AddDays(-1);
                     }
@@ -124,7 +116,7 @@ public class NumericUpDownControl : ScrollBar
 
     private static void ModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if((Mode)e.NewValue == Mode.DateTimeMode && d is NumericUpDownControl numericUpDownControl)
+        if ((Mode)e.NewValue == Mode.DateTimeMode && d is NumericUpDownControl numericUpDownControl)
         {
             numericUpDownControl.SmallChange = 1;
             numericUpDownControl.LargeChange = 1;

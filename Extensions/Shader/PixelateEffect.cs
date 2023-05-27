@@ -27,10 +27,7 @@ public class PixelateEffect : ShaderEffect
 
     public PixelateEffect()
     {
-        PixelShader = new PixelShader
-        {
-            UriSource = new Uri("/Extensions;component/Shader/PixelateEffect.ps", UriKind.Relative)
-        };
+        PixelShader = new PixelShader { UriSource = new Uri("/Extensions;component/Shader/PixelateEffect.ps", UriKind.Relative) };
 
         UpdateShaderValue(InputProperty);
         UpdateShaderValue(PixelCountsProperty);
@@ -40,12 +37,7 @@ public class PixelateEffect : ShaderEffect
     /// <summary>
     /// The amount to shift alternate rows (use 1 to get a brick wall look).
     /// </summary>
-    public double BrickOffset
-    {
-        get => (double)GetValue(BrickOffsetProperty);
-
-        set => SetValue(BrickOffsetProperty, value);
-    }
+    public double BrickOffset { get => (double)GetValue(BrickOffsetProperty); set => SetValue(BrickOffsetProperty, value); }
 
     public Brush Input { get => (Brush)GetValue(InputProperty); set => SetValue(InputProperty, value); }
 

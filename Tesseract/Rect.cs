@@ -45,8 +45,7 @@ namespace Tesseract
 
         public override bool Equals(object obj) { return obj is Rect && Equals((Rect)obj); }
 
-        public bool Equals(Rect other)
-        { return X1 == other.X1 && Y1 == other.Y1 && Width == other.Width && Height == other.Height; }
+        public bool Equals(Rect other) { return X1 == other.X1 && Y1 == other.Y1 && Width == other.Width && Height == other.Height; }
 
         public override int GetHashCode()
         {

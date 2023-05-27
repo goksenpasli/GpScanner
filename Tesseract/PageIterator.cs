@@ -13,15 +13,11 @@ namespace Tesseract
     /// </remarks>
     public class PageIterator : DisposableBase
     {
-        public PolyBlockType BlockType
-        {
-            get
-            {
+        public PolyBlockType BlockType {
+            get {
                 VerifyNotDisposed();
 
-                return handle.Handle == IntPtr.Zero
-                    ? PolyBlockType.Unknown
-                    : TessApi.Native.PageIteratorBlockType(handle);
+                return handle.Handle == IntPtr.Zero ? PolyBlockType.Unknown : TessApi.Native.PageIteratorBlockType(handle);
             }
         }
 
@@ -31,7 +27,7 @@ namespace Tesseract
         public void Begin()
         {
             VerifyNotDisposed();
-            if(handle.Handle != IntPtr.Zero)
+            if (handle.Handle != IntPtr.Zero)
             {
                 TessApi.Native.PageIteratorBegin(handle);
             }
@@ -40,15 +36,13 @@ namespace Tesseract
         public Pix GetBinaryImage(PageIteratorLevel level)
         {
             VerifyNotDisposed();
-            return handle.Handle == IntPtr.Zero
-                ? null
-                : Pix.Create(TessApi.Native.PageIteratorGetBinaryImage(handle, level));
+            return handle.Handle == IntPtr.Zero ? null : Pix.Create(TessApi.Native.PageIteratorGetBinaryImage(handle, level));
         }
 
         public Pix GetImage(PageIteratorLevel level, int padding, out int x, out int y)
         {
             VerifyNotDisposed();
-            if(handle.Handle == IntPtr.Zero)
+            if (handle.Handle == IntPtr.Zero)
             {
                 x = 0;
                 y = 0;
@@ -56,8 +50,7 @@ namespace Tesseract
                 return null;
             }
 
-            return Pix.Create(
-                TessApi.Native.PageIteratorGetImage(handle, level, padding, page.Image.Handle, out x, out y));
+            return Pix.Create(TessApi.Native.PageIteratorGetImage(handle, level, padding, page.Image.Handle, out x, out y));
         }
 
         /// <summary>
@@ -66,13 +59,9 @@ namespace Tesseract
         public ElementProperties GetProperties()
         {
             VerifyNotDisposed();
-            if(handle.Handle == IntPtr.Zero)
+            if (handle.Handle == IntPtr.Zero)
             {
-                return new ElementProperties(
-                    Orientation.PageUp,
-                    TextLineOrder.TopToBottom,
-                    WritingDirection.LeftToRight,
-                    0f);
+                return new ElementProperties(Orientation.PageUp, TextLineOrder.TopToBottom, WritingDirection.LeftToRight, 0f);
             }
 
             TessApi.Native
@@ -111,8 +100,7 @@ namespace Tesseract
         {
             VerifyNotDisposed();
 
-            return handle.Handle != IntPtr.Zero &&
-                TessApi.Native.PageIteratorIsAtFinalElement(handle, level, element) != 0;
+            return handle.Handle != IntPtr.Zero && TessApi.Native.PageIteratorIsAtFinalElement(handle, level, element) != 0;
         }
 
         /// <summary>
@@ -161,8 +149,7 @@ namespace Tesseract
         public bool TryGetBaseline(PageIteratorLevel level, out Rect bounds)
         {
             VerifyNotDisposed();
-            if(handle.Handle != IntPtr.Zero &&
-                TessApi.Native.PageIteratorBaseline(handle, level, out int x1, out int y1, out int x2, out int y2) != 0)
+            if (handle.Handle != IntPtr.Zero && TessApi.Native.PageIteratorBaseline(handle, level, out int x1, out int y1, out int x2, out int y2) != 0)
             {
                 bounds = Rect.FromCoords(x1, y1, x2, y2);
                 return true;
@@ -181,9 +168,7 @@ namespace Tesseract
         public bool TryGetBoundingBox(PageIteratorLevel level, out Rect bounds)
         {
             VerifyNotDisposed();
-            if(handle.Handle != IntPtr.Zero &&
-                TessApi.Native.PageIteratorBoundingBox(handle, level, out int x1, out int y1, out int x2, out int y2) !=
-                0)
+            if (handle.Handle != IntPtr.Zero && TessApi.Native.PageIteratorBoundingBox(handle, level, out int x1, out int y1, out int x2, out int y2) != 0)
             {
                 bounds = Rect.FromCoords(x1, y1, x2, y2);
                 return true;
@@ -205,7 +190,7 @@ namespace Tesseract
 
         protected override void Dispose(bool disposing)
         {
-            if(handle.Handle != IntPtr.Zero)
+            if (handle.Handle != IntPtr.Zero)
             {
                 TessApi.Native.PageIteratorDelete(handle);
             }

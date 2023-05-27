@@ -4,8 +4,8 @@
     /// The text lines are read in the given sequence.
     /// </summary>
     /// <remarks>
-    /// <para> For example in English the order is top-to-bottom. Chinese vertical text lines are read right-to-left.
-    /// While Mongolian is written in vertical columns like Chinese but read left-to-right.</para> <para> Note that only
+    /// <para>For example in English the order is top-to-bottom. Chinese vertical text lines are read right-to-left.
+    /// While Mongolian is written in vertical columns like Chinese but read left-to-right.</para> <para>Note that only
     /// some combinations makes sense for example <see cref="WritingDirection.LeftToRight"/> implies<see
     /// cref="TopToBottom"/>.</para>
     /// </remarks>

@@ -12,15 +12,15 @@ namespace Tesseract.Internal.InteropDotNet
         public bool FreeLibrary(string fileName)
         {
             fileName = FixUpLibraryName(fileName);
-            lock(syncLock)
+            lock (syncLock)
             {
-                if(!IsLibraryLoaded(fileName))
+                if (!IsLibraryLoaded(fileName))
                 {
                     Logger.TraceWarning("Failed to free library \"{0}\" because it is not loaded", fileName);
                     return false;
                 }
 
-                if(logic.FreeLibrary(loadedAssemblies[fileName]))
+                if (logic.FreeLibrary(loadedAssemblies[fileName]))
                 {
                     _ = loadedAssemblies.Remove(fileName);
                     return true;
@@ -33,15 +33,13 @@ namespace Tesseract.Internal.InteropDotNet
         public IntPtr GetProcAddress(IntPtr dllHandle, string name)
         {
             IntPtr procAddress = logic.GetProcAddress(dllHandle, name);
-            return procAddress == IntPtr.Zero
-                ? throw new LoadLibraryException($"Failed to load proc {name}")
-                : procAddress;
+            return procAddress == IntPtr.Zero ? throw new LoadLibraryException($"Failed to load proc {name}") : procAddress;
         }
 
         public bool IsLibraryLoaded(string fileName)
         {
             fileName = FixUpLibraryName(fileName);
-            lock(syncLock)
+            lock (syncLock)
             {
                 return loadedAssemblies.ContainsKey(fileName);
             }
@@ -50,11 +48,11 @@ namespace Tesseract.Internal.InteropDotNet
         public IntPtr LoadLibrary(string fileName, string platformName = null)
         {
             fileName = FixUpLibraryName(fileName);
-            lock(syncLock)
+            lock (syncLock)
             {
-                if(!loadedAssemblies.ContainsKey(fileName))
+                if (!loadedAssemblies.ContainsKey(fileName))
                 {
-                    if(platformName == null)
+                    if (platformName == null)
                     {
                         platformName = SystemManager.GetPlatformName();
                     }
@@ -62,30 +60,29 @@ namespace Tesseract.Internal.InteropDotNet
                     Logger.TraceInformation($"Current platform: {platformName}");
 
                     IntPtr dllHandle = CheckCustomSearchPath(fileName, platformName);
-                    if(dllHandle == IntPtr.Zero)
+                    if (dllHandle == IntPtr.Zero)
                     {
                         dllHandle = CheckExecutingAssemblyDomain(fileName, platformName);
                     }
 
-                    if(dllHandle == IntPtr.Zero)
+                    if (dllHandle == IntPtr.Zero)
                     {
                         dllHandle = CheckCurrentAppDomain(fileName, platformName);
                     }
 
-                    if(dllHandle == IntPtr.Zero)
+                    if (dllHandle == IntPtr.Zero)
                     {
                         dllHandle = CheckCurrentAppDomainBin(fileName, platformName);
                     }
 
-                    if(dllHandle == IntPtr.Zero)
+                    if (dllHandle == IntPtr.Zero)
                     {
                         dllHandle = CheckWorkingDirecotry(fileName, platformName);
                     }
 
                     loadedAssemblies[fileName] = dllHandle != IntPtr.Zero
                         ? dllHandle
-                        : throw new DllNotFoundException(
-                            $"Failed to find library \"{fileName}\" for platform {platformName}.");
+                        : throw new DllNotFoundException($"Failed to find library \"{fileName}\" for platform {platformName}.");
                 }
 
                 return loadedAssemblies[fileName];
@@ -103,11 +100,7 @@ namespace Tesseract.Internal.InteropDotNet
         private IntPtr CheckCurrentAppDomain(string fileName, string platformName)
         {
             string baseDirectory = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory);
-            Logger.TraceInformation(
-                "Checking current application domain location '{0}' for '{1}' on platform {2}.",
-                baseDirectory,
-                fileName,
-                platformName);
+            Logger.TraceInformation("Checking current application domain location '{0}' for '{1}' on platform {2}.", baseDirectory, fileName, platformName);
             return InternalLoadLibrary(baseDirectory, platformName, fileName);
         }
 
@@ -115,9 +108,9 @@ namespace Tesseract.Internal.InteropDotNet
         /// Special test for web applications.
         /// </summary>
         /// <remarks>
-        /// Note that this makes a couple of assumptions these being: <list type="bullet"><item> That the current
+        /// Note that this makes a couple of assumptions these being: <list type="bullet"><item>That the current
         /// application domain's location for web applications corresponds to the web applications root
-        /// directory.</item><item> That the tesseract\leptonica dlls reside in the corresponding x86 or x64 directories
+        /// directory.</item><item>That the tesseract\leptonica dlls reside in the corresponding x86 or x64 directories
         /// in the bin directory under the apps root directory.</item></list>
         /// </remarks>
         /// <param name="fileName"></param>
@@ -126,7 +119,7 @@ namespace Tesseract.Internal.InteropDotNet
         private IntPtr CheckCurrentAppDomainBin(string fileName, string platformName)
         {
             string baseDirectory = Path.Combine(Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory), "bin");
-            if(Directory.Exists(baseDirectory))
+            if (Directory.Exists(baseDirectory))
             {
                 Logger.TraceInformation(
                     "Checking current application domain's bin location '{0}' for '{1}' on platform {2}.",
@@ -136,21 +129,16 @@ namespace Tesseract.Internal.InteropDotNet
                 return InternalLoadLibrary(baseDirectory, platformName, fileName);
             }
 
-            Logger.TraceInformation(
-                "No bin directory exists under the current application domain's location, skipping.");
+            Logger.TraceInformation("No bin directory exists under the current application domain's location, skipping.");
             return IntPtr.Zero;
         }
 
         private IntPtr CheckCustomSearchPath(string fileName, string platformName)
         {
             string baseDirectory = CustomSearchPath;
-            if(!string.IsNullOrEmpty(baseDirectory))
+            if (!string.IsNullOrEmpty(baseDirectory))
             {
-                Logger.TraceInformation(
-                    "Checking custom search location '{0}' for '{1}' on platform {2}.",
-                    baseDirectory,
-                    fileName,
-                    platformName);
+                Logger.TraceInformation("Checking custom search location '{0}' for '{1}' on platform {2}.", baseDirectory, fileName, platformName);
                 return InternalLoadLibrary(baseDirectory, platformName, fileName);
             }
 
@@ -161,28 +149,20 @@ namespace Tesseract.Internal.InteropDotNet
         private IntPtr CheckExecutingAssemblyDomain(string fileName, string platformName)
         {
             Assembly executingAssembly = Assembly.GetExecutingAssembly();
-            if(executingAssembly == null)
+            if (executingAssembly == null)
             {
                 return IntPtr.Zero;
             }
 
             string baseDirectory = Path.GetDirectoryName(executingAssembly.Location);
-            Logger.TraceInformation(
-                "Checking executing application domain location '{0}' for '{1}' on platform {2}.",
-                baseDirectory,
-                fileName,
-                platformName);
+            Logger.TraceInformation("Checking executing application domain location '{0}' for '{1}' on platform {2}.", baseDirectory, fileName, platformName);
             return InternalLoadLibrary(baseDirectory, platformName, fileName);
         }
 
         private IntPtr CheckWorkingDirecotry(string fileName, string platformName)
         {
             string baseDirectory = Path.GetFullPath(Environment.CurrentDirectory);
-            Logger.TraceInformation(
-                "Checking working directory '{0}' for '{1}' on platform {2}.",
-                baseDirectory,
-                fileName,
-                platformName);
+            Logger.TraceInformation("Checking working directory '{0}' for '{1}' on platform {2}.", baseDirectory, fileName, platformName);
             return InternalLoadLibrary(baseDirectory, platformName, fileName);
         }
 
@@ -195,13 +175,11 @@ namespace Tesseract.Internal.InteropDotNet
         }
 
         #region Singleton
-        public static LibraryLoader Instance
-        {
-            get
-            {
-                if(instance == null)
+        public static LibraryLoader Instance {
+            get {
+                if (instance == null)
                 {
-                    switch(SystemManager.GetOperatingSystem())
+                    switch (SystemManager.GetOperatingSystem())
                     {
                         case OperatingSystem.Windows:
                             Logger.TraceInformation("Current OS: Windows");
