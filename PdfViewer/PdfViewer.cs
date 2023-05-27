@@ -550,23 +550,23 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public static async Task<MemoryStream> ConvertToImgStreamAsync(byte[] stream, int page, int dpi)
+    public static async Task<MemoryStream> ConvertToImgStreamAsync(byte[] pdffilestream, int page, int dpi)
     {
         try
         {
-            return stream?.Length == 0
-                ? throw new ArgumentNullException(nameof(stream), "file can not be null or length zero")
+            return pdffilestream?.Length == 0
+                ? throw new ArgumentNullException(nameof(pdffilestream), "file can not be null or length zero")
                 : await Task.Run(
                     () =>
                     {
-                        using MemoryStream ms = new(stream);
+                        using MemoryStream ms = new(pdffilestream);
                         using PdfDocument pdfDoc = PdfDocument.Load(ms);
                         int width = (int)(pdfDoc.PageSizes[page - 1].Width / 72 * dpi);
                         int height = (int)(pdfDoc.PageSizes[page - 1].Height / 72 * dpi);
                         System.Drawing.Image image = pdfDoc.Render(page - 1, width, height, dpi, dpi, false);
-                        BitmapImage bitmapImage = image.ToBitmapImage(ImageFormat.Jpeg);
-                        bitmapImage.Freeze();
-                        return new MemoryStream(bitmapImage.ToTiffJpegByteArray(Format.Jpg));
+                        MemoryStream stream = new();
+                        image.Save(stream, ImageFormat.Jpeg);
+                        return stream;
                     });
         }
         catch (Exception)
@@ -581,7 +581,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         {
             byte[] buffer = new byte[4];
             using FileStream fs = new(filename, FileMode.Open, FileAccess.Read);
-            int bytes_read = fs.Read(buffer, 0, buffer.Length);
+            _ = fs.Read(buffer, 0, buffer.Length);
             byte[] pdfheader = { 0x25, 0x50, 0x44, 0x46 };
             return buffer?.SequenceEqual(pdfheader) == true;
         }

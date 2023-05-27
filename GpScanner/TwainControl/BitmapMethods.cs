@@ -197,6 +197,7 @@ public static class BitmapMethods
     {
         BitmapImage image = new();
         image.BeginInit();
+        _ = ms.Seek(0, SeekOrigin.Begin);
         image.CacheOption = BitmapCacheOption.None;
         image.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.DelayCreation;
         image.StreamSource = ms;

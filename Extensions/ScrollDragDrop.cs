@@ -81,9 +81,7 @@ public static class DragDropExtension
 
     private static void HandleScrollOnDragDropChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        FrameworkElement container = d as FrameworkElement;
-
-        if (d != null)
+        if (d is FrameworkElement container)
         {
             Unsubscribe(container);
 

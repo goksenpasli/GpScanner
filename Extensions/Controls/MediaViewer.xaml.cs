@@ -1167,7 +1167,7 @@ public partial class MediaViewer : UserControl
         }
     }
 
-    private void Viewport3D_MouseWheel(object sender, MouseWheelEventArgs e) { Fov -= e.Delta / 100; }
+    private void Viewport3D_MouseWheel(object sender, MouseWheelEventArgs e) { Fov -= e.Delta / 100d; }
 }
 
 public class SrtContent

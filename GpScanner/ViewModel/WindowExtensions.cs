@@ -48,8 +48,6 @@ public static class WindowExtensions
 
     private const int _AboutSysMenuID = 1001;
 
-    private const int _SettingsSysMenuID = 1002;
-
     private const int GWL_STYLE = -16, WS_MINIMIZEBOX = 0x20000;
 
     private const uint MF_BYCOMMAND = 0x00000000;
