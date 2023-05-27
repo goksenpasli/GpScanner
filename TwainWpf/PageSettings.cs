@@ -4,8 +4,7 @@ using TwainWpf.TwainNative;
 namespace TwainWpf
 {
     /// <summary>
-    /// Page settings used for automatic document feeders
-    /// scanning.
+    /// Page settings used for automatic document feeders scanning.
     /// </summary>
     public class PageSettings : INotifyPropertyChanged
     {
@@ -28,11 +27,13 @@ namespace TwainWpf
         /// Gets or sets the page orientation.
         /// </summary>
         /// <value>The orientation.</value>
-        public Orientation Orientation {
+        public Orientation Orientation
+        {
             get => _orientation;
 
-            set {
-                if (value != _orientation)
+            set
+            {
+                if(value != _orientation)
                 {
                     _orientation = value;
                     OnPropertyChanged(nameof(Orientation));
@@ -44,11 +45,13 @@ namespace TwainWpf
         /// Gets or sets the Page Size.
         /// </summary>
         /// <value>The size.</value>
-        public PageType Size {
+        public PageType Size
+        {
             get => _size;
 
-            set {
-                if (value != _size)
+            set
+            {
+                if(value != _size)
                 {
                     _size = value;
                     OnPropertyChanged("PaperSize");
@@ -61,14 +64,12 @@ namespace TwainWpf
         private PageType _size;
 
         #region INotifyPropertyChanged Members
-
-        public event PropertyChangedEventHandler PropertyChanged = delegate { };
+        public event PropertyChangedEventHandler PropertyChanged = delegate
+        {
+        };
 
         protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
-
+        { PropertyChanged(this, new PropertyChangedEventArgs(propertyName)); }
         #endregion INotifyPropertyChanged Members
     }
 }

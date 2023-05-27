@@ -5,7 +5,9 @@ using System.Windows.Media.Effects;
 
 namespace Extensions;
 
-/// <summary>An effect that inverts all colors.</summary>
+/// <summary>
+/// An effect that inverts all colors.
+/// </summary>
 public class InvertColorEffect : ShaderEffect
 {
     public static readonly DependencyProperty InputProperty =
@@ -21,9 +23,5 @@ public class InvertColorEffect : ShaderEffect
         UpdateShaderValue(InputProperty);
     }
 
-    public Brush Input {
-        get => (Brush)GetValue(InputProperty);
-
-        set => SetValue(InputProperty, value);
-    }
+    public Brush Input { get => (Brush)GetValue(InputProperty); set => SetValue(InputProperty, value); }
 }

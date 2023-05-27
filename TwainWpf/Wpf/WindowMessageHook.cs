@@ -14,16 +14,18 @@ namespace TwainWpf.Wpf
 
         public FilterMessage FilterMessageCallback { get; set; }
 
-        public bool UseFilter {
+        public bool UseFilter
+        {
             get => _usingFilter;
 
-            set {
-                if (!_usingFilter && value)
+            set
+            {
+                if(!_usingFilter && value)
                 {
                     _source.AddHook(FilterMessage);
                     _usingFilter = true;
                 }
-                if (_usingFilter && !value)
+                if(_usingFilter && !value)
                 {
                     _source.RemoveHook(FilterMessage);
                     _usingFilter = false;
@@ -35,7 +37,9 @@ namespace TwainWpf.Wpf
 
         public IntPtr FilterMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
-            return FilterMessageCallback == null ? IntPtr.Zero : FilterMessageCallback(hwnd, msg, wParam, lParam, ref handled);
+            return FilterMessageCallback == null
+                ? IntPtr.Zero
+                : FilterMessageCallback(hwnd, msg, wParam, lParam, ref handled);
         }
 
         private readonly WindowInteropHelper _interopHelper;

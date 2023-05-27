@@ -17,10 +17,12 @@ internal static class DataSerialize
             XmlSerializer serializer = new(typeof(T));
             using StreamReader stream = new(xmldatapath);
             return serializer.Deserialize(stream) as T;
-        }
-        catch (Exception ex)
+        } catch(Exception ex)
         {
-            _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK,
+            _ = MessageBox.Show(
+                ex.Message,
+                Application.Current?.MainWindow?.Title,
+                MessageBoxButton.OK,
                 MessageBoxImage.Error);
         }
 
@@ -36,7 +38,7 @@ internal static class DataSerialize
     internal static ObservableCollection<T> DeSerialize<T>(this IEnumerable<XElement> xElement) where T : class, new()
     {
         ObservableCollection<T> list = new();
-        foreach (XElement element in xElement)
+        foreach(XElement element in xElement)
         {
             list.Add(element.DeSerialize<T>());
         }
@@ -44,10 +46,7 @@ internal static class DataSerialize
         return list;
     }
 
-    internal static int RandomNumber()
-    {
-        return new Random(Guid.NewGuid().GetHashCode()).Next(1, int.MaxValue);
-    }
+    internal static int RandomNumber() { return new Random(Guid.NewGuid().GetHashCode()).Next(1, int.MaxValue); }
 
     internal static void Serialize<T>(this T dataToSerialize) where T : class
     {

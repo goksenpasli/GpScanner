@@ -25,18 +25,18 @@ namespace Tesseract.Interop
         }
 
         /// <summary>
-        ///     Gets the number of bytes in a null terminated byte array.
+        /// Gets the number of bytes in a null terminated byte array.
         /// </summary>
         public static int StrLength(IntPtr handle)
         {
-            if (handle == IntPtr.Zero)
+            if(handle == IntPtr.Zero)
             {
                 return 0;
             }
 
             byte* ptr = (byte*)handle.ToPointer();
             int length = 0;
-            while (*(ptr + length) != 0)
+            while(*(ptr + length) != 0)
             {
                 length++;
             }

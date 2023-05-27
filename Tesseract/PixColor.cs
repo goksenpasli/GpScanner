@@ -33,19 +33,10 @@ namespace Tesseract
 
         public static PixColor FromRgb(uint value)
         {
-            return new PixColor(
-                (byte)((value >> 24) & 0xFF),
-                (byte)((value >> 16) & 0xFF),
-                (byte)((value >> 8) & 0xFF));
+            return new PixColor((byte)((value >> 24) & 0xFF), (byte)((value >> 16) & 0xFF), (byte)((value >> 8) & 0xFF));
         }
 
-        public uint ToRGBA()
-        {
-            return (uint)((Red << 24) |
-                          (Green << 16) |
-                          (Blue << 8) |
-                          Alpha);
-        }
+        public uint ToRGBA() { return (uint)((Red << 24) | (Green << 16) | (Blue << 8) | Alpha); }
 
 #if NETFULL
         public static explicit operator System.Drawing.Color(PixColor color)
@@ -60,16 +51,10 @@ namespace Tesseract
 #endif
 
         #region Equals and GetHashCode implementation
-
-        public override bool Equals(object obj)
-        {
-            return obj is PixColor && Equals((PixColor)obj);
-        }
+        public override bool Equals(object obj) { return obj is PixColor && Equals((PixColor)obj); }
 
         public bool Equals(PixColor other)
-        {
-            return Red == other.Red && Blue == other.Blue && Green == other.Green && Alpha == other.Alpha;
-        }
+        { return Red == other.Red && Blue == other.Blue && Green == other.Green && Alpha == other.Alpha; }
 
         public override int GetHashCode()
         {
@@ -94,12 +79,7 @@ namespace Tesseract
         {
             return !(lhs == rhs);
         }
-
         #endregion Equals and GetHashCode implementation
-
-        public override string ToString()
-        {
-            return $"Color(0x{ToRGBA():X})";
-        }
+        public override string ToString() { return $"Color(0x{ToRGBA():X})"; }
     }
 }

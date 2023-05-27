@@ -2,8 +2,7 @@ namespace Tesseract
 {
     public class FontAttributes
     {
-        public FontAttributes(
-            FontInfo fontInfo, bool isUnderlined, bool isSmallCaps, int pointSize)
+        public FontAttributes(FontInfo fontInfo, bool isUnderlined, bool isSmallCaps, int pointSize)
         {
             FontInfo = fontInfo;
             IsUnderlined = isUnderlined;

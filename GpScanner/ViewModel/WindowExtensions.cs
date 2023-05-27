@@ -13,15 +13,16 @@ public static class WindowExtensions
 {
     static WindowExtensions()
     {
-        OpenSettings = new RelayCommand<object>(parameter =>
-        {
-            SettingsWindowView settingswindow = new()
+        OpenSettings = new RelayCommand<object>(
+            parameter =>
             {
-                Owner = Application.Current.MainWindow,
-                DataContext = Application.Current.MainWindow.DataContext
-            };
-            _ = settingswindow.ShowDialog();
-        });
+                SettingsWindowView settingswindow = new()
+                {
+                    Owner = Application.Current.MainWindow,
+                    DataContext = Application.Current.MainWindow.DataContext
+                };
+                _ = settingswindow.ShowDialog();
+            });
     }
 
     public static ICommand OpenSettings { get; }
@@ -87,9 +88,9 @@ public static class WindowExtensions
     [DebuggerStepThrough]
     private static IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
     {
-        if (msg == WM_SYSCOMMAND)
+        if(msg == WM_SYSCOMMAND)
         {
-            switch (wParam.ToInt32())
+            switch(wParam.ToInt32())
             {
                 case _AboutSysMenuID:
                     _ = Process.Start("https://github.com/goksenpasli");

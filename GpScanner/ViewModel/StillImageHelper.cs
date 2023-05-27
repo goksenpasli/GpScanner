@@ -23,7 +23,7 @@ public static class StillImageHelper
 
     public static void ActivateProcess(Process process)
     {
-        if (process.MainWindowHandle != IntPtr.Zero)
+        if(process.MainWindowHandle != IntPtr.Zero)
         {
             _ = SetForegroundWindow(process.MainWindowHandle);
         }
@@ -39,7 +39,7 @@ public static class StillImageHelper
 
     public static void KillServer()
     {
-        if (_serverRunning)
+        if(_serverRunning)
         {
             _ = SendMessage(Process.GetCurrentProcess(), MSG_KILL_PIPE_SERVER);
         }
@@ -72,10 +72,12 @@ public static class StillImageHelper
             key4.SetValue("Desc", "Scan with GpScanner");
             key4.SetValue("Icon", "sti.dll,0");
             key4.SetValue("Name", "GpScanner");
-        }
-        catch (Exception ex)
+        } catch(Exception ex)
         {
-            _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK,
+            _ = MessageBox.Show(
+                ex.Message,
+                Application.Current?.MainWindow?.Title,
+                MessageBoxButton.OK,
                 MessageBoxImage.Error);
         }
     }
@@ -89,10 +91,12 @@ public static class StillImageHelper
             StreamString streamString = new(pipeClient);
             _ = streamString.WriteString(msg);
             return true;
-        }
-        catch (Exception ex)
+        } catch(Exception ex)
         {
-            _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK,
+            _ = MessageBox.Show(
+                ex.Message,
+                Application.Current?.MainWindow?.Title,
+                MessageBoxButton.OK,
                 MessageBoxImage.Error);
         }
 
@@ -105,37 +109,37 @@ public static class StillImageHelper
 
     public static void StartServer(Action<string> msgCallback)
     {
-        if (!_serverRunning)
+        if(!_serverRunning)
         {
             _serverRunning = true;
-            _ = Task.Run(() =>
-            {
-                try
+            _ = Task.Run(
+                () =>
                 {
-                    using NamedPipeServerStream pipeServer = new(GetPipeName(Process.GetCurrentProcess()),
-                        PipeDirection.In);
-                    while (_serverRunning)
+                    try
                     {
-                        pipeServer.WaitForConnection();
-                        StreamString streamString = new(pipeServer);
-                        string msg = streamString.ReadString();
-                        if (msg == MSG_KILL_PIPE_SERVER)
+                        using NamedPipeServerStream pipeServer = new(
+                            GetPipeName(Process.GetCurrentProcess()),
+                            PipeDirection.In);
+                        while(_serverRunning)
                         {
-                            break;
-                        }
+                            pipeServer.WaitForConnection();
+                            StreamString streamString = new(pipeServer);
+                            string msg = streamString.ReadString();
+                            if(msg == MSG_KILL_PIPE_SERVER)
+                            {
+                                break;
+                            }
 
-                        msgCallback(msg);
-                        pipeServer.Disconnect();
+                            msgCallback(msg);
+                            pipeServer.Disconnect();
+                        }
+                    } catch(Exception)
+                    {
+                    } finally
+                    {
+                        _serverRunning = false;
                     }
-                }
-                catch (Exception)
-                {
-                }
-                finally
-                {
-                    _serverRunning = false;
-                }
-            });
+                });
         }
     }
 
@@ -151,17 +155,19 @@ public static class StillImageHelper
             Registry.LocalMachine.DeleteSubKey(REGKEY_STI_EVENT_SCANBUTTON, false);
 
             RegistryKey events = Registry.LocalMachine.OpenSubKey(REGKEY_IMAGE_EVENTS, true);
-            if (events != null)
+            if(events != null)
             {
-                foreach (string eventType in events.GetSubKeyNames())
+                foreach(string eventType in events.GetSubKeyNames())
                 {
                     events.DeleteSubKey($@"{eventType}\{{143762b8-772a-47af-bae6-08e0a1d0ca89}}", false);
                 }
             }
-        }
-        catch (Exception ex)
+        } catch(Exception ex)
         {
-            _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK,
+            _ = MessageBox.Show(
+                ex.Message,
+                Application.Current?.MainWindow?.Title,
+                MessageBoxButton.OK,
                 MessageBoxImage.Error);
         }
     }
@@ -187,10 +193,7 @@ public static class StillImageHelper
 
     private static bool _serverRunning;
 
-    private static string GetPipeName(Process process)
-    {
-        return string.Format(PIPE_NAME_FORMAT, process.Id);
-    }
+    private static string GetPipeName(Process process) { return string.Format(PIPE_NAME_FORMAT, process.Id); }
 
     private class StreamString
     {
@@ -214,7 +217,7 @@ public static class StillImageHelper
         {
             byte[] outBuffer = streamEncoding.GetBytes(outString);
             int len = outBuffer.Length;
-            if (len > ushort.MaxValue)
+            if(len > ushort.MaxValue)
             {
                 len = ushort.MaxValue;
             }

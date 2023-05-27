@@ -17,7 +17,7 @@ using static Extensions.ExtensionMethods;
 namespace GpScanner;
 
 /// <summary>
-///     Interaction logic for MainWindow.xaml
+/// Interaction logic for MainWindow.xaml
 /// </summary>
 public partial class MainWindow : Window
 {
@@ -33,7 +33,8 @@ public partial class MainWindow : Window
 
     private async void ContentControl_Drop(object sender, DragEventArgs e)
     {
-        if (e.OriginalSource is Image image && e.Data.GetData(typeof(ScannedImage)) is ScannedImage droppedData &&
+        if(e.OriginalSource is Image image &&
+            e.Data.GetData(typeof(ScannedImage)) is ScannedImage droppedData &&
             image.TemplatedParent is PdfViewer.PdfViewer pdfviewer)
         {
             try
@@ -43,7 +44,7 @@ public partial class MainWindow : Window
                 int curpage = pdfviewer.Sayfa;
                 droppedData.Resim.GeneratePdf(null, Format.Jpg, TwainCtrl.SelectedPaper).Save(temporarypdf);
                 string[] processedfiles = { temporarypdf, pdfFilePath };
-                if ((Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.LeftShift)) ||
+                if((Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.LeftShift)) ||
                     (Keyboard.IsKeyDown(Key.RightAlt) && Keyboard.IsKeyDown(Key.RightShift)))
                 {
                     await TwainCtrl.RemovePdfPage(pdfFilePath, curpage, curpage);
@@ -53,7 +54,7 @@ public partial class MainWindow : Window
                     return;
                 }
 
-                if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                if(Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
                 {
                     processedfiles.MergePdf().Save(pdfFilePath);
                     await TwainCtrl.ArrangeFile(pdfFilePath, pdfFilePath, 0, curpage - 1);
@@ -66,10 +67,12 @@ public partial class MainWindow : Window
                     : new[] { temporarypdf, pdfFilePath };
                 pdffiles.MergePdf().Save(pdfFilePath);
                 TwainCtrl.NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
-            }
-            catch (Exception ex)
+            } catch(Exception ex)
             {
-                _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK,
+                _ = MessageBox.Show(
+                    ex.Message,
+                    Application.Current?.MainWindow?.Title,
+                    MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
         }
@@ -77,11 +80,12 @@ public partial class MainWindow : Window
 
     private void ContentControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
-        if (DataContext is GpScannerViewModel gpScannerViewModel && e.LeftButton is MouseButtonState.Pressed &&
+        if(DataContext is GpScannerViewModel gpScannerViewModel &&
+            e.LeftButton is MouseButtonState.Pressed &&
             e.MouseDevice.DirectlyOver is Image image)
         {
             string filepath = image.DataContext.ToString();
-            if (gpScannerViewModel.OpenOriginalFile.CanExecute(filepath))
+            if(gpScannerViewModel.OpenOriginalFile.CanExecute(filepath))
             {
                 gpScannerViewModel.OpenOriginalFile.Execute(filepath);
             }
@@ -90,7 +94,7 @@ public partial class MainWindow : Window
 
     private void GridSplitter_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
-        if (DataContext is GpScannerViewModel ViewModel)
+        if(DataContext is GpScannerViewModel ViewModel)
         {
             ViewModel.MainWindowDocumentGuiControlLength = new GridLength(1, GridUnitType.Star);
             ViewModel.MainWindowGuiControlLength = new GridLength(3, GridUnitType.Star);
@@ -99,42 +103,42 @@ public partial class MainWindow : Window
 
     private void GridSplitter_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
     {
-        if (DataContext is GpScannerViewModel ViewModel)
+        if(DataContext is GpScannerViewModel ViewModel)
         {
             ViewModel.MainWindowDocumentGuiControlLength = new GridLength(0, GridUnitType.Star);
             ViewModel.MainWindowGuiControlLength = new GridLength(1, GridUnitType.Star);
         }
     }
 
-    private async void ListBox_Drop(object sender, DragEventArgs e)
-    {
-        await TwainCtrl.ListBoxDropFile(e);
-    }
+    private async void ListBox_Drop(object sender, DragEventArgs e) { await TwainCtrl.ListBoxDropFile(e); }
 
     private void MW_ContentRendered(object sender, EventArgs e)
     {
         this.SystemMenu();
 
-        if (DataContext is GpScannerViewModel ViewModel && Settings.Default.RegisterBatchWatcher &&
+        if(DataContext is GpScannerViewModel ViewModel &&
+            Settings.Default.RegisterBatchWatcher &&
             Directory.Exists(Settings.Default.BatchFolder))
         {
-            ViewModel.RegisterBatchImageFileWatcher(TwainCtrl.Scanner, TwainCtrl.SelectedPaper,
+            ViewModel.RegisterBatchImageFileWatcher(
+                TwainCtrl.Scanner,
+                TwainCtrl.SelectedPaper,
                 Settings.Default.BatchFolder);
         }
 
-        if (Settings.Default.IsFirstRun)
+        if(Settings.Default.IsFirstRun)
         {
             WindowExtensions.OpenSettings.Execute(null);
             Settings.Default.IsFirstRun = false;
         }
 
         string[] commandLineArgs = Environment.GetCommandLineArgs();
-        if (commandLineArgs.Length > 1)
+        if(commandLineArgs.Length > 1)
         {
             string filePath = commandLineArgs[1];
             string extension = Path.GetExtension(filePath)?.ToLower();
 
-            if (Settings.Default.DirectOpenEypFile && extension == ".eyp" && File.Exists(filePath))
+            if(Settings.Default.DirectOpenEypFile && extension == ".eyp" && File.Exists(filePath))
             {
                 EypPdfViewer eypPdfViewer = TwainCtrl.PdfImportViewer.PdfViewer;
                 eypPdfViewer.PdfFilePath = eypPdfViewer.ExtractEypFilesToPdf(filePath);
@@ -144,7 +148,7 @@ public partial class MainWindow : Window
                 return;
             }
 
-            if (Settings.Default.DirectOpenPdfFile && extension == ".pdf" && File.Exists(filePath))
+            if(Settings.Default.DirectOpenPdfFile && extension == ".pdf" && File.Exists(filePath))
             {
                 EypPdfViewer eypPdfViewer = TwainCtrl.PdfImportViewer.PdfViewer;
                 eypPdfViewer.PdfFilePath = filePath;
@@ -154,7 +158,7 @@ public partial class MainWindow : Window
                 return;
             }
 
-            if (Settings.Default.DirectOpenUdfFile && extension == ".udf" && File.Exists(filePath))
+            if(Settings.Default.DirectOpenUdfFile && extension == ".udf" && File.Exists(filePath))
             {
                 TwainCtrl.xpsViewer.XpsDataFilePath = TwainCtrl.LoadUdfFile(filePath);
                 TwainCtrl.TbCtrl.SelectedIndex = 2;
@@ -165,9 +169,9 @@ public partial class MainWindow : Window
             GC.Collect();
         }
 
-        if (StillImageHelper.FirstLanuchScan)
+        if(StillImageHelper.FirstLanuchScan)
         {
-            switch (Settings.Default.ButtonScanMode)
+            switch(Settings.Default.ButtonScanMode)
             {
                 case 0 when TwainCtrl.ScanImage.CanExecute(null):
                     TwainCtrl.ScanImage.Execute(null);
@@ -179,72 +183,68 @@ public partial class MainWindow : Window
             }
         }
 
-        StillImageHelper.StartServer(msg =>
-        {
-            if (msg.StartsWith(StillImageHelper.DEVICE_PREFIX, StringComparison.InvariantCulture))
+        StillImageHelper.StartServer(
+            msg =>
             {
-                switch (Settings.Default.ButtonScanMode)
+                if(msg.StartsWith(StillImageHelper.DEVICE_PREFIX, StringComparison.InvariantCulture))
                 {
-                    case 0 when TwainCtrl.ScanImage.CanExecute(null):
-                        Dispatcher.Invoke(() => TwainCtrl.ScanImage.Execute(null));
-                        break;
+                    switch(Settings.Default.ButtonScanMode)
+                    {
+                        case 0 when TwainCtrl.ScanImage.CanExecute(null):
+                            Dispatcher.Invoke(() => TwainCtrl.ScanImage.Execute(null));
+                            break;
 
-                    case 1 when TwainCtrl.FastScanImage.CanExecute(null):
-                        Dispatcher.Invoke(() => TwainCtrl.FastScanImage.Execute(null));
-                        break;
+                        case 1 when TwainCtrl.FastScanImage.CanExecute(null):
+                            Dispatcher.Invoke(() => TwainCtrl.FastScanImage.Execute(null));
+                            break;
+                    }
                 }
-            }
-        });
+            });
     }
 
     private void QrListBox_Drop(object sender, DragEventArgs e)
     {
-        if (e.Data.GetData(typeof(ScannedImage)) is ScannedImage scannedImage &&
+        if(e.Data.GetData(typeof(ScannedImage)) is ScannedImage scannedImage &&
             DataContext is GpScannerViewModel ViewModel &&
             QrCode.QrCode.GetMultipleImageBarcodeResult(scannedImage.Resim) is IEnumerable<string> barcodes)
         {
-            foreach (string barcode in barcodes)
+            foreach(string barcode in barcodes)
             {
                 ViewModel.BarcodeList.Add(barcode);
             }
         }
     }
 
-    private void Run_Drop(object sender, DragEventArgs e)
-    {
-        TwainCtrl.DropFile(sender, e);
-    }
+    private void Run_Drop(object sender, DragEventArgs e) { TwainCtrl.DropFile(sender, e); }
 
-    private void Run_PreviewMouseMove(object sender, MouseEventArgs e)
-    {
-        TwainCtrl.DropPreviewFile(sender, e);
-    }
+    private void Run_PreviewMouseMove(object sender, MouseEventArgs e) { TwainCtrl.DropPreviewFile(sender, e); }
 
     private async void TwainCtrl_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if (DataContext is GpScannerViewModel ViewModel)
+        if(DataContext is GpScannerViewModel ViewModel)
         {
-            if (e.PropertyName is "Resimler")
+            if(e.PropertyName is "Resimler")
             {
                 ViewModel.ReloadFileDatas();
             }
 
-            if (e.PropertyName is "DetectPageSeperator" && ViewModel.DetectBarCode)
+            if(e.PropertyName is "DetectPageSeperator" && ViewModel.DetectBarCode)
             {
                 ViewModel.AddBarcodeToList(TwainCtrl?.Scanner?.BarcodeContent);
 
-                if (ViewModel.DetectPageSeperator && ViewModel.BarcodeContent is not null)
+                if(ViewModel.DetectPageSeperator && ViewModel.BarcodeContent is not null)
                 {
                     TwainCtrl.Scanner.FileName = ViewModel.GetPatchCodeResult(TwainCtrl.Scanner.BarcodeContent);
                 }
             }
 
-            if (e.PropertyName is "DataBaseTextData" && TwainCtrl?.DataBaseTextData is not null)
+            if(e.PropertyName is "DataBaseTextData" && TwainCtrl?.DataBaseTextData is not null)
             {
                 ViewModel.ScannedText = TwainCtrl.DataBaseTextData;
-                if (ViewModel.ScannedText != null)
+                if(ViewModel.ScannedText != null)
                 {
-                    ViewModel.ScannerData?.Data?.Add(new Data
+                    ViewModel.ScannerData?.Data?.Add(
+                    new Data
                     {
                         Id = DataSerialize.RandomNumber(),
                         FileName = TwainCtrl?.Scanner?.PdfFilePath,
@@ -258,16 +258,16 @@ public partial class MainWindow : Window
                 TwainCtrl.DataBaseTextData = null;
             }
 
-            if (e.PropertyName is "ImgData" && TwainCtrl?.ImgData is not null)
+            if(e.PropertyName is "ImgData" && TwainCtrl?.ImgData is not null)
             {
-                if (ViewModel.DetectBarCode)
+                if(ViewModel.DetectBarCode)
                 {
                     ViewModel.AddBarcodeToList(QrCode.QrCode.GetImageBarcodeResult(TwainCtrl.ImgData));
                 }
 
                 ViewModel.OcrIsBusy = true;
                 ViewModel.ScannedText = await TwainCtrl.ImgData.OcrAsyc(Settings.Default.DefaultTtsLang);
-                if (ViewModel.ScannedText != null)
+                if(ViewModel.ScannedText != null)
                 {
                     ViewModel.TranslateViewModel.Metin = string.Join(" ", ViewModel.ScannedText?.Select(z => z.Text));
                     ViewModel.TranslateViewModel.TaramaGeçmiş.Add(ViewModel.TranslateViewModel?.Metin);
@@ -277,27 +277,29 @@ public partial class MainWindow : Window
                 TwainCtrl.ImgData = null;
             }
 
-            if (e.PropertyName is "DragMoveStarted")
+            if(e.PropertyName is "DragMoveStarted")
             {
                 ViewModel.ListBoxBorderAnimation = TwainCtrl.DragMoveStarted;
             }
 
-            if (e.PropertyName is "CameraQRCodeData" && TwainCtrl?.CameraQRCodeData is not null)
+            if(e.PropertyName is "CameraQRCodeData" && TwainCtrl?.CameraQRCodeData is not null)
             {
                 ViewModel.AddBarcodeToList(TwainCtrl?.Scanner?.BarcodeContent);
                 TwainCtrl.CameraQRCodeData = null;
             }
 
-            if (e.PropertyName is "UsePageSeperator" && TwainCtrl?.Scanner?.UsePageSeperator == true)
+            if(e.PropertyName is "UsePageSeperator" && TwainCtrl?.Scanner?.UsePageSeperator == true)
             {
-                if (Settings.Default.PatchCodes.Count <= 0)
+                if(Settings.Default.PatchCodes.Count <= 0)
                 {
                     TwainCtrl.Scanner.UsePageSeperator = false;
                     _ = MessageBox.Show(Translation.GetResStringValue("NOPATCHCODE"));
-                    if (WindowExtensions.OpenSettings.CanExecute(null)
-                        && Policy.CheckPolicy("OpenSettings",
-                            Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\GpScanner"))
-                        && Policy.CheckPolicy("OpenSettings",
+                    if(WindowExtensions.OpenSettings.CanExecute(null) &&
+                        Policy.CheckPolicy(
+                            "OpenSettings",
+                            Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\GpScanner")) &&
+                        Policy.CheckPolicy(
+                            "OpenSettings",
                             Registry.CurrentUser.OpenSubKey(@"Software\Policies\GpScanner")))
                     {
                         WindowExtensions.OpenSettings.Execute(null);
@@ -313,7 +315,7 @@ public partial class MainWindow : Window
 
     private void Window_Closing(object sender, CancelEventArgs e)
     {
-        if (TwainCtrl.Filesavetask?.IsCompleted == false ||
+        if(TwainCtrl.Filesavetask?.IsCompleted == false ||
             (DataContext as GpScannerViewModel)?.Filesavetask?.IsCompleted == false)
         {
             _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));

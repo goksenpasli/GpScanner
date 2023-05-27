@@ -18,10 +18,7 @@ namespace Tesseract
         {
         }
 
-        protected LoadLibraryException(
-            SerializationInfo info,
-            StreamingContext context)
-            : base(info, context)
+        protected LoadLibraryException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

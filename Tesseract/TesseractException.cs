@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Tesseract
 {
     /// <summary>
-    ///     Desctiption of TesseractException.
+    /// Desctiption of TesseractException.
     /// </summary>
     [Serializable]
     public class TesseractException : Exception, ISerializable

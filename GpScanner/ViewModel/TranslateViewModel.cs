@@ -16,55 +16,63 @@ public class TranslateViewModel : InpcBase
         PropertyChanged += TranslateViewModel_PropertyChanged;
 
         speechSynthesizer = new SpeechSynthesizer();
-        if (speechSynthesizer is not null)
+        if(speechSynthesizer is not null)
         {
             TtsDilleri = speechSynthesizer.GetInstalledVoices().Select(z => z.VoiceInfo.Name);
             OkumaDili = TtsDilleri?.FirstOrDefault();
         }
 
-        Sıfırla = new RelayCommand<object>(parameter =>
-        {
-            Metin = string.Empty;
-            Çeviri = string.Empty;
-        }, parameter => true);
-
-        Değiştir = new RelayCommand<object>(parameter =>
-        {
-            string current = MevcutDil;
-            string translated = ÇevrilenDil;
-            ÇevrilenDil = current;
-            MevcutDil = translated;
-        }, parameter => ÇevrilenDil != MevcutDil);
-
-        Oku = new RelayCommand<object>(parameter =>
-        {
-            if (parameter is string metin)
+        Sıfırla = new RelayCommand<object>(
+            parameter =>
             {
-                if (speechSynthesizer.State == SynthesizerState.Speaking)
-                {
-                    speechSynthesizer.Pause();
-                    return;
-                }
+                Metin = string.Empty;
+                Çeviri = string.Empty;
+            },
+            parameter => true);
 
-                if (speechSynthesizer.State == SynthesizerState.Paused)
-                {
-                    speechSynthesizer.Resume();
-                    return;
-                }
+        Değiştir = new RelayCommand<object>(
+            parameter =>
+            {
+                string current = MevcutDil;
+                string translated = ÇevrilenDil;
+                ÇevrilenDil = current;
+                MevcutDil = translated;
+            },
+            parameter => ÇevrilenDil != MevcutDil);
 
-                if (speechSynthesizer.State == SynthesizerState.Ready)
+        Oku = new RelayCommand<object>(
+            parameter =>
+            {
+                if(parameter is string metin)
                 {
-                    _ = speechSynthesizer.SpeakAsync(metin);
+                    if(speechSynthesizer.State == SynthesizerState.Speaking)
+                    {
+                        speechSynthesizer.Pause();
+                        return;
+                    }
+
+                    if(speechSynthesizer.State == SynthesizerState.Paused)
+                    {
+                        speechSynthesizer.Resume();
+                        return;
+                    }
+
+                    if(speechSynthesizer.State == SynthesizerState.Ready)
+                    {
+                        _ = speechSynthesizer.SpeakAsync(metin);
+                    }
                 }
-            }
-        }, parameter => !string.IsNullOrEmpty(OkumaDili));
+            },
+            parameter => !string.IsNullOrEmpty(OkumaDili));
     }
 
-    public string Çeviri {
+    public string Çeviri
+    {
         get => çeviri;
 
-        set {
-            if (çeviri != value)
+        set
+        {
+            if(çeviri != value)
             {
                 çeviri = value;
                 OnPropertyChanged(nameof(Çeviri));
@@ -72,11 +80,13 @@ public class TranslateViewModel : InpcBase
         }
     }
 
-    public string ÇevrilenDil {
+    public string ÇevrilenDil
+    {
         get => çevrilenDil;
 
-        set {
-            if (çevrilenDil != value)
+        set
+        {
+            if(çevrilenDil != value)
             {
                 çevrilenDil = value;
                 OnPropertyChanged(nameof(ÇevrilenDil));
@@ -87,9 +97,11 @@ public class TranslateViewModel : InpcBase
 
     public ICommand Değiştir { get; }
 
-    public string Metin {
-        get {
-            if (!string.IsNullOrEmpty(metin))
+    public string Metin
+    {
+        get
+        {
+            if(!string.IsNullOrEmpty(metin))
             {
                 _ = Task.Run(() => Çeviri = Extensions.TranslateViewModel.DileÇevir(metin, MevcutDil, ÇevrilenDil));
             }
@@ -97,8 +109,9 @@ public class TranslateViewModel : InpcBase
             return metin;
         }
 
-        set {
-            if (metin != value)
+        set
+        {
+            if(metin != value)
             {
                 metin = value;
                 OnPropertyChanged(nameof(Metin));
@@ -107,11 +120,13 @@ public class TranslateViewModel : InpcBase
         }
     }
 
-    public bool MetinBoxIsreadOnly {
+    public bool MetinBoxIsreadOnly
+    {
         get => metinBoxIsreadOnly;
 
-        set {
-            if (metinBoxIsreadOnly != value)
+        set
+        {
+            if(metinBoxIsreadOnly != value)
             {
                 metinBoxIsreadOnly = value;
                 OnPropertyChanged(nameof(MetinBoxIsreadOnly));
@@ -119,11 +134,13 @@ public class TranslateViewModel : InpcBase
         }
     }
 
-    public string MevcutDil {
+    public string MevcutDil
+    {
         get => mevcutDil;
 
-        set {
-            if (mevcutDil != value)
+        set
+        {
+            if(mevcutDil != value)
             {
                 mevcutDil = value;
                 OnPropertyChanged(nameof(MevcutDil));
@@ -134,11 +151,13 @@ public class TranslateViewModel : InpcBase
 
     public ICommand Oku { get; }
 
-    public string OkumaDili {
+    public string OkumaDili
+    {
         get => okumaDili;
 
-        set {
-            if (okumaDili != value)
+        set
+        {
+            if(okumaDili != value)
             {
                 okumaDili = value;
                 OnPropertyChanged(nameof(OkumaDili));
@@ -148,11 +167,13 @@ public class TranslateViewModel : InpcBase
 
     public ICommand Sıfırla { get; }
 
-    public ObservableCollection<string> TaramaGeçmiş {
+    public ObservableCollection<string> TaramaGeçmiş
+    {
         get => taramaGeçmiş;
 
-        set {
-            if (taramaGeçmiş != value)
+        set
+        {
+            if(taramaGeçmiş != value)
             {
                 taramaGeçmiş = value;
                 OnPropertyChanged(nameof(TaramaGeçmiş));
@@ -180,7 +201,7 @@ public class TranslateViewModel : InpcBase
 
     private void TranslateViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName is "OkumaDili" && !string.IsNullOrEmpty(OkumaDili))
+        if(e.PropertyName is "OkumaDili" && !string.IsNullOrEmpty(OkumaDili))
         {
             speechSynthesizer = new SpeechSynthesizer();
             TtsDilleri = speechSynthesizer.GetInstalledVoices().Select(z => z.VoiceInfo.Name);

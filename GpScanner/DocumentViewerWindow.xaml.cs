@@ -12,7 +12,7 @@ using TwainControl;
 namespace GpScanner;
 
 /// <summary>
-///     Interaction logic for DocumentViewerWindow.xaml
+/// Interaction logic for DocumentViewerWindow.xaml
 /// </summary>
 public partial class DocumentViewerWindow : Window
 {
@@ -40,8 +40,10 @@ public partial class DocumentViewerWindow : Window
 
     private void DocumentViewer_MouseDown(object sender, MouseButtonEventArgs e)
     {
-        if (e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer &&
-            e.LeftButton == MouseButtonState.Pressed && Keyboard.IsKeyDown(Key.LeftCtrl))
+        if(e.OriginalSource is Image img &&
+            img.Parent is ScrollViewer scrollviewer &&
+            e.LeftButton == MouseButtonState.Pressed &&
+            Keyboard.IsKeyDown(Key.LeftCtrl))
         {
             isMouseDown = true;
             Cursor = Cursors.Cross;
@@ -51,11 +53,13 @@ public partial class DocumentViewerWindow : Window
 
     private void DocumentViewer_MouseMove(object sender, MouseEventArgs e)
     {
-        if (e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer && isMouseDown &&
+        if(e.OriginalSource is Image img &&
+            img.Parent is ScrollViewer scrollviewer &&
+            isMouseDown &&
             DataContext is DocumentViewerModel documentViewerModel)
         {
             Point mousemovecoord = e.GetPosition(scrollviewer);
-            if (!cnv.Children.Contains(selectionbox))
+            if(!cnv.Children.Contains(selectionbox))
             {
                 _ = cnv.Children.Add(selectionbox);
             }
@@ -70,7 +74,7 @@ public partial class DocumentViewerWindow : Window
             selectionbox.Width = x2 - x1;
             selectionbox.Height = y2 - y1;
 
-            if (e.LeftButton == MouseButtonState.Released)
+            if(e.LeftButton == MouseButtonState.Released)
             {
                 cnv.Children.Remove(selectionbox);
                 width = Math.Abs(mousemovecoord.X - mousedowncoord.X);
@@ -78,8 +82,13 @@ public partial class DocumentViewerWindow : Window
                 double captureX, captureY;
                 captureX = mousedowncoord.X < mousemovecoord.X ? mousedowncoord.X : mousemovecoord.X;
                 captureY = mousedowncoord.Y < mousemovecoord.Y ? mousedowncoord.Y : mousemovecoord.Y;
-                documentViewerModel.ImgData = BitmapMethods.CaptureScreen(captureX, captureY, width, height,
-                    scrollviewer, BitmapFrame.Create((BitmapSource)img.Source));
+                documentViewerModel.ImgData = BitmapMethods.CaptureScreen(
+                    captureX,
+                    captureY,
+                    width,
+                    height,
+                    scrollviewer,
+                    BitmapFrame.Create((BitmapSource)img.Source));
                 mousedowncoord.X = mousedowncoord.Y = 0;
                 isMouseDown = false;
                 Cursor = Cursors.Arrow;
@@ -89,7 +98,7 @@ public partial class DocumentViewerWindow : Window
 
     private void Window_Unloaded(object sender, RoutedEventArgs e)
     {
-        if (cnt.GetFirstVisualChild<PdfViewer.PdfViewer>() is PdfViewer.PdfViewer pdfvwr)
+        if(cnt.GetFirstVisualChild<PdfViewer.PdfViewer>() is PdfViewer.PdfViewer pdfvwr)
         {
             pdfvwr?.Dispose();
             GC.Collect();

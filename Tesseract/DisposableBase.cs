@@ -19,16 +19,13 @@ namespace Tesseract
             Disposed?.Invoke(this, EventArgs.Empty);
         }
 
-        protected DisposableBase()
-        {
-            IsDisposed = false;
-        }
+        protected DisposableBase() { IsDisposed = false; }
 
         protected abstract void Dispose(bool disposing);
 
         protected virtual void VerifyNotDisposed()
         {
-            if (IsDisposed)
+            if(IsDisposed)
             {
                 throw new ObjectDisposedException(ToString());
             }

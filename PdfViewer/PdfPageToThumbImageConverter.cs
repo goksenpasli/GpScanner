@@ -10,11 +10,13 @@ namespace PdfViewer;
 
 public sealed class PdfPageToThumbImageConverter : InpcBase, IMultiValueConverter
 {
-    public int Dpi {
+    public int Dpi
+    {
         get => dpi;
 
-        set {
-            if (dpi != value)
+        set
+        {
+            if(dpi != value)
             {
                 dpi = value;
                 OnPropertyChanged(nameof(Dpi));
@@ -24,19 +26,23 @@ public sealed class PdfPageToThumbImageConverter : InpcBase, IMultiValueConverte
 
     public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {
-        if (values[0] is string PdfFilePath && values[1] is int index && File.Exists(PdfFilePath))
+        if(values[0] is string PdfFilePath && values[1] is int index && File.Exists(PdfFilePath))
         {
             try
             {
-                return Task.Run(async () =>
-                {
-                    BitmapSource bitmapImage = await PdfViewer.ConvertToImgAsync(PdfFilePath, index, Dpi).ConfigureAwait(false);
-                    bitmapImage.Freeze();
-                    GC.Collect();
-                    return bitmapImage;
-                }).ConfigureAwait(false).GetAwaiter().GetResult();
-            }
-            catch (Exception)
+                return Task.Run(
+                    async () =>
+                    {
+                        BitmapSource bitmapImage = await PdfViewer.ConvertToImgAsync(PdfFilePath, index, Dpi)
+                            .ConfigureAwait(false);
+                        bitmapImage.Freeze();
+                        GC.Collect();
+                        return bitmapImage;
+                    })
+                    .ConfigureAwait(false)
+                    .GetAwaiter()
+                    .GetResult();
+            } catch(Exception)
             {
                 return null;
             }
@@ -46,9 +52,7 @@ public sealed class PdfPageToThumbImageConverter : InpcBase, IMultiValueConverte
     }
 
     public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
-    {
-        throw new NotImplementedException();
-    }
+    { throw new NotImplementedException(); }
 
     private int dpi = 9;
 }

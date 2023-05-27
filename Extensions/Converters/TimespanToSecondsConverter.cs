@@ -13,7 +13,5 @@ public sealed class TimespanToSecondsConverter : IValueConverter
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        return TimeSpan.FromSeconds((double)value);
-    }
+    { return TimeSpan.FromSeconds((double)value); }
 }

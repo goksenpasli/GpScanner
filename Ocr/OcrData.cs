@@ -4,11 +4,13 @@ namespace Ocr;
 
 public class OcrData : InpcBase
 {
-    public Rect Rect {
+    public Rect Rect
+    {
         get => rect;
 
-        set {
-            if (rect != value)
+        set
+        {
+            if(rect != value)
             {
                 rect = value;
                 OnPropertyChanged(nameof(Rect));
@@ -16,11 +18,13 @@ public class OcrData : InpcBase
         }
     }
 
-    public string Text {
+    public string Text
+    {
         get => text;
 
-        set {
-            if (text != value)
+        set
+        {
+            if(text != value)
             {
                 text = value;
                 OnPropertyChanged(nameof(Text));

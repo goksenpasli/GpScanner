@@ -5,17 +5,25 @@ using System.Windows.Media.Effects;
 
 namespace Extensions;
 
-/// <summary>An effect that embosses the input.</summary>
+/// <summary>
+/// An effect that embosses the input.
+/// </summary>
 public class EmbossedEffect : ShaderEffect
 {
-    public static readonly DependencyProperty EmbossedAmountProperty = DependencyProperty.Register("EmbossedAmount",
-        typeof(double), typeof(EmbossedEffect), new UIPropertyMetadata(0.5D, PixelShaderConstantCallback(0)));
+    public static readonly DependencyProperty EmbossedAmountProperty = DependencyProperty.Register(
+        "EmbossedAmount",
+        typeof(double),
+        typeof(EmbossedEffect),
+        new UIPropertyMetadata(0.5D, PixelShaderConstantCallback(0)));
 
     public static readonly DependencyProperty InputProperty =
         RegisterPixelShaderSamplerProperty("Input", typeof(EmbossedEffect), 0);
 
-    public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(double),
-        typeof(EmbossedEffect), new UIPropertyMetadata(0.003D, PixelShaderConstantCallback(1)));
+    public static readonly DependencyProperty WidthProperty = DependencyProperty.Register(
+        "Width",
+        typeof(double),
+        typeof(EmbossedEffect),
+        new UIPropertyMetadata(0.003D, PixelShaderConstantCallback(1)));
 
     public EmbossedEffect()
     {
@@ -29,23 +37,20 @@ public class EmbossedEffect : ShaderEffect
         UpdateShaderValue(WidthProperty);
     }
 
-    /// <summary>The amplitude of the embossing.</summary>
-    public double EmbossedAmount {
+    /// <summary>
+    /// The amplitude of the embossing.
+    /// </summary>
+    public double EmbossedAmount
+    {
         get => (double)GetValue(EmbossedAmountProperty);
 
         set => SetValue(EmbossedAmountProperty, value);
     }
 
-    public Brush Input {
-        get => (Brush)GetValue(InputProperty);
+    public Brush Input { get => (Brush)GetValue(InputProperty); set => SetValue(InputProperty, value); }
 
-        set => SetValue(InputProperty, value);
-    }
-
-    /// <summary>The separation between samples (as a fraction of input size).</summary>
-    public double Width {
-        get => (double)GetValue(WidthProperty);
-
-        set => SetValue(WidthProperty, value);
-    }
+    /// <summary>
+    /// The separation between samples (as a fraction of input size).
+    /// </summary>
+    public double Width { get => (double)GetValue(WidthProperty); set => SetValue(WidthProperty, value); }
 }

@@ -28,7 +28,8 @@ public class ResizablePanel : ContentControl
 {
     static ResizablePanel()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(typeof(ResizablePanel),
+        DefaultStyleKeyProperty.OverrideMetadata(
+            typeof(ResizablePanel),
             new FrameworkPropertyMetadata(typeof(ResizablePanel)));
     }
 }
@@ -39,16 +40,12 @@ public class Resizer : Thumb
         DependencyProperty.Register("ThumbDirection", typeof(ResizeDirections), typeof(Resizer));
 
     static Resizer()
-    {
-        DefaultStyleKeyProperty.OverrideMetadata(typeof(Resizer), new FrameworkPropertyMetadata(typeof(Resizer)));
-    }
+    { DefaultStyleKeyProperty.OverrideMetadata(typeof(Resizer), new FrameworkPropertyMetadata(typeof(Resizer))); }
 
-    public Resizer()
-    {
-        DragDelta += Resizer_DragDelta;
-    }
+    public Resizer() { DragDelta += Resizer_DragDelta; }
 
-    public ResizeDirections ThumbDirection {
+    public ResizeDirections ThumbDirection
+    {
         get => (ResizeDirections)GetValue(ThumbDirectionProperty);
         set => SetValue(ThumbDirectionProperty, value);
     }
@@ -85,9 +82,9 @@ public class Resizer : Thumb
 
     private void Resizer_DragDelta(object sender, DragDeltaEventArgs e)
     {
-        if (DataContext is Control designerItem)
+        if(DataContext is Control designerItem)
         {
-            switch (ThumbDirection)
+            switch(ThumbDirection)
             {
                 case ResizeDirections.TopLeft:
                     _ = ResizeTop(e, designerItem);

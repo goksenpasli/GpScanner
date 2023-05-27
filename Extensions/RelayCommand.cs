@@ -8,13 +8,11 @@ namespace Extensions;
 
 public class RelayAsyncCommand<T> : RelayCommand<T>
 {
-    public RelayAsyncCommand(Action<T> execute, Predicate<T> canExecute)
-        : base(execute, canExecute)
+    public RelayAsyncCommand(Action<T> execute, Predicate<T> canExecute) : base(execute, canExecute)
     {
     }
 
-    public RelayAsyncCommand(Action<T> execute)
-        : base(execute)
+    public RelayAsyncCommand(Action<T> execute) : base(execute)
     {
     }
 
@@ -24,10 +22,7 @@ public class RelayAsyncCommand<T> : RelayCommand<T>
 
     public bool IsExecuting { get; private set; }
 
-    public override bool CanExecute(object parameter)
-    {
-        return base.CanExecute(parameter) && !IsExecuting;
-    }
+    public override bool CanExecute(object parameter) { return base.CanExecute(parameter) && !IsExecuting; }
 
     public override void Execute(object parameter)
     {
@@ -37,10 +32,10 @@ public class RelayAsyncCommand<T> : RelayCommand<T>
             Started?.Invoke(this, EventArgs.Empty);
 
             Task task = Task.Run(() => _execute((T)parameter));
-            _ = task.ContinueWith(_ => OnRunWorkerCompleted(EventArgs.Empty),
+            _ = task.ContinueWith(
+                _ => OnRunWorkerCompleted(EventArgs.Empty),
                 TaskScheduler.FromCurrentSynchronizationContext());
-        }
-        catch (Exception ex)
+        } catch(Exception ex)
         {
             OnRunWorkerCompleted(new RunWorkerCompletedEventArgs(null, ex, true));
         }
@@ -56,17 +51,13 @@ public class RelayAsyncCommand<T> : RelayCommand<T>
 public class RelayCommand<T> : ICommand
 {
     #region Fields
-
     protected readonly Predicate<T> _canExecute;
 
     protected readonly Action<T> _execute;
-
     #endregion Fields
 
     #region Constructors
-
-    public RelayCommand(Action<T> execute)
-        : this(execute, null)
+    public RelayCommand(Action<T> execute) : this(execute, null)
     {
     }
 
@@ -75,28 +66,20 @@ public class RelayCommand<T> : ICommand
         _execute = execute ?? throw new ArgumentNullException(nameof(execute));
         _canExecute = canExecute;
     }
-
     #endregion Constructors
 
     #region ICommand Members
-
-    public event EventHandler CanExecuteChanged {
+    public event EventHandler CanExecuteChanged
+    {
         add => CommandManager.RequerySuggested += value;
         remove => CommandManager.RequerySuggested -= value;
     }
 
     [DebuggerStepThrough]
-    public virtual bool CanExecute(object parameter)
-    {
-        return _canExecute == null || _canExecute((T)parameter);
-    }
+    public virtual bool CanExecute(object parameter) { return _canExecute == null || _canExecute((T)parameter); }
 
     [DebuggerStepThrough]
-    public virtual void Execute(object parameter)
-    {
-        _execute((T)parameter);
-    }
-
+    public virtual void Execute(object parameter) { _execute((T)parameter); }
     #endregion ICommand Members
 }
 
@@ -108,36 +91,32 @@ public class RelayCommand : ICommand
         this.canExecute = canExecute;
     }
 
-    public RelayCommand(Action execute)
-        : this(execute, null)
+    public RelayCommand(Action execute) : this(execute, null)
     {
     }
 
-    public event EventHandler CanExecuteChanged {
-        add {
-            if (canExecute != null)
+    public event EventHandler CanExecuteChanged
+    {
+        add
+        {
+            if(canExecute != null)
             {
                 CommandManager.RequerySuggested += value;
             }
         }
 
-        remove {
-            if (canExecute != null)
+        remove
+        {
+            if(canExecute != null)
             {
                 CommandManager.RequerySuggested -= value;
             }
         }
     }
 
-    public virtual bool CanExecute(object parameter)
-    {
-        return canExecute == null || canExecute();
-    }
+    public virtual bool CanExecute(object parameter) { return canExecute == null || canExecute(); }
 
-    public virtual void Execute(object parameter)
-    {
-        execute();
-    }
+    public virtual void Execute(object parameter) { execute(); }
 
     protected readonly Func<bool> canExecute;
 

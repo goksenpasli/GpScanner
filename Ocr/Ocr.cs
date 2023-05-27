@@ -17,10 +17,10 @@ public static class Ocr
     static Ocr()
     {
         TesseractPath = $@"{Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName)}\tessdata";
-        if (Directory.Exists(TesseractPath))
+        if(Directory.Exists(TesseractPath))
         {
-            TesseractDataExists = Directory.EnumerateFiles(TesseractPath).Any(z =>
-                string.Equals(Path.GetExtension(z), ".traineddata", StringComparison.OrdinalIgnoreCase));
+            TesseractDataExists = Directory.EnumerateFiles(TesseractPath)
+                .Any(z => string.Equals(Path.GetExtension(z), ".traineddata", StringComparison.OrdinalIgnoreCase));
             return;
         }
 
@@ -31,12 +31,12 @@ public static class Ocr
 
     public static async Task<ObservableCollection<OcrData>> OcrAsyc(this byte[] dosya, string lang)
     {
-        if (string.IsNullOrWhiteSpace(lang))
+        if(string.IsNullOrWhiteSpace(lang))
         {
             throw new ArgumentNullException(nameof(lang));
         }
 
-        if (!Directory.Exists(TesseractPath))
+        if(!Directory.Exists(TesseractPath))
         {
             throw new ArgumentNullException(nameof(TesseractPath));
         }
@@ -47,12 +47,12 @@ public static class Ocr
 
     public static async Task<ObservableCollection<OcrData>> OcrAsyc(this string dosya, string lang)
     {
-        if (string.IsNullOrWhiteSpace(lang))
+        if(string.IsNullOrWhiteSpace(lang))
         {
             throw new ArgumentNullException(nameof(lang));
         }
 
-        if (!Directory.Exists(TesseractPath))
+        if(!Directory.Exists(TesseractPath))
         {
             throw new ArgumentNullException(nameof(TesseractPath));
         }
@@ -65,7 +65,7 @@ public static class Ocr
 
     private static ObservableCollection<OcrData> GetOcrData(this byte[] dosya, string lang)
     {
-        if (dosya is null)
+        if(dosya is null)
         {
             throw new ArgumentNullException(nameof(dosya));
         }
@@ -83,7 +83,7 @@ public static class Ocr
 
     private static ObservableCollection<OcrData> GetOcrData(this string dosya, string lang)
     {
-        if (dosya is null)
+        if(dosya is null)
         {
             throw new ArgumentNullException(nameof(dosya));
         }
@@ -98,17 +98,18 @@ public static class Ocr
         return ocrdata;
     }
 
-    private static ObservableCollection<OcrData> IterateOcr(this ResultIterator iterator,
+    private static ObservableCollection<OcrData> IterateOcr(
+        this ResultIterator iterator,
         PageIteratorLevel pageIteratorLevel)
     {
         ObservableCollection<OcrData> ocrdata = new();
         do
         {
-            if (iterator.TryGetBoundingBox(pageIteratorLevel, out Tesseract.Rect rect))
+            if(iterator.TryGetBoundingBox(pageIteratorLevel, out Tesseract.Rect rect))
             {
                 Rect imgrect = new(rect.X1, rect.Y1, rect.Width, rect.Height);
                 OcrData item = new() { Text = iterator.GetText(pageIteratorLevel), Rect = imgrect };
-                if (!string.IsNullOrWhiteSpace(item.Text))
+                if(!string.IsNullOrWhiteSpace(item.Text))
                 {
                     ocrdata.Add(item);
                 }

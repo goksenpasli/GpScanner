@@ -16,16 +16,17 @@ public enum FileType
 public static class Win32FileScanner
 {
     /// <summary>
-    ///     Provides a enumerable of file results that contain a range of information about both files and directories
-    ///     discovered in the provided directory path.
+    /// Provides a enumerable of file results that contain a range of information about both files and directories
+    /// discovered in the provided directory path.
     /// </summary>
     /// <param name="path">The folder path.</param>
     /// <param name="rootStats">
-    ///     A cumulative stat object representing total files, folder, sizes, etc for the base directory
-    ///     provided.
+    /// A cumulative stat object representing total files, folder, sizes, etc for the base directory provided.
     /// </param>
     /// <param name="maxDepth">Maximum folder depth to recurse. Set -1 to disable max depth.</param>
-    public static IEnumerable<FileResult> EnumerateFileItems(string path, out DirectoryStats rootStats,
+    public static IEnumerable<FileResult> EnumerateFileItems(
+        string path,
+        out DirectoryStats rootStats,
         int maxDepth = -1)
     {
         rootStats = new DirectoryStats();
@@ -33,14 +34,12 @@ public static class Win32FileScanner
     }
 
     /// <summary>
-    ///     A barebones version of EnumerateFiles() provides only the path and not statistics. Only provides files and not
-    ///     directories.
+    /// A barebones version of EnumerateFiles() provides only the path and not statistics. Only provides files and not
+    /// directories.
     /// </summary>
     /// <param name="maxDepth">Maximum folder depth to recurse. Set -1 to disable max depth.</param>
     public static IEnumerable<string> EnumerateFilepaths(string path, int maxDepth = -1)
-    {
-        return ScanRecursiveFilepath(Path.GetFullPath(path), maxDepth, 0);
-    }
+    { return ScanRecursiveFilepath(Path.GetFullPath(path), maxDepth, 0); }
 
     private static readonly IntPtr invalidHandle = new(-1);
 
@@ -88,14 +87,10 @@ public static class Win32FileScanner
     private static extern bool FindNextFile(IntPtr hFindFile, out Win32FindData lpFindFileData);
 
     private static long GetFilesize(Win32FindData findData)
-    {
-        return findData.nFileSizeLow + ((long)findData.nFileSizeHigh * uint.MaxValue);
-    }
+    { return findData.nFileSizeLow + ((long)findData.nFileSizeHigh * uint.MaxValue); }
 
     private static bool IsValidFile(Win32FindData findData)
-    {
-        return !findData.cFileName.Equals(".") && !findData.cFileName.Equals("..");
-    }
+    { return !findData.cFileName.Equals(".") && !findData.cFileName.Equals(".."); }
 
     private static IEnumerable<FileResult> ScanRecursive(string path, int maxDepth, int depth, DirectoryStats parent)
     {
@@ -105,11 +100,11 @@ public static class Win32FileScanner
         {
             handle = FindFirstFile($@"{path}\*", out Win32FindData findData);
 
-            if (handle != invalidHandle)
+            if(handle != invalidHandle)
             {
                 do
                 {
-                    if (findData.dwFileAttributes.HasFlag(FileAttributes.ReparsePoint | FileAttributes.Directory) ||
+                    if(findData.dwFileAttributes.HasFlag(FileAttributes.ReparsePoint | FileAttributes.Directory) ||
                         !IsValidFile(findData))
                     {
                         continue;
@@ -121,39 +116,51 @@ public static class Win32FileScanner
                     DateTime lastWriteTime = ToDateTime(findData.ftLastWriteTime);
                     DateTime lastAccessTime = ToDateTime(findData.ftLastAccessTime);
 
-                    if (findData.dwFileAttributes.HasFlag(FileAttributes.Directory))
+                    if(findData.dwFileAttributes.HasFlag(FileAttributes.Directory))
                     {
-                        if (maxDepth >= 0 && depth + 1 > maxDepth)
+                        if(maxDepth >= 0 && depth + 1 > maxDepth)
                         {
                             continue;
                         }
 
                         DirectoryStats stats = new();
 
-                        foreach (FileResult fileResult in ScanRecursive(fullPath, maxDepth, depth + 1, stats))
+                        foreach(FileResult fileResult in ScanRecursive(fullPath, maxDepth, depth + 1, stats))
                         {
                             yield return fileResult;
                         }
 
                         parent.AddDirectory(ref stats);
 
-                        yield return new FileResult(fullPath, 0, findData.dwFileAttributes, creationTime, lastWriteTime,
-                            lastAccessTime, FileType.Folder, depth, stats);
-                    }
-                    else
+                        yield return new FileResult(
+                            fullPath,
+                            0,
+                            findData.dwFileAttributes,
+                            creationTime,
+                            lastWriteTime,
+                            lastAccessTime,
+                            FileType.Folder,
+                            depth,
+                            stats);
+                    } else
                     {
                         long filesize = GetFilesize(findData);
 
                         parent.AddFile(filesize);
 
-                        yield return new FileResult(fullPath, filesize, findData.dwFileAttributes, creationTime,
-                            lastWriteTime, lastAccessTime, FileType.File, depth);
+                        yield return new FileResult(
+                            fullPath,
+                            filesize,
+                            findData.dwFileAttributes,
+                            creationTime,
+                            lastWriteTime,
+                            lastAccessTime,
+                            FileType.File,
+                            depth);
                     }
                 } while (FindNextFile(handle, out findData));
             }
-
-        }
-        finally
+        } finally
         {
             _ = FindClose(handle);
         }
@@ -167,11 +174,11 @@ public static class Win32FileScanner
         {
             handle = FindFirstFile($@"{path}\*", out Win32FindData findData);
 
-            if (handle != invalidHandle)
+            if(handle != invalidHandle)
             {
                 do
                 {
-                    if (findData.dwFileAttributes.HasFlag(FileAttributes.ReparsePoint | FileAttributes.Directory) ||
+                    if(findData.dwFileAttributes.HasFlag(FileAttributes.ReparsePoint | FileAttributes.Directory) ||
                         !IsValidFile(findData))
                     {
                         continue;
@@ -179,35 +186,31 @@ public static class Win32FileScanner
 
                     string fullPath = Path.Combine(path, findData.cFileName);
 
-                    if (findData.dwFileAttributes.HasFlag(FileAttributes.Directory))
+                    if(findData.dwFileAttributes.HasFlag(FileAttributes.Directory))
                     {
-                        if (maxDepth >= 0 && depth + 1 > maxDepth)
+                        if(maxDepth >= 0 && depth + 1 > maxDepth)
                         {
                             continue;
                         }
 
-                        foreach (string filePath in ScanRecursiveFilepath(fullPath, maxDepth, depth + 1))
+                        foreach(string filePath in ScanRecursiveFilepath(fullPath, maxDepth, depth + 1))
                         {
                             yield return filePath;
                         }
-
-                    }
-                    else
+                    } else
                     {
                         yield return fullPath;
                     }
                 } while (FindNextFile(handle, out findData));
             }
-
-        }
-        finally
+        } finally
         {
             _ = FindClose(handle);
         }
     }
 
     /// <summary>
-    ///     Converts the provided Win32 FileTime struct into a .NET DateTime struct.
+    /// Converts the provided Win32 FileTime struct into a .NET DateTime struct.
     /// </summary>
     private static DateTime ToDateTime(FileTime fileTime)
     {
@@ -262,8 +265,16 @@ public sealed class DirectoryStats
 
 public sealed class FileResult
 {
-    public FileResult(string path, long filesize, FileAttributes attributes, DateTime creationTime,
-        DateTime lastWriteTime, DateTime lastAccessTime, FileType type, int depth, DirectoryStats stats = null)
+    public FileResult(
+        string path,
+        long filesize,
+        FileAttributes attributes,
+        DateTime creationTime,
+        DateTime lastWriteTime,
+        DateTime lastAccessTime,
+        FileType type,
+        int depth,
+        DirectoryStats stats = null)
     {
         Path = path;
         Size = filesize;
@@ -288,10 +299,14 @@ public sealed class FileResult
 
     public DateTime LastWriteTime { get; }
 
-    /// <summary>Gets the absolute path to this file.</summary>
+    /// <summary>
+    /// Gets the absolute path to this file.
+    /// </summary>
     public string Path { get; }
 
-    /// <summary>Gets the size of this file in bytes.</summary>
+    /// <summary>
+    /// Gets the size of this file in bytes.
+    /// </summary>
     public long Size { get; }
 
     public DirectoryStats Stats { get; }

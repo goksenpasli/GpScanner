@@ -18,10 +18,7 @@ namespace Tesseract
         {
         }
 
-        protected LeptonicaException(
-            SerializationInfo info,
-            StreamingContext context)
-            : base(info, context)
+        protected LeptonicaException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

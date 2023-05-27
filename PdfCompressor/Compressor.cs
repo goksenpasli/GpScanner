@@ -24,66 +24,79 @@ namespace PdfCompressor;
 
 public class Compressor : Control, INotifyPropertyChanged
 {
-    public static readonly DependencyProperty DpiProperty = DependencyProperty.Register("Dpi", typeof(int),
-        typeof(Compressor), new PropertyMetadata(Settings.Default.Dpi, Changed));
+    public static readonly DependencyProperty DpiProperty = DependencyProperty.Register(
+        "Dpi",
+        typeof(int),
+        typeof(Compressor),
+        new PropertyMetadata(Settings.Default.Dpi, Changed));
 
-    public static readonly DependencyProperty LoadedPdfPathProperty = DependencyProperty.Register("LoadedPdfPath",
-        typeof(string), typeof(Compressor), new PropertyMetadata(string.Empty));
+    public static readonly DependencyProperty LoadedPdfPathProperty = DependencyProperty.Register(
+        "LoadedPdfPath",
+        typeof(string),
+        typeof(Compressor),
+        new PropertyMetadata(string.Empty));
 
-    public static readonly DependencyProperty QualityProperty = DependencyProperty.Register("Quality", typeof(int),
-        typeof(Compressor), new PropertyMetadata(Settings.Default.Quality, Changed));
+    public static readonly DependencyProperty QualityProperty = DependencyProperty.Register(
+        "Quality",
+        typeof(int),
+        typeof(Compressor),
+        new PropertyMetadata(Settings.Default.Quality, Changed));
 
     public static readonly DependencyProperty UseMozJpegProperty =
         DependencyProperty.Register("UseMozJpeg", typeof(bool), typeof(Compressor), new PropertyMetadata(false));
 
     static Compressor()
-    {
-        DefaultStyleKeyProperty.OverrideMetadata(typeof(Compressor), new FrameworkPropertyMetadata(typeof(Compressor)));
-    }
+    { DefaultStyleKeyProperty.OverrideMetadata(typeof(Compressor), new FrameworkPropertyMetadata(typeof(Compressor))); }
 
     public Compressor()
     {
-        CompressFile = new RelayCommand<object>(async parameter =>
-        {
-            if (IsValidPdfFile(LoadedPdfPath))
+        CompressFile = new RelayCommand<object>(
+            async parameter =>
             {
-                PdfiumViewer.PdfDocument loadedpdfdoc = PdfiumViewer.PdfDocument.Load(LoadedPdfPath);
-                List<BitmapImage> images = await AddToListAsync(loadedpdfdoc, Dpi);
-                using PdfDocument pdfDocument = await GeneratePdf(images, UseMozJpeg, Quality, Dpi);
-                images = null;
-                SaveFileDialog saveFileDialog = new()
+                if(IsValidPdfFile(LoadedPdfPath))
                 {
-                    Filter = "Pdf Dosyası (*.pdf)|*.pdf",
-                    FileName = $"{Path.GetFileNameWithoutExtension(LoadedPdfPath)}_Compressed.pdf"
-                };
-                if (saveFileDialog.ShowDialog() == true)
-                {
-                    pdfDocument.Save(saveFileDialog.FileName);
+                    PdfiumViewer.PdfDocument loadedpdfdoc = PdfiumViewer.PdfDocument.Load(LoadedPdfPath);
+                    List<BitmapImage> images = await AddToListAsync(loadedpdfdoc, Dpi);
+                    using PdfDocument pdfDocument = await GeneratePdf(images, UseMozJpeg, Quality, Dpi);
+                    images = null;
+                    SaveFileDialog saveFileDialog = new()
+                    {
+                        Filter = "Pdf Dosyası (*.pdf)|*.pdf",
+                        FileName = $"{Path.GetFileNameWithoutExtension(LoadedPdfPath)}_Compressed.pdf"
+                    };
+                    if(saveFileDialog.ShowDialog() == true)
+                    {
+                        pdfDocument.Save(saveFileDialog.FileName);
+                    }
+
+                    GC.Collect();
                 }
+            },
+            parameter => !string.IsNullOrWhiteSpace(LoadedPdfPath));
 
-                GC.Collect();
-            }
-        }, parameter => !string.IsNullOrWhiteSpace(LoadedPdfPath));
-
-        OpenFile = new RelayCommand<object>(parameter =>
-        {
-            OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = "Pdf Dosyaları (*.pdf)|*.pdf" };
-            if (openFileDialog.ShowDialog() == true && IsValidPdfFile(openFileDialog.FileName))
+        OpenFile = new RelayCommand<object>(
+            parameter =>
             {
-                LoadedPdfPath = openFileDialog.FileName;
-            }
-        }, parameter => true);
+                OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = "Pdf Dosyaları (*.pdf)|*.pdf" };
+                if(openFileDialog.ShowDialog() == true && IsValidPdfFile(openFileDialog.FileName))
+                {
+                    LoadedPdfPath = openFileDialog.FileName;
+                }
+            },
+            parameter => true);
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
 
     public RelayCommand<object> CompressFile { get; }
 
-    public double CompressionProgress {
+    public double CompressionProgress
+    {
         get => compressionProgress;
 
-        set {
-            if (compressionProgress != value)
+        set
+        {
+            if(compressionProgress != value)
             {
                 compressionProgress = value;
                 OnPropertyChanged(nameof(CompressionProgress));
@@ -91,31 +104,23 @@ public class Compressor : Control, INotifyPropertyChanged
         }
     }
 
-    public int Dpi {
-        get => (int)GetValue(DpiProperty);
-        set => SetValue(DpiProperty, value);
-    }
+    public int Dpi { get => (int)GetValue(DpiProperty); set => SetValue(DpiProperty, value); }
 
-    public string LoadedPdfPath {
+    public string LoadedPdfPath
+    {
         get => (string)GetValue(LoadedPdfPathProperty);
         set => SetValue(LoadedPdfPathProperty, value);
     }
 
     public RelayCommand<object> OpenFile { get; }
 
-    public int Quality {
-        get => (int)GetValue(QualityProperty);
-        set => SetValue(QualityProperty, value);
-    }
+    public int Quality { get => (int)GetValue(QualityProperty); set => SetValue(QualityProperty, value); }
 
-    public bool UseMozJpeg {
-        get => (bool)GetValue(UseMozJpegProperty);
-        set => SetValue(UseMozJpegProperty, value);
-    }
+    public bool UseMozJpeg { get => (bool)GetValue(UseMozJpegProperty); set => SetValue(UseMozJpegProperty, value); }
 
     public static Bitmap BitmapSourceToBitmap(BitmapSource bitmapsource)
     {
-        if (bitmapsource is null)
+        if(bitmapsource is null)
         {
             throw new ArgumentNullException(nameof(bitmapsource));
         }
@@ -127,7 +132,9 @@ public class Compressor : Control, INotifyPropertyChanged
         src.EndInit();
         src.Freeze();
         Bitmap bitmap = new(src.PixelWidth, src.PixelHeight, PixelFormat.Format32bppArgb);
-        BitmapData data = bitmap.LockBits(new Rectangle(Point.Empty, bitmap.Size), ImageLockMode.WriteOnly,
+        BitmapData data = bitmap.LockBits(
+            new Rectangle(Point.Empty, bitmap.Size),
+            ImageLockMode.WriteOnly,
             PixelFormat.Format32bppArgb);
         src.CopyPixels(Int32Rect.Empty, data.Scan0, data.Height * data.Stride, data.Stride);
         bitmap.UnlockBits(data);
@@ -136,7 +143,7 @@ public class Compressor : Control, INotifyPropertyChanged
 
     public static void DefaultPdfCompression(PdfDocument doc)
     {
-        if (doc is null)
+        if(doc is null)
         {
             throw new ArgumentNullException(nameof(doc));
         }
@@ -150,7 +157,7 @@ public class Compressor : Control, INotifyPropertyChanged
 
     public static bool IsValidPdfFile(string filename)
     {
-        if (File.Exists(filename))
+        if(File.Exists(filename))
         {
             byte[] buffer = new byte[4];
             using FileStream fs = new(filename, FileMode.Open, FileAccess.Read);
@@ -165,94 +172,99 @@ public class Compressor : Control, INotifyPropertyChanged
     public async Task<List<BitmapImage>> AddToListAsync(PdfiumViewer.PdfDocument pdfDoc, int dpi)
     {
         List<BitmapImage> images = new();
-        await Task.Run(() =>
-        {
-            for (int i = 0; i < pdfDoc.PageCount; i++)
+        await Task.Run(
+            () =>
             {
-                int width = (int)(pdfDoc.PageSizes[i].Width / 72 * dpi);
-                int height = (int)(pdfDoc.PageSizes[i].Height / 72 * dpi);
-                using System.Drawing.Image image = pdfDoc.Render(i, width, height, dpi, dpi, false);
-                images.Add(image.ToBitmapImage(ImageFormat.Jpeg));
-                CompressionProgress = (i + 1) / (double)pdfDoc.PageCount;
-            }
-        });
+                for(int i = 0; i < pdfDoc.PageCount; i++)
+                {
+                    int width = (int)(pdfDoc.PageSizes[i].Width / 72 * dpi);
+                    int height = (int)(pdfDoc.PageSizes[i].Height / 72 * dpi);
+                    using System.Drawing.Image image = pdfDoc.Render(i, width, height, dpi, dpi, false);
+                    images.Add(image.ToBitmapImage(ImageFormat.Jpeg));
+                    CompressionProgress = (i + 1) / (double)pdfDoc.PageCount;
+                }
+            });
         return images;
     }
 
-    public async Task<PdfDocument> GeneratePdf(List<BitmapImage> bitmapFrames, bool UseMozJpegEncoding,
-        int jpegquality = 80, int dpi = 200)
+    public async Task<PdfDocument> GeneratePdf(
+        List<BitmapImage> bitmapFrames,
+        bool UseMozJpegEncoding,
+        int jpegquality = 80,
+        int dpi = 200)
     {
-        if (bitmapFrames?.Count == 0)
+        if(bitmapFrames?.Count == 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(bitmapFrames),
+            throw new ArgumentOutOfRangeException(
+                nameof(bitmapFrames),
                 "bitmap frames count should be greater than zero");
         }
 
         using PdfDocument document = new();
         try
         {
-            await Task.Run(() =>
-            {
-                for (int i = 0; i < bitmapFrames.Count; i++)
+            await Task.Run(
+                () =>
                 {
-                    BitmapImage pdfimage = bitmapFrames[i];
-                    PdfPage page = document.AddPage();
-
-                    if (UseMozJpegEncoding)
+                    for(int i = 0; i < bitmapFrames.Count; i++)
                     {
-                        using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
-                        using MozJpeg.MozJpeg mozJpeg = new();
-                        BitmapSource resizedimage = pdfimage.Resize(page.Width, page.Height, 0, dpi, dpi);
-                        byte[] data = mozJpeg.Encode(BitmapSourceToBitmap(resizedimage), jpegquality, false,
-                            TJFlags.ACCURATEDCT | TJFlags.DC_SCAN_OPT2 | TJFlags.TUNE_MS_SSIM);
-                        using MemoryStream ms = new(data);
-                        using XImage xImage = XImage.FromStream(ms);
-                        XSize size = PageSizeConverter.ToSize(page.Size);
-                        resizedimage = null;
-                        data = null;
+                        BitmapImage pdfimage = bitmapFrames[i];
+                        PdfPage page = document.AddPage();
 
-                        if (pdfimage.PixelWidth < pdfimage.PixelHeight)
+                        if(UseMozJpegEncoding)
                         {
-                            gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
-                        }
-                        else
-                        {
-                            page.Orientation = PageOrientation.Landscape;
-                            gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
-                        }
+                            using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
+                            using MozJpeg.MozJpeg mozJpeg = new();
+                            BitmapSource resizedimage = pdfimage.Resize(page.Width, page.Height, 0, dpi, dpi);
+                            byte[] data = mozJpeg.Encode(
+                                BitmapSourceToBitmap(resizedimage),
+                                jpegquality,
+                                false,
+                                TJFlags.ACCURATEDCT | TJFlags.DC_SCAN_OPT2 | TJFlags.TUNE_MS_SSIM);
+                            using MemoryStream ms = new(data);
+                            using XImage xImage = XImage.FromStream(ms);
+                            XSize size = PageSizeConverter.ToSize(page.Size);
+                            resizedimage = null;
+                            data = null;
 
-                        CompressionProgress = (i + 1) / (double)bitmapFrames.Count;
-                    }
-                    else
-                    {
-                        using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
-                        BitmapSource resizedimage = pdfimage.Resize(page.Width, page.Height, 0, dpi, dpi);
-                        using MemoryStream ms =
+                            if(pdfimage.PixelWidth < pdfimage.PixelHeight)
+                            {
+                                gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
+                            } else
+                            {
+                                page.Orientation = PageOrientation.Landscape;
+                                gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
+                            }
+
+                            CompressionProgress = (i + 1) / (double)bitmapFrames.Count;
+                        } else
+                        {
+                            using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
+                            BitmapSource resizedimage = pdfimage.Resize(page.Width, page.Height, 0, dpi, dpi);
+                            using MemoryStream ms =
                             new(resizedimage.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg, jpegquality));
-                        using XImage xImage = XImage.FromStream(ms);
-                        XSize size = PageSizeConverter.ToSize(page.Size);
-                        resizedimage = null;
+                            using XImage xImage = XImage.FromStream(ms);
+                            XSize size = PageSizeConverter.ToSize(page.Size);
+                            resizedimage = null;
 
-                        if (pdfimage.PixelWidth < pdfimage.PixelHeight)
-                        {
-                            gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
-                        }
-                        else
-                        {
-                            page.Orientation = PageOrientation.Landscape;
-                            gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
+                            if(pdfimage.PixelWidth < pdfimage.PixelHeight)
+                            {
+                                gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
+                            } else
+                            {
+                                page.Orientation = PageOrientation.Landscape;
+                                gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
+                            }
+
+                            CompressionProgress = (i + 1) / (double)bitmapFrames.Count;
                         }
 
-                        CompressionProgress = (i + 1) / (double)bitmapFrames.Count;
+                        GC.Collect();
                     }
 
-                    GC.Collect();
-                }
-
-                DefaultPdfCompression(document);
-            });
-        }
-        catch (Exception ex)
+                    DefaultPdfCompression(document);
+                });
+        } catch(Exception ex)
         {
             bitmapFrames = null;
             throw new ArgumentException(nameof(document), ex);
@@ -262,9 +274,7 @@ public class Compressor : Control, INotifyPropertyChanged
     }
 
     protected virtual void OnPropertyChanged(string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
+    { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
 
     private double compressionProgress;
 

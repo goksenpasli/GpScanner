@@ -19,10 +19,7 @@ namespace Tesseract.Internal.InteropDotNet
 
         public bool ThrowOnUnmappableChar;
 
-        public RuntimeDllImportAttribute(string libraryFileName)
-        {
-            LibraryFileName = libraryFileName;
-        }
+        public RuntimeDllImportAttribute(string libraryFileName) { LibraryFileName = libraryFileName; }
 
         public string LibraryFileName { get; }
     }

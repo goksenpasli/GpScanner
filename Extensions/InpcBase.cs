@@ -10,25 +10,18 @@ public abstract class InpcBase : INotifyPropertyChanged, INotifyPropertyChanging
     [field: NonSerialized] public event PropertyChangingEventHandler PropertyChanging;
 
     protected virtual void OnPropertyChanged(string propertyName)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
+    { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
 
     protected virtual void OnPropertyChanged<T>(string propertyName, T oldvalue, T newvalue)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedExtendedEventArgs<T>(propertyName, oldvalue, newvalue));
-    }
+    { PropertyChanged?.Invoke(this, new PropertyChangedExtendedEventArgs<T>(propertyName, oldvalue, newvalue)); }
 
     protected virtual void OnPropertyChanging(string propertyName)
-    {
-        PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
-    }
+    { PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName)); }
 }
 
 public class PropertyChangedExtendedEventArgs<T> : PropertyChangedEventArgs
 {
-    public PropertyChangedExtendedEventArgs(string propertyName, T oldValue, T newValue)
-        : base(propertyName)
+    public PropertyChangedExtendedEventArgs(string propertyName, T oldValue, T newValue) : base(propertyName)
     {
         OldValue = oldValue;
         NewValue = newValue;

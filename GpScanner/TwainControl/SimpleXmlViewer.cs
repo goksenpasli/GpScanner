@@ -12,7 +12,7 @@ namespace TwainControl
 
             XmlViewerControlModel.SetXmlContent(xmlViewerControl, (string)Tag);
 
-            if (maximizePdfWindow == null)
+            if(maximizePdfWindow == null)
             {
                 maximizePdfWindow = new Window
                 {

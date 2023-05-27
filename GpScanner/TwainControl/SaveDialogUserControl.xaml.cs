@@ -9,22 +9,21 @@ using TwainControl.Properties;
 namespace TwainControl;
 
 /// <summary>
-///     Interaction logic for SaveDialogUserControl.xaml
+/// Interaction logic for SaveDialogUserControl.xaml
 /// </summary>
 public partial class SaveDialogUserControl : UserControl, INotifyPropertyChanged
 {
-    public SaveDialogUserControl()
-    {
-        InitializeComponent();
-    }
+    public SaveDialogUserControl() { InitializeComponent(); }
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public BitmapSource PreviewImage {
+    public BitmapSource PreviewImage
+    {
         get => previewImage;
 
-        set {
-            if (previewImage != value)
+        set
+        {
+            if(previewImage != value)
             {
                 previewImage = value;
                 OnPropertyChanged(nameof(PreviewImage));
@@ -33,9 +32,7 @@ public partial class SaveDialogUserControl : UserControl, INotifyPropertyChanged
     }
 
     protected virtual void OnPropertyChanged(string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
+    { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
 
     private BitmapSource previewImage;
 
@@ -43,7 +40,7 @@ public partial class SaveDialogUserControl : UserControl, INotifyPropertyChanged
 
     private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName is "BwThreshold")
+        if(e.PropertyName is "BwThreshold")
         {
             GenerateImage();
         }
@@ -52,15 +49,14 @@ public partial class SaveDialogUserControl : UserControl, INotifyPropertyChanged
     private void GenerateImage()
     {
         PreviewImage = twainCtrl.SaveIndex == 3
-            ? twainCtrl?.SeçiliResim?.Resim?.BitmapSourceToBitmap().ConvertBlackAndWhite(Settings.Default.BwThreshold)
-                .ToBitmapImage(ImageFormat.Jpeg).Resize(512, 512)
+            ? twainCtrl?.SeçiliResim?.Resim?.BitmapSourceToBitmap()
+                .ConvertBlackAndWhite(Settings.Default.BwThreshold)
+                .ToBitmapImage(ImageFormat.Jpeg)
+                .Resize(512, 512)
             : null;
     }
 
-    private void TwainCtrl_PropertyChanged(object sender, PropertyChangedEventArgs e)
-    {
-        GenerateImage();
-    }
+    private void TwainCtrl_PropertyChanged(object sender, PropertyChangedEventArgs e) { GenerateImage(); }
 
     private void UserControl_Loaded(object sender, RoutedEventArgs e)
     {

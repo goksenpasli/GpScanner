@@ -11,15 +11,12 @@ public sealed class FilePathToFileDescriptionConverter : IValueConverter
         try
         {
             return (value as string).GetFileType();
-        }
-        catch (Exception)
+        } catch(Exception)
         {
             return null;
         }
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        throw new NotImplementedException();
-    }
+    { throw new NotImplementedException(); }
 }

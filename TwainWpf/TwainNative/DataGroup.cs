@@ -12,6 +12,5 @@ namespace TwainWpf.TwainNative
         Audio = 0x0004,
 
         DsmMask = 0xFFFF,
-
     }
 }

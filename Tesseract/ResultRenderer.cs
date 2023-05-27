@@ -7,7 +7,7 @@ using Tesseract.Interop;
 namespace Tesseract
 {
     /// <summary>
-    ///     Rendered formats supported by Tesseract.
+    /// Rendered formats supported by Tesseract.
     /// </summary>
     public enum RenderedFormat
     {
@@ -83,7 +83,7 @@ namespace Tesseract
         {
             base.Dispose(disposing);
 
-            if (_fontDirectoryHandle != IntPtr.Zero)
+            if(_fontDirectoryHandle != IntPtr.Zero)
             {
                 Marshal.FreeHGlobal(_fontDirectoryHandle);
                 _fontDirectoryHandle = IntPtr.Zero;
@@ -94,17 +94,18 @@ namespace Tesseract
     }
 
     /// <summary>
-    ///     Represents a native result renderer (e.g. text, pdf, etc).
+    /// Represents a native result renderer (e.g. text, pdf, etc).
     /// </summary>
     /// <remarks>
-    ///     Note that the ResultRenderer is explictly responsible for managing the
-    ///     renderer hierarchy. This gets around a number of difficult issues such
-    ///     as keeping track of what the next renderer is and how to manage the memory.
+    /// Note that the ResultRenderer is explictly responsible for managing the renderer hierarchy. This gets around a
+    /// number of difficult issues such as keeping track of what the next renderer is and how to manage the memory.
     /// </remarks>
     public abstract class ResultRenderer : DisposableBase, IResultRenderer
     {
-        public int PageNumber {
-            get {
+        public int PageNumber
+        {
+            get
+            {
                 VerifyNotDisposed();
 
                 return TessApi.Native.ResultRendererImageNum(Handle);
@@ -112,7 +113,7 @@ namespace Tesseract
         }
 
         /// <summary>
-        ///     Add the page to the current document.
+        /// Add the page to the current document.
         /// </summary>
         /// <param name="page"></param>
         /// <returns><c>True</c> if the page was successfully added to the result renderer; otherwise false.</returns>
@@ -128,7 +129,7 @@ namespace Tesseract
         }
 
         /// <summary>
-        ///     Begins a new document with the specified <paramref name="title" />.
+        /// Begins a new document with the specified <paramref name="title"/>.
         /// </summary>
         /// <param name="title">The (ANSI) title of the new document.</param>
         /// <returns>A handle that when disposed of ends the current document.</returns>
@@ -136,12 +137,13 @@ namespace Tesseract
         {
             Guard.RequireNotNull("title", title);
             VerifyNotDisposed();
-            Guard.Verify(_currentDocumentHandle == null,
+            Guard.Verify(
+                _currentDocumentHandle == null,
                 "Cannot begin document \"{0}\" as another document is currently being processed which must be dispose off first.",
                 title);
 
             IntPtr titlePtr = Marshal.StringToHGlobalAnsi(title);
-            if (TessApi.Native.ResultRendererBeginDocument(Handle, titlePtr) == 0)
+            if(TessApi.Native.ResultRendererBeginDocument(Handle, titlePtr) == 0)
             {
                 Marshal.FreeHGlobal(titlePtr);
 
@@ -152,10 +154,7 @@ namespace Tesseract
             return _currentDocumentHandle;
         }
 
-        protected ResultRenderer()
-        {
-            _handle = new HandleRef(this, IntPtr.Zero);
-        }
+        protected ResultRenderer() { _handle = new HandleRef(this, IntPtr.Zero); }
 
         protected HandleRef Handle => _handle;
 
@@ -163,18 +162,17 @@ namespace Tesseract
         {
             try
             {
-                if (disposing)
+                if(disposing)
                 {
-                    if (_currentDocumentHandle != null)
+                    if(_currentDocumentHandle != null)
                     {
                         _currentDocumentHandle.Dispose();
                         _currentDocumentHandle = null;
                     }
                 }
-            }
-            finally
+            } finally
             {
-                if (_handle.Handle != IntPtr.Zero)
+                if(_handle.Handle != IntPtr.Zero)
                 {
                     TessApi.Native.DeleteResultRenderer(_handle);
                     _handle = new HandleRef(this, IntPtr.Zero);
@@ -183,7 +181,7 @@ namespace Tesseract
         }
 
         /// <summary>
-        ///     Initialise the render to use the specified native result renderer.
+        /// Initialise the render to use the specified native result renderer.
         /// </summary>
         /// <param name="handle"></param>
         protected void Initialise(IntPtr handle)
@@ -199,7 +197,7 @@ namespace Tesseract
         private HandleRef _handle;
 
         /// <summary>
-        ///     Ensures the renderer's EndDocument when disposed off.
+        /// Ensures the renderer's EndDocument when disposed off.
         /// </summary>
         private class EndDocumentOnDispose : DisposableBase
         {
@@ -213,18 +211,18 @@ namespace Tesseract
             {
                 try
                 {
-                    if (disposing)
+                    if(disposing)
                     {
-                        Guard.Verify(_renderer._currentDocumentHandle == this,
+                        Guard.Verify(
+                            _renderer._currentDocumentHandle == this,
                             "Expected the Result Render's active document to be this document.");
 
                         _ = TessApi.Native.ResultRendererEndDocument(_renderer._handle);
                         _renderer._currentDocumentHandle = null;
                     }
-                }
-                finally
+                } finally
                 {
-                    if (_titlePtr != IntPtr.Zero)
+                    if(_titlePtr != IntPtr.Zero)
                     {
                         Marshal.FreeHGlobal(_titlePtr);
                         _titlePtr = IntPtr.Zero;
@@ -240,80 +238,72 @@ namespace Tesseract
         #region Factory Methods
 
         /// <summary>
-        ///     Creates a <see cref="IResultRenderer">result renderer</see> that render that generates an Alto
-        ///     file from tesseract's output.
+        /// Creates a <see cref="IResultRenderer">result renderer</see> that render that generates an Alto file from
+        /// tesseract's output.
         /// </summary>
         /// <param name="outputFilename">The path to the Alto file to be created without the file extension.</param>
         /// <returns></returns>
         public static IResultRenderer CreateAltoRenderer(string outputFilename)
-        {
-            return new AltoResultRenderer(outputFilename);
-        }
+        { return new AltoResultRenderer(outputFilename); }
 
         /// <summary>
-        ///     Creates a <see cref="IResultRenderer">result renderer</see> that render that generates a box text file from
-        ///     tesseract's output.
+        /// Creates a <see cref="IResultRenderer">result renderer</see> that render that generates a box text file from
+        /// tesseract's output.
         /// </summary>
         /// <param name="outputFilename">The path to the box file to be created without the file extension.</param>
         /// <returns></returns>
         public static IResultRenderer CreateBoxRenderer(string outputFilename)
-        {
-            return new BoxResultRenderer(outputFilename);
-        }
+        { return new BoxResultRenderer(outputFilename); }
 
         /// <summary>
-        ///     Creates a <see cref="IResultRenderer">result renderer</see> that render that generates a HOCR
-        ///     file from tesseract's output.
+        /// Creates a <see cref="IResultRenderer">result renderer</see> that render that generates a HOCR file from
+        /// tesseract's output.
         /// </summary>
         /// <param name="outputFilename">The path to the hocr file to be generated without the file extension.</param>
         /// <param name="fontInfo">Determines if the generated HOCR file includes font information or not.</param>
         /// <returns></returns>
         public static IResultRenderer CreateHOcrRenderer(string outputFilename, bool fontInfo = false)
-        {
-            return new HOcrResultRenderer(outputFilename, fontInfo);
-        }
+        { return new HOcrResultRenderer(outputFilename, fontInfo); }
 
         /// <summary>
-        ///     Creates a <see cref="IResultRenderer">result renderer</see> that render that generates a unlv
-        ///     file from tesseract's output.
+        /// Creates a <see cref="IResultRenderer">result renderer</see> that render that generates a unlv file from
+        /// tesseract's output.
         /// </summary>
         /// <param name="outputFilename">The path to the unlv file to be created without the file extension.</param>
         /// <returns></returns>
         public static IResultRenderer CreateLSTMBoxRenderer(string outputFilename)
-        {
-            return new LSTMBoxResultRenderer(outputFilename);
-        }
+        { return new LSTMBoxResultRenderer(outputFilename); }
 
         /// <summary>
-        ///     Creates a <see cref="IResultRenderer">result renderer</see> that render that generates a searchable
-        ///     pdf file from tesseract's output.
+        /// Creates a <see cref="IResultRenderer">result renderer</see> that render that generates a searchable pdf file
+        /// from tesseract's output.
         /// </summary>
         /// <param name="outputFilename">The filename of the pdf file to be generated without the file extension.</param>
         /// <param name="fontDirectory">The directory containing the pdf font data, normally same as your tessdata directory.</param>
         /// <param name="textonly">skip images if set</param>
         /// <returns></returns>
         public static IResultRenderer CreatePdfRenderer(string outputFilename, string fontDirectory, bool textonly)
-        {
-            return new PdfResultRenderer(outputFilename, fontDirectory, textonly);
-        }
+        { return new PdfResultRenderer(outputFilename, fontDirectory, textonly); }
 
         /// <summary>
-        ///     Creates renderers for specified output formats.
+        /// Creates renderers for specified output formats.
         /// </summary>
         /// <param name="outputbase"></param>
         /// <param name="dataPath">The directory containing the pdf font data, normally same as your tessdata directory.</param>
         /// <param name="outputFormats"></param>
         /// <returns></returns>
-        public static IEnumerable<IResultRenderer> CreateRenderers(string outputbase, string dataPath,
+        public static IEnumerable<IResultRenderer> CreateRenderers(
+            string outputbase,
+            string dataPath,
             List<RenderedFormat> outputFormats)
         {
             List<IResultRenderer> renderers = new List<IResultRenderer>();
 
-            foreach (RenderedFormat format in outputFormats)
+            foreach(RenderedFormat format in outputFormats)
             {
                 IResultRenderer renderer = null;
 
-                switch (format)
+                switch(format)
                 {
                     case RenderedFormat.TEXT:
                         renderer = CreateTextRenderer(outputbase);
@@ -361,49 +351,40 @@ namespace Tesseract
         }
 
         /// <summary>
-        ///     Creates a <see cref="IResultRenderer">result renderer</see> that render that generates UTF-8 encoded text
-        ///     file from tesseract's output.
+        /// Creates a <see cref="IResultRenderer">result renderer</see> that render that generates UTF-8 encoded text
+        /// file from tesseract's output.
         /// </summary>
         /// <param name="outputFilename">The path to the text file to be generated without the file extension.</param>
         /// <returns></returns>
         public static IResultRenderer CreateTextRenderer(string outputFilename)
-        {
-            return new TextResultRenderer(outputFilename);
-        }
+        { return new TextResultRenderer(outputFilename); }
 
         /// <summary>
-        ///     Creates a <see cref="IResultRenderer">result renderer</see> that render that generates a Tsv
-        ///     file from tesseract's output.
+        /// Creates a <see cref="IResultRenderer">result renderer</see> that render that generates a Tsv file from
+        /// tesseract's output.
         /// </summary>
         /// <param name="outputFilename">The path to the Tsv file to be created without the file extension.</param>
         /// <returns></returns>
         public static IResultRenderer CreateTsvRenderer(string outputFilename)
-        {
-            return new TsvResultRenderer(outputFilename);
-        }
+        { return new TsvResultRenderer(outputFilename); }
 
         /// <summary>
-        ///     Creates a <see cref="IResultRenderer">result renderer</see> that render that generates a unlv
-        ///     file from tesseract's output.
+        /// Creates a <see cref="IResultRenderer">result renderer</see> that render that generates a unlv file from
+        /// tesseract's output.
         /// </summary>
         /// <param name="outputFilename">The path to the unlv file to be created without the file extension.</param>
         /// <returns></returns>
         public static IResultRenderer CreateUnlvRenderer(string outputFilename)
-        {
-            return new UnlvResultRenderer(outputFilename);
-        }
+        { return new UnlvResultRenderer(outputFilename); }
 
         /// <summary>
-        ///     Creates a <see cref="IResultRenderer">result renderer</see> that render that generates a unlv
-        ///     file from tesseract's output.
+        /// Creates a <see cref="IResultRenderer">result renderer</see> that render that generates a unlv file from
+        /// tesseract's output.
         /// </summary>
         /// <param name="outputFilename">The path to the unlv file to be created without the file extension.</param>
         /// <returns></returns>
         public static IResultRenderer CreateWordStrBoxRenderer(string outputFilename)
-        {
-            return new WordStrBoxResultRenderer(outputFilename);
-        }
-
+        { return new WordStrBoxResultRenderer(outputFilename); }
         #endregion Factory Methods
     }
 

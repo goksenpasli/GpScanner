@@ -1,7 +1,7 @@
 ﻿namespace Tesseract
 {
     /// <summary>
-    ///     Description of BitmapHelper.
+    /// Description of BitmapHelper.
     /// </summary>
     public static unsafe class BitmapHelper
     {
@@ -12,9 +12,7 @@
 #endif
 
         public static byte GetDataBit(byte* data, int index)
-        {
-            return (byte)((*(data + (index >> 3)) >> (index & 0x7)) & 1);
-        }
+        { return (byte)((*(data + (index >> 3)) >> (index & 0x7)) & 1); }
 
 #if Net45 || NETSTANDARD
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -23,8 +21,7 @@
         public static void SetDataBit(byte* data, int index, byte value)
         {
             byte* wordPtr = data + (index >> 3);
-            *wordPtr &= (byte)~(0x80 >>
-                                (index & 7));
+            *wordPtr &= (byte)~(0x80 >> (index & 7));
             *wordPtr |= (byte)((value & 1) << (7 - (index & 7)));
         }
 
@@ -33,9 +30,7 @@
 #endif
 
         public static byte GetDataQBit(byte* data, int index)
-        {
-            return (byte)((*(data + (index >> 1)) >> (4 * (index & 1))) & 0xF);
-        }
+        { return (byte)((*(data + (index >> 1)) >> (4 * (index & 1))) & 0xF); }
 
 #if Net45 || NETSTANDARD
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -44,9 +39,7 @@
         public static void SetDataQBit(byte* data, int index, byte value)
         {
             byte* wordPtr = data + (index >> 1);
-            *wordPtr &= (byte)~(0xF0 >>
-                                (4 * (index &
-                                      1)));
+            *wordPtr &= (byte)~(0xF0 >> (4 * (index & 1)));
             *wordPtr |= (byte)((value & 0x0F) << (4 - (4 * (index & 1))));
         }
 
@@ -54,56 +47,37 @@
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static byte GetDataByte(byte* data, int index)
-        {
-            return *(data + index);
-        }
+        public static byte GetDataByte(byte* data, int index) { return *(data + index); }
 
 #if Net45 || NETSTANDARD
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static void SetDataByte(byte* data, int index, byte value)
-        {
-            *(data + index) = value;
-        }
+        public static void SetDataByte(byte* data, int index, byte value) { *(data + index) = value; }
 
 #if Net45 || NETSTANDARD
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static ushort GetDataUInt16(ushort* data, int index)
-        {
-            return *(data + index);
-        }
+        public static ushort GetDataUInt16(ushort* data, int index) { return *(data + index); }
 
 #if Net45 || NETSTANDARD
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static void SetDataUInt16(ushort* data, int index, ushort value)
-        {
-            *(data + index) = value;
-        }
+        public static void SetDataUInt16(ushort* data, int index, ushort value) { *(data + index) = value; }
 
 #if Net45 || NETSTANDARD
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static uint GetDataUInt32(uint* data, int index)
-        {
-            return *(data + index);
-        }
+        public static uint GetDataUInt32(uint* data, int index) { return *(data + index); }
 
 #if Net45 || NETSTANDARD
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static void SetDataUInt32(uint* data, int index, uint value)
-        {
-            *(data + index) = value;
-        }
-
+        public static void SetDataUInt32(uint* data, int index, uint value) { *(data + index) = value; }
         #endregion Bitmap Data Access
 
         #region PixelFormat conversion
@@ -119,9 +93,9 @@
             uint blue = val & 0x1F;
 
             return (((red << 3) | (red >> 2)) << 24) |
-                   (((green << 3) | (green >> 2)) << 16) |
-                   (((blue << 3) | (blue >> 2)) << 8) |
-                   0xFF;
+                (((green << 3) | (green >> 2)) << 16) |
+                (((blue << 3) | (blue >> 2)) << 8) |
+                0xFF;
         }
 
 #if Net45 || NETSTANDARD
@@ -135,9 +109,9 @@
             uint blue = val & 0x1F;
 
             return (((red << 3) | (red >> 2)) << 24) |
-                   (((green << 2) | (green >> 4)) << 16) |
-                   (((blue << 3) | (blue >> 2)) << 8) |
-                   0xFF;
+                (((green << 2) | (green >> 4)) << 16) |
+                (((blue << 3) | (blue >> 2)) << 8) |
+                0xFF;
         }
 
 #if Net45 || NETSTANDARD
@@ -152,9 +126,9 @@
             uint blue = val & 0x1F;
 
             return (((red << 3) | (red >> 2)) << 24) |
-                   (((green << 3) | (green >> 2)) << 16) |
-                   (((blue << 3) | (blue >> 2)) << 8) |
-                   ((alpha << 8) - alpha);
+                (((green << 3) | (green >> 2)) << 16) |
+                (((blue << 3) | (blue >> 2)) << 8) |
+                ((alpha << 8) - alpha);
         }
 
 #if Net45 || NETSTANDARD
@@ -162,13 +136,7 @@
 #endif
 
         public static uint EncodeAsRGBA(byte red, byte green, byte blue, byte alpha)
-        {
-            return (uint)((red << 24) |
-                          (green << 16) |
-                          (blue << 8) |
-                          alpha);
-        }
-
+        { return (uint)((red << 24) | (green << 16) | (blue << 8) | alpha); }
         #endregion PixelFormat conversion
     }
 }

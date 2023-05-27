@@ -9,12 +9,16 @@ namespace Extensions;
 
 public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 {
-    public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register("Description",
-        typeof(string), typeof(ButtonedTextBox), new PropertyMetadata(string.Empty));
+    public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register(
+        "Description",
+        typeof(string),
+        typeof(ButtonedTextBox),
+        new PropertyMetadata(string.Empty));
 
     static ButtonedTextBox()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(typeof(ButtonedTextBox),
+        DefaultStyleKeyProperty.OverrideMetadata(
+            typeof(ButtonedTextBox),
             new FrameworkPropertyMetadata(typeof(ButtonedTextBox)));
     }
 
@@ -30,11 +34,13 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     public new ICommand Copy { get; } = new RoutedCommand();
 
-    public Visibility CopyButtonVisibility {
+    public Visibility CopyButtonVisibility
+    {
         get => copyButtonVisibility;
 
-        set {
-            if (copyButtonVisibility != value)
+        set
+        {
+            if(copyButtonVisibility != value)
             {
                 copyButtonVisibility = value;
                 OnPropertyChanged(nameof(CopyButtonVisibility));
@@ -42,18 +48,21 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         }
     }
 
-    public string Description {
+    public string Description
+    {
         get => (string)GetValue(DescriptionProperty);
         set => SetValue(DescriptionProperty, value);
     }
 
     public ICommand Open { get; } = new RoutedCommand();
 
-    public Visibility OpenButtonVisibility {
+    public Visibility OpenButtonVisibility
+    {
         get => openButtonVisibility;
 
-        set {
-            if (openButtonVisibility != value)
+        set
+        {
+            if(openButtonVisibility != value)
             {
                 openButtonVisibility = value;
                 OnPropertyChanged(nameof(OpenButtonVisibility));
@@ -63,11 +72,13 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     public new ICommand Paste { get; } = new RoutedCommand();
 
-    public Visibility PasteButtonVisibility {
+    public Visibility PasteButtonVisibility
+    {
         get => pasteButtonVisibility;
 
-        set {
-            if (pasteButtonVisibility != value)
+        set
+        {
+            if(pasteButtonVisibility != value)
             {
                 pasteButtonVisibility = value;
                 OnPropertyChanged(nameof(PasteButtonVisibility));
@@ -77,11 +88,13 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     public ICommand Reset { get; } = new RoutedCommand();
 
-    public Visibility ResetButtonVisibility {
+    public Visibility ResetButtonVisibility
+    {
         get => resetButtonVisibility;
 
-        set {
-            if (resetButtonVisibility != value)
+        set
+        {
+            if(resetButtonVisibility != value)
             {
                 resetButtonVisibility = value;
                 OnPropertyChanged(nameof(ResetButtonVisibility));
@@ -90,9 +103,7 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
     }
 
     protected virtual void OnPropertyChanged(string propertyName)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
+    { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
 
     private Visibility copyButtonVisibility = Visibility.Visible;
 
@@ -104,24 +115,20 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     private void CanExecute(object sender, CanExecuteRoutedEventArgs e)
     {
-        if (!string.IsNullOrWhiteSpace(Text))
+        if(!string.IsNullOrWhiteSpace(Text))
         {
             e.CanExecute = true;
         }
     }
 
-    private void CopyCommand(object sender, ExecutedRoutedEventArgs e)
-    {
-        Clipboard.SetText(Text);
-    }
+    private void CopyCommand(object sender, ExecutedRoutedEventArgs e) { Clipboard.SetText(Text); }
 
     private void OpenCommand(object sender, ExecutedRoutedEventArgs e)
     {
         try
         {
             _ = Process.Start(Text);
-        }
-        catch (Exception ex)
+        } catch(Exception ex)
         {
             _ = MessageBox.Show(ex.Message);
         }
@@ -129,19 +136,13 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     private void PasteCanExecute(object sender, CanExecuteRoutedEventArgs e)
     {
-        if (Clipboard.ContainsText() && !IsReadOnly)
+        if(Clipboard.ContainsText() && !IsReadOnly)
         {
             e.CanExecute = true;
         }
     }
 
-    private void PasteCommand(object sender, ExecutedRoutedEventArgs e)
-    {
-        Text = Clipboard.GetText();
-    }
+    private void PasteCommand(object sender, ExecutedRoutedEventArgs e) { Text = Clipboard.GetText(); }
 
-    private void ResetCommand(object sender, ExecutedRoutedEventArgs e)
-    {
-        Text = string.Empty;
-    }
+    private void ResetCommand(object sender, ExecutedRoutedEventArgs e) { Text = string.Empty; }
 }

@@ -4,11 +4,13 @@ namespace GpScanner.ViewModel;
 
 public class BatchTxtOcr : InpcBase
 {
-    public string FilePath {
+    public string FilePath
+    {
         get => filePath;
 
-        set {
-            if (filePath != value)
+        set
+        {
+            if(filePath != value)
             {
                 filePath = value;
                 OnPropertyChanged(nameof(FilePath));
@@ -16,11 +18,13 @@ public class BatchTxtOcr : InpcBase
         }
     }
 
-    public double ProgressValue {
+    public double ProgressValue
+    {
         get => progressValue;
 
-        set {
-            if (progressValue != value)
+        set
+        {
+            if(progressValue != value)
             {
                 progressValue = value;
                 OnPropertyChanged(nameof(ProgressValue));

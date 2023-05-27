@@ -16,18 +16,21 @@ namespace DvdBurner
 {
     public class Burner : Control, INotifyPropertyChanged
     {
-        public static readonly DependencyProperty BurnDirectoryProperty = DependencyProperty.Register("BurnDirectory", typeof(string), typeof(Burner), new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty BurnDirectoryProperty = DependencyProperty.Register(
+            "BurnDirectory",
+            typeof(string),
+            typeof(Burner),
+            new PropertyMetadata(string.Empty));
 
         static Burner()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(Burner), new FrameworkPropertyMetadata(typeof(Burner)));
-        }
+        { DefaultStyleKeyProperty.OverrideMetadata(typeof(Burner), new FrameworkPropertyMetadata(typeof(Burner))); }
 
         public Burner()
         {
-            BurnDvd = new RelayCommand<object>(parameter =>
+            BurnDvd = new RelayCommand<object>(
+                parameter =>
                 {
-                    if (Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
+                    if(Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
                     {
                         _ = MessageBox.Show(WarnText);
                         return;
@@ -39,119 +42,122 @@ namespace DvdBurner
                     dynamic Stream;
                     Index = 0;
                     FolderPath = BurnDirectory;
-                    Burntask = Task.Run(() =>
-                    {
-                        try
+                    Burntask = Task.Run(
+                        () =>
                         {
-                            dynamic g_DiscMaster = new MsftDiscMaster2();
-                            if (g_DiscMaster.Count > 0)
+                            try
                             {
-                                dynamic uniqueId;
-                                recorder = new MsftDiscRecorder2();
-                                uniqueId = g_DiscMaster.Item(Index);
-                                recorder.InitializeDiscRecorder(uniqueId);
+                                dynamic g_DiscMaster = new MsftDiscMaster2();
+                                if(g_DiscMaster.Count > 0)
+                                {
+                                    dynamic uniqueId;
+                                    recorder = new MsftDiscRecorder2();
+                                    uniqueId = g_DiscMaster.Item(Index);
+                                    recorder.InitializeDiscRecorder(uniqueId);
 
-                                dynamic FSI;
-                                dynamic Dir;
-                                dynamic dataWriter;
+                                    dynamic FSI;
+                                    dynamic Dir;
+                                    dynamic dataWriter;
 
-                                FSI = new MsftFileSystemImage();
-                                Dir = FSI.Root;
+                                    FSI = new MsftFileSystemImage();
+                                    Dir = FSI.Root;
 
-                                dataWriter = new MsftDiscFormat2Data();
-                                dataWriter.Recorder = recorder;
-                                dataWriter.ClientName = AppName;
-                                FSI.VolumeName = CdLabel;
-                                FSI.ChooseImageDefaults(recorder);
-                                dataWriter.Update += new DDiscFormat2DataEvents_UpdateEventHandler(DataWriter_Update);
-                                Dir?.AddTree(FolderPath, false);
-                                dynamic result = FSI.CreateResultImage();
-                                Stream = result?.ImageStream;
-                                dataWriter.ForceOverwrite = true;
-                                dataWriter.Write(Stream);
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            ActionText = ex.Message;
-                        }
-                        finally
-                        {
-                            if (Eject)
+                                    dataWriter = new MsftDiscFormat2Data();
+                                    dataWriter.Recorder = recorder;
+                                    dataWriter.ClientName = AppName;
+                                    FSI.VolumeName = CdLabel;
+                                    FSI.ChooseImageDefaults(recorder);
+                                    dataWriter.Update += new DDiscFormat2DataEvents_UpdateEventHandler(
+                                        DataWriter_Update);
+                                    Dir?.AddTree(FolderPath, false);
+                                    dynamic result = FSI.CreateResultImage();
+                                    Stream = result?.ImageStream;
+                                    dataWriter.ForceOverwrite = true;
+                                    dataWriter.Write(Stream);
+                                }
+                            } catch(Exception ex)
                             {
-                                recorder?.EjectMedia();
+                                ActionText = ex.Message;
+                            } finally
+                            {
+                                if(Eject)
+                                {
+                                    recorder?.EjectMedia();
+                                }
                             }
-                        }
-                    });
+                        });
                 },
-                parameter => Directory.Exists(BurnDirectory) && !string.IsNullOrWhiteSpace(CdLabel) &&
-                             Directory.EnumerateFiles(BurnDirectory)?.Any() == true);
+                parameter => Directory.Exists(BurnDirectory) &&
+                    !string.IsNullOrWhiteSpace(CdLabel) &&
+                    Directory.EnumerateFiles(BurnDirectory)?.Any() == true);
 
-            SelectBurnDir = new RelayCommand<object>(parameter =>
-            {
-                FolderBrowserDialog dialog = new FolderBrowserDialog
+            SelectBurnDir = new RelayCommand<object>(
+                parameter =>
                 {
-                    Description = "Yazılacak Klasörü Seçin."
-                };
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                    BurnDirectory = dialog.SelectedPath;
-                }
-            }, parameter => true);
-
-            EraseDvd = new RelayCommand<object>(parameter =>
-            {
-                if (Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
-                {
-                    _ = MessageBox.Show(WarnText);
-                    return;
-                }
-
-                Erasetask = Task.Run(() =>
-                {
-                    MsftDiscRecorder2 recorder = null;
-                    try
+                    FolderBrowserDialog dialog = new FolderBrowserDialog { Description = "Yazılacak Klasörü Seçin." };
+                    if(dialog.ShowDialog() == DialogResult.OK)
                     {
-                        dynamic g_DiscMaster = new MsftDiscMaster2();
-                        dynamic uniqueId;
-                        dynamic Index = 0;
-                        MsftDiscFormat2Erase discFormatErase = null;
-                        if (g_DiscMaster.Count > 0)
+                        BurnDirectory = dialog.SelectedPath;
+                    }
+                },
+                parameter => true);
+
+            EraseDvd = new RelayCommand<object>(
+                parameter =>
+                {
+                    if(Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
+                    {
+                        _ = MessageBox.Show(WarnText);
+                        return;
+                    }
+
+                    Erasetask = Task.Run(
+                        () =>
                         {
-                            recorder = new MsftDiscRecorder2();
-                            uniqueId = g_DiscMaster.Item(Index);
-                            recorder.InitializeDiscRecorder(uniqueId);
-                            discFormatErase = new MsftDiscFormat2Erase
+                            MsftDiscRecorder2 recorder = null;
+                            try
                             {
-                                Recorder = recorder,
-                                ClientName = AppName,
-                                FullErase = false
-                            };
-                            discFormatErase.EraseMedia();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        ActionText = ex.Message;
-                    }
-                    finally
-                    {
-                        if (Eject)
-                        {
-                            recorder?.EjectMedia();
-                        }
-                    }
-                });
-            }, parameter => true);
+                                dynamic g_DiscMaster = new MsftDiscMaster2();
+                                dynamic uniqueId;
+                                dynamic Index = 0;
+                                MsftDiscFormat2Erase discFormatErase = null;
+                                if(g_DiscMaster.Count > 0)
+                                {
+                                    recorder = new MsftDiscRecorder2();
+                                    uniqueId = g_DiscMaster.Item(Index);
+                                    recorder.InitializeDiscRecorder(uniqueId);
+                                    discFormatErase = new MsftDiscFormat2Erase
+                                    {
+                                        Recorder = recorder,
+                                        ClientName = AppName,
+                                        FullErase = false
+                                    };
+                                    discFormatErase.EraseMedia();
+                                }
+                            } catch(Exception ex)
+                            {
+                                ActionText = ex.Message;
+                            } finally
+                            {
+                                if(Eject)
+                                {
+                                    recorder?.EjectMedia();
+                                }
+                            }
+                        });
+                },
+                parameter => true);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public string ActionText {
+        public string ActionText
+        {
             get => actionText;
 
-            set {
-                if (actionText != value)
+            set
+            {
+                if(actionText != value)
                 {
                     actionText = value;
                     OnPropertyChanged(nameof(ActionText));
@@ -159,18 +165,21 @@ namespace DvdBurner
             }
         }
 
-        public string BurnDirectory {
+        public string BurnDirectory
+        {
             get => (string)GetValue(BurnDirectoryProperty);
             set => SetValue(BurnDirectoryProperty, value);
         }
 
         public RelayCommand<object> BurnDvd { get; }
 
-        public string CdLabel {
+        public string CdLabel
+        {
             get => cdLabel;
 
-            set {
-                if (cdLabel != value)
+            set
+            {
+                if(cdLabel != value)
                 {
                     cdLabel = value;
                     OnPropertyChanged(nameof(CdLabel));
@@ -178,11 +187,13 @@ namespace DvdBurner
             }
         }
 
-        public bool Eject {
+        public bool Eject
+        {
             get => eject;
 
-            set {
-                if (eject != value)
+            set
+            {
+                if(eject != value)
                 {
                     eject = value;
                     OnPropertyChanged(nameof(Eject));
@@ -192,11 +203,13 @@ namespace DvdBurner
 
         public RelayCommand<object> EraseDvd { get; }
 
-        public bool ProgressIndeterminate {
+        public bool ProgressIndeterminate
+        {
             get => progressIndeterminate;
 
-            set {
-                if (progressIndeterminate != value)
+            set
+            {
+                if(progressIndeterminate != value)
                 {
                     progressIndeterminate = value;
                     OnPropertyChanged(nameof(ProgressIndeterminate));
@@ -204,11 +217,13 @@ namespace DvdBurner
             }
         }
 
-        public double ProgressValue {
+        public double ProgressValue
+        {
             get => progressValue;
 
-            set {
-                if (progressValue != value)
+            set
+            {
+                if(progressValue != value)
                 {
                     progressValue = value;
                     OnPropertyChanged(nameof(ProgressValue));
@@ -219,9 +234,7 @@ namespace DvdBurner
         public RelayCommand<object> SelectBurnDir { get; }
 
         protected virtual void OnPropertyChanged(string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
 
         private const string WarnText = "İşlem Sürüyor. Bitmesini Bekleyin.";
 
@@ -245,7 +258,7 @@ namespace DvdBurner
         {
             try
             {
-                switch ((int)progress.CurrentAction)
+                switch((int)progress.CurrentAction)
                 {
                     case (int)IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_CALIBRATING_POWER:
                         ActionText = "Kalibrasyon Gücü (OPC).";
@@ -296,8 +309,7 @@ namespace DvdBurner
                         ActionText = "Bilinmeyen İşlem." + progress?.CurrentAction.ToString();
                         break;
                 }
-            }
-            catch (Exception ex)
+            } catch(Exception ex)
             {
                 ActionText = $"Hata{ex.Message}";
             }

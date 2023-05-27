@@ -19,7 +19,7 @@ namespace TwainControl
             imageViewer.ImageFilePath = (e.OriginalSource as Image).DataContext as string;
             imageViewer.DataContext = Tag;
 
-            if (maximizePdfWindow == null)
+            if(maximizePdfWindow == null)
             {
                 maximizePdfWindow = new Window
                 {
