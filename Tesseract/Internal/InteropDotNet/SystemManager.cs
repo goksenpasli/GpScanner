@@ -4,8 +4,6 @@ namespace Tesseract.Internal.InteropDotNet
 {
     internal static class SystemManager
     {
-        public static string GetPlatformName() { return IntPtr.Size == sizeof(int) ? "x86" : "x64"; }
-
         public static OperatingSystem GetOperatingSystem()
         {
 #if NETCORE || NETSTANDARD
@@ -38,6 +36,8 @@ namespace Tesseract.Internal.InteropDotNet
             }
 #endif
         }
+
+        public static string GetPlatformName() { return IntPtr.Size == sizeof(int) ? "x86" : "x64"; }
     }
 
     internal enum OperatingSystem

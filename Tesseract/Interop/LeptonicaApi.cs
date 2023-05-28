@@ -491,6 +491,14 @@ namespace Tesseract.Interop
 
     internal static class LeptonicaApi
     {
+        public static void Initialize()
+        {
+            if(native == null)
+            {
+                native = InteropRuntimeImplementer.CreateInstance<ILeptonicaApiSignatures>();
+            }
+        }
+
         public static ILeptonicaApiSignatures Native
         {
             get
@@ -501,14 +509,6 @@ namespace Tesseract.Interop
                 }
 
                 return native;
-            }
-        }
-
-        public static void Initialize()
-        {
-            if(native == null)
-            {
-                native = InteropRuntimeImplementer.CreateInstance<ILeptonicaApiSignatures>();
             }
         }
 

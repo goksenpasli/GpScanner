@@ -51,6 +51,14 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
 
     public event PropertyChangedEventHandler PropertyChanged;
 
+    public void EncodeBitmapImage(Stream ms)
+    {
+        JpegBitmapEncoder encoder = new();
+        encoder.Frames.Add(BitmapFrame.Create(new TransformedBitmap(Device.BitmapSource, new RotateTransform(Rotation))));
+        encoder.QualityLevel = 90;
+        encoder.Save(ms);
+    }
+
     public bool DetectQRCode
     {
         get => detectQRCode;
@@ -143,27 +151,7 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
         }
     }
 
-    public void EncodeBitmapImage(Stream ms)
-    {
-        JpegBitmapEncoder encoder = new();
-        encoder.Frames.Add(BitmapFrame.Create(new TransformedBitmap(Device.BitmapSource, new RotateTransform(Rotation))));
-        encoder.QualityLevel = 90;
-        encoder.Save(ms);
-    }
-
     protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
-
-    private bool detectQRCode;
-
-    private CapDevice device;
-
-    private FilterInfo[] liste = CapDevice.DeviceMonikers;
-
-    private byte[] resimData;
-
-    private double rotation = 180;
-
-    private FilterInfo seçiliKamera;
 
     private void CameraUserControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
@@ -178,4 +166,16 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
         Device?.Stop();
         DetectQRCode = false;
     }
+
+    private bool detectQRCode;
+
+    private CapDevice device;
+
+    private FilterInfo[] liste = CapDevice.DeviceMonikers;
+
+    private byte[] resimData;
+
+    private double rotation = 180;
+
+    private FilterInfo seçiliKamera;
 }

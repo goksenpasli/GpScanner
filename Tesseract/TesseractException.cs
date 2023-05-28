@@ -9,6 +9,9 @@ namespace Tesseract
     [Serializable]
     public class TesseractException : Exception, ISerializable
     {
+        protected TesseractException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
         public TesseractException()
         {
         }
@@ -18,10 +21,6 @@ namespace Tesseract
         }
 
         public TesseractException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected TesseractException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

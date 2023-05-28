@@ -8,54 +8,6 @@ namespace Extensions;
 
 public class MaskedTextBox : TextBox
 {
-    public static readonly DependencyProperty ClearButtonVisibilityProperty =
-        DependencyProperty.Register("ClearButtonVisibility", typeof(Visibility), typeof(MaskedTextBox), new PropertyMetadata(Visibility.Collapsed));
-
-    public static readonly DependencyProperty IncludeLiteralsProperty = DependencyProperty.Register(
-        "IncludeLiterals",
-        typeof(bool),
-        typeof(MaskedTextBox),
-        new UIPropertyMetadata(true, OnIncludeLiteralsPropertyChanged));
-
-    public static readonly DependencyProperty IncludePromptProperty = DependencyProperty.Register(
-        "IncludePrompt",
-        typeof(bool),
-        typeof(MaskedTextBox),
-        new UIPropertyMetadata(false, OnIncludePromptPropertyChanged));
-
-    public static readonly DependencyProperty MaskProperty = DependencyProperty.Register(
-        "Mask",
-        typeof(string),
-        typeof(MaskedTextBox),
-        new UIPropertyMetadata("<>", OnMaskPropertyChanged));
-
-    public static readonly DependencyProperty PromptCharProperty = DependencyProperty.Register(
-        "PromptChar",
-        typeof(char),
-        typeof(MaskedTextBox),
-        new UIPropertyMetadata('_', OnPromptCharChanged));
-
-    public static readonly DependencyProperty SelectAllOnGotFocusProperty =
-        DependencyProperty.Register("SelectAllOnGotFocus", typeof(bool), typeof(MaskedTextBox), new PropertyMetadata(false));
-
-    public static readonly RoutedEvent ValueChangedEvent = EventManager.RegisterRoutedEvent(
-        "ValueChanged",
-        RoutingStrategy.Bubble,
-        typeof(RoutedPropertyChangedEventHandler<object>),
-        typeof(MaskedTextBox));
-
-    public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-        "Value",
-        typeof(object),
-        typeof(MaskedTextBox),
-        new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged));
-
-    public static readonly DependencyProperty ValueTypeProperty = DependencyProperty.Register(
-        "ValueType",
-        typeof(Type),
-        typeof(MaskedTextBox),
-        new UIPropertyMetadata(typeof(string), OnValueTypeChanged));
-
     static MaskedTextBox() { TextProperty.OverrideMetadata(typeof(MaskedTextBox), new FrameworkPropertyMetadata(OnTextChanged)); }
 
     public MaskedTextBox()
@@ -71,11 +23,14 @@ public class MaskedTextBox : TextBox
         remove => RemoveHandler(ValueChangedEvent, value);
     }
 
-    public Visibility ClearButtonVisibility
+    public override void OnApplyTemplate()
     {
-        get => (Visibility)GetValue(ClearButtonVisibilityProperty);
-        set => SetValue(ClearButtonVisibilityProperty, value);
+        base.OnApplyTemplate();
+        UpdateMaskProvider(Mask);
+        UpdateText(0);
     }
+
+    public Visibility ClearButtonVisibility { get => (Visibility)GetValue(ClearButtonVisibilityProperty); set => SetValue(ClearButtonVisibilityProperty, value); }
 
     public bool IncludeLiterals { get => (bool)GetValue(IncludeLiteralsProperty); set => SetValue(IncludeLiteralsProperty, value); }
 
@@ -92,15 +47,6 @@ public class MaskedTextBox : TextBox
     public object Value { get => GetValue(ValueProperty); set => SetValue(ValueProperty, value); }
 
     public Type ValueType { get => (Type)GetValue(ValueTypeProperty); set => SetValue(ValueTypeProperty, value); }
-
-    public override void OnApplyTemplate()
-    {
-        base.OnApplyTemplate();
-        UpdateMaskProvider(Mask);
-        UpdateText(0);
-    }
-
-    protected MaskedTextProvider MaskProvider { get; set; }
 
     protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
     {
@@ -186,56 +132,7 @@ public class MaskedTextBox : TextBox
         }
     }
 
-    private bool _convertExceptionOccurred;
-
-    private bool _isInitialized;
-
-    /// <summary>
-    /// Flags if the Text and Value properties are in the process of being sync'd
-    /// </summary>
-    private bool _isSyncingTextAndValueProperties;
-
-    private static void OnIncludeLiteralsPropertyChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
-    {
-        MaskedTextBox maskedTextBox = o as MaskedTextBox;
-        maskedTextBox?.OnIncludeLiteralsChanged((bool)e.OldValue, (bool)e.NewValue);
-    }
-
-    private static void OnIncludePromptPropertyChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
-    {
-        MaskedTextBox maskedTextBox = o as MaskedTextBox;
-        maskedTextBox?.OnIncludePromptChanged((bool)e.OldValue, (bool)e.NewValue);
-    }
-
-    private static void OnMaskPropertyChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
-    {
-        MaskedTextBox maskedTextBox = o as MaskedTextBox;
-        maskedTextBox?.OnMaskChanged((string)e.OldValue, (string)e.NewValue);
-    }
-
-    private static void OnPromptCharChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
-    {
-        MaskedTextBox maskedTextBox = o as MaskedTextBox;
-        maskedTextBox?.OnPromptCharChanged((char)e.OldValue, (char)e.NewValue);
-    }
-
-    private static void OnTextChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
-    {
-        MaskedTextBox inputBase = o as MaskedTextBox;
-        inputBase?.OnTextChanged((string)e.OldValue, (string)e.NewValue);
-    }
-
-    private static void OnValueChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
-    {
-        MaskedTextBox maskedTextBox = o as MaskedTextBox;
-        maskedTextBox?.OnValueChanged(e.OldValue, e.NewValue);
-    }
-
-    private static void OnValueTypeChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
-    {
-        MaskedTextBox maskedTextBox = o as MaskedTextBox;
-        maskedTextBox?.OnValueTypeChanged((Type)e.OldValue, (Type)e.NewValue);
-    }
+    protected MaskedTextProvider MaskProvider { get; set; }
 
     private void CanCut(object sender, CanExecuteRoutedEventArgs e)
     {
@@ -455,6 +352,48 @@ public class MaskedTextBox : TextBox
         UpdateText(position);
     }
 
+    private static void OnIncludeLiteralsPropertyChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+    {
+        MaskedTextBox maskedTextBox = o as MaskedTextBox;
+        maskedTextBox?.OnIncludeLiteralsChanged((bool)e.OldValue, (bool)e.NewValue);
+    }
+
+    private static void OnIncludePromptPropertyChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+    {
+        MaskedTextBox maskedTextBox = o as MaskedTextBox;
+        maskedTextBox?.OnIncludePromptChanged((bool)e.OldValue, (bool)e.NewValue);
+    }
+
+    private static void OnMaskPropertyChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+    {
+        MaskedTextBox maskedTextBox = o as MaskedTextBox;
+        maskedTextBox?.OnMaskChanged((string)e.OldValue, (string)e.NewValue);
+    }
+
+    private static void OnPromptCharChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+    {
+        MaskedTextBox maskedTextBox = o as MaskedTextBox;
+        maskedTextBox?.OnPromptCharChanged((char)e.OldValue, (char)e.NewValue);
+    }
+
+    private static void OnTextChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+    {
+        MaskedTextBox inputBase = o as MaskedTextBox;
+        inputBase?.OnTextChanged((string)e.OldValue, (string)e.NewValue);
+    }
+
+    private static void OnValueChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+    {
+        MaskedTextBox maskedTextBox = o as MaskedTextBox;
+        maskedTextBox?.OnValueChanged(e.OldValue, e.NewValue);
+    }
+
+    private static void OnValueTypeChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+    {
+        MaskedTextBox maskedTextBox = o as MaskedTextBox;
+        maskedTextBox?.OnValueTypeChanged((Type)e.OldValue, (Type)e.NewValue);
+    }
+
     private void Paste(object sender, RoutedEventArgs e)
     {
         if(IsReadOnly)
@@ -528,13 +467,7 @@ public class MaskedTextBox : TextBox
             return;
         }
 
-        MaskProvider = new MaskedTextProvider(mask)
-        {
-            IncludePrompt = IncludePrompt,
-            IncludeLiterals = IncludeLiterals,
-            PromptChar = PromptChar,
-            ResetOnSpace = false
-        };
+        MaskProvider = new MaskedTextProvider(mask) { IncludePrompt = IncludePrompt, IncludeLiterals = IncludeLiterals, PromptChar = PromptChar, ResetOnSpace = false };
     }
 
     private void UpdateText() { UpdateText(SelectionStart); }
@@ -546,4 +479,61 @@ public class MaskedTextBox : TextBox
         SelectionLength = 0;
         SelectionStart = position;
     }
+
+    public static readonly DependencyProperty ClearButtonVisibilityProperty =
+        DependencyProperty.Register("ClearButtonVisibility", typeof(Visibility), typeof(MaskedTextBox), new PropertyMetadata(Visibility.Collapsed));
+
+    public static readonly DependencyProperty IncludeLiteralsProperty = DependencyProperty.Register(
+        "IncludeLiterals",
+        typeof(bool),
+        typeof(MaskedTextBox),
+        new UIPropertyMetadata(true, OnIncludeLiteralsPropertyChanged));
+
+    public static readonly DependencyProperty IncludePromptProperty = DependencyProperty.Register(
+        "IncludePrompt",
+        typeof(bool),
+        typeof(MaskedTextBox),
+        new UIPropertyMetadata(false, OnIncludePromptPropertyChanged));
+
+    public static readonly DependencyProperty MaskProperty = DependencyProperty.Register(
+        "Mask",
+        typeof(string),
+        typeof(MaskedTextBox),
+        new UIPropertyMetadata("<>", OnMaskPropertyChanged));
+
+    public static readonly DependencyProperty PromptCharProperty = DependencyProperty.Register(
+        "PromptChar",
+        typeof(char),
+        typeof(MaskedTextBox),
+        new UIPropertyMetadata('_', OnPromptCharChanged));
+
+    public static readonly DependencyProperty SelectAllOnGotFocusProperty =
+        DependencyProperty.Register("SelectAllOnGotFocus", typeof(bool), typeof(MaskedTextBox), new PropertyMetadata(false));
+
+    public static readonly RoutedEvent ValueChangedEvent = EventManager.RegisterRoutedEvent(
+        "ValueChanged",
+        RoutingStrategy.Bubble,
+        typeof(RoutedPropertyChangedEventHandler<object>),
+        typeof(MaskedTextBox));
+
+    public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
+        "Value",
+        typeof(object),
+        typeof(MaskedTextBox),
+        new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged));
+
+    public static readonly DependencyProperty ValueTypeProperty = DependencyProperty.Register(
+        "ValueType",
+        typeof(Type),
+        typeof(MaskedTextBox),
+        new UIPropertyMetadata(typeof(string), OnValueTypeChanged));
+
+    private bool _convertExceptionOccurred;
+
+    private bool _isInitialized;
+
+    /// <summary>
+    /// Flags if the Text and Value properties are in the process of being sync'd
+    /// </summary>
+    private bool _isSyncingTextAndValueProperties;
 }

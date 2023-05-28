@@ -12,48 +12,41 @@ namespace Tesseract
 {
     public sealed class Page : DisposableBase
     {
-        public TesseractEngine Engine { get; }
-
-        /// <summary>
-        /// Gets the <see cref="Pix"/> that is being ocr'd.
-        /// </summary>
-        public Pix Image { get; }
-
-        /// <summary>
-        /// Gets the name of the image being ocr'd.
-        /// </summary>
-        /// <remarks>
-        /// This is also used for some of the more advanced functionality such as identifying the associated UZN file if
-        /// present.
-        /// </remarks>
-        public string ImageName { get; }
-
-        /// <summary>
-        /// Gets the page segmentation mode used to OCR the specified image.
-        /// </summary>
-        public PageSegMode PageSegmentMode { get; }
-
-        /// <summary>
-        /// The current region of interest being parsed.
-        /// </summary>
-        public Rect RegionOfInterest
+        internal Page(TesseractEngine engine, Pix image, string imageName, Rect regionOfInterest, PageSegMode pageSegmentMode)
         {
-            get => regionOfInterest;
+            Engine = engine;
+            Image = image;
+            ImageName = imageName;
+            RegionOfInterest = regionOfInterest;
+            PageSegmentMode = pageSegmentMode;
+        }
 
-            set
+        internal void Recognize()
+        {
+            Guard.Verify(PageSegmentMode != PageSegMode.OsdOnly, "Cannot OCR image when using OSD only page segmentation, please use DetectBestOrientation instead.");
+            if(!runRecognitionPhase)
             {
-                if(value.X1 < 0 || value.Y1 < 0 || value.X2 > Image.Width || value.Y2 > Image.Height)
+                if(TessApi.Native.BaseApiRecognize(Engine.Handle, new HandleRef(this, IntPtr.Zero)) != 0)
                 {
-                    throw new ArgumentException("The region of interest to be processed must be within the image bounds.", nameof(value));
+                    throw new InvalidOperationException("Recognition of image failed.");
                 }
 
-                if(regionOfInterest != value)
+                runRecognitionPhase = true;
+
+                if(Engine.TryGetBoolVariable("tessedit_write_images", out bool tesseditWriteImages) && tesseditWriteImages)
                 {
-                    regionOfInterest = value;
-
-                    TessApi.Native.BaseApiSetRectangle(Engine.Handle, regionOfInterest.X1, regionOfInterest.Y1, regionOfInterest.Width, regionOfInterest.Height);
-
-                    runRecognitionPhase = false;
+                    using(Pix thresholdedImage = GetThresholdedImage())
+                    {
+                        string filePath = Path.Combine(Environment.CurrentDirectory, "tessinput.tif");
+                        try
+                        {
+                            thresholdedImage.Save(filePath, ImageFormat.TiffG4);
+                            trace.TraceEvent(TraceEventType.Information, 2, "Successfully saved the thresholded image to '{0}'", filePath);
+                        } catch(Exception error)
+                        {
+                            trace.TraceEvent(TraceEventType.Error, 2, "Failed to save the thresholded image to '{0}'.\nError: {1}", filePath, error.Message);
+                        }
+                    }
                 }
             }
         }
@@ -111,8 +104,7 @@ namespace Tesseract
         /// </remarks>
         /// <param name="orientation">The detected clockwise page rotation in degrees (0, 90, 180, or 270).</param>
         /// <param name="confidence">The confidence level of the orientation (15 is reasonably confident).</param>
-        public void DetectBestOrientation(out int orientation, out float confidence)
-        { DetectBestOrientationAndScript(out orientation, out confidence, out _, out _); }
+        public void DetectBestOrientation(out int orientation, out float confidence) { DetectBestOrientationAndScript(out orientation, out confidence, out _, out _); }
 
         /// <summary>
         ///     Detects the page orientation, with corresponding confidence when using <see cref="PageSegMode.OsdOnly" />.
@@ -131,12 +123,7 @@ namespace Tesseract
         public void DetectBestOrientationAndScript(out int orientation, out float confidence, out string scriptName, out float scriptConfidence)
         {
             if(TessApi.Native
-                    .TessBaseAPIDetectOrientationScript(
-                        Engine.Handle,
-                        out int orient_deg,
-                        out float orient_conf,
-                        out IntPtr script_nameHandle,
-                        out float script_conf) !=
+                    .TessBaseAPIDetectOrientationScript(Engine.Handle, out int orient_deg, out float orient_conf, out IntPtr script_nameHandle, out float script_conf) !=
                 0)
             {
                 orientation = orient_deg;
@@ -307,43 +294,48 @@ namespace Tesseract
             return TessApi.BaseAPIGetWordStrBoxText(Engine.Handle, pageNum);
         }
 
-        internal Page(TesseractEngine engine, Pix image, string imageName, Rect regionOfInterest, PageSegMode pageSegmentMode)
-        {
-            Engine = engine;
-            Image = image;
-            ImageName = imageName;
-            RegionOfInterest = regionOfInterest;
-            PageSegmentMode = pageSegmentMode;
-        }
+        public TesseractEngine Engine { get; }
 
-        internal void Recognize()
+        /// <summary>
+        /// Gets the <see cref="Pix"/> that is being ocr'd.
+        /// </summary>
+        public Pix Image { get; }
+
+        /// <summary>
+        /// Gets the name of the image being ocr'd.
+        /// </summary>
+        /// <remarks>
+        /// This is also used for some of the more advanced functionality such as identifying the associated UZN file if
+        /// present.
+        /// </remarks>
+        public string ImageName { get; }
+
+        /// <summary>
+        /// Gets the page segmentation mode used to OCR the specified image.
+        /// </summary>
+        public PageSegMode PageSegmentMode { get; }
+
+        /// <summary>
+        /// The current region of interest being parsed.
+        /// </summary>
+        public Rect RegionOfInterest
         {
-            Guard.Verify(
-                PageSegmentMode != PageSegMode.OsdOnly,
-                "Cannot OCR image when using OSD only page segmentation, please use DetectBestOrientation instead.");
-            if(!runRecognitionPhase)
+            get => regionOfInterest;
+
+            set
             {
-                if(TessApi.Native.BaseApiRecognize(Engine.Handle, new HandleRef(this, IntPtr.Zero)) != 0)
+                if(value.X1 < 0 || value.Y1 < 0 || value.X2 > Image.Width || value.Y2 > Image.Height)
                 {
-                    throw new InvalidOperationException("Recognition of image failed.");
+                    throw new ArgumentException("The region of interest to be processed must be within the image bounds.", nameof(value));
                 }
 
-                runRecognitionPhase = true;
-
-                if(Engine.TryGetBoolVariable("tessedit_write_images", out bool tesseditWriteImages) && tesseditWriteImages)
+                if(regionOfInterest != value)
                 {
-                    using(Pix thresholdedImage = GetThresholdedImage())
-                    {
-                        string filePath = Path.Combine(Environment.CurrentDirectory, "tessinput.tif");
-                        try
-                        {
-                            thresholdedImage.Save(filePath, ImageFormat.TiffG4);
-                            trace.TraceEvent(TraceEventType.Information, 2, "Successfully saved the thresholded image to '{0}'", filePath);
-                        } catch(Exception error)
-                        {
-                            trace.TraceEvent(TraceEventType.Error, 2, "Failed to save the thresholded image to '{0}'.\nError: {1}", filePath, error.Message);
-                        }
-                    }
+                    regionOfInterest = value;
+
+                    TessApi.Native.BaseApiSetRectangle(Engine.Handle, regionOfInterest.X1, regionOfInterest.Y1, regionOfInterest.Width, regionOfInterest.Height);
+
+                    runRecognitionPhase = false;
                 }
             }
         }

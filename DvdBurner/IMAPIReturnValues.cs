@@ -786,6 +786,6 @@ namespace DvdBurner
         /// feature.
         /// </summary>
         public const ulong IMAPI_S_IMAGE_FEATURE_NOT_SUPPORTED = 0x00AAB15FL;
-        #endregion Constants in Imapi2fserror.h.
+    #endregion Constants in Imapi2fserror.h.
     }
 }

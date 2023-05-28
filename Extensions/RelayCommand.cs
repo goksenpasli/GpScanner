@@ -8,19 +8,16 @@ namespace Extensions;
 
 public class RelayAsyncCommand<T> : RelayCommand<T>
 {
-    public RelayAsyncCommand(Action<T> execute, Predicate<T> canExecute) : base(execute, canExecute)
+    public RelayAsyncCommand(Action<T> execute) : base(execute)
     {
     }
-
-    public RelayAsyncCommand(Action<T> execute) : base(execute)
+    public RelayAsyncCommand(Action<T> execute, Predicate<T> canExecute) : base(execute, canExecute)
     {
     }
 
     public event EventHandler Ended;
 
     public event EventHandler Started;
-
-    public bool IsExecuting { get; private set; }
 
     public override bool CanExecute(object parameter) { return base.CanExecute(parameter) && !IsExecuting; }
 
@@ -38,6 +35,8 @@ public class RelayAsyncCommand<T> : RelayCommand<T>
             OnRunWorkerCompleted(new RunWorkerCompletedEventArgs(null, ex, true));
         }
     }
+
+    public bool IsExecuting { get; private set; }
 
     private void OnRunWorkerCompleted(EventArgs e)
     {
@@ -79,14 +78,14 @@ public class RelayCommand<T> : ICommand
 
 public class RelayCommand : ICommand
 {
+    public RelayCommand(Action execute) : this(execute, null)
+    {
+    }
+
     public RelayCommand(Action execute, Func<bool> canExecute)
     {
         this.execute = execute ?? throw new ArgumentNullException(nameof(execute));
         this.canExecute = canExecute;
-    }
-
-    public RelayCommand(Action execute) : this(execute, null)
-    {
     }
 
     public event EventHandler CanExecuteChanged

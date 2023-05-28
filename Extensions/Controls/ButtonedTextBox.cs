@@ -9,12 +9,6 @@ namespace Extensions;
 
 public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 {
-    public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register(
-        "Description",
-        typeof(string),
-        typeof(ButtonedTextBox),
-        new PropertyMetadata(string.Empty));
-
     static ButtonedTextBox() { DefaultStyleKeyProperty.OverrideMetadata(typeof(ButtonedTextBox), new FrameworkPropertyMetadata(typeof(ButtonedTextBox))); }
 
     public ButtonedTextBox()
@@ -95,14 +89,6 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     protected virtual void OnPropertyChanged(string propertyName) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
 
-    private Visibility copyButtonVisibility = Visibility.Visible;
-
-    private Visibility openButtonVisibility = Visibility.Visible;
-
-    private Visibility pasteButtonVisibility = Visibility.Visible;
-
-    private Visibility resetButtonVisibility = Visibility.Visible;
-
     private void CanExecute(object sender, CanExecuteRoutedEventArgs e)
     {
         if(!string.IsNullOrWhiteSpace(Text))
@@ -135,4 +121,18 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
     private void PasteCommand(object sender, ExecutedRoutedEventArgs e) { Text = Clipboard.GetText(); }
 
     private void ResetCommand(object sender, ExecutedRoutedEventArgs e) { Text = string.Empty; }
+
+    public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register(
+        "Description",
+        typeof(string),
+        typeof(ButtonedTextBox),
+        new PropertyMetadata(string.Empty));
+
+    private Visibility copyButtonVisibility = Visibility.Visible;
+
+    private Visibility openButtonVisibility = Visibility.Visible;
+
+    private Visibility pasteButtonVisibility = Visibility.Visible;
+
+    private Visibility resetButtonVisibility = Visibility.Visible;
 }

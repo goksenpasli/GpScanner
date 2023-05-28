@@ -6,6 +6,9 @@ namespace TwainWpf
 {
     public class TwainException : ApplicationException
     {
+        protected TwainException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
         public TwainException() : this(null, null)
         {
         }
@@ -16,22 +19,18 @@ namespace TwainWpf
 
         public TwainException(string message, TwainResult returnCode) : this(message, null) { ReturnCode = returnCode; }
 
+        public TwainException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
         public TwainException(string message, TwainResult returnCode, ConditionCode conditionCode) : this(message, null)
         {
             ReturnCode = returnCode;
             ConditionCode = conditionCode;
         }
 
-        public TwainException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
         public ConditionCode? ConditionCode { get; private set; }
 
         public TwainResult? ReturnCode { get; private set; }
-
-        protected TwainException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
     }
 }

@@ -76,10 +76,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     {
                         using PdfDocument reader = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.Modify);
                         PdfPage page = reader.Pages[PdfViewer.Sayfa - 1];
-                        PdfAnnotation annotation = page.Annotations
-                            .ToList()
-                            .OfType<PdfAnnotation>()
-                            .FirstOrDefault(z => z.Contents == selectedannotation.Contents);
+                        PdfAnnotation annotation = page.Annotations.ToList().OfType<PdfAnnotation>().FirstOrDefault(z => z.Contents == selectedannotation.Contents);
                         page?.Annotations?.Remove(annotation);
                         twainCtrl?.Annotations?.Remove(selectedannotation);
                         reader.Save(PdfViewer.PdfFilePath);
@@ -374,80 +371,6 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
 
-    private static readonly Ellipse ellipseselectionbox = new()
-    {
-        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
-        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
-        StrokeDashArray = new DoubleCollection(new double[] { 1 })
-    };
-
-    private static readonly Line linebox = new()
-    {
-        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
-        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
-        StrokeDashArray = new DoubleCollection(new double[] { 1 })
-    };
-
-    private static readonly Rectangle rectangleselectionbox = new()
-    {
-        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
-        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
-        StrokeDashArray = new DoubleCollection(new double[] { 1 })
-    };
-
-    private static readonly Line reverselinebox = new()
-    {
-        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
-        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
-        StrokeDashArray = new DoubleCollection(new double[] { 1 })
-    };
-
-    private string annotationText = string.Empty;
-
-    private bool drawAnnotation;
-
-    private bool drawEllipse;
-
-    private bool drawImage;
-
-    private bool drawLine;
-
-    private XImage drawnImage;
-
-    private bool drawRect;
-
-    private bool drawReverseLine;
-
-    private bool drawRoundedRect;
-
-    private bool drawString;
-
-    private XKnownColor graphObjectColor = XKnownColor.Black;
-
-    private XKnownColor graphObjectFillColor = XKnownColor.Transparent;
-
-    private double height;
-
-    private bool isDrawMouseDown;
-
-    private bool isMouseDown;
-
-    private Point mousedowncoord;
-
-    private XDashStyle penDash = XDashStyle.Solid;
-
-    private XLineCap penLineCap = XLineCap.Flat;
-
-    private XLineJoin penLineJoin = XLineJoin.Miter;
-
-    private double penWidth = 0.5d;
-
-    private string text = string.Empty;
-
-    private double textSize = 12d;
-
-    private double width;
-
     private void PdfImportViewerControl_MouseDown(object sender, MouseButtonEventArgs e)
     {
         if(e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer && e.LeftButton == MouseButtonState.Pressed)
@@ -541,26 +464,15 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     height = Math.Abs(y2 - y1);
                     coordx = x1 + scrollviewer.HorizontalOffset;
                     coordy = y1 + scrollviewer.VerticalOffset;
-                    double widthmultiply = page.Width /
-                        (scrollviewer.ExtentWidth < scrollviewer.ViewportWidth ? scrollviewer.ViewportWidth : scrollviewer.ExtentWidth);
+                    double widthmultiply = page.Width / (scrollviewer.ExtentWidth < scrollviewer.ViewportWidth ? scrollviewer.ViewportWidth : scrollviewer.ExtentWidth);
                     double heightmultiply = page.Height /
                         (scrollviewer.ExtentHeight < scrollviewer.ViewportHeight ? scrollviewer.ViewportHeight : scrollviewer.ExtentHeight);
 
                     Rect rect = page.Orientation == PageOrientation.Portrait
                         ? new(coordx * widthmultiply, coordy * heightmultiply, width * widthmultiply, height * heightmultiply)
-                        : new(
-                            coordy * widthmultiply,
-                            page.Height - (coordx * heightmultiply) - (width * widthmultiply),
-                            height * widthmultiply,
-                            width * heightmultiply);
+                        : new(coordy * widthmultiply, page.Height - (coordx * heightmultiply) - (width * widthmultiply), height * widthmultiply, width * heightmultiply);
 
-                    XPen pen = new(XColor.FromKnownColor(GraphObjectColor))
-                    {
-                        DashStyle = PenDash,
-                        LineCap = PenLineCap,
-                        LineJoin = PenLineJoin,
-                        Width = PenWidth
-                    };
+                    XPen pen = new(XColor.FromKnownColor(GraphObjectColor)) { DashStyle = PenDash, LineCap = PenLineCap, LineJoin = PenLineJoin, Width = PenWidth };
                     XBrush brush = new XSolidBrush(XColor.FromKnownColor(GraphObjectFillColor));
 
                     if(DrawRect)
@@ -709,4 +621,78 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     }
 
     private void PdfViewer_PreviewKeyUp(object sender, KeyEventArgs e) { Cursor = Cursors.Arrow; }
+
+    private static readonly Ellipse ellipseselectionbox = new()
+    {
+        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
+        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
+        StrokeDashArray = new DoubleCollection(new double[] { 1 })
+    };
+
+    private static readonly Line linebox = new()
+    {
+        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
+        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
+        StrokeDashArray = new DoubleCollection(new double[] { 1 })
+    };
+
+    private static readonly Rectangle rectangleselectionbox = new()
+    {
+        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
+        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
+        StrokeDashArray = new DoubleCollection(new double[] { 1 })
+    };
+
+    private static readonly Line reverselinebox = new()
+    {
+        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
+        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
+        StrokeDashArray = new DoubleCollection(new double[] { 1 })
+    };
+
+    private string annotationText = string.Empty;
+
+    private bool drawAnnotation;
+
+    private bool drawEllipse;
+
+    private bool drawImage;
+
+    private bool drawLine;
+
+    private XImage drawnImage;
+
+    private bool drawRect;
+
+    private bool drawReverseLine;
+
+    private bool drawRoundedRect;
+
+    private bool drawString;
+
+    private XKnownColor graphObjectColor = XKnownColor.Black;
+
+    private XKnownColor graphObjectFillColor = XKnownColor.Transparent;
+
+    private double height;
+
+    private bool isDrawMouseDown;
+
+    private bool isMouseDown;
+
+    private Point mousedowncoord;
+
+    private XDashStyle penDash = XDashStyle.Solid;
+
+    private XLineCap penLineCap = XLineCap.Flat;
+
+    private XLineJoin penLineJoin = XLineJoin.Miter;
+
+    private double penWidth = 0.5d;
+
+    private string text = string.Empty;
+
+    private double textSize = 12d;
+
+    private double width;
 }

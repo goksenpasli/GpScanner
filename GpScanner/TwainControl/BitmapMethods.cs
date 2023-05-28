@@ -83,13 +83,7 @@ public static class BitmapMethods
         return bitmap;
     }
 
-    public static byte[] CaptureScreen(
-        double coordx,
-        double coordy,
-        double selectionwidth,
-        double selectionheight,
-        ScrollViewer scrollviewer,
-        BitmapFrame bitmapFrame)
+    public static byte[] CaptureScreen(double coordx, double coordy, double selectionwidth, double selectionheight, ScrollViewer scrollviewer, BitmapFrame bitmapFrame)
     {
         try
         {
@@ -430,10 +424,7 @@ public static class BitmapMethods
         string font = "Arial")
     {
         FormattedText formattedText =
-            new(metin, CultureInfo.GetCultureInfo("tr-TR"), FlowDirection.LeftToRight, new Typeface(font), emSize, brushes)
-        {
-            TextAlignment = TextAlignment.Center
-        };
+            new(metin, CultureInfo.GetCultureInfo("tr-TR"), FlowDirection.LeftToRight, new Typeface(font), emSize, brushes) { TextAlignment = TextAlignment.Center };
         DrawingVisual dv = new();
         using(DrawingContext dc = dv.RenderOpen())
         {

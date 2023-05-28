@@ -37,47 +37,6 @@ public static class ExtensionMethods
 
     public const uint SHGFI_USEFILEATTRIBUTES = 0x000000010;
 
-    public enum FolderType
-    {
-        Closed = 0,
-
-        Open = 1
-    }
-
-    public enum Format
-    {
-        Tiff = 0,
-
-        TiffRenkli = 1,
-
-        Jpg = 2,
-
-        Png = 3
-    }
-
-    public enum IconSize
-    {
-        Large = 0,
-
-        Small = 1
-    }
-
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-    public struct SHFILEINFO
-    {
-        public IntPtr hIcon;
-
-        public int iIcon;
-
-        public uint dwAttributes;
-
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
-        public string szDisplayName;
-
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)]
-        public string szTypeName;
-    }
-
     public static Bitmap BitmapChangeFormat(this Bitmap bitmap, PixelFormat format)
     {
         Rectangle rect = new(0, 0, bitmap.Width, bitmap.Height);
@@ -354,6 +313,19 @@ public static class ExtensionMethods
     public static Brush RandomColor()
     { return new SolidColorBrush(System.Windows.Media.Color.FromRgb((byte)_random.Next(0, 256), (byte)_random.Next(0, 256), (byte)_random.Next(0, 256))); }
 
+    public static BitmapSource Resize(this BitmapSource bfPhoto, double oran)
+    {
+        ScaleTransform newTransform = new(oran, oran);
+        newTransform.Freeze();
+        TransformedBitmap tb = new();
+        tb.BeginInit();
+        tb.Source = bfPhoto;
+        tb.Transform = newTransform;
+        tb.EndInit();
+        tb.Freeze();
+        return tb;
+    }
+
     public static BitmapSource Resize(this BitmapSource bfPhoto, double nWidth, double nHeight, double? rotate = null, int dpiX = 96, int dpiY = 96)
     {
         if(bfPhoto is not null)
@@ -375,19 +347,6 @@ public static class ExtensionMethods
         }
 
         return null;
-    }
-
-    public static BitmapSource Resize(this BitmapSource bfPhoto, double oran)
-    {
-        ScaleTransform newTransform = new(oran, oran);
-        newTransform.Freeze();
-        TransformedBitmap tb = new();
-        tb.BeginInit();
-        tb.Source = bfPhoto;
-        tb.Transform = newTransform;
-        tb.EndInit();
-        tb.Freeze();
-        return tb;
     }
 
     public static async Task<BitmapSource> ResizeAsync(this BitmapSource bfPhoto, double oran, double centerx = 0, double centery = 0)
@@ -480,12 +439,7 @@ public static class ExtensionMethods
         double scale = resolution / 96d;
         uiElement.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
         uiElement.Arrange(new Rect(uiElement.DesiredSize));
-        RenderTargetBitmap bmp = new(
-            (int)(scale * uiElement.RenderSize.Width),
-            (int)(scale * uiElement.RenderSize.Height),
-            scale * 96,
-            scale * 96,
-            PixelFormats.Pbgra32);
+        RenderTargetBitmap bmp = new((int)(scale * uiElement.RenderSize.Width), (int)(scale * uiElement.RenderSize.Height), scale * 96, scale * 96, PixelFormats.Pbgra32);
         bmp.Render(uiElement);
         bmp.Freeze();
         return bmp;
@@ -534,9 +488,50 @@ public static class ExtensionMethods
         }
     }
 
+    private static byte GetGrayscaleValue(byte red, byte green, byte blue) { return (byte)Math.Round((0.299 * red) + (0.587 * green) + (0.114 * blue)); }
+
     private static readonly Random _random = new();
 
     private static readonly IntPtr hwnd = Process.GetCurrentProcess().Handle;
 
-    private static byte GetGrayscaleValue(byte red, byte green, byte blue) { return (byte)Math.Round((0.299 * red) + (0.587 * green) + (0.114 * blue)); }
+    public enum FolderType
+    {
+        Closed = 0,
+
+        Open = 1
+    }
+
+    public enum Format
+    {
+        Tiff = 0,
+
+        TiffRenkli = 1,
+
+        Jpg = 2,
+
+        Png = 3
+    }
+
+    public enum IconSize
+    {
+        Large = 0,
+
+        Small = 1
+    }
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+    public struct SHFILEINFO
+    {
+        public IntPtr hIcon;
+
+        public int iIcon;
+
+        public uint dwAttributes;
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
+        public string szDisplayName;
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)]
+        public string szTypeName;
+    }
 }

@@ -10,20 +10,6 @@ namespace PdfViewer;
 
 public sealed class PdfPageToThumbImageConverter : InpcBase, IMultiValueConverter
 {
-    public int Dpi
-    {
-        get => dpi;
-
-        set
-        {
-            if(dpi != value)
-            {
-                dpi = value;
-                OnPropertyChanged(nameof(Dpi));
-            }
-        }
-    }
-
     public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {
         if(values[0] is string PdfFilePath && values[1] is int index && File.Exists(PdfFilePath))
@@ -51,6 +37,20 @@ public sealed class PdfPageToThumbImageConverter : InpcBase, IMultiValueConverte
     }
 
     public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) { throw new NotImplementedException(); }
+
+    public int Dpi
+    {
+        get => dpi;
+
+        set
+        {
+            if(dpi != value)
+            {
+                dpi = value;
+                OnPropertyChanged(nameof(Dpi));
+            }
+        }
+    }
 
     private int dpi = 9;
 }

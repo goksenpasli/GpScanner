@@ -16,12 +16,6 @@ namespace Extensions.Controls;
 /// </summary>
 public partial class ArchiveViewer : UserControl, INotifyPropertyChanged
 {
-    public static readonly DependencyProperty ArchivePathProperty = DependencyProperty.Register(
-        "ArchivePath",
-        typeof(string),
-        typeof(ArchiveViewer),
-        new PropertyMetadata(null, Changed));
-
     public ArchiveViewer()
     {
         InitializeComponent();
@@ -78,10 +72,6 @@ public partial class ArchiveViewer : UserControl, INotifyPropertyChanged
 
     protected virtual void OnPropertyChanged(string propertyName) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
 
-    private static double toplamOran;
-
-    private ObservableCollection<ArchiveData> arşivİçerik;
-
     private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if(d is ArchiveViewer archiveViewer && e.NewValue is not null)
@@ -107,4 +97,13 @@ public partial class ArchiveViewer : UserControl, INotifyPropertyChanged
             archiveViewer.ToplamOran = (double)archiveViewer.Arşivİçerik.Sum(z => z.SıkıştırılmışBoyut) / archiveViewer.Arşivİçerik.Sum(z => z.Boyut) * 100;
         }
     }
+
+    private static double toplamOran;
+    public static readonly DependencyProperty ArchivePathProperty = DependencyProperty.Register(
+        "ArchivePath",
+        typeof(string),
+        typeof(ArchiveViewer),
+        new PropertyMetadata(null, Changed));
+
+    private ObservableCollection<ArchiveData> arşivİçerik;
 }

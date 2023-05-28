@@ -13,6 +13,25 @@ namespace TwainWpf
             _twainType = twainType;
         }
 
+        public BasicCapabilityResult GetBasicValue()
+        {
+            CapabilityOneValue oneValue = new CapabilityOneValue(_twainType, 0);
+            TwainCapability twainCapability = TwainCapability.From(_capability, oneValue);
+
+            TwainResult result = Twain32Native.DsCapability(_applicationId, _sourceId, DataGroup.Control, DataArgumentType.Capability, Message.Get, twainCapability);
+
+            if(result != TwainResult.Success)
+            {
+                ConditionCode conditionCode = GetStatus();
+
+                return new BasicCapabilityResult() { ConditionCode = conditionCode, ErrorCode = result };
+            }
+
+            twainCapability.ReadBackValue();
+
+            return new BasicCapabilityResult() { RawBasicValue = oneValue.Value };
+        }
+
         public static bool GetBoolCapability(Capabilities capability, Identity applicationId, Identity sourceId)
         {
             Capability c = new Capability(capability, TwainType.Int16, applicationId, sourceId);
@@ -78,31 +97,6 @@ namespace TwainWpf
             }
         }
 
-        public BasicCapabilityResult GetBasicValue()
-        {
-            CapabilityOneValue oneValue = new CapabilityOneValue(_twainType, 0);
-            TwainCapability twainCapability = TwainCapability.From(_capability, oneValue);
-
-            TwainResult result = Twain32Native.DsCapability(
-                _applicationId,
-                _sourceId,
-                DataGroup.Control,
-                DataArgumentType.Capability,
-                Message.Get,
-                twainCapability);
-
-            if(result != TwainResult.Success)
-            {
-                ConditionCode conditionCode = GetStatus();
-
-                return new BasicCapabilityResult() { ConditionCode = conditionCode, ErrorCode = result };
-            }
-
-            twainCapability.ReadBackValue();
-
-            return new BasicCapabilityResult() { RawBasicValue = oneValue.Value };
-        }
-
         public void SetValue(short value) { SetValue<short>(value); }
 
         protected ConditionCode GetStatus() { return DataSourceManager.GetConditionCode(_applicationId, _sourceId); }
@@ -113,13 +107,7 @@ namespace TwainWpf
             CapabilityOneValue oneValue = new CapabilityOneValue(_twainType, rawValue);
             TwainCapability twainCapability = TwainCapability.From(_capability, oneValue);
 
-            TwainResult result = Twain32Native.DsCapability(
-                _applicationId,
-                _sourceId,
-                DataGroup.Control,
-                DataArgumentType.Capability,
-                Message.Set,
-                twainCapability);
+            TwainResult result = Twain32Native.DsCapability(_applicationId, _sourceId, DataGroup.Control, DataArgumentType.Capability, Message.Set, twainCapability);
 
             if(result == TwainResult.Success)
             {

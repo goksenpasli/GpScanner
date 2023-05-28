@@ -34,10 +34,6 @@ public class SimplePdfViewer : PdfViewer.PdfViewer
         base.OnMouseDoubleClick(e);
     }
 
-    private Window maximizePdfWindow;
-
-    private PdfImportViewerControl pdfImportViewerControl;
-
     private void MaximizePdfWindow_Closed(object sender, EventArgs e)
     {
         pdfImportViewerControl?.PdfViewer?.Dispose();
@@ -45,4 +41,8 @@ public class SimplePdfViewer : PdfViewer.PdfViewer
         maximizePdfWindow = null;
         pdfImportViewerControl = null;
     }
+
+    private Window maximizePdfWindow;
+
+    private PdfImportViewerControl pdfImportViewerControl;
 }

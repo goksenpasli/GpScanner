@@ -13,11 +13,7 @@ namespace Tesseract
     /// </remarks>
     public sealed class PixColormap : IDisposable
     {
-        public int Count => LeptonicaApi.Native.pixcmapGetCount(Handle);
-
-        public int Depth => LeptonicaApi.Native.pixcmapGetDepth(Handle);
-
-        public int FreeCount => LeptonicaApi.Native.pixcmapGetFreeCount(Handle);
+        internal PixColormap(IntPtr handle) { Handle = new HandleRef(this, handle); }
 
         public PixColor this[int index]
         {
@@ -31,6 +27,26 @@ namespace Tesseract
                 {
                     throw new InvalidOperationException("Failed to reset color.");
                 }
+            }
+        }
+
+        internal HandleRef Handle { get; private set; }
+
+        public bool AddBlackOrWhite(int color, out int index) { return LeptonicaApi.Native.pixcmapAddBlackOrWhite(Handle, color, out index) == 0; }
+
+        public bool AddColor(PixColor color) { return LeptonicaApi.Native.pixcmapAddColor(Handle, color.Red, color.Green, color.Blue) == 0; }
+
+        public bool AddNearestColor(PixColor color, out int index)
+        { return LeptonicaApi.Native.pixcmapAddNearestColor(Handle, color.Red, color.Green, color.Blue, out index) == 0; }
+
+        public bool AddNewColor(PixColor color, out int index)
+        { return LeptonicaApi.Native.pixcmapAddNewColor(Handle, color.Red, color.Green, color.Blue, out index) == 0; }
+
+        public void Clear()
+        {
+            if(LeptonicaApi.Native.pixcmapClear(Handle) != 0)
+            {
+                throw new InvalidOperationException("Failed to clear color map.");
             }
         }
 
@@ -72,24 +88,6 @@ namespace Tesseract
             return handle == IntPtr.Zero ? throw new InvalidOperationException("Failed to create colormap.") : new PixColormap(handle);
         }
 
-        public bool AddBlackOrWhite(int color, out int index) { return LeptonicaApi.Native.pixcmapAddBlackOrWhite(Handle, color, out index) == 0; }
-
-        public bool AddColor(PixColor color) { return LeptonicaApi.Native.pixcmapAddColor(Handle, color.Red, color.Green, color.Blue) == 0; }
-
-        public bool AddNearestColor(PixColor color, out int index)
-        { return LeptonicaApi.Native.pixcmapAddNearestColor(Handle, color.Red, color.Green, color.Blue, out index) == 0; }
-
-        public bool AddNewColor(PixColor color, out int index)
-        { return LeptonicaApi.Native.pixcmapAddNewColor(Handle, color.Red, color.Green, color.Blue, out index) == 0; }
-
-        public void Clear()
-        {
-            if(LeptonicaApi.Native.pixcmapClear(Handle) != 0)
-            {
-                throw new InvalidOperationException("Failed to clear color map.");
-            }
-        }
-
         public void Dispose()
         {
             IntPtr tmpHandle = Handle.Handle;
@@ -104,11 +102,12 @@ namespace Tesseract
                 : throw new InvalidOperationException("Failed to detect if color was usable or not.");
         }
 
-        public bool SetBlackOrWhite(bool setBlack, bool setWhite)
-        { return LeptonicaApi.Native.pixcmapSetBlackAndWhite(Handle, setBlack ? 1 : 0, setWhite ? 1 : 0) == 0; }
+        public bool SetBlackOrWhite(bool setBlack, bool setWhite) { return LeptonicaApi.Native.pixcmapSetBlackAndWhite(Handle, setBlack ? 1 : 0, setWhite ? 1 : 0) == 0; }
 
-        internal PixColormap(IntPtr handle) { Handle = new HandleRef(this, handle); }
+        public int Count => LeptonicaApi.Native.pixcmapGetCount(Handle);
 
-        internal HandleRef Handle { get; private set; }
+        public int Depth => LeptonicaApi.Native.pixcmapGetDepth(Handle);
+
+        public int FreeCount => LeptonicaApi.Native.pixcmapGetFreeCount(Handle);
     }
 }

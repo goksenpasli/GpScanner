@@ -9,6 +9,27 @@ namespace Tesseract
 {
     public sealed unsafe class Pix : DisposableBase, IEquatable<Pix>
     {
+        #region Clone
+
+        /// <summary>
+        /// Increments this pix's reference count and returns a reference to the same pix data.
+        /// </summary>
+        /// <remarks>
+        /// A "clone" is simply a reference to an existing pix. It is implemented this way because image can be large
+        /// and hence expensive to copy and extra handles need to be made with a simple policy to avoid double frees and
+        /// memory leaks. The general usage protocol is: <list type="number"><item>Whenever you want a new reference to
+        /// an existing <see cref="Pix"/> call <see cref="Clone"/>.</item><item>Always call <see cref="Dispose"/> on all
+        /// references. This decrements the reference count and will destroy the pix when the reference count reaches
+        /// zero.</item></list>
+        /// </remarks>
+        /// <returns>The pix with it's reference count incremented.</returns>
+        public Pix Clone()
+        {
+            IntPtr clonedHandle = LeptonicaApi.Native.pixClone(handle);
+            return new Pix(clonedHandle);
+        }
+        #endregion Clone
+
         #region Save methods
 
         /// <summary>
@@ -39,27 +60,6 @@ namespace Tesseract
             }
         }
         #endregion Save methods
-
-        #region Clone
-
-        /// <summary>
-        /// Increments this pix's reference count and returns a reference to the same pix data.
-        /// </summary>
-        /// <remarks>
-        /// A "clone" is simply a reference to an existing pix. It is implemented this way because image can be large
-        /// and hence expensive to copy and extra handles need to be made with a simple policy to avoid double frees and
-        /// memory leaks. The general usage protocol is: <list type="number"><item>Whenever you want a new reference to
-        /// an existing <see cref="Pix"/> call <see cref="Clone"/>.</item><item>Always call <see cref="Dispose"/> on all
-        /// references. This decrements the reference count and will destroy the pix when the reference count reaches
-        /// zero.</item></list>
-        /// </remarks>
-        /// <returns>The pix with it's reference count incremented.</returns>
-        public Pix Clone()
-        {
-            IntPtr clonedHandle = LeptonicaApi.Native.pixClone(handle);
-            return new Pix(clonedHandle);
-        }
-        #endregion Clone
 
         #region Scaling
 
@@ -534,8 +534,7 @@ namespace Tesseract
 
             pix1 = LeptonicaApi.Native.pixBackgroundNormFlex(handle, 7, 7, 1, 1, 10);
 
-            pix2 = LeptonicaApi.Native
-                .pixGammaTRCMasked(new HandleRef(this, IntPtr.Zero), new HandleRef(this, pix1), new HandleRef(this, IntPtr.Zero), 1.0f, 100, 175);
+            pix2 = LeptonicaApi.Native.pixGammaTRCMasked(new HandleRef(this, IntPtr.Zero), new HandleRef(this, pix1), new HandleRef(this, IntPtr.Zero), 1.0f, 100, 175);
 
             pix3 = LeptonicaApi.Native.pixThresholdToBinary(new HandleRef(this, pix2), 180);
 

@@ -272,13 +272,13 @@ namespace MozJpeg
     {
         public static bool MozJpegDllExists { get; set; } = File.Exists("turbojpeg_x86.dll");
 
-        private readonly object _lock = new object();
-
         private IntPtr _compressorHandle = IntPtr.Zero;
 
         private IntPtr _decompressHandle = IntPtr.Zero;
 
         private bool _isDisposed;
+
+        private readonly object _lock = new object();
 
         #region | Destruction |
 
@@ -439,15 +439,7 @@ namespace MozJpeg
             {
                 IntPtr rawJpegPtr = pinnedRawJpeg.AddrOfPinnedObject();
 
-                if(UnsafeNativeMethods.TjDecompressHeader(
-                        _decompressHandle,
-                        rawJpegPtr,
-                        (ulong)rawJpeg.Length,
-                        out width,
-                        out height,
-                        out subsampl,
-                        out colorspace) ==
-                    -1)
+                if(UnsafeNativeMethods.TjDecompressHeader(_decompressHandle, rawJpegPtr, (ulong)rawJpeg.Length, out width, out height, out subsampl, out colorspace) == -1)
                 {
                     throw new Exception("Can`t decode JPEG. Bad o unknow format.");
                 }
@@ -499,12 +491,7 @@ namespace MozJpeg
         /// cref="TJSubsamplingOptions"/> "Chrominance subsampling options".)
         /// </param>
         /// <returns>Byte array with the jpeg data</returns>
-        public byte[] Encode(
-            Bitmap bmp,
-            int quality = 75,
-            bool jfif = true,
-            TJFlags flags = TJFlags.NONE,
-            TJSubsamplingOptions subSamp = TJSubsamplingOptions.TJSAMP_420)
+        public byte[] Encode(Bitmap bmp, int quality = 75, bool jfif = true, TJFlags flags = TJFlags.NONE, TJSubsamplingOptions subSamp = TJSubsamplingOptions.TJSAMP_420)
         {
             BitmapData bmpData = null;
             IntPtr buf = IntPtr.Zero;
@@ -864,16 +851,7 @@ namespace MozJpeg
         /// <param name="pixelFormat">Pixel format of the destination image (see <see cref="TJPixelFormats"/> "Pixel formats".)</param>
         /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags"</param>
         /// <returns>0 if successful, or -1 if an error occurred (see <see cref="tjGetErrorStr"/>)</returns>
-        public static int TjDecompress(
-            IntPtr handle,
-            IntPtr jpegBuf,
-            ulong jpegSize,
-            IntPtr dstBuf,
-            int width,
-            int stride,
-            int height,
-            int pixelFormat,
-            int flags)
+        public static int TjDecompress(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, IntPtr dstBuf, int width, int stride, int height, int pixelFormat, int flags)
         {
             switch(IntPtr.Size)
             {
@@ -961,15 +939,7 @@ namespace MozJpeg
         /// </param>
         /// <param name="flags">The bitwise OR of one or more of the TJFLAG_BOTTOMUP "flags"</param>
         /// <returns>0 if successful, or -1 if an error occurred</returns>
-        public static int TjDecompressToYUVPlanes(
-            IntPtr handle,
-            IntPtr jpegBuf,
-            ulong jpegSize,
-            IntPtr[] dstPlanes,
-            int width,
-            int[] strides,
-            int height,
-            int flags)
+        public static int TjDecompressToYUVPlanes(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, IntPtr[] dstPlanes, int width, int[] strides, int height, int flags)
         {
             switch(IntPtr.Size)
             {

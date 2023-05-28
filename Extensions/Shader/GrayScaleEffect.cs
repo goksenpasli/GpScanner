@@ -10,9 +10,6 @@ namespace Extensions;
 /// </summary>
 public class GrayScaleEffect : ShaderEffect
 {
-    public static readonly DependencyProperty InputProperty =
-        RegisterPixelShaderSamplerProperty("Input", typeof(GrayScaleEffect), 0);
-
     public GrayScaleEffect()
     {
         PixelShader = new PixelShader { UriSource = new Uri("/Extensions;component/Shader/GrayScaleEffect.ps", UriKind.Relative) };
@@ -21,4 +18,7 @@ public class GrayScaleEffect : ShaderEffect
     }
 
     public Brush Input { get => (Brush)GetValue(InputProperty); set => SetValue(InputProperty, value); }
+
+    public static readonly DependencyProperty InputProperty =
+        RegisterPixelShaderSamplerProperty("Input", typeof(GrayScaleEffect), 0);
 }

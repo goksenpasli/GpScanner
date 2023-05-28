@@ -10,13 +10,6 @@ namespace Extensions;
 
 public static class DragDropExtension
 {
-    public static readonly DependencyProperty ScrollOnDragDropProperty =
-        DependencyProperty.RegisterAttached(
-        "ScrollOnDragDrop",
-        typeof(bool),
-        typeof(DragDropExtension),
-        new PropertyMetadata(false, HandleScrollOnDragDropChanged));
-
     public static IEnumerable<T> FindVisualChildren<T>(this DependencyObject parent) where T : DependencyObject
     {
         return parent == null ? throw new ArgumentNullException(nameof(parent)) : FindChildren();
@@ -125,4 +118,7 @@ public static class DragDropExtension
     private static void Subscribe(FrameworkElement container) { container.PreviewDragOver += OnContainerPreviewDragOver; }
 
     private static void Unsubscribe(FrameworkElement container) { container.PreviewDragOver -= OnContainerPreviewDragOver; }
+
+    public static readonly DependencyProperty ScrollOnDragDropProperty =
+        DependencyProperty.RegisterAttached("ScrollOnDragDrop", typeof(bool), typeof(DragDropExtension), new PropertyMetadata(false, HandleScrollOnDragDropChanged));
 }

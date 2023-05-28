@@ -8,16 +8,16 @@ namespace TwainWpf.TwainNative
     /// </summary>
     public class CapabilityEnumValue
     {
-        public TwainType TwainType { get; set; }
-
-        public int ItemCount { get; set; }
-
         public int CurrentIndex { get; set; }
 
         public int DefaultIndex { get; set; }
 
-#pragma warning disable 169
-
 #pragma warning restore 169
+
+        public int ItemCount { get; set; }
+
+        public TwainType TwainType { get; set; }
+
+#pragma warning disable 169
     }
 }

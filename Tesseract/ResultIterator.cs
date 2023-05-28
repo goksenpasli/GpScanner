@@ -7,6 +7,10 @@ namespace Tesseract
 {
     public sealed class ResultIterator : PageIterator
     {
+        internal ResultIterator(Page page, IntPtr handle) : base(page, handle)
+        {
+        }
+
         /// <summary>
         /// Gets an instance of a choice iterator using the current symbol of interest. The ChoiceIterator allows a one-
         /// shot iteration over the choices for this symbol and after that is is useless.
@@ -100,10 +104,6 @@ namespace Tesseract
         {
             VerifyNotDisposed();
             return handle.Handle == IntPtr.Zero ? null : TessApi.ResultIteratorWordRecognitionLanguage(handle);
-        }
-
-        internal ResultIterator(Page page, IntPtr handle) : base(page, handle)
-        {
         }
 
         private readonly Dictionary<int, FontInfo> _fontInfoCache = new Dictionary<int, FontInfo>();

@@ -42,6 +42,18 @@ namespace TwainWpf.TwainNative
 
         ~TwainCapability() { Dispose(false); }
 
+        public void Dispose() { Dispose(true); }
+
+        public static TwainCapability From<TValue>(Capabilities capabilities, TValue value)
+        {
+            ContainerType containerType;
+            Type structType = typeof(TValue);
+
+            containerType = structType == typeof(CapabilityOneValue) ? ContainerType.One : throw new NotSupportedException($"Unsupported type: {structType}");
+
+            return new TwainCapability(capabilities, containerType, value);
+        }
+
         public void ReadBackValue()
         {
             IntPtr p = Kernel32Native.GlobalLock(_handle);
@@ -54,18 +66,6 @@ namespace TwainWpf.TwainNative
                 _ = Kernel32Native.GlobalUnlock(_handle);
             }
         }
-
-        public static TwainCapability From<TValue>(Capabilities capabilities, TValue value)
-        {
-            ContainerType containerType;
-            Type structType = typeof(TValue);
-
-            containerType = structType == typeof(CapabilityOneValue) ? ContainerType.One : throw new NotSupportedException($"Unsupported type: {structType}");
-
-            return new TwainCapability(capabilities, containerType, value);
-        }
-
-        public void Dispose() { Dispose(true); }
 
         protected virtual void Dispose(bool disposing)
         {

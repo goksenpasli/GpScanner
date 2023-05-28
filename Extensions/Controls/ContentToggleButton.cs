@@ -5,6 +5,22 @@ namespace Extensions;
 
 public class ContentToggleButton : ToggleButton
 {
+    static ContentToggleButton() { DefaultStyleKeyProperty.OverrideMetadata(typeof(ContentToggleButton), new FrameworkPropertyMetadata(typeof(ContentToggleButton))); }
+
+    public override string ToString() { return Content?.ToString(); }
+
+    public double ContentHorizontalOffset { get => (double)GetValue(ContentHorizontalOffsetProperty); set => SetValue(ContentHorizontalOffsetProperty, value); }
+
+    public double ContentVerticalOffset { get => (double)GetValue(ContentVerticalOffsetProperty); set => SetValue(ContentVerticalOffsetProperty, value); }
+
+    public CornerRadius CornerRadius { get => (CornerRadius)GetValue(CornerRadiusProperty); set => SetValue(CornerRadiusProperty, value); }
+
+    public object OverContent { get => GetValue(OverContentProperty); set => SetValue(OverContentProperty, value); }
+
+    public PlacementMode PlacementMode { get => (PlacementMode)GetValue(PlacementModeProperty); set => SetValue(PlacementModeProperty, value); }
+
+    public bool StaysOpen { get => (bool)GetValue(StaysOpenProperty); set => SetValue(StaysOpenProperty, value); }
+
     public static readonly DependencyProperty ContentHorizontalOffsetProperty =
         DependencyProperty.Register("ContentHorizontalOffset", typeof(double), typeof(ContentToggleButton), new PropertyMetadata(0d));
 
@@ -34,21 +50,4 @@ public class ContentToggleButton : ToggleButton
         typeof(bool),
         typeof(ContentToggleButton),
         new PropertyMetadata(false));
-
-    static ContentToggleButton()
-    { DefaultStyleKeyProperty.OverrideMetadata(typeof(ContentToggleButton), new FrameworkPropertyMetadata(typeof(ContentToggleButton))); }
-
-    public double ContentHorizontalOffset { get => (double)GetValue(ContentHorizontalOffsetProperty); set => SetValue(ContentHorizontalOffsetProperty, value); }
-
-    public double ContentVerticalOffset { get => (double)GetValue(ContentVerticalOffsetProperty); set => SetValue(ContentVerticalOffsetProperty, value); }
-
-    public CornerRadius CornerRadius { get => (CornerRadius)GetValue(CornerRadiusProperty); set => SetValue(CornerRadiusProperty, value); }
-
-    public object OverContent { get => GetValue(OverContentProperty); set => SetValue(OverContentProperty, value); }
-
-    public PlacementMode PlacementMode { get => (PlacementMode)GetValue(PlacementModeProperty); set => SetValue(PlacementModeProperty, value); }
-
-    public bool StaysOpen { get => (bool)GetValue(StaysOpenProperty); set => SetValue(StaysOpenProperty, value); }
-
-    public override string ToString() { return Content?.ToString(); }
 }

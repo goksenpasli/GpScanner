@@ -7,7 +7,7 @@ namespace Tesseract.Internal.InteropDotNet
 {
     public sealed class LibraryLoader
     {
-        public string CustomSearchPath { get; set; }
+        private LibraryLoader(ILibraryLoaderLogic logic) { this.logic = logic; }
 
         public bool FreeLibrary(string fileName)
         {
@@ -89,13 +89,7 @@ namespace Tesseract.Internal.InteropDotNet
             }
         }
 
-        private readonly Dictionary<string, IntPtr> loadedAssemblies = new Dictionary<string, IntPtr>();
-
-        private readonly ILibraryLoaderLogic logic;
-
-        private readonly object syncLock = new object();
-
-        private LibraryLoader(ILibraryLoaderLogic logic) { this.logic = logic; }
+        public string CustomSearchPath { get; set; }
 
         private IntPtr CheckCurrentAppDomain(string fileName, string platformName)
         {
@@ -121,11 +115,7 @@ namespace Tesseract.Internal.InteropDotNet
             string baseDirectory = Path.Combine(Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory), "bin");
             if(Directory.Exists(baseDirectory))
             {
-                Logger.TraceInformation(
-                    "Checking current application domain's bin location '{0}' for '{1}' on platform {2}.",
-                    baseDirectory,
-                    fileName,
-                    platformName);
+                Logger.TraceInformation("Checking current application domain's bin location '{0}' for '{1}' on platform {2}.", baseDirectory, fileName, platformName);
                 return InternalLoadLibrary(baseDirectory, platformName, fileName);
             }
 
@@ -174,6 +164,12 @@ namespace Tesseract.Internal.InteropDotNet
             return File.Exists(fullPath) ? logic.LoadLibrary(fullPath) : IntPtr.Zero;
         }
 
+        private readonly Dictionary<string, IntPtr> loadedAssemblies = new Dictionary<string, IntPtr>();
+
+        private readonly ILibraryLoaderLogic logic;
+
+        private readonly object syncLock = new object();
+
         #region Singleton
         public static LibraryLoader Instance
         {
@@ -208,6 +204,6 @@ namespace Tesseract.Internal.InteropDotNet
         }
 
         private static LibraryLoader instance;
-        #endregion Singleton
+    #endregion Singleton
     }
 }

@@ -8,11 +8,6 @@ namespace TwainWpf
     /// </summary>
     public class PageSettings : INotifyPropertyChanged
     {
-        /// <summary>
-        /// Default Page setup - A4 Letter and Portrait orientation
-        /// </summary>
-        public static readonly PageSettings Default = new PageSettings() { Size = PageType.UsLetter, Orientation = Orientation.Default };
-
         public PageSettings()
         {
             Size = PageType.UsLetter;
@@ -55,6 +50,11 @@ namespace TwainWpf
             }
         }
 
+        /// <summary>
+        /// Default Page setup - A4 Letter and Portrait orientation
+        /// </summary>
+        public static readonly PageSettings Default = new PageSettings() { Size = PageType.UsLetter, Orientation = Orientation.Default };
+
         private Orientation _orientation;
 
         private PageType _size;
@@ -64,7 +64,10 @@ namespace TwainWpf
         {
         };
 
-        protected void OnPropertyChanged(string propertyName) { PropertyChanged(this, new PropertyChangedEventArgs(propertyName)); }
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
         #endregion INotifyPropertyChanged Members
     }
 }

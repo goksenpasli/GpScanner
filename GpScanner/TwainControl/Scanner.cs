@@ -15,10 +15,15 @@ namespace TwainControl;
 
 public class Scanner : InpcBase, IDataErrorInfo
 {
-    public static readonly Brush DefaultSaveProgressforegroundbrush =
-        (Brush)new BrushConverter().ConvertFromString("#FF06B025");
-
     public Scanner() { PropertyChanged += Scanner_PropertyChanged; }
+
+    public string this[string columnName] => columnName switch
+    {
+        "FileName" when string.IsNullOrWhiteSpace(FileName) => "Dosya Adını Boş Geçmeyin.",
+        "FileName" when FileName.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0 => "Dosya Adında Hatalı Karakter Var Düzeltin.",
+        "ProfileName" when string.IsNullOrWhiteSpace(ProfileName) => "Profil Adını Boş Geçmeyin.",
+        _ => null
+    };
 
     public bool AllowCopy
     {
@@ -1046,13 +1051,16 @@ public class Scanner : InpcBase, IDataErrorInfo
         }
     }
 
-    public string this[string columnName] => columnName switch
+    private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        "FileName" when string.IsNullOrWhiteSpace(FileName) => "Dosya Adını Boş Geçmeyin.",
-        "FileName" when FileName.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0 => "Dosya Adında Hatalı Karakter Var Düzeltin.",
-        "ProfileName" when string.IsNullOrWhiteSpace(ProfileName) => "Profil Adını Boş Geçmeyin.",
-        _ => null
-    };
+        if(e.PropertyName is "PdfSaveProgressValue" && PdfSaveProgressValue == 1)
+        {
+            ProgressState = TaskbarItemProgressState.None;
+        }
+    }
+
+    public static readonly Brush DefaultSaveProgressforegroundbrush =
+        (Brush)new BrushConverter().ConvertFromString("#FF06B025");
 
     private bool allowCopy = true;
 
@@ -1148,8 +1156,6 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     private string saveFileName;
 
-    private Brush saveProgressBarForegroundBrush = DefaultSaveProgressforegroundbrush;
-
     private bool saveProgressIndeterminate;
 
     private bool seçili;
@@ -1198,11 +1204,5 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     private double watermarkTextSize = 64;
 
-    private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
-    {
-        if(e.PropertyName is "PdfSaveProgressValue" && PdfSaveProgressValue == 1)
-        {
-            ProgressState = TaskbarItemProgressState.None;
-        }
-    }
+    private Brush saveProgressBarForegroundBrush = DefaultSaveProgressforegroundbrush;
 }

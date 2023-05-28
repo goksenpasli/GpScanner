@@ -13,51 +13,52 @@ namespace TwainWpf
             _messageHook = messageHook;
         }
 
-        public bool PaperDetectable
+        ~DataSource() { Dispose(false); }
+
+        public void Close()
         {
-            get
+            if(SourceId.Id != 0)
             {
                 try
                 {
-                    return Capability.GetBoolCapability(Capabilities.FeederLoaded, _applicationId, SourceId);
+                    UserInterface userInterface = new UserInterface();
+
+                    TwainResult result = Twain32Native.DsUserInterface(
+                        _applicationId,
+                        SourceId,
+                        DataGroup.Control,
+                        DataArgumentType.UserInterface,
+                        Message.DisableDS,
+                        userInterface);
+
+                    if(result != TwainResult.Failure)
+                    {
+                        result = Twain32Native.DsmIdentity(_applicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Identity, Message.CloseDS, SourceId);
+                    }
                 } catch
                 {
-                    return false;
                 }
             }
         }
 
-        public Identity SourceId { get; }
-
-        public bool SupportsDuplex
+        public void Dispose()
         {
-            get
-            {
-                try
-                {
-                    Capability cap = new Capability(Capabilities.Duplex, TwainType.Int16, _applicationId, SourceId);
-                    return ((Duplex)cap.GetBasicValue().Int16Value) != Duplex.None;
-                } catch
-                {
-                    return false;
-                }
-            }
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
-        public bool SupportsFilmScanner
+        public bool Enable(ScanSettings settings)
         {
-            get
-            {
-                try
-                {
-                    Capability cap = new Capability(Capabilities.Lightpath, TwainType.Int16, _applicationId, SourceId);
+            UserInterface ui = new UserInterface { ShowUI = (short)(settings.ShowTwainUi ? 1 : 0), ModalUI = 1, ParentHand = _messageHook.WindowHandle };
 
-                    return true;
-                } catch
-                {
-                    return false;
-                }
+            TwainResult result = Twain32Native.DsUserInterface(_applicationId, SourceId, DataGroup.Control, DataArgumentType.UserInterface, Message.EnableDS, ui);
+
+            if(result != TwainResult.Success)
+            {
+                Dispose();
+                return false;
             }
+            return true;
         }
 
         public static List<DataSource> GetAllSources(Identity applicationId, IWindowsMessageHook messageHook)
@@ -96,101 +97,6 @@ namespace TwainWpf
             return sources;
         }
 
-        public static DataSource GetDefault(Identity applicationId, IWindowsMessageHook messageHook)
-        {
-            Identity defaultSourceId = new Identity();
-
-            TwainResult result = Twain32Native.DsmIdentity(
-                applicationId,
-                IntPtr.Zero,
-                DataGroup.Control,
-                DataArgumentType.Identity,
-                Message.GetDefault,
-                defaultSourceId);
-
-            if(result != TwainResult.Success)
-            {
-                ConditionCode status = DataSourceManager.GetConditionCode(applicationId, null);
-                throw new TwainException($"Error getting information about the default source: {result}", result, status);
-            }
-
-            return new DataSource(applicationId, defaultSourceId, messageHook);
-        }
-
-        public static DataSource GetSource(string sourceProductName, Identity applicationId, IWindowsMessageHook messageHook)
-        {
-            foreach(DataSource source in GetAllSources(applicationId, messageHook))
-            {
-                if(sourceProductName.Equals(source.SourceId.ProductName, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    return source;
-                }
-            }
-
-            return null;
-        }
-
-        public static DataSource UserSelected(Identity applicationId, IWindowsMessageHook messageHook)
-        {
-            Identity defaultSourceId = new Identity();
-
-            _ = Twain32Native.DsmIdentity(applicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Identity, Message.UserSelect, defaultSourceId);
-
-            return new DataSource(applicationId, defaultSourceId, messageHook);
-        }
-
-        public void Close()
-        {
-            if(SourceId.Id != 0)
-            {
-                try
-                {
-                    UserInterface userInterface = new UserInterface();
-
-                    TwainResult result = Twain32Native.DsUserInterface(
-                        _applicationId,
-                        SourceId,
-                        DataGroup.Control,
-                        DataArgumentType.UserInterface,
-                        Message.DisableDS,
-                        userInterface);
-
-                    if(result != TwainResult.Failure)
-                    {
-                        result = Twain32Native.DsmIdentity(_applicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Identity, Message.CloseDS, SourceId);
-                    }
-                } catch
-                {
-                }
-            }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        public bool Enable(ScanSettings settings)
-        {
-            UserInterface ui = new UserInterface { ShowUI = (short)(settings.ShowTwainUi ? 1 : 0), ModalUI = 1, ParentHand = _messageHook.WindowHandle };
-
-            TwainResult result = Twain32Native.DsUserInterface(
-                _applicationId,
-                SourceId,
-                DataGroup.Control,
-                DataArgumentType.UserInterface,
-                Message.EnableDS,
-                ui);
-
-            if(result != TwainResult.Success)
-            {
-                Dispose();
-                return false;
-            }
-            return true;
-        }
-
         public short GetBitDepth(ScanSettings scanSettings)
         {
             switch(scanSettings.Resolution.ColourSetting)
@@ -208,6 +114,21 @@ namespace TwainWpf
             throw new NotImplementedException();
         }
 
+        public static DataSource GetDefault(Identity applicationId, IWindowsMessageHook messageHook)
+        {
+            Identity defaultSourceId = new Identity();
+
+            TwainResult result = Twain32Native.DsmIdentity(applicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Identity, Message.GetDefault, defaultSourceId);
+
+            if(result != TwainResult.Success)
+            {
+                ConditionCode status = DataSourceManager.GetConditionCode(applicationId, null);
+                throw new TwainException($"Error getting information about the default source: {result}", result, status);
+            }
+
+            return new DataSource(applicationId, defaultSourceId, messageHook);
+        }
+
         public PixelType GetPixelType(ScanSettings scanSettings)
         {
             switch(scanSettings.Resolution.ColourSetting)
@@ -223,6 +144,19 @@ namespace TwainWpf
             }
 
             throw new NotImplementedException();
+        }
+
+        public static DataSource GetSource(string sourceProductName, Identity applicationId, IWindowsMessageHook messageHook)
+        {
+            foreach(DataSource source in GetAllSources(applicationId, messageHook))
+            {
+                if(sourceProductName.Equals(source.SourceId.ProductName, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return source;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -352,12 +286,7 @@ namespace TwainWpf
                 Capability cap = new Capability(Capabilities.Orientation, TwainType.Int16, _applicationId, SourceId);
                 if((Orientation)cap.GetBasicValue().Int16Value != Orientation.Default)
                 {
-                    _ = Capability.SetBasicCapability(
-                        Capabilities.Orientation,
-                        (ushort)scanSettings.Page.Orientation,
-                        TwainType.UInt16,
-                        _applicationId,
-                        SourceId);
+                    _ = Capability.SetBasicCapability(Capabilities.Orientation, (ushort)scanSettings.Page.Orientation, TwainType.UInt16, _applicationId, SourceId);
                 }
             } catch
             {
@@ -475,6 +404,62 @@ namespace TwainWpf
             }
         }
 
+        public static DataSource UserSelected(Identity applicationId, IWindowsMessageHook messageHook)
+        {
+            Identity defaultSourceId = new Identity();
+
+            _ = Twain32Native.DsmIdentity(applicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Identity, Message.UserSelect, defaultSourceId);
+
+            return new DataSource(applicationId, defaultSourceId, messageHook);
+        }
+
+        public bool PaperDetectable
+        {
+            get
+            {
+                try
+                {
+                    return Capability.GetBoolCapability(Capabilities.FeederLoaded, _applicationId, SourceId);
+                } catch
+                {
+                    return false;
+                }
+            }
+        }
+
+        public Identity SourceId { get; }
+
+        public bool SupportsDuplex
+        {
+            get
+            {
+                try
+                {
+                    Capability cap = new Capability(Capabilities.Duplex, TwainType.Int16, _applicationId, SourceId);
+                    return ((Duplex)cap.GetBasicValue().Int16Value) != Duplex.None;
+                } catch
+                {
+                    return false;
+                }
+            }
+        }
+
+        public bool SupportsFilmScanner
+        {
+            get
+            {
+                try
+                {
+                    Capability cap = new Capability(Capabilities.Lightpath, TwainType.Int16, _applicationId, SourceId);
+
+                    return true;
+                } catch
+                {
+                    return false;
+                }
+            }
+        }
+
         protected void Dispose(bool disposing)
         {
             if(disposing)
@@ -482,12 +467,6 @@ namespace TwainWpf
                 Close();
             }
         }
-
-        private readonly Identity _applicationId;
-
-        private readonly IWindowsMessageHook _messageHook;
-
-        ~DataSource() { Dispose(false); }
 
         private bool NegotiateArea(ScanSettings scanSettings)
         {
@@ -518,5 +497,9 @@ namespace TwainWpf
 
             return result != TwainResult.Success ? throw new TwainException("DsImageLayout.GetDefault error", result) : true;
         }
+
+        private readonly Identity _applicationId;
+
+        private readonly IWindowsMessageHook _messageHook;
     }
 }

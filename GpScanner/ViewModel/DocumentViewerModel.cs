@@ -196,6 +196,15 @@ public class DocumentViewerModel : InpcBase
         }
     }
 
+    private async void DocumentViewerModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if(e.PropertyName is "ImgData" && ImgData is not null && !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang))
+        {
+            ObservableCollection<Ocr.OcrData> ocrtext = await Ocr.Ocr.OcrAsyc(ImgData, Settings.Default.DefaultTtsLang);
+            OcrText = string.Join(" ", ocrtext?.Select(z => z.Text));
+        }
+    }
+
     private IEnumerable<string> directoryAllPdfFiles;
 
     private byte[] ımgData;
@@ -211,13 +220,4 @@ public class DocumentViewerModel : InpcBase
     private Scanner scanner;
 
     private string title;
-
-    private async void DocumentViewerModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
-    {
-        if(e.PropertyName is "ImgData" && ImgData is not null && !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang))
-        {
-            ObservableCollection<Ocr.OcrData> ocrtext = await Ocr.Ocr.OcrAsyc(ImgData, Settings.Default.DefaultTtsLang);
-            OcrText = string.Join(" ", ocrtext?.Select(z => z.Text));
-        }
-    }
 }

@@ -14,21 +14,6 @@ namespace TwainWpf
     public class ResolutionSettings : INotifyPropertyChanged
     {
         /// <summary>
-        /// Colour photocopier quality resolution.
-        /// </summary>
-        public static readonly ResolutionSettings ColourPhotocopier = new ResolutionSettings() { Dpi = 300, ColourSetting = ColourSetting.Colour };
-
-        /// <summary>
-        /// Fax quality resolution.
-        /// </summary>
-        public static readonly ResolutionSettings Fax = new ResolutionSettings() { Dpi = 200, ColourSetting = ColourSetting.BlackAndWhite };
-
-        /// <summary>
-        /// Photocopier quality resolution.
-        /// </summary>
-        public static readonly ResolutionSettings Photocopier = new ResolutionSettings() { Dpi = 300, ColourSetting = ColourSetting.GreyScale };
-
-        /// <summary>
         /// The colour settings to use.
         /// </summary>
         public ColourSetting ColourSetting
@@ -62,6 +47,21 @@ namespace TwainWpf
             }
         }
 
+        /// <summary>
+        /// Colour photocopier quality resolution.
+        /// </summary>
+        public static readonly ResolutionSettings ColourPhotocopier = new ResolutionSettings() { Dpi = 300, ColourSetting = ColourSetting.Colour };
+
+        /// <summary>
+        /// Fax quality resolution.
+        /// </summary>
+        public static readonly ResolutionSettings Fax = new ResolutionSettings() { Dpi = 200, ColourSetting = ColourSetting.BlackAndWhite };
+
+        /// <summary>
+        /// Photocopier quality resolution.
+        /// </summary>
+        public static readonly ResolutionSettings Photocopier = new ResolutionSettings() { Dpi = 300, ColourSetting = ColourSetting.GreyScale };
+
         private ColourSetting _colourSettings;
 
         private int? _dpi;
@@ -71,7 +71,10 @@ namespace TwainWpf
         {
         };
 
-        protected void OnPropertyChanged(string propertyName) { PropertyChanged(this, new PropertyChangedEventArgs(propertyName)); }
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
         #endregion INotifyPropertyChanged Members
     }
 }

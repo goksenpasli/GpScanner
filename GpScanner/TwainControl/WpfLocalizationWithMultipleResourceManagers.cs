@@ -15,8 +15,6 @@ public class LocExtension : MarkupExtension
 {
     public LocExtension(string stringName) { StringName = stringName; }
 
-    public string StringName { get; }
-
     public override object ProvideValue(IServiceProvider serviceProvider)
     {
         object targetObject = (serviceProvider as IProvideValueTarget)?.TargetObject;
@@ -50,6 +48,8 @@ public class LocExtension : MarkupExtension
         return binding.ProvideValue(serviceProvider);
     }
 
+    public string StringName { get; }
+
     private ResourceManager GetResourceManager(object control)
     {
         if(control is DependencyObject dependencyObject)
@@ -70,11 +70,7 @@ public class LocExtension : MarkupExtension
 
 public class Translation : DependencyObject
 {
-    public static readonly DependencyProperty ResourceManagerProperty =
-        DependencyProperty.RegisterAttached("ResourceManager", typeof(ResourceManager), typeof(Translation));
-
-    public static ResourceManager GetResourceManager(DependencyObject dependencyObject)
-    { return (ResourceManager)dependencyObject.GetValue(ResourceManagerProperty); }
+    public static ResourceManager GetResourceManager(DependencyObject dependencyObject) { return (ResourceManager)dependencyObject.GetValue(ResourceManagerProperty); }
 
     public static string GetResStringValue(string resdata)
     {
@@ -83,30 +79,15 @@ public class Translation : DependencyObject
             : Resources.ResourceManager.GetString(resdata, TranslationSource.Instance.CurrentCulture);
     }
 
-    public static void SetResourceManager(DependencyObject dependencyObject, ResourceManager value)
-    { dependencyObject.SetValue(ResourceManagerProperty, value); }
+    public static void SetResourceManager(DependencyObject dependencyObject, ResourceManager value) { dependencyObject.SetValue(ResourceManagerProperty, value); }
+
+    public static readonly DependencyProperty ResourceManagerProperty =
+        DependencyProperty.RegisterAttached("ResourceManager", typeof(ResourceManager), typeof(Translation));
 }
 
 public class TranslationSource : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler PropertyChanged;
-
-    public static TranslationSource Instance { get; } = new();
-
-    public CultureInfo CurrentCulture
-    {
-        get => currentCulture;
-
-        set
-        {
-            if(currentCulture != value)
-            {
-                currentCulture = value;
-
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(string.Empty));
-            }
-        }
-    }
 
     public string this[string key]
     {
@@ -123,12 +104,6 @@ public class TranslationSource : INotifyPropertyChanged
         }
     }
 
-    public static Tuple<string, string> SplitName(string name)
-    {
-        int idx = name.LastIndexOf('.');
-        return Tuple.Create(name.Substring(0, idx), name.Substring(idx + 1));
-    }
-
     public void AddResourceManager(ResourceManager resourceManager)
     {
         if(!resourceManagerDictionary.ContainsKey(resourceManager.BaseName))
@@ -137,7 +112,30 @@ public class TranslationSource : INotifyPropertyChanged
         }
     }
 
-    private readonly Dictionary<string, ResourceManager> resourceManagerDictionary = new();
+    public static Tuple<string, string> SplitName(string name)
+    {
+        int idx = name.LastIndexOf('.');
+        return Tuple.Create(name.Substring(0, idx), name.Substring(idx + 1));
+    }
+
+    public CultureInfo CurrentCulture
+    {
+        get => currentCulture;
+
+        set
+        {
+            if(currentCulture != value)
+            {
+                currentCulture = value;
+
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(string.Empty));
+            }
+        }
+    }
+
+    public static TranslationSource Instance { get; } = new();
 
     private CultureInfo currentCulture = CultureInfo.InstalledUICulture;
+
+    private readonly Dictionary<string, ResourceManager> resourceManagerDictionary = new();
 }

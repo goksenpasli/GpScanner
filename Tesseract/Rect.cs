@@ -6,6 +6,13 @@ namespace Tesseract
     {
         public static readonly Rect Empty = new Rect();
 
+        #region ToString
+        public override string ToString()
+        {
+            return $"[Rect X={X1}, Y={Y1}, Width={Width}, Height={Height}]";
+        }
+        #endregion ToString
+
         #region Constructors + Factory Methods
         public Rect(int x, int y, int width, int height)
         {
@@ -15,7 +22,10 @@ namespace Tesseract
             Height = height;
         }
 
-        public static Rect FromCoords(int x1, int y1, int x2, int y2) { return new Rect(x1, y1, x2 - x1, y2 - y1); }
+        public static Rect FromCoords(int x1, int y1, int x2, int y2)
+        {
+            return new Rect(x1, y1, x2 - x1, y2 - y1);
+        }
         #endregion Constructors + Factory Methods
 
         #region Properties
@@ -61,9 +71,5 @@ namespace Tesseract
             return hashCode;
         }
         #endregion Equals and GetHashCode implementation
-
-        #region ToString
-        public override string ToString() { return $"[Rect X={X1}, Y={Y1}, Width={Width}, Height={Height}]"; }
-        #endregion ToString
     }
 }

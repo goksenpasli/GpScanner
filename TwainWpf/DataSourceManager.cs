@@ -12,26 +12,6 @@ namespace TwainWpf
     /// <seealso cref="IDisposable"/>
     public class DataSourceManager : IDisposable
     {
-        public static readonly Identity DefaultApplicationId = new Identity()
-        {
-            Id = BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0),
-            Version =
-                new TwainVersion()
-                {
-                    MajorNum = 1,
-                    MinorNum = 1,
-                    Language = Language.USA,
-                    Country = Country.USA,
-                    Info = Assembly.GetExecutingAssembly().FullName
-                },
-            ProtocolMajor = TwainConstants.ProtocolMajor,
-            ProtocolMinor = TwainConstants.ProtocolMinor,
-            SupportedGroups = (int)(DataGroup.Image | DataGroup.Control),
-            Manufacturer = "TwainDotNet",
-            ProductFamily = "TwainDotNet",
-            ProductName = "TwainDotNet",
-        };
-
         public DataSourceManager(Identity applicationId, IWindowsMessageHook messageHook)
         {
             ApplicationId = applicationId.Clone();
@@ -49,18 +29,14 @@ namespace TwainWpf
 
             _eventMessage.EventPtr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(WindowsMessage)));
 
-            TwainResult result = Twain32Native.DsmParent(
-                ApplicationId,
-                IntPtr.Zero,
-                DataGroup.Control,
-                DataArgumentType.Parent,
-                Message.OpenDSM,
-                ref windowHandle);
+            TwainResult result = Twain32Native.DsmParent(ApplicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Parent, Message.OpenDSM, ref windowHandle);
 
             DataSource = result == TwainResult.Success
                 ? DataSource.GetDefault(ApplicationId, MessageHook)
                 : throw new TwainException($"Error initialising DSM: {result}", result);
         }
+
+        ~DataSourceManager() { Dispose(false); }
 
         /// <summary>
         /// Notification that the scanning has completed.
@@ -69,11 +45,23 @@ namespace TwainWpf
 
         public event EventHandler<TransferImageEventArgs> TransferImage;
 
-        public Identity ApplicationId { get; }
+        internal void CloseDsAndCompleteScanning(Exception exception)
+        {
+            EndingScan();
+            DataSource.Close();
+            try
+            {
+                ScanningComplete?.Invoke(this, new ScanningCompleteEventArgs(exception));
+            } catch
+            {
+            }
+        }
 
-        public DataSource DataSource { get; private set; }
-
-        public IWindowsMessageHook MessageHook { get; }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
         public static ConditionCode GetConditionCode(Identity applicationId, Identity sourceId)
         {
@@ -82,12 +70,6 @@ namespace TwainWpf
             _ = Twain32Native.DsmStatus(applicationId, sourceId, DataGroup.Control, DataArgumentType.Status, Message.Get, status);
 
             return status.ConditionCode;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         public void SelectSource()
@@ -124,17 +106,11 @@ namespace TwainWpf
             }
         }
 
-        internal void CloseDsAndCompleteScanning(Exception exception)
-        {
-            EndingScan();
-            DataSource.Close();
-            try
-            {
-                ScanningComplete?.Invoke(this, new ScanningCompleteEventArgs(exception));
-            } catch
-            {
-            }
-        }
+        public Identity ApplicationId { get; }
+
+        public DataSource DataSource { get; private set; }
+
+        public IWindowsMessageHook MessageHook { get; }
 
         protected virtual void Dispose(bool disposing)
         {
@@ -296,18 +272,22 @@ namespace TwainWpf
                 } while (pendingTransfer.Count != 0);
             } finally
             {
-                _ = Twain32Native.DsPendingTransfer(
-                    ApplicationId,
-                    DataSource.SourceId,
-                    DataGroup.Control,
-                    DataArgumentType.PendingXfers,
-                    Message.Reset,
-                    pendingTransfer);
+                _ = Twain32Native.DsPendingTransfer(ApplicationId, DataSource.SourceId, DataGroup.Control, DataArgumentType.PendingXfers, Message.Reset, pendingTransfer);
             }
         }
 
-        private Event _eventMessage;
+        public static readonly Identity DefaultApplicationId = new Identity()
+        {
+            Id = BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0),
+            Version = new TwainVersion() { MajorNum = 1, MinorNum = 1, Language = Language.USA, Country = Country.USA, Info = Assembly.GetExecutingAssembly().FullName },
+            ProtocolMajor = TwainConstants.ProtocolMajor,
+            ProtocolMinor = TwainConstants.ProtocolMinor,
+            SupportedGroups = (int)(DataGroup.Image | DataGroup.Control),
+            Manufacturer = "TwainDotNet",
+            ProductFamily = "TwainDotNet",
+            ProductName = "TwainDotNet",
+        };
 
-        ~DataSourceManager() { Dispose(false); }
+        private Event _eventMessage;
     }
 }

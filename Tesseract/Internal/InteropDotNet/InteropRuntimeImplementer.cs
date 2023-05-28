@@ -63,10 +63,7 @@ namespace Tesseract.Internal.InteropDotNet
 
         private static void ImplementConstructor(TypeBuilder typeBuilder, MethodItem[] methods)
         {
-            ConstructorBuilder ctorBuilder = typeBuilder.DefineConstructor(
-                MethodAttributes.Public,
-                CallingConventions.Standard,
-                new[] { typeof(LibraryLoader) });
+            ConstructorBuilder ctorBuilder = typeBuilder.DefineConstructor(MethodAttributes.Public, CallingConventions.Standard, new[] { typeof(LibraryLoader) });
             _ = ctorBuilder.DefineParameter(1, ParameterAttributes.HasDefault, "loader");
             if(typeBuilder.BaseType == null)
             {
@@ -247,12 +244,7 @@ namespace Tesseract.Internal.InteropDotNet
         #endregion Main steps
 
         #region Reflection and emit helpers
-        private static MethodBuilder DefineMethod(
-            TypeBuilder typeBuilder,
-            string name,
-            MethodAttributes attributes,
-            Type returnType,
-            LightParameterInfo[] infoArray)
+        private static MethodBuilder DefineMethod(TypeBuilder typeBuilder, string name, MethodAttributes attributes, Type returnType, LightParameterInfo[] infoArray)
         {
             MethodBuilder methodBuilder =
                 typeBuilder.DefineMethod(name, attributes, returnType, GetParameterTypeArray(infoArray));

@@ -10,15 +10,6 @@ namespace Extensions;
 /// </summary>
 public class BlackWhiteEffect : ShaderEffect
 {
-    public static readonly DependencyProperty InputProperty =
-        RegisterPixelShaderSamplerProperty("Input", typeof(BlackWhiteEffect), 0);
-
-    public static readonly DependencyProperty ThresholdProperty = DependencyProperty.Register(
-        "Threshold",
-        typeof(double),
-        typeof(BlackWhiteEffect),
-        new UIPropertyMetadata(0.6D, PixelShaderConstantCallback(1)));
-
     public BlackWhiteEffect()
     {
         PixelShader = new PixelShader { UriSource = new Uri("/Extensions;component/Shader/BlackWhiteEffect.ps", UriKind.Relative) };
@@ -33,4 +24,13 @@ public class BlackWhiteEffect : ShaderEffect
     /// The Threshold value to convert pixel from black to white.
     /// </summary>
     public double Threshold { get => (double)GetValue(ThresholdProperty); set => SetValue(ThresholdProperty, value); }
+
+    public static readonly DependencyProperty InputProperty =
+        RegisterPixelShaderSamplerProperty("Input", typeof(BlackWhiteEffect), 0);
+
+    public static readonly DependencyProperty ThresholdProperty = DependencyProperty.Register(
+        "Threshold",
+        typeof(double),
+        typeof(BlackWhiteEffect),
+        new UIPropertyMetadata(0.6D, PixelShaderConstantCallback(1)));
 }

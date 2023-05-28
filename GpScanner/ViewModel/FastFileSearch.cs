@@ -37,42 +37,6 @@ public static class Win32FileScanner
     /// <param name="maxDepth">Maximum folder depth to recurse. Set -1 to disable max depth.</param>
     public static IEnumerable<string> EnumerateFilepaths(string path, int maxDepth = -1) { return ScanRecursiveFilepath(Path.GetFullPath(path), maxDepth, 0); }
 
-    private static readonly IntPtr invalidHandle = new(-1);
-
-    [StructLayout(LayoutKind.Sequential)]
-    private readonly struct FileTime
-    {
-        public readonly uint dwLowDateTime;
-
-        public readonly uint dwHighDateTime;
-    }
-
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-    private readonly struct Win32FindData
-    {
-        public readonly FileAttributes dwFileAttributes;
-
-        public readonly FileTime ftCreationTime;
-
-        public readonly FileTime ftLastAccessTime;
-
-        public readonly FileTime ftLastWriteTime;
-
-        public readonly uint nFileSizeHigh;
-
-        public readonly uint nFileSizeLow;
-
-        public readonly uint dwReserved0;
-
-        public readonly uint dwReserved1;
-
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
-        public readonly string cFileName;
-
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 14)]
-        public readonly string cAlternateFileName;
-    }
-
     [DllImport("kernel32.dll", SetLastError = true)]
     private static extern bool FindClose(IntPtr hFindFile);
 
@@ -125,31 +89,14 @@ public static class Win32FileScanner
 
                         parent.AddDirectory(ref stats);
 
-                        yield return new FileResult(
-                            fullPath,
-                            0,
-                            findData.dwFileAttributes,
-                            creationTime,
-                            lastWriteTime,
-                            lastAccessTime,
-                            FileType.Folder,
-                            depth,
-                            stats);
+                        yield return new FileResult(fullPath, 0, findData.dwFileAttributes, creationTime, lastWriteTime, lastAccessTime, FileType.Folder, depth, stats);
                     } else
                     {
                         long filesize = GetFilesize(findData);
 
                         parent.AddFile(filesize);
 
-                        yield return new FileResult(
-                            fullPath,
-                            filesize,
-                            findData.dwFileAttributes,
-                            creationTime,
-                            lastWriteTime,
-                            lastAccessTime,
-                            FileType.File,
-                            depth);
+                        yield return new FileResult(fullPath, filesize, findData.dwFileAttributes, creationTime, lastWriteTime, lastAccessTime, FileType.File, depth);
                     }
                 } while (FindNextFile(handle, out findData));
             }
@@ -215,26 +162,46 @@ public static class Win32FileScanner
         highBytes = null;
         return DateTime.FromFileTime(longValue);
     }
+
+    private static readonly IntPtr invalidHandle = new(-1);
+
+    [StructLayout(LayoutKind.Sequential)]
+    private readonly struct FileTime
+    {
+        public readonly uint dwLowDateTime;
+
+        public readonly uint dwHighDateTime;
+    }
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+    private readonly struct Win32FindData
+    {
+        public readonly FileAttributes dwFileAttributes;
+
+        public readonly FileTime ftCreationTime;
+
+        public readonly FileTime ftLastAccessTime;
+
+        public readonly FileTime ftLastWriteTime;
+
+        public readonly uint nFileSizeHigh;
+
+        public readonly uint nFileSizeLow;
+
+        public readonly uint dwReserved0;
+
+        public readonly uint dwReserved1;
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
+        public readonly string cFileName;
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 14)]
+        public readonly string cAlternateFileName;
+    }
 }
 
 public sealed class DirectoryStats
 {
-    public long Files { get; private set; }
-
-    public long Items => Files + Subdirectories;
-
-    public long Size { get; private set; }
-
-    public long Subdirectories { get; private set; }
-
-    public long TotalFiles { get; private set; }
-
-    public long TotalItems => TotalFiles + TotalSubdirectories;
-
-    public long TotalSize { get; private set; }
-
-    public long TotalSubdirectories { get; private set; }
-
     public void AddDirectory(ref DirectoryStats stats)
     {
         Subdirectories++;
@@ -253,6 +220,22 @@ public sealed class DirectoryStats
         Size += size;
         TotalSize += size;
     }
+
+    public long Files { get; private set; }
+
+    public long Items => Files + Subdirectories;
+
+    public long Size { get; private set; }
+
+    public long Subdirectories { get; private set; }
+
+    public long TotalFiles { get; private set; }
+
+    public long TotalItems => TotalFiles + TotalSubdirectories;
+
+    public long TotalSize { get; private set; }
+
+    public long TotalSubdirectories { get; private set; }
 }
 
 public sealed class FileResult

@@ -21,8 +21,6 @@ namespace GpScanner;
 /// </summary>
 public partial class MainWindow : Window
 {
-    public static CollectionViewSource cvs;
-
     public MainWindow()
     {
         InitializeComponent();
@@ -33,9 +31,7 @@ public partial class MainWindow : Window
 
     private async void ContentControl_Drop(object sender, DragEventArgs e)
     {
-        if(e.OriginalSource is Image image &&
-            e.Data.GetData(typeof(ScannedImage)) is ScannedImage droppedData &&
-            image.TemplatedParent is PdfViewer.PdfViewer pdfviewer)
+        if(e.OriginalSource is Image image && e.Data.GetData(typeof(ScannedImage)) is ScannedImage droppedData && image.TemplatedParent is PdfViewer.PdfViewer pdfviewer)
         {
             try
             {
@@ -44,8 +40,7 @@ public partial class MainWindow : Window
                 int curpage = pdfviewer.Sayfa;
                 droppedData.Resim.GeneratePdf(null, Format.Jpg, TwainCtrl.SelectedPaper).Save(temporarypdf);
                 string[] processedfiles = { temporarypdf, pdfFilePath };
-                if((Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.LeftShift)) ||
-                    (Keyboard.IsKeyDown(Key.RightAlt) && Keyboard.IsKeyDown(Key.RightShift)))
+                if((Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.LeftShift)) || (Keyboard.IsKeyDown(Key.RightAlt) && Keyboard.IsKeyDown(Key.RightShift)))
                 {
                     await TwainCtrl.RemovePdfPage(pdfFilePath, curpage, curpage);
                     processedfiles.MergePdf().Save(pdfFilePath);
@@ -309,4 +304,6 @@ public partial class MainWindow : Window
         GpScannerViewModel.BackupDataXmlFile();
         StillImageHelper.KillServer();
     }
+
+    public static CollectionViewSource cvs;
 }

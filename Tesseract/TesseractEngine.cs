@@ -27,13 +27,7 @@ namespace Tesseract
         /// <c>TESSDATA_PREFIX</c> environment variable is defined.
         /// </param>
         /// <param name="language">The language to load, for example 'eng' for English.</param>
-        public TesseractEngine(string datapath, string language) : this(
-            datapath,
-            language,
-            EngineMode.Default,
-            new string[0],
-            new Dictionary<string, object>(),
-            false)
+        public TesseractEngine(string datapath, string language) : this(datapath, language, EngineMode.Default, new string[0], new Dictionary<string, object>(), false)
         {
         }
 
@@ -224,7 +218,7 @@ namespace Tesseract
             Initialise(datapath, language, engineMode, configFiles, initialOptions, setOnlyNonDebugVariables);
         }
 
-        public string Version => TessApi.BaseApiGetVersion();
+        internal HandleRef Handle => handle;
 
         /// <summary>
         /// Processes the specific image.
@@ -285,8 +279,7 @@ namespace Tesseract
 
             if(processCount > 0)
             {
-                throw new InvalidOperationException(
-                    "Only one image can be processed at once. Please make sure you dispose of the page once your finished with it.");
+                throw new InvalidOperationException("Only one image can be processed at once. Please make sure you dispose of the page once your finished with it.");
             }
 
             processCount++;
@@ -304,31 +297,7 @@ namespace Tesseract
             return page;
         }
 
-        /// <summary>
-        /// Ties the specified pix to the lifecycle of a page.
-        /// </summary>
-        public class PageDisposalHandle
-        {
-            public PageDisposalHandle(Page page, Pix pix)
-            {
-                this.page = page;
-                this.pix = pix;
-                page.Disposed += OnPageDisposed;
-            }
-
-            private readonly Page page;
-
-            private readonly Pix pix;
-
-            private void OnPageDisposed(object sender, EventArgs e)
-            {
-                page.Disposed -= OnPageDisposed;
-
-                pix.Dispose();
-            }
-        }
-
-        internal HandleRef Handle => handle;
+        public string Version => TessApi.BaseApiGetVersion();
 
         protected override void Dispose(bool disposing)
         {
@@ -338,10 +307,6 @@ namespace Tesseract
                 handle = new HandleRef(this, IntPtr.Zero);
             }
         }
-
-        private HandleRef handle;
-
-        private int processCount;
 
         private void Initialise(
             string datapath,
@@ -381,8 +346,39 @@ namespace Tesseract
         }
 
         #region Event Handlers
-        private void OnIteratorDisposed(object sender, EventArgs e) { processCount--; }
+        private void OnIteratorDisposed(object sender, EventArgs e)
+        {
+            processCount--;
+        }
         #endregion Event Handlers
+
+        private HandleRef handle;
+
+        private int processCount;
+
+        /// <summary>
+        /// Ties the specified pix to the lifecycle of a page.
+        /// </summary>
+        public class PageDisposalHandle
+        {
+            public PageDisposalHandle(Page page, Pix pix)
+            {
+                this.page = page;
+                this.pix = pix;
+                page.Disposed += OnPageDisposed;
+            }
+
+            private void OnPageDisposed(object sender, EventArgs e)
+            {
+                page.Disposed -= OnPageDisposed;
+
+                pix.Dispose();
+            }
+
+            private readonly Page page;
+
+            private readonly Pix pix;
+        }
 
         #region Config
 
@@ -489,7 +485,10 @@ namespace Tesseract
         /// </summary>
         /// <param name="filename"></param>
         /// <returns></returns>
-        public bool TryPrintVariablesToFile(string filename) { return TessApi.Native.BaseApiPrintVariablesToFile(handle, filename) != 0; }
+        public bool TryPrintVariablesToFile(string filename)
+        {
+            return TessApi.Native.BaseApiPrintVariablesToFile(handle, filename) != 0;
+        }
         #endregion Config
     }
 }

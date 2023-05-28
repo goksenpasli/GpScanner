@@ -29,16 +29,6 @@ namespace Tesseract
         }
 
         /// <summary>
-        /// Get's the current page number.
-        /// </summary>
-        public int PageNumber { get; private set; } = -1;
-
-        /// <summary>
-        /// Get's the child result renderers.
-        /// </summary>
-        public IEnumerable<IResultRenderer> ResultRenderers => _resultRenderers;
-
-        /// <summary>
         /// Adds a page to each of the child result renderers.
         /// </summary>
         /// <param name="page"></param>
@@ -103,6 +93,16 @@ namespace Tesseract
             }
         }
 
+        /// <summary>
+        /// Get's the current page number.
+        /// </summary>
+        public int PageNumber { get; private set; } = -1;
+
+        /// <summary>
+        /// Get's the child result renderers.
+        /// </summary>
+        public IEnumerable<IResultRenderer> ResultRenderers => _resultRenderers;
+
         protected override void Dispose(bool disposing)
         {
             try
@@ -158,9 +158,9 @@ namespace Tesseract
                 }
             }
 
-            private readonly AggregateResultRenderer _renderer;
-
             private List<IDisposable> _children;
+
+            private readonly AggregateResultRenderer _renderer;
         }
     }
 }

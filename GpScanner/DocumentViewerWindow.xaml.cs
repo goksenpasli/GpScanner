@@ -22,28 +22,9 @@ public partial class DocumentViewerWindow : Window
         DataContext = new DocumentViewerModel();
     }
 
-    private static readonly Rectangle selectionbox = new()
-    {
-        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
-        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
-        StrokeThickness = 2,
-        StrokeDashArray = new DoubleCollection(new double[] { 1 })
-    };
-
-    private double height;
-
-    private bool isMouseDown;
-
-    private Point mousedowncoord;
-
-    private double width;
-
     private void DocumentViewer_MouseDown(object sender, MouseButtonEventArgs e)
     {
-        if(e.OriginalSource is Image img &&
-            img.Parent is ScrollViewer scrollviewer &&
-            e.LeftButton == MouseButtonState.Pressed &&
-            Keyboard.IsKeyDown(Key.LeftCtrl))
+        if(e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer && e.LeftButton == MouseButtonState.Pressed && Keyboard.IsKeyDown(Key.LeftCtrl))
         {
             isMouseDown = true;
             Cursor = Cursors.Cross;
@@ -79,13 +60,7 @@ public partial class DocumentViewerWindow : Window
                 double captureX, captureY;
                 captureX = mousedowncoord.X < mousemovecoord.X ? mousedowncoord.X : mousemovecoord.X;
                 captureY = mousedowncoord.Y < mousemovecoord.Y ? mousedowncoord.Y : mousemovecoord.Y;
-                documentViewerModel.ImgData = BitmapMethods.CaptureScreen(
-                    captureX,
-                    captureY,
-                    width,
-                    height,
-                    scrollviewer,
-                    BitmapFrame.Create((BitmapSource)img.Source));
+                documentViewerModel.ImgData = BitmapMethods.CaptureScreen(captureX, captureY, width, height, scrollviewer, BitmapFrame.Create((BitmapSource)img.Source));
                 mousedowncoord.X = mousedowncoord.Y = 0;
                 isMouseDown = false;
                 Cursor = Cursors.Arrow;
@@ -101,4 +76,20 @@ public partial class DocumentViewerWindow : Window
             GC.Collect();
         }
     }
+
+    private static readonly Rectangle selectionbox = new()
+    {
+        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
+        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
+        StrokeThickness = 2,
+        StrokeDashArray = new DoubleCollection(new double[] { 1 })
+    };
+
+    private double height;
+
+    private bool isMouseDown;
+
+    private Point mousedowncoord;
+
+    private double width;
 }

@@ -8,59 +8,11 @@ namespace Extensions;
 
 public class NumericUpDownControl : ScrollBar
 {
-    public static readonly DependencyProperty DateValueProperty = DependencyProperty.Register(
-        "DateValue",
-        typeof(DateTime?),
-        typeof(NumericUpDownControl),
-        new PropertyMetadata(null));
-
-    public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register(
-        "IsReadOnly",
-        typeof(bool),
-        typeof(NumericUpDownControl),
-        new PropertyMetadata(false));
-
-    public static readonly DependencyProperty NumericUpDownButtonsVisibilityProperty =
-        DependencyProperty.Register(
-        "NumericUpDownButtonsVisibility",
-        typeof(Visibility),
-        typeof(NumericUpDownControl),
-        new PropertyMetadata(Visibility.Visible));
-
-    public static readonly DependencyProperty NumericUpdownTextBoxVisibilityProperty =
-        DependencyProperty.Register(
-        "NumericUpdownTextBoxVisibility",
-        typeof(Visibility),
-        typeof(NumericUpDownControl),
-        new PropertyMetadata(Visibility.Visible));
-
-    public static readonly DependencyProperty ShowModeProperty = DependencyProperty.Register(
-        "ShowMode",
-        typeof(Mode),
-        typeof(NumericUpDownControl),
-        new PropertyMetadata(Mode.NumberMode, ModeChanged));
-
-    [Browsable(false)]
-    public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
-        "Text",
-        typeof(double),
-        typeof(NumericUpDownControl),
-        new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
-
     static NumericUpDownControl()
     {
         DefaultStyleKeyProperty.OverrideMetadata(typeof(NumericUpDownControl), new FrameworkPropertyMetadata(typeof(NumericUpDownControl)));
         MaximumProperty.OverrideMetadata(typeof(NumericUpDownControl), new FrameworkPropertyMetadata(double.MaxValue));
         MinimumProperty.OverrideMetadata(typeof(NumericUpDownControl), new FrameworkPropertyMetadata(double.MinValue));
-    }
-
-    public enum Mode
-    {
-        NumberMode = 0,
-
-        CurrencyMode = 1,
-
-        DateTimeMode = 2
     }
 
     public DateTime? DateValue { get => (DateTime?)GetValue(DateValueProperty); set => SetValue(DateValueProperty, value); }
@@ -123,5 +75,45 @@ public class NumericUpDownControl : ScrollBar
             numericUpDownControl.SmallChange = 1;
             numericUpDownControl.LargeChange = 1;
         }
+    }
+
+    public static readonly DependencyProperty DateValueProperty = DependencyProperty.Register(
+        "DateValue",
+        typeof(DateTime?),
+        typeof(NumericUpDownControl),
+        new PropertyMetadata(null));
+
+    public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register(
+        "IsReadOnly",
+        typeof(bool),
+        typeof(NumericUpDownControl),
+        new PropertyMetadata(false));
+
+    public static readonly DependencyProperty NumericUpDownButtonsVisibilityProperty =
+        DependencyProperty.Register("NumericUpDownButtonsVisibility", typeof(Visibility), typeof(NumericUpDownControl), new PropertyMetadata(Visibility.Visible));
+
+    public static readonly DependencyProperty NumericUpdownTextBoxVisibilityProperty =
+        DependencyProperty.Register("NumericUpdownTextBoxVisibility", typeof(Visibility), typeof(NumericUpDownControl), new PropertyMetadata(Visibility.Visible));
+
+    public static readonly DependencyProperty ShowModeProperty = DependencyProperty.Register(
+        "ShowMode",
+        typeof(Mode),
+        typeof(NumericUpDownControl),
+        new PropertyMetadata(Mode.NumberMode, ModeChanged));
+
+    [Browsable(false)]
+    public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
+        "Text",
+        typeof(double),
+        typeof(NumericUpDownControl),
+        new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+    public enum Mode
+    {
+        NumberMode = 0,
+
+        CurrencyMode = 1,
+
+        DateTimeMode = 2
     }
 }

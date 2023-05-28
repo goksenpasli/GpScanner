@@ -8,13 +8,16 @@
             Confidence = confidence;
         }
 
+        #region ToString
+        public override string ToString()
+        {
+            return $"Scew: {Angle} [conf: {Confidence}]";
+        }
+        #endregion ToString
+
         public float Angle { get; }
 
         public float Confidence { get; }
-
-        #region ToString
-        public override string ToString() { return $"Scew: {Angle} [conf: {Confidence}]"; }
-        #endregion ToString
 
         #region Equals and GetHashCode implementation
         public static bool operator !=(Scew lhs, Scew rhs)

@@ -163,6 +163,7 @@
             AcceptsReturn="True" CharacterCasing="Normal"
             IsReadOnly="{Binding MetinBoxIsreadOnly}"
             OpenButtonVisibility="Collapsed" ScrollViewer.VerticalScrollBarVisibility="Auto"
+            SpellCheck.IsEnabled="True"
             Text="{Binding Metin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             TextWrapping="Wrap" />
         <ToggleButton Grid.Row="2" Grid.Column="3"
@@ -175,6 +176,7 @@
             VerticalContentAlignment="Top"
             AcceptsReturn="True" CharacterCasing="Normal" IsReadOnly="True"
             OpenButtonVisibility="Collapsed" ScrollViewer.VerticalScrollBarVisibility="Auto"
+            SpellCheck.IsEnabled="True"
             Text="{Binding Çeviri}"
             TextWrapping="Wrap" />
         <ToggleButton Grid.Row="3" Grid.Column="3"

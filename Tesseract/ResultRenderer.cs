@@ -102,15 +102,7 @@ namespace Tesseract
     /// </remarks>
     public abstract class ResultRenderer : DisposableBase, IResultRenderer
     {
-        public int PageNumber
-        {
-            get
-            {
-                VerifyNotDisposed();
-
-                return TessApi.Native.ResultRendererImageNum(Handle);
-            }
-        }
+        protected ResultRenderer() { _handle = new HandleRef(this, IntPtr.Zero); }
 
         /// <summary>
         /// Add the page to the current document.
@@ -154,9 +146,15 @@ namespace Tesseract
             return _currentDocumentHandle;
         }
 
-        protected ResultRenderer() { _handle = new HandleRef(this, IntPtr.Zero); }
+        public int PageNumber
+        {
+            get
+            {
+                VerifyNotDisposed();
 
-        protected HandleRef Handle => _handle;
+                return TessApi.Native.ResultRendererImageNum(Handle);
+            }
+        }
 
         protected override void Dispose(bool disposing)
         {
@@ -191,6 +189,8 @@ namespace Tesseract
 
             _handle = new HandleRef(this, handle);
         }
+
+        protected HandleRef Handle => _handle;
 
         private IDisposable _currentDocumentHandle;
 
@@ -258,8 +258,7 @@ namespace Tesseract
         /// <param name="outputFilename">The path to the hocr file to be generated without the file extension.</param>
         /// <param name="fontInfo">Determines if the generated HOCR file includes font information or not.</param>
         /// <returns></returns>
-        public static IResultRenderer CreateHOcrRenderer(string outputFilename, bool fontInfo = false)
-        { return new HOcrResultRenderer(outputFilename, fontInfo); }
+        public static IResultRenderer CreateHOcrRenderer(string outputFilename, bool fontInfo = false) { return new HOcrResultRenderer(outputFilename, fontInfo); }
 
         /// <summary>
         /// Creates a <see cref="IResultRenderer">result renderer</see> that render that generates a unlv file from
@@ -372,7 +371,10 @@ namespace Tesseract
         /// </summary>
         /// <param name="outputFilename">The path to the unlv file to be created without the file extension.</param>
         /// <returns></returns>
-        public static IResultRenderer CreateWordStrBoxRenderer(string outputFilename) { return new WordStrBoxResultRenderer(outputFilename); }
+        public static IResultRenderer CreateWordStrBoxRenderer(string outputFilename)
+        {
+            return new WordStrBoxResultRenderer(outputFilename);
+        }
         #endregion Factory Methods
     }
 

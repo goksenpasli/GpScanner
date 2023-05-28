@@ -79,16 +79,6 @@ public class ScannedImage : InpcBase
         }
     }
 
-    private bool animate;
-
-    private string filePath;
-
-    private BitmapFrame resim;
-
-    private double rotationAngle;
-
-    private bool seçili;
-
     private async void ScannedImage_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if(e.PropertyName is "RotationAngle" && RotationAngle != 0)
@@ -104,4 +94,14 @@ public class ScannedImage : InpcBase
             RotationAngle = 0;
         }
     }
+
+    private bool animate;
+
+    private string filePath;
+
+    private BitmapFrame resim;
+
+    private double rotationAngle;
+
+    private bool seçili;
 }

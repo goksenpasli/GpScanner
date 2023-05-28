@@ -376,12 +376,24 @@
                         </UniformGrid>
                         <Separator />
                         <UniformGrid Columns="2">
-                            <CheckBox VerticalContentAlignment="Center"
-                                Content="{twainctrl:Loc PDFOPEN}"
-                                IsChecked="{Binding DirectOpenPdfFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                            <CheckBox VerticalContentAlignment="Center"
-                                Content="{twainctrl:Loc EYPOPEN}"
-                                IsChecked="{Binding DirectOpenEypFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                            <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding DirectOpenPdfFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                <CheckBox.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Width="16" Height="16"
+                                            Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
+                                        <TextBlock Text="{twainctrl:Loc PDFOPEN}" />
+                                    </StackPanel>
+                                </CheckBox.Content>
+                            </CheckBox>
+                            <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding DirectOpenEypFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                <CheckBox.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Width="16" Height="16"
+                                            Source="{Binding Source='.eyp', Converter={StaticResource FilePathToIconConverter}}" />
+                                        <TextBlock Text="{twainctrl:Loc EYPOPEN}" />
+                                    </StackPanel>
+                                </CheckBox.Content>
+                            </CheckBox>
                         </UniformGrid>
                     </StackPanel>
                 </GroupBox>
@@ -525,9 +537,10 @@
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <TextBox Grid.Column="0"
-                                IsReadOnly="True"
-                                Text="{Binding BatchFolder}" />
+                            <Extensions:ButtonedTextBox Grid.Column="0"
+                                CopyButtonVisibility="Collapsed" IsReadOnly="True" OpenButtonVisibility="Collapsed"
+                                PasteButtonVisibility="Collapsed"
+                                Text="{Binding BatchFolder, UpdateSourceTrigger=PropertyChanged}" />
                             <Button Grid.Column="1"
                                 twainctrl:Policy.PolicyName="SetBatchFolder"
                                 Command="{Binding SetBatchFolder}"

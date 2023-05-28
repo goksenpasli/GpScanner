@@ -9,16 +9,6 @@ namespace TwainWpf
         /// </summary>
         public const short TransferAllPages = -1;
 
-        /// <summary>
-        /// Default scan settings.
-        /// </summary>
-        public static readonly ScanSettings Default = new ScanSettings()
-        {
-            Resolution = ResolutionSettings.ColourPhotocopier,
-            Page = PageSettings.Default,
-            Rotation = new RotationSettings()
-        };
-
         public ScanSettings() { ShouldTransferAllPages = true; }
 
         /// <summary>
@@ -254,6 +244,16 @@ namespace TwainWpf
             }
         }
 
+        /// <summary>
+        /// Default scan settings.
+        /// </summary>
+        public static readonly ScanSettings Default = new ScanSettings()
+        {
+            Resolution = ResolutionSettings.ColourPhotocopier,
+            Page = PageSettings.Default,
+            Rotation = new RotationSettings()
+        };
+
         private bool _abortWhenNoPaperDetectable;
 
         private AreaSettings _area;
@@ -285,7 +285,10 @@ namespace TwainWpf
         {
         };
 
-        protected void OnPropertyChanged(string propertyName) { PropertyChanged(this, new PropertyChangedEventArgs(propertyName)); }
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
         #endregion INotifyPropertyChanged Members
     }
 }

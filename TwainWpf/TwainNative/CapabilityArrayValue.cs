@@ -10,8 +10,8 @@ namespace TwainWpf.TwainNative
     [StructLayout(LayoutKind.Sequential, Pack = 2)]
     public class CapabilityArrayValue
     {
-        public TwainType TwainType { get; set; }
-
         public int ItemCount { get; set; }
+
+        public TwainType TwainType { get; set; }
     }
 }

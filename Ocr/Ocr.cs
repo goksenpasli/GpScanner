@@ -12,8 +12,6 @@ namespace Ocr;
 
 public static class Ocr
 {
-    public static CancellationTokenSource ocrcancellationToken;
-
     static Ocr()
     {
         TesseractPath = $@"{Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName)}\tessdata";
@@ -27,7 +25,22 @@ public static class Ocr
         TesseractDataExists = false;
     }
 
-    public static bool TesseractDataExists { get; }
+    public static ObservableCollection<OcrData> GetOcrData(this string dosya, string lang)
+    {
+        if(dosya is null)
+        {
+            throw new ArgumentNullException(nameof(dosya));
+        }
+
+        using TesseractEngine engine = new(TesseractPath, lang, EngineMode.LstmOnly);
+        using Pix pixImage = Pix.LoadFromFile(dosya);
+        using Page page = engine.Process(pixImage);
+        using ResultIterator iterator = page.GetIterator();
+        iterator.Begin();
+        ObservableCollection<OcrData> ocrdata = iterator.IterateOcr(PageIteratorLevel.Word);
+        dosya = null;
+        return ocrdata;
+    }
 
     public static async Task<ObservableCollection<OcrData>> OcrAsyc(this byte[] dosya, string lang)
     {
@@ -61,7 +74,7 @@ public static class Ocr
         return await Task.Run(() => dosya.GetOcrData(lang), ocrcancellationToken.Token);
     }
 
-    private static string TesseractPath { get; }
+    public static bool TesseractDataExists { get; }
 
     private static ObservableCollection<OcrData> GetOcrData(this byte[] dosya, string lang)
     {
@@ -78,23 +91,6 @@ public static class Ocr
         ObservableCollection<OcrData> ocrdata = iterator.IterateOcr(PageIteratorLevel.Word);
         dosya = null;
         GC.Collect();
-        return ocrdata;
-    }
-
-    private static ObservableCollection<OcrData> GetOcrData(this string dosya, string lang)
-    {
-        if(dosya is null)
-        {
-            throw new ArgumentNullException(nameof(dosya));
-        }
-
-        using TesseractEngine engine = new(TesseractPath, lang, EngineMode.LstmOnly);
-        using Pix pixImage = Pix.LoadFromFile(dosya);
-        using Page page = engine.Process(pixImage);
-        using ResultIterator iterator = page.GetIterator();
-        iterator.Begin();
-        ObservableCollection<OcrData> ocrdata = iterator.IterateOcr(PageIteratorLevel.Word);
-        dosya = null;
         return ocrdata;
     }
 
@@ -116,4 +112,8 @@ public static class Ocr
 
         return ocrdata;
     }
+
+    private static string TesseractPath { get; }
+
+    public static CancellationTokenSource ocrcancellationToken;
 }

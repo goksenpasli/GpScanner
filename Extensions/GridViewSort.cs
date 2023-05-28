@@ -185,7 +185,10 @@ public class GridViewSort
 
     public static void SetSortGlyphAscending(DependencyObject obj, ImageSource value) { obj.SetValue(SortGlyphAscendingProperty, value); }
 
-    public static void SetSortGlyphDescending(DependencyObject obj, ImageSource value) { obj.SetValue(SortGlyphDescendingProperty, value); }
+    public static void SetSortGlyphDescending(DependencyObject obj, ImageSource value)
+    {
+        obj.SetValue(SortGlyphDescendingProperty, value);
+    }
     #endregion Public attached properties
 
     #region Private attached properties
@@ -194,7 +197,10 @@ public class GridViewSort
 
     private static GridViewColumnHeader GetSortedColumnHeader(DependencyObject obj) { return (GridViewColumnHeader)obj.GetValue(SortedColumnHeaderProperty); }
 
-    private static void SetSortedColumnHeader(DependencyObject obj, GridViewColumnHeader value) { obj.SetValue(SortedColumnHeaderProperty, value); }
+    private static void SetSortedColumnHeader(DependencyObject obj, GridViewColumnHeader value)
+    {
+        obj.SetValue(SortedColumnHeaderProperty, value);
+    }
     #endregion Private attached properties
 
     #region Helper methods
@@ -223,10 +229,7 @@ public class GridViewSort
             view.SortDescriptions.Add(new SortDescription(propertyName, direction));
             if(GetShowSortGlyph(listView))
             {
-                AddSortGlyph(
-                    sortedColumnHeader,
-                    direction,
-                    direction == ListSortDirection.Ascending ? GetSortGlyphAscending(listView) : GetSortGlyphDescending(listView));
+                AddSortGlyph(sortedColumnHeader, direction, direction == ListSortDirection.Ascending ? GetSortGlyphAscending(listView) : GetSortGlyphDescending(listView));
             }
 
             SetSortedColumnHeader(listView, sortedColumnHeader);

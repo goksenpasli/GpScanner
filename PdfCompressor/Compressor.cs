@@ -24,33 +24,6 @@ namespace PdfCompressor;
 
 public class Compressor : Control, INotifyPropertyChanged
 {
-    public static readonly DependencyProperty BlackAndWhiteProperty =
-        DependencyProperty.Register("BlackAndWhite", typeof(bool), typeof(Compressor), new PropertyMetadata(Settings.Default.Bw, BwChanged));
-
-    public static readonly DependencyProperty DpiProperty = DependencyProperty.Register(
-        "Dpi",
-        typeof(int),
-        typeof(Compressor),
-        new PropertyMetadata(Settings.Default.Dpi, DpiChanged));
-
-    public static readonly DependencyProperty LoadedPdfPathProperty = DependencyProperty.Register(
-        "LoadedPdfPath",
-        typeof(string),
-        typeof(Compressor),
-        new PropertyMetadata(string.Empty));
-
-    public static readonly DependencyProperty QualityProperty = DependencyProperty.Register(
-        "Quality",
-        typeof(int),
-        typeof(Compressor),
-        new PropertyMetadata(Settings.Default.Quality, QualityChanged));
-
-
-    public static readonly DependencyProperty UseMozJpegProperty =
-        DependencyProperty.Register("UseMozJpeg", typeof(bool), typeof(Compressor), new PropertyMetadata(false, MozpegChanged));
-
-    private double compressionProgress;
-
     static Compressor() { DefaultStyleKeyProperty.OverrideMetadata(typeof(Compressor), new FrameworkPropertyMetadata(typeof(Compressor))); }
 
     public Compressor()
@@ -92,37 +65,6 @@ public class Compressor : Control, INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
-
-
-    public bool BlackAndWhite { get => (bool)GetValue(BlackAndWhiteProperty); set => SetValue(BlackAndWhiteProperty, value); }
-
-    public RelayCommand<object> CompressFile { get; }
-
-    public double CompressionProgress
-    {
-        get => compressionProgress;
-
-        set
-        {
-            if(compressionProgress != value)
-            {
-                compressionProgress = value;
-                OnPropertyChanged(nameof(CompressionProgress));
-            }
-        }
-    }
-
-    public int Dpi { get => (int)GetValue(DpiProperty); set => SetValue(DpiProperty, value); }
-
-    public string LoadedPdfPath { get => (string)GetValue(LoadedPdfPathProperty); set => SetValue(LoadedPdfPathProperty, value); }
-
-    public RelayCommand<object> OpenFile { get; }
-
-    public int Quality { get => (int)GetValue(QualityProperty); set => SetValue(QualityProperty, value); }
-
-    public bool UseMozJpeg { get => (bool)GetValue(UseMozJpegProperty); set => SetValue(UseMozJpegProperty, value); }
-
-    protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
 
     public async Task<List<BitmapImage>> AddToListAsync(PdfiumViewer.PdfDocument pdfDoc, int dpi)
     {
@@ -272,6 +214,37 @@ public class Compressor : Control, INotifyPropertyChanged
         return false;
     }
 
+
+    public bool BlackAndWhite { get => (bool)GetValue(BlackAndWhiteProperty); set => SetValue(BlackAndWhiteProperty, value); }
+
+    public RelayCommand<object> CompressFile { get; }
+
+    public double CompressionProgress
+    {
+        get => compressionProgress;
+
+        set
+        {
+            if(compressionProgress != value)
+            {
+                compressionProgress = value;
+                OnPropertyChanged(nameof(CompressionProgress));
+            }
+        }
+    }
+
+    public int Dpi { get => (int)GetValue(DpiProperty); set => SetValue(DpiProperty, value); }
+
+    public string LoadedPdfPath { get => (string)GetValue(LoadedPdfPathProperty); set => SetValue(LoadedPdfPathProperty, value); }
+
+    public RelayCommand<object> OpenFile { get; }
+
+    public int Quality { get => (int)GetValue(QualityProperty); set => SetValue(QualityProperty, value); }
+
+    public bool UseMozJpeg { get => (bool)GetValue(UseMozJpegProperty); set => SetValue(UseMozJpegProperty, value); }
+
+    protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
+
     private static void BwChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if(d is Compressor compressor)
@@ -293,12 +266,6 @@ public class Compressor : Control, INotifyPropertyChanged
         Settings.Default.Save();
     }
 
-    private static void QualityChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        Settings.Default.Quality = (int)e.NewValue;
-        Settings.Default.Save();
-    }
-
     private static void MozpegChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if(d is Compressor compressor && (bool)e.NewValue)
@@ -306,4 +273,37 @@ public class Compressor : Control, INotifyPropertyChanged
             compressor.BlackAndWhite = false;
         }
     }
+
+    private static void QualityChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        Settings.Default.Quality = (int)e.NewValue;
+        Settings.Default.Save();
+    }
+
+    public static readonly DependencyProperty BlackAndWhiteProperty =
+        DependencyProperty.Register("BlackAndWhite", typeof(bool), typeof(Compressor), new PropertyMetadata(Settings.Default.Bw, BwChanged));
+
+    public static readonly DependencyProperty DpiProperty = DependencyProperty.Register(
+        "Dpi",
+        typeof(int),
+        typeof(Compressor),
+        new PropertyMetadata(Settings.Default.Dpi, DpiChanged));
+
+    public static readonly DependencyProperty LoadedPdfPathProperty = DependencyProperty.Register(
+        "LoadedPdfPath",
+        typeof(string),
+        typeof(Compressor),
+        new PropertyMetadata(string.Empty));
+
+    public static readonly DependencyProperty QualityProperty = DependencyProperty.Register(
+        "Quality",
+        typeof(int),
+        typeof(Compressor),
+        new PropertyMetadata(Settings.Default.Quality, QualityChanged));
+
+
+    public static readonly DependencyProperty UseMozJpegProperty =
+        DependencyProperty.Register("UseMozJpeg", typeof(bool), typeof(Compressor), new PropertyMetadata(false, MozpegChanged));
+
+    private double compressionProgress;
 }

@@ -39,8 +39,6 @@ public enum PdfPageLayout
 
 public static class PdfGeneration
 {
-    public static Scanner Scanner { get; set; }
-
     public static PdfDocument ArrangePdfPages(this string filename, int oldindex, int newindex)
     {
         using PdfDocument inputDocument = PdfReader.Open(filename, PdfDocumentOpenMode.Modify);
@@ -90,6 +88,128 @@ public static class PdfGeneration
         }
 
         return outputDocument;
+    }
+
+    public static PdfDocument GeneratePdf(this List<string> imagefiles, Paper paper, List<ObservableCollection<OcrData>> ScannedText = null)
+    {
+        if(imagefiles?.Count == 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(imagefiles), "bitmapframes count should be greater than zero");
+        }
+
+        using PdfDocument document = new();
+        try
+        {
+            Scanner.ProgressState = TaskbarItemProgressState.Normal;
+            for(int i = 0; i < imagefiles.Count; i++)
+            {
+                string imagefile = imagefiles[i];
+                PdfPage page = document.AddPage();
+                SetPaperSize(paper, page);
+                using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
+                using XImage xImage = XImage.FromFile(imagefile);
+                XSize size = PageSizeConverter.ToSize(page.Size);
+                if(xImage.PixelWidth < xImage.PixelHeight)
+                {
+                    page.Orientation = PageOrientation.Portrait;
+                    if(ScannedText?.ElementAtOrDefault(i) != null)
+                    {
+                        WritePdfTextContent(xImage, ScannedText[i], page, gfx, XBrushes.Transparent);
+                    }
+
+                    gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
+                } else
+                {
+                    page.Orientation = PageOrientation.Landscape;
+                    if(ScannedText?.ElementAtOrDefault(i) != null)
+                    {
+                        WritePdfTextContent(xImage, ScannedText[i], page, gfx, XBrushes.Transparent);
+                    }
+
+                    gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
+                }
+
+                if(Scanner.PdfPageNumberDraw)
+                {
+                    gfx.DrawText(
+                        new XSolidBrush(XColor.FromKnownColor(Scanner.PdfAlignTextColor)),
+                        (i + 1).ToString(),
+                        GetPdfTextLayout(page)[0],
+                        GetPdfTextLayout(page)[1]);
+                }
+
+                Scanner.PdfSaveProgressValue = i / (double)imagefiles.Count;
+            }
+
+            if(Scanner.PasswordProtect)
+            {
+                ApplyPdfSecurity(document);
+            }
+
+            document.DefaultPdfCompression();
+            Scanner.PdfSaveProgressValue = 0;
+        } catch(Exception ex)
+        {
+            imagefiles = null;
+            ScannedText = null;
+            throw new ArgumentException(nameof(document), ex);
+        }
+
+        return document;
+    }
+
+    public static PdfDocument GeneratePdf(this string imagefile, Paper paper, ObservableCollection<OcrData> ScannedText = null)
+    {
+        using PdfDocument document = new();
+        try
+        {
+            Scanner.ProgressState = TaskbarItemProgressState.Normal;
+
+            PdfPage page = document.AddPage();
+            SetPaperSize(paper, page);
+            using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
+            using XImage xImage = XImage.FromFile(imagefile);
+            XSize size = PageSizeConverter.ToSize(page.Size);
+            if(xImage.PixelWidth < xImage.PixelHeight)
+            {
+                page.Orientation = PageOrientation.Portrait;
+                if(ScannedText != null)
+                {
+                    WritePdfTextContent(xImage, ScannedText, page, gfx, XBrushes.Transparent);
+                }
+
+                gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
+            } else
+            {
+                page.Orientation = PageOrientation.Landscape;
+                if(ScannedText != null)
+                {
+                    WritePdfTextContent(xImage, ScannedText, page, gfx, XBrushes.Transparent);
+                }
+
+                gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
+            }
+
+            if(Scanner.PdfPageNumberDraw)
+            {
+                gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfAlignTextColor)), "1", GetPdfTextLayout(page)[0], GetPdfTextLayout(page)[1]);
+            }
+
+            if(Scanner.PasswordProtect)
+            {
+                ApplyPdfSecurity(document);
+            }
+
+            document.DefaultPdfCompression();
+            Scanner.PdfSaveProgressValue = 0;
+        } catch(Exception ex)
+        {
+            imagefile = null;
+            ScannedText = null;
+            throw new ArgumentException(nameof(document), ex);
+        }
+
+        return document;
     }
 
     public static Task<PdfDocument> GeneratePdf(
@@ -233,128 +353,6 @@ public static class PdfGeneration
         return Task.FromResult(document);
     }
 
-    public static PdfDocument GeneratePdf(this List<string> imagefiles, Paper paper, List<ObservableCollection<OcrData>> ScannedText = null)
-    {
-        if(imagefiles?.Count == 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(imagefiles), "bitmapframes count should be greater than zero");
-        }
-
-        using PdfDocument document = new();
-        try
-        {
-            Scanner.ProgressState = TaskbarItemProgressState.Normal;
-            for(int i = 0; i < imagefiles.Count; i++)
-            {
-                string imagefile = imagefiles[i];
-                PdfPage page = document.AddPage();
-                SetPaperSize(paper, page);
-                using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
-                using XImage xImage = XImage.FromFile(imagefile);
-                XSize size = PageSizeConverter.ToSize(page.Size);
-                if(xImage.PixelWidth < xImage.PixelHeight)
-                {
-                    page.Orientation = PageOrientation.Portrait;
-                    if(ScannedText?.ElementAtOrDefault(i) != null)
-                    {
-                        WritePdfTextContent(xImage, ScannedText[i], page, gfx, XBrushes.Transparent);
-                    }
-
-                    gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
-                } else
-                {
-                    page.Orientation = PageOrientation.Landscape;
-                    if(ScannedText?.ElementAtOrDefault(i) != null)
-                    {
-                        WritePdfTextContent(xImage, ScannedText[i], page, gfx, XBrushes.Transparent);
-                    }
-
-                    gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
-                }
-
-                if(Scanner.PdfPageNumberDraw)
-                {
-                    gfx.DrawText(
-                        new XSolidBrush(XColor.FromKnownColor(Scanner.PdfAlignTextColor)),
-                        (i + 1).ToString(),
-                        GetPdfTextLayout(page)[0],
-                        GetPdfTextLayout(page)[1]);
-                }
-
-                Scanner.PdfSaveProgressValue = i / (double)imagefiles.Count;
-            }
-
-            if(Scanner.PasswordProtect)
-            {
-                ApplyPdfSecurity(document);
-            }
-
-            document.DefaultPdfCompression();
-            Scanner.PdfSaveProgressValue = 0;
-        } catch(Exception ex)
-        {
-            imagefiles = null;
-            ScannedText = null;
-            throw new ArgumentException(nameof(document), ex);
-        }
-
-        return document;
-    }
-
-    public static PdfDocument GeneratePdf(this string imagefile, Paper paper, ObservableCollection<OcrData> ScannedText = null)
-    {
-        using PdfDocument document = new();
-        try
-        {
-            Scanner.ProgressState = TaskbarItemProgressState.Normal;
-
-            PdfPage page = document.AddPage();
-            SetPaperSize(paper, page);
-            using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
-            using XImage xImage = XImage.FromFile(imagefile);
-            XSize size = PageSizeConverter.ToSize(page.Size);
-            if(xImage.PixelWidth < xImage.PixelHeight)
-            {
-                page.Orientation = PageOrientation.Portrait;
-                if(ScannedText != null)
-                {
-                    WritePdfTextContent(xImage, ScannedText, page, gfx, XBrushes.Transparent);
-                }
-
-                gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
-            } else
-            {
-                page.Orientation = PageOrientation.Landscape;
-                if(ScannedText != null)
-                {
-                    WritePdfTextContent(xImage, ScannedText, page, gfx, XBrushes.Transparent);
-                }
-
-                gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
-            }
-
-            if(Scanner.PdfPageNumberDraw)
-            {
-                gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfAlignTextColor)), "1", GetPdfTextLayout(page)[0], GetPdfTextLayout(page)[1]);
-            }
-
-            if(Scanner.PasswordProtect)
-            {
-                ApplyPdfSecurity(document);
-            }
-
-            document.DefaultPdfCompression();
-            Scanner.PdfSaveProgressValue = 0;
-        } catch(Exception ex)
-        {
-            imagefile = null;
-            ScannedText = null;
-            throw new ArgumentException(nameof(document), ex);
-        }
-
-        return document;
-    }
-
     public static PdfDocument GeneratePdf(
         this BitmapSource bitmapframe,
         ObservableCollection<OcrData> ScannedText,
@@ -380,11 +378,7 @@ public static class PdfGeneration
             {
                 using MozJpeg.MozJpeg mozJpeg = new();
                 BitmapSource resizedimage = bitmapframe.Resize(page.Width, page.Height, 0, dpi, dpi);
-                data = mozJpeg.Encode(
-                    resizedimage.BitmapSourceToBitmap(),
-                    jpegquality,
-                    false,
-                    TJFlags.ACCURATEDCT | TJFlags.DC_SCAN_OPT2 | TJFlags.TUNE_MS_SSIM);
+                data = mozJpeg.Encode(resizedimage.BitmapSourceToBitmap(), jpegquality, false, TJFlags.ACCURATEDCT | TJFlags.DC_SCAN_OPT2 | TJFlags.TUNE_MS_SSIM);
                 ms = new MemoryStream(data);
                 resizedimage = null;
             } else
@@ -477,9 +471,7 @@ public static class PdfGeneration
         try
         {
             using PdfDocument outputDocument = new();
-            foreach(PdfDocument inputDocument in from string file in pdffiles
-                let inputDocument = PdfReader.Open(file, PdfDocumentOpenMode.Import)
-                select inputDocument)
+            foreach(PdfDocument inputDocument in from string file in pdffiles let inputDocument = PdfReader.Open(file, PdfDocumentOpenMode.Import) select inputDocument)
             {
                 for(int i = 0; i < inputDocument.PageCount; i++)
                 {
@@ -517,24 +509,7 @@ public static class PdfGeneration
     public static void SetPaperSize(this Paper paper, PdfPage page)
     { page.Size = paper == null || !paperSizes.TryGetValue(paper.PaperType, out PageSize pageSize) ? PageSize.A4 : pageSize; }
 
-    private static readonly Dictionary<string, PageSize> paperSizes = new()
-    {
-        { "A0", PageSize.A0 },
-        { "A1", PageSize.A1 },
-        { "A2", PageSize.A2 },
-        { "A3", PageSize.A3 },
-        { "A4", PageSize.A4 },
-        { "A5", PageSize.A5 },
-        { "B0", PageSize.B0 },
-        { "B1", PageSize.B1 },
-        { "B2", PageSize.B2 },
-        { "B3", PageSize.B3 },
-        { "B4", PageSize.B4 },
-        { "B5", PageSize.B5 },
-        { "Letter", PageSize.Letter },
-        { "Legal", PageSize.Legal },
-        { "Executive", PageSize.Executive }
-    };
+    public static Scanner Scanner { get; set; }
 
     private static XRect AdjustBounds(this Rect rect, double hAdjust, double vAdjust)
     { return new XRect(rect.X * hAdjust, rect.Y * vAdjust, rect.Width * hAdjust, rect.Height * vAdjust); }
@@ -562,12 +537,7 @@ public static class PdfGeneration
         textformatter.DrawString(item.Text, font, xBrush, adjustedBounds);
     }
 
-    private static void WritePdfTextContent(
-        this BitmapSource bitmapframe,
-        ObservableCollection<OcrData> ScannedText,
-        PdfPage page,
-        XGraphics gfx,
-        XBrush xBrush)
+    private static void WritePdfTextContent(this BitmapSource bitmapframe, ObservableCollection<OcrData> ScannedText, PdfPage page, XGraphics gfx, XBrush xBrush)
     {
         if(ScannedText is not null)
         {
@@ -602,4 +572,23 @@ public static class PdfGeneration
             }
         }
     }
+
+    private static readonly Dictionary<string, PageSize> paperSizes = new()
+    {
+        { "A0", PageSize.A0 },
+        { "A1", PageSize.A1 },
+        { "A2", PageSize.A2 },
+        { "A3", PageSize.A3 },
+        { "A4", PageSize.A4 },
+        { "A5", PageSize.A5 },
+        { "B0", PageSize.B0 },
+        { "B1", PageSize.B1 },
+        { "B2", PageSize.B2 },
+        { "B3", PageSize.B3 },
+        { "B4", PageSize.B4 },
+        { "B5", PageSize.B5 },
+        { "Letter", PageSize.Letter },
+        { "Legal", PageSize.Legal },
+        { "Executive", PageSize.Executive }
+    };
 }

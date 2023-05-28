@@ -3,6 +3,7 @@ using GpScanner.Properties;
 using Ocr;
 using PdfSharp.Pdf;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -430,7 +431,7 @@ public class GpScannerViewModel : InpcBase
                     .ToList();
                 int slicecount = files.Count > Environment.ProcessorCount ? files.Count / Environment.ProcessorCount : 1;
                 Scanner scanner = ToolBox.Scanner;
-                BatchTxtOcrs = new List<BatchTxtOcr>();
+                BatchTxtOcrs = new ConcurrentBag<BatchTxtOcr>();
                 List<Task> Tasks = new();
                 ocrcancellationToken = new CancellationTokenSource();
                 foreach(List<string> item in TwainCtrl.ChunkBy(files, slicecount))
@@ -440,7 +441,7 @@ public class GpScannerViewModel : InpcBase
                         BatchTxtOcr batchTxtOcr = new();
                         Paper paper = ToolBox.Paper;
                         Task task = Task.Run(
-                            async () =>
+                            () =>
                             {
                                 for(int i = 0; i < item.Count; i++)
                                 {
@@ -448,7 +449,7 @@ public class GpScannerViewModel : InpcBase
                                     {
                                         string pdffile = Path.ChangeExtension(item.ElementAtOrDefault(i), ".pdf");
                                         ObservableCollection<OcrData> scannedText = scanner?.ApplyPdfSaveOcr == true
-                                            ? await item.ElementAtOrDefault(i).OcrAsyc(scanner.SelectedTtsLanguage)
+                                            ? item.ElementAtOrDefault(i).GetOcrData(scanner.SelectedTtsLanguage)
                                             : null;
 
                                         batchTxtOcr.ProgressValue = (i + 1) / (double)item.Count;
@@ -510,7 +511,7 @@ public class GpScannerViewModel : InpcBase
                     .ToList();
                 int slicecount = files.Count > Environment.ProcessorCount ? files.Count / Environment.ProcessorCount : 1;
                 Scanner scanner = ToolBox.Scanner;
-                BatchTxtOcrs = new List<BatchTxtOcr>();
+                BatchTxtOcrs = new ConcurrentBag<BatchTxtOcr>();
                 List<Task> Tasks = new();
                 ocrcancellationToken = new CancellationTokenSource();
                 foreach(List<string> item in TwainCtrl.ChunkBy(files, slicecount))
@@ -519,7 +520,7 @@ public class GpScannerViewModel : InpcBase
                     {
                         BatchTxtOcr batchTxtOcr = new();
                         Task task = Task.Run(
-                            async () =>
+                            () =>
                             {
                                 List<string> scannedtext = new();
                                 for(int i = 0; i < item.Count; i++)
@@ -528,7 +529,7 @@ public class GpScannerViewModel : InpcBase
                                     {
                                         string image = item[i];
                                         string txtfile = Path.ChangeExtension(image, ".txt");
-                                        string content = string.Join(" ", (await image.OcrAsyc(scanner.SelectedTtsLanguage)).Select(z => z.Text));
+                                        string content = string.Join(" ", image.GetOcrData(scanner.SelectedTtsLanguage).Select(z => z.Text));
                                         File.WriteAllText(txtfile, content);
                                         batchTxtOcr.ProgressValue = (i + 1) / (double)item.Count;
                                         batchTxtOcr.FilePath = Path.GetFileName(image);
@@ -607,9 +608,7 @@ public class GpScannerViewModel : InpcBase
             parameter => true);
 
         PrintImage =
-            new RelayCommand<object>(
-            parameter => PdfViewer.PdfViewer.PrintImageSource(parameter as ImageSource, 300, false),
-            parameter => parameter is ImageSource);
+            new RelayCommand<object>(parameter => PdfViewer.PdfViewer.PrintImageSource(parameter as ImageSource, 300, false), parameter => parameter is ImageSource);
     }
 
     public static event EventHandler<PropertyChangedEventArgs> StaticPropertyChanged;
@@ -868,7 +867,7 @@ public class GpScannerViewModel : InpcBase
         }
     }
 
-    public List<BatchTxtOcr> BatchTxtOcrs
+    public ConcurrentBag<BatchTxtOcr> BatchTxtOcrs
     {
         get => batchTxtOcrs;
 
@@ -1495,8 +1494,7 @@ public class GpScannerViewModel : InpcBase
             {
                 Scanner scanner = x.Item as Scanner;
                 x.Accepted = Path.GetFileNameWithoutExtension(scanner?.FileName).Contains(AramaMetni, StringComparison.OrdinalIgnoreCase) ||
-                    ScannerData.Data
-                        .Any(z => z.FileName == scanner?.FileName && z.FileContent?.Contains(AramaMetni, StringComparison.OrdinalIgnoreCase) == true);
+                    ScannerData.Data.Any(z => z.FileName == scanner?.FileName && z.FileContent?.Contains(AramaMetni, StringComparison.OrdinalIgnoreCase) == true);
             };
         }
 
@@ -1633,7 +1631,7 @@ public class GpScannerViewModel : InpcBase
 
     private string batchFolder;
 
-    private List<BatchTxtOcr> batchTxtOcrs;
+    private ConcurrentBag<BatchTxtOcr> batchTxtOcrs;
 
     private XmlLanguage calendarLang;
 

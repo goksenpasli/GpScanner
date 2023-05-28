@@ -46,8 +46,6 @@ public class EypPdfViewer : PdfViewer.PdfViewer
             });
     }
 
-    public new RelayCommand<object> DosyaAç { get; }
-
     public void AddToHistoryList(string pdffilepath)
     {
         if(!Settings.Default.PdfLoadHistory.Contains(PdfFilePath))
@@ -65,6 +63,8 @@ public class EypPdfViewer : PdfViewer.PdfViewer
         document.Save(source);
         return source;
     }
+
+    public new RelayCommand<object> DosyaAç { get; }
 
     protected override void OnDrop(DragEventArgs e)
     {

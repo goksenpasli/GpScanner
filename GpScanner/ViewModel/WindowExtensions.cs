@@ -11,6 +11,22 @@ namespace GpScanner.ViewModel;
 
 public static class WindowExtensions
 {
+    private const int _AboutSysMenuID = 1001;
+
+    private const int GWL_STYLE = -16, WS_MINIMIZEBOX = 0x20000;
+
+    private const uint MF_BYCOMMAND = 0x00000000;
+
+    private const int MF_BYPOSITION = 0x400;
+
+    private const uint MF_ENABLED = 0x00000000;
+
+    private const uint MF_GRAYED = 0x00000001;
+
+    private const uint SC_CLOSE = 0xF060;
+
+    private const int WM_SYSCOMMAND = 0x112;
+
     static WindowExtensions()
     {
         OpenSettings = new RelayCommand<object>(
@@ -21,7 +37,13 @@ public static class WindowExtensions
             });
     }
 
-    public static ICommand OpenSettings { get; }
+    internal static void HideMinimizeButtons(this Window window)
+    {
+        IntPtr hwnd = new WindowInteropHelper(window).Handle;
+        int currentStyle = GetWindowLong(hwnd, GWL_STYLE);
+
+        _ = SetWindowLong(hwnd, GWL_STYLE, currentStyle & ~WS_MINIMIZEBOX);
+    }
 
     public static void DisableCloseButton(this Window window, bool disable)
     {
@@ -38,29 +60,7 @@ public static class WindowExtensions
         source.AddHook(WndProc);
     }
 
-    internal static void HideMinimizeButtons(this Window window)
-    {
-        IntPtr hwnd = new WindowInteropHelper(window).Handle;
-        int currentStyle = GetWindowLong(hwnd, GWL_STYLE);
-
-        _ = SetWindowLong(hwnd, GWL_STYLE, currentStyle & ~WS_MINIMIZEBOX);
-    }
-
-    private const int _AboutSysMenuID = 1001;
-
-    private const int GWL_STYLE = -16, WS_MINIMIZEBOX = 0x20000;
-
-    private const uint MF_BYCOMMAND = 0x00000000;
-
-    private const int MF_BYPOSITION = 0x400;
-
-    private const uint MF_ENABLED = 0x00000000;
-
-    private const uint MF_GRAYED = 0x00000001;
-
-    private const uint SC_CLOSE = 0xF060;
-
-    private const int WM_SYSCOMMAND = 0x112;
+    public static ICommand OpenSettings { get; }
 
     [DllImport("user32.dll")]
     private static extern bool EnableMenuItem(IntPtr hMenu, uint uIDEnableItem, uint uEnable);

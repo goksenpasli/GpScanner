@@ -31,15 +31,15 @@ namespace TwainControl
             base.OnMouseDoubleClick(e);
         }
 
-        private Window maximizePdfWindow;
-
-        private XmlViewerControl xmlViewerControl;
-
         private void MaximizePdfWindow_Closed(object sender, EventArgs e)
         {
             maximizePdfWindow.Closed -= MaximizePdfWindow_Closed;
             xmlViewerControl = null;
             maximizePdfWindow = null;
         }
+
+        private Window maximizePdfWindow;
+
+        private XmlViewerControl xmlViewerControl;
     }
 }

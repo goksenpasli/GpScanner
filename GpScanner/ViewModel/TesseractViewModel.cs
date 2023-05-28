@@ -130,12 +130,6 @@ public class TesseractViewModel : InpcBase
         }
     }
 
-    private bool showAllLanguages;
-
-    private string tessdatafolder;
-
-    private ObservableCollection<string> tesseractFiles;
-
     private ObservableCollection<string> GetTesseractFiles(string tesseractfolder)
     {
         return Directory.Exists(tesseractfolder)
@@ -287,4 +281,10 @@ public class TesseractViewModel : InpcBase
             }
         }
     }
+
+    private bool showAllLanguages;
+
+    private string tessdatafolder;
+
+    private ObservableCollection<string> tesseractFiles;
 }

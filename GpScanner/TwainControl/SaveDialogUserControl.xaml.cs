@@ -33,10 +33,6 @@ public partial class SaveDialogUserControl : UserControl, INotifyPropertyChanged
 
     protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
 
-    private BitmapSource previewImage;
-
-    private TwainCtrl twainCtrl;
-
     private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if(e.PropertyName is "BwThreshold")
@@ -48,10 +44,7 @@ public partial class SaveDialogUserControl : UserControl, INotifyPropertyChanged
     private void GenerateImage()
     {
         PreviewImage = twainCtrl.SaveIndex == 3
-            ? twainCtrl?.SeçiliResim?.Resim?.BitmapSourceToBitmap()
-                .ConvertBlackAndWhite(Settings.Default.BwThreshold)
-                .ToBitmapImage(ImageFormat.Jpeg)
-                .Resize(512, 512)
+            ? twainCtrl?.SeçiliResim?.Resim?.BitmapSourceToBitmap().ConvertBlackAndWhite(Settings.Default.BwThreshold).ToBitmapImage(ImageFormat.Jpeg).Resize(512, 512)
             : null;
     }
 
@@ -63,4 +56,8 @@ public partial class SaveDialogUserControl : UserControl, INotifyPropertyChanged
         twainCtrl.PropertyChanged += TwainCtrl_PropertyChanged;
         Settings.Default.PropertyChanged += Default_PropertyChanged;
     }
+
+    private BitmapSource previewImage;
+
+    private TwainCtrl twainCtrl;
 }
