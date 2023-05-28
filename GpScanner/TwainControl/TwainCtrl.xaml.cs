@@ -1223,11 +1223,14 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter => parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
 
         CopyPdfBitmapFile = new RelayCommand<object>(
-            parameter =>
+            async parameter =>
             {
                 if(parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
                 {
-                    Clipboard.SetImage(((BitmapSource)pdfViewer.Source).BitmapSourceToBitmap());
+                    byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfViewer.PdfFilePath);
+                    using MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfViewer.Sayfa, (int)Settings.Default.ImgLoadResolution);
+                    using System.Drawing.Image image = System.Drawing.Image.FromStream(ms);
+                    Clipboard.SetImage(image);
                 }
             },
             parameter => parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));

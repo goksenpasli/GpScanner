@@ -265,16 +265,6 @@
                                 </Image.Source>
                             </Image>
                         </Button>
-                        <Button Command="{Binding CopyPdfBitmapFile}" CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
-                            <Image Width="16" Height="16">
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Shell32.dll" />
-                                        <Binding Source="134" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
-                        </Button>
                         <Button Command="{Binding RemoveSelectedPage}" CommandParameter="{Binding ElementName=PdfVwr}">
                             <Image Width="16" Height="16"
                                 Source="/TwainControl;component/Icons/delete.png" />
@@ -334,6 +324,16 @@
                                     </Image.Source>
                                 </Image>
                             </Button.Content>
+                        </Button>
+                        <Button Command="{Binding CopyPdfBitmapFile}" CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
+                            <Image Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="134" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
                         </Button>
                         <Button BorderBrush="Cyan"
                             Command="{Binding PasteFileToPdfFile}"

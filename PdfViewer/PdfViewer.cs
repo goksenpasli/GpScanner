@@ -211,6 +211,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                         System.Drawing.Image image = pdfDoc.Render(page - 1, width, height, dpi, dpi, false);
                         MemoryStream stream = new();
                         image.Save(stream, ImageFormat.Jpeg);
+                        pdffilestream = null;
                         return stream;
                     });
         } catch(Exception)
