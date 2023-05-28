@@ -4,7 +4,7 @@ using System.Windows.Controls.Primitives;
 
 namespace Extensions;
 
-public class SplitButton : Button
+public class SplitButton : ButtonBase
 {
     static SplitButton() { DefaultStyleKeyProperty.OverrideMetadata(typeof(SplitButton), new FrameworkPropertyMetadata(typeof(SplitButton))); }
 
