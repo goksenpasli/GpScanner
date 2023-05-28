@@ -183,7 +183,7 @@ public static class BitmapMethods
             });
     }
 
-    public static async Task<BitmapFrame> GenerateImageDocumentBitmapFrame(MemoryStream ms, Paper paper, bool deskew = false)
+    public static async Task<BitmapFrame> GenerateImageDocumentBitmapFrameAsync(MemoryStream ms, Paper paper, bool deskew = false)
     {
         BitmapImage image = new();
         image.BeginInit();

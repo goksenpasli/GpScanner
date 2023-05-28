@@ -491,7 +491,7 @@
                                     IsChecked="{Binding ThumbApplyEffects}" />
                                 <Button x:Name="CaptureThumb"
                                     VerticalContentAlignment="Center"
-                                    BorderBrush="Cyan" BorderThickness="2" Click="CaptureThumb_Click"
+                                    BorderBrush="Cyan" BorderThickness="2" Click="CaptureThumb_ClickAsync"
                                     Content="µ" FontFamily="Webdings" FontSize="20"
                                     Foreground="Blue" />
                             </UniformGrid>

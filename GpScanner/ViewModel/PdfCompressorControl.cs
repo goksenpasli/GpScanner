@@ -24,7 +24,7 @@ public class PdfCompressorControl : Compressor
                     using(PdfiumViewer.PdfDocument loadedpdfdoc = PdfiumViewer.PdfDocument.Load(LoadedPdfPath))
                     {
                         List<BitmapImage> images = await AddToListAsync(loadedpdfdoc, Dpi);
-                        pdfDocument = await GeneratePdf(images, UseMozJpeg, BlackAndWhite, Quality, Dpi);
+                        pdfDocument = await GeneratePdfAsync(images, UseMozJpeg, BlackAndWhite, Quality, Dpi);
                         images = null;
                     }
 

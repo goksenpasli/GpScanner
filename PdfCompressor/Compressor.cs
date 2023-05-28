@@ -35,7 +35,7 @@ public class Compressor : Control, INotifyPropertyChanged
                 {
                     PdfiumViewer.PdfDocument loadedpdfdoc = PdfiumViewer.PdfDocument.Load(LoadedPdfPath);
                     List<BitmapImage> images = await AddToListAsync(loadedpdfdoc, Dpi);
-                    using PdfDocument pdfDocument = await GeneratePdf(images, UseMozJpeg, BlackAndWhite, Quality, Dpi);
+                    using PdfDocument pdfDocument = await GeneratePdfAsync(images, UseMozJpeg, BlackAndWhite, Quality, Dpi);
                     images = null;
                     SaveFileDialog saveFileDialog = new()
                     {
@@ -118,7 +118,7 @@ public class Compressor : Control, INotifyPropertyChanged
         doc.Options.EnableCcittCompressionForBilevelImages = true;
     }
 
-    public async Task<PdfDocument> GeneratePdf(List<BitmapImage> bitmapFrames, bool UseMozJpegEncoding, bool bw, int jpegquality = 80, int dpi = 200)
+    public async Task<PdfDocument> GeneratePdfAsync(List<BitmapImage> bitmapFrames, bool UseMozJpegEncoding, bool bw, int jpegquality = 80, int dpi = 200)
     {
         if(bitmapFrames?.Count == 0)
         {

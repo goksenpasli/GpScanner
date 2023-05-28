@@ -20,7 +20,7 @@ public class DocumentViewerModel : InpcBase
 {
     public DocumentViewerModel()
     {
-        PropertyChanged += DocumentViewerModel_PropertyChanged;
+        PropertyChanged += DocumentViewerModel_PropertyChangedAsync;
         Back = new RelayCommand<object>(
             parameter =>
             {
@@ -43,7 +43,7 @@ public class DocumentViewerModel : InpcBase
                 if(parameter is ImageSource imageSource)
                 {
                     MemoryStream ms = new(imageSource.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg));
-                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrame(ms, ToolBox.Paper);
+                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms, ToolBox.Paper);
                     bitmapFrame.Freeze();
                     ScannedImage scannedImage = new() { Seçili = false, FilePath = PdfFilePath, Resim = bitmapFrame };
                     Scanner?.Resimler.Add(scannedImage);
@@ -196,11 +196,11 @@ public class DocumentViewerModel : InpcBase
         }
     }
 
-    private async void DocumentViewerModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    private async void DocumentViewerModel_PropertyChangedAsync(object sender, PropertyChangedEventArgs e)
     {
         if(e.PropertyName is "ImgData" && ImgData is not null && !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang))
         {
-            ObservableCollection<Ocr.OcrData> ocrtext = await Ocr.Ocr.OcrAsyc(ImgData, Settings.Default.DefaultTtsLang);
+            ObservableCollection<Ocr.OcrData> ocrtext = await Ocr.Ocr.OcrAsync(ImgData, Settings.Default.DefaultTtsLang);
             OcrText = string.Join(" ", ocrtext?.Select(z => z.Text));
         }
     }

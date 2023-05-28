@@ -374,13 +374,13 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
 
-    private static async void DecodeHeightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static async void DecodeHeightChangedAsync(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if(d is ImageViewer imageViewer)
         {
             string path = imageViewer.ImageFilePath;
             imageViewer.DecodeHeight = (int)e.NewValue;
-            await LoadImage(path, imageViewer);
+            await LoadImageAsync(path, imageViewer);
         }
     }
 
@@ -400,7 +400,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    private static async Task<int[]> GetImagePixelSize(string filepath)
+    private static async Task<int[]> GetImagePixelSizeAsync(string filepath)
     {
         return await Task.Run(
             () =>
@@ -413,16 +413,16 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
             });
     }
 
-    private static async void ImageFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static async void ImageFilePathChangedAsync(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if(d is ImageViewer imageViewer)
         {
             if(e.NewValue is string filepath && File.Exists(filepath))
             {
-                int[] size = await GetImagePixelSize(filepath);
+                int[] size = await GetImagePixelSizeAsync(filepath);
                 imageViewer.OriginalPixelHeight = size[0];
                 imageViewer.OriginalPixelWidth = size[1];
-                await LoadImage(filepath, imageViewer);
+                await LoadImageAsync(filepath, imageViewer);
                 return;
             }
 
@@ -438,7 +438,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    private static async Task LoadImage(string filepath, ImageViewer imageViewer)
+    private static async Task LoadImageAsync(string filepath, ImageViewer imageViewer)
     {
         if(filepath is not null && File.Exists(filepath))
         {
@@ -527,7 +527,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    private void Viewport3D_MouseWheel(object sender, MouseWheelEventArgs e) { Fov -= e.Delta / 100; }
+    private void Viewport3D_MouseWheel(object sender, MouseWheelEventArgs e) { Fov -= e.Delta / 100d; }
 
     private static bool ZoomValidateCallBack(object value)
     {
@@ -542,7 +542,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         "DecodeHeight",
         typeof(int),
         typeof(ImageViewer),
-        new PropertyMetadata(300, DecodeHeightChanged));
+        new PropertyMetadata(300, DecodeHeightChangedAsync));
 
     public static readonly DependencyProperty FovProperty = DependencyProperty.Register("Fov", typeof(double), typeof(ImageViewer), new PropertyMetadata(95d, FovChanged));
 
@@ -550,7 +550,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         "ImageFilePath",
         typeof(string),
         typeof(ImageViewer),
-        new PropertyMetadata(null, ImageFilePathChanged));
+        new PropertyMetadata(null, ImageFilePathChangedAsync));
 
     public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
         "Orientation",

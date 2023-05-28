@@ -66,12 +66,12 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                                     break;
 
                                 case 3:
-                                    await TwainCtrl.SavePdfImage(bitmapFrame, saveFileDialog.FileName, Scanner, Paper);
+                                    await TwainCtrl.SavePdfImageAsync(bitmapFrame, saveFileDialog.FileName, Scanner, Paper);
                                     bitmapFrame = null;
                                     break;
 
                                 case 4:
-                                    await TwainCtrl.SavePdfImage(bitmapFrame, saveFileDialog.FileName, Scanner, Paper, true);
+                                    await TwainCtrl.SavePdfImageAsync(bitmapFrame, saveFileDialog.FileName, Scanner, Paper, true);
                                     bitmapFrame = null;
                                     break;
 
@@ -81,7 +81,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                                     break;
 
                                 case 6:
-                                    await TwainCtrl.SaveTxtFile(bitmapFrame, saveFileDialog.FileName, Scanner);
+                                    await TwainCtrl.SaveTxtFileAsync(bitmapFrame, saveFileDialog.FileName, Scanner);
                                     bitmapFrame = null;
                                     break;
                             }
@@ -183,7 +183,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                                     scannedimage => CropImageToList(scannedimage.Resim, (int)Scanner.SliceCountWidth, (int)Scanner.SliceCountHeight)
                                             .Select(croppedBitmap => new ScannedImage { Resim = BitmapFrame.Create(croppedBitmap) }))
                                 .ToList();
-                            pdfdocument = await listcroppedimages.GeneratePdf(Format.Jpg, Paper, Settings.Default.JpegQuality, null, (int)Settings.Default.Çözünürlük);
+                            pdfdocument = await listcroppedimages.GeneratePdfAsync(Format.Jpg, Paper, Settings.Default.JpegQuality, null, (int)Settings.Default.Çözünürlük);
                         });
                     string savefolder = CreateSaveFolder("SPLIT");
                     string path = savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "pdf");

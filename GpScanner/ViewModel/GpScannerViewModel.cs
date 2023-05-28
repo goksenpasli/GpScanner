@@ -123,7 +123,7 @@ public class GpScannerViewModel : InpcBase
                 {
                     byte[] imgdata = twainCtrl.SeçiliResim.Resim.ToTiffJpegByteArray(Format.Jpg);
                     OcrIsBusy = true;
-                    ScannedText = await imgdata.OcrAsyc(Settings.Default.DefaultTtsLang);
+                    ScannedText = await imgdata.OcrAsync(Settings.Default.DefaultTtsLang);
                     OcrIsBusy = false;
                     if(ScannedText != null)
                     {
@@ -162,7 +162,7 @@ public class GpScannerViewModel : InpcBase
                             {
                                 using MemoryStream ms = await PdfViewer.PdfViewer
                                     .ConvertToImgStreamAsync(filedata, i, (int)Twainsettings.Settings.Default.ImgLoadResolution);
-                                ocrdata = await ms.ToArray().OcrAsyc(Settings.Default.DefaultTtsLang);
+                                ocrdata = await ms.ToArray().OcrAsync(Settings.Default.DefaultTtsLang);
                                 ScannerData.Data
                                     .Add(
                                         new Data
@@ -176,7 +176,7 @@ public class GpScannerViewModel : InpcBase
                         {
                             using MemoryStream ms = await PdfViewer.PdfViewer
                                 .ConvertToImgStreamAsync(filedata, pdfviewer.Sayfa, (int)Twainsettings.Settings.Default.ImgLoadResolution);
-                            ocrdata = await ms.ToArray().OcrAsyc(Settings.Default.DefaultTtsLang);
+                            ocrdata = await ms.ToArray().OcrAsync(Settings.Default.DefaultTtsLang);
                             ScannerData.Data
                                 .Add(
                                     new Data
@@ -738,7 +738,7 @@ public class GpScannerViewModel : InpcBase
             if(imagefileextensions.Contains(Path.GetExtension(e.Name.ToLower())))
             {
                 await Task.Delay(1000);
-                ObservableCollection<OcrData> scannedText = await e.FullPath.OcrAsyc(scanner.SelectedTtsLanguage);
+                ObservableCollection<OcrData> scannedText = await e.FullPath.OcrAsync(scanner.SelectedTtsLanguage);
                 await Task.Run(
                     () =>
                     {

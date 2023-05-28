@@ -380,7 +380,7 @@ public partial class MediaViewer : UserControl
         }
     }
 
-    private async void CaptureThumb_Click(object sender, RoutedEventArgs e)
+    private async void CaptureThumb_ClickAsync(object sender, RoutedEventArgs e)
     {
         if(Player.NaturalVideoWidth > 0 && MediaDataFilePath != null)
         {

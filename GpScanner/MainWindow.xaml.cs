@@ -26,10 +26,10 @@ public partial class MainWindow : Window
         InitializeComponent();
         cvs = TryFindResource("Veriler") as CollectionViewSource;
         DataContext = new GpScannerViewModel();
-        TwainCtrl.PropertyChanged += TwainCtrl_PropertyChanged;
+        TwainCtrl.PropertyChanged += TwainCtrl_PropertyChangedAsync;
     }
 
-    private async void ContentControl_Drop(object sender, DragEventArgs e)
+    private async void ContentControl_DropAsync(object sender, DragEventArgs e)
     {
         if(e.OriginalSource is Image image && e.Data.GetData(typeof(ScannedImage)) is ScannedImage droppedData && image.TemplatedParent is PdfViewer.PdfViewer pdfviewer)
         {
@@ -42,9 +42,9 @@ public partial class MainWindow : Window
                 string[] processedfiles = { temporarypdf, pdfFilePath };
                 if((Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.LeftShift)) || (Keyboard.IsKeyDown(Key.RightAlt) && Keyboard.IsKeyDown(Key.RightShift)))
                 {
-                    await TwainCtrl.RemovePdfPage(pdfFilePath, curpage, curpage);
+                    await TwainCtrl.RemovePdfPageAsync(pdfFilePath, curpage, curpage);
                     processedfiles.MergePdf().Save(pdfFilePath);
-                    await TwainCtrl.ArrangeFile(pdfFilePath, pdfFilePath, 0, curpage - 1);
+                    await TwainCtrl.ArrangeFileAsync(pdfFilePath, pdfFilePath, 0, curpage - 1);
                     TwainCtrl.NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
                     return;
                 }
@@ -52,7 +52,7 @@ public partial class MainWindow : Window
                 if(Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
                 {
                     processedfiles.MergePdf().Save(pdfFilePath);
-                    await TwainCtrl.ArrangeFile(pdfFilePath, pdfFilePath, 0, curpage - 1);
+                    await TwainCtrl.ArrangeFileAsync(pdfFilePath, pdfFilePath, 0, curpage - 1);
                     TwainCtrl.NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
                     return;
                 }
@@ -99,7 +99,7 @@ public partial class MainWindow : Window
         }
     }
 
-    private async void ListBox_Drop(object sender, DragEventArgs e) { await TwainCtrl.ListBoxDropFile(e); }
+    private async void ListBox_DropAsync(object sender, DragEventArgs e) { await TwainCtrl.ListBoxDropFileAsync(e); }
 
     private void MW_ContentRendered(object sender, EventArgs e)
     {
@@ -203,7 +203,7 @@ public partial class MainWindow : Window
 
     private void Run_PreviewMouseMove(object sender, MouseEventArgs e) { TwainCtrl.DropPreviewFile(sender, e); }
 
-    private async void TwainCtrl_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    private async void TwainCtrl_PropertyChangedAsync(object sender, PropertyChangedEventArgs e)
     {
         if(DataContext is GpScannerViewModel ViewModel)
         {
@@ -250,7 +250,7 @@ public partial class MainWindow : Window
                 }
 
                 ViewModel.OcrIsBusy = true;
-                ViewModel.ScannedText = await TwainCtrl.ImgData.OcrAsyc(Settings.Default.DefaultTtsLang);
+                ViewModel.ScannedText = await TwainCtrl.ImgData.OcrAsync(Settings.Default.DefaultTtsLang);
                 if(ViewModel.ScannedText != null)
                 {
                     ViewModel.TranslateViewModel.Metin = string.Join(" ", ViewModel.ScannedText?.Select(z => z.Text));
@@ -278,16 +278,8 @@ public partial class MainWindow : Window
                 {
                     TwainCtrl.Scanner.UsePageSeperator = false;
                     _ = MessageBox.Show(Translation.GetResStringValue("NOPATCHCODE"));
-                    if(WindowExtensions.OpenSettings.CanExecute(null) &&
-                        Policy.CheckPolicy("OpenSettings", Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\GpScanner")) &&
-                        Policy.CheckPolicy("OpenSettings", Registry.CurrentUser.OpenSubKey(@"Software\Policies\GpScanner")))
-                    {
-                        WindowExtensions.OpenSettings.Execute(null);
-                    }
-
                     return;
                 }
-
                 ViewModel.DetectPageSeperator = TwainCtrl.Scanner.UsePageSeperator;
             }
         }

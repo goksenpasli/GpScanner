@@ -203,7 +203,7 @@
                                     <Extensions:ContentToggleButton.OverContent>
                                         <Extensions:ResizablePanel Width="480" Height="360" MinWidth="480"
                                             MinHeight="360">
-                                            <local:CameraUserControl PropertyChanged="CameraUserControl_PropertyChanged" />
+                                            <local:CameraUserControl x:Name="Camera" />
                                         </Extensions:ResizablePanel>
                                     </Extensions:ContentToggleButton.OverContent>
                                 </Extensions:ContentToggleButton>
@@ -970,7 +970,7 @@
                                 Extensions:DragDropExtension.ScrollOnDragDrop="True" local:Policy.PolicyName="LoadImage"
                                 AllowDrop="True"
                                 Background="{StaticResource BorderBackground}"
-                                Drop="ListBox_Drop" IsSynchronizedWithCurrentItem="False"
+                                Drop="ListBox_DropAsync" IsSynchronizedWithCurrentItem="False"
                                 ItemsSource="{Binding Scanner.Resimler, Mode=OneWay}"
                                 PreviewMouseWheel="ListBox_PreviewMouseWheel"
                                 SelectedItem="{Binding SeçiliResim}"
@@ -1306,7 +1306,7 @@
                             </StackPanel>
                         </Grid>
                     </Button>
-                    <Extensions:ContentToggleButton>
+                    <Extensions:SplitButton Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/goksenpasli">
                         <StackPanel Orientation="Horizontal">
                             <Image Width="32" Height="32">
                                 <Image.Source>
@@ -1320,10 +1320,10 @@
                                 FontWeight="Bold"
                                 Text="{local:Loc ABOUT}" />
                         </StackPanel>
-                        <Extensions:ContentToggleButton.OverContent>
+                        <Extensions:SplitButton.InternalContent>
                             <local:AboutView />
-                        </Extensions:ContentToggleButton.OverContent>
-                    </Extensions:ContentToggleButton>
+                        </Extensions:SplitButton.InternalContent>
+                    </Extensions:SplitButton>
                 </UniformGrid>
             </Grid>
         </GroupBox>
@@ -1386,7 +1386,7 @@
                             d:Source="/GpScanner;component/splash.png" d:Zoom="1"
                             Angle="{Binding Scanner.RotateAngle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             OpenButtonVisibility="Collapsed" PanoramaButtonVisibility="Collapsed"
-                            PreviewMouseDown="ImgViewer_MouseDown" PreviewMouseMove="ImgViewer_MouseMove"
+                            PreviewMouseDown="ImgViewer_MouseDown" PreviewMouseMove="ImgViewer_MouseMoveAsync"
                             PreviewMouseWheel="ImgViewer_PreviewMouseWheel" PrintButtonVisibility="Visible" SnapTick="True"
                             Source="{Binding SeçiliResim.Resim, Mode=OneWay}" />
                         <Canvas x:Name="cnv" />

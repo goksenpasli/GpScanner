@@ -42,7 +42,7 @@ public static class Ocr
         return ocrdata;
     }
 
-    public static async Task<ObservableCollection<OcrData>> OcrAsyc(this byte[] dosya, string lang)
+    public static async Task<ObservableCollection<OcrData>> OcrAsync(this byte[] dosya, string lang)
     {
         if(string.IsNullOrWhiteSpace(lang))
         {
@@ -58,7 +58,7 @@ public static class Ocr
         return await Task.Run(() => dosya.GetOcrData(lang), ocrcancellationToken.Token);
     }
 
-    public static async Task<ObservableCollection<OcrData>> OcrAsyc(this string dosya, string lang)
+    public static async Task<ObservableCollection<OcrData>> OcrAsync(this string dosya, string lang)
     {
         if(string.IsNullOrWhiteSpace(lang))
         {

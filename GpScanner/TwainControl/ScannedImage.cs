@@ -7,7 +7,7 @@ namespace TwainControl;
 
 public class ScannedImage : InpcBase
 {
-    public ScannedImage() { PropertyChanged += ScannedImage_PropertyChanged; }
+    public ScannedImage() { PropertyChanged += ScannedImage_PropertyChangedAsync; }
 
     public bool Animate
     {
@@ -79,7 +79,7 @@ public class ScannedImage : InpcBase
         }
     }
 
-    private async void ScannedImage_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    private async void ScannedImage_PropertyChangedAsync(object sender, PropertyChangedEventArgs e)
     {
         if(e.PropertyName is "RotationAngle" && RotationAngle != 0)
         {

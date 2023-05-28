@@ -44,7 +44,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public PdfViewer()
     {
-        PropertyChanged += PdfViewer_PropertyChanged;
+        PropertyChanged += PdfViewer_PropertyChangedAsync;
         SizeChanged += PdfViewer_SizeChanged;
         DosyaAç = new RelayCommand<object>(
             parameter =>
@@ -680,7 +680,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    private static async void DpiChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static async void DpiChangedAsync(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if(d is PdfViewer pdfViewer && pdfViewer.PdfFilePath is not null)
         {
@@ -719,7 +719,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    private async void PdfViewer_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    private async void PdfViewer_PropertyChangedAsync(object sender, PropertyChangedEventArgs e)
     {
         if(e.PropertyName is "Sayfa" && sender is PdfViewer pdfViewer && pdfViewer.PdfFilePath is not null)
         {
@@ -817,7 +817,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         DependencyProperty.Register("ContextMenuVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Collapsed));
 
     public static readonly DependencyProperty DpiProperty =
-        DependencyProperty.Register("Dpi", typeof(int), typeof(PdfViewer), new PropertyMetadata(200, DpiChanged));
+        DependencyProperty.Register("Dpi", typeof(int), typeof(PdfViewer), new PropertyMetadata(200, DpiChangedAsync));
 
     public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
         "Orientation",

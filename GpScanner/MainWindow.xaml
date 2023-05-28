@@ -395,7 +395,7 @@
                                                     Height="{Binding DataContext.SelectedSize.Height, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                                                     HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
                                                     d:Height="50" Background="Transparent" BorderBrush="Cyan"
-                                                    Drop="ContentControl_Drop"
+                                                    Drop="ContentControl_DropAsync"
                                                     IsChecked="{Binding Seçili}">
                                                     <CheckBox.Style>
                                                         <Style TargetType="{x:Type CheckBox}">
@@ -729,7 +729,7 @@
                                     <ListBox Extensions:DragDropExtension.ScrollOnDragDrop="True" twainctrl:Policy.PolicyName="LoadImage"
                                         AllowDrop="True"
                                         Background="{StaticResource BorderBackground}"
-                                        Drop="ListBox_Drop"
+                                        Drop="ListBox_DropAsync"
                                         ItemsSource="{Binding Source={x:Reference TwainCtrl}, Path=Scanner.Resimler}"
                                         VirtualizingPanel.CacheLength="3,3" VirtualizingPanel.CacheLengthUnit="Item"
                                         VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.ScrollUnit="Pixel"

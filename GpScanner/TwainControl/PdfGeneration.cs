@@ -212,7 +212,7 @@ public static class PdfGeneration
         return document;
     }
 
-    public static Task<PdfDocument> GeneratePdf(
+    public static Task<PdfDocument> GeneratePdfAsync(
         this List<ScannedImage> bitmapFrames,
         Format format,
         Paper paper,
@@ -490,7 +490,7 @@ public static class PdfGeneration
         }
     }
 
-    public static async Task SavePdfFiles(this string[] files)
+    public static async Task SavePdfFilesAsync(this string[] files)
     {
         SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası(*.pdf)|*.pdf", FileName = Translation.GetResStringValue("MERGE") };
         if(saveFileDialog.ShowDialog() == true)
