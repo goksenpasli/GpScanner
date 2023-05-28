@@ -4,6 +4,7 @@
     xmlns:Converter="clr-namespace:GpScanner.Converter"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
     xmlns:PdfCompressor="clr-namespace:PdfCompressor;assembly=PdfCompressor"
+    xmlns:System="clr-namespace:System;assembly=mscorlib"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dvd="clr-namespace:DvdBurner;assembly=DvdBurner" xmlns:local="clr-namespace:GpScanner"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -494,6 +495,21 @@
                         <GroupBox.Header>
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal">
+                                    <Image Width="16" Height="16">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="12" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <Extensions:NumericUpDownControl IsReadOnly="True"
+                                        Maximum="{Binding Source={x:Static System:Environment.ProcessorCount}}"
+                                        Minimum="1" Orientation="Horizontal" SmallChange="1"
+                                        Value="{Binding ProcessorCount, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                                    <StackPanel Orientation="Horizontal">
+                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                    </StackPanel>
                                     <TextBlock VerticalAlignment="Center"
                                         FontWeight="Bold"
                                         Text="{twainctrl:Loc BATCH}" />

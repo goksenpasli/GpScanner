@@ -3,7 +3,6 @@ using GpScanner.Properties;
 using Ocr;
 using PdfSharp.Pdf;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -429,9 +428,9 @@ public class GpScannerViewModel : InpcBase
                 List<string> files = Win32FileScanner.EnumerateFilepaths(BatchFolder)
                     .Where(s => imagefileextensions.Any(ext => ext == Path.GetExtension(s).ToLower()))
                     .ToList();
-                int slicecount = files.Count > Environment.ProcessorCount ? files.Count / Environment.ProcessorCount : 1;
+                int slicecount = files.Count > Settings.Default.ProcessorCount ? files.Count / Settings.Default.ProcessorCount : 1;
                 Scanner scanner = ToolBox.Scanner;
-                BatchTxtOcrs = new ConcurrentBag<BatchTxtOcr>();
+                BatchTxtOcrs = new ObservableCollection<BatchTxtOcr>();
                 List<Task> Tasks = new();
                 ocrcancellationToken = new CancellationTokenSource();
                 foreach(List<string> item in TwainCtrl.ChunkBy(files, slicecount))
@@ -455,8 +454,6 @@ public class GpScannerViewModel : InpcBase
                                         batchTxtOcr.ProgressValue = (i + 1) / (double)item.Count;
                                         batchTxtOcr.FilePath = Path.GetFileName(item.ElementAtOrDefault(i));
                                         item.ElementAtOrDefault(i).GeneratePdf(paper, scannedText).Save(pdffile);
-
-                                        GC.Collect();
                                     }
                                 }
                             },
@@ -466,11 +463,7 @@ public class GpScannerViewModel : InpcBase
                     }
                 }
 
-                if(scanner?.ApplyPdfSaveOcr == true)
-                {
-                    BatchDialogOpen = true;
-                }
-
+                BatchDialogOpen = true;
                 Filesavetask = Task.WhenAll(Tasks);
                 await Filesavetask;
                 if(Filesavetask?.IsCompleted == true && Shutdown)
@@ -509,9 +502,9 @@ public class GpScannerViewModel : InpcBase
                 List<string> files = Win32FileScanner.EnumerateFilepaths(BatchFolder)
                     .Where(s => imagefileextensions.Any(ext => ext == Path.GetExtension(s).ToLower()))
                     .ToList();
-                int slicecount = files.Count > Environment.ProcessorCount ? files.Count / Environment.ProcessorCount : 1;
+                int slicecount = files.Count > Settings.Default.ProcessorCount ? files.Count / Settings.Default.ProcessorCount : 1;
                 Scanner scanner = ToolBox.Scanner;
-                BatchTxtOcrs = new ConcurrentBag<BatchTxtOcr>();
+                BatchTxtOcrs = new ObservableCollection<BatchTxtOcr>();
                 List<Task> Tasks = new();
                 ocrcancellationToken = new CancellationTokenSource();
                 foreach(List<string> item in TwainCtrl.ChunkBy(files, slicecount))
@@ -522,7 +515,6 @@ public class GpScannerViewModel : InpcBase
                         Task task = Task.Run(
                             () =>
                             {
-                                List<string> scannedtext = new();
                                 for(int i = 0; i < item.Count; i++)
                                 {
                                     if(ocrcancellationToken?.IsCancellationRequested == false)
@@ -533,7 +525,6 @@ public class GpScannerViewModel : InpcBase
                                         File.WriteAllText(txtfile, content);
                                         batchTxtOcr.ProgressValue = (i + 1) / (double)item.Count;
                                         batchTxtOcr.FilePath = Path.GetFileName(image);
-                                        GC.Collect();
                                     }
                                 }
                             },
@@ -867,7 +858,7 @@ public class GpScannerViewModel : InpcBase
         }
     }
 
-    public ConcurrentBag<BatchTxtOcr> BatchTxtOcrs
+    public ObservableCollection<BatchTxtOcr> BatchTxtOcrs
     {
         get => batchTxtOcrs;
 
@@ -1631,7 +1622,7 @@ public class GpScannerViewModel : InpcBase
 
     private string batchFolder;
 
-    private ConcurrentBag<BatchTxtOcr> batchTxtOcrs;
+    private ObservableCollection<BatchTxtOcr> batchTxtOcrs;
 
     private XmlLanguage calendarLang;
 

@@ -228,5 +228,17 @@ namespace GpScanner.Properties {
                 this["FtpSites"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int ProcessorCount {
+            get {
+                return ((int)(this["ProcessorCount"]));
+            }
+            set {
+                this["ProcessorCount"] = value;
+            }
+        }
     }
 }
