@@ -89,7 +89,7 @@
                 d:ItemsSource="{d:SampleData ItemCount=5}"
                 twainctrl:Policy.PolicyName="DefaultTtsLang"
                 Background="{StaticResource BorderBackground}"
-                ItemsSource="{Binding TesseractFiles}"
+                ItemsSource="{Binding TesseractFiles, ValidatesOnDataErrors=True}"
                 SelectedItem="{Binding DefaultTtsLang, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                 <ListBox.Resources>
                     <Style BasedOn="{StaticResource ListBoxItemTemplate}" TargetType="ListBoxItem" />

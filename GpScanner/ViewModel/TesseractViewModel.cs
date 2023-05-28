@@ -1,4 +1,5 @@
 ﻿using Extensions;
+using GpScanner.Properties;
 using Ocr;
 using System;
 using System.Collections.ObjectModel;
@@ -9,11 +10,13 @@ using System.Linq;
 using System.Net;
 using System.Windows;
 using System.Windows.Input;
+using TwainControl;
 using InpcBase = Extensions.InpcBase;
 
 namespace GpScanner.ViewModel;
 
-public class TesseractViewModel : InpcBase
+public class TesseractViewModel : InpcBase, IDataErrorInfo
+
 {
     public TesseractViewModel()
     {
@@ -80,7 +83,16 @@ public class TesseractViewModel : InpcBase
             parameter => true);
 
         PropertyChanged += TesseractViewModel_PropertyChanged;
+        Settings.Default.PropertyChanged += Default_PropertyChanged;
     }
+
+    public string this[string columnName] => columnName switch
+    {
+        "TesseractFiles" when TesseractFiles?.Count==0 || string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) => Translation.GetResStringValue("RESTARTAPP"),
+        _ => null
+    };
+
+    public string Error => string.Empty;
 
     public ObservableCollection<TesseractOcrData> OcrDatas { get; set; }
 
@@ -127,6 +139,14 @@ public class TesseractViewModel : InpcBase
                 tesseractFiles = value;
                 OnPropertyChanged(nameof(TesseractFiles));
             }
+        }
+    }
+
+    private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if(e.PropertyName is "DefaultTtsLang")
+        {
+            OnPropertyChanged(nameof(TesseractFiles));
         }
     }
 

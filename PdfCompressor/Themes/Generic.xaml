@@ -55,7 +55,7 @@
                                 </Image>
                             </Button>
                             <UniformGrid Grid.Row="2" Grid.ColumnSpan="2"
-                                Columns="2">
+                                Columns="3">
                                 <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
                                     Content="MOZJPEG"
                                     IsChecked="{Binding UseMozJpeg, RelativeSource={RelativeSource TemplatedParent}}"

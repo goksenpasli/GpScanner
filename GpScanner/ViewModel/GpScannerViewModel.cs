@@ -1428,15 +1428,26 @@ public class GpScannerViewModel : InpcBase
 
     private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if(e.PropertyName is "RegisterBatchWatcher" && Settings.Default.RegisterBatchWatcher && !Directory.Exists(Settings.Default.BatchFolder))
+        if(e.PropertyName is "RegisterBatchWatcher" && Settings.Default.RegisterBatchWatcher)
         {
-            Settings.Default.RegisterBatchWatcher = false;
-            Settings.Default.BatchFolder = null;
+            if(!Directory.Exists(Settings.Default.BatchFolder))
+            {
+                Settings.Default.RegisterBatchWatcher = false;
+                Settings.Default.BatchFolder = null;
+            } else
+            {
+                _ = MessageBox.Show(Translation.GetResStringValue("RESTARTAPP"));
+            }
         }
 
         if(e.PropertyName is "DefaultTtsLang")
         {
             PdfGeneration.Scanner.SelectedTtsLanguage = Settings.Default.DefaultTtsLang;
+        }
+
+        if(e.PropertyName is "WatchFolderPdfFileChange" && Settings.Default.WatchFolderPdfFileChange)
+        {
+            _ = MessageBox.Show(Translation.GetResStringValue("RESTARTAPP"));
         }
 
         Settings.Default.Save();

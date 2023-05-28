@@ -37,10 +37,6 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="1*" />
@@ -588,7 +584,7 @@
                             <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
                                 CopyButtonVisibility="Collapsed" IsReadOnly="True" OpenButtonVisibility="Collapsed"
                                 PasteButtonVisibility="Collapsed"
-                                Text="{Binding BatchFolder, Source={x:Static properties:Settings.Default}}"
+                                Text="{Binding BatchFolder, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
                                 ToolTip="{Binding BatchFolder, Source={x:Static properties:Settings.Default}}" />
                             <UniformGrid Columns="2">
                                 <Button twainctrl:Policy.PolicyName="SetBatchWatchFolder"
@@ -691,28 +687,5 @@
             </Grid>
         </GroupBox>
         <local:TesseractView Grid.Column="1" />
-        <StatusBar Grid.Row="2" Grid.ColumnSpan="2"
-            Background="Maroon">
-            <StatusBarItem>
-                <StatusBarItem.Style>
-                    <Style TargetType="StatusBarItem">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding DefaultTtsLang, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}, Converter={StaticResource StringNullableToBooleanConverter}}" Value="true">
-                                <Setter Property="Visibility" Value="Collapsed" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding DefaultTtsLang, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}, Converter={StaticResource StringNullableToBooleanConverter}}" Value="false">
-                                <Setter Property="Visibility" Value="Visible" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </StatusBarItem.Style>
-                <TextBlock FontWeight="Bold" Foreground="Red"
-                    Text="{twainctrl:Loc TESSLANGSELECT}" />
-            </StatusBarItem>
-            <StatusBarItem>
-                <TextBlock FontWeight="Bold" Foreground="Blue"
-                    Text="{twainctrl:Loc RESTARTAPP}" />
-            </StatusBarItem>
-        </StatusBar>
     </Grid>
 </Window>

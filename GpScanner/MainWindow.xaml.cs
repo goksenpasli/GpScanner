@@ -1,6 +1,5 @@
 ﻿using GpScanner.Properties;
 using GpScanner.ViewModel;
-using Microsoft.Win32;
 using Ocr;
 using System;
 using System.Collections.Generic;
