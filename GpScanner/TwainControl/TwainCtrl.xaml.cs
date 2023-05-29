@@ -1235,6 +1235,16 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
 
+        CopyThumbPdfBitmapFile = new RelayCommand<object>(
+           parameter =>
+           {
+               if (parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
+               {
+                   Clipboard.SetImage(((BitmapSource)pdfViewer.Source).BitmapSourceToBitmap());
+               }
+           },
+           parameter => parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
+
         ExtractMultiplePdfFile = new RelayCommand<object>(
             async parameter =>
             {
@@ -1928,6 +1938,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     };
 
     public ICommand CopyPdfBitmapFile { get; }
+
+    public ICommand CopyThumbPdfBitmapFile { get; }
 
     public CroppedBitmap CroppedOcrBitmap
     {

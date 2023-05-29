@@ -455,25 +455,22 @@
                     OsdTextVisibility="Visible" />
             </DataTemplate>
             <DataTemplate x:Key="EmptyTemplate">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <TextBlock VerticalAlignment="Center">
-                        <Hyperlink BaselineAlignment="Center"
-                            Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                            CommandParameter="{Binding Mode=OneWay}"
-                            TextDecorations="None">
-                            <Image Width="16" Height="16"
-                                Source="/TwainControl;component/Icons/delete.png" />
-                        </Hyperlink>
-                    </TextBlock>
-                    <TextBlock Grid.Row="1"
-                        Width="210"
-                        Text="{Binding Mode=OneWay}"
-                        TextWrapping="Wrap" />
-                </Grid>
+                <TextBlock Width="210" TextWrapping="Wrap">
+                    <Hyperlink BaselineAlignment="Center"
+                        Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                        CommandParameter="{Binding Mode=OneWay}"
+                        TextDecorations="None">
+                        <Image Width="32" Height="32"
+                            Source="/TwainControl;component/Icons/delete.png" />
+                    </Hyperlink>
+                    <Image Width="32" Height="32"
+                        Source="{Binding Mode=OneWay, Converter={StaticResource FilePathToIconConverter}}" />
+                    <Hyperlink BaselineAlignment="Center"
+                        Command="{Binding Path=DataContext.WebAdreseGit, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                        CommandParameter="{Binding Mode=OneWay}">
+                        <Run Text="{Binding Mode=OneWay}" />
+                    </Hyperlink>
+                </TextBlock>
             </DataTemplate>
             <DataTemplate x:Key="EypSimplePdfTemplate">
                 <Grid>

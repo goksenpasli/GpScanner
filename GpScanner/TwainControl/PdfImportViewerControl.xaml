@@ -174,7 +174,7 @@
                     </Image.Source>
                 </Image>
             </Button>
-            <Button Command="{Binding CopyPdfBitmapFile}" CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
+            <Extensions:SplitButton Command="{Binding CopyPdfBitmapFile}" CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
                 <Image Width="16" Height="16">
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -183,7 +183,19 @@
                         </MultiBinding>
                     </Image.Source>
                 </Image>
-            </Button>
+                <Extensions:SplitButton.InternalContent>
+                    <Button Command="{Binding CopyThumbPdfBitmapFile}" CommandParameter="{Binding Source={x:Reference PdfViewer}, Mode=OneWay}">
+                        <Image Width="16" Height="16">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                    <Binding Source="Shell32.dll" />
+                                    <Binding Source="139" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                    </Button>
+                </Extensions:SplitButton.InternalContent>
+            </Extensions:SplitButton>
             <Button BorderBrush="Cyan"
                 Command="{Binding PasteFileToPdfFile}"
                 CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">

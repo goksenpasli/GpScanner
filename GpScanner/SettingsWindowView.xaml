@@ -491,7 +491,11 @@
                         <GroupBox.Header>
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Width="16" Height="16">
+                                    <Extensions:NumericUpDownControl IsReadOnly="True"
+                                        Maximum="{Binding Source={x:Static System:Environment.ProcessorCount}}"
+                                        Minimum="1" SmallChange="1"
+                                        Value="{Binding ProcessorCount, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                                    <Image Width="32" Height="32">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                 <Binding Source="Shell32.dll" />
@@ -499,13 +503,6 @@
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
-                                    <Extensions:NumericUpDownControl IsReadOnly="True"
-                                        Maximum="{Binding Source={x:Static System:Environment.ProcessorCount}}"
-                                        Minimum="1" Orientation="Horizontal" SmallChange="1"
-                                        Value="{Binding ProcessorCount, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                                    <StackPanel Orientation="Horizontal">
-                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                    </StackPanel>
                                     <TextBlock VerticalAlignment="Center"
                                         FontWeight="Bold"
                                         Text="{twainctrl:Loc BATCH}" />
@@ -513,19 +510,18 @@
                                         IsChecked="{Binding ApplyPdfSaveOcr, Source={x:Static twainctrl:ToolBox.Scanner}}">
                                         <CheckBox.Content>
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock>
+                                                <Image Width="32" Height="32"
+                                                    Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
+                                                <TextBlock VerticalAlignment="Center">
                                                     <Run BaselineAlignment="Center" Text="{twainctrl:Loc FILE}" />
+                                                    <LineBreak />
                                                     <Run BaselineAlignment="Center" Text="{twainctrl:Loc OCR}" />
                                                 </TextBlock>
-                                                <Image Width="16" Height="16"
-                                                    Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
                                             </StackPanel>
                                         </CheckBox.Content>
                                     </CheckBox>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal">
                                     <ToggleButton IsChecked="{Binding Shutdown}">
-                                        <Image Width="16" Height="16">
+                                        <Image Width="32" Height="32">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                     <Binding Source="Shell32.dll" />
@@ -534,13 +530,13 @@
                                             </Image.Source>
                                         </Image>
                                     </ToggleButton>
-                                    <TextBlock VerticalAlignment="Center"
-                                        FontWeight="Bold" Foreground="Red"
-                                        Text="{twainctrl:Loc CLOSECOMP}"
-                                        TextTrimming="CharacterEllipsis"
-                                        ToolTip="{twainctrl:Loc WARNREBOOT}"
-                                        Visibility="{Binding Shutdown, Converter={StaticResource BooleanToVisibilityConverter}}" />
                                 </StackPanel>
+                                <TextBlock VerticalAlignment="Center"
+                                    FontWeight="Bold" Foreground="Red"
+                                    Text="{twainctrl:Loc CLOSECOMP}"
+                                    TextTrimming="CharacterEllipsis"
+                                    ToolTip="{twainctrl:Loc WARNREBOOT}"
+                                    Visibility="{Binding Shutdown, Converter={StaticResource BooleanToVisibilityConverter}}" />
                             </StackPanel>
                         </GroupBox.Header>
                         <Grid>
@@ -584,8 +580,16 @@
                             <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
                                 CopyButtonVisibility="Collapsed" IsReadOnly="True" OpenButtonVisibility="Collapsed"
                                 PasteButtonVisibility="Collapsed"
-                                Text="{Binding BatchFolder, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
-                                ToolTip="{Binding BatchFolder, Source={x:Static properties:Settings.Default}}" />
+                                Text="{Binding BatchFolder, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                <Extensions:ButtonedTextBox.ToolTip>
+                                    <TextBlock Width="400" TextWrapping="Wrap">
+                                        <Run FontWeight="Bold" Foreground="Red"
+                                            Text="{twainctrl:Loc BATCHDESC}" />
+                                        <LineBreak />
+                                        <Run FontWeight="Bold" Text="{Binding BatchFolder, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
+                                    </TextBlock>
+                                </Extensions:ButtonedTextBox.ToolTip>
+                            </Extensions:ButtonedTextBox>
                             <UniformGrid Columns="2">
                                 <Button twainctrl:Policy.PolicyName="SetBatchWatchFolder"
                                     Command="{Binding SetBatchWatchFolder}"
