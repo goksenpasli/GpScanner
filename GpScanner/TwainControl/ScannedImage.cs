@@ -37,6 +37,21 @@ public class ScannedImage : InpcBase
         }
     }
 
+    public int Index
+    {
+        get => ındex;
+        set
+        {
+            if(ındex == value)
+            {
+                return;
+            }
+
+            ındex = value;
+            OnPropertyChanged(nameof(Index));
+        }
+    }
+
     public BitmapFrame Resim
     {
         get => resim;
@@ -98,6 +113,8 @@ public class ScannedImage : InpcBase
     private bool animate;
 
     private string filePath;
+
+    private int ındex;
 
     private BitmapFrame resim;
 

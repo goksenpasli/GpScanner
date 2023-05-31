@@ -1058,37 +1058,41 @@
                                                                     Source="/TwainControl;component/Icons/delete.png" />
                                                             </Hyperlink>
                                                         </TextBlock>
-                                                        <ToggleButton Width="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}"
-                                                            Height="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}"
-                                                            VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                                            Background="{x:Null}"
-                                                            BorderBrush="{x:Null}"
-                                                            IsChecked="{Binding Seçili}"
-                                                            RenderTransformOrigin="0.5,0.5"
-                                                            Style="{StaticResource ToggleButtonAnimationStyle}">
-                                                            <ToggleButton.RenderTransform>
-                                                                <TransformGroup>
-                                                                    <ScaleTransform />
-                                                                    <SkewTransform />
-                                                                    <RotateTransform />
-                                                                    <TranslateTransform />
-                                                                </TransformGroup>
-                                                            </ToggleButton.RenderTransform>
-                                                            <Viewbox>
-                                                                <Image Width="{Binding Resim.Thumbnail.Width, Mode=OneWay}"
-                                                                    Height="{Binding Resim.Thumbnail.Height, Mode=OneWay}"
-                                                                    d:Height="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}"
-                                                                    d:Source="/GpScanner;component/scanner.ico"
-                                                                    d:Width="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}">
-                                                                    <Image.Source>
-                                                                        <PriorityBinding>
-                                                                            <Binding IsAsync="True" Mode="OneWay" Path="Resim.Thumbnail" />
-                                                                            <Binding Converter="{StaticResource FilePathToIconConverter}" Path="FilePath" />
-                                                                        </PriorityBinding>
-                                                                    </Image.Source>
-                                                                </Image>
-                                                            </Viewbox>
-                                                        </ToggleButton>
+                                                        <Canvas Width="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}" Height="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}">
+                                                            <ToggleButton Width="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}"
+                                                                Height="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}"
+                                                                VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                                                Background="{x:Null}"
+                                                                BorderBrush="{x:Null}"
+                                                                IsChecked="{Binding Seçili}"
+                                                                RenderTransformOrigin="0.5,0.5"
+                                                                Style="{StaticResource ToggleButtonAnimationStyle}">
+                                                                <ToggleButton.RenderTransform>
+                                                                    <TransformGroup>
+                                                                        <ScaleTransform />
+                                                                        <SkewTransform />
+                                                                        <RotateTransform />
+                                                                        <TranslateTransform />
+                                                                    </TransformGroup>
+                                                                </ToggleButton.RenderTransform>
+                                                                <Viewbox>
+                                                                    <Image Width="{Binding Resim.Thumbnail.Width, Mode=OneWay}"
+                                                                        Height="{Binding Resim.Thumbnail.Height, Mode=OneWay}"
+                                                                        d:Height="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}"
+                                                                        d:Source="/GpScanner;component/scanner.ico"
+                                                                        d:Width="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}">
+                                                                        <Image.Source>
+                                                                            <PriorityBinding>
+                                                                                <Binding IsAsync="True" Mode="OneWay" Path="Resim.Thumbnail" />
+                                                                                <Binding Converter="{StaticResource FilePathToIconConverter}" Path="FilePath" />
+                                                                            </PriorityBinding>
+                                                                        </Image.Source>
+                                                                    </Image>
+                                                                </Viewbox>
+                                                            </ToggleButton>
+                                                            <TextBlock Canvas.Left="0" Canvas.Bottom="0"
+                                                                Text="{Binding Index, Mode=OneWay}" />
+                                                        </Canvas>
                                                     </StackPanel>
                                                 </ControlTemplate>
                                             </Setter.Value>
@@ -1334,79 +1338,85 @@
             MouseDoubleClick="GridSplitter_MouseDoubleClick"
             MouseRightButtonDown="GridSplitter_MouseRightButtonDown"
             ToolTip="{local:Loc SPLITTERTOOLTIP}" />
-        <GroupBox Grid.Column="2"
-            Panel.ZIndex="-1"
-            Background="{StaticResource GroupBoxBackGround}">
-            <GroupBox.Header>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock VerticalAlignment="Center" Text="{local:Loc DOCUMENT}" />
-                    <Button local:Policy.PolicyName="InsertClipBoardImage" BorderBrush="Cyan"
-                        Command="{Binding InsertClipBoardImage}">
-                        <Image Width="16" Height="16">
-                            <Image.Source>
-                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                    <Binding Source="Shell32.dll" />
-                                    <Binding Source="260" />
-                                </MultiBinding>
-                            </Image.Source>
-                        </Image>
-                    </Button>
-                </StackPanel>
-            </GroupBox.Header>
-            <Grid>
-                <DockPanel IsEnabled="{Binding SeçiliResim, Converter={StaticResource NullableToBooleanConverter}}">
-                    <Slider Margin="20,0,20,0"
-                        DockPanel.Dock="Top" IsSnapToTickEnabled="True"
-                        Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
-                        Style="{StaticResource SliderStyle}"
-                        TickPlacement="BottomRight"
-                        Value="{Binding Scanner.CropLeft}" />
-                    <Slider Margin="25,0,20,0"
-                        DockPanel.Dock="Bottom" IsDirectionReversed="True" IsSnapToTickEnabled="True"
-                        Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
-                        Style="{StaticResource SliderStyle}"
-                        TickPlacement="TopLeft"
-                        Value="{Binding Scanner.CropRight}" />
-                    <Slider Margin="0,-5,0,20"
-                        DockPanel.Dock="Left" IsDirectionReversed="True" IsSnapToTickEnabled="True"
-                        Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
-                        Orientation="Vertical"
-                        Style="{StaticResource SliderStyle}"
-                        TickPlacement="BottomRight"
-                        Value="{Binding Scanner.CropTop}" />
-                    <Slider Margin="0,0,0,20"
-                        DockPanel.Dock="Right" IsSnapToTickEnabled="True"
-                        Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
-                        Orientation="Vertical"
-                        Style="{StaticResource SliderStyle}"
-                        TickPlacement="TopLeft"
-                        Value="{Binding Scanner.CropBottom}" />
-                    <Grid Panel.ZIndex="-1">
-                        <Extensions:ImageViewer x:Name="ImgViewer"
-                            d:Source="/GpScanner;component/splash.png" d:Zoom="1"
-                            Angle="{Binding Scanner.RotateAngle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            OpenButtonVisibility="Collapsed" PanoramaButtonVisibility="Collapsed"
-                            PreviewMouseDown="ImgViewer_MouseDown" PreviewMouseMove="ImgViewer_MouseMoveAsync"
-                            PreviewMouseWheel="ImgViewer_PreviewMouseWheel" PrintButtonVisibility="Visible" SnapTick="True"
-                            Source="{Binding SeçiliResim.Resim, Mode=OneWay}" />
-                        <Canvas x:Name="cnv" />
-                    </Grid>
-                </DockPanel>
-                <Expander HorizontalAlignment="Left" VerticalAlignment="Bottom"
-                    ExpandDirection="Up"
-                    IsExpanded="{Binding Scanner.CropDialogExpanded}">
+        <TabControl Grid.Column="2">
+            <TabItem Header="{local:Loc DOCUMENT}">
+                <GroupBox Panel.ZIndex="-1" Background="{StaticResource GroupBoxBackGround}">
+                    <GroupBox.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <Button local:Policy.PolicyName="InsertClipBoardImage" BorderBrush="Cyan"
+                                Command="{Binding InsertClipBoardImage}">
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="260" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                            </Button>
+                        </StackPanel>
+                    </GroupBox.Header>
                     <Grid>
-                        <local:ToolBox />
-                        <ToggleButton HorizontalAlignment="Right" VerticalAlignment="Top"
-                            Background="{x:Null}"
-                            BorderBrush="{x:Null}"
-                            IsChecked="{Binding Scanner.CropDialogExpanded}">
-                            <Image Width="16" Height="16"
-                                Source="/TwainControl;component/Icons/delete.png" />
-                        </ToggleButton>
+                        <DockPanel IsEnabled="{Binding SeçiliResim, Converter={StaticResource NullableToBooleanConverter}}">
+                            <Slider Margin="20,0,20,0"
+                                DockPanel.Dock="Top" IsSnapToTickEnabled="True"
+                                Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
+                                Style="{StaticResource SliderStyle}"
+                                TickPlacement="BottomRight"
+                                Value="{Binding Scanner.CropLeft}" />
+                            <Slider Margin="25,0,20,0"
+                                DockPanel.Dock="Bottom" IsDirectionReversed="True" IsSnapToTickEnabled="True"
+                                Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
+                                Style="{StaticResource SliderStyle}"
+                                TickPlacement="TopLeft"
+                                Value="{Binding Scanner.CropRight}" />
+                            <Slider Margin="0,-5,0,20"
+                                DockPanel.Dock="Left" IsDirectionReversed="True" IsSnapToTickEnabled="True"
+                                Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
+                                Orientation="Vertical"
+                                Style="{StaticResource SliderStyle}"
+                                TickPlacement="BottomRight"
+                                Value="{Binding Scanner.CropTop}" />
+                            <Slider Margin="0,0,0,20"
+                                DockPanel.Dock="Right" IsSnapToTickEnabled="True"
+                                Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
+                                Orientation="Vertical"
+                                Style="{StaticResource SliderStyle}"
+                                TickPlacement="TopLeft"
+                                Value="{Binding Scanner.CropBottom}" />
+                            <Grid Panel.ZIndex="-1">
+                                <Extensions:ImageViewer x:Name="ImgViewer"
+                                    d:Source="/GpScanner;component/splash.png" d:Zoom="1"
+                                    Angle="{Binding Scanner.RotateAngle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    OpenButtonVisibility="Collapsed" PanoramaButtonVisibility="Collapsed"
+                                    PreviewMouseDown="ImgViewer_MouseDown" PreviewMouseMove="ImgViewer_MouseMoveAsync"
+                                    PreviewMouseWheel="ImgViewer_PreviewMouseWheel" PrintButtonVisibility="Visible" SnapTick="True"
+                                    Source="{Binding SeçiliResim.Resim, Mode=OneWay}" />
+                                <Canvas x:Name="cnv" />
+                            </Grid>
+                        </DockPanel>
+                        <Expander HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                            ExpandDirection="Up"
+                            IsExpanded="{Binding Scanner.CropDialogExpanded}">
+                            <Grid>
+                                <local:ToolBox />
+                                <ToggleButton HorizontalAlignment="Right" VerticalAlignment="Top"
+                                    Background="{x:Null}"
+                                    BorderBrush="{x:Null}"
+                                    IsChecked="{Binding Scanner.CropDialogExpanded}">
+                                    <Image Width="16" Height="16"
+                                        Source="/TwainControl;component/Icons/delete.png" />
+                                </ToggleButton>
+                            </Grid>
+                        </Expander>
                     </Grid>
-                </Expander>
-            </Grid>
-        </GroupBox>
+                </GroupBox>
+            </TabItem>
+            <TabItem Header="{local:Loc GRAPH}">
+                <GroupBox Header="{local:Loc GRAPH}">
+                    <local:DrawControl EditingImage="{Binding SeçiliResim.Resim}" />
+                </GroupBox>
+            </TabItem>
+        </TabControl>
     </Grid>
 </UserControl>

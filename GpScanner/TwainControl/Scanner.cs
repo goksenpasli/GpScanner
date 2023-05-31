@@ -3,6 +3,7 @@ using PdfSharp.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -15,7 +16,11 @@ namespace TwainControl;
 
 public class Scanner : InpcBase, IDataErrorInfo
 {
-    public Scanner() { PropertyChanged += Scanner_PropertyChanged; }
+    public Scanner()
+    {
+        PropertyChanged += Scanner_PropertyChanged;
+        Resimler.CollectionChanged += Resimler_CollectionChanged;
+    }
 
     public string this[string columnName] => columnName switch
     {
@@ -1047,6 +1052,23 @@ public class Scanner : InpcBase, IDataErrorInfo
             {
                 watermarkTextSize = value;
                 OnPropertyChanged(nameof(WatermarkTextSize));
+            }
+        }
+    }
+
+    private void Resimler_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        if(e.Action == NotifyCollectionChangedAction.Add)
+        {
+            for(int i = e.NewStartingIndex; i < Resimler.Count; i++)
+            {
+                Resimler[i].Index = i+1;
+            }
+        } else if(e.Action == NotifyCollectionChangedAction.Remove)
+        {
+            for(int i = e.OldStartingIndex; i < Resimler.Count; i++)
+            {
+                Resimler[i].Index = i+1;
             }
         }
     }

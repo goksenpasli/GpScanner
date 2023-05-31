@@ -100,6 +100,9 @@
     <Compile Include="Converter\EnumOrientationToTwainVersionConverter.cs" />
     <Compile Include="Converter\FontSizeConverter.cs" />
     <Compile Include="Converter\XKnownColorToBrushConverter.cs" />
+    <Compile Include="DrawControl.xaml.cs">
+      <DependentUpon>DrawControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="EypPdfViewer.cs" />
     <Compile Include="PdfData.cs" />
     <Compile Include="PdfGeneration.cs" />
@@ -176,6 +179,7 @@
       <DependentUpon>XmlViewerControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="XmlViewerControlModel.cs" />
+    <Compile Include="ZoomableInkCanvas.cs" />
     <Page Include="AboutView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -185,6 +189,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CommonResource.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DrawControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
