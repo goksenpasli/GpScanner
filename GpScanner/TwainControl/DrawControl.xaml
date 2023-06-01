@@ -35,12 +35,36 @@
                 EditingMode="{Binding ElementName=CbEdit, Path=SelectedItem}"
                 IsEnabled="{Binding ElementName=Img, Path=ImageSource, Converter={StaticResource NullableToBooleanConverter}}"
                 UseCustomCursor="True">
-                <InkCanvas.DefaultDrawingAttributes>
+                <local:ZoomableInkCanvas.ContextMenu>
+                    <ContextMenu>
+                        <ContextMenu.Template>
+                            <ControlTemplate>
+                                <GroupBox>
+                                    <StackPanel>
+                                        <Slider Width="128"
+                                            VerticalAlignment="Center"
+                                            AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="256"
+                                            Minimum="0.5"
+                                            Style="{DynamicResource Slider}"
+                                            Value="{Binding StylusWidth, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" />
+                                        <Slider Width="128"
+                                            VerticalAlignment="Center"
+                                            AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="256"
+                                            Minimum="0.5"
+                                            Style="{DynamicResource Slider}"
+                                            Value="{Binding StylusHeight, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" />
+                                    </StackPanel>
+                                </GroupBox>
+                            </ControlTemplate>
+                        </ContextMenu.Template>
+                    </ContextMenu>
+                </local:ZoomableInkCanvas.ContextMenu>
+                <local:ZoomableInkCanvas.DefaultDrawingAttributes>
                     <DrawingAttributes x:Name="DrawingAttribute" />
-                </InkCanvas.DefaultDrawingAttributes>
-                <InkCanvas.Background>
+                </local:ZoomableInkCanvas.DefaultDrawingAttributes>
+                <local:ZoomableInkCanvas.Background>
                     <ImageBrush x:Name="Img" ImageSource="{Binding TemporaryImage, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" />
-                </InkCanvas.Background>
+                </local:ZoomableInkCanvas.Background>
             </local:ZoomableInkCanvas>
         </ScrollViewer>
         <StackPanel Grid.Row="1" Orientation="Horizontal">
@@ -110,10 +134,11 @@
                 <Image Width="24" Height="24"
                     Source="/TwainControl;component/Icons/save.png" />
             </Button>
-            <Slider Width="100" ValueChanged="Slider_ValueChanged"
+            <Slider Width="100"
                 VerticalAlignment="Center"
                 AutoToolTipPlacement="TopLeft" Maximum="3" Minimum="0.1"
                 Style="{DynamicResource Slider}"
+                ValueChanged="Slider_ValueChanged"
                 Value="{Binding ElementName=Ink, Path=CurrentZoom}" />
         </StackPanel>
         <Extension:ColorPicker Grid.RowSpan="2" Grid.Column="1"

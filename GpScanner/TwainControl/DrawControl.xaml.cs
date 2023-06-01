@@ -1,9 +1,6 @@
 ﻿
 using Extensions;
-using Microsoft.Win32.SafeHandles;
-using System;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
@@ -104,6 +101,19 @@ namespace TwainControl
 
         public BitmapFrame EditingImage { get => (BitmapFrame)GetValue(EditingImageProperty); set => SetValue(EditingImageProperty, value); }
 
+        public Ellipse Ellipse
+        {
+            get => ellipse;
+            set
+            {
+                if(ellipse != value)
+                {
+                    ellipse = value;
+                    OnPropertyChanged(nameof(Ellipse));
+                }
+            }
+        }
+
         public bool Highlighter
         {
             get => highlighter;
@@ -141,6 +151,19 @@ namespace TwainControl
                 {
                     @lock = value;
                     OnPropertyChanged(nameof(Lock));
+                }
+            }
+        }
+
+        public Rectangle Rectangle
+        {
+            get => rectangle;
+            set
+            {
+                if(rectangle != value)
+                {
+                    rectangle = value;
+                    OnPropertyChanged(nameof(Rectangle));
                 }
             }
         }
@@ -267,9 +290,19 @@ namespace TwainControl
 
         private void GenerateCustomCursor()
         {
-            Ellipse ellipse = new() { Fill = new SolidColorBrush(DrawingAttribute.Color), Width = StylusWidth * Ink.CurrentZoom, Height = StylusHeight * Ink.CurrentZoom };
-            Rectangle rect = new() { Fill = new SolidColorBrush(DrawingAttribute.Color), Width = StylusWidth * Ink.CurrentZoom, Height = StylusHeight * Ink.CurrentZoom };
-            DrawCursor = (SelectedStylus == StylusTip.Ellipse) ? ConvertToCursor(ellipse) : ConvertToCursor(rect);
+            PresentationSource source = PresentationSource.FromVisual(this);
+            double m11 = source?.CompositionTarget.TransformToDevice.M11 ?? 1;
+            double m22 = source?.CompositionTarget.TransformToDevice.M22 ?? 1;
+            SolidColorBrush brush = new(DrawingAttribute.Color);
+            double width = StylusWidth * Ink.CurrentZoom * m11;
+            double height = StylusHeight * Ink.CurrentZoom * m22;
+            Ellipse.Width = width;
+            Ellipse.Height = height;
+            Ellipse.Fill = brush;
+            Rectangle.Width = width;
+            Rectangle.Height = height;
+            Rectangle.Fill = brush;
+            DrawCursor = (SelectedStylus == StylusTip.Ellipse) ? ConvertToCursor(Ellipse) : ConvertToCursor(Rectangle);
         }
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -283,13 +316,18 @@ namespace TwainControl
             typeof(BitmapFrame),
             typeof(DrawControl),
             new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
         private Cursor drawCursor;
+
+        private Ellipse ellipse = new();
 
         private bool highlighter;
 
         private bool ıgnorePressure;
 
         private bool @lock = true;
+
+        private Rectangle rectangle = new();
 
         private string selectedColor = "Black";
 
@@ -302,20 +340,5 @@ namespace TwainControl
         private double stylusWidth = 2d;
 
         private ImageSource temporaryImage;
-
-        public class SafeIconHandle : SafeHandleZeroOrMinusOneIsInvalid
-        {
-            private SafeIconHandle() : base(true)
-            {
-            }
-
-            public SafeIconHandle(IntPtr hIcon) : base(true) { SetHandle(hIcon); }
-
-            [DllImport("user32.dll", SetLastError = true)]
-            [return: MarshalAs(UnmanagedType.Bool)]
-            internal static extern bool DestroyIcon([In] IntPtr hIcon);
-
-            protected override bool ReleaseHandle() { return DestroyIcon(handle); }
-        }
     }
 }
