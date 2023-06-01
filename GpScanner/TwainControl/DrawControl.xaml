@@ -31,7 +31,7 @@
             <local:ZoomableInkCanvas x:Name="Ink"
                 Width="{Binding ElementName=Img, Path=ImageSource.Width}"
                 Height="{Binding ElementName=Img, Path=ImageSource.Height}"
-                Cursor="Pen"
+                Cursor="{Binding DrawCursor, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
                 EditingMode="{Binding ElementName=CbEdit, Path=SelectedItem}"
                 IsEnabled="{Binding ElementName=Img, Path=ImageSource, Converter={StaticResource NullableToBooleanConverter}}"
                 UseCustomCursor="True">
@@ -110,7 +110,7 @@
                 <Image Width="24" Height="24"
                     Source="/TwainControl;component/Icons/save.png" />
             </Button>
-            <Slider Width="100"
+            <Slider Width="100" ValueChanged="Slider_ValueChanged"
                 VerticalAlignment="Center"
                 AutoToolTipPlacement="TopLeft" Maximum="3" Minimum="0.1"
                 Style="{DynamicResource Slider}"
