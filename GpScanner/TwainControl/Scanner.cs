@@ -86,6 +86,20 @@ public class Scanner : InpcBase, IDataErrorInfo
         }
     }
 
+    public bool ApplyMedian
+    {
+        get { return applyMedian; }
+
+        set
+        {
+            if(applyMedian != value)
+            {
+                applyMedian = value;
+                OnPropertyChanged(nameof(ApplyMedian));
+            }
+        }
+    }
+
     public bool ApplyPdfSaveOcr
     {
         get => applyPdfSaveOcr;
@@ -465,6 +479,19 @@ public class Scanner : InpcBase, IDataErrorInfo
             {
                 ftpLoadProgressValue = value;
                 OnPropertyChanged(nameof(FtpLoadProgressValue));
+            }
+        }
+    }
+
+    public bool InvertImage
+    {
+        get => ınvertImage;
+        set
+        {
+            if(ınvertImage != value)
+            {
+                ınvertImage = value;
+                OnPropertyChanged(nameof(InvertImage));
             }
         }
     }
@@ -1062,13 +1089,13 @@ public class Scanner : InpcBase, IDataErrorInfo
         {
             for(int i = e.NewStartingIndex; i < Resimler.Count; i++)
             {
-                Resimler[i].Index = i+1;
+                Resimler[i].Index = i + 1;
             }
         } else if(e.Action == NotifyCollectionChangedAction.Remove)
         {
             for(int i = e.OldStartingIndex; i < Resimler.Count; i++)
             {
-                Resimler[i].Index = i+1;
+                Resimler[i].Index = i + 1;
             }
         }
     }
@@ -1091,6 +1118,7 @@ public class Scanner : InpcBase, IDataErrorInfo
     private bool allowPrint = true;
 
     private bool applyDataBaseOcr = Ocr.Ocr.TesseractDataExists;
+    private bool applyMedian;
 
     private bool applyPdfSaveOcr;
 
@@ -1145,6 +1173,7 @@ public class Scanner : InpcBase, IDataErrorInfo
     private string fileOcrContent;
 
     private int ftpLoadProgressValue;
+    private bool ınvertImage;
 
     private PdfPageLayout layout = PdfPageLayout.Middle;
 

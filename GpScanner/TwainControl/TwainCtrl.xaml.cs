@@ -504,7 +504,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 string profile =
-                    $"{Scanner.ProfileName}|{Settings.Default.Çözünürlük}|{Settings.Default.Adf}|{Settings.Default.Mode}|{Scanner.Duplex}|{Scanner.ShowUi}|false|{Settings.Default.ShowFile}|{Scanner.DetectEmptyPage}|{Scanner.FileName}";
+                    $"{Scanner.ProfileName}|{Settings.Default.Çözünürlük}|{Settings.Default.Adf}|{Settings.Default.Mode}|{Scanner.Duplex}|{Scanner.ShowUi}|false|{Settings.Default.ShowFile}|{Scanner.DetectEmptyPage}|{Scanner.FileName}|{Scanner.InvertImage}|{Scanner.ApplyMedian}";
                 _ = Settings.Default.Profile.Add(profile);
                 Settings.Default.Save();
                 Settings.Default.Reload();
@@ -2521,7 +2521,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 Scanner.CroppedImage = null;
                 Scanner.CopyCroppedImage = null;
             }
-
             disposedValue = true;
         }
     }
@@ -2595,7 +2594,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         {
             return default;
         }
-
         int height = bitmapSource.PixelHeight - (int)Scanner.CropBottom - (int)Scanner.CropTop;
         int width = bitmapSource.PixelWidth - (int)Scanner.CropRight - (int)Scanner.CropLeft;
         return width < 0 || height < 0 ? default : new Int32Rect((int)Scanner.CropLeft, (int)Scanner.CropTop, width, height);
@@ -2994,6 +2992,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             Settings.Default.ShowFile = bool.Parse(selectedprofile[7]);
             Scanner.DetectEmptyPage = bool.Parse(selectedprofile[8]);
             Scanner.FileName = selectedprofile[9];
+            Scanner.InvertImage = bool.Parse(selectedprofile[10]);
+            Scanner.ApplyMedian = bool.Parse(selectedprofile[11]);
             Settings.Default.DefaultProfile = Scanner.SelectedProfile;
             Settings.Default.Save();
         }
@@ -3020,13 +3020,26 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 return;
             }
-
             int decodepixelheight = (int)(SelectedPaper.Height / Inch * Settings.Default.Çözünürlük);
-            BitmapSource evrak = Scanner?.Resimler.Count % 2 == 0
-                ? EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight)
-                : Scanner?.PaperBackScan == true
-                    ? EvrakOluştur(bitmap, (ColourSetting)Settings.Default.BackMode, decodepixelheight)
-                    : EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight);
+            BitmapSource evrak;
+            if(Scanner?.Resimler.Count % 2 == 0)
+            {
+                evrak = EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight);
+            } else if(Scanner?.PaperBackScan == true)
+            {
+                evrak = EvrakOluştur(bitmap, (ColourSetting)Settings.Default.BackMode, decodepixelheight);
+            } else
+            {
+                evrak = EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight);
+            }
+            if(Scanner.InvertImage)
+            {
+                evrak = evrak.InvertBitmap();
+            }
+            if(Scanner.ApplyMedian)
+            {
+                evrak = evrak.MedianFilterBitmap(Settings.Default.MedianValue);
+            }
             evrak.Freeze();
             BitmapSource önizleme = evrak.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Width * SelectedPaper.Height);
             önizleme.Freeze();

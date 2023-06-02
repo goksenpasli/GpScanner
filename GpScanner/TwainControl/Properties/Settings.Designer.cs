@@ -264,5 +264,17 @@ namespace TwainControl.Properties {
                 this["PdfLoadHistory"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public int MedianValue {
+            get {
+                return ((int)(this["MedianValue"]));
+            }
+            set {
+                this["MedianValue"] = value;
+            }
+        }
     }
 }

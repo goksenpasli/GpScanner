@@ -57,8 +57,8 @@
                                         </StackPanel>
                                     </GroupBox.Header>
                                     <StackPanel Orientation="Horizontal">
-                                        <Ellipse Width="{Binding StylusWidth, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
-                                            Height="{Binding StylusHeight, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
+                                        <Ellipse Width="{Binding Ellipse.Width, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
+                                            Height="{Binding Ellipse.Height, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
                                             Fill="{Binding SelectedBrush, RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
                                             <Ellipse.Style>
                                                 <Style TargetType="Ellipse">
@@ -71,8 +71,8 @@
                                                 </Style>
                                             </Ellipse.Style>
                                         </Ellipse>
-                                        <Rectangle Width="{Binding StylusWidth, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
-                                            Height="{Binding StylusHeight, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
+                                        <Rectangle Width="{Binding Rectangle.Width, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
+                                            Height="{Binding Rectangle.Height, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
                                             Fill="{Binding SelectedBrush, RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
                                             <Rectangle.Style>
                                                 <Style TargetType="Rectangle">

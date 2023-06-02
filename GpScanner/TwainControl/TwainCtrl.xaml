@@ -704,15 +704,25 @@
                                             </StackPanel>
                                         </CheckBox.Content>
                                     </CheckBox>
-                                    <CheckBox Grid.Column="1"
-                                        Content="{local:Loc GUI}"
-                                        IsChecked="{Binding Scanner.ShowUi}" />
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                        <CheckBox Content="{local:Loc GUI}" IsChecked="{Binding Scanner.ShowUi}" />
+                                        <CheckBox Content="{local:Loc REVERSE}" IsChecked="{Binding Scanner.InvertImage}" />
+                                    </StackPanel>
                                     <CheckBox Grid.Row="1" Grid.Column="0"
                                         Content="{local:Loc SHOWFILE}"
                                         IsChecked="{Binding ShowFile, Source={x:Static properties:Settings.Default}}" />
-                                    <CheckBox Grid.Row="1" Grid.Column="1"
-                                        Content="{local:Loc SHOWPROGRESS}"
-                                        IsChecked="{Binding Scanner.ShowProgress}" />
+                                    <StackPanel Grid.Row="1" Grid.Column="1"
+                                        Orientation="Horizontal">
+                                        <CheckBox Content="{local:Loc SHOWPROGRESS}" IsChecked="{Binding Scanner.ShowProgress}" />
+                                        <CheckBox IsChecked="{Binding Scanner.ApplyMedian}">
+                                            <Extensions:NumericUpDownControl Background="{StaticResource Despeckle}"
+                                                FontWeight="Bold" Foreground="Magenta"
+                                                IsEnabled="{Binding Scanner.ApplyMedian}"
+                                                Maximum="10" Minimum="0" Orientation="Horizontal"
+                                                SmallChange="1"
+                                                Value="{Binding MedianValue, Source={x:Static properties:Settings.Default}}" />
+                                        </CheckBox>
+                                    </StackPanel>
                                     <CheckBox Grid.Row="2"
                                         IsChecked="{Binding Scanner.DetectEmptyPage}"
                                         IsEnabled="{Binding Adf, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
