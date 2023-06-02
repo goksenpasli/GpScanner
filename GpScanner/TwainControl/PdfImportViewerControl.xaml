@@ -63,6 +63,9 @@
                     </MenuItem.ItemContainerStyle>
                 </MenuItem>
             </Menu>
+            <StackPanel Orientation="Horizontal">
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+            </StackPanel>
             <Extensions:NumericUpDownControl IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}"
                 Maximum="{Binding ElementName=PdfViewer, Path=ToplamSayfa}"
                 Minimum="1" SmallChange="1"
@@ -71,6 +74,7 @@
                 Maximum="{Binding ElementName=PdfViewer, Path=ToplamSayfa}"
                 Minimum="1" SmallChange="1"
                 Value="{Binding SayfaBitiş, UpdateSourceTrigger=PropertyChanged}" />
+
             <Button Command="{Binding ExtractPdfFile}" CommandParameter="{Binding PdfFilePath, ElementName=PdfViewer, Mode=OneWay}">
                 <Image Width="16" Height="16">
                     <Image.Source>
@@ -81,6 +85,23 @@
                     </Image.Source>
                 </Image>
             </Button>
+            <Button Command="{Binding RemoveSelectedPage}" CommandParameter="{Binding ElementName=PdfViewer}">
+                <Image Width="16" Height="16"
+                    Source="/TwainControl;component/Icons/delete.png" />
+            </Button>
+            <Button Command="{Binding ArrangePdfFile}" CommandParameter="{Binding ElementName=PdfViewer}">
+                <Image Width="16" Height="16">
+                    <Image.Source>
+                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                            <Binding Source="Shell32.dll" />
+                            <Binding Source="263" />
+                        </MultiBinding>
+                    </Image.Source>
+                </Image>
+            </Button>
+            <StackPanel Orientation="Horizontal">
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+            </StackPanel>
             <Extensions:ContentToggleButton Command="{Binding LoadPdfExtractFile}" CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
                 <Image Width="16" Height="16">
                     <Image.Source>
@@ -140,20 +161,6 @@
                     </GroupBox>
                 </Extensions:ContentToggleButton.OverContent>
             </Extensions:ContentToggleButton>
-            <Button Command="{Binding RemoveSelectedPage}" CommandParameter="{Binding ElementName=PdfViewer}">
-                <Image Width="16" Height="16"
-                    Source="/TwainControl;component/Icons/delete.png" />
-            </Button>
-            <Button Command="{Binding ArrangePdfFile}" CommandParameter="{Binding ElementName=PdfViewer}">
-                <Image Width="16" Height="16">
-                    <Image.Source>
-                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                            <Binding Source="Shell32.dll" />
-                            <Binding Source="263" />
-                        </MultiBinding>
-                    </Image.Source>
-                </Image>
-            </Button>
             <Button Command="{Binding ReversePdfFile}" CommandParameter="{Binding ElementName=PdfViewer}">
                 <Image Width="16" Height="16">
                     <Image.Source>
@@ -395,6 +402,20 @@
                     </GroupBox>
                 </Extensions:ContentToggleButton.OverContent>
             </Extensions:ContentToggleButton>
+            <StackPanel Orientation="Horizontal">
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+            </StackPanel>
+            <Extensions:NumericUpDownControl IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}"
+                IsReadOnly="True" Maximum="10" Minimum="0"
+                SmallChange="1"
+                Value="{Binding PdfMedianValue}" />
+            <Button Command="{Binding ApplyPdfMedianFilter}" CommandParameter="{Binding ElementName=PdfViewer}">
+                <Image Width="16" Height="16"
+                    Source="/TwainControl;component/Icons/save.png" />
+            </Button>
+            <StackPanel Orientation="Horizontal">
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+            </StackPanel>
             <Extensions:NumericUpDownControl IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}"
                 IsReadOnly="True"
                 Maximum="{Binding ElementName=PdfViewer, Path=ToplamSayfa}"
@@ -410,6 +431,9 @@
                     </Image.Source>
                 </Image>
             </Button>
+            <StackPanel Orientation="Horizontal">
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+            </StackPanel>
             <Button Command="{Binding MaximizePdfControl}" IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
                 <Image Width="16" Height="16">
                     <Image.Source>

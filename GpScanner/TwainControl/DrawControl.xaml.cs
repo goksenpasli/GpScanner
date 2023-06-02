@@ -21,7 +21,7 @@ namespace TwainControl
             PropertyChanged += DrawControl_PropertyChanged;
 
             GenerateCustomCursor();
-
+            Ink.PreviewMouseDown += Ink_PreviewMouseDown;
             SaveEditedImage = new RelayCommand<object>(
                 parameter =>
                 {
@@ -37,7 +37,7 @@ namespace TwainControl
                         EditingImage = SaveInkCanvasToImage();
                     }
                 },
-                parameter => TemporaryImage is not null);
+                parameter => parameter is BitmapFrame bitmapFrame && TemporaryImage is not null);
 
             LoadImage = new RelayCommand<object>(parameter => TemporaryImage = EditingImage, parameter => EditingImage is not null);
         }
@@ -170,6 +170,19 @@ namespace TwainControl
 
         public RelayCommand<object> SaveEditedImage { get; }
 
+        public SolidColorBrush SelectedBrush
+        {
+            get => selectedBrush;
+            set
+            {
+                if(selectedBrush != value)
+                {
+                    selectedBrush = value;
+                    OnPropertyChanged(nameof(SelectedBrush));
+                }
+            }
+        }
+
         public string SelectedColor
         {
             get => selectedColor;
@@ -293,16 +306,36 @@ namespace TwainControl
             PresentationSource source = PresentationSource.FromVisual(this);
             double m11 = source?.CompositionTarget.TransformToDevice.M11 ?? 1;
             double m22 = source?.CompositionTarget.TransformToDevice.M22 ?? 1;
-            SolidColorBrush brush = new(DrawingAttribute.Color);
+            SelectedBrush = new(DrawingAttribute.Color);
             double width = StylusWidth * Ink.CurrentZoom * m11;
             double height = StylusHeight * Ink.CurrentZoom * m22;
             Ellipse.Width = width;
             Ellipse.Height = height;
-            Ellipse.Fill = brush;
+            Ellipse.Fill = SelectedBrush;
             Rectangle.Width = width;
             Rectangle.Height = height;
-            Rectangle.Fill = brush;
+            Rectangle.Fill = SelectedBrush;
             DrawCursor = (SelectedStylus == StylusTip.Ellipse) ? ConvertToCursor(Ellipse) : ConvertToCursor(Rectangle);
+        }
+
+        private void Ink_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if((Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift)) && e.RightButton == MouseButtonState.Pressed)
+            {
+                Point mousemovecoord = e.GetPosition(Scr);
+                mousemovecoord.X += Scr.HorizontalOffset;
+                mousemovecoord.Y += Scr.VerticalOffset;
+                double widthmultiply = ((BitmapSource)Img.ImageSource).PixelWidth / (Ink.DesiredSize.Width < Ink.ActualWidth ? Ink.ActualWidth : Ink.DesiredSize.Width);
+                double heightmultiply = ((BitmapSource)Img.ImageSource).PixelHeight /
+                    (Ink.DesiredSize.Height < Ink.ActualHeight ? Ink.ActualHeight : Ink.DesiredSize.Height);
+                Int32Rect sourceRect = new((int)(mousemovecoord.X * widthmultiply), (int)(mousemovecoord.Y * heightmultiply), 1, 1);
+                CroppedBitmap croppedbitmap = new((BitmapSource)Img.ImageSource, sourceRect);
+                byte[] pixels = new byte[4];
+                croppedbitmap.CopyPixels(pixels, 4, 0);
+                croppedbitmap.Freeze();
+                DrawingAttribute.Color = Color.FromRgb(pixels[2], pixels[1], pixels[0]);
+                SelectedBrush=new SolidColorBrush(DrawingAttribute.Color);
+            }
         }
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -328,6 +361,7 @@ namespace TwainControl
         private bool @lock = true;
 
         private Rectangle rectangle = new();
+        private SolidColorBrush selectedBrush;
 
         private string selectedColor = "Black";
 

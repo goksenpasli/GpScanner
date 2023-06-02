@@ -362,7 +362,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public int Dpi { get => (int)GetValue(DpiProperty); set => SetValue(DpiProperty, value); }
 
-    public static int[] DpiList { get; } = { 12, 24, 36, 48, 72, 96, 120, 150, 200, 300, 400, 500, 600 };
+    public static int[] DpiList { get; } = { 12, 24, 36, 48, 72, 96, 120, 150, 200, 300, 400, 500, 600, 1200};
 
     public Visibility DpiListVisibility
     {

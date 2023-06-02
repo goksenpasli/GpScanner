@@ -93,10 +93,10 @@
                     Value="{Binding Path=JpegQuality, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
             </HeaderedContentControl>
             <HeaderedContentControl Header="{local:Loc RES}">
-                <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="600"
+                <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="1200"
                     Minimum="72" SmallChange="1"
                     Style="{StaticResource Slider}"
-                    Ticks="72,96,120,150,200,300,450,600"
+                    Ticks="72,96,120,150,200,300,450,600,1200"
                     ToolTip="{local:Loc RES}"
                     Value="{Binding Path=ImgLoadResolution, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
             </HeaderedContentControl>

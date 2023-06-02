@@ -40,19 +40,51 @@
                         <ContextMenu.Template>
                             <ControlTemplate>
                                 <GroupBox>
-                                    <StackPanel>
-                                        <Slider Width="128"
-                                            VerticalAlignment="Center"
-                                            AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="256"
-                                            Minimum="0.5"
-                                            Style="{DynamicResource Slider}"
-                                            Value="{Binding StylusWidth, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" />
-                                        <Slider Width="128"
-                                            VerticalAlignment="Center"
-                                            AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="256"
-                                            Minimum="0.5"
-                                            Style="{DynamicResource Slider}"
-                                            Value="{Binding StylusHeight, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" />
+                                    <GroupBox.Header>
+                                        <StackPanel>
+                                            <Slider Width="256"
+                                                VerticalAlignment="Center"
+                                                AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="256"
+                                                Minimum="0.5"
+                                                Style="{DynamicResource Slider}"
+                                                Value="{Binding StylusWidth, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" />
+                                            <Slider Width="256"
+                                                VerticalAlignment="Center"
+                                                AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="256"
+                                                Minimum="0.5"
+                                                Style="{DynamicResource Slider}"
+                                                Value="{Binding StylusHeight, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" />
+                                        </StackPanel>
+                                    </GroupBox.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Ellipse Width="{Binding StylusWidth, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
+                                            Height="{Binding StylusHeight, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
+                                            Fill="{Binding SelectedBrush, RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
+                                            <Ellipse.Style>
+                                                <Style TargetType="Ellipse">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding SelectedStylus, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" Value="{x:Static StylusTip.Ellipse}">
+                                                            <Setter Property="Visibility" Value="Visible" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Ellipse.Style>
+                                        </Ellipse>
+                                        <Rectangle Width="{Binding StylusWidth, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
+                                            Height="{Binding StylusHeight, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
+                                            Fill="{Binding SelectedBrush, RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
+                                            <Rectangle.Style>
+                                                <Style TargetType="Rectangle">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding SelectedStylus, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" Value="{x:Static StylusTip.Rectangle}">
+                                                            <Setter Property="Visibility" Value="Visible" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Rectangle.Style>
+                                        </Rectangle>
                                     </StackPanel>
                                 </GroupBox>
                             </ControlTemplate>
@@ -134,6 +166,8 @@
                 <Image Width="24" Height="24"
                     Source="/TwainControl;component/Icons/save.png" />
             </Button>
+            <Rectangle Width="24" Height="24"
+                Fill="{Binding SelectedBrush, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" />
             <Slider Width="100"
                 VerticalAlignment="Center"
                 AutoToolTipPlacement="TopLeft" Maximum="3" Minimum="0.1"

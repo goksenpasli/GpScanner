@@ -1236,14 +1236,40 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter => parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
 
         CopyThumbPdfBitmapFile = new RelayCommand<object>(
-           parameter =>
-           {
-               if (parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
-               {
-                   Clipboard.SetImage(((BitmapSource)pdfViewer.Source).BitmapSourceToBitmap());
-               }
-           },
-           parameter => parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
+            parameter =>
+            {
+                if(parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
+                {
+                    Clipboard.SetImage(((BitmapSource)pdfViewer.Source).BitmapSourceToBitmap());
+                }
+            },
+            parameter => parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
+
+        ApplyPdfMedianFilter = new RelayCommand<object>(
+            async parameter =>
+            {
+                if(parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
+                {
+                    byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfViewer.PdfFilePath);
+                    MemoryStream ms = await PdfViewer.PdfViewer
+                        .ConvertToImgStreamAsync(filedata, PdfImportViewer.PdfViewer.Sayfa, (int)Settings.Default.ImgLoadResolution);
+                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms, SelectedPaper);
+                    ms = null;
+                    using PdfDocument document = bitmapFrame.MedianFilterBitmap(PdfMedianValue)
+                        .GeneratePdf(null, Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, (int)Settings.Default.Çözünürlük);
+                    SaveFileDialog saveFileDialog = new()
+                    {
+                        Filter = "Pdf Dosyası(*.pdf)|*.pdf",
+                        FileName = $"{Translation.GetResStringValue("PAGENUMBER")} {pdfViewer.Sayfa}.pdf"
+                    };
+                    if(saveFileDialog.ShowDialog() == true)
+                    {
+                        document.Save(saveFileDialog.FileName);
+                        PdfMedianValue = 0;
+                    }
+                }
+            },
+            parameter => PdfMedianValue > 0 && parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
 
         ExtractMultiplePdfFile = new RelayCommand<object>(
             async parameter =>
@@ -1884,6 +1910,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
+    public ICommand ApplyPdfMedianFilter { get; }
+
     public ICommand ArrangePdfFile { get; }
 
     public byte[] CameraQRCodeData
@@ -2135,6 +2163,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 pdfLoadProgressValue = value;
                 OnPropertyChanged(nameof(PdfLoadProgressValue));
+            }
+        }
+    }
+
+    public int PdfMedianValue
+    {
+        get => pdfMedianValue;
+        set
+        {
+            if(pdfMedianValue != value)
+            {
+                pdfMedianValue = value;
+                OnPropertyChanged(nameof(PdfMedianValue));
             }
         }
     }
@@ -3125,6 +3166,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private ObservableCollection<Paper> papers;
 
     private double pdfLoadProgressValue;
+
+    private int pdfMedianValue;
 
     private ObservableCollection<PdfData> pdfPages;
 
