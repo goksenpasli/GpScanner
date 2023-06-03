@@ -381,7 +381,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             for(int i = 0; i < seçiliresimler.Count; i++)
                             {
                                 byte[] imgdata = null;
-                                await Dispatcher.InvokeAsync(() => imgdata = seçiliresimler[i].Resim.ToTiffJpegByteArray(Format.Jpg));
+                                _ = await Dispatcher.InvokeAsync(() => imgdata = seçiliresimler[i].Resim.ToTiffJpegByteArray(Format.Jpg));
                                 ObservableCollection<OcrData> ocrdata = await imgdata.OcrAsync(Scanner.SelectedTtsLanguage);
                                 await Dispatcher.InvokeAsync(
                                     () =>
@@ -1672,7 +1672,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         scannedImage.GeneratePdf(ocrtext, Format.Jpg, paper, Settings.Default.JpegQuality, Settings.Default.ImgLoadResolution).Save(filename);
     }
 
-    public static async Task SavePdfImageAsync(List<ScannedImage> images, string filename, Scanner scanner, Paper paper, bool applyocr, bool blackwhite = false, int dpi = 120)
+    public async Task SavePdfImageAsync(List<ScannedImage> images, string filename, Scanner scanner, Paper paper, bool applyocr, bool blackwhite = false, int dpi = 120)
     {
         List<ObservableCollection<OcrData>> scannedtext = null;
         if(applyocr && !string.IsNullOrEmpty(scanner?.SelectedTtsLanguage))
@@ -1683,7 +1683,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             for(int i = 0; i < images.Count; i++)
             {
                 ScannedImage image = images[i];
-                scannedtext.Add(await image.Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsync(scanner.SelectedTtsLanguage));
+                await Dispatcher.Invoke(
+                    async () =>
+                    {
+                        ObservableCollection<OcrData> item = await image.Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsync(scanner.SelectedTtsLanguage);
+                        scannedtext.Add(item);
+                    });
                 scanner.PdfSaveProgressValue = i / (double)images.Count;
             }
 
