@@ -14,6 +14,7 @@
                 <ResourceDictionary Source="/TwainControl;component/CommonResource.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <Extension:SystemFileIconConverter x:Key="SystemFileIconConverter" />
+            <Extension:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
             <Extension:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
@@ -31,6 +32,7 @@
             <local:ZoomableInkCanvas x:Name="Ink"
                 Width="{Binding ElementName=Img, Path=ImageSource.Width}"
                 Height="{Binding ElementName=Img, Path=ImageSource.Height}"
+                ContextMenuService.IsEnabled="{Binding DrawControlContextMenu, Converter={StaticResource ReverseBooleanConverter}, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
                 Cursor="{Binding DrawCursor, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
                 EditingMode="{Binding ElementName=CbEdit, Path=SelectedItem}"
                 IsEnabled="{Binding ElementName=Img, Path=ImageSource, Converter={StaticResource NullableToBooleanConverter}}"

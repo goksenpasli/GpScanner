@@ -209,6 +209,19 @@ namespace TwainControl
             }
         }
 
+        public bool DrawControlContextMenu
+        {
+            get => drawControlContextMenu;
+            set
+            {
+                if(drawControlContextMenu != value)
+                {
+                    drawControlContextMenu = value;
+                    OnPropertyChanged(nameof(DrawControlContextMenu));
+                }
+            }
+        }
+
         public bool Smooth
         {
             get => smooth;
@@ -316,20 +329,25 @@ namespace TwainControl
 
         private void Ink_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if((Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift)) && e.RightButton == MouseButtonState.Pressed)
+            if(e.RightButton == MouseButtonState.Pressed)
             {
-                Point mousemovecoord = e.GetPosition(Scr);
-                mousemovecoord.X += Scr.HorizontalOffset;
-                mousemovecoord.Y += Scr.VerticalOffset;
-                double widthmultiply = ((BitmapSource)Img.ImageSource).PixelWidth / (Ink.DesiredSize.Width < Ink.ActualWidth ? Ink.ActualWidth : Ink.DesiredSize.Width);
-                double heightmultiply = ((BitmapSource)Img.ImageSource).PixelHeight / (Ink.DesiredSize.Height < Ink.ActualHeight ? Ink.ActualHeight : Ink.DesiredSize.Height);
-                Int32Rect sourceRect = new((int)(mousemovecoord.X * widthmultiply), (int)(mousemovecoord.Y * heightmultiply), 1, 1);
-                CroppedBitmap croppedbitmap = new((BitmapSource)Img.ImageSource, sourceRect);
-                byte[] pixels = new byte[4];
-                croppedbitmap.CopyPixels(pixels, 4, 0);
-                croppedbitmap.Freeze();
-                DrawingAttribute.Color = Color.FromRgb(pixels[2], pixels[1], pixels[0]);
-                SelectedBrush = new SolidColorBrush(DrawingAttribute.Color);
+                DrawControlContextMenu = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
+                if(DrawControlContextMenu)
+                {
+                    Point mousemovecoord = e.GetPosition(Scr);
+                    mousemovecoord.X += Scr.HorizontalOffset;
+                    mousemovecoord.Y += Scr.VerticalOffset;
+                    double widthmultiply = ((BitmapSource)Img.ImageSource).PixelWidth / (Ink.DesiredSize.Width < Ink.ActualWidth ? Ink.ActualWidth : Ink.DesiredSize.Width);
+                    double heightmultiply = ((BitmapSource)Img.ImageSource).PixelHeight / (Ink.DesiredSize.Height < Ink.ActualHeight ? Ink.ActualHeight : Ink.DesiredSize.Height);
+                    Int32Rect sourceRect = new((int)(mousemovecoord.X * widthmultiply), (int)(mousemovecoord.Y * heightmultiply), 1, 1);
+                    CroppedBitmap croppedbitmap = new((BitmapSource)Img.ImageSource, sourceRect);
+                    byte[] pixels = new byte[4];
+                    croppedbitmap.CopyPixels(pixels, 4, 0);
+                    croppedbitmap.Freeze();
+                    DrawingAttribute.Color = Color.FromRgb(pixels[2], pixels[1], pixels[0]);
+                    SelectedBrush = new SolidColorBrush(DrawingAttribute.Color);
+                    GenerateCustomCursor();
+                }
             }
         }
 
@@ -361,6 +379,7 @@ namespace TwainControl
         private string selectedColor = "Black";
 
         private StylusTip selectedStylus = StylusTip.Ellipse;
+        private bool drawControlContextMenu;
 
         private bool smooth;
 

@@ -13,7 +13,11 @@
         ObjectInstance="{x:Type Colors}" />
     <DataTemplate x:Key="ColorItemTemplate">
         <Rectangle Width="16" Height="16"
-            Fill="{Binding Name}" />
+            Fill="{Binding Name}">
+            <Rectangle.ToolTip>
+                <TextBlock Text="{Binding Name}" />
+            </Rectangle.ToolTip>
+        </Rectangle>
     </DataTemplate>
     <local:SystemFileIconConverter x:Key="SystemFileIconConverter" />
     <local:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
