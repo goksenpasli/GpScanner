@@ -1629,7 +1629,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             });
     }
 
-    public static void SaveJpgImage(BitmapFrame scannedImage, string filename) { File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality)); }
+    public void SaveJpgImage(BitmapFrame scannedImage, string filename)
+    { Dispatcher.Invoke(() => File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality))); }
 
     public static async Task SaveJpgImageAsync(List<ScannedImage> images, string filename, Scanner scanner)
     {
@@ -1653,13 +1654,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             });
     }
 
-    public static async Task SavePdfImageAsync(BitmapFrame scannedImage, string filename, Scanner scanner, Paper paper, bool applyocr, bool blackwhite = false)
+    public async Task SavePdfImageAsync(BitmapFrame scannedImage, string filename, Scanner scanner, Paper paper, bool applyocr, bool blackwhite = false)
     {
         ObservableCollection<OcrData> ocrtext = null;
         if(applyocr && !string.IsNullOrEmpty(scanner?.SelectedTtsLanguage))
         {
             scanner.SaveProgressBarForegroundBrush = bluesaveprogresscolor;
-            ocrtext = await scannedImage.ToTiffJpegByteArray(Format.Jpg).OcrAsync(scanner.SelectedTtsLanguage);
+            _ = await Dispatcher.Invoke(async () => ocrtext = await scannedImage.ToTiffJpegByteArray(Format.Jpg).OcrAsync(scanner.SelectedTtsLanguage));
         }
 
         scanner.SaveProgressBarForegroundBrush = Scanner.DefaultSaveProgressforegroundbrush;
@@ -1705,17 +1706,17 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         (await images.GeneratePdfAsync(Format.Jpg, paper, Settings.Default.JpegQuality, scannedtext, dpi)).Save(filename);
     }
 
-    public static void SaveTifImage(BitmapFrame scannedImage, string filename)
+    public void SaveTifImage(BitmapFrame scannedImage, string filename)
     {
         if((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
         {
-            File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.Tiff));
+            Dispatcher.Invoke(() => File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.Tiff)));
             return;
         }
 
         if((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
         {
-            File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.TiffRenkli));
+            Dispatcher.Invoke(() => File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.TiffRenkli)));
         }
     }
 
@@ -1735,23 +1736,31 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             });
     }
 
-    public static async Task SaveTxtFileAsync(BitmapFrame bitmapFrame, string fileName, Scanner scanner)
+    public async Task SaveTxtFileAsync(BitmapFrame bitmapFrame, string fileName, Scanner scanner)
     {
         if(bitmapFrame is not null && !string.IsNullOrEmpty(scanner.SelectedTtsLanguage))
         {
-            ObservableCollection<OcrData> ocrtext = await bitmapFrame.ToTiffJpegByteArray(Format.Jpg).OcrAsync(scanner.SelectedTtsLanguage);
-            File.WriteAllText(fileName, string.Join(" ", ocrtext.Select(z => z.Text)));
+            await Dispatcher.Invoke(
+                async () =>
+                {
+                    ObservableCollection<OcrData> ocrtext = await bitmapFrame.ToTiffJpegByteArray(Format.Jpg).OcrAsync(scanner.SelectedTtsLanguage);
+                    File.WriteAllText(fileName, string.Join(" ", ocrtext.Select(z => z.Text)));
+                });
         }
     }
 
-    public static async Task SaveTxtFileAsync(List<ScannedImage> images, string fileName, Scanner scanner)
+    public async Task SaveTxtFileAsync(List<ScannedImage> images, string fileName, Scanner scanner)
     {
         if(images is not null && !string.IsNullOrEmpty(scanner.SelectedTtsLanguage))
         {
             for(int i = 0; i < images.Count; i++)
             {
-                ObservableCollection<OcrData> ocrtext = await images[i].Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsync(scanner.SelectedTtsLanguage);
-                File.WriteAllText(Path.Combine(Path.GetDirectoryName(fileName), $"{Path.GetFileNameWithoutExtension(fileName)}{i}.txt"), string.Join(" ", ocrtext.Select(z => z.Text)));
+                await Dispatcher.Invoke(
+                    async () =>
+                    {
+                        ObservableCollection<OcrData> ocrtext = await images[i].Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsync(scanner.SelectedTtsLanguage);
+                        File.WriteAllText(Path.Combine(Path.GetDirectoryName(fileName), $"{Path.GetFileNameWithoutExtension(fileName)}{i}.txt"), string.Join(" ", ocrtext.Select(z => z.Text)));
+                    });
             }
         }
     }

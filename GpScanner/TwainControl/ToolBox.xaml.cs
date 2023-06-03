@@ -1,5 +1,4 @@
 ﻿using Extensions;
-using Microsoft.Win32;
 using Ocr;
 using PdfSharp;
 using PdfSharp.Drawing;
@@ -29,65 +28,6 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
     public ToolBox()
     {
         InitializeComponent();
-
-        SaveImage = new RelayCommand<object>(
-            parameter =>
-            {
-                if(TwainCtrl.Filesavetask?.IsCompleted == false)
-                {
-                    _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
-                    return;
-                }
-
-                SaveFileDialog saveFileDialog = new()
-                {
-                    Filter = "Tif Resmi (*.tif)|*.tif|Jpg Resmi (*.jpg)|*.jpg|Pdf Dosyası (*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf|Xps Dosyası (*.xps)|*.xps|Txt Dosyası (*.txt)|*.txt",
-                    FileName = Scanner.FileName,
-                    FilterIndex = 3
-                };
-                if(saveFileDialog.ShowDialog() == true)
-                {
-                    TwainCtrl.Filesavetask = Task.Run(
-                        async () =>
-                        {
-                            BitmapFrame bitmapFrame = BitmapFrame.Create(parameter as BitmapSource);
-                            bitmapFrame.Freeze();
-                            switch(saveFileDialog.FilterIndex)
-                            {
-                                case 1:
-                                    TwainCtrl.SaveTifImage(bitmapFrame, saveFileDialog.FileName);
-                                    bitmapFrame = null;
-                                    break;
-
-                                case 2:
-                                    TwainCtrl.SaveJpgImage(bitmapFrame, saveFileDialog.FileName);
-                                    bitmapFrame = null;
-                                    break;
-
-                                case 3:
-                                    await TwainCtrl.SavePdfImageAsync(bitmapFrame, saveFileDialog.FileName, Scanner, Paper, Scanner.ApplyPdfSaveOcr);
-                                    bitmapFrame = null;
-                                    break;
-
-                                case 4:
-                                    await TwainCtrl.SavePdfImageAsync(bitmapFrame, saveFileDialog.FileName, Scanner, Paper, true);
-                                    bitmapFrame = null;
-                                    break;
-
-                                case 5:
-                                    TwainCtrl.SaveXpsImage(bitmapFrame, saveFileDialog.FileName);
-                                    bitmapFrame = null;
-                                    break;
-
-                                case 6:
-                                    await TwainCtrl.SaveTxtFileAsync(bitmapFrame, saveFileDialog.FileName, Scanner);
-                                    bitmapFrame = null;
-                                    break;
-                            }
-                        });
-                }
-            },
-            parameter => Scanner?.CroppedImage is not null);
 
         PrintCroppedImage =
             new RelayCommand<object>(parameter => PdfViewer.PdfViewer.PrintImageSource(parameter as ImageSource), parameter => Scanner?.CroppedImage is not null);
@@ -414,8 +354,6 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
             }
         }
     }
-
-    public ICommand SaveImage { get; }
 
     public static Scanner Scanner { get; set; }
 

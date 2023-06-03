@@ -338,7 +338,7 @@ public class GpScannerViewModel : InpcBase
                 SaveFileDialog saveFileDialog = new() { Filter = "Jpg Resmi (*.jpg)|*.jpg", FileName = "QR" };
                 if(saveFileDialog.ShowDialog() == true)
                 {
-                    TwainCtrl.SaveJpgImage(BitmapFrame.Create(parameter as WriteableBitmap), saveFileDialog.FileName);
+                    File.WriteAllBytes(saveFileDialog.FileName, BitmapFrame.Create(parameter as WriteableBitmap).ToTiffJpegByteArray(Format.Jpg));
                 }
             },
             parameter => parameter is WriteableBitmap writeableBitmap && writeableBitmap is not null);
