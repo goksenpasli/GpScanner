@@ -342,7 +342,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                     break;
 
                                 case 4:
-                                    await SaveTifImageAsync(seçiliresimler, fileName, Scanner);
+                                    SaveTifImage(seçiliresimler, fileName);
                                     break;
 
                                 case 5:
@@ -1372,31 +1372,28 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             }
 
                             case ".tıf" or ".tiff" or ".tıff" or ".tif":
-                            {
-                                TiffBitmapDecoder decoder = new(new Uri(filename), BitmapCreateOptions.None, BitmapCacheOption.None);
-                                int pagecount = decoder.Frames.Count;
-                                for(int i = 0; i < pagecount; i++)
-                                {
-                                    BitmapFrame image = decoder.Frames[i];
-                                    image.Freeze();
-                                    BitmapSource thumbimage = image.PixelWidth < image.PixelHeight
-                                        ? image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Width * SelectedPaper.Height)
-                                        : image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Height * SelectedPaper.Width);
-                                    thumbimage.Freeze();
-                                    BitmapFrame bitmapFrame = BitmapFrame.Create(image, thumbimage);
-                                    bitmapFrame.Freeze();
-                                    ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
-                                    Dispatcher.Invoke(
-                                        () =>
+                                await Dispatcher.InvokeAsync(
+                                    () =>
+                                    {
+                                        TiffBitmapDecoder decoder = new(new Uri(filename), BitmapCreateOptions.None, BitmapCacheOption.None);
+                                        int pagecount = decoder.Frames.Count;
+                                        for(int i = 0; i < pagecount; i++)
                                         {
+                                            BitmapFrame image = decoder.Frames[i];
+                                            image.Freeze();
+                                            BitmapSource thumbimage = image.PixelWidth < image.PixelHeight
+                                                ? image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Width * SelectedPaper.Height)
+                                                : image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Height * SelectedPaper.Width);
+                                            thumbimage.Freeze();
+                                            BitmapFrame bitmapFrame = BitmapFrame.Create(image, thumbimage);
+                                            bitmapFrame.Freeze();
+                                            ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
                                             Scanner?.Resimler.Add(img);
                                             double progressvalue = (i + 1) / (double)pagecount;
                                             Scanner.PdfSaveProgressValue = progressvalue == 1 ? 0 : progressvalue;
-                                        });
-                                }
-
+                                        }
+                                    });
                                 break;
-                            }
                             case ".xps":
                             {
                                 FixedDocumentSequence docSeq = null;
@@ -1716,9 +1713,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public static async Task SaveTifImageAsync(List<ScannedImage> images, string filename, Scanner scanner)
+    public void SaveTifImage(List<ScannedImage> images, string filename)
     {
-        await Task.Run(
+        Dispatcher.Invoke(
             () =>
             {
                 TiffBitmapEncoder tifccittencoder = new() { Compression = TiffCompressOption.Ccitt4 };
@@ -1726,15 +1723,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     ScannedImage scannedimage = images[i];
                     tifccittencoder.Frames.Add(scannedimage.Resim);
-                    scanner.PdfSaveProgressValue = i / (double)images.Count;
                 }
-
-                scanner.PdfSaveProgressValue = 0;
-                scanner.SaveProgressIndeterminate = true;
                 using FileStream stream = new(filename, FileMode.Create);
                 tifccittencoder.Save(stream);
-                scanner.SaveProgressIndeterminate = false;
-                GC.Collect();
             });
     }
 
@@ -2936,16 +2927,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 return;
             }
             int decodepixelheight = (int)(SelectedPaper.Height / Inch * Settings.Default.Çözünürlük);
-            BitmapSource evrak;
-            if(Scanner?.Resimler.Count % 2 == 0)
-            {
-                evrak = EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight);
-            } else
-            {
-                evrak = Scanner?.PaperBackScan == true
+            BitmapSource evrak = Scanner?.Resimler.Count % 2 == 0
+                ? EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight)
+                : Scanner?.PaperBackScan == true
                     ? EvrakOluştur(bitmap, (ColourSetting)Settings.Default.BackMode, decodepixelheight)
                     : EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight);
-            }
             if(Scanner.InvertImage)
             {
                 evrak = evrak.InvertBitmap();
