@@ -1773,8 +1773,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         scanner.SaveProgressBarForegroundBrush = Scanner.DefaultSaveProgressforegroundbrush;
         if(blackwhite)
         {
-            (await images.GeneratePdfAsync(Format.Tiff, paper, Settings.Default.JpegQuality, scannedtext, dpi))
-                .Save(filename);
+            (await images.GeneratePdfAsync(Format.Tiff, paper, Settings.Default.JpegQuality, scannedtext, dpi)).Save(filename);
             return;
         }
 
@@ -2688,27 +2687,30 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         Scanner.BarcodeContent = QrCode.QrCode.GetImageBarcodeResult(Scanner?.Resimler?.LastOrDefault()?.Resim);
         OnPropertyChanged(nameof(Scanner.DetectPageSeperator));
         Scanner.PdfFilePath = PdfGeneration.GetPdfScanPath();
+        List<ObservableCollection<OcrData>> PdfFileOcrData = null;
         if(Scanner.ApplyDataBaseOcr)
         {
+            PdfFileOcrData = new();
             Scanner.SaveProgressBarForegroundBrush = bluesaveprogresscolor;
             for(int i = 0; i < Scanner.Resimler.Count; i++)
             {
                 ScannedImage scannedimage = Scanner.Resimler[i];
                 Scanner.BarcodeContent = QrCode.QrCode.GetImageBarcodeResult(scannedimage.Resim);
                 DataBaseTextData = await scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Scanner.SelectedTtsLanguage);
+                PdfFileOcrData.Add(DataBaseTextData);
                 Scanner.PdfSaveProgressValue = i / (double)Scanner.Resimler.Count;
             }
         }
 
         if((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
         {
-            (await Scanner.Resimler.ToList().GeneratePdfAsync(Format.Tiff, SelectedPaper, Settings.Default.JpegQuality, null, (int)Settings.Default.Çözünürlük)).Save(
+            (await Scanner.Resimler.ToList().GeneratePdfAsync(Format.Tiff, SelectedPaper, Settings.Default.JpegQuality, PdfFileOcrData, (int)Settings.Default.Çözünürlük)).Save(
                 Scanner.PdfFilePath);
         }
 
         if((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
         {
-            (await Scanner.Resimler.ToList().GeneratePdfAsync(Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, null, (int)Settings.Default.Çözünürlük)).Save(
+            (await Scanner.Resimler.ToList().GeneratePdfAsync(Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, PdfFileOcrData, (int)Settings.Default.Çözünürlük)).Save(
                 Scanner.PdfFilePath);
         }
 
@@ -2719,6 +2721,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
         OnPropertyChanged(nameof(Scanner.Resimler));
         Scanner.Resimler.Clear();
+        DataBaseTextData = null;
+        PdfFileOcrData = null;
         twain.ScanningComplete -= FastScanAsync;
         Scanner.ArayüzEtkin = true;
     }
@@ -3025,12 +3029,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             if(Scanner?.Resimler.Count % 2 == 0)
             {
                 evrak = EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight);
-            } else if(Scanner?.PaperBackScan == true)
-            {
-                evrak = EvrakOluştur(bitmap, (ColourSetting)Settings.Default.BackMode, decodepixelheight);
             } else
             {
-                evrak = EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight);
+                evrak = Scanner?.PaperBackScan == true
+                    ? EvrakOluştur(bitmap, (ColourSetting)Settings.Default.BackMode, decodepixelheight)
+                    : EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight);
             }
             if(Scanner.InvertImage)
             {

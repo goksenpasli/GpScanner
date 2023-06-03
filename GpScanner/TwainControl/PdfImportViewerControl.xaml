@@ -74,8 +74,9 @@
                 Maximum="{Binding ElementName=PdfViewer, Path=ToplamSayfa}"
                 Minimum="1" SmallChange="1"
                 Value="{Binding SayfaBitiş, UpdateSourceTrigger=PropertyChanged}" />
-
-            <Button Command="{Binding ExtractPdfFile}" CommandParameter="{Binding PdfFilePath, ElementName=PdfViewer, Mode=OneWay}">
+            <Button local:Policy.PolicyName="ExtractPdfFile"
+                Command="{Binding ExtractPdfFile}"
+                CommandParameter="{Binding PdfFilePath, ElementName=PdfViewer, Mode=OneWay}">
                 <Image Width="16" Height="16">
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -85,11 +86,15 @@
                     </Image.Source>
                 </Image>
             </Button>
-            <Button Command="{Binding RemoveSelectedPage}" CommandParameter="{Binding ElementName=PdfViewer}">
+            <Button local:Policy.PolicyName="RemoveSelectedPage"
+                Command="{Binding RemoveSelectedPage}"
+                CommandParameter="{Binding ElementName=PdfViewer}">
                 <Image Width="16" Height="16"
                     Source="/TwainControl;component/Icons/delete.png" />
             </Button>
-            <Button Command="{Binding ArrangePdfFile}" CommandParameter="{Binding ElementName=PdfViewer}">
+            <Button local:Policy.PolicyName="ArrangePdfFile"
+                Command="{Binding ArrangePdfFile}"
+                CommandParameter="{Binding ElementName=PdfViewer}">
                 <Image Width="16" Height="16">
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -161,7 +166,9 @@
                     </GroupBox>
                 </Extensions:ContentToggleButton.OverContent>
             </Extensions:ContentToggleButton>
-            <Button Command="{Binding ReversePdfFile}" CommandParameter="{Binding ElementName=PdfViewer}">
+            <Button local:Policy.PolicyName="ReversePdfFile"
+                Command="{Binding ReversePdfFile}"
+                CommandParameter="{Binding ElementName=PdfViewer}">
                 <Image Width="16" Height="16">
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -171,7 +178,9 @@
                     </Image.Source>
                 </Image>
             </Button>
-            <Button Command="{Binding AddPdfAttachmentFile}" CommandParameter="{Binding ElementName=PdfViewer}">
+            <Button local:Policy.PolicyName="AddPdfAttachmentFile"
+                Command="{Binding AddPdfAttachmentFile}"
+                CommandParameter="{Binding ElementName=PdfViewer}">
                 <Image Width="16" Height="16">
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -203,7 +212,7 @@
                     </Button>
                 </Extensions:SplitButton.InternalContent>
             </Extensions:SplitButton>
-            <Button BorderBrush="Cyan"
+            <Button local:Policy.PolicyName="PasteFileToPdfFile" BorderBrush="Cyan"
                 Command="{Binding PasteFileToPdfFile}"
                 CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
                 <Button.Content>
@@ -217,27 +226,27 @@
                     </Image>
                 </Button.Content>
             </Button>
-            <Button BorderBrush="Cyan"
+            <Button local:Policy.PolicyName="RotateSelectedPage" BorderBrush="Cyan"
                 Command="{Binding RotateSelectedPage}"
                 CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
                 <Image Width="16" Height="16"
                     Source="/TwainControl;component/Icons/rotate.png" />
             </Button>
-            <Button BorderBrush="Cyan"
+            <Button local:Policy.PolicyName="AddAllFileToControlPanel" BorderBrush="Cyan"
                 Command="{Binding AddAllFileToControlPanel}"
                 CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
                 <Button.Content>
                     <TextBlock FontFamily="Wingdings" FontSize="16" Text="ç" />
                 </Button.Content>
             </Button>
-            <Button BorderBrush="Cyan"
+            <Button local:Policy.PolicyName="ReadPdfTag" BorderBrush="Cyan"
                 Command="{Binding ReadPdfTag}"
                 CommandParameter="{Binding ElementName=PdfViewer, Path=PdfFilePath, Mode=OneWay}">
                 <Button.Content>
                     <TextBlock FontFamily="Wingdings 2" FontSize="16" Text="-" />
                 </Button.Content>
             </Button>
-            <Button BorderBrush="Cyan"
+            <Button local:Policy.PolicyName="MergeSelectedImagesToPdfFile" BorderBrush="Cyan"
                 Command="{Binding MergeSelectedImagesToPdfFile}"
                 CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
                 <Button.Content>
@@ -409,7 +418,9 @@
                 IsReadOnly="True" Maximum="10" Minimum="0"
                 SmallChange="1"
                 Value="{Binding PdfMedianValue}" />
-            <Button Command="{Binding ApplyPdfMedianFilter}" CommandParameter="{Binding ElementName=PdfViewer}">
+            <Button local:Policy.PolicyName="ApplyPdfMedianFilter"
+                Command="{Binding ApplyPdfMedianFilter}"
+                CommandParameter="{Binding ElementName=PdfViewer}">
                 <Image Width="16" Height="16"
                     Source="/TwainControl;component/Icons/save.png" />
             </Button>
@@ -421,7 +432,9 @@
                 Maximum="{Binding ElementName=PdfViewer, Path=ToplamSayfa}"
                 Minimum="0" SmallChange="1"
                 Value="{Binding PdfSplitCount}" />
-            <Button Command="{Binding SplitPdf}" CommandParameter="{Binding ElementName=PdfViewer}">
+            <Button local:Policy.PolicyName="SplitPdf"
+                Command="{Binding SplitPdf}"
+                CommandParameter="{Binding ElementName=PdfViewer}">
                 <Image Width="16" Height="16">
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -434,7 +447,9 @@
             <StackPanel Orientation="Horizontal">
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             </StackPanel>
-            <Button Command="{Binding MaximizePdfControl}" IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
+            <Button local:Policy.PolicyName="MaximizePdfControl"
+                Command="{Binding MaximizePdfControl}"
+                IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
                 <Image Width="16" Height="16">
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -444,7 +459,9 @@
                     </Image.Source>
                 </Image>
             </Button>
-            <Button Command="{Binding ClosePdfFile}" CommandParameter="{Binding ElementName=PdfViewer}">
+            <Button local:Policy.PolicyName="ClosePdfFile"
+                Command="{Binding ClosePdfFile}"
+                CommandParameter="{Binding ElementName=PdfViewer}">
                 <Image Width="16" Height="16">
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -581,7 +598,7 @@
                             </Image>
                         </ToggleButton.Content>
                     </ToggleButton>
-                    <Button Command="{Binding LoadDrawImage, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                    <Button local:Policy.PolicyName="LoadDrawImage" Command="{Binding LoadDrawImage, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <Button.Content>
                             <Image Width="16" Height="16">
                                 <Image.Source>

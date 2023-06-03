@@ -224,21 +224,16 @@ public partial class MainWindow : Window
             if(e.PropertyName is "DataBaseTextData" && TwainCtrl?.DataBaseTextData is not null)
             {
                 ViewModel.ScannedText = TwainCtrl.DataBaseTextData;
-                if(ViewModel.ScannedText != null)
+                ViewModel.ScannerData?.Data?.Add(
+                new Data
                 {
-                    ViewModel.ScannerData?.Data?.Add(
-                    new Data
-                    {
-                        Id = DataSerialize.RandomNumber(),
-                        FileName = TwainCtrl?.Scanner?.PdfFilePath,
-                        FileContent = string.Join(" ", ViewModel.ScannedText?.Select(z => z.Text)),
-                        QrData = TwainCtrl?.Scanner?.BarcodeContent
-                    });
-                }
-
+                    Id = DataSerialize.RandomNumber(),
+                    FileName = TwainCtrl?.Scanner?.PdfFilePath,
+                    FileContent = string.Join(" ", ViewModel.ScannedText?.Select(z => z.Text)),
+                    QrData = TwainCtrl?.Scanner?.BarcodeContent
+                });
                 ViewModel.DatabaseSave.Execute(null);
                 ViewModel.ScannedText = null;
-                TwainCtrl.DataBaseTextData = null;
             }
 
             if(e.PropertyName is "ImgData" && TwainCtrl?.ImgData is not null)
