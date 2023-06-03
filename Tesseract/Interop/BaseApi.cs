@@ -180,12 +180,7 @@ namespace Tesseract.Interop
         int PageIteratorNext(HandleRef handle, PageIteratorLevel level);
 
         [RuntimeDllImport(Constants.TesseractDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "TessPageIteratorOrientation")]
-        void PageIteratorOrientation(
-            HandleRef handle,
-            out Orientation orientation,
-            out WritingDirection writing_direction,
-            out TextLineOrder textLineOrder,
-            out float deskew_angle);
+        void PageIteratorOrientation(HandleRef handle, out Orientation orientation, out WritingDirection writing_direction, out TextLineOrder textLineOrder, out float deskew_angle);
 
         [RuntimeDllImport(Constants.TesseractDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "TessResultIteratorCopy")]
         IntPtr ResultIteratorCopy(HandleRef handle);
@@ -541,17 +536,7 @@ namespace Tesseract.Interop
                 i++;
             }
 
-            return Native.BaseApiInit(
-                handle,
-                datapath,
-                language,
-                mode,
-                configFilesArray,
-                configFilesArray.Length,
-                varNames,
-                varValues,
-                new UIntPtr((uint)varNames.Length),
-                setOnlyNonDebugParams);
+            return Native.BaseApiInit(handle, datapath, language, mode, configFilesArray, configFilesArray.Length, varNames, varValues, new UIntPtr((uint)varNames.Length), setOnlyNonDebugParams);
         }
 
         public static int BaseApiSetDebugVariable(HandleRef handle, string name, string value)

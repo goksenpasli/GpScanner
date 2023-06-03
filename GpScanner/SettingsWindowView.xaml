@@ -491,18 +491,22 @@
                         <GroupBox.Header>
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <Extensions:NumericUpDownControl IsReadOnly="True"
-                                        Maximum="{Binding Source={x:Static System:Environment.ProcessorCount}}"
-                                        Minimum="1" SmallChange="1"
-                                        Value="{Binding ProcessorCount, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                                    <Image Width="32" Height="32">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="12" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
+                                    <Canvas Width="32" Height="32">
+                                        <Image Width="32" Height="32">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="12" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <Extensions:NumericUpDownControl Canvas.Right="3"
+                                            Height="32"
+                                            FontWeight="Bold" Foreground="Red" IsReadOnly="True"
+                                            Maximum="{Binding Source={x:Static System:Environment.ProcessorCount}}"
+                                            Minimum="1" SmallChange="1"
+                                            Value="{Binding ProcessorCount, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                                    </Canvas>
                                     <TextBlock VerticalAlignment="Center"
                                         FontWeight="Bold"
                                         Text="{twainctrl:Loc BATCH}" />

@@ -32,7 +32,7 @@
     <Setting Name="UseSelectedProfile" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="ImgLoadResolution" Type="System.Double" Scope="User">
+    <Setting Name="ImgLoadResolution" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">200</Value>
     </Setting>
     <Setting Name="JpegQuality" Type="System.Int32" Scope="User">

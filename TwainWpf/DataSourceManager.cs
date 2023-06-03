@@ -31,9 +31,7 @@ namespace TwainWpf
 
             TwainResult result = Twain32Native.DsmParent(ApplicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Parent, Message.OpenDSM, ref windowHandle);
 
-            DataSource = result == TwainResult.Success
-                ? DataSource.GetDefault(ApplicationId, MessageHook)
-                : throw new TwainException($"Error initialising DSM: {result}", result);
+            DataSource = result == TwainResult.Success ? DataSource.GetDefault(ApplicationId, MessageHook) : throw new TwainException($"Error initialising DSM: {result}", result);
         }
 
         ~DataSourceManager() { Dispose(false); }
@@ -143,27 +141,12 @@ namespace TwainWpf
 
             int pos = User32Native.GetMessagePos();
 
-            WindowsMessage message = new WindowsMessage
-            {
-                hwnd = hwnd,
-                message = msg,
-                wParam = wParam,
-                lParam = lParam,
-                time = User32Native.GetMessageTime(),
-                x = (short)pos,
-                y = (short)(pos >> 16)
-            };
+            WindowsMessage message = new WindowsMessage { hwnd = hwnd, message = msg, wParam = wParam, lParam = lParam, time = User32Native.GetMessageTime(), x = (short)pos, y = (short)(pos >> 16) };
 
             Marshal.StructureToPtr(message, _eventMessage.EventPtr, false);
             _eventMessage.Message = 0;
 
-            TwainResult result = Twain32Native.DsEvent(
-                ApplicationId,
-                DataSource.SourceId,
-                DataGroup.Control,
-                DataArgumentType.Event,
-                Message.ProcessEvent,
-                ref _eventMessage);
+            TwainResult result = Twain32Native.DsEvent(ApplicationId, DataSource.SourceId, DataGroup.Control, DataArgumentType.Event, Message.ProcessEvent, ref _eventMessage);
 
             if(result == TwainResult.NotDSEvent)
             {
@@ -215,13 +198,7 @@ namespace TwainWpf
                     IntPtr hbitmap = IntPtr.Zero;
 
                     ImageInfo imageInfo = new ImageInfo();
-                    TwainResult result = Twain32Native.DsImageInfo(
-                        ApplicationId,
-                        DataSource.SourceId,
-                        DataGroup.Image,
-                        DataArgumentType.ImageInfo,
-                        Message.Get,
-                        imageInfo);
+                    TwainResult result = Twain32Native.DsImageInfo(ApplicationId, DataSource.SourceId, DataGroup.Image, DataArgumentType.ImageInfo, Message.Get, imageInfo);
 
                     if(result != TwainResult.Success)
                     {
@@ -229,13 +206,7 @@ namespace TwainWpf
                         break;
                     }
 
-                    result = Twain32Native.DsImageTransfer(
-                        ApplicationId,
-                        DataSource.SourceId,
-                        DataGroup.Image,
-                        DataArgumentType.ImageNativeXfer,
-                        Message.Get,
-                        ref hbitmap);
+                    result = Twain32Native.DsImageTransfer(ApplicationId, DataSource.SourceId, DataGroup.Image, DataArgumentType.ImageNativeXfer, Message.Get, ref hbitmap);
 
                     if(result != TwainResult.XferDone)
                     {
@@ -243,13 +214,7 @@ namespace TwainWpf
                         break;
                     }
 
-                    result = Twain32Native.DsPendingTransfer(
-                        ApplicationId,
-                        DataSource.SourceId,
-                        DataGroup.Control,
-                        DataArgumentType.PendingXfers,
-                        Message.EndXfer,
-                        pendingTransfer);
+                    result = Twain32Native.DsPendingTransfer(ApplicationId, DataSource.SourceId, DataGroup.Control, DataArgumentType.PendingXfers, Message.EndXfer, pendingTransfer);
 
                     if(result != TwainResult.Success)
                     {

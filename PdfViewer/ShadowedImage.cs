@@ -38,11 +38,7 @@ public class ShadowedImage : Image
         }
     }
 
-    public static readonly DependencyProperty LocationProperty = DependencyProperty.Register(
-        "Location",
-        typeof(Point),
-        typeof(ShadowedImage),
-        new PropertyMetadata(new Point(2.5, 2.5)));
+    public static readonly DependencyProperty LocationProperty = DependencyProperty.Register("Location", typeof(Point), typeof(ShadowedImage), new PropertyMetadata(new Point(2.5, 2.5)));
 
     public static readonly DependencyProperty OverlayColorProperty = DependencyProperty.Register(
         "OverlayColor",

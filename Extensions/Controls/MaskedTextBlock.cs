@@ -37,11 +37,7 @@ public class MaskedTextBlock : TextBlock
     public static readonly DependencyProperty PromptCharProperty =
         DependencyProperty.Register("PromptChar", typeof(char), typeof(MaskedTextBlock), new PropertyMetadata('_'));
 
-    public static readonly DependencyProperty UnmaskedTextProperty = DependencyProperty.Register(
-        "UnmaskedText",
-        typeof(string),
-        typeof(MaskedTextBlock),
-        new UIPropertyMetadata(string.Empty, Changed));
+    public static readonly DependencyProperty UnmaskedTextProperty = DependencyProperty.Register("UnmaskedText", typeof(string), typeof(MaskedTextBlock), new UIPropertyMetadata(string.Empty, Changed));
 
     private MaskedTextProvider _provider;
 }

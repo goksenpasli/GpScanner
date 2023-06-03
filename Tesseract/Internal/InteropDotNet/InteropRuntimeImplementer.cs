@@ -53,8 +53,7 @@ namespace Tesseract.Internal.InteropDotNet
                     Info = methodInfoArray[i],
                     DllImportAttribute =
                         GetRuntimeDllImportAttribute(methodInfoArray[i]) ??
-                            throw new Exception(
-                                $"Method '{methodInfoArray[i].Name}' of interface '{interfaceType.Name}' should be marked with the RuntimeDllImport attribute")
+                            throw new Exception($"Method '{methodInfoArray[i].Name}' of interface '{interfaceType.Name}' should be marked with the RuntimeDllImport attribute")
                 };
             }
 
@@ -70,8 +69,7 @@ namespace Tesseract.Internal.InteropDotNet
                 throw new Exception("There is no a BaseType of typeBuilder");
             }
 
-            ConstructorInfo baseCtor = typeBuilder.BaseType.GetConstructor(new Type[0]) ??
-                throw new Exception("There is no a default constructor of BaseType of typeBuilder");
+            ConstructorInfo baseCtor = typeBuilder.BaseType.GetConstructor(new Type[0]) ?? throw new Exception("There is no a default constructor of BaseType of typeBuilder");
 
             List<string> libraries = new List<string>();
             foreach(MethodItem method in methods)
@@ -165,10 +163,7 @@ namespace Tesseract.Internal.InteropDotNet
             const MethodAttributes methodAttributes = MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.NewSlot | MethodAttributes.Virtual;
 
             string delegateName = GetDelegateName(assemblyName, method.Info);
-            TypeBuilder delegateBuilder = moduleBuilder.DefineType(
-                delegateName,
-                TypeAttributes.Public | TypeAttributes.AutoClass | TypeAttributes.Sealed,
-                typeof(MulticastDelegate));
+            TypeBuilder delegateBuilder = moduleBuilder.DefineType(delegateName, TypeAttributes.Public | TypeAttributes.AutoClass | TypeAttributes.Sealed, typeof(MulticastDelegate));
 
             RuntimeDllImportAttribute importAttribute = method.DllImportAttribute;
             ConstructorInfo attributeCtor =
@@ -259,9 +254,7 @@ namespace Tesseract.Internal.InteropDotNet
         private static RuntimeDllImportAttribute GetRuntimeDllImportAttribute(MethodInfo methodInfo)
         {
             object[] attributes = methodInfo.GetCustomAttributes(typeof(RuntimeDllImportAttribute), true);
-            return attributes.Length == 0
-                ? throw new Exception($"RuntimeDllImportAttribute for method '{methodInfo.Name}' not found")
-                : (RuntimeDllImportAttribute)attributes[0];
+            return attributes.Length == 0 ? throw new Exception($"RuntimeDllImportAttribute for method '{methodInfo.Name}' not found") : (RuntimeDllImportAttribute)attributes[0];
         }
 
         private static void LdArg(ILGenerator ilGen, int index)
@@ -388,8 +381,7 @@ namespace Tesseract.Internal.InteropDotNet
 
         private static string GetDelegateName(string assemblyName, MethodInfo methodInfo) { return $"{assemblyName}.{methodInfo.Name}Delegate"; }
 
-        private static string GetImplementationTypeName(string assemblyName, Type interfaceType)
-        { return $"{assemblyName}.{GetSubstantialName(interfaceType)}Implementation"; }
+        private static string GetImplementationTypeName(string assemblyName, Type interfaceType) { return $"{assemblyName}.{GetSubstantialName(interfaceType)}Implementation"; }
 
         private static string GetSubstantialName(Type interfaceType)
         {

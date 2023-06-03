@@ -37,13 +37,7 @@ public class LocExtension : MarkupExtension
             baseName = GetResourceManager(frameworkElement.TemplatedParent)?.BaseName ?? string.Empty;
         }
 
-        Binding binding = new()
-        {
-            Mode = BindingMode.OneWay,
-            Path = new PropertyPath($"[{baseName}.{StringName}]"),
-            Source = TranslationSource.Instance,
-            FallbackValue = StringName
-        };
+        Binding binding = new() { Mode = BindingMode.OneWay, Path = new PropertyPath($"[{baseName}.{StringName}]"), Source = TranslationSource.Instance, FallbackValue = StringName };
 
         return binding.ProvideValue(serviceProvider);
     }

@@ -35,11 +35,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         DosyaAç = new RelayCommand<object>(
             parameter =>
             {
-                OpenFileDialog openFileDialog = new()
-                {
-                    Multiselect = false,
-                    Filter = "Resim Dosyaları (*.jpg;*.jpeg;*.tif;*.tiff;*.png)|*.jpg;*.jpeg;*.tif;*.tiff;*.png"
-                };
+                OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = "Resim Dosyaları (*.jpg;*.jpeg;*.tif;*.tiff;*.png)|*.jpg;*.jpeg;*.tif;*.tiff;*.png" };
                 if(openFileDialog.ShowDialog() == true)
                 {
                     ImageFilePath = openFileDialog.FileName;
@@ -460,11 +456,9 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
                     return;
 
                 case ".png" or ".jpg" or ".jpeg" or ".bmp":
-                {
                     imageViewer.TifNavigasyonButtonEtkin = Visibility.Collapsed;
                     imageViewer.Source = await LoadImageAsync(filepath, imageViewer.DecodeHeight);
                     return;
-                }
             }
         }
     }
@@ -538,11 +532,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
     public static readonly DependencyProperty AngleProperty =
         DependencyProperty.Register("Angle", typeof(double), typeof(ImageViewer), new PropertyMetadata(0.0));
 
-    public static readonly DependencyProperty DecodeHeightProperty = DependencyProperty.Register(
-        "DecodeHeight",
-        typeof(int),
-        typeof(ImageViewer),
-        new PropertyMetadata(300, DecodeHeightChangedAsync));
+    public static readonly DependencyProperty DecodeHeightProperty = DependencyProperty.Register("DecodeHeight", typeof(int), typeof(ImageViewer), new PropertyMetadata(300, DecodeHeightChangedAsync));
 
     public static readonly DependencyProperty FovProperty = DependencyProperty.Register("Fov", typeof(double), typeof(ImageViewer), new PropertyMetadata(95d, FovChanged));
 
@@ -564,11 +554,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
     public static readonly DependencyProperty OriginalPixelWidthProperty =
         DependencyProperty.Register("OriginalPixelWidth", typeof(int), typeof(ImageViewer), new PropertyMetadata(0));
 
-    public static readonly DependencyProperty PanoramaModeProperty = DependencyProperty.Register(
-        "PanoramaMode",
-        typeof(bool),
-        typeof(ImageViewer),
-        new PropertyMetadata(PanoramaModeChanged));
+    public static readonly DependencyProperty PanoramaModeProperty = DependencyProperty.Register("PanoramaMode", typeof(bool), typeof(ImageViewer), new PropertyMetadata(PanoramaModeChanged));
 
     public static readonly DependencyProperty RotateXProperty =
         DependencyProperty.Register("RotateX", typeof(double), typeof(ImageViewer), new PropertyMetadata(0.0));
@@ -579,21 +565,12 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
     public static readonly DependencyProperty SnapTickProperty =
         DependencyProperty.Register("SnapTick", typeof(bool), typeof(ImageViewer), new PropertyMetadata(false));
 
-    public static readonly DependencyProperty SourceProperty = DependencyProperty.Register(
-        "Source",
-        typeof(ImageSource),
-        typeof(ImageViewer),
-        new PropertyMetadata(null, SourceChanged));
+    public static readonly DependencyProperty SourceProperty = DependencyProperty.Register("Source", typeof(ImageSource), typeof(ImageViewer), new PropertyMetadata(null, SourceChanged));
 
     public static readonly DependencyProperty ToolBarVisibilityProperty =
         DependencyProperty.Register("ToolBarVisibility", typeof(Visibility), typeof(ImageViewer), new PropertyMetadata(Visibility.Visible));
 
-    public static readonly DependencyProperty ZoomProperty = DependencyProperty.Register(
-        "Zoom",
-        typeof(double),
-        typeof(ImageViewer),
-        new PropertyMetadata(1.0),
-        ZoomValidateCallBack);
+    public static readonly DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(ImageViewer), new PropertyMetadata(1.0), ZoomValidateCallBack);
 
     private bool _isOnDrag;
 

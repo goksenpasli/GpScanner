@@ -37,11 +37,7 @@ public class Compressor : Control, INotifyPropertyChanged
                     List<BitmapImage> images = await AddToListAsync(loadedpdfdoc, Dpi);
                     using PdfDocument pdfDocument = await GeneratePdfAsync(images, UseMozJpeg, BlackAndWhite, Quality, Dpi);
                     images = null;
-                    SaveFileDialog saveFileDialog = new()
-                    {
-                        Filter = "Pdf Dosyası (*.pdf)|*.pdf",
-                        FileName = $"{Path.GetFileNameWithoutExtension(LoadedPdfPath)}_Compressed.pdf"
-                    };
+                    SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası (*.pdf)|*.pdf", FileName = $"{Path.GetFileNameWithoutExtension(LoadedPdfPath)}_Compressed.pdf" };
                     if(saveFileDialog.ShowDialog() == true)
                     {
                         pdfDocument.Save(saveFileDialog.FileName);
@@ -141,11 +137,7 @@ public class Compressor : Control, INotifyPropertyChanged
                             using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
                             using MozJpeg.MozJpeg mozJpeg = new();
                             BitmapSource resizedimage = pdfimage.Resize(page.Width, page.Height, 0, dpi, dpi);
-                            byte[] data = mozJpeg.Encode(
-                                BitmapSourceToBitmap(resizedimage),
-                                jpegquality,
-                                false,
-                                TJFlags.ACCURATEDCT | TJFlags.DC_SCAN_OPT2 | TJFlags.TUNE_MS_SSIM);
+                            byte[] data = mozJpeg.Encode(BitmapSourceToBitmap(resizedimage), jpegquality, false, TJFlags.ACCURATEDCT | TJFlags.DC_SCAN_OPT2 | TJFlags.TUNE_MS_SSIM);
                             using MemoryStream ms = new(data);
                             using XImage xImage = XImage.FromStream(ms);
                             XSize size = PageSizeConverter.ToSize(page.Size);
@@ -165,9 +157,7 @@ public class Compressor : Control, INotifyPropertyChanged
                         } else
                         {
                             using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
-                            BitmapSource resizedimage = bw
-                                ? pdfimage.Resize(page.Width, page.Height, 0, dpi, dpi).ConvertBlackAndWhite()
-                                : pdfimage.Resize(page.Width, page.Height, 0, dpi, dpi);
+                            BitmapSource resizedimage = bw ? pdfimage.Resize(page.Width, page.Height, 0, dpi, dpi).ConvertBlackAndWhite() : pdfimage.Resize(page.Width, page.Height, 0, dpi, dpi);
                             using MemoryStream ms =
                             new(resizedimage.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg, jpegquality));
                             using XImage xImage = XImage.FromStream(ms);
@@ -283,23 +273,11 @@ public class Compressor : Control, INotifyPropertyChanged
     public static readonly DependencyProperty BlackAndWhiteProperty =
         DependencyProperty.Register("BlackAndWhite", typeof(bool), typeof(Compressor), new PropertyMetadata(Settings.Default.Bw, BwChanged));
 
-    public static readonly DependencyProperty DpiProperty = DependencyProperty.Register(
-        "Dpi",
-        typeof(int),
-        typeof(Compressor),
-        new PropertyMetadata(Settings.Default.Dpi, DpiChanged));
+    public static readonly DependencyProperty DpiProperty = DependencyProperty.Register("Dpi", typeof(int), typeof(Compressor), new PropertyMetadata(Settings.Default.Dpi, DpiChanged));
 
-    public static readonly DependencyProperty LoadedPdfPathProperty = DependencyProperty.Register(
-        "LoadedPdfPath",
-        typeof(string),
-        typeof(Compressor),
-        new PropertyMetadata(string.Empty));
+    public static readonly DependencyProperty LoadedPdfPathProperty = DependencyProperty.Register("LoadedPdfPath", typeof(string), typeof(Compressor), new PropertyMetadata(string.Empty));
 
-    public static readonly DependencyProperty QualityProperty = DependencyProperty.Register(
-        "Quality",
-        typeof(int),
-        typeof(Compressor),
-        new PropertyMetadata(Settings.Default.Quality, QualityChanged));
+    public static readonly DependencyProperty QualityProperty = DependencyProperty.Register("Quality", typeof(int), typeof(Compressor), new PropertyMetadata(Settings.Default.Quality, QualityChanged));
 
 
     public static readonly DependencyProperty UseMozJpegProperty =

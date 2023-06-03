@@ -181,12 +181,7 @@ public class GraphControl : FrameworkElement
     }
 
     private FormattedText GenerateFormattedText(Chart item, Pen pen)
-    {
-        return new FormattedText(item.Description, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), FontSize, TextColor)
-        {
-            MaxTextWidth = pen.Thickness
-        };
-    }
+    { return new FormattedText(item.Description, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), FontSize, TextColor) { MaxTextWidth = pen.Thickness }; }
 
     private FormattedText GenerateFormattedValueText(Chart item, Pen pen)
     {
@@ -247,11 +242,7 @@ public class GraphControl : FrameworkElement
         new FrameworkPropertyMetadata(Brushes.Blue, FrameworkPropertyMetadataOptions.AffectsRender));
 
     public static readonly DependencyProperty LineDotVisibilityProperty =
-        DependencyProperty.Register(
-        "LineDotVisibility",
-        typeof(Visibility),
-        typeof(GraphControl),
-        new FrameworkPropertyMetadata(Visibility.Collapsed, FrameworkPropertyMetadataOptions.AffectsRender));
+        DependencyProperty.Register("LineDotVisibility", typeof(Visibility), typeof(GraphControl), new FrameworkPropertyMetadata(Visibility.Collapsed, FrameworkPropertyMetadataOptions.AffectsRender));
 
     public static readonly DependencyProperty LineGraphVisibilityProperty =
         DependencyProperty.Register(
@@ -273,11 +264,7 @@ public class GraphControl : FrameworkElement
         new FrameworkPropertyMetadata(new ObservableCollection<Chart>(), FrameworkPropertyMetadataOptions.AffectsRender));
 
     public static readonly DependencyProperty SeriesTextVisibilityProperty =
-        DependencyProperty.Register(
-        "SeriesTextVisibility",
-        typeof(Visibility),
-        typeof(GraphControl),
-        new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.AffectsRender));
+        DependencyProperty.Register("SeriesTextVisibility", typeof(Visibility), typeof(GraphControl), new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.AffectsRender));
 
     public static readonly DependencyProperty TextColorProperty = DependencyProperty.Register(
         "TextColor",
@@ -292,9 +279,5 @@ public class GraphControl : FrameworkElement
         new FrameworkPropertyMetadata(Brushes.Red, FrameworkPropertyMetadataOptions.AffectsRender));
 
     public static readonly DependencyProperty ValueTextVisibilityProperty =
-        DependencyProperty.Register(
-        "ValueTextVisibility",
-        typeof(Visibility),
-        typeof(GraphControl),
-        new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.AffectsRender));
+        DependencyProperty.Register("ValueTextVisibility", typeof(Visibility), typeof(GraphControl), new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.AffectsRender));
 }

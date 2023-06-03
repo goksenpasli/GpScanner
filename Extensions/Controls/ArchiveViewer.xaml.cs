@@ -99,11 +99,7 @@ public partial class ArchiveViewer : UserControl, INotifyPropertyChanged
     }
 
     private static double toplamOran;
-    public static readonly DependencyProperty ArchivePathProperty = DependencyProperty.Register(
-        "ArchivePath",
-        typeof(string),
-        typeof(ArchiveViewer),
-        new PropertyMetadata(null, Changed));
+    public static readonly DependencyProperty ArchivePathProperty = DependencyProperty.Register("ArchivePath", typeof(string), typeof(ArchiveViewer), new PropertyMetadata(null, Changed));
 
     private ObservableCollection<ArchiveData> arşivİçerik;
 }

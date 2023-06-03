@@ -111,11 +111,7 @@ public partial class MediaViewer : UserControl
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
-    public bool AutoLoadSameNameSubtitleFile
-    {
-        get => (bool)GetValue(AutoLoadSameNameSubtitleFileProperty);
-        set => SetValue(AutoLoadSameNameSubtitleFileProperty, value);
-    }
+    public bool AutoLoadSameNameSubtitleFile { get => (bool)GetValue(AutoLoadSameNameSubtitleFileProperty); set => SetValue(AutoLoadSameNameSubtitleFileProperty, value); }
 
     [Description("Video Controls")]
     [Category("Controls")]
@@ -263,11 +259,7 @@ public partial class MediaViewer : UserControl
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
-    public HorizontalAlignment SubTitleHorizontalAlignment
-    {
-        get => (HorizontalAlignment)GetValue(SubTitleHorizontalAlignmentProperty);
-        set => SetValue(SubTitleHorizontalAlignmentProperty, value);
-    }
+    public HorizontalAlignment SubTitleHorizontalAlignment { get => (HorizontalAlignment)GetValue(SubTitleHorizontalAlignmentProperty); set => SetValue(SubTitleHorizontalAlignmentProperty, value); }
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
@@ -283,11 +275,7 @@ public partial class MediaViewer : UserControl
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
-    public VerticalAlignment SubTitleVerticalAlignment
-    {
-        get => (VerticalAlignment)GetValue(SubTitleVerticalAlignmentProperty);
-        set => SetValue(SubTitleVerticalAlignmentProperty, value);
-    }
+    public VerticalAlignment SubTitleVerticalAlignment { get => (VerticalAlignment)GetValue(SubTitleVerticalAlignmentProperty); set => SetValue(SubTitleVerticalAlignmentProperty, value); }
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
@@ -494,8 +482,7 @@ public partial class MediaViewer : UserControl
         return visualgrid;
     }
 
-    private TextBlock GenerateWhiteTextBlock(string text)
-    { return new TextBlock { Text = text, Foreground = Brushes.White, HorizontalAlignment = HorizontalAlignment.Center }; }
+    private TextBlock GenerateWhiteTextBlock(string text) { return new TextBlock { Text = text, Foreground = Brushes.White, HorizontalAlignment = HorizontalAlignment.Center }; }
 
     private static string GetAutoSubtitlePath(string uriString)
     {
@@ -560,11 +547,7 @@ public partial class MediaViewer : UserControl
                     if(f is MediaElement mediaelement && mediaelement.NaturalDuration.HasTimeSpan)
                     {
                         viewer.EndTimeSpan = mediaelement.NaturalDuration.TimeSpan;
-                        timer = new DispatcherTimer(
-                            TimeSpan.FromSeconds(1),
-                            DispatcherPriority.Normal,
-                            (s, _) => viewer.MediaPosition = mediaelement.Position,
-                            Dispatcher.CurrentDispatcher);
+                        timer = new DispatcherTimer(TimeSpan.FromSeconds(1), DispatcherPriority.Normal, (s, _) => viewer.MediaPosition = mediaelement.Position, Dispatcher.CurrentDispatcher);
                         timer.Start();
                     }
                 }
@@ -944,12 +927,7 @@ public partial class MediaViewer : UserControl
 
     private static DispatcherTimer timer;
 
-    private static readonly ToolTip tooltip = new()
-    {
-        Width = 96 * SystemParameters.PrimaryScreenWidth / SystemParameters.PrimaryScreenHeight,
-        Height = 96,
-        Placement = PlacementMode.Mouse
-    };
+    private static readonly ToolTip tooltip = new() { Width = 96 * SystemParameters.PrimaryScreenWidth / SystemParameters.PrimaryScreenHeight, Height = 96, Placement = PlacementMode.Mouse };
     public static readonly DependencyProperty AngleProperty =
         DependencyProperty.Register("Angle", typeof(double), typeof(MediaViewer), new PropertyMetadata(0.0d));
 
@@ -992,17 +970,9 @@ public partial class MediaViewer : UserControl
     public static readonly DependencyProperty ContextMenuVisibilityProperty =
         DependencyProperty.Register("ContextMenuVisibility", typeof(Visibility), typeof(MediaElement), new PropertyMetadata(Visibility.Collapsed));
 
-    public static readonly DependencyProperty ControlVisibleProperty = DependencyProperty.Register(
-        "ControlVisible",
-        typeof(Visibility),
-        typeof(MediaViewer),
-        new PropertyMetadata(Visibility.Visible));
+    public static readonly DependencyProperty ControlVisibleProperty = DependencyProperty.Register("ControlVisible", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Visible));
 
-    public static readonly DependencyProperty EndTimeSpanProperty = DependencyProperty.Register(
-        "EndTimeSpan",
-        typeof(TimeSpan),
-        typeof(MediaViewer),
-        new PropertyMetadata(TimeSpan.Zero));
+    public static readonly DependencyProperty EndTimeSpanProperty = DependencyProperty.Register("EndTimeSpan", typeof(TimeSpan), typeof(MediaViewer), new PropertyMetadata(TimeSpan.Zero));
 
     public static readonly DependencyProperty FlipXProperty =
         DependencyProperty.Register("FlipX", typeof(double), typeof(MediaViewer), new PropertyMetadata(1.0d));
@@ -1024,11 +994,7 @@ public partial class MediaViewer : UserControl
         typeof(MediaViewer),
         new PropertyMetadata(TimeSpan.Zero, MediaPositionChanged));
 
-    public static readonly DependencyProperty MediaVolumeProperty = DependencyProperty.Register(
-        "MediaVolume",
-        typeof(double),
-        typeof(MediaViewer),
-        new PropertyMetadata(1d, MediaVolumeChanged));
+    public static readonly DependencyProperty MediaVolumeProperty = DependencyProperty.Register("MediaVolume", typeof(double), typeof(MediaViewer), new PropertyMetadata(1d, MediaVolumeChanged));
 
     public static readonly DependencyProperty OpenButtonVisibilityProperty =
         DependencyProperty.Register("OpenButtonVisibility", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Collapsed));
@@ -1036,26 +1002,14 @@ public partial class MediaViewer : UserControl
     public static readonly DependencyProperty OsdDisplayTimeProperty =
         DependencyProperty.Register("OsdDisplayTime", typeof(int), typeof(MediaViewer), new PropertyMetadata(3));
 
-    public static readonly DependencyProperty OsdTextProperty = DependencyProperty.Register(
-        "OsdText",
-        typeof(string),
-        typeof(MediaViewer),
-        new PropertyMetadata(null, OsdTextChanged));
+    public static readonly DependencyProperty OsdTextProperty = DependencyProperty.Register("OsdText", typeof(string), typeof(MediaViewer), new PropertyMetadata(null, OsdTextChanged));
 
     public static readonly DependencyProperty OsdTextVisibilityProperty =
         DependencyProperty.Register("OsdTextVisibility", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Collapsed));
 
-    public static readonly DependencyProperty PanoramaModeProperty = DependencyProperty.Register(
-        "PanoramaMode",
-        typeof(bool),
-        typeof(MediaViewer),
-        new PropertyMetadata(PanoramaModeChanged));
+    public static readonly DependencyProperty PanoramaModeProperty = DependencyProperty.Register("PanoramaMode", typeof(bool), typeof(MediaViewer), new PropertyMetadata(PanoramaModeChanged));
 
-    public static readonly DependencyProperty PixelateSizeProperty = DependencyProperty.Register(
-        "PixelateSize",
-        typeof(Size),
-        typeof(MediaViewer),
-        new PropertyMetadata(new Size(60, 40)));
+    public static readonly DependencyProperty PixelateSizeProperty = DependencyProperty.Register("PixelateSize", typeof(Size), typeof(MediaViewer), new PropertyMetadata(new Size(60, 40)));
 
     public static readonly DependencyProperty RotateXProperty =
         DependencyProperty.Register("RotateX", typeof(double), typeof(MediaViewer), new PropertyMetadata(0.0));
@@ -1069,11 +1023,7 @@ public partial class MediaViewer : UserControl
     public static readonly DependencyProperty SliderControlVisibleProperty =
         DependencyProperty.Register("SliderControlVisible", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Visible));
 
-    public static readonly DependencyProperty SubTitleColorProperty = DependencyProperty.Register(
-        "SubTitleColor",
-        typeof(Brush),
-        typeof(MediaViewer),
-        new PropertyMetadata(Brushes.White));
+    public static readonly DependencyProperty SubTitleColorProperty = DependencyProperty.Register("SubTitleColor", typeof(Brush), typeof(MediaViewer), new PropertyMetadata(Brushes.White));
 
     public static readonly DependencyProperty SubtitleFilePathProperty = DependencyProperty.Register(
         "SubtitleFilePath",
@@ -1090,11 +1040,7 @@ public partial class MediaViewer : UserControl
         typeof(MediaViewer),
         new PropertyMetadata(new Thickness(0d, 0d, 0d, 10d)));
 
-    public static readonly DependencyProperty SubTitleProperty = DependencyProperty.Register(
-        "SubTitle",
-        typeof(string),
-        typeof(MediaViewer),
-        new PropertyMetadata(string.Empty));
+    public static readonly DependencyProperty SubTitleProperty = DependencyProperty.Register("SubTitle", typeof(string), typeof(MediaViewer), new PropertyMetadata(string.Empty));
 
     public static readonly DependencyProperty SubTitleSizeProperty =
         DependencyProperty.Register("SubTitleSize", typeof(double), typeof(MediaViewer), new PropertyMetadata(32.0d));
@@ -1114,18 +1060,10 @@ public partial class MediaViewer : UserControl
     public static readonly DependencyProperty ThumbHeightCountProperty =
         DependencyProperty.Register("ThumbHeightCount", typeof(int), typeof(MediaViewer), new PropertyMetadata(1));
 
-    public static readonly DependencyProperty ThumbMarginProperty = DependencyProperty.Register(
-        "ThumbMargin",
-        typeof(Thickness),
-        typeof(MediaViewer),
-        new PropertyMetadata(new Thickness(5)));
+    public static readonly DependencyProperty ThumbMarginProperty = DependencyProperty.Register("ThumbMargin", typeof(Thickness), typeof(MediaViewer), new PropertyMetadata(new Thickness(5)));
 
     public static readonly DependencyProperty ThumbnailsVisibleProperty =
-        DependencyProperty.Register(
-        "ThumbnailsVisible",
-        typeof(bool),
-        typeof(MediaViewer),
-        new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+        DependencyProperty.Register("ThumbnailsVisible", typeof(bool), typeof(MediaViewer), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
     public static readonly DependencyProperty ThumbShowTimeProperty =
         DependencyProperty.Register("ThumbShowTime", typeof(bool), typeof(MediaViewer), new PropertyMetadata(true));
@@ -1139,11 +1077,7 @@ public partial class MediaViewer : UserControl
     public static readonly DependencyProperty TooltipOriginalSubtitleProperty =
         DependencyProperty.Register("TooltipOriginalSubtitle", typeof(string), typeof(MediaViewer), new PropertyMetadata(null));
 
-    public static readonly DependencyProperty VideoStretchProperty = DependencyProperty.Register(
-        "VideoStretch",
-        typeof(Stretch),
-        typeof(MediaViewer),
-        new PropertyMetadata(Stretch.Uniform));
+    public static readonly DependencyProperty VideoStretchProperty = DependencyProperty.Register("VideoStretch", typeof(Stretch), typeof(MediaViewer), new PropertyMetadata(Stretch.Uniform));
 
     private bool _isOnDrag;
 

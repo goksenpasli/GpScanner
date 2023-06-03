@@ -41,8 +41,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
 
                 SaveFileDialog saveFileDialog = new()
                 {
-                    Filter =
-                        "Tif Resmi (*.tif)|*.tif|Jpg Resmi (*.jpg)|*.jpg|Pdf Dosyası (*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf|Xps Dosyası (*.xps)|*.xps|Txt Dosyası (*.txt)|*.txt",
+                    Filter = "Tif Resmi (*.tif)|*.tif|Jpg Resmi (*.jpg)|*.jpg|Pdf Dosyası (*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf|Xps Dosyası (*.xps)|*.xps|Txt Dosyası (*.txt)|*.txt",
                     FileName = Scanner.FileName,
                     FilterIndex = 3
                 };
@@ -66,7 +65,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                                     break;
 
                                 case 3:
-                                    await TwainCtrl.SavePdfImageAsync(bitmapFrame, saveFileDialog.FileName, Scanner, Paper);
+                                    await TwainCtrl.SavePdfImageAsync(bitmapFrame, saveFileDialog.FileName, Scanner, Paper, Scanner.ApplyPdfSaveOcr);
                                     bitmapFrame = null;
                                     break;
 
@@ -101,13 +100,10 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
             },
             parameter => Scanner?.CroppedImage is not null);
 
-        InvertImage = new RelayCommand<object>(
-            parameter => Scanner.CroppedImage = ((BitmapSource)Scanner.CroppedImage).InvertBitmap(),
-            parameter => Scanner?.CroppedImage is not null);
+        InvertImage = new RelayCommand<object>(parameter => Scanner.CroppedImage = ((BitmapSource)Scanner.CroppedImage).InvertBitmap(), parameter => Scanner?.CroppedImage is not null);
 
         BlackAndWhiteImage = new RelayCommand<object>(
-            parameter => Scanner.CroppedImage =
-                ((BitmapSource)Scanner.CroppedImage).BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg),
+            parameter => Scanner.CroppedImage = ((BitmapSource)Scanner.CroppedImage).BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg),
             parameter => Scanner?.CroppedImage is not null);
 
         ApplyColorChange = new RelayCommand<object>(parameter => Scanner.CopyCroppedImage = Scanner.CroppedImage, parameter => Scanner?.CroppedImage is not null);
@@ -143,9 +139,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                             Dispatcher.Invoke(
                                 () =>
                                 {
-                                    File.WriteAllBytes(
-                                        savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "jpg"),
-                                        croppedBitmap.ToTiffJpegByteArray(Format.Jpg));
+                                    File.WriteAllBytes(savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "jpg"), croppedBitmap.ToTiffJpegByteArray(Format.Jpg));
                                     ToolBoxPdfMergeProgressValue = (i + 1) / (double)croppedBitmaps.Count;
                                 });
                         }
@@ -232,9 +226,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
         MergeAllImage = new RelayCommand<object>(
             async parameter =>
             {
-                PageOrientation pageOrientation = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)
-                    ? PageOrientation.Portrait
-                    : PageOrientation.Landscape;
+                PageOrientation pageOrientation = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt) ? PageOrientation.Portrait : PageOrientation.Landscape;
                 string savefolder = CreateSaveFolder("MERGE");
                 IEnumerable<ScannedImage> seçiliresimler = Scanner.Resimler.Where(z => z.Seçili);
                 PdfDocument pdfdocument = new();
@@ -264,9 +256,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                                     double height = page.Height / Scanner.SliceCountHeight;
                                     BitmapFrame currentimage = seçiliresimler.ElementAtOrDefault(imageindex).Resim;
                                     double xratio = width / currentimage.PixelWidth;
-                                    BitmapSource bitmapsource = ResizeRatioImage
-                                        ? currentimage.Resize(xratio)
-                                        : CompressImage ? currentimage.Resize(width, height) : currentimage;
+                                    BitmapSource bitmapsource = ResizeRatioImage ? currentimage.Resize(xratio) : CompressImage ? currentimage.Resize(width, height) : currentimage;
                                     using MemoryStream ms =
                             new(bitmapsource.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality));
                                     using XImage xImage = XImage.FromStream(ms);

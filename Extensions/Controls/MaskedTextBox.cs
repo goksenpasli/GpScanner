@@ -17,11 +17,7 @@ public class MaskedTextBox : TextBox
         _ = CommandBindings.Add(new CommandBinding(ApplicationCommands.Cut, null, CanCut));
     }
 
-    public event RoutedPropertyChangedEventHandler<object> ValueChanged
-    {
-        add => AddHandler(ValueChangedEvent, value);
-        remove => RemoveHandler(ValueChangedEvent, value);
-    }
+    public event RoutedPropertyChangedEventHandler<object> ValueChanged { add => AddHandler(ValueChangedEvent, value); remove => RemoveHandler(ValueChangedEvent, value); }
 
     public override void OnApplyTemplate()
     {
@@ -495,17 +491,9 @@ public class MaskedTextBox : TextBox
         typeof(MaskedTextBox),
         new UIPropertyMetadata(false, OnIncludePromptPropertyChanged));
 
-    public static readonly DependencyProperty MaskProperty = DependencyProperty.Register(
-        "Mask",
-        typeof(string),
-        typeof(MaskedTextBox),
-        new UIPropertyMetadata("<>", OnMaskPropertyChanged));
+    public static readonly DependencyProperty MaskProperty = DependencyProperty.Register("Mask", typeof(string), typeof(MaskedTextBox), new UIPropertyMetadata("<>", OnMaskPropertyChanged));
 
-    public static readonly DependencyProperty PromptCharProperty = DependencyProperty.Register(
-        "PromptChar",
-        typeof(char),
-        typeof(MaskedTextBox),
-        new UIPropertyMetadata('_', OnPromptCharChanged));
+    public static readonly DependencyProperty PromptCharProperty = DependencyProperty.Register("PromptChar", typeof(char), typeof(MaskedTextBox), new UIPropertyMetadata('_', OnPromptCharChanged));
 
     public static readonly DependencyProperty SelectAllOnGotFocusProperty =
         DependencyProperty.Register("SelectAllOnGotFocus", typeof(bool), typeof(MaskedTextBox), new PropertyMetadata(false));

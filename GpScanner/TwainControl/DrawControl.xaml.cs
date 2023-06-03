@@ -25,7 +25,7 @@ namespace TwainControl
             SaveEditedImage = new RelayCommand<object>(
                 parameter =>
                 {
-                    if(parameter is BitmapFrame bitmapFrame &&
+                    if(parameter is BitmapFrame &&
                         MessageBox.Show(
                         $"{Translation.GetResStringValue("GRAPH")} {Translation.GetResStringValue("APPLY")}",
                         Application.Current.MainWindow.Title,
@@ -37,7 +37,7 @@ namespace TwainControl
                         EditingImage = SaveInkCanvasToImage();
                     }
                 },
-                parameter => parameter is BitmapFrame bitmapFrame && TemporaryImage is not null);
+                parameter => parameter is BitmapFrame && TemporaryImage is not null);
 
             LoadImage = new RelayCommand<object>(parameter => TemporaryImage = EditingImage, parameter => EditingImage is not null);
         }
@@ -72,12 +72,8 @@ namespace TwainControl
                 renderTargetBitmap.Render(dv);
                 renderTargetBitmap.Freeze();
                 BitmapSource thumbnail = Ink.ActualWidth < Ink.ActualHeight
-                    ? renderTargetBitmap.Resize(
-                        Settings.Default.PreviewWidth,
-                        Settings.Default.PreviewWidth / twainctrl.SelectedPaper.Width * twainctrl.SelectedPaper.Height)
-                    : renderTargetBitmap.Resize(
-                        Settings.Default.PreviewWidth,
-                        Settings.Default.PreviewWidth / twainctrl.SelectedPaper.Height * twainctrl.SelectedPaper.Width);
+                    ? renderTargetBitmap.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / twainctrl.SelectedPaper.Width * twainctrl.SelectedPaper.Height)
+                    : renderTargetBitmap.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / twainctrl.SelectedPaper.Height * twainctrl.SelectedPaper.Width);
                 thumbnail.Freeze();
                 BitmapFrame image = BitmapFrame.Create(renderTargetBitmap, thumbnail);
                 image.Freeze();
@@ -326,15 +322,14 @@ namespace TwainControl
                 mousemovecoord.X += Scr.HorizontalOffset;
                 mousemovecoord.Y += Scr.VerticalOffset;
                 double widthmultiply = ((BitmapSource)Img.ImageSource).PixelWidth / (Ink.DesiredSize.Width < Ink.ActualWidth ? Ink.ActualWidth : Ink.DesiredSize.Width);
-                double heightmultiply = ((BitmapSource)Img.ImageSource).PixelHeight /
-                    (Ink.DesiredSize.Height < Ink.ActualHeight ? Ink.ActualHeight : Ink.DesiredSize.Height);
+                double heightmultiply = ((BitmapSource)Img.ImageSource).PixelHeight / (Ink.DesiredSize.Height < Ink.ActualHeight ? Ink.ActualHeight : Ink.DesiredSize.Height);
                 Int32Rect sourceRect = new((int)(mousemovecoord.X * widthmultiply), (int)(mousemovecoord.Y * heightmultiply), 1, 1);
                 CroppedBitmap croppedbitmap = new((BitmapSource)Img.ImageSource, sourceRect);
                 byte[] pixels = new byte[4];
                 croppedbitmap.CopyPixels(pixels, 4, 0);
                 croppedbitmap.Freeze();
                 DrawingAttribute.Color = Color.FromRgb(pixels[2], pixels[1], pixels[0]);
-                SelectedBrush=new SolidColorBrush(DrawingAttribute.Color);
+                SelectedBrush = new SolidColorBrush(DrawingAttribute.Color);
             }
         }
 

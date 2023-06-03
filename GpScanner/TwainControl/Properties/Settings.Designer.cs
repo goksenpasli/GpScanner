@@ -146,9 +146,9 @@ namespace TwainControl.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("200")]
-        public double ImgLoadResolution {
+        public int ImgLoadResolution {
             get {
-                return ((double)(this["ImgLoadResolution"]));
+                return ((int)(this["ImgLoadResolution"]));
             }
             set {
                 this["ImgLoadResolution"] = value;

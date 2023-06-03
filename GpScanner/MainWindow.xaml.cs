@@ -56,9 +56,7 @@ public partial class MainWindow : Window
                     return;
                 }
 
-                string[] pdffiles = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)
-                    ? new[] { pdfFilePath, temporarypdf }
-                    : new[] { temporarypdf, pdfFilePath };
+                string[] pdffiles = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt) ? new[] { pdfFilePath, temporarypdf } : new[] { temporarypdf, pdfFilePath };
                 pdffiles.MergePdf().Save(pdfFilePath);
                 TwainCtrl.NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
             } catch(Exception ex)

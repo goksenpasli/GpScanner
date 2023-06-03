@@ -5,8 +5,7 @@ namespace Tesseract.Internal.InteropDotNet
 {
     internal class WindowsLibraryLoaderLogic : ILibraryLoaderLogic
     {
-        public string FixUpLibraryName(string fileName)
-        { return !string.IsNullOrEmpty(fileName) && !fileName.EndsWith(".dll", StringComparison.OrdinalIgnoreCase) ? $"{fileName}.dll" : fileName; }
+        public string FixUpLibraryName(string fileName) { return !string.IsNullOrEmpty(fileName) && !fileName.EndsWith(".dll", StringComparison.OrdinalIgnoreCase) ? $"{fileName}.dll" : fileName; }
 
         public bool FreeLibrary(IntPtr libraryHandle)
         {

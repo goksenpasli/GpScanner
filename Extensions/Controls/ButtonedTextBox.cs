@@ -122,11 +122,7 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     private void ResetCommand(object sender, ExecutedRoutedEventArgs e) { Text = string.Empty; }
 
-    public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register(
-        "Description",
-        typeof(string),
-        typeof(ButtonedTextBox),
-        new PropertyMetadata(string.Empty));
+    public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register("Description", typeof(string), typeof(ButtonedTextBox), new PropertyMetadata(string.Empty));
 
     private Visibility copyButtonVisibility = Visibility.Visible;
 

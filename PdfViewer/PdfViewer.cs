@@ -362,7 +362,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public int Dpi { get => (int)GetValue(DpiProperty); set => SetValue(DpiProperty, value); }
 
-    public static int[] DpiList { get; } = { 12, 24, 36, 48, 72, 96, 120, 150, 200, 300, 400, 500, 600, 1200};
+    public static int[] DpiList { get; } = { 12, 24, 36, 48, 72, 96, 120, 150, 200, 300, 400, 500, 600, 1200 };
 
     public Visibility DpiListVisibility
     {
@@ -693,10 +693,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     private static void PdfFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if(d is PdfViewer pdfViewer &&
-            e.NewValue is not null &&
-            File.Exists(e.NewValue as string) &&
-            string.Equals(Path.GetExtension(e.NewValue as string), ".pdf", StringComparison.OrdinalIgnoreCase))
+        if(d is PdfViewer pdfViewer && e.NewValue is not null && File.Exists(e.NewValue as string) && string.Equals(Path.GetExtension(e.NewValue as string), ".pdf", StringComparison.OrdinalIgnoreCase))
         {
             try
             {
@@ -826,11 +823,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         typeof(PdfViewer),
         new PropertyMetadata(FitImageOrientation.Width, Changed));
 
-    public static readonly DependencyProperty PdfFilePathProperty = DependencyProperty.Register(
-        "PdfFilePath",
-        typeof(string),
-        typeof(PdfViewer),
-        new PropertyMetadata(null, PdfFilePathChanged));
+    public static readonly DependencyProperty PdfFilePathProperty = DependencyProperty.Register("PdfFilePath", typeof(string), typeof(PdfViewer), new PropertyMetadata(null, PdfFilePathChanged));
 
     public static readonly DependencyProperty ScrollBarVisibleProperty = DependencyProperty.Register(
         "ScrollBarVisible",
@@ -847,11 +840,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     public static readonly DependencyProperty SnapTickProperty =
         DependencyProperty.Register("SnapTick", typeof(bool), typeof(PdfViewer), new PropertyMetadata(false));
 
-    public static readonly DependencyProperty SourceProperty = DependencyProperty.Register(
-        "Source",
-        typeof(ImageSource),
-        typeof(PdfViewer),
-        new PropertyMetadata(null, SourceChanged));
+    public static readonly DependencyProperty SourceProperty = DependencyProperty.Register("Source", typeof(ImageSource), typeof(PdfViewer), new PropertyMetadata(null, SourceChanged));
 
     public static readonly DependencyProperty ThumbsVisibleProperty =
         DependencyProperty.Register("ThumbsVisible", typeof(bool), typeof(PdfViewer), new PropertyMetadata(true));

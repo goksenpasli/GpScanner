@@ -34,8 +34,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 {
                     OpenFileDialog openFileDialog = new()
                     {
-                        Filter =
-                            "Resim Dosyası (*.pdf;*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle)|*.pdf;*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle",
+                        Filter = "Resim Dosyası (*.pdf;*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle)|*.pdf;*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle",
                         Multiselect = false
                     };
                     if(openFileDialog.ShowDialog() == true)
@@ -381,8 +380,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 mousedowncoord = e.GetPosition(scrollviewer);
             }
 
-            if(Keyboard.IsKeyDown(Key.LeftShift) &&
-                (DrawAnnotation || DrawString || DrawImage || DrawEllipse || DrawRect || DrawLine || DrawReverseLine || DrawRoundedRect))
+            if(Keyboard.IsKeyDown(Key.LeftShift) && (DrawAnnotation || DrawString || DrawImage || DrawEllipse || DrawRect || DrawLine || DrawReverseLine || DrawRoundedRect))
             {
                 isDrawMouseDown = true;
                 mousedowncoord = e.GetPosition(scrollviewer);
@@ -465,8 +463,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     coordx = x1 + scrollviewer.HorizontalOffset;
                     coordy = y1 + scrollviewer.VerticalOffset;
                     double widthmultiply = page.Width / (scrollviewer.ExtentWidth < scrollviewer.ViewportWidth ? scrollviewer.ViewportWidth : scrollviewer.ExtentWidth);
-                    double heightmultiply = page.Height /
-                        (scrollviewer.ExtentHeight < scrollviewer.ViewportHeight ? scrollviewer.ViewportHeight : scrollviewer.ExtentHeight);
+                    double heightmultiply = page.Height / (scrollviewer.ExtentHeight < scrollviewer.ViewportHeight ? scrollviewer.ViewportHeight : scrollviewer.ExtentHeight);
 
                     Rect rect = page.Orientation == PageOrientation.Portrait
                         ? new(coordx * widthmultiply, coordy * heightmultiply, width * widthmultiply, height * heightmultiply)

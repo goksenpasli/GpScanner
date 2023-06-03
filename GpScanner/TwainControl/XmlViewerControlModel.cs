@@ -29,9 +29,5 @@ public class XmlViewerControlModel
         }
     }
 
-    public static readonly DependencyProperty XmlContentProperty = DependencyProperty.RegisterAttached(
-        "XmlContent",
-        typeof(string),
-        typeof(XmlViewerControlModel),
-        new PropertyMetadata(null, Changed));
+    public static readonly DependencyProperty XmlContentProperty = DependencyProperty.RegisterAttached("XmlContent", typeof(string), typeof(XmlViewerControlModel), new PropertyMetadata(null, Changed));
 }

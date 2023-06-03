@@ -288,11 +288,7 @@ namespace DvdBurner
         private static Task Burntask;
 
         private static Task Erasetask;
-        public static readonly DependencyProperty BurnDirectoryProperty = DependencyProperty.Register(
-            "BurnDirectory",
-            typeof(string),
-            typeof(Burner),
-            new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty BurnDirectoryProperty = DependencyProperty.Register("BurnDirectory", typeof(string), typeof(Burner), new PropertyMetadata(string.Empty));
 
         private string actionText;
 

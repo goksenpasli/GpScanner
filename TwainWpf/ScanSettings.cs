@@ -247,12 +247,7 @@ namespace TwainWpf
         /// <summary>
         /// Default scan settings.
         /// </summary>
-        public static readonly ScanSettings Default = new ScanSettings()
-        {
-            Resolution = ResolutionSettings.ColourPhotocopier,
-            Page = PageSettings.Default,
-            Rotation = new RotationSettings()
-        };
+        public static readonly ScanSettings Default = new ScanSettings() { Resolution = ResolutionSettings.ColourPhotocopier, Page = PageSettings.Default, Rotation = new RotationSettings() };
 
         private bool _abortWhenNoPaperDetectable;
 

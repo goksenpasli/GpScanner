@@ -207,7 +207,7 @@
                                         </Extensions:ResizablePanel>
                                     </Extensions:ContentToggleButton.OverContent>
                                 </Extensions:ContentToggleButton>
-                                <Button local:Policy.PolicyName="ScanImage" BorderBrush="Cyan"
+                                <Button local:Policy.PolicyName="ScanImage"
                                     Command="{Binding ScanImage}"
                                     IsEnabled="{Binding Scanner.ArayüzEtkin}">
                                     <StackPanel Orientation="Horizontal">
@@ -222,7 +222,7 @@
                                         <TextBlock VerticalAlignment="Center" Text="{local:Loc SCAN}" />
                                     </StackPanel>
                                 </Button>
-                                <Button local:Policy.PolicyName="FastScanImage" Background="Green" BorderBrush="Cyan"
+                                <Button local:Policy.PolicyName="FastScanImage" Background="Green"
                                     Command="{Binding FastScanImage}"
                                     IsDefault="True"
                                     IsEnabled="{Binding Scanner.ArayüzEtkin}">

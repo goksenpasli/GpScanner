@@ -45,8 +45,7 @@ namespace Tesseract
       	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static uint GetDataByte(uint* data, int index)
-        { return IntPtr.Size == 8 ? *(byte*)((ulong)((byte*)data + index) ^ 3) : *(byte*)((uint)((byte*)data + index) ^ 3); }
+        public static uint GetDataByte(uint* data, int index) { return IntPtr.Size == 8 ? *(byte*)((ulong)((byte*)data + index) ^ 3) : *(byte*)((uint)((byte*)data + index) ^ 3); }
 
         /// <summary>
         /// Gets the pixel value for a 2bpp image.
@@ -82,8 +81,7 @@ namespace Tesseract
       	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static uint GetDataTwoByte(uint* data, int index)
-        { return IntPtr.Size == 8 ? *(ushort*)((ulong)((ushort*)data + index) ^ 2) : *(ushort*)((uint)((ushort*)data + index) ^ 2); }
+        public static uint GetDataTwoByte(uint* data, int index) { return IntPtr.Size == 8 ? *(ushort*)((ulong)((ushort*)data + index) ^ 2) : *(ushort*)((uint)((ushort*)data + index) ^ 2); }
 
         /// <summary>
         /// Sets the pixel value for a 1bpp image.

@@ -88,7 +88,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
 
     public string this[string columnName] => columnName switch
     {
-        "TesseractFiles" when TesseractFiles?.Count==0 || string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) => Translation.GetResStringValue("RESTARTAPP"),
+        "TesseractFiles" when TesseractFiles?.Count == 0 || string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) => Translation.GetResStringValue("RESTARTAPP"),
         _ => null
     };
 
@@ -151,11 +151,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
     }
 
     private ObservableCollection<string> GetTesseractFiles(string tesseractfolder)
-    {
-        return Directory.Exists(tesseractfolder)
-            ? new ObservableCollection<string>(Directory.EnumerateFiles(tesseractfolder, "*.traineddata").Select(Path.GetFileNameWithoutExtension))
-            : null;
-    }
+    { return Directory.Exists(tesseractfolder) ? new ObservableCollection<string>(Directory.EnumerateFiles(tesseractfolder, "*.traineddata").Select(Path.GetFileNameWithoutExtension)) : null; }
 
     private ObservableCollection<TesseractOcrData> TesseractDownloadData()
     {

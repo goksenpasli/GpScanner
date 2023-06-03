@@ -33,11 +33,7 @@ public class ContentToggleButton : ToggleButton
         typeof(ContentToggleButton),
         new PropertyMetadata(new CornerRadius(0d)));
 
-    public static readonly DependencyProperty OverContentProperty = DependencyProperty.Register(
-        "OverContent",
-        typeof(object),
-        typeof(ContentToggleButton),
-        new PropertyMetadata(null));
+    public static readonly DependencyProperty OverContentProperty = DependencyProperty.Register("OverContent", typeof(object), typeof(ContentToggleButton), new PropertyMetadata(null));
 
     public static readonly DependencyProperty PlacementModeProperty = DependencyProperty.Register(
         "PlacementMode",
@@ -45,9 +41,5 @@ public class ContentToggleButton : ToggleButton
         typeof(ContentToggleButton),
         new PropertyMetadata(PlacementMode.Bottom));
 
-    public static readonly DependencyProperty StaysOpenProperty = DependencyProperty.Register(
-        "StaysOpen",
-        typeof(bool),
-        typeof(ContentToggleButton),
-        new PropertyMetadata(false));
+    public static readonly DependencyProperty StaysOpenProperty = DependencyProperty.Register("StaysOpen", typeof(bool), typeof(ContentToggleButton), new PropertyMetadata(false));
 }

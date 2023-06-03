@@ -19,6 +19,7 @@ public class Scanner : InpcBase, IDataErrorInfo
     public Scanner()
     {
         PropertyChanged += Scanner_PropertyChanged;
+        Resimler.CollectionChanged -= Resimler_CollectionChanged;
         Resimler.CollectionChanged += Resimler_CollectionChanged;
     }
 
@@ -29,6 +30,23 @@ public class Scanner : InpcBase, IDataErrorInfo
         "ProfileName" when string.IsNullOrWhiteSpace(ProfileName) => "Profil Adını Boş Geçmeyin.",
         _ => null
     };
+
+    public void Resimler_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        if(e.Action == NotifyCollectionChangedAction.Add)
+        {
+            for(int i = e.NewStartingIndex; i < Resimler.Count; i++)
+            {
+                Resimler[i].Index = i + 1;
+            }
+        } else if(e.Action == NotifyCollectionChangedAction.Remove)
+        {
+            for(int i = e.OldStartingIndex; i < Resimler.Count; i++)
+            {
+                Resimler[i].Index = i + 1;
+            }
+        }
+    }
 
     public bool AllowCopy
     {
@@ -88,7 +106,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool ApplyMedian
     {
-        get { return applyMedian; }
+        get => applyMedian;
 
         set
         {
@@ -1079,23 +1097,6 @@ public class Scanner : InpcBase, IDataErrorInfo
             {
                 watermarkTextSize = value;
                 OnPropertyChanged(nameof(WatermarkTextSize));
-            }
-        }
-    }
-
-    private void Resimler_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-    {
-        if(e.Action == NotifyCollectionChangedAction.Add)
-        {
-            for(int i = e.NewStartingIndex; i < Resimler.Count; i++)
-            {
-                Resimler[i].Index = i + 1;
-            }
-        } else if(e.Action == NotifyCollectionChangedAction.Remove)
-        {
-            for(int i = e.OldStartingIndex; i < Resimler.Count; i++)
-            {
-                Resimler[i].Index = i + 1;
             }
         }
     }

@@ -90,16 +90,10 @@ public static class BitmapMethods
             coordx += scrollviewer.HorizontalOffset;
             coordy += scrollviewer.VerticalOffset;
 
-            double widthmultiply = bitmapFrame.PixelWidth /
-                (scrollviewer.ExtentWidth < scrollviewer.ViewportWidth ? scrollviewer.ViewportWidth : scrollviewer.ExtentWidth);
-            double heightmultiply = bitmapFrame.PixelHeight /
-                (scrollviewer.ExtentHeight < scrollviewer.ViewportHeight ? scrollviewer.ViewportHeight : scrollviewer.ExtentHeight);
+            double widthmultiply = bitmapFrame.PixelWidth / (scrollviewer.ExtentWidth < scrollviewer.ViewportWidth ? scrollviewer.ViewportWidth : scrollviewer.ExtentWidth);
+            double heightmultiply = bitmapFrame.PixelHeight / (scrollviewer.ExtentHeight < scrollviewer.ViewportHeight ? scrollviewer.ViewportHeight : scrollviewer.ExtentHeight);
 
-            Int32Rect ınt32Rect = new(
-                (int)(coordx * widthmultiply),
-                (int)(coordy * heightmultiply),
-                (int)(selectionwidth * widthmultiply),
-                (int)(selectionheight * heightmultiply));
+            Int32Rect ınt32Rect = new((int)(coordx * widthmultiply), (int)(coordy * heightmultiply), (int)(selectionwidth * widthmultiply), (int)(selectionheight * heightmultiply));
             CroppedBitmap cb = new(bitmapFrame, ınt32Rect);
             bitmapFrame = null;
             return cb.ToTiffJpegByteArray(Format.Png);
@@ -202,9 +196,7 @@ public static class BitmapMethods
             skewedimage.Freeze();
         }
 
-        return deskew
-            ? CreateBitmapFrame(skewedimage, paper, image.PixelWidth < image.PixelHeight)
-            : CreateBitmapFrame(image, paper, image.PixelWidth < image.PixelHeight);
+        return deskew ? CreateBitmapFrame(skewedimage, paper, image.PixelWidth < image.PixelHeight) : CreateBitmapFrame(image, paper, image.PixelWidth < image.PixelHeight);
     }
 
     public static ObservableCollection<Paper> GetPapers()
@@ -414,14 +406,7 @@ public static class BitmapMethods
         }
     }
 
-    public static RenderTargetBitmap ÜstüneResimÇiz(
-        this ImageSource Source,
-        Point konum,
-        Brush brushes,
-        double emSize = 64,
-        string metin = null,
-        double angle = 315,
-        string font = "Arial")
+    public static RenderTargetBitmap ÜstüneResimÇiz(this ImageSource Source, Point konum, Brush brushes, double emSize = 64, string metin = null, double angle = 315, string font = "Arial")
     {
         FormattedText formattedText =
             new(metin, CultureInfo.GetCultureInfo("tr-TR"), FlowDirection.LeftToRight, new Typeface(font), emSize, brushes) { TextAlignment = TextAlignment.Center };
