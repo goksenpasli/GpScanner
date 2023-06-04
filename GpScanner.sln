@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QrCode", "QrCode\QrCode.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfCompressor", "PdfCompressor\PdfCompressor.csproj", "{B24CD58D-FF54-427F-BB73-E687A04F0006}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebPWrapper", "WebPWrapper\WebPWrapper.csproj", "{F971B2A1-8893-43D7-A5AA-4AE7EB41A82A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -181,6 +183,18 @@ Global
 		{B24CD58D-FF54-427F-BB73-E687A04F0006}.x64|Any CPU.Build.0 = Debug|Any CPU
 		{B24CD58D-FF54-427F-BB73-E687A04F0006}.x64|x86.ActiveCfg = Debug|Any CPU
 		{B24CD58D-FF54-427F-BB73-E687A04F0006}.x64|x86.Build.0 = Debug|Any CPU
+		{F971B2A1-8893-43D7-A5AA-4AE7EB41A82A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F971B2A1-8893-43D7-A5AA-4AE7EB41A82A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F971B2A1-8893-43D7-A5AA-4AE7EB41A82A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F971B2A1-8893-43D7-A5AA-4AE7EB41A82A}.Debug|x86.Build.0 = Debug|Any CPU
+		{F971B2A1-8893-43D7-A5AA-4AE7EB41A82A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F971B2A1-8893-43D7-A5AA-4AE7EB41A82A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F971B2A1-8893-43D7-A5AA-4AE7EB41A82A}.Release|x86.ActiveCfg = Release|Any CPU
+		{F971B2A1-8893-43D7-A5AA-4AE7EB41A82A}.Release|x86.Build.0 = Release|Any CPU
+		{F971B2A1-8893-43D7-A5AA-4AE7EB41A82A}.x64|Any CPU.ActiveCfg = Debug|Any CPU
+		{F971B2A1-8893-43D7-A5AA-4AE7EB41A82A}.x64|Any CPU.Build.0 = Debug|Any CPU
+		{F971B2A1-8893-43D7-A5AA-4AE7EB41A82A}.x64|x86.ActiveCfg = Debug|Any CPU
+		{F971B2A1-8893-43D7-A5AA-4AE7EB41A82A}.x64|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

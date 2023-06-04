@@ -76,6 +76,11 @@
                         PdfiumViewer
                     </Hyperlink>
                 </TextBlock>
+                <TextBlock>
+                    <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="hhttps://github.com/JosePineiro/WebP-wrapper">
+                        WebP-Wrapper
+                    </Hyperlink>
+                </TextBlock>
             </StackPanel>
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>

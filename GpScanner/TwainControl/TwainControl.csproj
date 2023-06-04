@@ -349,6 +349,10 @@
       <Project>{39ace1c2-42eb-4bdd-89bf-2b73c82b7925}</Project>
       <Name>UdfParser</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\WebPWrapper\WebPWrapper.csproj">
+      <Project>{f971b2a1-8893-43d7-a5aa-4ae7eb41a82a}</Project>
+      <Name>WebPWrapper</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\flatbed.png" />

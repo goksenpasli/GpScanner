@@ -12,6 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using TwainControl.Properties;
+using WebPWrapper;
 using static Extensions.ExtensionMethods;
 using Brush = System.Windows.Media.Brush;
 using Color = System.Windows.Media.Color;
@@ -422,6 +423,34 @@ public static class BitmapMethods
         rtb.Render(dv);
         rtb.Freeze();
         return rtb;
+    }
+
+    public static BitmapSource WebpDecode(this string webpresimyolu, bool fullresolution, int decodeheight)
+    {
+        using WebP webp = new();
+        WebPDecoderOptions options = new() { use_threads = 1, bypass_filtering = 0, no_fancy_upsampling = 1 };
+        using Bitmap bmp = webp.Load(webpresimyolu, options);
+        BitmapImage bitmapimage = bmp.PixelFormat == PixelFormat.Format32bppArgb
+            ? fullresolution ? bmp.ToBitmapImage(ImageFormat.Png) : bmp.ToBitmapImage(ImageFormat.Png, decodeheight)
+            : fullresolution ? bmp.ToBitmapImage(ImageFormat.Jpeg) : bmp.ToBitmapImage(ImageFormat.Jpeg, decodeheight);
+        bitmapimage.Freeze();
+        return bitmapimage;
+    }
+
+    public static byte[] WebpEncode(this byte[] resim, int kalite)
+    {
+        try
+        {
+            using WebP webp = new();
+            using MemoryStream ms = new(resim);
+            using Bitmap bmp = System.Drawing.Image.FromStream(ms) as Bitmap;
+            return bmp.PixelFormat is PixelFormat.Format24bppRgb or PixelFormat.Format32bppArgb
+                ? webp.EncodeLossy(bmp, kalite)
+                : webp.EncodeLossy(bmp.BitmapChangeFormat(PixelFormat.Format24bppRgb), kalite);
+        } catch(Exception)
+        {
+            return null;
+        }
     }
 
     private static BitmapFrame CreateBitmapFrame(BitmapSource source, Paper paper, bool isPortrait)

@@ -176,7 +176,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
                     SaveFileDialog saveFileDialog = new()
                     {
-                        Filter = "Tif Resmi (*.tif)|*.tif|Jpg Resmi (*.jpg)|*.jpg|Pdf Dosyası (*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf|Xps Dosyası (*.xps)|*.xps|Txt Dosyası (*.txt)|*.txt",
+                        Filter =
+                            "Tif Resmi (*.tif)|*.tif|Jpg Resmi (*.jpg)|*.jpg|Pdf Dosyası (*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf|Xps Dosyası (*.xps)|*.xps|Txt Dosyası (*.txt)|*.txt|Webp Dosyası (*.webp)|*.webp",
                         FileName = Scanner.SaveFileName,
                         FilterIndex = SaveIndex + 1
                     };
@@ -210,6 +211,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
                                     case 6:
                                         await SaveTxtFileAsync(bitmapFrame, fileName, Scanner);
+                                        break;
+
+                                    case 7:
+                                        SaveWebpImage(bitmapFrame, fileName);
                                         break;
                                 }
                             });
@@ -317,7 +322,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
                 SaveFileDialog saveFileDialog = new()
                 {
-                    Filter = "Pdf Dosyası (*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf|Jpg Resmi (*.jpg)|*.jpg|Tif Resmi (*.tif)|*.tif|Txt Dosyası (*.txt)|*.txt",
+                    Filter = "Pdf Dosyası (*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf|Jpg Resmi (*.jpg)|*.jpg|Tif Resmi (*.tif)|*.tif|Txt Dosyası (*.txt)|*.txt|Webp Dosyası (*.webp)|*.webp",
                     FileName = Scanner.SaveFileName
                 };
                 if(saveFileDialog.ShowDialog() == true)
@@ -347,6 +352,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
                                 case 5:
                                     await SaveTxtFileAsync(seçiliresimler, fileName, Scanner);
+                                    break;
+
+                                case 6:
+                                    await SaveWebpImageAsync(seçiliresimler, fileName, Scanner);
                                     break;
                             }
 
@@ -532,7 +541,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 OpenFileDialog openFileDialog = new()
                 {
                     Filter =
-                        "Tüm Dosyalar (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp|Resim Dosyası (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle|Pdf Dosyası (*.pdf)|*.pdf|Xps Dosyası (*.xps)|*.xps|Eyp Dosyası (*.eyp)|*.eyp",
+                        "Tüm Dosyalar (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp|Resim Dosyası (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.webp)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.webp|Pdf Dosyası (*.pdf)|*.pdf|Xps Dosyası (*.xps)|*.xps|Eyp Dosyası (*.eyp)|*.eyp|Webp Dosyası (*.webp)|*.webp",
                     Multiselect = true
                 };
                 if(openFileDialog.ShowDialog() == true)
@@ -1371,6 +1380,18 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                 await Dispatcher.InvokeAsync(() => Scanner?.Resimler.Add(img));
                                 break;
                             }
+                            case ".webp":
+                            {
+                                BitmapImage main = (BitmapImage)filename.WebpDecode(true, decodeheight);
+                                BitmapImage thumb = (BitmapImage)filename.WebpDecode(false, decodeheight / 10);
+                                BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100
+                                    ? BitmapFrame.Create(main.Resize(Settings.Default.DefaultPictureResizeRatio / 100d), thumb)
+                                    : BitmapFrame.Create(main, thumb);
+                                bitmapFrame.Freeze();
+                                ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
+                                await Dispatcher.InvokeAsync(() => Scanner?.Resimler.Add(img));
+                                break;
+                            }
 
                             case ".tıf" or ".tiff" or ".tıff" or ".tif":
                                 await Dispatcher.InvokeAsync(
@@ -1632,7 +1653,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public void SaveJpgImage(BitmapFrame scannedImage, string filename)
     { Dispatcher.Invoke(() => File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality))); }
 
-    public static async Task SaveJpgImageAsync(List<ScannedImage> images, string filename, Scanner scanner)
+    public async Task SaveJpgImageAsync(List<ScannedImage> images, string filename, Scanner scanner)
     {
         await Task.Run(
             () =>
@@ -1641,14 +1662,16 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 for(int i = 0; i < images.Count; i++)
                 {
                     ScannedImage scannedimage = images[i];
-                    File.WriteAllBytes(directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "jpg"), scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality));
+                    byte[] bytes = null;
+                    _ = Dispatcher.Invoke(() => bytes = scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality));
+                    File.WriteAllBytes(directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "jpg"), bytes);
                     scanner.PdfSaveProgressValue = i / (double)images.Count;
                     if(Settings.Default.RemoveProcessedImage)
                     {
                         scannedimage.Resim = null;
                     }
+                    bytes = null;
                 }
-
                 scanner.PdfSaveProgressValue = 0;
                 GC.Collect();
             });
@@ -1765,21 +1788,47 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public static void SaveXpsImage(BitmapFrame scannedImage, string filename)
+    public void SaveWebpImage(BitmapFrame scannedImage, string filename)
+    { Dispatcher.Invoke(() => File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.Jpg).WebpEncode(Settings.Default.JpegQuality))); }
+
+    public async Task SaveWebpImageAsync(List<ScannedImage> images, string filename, Scanner scanner)
     {
-        Application.Current.Dispatcher
-            .Invoke(
-                () =>
+        await Task.Run(
+            () =>
+            {
+                string directory = Path.GetDirectoryName(filename);
+                for(int i = 0; i < images.Count; i++)
                 {
-                    Image image = new();
-                    image.BeginInit();
-                    image.Source = scannedImage;
-                    image.EndInit();
-                    using XpsDocument xpsd = new(filename, FileAccess.Write);
-                    XpsDocumentWriter xw = XpsDocument.CreateXpsDocumentWriter(xpsd);
-                    xw.Write(image);
-                    image = null;
-                });
+                    ScannedImage scannedimage = images[i];
+                    byte[] bytes = null;
+                    _ = Dispatcher.Invoke(() => bytes = scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg).WebpEncode(Settings.Default.JpegQuality));
+                    File.WriteAllBytes(directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "webp"), bytes);
+                    scanner.PdfSaveProgressValue = i / (double)images.Count;
+                    if(Settings.Default.RemoveProcessedImage)
+                    {
+                        scannedimage.Resim = null;
+                    }
+                    bytes = null;
+                }
+                scanner.PdfSaveProgressValue = 0;
+                GC.Collect();
+            });
+    }
+
+    public  void SaveXpsImage(BitmapFrame scannedImage, string filename)
+    {
+        Dispatcher.Invoke(
+            () =>
+            {
+                Image image = new();
+                image.BeginInit();
+                image.Source = scannedImage;
+                image.EndInit();
+                using XpsDocument xpsd = new(filename, FileAccess.Write);
+                XpsDocumentWriter xw = XpsDocument.CreateXpsDocumentWriter(xpsd);
+                xw.Write(image);
+                image = null;
+            });
     }
 
     public void SplitPdfPageCount(string pdfpath, string savefolder, int pagecount)

@@ -8,7 +8,7 @@
     xmlns:properties="clr-namespace:TwainControl.Properties"
     xmlns:tesseract="clr-namespace:Ocr;assembly=Ocr"
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
-    d:DesignHeight="200" d:DesignWidth="450"
+    d:DesignHeight="240" d:DesignWidth="450"
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
     Loaded="UserControl_Loaded" UseLayoutRounding="True"
     mc:Ignorable="d">
@@ -44,7 +44,7 @@
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <UniformGrid Columns="2" Rows="3" />
+                        <UniformGrid Columns="2" Rows="4" />
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
                 <ListBoxItem>
@@ -102,6 +102,13 @@
                             <Run Text="{Binding Mode=OneWay, Source='.txt', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
                             <Run FontWeight="Bold" Foreground="Red" Text="OCR" />
                         </TextBlock>
+                    </StackPanel>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Width="32" Height="32"
+                            Source="{Binding Source='.webp', Converter={StaticResource FilePathToIconConverter}}" />
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Source='.webp', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
                     </StackPanel>
                 </ListBoxItem>
             </ListBox>
