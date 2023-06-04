@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using TwainControl.Properties;
 
 namespace TwainControl;
 
@@ -62,6 +63,21 @@ public class ScannedImage : InpcBase
             {
                 resim = value;
                 OnPropertyChanged(nameof(Resim));
+                OnPropertyChanged(nameof(ResimThumb));
+            }
+        }
+    }
+
+    public BitmapSource ResimThumb
+    {
+        get => Resim.Resize(Settings.Default.DefaultThumbPictureResizeRatio / 100d);
+
+        set
+        {
+            if(resimThumb != value)
+            {
+                resimThumb = value;
+                OnPropertyChanged(nameof(ResimThumb));
             }
         }
     }
@@ -98,7 +114,7 @@ public class ScannedImage : InpcBase
     {
         if(e.PropertyName is "RotationAngle" && RotationAngle != 0)
         {
-            if(Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+            if(Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
             {
                 Resim = await Resim.FlipImageAsync(RotationAngle);
                 RotationAngle = 0;
@@ -117,6 +133,8 @@ public class ScannedImage : InpcBase
     private int ındex;
 
     private BitmapFrame resim;
+
+    private BitmapSource resimThumb;
 
     private double rotationAngle;
 

@@ -276,5 +276,29 @@ namespace TwainControl.Properties {
                 this["MedianValue"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("70")]
+        public int WebpQuality {
+            get {
+                return ((int)(this["WebpQuality"]));
+            }
+            set {
+                this["WebpQuality"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int DefaultThumbPictureResizeRatio {
+            get {
+                return ((int)(this["DefaultThumbPictureResizeRatio"]));
+            }
+            set {
+                this["DefaultThumbPictureResizeRatio"] = value;
+            }
+        }
     }
 }

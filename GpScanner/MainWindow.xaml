@@ -759,7 +759,7 @@
                                                         d:Width="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}">
                                                         <Image.Source>
                                                             <PriorityBinding>
-                                                                <Binding IsAsync="True" Mode="OneWay" Path="Resim.Thumbnail" />
+                                                                <Binding IsAsync="True" Mode="OneWay" Path="ResimThumb" />
                                                                 <Binding Converter="{StaticResource FilePathToIconConverter}" Path="FilePath" />
                                                             </PriorityBinding>
                                                         </Image.Source>

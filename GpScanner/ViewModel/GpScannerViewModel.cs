@@ -1306,7 +1306,7 @@ public class GpScannerViewModel : InpcBase
 
     public int[] SettingsPagePdfDpiList { get; } = PdfViewer.PdfViewer.DpiList;
 
-    public int[] SettingsPagePictureResizeList { get; } = { 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 };
+    public int[] SettingsPagePictureResizeList { get; } = Enumerable.Range(5, 100).Where(z => z % 5 == 0).ToArray();
 
     public bool Shutdown
     {

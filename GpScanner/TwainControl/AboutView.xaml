@@ -77,7 +77,7 @@
                     </Hyperlink>
                 </TextBlock>
                 <TextBlock>
-                    <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="hhttps://github.com/JosePineiro/WebP-wrapper">
+                    <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/JosePineiro/WebP-wrapper">
                         WebP-Wrapper
                     </Hyperlink>
                 </TextBlock>

@@ -9,7 +9,6 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using TwainControl.Properties;
 
 namespace TwainControl
 {
@@ -60,26 +59,31 @@ namespace TwainControl
 
         public BitmapFrame SaveInkCanvasToImage()
         {
-            if(DataContext is TwainCtrl twainctrl)
+            RenderTargetBitmap renderTargetBitmap = new((int)Ink.ActualWidth, (int)Ink.ActualHeight, 96, 96, PixelFormats.Pbgra32);
+            Rect bounds = VisualTreeHelper.GetDescendantBounds(Ink);
+            DrawingVisual dv = new();
+            using(DrawingContext ctx = dv.RenderOpen())
             {
-                RenderTargetBitmap renderTargetBitmap = new((int)Ink.ActualWidth, (int)Ink.ActualHeight, 96, 96, PixelFormats.Pbgra32);
-                Rect bounds = VisualTreeHelper.GetDescendantBounds(Ink);
-                DrawingVisual dv = new();
-                using(DrawingContext ctx = dv.RenderOpen())
-                {
-                    ctx.DrawRectangle(new VisualBrush(Ink), null, bounds);
-                }
-                renderTargetBitmap.Render(dv);
-                renderTargetBitmap.Freeze();
-                BitmapSource thumbnail = Ink.ActualWidth < Ink.ActualHeight
-                    ? renderTargetBitmap.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / twainctrl.SelectedPaper.Width * twainctrl.SelectedPaper.Height)
-                    : renderTargetBitmap.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / twainctrl.SelectedPaper.Height * twainctrl.SelectedPaper.Width);
-                thumbnail.Freeze();
-                BitmapFrame image = BitmapFrame.Create(renderTargetBitmap, thumbnail);
-                image.Freeze();
-                return image;
+                ctx.DrawRectangle(new VisualBrush(Ink), null, bounds);
             }
-            return null;
+            renderTargetBitmap.Render(dv);
+            renderTargetBitmap.Freeze();
+            BitmapFrame image = BitmapFrame.Create(renderTargetBitmap);
+            image.Freeze();
+            return image;
+        }
+
+        public bool DrawControlContextMenu
+        {
+            get => drawControlContextMenu;
+            set
+            {
+                if(drawControlContextMenu != value)
+                {
+                    drawControlContextMenu = value;
+                    OnPropertyChanged(nameof(DrawControlContextMenu));
+                }
+            }
         }
 
         public Cursor DrawCursor
@@ -205,19 +209,6 @@ namespace TwainControl
                     OnPropertyChanged(nameof(SelectedStylus));
                     OnPropertyChanged(nameof(StylusHeight));
                     OnPropertyChanged(nameof(stylusWidth));
-                }
-            }
-        }
-
-        public bool DrawControlContextMenu
-        {
-            get => drawControlContextMenu;
-            set
-            {
-                if(drawControlContextMenu != value)
-                {
-                    drawControlContextMenu = value;
-                    OnPropertyChanged(nameof(DrawControlContextMenu));
                 }
             }
         }
@@ -362,6 +353,7 @@ namespace TwainControl
             typeof(BitmapFrame),
             typeof(DrawControl),
             new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+        private bool drawControlContextMenu;
 
         private Cursor drawCursor;
 
@@ -379,7 +371,6 @@ namespace TwainControl
         private string selectedColor = "Black";
 
         private StylusTip selectedStylus = StylusTip.Ellipse;
-        private bool drawControlContextMenu;
 
         private bool smooth;
 

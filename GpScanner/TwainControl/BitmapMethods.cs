@@ -11,7 +11,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using TwainControl.Properties;
 using WebPWrapper;
 using static Extensions.ExtensionMethods;
 using Brush = System.Windows.Media.Brush;
@@ -151,34 +150,28 @@ public static class BitmapMethods
     public static async Task<BitmapFrame> FlipImageAsync(this BitmapFrame bitmapFrame, double angle)
     {
         TransformedBitmap transformedBitmap = null;
-        TransformedBitmap transformedBitmapthumb = null;
         switch(angle)
         {
             case 1:
                 transformedBitmap = new TransformedBitmap(bitmapFrame, new ScaleTransform(angle, -1, 0, 0));
-                transformedBitmapthumb =
-                    new TransformedBitmap(bitmapFrame.Thumbnail, new ScaleTransform(angle, -1, 0, 0));
                 break;
 
             case -1:
                 transformedBitmap = new TransformedBitmap(bitmapFrame, new ScaleTransform(angle, 1, 0, 0));
-                transformedBitmapthumb =
-                    new TransformedBitmap(bitmapFrame.Thumbnail, new ScaleTransform(angle, 1, 0, 0));
                 break;
         }
 
         transformedBitmap.Freeze();
-        transformedBitmapthumb.Freeze();
         return await Task.Run(
             () =>
             {
-                BitmapFrame frame = BitmapFrame.Create(transformedBitmap, transformedBitmapthumb);
+                BitmapFrame frame = BitmapFrame.Create(transformedBitmap);
                 frame.Freeze();
                 return frame;
             });
     }
 
-    public static async Task<BitmapFrame> GenerateImageDocumentBitmapFrameAsync(MemoryStream ms, Paper paper, bool deskew = false)
+    public static async Task<BitmapFrame> GenerateImageDocumentBitmapFrameAsync(MemoryStream ms, bool deskew = false)
     {
         BitmapImage image = new();
         image.BeginInit();
@@ -197,7 +190,7 @@ public static class BitmapMethods
             skewedimage.Freeze();
         }
 
-        return deskew ? CreateBitmapFrame(skewedimage, paper, image.PixelWidth < image.PixelHeight) : CreateBitmapFrame(image, paper, image.PixelWidth < image.PixelHeight);
+        return deskew ? BitmapFrame.Create(skewedimage) : BitmapFrame.Create(image);
     }
 
     public static ObservableCollection<Paper> GetPapers()
@@ -387,13 +380,11 @@ public static class BitmapMethods
         }
 
         TransformedBitmap transformedBitmap = new(bitmapFrame, new RotateTransform(angle * 90));
-        TransformedBitmap transformedBitmapthumb = new(bitmapFrame.Thumbnail, new RotateTransform(angle * 90));
         transformedBitmap.Freeze();
-        transformedBitmapthumb.Freeze();
         return await Task.Run(
             () =>
             {
-                BitmapFrame frame = BitmapFrame.Create(transformedBitmap, transformedBitmapthumb);
+                BitmapFrame frame = BitmapFrame.Create(transformedBitmap);
                 frame.Freeze();
                 return frame;
             });
@@ -409,8 +400,9 @@ public static class BitmapMethods
 
     public static RenderTargetBitmap ÜstüneResimÇiz(this ImageSource Source, Point konum, Brush brushes, double emSize = 64, string metin = null, double angle = 315, string font = "Arial")
     {
+        FlowDirection flowDirection = (CultureInfo.CurrentCulture == CultureInfo.GetCultureInfo("ar-AR")) ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
         FormattedText formattedText =
-            new(metin, CultureInfo.GetCultureInfo("tr-TR"), FlowDirection.LeftToRight, new Typeface(font), emSize, brushes) { TextAlignment = TextAlignment.Center };
+            new(metin, CultureInfo.CurrentCulture, flowDirection, new Typeface(font), emSize, brushes) { TextAlignment = TextAlignment.Center };
         DrawingVisual dv = new();
         using(DrawingContext dc = dv.RenderOpen())
         {
@@ -451,19 +443,5 @@ public static class BitmapMethods
         {
             return null;
         }
-    }
-
-    private static BitmapFrame CreateBitmapFrame(BitmapSource source, Paper paper, bool isPortrait)
-    {
-        BitmapImage resizedImage = isPortrait
-            ? source.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Width * paper.Height)
-                .BitmapSourceToBitmap()
-                .ToBitmapImage(ImageFormat.Jpeg, Settings.Default.PreviewWidth)
-            : source.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / paper.Height * paper.Width)
-                .BitmapSourceToBitmap()
-                .ToBitmapImage(ImageFormat.Jpeg, Settings.Default.PreviewWidth);
-
-        resizedImage.Freeze();
-        return BitmapFrame.Create(source, resizedImage);
     }
 }

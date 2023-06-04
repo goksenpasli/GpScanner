@@ -342,7 +342,7 @@
                 </GroupBox>
                 <GroupBox Grid.Row="3">
                     <StackPanel>
-                        <UniformGrid Columns="5">
+                        <UniformGrid Columns="6">
                             <TextBlock VerticalAlignment="Center" TextWrapping="Wrap">
                                 <Run Text="{twainctrl:Loc FILE}" />
                                 <Run Text="{twainctrl:Loc RES}" />
@@ -350,7 +350,11 @@
                             <ComboBox VerticalContentAlignment="Center"
                                 twainctrl:Policy.PolicyName="DefaultPictureResizeRatio" ItemStringFormat="%{0}"
                                 ItemsSource="{Binding SettingsPagePictureResizeList}"
-                                SelectedItem="{Binding DefaultPictureResizeRatio, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                                SelectedItem="{Binding DefaultPictureResizeRatio, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />      
+                            <ComboBox VerticalContentAlignment="Center"
+                                twainctrl:Policy.PolicyName="DefaultPictureResizeRatio" ItemStringFormat="%{0}"
+                                ItemsSource="{Binding SettingsPagePictureResizeList}"
+                                SelectedItem="{Binding DefaultThumbPictureResizeRatio, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBlock VerticalAlignment="Center" Text="PDF DPI" />
                             <ComboBox VerticalContentAlignment="Center"
                                 twainctrl:Policy.PolicyName="DefaultThumbNailDpi" ItemStringFormat="{}{0} Dpi"

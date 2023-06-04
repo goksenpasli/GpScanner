@@ -9,7 +9,7 @@
     xmlns:properties="clr-namespace:TwainControl.Properties"
     xmlns:tesseract="clr-namespace:Ocr;assembly=Ocr"
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
-    d:DesignHeight="440" d:DesignWidth="480"
+    d:DesignHeight="440" d:DesignWidth="500"
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
     UseLayoutRounding="True"
     mc:Ignorable="d">
@@ -66,7 +66,7 @@
             <HeaderedContentControl Header="{local:Loc PASSWORD}">
                 <PasswordBox IsEnabled="{Binding Scanner.PasswordProtect}" PasswordChanged="PasswordBox_PasswordChanged" />
             </HeaderedContentControl>
-            <UniformGrid Columns="2">
+            <UniformGrid Columns="3">
                 <GroupBox>
                     <StackPanel IsEnabled="{Binding Scanner.PdfPassword, Converter={StaticResource NullableToBooleanConverter}}">
                         <CheckBox Content="{local:Loc ALLOWPRINT}" IsChecked="{Binding Scanner.AllowPrint}" />
@@ -82,6 +82,14 @@
                             Text="{Binding Scanner.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <Extensions:ButtonedTextBox CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed"
                             Text="{Binding Scanner.CreatorAppName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Header="WEBP">
+                    <StackPanel>
+                        <Slider AutoToolTipPlacement="TopLeft" Maximum="95" Minimum="10"
+                            SmallChange="1"
+                            Style="{DynamicResource Slider}"
+                            Value="{Binding Path=WebpQuality, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                     </StackPanel>
                 </GroupBox>
             </UniformGrid>

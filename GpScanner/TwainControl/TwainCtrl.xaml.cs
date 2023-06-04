@@ -592,23 +592,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => true);
 
-        AddSinglePdfPage = new RelayCommand<object>(
-            parameter =>
-            {
-                if(parameter is BitmapSource imageSource)
-                {
-                    BitmapSource bitmapSource = imageSource.Width < imageSource.Height
-                        ? imageSource.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Width * SelectedPaper.Height)
-                        : imageSource.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Height * SelectedPaper.Width);
-                    BitmapFrame bitmapFrame = BitmapFrame.Create(imageSource, bitmapSource.BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg, Settings.Default.PreviewWidth));
-                    bitmapFrame.Freeze();
-                    ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
-                    Scanner?.Resimler.Add(scannedImage);
-                    GC.Collect();
-                }
-            },
-            parameter => parameter is BitmapSource);
-
         SendMail = new RelayCommand<object>(
             parameter =>
             {
@@ -645,7 +628,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     BitmapSource image = Imaging.CreateBitmapSourceFromHBitmap(bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
                     if(image != null)
                     {
-                        BitmapFrame bitmapFrame = GenerateBitmapFrame(image, SelectedPaper);
+                        BitmapFrame bitmapFrame = GenerateBitmapFrame(image);
                         Scanner?.Resimler?.Add(new ScannedImage { Seçili = true, Resim = bitmapFrame });
                         bitmapFrame = null;
                     }
@@ -874,7 +857,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         BitmapSource image = Imaging.CreateBitmapSourceFromHBitmap(bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
                         if(image != null)
                         {
-                            BitmapFrame bitmapFrame = GenerateBitmapFrame(image, SelectedPaper);
+                            BitmapFrame bitmapFrame = GenerateBitmapFrame(image);
                             await Task.Run(
                                 () =>
                                 {
@@ -965,7 +948,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
                     byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfviewer.PdfFilePath);
                     MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfviewer.Sayfa, Settings.Default.ImgLoadResolution);
-                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms, SelectedPaper);
+                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms);
                     bitmapFrame.Freeze();
                     ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
                     Scanner?.Resimler.Add(scannedImage);
@@ -1206,7 +1189,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfViewer.PdfFilePath);
                     MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, PdfImportViewer.PdfViewer.Sayfa, Settings.Default.ImgLoadResolution);
-                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms, SelectedPaper);
+                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms);
                     ms = null;
                     using PdfDocument document = bitmapFrame.MedianFilterBitmap(PdfMedianValue)
                         .GeneratePdf(null, Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, (int)Settings.Default.Çözünürlük);
@@ -1371,10 +1354,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             case ".bmp":
                             {
                                 BitmapImage main = await ImageViewer.LoadImageAsync(filename);
-                                BitmapImage thumb = await ImageViewer.LoadImageAsync(filename, decodeheight / 10);
                                 BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100
-                                    ? BitmapFrame.Create(main.Resize(Settings.Default.DefaultPictureResizeRatio / 100d), thumb)
-                                    : BitmapFrame.Create(main, thumb);
+                                    ? BitmapFrame.Create(main.Resize(Settings.Default.DefaultPictureResizeRatio / 100d))
+                                    : BitmapFrame.Create(main);
                                 bitmapFrame.Freeze();
                                 ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
                                 await Dispatcher.InvokeAsync(() => Scanner?.Resimler.Add(img));
@@ -1383,10 +1365,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             case ".webp":
                             {
                                 BitmapImage main = (BitmapImage)filename.WebpDecode(true, decodeheight);
-                                BitmapImage thumb = (BitmapImage)filename.WebpDecode(false, decodeheight / 10);
                                 BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100
-                                    ? BitmapFrame.Create(main.Resize(Settings.Default.DefaultPictureResizeRatio / 100d), thumb)
-                                    : BitmapFrame.Create(main, thumb);
+                                    ? BitmapFrame.Create(main.Resize(Settings.Default.DefaultPictureResizeRatio / 100d))
+                                    : BitmapFrame.Create(main);
                                 bitmapFrame.Freeze();
                                 ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
                                 await Dispatcher.InvokeAsync(() => Scanner?.Resimler.Add(img));
@@ -1403,11 +1384,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                         {
                                             BitmapFrame image = decoder.Frames[i];
                                             image.Freeze();
-                                            BitmapSource thumbimage = image.PixelWidth < image.PixelHeight
-                                                ? image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Width * SelectedPaper.Height)
-                                                : image.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Height * SelectedPaper.Width);
-                                            thumbimage.Freeze();
-                                            BitmapFrame bitmapFrame = BitmapFrame.Create(image, thumbimage);
+                                            BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100
+                                                ? BitmapFrame.Create(image.Resize(Settings.Default.DefaultPictureResizeRatio / 100d))
+                                                : BitmapFrame.Create(image);
                                             bitmapFrame.Freeze();
                                             ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
                                             Scanner?.Resimler.Add(img);
@@ -1439,13 +1418,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                             bitmapframe = BitmapFrame.Create(rtb);
                                             bitmapframe.Freeze();
                                         });
-                                    BitmapSource thumbimage = bitmapframe.PixelWidth < bitmapframe.PixelHeight
-                                        ? bitmapframe.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Width * SelectedPaper.Height)
-                                        : bitmapframe.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Height * SelectedPaper.Width);
-                                    thumbimage.Freeze();
-                                    BitmapFrame bitmapFrame = BitmapFrame.Create(bitmapframe, thumbimage);
-                                    bitmapFrame.Freeze();
-                                    ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
+                                    //    ? bitmapframe.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Width * SelectedPaper.Height)
+                                    ScannedImage img = new() { Resim = bitmapframe, FilePath = filename };
                                     await Dispatcher.InvokeAsync(
                                         () =>
                                         {
@@ -1553,14 +1527,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         return null;
     }
 
-    public static BitmapFrame GenerateBitmapFrame(BitmapSource bitmapSource, Paper thumbnailpaper)
+    public static BitmapFrame GenerateBitmapFrame(BitmapSource bitmapSource)
     {
         bitmapSource.Freeze();
-        BitmapSource thumbnail = bitmapSource.PixelWidth < bitmapSource.PixelHeight
-            ? bitmapSource.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / thumbnailpaper.Width * thumbnailpaper.Height)
-            : bitmapSource.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / thumbnailpaper.Height * thumbnailpaper.Width);
-        thumbnail.Freeze();
-        BitmapFrame bitmapFrame = BitmapFrame.Create(bitmapSource, thumbnail);
+        BitmapFrame bitmapFrame = BitmapFrame.Create(bitmapSource);
         bitmapFrame.Freeze();
         return bitmapFrame;
     }
@@ -1789,7 +1759,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     }
 
     public void SaveWebpImage(BitmapFrame scannedImage, string filename)
-    { Dispatcher.Invoke(() => File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.Jpg).WebpEncode(Settings.Default.JpegQuality))); }
+    { Dispatcher.Invoke(() => File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.Jpg).WebpEncode(Settings.Default.WebpQuality))); }
 
     public async Task SaveWebpImageAsync(List<ScannedImage> images, string filename, Scanner scanner)
     {
@@ -1801,7 +1771,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     ScannedImage scannedimage = images[i];
                     byte[] bytes = null;
-                    _ = Dispatcher.Invoke(() => bytes = scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg).WebpEncode(Settings.Default.JpegQuality));
+                    _ = Dispatcher.Invoke(() => bytes = scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg).WebpEncode(Settings.Default.WebpQuality));
                     File.WriteAllBytes(directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "webp"), bytes);
                     scanner.PdfSaveProgressValue = i / (double)images.Count;
                     if(Settings.Default.RemoveProcessedImage)
@@ -1815,7 +1785,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             });
     }
 
-    public  void SaveXpsImage(BitmapFrame scannedImage, string filename)
+    public void SaveXpsImage(BitmapFrame scannedImage, string filename)
     {
         Dispatcher.Invoke(
             () =>
@@ -1853,8 +1823,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public ICommand AddPageNumber { get; }
 
     public ICommand AddPdfAttachmentFile { get; }
-
-    public ICommand AddSinglePdfPage { get; }
 
     public double AllImageRotationAngle
     {
@@ -2508,7 +2476,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         for(int i = 1; i <= totalpagecount; i++)
         {
             ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, Settings.Default.ImgLoadResolution);
-            BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms, SelectedPaper, Scanner.Deskew);
+            BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms, Scanner.Deskew);
             bitmapFrame.Freeze();
             await Dispatcher.InvokeAsync(
                 () =>
@@ -2533,7 +2501,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             if(e.PropertyName is "ResimData" && cameraUserControl.ResimData is not null)
             {
                 MemoryStream ms = new(cameraUserControl.ResimData);
-                BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms, SelectedPaper);
+                BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms);
                 bitmapFrame.Freeze();
                 Scanner.Resimler.Add(new ScannedImage { Resim = bitmapFrame });
                 ms = null;
@@ -2803,7 +2771,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         if(ImgData is not null)
                         {
                             MemoryStream ms = new(ImgData);
-                            BitmapFrame bitmapframe = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms, SelectedPaper);
+                            BitmapFrame bitmapframe = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms);
                             bitmapframe.Freeze();
                             ScannedImage item = new() { Resim = bitmapframe };
                             Scanner.Resimler.Add(item);
@@ -3005,9 +2973,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 evrak = evrak.MedianFilterBitmap(Settings.Default.MedianValue);
             }
             evrak.Freeze();
-            BitmapSource önizleme = evrak.Resize(Settings.Default.PreviewWidth, Settings.Default.PreviewWidth / SelectedPaper.Width * SelectedPaper.Height);
-            önizleme.Freeze();
-            BitmapFrame bitmapFrame = BitmapFrame.Create(evrak, önizleme);
+            BitmapFrame bitmapFrame = BitmapFrame.Create(evrak);
             bitmapFrame.Freeze();
             Scanner?.Resimler?.Add(new ScannedImage { Resim = bitmapFrame, RotationAngle = (double)SelectedRotation });
         }

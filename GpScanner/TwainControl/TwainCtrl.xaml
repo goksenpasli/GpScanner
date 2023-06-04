@@ -816,7 +816,7 @@
                                 Value="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}" />
                             <Extensions:ContentToggleButton Grid.Column="1">
                                 <Extensions:ContentToggleButton.OverContent>
-                                    <local:PdfSettings Width="480" />
+                                    <local:PdfSettings Width="500" />
                                 </Extensions:ContentToggleButton.OverContent>
                                 <StackPanel Orientation="Horizontal">
                                     <Image Width="24" Height="24">
@@ -1086,14 +1086,14 @@
                                                                     </TransformGroup>
                                                                 </ToggleButton.RenderTransform>
                                                                 <Viewbox>
-                                                                    <Image Width="{Binding Resim.Thumbnail.Width, Mode=OneWay}"
-                                                                        Height="{Binding Resim.Thumbnail.Height, Mode=OneWay}"
+                                                                    <Image Width="{Binding ResimThumb.Width, Mode=OneWay}"
+                                                                        Height="{Binding ResimThumb.Height, Mode=OneWay}"
                                                                         d:Height="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}"
                                                                         d:Source="/GpScanner;component/scanner.ico"
                                                                         d:Width="{Binding Path=PreviewWidth, Source={x:Static properties:Settings.Default}}">
                                                                         <Image.Source>
                                                                             <PriorityBinding>
-                                                                                <Binding IsAsync="True" Mode="OneWay" Path="Resim.Thumbnail" />
+                                                                                <Binding IsAsync="True" Mode="OneWay" Path="ResimThumb" />
                                                                                 <Binding Converter="{StaticResource FilePathToIconConverter}" Path="FilePath" />
                                                                             </PriorityBinding>
                                                                         </Image.Source>

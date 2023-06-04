@@ -92,7 +92,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
         TransferImage = new RelayCommand<object>(
             parameter =>
             {
-                BitmapFrame bitmapFrame = TwainCtrl.GenerateBitmapFrame((BitmapSource)Scanner.CroppedImage, Paper);
+                BitmapFrame bitmapFrame = TwainCtrl.GenerateBitmapFrame((BitmapSource)Scanner.CroppedImage);
                 bitmapFrame.Freeze();
                 ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
                 Scanner?.Resimler.Add(scannedImage);

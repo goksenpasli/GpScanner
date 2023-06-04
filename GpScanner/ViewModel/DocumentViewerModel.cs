@@ -43,7 +43,7 @@ public class DocumentViewerModel : InpcBase
                 if(parameter is ImageSource imageSource)
                 {
                     MemoryStream ms = new(imageSource.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg));
-                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms, ToolBox.Paper);
+                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms);
                     bitmapFrame.Freeze();
                     ScannedImage scannedImage = new() { Seçili = false, FilePath = PdfFilePath, Resim = bitmapFrame };
                     Scanner?.Resimler.Add(scannedImage);

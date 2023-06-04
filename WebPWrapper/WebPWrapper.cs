@@ -70,10 +70,9 @@ namespace WebPWrapper
             {
                 byte[] rawWebP = File.ReadAllBytes(pathFileName);
                 return Decode(rawWebP, webPDecoderOptions);
-            }
-            catch (Exception ex)
+            } catch(Exception ex)
             {
-                throw new Exception(ex.Message + "\r\nIn WebP.Load");
+                throw new Exception($"{ex.Message}\r\nIn WebP.Load");
             }
         }
 
