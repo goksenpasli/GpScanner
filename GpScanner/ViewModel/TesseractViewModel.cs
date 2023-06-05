@@ -88,7 +88,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
 
     public string this[string columnName] => columnName switch
     {
-        "TesseractFiles" when TesseractFiles?.Count(z => z.Checked) == 0 || string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) => Translation.GetResStringValue("RESTARTAPP"),
+        "TesseractFiles" when TesseractFiles?.Count(z => z.Checked) == 0 || string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) => $"{Translation.GetResStringValue("DESTLANG")}{Environment.NewLine}{Translation.GetResStringValue("NOPROFILE")}",
         _ => null
     };
 
@@ -167,8 +167,13 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
     {
         if(e.PropertyName is "Checked")
         {
-            IEnumerable<string> checkedFiles = TesseractFiles.Where(item => item.Checked).Select(item => item.Name);
-            Settings.Default.DefaultTtsLang = string.Join("+", checkedFiles);
+            IEnumerable<TessFiles> checkedFiles = TesseractFiles.Where(item => item.Checked);
+            Settings.Default.DefaultTtsLang = string.Join("+", checkedFiles.Select(item => item.Name));
+            if(!checkedFiles.Any())
+            {
+                Settings.Default.BatchFolder = string.Empty;
+                ToolBox.Scanner.ApplyPdfSaveOcr = false;
+            }
             OnPropertyChanged(nameof(TesseractFiles));
         }
     }

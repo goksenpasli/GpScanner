@@ -222,7 +222,7 @@ namespace MozJpeg
     /// Chrominance subsampling options. <para>When pixels are converted from RGB to YCbCr (see #TJCS_YCbCr) or from
     /// CMYK to YCCK (see #TJCS_YCCK) as part of the JPEG compression process, some of the Cb and Cr (chrominance)
     /// components can be discarded or averaged together to produce a smaller image with little perceptible loss of
-    /// image clarity (the human eye is more sensitive to small changes in brightness than to small changes in color.) 
+    /// image clarity (the human eye is more sensitive to small changes in brightness than to small changes in color.)
     /// This is called "chrominance subsampling".</para>
     /// </summary>
     public enum TJSubsamplingOptions

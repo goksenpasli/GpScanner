@@ -445,7 +445,7 @@ public class GpScannerViewModel : InpcBase
                     ViewModel.Shutdown.DoExitWin(ViewModel.Shutdown.EWX_SHUTDOWN);
                 }
             },
-            parameter => !string.IsNullOrWhiteSpace(BatchFolder));
+            parameter => !string.IsNullOrWhiteSpace(BatchFolder) && !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
 
         CancelBatchOcr = new RelayCommand<object>(
             parameter =>
@@ -514,7 +514,7 @@ public class GpScannerViewModel : InpcBase
                     ViewModel.Shutdown.DoExitWin(ViewModel.Shutdown.EWX_SHUTDOWN);
                 }
             },
-            parameter => !string.IsNullOrWhiteSpace(BatchFolder));
+            parameter => !string.IsNullOrWhiteSpace(BatchFolder) && !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
 
         DatabaseSave = new RelayCommand<object>(parameter => ScannerData.Serialize());
 
@@ -1414,6 +1414,11 @@ public class GpScannerViewModel : InpcBase
         if(e.PropertyName is "WatchFolderPdfFileChange" && Settings.Default.WatchFolderPdfFileChange)
         {
             _ = MessageBox.Show(Translation.GetResStringValue("RESTARTAPP"));
+        }
+
+        if(e.PropertyName is "BatchFolder" && Settings.Default.BatchFolder?.Length == 0)
+        {
+            Settings.Default.RegisterBatchWatcher = false;
         }
 
         Settings.Default.Save();

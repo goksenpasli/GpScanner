@@ -6,15 +6,15 @@
 /// Bitmap Decode(byte[] rawWebP, WebPDecoderOptions options) - Decode WebP data (rawWebP) to bitmap using 'options'.
 /// Bitmap GetThumbnailFast(byte[] rawWebP, int width, int height) - Get a thumbnail from WebP data (rawWebP) with dimensions 'width x height'. Fast mode.
 /// Bitmap GetThumbnailQuality(byte[] rawWebP, int width, int height) - Fast get a thumbnail from WebP data (rawWebP) with dimensions 'width x height'. Quality mode.
-/// 
+///
 /// Encode Functions:
 /// Save(Bitmap bmp, string pathFileName, int quality) - Save bitmap with quality lost to WebP file. Opcionally select 'quality'.
 /// byte[] EncodeLossy(Bitmap bmp, int quality) - Encode bitmap with quality lost to WebP byte array. Opcionally select 'quality'.
 /// byte[] EncodeLossy(Bitmap bmp, int quality, int speed, bool info) - Encode bitmap with quality lost to WebP byte array. Select 'quality', 'speed' and optionally select 'info'.
-/// byte[] EncodeLossless(Bitmap bmp) - Encode bitmap without quality lost to WebP byte array. 
-/// byte[] EncodeLossless(Bitmap bmp, int speed, bool info = false) - Encode bitmap without quality lost to WebP byte array. Select 'speed'. 
+/// byte[] EncodeLossless(Bitmap bmp) - Encode bitmap without quality lost to WebP byte array.
+/// byte[] EncodeLossless(Bitmap bmp, int speed, bool info = false) - Encode bitmap without quality lost to WebP byte array. Select 'speed'.
 /// byte[] EncodeNearLossless(Bitmap bmp, int quality, int speed = 9, bool info = false) - Encode bitmap with a near lossless method to WebP byte array. Select 'quality', 'speed' and optionally select 'info'.
-/// 
+///
 /// Another functions:
 /// string GetVersion() - Get the library version
 /// GetInfo(byte[] rawWebP, out int width, out int height, out bool has_alpha, out bool has_animation, out string format) - Get information of WEBP data
@@ -128,7 +128,7 @@ namespace WebPWrapper
         /// <param name="rawWebP">the data to uncompress</param>
         /// <param name="options">Options for advanced decode</param>
         /// <returns>Bitmap with the WebP image</returns>
-        public Bitmap Decode(byte[] rawWebP, WebPDecoderOptions options, PixelFormat pixelFormat = PixelFormat.DontCare)
+        public Bitmap Decode(byte[] rawWebP, WebPDecoderOptions options)
         {
             GCHandle pinnedWebP = GCHandle.Alloc(rawWebP, GCHandleType.Pinned);
             Bitmap bmp = null;
@@ -992,7 +992,7 @@ namespace WebPWrapper
         [DllImport("kernel32.dll", EntryPoint = "CopyMemory", SetLastError = false)]
         internal static extern void CopyMemory(IntPtr dest, IntPtr src, uint count);
 
-        private static readonly int WEBP_DECODER_ABI_VERSION = 0x0208;
+        private const int WEBP_DECODER_ABI_VERSION = 0x0208;
 
         /// <summary>
         /// This function will initialize the configuration according to a predefined set of parameters (referred to by
@@ -1302,14 +1302,14 @@ namespace WebPWrapper
             switch(IntPtr.Size)
             {
                 case 4:
-                    if(WebPDecodeBGRInto_x86(data, (UIntPtr)data_size, output_buffer, output_buffer_size, output_stride) == null)
+                    if(WebPDecodeBGRInto_x86(data, (UIntPtr)data_size, output_buffer, output_buffer_size, output_stride) == default)
                     {
                         throw new InvalidOperationException("Can not decode WebP");
                     }
 
                     break;
                 case 8:
-                    if(WebPDecodeBGRInto_x64(data, (UIntPtr)data_size, output_buffer, output_buffer_size, output_stride) == null)
+                    if(WebPDecodeBGRInto_x64(data, (UIntPtr)data_size, output_buffer, output_buffer_size, output_stride) == default)
                     {
                         throw new InvalidOperationException("Can not decode WebP");
                     }
@@ -1339,14 +1339,14 @@ namespace WebPWrapper
             switch(IntPtr.Size)
             {
                 case 4:
-                    if(WebPDecodeBGRAInto_x86(data, (UIntPtr)data_size, output_buffer, output_buffer_size, output_stride) == null)
+                    if(WebPDecodeBGRAInto_x86(data, (UIntPtr)data_size, output_buffer, output_buffer_size, output_stride) == default)
                     {
                         throw new InvalidOperationException("Can not decode WebP");
                     }
 
                     break;
                 case 8:
-                    if(WebPDecodeBGRAInto_x64(data, (UIntPtr)data_size, output_buffer, output_buffer_size, output_stride) == null)
+                    if(WebPDecodeBGRAInto_x64(data, (UIntPtr)data_size, output_buffer, output_buffer_size, output_stride) == default)
                     {
                         throw new InvalidOperationException("Can not decode WebP");
                     }
@@ -1376,14 +1376,14 @@ namespace WebPWrapper
             switch(IntPtr.Size)
             {
                 case 4:
-                    if(WebPDecodeARGBInto_x86(data, (UIntPtr)data_size, output_buffer, output_buffer_size, output_stride) == null)
+                    if(WebPDecodeARGBInto_x86(data, (UIntPtr)data_size, output_buffer, output_buffer_size, output_stride) == default)
                     {
                         throw new InvalidOperationException("Can not decode WebP");
                     }
 
                     break;
                 case 8:
-                    if(WebPDecodeARGBInto_x64(data, (UIntPtr)data_size, output_buffer, output_buffer_size, output_stride) == null)
+                    if(WebPDecodeARGBInto_x64(data, (UIntPtr)data_size, output_buffer, output_buffer_size, output_stride) == default)
                     {
                         throw new InvalidOperationException("Can not decode WebP");
                     }

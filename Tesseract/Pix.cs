@@ -91,8 +91,8 @@ namespace Tesseract
         /// sharpening filter.</para> <para>For images with sharp edges, sharpening substantially improves the image
         /// quality for scale factors between about 0.2 and about 2.0. pixScale() uses a small amount of sharpening by
         /// default because it strengthens edge pixels that are weak due to anti-aliasing. The default sharpening
-        /// factors are:<list type="bullet"><item><description><![CDATA[for scaling factors < 0.7:   sharpfract = 0.2   
-        /// sharpwidth = 1]]></description></item><item><description>for scaling factors >= 0.7:  sharpfract = 0.4   
+        /// factors are:<list type="bullet"><item><description><![CDATA[for scaling factors < 0.7:   sharpfract = 0.2
+        /// sharpwidth = 1]]></description></item><item><description>for scaling factors >= 0.7:  sharpfract = 0.4
         /// sharpwidth = 2</description></item></list> The cases where the sharpening halfwidth is 1 or 2 have special
         /// implementations and are about twice as fast as the general case.</para> <para>However, sharpening is
         /// computationally expensive, and one needs to consider the speed-quality tradeoff:<list

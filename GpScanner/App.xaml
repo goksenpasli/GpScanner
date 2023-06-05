@@ -96,31 +96,9 @@
                                 </Border>
                             </ToolTip>
                         </Canvas.ToolTip>
-                        <Canvas.RenderTransform>
-                            <TransformGroup>
-                                <ScaleTransform />
-                                <SkewTransform />
-                                <RotateTransform />
-                                <TranslateTransform />
-                            </TransformGroup>
-                        </Canvas.RenderTransform>
                     </Canvas>
                     <AdornedElementPlaceholder x:Name="Adorner" />
                 </Grid>
-                <ControlTemplate.Triggers>
-                    <DataTrigger Binding="{Binding AdornedElement.(Validation.HasError), ElementName=Adorner}" Value="True">
-                        <DataTrigger.EnterActions>
-                            <BeginStoryboard>
-                                <Storyboard AutoReverse="True" RepeatBehavior="Forever" Timeline.DesiredFrameRate="2">
-                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Cnv" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)">
-                                        <EasingDoubleKeyFrame KeyTime="0" Value="45" />
-                                        <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="0" />
-                                    </DoubleAnimationUsingKeyFrames>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </DataTrigger.EnterActions>
-                    </DataTrigger>
-                </ControlTemplate.Triggers>
             </ControlTemplate>
             <ControlTemplate x:Key="PdfViewerThumbTemplate" TargetType="{x:Type PdfViewer:PdfViewer}">
                 <Grid>

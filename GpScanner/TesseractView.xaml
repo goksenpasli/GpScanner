@@ -90,7 +90,8 @@
                 twainctrl:Policy.PolicyName="DefaultTtsLang"
                 Background="{StaticResource BorderBackground}"
                 ItemsSource="{Binding TesseractFiles, ValidatesOnDataErrors=True}"
-                SelectionMode="Extended">
+                SelectionMode="Extended"
+                Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
                         <Setter Property="Template">
