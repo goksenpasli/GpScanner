@@ -140,6 +140,7 @@
     <Compile Include="ViewModel\StillImageHelper.cs" />
     <Compile Include="ViewModel\StrCmpLogicalComparer.cs" />
     <Compile Include="ViewModel\TesseractViewModel.cs" />
+    <Compile Include="ViewModel\TessFiles.cs" />
     <Compile Include="ViewModel\ThumbnailTranslateViewModel.cs" />
     <Compile Include="ViewModel\TranslateViewModel.cs" />
     <Compile Include="ViewModel\ViewerTemplateSelector.cs" />

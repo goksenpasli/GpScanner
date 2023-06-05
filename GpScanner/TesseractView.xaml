@@ -90,10 +90,21 @@
                 twainctrl:Policy.PolicyName="DefaultTtsLang"
                 Background="{StaticResource BorderBackground}"
                 ItemsSource="{Binding TesseractFiles, ValidatesOnDataErrors=True}"
-                SelectedItem="{Binding DefaultTtsLang, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
-                <ListBox.Resources>
-                    <Style BasedOn="{StaticResource ListBoxItemTemplate}" TargetType="ListBoxItem" />
-                </ListBox.Resources>
+                SelectionMode="Extended">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <CheckBox VerticalContentAlignment="Center"
+                                        d:Content="Name"
+                                        Content="{Binding Path=Name, Mode=OneWay}"
+                                        IsChecked="{Binding Checked}" />
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
             </ListBox>
             <FlowDocumentScrollViewer Grid.Row="1" Grid.ColumnSpan="2">
                 <FlowDocument>
