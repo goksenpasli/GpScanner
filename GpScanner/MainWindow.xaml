@@ -107,11 +107,6 @@
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo ProgressState="{Binding Scanner.ProgressState, ElementName=TwainCtrl}" ProgressValue="{Binding Scanner.PdfSaveProgressValue, ElementName=TwainCtrl}" />
     </Window.TaskbarItemInfo>
-    <Window.InputBindings>
-        <KeyBinding Key="F1"
-            Command="{Binding TesseractViewModel.TesseractDataFilesDownloadLink}"
-            CommandParameter="yardım.chm" />
-    </Window.InputBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />

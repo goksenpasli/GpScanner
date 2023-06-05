@@ -10,11 +10,6 @@
     Unloaded="Window_Unloaded" UseLayoutRounding="True" WindowStartupLocation="CenterOwner"
     WindowState="Maximized"
     mc:Ignorable="d">
-    <Window.InputBindings>
-        <KeyBinding Key="S"
-            Command="{Binding SaveImageAsPdfFile}"
-            CommandParameter="yardım.chm" Modifiers="Ctrl" />
-    </Window.InputBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="48" />

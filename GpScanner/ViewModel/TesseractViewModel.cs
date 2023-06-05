@@ -311,7 +311,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
     {
         if(e.PropertyName is "ShowAllLanguages" && ShowAllLanguages)
         {
-            foreach(TesseractOcrData item in OcrDatas.ToList())
+            foreach(TesseractOcrData item in OcrDatas)
             {
                 item.IsVisible = Visibility.Visible;
             }

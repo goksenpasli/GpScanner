@@ -226,7 +226,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         Tümünüİşaretle = new RelayCommand<object>(
             parameter =>
             {
-                List<ScannedImage> resimler = Scanner.Resimler.ToList();
+                ObservableCollection<ScannedImage> resimler = Scanner.Resimler;
                 if(Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                 {
                     for(int i = 1; i < resimler.Count; i += 2)
@@ -253,7 +253,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 TümününİşaretiniKaldır.Execute(null);
-                foreach(ScannedImage item in Scanner.Resimler.ToList().Where(item => item.Resim.PixelWidth <= item.Resim.PixelHeight))
+                foreach(ScannedImage item in Scanner.Resimler.Where(item => item.Resim.PixelWidth <= item.Resim.PixelHeight))
                 {
                     item.Seçili = true;
                 }
@@ -265,7 +265,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 TümününİşaretiniKaldır.Execute(null);
                 foreach(ScannedImage item in
-                     Scanner.Resimler.ToList().Where(item => item.Resim.PixelHeight < item.Resim.PixelWidth))
+                     Scanner.Resimler.Where(item => item.Resim.PixelHeight < item.Resim.PixelWidth))
                 {
                     item.Seçili = true;
                 }
@@ -276,7 +276,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 SeçiliResim = null;
-                foreach(ScannedImage item in Scanner.Resimler.ToList())
+                foreach(ScannedImage item in Scanner.Resimler)
                 {
                     item.Seçili = false;
                 }
@@ -286,7 +286,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         Tersiniİşaretle = new RelayCommand<object>(
             parameter =>
             {
-                foreach(ScannedImage item in Scanner.Resimler.ToList())
+                foreach(ScannedImage item in Scanner.Resimler)
                 {
                     item.Seçili = !item.Seçili;
                 }
@@ -3000,7 +3000,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         {
             if(Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
             {
-                foreach(ScannedImage image in Scanner.Resimler.Where(z => z.Seçili).ToList())
+                foreach(ScannedImage image in Scanner.Resimler.Where(z => z.Seçili))
                 {
                     image.Resim = await image.Resim.FlipImageAsync(AllImageRotationAngle);
                 }
@@ -3011,7 +3011,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
             if(Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
             {
-                foreach(ScannedImage image in Scanner.Resimler.Where(z => z.Seçili).ToList())
+                foreach(ScannedImage image in Scanner.Resimler.Where(z => z.Seçili))
                 {
                     image.Resim = await image.Resim.RotateImageAsync(AllImageRotationAngle);
                 }
@@ -3020,7 +3020,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 return;
             }
 
-            foreach(ScannedImage image in Scanner.Resimler.ToList())
+            foreach(ScannedImage image in Scanner.Resimler)
             {
                 image.Resim = await image.Resim.RotateImageAsync(AllImageRotationAngle);
             }

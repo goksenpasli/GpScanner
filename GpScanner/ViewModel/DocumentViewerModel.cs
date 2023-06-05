@@ -54,24 +54,6 @@ public class DocumentViewerModel : InpcBase
                 }
             },
             parameter => true);
-
-        SaveImageAsPdfFile = new RelayCommand<object>(
-            parameter =>
-            {
-                SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası (*.pdf)|*.pdf", FileName = "File.pdf" };
-                if(saveFileDialog.ShowDialog() == true)
-                {
-                    using PdfDocument document = new();
-                    PdfPage page = document.AddPage();
-                    XImage img = XImage.FromFile(PdfFilePath);
-                    page.Width = img.PixelWidth;
-                    page.Height = img.PixelHeight;
-                    using XGraphics gfx = XGraphics.FromPdfPage(page);
-                    gfx.DrawImage(img, 0, 0, page.Width, page.Height);
-                    document.Save(saveFileDialog.FileName);
-                }
-            },
-            parameter => Path.GetExtension(PdfFilePath?.ToLower()) is not ".pdf" and not ".zip" and not ".xps");
     }
 
     public ICommand AddFileToControlPanel { get; }
@@ -165,8 +147,6 @@ public class DocumentViewerModel : InpcBase
             }
         }
     }
-
-    public ICommand SaveImageAsPdfFile { get; }
 
     public Scanner Scanner
     {
