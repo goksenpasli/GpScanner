@@ -544,6 +544,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         "Tüm Dosyalar (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp|Resim Dosyası (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.webp)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.webp|Pdf Dosyası (*.pdf)|*.pdf|Xps Dosyası (*.xps)|*.xps|Eyp Dosyası (*.eyp)|*.eyp|Webp Dosyası (*.webp)|*.webp",
                     Multiselect = true
                 };
+
+                if(CheckWithCurrentOsVersion("10.0.17134"))
+                {
+                    openFileDialog.Filter += "|Heic Dosyası (*.heic)|*.heic";
+                }
+
                 if(openFileDialog.ShowDialog() == true)
                 {
                     GC.Collect();
@@ -1352,16 +1358,16 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             case ".gif":
                             case ".gıf":
                             case ".bmp":
-                            {
-                                BitmapImage main = await ImageViewer.LoadImageAsync(filename);
-                                BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100
-                                    ? BitmapFrame.Create(main.Resize(Settings.Default.DefaultPictureResizeRatio / 100d))
-                                    : BitmapFrame.Create(main);
-                                bitmapFrame.Freeze();
-                                ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
-                                await Dispatcher.InvokeAsync(() => Scanner?.Resimler.Add(img));
+                                await AddImageFiles(filename);
                                 break;
-                            }
+
+                            case ".heic":
+                                if(CheckWithCurrentOsVersion("10.0.17134"))
+                                {
+                                    await AddImageFiles(filename);
+                                }
+                                break;
+
                             case ".webp":
                             {
                                 BitmapImage main = (BitmapImage)filename.WebpDecode(true, decodeheight);
@@ -2469,6 +2475,15 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
 
+    private async Task AddImageFiles(string filename)
+    {
+        BitmapImage main = await ImageViewer.LoadImageAsync(filename);
+        BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(main.Resize(Settings.Default.DefaultPictureResizeRatio / 100d)) : BitmapFrame.Create(main);
+        bitmapFrame.Freeze();
+        ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
+        await Dispatcher.InvokeAsync(() => Scanner?.Resimler.Add(img));
+    }
+
     private async Task AddPdfFileAsync(byte[] filedata, string filepath = null)
     {
         double totalpagecount = await PdfViewer.PdfViewer.PdfPageCountAsync(filedata);
@@ -2527,6 +2542,14 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 CameraQrCodeTimer?.Stop();
             }
         }
+    }
+
+    private bool CheckWithCurrentOsVersion(string version)
+    {
+        string osversion = $"{Environment.OSVersion.Version.Major}.{Environment.OSVersion.Version.Minor}.{Environment.OSVersion.Version.Build}";
+        Version current = new(osversion);
+        Version compare = new(version);
+        return current >= compare;
     }
 
     private Int32Rect CropPreviewImage(ImageSource imageSource)

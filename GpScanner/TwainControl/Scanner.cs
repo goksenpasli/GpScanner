@@ -1119,6 +1119,7 @@ public class Scanner : InpcBase, IDataErrorInfo
     private bool allowPrint = true;
 
     private bool applyDataBaseOcr = Ocr.Ocr.TesseractDataExists;
+
     private bool applyMedian;
 
     private bool applyPdfSaveOcr;
@@ -1174,6 +1175,7 @@ public class Scanner : InpcBase, IDataErrorInfo
     private string fileOcrContent;
 
     private int ftpLoadProgressValue;
+
     private bool ınvertImage;
 
     private PdfPageLayout layout = PdfPageLayout.Middle;

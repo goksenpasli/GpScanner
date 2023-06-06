@@ -82,7 +82,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                 }
             },
             parameter => true);
-
+        Tess_PropertyChanged(this, new PropertyChangedEventArgs("Checked"));
         PropertyChanged += TesseractViewModel_PropertyChanged;
     }
 
@@ -172,7 +172,8 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
             if(!checkedFiles.Any())
             {
                 Settings.Default.BatchFolder = string.Empty;
-                ToolBox.Scanner.ApplyPdfSaveOcr = false;
+                PdfGeneration.Scanner.ApplyPdfSaveOcr = false;
+                PdfGeneration.Scanner.ApplyDataBaseOcr = false;
             }
             OnPropertyChanged(nameof(TesseractFiles));
         }
