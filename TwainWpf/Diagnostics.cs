@@ -21,7 +21,8 @@ namespace TwainWpf
                         bool result = Capability.GetBoolCapability(capability, dataSourceManager.ApplicationId, dataSource.SourceId);
 
                         Console.WriteLine($"{capability}: {result}");
-                    } catch(TwainException e)
+                    }
+                    catch(TwainException e)
                     {
                         Console.WriteLine($"{capability}: {e.Message} {e.ReturnCode} {e.ConditionCode}");
                     }

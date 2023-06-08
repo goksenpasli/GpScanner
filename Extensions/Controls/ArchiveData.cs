@@ -6,7 +6,7 @@ public class ArchiveData : InpcBase
 {
     public long Boyut
     {
-        get => boyut;
+        get { return boyut; }
 
         set
         {
@@ -20,7 +20,7 @@ public class ArchiveData : InpcBase
 
     public string DosyaAdı
     {
-        get => dosyaAdı;
+        get { return dosyaAdı; }
 
         set
         {
@@ -34,7 +34,7 @@ public class ArchiveData : InpcBase
 
     public DateTime DüzenlenmeZamanı
     {
-        get => düzenlenmeZamanı;
+        get { return düzenlenmeZamanı; }
 
         set
         {
@@ -48,7 +48,7 @@ public class ArchiveData : InpcBase
 
     public double Oran
     {
-        get => oran;
+        get { return oran; }
 
         set
         {
@@ -62,7 +62,7 @@ public class ArchiveData : InpcBase
 
     public long SıkıştırılmışBoyut
     {
-        get => sıkıştırılmışBoyut;
+        get { return sıkıştırılmışBoyut; }
 
         set
         {
@@ -76,7 +76,7 @@ public class ArchiveData : InpcBase
 
     public string TamYol
     {
-        get => tamYol;
+        get { return tamYol; }
 
         set
         {

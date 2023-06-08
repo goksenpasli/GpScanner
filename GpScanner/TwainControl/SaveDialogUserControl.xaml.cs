@@ -19,7 +19,7 @@ public partial class SaveDialogUserControl : UserControl, INotifyPropertyChanged
 
     public BitmapSource PreviewImage
     {
-        get => previewImage;
+        get { return previewImage; }
 
         set
         {

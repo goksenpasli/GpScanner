@@ -6,7 +6,7 @@ public class TesseractOcrData : InpcBase
 {
     public bool IsEnabled
     {
-        get => ısEnabled;
+        get { return ısEnabled; }
 
         set
         {
@@ -20,7 +20,7 @@ public class TesseractOcrData : InpcBase
 
     public Visibility IsVisible
     {
-        get => ısVisible;
+        get { return ısVisible; }
 
         set
         {
@@ -34,7 +34,7 @@ public class TesseractOcrData : InpcBase
 
     public string OcrName
     {
-        get => ocrName;
+        get { return ocrName; }
 
         set
         {
@@ -48,7 +48,7 @@ public class TesseractOcrData : InpcBase
 
     public double ProgressValue
     {
-        get => progressValue;
+        get { return progressValue; }
 
         set
         {

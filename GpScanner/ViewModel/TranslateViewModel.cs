@@ -68,7 +68,7 @@ public class TranslateViewModel : InpcBase
 
     public string Çeviri
     {
-        get => çeviri;
+        get { return çeviri; }
 
         set
         {
@@ -82,7 +82,7 @@ public class TranslateViewModel : InpcBase
 
     public string ÇevrilenDil
     {
-        get => çevrilenDil;
+        get { return çevrilenDil; }
 
         set
         {
@@ -122,7 +122,7 @@ public class TranslateViewModel : InpcBase
 
     public bool MetinBoxIsreadOnly
     {
-        get => metinBoxIsreadOnly;
+        get { return metinBoxIsreadOnly; }
 
         set
         {
@@ -136,7 +136,7 @@ public class TranslateViewModel : InpcBase
 
     public string MevcutDil
     {
-        get => mevcutDil;
+        get { return mevcutDil; }
 
         set
         {
@@ -153,7 +153,7 @@ public class TranslateViewModel : InpcBase
 
     public string OkumaDili
     {
-        get => okumaDili;
+        get { return okumaDili; }
 
         set
         {
@@ -169,7 +169,7 @@ public class TranslateViewModel : InpcBase
 
     public ObservableCollection<string> TaramaGeçmiş
     {
-        get => taramaGeçmiş;
+        get { return taramaGeçmiş; }
 
         set
         {

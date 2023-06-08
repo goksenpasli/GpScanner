@@ -17,7 +17,8 @@ internal static class DataSerialize
             XmlSerializer serializer = new(typeof(T));
             using StreamReader stream = new(xmldatapath);
             return serializer.Deserialize(stream) as T;
-        } catch(Exception ex)
+        }
+        catch(Exception ex)
         {
             _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
         }

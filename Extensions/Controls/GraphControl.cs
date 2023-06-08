@@ -21,61 +21,61 @@ public class GraphControl : FrameworkElement
 
     [Description("Graph Controls")]
     [Category("Graph")]
-    public Visibility ContextMenuVisibility { get => (Visibility)GetValue(ContextMenuVisibilityProperty); set => SetValue(ContextMenuVisibilityProperty, value); }
+    public Visibility ContextMenuVisibility { get { return (Visibility)GetValue(ContextMenuVisibilityProperty); } set { SetValue(ContextMenuVisibilityProperty, value); } }
 
     [Description("Graph Controls")]
     [Category("Graph")]
-    public Brush DotColor { get => (Brush)GetValue(DotColorProperty); set => SetValue(DotColorProperty, value); }
+    public Brush DotColor { get { return (Brush)GetValue(DotColorProperty); } set { SetValue(DotColorProperty, value); } }
 
     [Description("Graph Controls")]
     [Category("Graph")]
-    public double FontSize { get => (double)GetValue(FontSizeProperty); set => SetValue(FontSizeProperty, value); }
+    public double FontSize { get { return (double)GetValue(FontSizeProperty); } set { SetValue(FontSizeProperty, value); } }
 
     [Description("Graph Controls")]
     [Category("Graph")]
-    public Visibility GraphContentVisibility { get => (Visibility)GetValue(GraphContentVisibilityProperty); set => SetValue(GraphContentVisibilityProperty, value); }
+    public Visibility GraphContentVisibility { get { return (Visibility)GetValue(GraphContentVisibilityProperty); } set { SetValue(GraphContentVisibilityProperty, value); } }
 
     [Description("Graph Controls")]
     [Category("Graph")]
-    public bool IsContextMenuEnabled { get => (bool)GetValue(IsContextMenuEnabledProperty); set => SetValue(IsContextMenuEnabledProperty, value); }
+    public bool IsContextMenuEnabled { get { return (bool)GetValue(IsContextMenuEnabledProperty); } set { SetValue(IsContextMenuEnabledProperty, value); } }
 
     public ICommand Kaydet { get; }
 
     [Description("Graph Controls")]
     [Category("Graph")]
-    public Brush LineColor { get => (Brush)GetValue(LineColorProperty); set => SetValue(LineColorProperty, value); }
+    public Brush LineColor { get { return (Brush)GetValue(LineColorProperty); } set { SetValue(LineColorProperty, value); } }
 
     [Description("Graph Controls")]
     [Category("Graph")]
-    public Visibility LineDotVisibility { get => (Visibility)GetValue(LineDotVisibilityProperty); set => SetValue(LineDotVisibilityProperty, value); }
+    public Visibility LineDotVisibility { get { return (Visibility)GetValue(LineDotVisibilityProperty); } set { SetValue(LineDotVisibilityProperty, value); } }
 
     [Description("Graph Controls")]
     [Category("Graph")]
-    public Visibility LineGraphVisibility { get => (Visibility)GetValue(LineGraphVisibilityProperty); set => SetValue(LineGraphVisibilityProperty, value); }
+    public Visibility LineGraphVisibility { get { return (Visibility)GetValue(LineGraphVisibilityProperty); } set { SetValue(LineGraphVisibilityProperty, value); } }
 
     [Description("Graph Controls")]
     [Category("Graph")]
-    public double LineThickness { get => (double)GetValue(LineThicknessProperty); set => SetValue(LineThicknessProperty, value); }
+    public double LineThickness { get { return (double)GetValue(LineThicknessProperty); } set { SetValue(LineThicknessProperty, value); } }
 
     [Description("Graph Controls")]
     [Category("Graph")]
-    public ObservableCollection<Chart> Series { get => (ObservableCollection<Chart>)GetValue(SeriesProperty); set => SetValue(SeriesProperty, value); }
+    public ObservableCollection<Chart> Series { get { return (ObservableCollection<Chart>)GetValue(SeriesProperty); } set { SetValue(SeriesProperty, value); } }
 
     [Description("Graph Controls")]
     [Category("Graph")]
-    public Visibility SeriesTextVisibility { get => (Visibility)GetValue(SeriesTextVisibilityProperty); set => SetValue(SeriesTextVisibilityProperty, value); }
+    public Visibility SeriesTextVisibility { get { return (Visibility)GetValue(SeriesTextVisibilityProperty); } set { SetValue(SeriesTextVisibilityProperty, value); } }
 
     [Description("Graph Controls")]
     [Category("Graph")]
-    public Brush TextColor { get => (Brush)GetValue(TextColorProperty); set => SetValue(TextColorProperty, value); }
+    public Brush TextColor { get { return (Brush)GetValue(TextColorProperty); } set { SetValue(TextColorProperty, value); } }
 
     [Description("Graph Controls")]
     [Category("Graph")]
-    public Brush ValueColor { get => (Brush)GetValue(ValueColorProperty); set => SetValue(ValueColorProperty, value); }
+    public Brush ValueColor { get { return (Brush)GetValue(ValueColorProperty); } set { SetValue(ValueColorProperty, value); } }
 
     [Description("Graph Controls")]
     [Category("Graph")]
-    public Visibility ValueTextVisibility { get => (Visibility)GetValue(ValueTextVisibilityProperty); set => SetValue(ValueTextVisibilityProperty, value); }
+    public Visibility ValueTextVisibility { get { return (Visibility)GetValue(ValueTextVisibilityProperty); } set { SetValue(ValueTextVisibilityProperty, value); } }
 
     protected override void OnRender(DrawingContext drawingContext)
     {
@@ -181,7 +181,12 @@ public class GraphControl : FrameworkElement
     }
 
     private FormattedText GenerateFormattedText(Chart item, Pen pen)
-    { return new FormattedText(item.Description, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), FontSize, TextColor) { MaxTextWidth = pen.Thickness }; }
+    {
+        return new FormattedText(item.Description, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), FontSize, TextColor)
+        {
+            MaxTextWidth = pen.Thickness
+        };
+    }
 
     private FormattedText GenerateFormattedValueText(Chart item, Pen pen)
     {
@@ -242,7 +247,11 @@ public class GraphControl : FrameworkElement
         new FrameworkPropertyMetadata(Brushes.Blue, FrameworkPropertyMetadataOptions.AffectsRender));
 
     public static readonly DependencyProperty LineDotVisibilityProperty =
-        DependencyProperty.Register("LineDotVisibility", typeof(Visibility), typeof(GraphControl), new FrameworkPropertyMetadata(Visibility.Collapsed, FrameworkPropertyMetadataOptions.AffectsRender));
+        DependencyProperty.Register(
+        "LineDotVisibility",
+        typeof(Visibility),
+        typeof(GraphControl),
+        new FrameworkPropertyMetadata(Visibility.Collapsed, FrameworkPropertyMetadataOptions.AffectsRender));
 
     public static readonly DependencyProperty LineGraphVisibilityProperty =
         DependencyProperty.Register(
@@ -264,7 +273,11 @@ public class GraphControl : FrameworkElement
         new FrameworkPropertyMetadata(new ObservableCollection<Chart>(), FrameworkPropertyMetadataOptions.AffectsRender));
 
     public static readonly DependencyProperty SeriesTextVisibilityProperty =
-        DependencyProperty.Register("SeriesTextVisibility", typeof(Visibility), typeof(GraphControl), new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.AffectsRender));
+        DependencyProperty.Register(
+        "SeriesTextVisibility",
+        typeof(Visibility),
+        typeof(GraphControl),
+        new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.AffectsRender));
 
     public static readonly DependencyProperty TextColorProperty = DependencyProperty.Register(
         "TextColor",
@@ -279,5 +292,9 @@ public class GraphControl : FrameworkElement
         new FrameworkPropertyMetadata(Brushes.Red, FrameworkPropertyMetadataOptions.AffectsRender));
 
     public static readonly DependencyProperty ValueTextVisibilityProperty =
-        DependencyProperty.Register("ValueTextVisibility", typeof(Visibility), typeof(GraphControl), new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.AffectsRender));
+        DependencyProperty.Register(
+        "ValueTextVisibility",
+        typeof(Visibility),
+        typeof(GraphControl),
+        new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.AffectsRender));
 }

@@ -20,7 +20,7 @@ namespace TwainWpf
         /// <value>The orientation.</value>
         public Orientation Orientation
         {
-            get => _orientation;
+            get { return _orientation; }
 
             set
             {
@@ -38,7 +38,7 @@ namespace TwainWpf
         /// <value>The size.</value>
         public PageType Size
         {
-            get => _size;
+            get { return _size; }
 
             set
             {

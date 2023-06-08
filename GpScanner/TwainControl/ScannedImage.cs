@@ -12,7 +12,7 @@ public class ScannedImage : InpcBase
 
     public bool Animate
     {
-        get => animate;
+        get { return animate; }
 
         set
         {
@@ -26,7 +26,7 @@ public class ScannedImage : InpcBase
 
     public string FilePath
     {
-        get => filePath;
+        get { return filePath; }
 
         set
         {
@@ -40,7 +40,7 @@ public class ScannedImage : InpcBase
 
     public int Index
     {
-        get => ındex;
+        get { return ındex; }
         set
         {
             if(ındex == value)
@@ -55,7 +55,7 @@ public class ScannedImage : InpcBase
 
     public BitmapFrame Resim
     {
-        get => resim;
+        get { return resim; }
 
         set
         {
@@ -70,7 +70,7 @@ public class ScannedImage : InpcBase
 
     public BitmapSource ResimThumb
     {
-        get => Resim.Resize(Settings.Default.DefaultThumbPictureResizeRatio / 100d);
+        get { return Resim.Resize(Settings.Default.DefaultThumbPictureResizeRatio / 100d); }
 
         set
         {
@@ -84,7 +84,7 @@ public class ScannedImage : InpcBase
 
     public double RotationAngle
     {
-        get => rotationAngle;
+        get { return rotationAngle; }
 
         set
         {
@@ -98,7 +98,7 @@ public class ScannedImage : InpcBase
 
     public bool Seçili
     {
-        get => seçili;
+        get { return seçili; }
 
         set
         {

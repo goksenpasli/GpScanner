@@ -163,7 +163,10 @@ namespace Tesseract.Internal.InteropDotNet
             const MethodAttributes methodAttributes = MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.NewSlot | MethodAttributes.Virtual;
 
             string delegateName = GetDelegateName(assemblyName, method.Info);
-            TypeBuilder delegateBuilder = moduleBuilder.DefineType(delegateName, TypeAttributes.Public | TypeAttributes.AutoClass | TypeAttributes.Sealed, typeof(MulticastDelegate));
+            TypeBuilder delegateBuilder = moduleBuilder.DefineType(
+                delegateName,
+                TypeAttributes.Public | TypeAttributes.AutoClass | TypeAttributes.Sealed,
+                typeof(MulticastDelegate));
 
             RuntimeDllImportAttribute importAttribute = method.DllImportAttribute;
             ConstructorInfo attributeCtor =

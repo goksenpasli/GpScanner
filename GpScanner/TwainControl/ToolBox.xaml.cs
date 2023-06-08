@@ -40,10 +40,13 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
             },
             parameter => Scanner?.CroppedImage is not null);
 
-        InvertImage = new RelayCommand<object>(parameter => Scanner.CroppedImage = ((BitmapSource)Scanner.CroppedImage).InvertBitmap(), parameter => Scanner?.CroppedImage is not null);
+        InvertImage = new RelayCommand<object>(
+            parameter => Scanner.CroppedImage = ((BitmapSource)Scanner.CroppedImage).InvertBitmap(),
+            parameter => Scanner?.CroppedImage is not null);
 
         BlackAndWhiteImage = new RelayCommand<object>(
-            parameter => Scanner.CroppedImage = ((BitmapSource)Scanner.CroppedImage).BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg),
+            parameter => Scanner.CroppedImage =
+                ((BitmapSource)Scanner.CroppedImage).BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg),
             parameter => Scanner?.CroppedImage is not null);
 
         ApplyColorChange = new RelayCommand<object>(parameter => Scanner.CopyCroppedImage = Scanner.CroppedImage, parameter => Scanner?.CroppedImage is not null);
@@ -205,7 +208,8 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                                     if(ResizeRatioImage)
                                     {
                                         gfx.DrawImage(xImage, new Point(x, y));
-                                    } else
+                                    }
+                                    else
                                     {
                                         gfx.DrawImage(xImage, box);
                                     }
@@ -301,7 +305,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
 
     public double BorderSize
     {
-        get => borderSize;
+        get { return borderSize; }
 
         set
         {
@@ -315,7 +319,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
 
     public bool CompressImage
     {
-        get => compressImage;
+        get { return compressImage; }
 
         set
         {
@@ -343,7 +347,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
 
     public bool ResizeRatioImage
     {
-        get => resizeRatioImage;
+        get { return resizeRatioImage; }
 
         set
         {
@@ -365,7 +369,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
 
     public double ToolBoxPdfMergeProgressValue
     {
-        get => toolBoxPdfMergeProgressValue;
+        get { return toolBoxPdfMergeProgressValue; }
 
         set
         {

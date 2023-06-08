@@ -22,12 +22,17 @@ public class XmlViewerControlModel
                 XMLdoc.Load(path);
                 Binding binding = new() { Source = new XmlDataProvider { Document = XMLdoc }, XPath = "child::node()" };
                 _ = xmlViewerControl.xmlTree.SetBinding(ItemsControl.ItemsSourceProperty, binding);
-            } catch(XmlException ex)
+            }
+            catch(XmlException ex)
             {
                 throw new ArgumentException(nameof(path), ex);
             }
         }
     }
 
-    public static readonly DependencyProperty XmlContentProperty = DependencyProperty.RegisterAttached("XmlContent", typeof(string), typeof(XmlViewerControlModel), new PropertyMetadata(null, Changed));
+    public static readonly DependencyProperty XmlContentProperty = DependencyProperty.RegisterAttached(
+        "XmlContent",
+        typeof(string),
+        typeof(XmlViewerControlModel),
+        new PropertyMetadata(null, Changed));
 }

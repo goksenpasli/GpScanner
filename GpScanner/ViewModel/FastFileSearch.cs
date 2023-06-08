@@ -90,7 +90,8 @@ public static class Win32FileScanner
                         parent.AddDirectory(ref stats);
 
                         yield return new FileResult(fullPath, 0, findData.dwFileAttributes, creationTime, lastWriteTime, lastAccessTime, FileType.Folder, depth, stats);
-                    } else
+                    }
+                    else
                     {
                         long filesize = GetFilesize(findData);
 
@@ -98,9 +99,11 @@ public static class Win32FileScanner
 
                         yield return new FileResult(fullPath, filesize, findData.dwFileAttributes, creationTime, lastWriteTime, lastAccessTime, FileType.File, depth);
                     }
-                } while (FindNextFile(handle, out findData));
+                }
+                while (FindNextFile(handle, out findData));
             }
-        } finally
+        }
+        finally
         {
             _ = FindClose(handle);
         }
@@ -136,13 +139,16 @@ public static class Win32FileScanner
                         {
                             yield return filePath;
                         }
-                    } else
+                    }
+                    else
                     {
                         yield return fullPath;
                     }
-                } while (FindNextFile(handle, out findData));
+                }
+                while (FindNextFile(handle, out findData));
             }
-        } finally
+        }
+        finally
         {
             _ = FindClose(handle);
         }

@@ -39,7 +39,8 @@ public class Scanner : InpcBase, IDataErrorInfo
             {
                 Resimler[i].Index = i + 1;
             }
-        } else if(e.Action == NotifyCollectionChangedAction.Remove)
+        }
+        else if(e.Action == NotifyCollectionChangedAction.Remove)
         {
             for(int i = e.OldStartingIndex; i < Resimler.Count; i++)
             {
@@ -50,7 +51,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool AllowCopy
     {
-        get => allowCopy;
+        get { return allowCopy; }
 
         set
         {
@@ -64,7 +65,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool AllowEdit
     {
-        get => allowEdit;
+        get { return allowEdit; }
 
         set
         {
@@ -78,7 +79,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool AllowPrint
     {
-        get => allowPrint;
+        get { return allowPrint; }
 
         set
         {
@@ -92,7 +93,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool ApplyDataBaseOcr
     {
-        get => applyDataBaseOcr;
+        get { return applyDataBaseOcr; }
 
         set
         {
@@ -106,7 +107,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool ApplyMedian
     {
-        get => applyMedian;
+        get { return applyMedian; }
 
         set
         {
@@ -120,7 +121,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool ApplyPdfSaveOcr
     {
-        get => applyPdfSaveOcr;
+        get { return applyPdfSaveOcr; }
 
         set
         {
@@ -134,7 +135,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool ArayüzEtkin
     {
-        get => arayüzetkin;
+        get { return arayüzetkin; }
 
         set
         {
@@ -148,7 +149,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool AutoSave
     {
-        get => autoSave;
+        get { return autoSave; }
 
         set
         {
@@ -162,7 +163,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public string BarcodeContent
     {
-        get => barcodeContent;
+        get { return barcodeContent; }
 
         set
         {
@@ -176,7 +177,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool BorderAnimation
     {
-        get => borderAnimation;
+        get { return borderAnimation; }
 
         set
         {
@@ -190,7 +191,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public int BoyAdet
     {
-        get => boyAdet;
+        get { return boyAdet; }
 
         set
         {
@@ -204,7 +205,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public double Brightness
     {
-        get => brightness;
+        get { return brightness; }
 
         set
         {
@@ -218,7 +219,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public int CaretPosition
     {
-        get => caretPosition;
+        get { return caretPosition; }
 
         set
         {
@@ -232,7 +233,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public ObservableCollection<Chart> Chart
     {
-        get => chart;
+        get { return chart; }
 
         set
         {
@@ -246,7 +247,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public ImageSource CopyCroppedImage
     {
-        get => copyCroppedImage;
+        get { return copyCroppedImage; }
 
         set
         {
@@ -260,7 +261,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public string CreatorAppName
     {
-        get => creatorAppName;
+        get { return creatorAppName; }
 
         set
         {
@@ -274,7 +275,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public double CropBottom
     {
-        get => cropBottom;
+        get { return cropBottom; }
 
         set
         {
@@ -288,7 +289,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool CropDialogExpanded
     {
-        get => cropDialogExpanded;
+        get { return cropDialogExpanded; }
 
         set
         {
@@ -302,7 +303,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public double CropLeft
     {
-        get => cropLeft;
+        get { return cropLeft; }
 
         set
         {
@@ -316,7 +317,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public ImageSource CroppedImage
     {
-        get => croppedImage;
+        get { return croppedImage; }
 
         set
         {
@@ -330,7 +331,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public double CroppedImageAngle
     {
-        get => croppedImageAngle;
+        get { return croppedImageAngle; }
 
         set
         {
@@ -344,7 +345,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public double CropRight
     {
-        get => cropRight;
+        get { return cropRight; }
 
         set
         {
@@ -358,7 +359,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public double CropTop
     {
-        get => cropTop;
+        get { return cropTop; }
 
         set
         {
@@ -372,7 +373,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool Deskew
     {
-        get => deskew;
+        get { return deskew; }
 
         set
         {
@@ -386,7 +387,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool DetectEmptyPage
     {
-        get => detectEmptyPage;
+        get { return detectEmptyPage; }
 
         set
         {
@@ -400,7 +401,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool DetectPageSeperator
     {
-        get => detectPageSeperator;
+        get { return detectPageSeperator; }
 
         set
         {
@@ -414,7 +415,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool Duplex
     {
-        get => duplex;
+        get { return duplex; }
 
         set
         {
@@ -428,7 +429,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public int EnAdet
     {
-        get => enAdet;
+        get { return enAdet; }
 
         set
         {
@@ -444,7 +445,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool FileIsPdfFile
     {
-        get => string.Equals(Path.GetExtension(FileName), ".pdf", StringComparison.OrdinalIgnoreCase);
+        get { return string.Equals(Path.GetExtension(FileName), ".pdf", StringComparison.OrdinalIgnoreCase); }
 
         set
         {
@@ -458,7 +459,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public string FileName
     {
-        get => fileName;
+        get { return fileName; }
 
         set
         {
@@ -473,7 +474,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public string FileOcrContent
     {
-        get => fileOcrContent;
+        get { return fileOcrContent; }
 
         set
         {
@@ -489,7 +490,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public int FtpLoadProgressValue
     {
-        get => ftpLoadProgressValue;
+        get { return ftpLoadProgressValue; }
 
         set
         {
@@ -503,7 +504,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool InvertImage
     {
-        get => ınvertImage;
+        get { return ınvertImage; }
         set
         {
             if(ınvertImage != value)
@@ -516,7 +517,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public PdfPageLayout Layout
     {
-        get => layout;
+        get { return layout; }
 
         set
         {
@@ -530,7 +531,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public string LocalizedPath
     {
-        get => ExtensionMethods.GetDisplayName(Settings.Default.AutoFolder);
+        get { return ExtensionMethods.GetDisplayName(Settings.Default.AutoFolder); }
 
         set
         {
@@ -544,7 +545,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public int MedianValue
     {
-        get => medianValue;
+        get { return medianValue; }
 
         set
         {
@@ -558,7 +559,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool PaperBackScan
     {
-        get => paperBackScan;
+        get { return paperBackScan; }
 
         set
         {
@@ -572,7 +573,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool PasswordProtect
     {
-        get => passwordProtect;
+        get { return passwordProtect; }
 
         set
         {
@@ -586,7 +587,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public XKnownColor PdfAlignTextColor
     {
-        get => pdfAlignTextColor;
+        get { return pdfAlignTextColor; }
 
         set
         {
@@ -600,7 +601,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public string PdfFilePath
     {
-        get => pdfFilePath;
+        get { return pdfFilePath; }
 
         set
         {
@@ -614,7 +615,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool PdfPageNumberDraw
     {
-        get => pdfPageNumberDraw;
+        get { return pdfPageNumberDraw; }
 
         set
         {
@@ -628,7 +629,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public SecureString PdfPassword
     {
-        get => pdfPassword;
+        get { return pdfPassword; }
 
         set
         {
@@ -642,7 +643,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public double PdfSaveProgressValue
     {
-        get => pdfSaveProgressValue;
+        get { return pdfSaveProgressValue; }
 
         set
         {
@@ -656,7 +657,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public string ProfileName
     {
-        get => profileName;
+        get { return profileName; }
 
         set
         {
@@ -670,7 +671,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public TaskbarItemProgressState ProgressState
     {
-        get => progressState;
+        get { return progressState; }
 
         set
         {
@@ -684,7 +685,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public IEnumerable<string> QrData
     {
-        get => qrData;
+        get { return qrData; }
 
         set
         {
@@ -698,7 +699,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public ObservableCollection<ScannedImage> Resimler
     {
-        get => resimler;
+        get { return resimler; }
 
         set
         {
@@ -712,7 +713,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public double RotateAngle
     {
-        get => rotateAngle;
+        get { return rotateAngle; }
 
         set
         {
@@ -753,7 +754,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public Brush SaveProgressBarForegroundBrush
     {
-        get => saveProgressBarForegroundBrush;
+        get { return saveProgressBarForegroundBrush; }
 
         set
         {
@@ -767,7 +768,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool SaveProgressIndeterminate
     {
-        get => saveProgressIndeterminate;
+        get { return saveProgressIndeterminate; }
 
         set
         {
@@ -781,7 +782,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool Seçili
     {
-        get => seçili;
+        get { return seçili; }
 
         set
         {
@@ -795,7 +796,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public int SeçiliResimSayısı
     {
-        get => seçiliResimSayısı;
+        get { return seçiliResimSayısı; }
 
         set
         {
@@ -809,7 +810,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public string SeçiliTarayıcı
     {
-        get => seçiliTarayıcı;
+        get { return seçiliTarayıcı; }
 
         set
         {
@@ -823,7 +824,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public string SelectedProfile
     {
-        get => selectedProfile;
+        get { return selectedProfile; }
 
         set
         {
@@ -837,7 +838,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public string SelectedTtsLanguage
     {
-        get => selectedTtsLanguage;
+        get { return selectedTtsLanguage; }
 
         set
         {
@@ -851,7 +852,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool ShowProgress
     {
-        get => showProgress;
+        get { return showProgress; }
 
         set
         {
@@ -865,7 +866,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool ShowUi
     {
-        get => showUi;
+        get { return showUi; }
 
         set
         {
@@ -879,7 +880,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public double SliceCountHeight
     {
-        get => sliceCountHeight;
+        get { return sliceCountHeight; }
 
         set
         {
@@ -893,7 +894,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public double SliceCountWidth
     {
-        get => sliceCountWidth;
+        get { return sliceCountWidth; }
 
         set
         {
@@ -907,7 +908,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public string SourceColor
     {
-        get => sourceColor;
+        get { return sourceColor; }
 
         set
         {
@@ -921,7 +922,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public IList<string> Tarayıcılar
     {
-        get => tarayıcılar;
+        get { return tarayıcılar; }
 
         set
         {
@@ -935,7 +936,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public string TargetColor
     {
-        get => targetColor;
+        get { return targetColor; }
 
         set
         {
@@ -949,7 +950,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public double Threshold
     {
-        get => threshold;
+        get { return threshold; }
 
         set
         {
@@ -963,7 +964,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public int ToolBarBwThreshold
     {
-        get => toolBarBwThreshold;
+        get { return toolBarBwThreshold; }
 
         set
         {
@@ -977,7 +978,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public ObservableCollection<string> UnsupportedFiles
     {
-        get => unsupportedFiles;
+        get { return unsupportedFiles; }
 
         set
         {
@@ -991,7 +992,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool UseMozJpegEncoding
     {
-        get => useMozJpegEncoding;
+        get { return useMozJpegEncoding; }
 
         set
         {
@@ -1005,7 +1006,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool UsePageSeperator
     {
-        get => usePageSeperator;
+        get { return usePageSeperator; }
 
         set
         {
@@ -1019,7 +1020,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public string UserName
     {
-        get => userName;
+        get { return userName; }
 
         set
         {
@@ -1033,7 +1034,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public string Watermark
     {
-        get => watermark;
+        get { return watermark; }
 
         set
         {
@@ -1047,7 +1048,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public double WatermarkAngle
     {
-        get => watermarkAngle;
+        get { return watermarkAngle; }
 
         set
         {
@@ -1061,7 +1062,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public SolidColorBrush WatermarkColor
     {
-        get => watermarkColor;
+        get { return watermarkColor; }
 
         set
         {
@@ -1075,7 +1076,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public string WatermarkFont
     {
-        get => watermarkFont;
+        get { return watermarkFont; }
 
         set
         {
@@ -1089,7 +1090,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public double WatermarkTextSize
     {
-        get => watermarkTextSize;
+        get { return watermarkTextSize; }
 
         set
         {

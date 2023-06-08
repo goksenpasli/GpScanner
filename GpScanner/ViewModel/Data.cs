@@ -9,7 +9,7 @@ public class Data : InpcBase
     [XmlAttribute(AttributeName = "FileContent")]
     public string FileContent
     {
-        get => fileContent;
+        get { return fileContent; }
 
         set
         {
@@ -24,7 +24,7 @@ public class Data : InpcBase
     [XmlAttribute(AttributeName = "FileName")]
     public string FileName
     {
-        get => fileName;
+        get { return fileName; }
 
         set
         {
@@ -39,7 +39,7 @@ public class Data : InpcBase
     [XmlAttribute(AttributeName = "Id")]
     public int Id
     {
-        get => ıd;
+        get { return ıd; }
 
         set
         {
@@ -54,7 +54,7 @@ public class Data : InpcBase
     [XmlAttribute(AttributeName = "QrData")]
     public string QrData
     {
-        get => qrData;
+        get { return qrData; }
 
         set
         {

@@ -28,7 +28,8 @@ public class GridViewSort
                         {
                             command.Execute(propertyName);
                         }
-                    } else if(GetAutoSort(listView))
+                    }
+                    else if(GetAutoSort(listView))
                     {
                         ApplySort(listView.Items, propertyName, listView, headerClicked);
                     }

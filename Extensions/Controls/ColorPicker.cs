@@ -50,23 +50,28 @@ public static class HSV
         {
             r = c;
             g = x;
-        } else if(h < 120)
+        }
+        else if(h < 120)
         {
             r = x;
             g = c;
-        } else if(h < 180)
+        }
+        else if(h < 180)
         {
             g = c;
             b = x;
-        } else if(h < 240)
+        }
+        else if(h < 240)
         {
             g = x;
             b = c;
-        } else if(h < 300)
+        }
+        else if(h < 300)
         {
             r = x;
             b = c;
-        } else if(h <= 360)
+        }
+        else if(h <= 360)
         {
             r = c;
             b = x;
@@ -119,23 +124,27 @@ public class ColorPicker : Control
         }
     }
 
-    public byte Alpha { get => (byte)GetValue(AlphaProperty); set => SetValue(AlphaProperty, value); }
+    public byte Alpha { get { return (byte)GetValue(AlphaProperty); } set { SetValue(AlphaProperty, value); } }
 
-    public int ColorPickerColumnCount { get => (int)GetValue(ColorPickerColumnCountProperty); set => SetValue(ColorPickerColumnCountProperty, value); }
+    public int ColorPickerColumnCount { get { return (int)GetValue(ColorPickerColumnCountProperty); } set { SetValue(ColorPickerColumnCountProperty, value); } }
 
-    public string HexCode { get => (string)GetValue(HexCodeProperty); set => SetValue(HexCodeProperty, value); }
+    public string HexCode { get { return (string)GetValue(HexCodeProperty); } set { SetValue(HexCodeProperty, value); } }
 
-    public Visibility HexCodeVisibility { get => (Visibility)GetValue(HexCodeVisibilityProperty); set => SetValue(HexCodeVisibilityProperty, value); }
+    public Visibility HexCodeVisibility { get { return (Visibility)GetValue(HexCodeVisibilityProperty); } set { SetValue(HexCodeVisibilityProperty, value); } }
 
-    public Color MiddleStopColor { get => (Color)GetValue(MiddleStopColorProperty); set => SetValue(MiddleStopColorProperty, value); }
+    public Color MiddleStopColor { get { return (Color)GetValue(MiddleStopColorProperty); } set { SetValue(MiddleStopColorProperty, value); } }
 
-    public Visibility PredefinedColorVisibility { get => (Visibility)GetValue(PredefinedColorVisibilityProperty); set => SetValue(PredefinedColorVisibilityProperty, value); }
+    public Visibility PredefinedColorVisibility
+    {
+        get { return (Visibility)GetValue(PredefinedColorVisibilityProperty); }
+        set { SetValue(PredefinedColorVisibilityProperty, value); }
+    }
 
     public GridLength SelectorLength { get; set; } = new(1, GridUnitType.Star);
 
-    public Visibility SliderVisibility { get => (Visibility)GetValue(SliderVisibilityProperty); set => SetValue(SliderVisibilityProperty, value); }
+    public Visibility SliderVisibility { get { return (Visibility)GetValue(SliderVisibilityProperty); } set { SetValue(SliderVisibilityProperty, value); } }
 
-    public Brush SpectrumGridBackground { get => (Brush)GetValue(SpectrumGridBackgroundProperty); set => SetValue(SpectrumGridBackgroundProperty, value); }
+    public Brush SpectrumGridBackground { get { return (Brush)GetValue(SpectrumGridBackgroundProperty); } set { SetValue(SpectrumGridBackgroundProperty, value); } }
 
     private static void AlphaChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -171,7 +180,11 @@ public class ColorPicker : Control
         }
     }
 
-    public static readonly DependencyProperty AlphaProperty = DependencyProperty.Register("Alpha", typeof(byte), typeof(ColorPicker), new PropertyMetadata((byte)0xff, AlphaChanged));
+    public static readonly DependencyProperty AlphaProperty = DependencyProperty.Register(
+        "Alpha",
+        typeof(byte),
+        typeof(ColorPicker),
+        new PropertyMetadata((byte)0xff, AlphaChanged));
 
     public static readonly DependencyProperty ColorPickerColumnCountProperty =
         DependencyProperty.Register("ColorPickerColumnCount", typeof(int), typeof(ColorPicker), new PropertyMetadata(8));
@@ -181,7 +194,11 @@ public class ColorPicker : Control
     public static readonly DependencyProperty HexCodeVisibilityProperty =
         DependencyProperty.Register("HexCodeVisibility", typeof(Visibility), typeof(ColorPicker), new PropertyMetadata(Visibility.Visible));
 
-    public static readonly DependencyProperty MiddleStopColorProperty = DependencyProperty.Register("MiddleStopColor", typeof(Color), typeof(ColorPicker), new PropertyMetadata(Colors.Gray));
+    public static readonly DependencyProperty MiddleStopColorProperty = DependencyProperty.Register(
+        "MiddleStopColor",
+        typeof(Color),
+        typeof(ColorPicker),
+        new PropertyMetadata(Colors.Gray));
 
     public static readonly DependencyProperty PredefinedColorVisibilityProperty =
         DependencyProperty.Register("PredefinedColorVisibility", typeof(Visibility), typeof(ColorPicker), new PropertyMetadata(Visibility.Collapsed));

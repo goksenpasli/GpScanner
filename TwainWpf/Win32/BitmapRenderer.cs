@@ -56,7 +56,8 @@ namespace TwainWpf.Win32
                 try
                 {
                     _ = Gdi32Native.SetDIBitsToDevice(hdc, 0, 0, _rectangle.Width, _rectangle.Height, 0, 0, 0, _rectangle.Height, _pixelInfoPointer, _bitmapPointer, 0);
-                } finally
+                }
+                finally
                 {
                     graphics.ReleaseHdc(hdc);
                 }

@@ -59,7 +59,8 @@ public static class DragDropExtension
         return null;
     }
 
-    public static bool GetScrollOnDragDrop(DependencyObject element) { return element == null ? throw new ArgumentNullException(nameof(element)) : (bool)element.GetValue(ScrollOnDragDropProperty); }
+    public static bool GetScrollOnDragDrop(DependencyObject element)
+    { return element == null ? throw new ArgumentNullException(nameof(element)) : (bool)element.GetValue(ScrollOnDragDropProperty); }
 
     public static void SetScrollOnDragDrop(DependencyObject element, bool value)
     {

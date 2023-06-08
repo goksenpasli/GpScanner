@@ -80,7 +80,9 @@ namespace Tesseract.Internal.InteropDotNet
                         dllHandle = CheckWorkingDirecotry(fileName, platformName);
                     }
 
-                    loadedAssemblies[fileName] = dllHandle != IntPtr.Zero ? dllHandle : throw new DllNotFoundException($"Failed to find library \"{fileName}\" for platform {platformName}.");
+                    loadedAssemblies[fileName] = dllHandle != IntPtr.Zero
+                        ? dllHandle
+                        : throw new DllNotFoundException($"Failed to find library \"{fileName}\" for platform {platformName}.");
                 }
 
                 return loadedAssemblies[fileName];

@@ -14,7 +14,8 @@ public sealed class SystemFileIconConverter : IMultiValueConverter
             try
             {
                 return $@"{Environment.SystemDirectory}\{systemfilename}".IconCreate(System.Convert.ToInt32(index));
-            } catch(Exception)
+            }
+            catch(Exception)
             {
                 return null;
             }

@@ -16,7 +16,7 @@ namespace TwainWpf
         /// </summary>
         public bool AbortWhenNoPaperDetectable
         {
-            get => _abortWhenNoPaperDetectable;
+            get { return _abortWhenNoPaperDetectable; }
 
             set
             {
@@ -30,7 +30,7 @@ namespace TwainWpf
 
         public AreaSettings Area
         {
-            get => _area;
+            get { return _area; }
 
             set
             {
@@ -48,7 +48,7 @@ namespace TwainWpf
         /// <value>The page.</value>
         public PageSettings Page
         {
-            get => _page;
+            get { return _page; }
 
             set
             {
@@ -65,7 +65,7 @@ namespace TwainWpf
         /// </summary>
         public ResolutionSettings Resolution
         {
-            get => _resolution;
+            get { return _resolution; }
 
             set
             {
@@ -83,7 +83,7 @@ namespace TwainWpf
         /// <value>The rotation.</value>
         public RotationSettings Rotation
         {
-            get => _rotation;
+            get { return _rotation; }
 
             set
             {
@@ -98,7 +98,7 @@ namespace TwainWpf
         /// <summary>
         /// Indicates if all pages should be transferred.
         /// </summary>
-        public bool ShouldTransferAllPages { get => _transferCount == TransferAllPages; set => TransferCount = value ? TransferAllPages : (short)1; }
+        public bool ShouldTransferAllPages { get { return _transferCount == TransferAllPages; } set { TransferCount = value ? TransferAllPages : (short)1; } }
 
         /// <summary>
         /// Gets or sets a value indicating whether [show progress indicator ui]. If TRUE, the Source will display a
@@ -110,7 +110,7 @@ namespace TwainWpf
         /// <value><c>true</c> if [show progress indicator ui]; otherwise, <c>false</c>.</value>
         public bool? ShowProgressIndicatorUi
         {
-            get => _showProgressIndicatorUi;
+            get { return _showProgressIndicatorUi; }
 
             set
             {
@@ -127,7 +127,7 @@ namespace TwainWpf
         /// </summary>
         public bool ShowTwainUi
         {
-            get => _showTwainUi;
+            get { return _showTwainUi; }
 
             set
             {
@@ -144,7 +144,7 @@ namespace TwainWpf
         /// </summary>
         public short TransferCount
         {
-            get => _transferCount;
+            get { return _transferCount; }
 
             set
             {
@@ -163,7 +163,7 @@ namespace TwainWpf
         /// </summary>
         public bool? UseAutoFeeder
         {
-            get => _useAutoFeeder;
+            get { return _useAutoFeeder; }
 
             set
             {
@@ -181,7 +181,7 @@ namespace TwainWpf
         /// </summary>
         public bool? UseAutoScanCache
         {
-            get => _useAutoScanCache;
+            get { return _useAutoScanCache; }
 
             set
             {
@@ -198,7 +198,7 @@ namespace TwainWpf
         /// </summary>
         public bool? UseDocumentFeeder
         {
-            get => _useDocumentFeeder;
+            get { return _useDocumentFeeder; }
 
             set
             {
@@ -215,7 +215,7 @@ namespace TwainWpf
         /// </summary>
         public bool? UseDuplex
         {
-            get => _useDuplex;
+            get { return _useDuplex; }
 
             set
             {
@@ -232,7 +232,7 @@ namespace TwainWpf
         /// </summary>
         public bool? UseFilmScanner
         {
-            get => _useFilmScanner;
+            get { return _useFilmScanner; }
 
             set
             {
@@ -247,7 +247,12 @@ namespace TwainWpf
         /// <summary>
         /// Default scan settings.
         /// </summary>
-        public static readonly ScanSettings Default = new ScanSettings() { Resolution = ResolutionSettings.ColourPhotocopier, Page = PageSettings.Default, Rotation = new RotationSettings() };
+        public static readonly ScanSettings Default = new ScanSettings()
+        {
+            Resolution = ResolutionSettings.ColourPhotocopier,
+            Page = PageSettings.Default,
+            Rotation = new RotationSettings()
+        };
 
         private bool _abortWhenNoPaperDetectable;
 

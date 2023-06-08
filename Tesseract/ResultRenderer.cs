@@ -165,7 +165,8 @@ namespace Tesseract
                         _currentDocumentHandle = null;
                     }
                 }
-            } finally
+            }
+            finally
             {
                 if(_handle.Handle != IntPtr.Zero)
                 {
@@ -215,7 +216,8 @@ namespace Tesseract
                         _ = TessApi.Native.ResultRendererEndDocument(_renderer._handle);
                         _renderer._currentDocumentHandle = null;
                     }
-                } finally
+                }
+                finally
                 {
                     if(_titlePtr != IntPtr.Zero)
                     {
@@ -273,7 +275,8 @@ namespace Tesseract
         /// <param name="fontDirectory">The directory containing the pdf font data, normally same as your tessdata directory.</param>
         /// <param name="textonly">skip images if set</param>
         /// <returns></returns>
-        public static IResultRenderer CreatePdfRenderer(string outputFilename, string fontDirectory, bool textonly) { return new PdfResultRenderer(outputFilename, fontDirectory, textonly); }
+        public static IResultRenderer CreatePdfRenderer(string outputFilename, string fontDirectory, bool textonly)
+        { return new PdfResultRenderer(outputFilename, fontDirectory, textonly); }
 
         /// <summary>
         /// Creates renderers for specified output formats.

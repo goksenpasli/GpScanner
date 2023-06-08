@@ -10,7 +10,7 @@ public class ScannerData : InpcBase
     [XmlElement(ElementName = "Data")]
     public ObservableCollection<Data> Data
     {
-        get => data;
+        get { return data; }
 
         set
         {

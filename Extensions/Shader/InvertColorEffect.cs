@@ -17,7 +17,7 @@ public class InvertColorEffect : ShaderEffect
         UpdateShaderValue(InputProperty);
     }
 
-    public Brush Input { get => (Brush)GetValue(InputProperty); set => SetValue(InputProperty, value); }
+    public Brush Input { get { return (Brush)GetValue(InputProperty); } set { SetValue(InputProperty, value); } }
 
     public static readonly DependencyProperty InputProperty =
         RegisterPixelShaderSamplerProperty("Input", typeof(InvertColorEffect), 0);

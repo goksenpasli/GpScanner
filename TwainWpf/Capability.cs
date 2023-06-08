@@ -91,7 +91,8 @@ namespace TwainWpf
             if(capResult.ConditionCode != ConditionCode.Success)
             {
                 throw new TwainException($"Unexpected failure verifying capability {capability}", capResult.ErrorCode, capResult.ConditionCode);
-            } else if(capResult.BoolValue != value)
+            }
+            else if(capResult.BoolValue != value)
             {
                 throw new TwainException($"Failed to set value for capability {capability}", capResult.ErrorCode, capResult.ConditionCode);
             }

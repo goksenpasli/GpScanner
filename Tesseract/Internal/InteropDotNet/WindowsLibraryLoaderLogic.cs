@@ -5,7 +5,8 @@ namespace Tesseract.Internal.InteropDotNet
 {
     internal class WindowsLibraryLoaderLogic : ILibraryLoaderLogic
     {
-        public string FixUpLibraryName(string fileName) { return !string.IsNullOrEmpty(fileName) && !fileName.EndsWith(".dll", StringComparison.OrdinalIgnoreCase) ? $"{fileName}.dll" : fileName; }
+        public string FixUpLibraryName(string fileName)
+        { return !string.IsNullOrEmpty(fileName) && !fileName.EndsWith(".dll", StringComparison.OrdinalIgnoreCase) ? $"{fileName}.dll" : fileName; }
 
         public bool FreeLibrary(IntPtr libraryHandle)
         {
@@ -16,13 +17,15 @@ namespace Tesseract.Internal.InteropDotNet
                 if(isSuccess)
                 {
                     Logger.TraceInformation("Successfully freed native library with handle {0}.", libraryHandle);
-                } else
+                }
+                else
                 {
                     Logger.TraceError("Failed to free native library with handle {0}.\r\nCheck windows event log.", libraryHandle);
                 }
 
                 return isSuccess;
-            } catch(Exception e)
+            }
+            catch(Exception e)
             {
                 int lastError = WindowsGetLastError();
                 Logger.TraceError(
@@ -43,13 +46,15 @@ namespace Tesseract.Internal.InteropDotNet
                 if(functionHandle != IntPtr.Zero)
                 {
                     Logger.TraceInformation("Successfully loaded native function \"{0}\", function handle = {1}.", functionName, functionHandle);
-                } else
+                }
+                else
                 {
                     throw new LoadLibraryException($"Failed to load native function \"{functionName}\" from library with handle  {libraryHandle}.");
                 }
 
                 return functionHandle;
-            } catch(Exception e)
+            }
+            catch(Exception e)
             {
                 int lastError = WindowsGetLastError();
                 throw new LoadLibraryException(
@@ -74,11 +79,13 @@ namespace Tesseract.Internal.InteropDotNet
                 if(libraryHandle != IntPtr.Zero)
                 {
                     Logger.TraceInformation("Successfully loaded native library \"{0}\", handle = {1}.", fileName, libraryHandle);
-                } else
+                }
+                else
                 {
                     Logger.TraceError("Failed to load native library \"{0}\".\r\nCheck windows event log.", fileName);
                 }
-            } catch(Exception e)
+            }
+            catch(Exception e)
             {
                 int lastError = WindowsGetLastError();
                 Logger.TraceError(
@@ -92,13 +99,13 @@ namespace Tesseract.Internal.InteropDotNet
         }
 
         [DllImport(
-            "kernel32",
-            EntryPoint = "FreeLibrary",
-            CallingConvention = CallingConvention.Winapi,
-            SetLastError = true,
-            CharSet = CharSet.Auto,
-            BestFitMapping = false,
-            ThrowOnUnmappableChar = true)]
+        "kernel32",
+        EntryPoint = "FreeLibrary",
+        CallingConvention = CallingConvention.Winapi,
+        SetLastError = true,
+        CharSet = CharSet.Auto,
+        BestFitMapping = false,
+        ThrowOnUnmappableChar = true)]
         private static extern bool WindowsFreeLibrary(IntPtr handle);
 
         private static int WindowsGetLastError() { return Marshal.GetLastWin32Error(); }
@@ -107,13 +114,13 @@ namespace Tesseract.Internal.InteropDotNet
         private static extern IntPtr WindowsGetProcAddress(IntPtr handle, string procedureName);
 
         [DllImport(
-            "kernel32",
-            EntryPoint = "LoadLibrary",
-            CallingConvention = CallingConvention.Winapi,
-            SetLastError = true,
-            CharSet = CharSet.Auto,
-            BestFitMapping = false,
-            ThrowOnUnmappableChar = true)]
+        "kernel32",
+        EntryPoint = "LoadLibrary",
+        CallingConvention = CallingConvention.Winapi,
+        SetLastError = true,
+        CharSet = CharSet.Auto,
+        BestFitMapping = false,
+        ThrowOnUnmappableChar = true)]
         private static extern IntPtr WindowsLoadLibrary(string dllPath);
     }
 }

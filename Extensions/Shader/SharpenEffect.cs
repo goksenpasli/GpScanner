@@ -22,16 +22,20 @@ public class SharpenEffect : ShaderEffect
     /// <summary>
     /// The amount of sharpening.
     /// </summary>
-    public double Amount { get => (double)GetValue(AmountProperty); set => SetValue(AmountProperty, value); }
+    public double Amount { get { return (double)GetValue(AmountProperty); } set { SetValue(AmountProperty, value); } }
 
-    public Brush Input { get => (Brush)GetValue(InputProperty); set => SetValue(InputProperty, value); }
+    public Brush Input { get { return (Brush)GetValue(InputProperty); } set { SetValue(InputProperty, value); } }
 
     /// <summary>
     /// The size of the input (in pixels).
     /// </summary>
-    public Size InputSize { get => (Size)GetValue(InputSizeProperty); set => SetValue(InputSizeProperty, value); }
+    public Size InputSize { get { return (Size)GetValue(InputSizeProperty); } set { SetValue(InputSizeProperty, value); } }
 
-    public static readonly DependencyProperty AmountProperty = DependencyProperty.Register("Amount", typeof(double), typeof(SharpenEffect), new UIPropertyMetadata(1D, PixelShaderConstantCallback(0)));
+    public static readonly DependencyProperty AmountProperty = DependencyProperty.Register(
+        "Amount",
+        typeof(double),
+        typeof(SharpenEffect),
+        new UIPropertyMetadata(1D, PixelShaderConstantCallback(0)));
 
     public static readonly DependencyProperty InputProperty =
         RegisterPixelShaderSamplerProperty("Input", typeof(SharpenEffect), 0);

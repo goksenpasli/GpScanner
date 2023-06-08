@@ -18,7 +18,7 @@ namespace TwainWpf
         /// </summary>
         public ColourSetting ColourSetting
         {
-            get => _colourSettings;
+            get { return _colourSettings; }
 
             set
             {
@@ -35,7 +35,7 @@ namespace TwainWpf
         /// </summary>
         public int? Dpi
         {
-            get => _dpi;
+            get { return _dpi; }
 
             set
             {

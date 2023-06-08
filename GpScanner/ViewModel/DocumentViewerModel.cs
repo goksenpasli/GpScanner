@@ -1,8 +1,5 @@
 ﻿using Extensions;
 using GpScanner.Properties;
-using Microsoft.Win32;
-using PdfSharp.Drawing;
-using PdfSharp.Pdf;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -62,7 +59,7 @@ public class DocumentViewerModel : InpcBase
 
     public IEnumerable<string> DirectoryAllPdfFiles
     {
-        get => directoryAllPdfFiles;
+        get { return directoryAllPdfFiles; }
 
         set
         {
@@ -78,7 +75,7 @@ public class DocumentViewerModel : InpcBase
 
     public byte[] ImgData
     {
-        get => ımgData;
+        get { return ımgData; }
 
         set
         {
@@ -92,7 +89,7 @@ public class DocumentViewerModel : InpcBase
 
     public int Index
     {
-        get => ındex;
+        get { return ındex; }
 
         set
         {
@@ -106,7 +103,7 @@ public class DocumentViewerModel : InpcBase
 
     public string OcrText
     {
-        get => ocrText;
+        get { return ocrText; }
 
         set
         {
@@ -120,7 +117,7 @@ public class DocumentViewerModel : InpcBase
 
     public string PdfFileContent
     {
-        get => string.Join(" ", GpScannerViewModel.DataYükle()?.Where(z => z.FileName == PdfFilePath).Select(z => z.FileContent));
+        get { return string.Join(" ", GpScannerViewModel.DataYükle()?.Where(z => z.FileName == PdfFilePath).Select(z => z.FileContent)); }
 
         set
         {
@@ -134,7 +131,7 @@ public class DocumentViewerModel : InpcBase
 
     public string PdfFilePath
     {
-        get => pdfFilePath;
+        get { return pdfFilePath; }
 
         set
         {
@@ -150,7 +147,7 @@ public class DocumentViewerModel : InpcBase
 
     public Scanner Scanner
     {
-        get => scanner;
+        get { return scanner; }
 
         set
         {
@@ -164,7 +161,7 @@ public class DocumentViewerModel : InpcBase
 
     public string Title
     {
-        get => Path.GetFileName(PdfFilePath);
+        get { return Path.GetFileName(PdfFilePath); }
 
         set
         {

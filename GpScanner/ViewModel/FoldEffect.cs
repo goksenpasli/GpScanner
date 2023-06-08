@@ -15,9 +15,9 @@ public class FoldEffect : ShaderEffect
         UpdateShaderValue(FoldAmountProperty);
     }
 
-    public double FoldAmount { get => (double)GetValue(FoldAmountProperty); set => SetValue(FoldAmountProperty, value); }
+    public double FoldAmount { get { return (double)GetValue(FoldAmountProperty); } set { SetValue(FoldAmountProperty, value); } }
 
-    public Brush Input { get => (Brush)GetValue(InputProperty); set => SetValue(InputProperty, value); }
+    public Brush Input { get { return (Brush)GetValue(InputProperty); } set { SetValue(InputProperty, value); } }
 
     public static readonly DependencyProperty FoldAmountProperty = DependencyProperty.Register(
         "FoldAmount",

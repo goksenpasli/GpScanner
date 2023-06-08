@@ -35,7 +35,7 @@ public class Resizer : Thumb
 
     public Resizer() { DragDelta += Resizer_DragDelta; }
 
-    public ResizeDirections ThumbDirection { get => (ResizeDirections)GetValue(ThumbDirectionProperty); set => SetValue(ThumbDirectionProperty, value); }
+    public ResizeDirections ThumbDirection { get { return (ResizeDirections)GetValue(ThumbDirectionProperty); } set { SetValue(ThumbDirectionProperty, value); } }
 
     private static double ResizeBottom(DragDeltaEventArgs e, Control designerItem)
     {

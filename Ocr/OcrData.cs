@@ -6,7 +6,7 @@ public class OcrData : InpcBase
 {
     public Rect Rect
     {
-        get => rect;
+        get { return rect; }
 
         set
         {
@@ -20,7 +20,7 @@ public class OcrData : InpcBase
 
     public string Text
     {
-        get => text;
+        get { return text; }
 
         set
         {

@@ -69,10 +69,12 @@ namespace DvdBurner
                                     dataWriter.ForceOverwrite = true;
                                     dataWriter.Write(Stream);
                                 }
-                            } catch(Exception ex)
+                            }
+                            catch(Exception ex)
                             {
                                 ActionText = ex.Message;
-                            } finally
+                            }
+                            finally
                             {
                                 if(Eject)
                                 {
@@ -121,10 +123,12 @@ namespace DvdBurner
                                     discFormatErase = new MsftDiscFormat2Erase { Recorder = recorder, ClientName = AppName, FullErase = false };
                                     discFormatErase.EraseMedia();
                                 }
-                            } catch(Exception ex)
+                            }
+                            catch(Exception ex)
                             {
                                 ActionText = ex.Message;
-                            } finally
+                            }
+                            finally
                             {
                                 if(Eject)
                                 {
@@ -140,7 +144,7 @@ namespace DvdBurner
 
         public string ActionText
         {
-            get => actionText;
+            get { return actionText; }
 
             set
             {
@@ -152,13 +156,13 @@ namespace DvdBurner
             }
         }
 
-        public string BurnDirectory { get => (string)GetValue(BurnDirectoryProperty); set => SetValue(BurnDirectoryProperty, value); }
+        public string BurnDirectory { get { return (string)GetValue(BurnDirectoryProperty); } set { SetValue(BurnDirectoryProperty, value); } }
 
         public RelayCommand<object> BurnDvd { get; }
 
         public string CdLabel
         {
-            get => cdLabel;
+            get { return cdLabel; }
 
             set
             {
@@ -172,7 +176,7 @@ namespace DvdBurner
 
         public bool Eject
         {
-            get => eject;
+            get { return eject; }
 
             set
             {
@@ -188,7 +192,7 @@ namespace DvdBurner
 
         public bool ProgressIndeterminate
         {
-            get => progressIndeterminate;
+            get { return progressIndeterminate; }
 
             set
             {
@@ -202,7 +206,7 @@ namespace DvdBurner
 
         public double ProgressValue
         {
-            get => progressValue;
+            get { return progressValue; }
 
             set
             {
@@ -273,7 +277,8 @@ namespace DvdBurner
                         ActionText = "Bilinmeyen İşlem." + progress?.CurrentAction.ToString();
                         break;
                 }
-            } catch(Exception ex)
+            }
+            catch(Exception ex)
             {
                 ActionText = $"Hata{ex.Message}";
             }
@@ -288,7 +293,11 @@ namespace DvdBurner
         private static Task Burntask;
 
         private static Task Erasetask;
-        public static readonly DependencyProperty BurnDirectoryProperty = DependencyProperty.Register("BurnDirectory", typeof(string), typeof(Burner), new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty BurnDirectoryProperty = DependencyProperty.Register(
+            "BurnDirectory",
+            typeof(string),
+            typeof(Burner),
+            new PropertyMetadata(string.Empty));
 
         private string actionText;
 

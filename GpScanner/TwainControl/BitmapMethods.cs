@@ -52,7 +52,8 @@ public static class BitmapMethods
                         if(value < 0)
                         {
                             value = 0;
-                        } else if(value > 255)
+                        }
+                        else if(value > 255)
                         {
                             value = 255;
                         }
@@ -97,7 +98,8 @@ public static class BitmapMethods
             CroppedBitmap cb = new(bitmapFrame, ınt32Rect);
             bitmapFrame = null;
             return cb.ToTiffJpegByteArray(Format.Png);
-        } catch(Exception)
+        }
+        catch(Exception)
         {
             return null;
         }
@@ -117,7 +119,8 @@ public static class BitmapMethods
         if(orientation == Orientation.Horizontal)
         {
             totalWidth *= images.Count;
-        } else
+        }
+        else
         {
             totalHeight *= images.Count;
         }
@@ -134,7 +137,8 @@ public static class BitmapMethods
                 if(orientation == Orientation.Horizontal)
                 {
                     curWidth += image.Resim.PixelWidth;
-                } else
+                }
+                else
                 {
                     curHeight += image.Resim.PixelHeight;
                 }
@@ -365,7 +369,8 @@ public static class BitmapMethods
                     dv = null;
                     return rtb;
                 });
-        } catch(Exception ex)
+        }
+        catch(Exception ex)
         {
             Source = null;
             throw new ArgumentException(nameof(Source), ex);
@@ -398,7 +403,14 @@ public static class BitmapMethods
         }
     }
 
-    public static RenderTargetBitmap ÜstüneResimÇiz(this ImageSource Source, Point konum, Brush brushes, double emSize = 64, string metin = null, double angle = 315, string font = "Arial")
+    public static RenderTargetBitmap ÜstüneResimÇiz(
+        this ImageSource Source,
+        Point konum,
+        Brush brushes,
+        double emSize = 64,
+        string metin = null,
+        double angle = 315,
+        string font = "Arial")
     {
         FlowDirection flowDirection = (CultureInfo.CurrentCulture == CultureInfo.GetCultureInfo("ar-AR")) ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
         FormattedText formattedText =
@@ -439,7 +451,8 @@ public static class BitmapMethods
             return bmp.PixelFormat is PixelFormat.Format24bppRgb or PixelFormat.Format32bppArgb
                 ? webp.EncodeLossy(bmp, kalite)
                 : webp.EncodeLossy(bmp.BitmapChangeFormat(PixelFormat.Format24bppRgb), kalite);
-        } catch(Exception)
+        }
+        catch(Exception)
         {
             return null;
         }

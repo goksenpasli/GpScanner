@@ -23,7 +23,11 @@ public static class UdfParser
         PrintDialog pd = new();
         PageFormat pageformat = content.Properties.PageFormat;
         flowdocumentscrollviewer.Document = flowdocument;
-        flowdocumentscrollviewer.Document.PagePadding = new Thickness(pageformat.LeftMargin * 4 / 3, pageformat.TopMargin * 4 / 3, pageformat.RightMargin * 4 / 3, pageformat.BottomMargin * 4 / 3);
+        flowdocumentscrollviewer.Document.PagePadding = new Thickness(
+            pageformat.LeftMargin * 4 / 3,
+            pageformat.TopMargin * 4 / 3,
+            pageformat.RightMargin * 4 / 3,
+            pageformat.BottomMargin * 4 / 3);
         flowdocumentscrollviewer.Document.ColumnWidth = pd.PrintableAreaWidth;
         return flowdocumentscrollviewer.Document;
     }

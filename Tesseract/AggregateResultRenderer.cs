@@ -73,14 +73,16 @@ namespace Tesseract
 
                 _currentDocumentHandle = new EndDocumentOnDispose(this, children);
                 return _currentDocumentHandle;
-            } catch(Exception)
+            }
+            catch(Exception)
             {
                 foreach(IDisposable child in children)
                 {
                     try
                     {
                         child.Dispose();
-                    } catch(Exception disposalError)
+                    }
+                    catch(Exception disposalError)
                     {
                         Logger.TraceError("Failed to dispose of child document {0}: {1}", child, disposalError.Message);
                     }
@@ -112,7 +114,8 @@ namespace Tesseract
                         _currentDocumentHandle = null;
                     }
                 }
-            } finally
+            }
+            finally
             {
                 foreach(IResultRenderer renderer in ResultRenderers)
                 {

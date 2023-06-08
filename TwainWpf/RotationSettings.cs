@@ -16,7 +16,7 @@ namespace TwainWpf
         /// </value>
         public bool AutomaticBorderDetection
         {
-            get => _automaticBorderDetection;
+            get { return _automaticBorderDetection; }
 
             set
             {
@@ -34,7 +34,7 @@ namespace TwainWpf
         /// <value><c>true</c> if [automatic deskew]; otherwise, <c>false</c>.</value>
         public bool AutomaticDeskew
         {
-            get => _automaticDeskew;
+            get { return _automaticDeskew; }
 
             set
             {
@@ -52,7 +52,7 @@ namespace TwainWpf
         /// <value><c>true</c> if [automatic rotate]; otherwise, <c>false</c>.</value>
         public bool AutomaticRotate
         {
-            get => _automaticRotate;
+            get { return _automaticRotate; }
 
             set
             {
@@ -70,7 +70,7 @@ namespace TwainWpf
         /// <value>The flip side rotation.</value>
         public FlipRotation FlipSideRotation
         {
-            get => _flipSideRotation;
+            get { return _flipSideRotation; }
 
             set
             {

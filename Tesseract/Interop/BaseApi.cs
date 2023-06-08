@@ -536,7 +536,17 @@ namespace Tesseract.Interop
                 i++;
             }
 
-            return Native.BaseApiInit(handle, datapath, language, mode, configFilesArray, configFilesArray.Length, varNames, varValues, new UIntPtr((uint)varNames.Length), setOnlyNonDebugParams);
+            return Native.BaseApiInit(
+                handle,
+                datapath,
+                language,
+                mode,
+                configFilesArray,
+                configFilesArray.Length,
+                varNames,
+                varValues,
+                new UIntPtr((uint)varNames.Length),
+                setOnlyNonDebugParams);
         }
 
         public static int BaseApiSetDebugVariable(HandleRef handle, string name, string value)
@@ -546,7 +556,8 @@ namespace Tesseract.Interop
             {
                 valuePtr = MarshalHelper.StringToPtr(value, Encoding.UTF8);
                 return Native.BaseApiSetDebugVariable(handle, name, valuePtr);
-            } finally
+            }
+            finally
             {
                 if(valuePtr != IntPtr.Zero)
                 {
@@ -562,7 +573,8 @@ namespace Tesseract.Interop
             {
                 valuePtr = MarshalHelper.StringToPtr(value, Encoding.UTF8);
                 return Native.BaseApiSetVariable(handle, name, valuePtr);
-            } finally
+            }
+            finally
             {
                 if(valuePtr != IntPtr.Zero)
                 {

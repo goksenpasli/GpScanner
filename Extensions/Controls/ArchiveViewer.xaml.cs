@@ -31,7 +31,8 @@ public partial class ArchiveViewer : UserControl, INotifyPropertyChanged
                     string extractpath = Path.Combine(Path.GetTempPath(), dosya.Name);
                     dosya?.ExtractToFile(extractpath, true);
                     _ = Process.Start(extractpath);
-                } catch(Exception ex)
+                }
+                catch(Exception ex)
                 {
                     throw new ArgumentException(ArchivePath, ex);
                 }
@@ -41,11 +42,11 @@ public partial class ArchiveViewer : UserControl, INotifyPropertyChanged
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public string ArchivePath { get => (string)GetValue(ArchivePathProperty); set => SetValue(ArchivePathProperty, value); }
+    public string ArchivePath { get { return (string)GetValue(ArchivePathProperty); } set { SetValue(ArchivePathProperty, value); } }
 
     public ObservableCollection<ArchiveData> Arşivİçerik
     {
-        get => arşivİçerik;
+        get { return arşivİçerik; }
 
         set
         {
@@ -61,7 +62,7 @@ public partial class ArchiveViewer : UserControl, INotifyPropertyChanged
 
     public double ToplamOran
     {
-        get => toplamOran;
+        get { return toplamOran; }
 
         set
         {
@@ -99,7 +100,11 @@ public partial class ArchiveViewer : UserControl, INotifyPropertyChanged
     }
 
     private static double toplamOran;
-    public static readonly DependencyProperty ArchivePathProperty = DependencyProperty.Register("ArchivePath", typeof(string), typeof(ArchiveViewer), new PropertyMetadata(null, Changed));
+    public static readonly DependencyProperty ArchivePathProperty = DependencyProperty.Register(
+        "ArchivePath",
+        typeof(string),
+        typeof(ArchiveViewer),
+        new PropertyMetadata(null, Changed));
 
     private ObservableCollection<ArchiveData> arşivİçerik;
 }

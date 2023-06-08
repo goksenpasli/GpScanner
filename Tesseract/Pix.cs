@@ -49,7 +49,8 @@ namespace Tesseract
                 {
                     actualFormat = ImageFormat.Default;
                 }
-            } else
+            }
+            else
             {
                 actualFormat = format.Value;
             }
@@ -173,11 +174,13 @@ namespace Tesseract
 
             IntPtr handle = LeptonicaApi.Native.pixCreate(width, height, depth);
             return handle == IntPtr.Zero
-                ? throw new InvalidOperationException("Failed to create pix, this normally occurs because the requested image size is too large, please check Standard Error Output.")
+                ? throw new InvalidOperationException(
+                    "Failed to create pix, this normally occurs because the requested image size is too large, please check Standard Error Output.")
                 : Create(handle);
         }
 
-        public static Pix Create(IntPtr handle) { return handle == IntPtr.Zero ? throw new ArgumentException("Pix handle must not be zero (null).", nameof(handle)) : new Pix(handle); }
+        public static Pix Create(IntPtr handle)
+        { return handle == IntPtr.Zero ? throw new ArgumentException("Pix handle must not be zero (null).", nameof(handle)) : new Pix(handle); }
 
         public static Pix LoadFromFile(string filename)
         {
@@ -244,7 +247,7 @@ namespace Tesseract
         #region Properties
         public PixColormap Colormap
         {
-            get => colormap;
+            get { return colormap; }
 
             set
             {
@@ -254,7 +257,8 @@ namespace Tesseract
                     {
                         colormap = value;
                     }
-                } else
+                }
+                else
                 {
                     if(LeptonicaApi.Native.pixDestroyColormap(handle) == 0)
                     {
@@ -270,9 +274,9 @@ namespace Tesseract
 
         public int Width { get; }
 
-        public int XRes { get => LeptonicaApi.Native.pixGetXRes(handle); set => LeptonicaApi.Native.pixSetXRes(handle, value); }
+        public int XRes { get { return LeptonicaApi.Native.pixGetXRes(handle); } set { LeptonicaApi.Native.pixSetXRes(handle, value); } }
 
-        public int YRes { get => LeptonicaApi.Native.pixGetYRes(handle); set => LeptonicaApi.Native.pixSetYRes(handle, value); }
+        public int YRes { get { return LeptonicaApi.Native.pixGetYRes(handle); } set { LeptonicaApi.Native.pixSetYRes(handle, value); } }
 
         public PixData GetData() { return new PixData(this); }
 
@@ -598,7 +602,8 @@ namespace Tesseract
 
                 _ = LeptonicaApi.Native.pixCombineMasked(new HandleRef(this, pix8), new HandleRef(this, pix9), new HandleRef(this, pix7));
                 return pix8 == IntPtr.Zero ? throw new TesseractException("Failed to remove lines from image.") : new Pix(pix8);
-            } finally
+            }
+            finally
             {
                 if(pix1 != IntPtr.Zero)
                 {

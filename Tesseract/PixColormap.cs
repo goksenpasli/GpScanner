@@ -17,7 +17,12 @@ namespace Tesseract
 
         public PixColor this[int index]
         {
-            get => LeptonicaApi.Native.pixcmapGetColor32(Handle, index, out int color) == 0 ? PixColor.FromRgb((uint)color) : throw new InvalidOperationException("Failed to retrieve color.");
+            get
+            {
+                return LeptonicaApi.Native.pixcmapGetColor32(Handle, index, out int color) == 0
+                    ? PixColor.FromRgb((uint)color)
+                    : throw new InvalidOperationException("Failed to retrieve color.");
+            }
 
             set
             {
@@ -34,7 +39,8 @@ namespace Tesseract
 
         public bool AddColor(PixColor color) { return LeptonicaApi.Native.pixcmapAddColor(Handle, color.Red, color.Green, color.Blue) == 0; }
 
-        public bool AddNearestColor(PixColor color, out int index) { return LeptonicaApi.Native.pixcmapAddNearestColor(Handle, color.Red, color.Green, color.Blue, out index) == 0; }
+        public bool AddNearestColor(PixColor color, out int index)
+        { return LeptonicaApi.Native.pixcmapAddNearestColor(Handle, color.Red, color.Green, color.Blue, out index) == 0; }
 
         public bool AddNewColor(PixColor color, out int index) { return LeptonicaApi.Native.pixcmapAddNewColor(Handle, color.Red, color.Green, color.Blue, out index) == 0; }
 

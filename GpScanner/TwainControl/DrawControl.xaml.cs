@@ -75,7 +75,7 @@ namespace TwainControl
 
         public bool DrawControlContextMenu
         {
-            get => drawControlContextMenu;
+            get { return drawControlContextMenu; }
             set
             {
                 if(drawControlContextMenu != value)
@@ -88,7 +88,7 @@ namespace TwainControl
 
         public Cursor DrawCursor
         {
-            get => drawCursor;
+            get { return drawCursor; }
             set
             {
                 if(drawCursor != value)
@@ -99,11 +99,11 @@ namespace TwainControl
             }
         }
 
-        public BitmapFrame EditingImage { get => (BitmapFrame)GetValue(EditingImageProperty); set => SetValue(EditingImageProperty, value); }
+        public BitmapFrame EditingImage { get { return (BitmapFrame)GetValue(EditingImageProperty); } set { SetValue(EditingImageProperty, value); } }
 
         public Ellipse Ellipse
         {
-            get => ellipse;
+            get { return ellipse; }
             set
             {
                 if(ellipse != value)
@@ -116,7 +116,7 @@ namespace TwainControl
 
         public bool Highlighter
         {
-            get => highlighter;
+            get { return highlighter; }
             set
             {
                 if(highlighter != value)
@@ -129,7 +129,7 @@ namespace TwainControl
 
         public bool IgnorePressure
         {
-            get => ıgnorePressure;
+            get { return ıgnorePressure; }
             set
             {
                 if(ıgnorePressure != value)
@@ -144,7 +144,7 @@ namespace TwainControl
 
         public bool Lock
         {
-            get => @lock;
+            get { return @lock; }
             set
             {
                 if(@lock != value)
@@ -157,7 +157,7 @@ namespace TwainControl
 
         public Rectangle Rectangle
         {
-            get => rectangle;
+            get { return rectangle; }
             set
             {
                 if(rectangle != value)
@@ -172,7 +172,7 @@ namespace TwainControl
 
         public SolidColorBrush SelectedBrush
         {
-            get => selectedBrush;
+            get { return selectedBrush; }
             set
             {
                 if(selectedBrush != value)
@@ -185,7 +185,7 @@ namespace TwainControl
 
         public string SelectedColor
         {
-            get => selectedColor;
+            get { return selectedColor; }
             set
             {
                 if(selectedColor != value)
@@ -200,7 +200,7 @@ namespace TwainControl
 
         public StylusTip SelectedStylus
         {
-            get => selectedStylus;
+            get { return selectedStylus; }
             set
             {
                 if(selectedStylus != value)
@@ -215,7 +215,7 @@ namespace TwainControl
 
         public bool Smooth
         {
-            get => smooth;
+            get { return smooth; }
             set
             {
                 if(smooth != value)
@@ -228,7 +228,7 @@ namespace TwainControl
 
         public double StylusHeight
         {
-            get => stylusHeight;
+            get { return stylusHeight; }
             set
             {
                 if(stylusHeight != value)
@@ -241,7 +241,7 @@ namespace TwainControl
 
         public double StylusWidth
         {
-            get => stylusWidth;
+            get { return stylusWidth; }
             set
             {
                 if(stylusWidth != value)
@@ -254,7 +254,7 @@ namespace TwainControl
 
         public ImageSource TemporaryImage
         {
-            get => temporaryImage;
+            get { return temporaryImage; }
             set
             {
                 if(temporaryImage != value)

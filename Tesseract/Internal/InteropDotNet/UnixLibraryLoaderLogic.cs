@@ -41,7 +41,8 @@ namespace Tesseract.Internal.InteropDotNet
             if(functionHandle != IntPtr.Zero && errorPointer == IntPtr.Zero)
             {
                 Logger.TraceInformation("Successfully loaded native function \"{0}\", function handle = {1}.", functionName, functionHandle);
-            } else
+            }
+            else
             {
                 Logger.TraceError("Failed to load native function \"{0}\", function handle = {1}, error pointer = {2}", functionName, functionHandle, errorPointer);
             }
@@ -60,11 +61,13 @@ namespace Tesseract.Internal.InteropDotNet
                 if(libraryHandle != IntPtr.Zero)
                 {
                     Logger.TraceInformation("Successfully loaded native library \"{0}\", handle = {1}.", fileName, libraryHandle);
-                } else
+                }
+                else
                 {
                     Logger.TraceError("Failed to load native library \"{0}\".\r\nCheck windows event log.", fileName);
                 }
-            } catch(Exception e)
+            }
+            catch(Exception e)
             {
                 IntPtr lastError = UnixGetLastError();
                 Logger.TraceError(

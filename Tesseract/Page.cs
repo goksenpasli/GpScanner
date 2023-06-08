@@ -42,7 +42,8 @@ namespace Tesseract
                         {
                             thresholdedImage.Save(filePath, ImageFormat.TiffG4);
                             trace.TraceEvent(TraceEventType.Information, 2, "Successfully saved the thresholded image to '{0}'", filePath);
-                        } catch(Exception error)
+                        }
+                        catch(Exception error)
                         {
                             trace.TraceEvent(TraceEventType.Error, 2, "Failed to save the thresholded image to '{0}'.\nError: {1}", filePath, error.Message);
                         }
@@ -86,7 +87,9 @@ namespace Tesseract
 
             orientation = orientationDegrees > 315 || orientationDegrees <= 45
                 ? Orientation.PageUp
-                : orientationDegrees > 45 && orientationDegrees <= 135 ? Orientation.PageRight : orientationDegrees > 135 && orientationDegrees <= 225 ? Orientation.PageDown : Orientation.PageLeft;
+                : orientationDegrees > 45 && orientationDegrees <= 135
+                    ? Orientation.PageRight
+                    : orientationDegrees > 135 && orientationDegrees <= 225 ? Orientation.PageDown : Orientation.PageLeft;
 
             confidence = orientationConfidence;
         }
@@ -124,7 +127,8 @@ namespace Tesseract
                 confidence = orient_conf;
                 scriptName = script_nameHandle != IntPtr.Zero ? MarshalHelper.PtrToString(script_nameHandle, Encoding.ASCII) : null;
                 scriptConfidence = script_conf;
-            } else
+            }
+            else
             {
                 throw new TesseractException("Failed to detect image orientation.");
             }
@@ -314,7 +318,7 @@ namespace Tesseract
         /// </summary>
         public Rect RegionOfInterest
         {
-            get => regionOfInterest;
+            get { return regionOfInterest; }
 
             set
             {

@@ -61,7 +61,7 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
 
     public bool DetectQRCode
     {
-        get => detectQRCode;
+        get { return detectQRCode; }
 
         set
         {
@@ -75,7 +75,7 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
 
     public CapDevice Device
     {
-        get => device;
+        get { return device; }
 
         set
         {
@@ -95,7 +95,7 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
 
     public FilterInfo[] Liste
     {
-        get => liste;
+        get { return liste; }
 
         set
         {
@@ -111,7 +111,7 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
 
     public byte[] ResimData
     {
-        get => resimData;
+        get { return resimData; }
 
         set
         {
@@ -125,7 +125,7 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
 
     public double Rotation
     {
-        get => rotation;
+        get { return rotation; }
 
         set
         {
@@ -139,7 +139,7 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
 
     public FilterInfo SeçiliKamera
     {
-        get => seçiliKamera;
+        get { return seçiliKamera; }
 
         set
         {

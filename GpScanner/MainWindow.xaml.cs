@@ -60,7 +60,8 @@ public partial class MainWindow : Window
                 string[] pdffiles = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt) ? new[] { pdfFilePath, temporarypdf } : new[] { temporarypdf, pdfFilePath };
                 pdffiles.MergePdf().Save(pdfFilePath);
                 TwainCtrl.NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
-            } catch(Exception ex)
+            }
+            catch(Exception ex)
             {
                 _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -203,7 +204,8 @@ public partial class MainWindow : Window
 
     private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if((e.PropertyName is "ApplyPdfSaveOcr" && TwainCtrl?.Scanner?.ApplyPdfSaveOcr == true) || (e.PropertyName is "ApplyDataBaseOcr" && TwainCtrl?.Scanner?.ApplyDataBaseOcr == true))
+        if((e.PropertyName is "ApplyPdfSaveOcr" && TwainCtrl?.Scanner?.ApplyPdfSaveOcr == true) ||
+            (e.PropertyName is "ApplyDataBaseOcr" && TwainCtrl?.Scanner?.ApplyDataBaseOcr == true))
         {
             if(DataContext is GpScannerViewModel ViewModel)
             {

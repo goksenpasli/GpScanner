@@ -25,7 +25,7 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     public Visibility CopyButtonVisibility
     {
-        get => copyButtonVisibility;
+        get { return copyButtonVisibility; }
 
         set
         {
@@ -37,13 +37,13 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         }
     }
 
-    public string Description { get => (string)GetValue(DescriptionProperty); set => SetValue(DescriptionProperty, value); }
+    public string Description { get { return (string)GetValue(DescriptionProperty); } set { SetValue(DescriptionProperty, value); } }
 
     public ICommand Open { get; } = new RoutedCommand();
 
     public Visibility OpenButtonVisibility
     {
-        get => openButtonVisibility;
+        get { return openButtonVisibility; }
 
         set
         {
@@ -59,7 +59,7 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     public Visibility PasteButtonVisibility
     {
-        get => pasteButtonVisibility;
+        get { return pasteButtonVisibility; }
 
         set
         {
@@ -75,7 +75,7 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     public Visibility ResetButtonVisibility
     {
-        get => resetButtonVisibility;
+        get { return resetButtonVisibility; }
 
         set
         {
@@ -104,7 +104,8 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         try
         {
             _ = Process.Start(Text);
-        } catch(Exception ex)
+        }
+        catch(Exception ex)
         {
             _ = MessageBox.Show(ex.Message);
         }
@@ -122,7 +123,11 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     private void ResetCommand(object sender, ExecutedRoutedEventArgs e) { Text = string.Empty; }
 
-    public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register("Description", typeof(string), typeof(ButtonedTextBox), new PropertyMetadata(string.Empty));
+    public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register(
+        "Description",
+        typeof(string),
+        typeof(ButtonedTextBox),
+        new PropertyMetadata(string.Empty));
 
     private Visibility copyButtonVisibility = Visibility.Visible;
 

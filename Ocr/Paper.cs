@@ -4,7 +4,7 @@ public class Paper : InpcBase
 {
     public double Height
     {
-        get => height;
+        get { return height; }
 
         set
         {
@@ -18,7 +18,7 @@ public class Paper : InpcBase
 
     public string PaperType
     {
-        get => paperType;
+        get { return paperType; }
 
         set
         {
@@ -32,7 +32,7 @@ public class Paper : InpcBase
 
     public double Width
     {
-        get => width;
+        get { return width; }
 
         set
         {

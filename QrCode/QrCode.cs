@@ -75,7 +75,7 @@ public class QrCode : InpcBase
 
     public ResultPoint[] BarcodePosition
     {
-        get => barcodePosition;
+        get { return barcodePosition; }
 
         set
         {

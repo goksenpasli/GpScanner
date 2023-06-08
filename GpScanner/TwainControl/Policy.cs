@@ -25,7 +25,8 @@ public class Policy : DependencyObject
             }
 
             return true;
-        } catch(Exception)
+        }
+        catch(Exception)
         {
         }
 

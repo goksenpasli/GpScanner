@@ -107,7 +107,8 @@ public static class Ocr
                     ocrdata.Add(item);
                 }
             }
-        } while (iterator.Next(pageIteratorLevel));
+        }
+        while (iterator.Next(pageIteratorLevel));
 
         return ocrdata;
     }

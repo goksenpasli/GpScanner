@@ -23,13 +23,20 @@ namespace TwainWpf
                 {
                     UserInterface userInterface = new UserInterface();
 
-                    TwainResult result = Twain32Native.DsUserInterface(_applicationId, SourceId, DataGroup.Control, DataArgumentType.UserInterface, Message.DisableDS, userInterface);
+                    TwainResult result = Twain32Native.DsUserInterface(
+                        _applicationId,
+                        SourceId,
+                        DataGroup.Control,
+                        DataArgumentType.UserInterface,
+                        Message.DisableDS,
+                        userInterface);
 
                     if(result != TwainResult.Failure)
                     {
                         result = Twain32Native.DsmIdentity(_applicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Identity, Message.CloseDS, SourceId);
                     }
-                } catch
+                }
+                catch
                 {
                 }
             }
@@ -65,10 +72,12 @@ namespace TwainWpf
             if(result == TwainResult.EndOfList)
             {
                 return sources;
-            } else if(result != TwainResult.Success)
+            }
+            else if(result != TwainResult.Success)
             {
                 throw new TwainException("Error getting first source.", result);
-            } else
+            }
+            else
             {
                 sources.Add(new DataSource(applicationId, id, messageHook));
             }
@@ -80,7 +89,8 @@ namespace TwainWpf
                 if(result == TwainResult.EndOfList)
                 {
                     break;
-                } else if(result != TwainResult.Success)
+                }
+                else if(result != TwainResult.Success)
                 {
                     throw new TwainException("Error enumerating sources.", result);
                 }
@@ -165,7 +175,8 @@ namespace TwainWpf
                 {
                     Capability.SetCapability(Capabilities.Automaticborderdetection, true, _applicationId, SourceId);
                 }
-            } catch
+            }
+            catch
             {
             }
         }
@@ -182,7 +193,8 @@ namespace TwainWpf
                 {
                     Capability.SetCapability(Capabilities.Automaticrotate, true, _applicationId, SourceId);
                 }
-            } catch
+            }
+            catch
             {
             }
         }
@@ -192,7 +204,8 @@ namespace TwainWpf
             try
             {
                 _ = Capability.SetBasicCapability(Capabilities.IPixelType, (ushort)GetPixelType(scanSettings), TwainType.UInt16, _applicationId, SourceId);
-            } catch
+            }
+            catch
             {
             }
 
@@ -203,7 +216,8 @@ namespace TwainWpf
                 {
                     _ = Capability.SetCapability(Capabilities.BitDepth, GetBitDepth(scanSettings), _applicationId, SourceId);
                 }
-            } catch
+            }
+            catch
             {
             }
         }
@@ -216,7 +230,8 @@ namespace TwainWpf
                 {
                     Capability.SetCapability(Capabilities.DuplexEnabled, scanSettings.UseDuplex.Value, _applicationId, SourceId);
                 }
-            } catch
+            }
+            catch
             {
             }
         }
@@ -229,7 +244,8 @@ namespace TwainWpf
                 {
                     Capability.SetCapability(Capabilities.FeederEnabled, scanSettings.UseDocumentFeeder.Value, _applicationId, SourceId);
                 }
-            } catch
+            }
+            catch
             {
             }
 
@@ -239,7 +255,8 @@ namespace TwainWpf
                 {
                     Capability.SetCapability(Capabilities.AutoFeed, scanSettings.UseAutoFeeder == true && scanSettings.UseDocumentFeeder == true, _applicationId, SourceId);
                 }
-            } catch
+            }
+            catch
             {
             }
 
@@ -249,7 +266,8 @@ namespace TwainWpf
                 {
                     Capability.SetCapability(Capabilities.AutoScan, scanSettings.UseAutoScanCache.Value, _applicationId, SourceId);
                 }
-            } catch
+            }
+            catch
             {
             }
         }
@@ -264,7 +282,8 @@ namespace TwainWpf
                         ? Capability.SetBasicCapability(Capabilities.Lightpath, (ushort)Lightpath.Transmissive, TwainType.UInt16, _applicationId, SourceId)
                         : Capability.SetBasicCapability(Capabilities.Lightpath, (ushort)Lightpath.Reflective, TwainType.UInt16, _applicationId, SourceId);
                 }
-            } catch
+            }
+            catch
             {
             }
         }
@@ -278,7 +297,8 @@ namespace TwainWpf
                 {
                     _ = Capability.SetBasicCapability(Capabilities.Orientation, (ushort)scanSettings.Page.Orientation, TwainType.UInt16, _applicationId, SourceId);
                 }
-            } catch
+            }
+            catch
             {
             }
         }
@@ -296,7 +316,8 @@ namespace TwainWpf
                 {
                     _ = Capability.SetBasicCapability(Capabilities.Supportedsizes, (ushort)scanSettings.Page.Size, TwainType.UInt16, _applicationId, SourceId);
                 }
-            } catch
+            }
+            catch
             {
             }
         }
@@ -313,7 +334,8 @@ namespace TwainWpf
                 {
                     Capability.SetCapability(Capabilities.Indicators, scanSettings.ShowProgressIndicatorUi.Value, _applicationId, SourceId);
                 }
-            } catch
+            }
+            catch
             {
             }
         }
@@ -328,7 +350,8 @@ namespace TwainWpf
                     _ = Capability.SetBasicCapability(Capabilities.XResolution, dpi, TwainType.Fix32, _applicationId, SourceId);
                     _ = Capability.SetBasicCapability(Capabilities.YResolution, dpi, TwainType.Fix32, _applicationId, SourceId);
                 }
-            } catch
+            }
+            catch
             {
             }
         }
@@ -338,7 +361,8 @@ namespace TwainWpf
             try
             {
                 scanSettings.TransferCount = Capability.SetCapability(Capabilities.XferCount, scanSettings.TransferCount, _applicationId, SourceId);
-            } catch
+            }
+            catch
             {
             }
         }
@@ -410,7 +434,8 @@ namespace TwainWpf
                 try
                 {
                     return Capability.GetBoolCapability(Capabilities.FeederLoaded, _applicationId, SourceId);
-                } catch
+                }
+                catch
                 {
                     return false;
                 }
@@ -427,7 +452,8 @@ namespace TwainWpf
                 {
                     Capability cap = new Capability(Capabilities.Duplex, TwainType.Int16, _applicationId, SourceId);
                     return ((Duplex)cap.GetBasicValue().Int16Value) != Duplex.None;
-                } catch
+                }
+                catch
                 {
                     return false;
                 }
@@ -443,7 +469,8 @@ namespace TwainWpf
                     Capability cap = new Capability(Capabilities.Lightpath, TwainType.Int16, _applicationId, SourceId);
 
                     return true;
-                } catch
+                }
+                catch
                 {
                     return false;
                 }
@@ -474,11 +501,15 @@ namespace TwainWpf
                 {
                     _ = Capability.SetCapability(Capabilities.IUnits, (short)area.Units, _applicationId, SourceId);
                 }
-            } catch
+            }
+            catch
             {
             }
 
-            ImageLayout imageLayout = new ImageLayout { Frame = new Frame { Left = new Fix32(area.Left), Top = new Fix32(area.Top), Right = new Fix32(area.Right), Bottom = new Fix32(area.Bottom) } };
+            ImageLayout imageLayout = new ImageLayout
+            {
+                Frame = new Frame { Left = new Fix32(area.Left), Top = new Fix32(area.Top), Right = new Fix32(area.Right), Bottom = new Fix32(area.Bottom) }
+            };
 
             TwainResult result = Twain32Native.DsImageLayout(_applicationId, SourceId, DataGroup.Image, DataArgumentType.ImageLayout, Message.Set, imageLayout);
 

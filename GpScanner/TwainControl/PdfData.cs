@@ -6,7 +6,7 @@ public class PdfData : InpcBase
 {
     public int PageNumber
     {
-        get => pageNumber;
+        get { return pageNumber; }
 
         set
         {
@@ -20,7 +20,7 @@ public class PdfData : InpcBase
 
     public bool Selected
     {
-        get => selected;
+        get { return selected; }
 
         set
         {

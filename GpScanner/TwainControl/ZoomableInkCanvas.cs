@@ -12,7 +12,7 @@ namespace TwainControl
 
         public double CurrentZoom
         {
-            get => currentZoom;
+            get { return currentZoom; }
             set
             {
                 if(currentZoom != value)

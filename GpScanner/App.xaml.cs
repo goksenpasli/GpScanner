@@ -45,7 +45,7 @@ public partial class App : Application
         }
     }
 
-    private void Current_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+    private void Current_DispatcherUnhandledException(DispatcherUnhandledExceptionEventArgs e)
     {
         _ = MessageBox.Show(e.Exception.Message);
         e.Handled = true;

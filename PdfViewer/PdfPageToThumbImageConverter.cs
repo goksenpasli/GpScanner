@@ -27,7 +27,8 @@ public sealed class PdfPageToThumbImageConverter : InpcBase, IMultiValueConverte
                     .ConfigureAwait(false)
                     .GetAwaiter()
                     .GetResult();
-            } catch(Exception)
+            }
+            catch(Exception)
             {
                 return null;
             }
@@ -40,7 +41,7 @@ public sealed class PdfPageToThumbImageConverter : InpcBase, IMultiValueConverte
 
     public int Dpi
     {
-        get => dpi;
+        get { return dpi; }
 
         set
         {

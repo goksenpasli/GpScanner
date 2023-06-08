@@ -58,7 +58,8 @@ namespace WebPWrapper
                 byte[] rawWebP = File.ReadAllBytes(pathFileName);
 
                 return Decode(rawWebP);
-            } catch(Exception ex)
+            }
+            catch(Exception ex)
             {
                 throw new Exception($"{ex.Message}\r\nIn WebP.Load");
             }
@@ -70,7 +71,8 @@ namespace WebPWrapper
             {
                 byte[] rawWebP = File.ReadAllBytes(pathFileName);
                 return Decode(rawWebP, webPDecoderOptions);
-            } catch(Exception ex)
+            }
+            catch(Exception ex)
             {
                 throw new Exception($"{ex.Message}\r\nIn WebP.Load");
             }
@@ -99,16 +101,19 @@ namespace WebPWrapper
                 if(bmp.PixelFormat == PixelFormat.Format24bppRgb)
                 {
                     UnsafeNativeMethods.WebPDecodeBGRInto(ptrData, rawWebP.Length, bmpData.Scan0, outputSize, bmpData.Stride);
-                } else
+                }
+                else
                 {
                     UnsafeNativeMethods.WebPDecodeBGRAInto(ptrData, rawWebP.Length, bmpData.Scan0, outputSize, bmpData.Stride);
                 }
 
                 return bmp;
-            } catch(Exception)
+            }
+            catch(Exception)
             {
                 throw;
-            } finally
+            }
+            finally
             {
                 if(bmpData != null)
                 {
@@ -162,7 +167,8 @@ namespace WebPWrapper
                         width = options.crop_width;
                         height = options.crop_height;
                     }
-                } else
+                }
+                else
                 {
                     width = options.scaled_width;
                     height = options.scaled_height;
@@ -187,7 +193,8 @@ namespace WebPWrapper
                 {
                     config.output.colorspace = WEBP_CSP_MODE.MODE_bgrA;
                     bmp = new Bitmap(config.input.Width, config.input.Height, PixelFormat.Format32bppArgb);
-                } else
+                }
+                else
                 {
                     config.output.colorspace = WEBP_CSP_MODE.MODE_BGR;
                     bmp = new Bitmap(config.input.Width, config.input.Height, PixelFormat.Format24bppRgb);
@@ -209,10 +216,12 @@ namespace WebPWrapper
                 UnsafeNativeMethods.WebPFreeDecBuffer(ref config.output);
 
                 return bmp;
-            } catch(Exception ex)
+            }
+            catch(Exception ex)
             {
                 throw new Exception($"{ex.Message}\r\nIn WebP.Decode");
-            } finally
+            }
+            finally
             {
                 if(bmpData != null)
                 {
@@ -275,10 +284,12 @@ namespace WebPWrapper
                 UnsafeNativeMethods.WebPFreeDecBuffer(ref config.output);
 
                 return bmp;
-            } catch(Exception ex)
+            }
+            catch(Exception ex)
             {
                 throw new Exception($"{ex.Message}\r\nIn WebP.Thumbnail");
-            } finally
+            }
+            finally
             {
                 if(bmpData != null)
                 {
@@ -331,7 +342,8 @@ namespace WebPWrapper
                 {
                     config.output.colorspace = WEBP_CSP_MODE.MODE_bgrA;
                     bmp = new Bitmap(width, height, PixelFormat.Format32bppArgb);
-                } else
+                }
+                else
                 {
                     config.output.colorspace = WEBP_CSP_MODE.MODE_BGR;
                     bmp = new Bitmap(width, height, PixelFormat.Format24bppRgb);
@@ -354,10 +366,12 @@ namespace WebPWrapper
                 UnsafeNativeMethods.WebPFreeDecBuffer(ref config.output);
 
                 return bmp;
-            } catch(Exception ex)
+            }
+            catch(Exception ex)
             {
                 throw new Exception($"{ex.Message}\r\nIn WebP.Thumbnail");
-            } finally
+            }
+            finally
             {
                 if(bmpData != null)
                 {
@@ -388,7 +402,8 @@ namespace WebPWrapper
                 rawWebP = EncodeLossy(bmp, quality);
 
                 File.WriteAllBytes(pathFileName, rawWebP);
-            } catch(Exception ex)
+            }
+            catch(Exception ex)
             {
                 throw new Exception($"{ex.Message}\r\nIn WebP.Save");
             }
@@ -438,10 +453,12 @@ namespace WebPWrapper
                 Marshal.Copy(unmanagedData, rawWebP, 0, size);
 
                 return rawWebP;
-            } catch(Exception ex)
+            }
+            catch(Exception ex)
             {
                 throw new Exception($"{ex.Message}\r\nIn WebP.EncodeLossly");
-            } finally
+            }
+            finally
             {
                 if(bmpData != null)
                 {
@@ -491,7 +508,8 @@ namespace WebPWrapper
             {
                 config.preprocessing = 4;
                 config.use_sharp_yuv = 1;
-            } else
+            }
+            else
             {
                 config.preprocessing = 3;
             }
@@ -535,10 +553,12 @@ namespace WebPWrapper
                 Marshal.Copy(unmanagedData, rawWebP, 0, size);
 
                 return rawWebP;
-            } catch(Exception ex)
+            }
+            catch(Exception ex)
             {
                 throw new Exception($"{ex.Message}\r\nIn WebP.EncodeLossless (Simple)");
-            } finally
+            }
+            finally
             {
                 if(bmpData != null)
                 {
@@ -573,7 +593,8 @@ namespace WebPWrapper
                 {
                     throw new Exception("Can´t configure lossless preset");
                 }
-            } else
+            }
+            else
             {
                 config.lossless = 1;
                 config.method = speed;
@@ -644,7 +665,8 @@ namespace WebPWrapper
                 uint minor = (v >> 8) % 256;
                 uint major = (v >> 16) % 256;
                 return $"{major}.{minor}.{revision}";
-            } catch(Exception ex)
+            }
+            catch(Exception ex)
             {
                 throw new Exception($"{ex.Message}\r\nIn WebP.GetVersion");
             }
@@ -692,10 +714,12 @@ namespace WebPWrapper
                         format = "undefined";
                         break;
                 }
-            } catch(Exception ex)
+            }
+            catch(Exception ex)
             {
                 throw new Exception($"{ex.Message}\r\nIn WebP.GetInfo");
-            } finally
+            }
+            finally
             {
                 if(pinnedWebP.IsAllocated)
                 {
@@ -760,7 +784,8 @@ namespace WebPWrapper
                     {
                         throw new Exception("Can´t allocate memory in WebPPictureImportBGR");
                     }
-                } else
+                }
+                else
                 {
                     wpicSource.use_argb = 0;
                     if(UnsafeNativeMethods.WebPPictureImportBGR(ref wpicSource, sourceBmpData.Scan0, sourceBmpData.Stride) != 1)
@@ -787,7 +812,8 @@ namespace WebPWrapper
                     {
                         throw new Exception("Can´t allocate memory in WebPPictureImportBGR");
                     }
-                } else
+                }
+                else
                 {
                     wpicSource.use_argb = 0;
                     if(UnsafeNativeMethods.WebPPictureImportBGR(ref wpicReference, referenceBmpData.Scan0, referenceBmpData.Stride) != 1)
@@ -798,10 +824,12 @@ namespace WebPWrapper
 
                 IntPtr ptrResult = pinnedResult.AddrOfPinnedObject();
                 return UnsafeNativeMethods.WebPPictureDistortion(ref wpicSource, ref wpicReference, metric_type, ptrResult) != 1 ? throw new Exception("Can´t measure.") : result;
-            } catch(Exception ex)
+            }
+            catch(Exception ex)
             {
                 throw new Exception($"{ex.Message}\r\nIn WebP.GetPictureDistortion");
-            } finally
+            }
+            finally
             {
                 if(sourceBmpData != null)
                 {
@@ -891,7 +919,8 @@ namespace WebPWrapper
                     wpic.colorspace = (uint)WEBP_CSP_MODE.MODE_bgrA;
                     dataWebpSize = bmp.Width * bmp.Height * 32;
                     dataWebp = new byte[bmp.Width * bmp.Height * 32];
-                } else
+                }
+                else
                 {
                     int result = UnsafeNativeMethods.WebPPictureImportBGR(ref wpic, bmpData.Scan0, bmpData.Stride);
                     if(result != 1)
@@ -949,10 +978,12 @@ namespace WebPWrapper
                 }
 
                 return rawWebP;
-            } catch(Exception ex)
+            }
+            catch(Exception ex)
             {
                 throw new Exception($"{ex.Message}\r\nIn WebP.AdvancedEncode");
-            } finally
+            }
+            finally
             {
                 if(pinnedArrayHandle.IsAllocated)
                 {
@@ -1042,10 +1073,18 @@ namespace WebPWrapper
         }
 
         [DllImport("libwebp_x86.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "WebPGetFeaturesInternal")]
-        private static extern VP8StatusCode WebPGetFeaturesInternal_x86([InAttribute()] IntPtr rawWebP, UIntPtr data_size, ref WebPBitstreamFeatures features, int WEBP_DECODER_ABI_VERSION);
+        private static extern VP8StatusCode WebPGetFeaturesInternal_x86(
+            [InAttribute()] IntPtr rawWebP,
+            UIntPtr data_size,
+            ref WebPBitstreamFeatures features,
+            int WEBP_DECODER_ABI_VERSION);
 
         [DllImport("libwebp_x64.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "WebPGetFeaturesInternal")]
-        private static extern VP8StatusCode WebPGetFeaturesInternal_x64([InAttribute()] IntPtr rawWebP, UIntPtr data_size, ref WebPBitstreamFeatures features, int WEBP_DECODER_ABI_VERSION);
+        private static extern VP8StatusCode WebPGetFeaturesInternal_x64(
+            [InAttribute()] IntPtr rawWebP,
+            UIntPtr data_size,
+            ref WebPBitstreamFeatures features,
+            int WEBP_DECODER_ABI_VERSION);
 
         /// <summary>
         /// Activate the lossless compression mode with the desired efficiency

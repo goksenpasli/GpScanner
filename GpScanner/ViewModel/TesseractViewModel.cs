@@ -36,7 +36,8 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                     try
                     {
                         _ = Process.Start(path);
-                    } catch(Exception ex)
+                    }
+                    catch(Exception ex)
                     {
                         _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
                     }
@@ -68,14 +69,16 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                         };
                         Uri address = new($"https://github.com/tesseract-ocr/tessdata_best/raw/main/{ocrData.OcrName}");
                         await client.DownloadFileTaskAsync(address, datafile);
-                    } catch(Exception ex)
+                    }
+                    catch(Exception ex)
                     {
                         _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
                         if(new FileInfo(datafile)?.Length == 0)
                         {
                             File.Delete(datafile);
                         }
-                    } finally
+                    }
+                    finally
                     {
                         ocrData.IsEnabled = true;
                     }
@@ -107,7 +110,8 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                             tessfiles.PropertyChanged += Tess_PropertyChanged;
                             return tessfiles;
                         }));
-        } else
+        }
+        else
         {
             return null;
         }
@@ -119,7 +123,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
 
     public bool ShowAllLanguages
     {
-        get => showAllLanguages;
+        get { return showAllLanguages; }
 
         set
         {
@@ -133,7 +137,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
 
     public string Tessdatafolder
     {
-        get => tessdatafolder;
+        get { return tessdatafolder; }
 
         set
         {
@@ -151,7 +155,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
 
     public ObservableCollection<TessFiles> TesseractFiles
     {
-        get => tesseractFiles;
+        get { return tesseractFiles; }
 
         set
         {

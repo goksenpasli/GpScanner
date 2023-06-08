@@ -30,7 +30,8 @@ public class TranslateViewModel : InpcBase
             }
 
             return çeviri;
-        } catch(Exception)
+        }
+        catch(Exception)
         {
             return string.Empty;
         }

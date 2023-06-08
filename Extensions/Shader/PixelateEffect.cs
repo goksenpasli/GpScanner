@@ -22,14 +22,14 @@ public class PixelateEffect : ShaderEffect
     /// <summary>
     /// The amount to shift alternate rows (use 1 to get a brick wall look).
     /// </summary>
-    public double BrickOffset { get => (double)GetValue(BrickOffsetProperty); set => SetValue(BrickOffsetProperty, value); }
+    public double BrickOffset { get { return (double)GetValue(BrickOffsetProperty); } set { SetValue(BrickOffsetProperty, value); } }
 
-    public Brush Input { get => (Brush)GetValue(InputProperty); set => SetValue(InputProperty, value); }
+    public Brush Input { get { return (Brush)GetValue(InputProperty); } set { SetValue(InputProperty, value); } }
 
     /// <summary>
     /// The number of horizontal and vertical pixel blocks.
     /// </summary>
-    public Size PixelCounts { get => (Size)GetValue(PixelCountsProperty); set => SetValue(PixelCountsProperty, value); }
+    public Size PixelCounts { get { return (Size)GetValue(PixelCountsProperty); } set { SetValue(PixelCountsProperty, value); } }
 
     public static readonly DependencyProperty BrickOffsetProperty = DependencyProperty.Register(
         "BrickOffset",

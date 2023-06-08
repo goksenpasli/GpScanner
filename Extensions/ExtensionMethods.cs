@@ -68,7 +68,8 @@ public static class ExtensionMethods
                     currentLine[x] = gray;
                     currentLine[x + 1] = gray;
                     currentLine[x + 2] = gray;
-                } else
+                }
+                else
                 {
                     currentLine[x] = (byte)(gray < bWthreshold ? 0 : 255);
                     currentLine[x + 1] = (byte)(gray < bWthreshold ? 0 : 255);
@@ -162,7 +163,8 @@ public static class ExtensionMethods
 
                     IEnumerable<string> directories = Directory.EnumerateDirectories(currentPath);
                     _ = Parallel.ForEach(directories, directory => pendingQueue.Add(directory));
-                } catch(UnauthorizedAccessException)
+                }
+                catch(UnauthorizedAccessException)
                 {
                 }
             });
@@ -173,12 +175,15 @@ public static class ExtensionMethods
     [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
     public static extern IntPtr ExtractIcon(this IntPtr hInst, string lpszExeFileName, int nIconIndex);
 
-    public static IEnumerable<string> FilterFiles(this string path, params string[] exts) { return exts.SelectMany(ext => Directory.EnumerateFiles(path, ext, SearchOption.TopDirectoryOnly)); }
+    public static IEnumerable<string> FilterFiles(this string path, params string[] exts)
+    { return exts.SelectMany(ext => Directory.EnumerateFiles(path, ext, SearchOption.TopDirectoryOnly)); }
 
     public static string GetDisplayName(string path)
     {
         _ = new SHFILEINFO();
-        return SHGetFileInfo(path, FILE_ATTRIBUTE_NORMAL, out SHFILEINFO shfi, (uint)Marshal.SizeOf(typeof(SHFILEINFO)), SHGFI_DISPLAYNAME) != IntPtr.Zero ? shfi.szDisplayName : null;
+        return SHGetFileInfo(path, FILE_ATTRIBUTE_NORMAL, out SHFILEINFO shfi, (uint)Marshal.SizeOf(typeof(SHFILEINFO)), SHGFI_DISPLAYNAME) != IntPtr.Zero
+            ? shfi.szDisplayName
+            : null;
     }
 
     public static string GetFileType(this string filename)
@@ -199,7 +204,8 @@ public static class ExtensionMethods
             if(IconSize.Small == size)
             {
                 flags += SHGFI_SMALLICON;
-            } else
+            }
+            else
             {
                 flags += SHGFI_LARGEICON;
             }
@@ -307,7 +313,8 @@ public static class ExtensionMethods
         }
     }
 
-    public static Brush RandomColor() { return new SolidColorBrush(System.Windows.Media.Color.FromRgb((byte)_random.Next(0, 256), (byte)_random.Next(0, 256), (byte)_random.Next(0, 256))); }
+    public static Brush RandomColor()
+    { return new SolidColorBrush(System.Windows.Media.Color.FromRgb((byte)_random.Next(0, 256), (byte)_random.Next(0, 256), (byte)_random.Next(0, 256))); }
 
     public static BitmapSource Resize(this BitmapSource bfPhoto, double oran)
     {
@@ -380,7 +387,12 @@ public static class ExtensionMethods
     public static extern int SHOpenFolderAndSelectItems(IntPtr pidlFolder, uint cidl, [In][MarshalAs(UnmanagedType.LPArray)] IntPtr[] apidl, uint dwFlags);
 
     [DllImport("shell32.dll", SetLastError = true)]
-    public static extern void SHParseDisplayName([MarshalAs(UnmanagedType.LPWStr)] string name, IntPtr bindingContext, [Out] out IntPtr pidl, uint sfgaoIn, [Out] out uint psfgaoOut);
+    public static extern void SHParseDisplayName(
+        [MarshalAs(UnmanagedType.LPWStr)] string name,
+        IntPtr bindingContext,
+        [Out] out IntPtr pidl,
+        uint sfgaoIn,
+        [Out] out uint psfgaoOut);
 
     public static BitmapImage ToBitmapImage(this Image bitmap, ImageFormat format, double decodeheight = 0)
     {
@@ -473,7 +485,8 @@ public static class ExtensionMethods
                 default:
                     throw new ArgumentOutOfRangeException(nameof(format), format, null);
             }
-        } catch(Exception ex)
+        }
+        catch(Exception ex)
         {
             throw new ArgumentException(nameof(format), ex.Message);
         }

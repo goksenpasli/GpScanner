@@ -6,7 +6,7 @@ public class Chart : InpcBase
 {
     public Brush ChartBrush
     {
-        get => chartBrush;
+        get { return chartBrush; }
 
         set
         {
@@ -20,7 +20,7 @@ public class Chart : InpcBase
 
     public double ChartValue
     {
-        get => chartValue;
+        get { return chartValue; }
 
         set
         {
@@ -34,7 +34,7 @@ public class Chart : InpcBase
 
     public string Description
     {
-        get => description;
+        get { return description; }
 
         set
         {

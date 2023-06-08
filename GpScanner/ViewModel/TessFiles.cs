@@ -6,7 +6,7 @@ public class TessFiles : InpcBase
 {
     public bool Checked
     {
-        get => @checked;
+        get { return @checked; }
         set
         {
             if(@checked != value)
@@ -19,7 +19,7 @@ public class TessFiles : InpcBase
 
     public string Name
     {
-        get => name;
+        get { return name; }
         set
         {
             if(name != value)

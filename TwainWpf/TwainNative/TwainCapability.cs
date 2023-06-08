@@ -34,7 +34,8 @@ namespace TwainWpf.TwainNative
             try
             {
                 Marshal.StructureToPtr(value, p, false);
-            } finally
+            }
+            finally
             {
                 _ = Kernel32Native.GlobalUnlock(_handle);
             }
@@ -61,7 +62,8 @@ namespace TwainWpf.TwainNative
             try
             {
                 Marshal.PtrToStructure(p, _value);
-            } finally
+            }
+            finally
             {
                 _ = Kernel32Native.GlobalUnlock(_handle);
             }

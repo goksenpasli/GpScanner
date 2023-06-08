@@ -22,14 +22,14 @@ public class EmbossedEffect : ShaderEffect
     /// <summary>
     /// The amplitude of the embossing.
     /// </summary>
-    public double EmbossedAmount { get => (double)GetValue(EmbossedAmountProperty); set => SetValue(EmbossedAmountProperty, value); }
+    public double EmbossedAmount { get { return (double)GetValue(EmbossedAmountProperty); } set { SetValue(EmbossedAmountProperty, value); } }
 
-    public Brush Input { get => (Brush)GetValue(InputProperty); set => SetValue(InputProperty, value); }
+    public Brush Input { get { return (Brush)GetValue(InputProperty); } set { SetValue(InputProperty, value); } }
 
     /// <summary>
     /// The separation between samples (as a fraction of input size).
     /// </summary>
-    public double Width { get => (double)GetValue(WidthProperty); set => SetValue(WidthProperty, value); }
+    public double Width { get { return (double)GetValue(WidthProperty); } set { SetValue(WidthProperty, value); } }
 
     public static readonly DependencyProperty EmbossedAmountProperty = DependencyProperty.Register(
         "EmbossedAmount",

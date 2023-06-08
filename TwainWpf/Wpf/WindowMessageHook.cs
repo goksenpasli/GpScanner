@@ -19,7 +19,7 @@ namespace TwainWpf.Wpf
 
         public bool UseFilter
         {
-            get => _usingFilter;
+            get { return _usingFilter; }
 
             set
             {

@@ -16,7 +16,7 @@ namespace TwainWpf
 
         public float Bottom
         {
-            get => _bottom;
+            get { return _bottom; }
 
             private set
             {
@@ -27,7 +27,7 @@ namespace TwainWpf
 
         public float Left
         {
-            get => _left;
+            get { return _left; }
 
             private set
             {
@@ -38,7 +38,7 @@ namespace TwainWpf
 
         public float Right
         {
-            get => _right;
+            get { return _right; }
 
             private set
             {
@@ -49,7 +49,7 @@ namespace TwainWpf
 
         public float Top
         {
-            get => _top;
+            get { return _top; }
 
             private set
             {
@@ -60,7 +60,7 @@ namespace TwainWpf
 
         public Units Units
         {
-            get => _units;
+            get { return _units; }
 
             set
             {

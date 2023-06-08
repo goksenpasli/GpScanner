@@ -6,7 +6,7 @@ public class BatchTxtOcr : InpcBase
 {
     public string FilePath
     {
-        get => filePath;
+        get { return filePath; }
 
         set
         {
@@ -20,7 +20,7 @@ public class BatchTxtOcr : InpcBase
 
     public double ProgressValue
     {
-        get => progressValue;
+        get { return progressValue; }
 
         set
         {

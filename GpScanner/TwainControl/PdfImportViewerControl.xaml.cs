@@ -34,14 +34,16 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 {
                     OpenFileDialog openFileDialog = new()
                     {
-                        Filter = "Resim Dosyası (*.pdf;*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle)|*.pdf;*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle",
+                        Filter =
+                            "Resim Dosyası (*.pdf;*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle)|*.pdf;*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle",
                         Multiselect = false
                     };
                     if(openFileDialog.ShowDialog() == true)
                     {
                         DrawnImage = XImage.FromFile(openFileDialog.FileName);
                     }
-                } catch(Exception ex)
+                }
+                catch(Exception ex)
                 {
                     _ = MessageBox.Show(ex.Message);
                 }
@@ -59,7 +61,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                         PdfPage page = reader.Pages[PdfViewer.Sayfa - 1];
                         twainCtrl.Annotations = page?.Annotations;
                     }
-                } catch(Exception ex)
+                }
+                catch(Exception ex)
                 {
                     _ = MessageBox.Show(ex.Message);
                 }
@@ -80,7 +83,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                         twainCtrl?.Annotations?.Remove(selectedannotation);
                         reader.Save(PdfViewer.PdfFilePath);
                     }
-                } catch(Exception ex)
+                }
+                catch(Exception ex)
                 {
                     _ = MessageBox.Show(ex.Message);
                 }
@@ -95,7 +99,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     if(File.Exists(filepath))
                     {
                         PdfViewer.PdfFilePath = filepath;
-                    } else
+                    }
+                    else
                     {
                         Settings.Default.PdfLoadHistory.Remove(filepath);
                         Settings.Default.Save();
@@ -110,7 +115,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public string AnnotationText
     {
-        get => annotationText;
+        get { return annotationText; }
 
         set
         {
@@ -124,7 +129,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public bool DrawAnnotation
     {
-        get => drawAnnotation;
+        get { return drawAnnotation; }
 
         set
         {
@@ -138,7 +143,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public bool DrawEllipse
     {
-        get => drawEllipse;
+        get { return drawEllipse; }
 
         set
         {
@@ -152,7 +157,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public bool DrawImage
     {
-        get => drawImage;
+        get { return drawImage; }
 
         set
         {
@@ -166,7 +171,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public bool DrawLine
     {
-        get => drawLine;
+        get { return drawLine; }
 
         set
         {
@@ -180,7 +185,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public XImage DrawnImage
     {
-        get => drawnImage;
+        get { return drawnImage; }
 
         set
         {
@@ -194,7 +199,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public bool DrawRect
     {
-        get => drawRect;
+        get { return drawRect; }
 
         set
         {
@@ -208,7 +213,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public bool DrawReverseLine
     {
-        get => drawReverseLine;
+        get { return drawReverseLine; }
 
         set
         {
@@ -222,7 +227,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public bool DrawRoundedRect
     {
-        get => drawRoundedRect;
+        get { return drawRoundedRect; }
 
         set
         {
@@ -236,7 +241,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public bool DrawString
     {
-        get => drawString;
+        get { return drawString; }
 
         set
         {
@@ -250,7 +255,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public XKnownColor GraphObjectColor
     {
-        get => graphObjectColor;
+        get { return graphObjectColor; }
 
         set
         {
@@ -264,7 +269,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public XKnownColor GraphObjectFillColor
     {
-        get => graphObjectFillColor;
+        get { return graphObjectFillColor; }
 
         set
         {
@@ -282,7 +287,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public XDashStyle PenDash
     {
-        get => penDash;
+        get { return penDash; }
 
         set
         {
@@ -296,7 +301,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public XLineCap PenLineCap
     {
-        get => penLineCap;
+        get { return penLineCap; }
 
         set
         {
@@ -310,7 +315,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public XLineJoin PenLineJoin
     {
-        get => penLineJoin;
+        get { return penLineJoin; }
 
         set
         {
@@ -324,7 +329,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public double PenWidth
     {
-        get => penWidth;
+        get { return penWidth; }
 
         set
         {
@@ -342,7 +347,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public string Text
     {
-        get => text;
+        get { return text; }
 
         set
         {
@@ -356,7 +361,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public double TextSize
     {
-        get => textSize;
+        get { return textSize; }
 
         set
         {
@@ -477,7 +482,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                         if(GraphObjectFillColor == XKnownColor.Transparent)
                         {
                             gfx.DrawRectangle(pen, rect);
-                        } else
+                        }
+                        else
                         {
                             gfx.DrawRectangle(pen, brush, rect);
                         }
@@ -488,7 +494,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                         if(GraphObjectFillColor == XKnownColor.Transparent)
                         {
                             gfx.DrawEllipse(pen, rect);
-                        } else
+                        }
+                        else
                         {
                             gfx.DrawEllipse(pen, brush, rect);
                         }
@@ -499,7 +506,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                         if(page.Orientation == PageOrientation.Portrait)
                         {
                             gfx.DrawLine(pen, rect.TopLeft, rect.BottomRight);
-                        } else
+                        }
+                        else
                         {
                             gfx.DrawLine(pen, rect.TopRight, rect.BottomLeft);
                         }
@@ -510,7 +518,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                         if(page.Orientation == PageOrientation.Portrait)
                         {
                             gfx.DrawLine(pen, rect.TopRight, rect.BottomLeft);
-                        } else
+                        }
+                        else
                         {
                             gfx.DrawLine(pen, rect.TopLeft, rect.BottomRight);
                         }
@@ -528,7 +537,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                         if(GraphObjectFillColor == XKnownColor.Transparent)
                         {
                             gfx.DrawRoundedRectangle(pen, rect, new Size(2, 2));
-                        } else
+                        }
+                        else
                         {
                             gfx.DrawRoundedRectangle(pen, brush, rect, new Size(2, 2));
                         }
@@ -543,17 +553,20 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                             if(page.Orientation == PageOrientation.Portrait)
                             {
                                 gfx.DrawString(Text, font, XBrushes.Black, rect, XStringFormats.TopLeft);
-                            } else
+                            }
+                            else
                             {
                                 gfx.RotateAtTransform(-90, rect.Location);
                                 gfx.DrawString(Text, font, XBrushes.Black, rect, XStringFormats.TopLeft);
                             }
-                        } else
+                        }
+                        else
                         {
                             if(page.Orientation == PageOrientation.Portrait)
                             {
                                 gfx.DrawString(Text, font, brush, rect, XStringFormats.TopLeft);
-                            } else
+                            }
+                            else
                             {
                                 gfx.RotateAtTransform(-90, rect.Location);
                                 gfx.DrawString(Text, font, brush, rect, XStringFormats.TopLeft);

@@ -50,7 +50,8 @@ namespace TwainWpf
             try
             {
                 ScanningComplete?.Invoke(this, new ScanningCompleteEventArgs(exception));
-            } catch
+            }
+            catch
             {
             }
         }
@@ -90,12 +91,14 @@ namespace TwainWpf
             {
                 MessageHook.UseFilter = true;
                 scanning = DataSource.Open(settings);
-            } catch(TwainException)
+            }
+            catch(TwainException)
             {
                 DataSource.Close();
                 EndingScan();
                 throw;
-            } finally
+            }
+            finally
             {
                 if(!scanning)
                 {
@@ -141,7 +144,16 @@ namespace TwainWpf
 
             int pos = User32Native.GetMessagePos();
 
-            WindowsMessage message = new WindowsMessage { hwnd = hwnd, message = msg, wParam = wParam, lParam = lParam, time = User32Native.GetMessageTime(), x = (short)pos, y = (short)(pos >> 16) };
+            WindowsMessage message = new WindowsMessage
+            {
+                hwnd = hwnd,
+                message = msg,
+                wParam = wParam,
+                lParam = lParam,
+                time = User32Native.GetMessageTime(),
+                x = (short)pos,
+                y = (short)(pos >> 16)
+            };
 
             Marshal.StructureToPtr(message, _eventMessage.EventPtr, false);
             _eventMessage.Message = 0;
@@ -161,7 +173,8 @@ namespace TwainWpf
                     try
                     {
                         TransferPictures();
-                    } catch(Exception e)
+                    }
+                    catch(Exception e)
                     {
                         exception = e;
                     }
@@ -234,8 +247,10 @@ namespace TwainWpf
                             }
                         }
                     }
-                } while (pendingTransfer.Count != 0);
-            } finally
+                }
+                while (pendingTransfer.Count != 0);
+            }
+            finally
             {
                 _ = Twain32Native.DsPendingTransfer(ApplicationId, DataSource.SourceId, DataGroup.Control, DataArgumentType.PendingXfers, Message.Reset, pendingTransfer);
             }
