@@ -1371,9 +1371,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             case ".webp":
                             {
                                 BitmapImage main = (BitmapImage)filename.WebpDecode(true, decodeheight);
-                                BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100
-                                    ? BitmapFrame.Create(main.Resize(Settings.Default.DefaultPictureResizeRatio / 100d))
-                                    : BitmapFrame.Create(main);
+                                BitmapFrame bitmapFrame = defaultpictureresizeratio != 100 ? BitmapFrame.Create(main.Resize(defaultpictureresizeratio / 100d)) : BitmapFrame.Create(main);
                                 bitmapFrame.Freeze();
                                 ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
                                 await Dispatcher.InvokeAsync(() => Scanner?.Resimler.Add(img));
@@ -1390,9 +1388,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                         {
                                             BitmapFrame image = decoder.Frames[i];
                                             image.Freeze();
-                                            BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100
-                                                ? BitmapFrame.Create(image.Resize(Settings.Default.DefaultPictureResizeRatio / 100d))
-                                                : BitmapFrame.Create(image);
+                                            BitmapFrame bitmapFrame = defaultpictureresizeratio != 100 ? BitmapFrame.Create(image.Resize(defaultpictureresizeratio / 100d)) : BitmapFrame.Create(image);
                                             bitmapFrame.Freeze();
                                             ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
                                             Scanner?.Resimler.Add(img);
@@ -2478,7 +2474,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private async Task AddImageFiles(string filename)
     {
         BitmapImage main = await ImageViewer.LoadImageAsync(filename);
-        BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(main.Resize(Settings.Default.DefaultPictureResizeRatio / 100d)) : BitmapFrame.Create(main);
+        BitmapFrame bitmapFrame = defaultpictureresizeratio != 100 ? BitmapFrame.Create(main.Resize(defaultpictureresizeratio / 100d)) : BitmapFrame.Create(main);
         bitmapFrame.Freeze();
         ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
         await Dispatcher.InvokeAsync(() => Scanner?.Resimler.Add(img));
@@ -3104,6 +3100,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private ObservableCollection<OcrData> dataBaseTextData;
 
     private int decodeHeight;
+
+    private readonly int defaultpictureresizeratio = Settings.Default.DefaultPictureResizeRatio;
 
     private bool disposedValue;
 

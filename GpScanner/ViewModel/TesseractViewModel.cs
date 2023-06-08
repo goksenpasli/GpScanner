@@ -92,6 +92,27 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
         _ => null
     };
 
+    public ObservableCollection<TessFiles> GetTesseractFiles(string tesseractfolder)
+    {
+        if(Directory.Exists(tesseractfolder))
+        {
+            string[] defaultTtsLang = Settings.Default.DefaultTtsLang.Split('+');
+            return new ObservableCollection<TessFiles>(
+                Directory.EnumerateFiles(tesseractfolder, "*.traineddata")
+                    .Select(
+                        filePath =>
+                        {
+                            string tessFileName = Path.GetFileNameWithoutExtension(filePath);
+                            TessFiles tessfiles = new() { Name = tessFileName, Checked = defaultTtsLang.Contains(tessFileName) };
+                            tessfiles.PropertyChanged += Tess_PropertyChanged;
+                            return tessfiles;
+                        }));
+        } else
+        {
+            return null;
+        }
+    }
+
     public string Error => string.Empty;
 
     public ObservableCollection<TesseractOcrData> OcrDatas { get; set; }
@@ -139,27 +160,6 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                 tesseractFiles = value;
                 OnPropertyChanged(nameof(TesseractFiles));
             }
-        }
-    }
-
-    private ObservableCollection<TessFiles> GetTesseractFiles(string tesseractfolder)
-    {
-        if(Directory.Exists(tesseractfolder))
-        {
-            string[] defaultTtsLang = Settings.Default.DefaultTtsLang.Split('+');
-            return new ObservableCollection<TessFiles>(
-                Directory.EnumerateFiles(tesseractfolder, "*.traineddata")
-                    .Select(
-                        filePath =>
-                        {
-                            string tessFileName = Path.GetFileNameWithoutExtension(filePath);
-                            TessFiles tessfiles = new() { Name = tessFileName, Checked = defaultTtsLang.Contains(tessFileName) };
-                            tessfiles.PropertyChanged += Tess_PropertyChanged;
-                            return tessfiles;
-                        }));
-        } else
-        {
-            return null;
         }
     }
 

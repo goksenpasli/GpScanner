@@ -26,6 +26,7 @@ public partial class MainWindow : Window
         cvs = TryFindResource("Veriler") as CollectionViewSource;
         DataContext = new GpScannerViewModel();
         TwainCtrl.PropertyChanged += TwainCtrl_PropertyChangedAsync;
+        TwainCtrl.Scanner.PropertyChanged += Scanner_PropertyChanged;
     }
 
     private async void ContentControl_DropAsync(object sender, DragEventArgs e)
@@ -199,6 +200,23 @@ public partial class MainWindow : Window
     private void Run_Drop(object sender, DragEventArgs e) { TwainCtrl.DropFile(sender, e); }
 
     private void Run_PreviewMouseMove(object sender, MouseEventArgs e) { TwainCtrl.DropPreviewFile(sender, e); }
+
+    private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if((e.PropertyName is "ApplyPdfSaveOcr" && TwainCtrl?.Scanner?.ApplyPdfSaveOcr == true) || (e.PropertyName is "ApplyDataBaseOcr" && TwainCtrl?.Scanner?.ApplyDataBaseOcr == true))
+        {
+            if(DataContext is GpScannerViewModel ViewModel)
+            {
+                if(ViewModel?.TesseractViewModel?.GetTesseractFiles(ViewModel.TesseractViewModel.Tessdatafolder)?.Count(item => item.Checked) == 0)
+                {
+                    TwainCtrl.Scanner.ApplyPdfSaveOcr = false;
+                    TwainCtrl.Scanner.ApplyDataBaseOcr = false;
+                    _ = MessageBox.Show(
+                        $"{Translation.GetResStringValue("SETTİNGS")}{Environment.NewLine}{Translation.GetResStringValue("DESTLANG")}{Environment.NewLine}{Translation.GetResStringValue("NOPROFILE")}");
+                }
+            }
+        }
+    }
 
     private async void TwainCtrl_PropertyChangedAsync(object sender, PropertyChangedEventArgs e)
     {

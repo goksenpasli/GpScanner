@@ -159,8 +159,6 @@ public static class PdfGeneration
         using PdfDocument document = new();
         try
         {
-            Scanner.ProgressState = TaskbarItemProgressState.Normal;
-
             PdfPage page = document.AddPage();
             SetPaperSize(paper, page);
             using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
@@ -197,7 +195,6 @@ public static class PdfGeneration
             }
 
             document.DefaultPdfCompression();
-            Scanner.PdfSaveProgressValue = 0;
         } catch(Exception ex)
         {
             imagefile = null;
