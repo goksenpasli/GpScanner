@@ -87,35 +87,35 @@ public partial class MediaViewer : UserControl
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public double Angle { get { return (double)GetValue(AngleProperty); } set { SetValue(AngleProperty, value); } }
+    public double Angle { get => (double)GetValue(AngleProperty); set => SetValue(AngleProperty, value); }
 
     [Description("Video Effects")]
     [Category("Effects")]
-    public bool ApplyBw { get { return (bool)GetValue(ApplyBwProperty); } set { SetValue(ApplyBwProperty, value); } }
+    public bool ApplyBw { get => (bool)GetValue(ApplyBwProperty); set => SetValue(ApplyBwProperty, value); }
 
     [Description("Video Effects")]
     [Category("Effects")]
-    public bool ApplyEmboss { get { return (bool)GetValue(ApplyEmbossProperty); } set { SetValue(ApplyEmbossProperty, value); } }
+    public bool ApplyEmboss { get => (bool)GetValue(ApplyEmbossProperty); set => SetValue(ApplyEmbossProperty, value); }
 
     [Description("Video Effects")]
     [Category("Effects")]
-    public bool ApplyGrayscale { get { return (bool)GetValue(ApplyGrayscaleProperty); } set { SetValue(ApplyGrayscaleProperty, value); } }
+    public bool ApplyGrayscale { get => (bool)GetValue(ApplyGrayscaleProperty); set => SetValue(ApplyGrayscaleProperty, value); }
 
     [Description("Video Effects")]
     [Category("Effects")]
-    public bool ApplyPixelate { get { return (bool)GetValue(ApplyPixelateProperty); } set { SetValue(ApplyPixelateProperty, value); } }
+    public bool ApplyPixelate { get => (bool)GetValue(ApplyPixelateProperty); set => SetValue(ApplyPixelateProperty, value); }
 
     [Description("Video Effects")]
     [Category("Effects")]
-    public bool ApplySharpen { get { return (bool)GetValue(ApplySharpenProperty); } set { SetValue(ApplySharpenProperty, value); } }
+    public bool ApplySharpen { get => (bool)GetValue(ApplySharpenProperty); set => SetValue(ApplySharpenProperty, value); }
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
-    public bool AutoLoadSameNameSubtitleFile { get { return (bool)GetValue(AutoLoadSameNameSubtitleFileProperty); } set { SetValue(AutoLoadSameNameSubtitleFileProperty, value); } }
+    public bool AutoLoadSameNameSubtitleFile { get => (bool)GetValue(AutoLoadSameNameSubtitleFileProperty); set => SetValue(AutoLoadSameNameSubtitleFileProperty, value); }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public bool AutoPlay { get { return (bool)GetValue(AutoPlayProperty); } set { SetValue(AutoPlayProperty, value); } }
+    public bool AutoPlay { get => (bool)GetValue(AutoPlayProperty); set => SetValue(AutoPlayProperty, value); }
 
     [Description("Video Controls")]
     [Category("Controls")]
@@ -123,27 +123,27 @@ public partial class MediaViewer : UserControl
 
     [Description("Subtitle Translate")]
     [Category("Translate")]
-    public bool AutoTranslate { get { return (bool)GetValue(AutoTranslateProperty); } set { SetValue(AutoTranslateProperty, value); } }
+    public bool AutoTranslate { get => (bool)GetValue(AutoTranslateProperty); set => SetValue(AutoTranslateProperty, value); }
 
     [Description("Video Effects")]
     [Category("Effects")]
-    public double BlurAmount { get { return (double)GetValue(BlurAmountProperty); } set { SetValue(BlurAmountProperty, value); } }
+    public double BlurAmount { get => (double)GetValue(BlurAmountProperty); set => SetValue(BlurAmountProperty, value); }
 
     [Description("Video Effects")]
     [Category("Effects")]
-    public bool BlurColor { get { return (bool)GetValue(BlurColorProperty); } set { SetValue(BlurColorProperty, value); } }
+    public bool BlurColor { get => (bool)GetValue(BlurColorProperty); set => SetValue(BlurColorProperty, value); }
 
     [Description("Video Effects")]
     [Category("Effects")]
-    public double BwAmount { get { return (double)GetValue(BwAmountProperty); } set { SetValue(BwAmountProperty, value); } }
+    public double BwAmount { get => (double)GetValue(BwAmountProperty); set => SetValue(BwAmountProperty, value); }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public Visibility ContextMenuVisibility { get { return (Visibility)GetValue(ContextMenuVisibilityProperty); } set { SetValue(ContextMenuVisibilityProperty, value); } }
+    public Visibility ContextMenuVisibility { get => (Visibility)GetValue(ContextMenuVisibilityProperty); set => SetValue(ContextMenuVisibilityProperty, value); }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public Visibility ControlVisible { get { return (Visibility)GetValue(ControlVisibleProperty); } set { SetValue(ControlVisibleProperty, value); } }
+    public Visibility ControlVisible { get => (Visibility)GetValue(ControlVisibleProperty); set => SetValue(ControlVisibleProperty, value); }
 
     [Description("Subtitle Translate")]
     [Category("Translate")]
@@ -151,15 +151,15 @@ public partial class MediaViewer : UserControl
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public TimeSpan EndTimeSpan { get { return (TimeSpan)GetValue(EndTimeSpanProperty); } set { SetValue(EndTimeSpanProperty, value); } }
+    public TimeSpan EndTimeSpan { get => (TimeSpan)GetValue(EndTimeSpanProperty); set => SetValue(EndTimeSpanProperty, value); }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public double FlipX { get { return (double)GetValue(FlipXProperty); } set { SetValue(FlipXProperty, value); } }
+    public double FlipX { get => (double)GetValue(FlipXProperty); set => SetValue(FlipXProperty, value); }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public double FlipY { get { return (double)GetValue(FlipYProperty); } set { SetValue(FlipYProperty, value); } }
+    public double FlipY { get => (double)GetValue(FlipYProperty); set => SetValue(FlipYProperty, value); }
 
     [Description("Video Controls")]
     [Category("Controls")]
@@ -167,23 +167,23 @@ public partial class MediaViewer : UserControl
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public double Fov { get { return (double)GetValue(FovProperty); } set { SetValue(FovProperty, value); } }
+    public double Fov { get => (double)GetValue(FovProperty); set => SetValue(FovProperty, value); }
 
     [Description("Video Effects")]
     [Category("Effects")]
-    public bool InvertColor { get { return (bool)GetValue(InvertColorProperty); } set { SetValue(InvertColorProperty, value); } }
+    public bool InvertColor { get => (bool)GetValue(InvertColorProperty); set => SetValue(InvertColorProperty, value); }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public string MediaDataFilePath { get { return (string)GetValue(MediaDataFilePathProperty); } set { SetValue(MediaDataFilePathProperty, value); } }
+    public string MediaDataFilePath { get => (string)GetValue(MediaDataFilePathProperty); set => SetValue(MediaDataFilePathProperty, value); }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public TimeSpan MediaPosition { get { return (TimeSpan)GetValue(MediaPositionProperty); } set { SetValue(MediaPositionProperty, value); } }
+    public TimeSpan MediaPosition { get => (TimeSpan)GetValue(MediaPositionProperty); set => SetValue(MediaPositionProperty, value); }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public double MediaVolume { get { return (double)GetValue(MediaVolumeProperty); } set { SetValue(MediaVolumeProperty, value); } }
+    public double MediaVolume { get => (double)GetValue(MediaVolumeProperty); set => SetValue(MediaVolumeProperty, value); }
 
     [Description("Subtitle Translate")]
     [Category("Translate")]
@@ -191,24 +191,24 @@ public partial class MediaViewer : UserControl
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public Visibility OpenButtonVisibility { get { return (Visibility)GetValue(OpenButtonVisibilityProperty); } set { SetValue(OpenButtonVisibilityProperty, value); } }
+    public Visibility OpenButtonVisibility { get => (Visibility)GetValue(OpenButtonVisibilityProperty); set => SetValue(OpenButtonVisibilityProperty, value); }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public int OsdDisplayTime { get { return (int)GetValue(OsdDisplayTimeProperty); } set { SetValue(OsdDisplayTimeProperty, value); } }
+    public int OsdDisplayTime { get => (int)GetValue(OsdDisplayTimeProperty); set => SetValue(OsdDisplayTimeProperty, value); }
 
     [Description("Video Controls")]
     [Category("Controls")]
     [Browsable(false)]
-    public string OsdText { get { return (string)GetValue(OsdTextProperty); } set { SetValue(OsdTextProperty, value); } }
+    public string OsdText { get => (string)GetValue(OsdTextProperty); set => SetValue(OsdTextProperty, value); }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public Visibility OsdTextVisibility { get { return (Visibility)GetValue(OsdTextVisibilityProperty); } set { SetValue(OsdTextVisibilityProperty, value); } }
+    public Visibility OsdTextVisibility { get => (Visibility)GetValue(OsdTextVisibilityProperty); set => SetValue(OsdTextVisibilityProperty, value); }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public bool PanoramaMode { get { return (bool)GetValue(PanoramaModeProperty); } set { SetValue(PanoramaModeProperty, value); } }
+    public bool PanoramaMode { get => (bool)GetValue(PanoramaModeProperty); set => SetValue(PanoramaModeProperty, value); }
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
@@ -217,7 +217,7 @@ public partial class MediaViewer : UserControl
 
     [Description("Video Effects")]
     [Category("Effects")]
-    public Size PixelateSize { get { return (Size)GetValue(PixelateSizeProperty); } set { SetValue(PixelateSizeProperty, value); } }
+    public Size PixelateSize { get => (Size)GetValue(PixelateSizeProperty); set => SetValue(PixelateSizeProperty, value); }
 
     [Description("Video Controls")]
     [Category("Controls")]
@@ -227,103 +227,103 @@ public partial class MediaViewer : UserControl
     [Description("Video Controls")]
     [Category("Controls")]
     [Browsable(false)]
-    public double RotateX { get { return (double)GetValue(RotateXProperty); } set { SetValue(RotateXProperty, value); } }
+    public double RotateX { get => (double)GetValue(RotateXProperty); set => SetValue(RotateXProperty, value); }
 
     [Description("Video Controls")]
     [Category("Controls")]
     [Browsable(false)]
-    public double RotateY { get { return (double)GetValue(RotateYProperty); } set { SetValue(RotateYProperty, value); } }
+    public double RotateY { get => (double)GetValue(RotateYProperty); set => SetValue(RotateYProperty, value); }
 
     [Description("Video Effects")]
     [Category("Effects")]
-    public double SharpenAmount { get { return (double)GetValue(SharpenAmountProperty); } set { SetValue(SharpenAmountProperty, value); } }
+    public double SharpenAmount { get => (double)GetValue(SharpenAmountProperty); set => SetValue(SharpenAmountProperty, value); }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public Visibility SliderControlVisible { get { return (Visibility)GetValue(SliderControlVisibleProperty); } set { SetValue(SliderControlVisibleProperty, value); } }
+    public Visibility SliderControlVisible { get => (Visibility)GetValue(SliderControlVisibleProperty); set => SetValue(SliderControlVisibleProperty, value); }
 
     public Geometry3D SphereModel { get; set; } = CreateGeometry();
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
     [Browsable(false)]
-    public string SubTitle { get { return (string)GetValue(SubTitleProperty); } set { SetValue(SubTitleProperty, value); } }
+    public string SubTitle { get => (string)GetValue(SubTitleProperty); set => SetValue(SubTitleProperty, value); }
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
-    public Brush SubTitleColor { get { return (Brush)GetValue(SubTitleColorProperty); } set { SetValue(SubTitleColorProperty, value); } }
+    public Brush SubTitleColor { get => (Brush)GetValue(SubTitleColorProperty); set => SetValue(SubTitleColorProperty, value); }
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
-    public string SubtitleFilePath { get { return (string)GetValue(SubtitleFilePathProperty); } set { SetValue(SubtitleFilePathProperty, value); } }
+    public string SubtitleFilePath { get => (string)GetValue(SubtitleFilePathProperty); set => SetValue(SubtitleFilePathProperty, value); }
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
     public HorizontalAlignment SubTitleHorizontalAlignment
     {
-        get { return (HorizontalAlignment)GetValue(SubTitleHorizontalAlignmentProperty); }
-        set { SetValue(SubTitleHorizontalAlignmentProperty, value); }
+        get => (HorizontalAlignment)GetValue(SubTitleHorizontalAlignmentProperty);
+        set => SetValue(SubTitleHorizontalAlignmentProperty, value);
     }
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
-    public Thickness SubTitleMargin { get { return (Thickness)GetValue(SubTitleMarginProperty); } set { SetValue(SubTitleMarginProperty, value); } }
+    public Thickness SubTitleMargin { get => (Thickness)GetValue(SubTitleMarginProperty); set => SetValue(SubTitleMarginProperty, value); }
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
-    public double SubTitleSize { get { return (double)GetValue(SubTitleSizeProperty); } set { SetValue(SubTitleSizeProperty, value); } }
+    public double SubTitleSize { get => (double)GetValue(SubTitleSizeProperty); set => SetValue(SubTitleSizeProperty, value); }
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
-    public bool SubtitleTooltipEnabled { get { return (bool)GetValue(SubtitleTooltipEnabledProperty); } set { SetValue(SubtitleTooltipEnabledProperty, value); } }
+    public bool SubtitleTooltipEnabled { get => (bool)GetValue(SubtitleTooltipEnabledProperty); set => SetValue(SubtitleTooltipEnabledProperty, value); }
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
     public VerticalAlignment SubTitleVerticalAlignment
     {
-        get { return (VerticalAlignment)GetValue(SubTitleVerticalAlignmentProperty); }
-        set { SetValue(SubTitleVerticalAlignmentProperty, value); }
+        get => (VerticalAlignment)GetValue(SubTitleVerticalAlignmentProperty);
+        set => SetValue(SubTitleVerticalAlignmentProperty, value);
     }
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
-    public Visibility SubTitleVisibility { get { return (Visibility)GetValue(SubTitleVisibilityProperty); } set { SetValue(SubTitleVisibilityProperty, value); } }
+    public Visibility SubTitleVisibility { get => (Visibility)GetValue(SubTitleVisibilityProperty); set => SetValue(SubTitleVisibilityProperty, value); }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public bool ThumbApplyEffects { get { return (bool)GetValue(ThumbApplyEffectsProperty); } set { SetValue(ThumbApplyEffectsProperty, value); } }
+    public bool ThumbApplyEffects { get => (bool)GetValue(ThumbApplyEffectsProperty); set => SetValue(ThumbApplyEffectsProperty, value); }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public int ThumbHeightCount { get { return (int)GetValue(ThumbHeightCountProperty); } set { SetValue(ThumbHeightCountProperty, value); } }
+    public int ThumbHeightCount { get => (int)GetValue(ThumbHeightCountProperty); set => SetValue(ThumbHeightCountProperty, value); }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public Thickness ThumbMargin { get { return (Thickness)GetValue(ThumbMarginProperty); } set { SetValue(ThumbMarginProperty, value); } }
+    public Thickness ThumbMargin { get => (Thickness)GetValue(ThumbMarginProperty); set => SetValue(ThumbMarginProperty, value); }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public bool ThumbnailsVisible { get { return (bool)GetValue(ThumbnailsVisibleProperty); } set { SetValue(ThumbnailsVisibleProperty, value); } }
+    public bool ThumbnailsVisible { get => (bool)GetValue(ThumbnailsVisibleProperty); set => SetValue(ThumbnailsVisibleProperty, value); }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public bool ThumbShowTime { get { return (bool)GetValue(ThumbShowTimeProperty); } set { SetValue(ThumbShowTimeProperty, value); } }
+    public bool ThumbShowTime { get => (bool)GetValue(ThumbShowTimeProperty); set => SetValue(ThumbShowTimeProperty, value); }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public int ThumbWidthCount { get { return (int)GetValue(ThumbWidthCountProperty); } set { SetValue(ThumbWidthCountProperty, value); } }
+    public int ThumbWidthCount { get => (int)GetValue(ThumbWidthCountProperty); set => SetValue(ThumbWidthCountProperty, value); }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public Visibility TimeDisplayVisibility { get { return (Visibility)GetValue(TimeDisplayVisibilityProperty); } set { SetValue(TimeDisplayVisibilityProperty, value); } }
+    public Visibility TimeDisplayVisibility { get => (Visibility)GetValue(TimeDisplayVisibilityProperty); set => SetValue(TimeDisplayVisibilityProperty, value); }
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
-    public string TooltipOriginalSubtitle { get { return (string)GetValue(TooltipOriginalSubtitleProperty); } set { SetValue(TooltipOriginalSubtitleProperty, value); } }
+    public string TooltipOriginalSubtitle { get => (string)GetValue(TooltipOriginalSubtitleProperty); set => SetValue(TooltipOriginalSubtitleProperty, value); }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public Stretch VideoStretch { get { return (Stretch)GetValue(VideoStretchProperty); } set { SetValue(VideoStretchProperty, value); } }
+    public Stretch VideoStretch { get => (Stretch)GetValue(VideoStretchProperty); set => SetValue(VideoStretchProperty, value); }
 
     private void AddPlaylist_Click(object sender, RoutedEventArgs e)
     {
@@ -579,7 +579,7 @@ public partial class MediaViewer : UserControl
         }
     }
 
-    private static void MediaPositionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static async void MediaPositionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if(d is MediaViewer viewer && e.NewValue != null && !dragging)
         {
@@ -594,8 +594,7 @@ public partial class MediaViewer : UserControl
                         if(viewer.AutoTranslate)
                         {
                             viewer.TooltipOriginalSubtitle = subtitle.Text;
-                            viewer.SubTitle =
-                                TranslateViewModel.DileÇevir(subtitle.Text, viewer.MevcutDil, viewer.ÇevrilenDil);
+                            viewer.SubTitle = await TranslateViewModel.DileÇevir(subtitle.Text, viewer.MevcutDil, viewer.ÇevrilenDil);
                         }
                         else
                         {

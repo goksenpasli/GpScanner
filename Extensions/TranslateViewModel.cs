@@ -1,24 +1,24 @@
 ﻿using System;
 using System.Linq;
-using System.Net;
-using System.Text;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 
 namespace Extensions;
 
 public class TranslateViewModel : InpcBase
 {
-    public static string DileÇevir(string text, string from = "auto", string to = "en")
+    public static async Task<string> DileÇevir(string text, string from = "auto", string to = "en")
     {
         try
         {
-            WebClient wc = new();
-            wc.Headers.Add(HttpRequestHeader.UserAgent, "Mozilla/5.0");
-            wc.Headers.Add(HttpRequestHeader.AcceptCharset, "UTF-8");
-            wc.Encoding = Encoding.UTF8;
-            string url =
-                $"https://translate.googleapis.com/translate_a/single?client=gtx&sl={from}&tl={to}&dt=t&q={Uri.EscapeUriString(text)}";
-            string page = wc.DownloadString(url);
+            using HttpClient client = new();
+            client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0");
+            client.DefaultRequestHeaders.Add("Accept-Charset", "UTF-8");
+            string url = $"https://translate.googleapis.com/translate_a/single?client=gtx&sl={from}&tl={to}&dt=t&q={Uri.EscapeUriString(text)}";
+            HttpResponseMessage response = await client.GetAsync(url);
+            _ = response.EnsureSuccessStatusCode();
+            string page = await response.Content.ReadAsStringAsync();
             JavaScriptSerializer JSS = new();
             object parsedObj = JSS.DeserializeObject(page);
             string çeviri = string.Empty;

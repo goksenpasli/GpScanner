@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Windows;
 using System.Windows.Input;
 using TwainControl;
@@ -50,30 +51,40 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
             {
                 if(parameter is TesseractOcrData ocrData)
                 {
-                    string datafile = null;
+                    string datafile = Path.Combine(tessdatafolder, ocrData.OcrName);
+
                     try
                     {
-                        datafile = $@"{tessdatafolder}\{ocrData.OcrName}";
-                        using WebClient client = new();
-                        client.DownloadProgressChanged += (s, e) =>
+                        using HttpClient client = new();
+                        _ = client.DefaultRequestHeaders
+                            .TryAddWithoutValidation(
+                                "User-Agent",
+                                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537");
+
+                        HttpResponseMessage response = await client.GetAsync(
+                            $"https://github.com/tesseract-ocr/tessdata_best/raw/main/{ocrData.OcrName}",
+                            HttpCompletionOption.ResponseHeadersRead);
+                        _ = response.EnsureSuccessStatusCode();
+
+                        using Stream contentStream = await response.Content.ReadAsStreamAsync();
+                        using FileStream fileStream = new(datafile, FileMode.Create, FileAccess.Write, FileShare.None);
+
+                        const int bufferSize = 8192;
+                        byte[] buffer = new byte[bufferSize];
+                        int bytesRead;
+                        ocrData.IsEnabled = false;
+                        while((bytesRead = await contentStream.ReadAsync(buffer, 0, bufferSize)) > 0)
                         {
-                            ocrData.ProgressValue = e.ProgressPercentage;
-                            ocrData.IsEnabled = ocrData.ProgressValue == 100;
-                        };
-                        client.DownloadFileCompleted += (s, e) =>
-                        {
-                            if(e.Error is null)
-                            {
-                                TesseractFiles = GetTesseractFiles(Tessdatafolder);
-                            }
-                        };
-                        Uri address = new($"https://github.com/tesseract-ocr/tessdata_best/raw/main/{ocrData.OcrName}");
-                        await client.DownloadFileTaskAsync(address, datafile);
+                            await fileStream.WriteAsync(buffer, 0, bytesRead);
+                            ocrData.ProgressValue = fileStream.Length / (double)response.Content.Headers.ContentLength * 100;
+                        }
+                        ocrData.IsEnabled = true;
+                        TesseractFiles = GetTesseractFiles(Tessdatafolder);
                     }
                     catch(Exception ex)
                     {
                         _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
-                        if(new FileInfo(datafile)?.Length == 0)
+                        if(File.Exists(datafile))
                         {
                             File.Delete(datafile);
                         }
@@ -122,7 +133,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
 
     public bool ShowAllLanguages
     {
-        get { return showAllLanguages; }
+        get => showAllLanguages;
 
         set
         {
@@ -136,7 +147,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
 
     public string Tessdatafolder
     {
-        get { return tessdatafolder; }
+        get => tessdatafolder;
 
         set
         {
@@ -154,7 +165,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
 
     public ObservableCollection<TessFiles> TesseractFiles
     {
-        get { return tesseractFiles; }
+        get => tesseractFiles;
 
         set
         {
