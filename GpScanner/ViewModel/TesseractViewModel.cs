@@ -85,7 +85,6 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                 }
             },
             parameter => true);
-        Tess_PropertyChanged(this, new PropertyChangedEventArgs("Checked"));
         PropertyChanged += TesseractViewModel_PropertyChanged;
     }
 
