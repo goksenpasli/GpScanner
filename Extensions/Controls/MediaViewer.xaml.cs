@@ -1,11 +1,13 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -213,7 +215,7 @@ public partial class MediaViewer : UserControl
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
     [Browsable(false)]
-    public ObservableCollection<SrtContent> ParsedSubtitle { get; set; }
+    public List<SrtContent> ParsedSubtitle { get; set; }
 
     [Description("Video Effects")]
     [Category("Effects")]
@@ -579,7 +581,7 @@ public partial class MediaViewer : UserControl
         }
     }
 
-    private static async void MediaPositionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void MediaPositionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if(d is MediaViewer viewer && e.NewValue != null && !dragging)
         {
@@ -587,27 +589,7 @@ public partial class MediaViewer : UserControl
             viewer.Player.Position = position;
             if(viewer.SubTitleVisibility == Visibility.Visible && viewer.ParsedSubtitle is not null)
             {
-                foreach(SrtContent subtitle in viewer.ParsedSubtitle)
-                {
-                    if(position > subtitle.StartTime && position < subtitle.EndTime)
-                    {
-                        if(viewer.AutoTranslate)
-                        {
-                            viewer.TooltipOriginalSubtitle = subtitle.Text;
-                            viewer.SubTitle = await TranslateViewModel.DileÇevir(subtitle.Text, viewer.MevcutDil, viewer.ÇevrilenDil);
-                        }
-                        else
-                        {
-                            viewer.SubTitle = subtitle.Text;
-                        }
-                    }
-
-                    if(position > subtitle.EndTime)
-                    {
-                        viewer.TooltipOriginalSubtitle = string.Empty;
-                        viewer.SubTitle = string.Empty;
-                    }
-                }
+                RenderSubtitle(viewer, position);
             }
         }
     }
@@ -681,31 +663,24 @@ public partial class MediaViewer : UserControl
         }
     }
 
-    private ObservableCollection<SrtContent> ParseSrtFile(string filepath)
+    private List<SrtContent> ParseSrtFile(string filepath)
     {
         try
         {
-            ObservableCollection<SrtContent> content = new();
+            List<SrtContent> content = new();
+            const string italicpattern = "<\\/?(i|i\\s+[^>]*)>";
             foreach(string element in File.ReadAllText(filepath, Encoding.GetEncoding("Windows-1254")).Split(new[] { "\r\n\r\n" }, StringSplitOptions.RemoveEmptyEntries))
             {
+                string[] lines = element.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
                 content.Add(
                     new SrtContent
                     {
-                        StartTime =
-                            TimeSpan.Parse(
-                                    element.Split('\n')[1]
-                        .Substring(0, element.Split('\n')[1].LastIndexOf("-->"))
-                                        .Trim()),
-                        EndTime =
-                            TimeSpan.Parse(
-                                    element.Split('\n')[1]
-                        .Substring(element.Split('\n')[1].LastIndexOf("-->") + 3)
-                                        .Trim()),
-                        Text = string.Concat(element.Split('\n').Skip(2).Take(element.Split('\n').Length - 2)),
-                        Segment = element.Split('\n')[0]
+                        StartTime = TimeSpan.Parse(lines[1].Substring(0, lines[1].LastIndexOf("-->")).Trim()),
+                        EndTime = TimeSpan.Parse(lines[1].Substring(lines[1].LastIndexOf("-->") + 3).Trim()),
+                        Text = Regex.Replace(string.Concat(lines.Skip(2).Take(lines.Length - 2)), italicpattern, string.Empty),
+                        Segment = lines[0]
                     });
             }
-
             return content;
         }
         catch(Exception ex)
@@ -755,6 +730,31 @@ public partial class MediaViewer : UserControl
 
         Player.Play();
         OsdText = "Çalıyor";
+    }
+
+    private static void RenderSubtitle(MediaViewer viewer, TimeSpan position)
+    {
+        foreach(SrtContent subtitle in viewer.ParsedSubtitle)
+        {
+            if(position > subtitle.StartTime && position < subtitle.EndTime)
+            {
+                if(viewer.AutoTranslate)
+                {
+                    viewer.TooltipOriginalSubtitle = subtitle.Text;
+                    viewer.SubTitle = TranslateViewModel.DileÇevirAsync(subtitle.Text, viewer.MevcutDil, viewer.ÇevrilenDil).ConfigureAwait(false).GetAwaiter().GetResult();
+                }
+                else
+                {
+                    viewer.SubTitle = subtitle.Text;
+                }
+            }
+
+            if(position > subtitle.EndTime)
+            {
+                viewer.TooltipOriginalSubtitle = string.Empty;
+                viewer.SubTitle = string.Empty;
+            }
+        }
     }
 
     private void Rotate_Click(object sender, RoutedEventArgs e)

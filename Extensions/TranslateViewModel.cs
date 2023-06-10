@@ -8,7 +8,7 @@ namespace Extensions;
 
 public class TranslateViewModel : InpcBase
 {
-    public static async Task<string> DileÇevir(string text, string from = "auto", string to = "en")
+    public static async Task<string> DileÇevirAsync(string text, string from = "auto", string to = "en")
     {
         try
         {
@@ -16,9 +16,9 @@ public class TranslateViewModel : InpcBase
             client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0");
             client.DefaultRequestHeaders.Add("Accept-Charset", "UTF-8");
             string url = $"https://translate.googleapis.com/translate_a/single?client=gtx&sl={from}&tl={to}&dt=t&q={Uri.EscapeUriString(text)}";
-            HttpResponseMessage response = await client.GetAsync(url);
+            HttpResponseMessage response = await client.GetAsync(url).ConfigureAwait(false);
             _ = response.EnsureSuccessStatusCode();
-            string page = await response.Content.ReadAsStringAsync();
+            string page = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             JavaScriptSerializer JSS = new();
             object parsedObj = JSS.DeserializeObject(page);
             string çeviri = string.Empty;
