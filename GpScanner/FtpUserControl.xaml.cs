@@ -7,5 +7,6 @@ namespace GpScanner;
 /// </summary>
 public partial class FtpUserControl : UserControl
 {
-    public FtpUserControl() { InitializeComponent(); }
+    public FtpUserControl()
+    { InitializeComponent(); }
 }

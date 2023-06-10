@@ -1,32 +1,16 @@
-﻿using Extensions;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
+using Extensions;
 using TwainControl;
 
 namespace GpScanner.ViewModel;
 
 public static class WindowExtensions
 {
-    private const int _AboutSysMenuID = 1001;
-
-    private const int GWL_STYLE = -16, WS_MINIMIZEBOX = 0x20000;
-
-    private const uint MF_BYCOMMAND = 0x00000000;
-
-    private const int MF_BYPOSITION = 0x400;
-
-    private const uint MF_ENABLED = 0x00000000;
-
-    private const uint MF_GRAYED = 0x00000001;
-
-    private const uint SC_CLOSE = 0xF060;
-
-    private const int WM_SYSCOMMAND = 0x112;
-
     static WindowExtensions()
     {
         OpenSettings = new RelayCommand<object>(
@@ -37,13 +21,7 @@ public static class WindowExtensions
             });
     }
 
-    internal static void HideMinimizeButtons(this Window window)
-    {
-        IntPtr hwnd = new WindowInteropHelper(window).Handle;
-        int currentStyle = GetWindowLong(hwnd, GWL_STYLE);
-
-        _ = SetWindowLong(hwnd, GWL_STYLE, currentStyle & ~WS_MINIMIZEBOX);
-    }
+    public static ICommand OpenSettings { get; }
 
     public static void DisableCloseButton(this Window window, bool disable)
     {
@@ -60,7 +38,29 @@ public static class WindowExtensions
         source.AddHook(WndProc);
     }
 
-    public static ICommand OpenSettings { get; }
+    internal static void HideMinimizeButtons(this Window window)
+    {
+        IntPtr hwnd = new WindowInteropHelper(window).Handle;
+        int currentStyle = GetWindowLong(hwnd, GWL_STYLE);
+
+        _ = SetWindowLong(hwnd, GWL_STYLE, currentStyle & ~WS_MINIMIZEBOX);
+    }
+
+    private const int _AboutSysMenuID = 1001;
+
+    private const int GWL_STYLE = -16, WS_MINIMIZEBOX = 0x20000;
+
+    private const uint MF_BYCOMMAND = 0x00000000;
+
+    private const int MF_BYPOSITION = 0x400;
+
+    private const uint MF_ENABLED = 0x00000000;
+
+    private const uint MF_GRAYED = 0x00000001;
+
+    private const uint SC_CLOSE = 0xF060;
+
+    private const int WM_SYSCOMMAND = 0x112;
 
     [DllImport("user32.dll")]
     private static extern bool EnableMenuItem(IntPtr hMenu, uint uIDEnableItem, uint uEnable);
@@ -80,9 +80,9 @@ public static class WindowExtensions
     [DebuggerStepThrough]
     private static IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
     {
-        if(msg == WM_SYSCOMMAND)
+        if (msg == WM_SYSCOMMAND)
         {
-            switch(wParam.ToInt32())
+            switch (wParam.ToInt32())
             {
                 case _AboutSysMenuID:
                     _ = Process.Start("https://github.com/goksenpasli");

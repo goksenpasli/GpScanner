@@ -24,17 +24,25 @@ public class PageRangeDocumentPaginator : DocumentPaginator
         _endIndex = Math.Min(_endIndex, _paginator.PageCount - 1);
     }
 
+    public override bool IsPageCountValid => true;
+
+    public override int PageCount => _startIndex > _paginator.PageCount - 1 || _startIndex > _endIndex ? 0 : _endIndex - _startIndex + 1;
+
+    public override Size PageSize { get { return _paginator.PageSize; } set { _paginator.PageSize = value; } }
+
+    public override IDocumentPaginatorSource Source => _paginator.Source;
+
     public override DocumentPage GetPage(int pageNumber)
     {
         DocumentPage page = _paginator.GetPage(pageNumber + _startIndex);
         ContainerVisual cv = new();
-        if(page.Visual is FixedPage page1)
+        if (page.Visual is FixedPage page1)
         {
-            foreach(object child in page1.Children)
+            foreach (object child in page1.Children)
             {
                 UIElement childClone = (UIElement)child.GetType().GetMethod("MemberwiseClone", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(child, null);
                 FieldInfo parentField = childClone.GetType().GetField("_parent", BindingFlags.Instance | BindingFlags.NonPublic);
-                if(parentField != null)
+                if (parentField != null)
                 {
                     parentField.SetValue(childClone, null);
                     _ = cv.Children.Add(childClone);
@@ -47,14 +55,6 @@ public class PageRangeDocumentPaginator : DocumentPaginator
         return page;
     }
 
-    public override bool IsPageCountValid => true;
-
-    public override int PageCount => _startIndex > _paginator.PageCount - 1 || _startIndex > _endIndex ? 0 : _endIndex - _startIndex + 1;
-
-    public override Size PageSize { get { return _paginator.PageSize; } set { _paginator.PageSize = value; } }
-
-    public override IDocumentPaginatorSource Source => _paginator.Source;
-
     private readonly int _endIndex;
 
     private readonly DocumentPaginator _paginator;
@@ -64,6 +64,12 @@ public class PageRangeDocumentPaginator : DocumentPaginator
 
 public partial class XpsViewer : UserControl, INotifyPropertyChanged
 {
+    public static readonly DependencyProperty XpsDataFilePathProperty = DependencyProperty.Register(
+        "XpsDataFilePath",
+        typeof(string),
+        typeof(XpsViewer),
+        new PropertyMetadata(null, XpsDataFilePathChanged));
+
     public XpsViewer()
     {
         InitializeComponent();
@@ -72,13 +78,11 @@ public partial class XpsViewer : UserControl, INotifyPropertyChanged
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public IDocumentPaginatorSource Document
-    {
+    public IDocumentPaginatorSource Document {
         get { return document; }
 
-        set
-        {
-            if(document != value)
+        set {
+            if (document != value)
             {
                 document = value;
                 OnPropertyChanged(nameof(Document));
@@ -88,7 +92,25 @@ public partial class XpsViewer : UserControl, INotifyPropertyChanged
 
     public string XpsDataFilePath { get { return (string)GetValue(XpsDataFilePathProperty); } set { SetValue(XpsDataFilePathProperty, value); } }
 
-    protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
+    protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+    private IDocumentPaginatorSource document;
+
+    private static void XpsDataFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is XpsViewer xpsViewer && e.NewValue != null)
+        {
+            try
+            {
+                XpsDocument doc = new(e.NewValue as string, FileAccess.Read);
+                xpsViewer.Document = doc.GetFixedDocumentSequence();
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException(nameof(xpsViewer), ex);
+            }
+        }
+    }
 
     private void CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
     {
@@ -99,11 +121,11 @@ public partial class XpsViewer : UserControl, INotifyPropertyChanged
     private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
     {
         PrintDialog dlg = new() { UserPageRangeEnabled = true };
-        if(dlg.ShowDialog() == true)
+        if (dlg.ShowDialog() == true)
         {
             XpsViewer xpsViewer = (sender as DocumentViewer)?.DataContext as XpsViewer;
             DocumentPaginator paginator = xpsViewer.Document.DocumentPaginator;
-            if(dlg.PageRangeSelection == PageRangeSelection.UserPages)
+            if (dlg.PageRangeSelection == PageRangeSelection.UserPages)
             {
                 paginator = new PageRangeDocumentPaginator(xpsViewer.Document.DocumentPaginator, dlg.PageRange);
             }
@@ -111,28 +133,4 @@ public partial class XpsViewer : UserControl, INotifyPropertyChanged
             dlg.PrintDocument(paginator, Application.Current?.MainWindow?.Title);
         }
     }
-
-    private static void XpsDataFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        if(d is XpsViewer xpsViewer && e.NewValue != null)
-        {
-            try
-            {
-                XpsDocument doc = new(e.NewValue as string, FileAccess.Read);
-                xpsViewer.Document = doc.GetFixedDocumentSequence();
-            }
-            catch(Exception ex)
-            {
-                throw new ArgumentException(nameof(xpsViewer), ex);
-            }
-        }
-    }
-
-    public static readonly DependencyProperty XpsDataFilePathProperty = DependencyProperty.Register(
-        "XpsDataFilePath",
-        typeof(string),
-        typeof(XpsViewer),
-        new PropertyMetadata(null, XpsDataFilePathChanged));
-
-    private IDocumentPaginatorSource document;
 }

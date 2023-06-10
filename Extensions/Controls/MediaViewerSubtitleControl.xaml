@@ -1,0 +1,73 @@
+﻿<UserControl x:Class="Extensions.Controls.MediaViewerSubtitleControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Controls="clr-namespace:Extensions.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:Extensions"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DataContext="{d:DesignInstance Type=Controls:MediaViewer}"
+    d:DesignHeight="500" d:DesignWidth="500" UseLayoutRounding="True"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <local:VisibilityToBooleanConverter x:Key="VisibilityToBooleanConverter" />
+    </UserControl.Resources>
+    <UniformGrid Columns="2">
+        <StackPanel Background="{StaticResource GroupBoxBackGround}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Button Grid.Column="1"
+                    Click="SubtitleMargin_Click" Content="5" FontFamily="Webdings" />
+                <Button Grid.Row="2" Grid.Column="1"
+                    Click="SubtitleMargin_Click" Content="6" FontFamily="Webdings" />
+                <Button Grid.Row="1"
+                    Click="SubtitleMargin_Click" Content="3" FontFamily="Webdings" />
+                <Button Grid.Row="1" Grid.Column="2"
+                    Click="SubtitleMargin_Click" Content="4" FontFamily="Webdings" />
+            </Grid>
+            <Button Click="Subtitle_Click" Content="ALTYAZI YÜKLE" FontFamily="Segoe UI" />
+            <ToggleButton VerticalContentAlignment="Center"
+                Content="ALTYAZI GÖRÜNÜR" FontFamily="Segoe UI"
+                IsChecked="{Binding SubTitleVisibility, Mode=TwoWay, Converter={StaticResource VisibilityToBooleanConverter}}" />
+            <Slider Maximum="128" Minimum="1"
+                Value="{Binding SubTitleSize}" />
+            <local:ColorPicker ColorPickerColumnCount="10" FontFamily="Segoe UI"
+                HexCode="{Binding SubTitleColor, Mode=TwoWay}"
+                PredefinedColorVisibility="Visible" />
+            <ToggleButton VerticalContentAlignment="Center"
+                Content="OTOMATİK ALTYAZI ÇEVİRİ" FontFamily="Segoe UI"
+                IsChecked="{Binding AutoTranslate}" />
+            <Controls:TranslateView FontFamily="Segoe UI" IsEnabled="{Binding AutoTranslate}" />
+        </StackPanel>
+        <ListBox d:ItemsSource="{d:SampleData ItemCount=5}"
+            FontFamily="Segoe UI"
+            ItemsSource="{Binding ParsedSubtitle}"
+            VirtualizingPanel.CacheLength="3,3" VirtualizingPanel.CacheLengthUnit="Item"
+            VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.ScrollUnit="Pixel"
+            VirtualizingPanel.VirtualizationMode="Standard">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Background" Value="{Binding BackgroundColor}" />
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock TextWrapping="Wrap">
+                        <Hyperlink Command="{Binding GoToFrame, RelativeSource={RelativeSource AncestorType=Controls:MediaViewer}}" CommandParameter="{Binding StartTime}">
+                            <Run Foreground="Red" Text="{Binding StartTime}" />
+                            <LineBreak />
+                            <Run Text="{Binding Text}" />
+                        </Hyperlink>
+                    </TextBlock>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </UniformGrid>
+</UserControl>

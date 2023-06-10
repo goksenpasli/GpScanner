@@ -4,13 +4,11 @@ namespace Ocr;
 
 public class TesseractOcrData : InpcBase
 {
-    public bool IsEnabled
-    {
+    public bool IsEnabled {
         get { return ısEnabled; }
 
-        set
-        {
-            if(ısEnabled != value)
+        set {
+            if (ısEnabled != value)
             {
                 ısEnabled = value;
                 OnPropertyChanged(nameof(IsEnabled));
@@ -18,13 +16,11 @@ public class TesseractOcrData : InpcBase
         }
     }
 
-    public Visibility IsVisible
-    {
+    public Visibility IsVisible {
         get { return ısVisible; }
 
-        set
-        {
-            if(ısVisible != value)
+        set {
+            if (ısVisible != value)
             {
                 ısVisible = value;
                 OnPropertyChanged(nameof(IsVisible));
@@ -32,13 +28,11 @@ public class TesseractOcrData : InpcBase
         }
     }
 
-    public string OcrName
-    {
+    public string OcrName {
         get { return ocrName; }
 
-        set
-        {
-            if(ocrName != value)
+        set {
+            if (ocrName != value)
             {
                 ocrName = value;
                 OnPropertyChanged(nameof(OcrName));
@@ -46,13 +40,11 @@ public class TesseractOcrData : InpcBase
         }
     }
 
-    public double ProgressValue
-    {
+    public double ProgressValue {
         get { return progressValue; }
 
-        set
-        {
-            if(progressValue != value)
+        set {
+            if (progressValue != value)
             {
                 progressValue = value;
                 OnPropertyChanged(nameof(ProgressValue));

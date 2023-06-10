@@ -1,6 +1,6 @@
-﻿using Extensions;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Xml.Serialization;
+using Extensions;
 
 namespace GpScanner.ViewModel;
 
@@ -8,13 +8,11 @@ namespace GpScanner.ViewModel;
 public class ScannerData : InpcBase
 {
     [XmlElement(ElementName = "Data")]
-    public ObservableCollection<Data> Data
-    {
+    public ObservableCollection<Data> Data {
         get { return data; }
 
-        set
-        {
-            if(data != value)
+        set {
+            if (data != value)
             {
                 data = value;
                 OnPropertyChanged(nameof(Data));

@@ -1,5 +1,4 @@
-﻿using Ocr;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
@@ -11,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Ocr;
 using WebPWrapper;
 using static Extensions.ExtensionMethods;
 using Brush = System.Windows.Media.Brush;
@@ -41,19 +41,19 @@ public static class BitmapMethods
             {
                 int rowOffset = y * stride;
 
-                for(int x = 0; x < width; x++)
+                for (int x = 0; x < width; x++)
                 {
                     int offset = rowOffset + (x * bytesPerPixel);
 
-                    for(int i = 0; i < bytesPerPixel; i++)
+                    for (int i = 0; i < bytesPerPixel; i++)
                     {
                         int value = pixelData[offset + i] + brightness;
 
-                        if(value < 0)
+                        if (value < 0)
                         {
                             value = 0;
                         }
-                        else if(value > 255)
+                        else if (value > 255)
                         {
                             value = 255;
                         }
@@ -99,7 +99,7 @@ public static class BitmapMethods
             bitmapFrame = null;
             return cb.ToTiffJpegByteArray(Format.Png);
         }
-        catch(Exception)
+        catch (Exception)
         {
             return null;
         }
@@ -110,13 +110,13 @@ public static class BitmapMethods
         int totalWidth = 0;
         int totalHeight = 0;
 
-        foreach(ScannedImage image in images)
+        foreach (ScannedImage image in images)
         {
             totalWidth = Math.Max(totalWidth, image.Resim.PixelWidth);
             totalHeight = Math.Max(totalHeight, image.Resim.PixelHeight);
         }
 
-        if(orientation == Orientation.Horizontal)
+        if (orientation == Orientation.Horizontal)
         {
             totalWidth *= images.Count;
         }
@@ -126,15 +126,15 @@ public static class BitmapMethods
         }
 
         DrawingVisual drawingVisual = new();
-        using(DrawingContext drawingContext = drawingVisual.RenderOpen())
+        using (DrawingContext drawingContext = drawingVisual.RenderOpen())
         {
             int curWidth = 0;
             int curHeight = 0;
-            foreach(ScannedImage image in images)
+            foreach (ScannedImage image in images)
             {
                 Rect rect = new(new Point(curWidth, curHeight), new Size(image.Resim.PixelWidth, image.Resim.PixelHeight));
                 drawingContext.DrawImage(image.Resim, rect);
-                if(orientation == Orientation.Horizontal)
+                if (orientation == Orientation.Horizontal)
                 {
                     curWidth += image.Resim.PixelWidth;
                 }
@@ -154,7 +154,7 @@ public static class BitmapMethods
     public static async Task<BitmapFrame> FlipImageAsync(this BitmapFrame bitmapFrame, double angle)
     {
         TransformedBitmap transformedBitmap = null;
-        switch(angle)
+        switch (angle)
         {
             case 1:
                 transformedBitmap = new TransformedBitmap(bitmapFrame, new ScaleTransform(angle, -1, 0, 0));
@@ -187,7 +187,7 @@ public static class BitmapMethods
         image.Freeze();
 
         RenderTargetBitmap skewedimage = null;
-        if(deskew)
+        if (deskew)
         {
             double deskewAngle = ToolBox.GetDeskewAngle(image, true);
             skewedimage = await image.RotateImageAsync(deskewAngle);
@@ -197,9 +197,7 @@ public static class BitmapMethods
         return deskew ? BitmapFrame.Create(skewedimage) : BitmapFrame.Create(image);
     }
 
-    public static ObservableCollection<Paper> GetPapers()
-    {
-        return new ObservableCollection<Paper>
+    public static ObservableCollection<Paper> GetPapers() => new ObservableCollection<Paper>
         {
             new() { Height = 119, PaperType = "A0", Width = 84.1 },
             new() { Height = 84.1, PaperType = "A1", Width = 59.5 },
@@ -217,7 +215,6 @@ public static class BitmapMethods
             new() { Height = 35.6, PaperType = "Legal", Width = 21.6 },
             new() { Height = 26.7, PaperType = "Executive", Width = 18.4 }
         };
-    }
 
     public static WriteableBitmap InvertBitmap(this BitmapSource bitmap)
     {
@@ -237,7 +234,7 @@ public static class BitmapMethods
             {
                 int offset = y * stride;
 
-                for(int x = 0; x < width * bytesPerPixel; x++)
+                for (int x = 0; x < width * bytesPerPixel; x++)
                 {
                     pixelData[offset + x] = (byte)(255 - pixelData[offset + x]);
                 }
@@ -265,7 +262,7 @@ public static class BitmapMethods
             height,
             y =>
             {
-                for(int x = 0; x < width; x++)
+                for (int x = 0; x < width; x++)
                 {
                     int minX = Math.Max(x - (threshold / 2), 0);
                     int maxX = Math.Min(x + (threshold / 2), width - 1);
@@ -273,9 +270,9 @@ public static class BitmapMethods
                     int maxY = Math.Min(y + (threshold / 2), height - 1);
 
                     List<byte> values = new();
-                    for(int wy = minY; wy <= maxY; wy++)
+                    for (int wy = minY; wy <= maxY; wy++)
                     {
-                        for(int wx = minX; wx <= maxX; wx++)
+                        for (int wx = minX; wx <= maxX; wx++)
                         {
                             int pixelIndex = (wy * stride) + (wx * bytesPerPixel);
                             byte pixelValue = inputPixels[pixelIndex];
@@ -289,7 +286,7 @@ public static class BitmapMethods
                     outputPixels[outputIndex] = medianValue;
                     outputPixels[outputIndex + 1] = medianValue;
                     outputPixels[outputIndex + 2] = medianValue;
-                    if(bytesPerPixel == 4)
+                    if (bytesPerPixel == 4)
                     {
                         outputPixels[outputIndex + 3] = 255;
                     }
@@ -323,7 +320,7 @@ public static class BitmapMethods
             {
                 int rowOffset = y * stride;
 
-                for(int x = 0; x < width; x++)
+                for (int x = 0; x < width; x++)
                 {
                     int offset = rowOffset + (x * pixelSize);
 
@@ -331,7 +328,7 @@ public static class BitmapMethods
                     byte g = targetPixels[offset + 1];
                     byte r = targetPixels[offset + 2];
 
-                    if(Math.Abs(toReplace.R - r) <= threshold && Math.Abs(toReplace.G - g) <= threshold && Math.Abs(toReplace.B - b) <= threshold)
+                    if (Math.Abs(toReplace.R - r) <= threshold && Math.Abs(toReplace.G - g) <= threshold && Math.Abs(toReplace.B - b) <= threshold)
                     {
                         targetPixels[offset] = replacement.B;
                         targetPixels[offset + 1] = replacement.G;
@@ -355,7 +352,7 @@ public static class BitmapMethods
                 () =>
                 {
                     DrawingVisual dv = new();
-                    using(DrawingContext dc = dv.RenderOpen())
+                    using (DrawingContext dc = dv.RenderOpen())
                     {
                         dc.PushTransform(new RotateTransform(angle));
                         dc.DrawImage(Source, new Rect(0, 0, bitmapSource.PixelWidth, bitmapSource.PixelHeight));
@@ -370,7 +367,7 @@ public static class BitmapMethods
                     return rtb;
                 });
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Source = null;
             throw new ArgumentException(nameof(Source), ex);
@@ -379,7 +376,7 @@ public static class BitmapMethods
 
     public static async Task<BitmapFrame> RotateImageAsync(this BitmapFrame bitmapFrame, double angle)
     {
-        if(angle is not -1 and not 1)
+        if (angle is not -1 and not 1)
         {
             throw new ArgumentOutOfRangeException(nameof(angle), "angle should be -1 or 1");
         }
@@ -397,7 +394,7 @@ public static class BitmapMethods
 
     public static IEnumerable<int> SteppedRange(int fromInclusive, int toExclusive, int step)
     {
-        for(int i = fromInclusive; i < toExclusive; i += step)
+        for (int i = fromInclusive; i < toExclusive; i += step)
         {
             yield return i;
         }
@@ -416,7 +413,7 @@ public static class BitmapMethods
         FormattedText formattedText =
             new(metin, CultureInfo.CurrentCulture, flowDirection, new Typeface(font), emSize, brushes) { TextAlignment = TextAlignment.Center };
         DrawingVisual dv = new();
-        using(DrawingContext dc = dv.RenderOpen())
+        using (DrawingContext dc = dv.RenderOpen())
         {
             dc.DrawImage(Source, new Rect(0, 0, ((BitmapSource)Source).Width, ((BitmapSource)Source).Height));
             dc.PushTransform(new RotateTransform(angle, konum.X, konum.Y));
@@ -452,7 +449,7 @@ public static class BitmapMethods
                 ? webp.EncodeLossy(bmp, kalite)
                 : webp.EncodeLossy(bmp.BitmapChangeFormat(PixelFormat.Format24bppRgb), kalite);
         }
-        catch(Exception)
+        catch (Exception)
         {
             return null;
         }

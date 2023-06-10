@@ -28,6 +28,7 @@ namespace Tesseract
             IntPtr clonedHandle = LeptonicaApi.Native.pixClone(handle);
             return new Pix(clonedHandle);
         }
+
         #endregion Clone
 
         #region Save methods
@@ -42,10 +43,10 @@ namespace Tesseract
         public void Save(string filename, ImageFormat? format = null)
         {
             ImageFormat actualFormat;
-            if(!format.HasValue)
+            if (!format.HasValue)
             {
                 string extension = Path.GetExtension(filename).ToLowerInvariant();
-                if(!imageFomatLookup.TryGetValue(extension, out actualFormat))
+                if (!imageFomatLookup.TryGetValue(extension, out actualFormat))
                 {
                     actualFormat = ImageFormat.Default;
                 }
@@ -55,11 +56,12 @@ namespace Tesseract
                 actualFormat = format.Value;
             }
 
-            if(LeptonicaApi.Native.pixWrite(filename, handle, actualFormat) != 0)
+            if (LeptonicaApi.Native.pixWrite(filename, handle, actualFormat) != 0)
             {
                 throw new IOException($"Failed to save image '{filename}'.");
             }
         }
+
         #endregion Save methods
 
         #region Scaling
@@ -117,9 +119,11 @@ namespace Tesseract
 
             return result == IntPtr.Zero ? throw new InvalidOperationException("Failed to scale pix.") : new Pix(result);
         }
+
         #endregion Scaling
 
         #region Constants
+
         public const int DefaultBinarySearchReduction = 2;
 
         public const int DefaultBinaryThreshold = 130;
@@ -146,28 +150,32 @@ namespace Tesseract
             { ".png", ImageFormat.Png },
             { ".bmp", ImageFormat.Bmp }
         };
+
         #endregion Constants
 
         #region Fields
+
         private PixColormap colormap;
 
         private HandleRef handle;
+
         #endregion Fields
 
         #region Create\Load methods
+
         public static Pix Create(int width, int height, int depth)
         {
-            if(!AllowedDepths.Contains(depth))
+            if (!AllowedDepths.Contains(depth))
             {
                 throw new ArgumentException("Depth must be 1, 2, 4, 8, 16, or 32 bits.", nameof(depth));
             }
 
-            if(width <= 0)
+            if (width <= 0)
             {
                 throw new ArgumentException("Width must be greater than zero", nameof(width));
             }
 
-            if(height <= 0)
+            if (height <= 0)
             {
                 throw new ArgumentException("Height must be greater than zero", nameof(height));
             }
@@ -179,8 +187,7 @@ namespace Tesseract
                 : Create(handle);
         }
 
-        public static Pix Create(IntPtr handle)
-        { return handle == IntPtr.Zero ? throw new ArgumentException("Pix handle must not be zero (null).", nameof(handle)) : new Pix(handle); }
+        public static Pix Create(IntPtr handle) => handle == IntPtr.Zero ? throw new ArgumentException("Pix handle must not be zero (null).", nameof(handle)) : new Pix(handle);
 
         public static Pix LoadFromFile(string filename)
         {
@@ -191,7 +198,7 @@ namespace Tesseract
         public static Pix LoadFromMemory(byte[] bytes)
         {
             IntPtr handle;
-            fixed(byte* ptr = bytes)
+            fixed (byte* ptr = bytes)
             {
                 handle = LeptonicaApi.Native.pixReadMem(ptr, bytes.Length);
             }
@@ -202,7 +209,7 @@ namespace Tesseract
         public static Pix LoadTiffFromMemory(byte[] bytes)
         {
             IntPtr handle;
-            fixed(byte* ptr = bytes)
+            fixed (byte* ptr = bytes)
             {
                 handle = LeptonicaApi.Native.pixReadMemTiff(ptr, bytes.Length, 0);
             }
@@ -226,7 +233,7 @@ namespace Tesseract
         /// <param name="handle"></param>
         private Pix(IntPtr handle)
         {
-            if(handle == IntPtr.Zero)
+            if (handle == IntPtr.Zero)
             {
                 throw new ArgumentNullException(nameof(handle));
             }
@@ -237,30 +244,30 @@ namespace Tesseract
             Depth = LeptonicaApi.Native.pixGetDepth(this.handle);
 
             IntPtr colorMapHandle = LeptonicaApi.Native.pixGetColormap(this.handle);
-            if(colorMapHandle != IntPtr.Zero)
+            if (colorMapHandle != IntPtr.Zero)
             {
                 colormap = new PixColormap(colorMapHandle);
             }
         }
+
         #endregion Create\Load methods
 
         #region Properties
-        public PixColormap Colormap
-        {
+
+        public PixColormap Colormap {
             get { return colormap; }
 
-            set
-            {
-                if(value != null)
+            set {
+                if (value != null)
                 {
-                    if(LeptonicaApi.Native.pixSetColormap(handle, value.Handle) == 0)
+                    if (LeptonicaApi.Native.pixSetColormap(handle, value.Handle) == 0)
                     {
                         colormap = value;
                     }
                 }
                 else
                 {
-                    if(LeptonicaApi.Native.pixDestroyColormap(handle) == 0)
+                    if (LeptonicaApi.Native.pixDestroyColormap(handle) == 0)
                     {
                         colormap = null;
                     }
@@ -278,18 +285,18 @@ namespace Tesseract
 
         public int YRes { get { return LeptonicaApi.Native.pixGetYRes(handle); } set { LeptonicaApi.Native.pixSetYRes(handle, value); } }
 
-        public PixData GetData() { return new PixData(this); }
+        public PixData GetData() => new PixData(this);
 
         internal HandleRef Handle => handle;
+
         #endregion Properties
 
         #region Equals
-        public override bool Equals(object obj) { return obj != null && GetType() == obj.GetType() && Equals((Pix)obj); }
 
-        public bool Equals(Pix other)
-        {
-            return other != null && (LeptonicaApi.Native.pixEqual(Handle, other.Handle, out int same) != 0 ? throw new TesseractException("Failed to compare pix") : same != 0);
-        }
+        public override bool Equals(object obj) => obj != null && GetType() == obj.GetType() && Equals((Pix)obj);
+
+        public bool Equals(Pix other) => other != null && (LeptonicaApi.Native.pixEqual(Handle, other.Handle, out int same) != 0 ? throw new TesseractException("Failed to compare pix") : same != 0);
+
         #endregion Equals
 
         #region Image manipulation
@@ -321,7 +328,7 @@ namespace Tesseract
 
             int result = LeptonicaApi.Native.pixOtsuAdaptiveThreshold(handle, sx, sy, smoothx, smoothy, scorefract, out IntPtr ppixth, out IntPtr ppixd);
 
-            if(ppixth != IntPtr.Zero)
+            if (ppixth != IntPtr.Zero)
             {
                 LeptonicaApi.Native.pixDestroy(ref ppixth);
             }
@@ -364,17 +371,17 @@ namespace Tesseract
 
             int result = LeptonicaApi.Native.pixSauvolaBinarize(handle, whsize, factor, addborder ? 1 : 0, out IntPtr ppixm, out IntPtr ppixsd, out IntPtr ppixth, out IntPtr ppixd);
 
-            if(ppixm != IntPtr.Zero)
+            if (ppixm != IntPtr.Zero)
             {
                 LeptonicaApi.Native.pixDestroy(ref ppixm);
             }
 
-            if(ppixsd != IntPtr.Zero)
+            if (ppixsd != IntPtr.Zero)
             {
                 LeptonicaApi.Native.pixDestroy(ref ppixsd);
             }
 
-            if(ppixth != IntPtr.Zero)
+            if (ppixth != IntPtr.Zero)
             {
                 LeptonicaApi.Native.pixDestroy(ref ppixth);
             }
@@ -412,7 +419,7 @@ namespace Tesseract
             int result =
                 LeptonicaApi.Native.pixSauvolaBinarizeTiled(handle, whsize, factor, nx, ny, out IntPtr ppixth, out IntPtr ppixd);
 
-            if(ppixth != IntPtr.Zero)
+            if (ppixth != IntPtr.Zero)
             {
                 LeptonicaApi.Native.pixDestroy(ref ppixth);
             }
@@ -443,7 +450,7 @@ namespace Tesseract
         /// Conversion from RBG to 8bpp grayscale.
         /// </summary>
         /// <returns>The Grayscale pix.</returns>
-        public Pix ConvertRGBToGray() { return ConvertRGBToGray(0, 0, 0); }
+        public Pix ConvertRGBToGray() => ConvertRGBToGray(0, 0, 0);
 
         /// <summary>
         /// Top-level conversion to 8 bpp.
@@ -466,7 +473,7 @@ namespace Tesseract
         /// confidence, it returns a deskewed image; otherwise, it returns a clone.
         /// </remarks>
         /// <returns>Returns deskewed image if confidence was high enough, otherwise returns clone of original pix.</returns>
-        public Pix Deskew() { return Deskew(DefaultBinarySearchReduction, out _); }
+        public Pix Deskew() => Deskew(DefaultBinarySearchReduction, out _);
 
         /// <summary>
         /// Determines the scew angle and if confidence is high enough returns the descewed image as the result,
@@ -478,7 +485,7 @@ namespace Tesseract
         /// </remarks>
         /// <param name="scew">The scew angle and confidence</param>
         /// <returns>Returns deskewed image if confidence was high enough, otherwise returns clone of original pix.</returns>
-        public Pix Deskew(out Scew scew) { return Deskew(DefaultBinarySearchReduction, out scew); }
+        public Pix Deskew(out Scew scew) => Deskew(DefaultBinarySearchReduction, out scew);
 
         /// <summary>
         /// Determines the scew angle and if confidence is high enough returns the descewed image as the result,
@@ -491,7 +498,7 @@ namespace Tesseract
         /// <param name="redSearch">The reduction factor used by the binary search, can be 1, 2, or 4.</param>
         /// <param name="scew">The scew angle and confidence</param>
         /// <returns>Returns deskewed image if confidence was high enough, otherwise returns clone of original pix.</returns>
-        public Pix Deskew(int redSearch, out Scew scew) { return Deskew(ScewSweep.Default, redSearch, DefaultBinaryThreshold, out scew); }
+        public Pix Deskew(int redSearch, out Scew scew) => Deskew(ScewSweep.Default, redSearch, DefaultBinaryThreshold, out scew);
 
         /// <summary>
         /// Determines the scew angle and if confidence is high enough returns the descewed image as the result,
@@ -509,7 +516,7 @@ namespace Tesseract
         public Pix Deskew(ScewSweep sweep, int redSearch, int thresh, out Scew scew)
         {
             IntPtr resultPixHandle = LeptonicaApi.Native.pixDeskewGeneral(handle, sweep.Reduction, sweep.Range, sweep.Delta, redSearch, thresh, out float pAngle, out float pConf);
-            if(resultPixHandle == IntPtr.Zero)
+            if (resultPixHandle == IntPtr.Zero)
             {
                 throw new TesseractException("Failed to deskew image.");
             }
@@ -605,42 +612,42 @@ namespace Tesseract
             }
             finally
             {
-                if(pix1 != IntPtr.Zero)
+                if (pix1 != IntPtr.Zero)
                 {
                     LeptonicaApi.Native.pixDestroy(ref pix1);
                 }
 
-                if(pix2 != IntPtr.Zero)
+                if (pix2 != IntPtr.Zero)
                 {
                     LeptonicaApi.Native.pixDestroy(ref pix2);
                 }
 
-                if(pix3 != IntPtr.Zero)
+                if (pix3 != IntPtr.Zero)
                 {
                     LeptonicaApi.Native.pixDestroy(ref pix3);
                 }
 
-                if(pix4 != IntPtr.Zero)
+                if (pix4 != IntPtr.Zero)
                 {
                     LeptonicaApi.Native.pixDestroy(ref pix4);
                 }
 
-                if(pix5 != IntPtr.Zero)
+                if (pix5 != IntPtr.Zero)
                 {
                     LeptonicaApi.Native.pixDestroy(ref pix5);
                 }
 
-                if(pix6 != IntPtr.Zero)
+                if (pix6 != IntPtr.Zero)
                 {
                     LeptonicaApi.Native.pixDestroy(ref pix6);
                 }
 
-                if(pix7 != IntPtr.Zero)
+                if (pix7 != IntPtr.Zero)
                 {
                     LeptonicaApi.Native.pixDestroy(ref pix7);
                 }
 
-                if(pix9 != IntPtr.Zero)
+                if (pix9 != IntPtr.Zero)
                 {
                     LeptonicaApi.Native.pixDestroy(ref pix9);
                 }
@@ -667,17 +674,17 @@ namespace Tesseract
         /// <returns>The image rotated around it's centre.</returns>
         public Pix Rotate(float angleInRadians, RotationMethod method = RotationMethod.AreaMap, RotationFill fillColor = RotationFill.White, int? width = null, int? height = null)
         {
-            if(width == null)
+            if (width == null)
             {
                 width = Width;
             }
 
-            if(height == null)
+            if (height == null)
             {
                 height = Height;
             }
 
-            if(Math.Abs(angleInRadians) < VerySmallAngle)
+            if (Math.Abs(angleInRadians) < VerySmallAngle)
             {
                 return Clone();
             }
@@ -703,10 +710,12 @@ namespace Tesseract
 
             return resultHandle == IntPtr.Zero ? throw new LeptonicaException("Failed to rotate image.") : new Pix(resultHandle);
         }
+
         #endregion Image manipulation
 
         #region Disposal
-        public override int GetHashCode() { throw new NotImplementedException(); }
+
+        public override int GetHashCode() => throw new NotImplementedException();
 
         protected override void Dispose(bool disposing)
         {
@@ -714,6 +723,7 @@ namespace Tesseract
             LeptonicaApi.Native.pixDestroy(ref tmpHandle);
             handle = new HandleRef(this, IntPtr.Zero);
         }
+
         #endregion Disposal
     }
 }

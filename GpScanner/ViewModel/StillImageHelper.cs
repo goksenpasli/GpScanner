@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -10,34 +9,21 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Microsoft.Win32;
 
 namespace GpScanner.ViewModel;
 
 public static class StillImageHelper
 {
-    private const string PIPE_NAME_FORMAT = "GPSCANNER_PIPE_143762b8-772a-47af-bae6-08e0a1d0ca89_{0}";
-
-    private const string REGKEY_AUTOPLAY_HANDLER_GPSCANNER =
-        @"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\WIA_{143762b8-772a-47af-bae6-08e0a1d0ca89}";
-
-    private const string REGKEY_IMAGE_EVENTS =
-        @"SYSTEM\CurrentControlSet\Control\Class\{6bdd1fc6-810f-11d0-bec7-08002be2092f}\0000\Events";
-
-    private const string REGKEY_STI_APP =
-        @"SOFTWARE\Microsoft\Windows\CurrentVersion\StillImage\Registered Applications";
-
-    private const string REGKEY_STI_EVENT_GPSCANNER =
-        @"SYSTEM\CurrentControlSet\Control\StillImage\Events\STIProxyEvent\{143762b8-772a-47af-bae6-08e0a1d0ca89}";
-
-    private const string REGKEY_STI_EVENT_SCANBUTTON =
-        @"SYSTEM\CurrentControlSet\Control\StillImage\Events\ScanButton\{143762b8-772a-47af-bae6-08e0a1d0ca89}";
-
-    private const int TIMEOUT = 1000;
     public const string MSG_KILL_PIPE_SERVER = "KILL_PIPE_SERVER";
+
+    public static string DEVICE_PREFIX = "/StiDevice:";
+
+    public static bool FirstLanuchScan { get; set; }
 
     public static void ActivateProcess(Process process)
     {
-        if(process.MainWindowHandle != IntPtr.Zero)
+        if (process.MainWindowHandle != IntPtr.Zero)
         {
             _ = SetForegroundWindow(process.MainWindowHandle);
         }
@@ -51,7 +37,7 @@ public static class StillImageHelper
 
     public static void KillServer()
     {
-        if(_serverRunning)
+        if (_serverRunning)
         {
             _ = SendMessage(Process.GetCurrentProcess(), MSG_KILL_PIPE_SERVER);
         }
@@ -85,7 +71,7 @@ public static class StillImageHelper
             key4.SetValue("Icon", "sti.dll,0");
             key4.SetValue("Name", "GpScanner");
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
         }
@@ -101,7 +87,7 @@ public static class StillImageHelper
             _ = streamString.WriteString(msg);
             return true;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
         }
@@ -115,7 +101,7 @@ public static class StillImageHelper
 
     public static void StartServer(Action<string> msgCallback)
     {
-        if(!_serverRunning)
+        if (!_serverRunning)
         {
             _serverRunning = true;
             _ = Task.Run(
@@ -124,12 +110,12 @@ public static class StillImageHelper
                     try
                     {
                         using NamedPipeServerStream pipeServer = new(GetPipeName(Process.GetCurrentProcess()), PipeDirection.In);
-                        while(_serverRunning)
+                        while (_serverRunning)
                         {
                             pipeServer.WaitForConnection();
                             StreamString streamString = new(pipeServer);
                             string msg = streamString.ReadString();
-                            if(msg == MSG_KILL_PIPE_SERVER)
+                            if (msg == MSG_KILL_PIPE_SERVER)
                             {
                                 break;
                             }
@@ -138,7 +124,7 @@ public static class StillImageHelper
                             pipeServer.Disconnect();
                         }
                     }
-                    catch(Exception)
+                    catch (Exception)
                     {
                     }
                     finally
@@ -161,27 +147,42 @@ public static class StillImageHelper
             Registry.LocalMachine.DeleteSubKey(REGKEY_STI_EVENT_SCANBUTTON, false);
 
             RegistryKey events = Registry.LocalMachine.OpenSubKey(REGKEY_IMAGE_EVENTS, true);
-            if(events != null)
+            if (events != null)
             {
-                foreach(string eventType in events.GetSubKeyNames())
+                foreach (string eventType in events.GetSubKeyNames())
                 {
                     events.DeleteSubKey($@"{eventType}\{{143762b8-772a-47af-bae6-08e0a1d0ca89}}", false);
                 }
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
-    public static bool FirstLanuchScan { get; set; }
+    private const string PIPE_NAME_FORMAT = "GPSCANNER_PIPE_143762b8-772a-47af-bae6-08e0a1d0ca89_{0}";
 
-    private static string GetPipeName(Process process) { return string.Format(PIPE_NAME_FORMAT, process.Id); }
+    private const string REGKEY_AUTOPLAY_HANDLER_GPSCANNER =
+        @"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\WIA_{143762b8-772a-47af-bae6-08e0a1d0ca89}";
+
+    private const string REGKEY_IMAGE_EVENTS =
+        @"SYSTEM\CurrentControlSet\Control\Class\{6bdd1fc6-810f-11d0-bec7-08002be2092f}\0000\Events";
+
+    private const string REGKEY_STI_APP =
+        @"SOFTWARE\Microsoft\Windows\CurrentVersion\StillImage\Registered Applications";
+
+    private const string REGKEY_STI_EVENT_GPSCANNER =
+        @"SYSTEM\CurrentControlSet\Control\StillImage\Events\STIProxyEvent\{143762b8-772a-47af-bae6-08e0a1d0ca89}";
+
+    private const string REGKEY_STI_EVENT_SCANBUTTON =
+        @"SYSTEM\CurrentControlSet\Control\StillImage\Events\ScanButton\{143762b8-772a-47af-bae6-08e0a1d0ca89}";
+
+    private const int TIMEOUT = 1000;
 
     private static bool _serverRunning;
 
-    public static string DEVICE_PREFIX = "/StiDevice:";
+    private static string GetPipeName(Process process) => string.Format(PIPE_NAME_FORMAT, process.Id);
 
     private class StreamString
     {
@@ -205,7 +206,7 @@ public static class StillImageHelper
         {
             byte[] outBuffer = streamEncoding.GetBytes(outString);
             int len = outBuffer.Length;
-            if(len > ushort.MaxValue)
+            if (len > ushort.MaxValue)
             {
                 len = ushort.MaxValue;
             }

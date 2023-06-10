@@ -7,30 +7,6 @@ namespace Extensions;
 
 public class ColorEffect : ShaderEffect
 {
-    public ColorEffect()
-    {
-        PixelShader = new PixelShader { UriSource = new Uri("/Extensions;component/Shader/ColorEffect.ps", UriKind.Relative) };
-
-        UpdateShaderValue(InputProperty);
-        UpdateShaderValue(BrightnessProperty);
-        UpdateShaderValue(ContrastProperty);
-        UpdateShaderValue(RedProperty);
-        UpdateShaderValue(GreenProperty);
-        UpdateShaderValue(BlueProperty);
-    }
-
-    public double Blue { get { return (double)GetValue(BlueProperty); } set { SetValue(BlueProperty, value); } }
-
-    public double Brightness { get { return (double)GetValue(BrightnessProperty); } set { SetValue(BrightnessProperty, value); } }
-
-    public double Contrast { get { return (double)GetValue(ContrastProperty); } set { SetValue(ContrastProperty, value); } }
-
-    public double Green { get { return (double)GetValue(GreenProperty); } set { SetValue(GreenProperty, value); } }
-
-    public Brush Input { get { return (Brush)GetValue(InputProperty); } set { SetValue(InputProperty, value); } }
-
-    public double Red { get { return (double)GetValue(RedProperty); } set { SetValue(RedProperty, value); } }
-
     public static readonly DependencyProperty BlueProperty = DependencyProperty.Register(
         "Blue",
         typeof(double),
@@ -63,4 +39,28 @@ public class ColorEffect : ShaderEffect
         typeof(double),
         typeof(ColorEffect),
         new UIPropertyMetadata(0D, PixelShaderConstantCallback(2)));
+
+    public ColorEffect()
+    {
+        PixelShader = new PixelShader { UriSource = new Uri("/Extensions;component/Shader/ColorEffect.ps", UriKind.Relative) };
+
+        UpdateShaderValue(InputProperty);
+        UpdateShaderValue(BrightnessProperty);
+        UpdateShaderValue(ContrastProperty);
+        UpdateShaderValue(RedProperty);
+        UpdateShaderValue(GreenProperty);
+        UpdateShaderValue(BlueProperty);
+    }
+
+    public double Blue { get { return (double)GetValue(BlueProperty); } set { SetValue(BlueProperty, value); } }
+
+    public double Brightness { get { return (double)GetValue(BrightnessProperty); } set { SetValue(BrightnessProperty, value); } }
+
+    public double Contrast { get { return (double)GetValue(ContrastProperty); } set { SetValue(ContrastProperty, value); } }
+
+    public double Green { get { return (double)GetValue(GreenProperty); } set { SetValue(GreenProperty, value); } }
+
+    public Brush Input { get { return (Brush)GetValue(InputProperty); } set { SetValue(InputProperty, value); } }
+
+    public double Red { get { return (double)GetValue(RedProperty); } set { SetValue(RedProperty, value); } }
 }

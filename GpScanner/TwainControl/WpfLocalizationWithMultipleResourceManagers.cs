@@ -13,26 +13,29 @@ namespace TwainControl;
 
 public class LocExtension : MarkupExtension
 {
-    public LocExtension(string stringName) { StringName = stringName; }
+    public LocExtension(string stringName)
+    { StringName = stringName; }
+
+    public string StringName { get; }
 
     public override object ProvideValue(IServiceProvider serviceProvider)
     {
         object targetObject = (serviceProvider as IProvideValueTarget)?.TargetObject;
 
-        if(targetObject?.GetType().Name == "SharedDp")
+        if (targetObject?.GetType().Name == "SharedDp")
         {
             return targetObject;
         }
 
         string baseName = GetResourceManager(targetObject)?.BaseName ?? string.Empty;
 
-        if(string.IsNullOrEmpty(baseName))
+        if (string.IsNullOrEmpty(baseName))
         {
             object rootObject = (serviceProvider as IRootObjectProvider)?.RootObject;
             baseName = GetResourceManager(rootObject)?.BaseName ?? string.Empty;
         }
 
-        if(string.IsNullOrEmpty(baseName) && targetObject is FrameworkElement frameworkElement)
+        if (string.IsNullOrEmpty(baseName) && targetObject is FrameworkElement frameworkElement)
         {
             baseName = GetResourceManager(frameworkElement.TemplatedParent)?.BaseName ?? string.Empty;
         }
@@ -48,15 +51,13 @@ public class LocExtension : MarkupExtension
         return binding.ProvideValue(serviceProvider);
     }
 
-    public string StringName { get; }
-
     private ResourceManager GetResourceManager(object control)
     {
-        if(control is DependencyObject dependencyObject)
+        if (control is DependencyObject dependencyObject)
         {
             object localValue = dependencyObject.ReadLocalValue(Translation.ResourceManagerProperty);
 
-            if(localValue != DependencyProperty.UnsetValue && localValue is ResourceManager resourceManager)
+            if (localValue != DependencyProperty.UnsetValue && localValue is ResourceManager resourceManager)
             {
                 TranslationSource.Instance.AddResourceManager(resourceManager);
 
@@ -70,31 +71,41 @@ public class LocExtension : MarkupExtension
 
 public class Translation : DependencyObject
 {
-    public static ResourceManager GetResourceManager(DependencyObject dependencyObject) { return (ResourceManager)dependencyObject.GetValue(ResourceManagerProperty); }
-
-    public static string GetResStringValue(string resdata)
-    {
-        return string.IsNullOrEmpty(resdata)
-            ? throw new ArgumentException($"'{nameof(resdata)}' cannot be null or empty.", nameof(resdata))
-            : Resources.ResourceManager.GetString(resdata, TranslationSource.Instance.CurrentCulture);
-    }
-
-    public static void SetResourceManager(DependencyObject dependencyObject, ResourceManager value) { dependencyObject.SetValue(ResourceManagerProperty, value); }
-
     public static readonly DependencyProperty ResourceManagerProperty =
         DependencyProperty.RegisterAttached("ResourceManager", typeof(ResourceManager), typeof(Translation));
+
+    public static ResourceManager GetResourceManager(DependencyObject dependencyObject) => (ResourceManager)dependencyObject.GetValue(ResourceManagerProperty);
+
+    public static string GetResStringValue(string resdata) => string.IsNullOrEmpty(resdata)
+            ? throw new ArgumentException($"'{nameof(resdata)}' cannot be null or empty.", nameof(resdata))
+            : Resources.ResourceManager.GetString(resdata, TranslationSource.Instance.CurrentCulture);
+
+    public static void SetResourceManager(DependencyObject dependencyObject, ResourceManager value) => dependencyObject.SetValue(ResourceManagerProperty, value);
 }
 
 public class TranslationSource : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public string this[string key]
-    {
-        get
-        {
+    public static TranslationSource Instance { get; } = new();
+
+    public CultureInfo CurrentCulture {
+        get { return currentCulture; }
+
+        set {
+            if (currentCulture != value)
+            {
+                currentCulture = value;
+
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(string.Empty));
+            }
+        }
+    }
+
+    public string this[string key] {
+        get {
             string translation = null;
-            if(resourceManagerDictionary.ContainsKey(SplitName(key).Item1))
+            if (resourceManagerDictionary.ContainsKey(SplitName(key).Item1))
             {
                 translation = resourceManagerDictionary[SplitName(key).Item1]
                     .GetString(SplitName(key).Item2, currentCulture);
@@ -104,38 +115,21 @@ public class TranslationSource : INotifyPropertyChanged
         }
     }
 
-    public void AddResourceManager(ResourceManager resourceManager)
-    {
-        if(!resourceManagerDictionary.ContainsKey(resourceManager.BaseName))
-        {
-            resourceManagerDictionary.Add(resourceManager.BaseName, resourceManager);
-        }
-    }
-
     public static Tuple<string, string> SplitName(string name)
     {
         int idx = name.LastIndexOf('.');
         return Tuple.Create(name.Substring(0, idx), name.Substring(idx + 1));
     }
 
-    public CultureInfo CurrentCulture
+    public void AddResourceManager(ResourceManager resourceManager)
     {
-        get { return currentCulture; }
-
-        set
+        if (!resourceManagerDictionary.ContainsKey(resourceManager.BaseName))
         {
-            if(currentCulture != value)
-            {
-                currentCulture = value;
-
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(string.Empty));
-            }
+            resourceManagerDictionary.Add(resourceManager.BaseName, resourceManager);
         }
     }
 
-    public static TranslationSource Instance { get; } = new();
+    private readonly Dictionary<string, ResourceManager> resourceManagerDictionary = new();
 
     private CultureInfo currentCulture = CultureInfo.InstalledUICulture;
-
-    private readonly Dictionary<string, ResourceManager> resourceManagerDictionary = new();
 }

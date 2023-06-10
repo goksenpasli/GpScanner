@@ -20,7 +20,7 @@ namespace TwainWpf.Win32
             _rectangle.Width = _bitmapInfo.Width;
             _rectangle.Height = _bitmapInfo.Height;
 
-            if(_bitmapInfo.SizeImage == 0)
+            if (_bitmapInfo.SizeImage == 0)
             {
                 _bitmapInfo.SizeImage = ((((_bitmapInfo.Width * _bitmapInfo.BitCount) + 31) & ~31) >> 3) * _bitmapInfo.Height;
             }
@@ -28,7 +28,7 @@ namespace TwainWpf.Win32
             Debug.Assert(Marshal.SizeOf(typeof(IntPtr)) == 4);
 
             int pixelInfoPointer = _bitmapInfo.ClrUsed;
-            if(pixelInfoPointer == 0 && _bitmapInfo.BitCount <= 8)
+            if (pixelInfoPointer == 0 && _bitmapInfo.BitCount <= 8)
             {
                 pixelInfoPointer = 1 << (_bitmapInfo.BitCount);
             }
@@ -36,8 +36,6 @@ namespace TwainWpf.Win32
 
             _pixelInfoPointer = new IntPtr(pixelInfoPointer);
         }
-
-        ~BitmapRenderer() { Dispose(false); }
 
         public void Dispose()
         {
@@ -49,7 +47,7 @@ namespace TwainWpf.Win32
         {
             Bitmap bitmap = new Bitmap(_rectangle.Width, _rectangle.Height);
 
-            using(Graphics graphics = Graphics.FromImage(bitmap))
+            using (Graphics graphics = Graphics.FromImage(bitmap))
             {
                 IntPtr hdc = graphics.GetHdc();
 
@@ -74,13 +72,6 @@ namespace TwainWpf.Win32
             _ = Kernel32Native.GlobalFree(_dibHandle);
         }
 
-        private static float PpmToDpi(double pixelsPerMeter)
-        {
-            double pixelsPerMillimeter = pixelsPerMeter / 1000.0;
-            double dotsPerInch = pixelsPerMillimeter * 25.4;
-            return (float)Math.Round(dotsPerInch, 2);
-        }
-
         private readonly BitmapInfoHeader _bitmapInfo;
 
         private readonly IntPtr _bitmapPointer;
@@ -90,5 +81,17 @@ namespace TwainWpf.Win32
         private readonly IntPtr _pixelInfoPointer;
 
         private Rectangle _rectangle;
+
+        ~BitmapRenderer()
+        {
+            Dispose(false);
+        }
+
+        private static float PpmToDpi(double pixelsPerMeter)
+        {
+            double pixelsPerMillimeter = pixelsPerMeter / 1000.0;
+            double dotsPerInch = pixelsPerMillimeter * 25.4;
+            return (float)Math.Round(dotsPerInch, 2);
+        }
     }
 }

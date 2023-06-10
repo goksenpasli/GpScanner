@@ -215,7 +215,6 @@
                                         </Image.Source>
                                     </Image>
                                 </Button>
-
                             </StackPanel>
                         </Grid>
                         <UniformGrid Columns="3" Rows="1">

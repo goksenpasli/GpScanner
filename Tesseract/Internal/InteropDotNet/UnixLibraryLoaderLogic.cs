@@ -5,18 +5,16 @@ namespace Tesseract.Internal.InteropDotNet
 {
     internal class UnixLibraryLoaderLogic : ILibraryLoaderLogic
     {
-        private const int RTLD_NOW = 2;
-
         public string FixUpLibraryName(string fileName)
         {
-            if(!string.IsNullOrEmpty(fileName))
+            if (!string.IsNullOrEmpty(fileName))
             {
-                if(!fileName.EndsWith(FileExtension, StringComparison.OrdinalIgnoreCase))
+                if (!fileName.EndsWith(FileExtension, StringComparison.OrdinalIgnoreCase))
                 {
                     fileName += FileExtension;
                 }
 
-                if(!fileName.StartsWith("lib", StringComparison.OrdinalIgnoreCase))
+                if (!fileName.StartsWith("lib", StringComparison.OrdinalIgnoreCase))
                 {
                     fileName = $"lib{fileName}";
                 }
@@ -25,7 +23,7 @@ namespace Tesseract.Internal.InteropDotNet
             return fileName;
         }
 
-        public bool FreeLibrary(IntPtr libraryHandle) { return UnixFreeLibrary(libraryHandle) != 0; }
+        public bool FreeLibrary(IntPtr libraryHandle) => UnixFreeLibrary(libraryHandle) != 0;
 
         public IntPtr GetProcAddress(IntPtr libraryHandle, string functionName)
         {
@@ -33,12 +31,12 @@ namespace Tesseract.Internal.InteropDotNet
             Logger.TraceInformation("Trying to load native function \"{0}\" from the library with handle {1}...", functionName, libraryHandle);
             IntPtr functionHandle = UnixGetProcAddress(libraryHandle, functionName);
             IntPtr errorPointer = UnixGetLastError();
-            if(errorPointer != IntPtr.Zero)
+            if (errorPointer != IntPtr.Zero)
             {
                 throw new Exception($"dlsym: {Marshal.PtrToStringAnsi(errorPointer)}");
             }
 
-            if(functionHandle != IntPtr.Zero && errorPointer == IntPtr.Zero)
+            if (functionHandle != IntPtr.Zero && errorPointer == IntPtr.Zero)
             {
                 Logger.TraceInformation("Successfully loaded native function \"{0}\", function handle = {1}.", functionName, functionHandle);
             }
@@ -58,7 +56,7 @@ namespace Tesseract.Internal.InteropDotNet
             {
                 Logger.TraceInformation("Trying to load native library \"{0}\"...", fileName);
                 libraryHandle = UnixLoadLibrary(fileName, RTLD_NOW);
-                if(libraryHandle != IntPtr.Zero)
+                if (libraryHandle != IntPtr.Zero)
                 {
                     Logger.TraceInformation("Successfully loaded native library \"{0}\", handle = {1}.", fileName, libraryHandle);
                 }
@@ -67,7 +65,7 @@ namespace Tesseract.Internal.InteropDotNet
                     Logger.TraceError("Failed to load native library \"{0}\".\r\nCheck windows event log.", fileName);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 IntPtr lastError = UnixGetLastError();
                 Logger.TraceError(
@@ -80,6 +78,11 @@ namespace Tesseract.Internal.InteropDotNet
             return libraryHandle;
         }
 
+        private const int RTLD_NOW = 2;
+
+        private static readonly string FileExtension =
+            SystemManager.GetOperatingSystem() == OperatingSystem.MacOSX ? ".dylib" : ".so";
+
         [DllImport("libdl", EntryPoint = "dlclose", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private static extern int UnixFreeLibrary(IntPtr handle);
 
@@ -91,8 +94,5 @@ namespace Tesseract.Internal.InteropDotNet
 
         [DllImport("libdl", EntryPoint = "dlopen")]
         private static extern IntPtr UnixLoadLibrary(string fileName, int flags);
-
-        private static readonly string FileExtension =
-            SystemManager.GetOperatingSystem() == OperatingSystem.MacOSX ? ".dylib" : ".so";
     }
 }

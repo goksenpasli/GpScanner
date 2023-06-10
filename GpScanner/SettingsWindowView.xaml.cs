@@ -7,5 +7,6 @@ namespace GpScanner;
 /// </summary>
 public partial class SettingsWindowView : Window
 {
-    public SettingsWindowView() { InitializeComponent(); }
+    public SettingsWindowView()
+    { InitializeComponent(); }
 }

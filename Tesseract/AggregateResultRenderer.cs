@@ -29,6 +29,16 @@ namespace Tesseract
         }
 
         /// <summary>
+        /// Get's the current page number.
+        /// </summary>
+        public int PageNumber { get; private set; } = -1;
+
+        /// <summary>
+        /// Get's the child result renderers.
+        /// </summary>
+        public IEnumerable<IResultRenderer> ResultRenderers => _resultRenderers;
+
+        /// <summary>
         /// Adds a page to each of the child result renderers.
         /// </summary>
         /// <param name="page"></param>
@@ -39,9 +49,9 @@ namespace Tesseract
             VerifyNotDisposed();
 
             PageNumber++;
-            foreach(IResultRenderer renderer in ResultRenderers)
+            foreach (IResultRenderer renderer in ResultRenderers)
             {
-                if(!renderer.AddPage(page))
+                if (!renderer.AddPage(page))
                 {
                     return false;
                 }
@@ -66,7 +76,7 @@ namespace Tesseract
             List<IDisposable> children = new List<IDisposable>();
             try
             {
-                foreach(IResultRenderer renderer in ResultRenderers)
+                foreach (IResultRenderer renderer in ResultRenderers)
                 {
                     children.Add(renderer.BeginDocument(title));
                 }
@@ -74,15 +84,15 @@ namespace Tesseract
                 _currentDocumentHandle = new EndDocumentOnDispose(this, children);
                 return _currentDocumentHandle;
             }
-            catch(Exception)
+            catch (Exception)
             {
-                foreach(IDisposable child in children)
+                foreach (IDisposable child in children)
                 {
                     try
                     {
                         child.Dispose();
                     }
-                    catch(Exception disposalError)
+                    catch (Exception disposalError)
                     {
                         Logger.TraceError("Failed to dispose of child document {0}: {1}", child, disposalError.Message);
                     }
@@ -92,23 +102,13 @@ namespace Tesseract
             }
         }
 
-        /// <summary>
-        /// Get's the current page number.
-        /// </summary>
-        public int PageNumber { get; private set; } = -1;
-
-        /// <summary>
-        /// Get's the child result renderers.
-        /// </summary>
-        public IEnumerable<IResultRenderer> ResultRenderers => _resultRenderers;
-
         protected override void Dispose(bool disposing)
         {
             try
             {
-                if(disposing)
+                if (disposing)
                 {
-                    if(_currentDocumentHandle != null)
+                    if (_currentDocumentHandle != null)
                     {
                         _currentDocumentHandle.Dispose();
                         _currentDocumentHandle = null;
@@ -117,7 +117,7 @@ namespace Tesseract
             }
             finally
             {
-                foreach(IResultRenderer renderer in ResultRenderers)
+                foreach (IResultRenderer renderer in ResultRenderers)
                 {
                     renderer.Dispose();
                 }
@@ -143,11 +143,11 @@ namespace Tesseract
 
             protected override void Dispose(bool disposing)
             {
-                if(disposing)
+                if (disposing)
                 {
                     Guard.Verify(_renderer._currentDocumentHandle == this, "Expected the Result Render's active document to be this document.");
 
-                    foreach(IDisposable child in _children)
+                    foreach (IDisposable child in _children)
                     {
                         child.Dispose();
                     }
@@ -158,9 +158,9 @@ namespace Tesseract
                 }
             }
 
-            private List<IDisposable> _children;
-
             private readonly AggregateResultRenderer _renderer;
+
+            private List<IDisposable> _children;
         }
     }
 }

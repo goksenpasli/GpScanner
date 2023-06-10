@@ -1,11 +1,4 @@
-﻿using Extensions;
-using Extensions.Controls;
-using Ocr;
-using PdfSharp.Drawing;
-using PdfSharp.Pdf;
-using PdfSharp.Pdf.Annotations;
-using PdfSharp.Pdf.IO;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -31,6 +24,13 @@ using System.Windows.Xps;
 using System.Windows.Xps.Packaging;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+using Extensions;
+using Extensions.Controls;
+using Ocr;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
+using PdfSharp.Pdf.Annotations;
+using PdfSharp.Pdf.IO;
 using TwainControl.Properties;
 using TwainWpf;
 using TwainWpf.TwainNative;
@@ -60,7 +60,9 @@ namespace TwainControl;
 
 public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposable
 {
-    private const double Inch = 2.54d;
+    public static DispatcherTimer CameraQrCodeTimer;
+
+    public static Task Filesavetask;
 
     public TwainCtrl()
     {
@@ -77,7 +79,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         Papers = BitmapMethods.GetPapers();
         ToolBox.Paper = SelectedPaper = Papers.FirstOrDefault(z => z.PaperType == "A4");
 
-        if(Settings.Default.UseSelectedProfile)
+        if (Settings.Default.UseSelectedProfile)
         {
             Scanner.SelectedProfile = Settings.Default.DefaultProfile;
         }
@@ -95,7 +97,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         FastScanImage = new RelayCommand<object>(
             parameter =>
             {
-                if(Filesavetask?.IsCompleted == false)
+                if (Filesavetask?.IsCompleted == false)
                 {
                     _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
                     return;
@@ -118,7 +120,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         ResimSil = new RelayCommand<object>(
             parameter =>
             {
-                if(Filesavetask?.IsCompleted == false)
+                if (Filesavetask?.IsCompleted == false)
                 {
                     _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
                     return;
@@ -128,13 +130,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 UndoImageIndex = Scanner.Resimler?.IndexOf(item);
                 UndoImage = item;
                 CanUndoImage = true;
-                if(Settings.Default.DirectRemoveImage)
+                if (Settings.Default.DirectRemoveImage)
                 {
                     RemoveSelectedImage(item);
                     return;
                 }
 
-                if(MessageBox.Show(
+                if (MessageBox.Show(
                     Translation.GetResStringValue("REMOVESELECTED"),
                     Application.Current.MainWindow.Title,
                     MessageBoxButton.YesNo,
@@ -171,9 +173,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         Kaydet = new RelayCommand<object>(
             parameter =>
             {
-                if(parameter is BitmapFrame bitmapFrame)
+                if (parameter is BitmapFrame bitmapFrame)
                 {
-                    if(Filesavetask?.IsCompleted == false)
+                    if (Filesavetask?.IsCompleted == false)
                     {
                         _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
                         return;
@@ -186,13 +188,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         FileName = Scanner.SaveFileName,
                         FilterIndex = SaveIndex + 1
                     };
-                    if(saveFileDialog.ShowDialog() == true)
+                    if (saveFileDialog.ShowDialog() == true)
                     {
                         Filesavetask = Task.Run(
                             async () =>
                             {
                                 string fileName = saveFileDialog.FileName;
-                                switch(saveFileDialog.FilterIndex)
+                                switch (saveFileDialog.FilterIndex)
                                 {
                                     case 1:
                                         SaveTifImage(bitmapFrame, fileName);
@@ -232,23 +234,23 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 ObservableCollection<ScannedImage> resimler = Scanner.Resimler;
-                if(Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                 {
-                    for(int i = 1; i < resimler.Count; i += 2)
+                    for (int i = 1; i < resimler.Count; i += 2)
                     {
                         resimler[i].Seçili = true;
                     }
                 }
-                else if(Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                else if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
                 {
-                    for(int i = 0; i < resimler.Count; i += 2)
+                    for (int i = 0; i < resimler.Count; i += 2)
                     {
                         resimler[i].Seçili = true;
                     }
                 }
                 else
                 {
-                    foreach(ScannedImage item in resimler)
+                    foreach (ScannedImage item in resimler)
                     {
                         item.Seçili = true;
                     }
@@ -260,7 +262,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 TümününİşaretiniKaldır.Execute(null);
-                foreach(ScannedImage item in Scanner.Resimler.Where(item => item.Resim.PixelWidth <= item.Resim.PixelHeight))
+                foreach (ScannedImage item in Scanner.Resimler.Where(item => item.Resim.PixelWidth <= item.Resim.PixelHeight))
                 {
                     item.Seçili = true;
                 }
@@ -271,7 +273,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 TümününİşaretiniKaldır.Execute(null);
-                foreach(ScannedImage item in
+                foreach (ScannedImage item in
                      Scanner.Resimler.Where(item => item.Resim.PixelHeight < item.Resim.PixelWidth))
                 {
                     item.Seçili = true;
@@ -283,7 +285,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 SeçiliResim = null;
-                foreach(ScannedImage item in Scanner.Resimler)
+                foreach (ScannedImage item in Scanner.Resimler)
                 {
                     item.Seçili = false;
                 }
@@ -293,7 +295,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         Tersiniİşaretle = new RelayCommand<object>(
             parameter =>
             {
-                foreach(ScannedImage item in Scanner.Resimler)
+                foreach (ScannedImage item in Scanner.Resimler)
                 {
                     item.Seçili = !item.Seçili;
                 }
@@ -305,13 +307,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 FolderBrowserDialog dialog = new() { Description = Translation.GetResStringValue("AUTOFOLDER"), SelectedPath = Settings.Default.AutoFolder };
                 string oldpath = Settings.Default.AutoFolder;
-                if(dialog.ShowDialog() == DialogResult.OK)
+                if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     Settings.Default.AutoFolder = dialog.SelectedPath;
                     Scanner.LocalizedPath = GetDisplayName(dialog.SelectedPath);
                 }
 
-                if(!string.IsNullOrWhiteSpace(oldpath) && oldpath != Settings.Default.AutoFolder)
+                if (!string.IsNullOrWhiteSpace(oldpath) && oldpath != Settings.Default.AutoFolder)
                 {
                     _ = MessageBox.Show(Translation.GetResStringValue("AUTOFOLDERCHANGE"), Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 }
@@ -321,7 +323,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         Seçilikaydet = new RelayCommand<object>(
             parameter =>
             {
-                if(Filesavetask?.IsCompleted == false)
+                if (Filesavetask?.IsCompleted == false)
                 {
                     _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
                     return;
@@ -333,14 +335,14 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         "Pdf Dosyası (*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf|Jpg Resmi (*.jpg)|*.jpg|Tif Resmi (*.tif)|*.tif|Txt Dosyası (*.txt)|*.txt|Webp Dosyası (*.webp)|*.webp",
                     FileName = Scanner.SaveFileName
                 };
-                if(saveFileDialog.ShowDialog() == true)
+                if (saveFileDialog.ShowDialog() == true)
                 {
                     Filesavetask = Task.Run(
                         async () =>
                         {
                             List<ScannedImage> seçiliresimler = Scanner?.Resimler?.Where(z => z.Seçili).ToList();
                             string fileName = saveFileDialog.FileName;
-                            switch(saveFileDialog.FilterIndex)
+                            switch (saveFileDialog.FilterIndex)
                             {
                                 case 1:
                                     await SavePdfImageAsync(seçiliresimler, fileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, false, Settings.Default.ImgLoadResolution);
@@ -370,7 +372,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             await Dispatcher.InvokeAsync(
                                 () =>
                                 {
-                                    if(Settings.Default.RemoveProcessedImage)
+                                    if (Settings.Default.RemoveProcessedImage)
                                     {
                                         SeçiliListeTemizle.Execute(null);
                                     }
@@ -391,11 +393,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     async () =>
                     {
                         List<ScannedImage> seçiliresimler = Scanner.Resimler.Where(z => z.Seçili).ToList();
-                        if(Scanner.ApplyDataBaseOcr)
+                        if (Scanner.ApplyDataBaseOcr)
                         {
                             Scanner.SaveProgressBarForegroundBrush = bluesaveprogresscolor;
                             Scanner.PdfFilePath = PdfGeneration.GetPdfScanPath();
-                            for(int i = 0; i < seçiliresimler.Count; i++)
+                            for (int i = 0; i < seçiliresimler.Count; i++)
                             {
                                 byte[] imgdata = null;
                                 _ = await Dispatcher.InvokeAsync(() => imgdata = seçiliresimler[i].Resim.ToTiffJpegByteArray(Format.Jpg));
@@ -412,7 +414,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
                         bool isBlackAndWhiteMode = (ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite;
                         bool isColourOrGreyscaleMode = (ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale;
-                        if(isBlackAndWhiteMode || isColourOrGreyscaleMode)
+                        if (isBlackAndWhiteMode || isColourOrGreyscaleMode)
                         {
                             await SavePdfImageAsync(
                                 seçiliresimler,
@@ -428,7 +430,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             () =>
                             {
                                 OnPropertyChanged(nameof(Scanner.Resimler));
-                                if(Settings.Default.RemoveProcessedImage)
+                                if (Settings.Default.RemoveProcessedImage)
                                 {
                                     SeçiliListeTemizle.Execute(null);
                                 }
@@ -447,13 +449,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         ListeTemizle = new RelayCommand<object>(
             parameter =>
             {
-                if(Filesavetask?.IsCompleted == false)
+                if (Filesavetask?.IsCompleted == false)
                 {
                     _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
                     return;
                 }
 
-                if(MessageBox.Show(
+                if (MessageBox.Show(
                     Translation.GetResStringValue("LISTREMOVEWARN"),
                     Application.Current.MainWindow.Title,
                     MessageBoxButton.YesNo,
@@ -472,7 +474,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         SeçiliListeTemizle = new RelayCommand<object>(
             parameter =>
             {
-                foreach(ScannedImage item in Scanner.Resimler.Where(z => z.Seçili).ToList())
+                foreach (ScannedImage item in Scanner.Resimler.Where(z => z.Seçili).ToList())
                 {
                     _ = Scanner.Resimler?.Remove(item);
                 }
@@ -487,7 +489,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 StringBuilder sb = new();
-                foreach(string item in Scanner.FolderDateFormats)
+                foreach (string item in Scanner.FolderDateFormats)
                 {
                     _ = sb.Append(item).Append(' ').AppendLine(DateTime.Today.ToString(item, TranslationSource.Instance.CurrentCulture));
                 }
@@ -548,7 +550,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         LoadImage = new RelayCommand<object>(
             parameter =>
             {
-                if(fileloadtask?.IsCompleted == false)
+                if (fileloadtask?.IsCompleted == false)
                 {
                     _ = MessageBox.Show(Translation.GetResStringValue("TRANSLATEPENDING"));
                     return;
@@ -561,12 +563,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     Multiselect = true
                 };
 
-                if(CheckWithCurrentOsVersion("10.0.17134"))
+                if (CheckWithCurrentOsVersion("10.0.17134"))
                 {
                     openFileDialog.Filter += "|Heic Dosyası (*.heic)|*.heic";
                 }
 
-                if(openFileDialog.ShowDialog() == true)
+                if (openFileDialog.ShowDialog() == true)
                 {
                     GC.Collect();
                     AddFiles(openFileDialog.FileNames, DecodeHeight);
@@ -578,7 +580,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         MaximizePdfControl = new RelayCommand<object>(
             parameter =>
             {
-                if(SelectedTab?.Content is PdfImportViewerControl pdfImportViewerControl)
+                if (SelectedTab?.Content is PdfImportViewerControl pdfImportViewerControl)
                 {
                     Window maximizePdfWindow = new()
                     {
@@ -607,7 +609,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 OpenFileDialog openFileDialog = new() { Filter = "Uyap Dokuman Formatı (*.udf)|*.udf", Multiselect = false };
 
-                if(openFileDialog.ShowDialog() == true && parameter is XpsViewer xpsViewer)
+                if (openFileDialog.ShowDialog() == true && parameter is XpsViewer xpsViewer)
                 {
                     xpsViewer.XpsDataFilePath = LoadUdfFile(openFileDialog.FileName);
                 }
@@ -621,7 +623,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     Mail.Mail.SendMail(MailData);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     throw new ArgumentException(nameof(MailData), ex);
                 }
@@ -631,7 +633,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         SplitPdf = new RelayCommand<object>(
             parameter =>
             {
-                if(parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
+                if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
                 {
                     string savefolder = ToolBox.CreateSaveFolder("SPLIT");
                     SplitPdfPageCount(pdfviewer.PdfFilePath, savefolder, PdfSplitCount);
@@ -645,11 +647,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 System.Windows.Forms.IDataObject clipboardData = Clipboard.GetDataObject();
-                if(clipboardData?.GetDataPresent(DataFormats.Bitmap) == true)
+                if (clipboardData?.GetDataPresent(DataFormats.Bitmap) == true)
                 {
                     using Bitmap bitmap = (Bitmap)clipboardData.GetData(DataFormats.Bitmap);
                     BitmapSource image = Imaging.CreateBitmapSourceFromHBitmap(bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-                    if(image != null)
+                    if (image != null)
                     {
                         BitmapFrame bitmapFrame = GenerateBitmapFrame(image);
                         Scanner?.Resimler?.Add(new ScannedImage { Seçili = true, Resim = bitmapFrame });
@@ -666,14 +668,14 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         InsertClipBoardImage = new RelayCommand<object>(
             parameter =>
             {
-                if(AddFromClipBoard.CanExecute(null))
+                if (AddFromClipBoard.CanExecute(null))
                 {
                     AddFromClipBoard.Execute(null);
                 }
 
-                if(Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                 {
-                    if(SeçiliDirektPdfKaydet.CanExecute(null))
+                    if (SeçiliDirektPdfKaydet.CanExecute(null))
                     {
                         SeçiliDirektPdfKaydet.Execute(null);
                     }
@@ -685,10 +687,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 SaveFileDialog saveFileDialog = new() { Filter = "Txt Dosyası (*.txt)|*.txt", FileName = "Filedata.txt" };
-                if(saveFileDialog.ShowDialog() == true)
+                if (saveFileDialog.ShowDialog() == true)
                 {
                     using StreamWriter file = new(saveFileDialog.FileName);
-                    foreach(ScannedImage image in Scanner?.Resimler?.GroupBy(z => z.FilePath).Select(z => z.FirstOrDefault()))
+                    foreach (ScannedImage image in Scanner?.Resimler?.GroupBy(z => z.FilePath).Select(z => z.FirstOrDefault()))
                     {
                         file.WriteLine(image.FilePath);
                     }
@@ -700,7 +702,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 OpenFileDialog openFileDialog = new() { Filter = "Txt Dosyası (*.txt)|*.txt" };
-                if(openFileDialog.ShowDialog() == true)
+                if (openFileDialog.ShowDialog() == true)
                 {
                     GC.Collect();
                     AddFiles(File.ReadAllLines(openFileDialog.FileName), DecodeHeight);
@@ -713,7 +715,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             async parameter =>
             {
                 string[] files = Scanner.UnsupportedFiles.Where(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase)).ToArray();
-                if(files.Length > 0)
+                if (files.Length > 0)
                 {
                     await files.SavePdfFilesAsync();
                 }
@@ -727,12 +729,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 OpenFileDialog openFileDialog = new() { Filter = "Pdf Dosyası (*.pdf)|*.pdf", Multiselect = true };
-                if(openFileDialog.ShowDialog() == true)
+                if (openFileDialog.ShowDialog() == true)
                 {
                     string[] files = openFileDialog.FileNames;
-                    if(files.Length > 0)
+                    if (files.Length > 0)
                     {
-                        foreach(string item in files)
+                        foreach (string item in files)
                         {
                             Scanner?.UnsupportedFiles?.Add(item);
                         }
@@ -745,10 +747,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         CycleSelectedDocuments = new RelayCommand<object>(
             async parameter =>
             {
-                if(parameter is ListBox listBox)
+                if (parameter is ListBox listBox)
                 {
                     ScannedImage scannedImage = Scanner?.Resimler?.Where(z => z.Seçili).ElementAtOrDefault(cycleindex);
-                    if(scannedImage is not null)
+                    if (scannedImage is not null)
                     {
                         listBox.ScrollIntoView(scannedImage);
                         scannedImage.Animate = true;
@@ -764,14 +766,14 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         PdfWaterMark = new RelayCommand<object>(
             parameter =>
             {
-                if(parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
+                if (parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
                 {
                     string oldpdfpath = pdfViewer.PdfFilePath;
-                    using(PdfDocument reader = PdfReader.Open(oldpdfpath))
+                    using (PdfDocument reader = PdfReader.Open(oldpdfpath))
                     {
-                        if(Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                        if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                         {
-                            for(int i = 0; i < reader.PageCount; i++)
+                            for (int i = 0; i < reader.PageCount; i++)
                             {
                                 using PdfDocument listDocument = GenerateWatermarkedPdf(reader, i, PdfWatermarkFontAngle);
                                 listDocument.Save(oldpdfpath);
@@ -794,10 +796,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         MergeSelectedImagesToPdfFile = new RelayCommand<object>(
             async parameter =>
             {
-                if(parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
+                if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
                 {
                     IEnumerable<ScannedImage> seçiliresimler = Scanner.Resimler.Where(z => z.Seçili);
-                    if(seçiliresimler.Any() &&
+                    if (seçiliresimler.Any() &&
                         MessageBox.Show(
                             $"{Translation.GetResStringValue("SAVESELECTED")}",
                             Application.Current.MainWindow.Title,
@@ -821,7 +823,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             });
                         pdfviewer.Sayfa = 1;
                         NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
-                        if(Settings.Default.RemoveProcessedImage)
+                        if (Settings.Default.RemoveProcessedImage)
                         {
                             SeçiliListeTemizle.Execute(null);
                         }
@@ -835,10 +837,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         PasteFileToPdfFile = new RelayCommand<object>(
             async parameter =>
             {
-                if(parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
+                if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
                 {
                     System.Windows.Forms.IDataObject clipboardData = Clipboard.GetDataObject();
-                    if(clipboardData is null)
+                    if (clipboardData is null)
                     {
                         return;
                     }
@@ -848,27 +850,27 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     string[] processedFiles = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)
                         ? new[] { pdfFilePath, temporaryPdf }
                         : new[] { temporaryPdf, pdfFilePath };
-                    if(clipboardData.GetDataPresent(DataFormats.FileDrop))
+                    if (clipboardData.GetDataPresent(DataFormats.FileDrop))
                     {
                         string[] clipboardFiles = (string[])clipboardData.GetData(System.Windows.DataFormats.FileDrop);
                         List<string> clipboardPdfFiles = clipboardFiles.Where(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase)).ToList();
                         List<string> clipboardImageFiles = clipboardFiles
                         .Where(z => imagefileextensions.Contains(Path.GetExtension(z).ToLower()))
                             .ToList();
-                        if(clipboardPdfFiles.Any() || clipboardImageFiles.Any())
+                        if (clipboardPdfFiles.Any() || clipboardImageFiles.Any())
                         {
                             await Task.Run(
                                 () =>
                                 {
-                                    if(clipboardPdfFiles.Any())
+                                    if (clipboardPdfFiles.Any())
                                     {
                                         clipboardPdfFiles.Add(pdfFilePath);
                                         clipboardPdfFiles.ToArray().MergePdf().Save(pdfFilePath);
                                     }
 
-                                    if(clipboardImageFiles.Any())
+                                    if (clipboardImageFiles.Any())
                                     {
-                                        using(PdfDocument document = clipboardImageFiles.GeneratePdf(SelectedPaper))
+                                        using (PdfDocument document = clipboardImageFiles.GeneratePdf(SelectedPaper))
                                         {
                                             document.Save(temporaryPdf);
                                         }
@@ -884,17 +886,17 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         }
                     }
 
-                    if(clipboardData.GetDataPresent(DataFormats.Bitmap))
+                    if (clipboardData.GetDataPresent(DataFormats.Bitmap))
                     {
                         using Bitmap bitmap = (Bitmap)clipboardData.GetData(DataFormats.Bitmap);
                         BitmapSource image = Imaging.CreateBitmapSourceFromHBitmap(bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-                        if(image != null)
+                        if (image != null)
                         {
                             BitmapFrame bitmapFrame = GenerateBitmapFrame(image);
                             await Task.Run(
                                 () =>
                                 {
-                                    using(PdfDocument pdfDocument = bitmapFrame.GeneratePdf(
+                                    using (PdfDocument pdfDocument = bitmapFrame.GeneratePdf(
                                         null,
                                         Format.Jpg,
                                         SelectedPaper,
@@ -924,9 +926,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         ReadPdfTag = new RelayCommand<object>(
             parameter =>
             {
-                if(parameter is string filepath && File.Exists(filepath))
+                if (parameter is string filepath && File.Exists(filepath))
                 {
-                    if(Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                     {
                         ExploreFile.Execute(filepath);
                         return;
@@ -958,23 +960,23 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         AddAllFileToControlPanel = new RelayCommand<object>(
             async parameter =>
             {
-                if(parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
+                if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
                 {
-                    if(Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.LeftCtrl) && TbCtrl?.Items[1] is TabItem selectedtab)
+                    if (Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.LeftCtrl) && TbCtrl?.Items[1] is TabItem selectedtab)
                     {
                         ((PdfImportViewerControl)selectedtab.Content).PdfViewer.PdfFilePath = pdfviewer.PdfFilePath;
                         SelectedTab = selectedtab;
                         return;
                     }
 
-                    if(Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                     {
                         AddFiles(new[] { pdfviewer.PdfFilePath }, DecodeHeight);
                         GC.Collect();
                         return;
                     }
 
-                    if(Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                    if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
                     {
                         string savefilename = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
                         await SaveFileAsync(pdfviewer.PdfFilePath, savefilename, pdfviewer.Sayfa, pdfviewer.ToplamSayfa);
@@ -998,14 +1000,14 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         RotateSelectedPage = new RelayCommand<object>(
             parameter =>
             {
-                if(parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
+                if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
                 {
                     string path = pdfviewer.PdfFilePath;
                     int currentpage = pdfviewer.Sayfa;
                     using PdfDocument inputDocument = PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Import);
-                    if((Keyboard.IsKeyDown(Key.LeftCtrl) && Keyboard.IsKeyDown(Key.LeftAlt)) || (Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.RightAlt)))
+                    if ((Keyboard.IsKeyDown(Key.LeftCtrl) && Keyboard.IsKeyDown(Key.LeftAlt)) || (Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.RightAlt)))
                     {
-                        if(Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                        if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
                         {
                             SavePageRotated(path, inputDocument, -90);
                             pdfviewer.PdfFilePath = null;
@@ -1030,7 +1032,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         ArrangePdfFile = new RelayCommand<object>(
             async parameter =>
             {
-                if(parameter is PdfViewer.PdfViewer pdfviewer &&
+                if (parameter is PdfViewer.PdfViewer pdfviewer &&
                     File.Exists(pdfviewer.PdfFilePath) &&
                     MessageBox.Show(
                     $"{Translation.GetResStringValue("REPLACEPAGE")} {SayfaBaşlangıç}-{SayfaBitiş}",
@@ -1053,7 +1055,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         ReversePdfFile = new RelayCommand<object>(
             async parameter =>
             {
-                if(parameter is PdfViewer.PdfViewer pdfviewer &&
+                if (parameter is PdfViewer.PdfViewer pdfviewer &&
                     File.Exists(pdfviewer.PdfFilePath) &&
                     MessageBox.Show(
                     $"{Translation.GetResStringValue("SAVEPDF")} {Translation.GetResStringValue("REVERSE")}",
@@ -1074,7 +1076,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         AddPdfAttachmentFile = new RelayCommand<object>(
             async parameter =>
             {
-                if(parameter is PdfViewer.PdfViewer pdfviewer &&
+                if (parameter is PdfViewer.PdfViewer pdfviewer &&
                     File.Exists(pdfviewer.PdfFilePath) &&
                     MessageBox.Show(
                     $"{Translation.GetResStringValue("ADDDOC")}",
@@ -1085,7 +1087,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     MessageBoxResult.Yes)
                 {
                     OpenFileDialog openFileDialog = new() { Filter = "Tüm Dosyalar (*.*)|*.*", Multiselect = true };
-                    if(openFileDialog.ShowDialog() == true)
+                    if (openFileDialog.ShowDialog() == true)
                     {
                         string oldpdfpath = pdfviewer.PdfFilePath;
                         await AddAttachmentFileAsync(openFileDialog.FileNames, pdfviewer.PdfFilePath, pdfviewer.PdfFilePath);
@@ -1099,7 +1101,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         ClosePdfFile = new RelayCommand<object>(
             parameter =>
             {
-                if(parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
+                if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
                 {
                     pdfviewer.PdfFilePath = null;
                     pdfviewer.Source = null;
@@ -1123,7 +1125,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 int start = Scanner.Resimler.IndexOf(Scanner?.Resimler.FirstOrDefault(z => z.Seçili));
                 int end = Scanner.Resimler.IndexOf(Scanner?.Resimler.LastOrDefault(z => z.Seçili));
-                if(Scanner?.Resimler?.Count(z => z.Seçili) == end - start + 1)
+                if (Scanner?.Resimler?.Count(z => z.Seçili) == end - start + 1)
                 {
                     List<ScannedImage> scannedImages = Scanner.Resimler.ToList();
                     scannedImages.Reverse(start, end - start + 1);
@@ -1141,10 +1143,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         RemoveSelectedPage = new RelayCommand<object>(
             async parameter =>
             {
-                if(parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
+                if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
                 {
                     string path = pdfviewer.PdfFilePath;
-                    if(MessageBox.Show(
+                    if (MessageBox.Show(
                             $"{Translation.GetResStringValue("PAGENUMBER")} {SayfaBaşlangıç}-{SayfaBitiş} {Translation.GetResStringValue("DELETE")}",
                             Application.Current.MainWindow.Title,
                             MessageBoxButton.YesNo,
@@ -1169,14 +1171,14 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         ExtractPdfFile = new RelayCommand<object>(
             async parameter =>
             {
-                if(parameter is string loadfilename && File.Exists(loadfilename))
+                if (parameter is string loadfilename && File.Exists(loadfilename))
                 {
                     SaveFileDialog saveFileDialog = new()
                     {
                         Filter = "Pdf Dosyası(*.pdf)|*.pdf",
                         FileName = $"{Path.GetFileNameWithoutExtension(loadfilename)} {Translation.GetResStringValue("PAGENUMBER")} {SayfaBaşlangıç}-{SayfaBitiş}.pdf"
                     };
-                    if(saveFileDialog.ShowDialog() == true)
+                    if (saveFileDialog.ShowDialog() == true)
                     {
                         string savefilename = saveFileDialog.FileName;
                         int start = SayfaBaşlangıç;
@@ -1190,10 +1192,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         LoadPdfExtractFile = new RelayCommand<object>(
             parameter =>
             {
-                if(parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
+                if (parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
                 {
                     PdfPages = new ObservableCollection<PdfData>();
-                    for(int i = 1; i <= pdfViewer.ToplamSayfa; i++)
+                    for (int i = 1; i <= pdfViewer.ToplamSayfa; i++)
                     {
                         PdfPages.Add(new PdfData { PageNumber = i });
                     }
@@ -1204,7 +1206,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         CopyPdfBitmapFile = new RelayCommand<object>(
             async parameter =>
             {
-                if(parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
+                if (parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
                 {
                     byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfViewer.PdfFilePath);
                     using MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfViewer.Sayfa, Settings.Default.ImgLoadResolution);
@@ -1217,7 +1219,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         CopyThumbPdfBitmapFile = new RelayCommand<object>(
             parameter =>
             {
-                if(parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
+                if (parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
                 {
                     Clipboard.SetImage(((BitmapSource)pdfViewer.Source).BitmapSourceToBitmap());
                 }
@@ -1227,7 +1229,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         ApplyPdfMedianFilter = new RelayCommand<object>(
             async parameter =>
             {
-                if(parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
+                if (parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
                 {
                     byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfViewer.PdfFilePath);
                     MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, PdfImportViewer.PdfViewer.Sayfa, Settings.Default.ImgLoadResolution);
@@ -1236,7 +1238,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     using PdfDocument document = bitmapFrame.MedianFilterBitmap(PdfMedianValue)
                         .GeneratePdf(null, Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, (int)Settings.Default.Çözünürlük);
                     SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası(*.pdf)|*.pdf", FileName = $"{Translation.GetResStringValue("PAGENUMBER")} {pdfViewer.Sayfa}.pdf" };
-                    if(saveFileDialog.ShowDialog() == true)
+                    if (saveFileDialog.ShowDialog() == true)
                     {
                         document.Save(saveFileDialog.FileName);
                         PdfMedianValue = 0;
@@ -1248,11 +1250,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         ExtractMultiplePdfFile = new RelayCommand<object>(
             async parameter =>
             {
-                if(parameter is PdfViewer.PdfViewer pdfViewer)
+                if (parameter is PdfViewer.PdfViewer pdfViewer)
                 {
                     string savefolder = ToolBox.CreateSaveFolder("SPLIT");
                     List<string> files = new();
-                    foreach(PdfData currentpage in PdfPages.Where(currentpage => currentpage.Selected))
+                    foreach (PdfData currentpage in PdfPages.Where(currentpage => currentpage.Selected))
                     {
                         string savefilename =
                         $"{savefolder}\\{Path.GetFileNameWithoutExtension(pdfViewer.PdfFilePath)} {currentpage.PageNumber}.pdf";
@@ -1260,7 +1262,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         files.Add(savefilename);
                     }
 
-                    if(MessageBox.Show(
+                    if (MessageBox.Show(
                             $"{Translation.GetResStringValue("MERGEPDF")}",
                             Application.Current.MainWindow.Title,
                             MessageBoxButton.YesNo,
@@ -1281,14 +1283,14 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         AddPageNumber = new RelayCommand<object>(
             parameter =>
             {
-                if(parameter is PdfViewer.PdfViewer pdfviewer)
+                if (parameter is PdfViewer.PdfViewer pdfviewer)
                 {
                     string oldpdfpath = pdfviewer.PdfFilePath;
                     int currentpage = pdfviewer.Sayfa;
                     using PdfDocument document = PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Modify);
-                    if(Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                     {
-                        for(int i = 0; i < document.PageCount; i++)
+                        for (int i = 0; i < document.PageCount; i++)
                         {
                             PdfPage pageall = document.Pages[i];
                             using XGraphics gfxall = XGraphics.FromPdfPage(pageall, XGraphicsPdfPageOptions.Append);
@@ -1324,7 +1326,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         ClearPdfHistory = new RelayCommand<object>(
             parameter =>
             {
-                if(MessageBox.Show(
+                if (MessageBox.Show(
                     $"{Translation.GetResStringValue("CLEARLIST")}",
                     Application.Current.MainWindow.Title,
                     MessageBoxButton.YesNo,
@@ -1342,536 +1344,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    internal static T DeSerialize<T>(string xmldatapath) where T : class, new()
-    {
-        try
-        {
-            XmlSerializer serializer = new(typeof(T));
-            using StreamReader stream = new(xmldatapath);
-            return serializer.Deserialize(stream) as T;
-        }
-        catch(Exception ex)
-        {
-            throw new ArgumentException(nameof(xmldatapath), ex);
-        }
-    }
-
-    public static async Task AddAttachmentFileAsync(string[] files, string loadfilename, string savefilename)
-    {
-        await Task.Run(
-            () =>
-            {
-                using PdfDocument inputDocument = PdfReader.Open(loadfilename, PdfDocumentOpenMode.Modify);
-                foreach(string item in files)
-                {
-                    inputDocument.AddEmbeddedFile(Path.GetFileNameWithoutExtension(item), item);
-                }
-
-                inputDocument.Save(savefilename);
-            });
-    }
-
-    public void AddFiles(string[] filenames, int decodeheight)
-    {
-        fileloadtask = Task.Run(
-            async () =>
-            {
-                try
-                {
-                    foreach(string filename in filenames)
-                    {
-                        switch(Path.GetExtension(filename.ToLower()))
-                        {
-                            case ".pdf":
-                                if(PdfViewer.PdfViewer.IsValidPdfFile(filename))
-                                {
-                                    byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(filename);
-                                    await AddPdfFileAsync(filedata, filename);
-                                }
-
-                                break;
-                            case ".eyp":
-                                List<string> files = EypFileExtract(filename);
-                                await Dispatcher.InvokeAsync(() => files.ForEach(z => Scanner?.UnsupportedFiles?.Add(z)));
-                                AddFiles(files.ToArray(), DecodeHeight);
-                                break;
-
-                            case ".jpg":
-                                case ".jpeg":
-                                case ".jfif":
-                                case ".jfıf":
-                                case ".jpe":
-                                case ".png":
-                                case ".gif":
-                                case ".gıf":
-                                case ".bmp":
-                                await AddImageFiles(filename);
-                                break;
-
-                            case ".heic":
-                                if(CheckWithCurrentOsVersion("10.0.17134"))
-                                {
-                                    await AddImageFiles(filename);
-                                }
-                                break;
-
-                            case ".webp":
-                            {
-                                BitmapImage main = (BitmapImage)filename.WebpDecode(true, decodeheight);
-                                BitmapFrame bitmapFrame = defaultpictureresizeratio != 100
-                                    ? BitmapFrame.Create(main.Resize(defaultpictureresizeratio / 100d))
-                                    : BitmapFrame.Create(main);
-                                bitmapFrame.Freeze();
-                                ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
-                                await Dispatcher.InvokeAsync(() => Scanner?.Resimler.Add(img));
-                                break;
-                            }
-
-                            case ".tıf" or ".tiff" or ".tıff" or ".tif":
-                                await Dispatcher.InvokeAsync(
-                                    () =>
-                                    {
-                                        TiffBitmapDecoder decoder = new(new Uri(filename), BitmapCreateOptions.None, BitmapCacheOption.None);
-                                        int pagecount = decoder.Frames.Count;
-                                        for(int i = 0; i < pagecount; i++)
-                                        {
-                                            BitmapFrame image = decoder.Frames[i];
-                                            image.Freeze();
-                                            BitmapFrame bitmapFrame = defaultpictureresizeratio != 100
-                                                ? BitmapFrame.Create(image.Resize(defaultpictureresizeratio / 100d))
-                                                : BitmapFrame.Create(image);
-                                            bitmapFrame.Freeze();
-                                            ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
-                                            Scanner?.Resimler.Add(img);
-                                            double progressvalue = (i + 1) / (double)pagecount;
-                                            Scanner.PdfSaveProgressValue = progressvalue == 1 ? 0 : progressvalue;
-                                        }
-                                    });
-                                break;
-                            case ".xps":
-                            {
-                                FixedDocumentSequence docSeq = null;
-                                DocumentPage docPage = null;
-                                await Dispatcher.InvokeAsync(
-                                    () =>
-                                    {
-                                        using XpsDocument xpsDoc = new(filename, FileAccess.Read);
-                                        docSeq = xpsDoc.GetFixedDocumentSequence();
-                                    });
-                                BitmapFrame bitmapframe = null;
-                                int pagecount = docSeq.DocumentPaginator.PageCount;
-                                for(int i = 0; i < pagecount; i++)
-                                {
-                                    await Dispatcher.InvokeAsync(
-                                        () =>
-                                        {
-                                            docPage = docSeq.DocumentPaginator.GetPage(i);
-                                            RenderTargetBitmap rtb = new((int)docPage.Size.Width, (int)docPage.Size.Height, 96, 96, PixelFormats.Default);
-                                            rtb.Render(docPage.Visual);
-                                            bitmapframe = BitmapFrame.Create(rtb);
-                                            bitmapframe.Freeze();
-                                        });
-                                    ScannedImage img = new() { Resim = bitmapframe, FilePath = filename };
-                                    await Dispatcher.InvokeAsync(
-                                        () =>
-                                        {
-                                            Scanner?.Resimler.Add(img);
-                                            double progressvalue = (i + 1) / (double)pagecount;
-                                            Scanner.PdfSaveProgressValue = progressvalue == 1 ? 0 : progressvalue;
-                                        });
-                                }
-
-                                break;
-                            }
-                        }
-                    }
-                }
-                catch(Exception ex)
-                {
-                    filenames = null;
-                    throw new ArgumentException(nameof(filenames), ex);
-                }
-            });
-    }
-
-    public static async Task ArrangeFileAsync(string loadfilename, string savefilename, int start, int end)
-    {
-        await Task.Run(
-            () =>
-            {
-                using PdfDocument outputDocument = loadfilename.ArrangePdfPages(start, end);
-                outputDocument.DefaultPdfCompression();
-                outputDocument.Save(savefilename);
-            });
-    }
-
-    public static List<List<T>> ChunkBy<T>(List<T> source, int chunkSize)
-    {
-        return source
-            .Select((x, i) => new { Index = i, Value = x })
-            .GroupBy(x => x.Index / chunkSize)
-            .Select(x => x.Select(v => v.Value).ToList())
-            .ToList();
-    }
-
-    public void Dispose() { Dispose(true); }
-
-    public void DropFile(object sender, DragEventArgs e)
-    {
-        if(sender is Run run && e.Data.GetData(typeof(ScannedImage)) is ScannedImage droppedData && run.DataContext is ScannedImage target)
-        {
-            int removedIdx = Scanner.Resimler.IndexOf(droppedData);
-            int targetIdx = Scanner.Resimler.IndexOf(target);
-
-            if(removedIdx < targetIdx)
-            {
-                Scanner.Resimler.Insert(targetIdx + 1, droppedData);
-                Scanner.Resimler.RemoveAt(removedIdx);
-                return;
-            }
-
-            int remIdx = removedIdx + 1;
-            if(Scanner.Resimler.Count + 1 > remIdx)
-            {
-                Scanner.Resimler.Insert(targetIdx, droppedData);
-                Scanner.Resimler.RemoveAt(remIdx);
-            }
-        }
-    }
-
-    public void DropPreviewFile(object sender, MouseEventArgs e)
-    {
-        if(sender is Run run && e.LeftButton == MouseButtonState.Pressed)
-        {
-            DragMoveStarted = true;
-            _ = DragDrop.DoDragDrop(run, run.DataContext, DragDropEffects.Move);
-            DragMoveStarted = false;
-        }
-    }
-
-    public static List<string> EypFileExtract(string eypfilepath)
-    {
-        using ZipArchive archive = ZipFile.Open(eypfilepath, ZipArchiveMode.Read);
-        if(archive != null)
-        {
-            List<string> data = new();
-            ZipArchiveEntry üstveri = archive.Entries.FirstOrDefault(entry => entry.Name == "NihaiOzet.xml");
-            string source = $"{Path.GetTempPath()}{Guid.NewGuid()}.xml";
-            üstveri?.ExtractToFile(source, true);
-            XDocument xdoc = XDocument.Load(source);
-            if(xdoc != null)
-            {
-                foreach(string file in xdoc.Descendants().Select(z => Path.GetFileName((string)z.Attribute("URI"))).Where(z => !string.IsNullOrEmpty(z)))
-                {
-                    ZipArchiveEntry zipArchiveEntry = archive.Entries.FirstOrDefault(entry => entry.Name == file);
-                    if(zipArchiveEntry != null)
-                    {
-                        string destinationFileName =
-                            $"{Path.GetTempPath()}{Guid.NewGuid()}{Path.GetExtension(file.ToLower())}";
-                        zipArchiveEntry.ExtractToFile(destinationFileName, true);
-                        data.Add(destinationFileName);
-                    }
-                }
-            }
-
-            return data;
-        }
-
-        return null;
-    }
-
-    public static BitmapFrame GenerateBitmapFrame(BitmapSource bitmapSource)
-    {
-        bitmapSource.Freeze();
-        BitmapFrame bitmapFrame = BitmapFrame.Create(bitmapSource);
-        bitmapFrame.Freeze();
-        return bitmapFrame;
-    }
-
-    public static void GotoPage(string path)
-    {
-        if(!string.IsNullOrWhiteSpace(path))
-        {
-            try
-            {
-                _ = Process.Start(path);
-            }
-            catch(Exception ex)
-            {
-                _ = MessageBox.Show(ex.Message);
-            }
-        }
-    }
-
-    public async Task ListBoxDropFileAsync(DragEventArgs e)
-    {
-        if(fileloadtask?.IsCompleted == false)
-        {
-            _ = MessageBox.Show(Application.Current.MainWindow, Translation.GetResStringValue("TRANSLATEPENDING"));
-            return;
-        }
-
-        string[] droppedfiles = (string[])e.Data.GetData(System.Windows.DataFormats.FileDrop);
-        if(droppedfiles?.Length > 0)
-        {
-            await Task.Run(() => AddFiles(droppedfiles, DecodeHeight));
-        }
-    }
-
-    public string LoadUdfFile(string filename)
-    {
-        ZipArchive archive = ZipFile.Open(filename, ZipArchiveMode.Read);
-        ZipArchiveEntry üstveri = archive.Entries.FirstOrDefault(entry => entry.Name == "content.xml");
-        string source = $"{Path.GetTempPath()}{Guid.NewGuid()}.xml";
-        string xpssource = $"{Path.GetTempPath()}{Guid.NewGuid()}.xps";
-        üstveri?.ExtractToFile(source, true);
-        Template xmldata = DeSerialize<Template>(source);
-        IDocumentPaginatorSource flowDocument = UdfParser.UdfParser.RenderDocument(xmldata);
-        using(XpsDocument xpsDocument = new(xpssource, FileAccess.ReadWrite))
-        {
-            XpsDocumentWriter xw = XpsDocument.CreateXpsDocumentWriter(xpsDocument);
-            xw.Write(flowDocument.DocumentPaginator);
-        }
-
-        return xpssource;
-    }
-
-    public static void NotifyPdfChange(PdfViewer.PdfViewer pdfviewer, string temporarypdf, string pdfFilePath)
-    {
-        File.Delete(temporarypdf);
-        pdfviewer.PdfFilePath = null;
-        pdfviewer.PdfFilePath = pdfFilePath;
-    }
-
-    public static async Task RemovePdfPageAsync(string pdffilepath, int start, int end)
-    {
-        await Task.Run(
-            () =>
-            {
-                PdfDocument inputDocument = PdfReader.Open(pdffilepath, PdfDocumentOpenMode.Import);
-                for(int i = end; i >= start; i--)
-                {
-                    inputDocument.Pages.RemoveAt(i - 1);
-                }
-
-                inputDocument.Save(pdffilepath);
-            });
-    }
-
-    public static async Task ReverseFileAsync(string loadfilename, string savefilename)
-    {
-        await Task.Run(
-            () =>
-            {
-                using PdfDocument inputDocument = PdfReader.Open(loadfilename, PdfDocumentOpenMode.Import);
-                using PdfDocument outputdocument = new();
-                for(int i = inputDocument.PageCount - 1; i >= 0; i--)
-                {
-                    _ = outputdocument.AddPage(inputDocument.Pages[i]);
-                }
-
-                outputdocument.Save(savefilename);
-            });
-    }
-
-    public void SaveJpgImage(BitmapFrame scannedImage, string filename)
-    { Dispatcher.Invoke(() => File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality))); }
-
-    public async Task SaveJpgImageAsync(List<ScannedImage> images, string filename, Scanner scanner)
-    {
-        await Task.Run(
-            () =>
-            {
-                string directory = Path.GetDirectoryName(filename);
-                for(int i = 0; i < images.Count; i++)
-                {
-                    ScannedImage scannedimage = images[i];
-                    byte[] bytes = null;
-                    _ = Dispatcher.Invoke(() => bytes = scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality));
-                    File.WriteAllBytes(directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "jpg"), bytes);
-                    scanner.PdfSaveProgressValue = i / (double)images.Count;
-                    if(Settings.Default.RemoveProcessedImage)
-                    {
-                        scannedimage.Resim = null;
-                    }
-                    bytes = null;
-                }
-                scanner.PdfSaveProgressValue = 0;
-                GC.Collect();
-            });
-    }
-
-    public async Task SavePdfImageAsync(BitmapFrame scannedImage, string filename, Scanner scanner, Paper paper, bool applyocr, bool blackwhite = false)
-    {
-        ObservableCollection<OcrData> ocrtext = null;
-        if(applyocr && !string.IsNullOrEmpty(scanner?.SelectedTtsLanguage))
-        {
-            scanner.SaveProgressBarForegroundBrush = bluesaveprogresscolor;
-            _ = await Dispatcher.Invoke(async () => ocrtext = await scannedImage.ToTiffJpegByteArray(Format.Jpg).OcrAsync(scanner.SelectedTtsLanguage));
-        }
-
-        scanner.SaveProgressBarForegroundBrush = Scanner.DefaultSaveProgressforegroundbrush;
-        if(blackwhite)
-        {
-            scannedImage.GeneratePdf(ocrtext, Format.Tiff, paper, Settings.Default.JpegQuality, Settings.Default.ImgLoadResolution).Save(filename);
-            return;
-        }
-
-        scannedImage.GeneratePdf(ocrtext, Format.Jpg, paper, Settings.Default.JpegQuality, Settings.Default.ImgLoadResolution).Save(filename);
-    }
-
-    public async Task SavePdfImageAsync(List<ScannedImage> images, string filename, Scanner scanner, Paper paper, bool applyocr, bool blackwhite = false, int dpi = 120)
-    {
-        List<ObservableCollection<OcrData>> scannedtext = null;
-        if(applyocr && !string.IsNullOrEmpty(scanner?.SelectedTtsLanguage))
-        {
-            scanner.SaveProgressBarForegroundBrush = bluesaveprogresscolor;
-            scannedtext = new List<ObservableCollection<OcrData>>();
-            scanner.ProgressState = TaskbarItemProgressState.Normal;
-            for(int i = 0; i < images.Count; i++)
-            {
-                ScannedImage image = images[i];
-                await Dispatcher.Invoke(
-                    async () =>
-                    {
-                        ObservableCollection<OcrData> item = await image.Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsync(scanner.SelectedTtsLanguage);
-                        scannedtext.Add(item);
-                    });
-                scanner.PdfSaveProgressValue = i / (double)images.Count;
-            }
-
-            scanner.PdfSaveProgressValue = 0;
-        }
-
-        scanner.SaveProgressBarForegroundBrush = Scanner.DefaultSaveProgressforegroundbrush;
-        if(blackwhite)
-        {
-            (await images.GeneratePdfAsync(Format.Tiff, paper, Settings.Default.JpegQuality, scannedtext, dpi)).Save(filename);
-            return;
-        }
-
-        (await images.GeneratePdfAsync(Format.Jpg, paper, Settings.Default.JpegQuality, scannedtext, dpi)).Save(filename);
-    }
-
-    public void SaveTifImage(BitmapFrame scannedImage, string filename)
-    {
-        if((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
-        {
-            Dispatcher.Invoke(() => File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.Tiff)));
-            return;
-        }
-
-        if((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
-        {
-            Dispatcher.Invoke(() => File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.TiffRenkli)));
-        }
-    }
-
-    public void SaveTifImage(List<ScannedImage> images, string filename)
-    {
-        Dispatcher.Invoke(
-            () =>
-            {
-                TiffBitmapEncoder tifccittencoder = new() { Compression = TiffCompressOption.Ccitt4 };
-                for(int i = 0; i < images.Count; i++)
-                {
-                    ScannedImage scannedimage = images[i];
-                    tifccittencoder.Frames.Add(scannedimage.Resim);
-                }
-                using FileStream stream = new(filename, FileMode.Create);
-                tifccittencoder.Save(stream);
-            });
-    }
-
-    public async Task SaveTxtFileAsync(BitmapFrame bitmapFrame, string fileName, Scanner scanner)
-    {
-        if(bitmapFrame is not null && !string.IsNullOrEmpty(scanner.SelectedTtsLanguage))
-        {
-            await Dispatcher.Invoke(
-                async () =>
-                {
-                    ObservableCollection<OcrData> ocrtext = await bitmapFrame.ToTiffJpegByteArray(Format.Jpg).OcrAsync(scanner.SelectedTtsLanguage);
-                    File.WriteAllText(fileName, string.Join(" ", ocrtext.Select(z => z.Text)));
-                });
-        }
-    }
-
-    public async Task SaveTxtFileAsync(List<ScannedImage> images, string fileName, Scanner scanner)
-    {
-        if(images is not null && !string.IsNullOrEmpty(scanner.SelectedTtsLanguage))
-        {
-            for(int i = 0; i < images.Count; i++)
-            {
-                await Dispatcher.Invoke(
-                    async () =>
-                    {
-                        ObservableCollection<OcrData> ocrtext = await images[i].Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsync(scanner.SelectedTtsLanguage);
-                        File.WriteAllText(
-                            Path.Combine(Path.GetDirectoryName(fileName), $"{Path.GetFileNameWithoutExtension(fileName)}{i}.txt"),
-                            string.Join(" ", ocrtext.Select(z => z.Text)));
-                    });
-            }
-        }
-    }
-
-    public void SaveWebpImage(BitmapFrame scannedImage, string filename)
-    { Dispatcher.Invoke(() => File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.Jpg).WebpEncode(Settings.Default.WebpQuality))); }
-
-    public async Task SaveWebpImageAsync(List<ScannedImage> images, string filename, Scanner scanner)
-    {
-        await Task.Run(
-            () =>
-            {
-                string directory = Path.GetDirectoryName(filename);
-                for(int i = 0; i < images.Count; i++)
-                {
-                    ScannedImage scannedimage = images[i];
-                    byte[] bytes = null;
-                    _ = Dispatcher.Invoke(() => bytes = scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg).WebpEncode(Settings.Default.WebpQuality));
-                    File.WriteAllBytes(directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "webp"), bytes);
-                    scanner.PdfSaveProgressValue = i / (double)images.Count;
-                    if(Settings.Default.RemoveProcessedImage)
-                    {
-                        scannedimage.Resim = null;
-                    }
-                    bytes = null;
-                }
-                scanner.PdfSaveProgressValue = 0;
-                GC.Collect();
-            });
-    }
-
-    public void SaveXpsImage(BitmapFrame scannedImage, string filename)
-    {
-        Dispatcher.Invoke(
-            () =>
-            {
-                Image image = new();
-                image.BeginInit();
-                image.Source = scannedImage;
-                image.EndInit();
-                using XpsDocument xpsd = new(filename, FileAccess.Write);
-                XpsDocumentWriter xw = XpsDocument.CreateXpsDocumentWriter(xpsd);
-                xw.Write(image);
-                image = null;
-            });
-    }
-
-    public void SplitPdfPageCount(string pdfpath, string savefolder, int pagecount)
-    {
-        using PdfDocument inputDocument = PdfReader.Open(pdfpath, PdfDocumentOpenMode.Import);
-        foreach(List<int> item in ChunkBy(Enumerable.Range(0, inputDocument.PageCount).ToList(), pagecount))
-        {
-            using PdfDocument outputDocument = new();
-            foreach(int pagenumber in item)
-            {
-                _ = outputDocument.AddPage(inputDocument.Pages[pagenumber]);
-            }
-
-            outputDocument.Save(savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "pdf"));
-        }
-    }
-
     public ICommand AddAllFileToControlPanel { get; }
 
     public ICommand AddFromClipBoard { get; }
@@ -1880,13 +1352,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand AddPdfAttachmentFile { get; }
 
-    public double AllImageRotationAngle
-    {
+    public double AllImageRotationAngle {
         get { return allImageRotationAngle; }
 
-        set
-        {
-            if(allImageRotationAngle != value)
+        set {
+            if (allImageRotationAngle != value)
             {
                 allImageRotationAngle = value;
                 OnPropertyChanged(nameof(AllImageRotationAngle));
@@ -1894,13 +1364,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public PdfAnnotations Annotations
-    {
+    public PdfAnnotations Annotations {
         get { return annotations; }
 
-        set
-        {
-            if(annotations != value)
+        set {
+            if (annotations != value)
             {
                 annotations = value;
                 OnPropertyChanged(nameof(Annotations));
@@ -1912,13 +1380,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand ArrangePdfFile { get; }
 
-    public byte[] CameraQRCodeData
-    {
+    public byte[] CameraQRCodeData {
         get { return cameraQRCodeData; }
 
-        set
-        {
-            if(cameraQRCodeData != value)
+        set {
+            if (cameraQRCodeData != value)
             {
                 cameraQRCodeData = value;
                 OnPropertyChanged(nameof(CameraQRCodeData));
@@ -1926,13 +1392,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public bool CanUndoImage
-    {
+    public bool CanUndoImage {
         get { return canUndoImage; }
 
-        set
-        {
-            if(canUndoImage != value)
+        set {
+            if (canUndoImage != value)
             {
                 canUndoImage = value;
                 OnPropertyChanged(nameof(CanUndoImage));
@@ -1967,13 +1431,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand CopyThumbPdfBitmapFile { get; }
 
-    public CroppedBitmap CroppedOcrBitmap
-    {
+    public CroppedBitmap CroppedOcrBitmap {
         get { return croppedOcrBitmap; }
 
-        set
-        {
-            if(croppedOcrBitmap != value)
+        set {
+            if (croppedOcrBitmap != value)
             {
                 croppedOcrBitmap = value;
                 OnPropertyChanged(nameof(CroppedOcrBitmap));
@@ -1983,13 +1445,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand CycleSelectedDocuments { get; }
 
-    public byte[] DataBaseQrData
-    {
+    public byte[] DataBaseQrData {
         get { return dataBaseQrData; }
 
-        set
-        {
-            if(dataBaseQrData != value)
+        set {
+            if (dataBaseQrData != value)
             {
                 dataBaseQrData = value;
                 OnPropertyChanged(nameof(DataBaseQrData));
@@ -1997,13 +1457,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public ObservableCollection<OcrData> DataBaseTextData
-    {
+    public ObservableCollection<OcrData> DataBaseTextData {
         get { return dataBaseTextData; }
 
-        set
-        {
-            if(dataBaseTextData != value)
+        set {
+            if (dataBaseTextData != value)
             {
                 dataBaseTextData = value;
                 OnPropertyChanged(nameof(DataBaseTextData));
@@ -2011,13 +1469,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public int DecodeHeight
-    {
+    public int DecodeHeight {
         get { return decodeHeight; }
 
-        set
-        {
-            if(decodeHeight != value)
+        set {
+            if (decodeHeight != value)
             {
                 decodeHeight = value;
                 OnPropertyChanged(nameof(DecodeHeight));
@@ -2025,13 +1481,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public GridLength DocumentGridLength
-    {
+    public GridLength DocumentGridLength {
         get { return documentGridLength; }
 
-        set
-        {
-            if(documentGridLength != value)
+        set {
+            if (documentGridLength != value)
             {
                 documentGridLength = value;
                 OnPropertyChanged(nameof(DocumentGridLength));
@@ -2039,13 +1493,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public bool DocumentPreviewIsExpanded
-    {
+    public bool DocumentPreviewIsExpanded {
         get { return documentPreviewIsExpanded; }
 
-        set
-        {
-            if(documentPreviewIsExpanded != value)
+        set {
+            if (documentPreviewIsExpanded != value)
             {
                 documentPreviewIsExpanded = value;
                 OnPropertyChanged(nameof(DocumentPreviewIsExpanded));
@@ -2053,13 +1505,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public bool DragMoveStarted
-    {
+    public bool DragMoveStarted {
         get { return dragMoveStarted; }
 
-        set
-        {
-            if(dragMoveStarted != value)
+        set {
+            if (dragMoveStarted != value)
             {
                 dragMoveStarted = value;
                 OnPropertyChanged(nameof(DragMoveStarted));
@@ -2081,13 +1531,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand FastScanImage { get; }
 
-    public byte[] ImgData
-    {
+    public byte[] ImgData {
         get { return ımgData; }
 
-        set
-        {
-            if(ımgData != value)
+        set {
+            if (ımgData != value)
             {
                 ımgData = value;
                 OnPropertyChanged(nameof(ImgData));
@@ -2115,13 +1563,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand LoadSingleUdfFile { get; }
 
-    public string MailData
-    {
+    public string MailData {
         get { return mailData; }
 
-        set
-        {
-            if(mailData != value)
+        set {
+            if (mailData != value)
             {
                 mailData = value;
                 OnPropertyChanged(nameof(MailData));
@@ -2135,13 +1581,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand OcrPage { get; }
 
-    public ObservableCollection<Paper> Papers
-    {
+    public ObservableCollection<Paper> Papers {
         get { return papers; }
 
-        set
-        {
-            if(papers != value)
+        set {
+            if (papers != value)
             {
                 papers = value;
                 OnPropertyChanged(nameof(Papers));
@@ -2151,13 +1595,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand PasteFileToPdfFile { get; }
 
-    public double PdfLoadProgressValue
-    {
+    public double PdfLoadProgressValue {
         get { return pdfLoadProgressValue; }
 
-        set
-        {
-            if(pdfLoadProgressValue != value)
+        set {
+            if (pdfLoadProgressValue != value)
             {
                 pdfLoadProgressValue = value;
                 OnPropertyChanged(nameof(PdfLoadProgressValue));
@@ -2165,12 +1607,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public int PdfMedianValue
-    {
+    public int PdfMedianValue {
         get { return pdfMedianValue; }
-        set
-        {
-            if(pdfMedianValue != value)
+
+        set {
+            if (pdfMedianValue != value)
             {
                 pdfMedianValue = value;
                 OnPropertyChanged(nameof(PdfMedianValue));
@@ -2178,13 +1619,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public ObservableCollection<PdfData> PdfPages
-    {
+    public ObservableCollection<PdfData> PdfPages {
         get { return pdfPages; }
 
-        set
-        {
-            if(pdfPages != value)
+        set {
+            if (pdfPages != value)
             {
                 pdfPages = value;
                 OnPropertyChanged(nameof(PdfPages));
@@ -2192,13 +1631,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public int PdfSplitCount
-    {
+    public int PdfSplitCount {
         get { return pdfSplitCount; }
 
-        set
-        {
-            if(pdfSplitCount != value)
+        set {
+            if (pdfSplitCount != value)
             {
                 pdfSplitCount = value;
                 OnPropertyChanged(nameof(PdfSplitCount));
@@ -2208,13 +1645,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand PdfWaterMark { get; }
 
-    public SolidColorBrush PdfWatermarkColor
-    {
+    public SolidColorBrush PdfWatermarkColor {
         get { return pdfWatermarkColor; }
 
-        set
-        {
-            if(pdfWatermarkColor != value)
+        set {
+            if (pdfWatermarkColor != value)
             {
                 pdfWatermarkColor = value;
                 OnPropertyChanged(nameof(PdfWatermarkColor));
@@ -2222,13 +1657,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public string PdfWatermarkFont
-    {
+    public string PdfWatermarkFont {
         get { return pdfWatermarkFont; }
 
-        set
-        {
-            if(pdfWatermarkFont != value)
+        set {
+            if (pdfWatermarkFont != value)
             {
                 pdfWatermarkFont = value;
                 OnPropertyChanged(nameof(PdfWatermarkFont));
@@ -2236,13 +1669,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public double PdfWatermarkFontAngle
-    {
+    public double PdfWatermarkFontAngle {
         get { return pdfWatermarkFontAngle; }
 
-        set
-        {
-            if(pdfWatermarkFontAngle != value)
+        set {
+            if (pdfWatermarkFontAngle != value)
             {
                 pdfWatermarkFontAngle = value;
                 OnPropertyChanged(nameof(PdfWatermarkFontAngle));
@@ -2250,13 +1681,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public double PdfWatermarkFontSize
-    {
+    public double PdfWatermarkFontSize {
         get { return pdfWatermarkFontSize; }
 
-        set
-        {
-            if(pdfWatermarkFontSize != value)
+        set {
+            if (pdfWatermarkFontSize != value)
             {
                 pdfWatermarkFontSize = value;
                 OnPropertyChanged(nameof(PdfWatermarkFontSize));
@@ -2264,13 +1693,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public string PdfWaterMarkText
-    {
+    public string PdfWaterMarkText {
         get { return pdfWaterMarkText; }
 
-        set
-        {
-            if(pdfWaterMarkText != value)
+        set {
+            if (pdfWaterMarkText != value)
             {
                 pdfWaterMarkText = value;
                 OnPropertyChanged(nameof(PdfWaterMarkText));
@@ -2298,13 +1725,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand SaveFileList { get; }
 
-    public int SaveIndex
-    {
+    public int SaveIndex {
         get { return saveIndex; }
 
-        set
-        {
-            if(saveIndex != value)
+        set {
+            if (saveIndex != value)
             {
                 saveIndex = value;
                 OnPropertyChanged(nameof(SaveIndex));
@@ -2314,13 +1739,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand SaveProfile { get; }
 
-    public int SayfaBaşlangıç
-    {
+    public int SayfaBaşlangıç {
         get { return sayfaBaşlangıç; }
 
-        set
-        {
-            if(sayfaBaşlangıç != value)
+        set {
+            if (sayfaBaşlangıç != value)
             {
                 sayfaBaşlangıç = value;
                 OnPropertyChanged(nameof(SayfaBaşlangıç));
@@ -2328,13 +1751,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public int SayfaBitiş
-    {
+    public int SayfaBitiş {
         get { return sayfaBitiş; }
 
-        set
-        {
-            if(sayfaBitiş != value)
+        set {
+            if (sayfaBitiş != value)
             {
                 sayfaBitiş = value;
                 OnPropertyChanged(nameof(SayfaBitiş));
@@ -2344,13 +1765,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand ScanImage { get; }
 
-    public Scanner Scanner
-    {
+    public Scanner Scanner {
         get { return scanner; }
 
-        set
-        {
-            if(scanner != value)
+        set {
+            if (scanner != value)
             {
                 scanner = value;
                 OnPropertyChanged(nameof(Scanner));
@@ -2364,13 +1783,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand SeçiliListeTemizle { get; }
 
-    public ScannedImage SeçiliResim
-    {
+    public ScannedImage SeçiliResim {
         get { return seçiliResim; }
 
-        set
-        {
-            if(seçiliResim != value)
+        set {
+            if (seçiliResim != value)
             {
                 seçiliResim = value;
                 OnPropertyChanged(nameof(SeçiliResim));
@@ -2378,13 +1795,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public Tuple<string, int, double, bool, double> SelectedCompressionProfile
-    {
+    public Tuple<string, int, double, bool, double> SelectedCompressionProfile {
         get { return selectedCompressionProfile; }
 
-        set
-        {
-            if(selectedCompressionProfile != value)
+        set {
+            if (selectedCompressionProfile != value)
             {
                 selectedCompressionProfile = value;
                 OnPropertyChanged(nameof(SelectedCompressionProfile));
@@ -2392,13 +1807,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public Orientation SelectedOrientation
-    {
+    public Orientation SelectedOrientation {
         get { return selectedOrientation; }
 
-        set
-        {
-            if(selectedOrientation != value)
+        set {
+            if (selectedOrientation != value)
             {
                 selectedOrientation = value;
                 OnPropertyChanged(nameof(SelectedOrientation));
@@ -2406,13 +1819,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public Paper SelectedPaper
-    {
+    public Paper SelectedPaper {
         get { return selectedPaper; }
 
-        set
-        {
-            if(selectedPaper != value)
+        set {
+            if (selectedPaper != value)
             {
                 selectedPaper = value;
                 OnPropertyChanged(nameof(SelectedPaper));
@@ -2420,13 +1831,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public PageRotation SelectedRotation
-    {
+    public PageRotation SelectedRotation {
         get { return selectedRotation; }
 
-        set
-        {
-            if(selectedRotation != value)
+        set {
+            if (selectedRotation != value)
             {
                 selectedRotation = value;
                 OnPropertyChanged(nameof(SelectedRotation));
@@ -2434,13 +1843,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public TabItem SelectedTab
-    {
+    public TabItem SelectedTab {
         get { return selectedTab; }
 
-        set
-        {
-            if(selectedTab != value)
+        set {
+            if (selectedTab != value)
             {
                 selectedTab = value;
                 OnPropertyChanged(nameof(SelectedTab));
@@ -2464,13 +1871,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand TümününİşaretiniKaldır { get; }
 
-    public GridLength TwainGuiControlLength
-    {
+    public GridLength TwainGuiControlLength {
         get { return twainGuiControlLength; }
 
-        set
-        {
-            if(twainGuiControlLength != value)
+        set {
+            if (twainGuiControlLength != value)
             {
                 twainGuiControlLength = value;
                 OnPropertyChanged(nameof(TwainGuiControlLength));
@@ -2478,13 +1883,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public ScannedImage UndoImage
-    {
+    public ScannedImage UndoImage {
         get { return undoImage; }
 
-        set
-        {
-            if(undoImage != value)
+        set {
+            if (undoImage != value)
             {
                 undoImage = value;
                 OnPropertyChanged(nameof(UndoImage));
@@ -2492,13 +1895,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public int? UndoImageIndex
-    {
+    public int? UndoImageIndex {
         get { return undoImageIndex; }
 
-        set
-        {
-            if(undoImageIndex != value)
+        set {
+            if (undoImageIndex != value)
             {
                 undoImageIndex = value;
                 OnPropertyChanged(nameof(UndoImageIndex));
@@ -2508,11 +1909,511 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand WebAdreseGit { get; }
 
+    public static async Task AddAttachmentFileAsync(string[] files, string loadfilename, string savefilename) => await Task.Run(
+            () =>
+            {
+                using PdfDocument inputDocument = PdfReader.Open(loadfilename, PdfDocumentOpenMode.Modify);
+                foreach (string item in files)
+                {
+                    inputDocument.AddEmbeddedFile(Path.GetFileNameWithoutExtension(item), item);
+                }
+
+                inputDocument.Save(savefilename);
+            });
+
+    public static async Task ArrangeFileAsync(string loadfilename, string savefilename, int start, int end) => await Task.Run(
+            () =>
+            {
+                using PdfDocument outputDocument = loadfilename.ArrangePdfPages(start, end);
+                outputDocument.DefaultPdfCompression();
+                outputDocument.Save(savefilename);
+            });
+
+    public static List<List<T>> ChunkBy<T>(List<T> source, int chunkSize) => source
+            .Select((x, i) => new { Index = i, Value = x })
+            .GroupBy(x => x.Index / chunkSize)
+            .Select(x => x.Select(v => v.Value).ToList())
+            .ToList();
+
+    public static List<string> EypFileExtract(string eypfilepath)
+    {
+        using ZipArchive archive = ZipFile.Open(eypfilepath, ZipArchiveMode.Read);
+        if (archive != null)
+        {
+            List<string> data = new();
+            ZipArchiveEntry üstveri = archive.Entries.FirstOrDefault(entry => entry.Name == "NihaiOzet.xml");
+            string source = $"{Path.GetTempPath()}{Guid.NewGuid()}.xml";
+            üstveri?.ExtractToFile(source, true);
+            XDocument xdoc = XDocument.Load(source);
+            if (xdoc != null)
+            {
+                foreach (string file in xdoc.Descendants().Select(z => Path.GetFileName((string)z.Attribute("URI"))).Where(z => !string.IsNullOrEmpty(z)))
+                {
+                    ZipArchiveEntry zipArchiveEntry = archive.Entries.FirstOrDefault(entry => entry.Name == file);
+                    if (zipArchiveEntry != null)
+                    {
+                        string destinationFileName =
+                            $"{Path.GetTempPath()}{Guid.NewGuid()}{Path.GetExtension(file.ToLower())}";
+                        zipArchiveEntry.ExtractToFile(destinationFileName, true);
+                        data.Add(destinationFileName);
+                    }
+                }
+            }
+
+            return data;
+        }
+
+        return null;
+    }
+
+    public static BitmapFrame GenerateBitmapFrame(BitmapSource bitmapSource)
+    {
+        bitmapSource.Freeze();
+        BitmapFrame bitmapFrame = BitmapFrame.Create(bitmapSource);
+        bitmapFrame.Freeze();
+        return bitmapFrame;
+    }
+
+    public static void GotoPage(string path)
+    {
+        if (!string.IsNullOrWhiteSpace(path))
+        {
+            try
+            {
+                _ = Process.Start(path);
+            }
+            catch (Exception ex)
+            {
+                _ = MessageBox.Show(ex.Message);
+            }
+        }
+    }
+
+    public static void NotifyPdfChange(PdfViewer.PdfViewer pdfviewer, string temporarypdf, string pdfFilePath)
+    {
+        File.Delete(temporarypdf);
+        pdfviewer.PdfFilePath = null;
+        pdfviewer.PdfFilePath = pdfFilePath;
+    }
+
+    public static async Task RemovePdfPageAsync(string pdffilepath, int start, int end) => await Task.Run(
+            () =>
+            {
+                PdfDocument inputDocument = PdfReader.Open(pdffilepath, PdfDocumentOpenMode.Import);
+                for (int i = end; i >= start; i--)
+                {
+                    inputDocument.Pages.RemoveAt(i - 1);
+                }
+
+                inputDocument.Save(pdffilepath);
+            });
+
+    public static async Task ReverseFileAsync(string loadfilename, string savefilename) => await Task.Run(
+            () =>
+            {
+                using PdfDocument inputDocument = PdfReader.Open(loadfilename, PdfDocumentOpenMode.Import);
+                using PdfDocument outputdocument = new();
+                for (int i = inputDocument.PageCount - 1; i >= 0; i--)
+                {
+                    _ = outputdocument.AddPage(inputDocument.Pages[i]);
+                }
+
+                outputdocument.Save(savefilename);
+            });
+
+    public void AddFiles(string[] filenames, int decodeheight) => fileloadtask = Task.Run(
+            async () =>
+            {
+                try
+                {
+                    foreach (string filename in filenames)
+                    {
+                        switch (Path.GetExtension(filename.ToLower()))
+                        {
+                            case ".pdf":
+                                if (PdfViewer.PdfViewer.IsValidPdfFile(filename))
+                                {
+                                    byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(filename);
+                                    await AddPdfFileAsync(filedata, filename);
+                                }
+
+                                break;
+
+                            case ".eyp":
+                                List<string> files = EypFileExtract(filename);
+                                await Dispatcher.InvokeAsync(() => files.ForEach(z => Scanner?.UnsupportedFiles?.Add(z)));
+                                AddFiles(files.ToArray(), DecodeHeight);
+                                break;
+
+                            case ".jpg":
+                            case ".jpeg":
+                            case ".jfif":
+                            case ".jfıf":
+                            case ".jpe":
+                            case ".png":
+                            case ".gif":
+                            case ".gıf":
+                            case ".bmp":
+                                await AddImageFiles(filename);
+                                break;
+
+                            case ".heic":
+                                if (CheckWithCurrentOsVersion("10.0.17134"))
+                                {
+                                    await AddImageFiles(filename);
+                                }
+                                break;
+
+                            case ".webp":
+                                {
+                                    BitmapImage main = (BitmapImage)filename.WebpDecode(true, decodeheight);
+                                    BitmapFrame bitmapFrame = defaultpictureresizeratio != 100
+                                        ? BitmapFrame.Create(main.Resize(defaultpictureresizeratio / 100d))
+                                        : BitmapFrame.Create(main);
+                                    bitmapFrame.Freeze();
+                                    ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
+                                    await Dispatcher.InvokeAsync(() => Scanner?.Resimler.Add(img));
+                                    break;
+                                }
+
+                            case ".tıf" or ".tiff" or ".tıff" or ".tif":
+                                await Dispatcher.InvokeAsync(
+                                    () =>
+                                    {
+                                        TiffBitmapDecoder decoder = new(new Uri(filename), BitmapCreateOptions.None, BitmapCacheOption.None);
+                                        int pagecount = decoder.Frames.Count;
+                                        for (int i = 0; i < pagecount; i++)
+                                        {
+                                            BitmapFrame image = decoder.Frames[i];
+                                            image.Freeze();
+                                            BitmapFrame bitmapFrame = defaultpictureresizeratio != 100
+                                                ? BitmapFrame.Create(image.Resize(defaultpictureresizeratio / 100d))
+                                                : BitmapFrame.Create(image);
+                                            bitmapFrame.Freeze();
+                                            ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
+                                            Scanner?.Resimler.Add(img);
+                                            double progressvalue = (i + 1) / (double)pagecount;
+                                            Scanner.PdfSaveProgressValue = progressvalue == 1 ? 0 : progressvalue;
+                                        }
+                                    });
+                                break;
+
+                            case ".xps":
+                                {
+                                    FixedDocumentSequence docSeq = null;
+                                    DocumentPage docPage = null;
+                                    await Dispatcher.InvokeAsync(
+                                        () =>
+                                        {
+                                            using XpsDocument xpsDoc = new(filename, FileAccess.Read);
+                                            docSeq = xpsDoc.GetFixedDocumentSequence();
+                                        });
+                                    BitmapFrame bitmapframe = null;
+                                    int pagecount = docSeq.DocumentPaginator.PageCount;
+                                    for (int i = 0; i < pagecount; i++)
+                                    {
+                                        await Dispatcher.InvokeAsync(
+                                            () =>
+                                            {
+                                                docPage = docSeq.DocumentPaginator.GetPage(i);
+                                                RenderTargetBitmap rtb = new((int)docPage.Size.Width, (int)docPage.Size.Height, 96, 96, PixelFormats.Default);
+                                                rtb.Render(docPage.Visual);
+                                                bitmapframe = BitmapFrame.Create(rtb);
+                                                bitmapframe.Freeze();
+                                            });
+                                        ScannedImage img = new() { Resim = bitmapframe, FilePath = filename };
+                                        await Dispatcher.InvokeAsync(
+                                            () =>
+                                            {
+                                                Scanner?.Resimler.Add(img);
+                                                double progressvalue = (i + 1) / (double)pagecount;
+                                                Scanner.PdfSaveProgressValue = progressvalue == 1 ? 0 : progressvalue;
+                                            });
+                                    }
+
+                                    break;
+                                }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    filenames = null;
+                    throw new ArgumentException(nameof(filenames), ex);
+                }
+            });
+
+    public void Dispose() => Dispose(true);
+
+    public void DropFile(object sender, DragEventArgs e)
+    {
+        if (sender is Run run && e.Data.GetData(typeof(ScannedImage)) is ScannedImage droppedData && run.DataContext is ScannedImage target)
+        {
+            int removedIdx = Scanner.Resimler.IndexOf(droppedData);
+            int targetIdx = Scanner.Resimler.IndexOf(target);
+
+            if (removedIdx < targetIdx)
+            {
+                Scanner.Resimler.Insert(targetIdx + 1, droppedData);
+                Scanner.Resimler.RemoveAt(removedIdx);
+                return;
+            }
+
+            int remIdx = removedIdx + 1;
+            if (Scanner.Resimler.Count + 1 > remIdx)
+            {
+                Scanner.Resimler.Insert(targetIdx, droppedData);
+                Scanner.Resimler.RemoveAt(remIdx);
+            }
+        }
+    }
+
+    public void DropPreviewFile(object sender, MouseEventArgs e)
+    {
+        if (sender is Run run && e.LeftButton == MouseButtonState.Pressed)
+        {
+            DragMoveStarted = true;
+            _ = DragDrop.DoDragDrop(run, run.DataContext, DragDropEffects.Move);
+            DragMoveStarted = false;
+        }
+    }
+
+    public async Task ListBoxDropFileAsync(DragEventArgs e)
+    {
+        if (fileloadtask?.IsCompleted == false)
+        {
+            _ = MessageBox.Show(Application.Current.MainWindow, Translation.GetResStringValue("TRANSLATEPENDING"));
+            return;
+        }
+
+        string[] droppedfiles = (string[])e.Data.GetData(System.Windows.DataFormats.FileDrop);
+        if (droppedfiles?.Length > 0)
+        {
+            await Task.Run(() => AddFiles(droppedfiles, DecodeHeight));
+        }
+    }
+
+    public string LoadUdfFile(string filename)
+    {
+        ZipArchive archive = ZipFile.Open(filename, ZipArchiveMode.Read);
+        ZipArchiveEntry üstveri = archive.Entries.FirstOrDefault(entry => entry.Name == "content.xml");
+        string source = $"{Path.GetTempPath()}{Guid.NewGuid()}.xml";
+        string xpssource = $"{Path.GetTempPath()}{Guid.NewGuid()}.xps";
+        üstveri?.ExtractToFile(source, true);
+        Template xmldata = DeSerialize<Template>(source);
+        IDocumentPaginatorSource flowDocument = UdfParser.UdfParser.RenderDocument(xmldata);
+        using (XpsDocument xpsDocument = new(xpssource, FileAccess.ReadWrite))
+        {
+            XpsDocumentWriter xw = XpsDocument.CreateXpsDocumentWriter(xpsDocument);
+            xw.Write(flowDocument.DocumentPaginator);
+        }
+
+        return xpssource;
+    }
+
+    public void SaveJpgImage(BitmapFrame scannedImage, string filename) => Dispatcher.Invoke(() => File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality)));
+
+    public async Task SaveJpgImageAsync(List<ScannedImage> images, string filename, Scanner scanner) => await Task.Run(
+            () =>
+            {
+                string directory = Path.GetDirectoryName(filename);
+                for (int i = 0; i < images.Count; i++)
+                {
+                    ScannedImage scannedimage = images[i];
+                    byte[] bytes = null;
+                    _ = Dispatcher.Invoke(() => bytes = scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality));
+                    File.WriteAllBytes(directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "jpg"), bytes);
+                    scanner.PdfSaveProgressValue = i / (double)images.Count;
+                    if (Settings.Default.RemoveProcessedImage)
+                    {
+                        scannedimage.Resim = null;
+                    }
+                    bytes = null;
+                }
+                scanner.PdfSaveProgressValue = 0;
+                GC.Collect();
+            });
+
+    public async Task SavePdfImageAsync(BitmapFrame scannedImage, string filename, Scanner scanner, Paper paper, bool applyocr, bool blackwhite = false)
+    {
+        ObservableCollection<OcrData> ocrtext = null;
+        if (applyocr && !string.IsNullOrEmpty(scanner?.SelectedTtsLanguage))
+        {
+            scanner.SaveProgressBarForegroundBrush = bluesaveprogresscolor;
+            _ = await Dispatcher.Invoke(async () => ocrtext = await scannedImage.ToTiffJpegByteArray(Format.Jpg).OcrAsync(scanner.SelectedTtsLanguage));
+        }
+
+        scanner.SaveProgressBarForegroundBrush = Scanner.DefaultSaveProgressforegroundbrush;
+        if (blackwhite)
+        {
+            scannedImage.GeneratePdf(ocrtext, Format.Tiff, paper, Settings.Default.JpegQuality, Settings.Default.ImgLoadResolution).Save(filename);
+            return;
+        }
+
+        scannedImage.GeneratePdf(ocrtext, Format.Jpg, paper, Settings.Default.JpegQuality, Settings.Default.ImgLoadResolution).Save(filename);
+    }
+
+    public async Task SavePdfImageAsync(List<ScannedImage> images, string filename, Scanner scanner, Paper paper, bool applyocr, bool blackwhite = false, int dpi = 120)
+    {
+        List<ObservableCollection<OcrData>> scannedtext = null;
+        if (applyocr && !string.IsNullOrEmpty(scanner?.SelectedTtsLanguage))
+        {
+            scanner.SaveProgressBarForegroundBrush = bluesaveprogresscolor;
+            scannedtext = new List<ObservableCollection<OcrData>>();
+            scanner.ProgressState = TaskbarItemProgressState.Normal;
+            for (int i = 0; i < images.Count; i++)
+            {
+                ScannedImage image = images[i];
+                await Dispatcher.Invoke(
+                    async () =>
+                    {
+                        ObservableCollection<OcrData> item = await image.Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsync(scanner.SelectedTtsLanguage);
+                        scannedtext.Add(item);
+                    });
+                scanner.PdfSaveProgressValue = i / (double)images.Count;
+            }
+
+            scanner.PdfSaveProgressValue = 0;
+        }
+
+        scanner.SaveProgressBarForegroundBrush = Scanner.DefaultSaveProgressforegroundbrush;
+        if (blackwhite)
+        {
+            (await images.GeneratePdfAsync(Format.Tiff, paper, Settings.Default.JpegQuality, scannedtext, dpi)).Save(filename);
+            return;
+        }
+
+        (await images.GeneratePdfAsync(Format.Jpg, paper, Settings.Default.JpegQuality, scannedtext, dpi)).Save(filename);
+    }
+
+    public void SaveTifImage(BitmapFrame scannedImage, string filename)
+    {
+        if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
+        {
+            Dispatcher.Invoke(() => File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.Tiff)));
+            return;
+        }
+
+        if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
+        {
+            Dispatcher.Invoke(() => File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.TiffRenkli)));
+        }
+    }
+
+    public void SaveTifImage(List<ScannedImage> images, string filename) => Dispatcher.Invoke(
+            () =>
+            {
+                TiffBitmapEncoder tifccittencoder = new() { Compression = TiffCompressOption.Ccitt4 };
+                for (int i = 0; i < images.Count; i++)
+                {
+                    ScannedImage scannedimage = images[i];
+                    tifccittencoder.Frames.Add(scannedimage.Resim);
+                }
+                using FileStream stream = new(filename, FileMode.Create);
+                tifccittencoder.Save(stream);
+            });
+
+    public async Task SaveTxtFileAsync(BitmapFrame bitmapFrame, string fileName, Scanner scanner)
+    {
+        if (bitmapFrame is not null && !string.IsNullOrEmpty(scanner.SelectedTtsLanguage))
+        {
+            await Dispatcher.Invoke(
+                async () =>
+                {
+                    ObservableCollection<OcrData> ocrtext = await bitmapFrame.ToTiffJpegByteArray(Format.Jpg).OcrAsync(scanner.SelectedTtsLanguage);
+                    File.WriteAllText(fileName, string.Join(" ", ocrtext.Select(z => z.Text)));
+                });
+        }
+    }
+
+    public async Task SaveTxtFileAsync(List<ScannedImage> images, string fileName, Scanner scanner)
+    {
+        if (images is not null && !string.IsNullOrEmpty(scanner.SelectedTtsLanguage))
+        {
+            for (int i = 0; i < images.Count; i++)
+            {
+                await Dispatcher.Invoke(
+                    async () =>
+                    {
+                        ObservableCollection<OcrData> ocrtext = await images[i].Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsync(scanner.SelectedTtsLanguage);
+                        File.WriteAllText(
+                            Path.Combine(Path.GetDirectoryName(fileName), $"{Path.GetFileNameWithoutExtension(fileName)}{i}.txt"),
+                            string.Join(" ", ocrtext.Select(z => z.Text)));
+                    });
+            }
+        }
+    }
+
+    public void SaveWebpImage(BitmapFrame scannedImage, string filename) => Dispatcher.Invoke(() => File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.Jpg).WebpEncode(Settings.Default.WebpQuality)));
+
+    public async Task SaveWebpImageAsync(List<ScannedImage> images, string filename, Scanner scanner) => await Task.Run(
+            () =>
+            {
+                string directory = Path.GetDirectoryName(filename);
+                for (int i = 0; i < images.Count; i++)
+                {
+                    ScannedImage scannedimage = images[i];
+                    byte[] bytes = null;
+                    _ = Dispatcher.Invoke(() => bytes = scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg).WebpEncode(Settings.Default.WebpQuality));
+                    File.WriteAllBytes(directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "webp"), bytes);
+                    scanner.PdfSaveProgressValue = i / (double)images.Count;
+                    if (Settings.Default.RemoveProcessedImage)
+                    {
+                        scannedimage.Resim = null;
+                    }
+                    bytes = null;
+                }
+                scanner.PdfSaveProgressValue = 0;
+                GC.Collect();
+            });
+
+    public void SaveXpsImage(BitmapFrame scannedImage, string filename) => Dispatcher.Invoke(
+            () =>
+            {
+                Image image = new();
+                image.BeginInit();
+                image.Source = scannedImage;
+                image.EndInit();
+                using XpsDocument xpsd = new(filename, FileAccess.Write);
+                XpsDocumentWriter xw = XpsDocument.CreateXpsDocumentWriter(xpsd);
+                xw.Write(image);
+                image = null;
+            });
+
+    public void SplitPdfPageCount(string pdfpath, string savefolder, int pagecount)
+    {
+        using PdfDocument inputDocument = PdfReader.Open(pdfpath, PdfDocumentOpenMode.Import);
+        foreach (List<int> item in ChunkBy(Enumerable.Range(0, inputDocument.PageCount).ToList(), pagecount))
+        {
+            using PdfDocument outputDocument = new();
+            foreach (int pagenumber in item)
+            {
+                _ = outputDocument.AddPage(inputDocument.Pages[pagenumber]);
+            }
+
+            outputDocument.Save(savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "pdf"));
+        }
+    }
+
+    internal static T DeSerialize<T>(string xmldatapath) where T : class, new()
+    {
+        try
+        {
+            XmlSerializer serializer = new(typeof(T));
+            using StreamReader stream = new(xmldatapath);
+            return serializer.Deserialize(stream) as T;
+        }
+        catch (Exception ex)
+        {
+            throw new ArgumentException(nameof(xmldatapath), ex);
+        }
+    }
+
     protected virtual void Dispose(bool disposing)
     {
-        if(!disposedValue)
+        if (!disposedValue)
         {
-            if(disposing)
+            if (disposing)
             {
                 Scanner.Resimler = null;
                 twain = null;
@@ -2523,611 +2424,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
+    protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-    private async Task AddImageFiles(string filename)
-    {
-        BitmapImage main = await ImageViewer.LoadImageAsync(filename);
-        BitmapFrame bitmapFrame = defaultpictureresizeratio != 100 ? BitmapFrame.Create(main.Resize(defaultpictureresizeratio / 100d)) : BitmapFrame.Create(main);
-        bitmapFrame.Freeze();
-        ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
-        await Dispatcher.InvokeAsync(() => Scanner?.Resimler.Add(img));
-    }
-
-    private async Task AddPdfFileAsync(byte[] filedata, string filepath = null)
-    {
-        double totalpagecount = await PdfViewer.PdfViewer.PdfPageCountAsync(filedata);
-        MemoryStream ms;
-        for(int i = 1; i <= totalpagecount; i++)
-        {
-            ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, Settings.Default.ImgLoadResolution);
-            BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms, Scanner.Deskew);
-            bitmapFrame.Freeze();
-            await Dispatcher.InvokeAsync(
-                () =>
-                {
-                    Scanner?.Resimler.Add(new ScannedImage { Resim = bitmapFrame, FilePath = filepath });
-                    PdfLoadProgressValue = i / totalpagecount;
-                });
-        }
-
-        _ = await Dispatcher.InvokeAsync(() => PdfLoadProgressValue = 0);
-        filedata = null;
-        ms = null;
-        GC.Collect();
-    }
-
-    private void ButtonedTextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e) { Scanner.CaretPosition = (sender as ButtonedTextBox)?.CaretIndex ?? 0; }
-
-    private async void CameraUserControl_PropertyChangedAsync(object sender, PropertyChangedEventArgs e)
-    {
-        if(sender is CameraUserControl cameraUserControl)
-        {
-            if(e.PropertyName is "ResimData" && cameraUserControl.ResimData is not null)
-            {
-                MemoryStream ms = new(cameraUserControl.ResimData);
-                BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms);
-                bitmapFrame.Freeze();
-                Scanner.Resimler.Add(new ScannedImage { Resim = bitmapFrame });
-                ms = null;
-            }
-
-            if(e.PropertyName is "DetectQRCode")
-            {
-                if(cameraUserControl.DetectQRCode)
-                {
-                    CameraQrCodeTimer = new DispatcherTimer(DispatcherPriority.Normal) { Interval = TimeSpan.FromSeconds(1) };
-                    CameraQrCodeTimer.Tick += (s, f2) =>
-                    {
-                        using MemoryStream ms = new();
-                        cameraUserControl.EncodeBitmapImage(ms);
-                        CameraQRCodeData = ms.ToArray();
-                        Scanner.BarcodeContent = QrCode.QrCode.GetImageBarcodeResult(CameraQRCodeData);
-                        OnPropertyChanged(nameof(CameraQRCodeData));
-                    };
-                    CameraQrCodeTimer?.Start();
-                    return;
-                }
-
-                CameraQrCodeTimer?.Stop();
-            }
-        }
-    }
-
-    private bool CheckWithCurrentOsVersion(string version)
-    {
-        string osversion = $"{Environment.OSVersion.Version.Major}.{Environment.OSVersion.Version.Minor}.{Environment.OSVersion.Version.Build}";
-        Version current = new(osversion);
-        Version compare = new(version);
-        return current >= compare;
-    }
-
-    private Int32Rect CropPreviewImage(ImageSource imageSource)
-    {
-        if(imageSource is not BitmapSource bitmapSource)
-        {
-            return default;
-        }
-        int height = bitmapSource.PixelHeight - (int)Scanner.CropBottom - (int)Scanner.CropTop;
-        int width = bitmapSource.PixelWidth - (int)Scanner.CropRight - (int)Scanner.CropLeft;
-        return width < 0 || height < 0 ? default : new Int32Rect((int)Scanner.CropLeft, (int)Scanner.CropTop, width, height);
-    }
-
-    private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
-    {
-        if(e.PropertyName is "ImgLoadResolution")
-        {
-            DecodeHeight = (int)(SelectedPaper.Height / Inch * Settings.Default.ImgLoadResolution);
-        }
-
-        if(e.PropertyName is "AutoFolder")
-        {
-            Scanner.AutoSave = Directory.Exists(Settings.Default.AutoFolder);
-        }
-
-        if(e.PropertyName is "Adf" && !Settings.Default.Adf)
-        {
-            Scanner.DetectEmptyPage = false;
-            Scanner.Duplex = false;
-        }
-
-        if(e.PropertyName is "Mode")
-        {
-            Settings.Default.BackMode = Settings.Default.Mode;
-        }
-
-        Settings.Default.Save();
-    }
-
-    private ScanSettings DefaultScanSettings()
-    {
-        ScanSettings scansettings = new()
-        {
-            UseAutoScanCache = true,
-            UseDocumentFeeder = Settings.Default.Adf,
-            ShowTwainUi = Scanner.ShowUi,
-            ShowProgressIndicatorUi = Scanner.ShowProgress,
-            UseDuplex = Scanner.Duplex,
-            ShouldTransferAllPages = true,
-            Resolution =
-                new ResolutionSettings { Dpi = (int)Settings.Default.Çözünürlük, ColourSetting = IsBlackAndWhiteMode() ? ColourSetting.BlackAndWhite : ColourSetting.Colour },
-            Page = new PageSettings { Orientation = SelectedOrientation }
-        };
-        scansettings.Page.Size = SelectedPaper.PaperType switch
-        {
-            "A0" => PageType.A0,
-            "A1" => PageType.A1,
-            "A2" => PageType.A2,
-            "A3" => PageType.A3,
-            "A4" => PageType.A4,
-            "A5" => PageType.A5,
-            "B0" => PageType.ISOB0,
-            "B1" => PageType.ISOB1,
-            "B2" => PageType.ISOB2,
-            "B3" => PageType.ISOB3,
-            "B4" => PageType.ISOB4,
-            "B5" => PageType.ISOB5,
-            "Letter" => PageType.UsLetter,
-            "Legal" => PageType.UsLegal,
-            "Executive" => PageType.UsExecutive,
-            _ => scansettings.Page.Size
-        };
-        return scansettings;
-    }
-
-    private BitmapSource EvrakOluştur(Bitmap bitmap, ColourSetting color, int decodepixelheight)
-    {
-        return color switch
-        {
-            ColourSetting.BlackAndWhite => bitmap.ConvertBlackAndWhite(Settings.Default.BwThreshold).ToBitmapImage(ImageFormat.Tiff, decodepixelheight),
-            _ => color switch
-            {
-                ColourSetting.GreyScale => bitmap.ConvertBlackAndWhite(Settings.Default.BwThreshold, true).ToBitmapImage(ImageFormat.Jpeg, decodepixelheight),
-                _ => color switch
-                {
-                    ColourSetting.Colour => bitmap.ToBitmapImage(ImageFormat.Jpeg, decodepixelheight),
-                    _ => null
-                }
-            }
-        };
-    }
-
-    private async void FastScanAsync(object sender, ScanningCompleteEventArgs e)
-    {
-        Scanner.ArayüzEtkin = false;
-        Scanner.BarcodeContent = QrCode.QrCode.GetImageBarcodeResult(Scanner?.Resimler?.LastOrDefault()?.Resim);
-        OnPropertyChanged(nameof(Scanner.DetectPageSeperator));
-        Scanner.PdfFilePath = PdfGeneration.GetPdfScanPath();
-        List<ObservableCollection<OcrData>> PdfFileOcrData = null;
-        if(Scanner.ApplyDataBaseOcr)
-        {
-            PdfFileOcrData = new();
-            Scanner.SaveProgressBarForegroundBrush = bluesaveprogresscolor;
-            for(int i = 0; i < Scanner.Resimler.Count; i++)
-            {
-                ScannedImage scannedimage = Scanner.Resimler[i];
-                Scanner.BarcodeContent = QrCode.QrCode.GetImageBarcodeResult(scannedimage.Resim);
-                DataBaseTextData = await scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Scanner.SelectedTtsLanguage);
-                PdfFileOcrData.Add(DataBaseTextData);
-                Scanner.PdfSaveProgressValue = i / (double)Scanner.Resimler.Count;
-            }
-        }
-
-        if((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
-        {
-            (await Scanner.Resimler.ToList().GeneratePdfAsync(Format.Tiff, SelectedPaper, Settings.Default.JpegQuality, PdfFileOcrData, (int)Settings.Default.Çözünürlük)).Save(
-                Scanner.PdfFilePath);
-        }
-
-        if((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
-        {
-            (await Scanner.Resimler.ToList().GeneratePdfAsync(Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, PdfFileOcrData, (int)Settings.Default.Çözünürlük)).Save(
-                Scanner.PdfFilePath);
-        }
-
-        if(Settings.Default.ShowFile)
-        {
-            ExploreFile.Execute(Scanner.PdfFilePath);
-        }
-
-        OnPropertyChanged(nameof(Scanner.Resimler));
-        Scanner.Resimler.Clear();
-        DataBaseTextData = null;
-        PdfFileOcrData = null;
-        twain.ScanningComplete -= FastScanAsync;
-        Scanner.ArayüzEtkin = true;
-    }
-
-    private PdfDocument GenerateWatermarkedPdf(PdfDocument pdfdocument, int sayfa, double rotation)
-    {
-        PdfPage page = pdfdocument.Pages[sayfa];
-        XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
-        gfx.TranslateTransform(page.Width / 2, page.Height / 2);
-        gfx.RotateTransform(rotation);
-        gfx.TranslateTransform(-page.Width / 2, -page.Height / 2);
-        XStringFormat format = new() { Alignment = XStringAlignment.Near, LineAlignment = XLineAlignment.Near };
-        XBrush brush = new XSolidBrush(XColor.FromArgb(PdfWatermarkColor.Color.A, PdfWatermarkColor.Color.R, PdfWatermarkColor.Color.G, PdfWatermarkColor.Color.B));
-        XFont font = new(PdfWatermarkFont, PdfWatermarkFontSize);
-        XSize size = gfx.MeasureString(PdfWaterMarkText, font);
-        gfx.DrawString(PdfWaterMarkText, font, brush, new XPoint((page.Width - size.Width) / 2, (page.Height - size.Height) / 2), format);
-        return pdfdocument;
-    }
-
-    private void GridSplitter_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-    {
-        TwainGuiControlLength = new GridLength(3, GridUnitType.Star);
-        DocumentGridLength = new GridLength(5, GridUnitType.Star);
-    }
-
-    private void GridSplitter_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-    {
-        TwainGuiControlLength = new GridLength(1, GridUnitType.Star);
-        DocumentGridLength = new GridLength(0, GridUnitType.Star);
-    }
-
-    private void ImgViewer_MouseDown(object sender, MouseButtonEventArgs e)
-    {
-        if(e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer)
-        {
-            if(e.LeftButton == MouseButtonState.Pressed && Keyboard.IsKeyDown(Key.LeftCtrl))
-            {
-                isMouseDown = true;
-                Cursor = Cursors.Cross;
-            }
-
-            if(e.RightButton == MouseButtonState.Pressed)
-            {
-                isRightMouseDown = true;
-                Cursor = Cursors.Cross;
-            }
-
-            mousedowncoord = e.GetPosition(scrollviewer);
-        }
-    }
-
-    private async void ImgViewer_MouseMoveAsync(object sender, MouseEventArgs e)
-    {
-        if(e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer)
-        {
-            if(isRightMouseDown && SeçiliResim.Resim is not null)
-            {
-                Point mousemovecoord = img.DesiredSize.Width < img.ActualWidth ? e.GetPosition(img) : e.GetPosition(scrollviewer);
-                mousemovecoord.X += scrollviewer.HorizontalOffset;
-                mousemovecoord.Y += scrollviewer.VerticalOffset;
-                double widthmultiply = SeçiliResim.Resim.PixelWidth / (img.DesiredSize.Width < img.ActualWidth ? img.ActualWidth : img.DesiredSize.Width);
-                double heightmultiply = SeçiliResim.Resim.PixelHeight / (img.DesiredSize.Height < img.ActualHeight ? img.ActualHeight : img.DesiredSize.Height);
-
-                Int32Rect sourceRect = new((int)(mousemovecoord.X * widthmultiply), (int)(mousemovecoord.Y * heightmultiply), 1, 1);
-                if(sourceRect.X < SeçiliResim.Resim.PixelWidth && sourceRect.Y < SeçiliResim.Resim.PixelHeight)
-                {
-                    CroppedBitmap croppedbitmap = new(SeçiliResim.Resim, sourceRect);
-                    byte[] pixels = new byte[4];
-                    croppedbitmap.CopyPixels(pixels, 4, 0);
-                    croppedbitmap.Freeze();
-                    Scanner.SourceColor = Color.FromRgb(pixels[2], pixels[1], pixels[0]).ToString();
-                }
-
-                if(e.RightButton == MouseButtonState.Released)
-                {
-                    isRightMouseDown = false;
-                    Cursor = Cursors.Arrow;
-                }
-            }
-
-            if(isMouseDown)
-            {
-                Point mousemovecoord = e.GetPosition(scrollviewer);
-                if(!cnv.Children.Contains(selectionbox))
-                {
-                    _ = cnv.Children.Add(selectionbox);
-                }
-
-                double x1 = Math.Min(mousedowncoord.X, mousemovecoord.X);
-                double x2 = Math.Max(mousedowncoord.X, mousemovecoord.X);
-                double y1 = Math.Min(mousedowncoord.Y, mousemovecoord.Y);
-                double y2 = Math.Max(mousedowncoord.Y, mousemovecoord.Y);
-
-                Canvas.SetLeft(selectionbox, x1);
-                Canvas.SetTop(selectionbox, y1);
-                selectionbox.Width = x2 - x1;
-                selectionbox.Height = y2 - y1;
-
-                if(e.LeftButton == MouseButtonState.Released)
-                {
-                    cnv.Children.Remove(selectionbox);
-                    width = Math.Abs(mousemovecoord.X - mousedowncoord.X);
-                    height = Math.Abs(mousemovecoord.Y - mousedowncoord.Y);
-                    double captureX, captureY;
-                    captureX = mousedowncoord.X < mousemovecoord.X ? mousedowncoord.X : mousemovecoord.X;
-                    captureY = mousedowncoord.Y < mousemovecoord.Y ? mousedowncoord.Y : mousemovecoord.Y;
-                    ImgData = BitmapMethods.CaptureScreen(captureX, captureY, width, height, scrollviewer, BitmapFrame.Create((BitmapSource)img.Source));
-
-                    if(Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
-                    {
-                        if(ImgData is not null)
-                        {
-                            MemoryStream ms = new(ImgData);
-                            BitmapFrame bitmapframe = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms);
-                            bitmapframe.Freeze();
-                            ScannedImage item = new() { Resim = bitmapframe };
-                            Scanner.Resimler.Add(item);
-                        }
-                    }
-
-                    mousedowncoord.X = mousedowncoord.Y = 0;
-                    isMouseDown = false;
-                    Cursor = Cursors.Arrow;
-                    ImgData = null;
-                }
-            }
-        }
-    }
-
-    private void ImgViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
-    {
-        if(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
-        {
-            double change = e.Delta > 0 ? .05 : -.05;
-            if(ImgViewer.Zoom + change <= 0.01)
-            {
-                ImgViewer.Zoom = 0.01;
-            }
-            else
-            {
-                ImgViewer.Zoom += change;
-            }
-        }
-    }
-
-    private bool IsBlackAndWhiteMode() { return Settings.Default.BackMode == (int)ColourSetting.BlackAndWhite && Settings.Default.Mode == (int)ColourSetting.BlackAndWhite; }
-
-    private void LbEypContent_Drop(object sender, DragEventArgs e)
-    {
-        string[] droppedfiles = (string[])e.Data.GetData(System.Windows.DataFormats.FileDrop);
-        if(droppedfiles?.Length > 0)
-        {
-            foreach(string file in droppedfiles.Where(file => string.Equals(Path.GetExtension(file), ".pdf", StringComparison.OrdinalIgnoreCase)))
-            {
-                Scanner?.UnsupportedFiles?.Add(file);
-            }
-        }
-    }
-
-    private async void ListBox_DropAsync(object sender, DragEventArgs e) { await ListBoxDropFileAsync(e); }
-
-    private void ListBox_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
-    {
-        if(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
-        {
-            Settings.Default.PreviewWidth += e.Delta > 0 ? 10 : -10;
-            if(Settings.Default.PreviewWidth <= 85)
-            {
-                Settings.Default.PreviewWidth = 85;
-            }
-
-            if(Settings.Default.PreviewWidth >= 300)
-            {
-                Settings.Default.PreviewWidth = 300;
-            }
-        }
-    }
-
-    private void Run_Drop(object sender, DragEventArgs e) { DropFile(sender, e); }
-
-    private void Run_EypDrop(object sender, DragEventArgs e)
-    {
-        if(sender is Run run && e.Data.GetData(typeof(string)) is string droppedData && run.DataContext is string target)
-        {
-            int removedIdx = Scanner.UnsupportedFiles.IndexOf(droppedData);
-            int targetIdx = Scanner.UnsupportedFiles.IndexOf(target);
-
-            if(removedIdx < targetIdx)
-            {
-                Scanner.UnsupportedFiles.Insert(targetIdx + 1, droppedData);
-                Scanner.UnsupportedFiles.RemoveAt(removedIdx);
-                return;
-            }
-
-            int remIdx = removedIdx + 1;
-            if(Scanner.UnsupportedFiles.Count + 1 > remIdx)
-            {
-                Scanner.UnsupportedFiles.Insert(targetIdx, droppedData);
-                Scanner.UnsupportedFiles.RemoveAt(remIdx);
-            }
-        }
-    }
-
-    private void Run_EypPreviewMouseMove(object sender, MouseEventArgs e)
-    {
-        if(sender is Run run && e.LeftButton == MouseButtonState.Pressed)
-        {
-            _ = DragDrop.DoDragDrop(run, run.DataContext, DragDropEffects.Move);
-        }
-    }
-
-    private void Run_PreviewMouseMove(object sender, MouseEventArgs e) { DropPreviewFile(sender, e); }
-
-    private static async Task SaveFileAsync(string loadfilename, string savefilename, int start, int end)
-    {
-        await Task.Run(
-            () =>
-            {
-                using PdfDocument outputDocument = loadfilename.ExtractPdfPages(start, end);
-                outputDocument.DefaultPdfCompression();
-                outputDocument.Save(savefilename);
-            });
-    }
-
-    private void SavePageRotated(string savepath, PdfDocument inputDocument, int angle)
-    {
-        foreach(PdfPage page in inputDocument.Pages)
-        {
-            page.Rotate += angle;
-        }
-
-        inputDocument.Save(savepath);
-    }
-
-    private void SavePageRotated(string savepath, PdfDocument inputDocument, int angle, int pageindex)
-    {
-        inputDocument.Pages[pageindex].Rotate += angle;
-        inputDocument.Save(savepath);
-    }
-
-    private void ScanCommonSettings()
-    {
-        Scanner.ArayüzEtkin = false;
-        _settings = DefaultScanSettings();
-        _settings.Rotation = new RotationSettings { AutomaticBorderDetection = true, AutomaticRotate = true, AutomaticDeskew = true };
-    }
-
-    private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
-    {
-        if(e.PropertyName is "CropLeft" or "CropTop" or "CropRight" or "CropBottom" && SeçiliResim != null)
-        {
-            Int32Rect sourceRect = CropPreviewImage(SeçiliResim.Resim);
-            if(sourceRect.HasArea)
-            {
-                Scanner.CroppedImage = new CroppedBitmap(SeçiliResim.Resim, sourceRect);
-                Scanner.CroppedImage.Freeze();
-                Scanner.CopyCroppedImage = Scanner.CroppedImage;
-                Scanner.CopyCroppedImage.Freeze();
-                Scanner.CropDialogExpanded = true;
-            }
-        }
-
-        if(e.PropertyName is "SelectedProfile" && !string.IsNullOrWhiteSpace(Scanner.SelectedProfile))
-        {
-            string[] selectedprofile = Scanner.SelectedProfile.Split('|');
-            Settings.Default.Çözünürlük = double.Parse(selectedprofile[1]);
-            Settings.Default.Adf = bool.Parse(selectedprofile[2]);
-            Settings.Default.Mode = int.Parse(selectedprofile[3]);
-            Scanner.Duplex = bool.Parse(selectedprofile[4]);
-            Scanner.ShowUi = bool.Parse(selectedprofile[5]);
-            Settings.Default.ShowFile = bool.Parse(selectedprofile[7]);
-            Scanner.DetectEmptyPage = bool.Parse(selectedprofile[8]);
-            Scanner.FileName = selectedprofile[9];
-            Scanner.InvertImage = bool.Parse(selectedprofile[10]);
-            Scanner.ApplyMedian = bool.Parse(selectedprofile[11]);
-            Settings.Default.DefaultProfile = Scanner.SelectedProfile;
-            Settings.Default.Save();
-        }
-
-        if(e.PropertyName is "UsePageSeperator")
-        {
-            OnPropertyChanged(nameof(Scanner.UsePageSeperator));
-        }
-
-        if(e.PropertyName is "Duplex" && !Scanner.Duplex)
-        {
-            Scanner.PaperBackScan = false;
-        }
-    }
-
-    private void Twain_ScanningComplete(object sender, ScanningCompleteEventArgs e) { Scanner.ArayüzEtkin = true; }
-
-    private void Twain_TransferImage(object sender, TransferImageEventArgs e)
-    {
-        if(e.Image != null)
-        {
-            using Bitmap bitmap = e.Image;
-            if(Scanner.DetectEmptyPage && bitmap.IsEmptyPage(Settings.Default.EmptyThreshold))
-            {
-                return;
-            }
-            int decodepixelheight = (int)(SelectedPaper.Height / Inch * Settings.Default.Çözünürlük);
-            BitmapSource evrak = Scanner?.Resimler.Count % 2 == 0
-                ? EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight)
-                : Scanner?.PaperBackScan == true
-                    ? EvrakOluştur(bitmap, (ColourSetting)Settings.Default.BackMode, decodepixelheight)
-                    : EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight);
-            if(Scanner.InvertImage)
-            {
-                evrak = evrak.InvertBitmap();
-            }
-            if(Scanner.ApplyMedian)
-            {
-                evrak = evrak.MedianFilterBitmap(Settings.Default.MedianValue);
-            }
-            evrak.Freeze();
-            BitmapFrame bitmapFrame = BitmapFrame.Create(evrak);
-            bitmapFrame.Freeze();
-            Scanner?.Resimler?.Add(new ScannedImage { Resim = bitmapFrame, RotationAngle = (double)SelectedRotation });
-        }
-    }
-
-    private async void TwainCtrl_PropertyChangedAsync(object sender, PropertyChangedEventArgs e)
-    {
-        if(e.PropertyName is "SelectedCompressionProfile" && SelectedCompressionProfile is not null)
-        {
-            Settings.Default.Mode = SelectedCompressionProfile.Item2;
-            Settings.Default.Çözünürlük = SelectedCompressionProfile.Item3;
-            Settings.Default.ImgLoadResolution = (int)SelectedCompressionProfile.Item3;
-            Settings.Default.JpegQuality = (int)SelectedCompressionProfile.Item5;
-            Scanner.UseMozJpegEncoding = SelectedCompressionProfile.Item4 && MozJpeg.MozJpeg.MozJpegDllExists;
-        }
-
-        if(e.PropertyName is "SelectedPaper" && SelectedPaper is not null)
-        {
-            DecodeHeight = (int)(SelectedPaper.Height / Inch * Settings.Default.ImgLoadResolution);
-            ToolBox.Paper = SelectedPaper;
-        }
-
-        if(e.PropertyName is "AllImageRotationAngle" && AllImageRotationAngle != 0)
-        {
-            if(Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
-            {
-                foreach(ScannedImage image in Scanner.Resimler.Where(z => z.Seçili))
-                {
-                    image.Resim = await image.Resim.FlipImageAsync(AllImageRotationAngle);
-                }
-
-                AllImageRotationAngle = 0;
-                return;
-            }
-
-            if(Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
-            {
-                foreach(ScannedImage image in Scanner.Resimler.Where(z => z.Seçili))
-                {
-                    image.Resim = await image.Resim.RotateImageAsync(AllImageRotationAngle);
-                }
-
-                AllImageRotationAngle = 0;
-                return;
-            }
-
-            foreach(ScannedImage image in Scanner.Resimler)
-            {
-                image.Resim = await image.Resim.RotateImageAsync(AllImageRotationAngle);
-            }
-
-            AllImageRotationAngle = 0;
-        }
-    }
-
-    private void UserControl_Loaded(object sender, RoutedEventArgs e)
-    {
-        if(!DesignerProperties.GetIsInDesignMode(this))
-        {
-            try
-            {
-                twain = new Twain(new WindowMessageHook(Window.GetWindow(Parent)));
-                Scanner.Tarayıcılar = twain.SourceNames;
-                if(Scanner.Tarayıcılar?.Count > 0)
-                {
-                    Scanner.SeçiliTarayıcı = Scanner.Tarayıcılar[0];
-                }
-
-                twain.TransferImage += Twain_TransferImage;
-                twain.ScanningComplete += Twain_ScanningComplete;
-            }
-            catch(Exception)
-            {
-                Scanner.ArayüzEtkin = false;
-            }
-        }
-    }
+    private const double Inch = 2.54d;
 
     private static readonly SolidColorBrush bluesaveprogresscolor = Brushes.DeepSkyBlue;
 
@@ -3138,9 +2437,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         StrokeThickness = 2,
         StrokeDashArray = new DoubleCollection(new double[] { 1 })
     };
-    public static DispatcherTimer CameraQrCodeTimer;
 
-    public static Task Filesavetask;
+    private readonly int defaultpictureresizeratio = Settings.Default.DefaultPictureResizeRatio;
+
+    private readonly string[] imagefileextensions = { ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp" };
 
     private ScanSettings _settings;
 
@@ -3160,8 +2460,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private int decodeHeight;
 
-    private readonly int defaultpictureresizeratio = Settings.Default.DefaultPictureResizeRatio;
-
     private bool disposedValue;
 
     private GridLength documentGridLength = new(5, GridUnitType.Star);
@@ -3175,8 +2473,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private double height;
 
     private byte[] ımgData;
-
-    private readonly string[] imagefileextensions = { ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp" };
 
     private bool isMouseDown;
 
@@ -3235,4 +2531,602 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private int? undoImageIndex;
 
     private double width;
+
+    private static async Task SaveFileAsync(string loadfilename, string savefilename, int start, int end) => await Task.Run(
+            () =>
+            {
+                using PdfDocument outputDocument = loadfilename.ExtractPdfPages(start, end);
+                outputDocument.DefaultPdfCompression();
+                outputDocument.Save(savefilename);
+            });
+
+    private async Task AddImageFiles(string filename)
+    {
+        BitmapImage main = await ImageViewer.LoadImageAsync(filename);
+        BitmapFrame bitmapFrame = defaultpictureresizeratio != 100 ? BitmapFrame.Create(main.Resize(defaultpictureresizeratio / 100d)) : BitmapFrame.Create(main);
+        bitmapFrame.Freeze();
+        ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
+        await Dispatcher.InvokeAsync(() => Scanner?.Resimler.Add(img));
+    }
+
+    private async Task AddPdfFileAsync(byte[] filedata, string filepath = null)
+    {
+        double totalpagecount = await PdfViewer.PdfViewer.PdfPageCountAsync(filedata);
+        MemoryStream ms;
+        for (int i = 1; i <= totalpagecount; i++)
+        {
+            ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, Settings.Default.ImgLoadResolution);
+            BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms, Scanner.Deskew);
+            bitmapFrame.Freeze();
+            await Dispatcher.InvokeAsync(
+                () =>
+                {
+                    Scanner?.Resimler.Add(new ScannedImage { Resim = bitmapFrame, FilePath = filepath });
+                    PdfLoadProgressValue = i / totalpagecount;
+                });
+        }
+
+        _ = await Dispatcher.InvokeAsync(() => PdfLoadProgressValue = 0);
+        filedata = null;
+        ms = null;
+        GC.Collect();
+    }
+
+    private void ButtonedTextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e) => Scanner.CaretPosition = (sender as ButtonedTextBox)?.CaretIndex ?? 0;
+
+    private async void CameraUserControl_PropertyChangedAsync(object sender, PropertyChangedEventArgs e)
+    {
+        if (sender is CameraUserControl cameraUserControl)
+        {
+            if (e.PropertyName is "ResimData" && cameraUserControl.ResimData is not null)
+            {
+                MemoryStream ms = new(cameraUserControl.ResimData);
+                BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms);
+                bitmapFrame.Freeze();
+                Scanner.Resimler.Add(new ScannedImage { Resim = bitmapFrame });
+                ms = null;
+            }
+
+            if (e.PropertyName is "DetectQRCode")
+            {
+                if (cameraUserControl.DetectQRCode)
+                {
+                    CameraQrCodeTimer = new DispatcherTimer(DispatcherPriority.Normal) { Interval = TimeSpan.FromSeconds(1) };
+                    CameraQrCodeTimer.Tick += (s, f2) =>
+                    {
+                        using MemoryStream ms = new();
+                        cameraUserControl.EncodeBitmapImage(ms);
+                        CameraQRCodeData = ms.ToArray();
+                        Scanner.BarcodeContent = QrCode.QrCode.GetImageBarcodeResult(CameraQRCodeData);
+                        OnPropertyChanged(nameof(CameraQRCodeData));
+                    };
+                    CameraQrCodeTimer?.Start();
+                    return;
+                }
+
+                CameraQrCodeTimer?.Stop();
+            }
+        }
+    }
+
+    private bool CheckWithCurrentOsVersion(string version)
+    {
+        string osversion = $"{Environment.OSVersion.Version.Major}.{Environment.OSVersion.Version.Minor}.{Environment.OSVersion.Version.Build}";
+        Version current = new(osversion);
+        Version compare = new(version);
+        return current >= compare;
+    }
+
+    private Int32Rect CropPreviewImage(ImageSource imageSource)
+    {
+        if (imageSource is not BitmapSource bitmapSource)
+        {
+            return default;
+        }
+        int height = bitmapSource.PixelHeight - (int)Scanner.CropBottom - (int)Scanner.CropTop;
+        int width = bitmapSource.PixelWidth - (int)Scanner.CropRight - (int)Scanner.CropLeft;
+        return width < 0 || height < 0 ? default : new Int32Rect((int)Scanner.CropLeft, (int)Scanner.CropTop, width, height);
+    }
+
+    private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is "ImgLoadResolution")
+        {
+            DecodeHeight = (int)(SelectedPaper.Height / Inch * Settings.Default.ImgLoadResolution);
+        }
+
+        if (e.PropertyName is "AutoFolder")
+        {
+            Scanner.AutoSave = Directory.Exists(Settings.Default.AutoFolder);
+        }
+
+        if (e.PropertyName is "Adf" && !Settings.Default.Adf)
+        {
+            Scanner.DetectEmptyPage = false;
+            Scanner.Duplex = false;
+        }
+
+        if (e.PropertyName is "Mode")
+        {
+            Settings.Default.BackMode = Settings.Default.Mode;
+        }
+
+        Settings.Default.Save();
+    }
+
+    private ScanSettings DefaultScanSettings()
+    {
+        ScanSettings scansettings = new()
+        {
+            UseAutoScanCache = true,
+            UseDocumentFeeder = Settings.Default.Adf,
+            ShowTwainUi = Scanner.ShowUi,
+            ShowProgressIndicatorUi = Scanner.ShowProgress,
+            UseDuplex = Scanner.Duplex,
+            ShouldTransferAllPages = true,
+            Resolution =
+                new ResolutionSettings { Dpi = (int)Settings.Default.Çözünürlük, ColourSetting = IsBlackAndWhiteMode() ? ColourSetting.BlackAndWhite : ColourSetting.Colour },
+            Page = new PageSettings { Orientation = SelectedOrientation }
+        };
+        scansettings.Page.Size = SelectedPaper.PaperType switch
+        {
+            "A0" => PageType.A0,
+            "A1" => PageType.A1,
+            "A2" => PageType.A2,
+            "A3" => PageType.A3,
+            "A4" => PageType.A4,
+            "A5" => PageType.A5,
+            "B0" => PageType.ISOB0,
+            "B1" => PageType.ISOB1,
+            "B2" => PageType.ISOB2,
+            "B3" => PageType.ISOB3,
+            "B4" => PageType.ISOB4,
+            "B5" => PageType.ISOB5,
+            "Letter" => PageType.UsLetter,
+            "Legal" => PageType.UsLegal,
+            "Executive" => PageType.UsExecutive,
+            _ => scansettings.Page.Size
+        };
+        return scansettings;
+    }
+
+    private BitmapSource EvrakOluştur(Bitmap bitmap, ColourSetting color, int decodepixelheight) => color switch
+    {
+        ColourSetting.BlackAndWhite => bitmap.ConvertBlackAndWhite(Settings.Default.BwThreshold).ToBitmapImage(ImageFormat.Tiff, decodepixelheight),
+        _ => color switch
+        {
+            ColourSetting.GreyScale => bitmap.ConvertBlackAndWhite(Settings.Default.BwThreshold, true).ToBitmapImage(ImageFormat.Jpeg, decodepixelheight),
+            _ => color switch
+            {
+                ColourSetting.Colour => bitmap.ToBitmapImage(ImageFormat.Jpeg, decodepixelheight),
+                _ => null
+            }
+        }
+    };
+
+    private async void FastScanAsync(object sender, ScanningCompleteEventArgs e)
+    {
+        Scanner.ArayüzEtkin = false;
+        Scanner.BarcodeContent = QrCode.QrCode.GetImageBarcodeResult(Scanner?.Resimler?.LastOrDefault()?.Resim);
+        OnPropertyChanged(nameof(Scanner.DetectPageSeperator));
+        Scanner.PdfFilePath = PdfGeneration.GetPdfScanPath();
+        List<ObservableCollection<OcrData>> PdfFileOcrData = null;
+        if (Scanner.ApplyDataBaseOcr)
+        {
+            PdfFileOcrData = new();
+            Scanner.SaveProgressBarForegroundBrush = bluesaveprogresscolor;
+            for (int i = 0; i < Scanner.Resimler.Count; i++)
+            {
+                ScannedImage scannedimage = Scanner.Resimler[i];
+                Scanner.BarcodeContent = QrCode.QrCode.GetImageBarcodeResult(scannedimage.Resim);
+                DataBaseTextData = await scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Scanner.SelectedTtsLanguage);
+                PdfFileOcrData.Add(DataBaseTextData);
+                Scanner.PdfSaveProgressValue = i / (double)Scanner.Resimler.Count;
+            }
+        }
+
+        if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
+        {
+            (await Scanner.Resimler.ToList().GeneratePdfAsync(Format.Tiff, SelectedPaper, Settings.Default.JpegQuality, PdfFileOcrData, (int)Settings.Default.Çözünürlük)).Save(
+                Scanner.PdfFilePath);
+        }
+
+        if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
+        {
+            (await Scanner.Resimler.ToList().GeneratePdfAsync(Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, PdfFileOcrData, (int)Settings.Default.Çözünürlük)).Save(
+                Scanner.PdfFilePath);
+        }
+
+        if (Settings.Default.ShowFile)
+        {
+            ExploreFile.Execute(Scanner.PdfFilePath);
+        }
+
+        OnPropertyChanged(nameof(Scanner.Resimler));
+        Scanner.Resimler.Clear();
+        DataBaseTextData = null;
+        PdfFileOcrData = null;
+        twain.ScanningComplete -= FastScanAsync;
+        Scanner.ArayüzEtkin = true;
+    }
+
+    private PdfDocument GenerateWatermarkedPdf(PdfDocument pdfdocument, int sayfa, double rotation)
+    {
+        PdfPage page = pdfdocument.Pages[sayfa];
+        XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
+        gfx.TranslateTransform(page.Width / 2, page.Height / 2);
+        gfx.RotateTransform(rotation);
+        gfx.TranslateTransform(-page.Width / 2, -page.Height / 2);
+        XStringFormat format = new() { Alignment = XStringAlignment.Near, LineAlignment = XLineAlignment.Near };
+        XBrush brush = new XSolidBrush(XColor.FromArgb(PdfWatermarkColor.Color.A, PdfWatermarkColor.Color.R, PdfWatermarkColor.Color.G, PdfWatermarkColor.Color.B));
+        XFont font = new(PdfWatermarkFont, PdfWatermarkFontSize);
+        XSize size = gfx.MeasureString(PdfWaterMarkText, font);
+        gfx.DrawString(PdfWaterMarkText, font, brush, new XPoint((page.Width - size.Width) / 2, (page.Height - size.Height) / 2), format);
+        return pdfdocument;
+    }
+
+    private void GridSplitter_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+        TwainGuiControlLength = new GridLength(3, GridUnitType.Star);
+        DocumentGridLength = new GridLength(5, GridUnitType.Star);
+    }
+
+    private void GridSplitter_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        TwainGuiControlLength = new GridLength(1, GridUnitType.Star);
+        DocumentGridLength = new GridLength(0, GridUnitType.Star);
+    }
+
+    private void ImgViewer_MouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if (e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed && Keyboard.IsKeyDown(Key.LeftCtrl))
+            {
+                isMouseDown = true;
+                Cursor = Cursors.Cross;
+            }
+
+            if (e.RightButton == MouseButtonState.Pressed)
+            {
+                isRightMouseDown = true;
+                Cursor = Cursors.Cross;
+            }
+
+            mousedowncoord = e.GetPosition(scrollviewer);
+        }
+    }
+
+    private async void ImgViewer_MouseMoveAsync(object sender, MouseEventArgs e)
+    {
+        if (e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer)
+        {
+            if (isRightMouseDown && SeçiliResim.Resim is not null)
+            {
+                Point mousemovecoord = img.DesiredSize.Width < img.ActualWidth ? e.GetPosition(img) : e.GetPosition(scrollviewer);
+                mousemovecoord.X += scrollviewer.HorizontalOffset;
+                mousemovecoord.Y += scrollviewer.VerticalOffset;
+                double widthmultiply = SeçiliResim.Resim.PixelWidth / (img.DesiredSize.Width < img.ActualWidth ? img.ActualWidth : img.DesiredSize.Width);
+                double heightmultiply = SeçiliResim.Resim.PixelHeight / (img.DesiredSize.Height < img.ActualHeight ? img.ActualHeight : img.DesiredSize.Height);
+
+                Int32Rect sourceRect = new((int)(mousemovecoord.X * widthmultiply), (int)(mousemovecoord.Y * heightmultiply), 1, 1);
+                if (sourceRect.X < SeçiliResim.Resim.PixelWidth && sourceRect.Y < SeçiliResim.Resim.PixelHeight)
+                {
+                    CroppedBitmap croppedbitmap = new(SeçiliResim.Resim, sourceRect);
+                    byte[] pixels = new byte[4];
+                    croppedbitmap.CopyPixels(pixels, 4, 0);
+                    croppedbitmap.Freeze();
+                    Scanner.SourceColor = Color.FromRgb(pixels[2], pixels[1], pixels[0]).ToString();
+                }
+
+                if (e.RightButton == MouseButtonState.Released)
+                {
+                    isRightMouseDown = false;
+                    Cursor = Cursors.Arrow;
+                }
+            }
+
+            if (isMouseDown)
+            {
+                Point mousemovecoord = e.GetPosition(scrollviewer);
+                if (!cnv.Children.Contains(selectionbox))
+                {
+                    _ = cnv.Children.Add(selectionbox);
+                }
+
+                double x1 = Math.Min(mousedowncoord.X, mousemovecoord.X);
+                double x2 = Math.Max(mousedowncoord.X, mousemovecoord.X);
+                double y1 = Math.Min(mousedowncoord.Y, mousemovecoord.Y);
+                double y2 = Math.Max(mousedowncoord.Y, mousemovecoord.Y);
+
+                Canvas.SetLeft(selectionbox, x1);
+                Canvas.SetTop(selectionbox, y1);
+                selectionbox.Width = x2 - x1;
+                selectionbox.Height = y2 - y1;
+
+                if (e.LeftButton == MouseButtonState.Released)
+                {
+                    cnv.Children.Remove(selectionbox);
+                    width = Math.Abs(mousemovecoord.X - mousedowncoord.X);
+                    height = Math.Abs(mousemovecoord.Y - mousedowncoord.Y);
+                    double captureX, captureY;
+                    captureX = mousedowncoord.X < mousemovecoord.X ? mousedowncoord.X : mousemovecoord.X;
+                    captureY = mousedowncoord.Y < mousemovecoord.Y ? mousedowncoord.Y : mousemovecoord.Y;
+                    ImgData = BitmapMethods.CaptureScreen(captureX, captureY, width, height, scrollviewer, BitmapFrame.Create((BitmapSource)img.Source));
+
+                    if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                    {
+                        if (ImgData is not null)
+                        {
+                            MemoryStream ms = new(ImgData);
+                            BitmapFrame bitmapframe = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms);
+                            bitmapframe.Freeze();
+                            ScannedImage item = new() { Resim = bitmapframe };
+                            Scanner.Resimler.Add(item);
+                        }
+                    }
+
+                    mousedowncoord.X = mousedowncoord.Y = 0;
+                    isMouseDown = false;
+                    Cursor = Cursors.Arrow;
+                    ImgData = null;
+                }
+            }
+        }
+    }
+
+    private void ImgViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+    {
+        if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+        {
+            double change = e.Delta > 0 ? .05 : -.05;
+            if (ImgViewer.Zoom + change <= 0.01)
+            {
+                ImgViewer.Zoom = 0.01;
+            }
+            else
+            {
+                ImgViewer.Zoom += change;
+            }
+        }
+    }
+
+    private bool IsBlackAndWhiteMode() => Settings.Default.BackMode == (int)ColourSetting.BlackAndWhite && Settings.Default.Mode == (int)ColourSetting.BlackAndWhite;
+
+    private void LbEypContent_Drop(object sender, DragEventArgs e)
+    {
+        string[] droppedfiles = (string[])e.Data.GetData(System.Windows.DataFormats.FileDrop);
+        if (droppedfiles?.Length > 0)
+        {
+            foreach (string file in droppedfiles.Where(file => string.Equals(Path.GetExtension(file), ".pdf", StringComparison.OrdinalIgnoreCase)))
+            {
+                Scanner?.UnsupportedFiles?.Add(file);
+            }
+        }
+    }
+
+    private async void ListBox_DropAsync(object sender, DragEventArgs e) => await ListBoxDropFileAsync(e);
+
+    private void ListBox_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+    {
+        if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+        {
+            Settings.Default.PreviewWidth += e.Delta > 0 ? 10 : -10;
+            if (Settings.Default.PreviewWidth <= 85)
+            {
+                Settings.Default.PreviewWidth = 85;
+            }
+
+            if (Settings.Default.PreviewWidth >= 300)
+            {
+                Settings.Default.PreviewWidth = 300;
+            }
+        }
+    }
+
+    private void Run_Drop(object sender, DragEventArgs e) => DropFile(sender, e);
+
+    private void Run_EypDrop(object sender, DragEventArgs e)
+    {
+        if (sender is Run run && e.Data.GetData(typeof(string)) is string droppedData && run.DataContext is string target)
+        {
+            int removedIdx = Scanner.UnsupportedFiles.IndexOf(droppedData);
+            int targetIdx = Scanner.UnsupportedFiles.IndexOf(target);
+
+            if (removedIdx < targetIdx)
+            {
+                Scanner.UnsupportedFiles.Insert(targetIdx + 1, droppedData);
+                Scanner.UnsupportedFiles.RemoveAt(removedIdx);
+                return;
+            }
+
+            int remIdx = removedIdx + 1;
+            if (Scanner.UnsupportedFiles.Count + 1 > remIdx)
+            {
+                Scanner.UnsupportedFiles.Insert(targetIdx, droppedData);
+                Scanner.UnsupportedFiles.RemoveAt(remIdx);
+            }
+        }
+    }
+
+    private void Run_EypPreviewMouseMove(object sender, MouseEventArgs e)
+    {
+        if (sender is Run run && e.LeftButton == MouseButtonState.Pressed)
+        {
+            _ = DragDrop.DoDragDrop(run, run.DataContext, DragDropEffects.Move);
+        }
+    }
+
+    private void Run_PreviewMouseMove(object sender, MouseEventArgs e) => DropPreviewFile(sender, e);
+
+    private void SavePageRotated(string savepath, PdfDocument inputDocument, int angle)
+    {
+        foreach (PdfPage page in inputDocument.Pages)
+        {
+            page.Rotate += angle;
+        }
+
+        inputDocument.Save(savepath);
+    }
+
+    private void SavePageRotated(string savepath, PdfDocument inputDocument, int angle, int pageindex)
+    {
+        inputDocument.Pages[pageindex].Rotate += angle;
+        inputDocument.Save(savepath);
+    }
+
+    private void ScanCommonSettings()
+    {
+        Scanner.ArayüzEtkin = false;
+        _settings = DefaultScanSettings();
+        _settings.Rotation = new RotationSettings { AutomaticBorderDetection = true, AutomaticRotate = true, AutomaticDeskew = true };
+    }
+
+    private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is "CropLeft" or "CropTop" or "CropRight" or "CropBottom" && SeçiliResim != null)
+        {
+            Int32Rect sourceRect = CropPreviewImage(SeçiliResim.Resim);
+            if (sourceRect.HasArea)
+            {
+                Scanner.CroppedImage = new CroppedBitmap(SeçiliResim.Resim, sourceRect);
+                Scanner.CroppedImage.Freeze();
+                Scanner.CopyCroppedImage = Scanner.CroppedImage;
+                Scanner.CopyCroppedImage.Freeze();
+                Scanner.CropDialogExpanded = true;
+            }
+        }
+
+        if (e.PropertyName is "SelectedProfile" && !string.IsNullOrWhiteSpace(Scanner.SelectedProfile))
+        {
+            string[] selectedprofile = Scanner.SelectedProfile.Split('|');
+            Settings.Default.Çözünürlük = double.Parse(selectedprofile[1]);
+            Settings.Default.Adf = bool.Parse(selectedprofile[2]);
+            Settings.Default.Mode = int.Parse(selectedprofile[3]);
+            Scanner.Duplex = bool.Parse(selectedprofile[4]);
+            Scanner.ShowUi = bool.Parse(selectedprofile[5]);
+            Settings.Default.ShowFile = bool.Parse(selectedprofile[7]);
+            Scanner.DetectEmptyPage = bool.Parse(selectedprofile[8]);
+            Scanner.FileName = selectedprofile[9];
+            Scanner.InvertImage = bool.Parse(selectedprofile[10]);
+            Scanner.ApplyMedian = bool.Parse(selectedprofile[11]);
+            Settings.Default.DefaultProfile = Scanner.SelectedProfile;
+            Settings.Default.Save();
+        }
+
+        if (e.PropertyName is "UsePageSeperator")
+        {
+            OnPropertyChanged(nameof(Scanner.UsePageSeperator));
+        }
+
+        if (e.PropertyName is "Duplex" && !Scanner.Duplex)
+        {
+            Scanner.PaperBackScan = false;
+        }
+    }
+
+    private void Twain_ScanningComplete(object sender, ScanningCompleteEventArgs e) => Scanner.ArayüzEtkin = true;
+
+    private void Twain_TransferImage(object sender, TransferImageEventArgs e)
+    {
+        if (e.Image != null)
+        {
+            using Bitmap bitmap = e.Image;
+            if (Scanner.DetectEmptyPage && bitmap.IsEmptyPage(Settings.Default.EmptyThreshold))
+            {
+                return;
+            }
+            int decodepixelheight = (int)(SelectedPaper.Height / Inch * Settings.Default.Çözünürlük);
+            BitmapSource evrak = Scanner?.Resimler.Count % 2 == 0
+                ? EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight)
+                : Scanner?.PaperBackScan == true
+                    ? EvrakOluştur(bitmap, (ColourSetting)Settings.Default.BackMode, decodepixelheight)
+                    : EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight);
+            if (Scanner.InvertImage)
+            {
+                evrak = evrak.InvertBitmap();
+            }
+            if (Scanner.ApplyMedian)
+            {
+                evrak = evrak.MedianFilterBitmap(Settings.Default.MedianValue);
+            }
+            evrak.Freeze();
+            BitmapFrame bitmapFrame = BitmapFrame.Create(evrak);
+            bitmapFrame.Freeze();
+            Scanner?.Resimler?.Add(new ScannedImage { Resim = bitmapFrame, RotationAngle = (double)SelectedRotation });
+        }
+    }
+
+    private async void TwainCtrl_PropertyChangedAsync(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is "SelectedCompressionProfile" && SelectedCompressionProfile is not null)
+        {
+            Settings.Default.Mode = SelectedCompressionProfile.Item2;
+            Settings.Default.Çözünürlük = SelectedCompressionProfile.Item3;
+            Settings.Default.ImgLoadResolution = (int)SelectedCompressionProfile.Item3;
+            Settings.Default.JpegQuality = (int)SelectedCompressionProfile.Item5;
+            Scanner.UseMozJpegEncoding = SelectedCompressionProfile.Item4 && MozJpeg.MozJpeg.MozJpegDllExists;
+        }
+
+        if (e.PropertyName is "SelectedPaper" && SelectedPaper is not null)
+        {
+            DecodeHeight = (int)(SelectedPaper.Height / Inch * Settings.Default.ImgLoadResolution);
+            ToolBox.Paper = SelectedPaper;
+        }
+
+        if (e.PropertyName is "AllImageRotationAngle" && AllImageRotationAngle != 0)
+        {
+            if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+            {
+                foreach (ScannedImage image in Scanner.Resimler.Where(z => z.Seçili))
+                {
+                    image.Resim = await image.Resim.FlipImageAsync(AllImageRotationAngle);
+                }
+
+                AllImageRotationAngle = 0;
+                return;
+            }
+
+            if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+            {
+                foreach (ScannedImage image in Scanner.Resimler.Where(z => z.Seçili))
+                {
+                    image.Resim = await image.Resim.RotateImageAsync(AllImageRotationAngle);
+                }
+
+                AllImageRotationAngle = 0;
+                return;
+            }
+
+            foreach (ScannedImage image in Scanner.Resimler)
+            {
+                image.Resim = await image.Resim.RotateImageAsync(AllImageRotationAngle);
+            }
+
+            AllImageRotationAngle = 0;
+        }
+    }
+
+    private void UserControl_Loaded(object sender, RoutedEventArgs e)
+    {
+        if (!DesignerProperties.GetIsInDesignMode(this))
+        {
+            try
+            {
+                twain = new Twain(new WindowMessageHook(Window.GetWindow(Parent)));
+                Scanner.Tarayıcılar = twain.SourceNames;
+                if (Scanner.Tarayıcılar?.Count > 0)
+                {
+                    Scanner.SeçiliTarayıcı = Scanner.Tarayıcılar[0];
+                }
+
+                twain.TransferImage += Twain_TransferImage;
+                twain.ScanningComplete += Twain_ScanningComplete;
+            }
+            catch (Exception)
+            {
+                Scanner.ArayüzEtkin = false;
+            }
+        }
+    }
 }

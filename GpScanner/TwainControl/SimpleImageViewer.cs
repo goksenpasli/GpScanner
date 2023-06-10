@@ -1,8 +1,8 @@
-﻿using Extensions;
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Extensions;
 
 namespace TwainControl
 {
@@ -15,7 +15,7 @@ namespace TwainControl
             imageViewer.ImageFilePath = (e.OriginalSource as Image)?.DataContext as string;
             imageViewer.DataContext = Tag;
 
-            if(maximizePdfWindow == null)
+            if (maximizePdfWindow == null)
             {
                 maximizePdfWindow = new Window
                 {
@@ -34,6 +34,10 @@ namespace TwainControl
             base.OnMouseDoubleClick(e);
         }
 
+        private ImageViewer imageViewer;
+
+        private Window maximizePdfWindow;
+
         private void MaximizePdfWindow_Closed(object sender, EventArgs e)
         {
             maximizePdfWindow.Closed -= MaximizePdfWindow_Closed;
@@ -41,9 +45,5 @@ namespace TwainControl
             imageViewer?.Dispose();
             imageViewer = null;
         }
-
-        private ImageViewer imageViewer;
-
-        private Window maximizePdfWindow;
     }
 }

@@ -27,9 +27,6 @@ namespace TwainWpf.Win32
 
         public int ClrImportant;
 
-        public override string ToString()
-        {
-            return $"s:{Size} w:{Width} h:{Height} p:{Planes} bc:{BitCount} c:{Compression} si:{SizeImage} xpels:{XPelsPerMeter} ypels:{YPelsPerMeter} cu:{ClrUsed} ci:{ClrImportant}";
-        }
+        public override string ToString() => $"s:{Size} w:{Width} h:{Height} p:{Planes} bc:{BitCount} c:{Compression} si:{SizeImage} xpels:{XPelsPerMeter} ypels:{YPelsPerMeter} cu:{ClrUsed} ci:{ClrImportant}";
     }
 }

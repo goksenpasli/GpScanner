@@ -218,7 +218,7 @@ namespace Tesseract
             Initialise(datapath, language, engineMode, configFiles, initialOptions, setOnlyNonDebugVariables);
         }
 
-        internal HandleRef Handle => handle;
+        public string Version => TessApi.BaseApiGetVersion();
 
         /// <summary>
         /// Processes the specific image.
@@ -228,7 +228,7 @@ namespace Tesseract
         /// </remarks>
         /// <param name="image">The image to process.</param>
         /// <param name="pageSegMode">The page layout analyasis method to use.</param>
-        public Page Process(Pix image, PageSegMode? pageSegMode = null) { return Process(image, null, new Rect(0, 0, image.Width, image.Height), pageSegMode); }
+        public Page Process(Pix image, PageSegMode? pageSegMode = null) => Process(image, null, new Rect(0, 0, image.Width, image.Height), pageSegMode);
 
         /// <summary>
         /// Processes a specified region in the image using the specified page layout analysis mode.
@@ -240,7 +240,7 @@ namespace Tesseract
         /// <param name="region">The image region to process.</param>
         /// <param name="pageSegMode">The page layout analyasis method to use.</param>
         /// <returns>A result iterator</returns>
-        public Page Process(Pix image, Rect region, PageSegMode? pageSegMode = null) { return Process(image, null, region, pageSegMode); }
+        public Page Process(Pix image, Rect region, PageSegMode? pageSegMode = null) => Process(image, null, region, pageSegMode);
 
         /// <summary>
         /// Processes the specific image.
@@ -251,8 +251,7 @@ namespace Tesseract
         /// <param name="image">The image to process.</param>
         /// <param name="inputName">Sets the input file's name, only needed for training or loading a uzn file.</param>
         /// <param name="pageSegMode">The page layout analyasis method to use.</param>
-        public Page Process(Pix image, string inputName, PageSegMode? pageSegMode = null)
-        { return Process(image, inputName, new Rect(0, 0, image.Width, image.Height), pageSegMode); }
+        public Page Process(Pix image, string inputName, PageSegMode? pageSegMode = null) => Process(image, inputName, new Rect(0, 0, image.Width, image.Height), pageSegMode);
 
         /// <summary>
         /// Processes a specified region in the image using the specified page layout analysis mode.
@@ -267,17 +266,17 @@ namespace Tesseract
         /// <returns>A result iterator</returns>
         public Page Process(Pix image, string inputName, Rect region, PageSegMode? pageSegMode = null)
         {
-            if(image == null)
+            if (image == null)
             {
                 throw new ArgumentNullException(nameof(image));
             }
 
-            if(region.X1 < 0 || region.Y1 < 0 || region.X2 > image.Width || region.Y2 > image.Height)
+            if (region.X1 < 0 || region.Y1 < 0 || region.X2 > image.Width || region.Y2 > image.Height)
             {
                 throw new ArgumentException("The image region to be processed must be within the image bounds.", nameof(region));
             }
 
-            if(processCount > 0)
+            if (processCount > 0)
             {
                 throw new InvalidOperationException("Only one image can be processed at once. Please make sure you dispose of the page once your finished with it.");
             }
@@ -287,7 +286,7 @@ namespace Tesseract
             PageSegMode actualPageSegmentMode = pageSegMode ?? DefaultPageSegMode;
             TessApi.Native.BaseAPISetPageSegMode(handle, actualPageSegmentMode);
             TessApi.Native.BaseApiSetImage(handle, image.Handle);
-            if(!string.IsNullOrEmpty(inputName))
+            if (!string.IsNullOrEmpty(inputName))
             {
                 TessApi.Native.BaseApiSetInputName(handle, inputName);
             }
@@ -297,19 +296,47 @@ namespace Tesseract
             return page;
         }
 
-        public string Version => TessApi.BaseApiGetVersion();
+        /// <summary>
+        /// Ties the specified pix to the lifecycle of a page.
+        /// </summary>
+        public class PageDisposalHandle
+        {
+            public PageDisposalHandle(Page page, Pix pix)
+            {
+                this.page = page;
+                this.pix = pix;
+                page.Disposed += OnPageDisposed;
+            }
+
+            private readonly Page page;
+
+            private readonly Pix pix;
+
+            private void OnPageDisposed(object sender, EventArgs e)
+            {
+                page.Disposed -= OnPageDisposed;
+
+                pix.Dispose();
+            }
+        }
+
+        internal HandleRef Handle => handle;
 
         protected override void Dispose(bool disposing)
         {
-            if(handle.Handle != IntPtr.Zero)
+            if (handle.Handle != IntPtr.Zero)
             {
                 TessApi.Native.BaseApiDelete(handle);
                 handle = new HandleRef(this, IntPtr.Zero);
             }
         }
 
+        private HandleRef handle;
+
+        private int processCount;
+
         private void Initialise(
-            string datapath,
+                            string datapath,
             string language,
             EngineMode engineMode,
             IEnumerable<string> configFiles,
@@ -318,17 +345,17 @@ namespace Tesseract
         {
             Guard.RequireNotNullOrEmpty(nameof(language), language);
 
-            if(!string.IsNullOrEmpty(datapath))
+            if (!string.IsNullOrEmpty(datapath))
             {
                 datapath = datapath.Trim();
 
-                if(datapath.EndsWith("\\", StringComparison.Ordinal) || datapath.EndsWith("/", StringComparison.Ordinal))
+                if (datapath.EndsWith("\\", StringComparison.Ordinal) || datapath.EndsWith("/", StringComparison.Ordinal))
                 {
                     datapath = datapath.Substring(0, datapath.Length - 1);
                 }
             }
 
-            if(TessApi.BaseApiInit(
+            if (TessApi.BaseApiInit(
                     handle,
                     datapath,
                     language,
@@ -346,39 +373,10 @@ namespace Tesseract
         }
 
         #region Event Handlers
-        private void OnIteratorDisposed(object sender, EventArgs e)
-        {
-            processCount--;
-        }
+
+        private void OnIteratorDisposed(object sender, EventArgs e) => processCount--;
+
         #endregion Event Handlers
-
-        private HandleRef handle;
-
-        private int processCount;
-
-        /// <summary>
-        /// Ties the specified pix to the lifecycle of a page.
-        /// </summary>
-        public class PageDisposalHandle
-        {
-            public PageDisposalHandle(Page page, Pix pix)
-            {
-                this.page = page;
-                this.pix = pix;
-                page.Disposed += OnPageDisposed;
-            }
-
-            private void OnPageDisposed(object sender, EventArgs e)
-            {
-                page.Disposed -= OnPageDisposed;
-
-                pix.Dispose();
-            }
-
-            private readonly Page page;
-
-            private readonly Pix pix;
-        }
 
         #region Config
 
@@ -388,7 +386,7 @@ namespace Tesseract
         /// </summary>
         public PageSegMode DefaultPageSegMode { get; set; }
 
-        public bool SetDebugVariable(string name, string value) { return TessApi.BaseApiSetDebugVariable(handle, name, value) != 0; }
+        public bool SetDebugVariable(string name, string value) => TessApi.BaseApiSetDebugVariable(handle, name, value) != 0;
 
         /// <summary>
         /// Sets the value of a string variable.
@@ -396,7 +394,7 @@ namespace Tesseract
         /// <param name="name">The name of the variable.</param>
         /// <param name="value">The new value of the variable.</param>
         /// <returns>Returns <c>True</c> if successful; otherwise <c>False</c>.</returns>
-        public bool SetVariable(string name, string value) { return TessApi.BaseApiSetVariable(handle, name, value) != 0; }
+        public bool SetVariable(string name, string value) => TessApi.BaseApiSetVariable(handle, name, value) != 0;
 
         /// <summary>
         /// Sets the value of a boolean variable.
@@ -442,7 +440,7 @@ namespace Tesseract
         /// <returns>Returns <c>True</c> if successful; otherwise <c>False</c>.</returns>
         public bool TryGetBoolVariable(string name, out bool value)
         {
-            if(TessApi.Native.BaseApiGetBoolVariable(handle, name, out int val) != 0)
+            if (TessApi.Native.BaseApiGetBoolVariable(handle, name, out int val) != 0)
             {
                 value = val != 0;
                 return true;
@@ -458,7 +456,7 @@ namespace Tesseract
         /// <param name="name">The name of the variable.</param>
         /// <param name="value">The current value of the variable.</param>
         /// <returns>Returns <c>True</c> if successful; otherwise <c>False</c>.</returns>
-        public bool TryGetDoubleVariable(string name, out double value) { return TessApi.Native.BaseApiGetDoubleVariable(handle, name, out value) != 0; }
+        public bool TryGetDoubleVariable(string name, out double value) => TessApi.Native.BaseApiGetDoubleVariable(handle, name, out value) != 0;
 
         /// <summary>
         /// Attempts to retrieve the value for an integer variable.
@@ -466,7 +464,7 @@ namespace Tesseract
         /// <param name="name">The name of the variable.</param>
         /// <param name="value">The current value of the variable.</param>
         /// <returns>Returns <c>True</c> if successful; otherwise <c>False</c>.</returns>
-        public bool TryGetIntVariable(string name, out int value) { return TessApi.Native.BaseApiGetIntVariable(handle, name, out value) != 0; }
+        public bool TryGetIntVariable(string name, out int value) => TessApi.Native.BaseApiGetIntVariable(handle, name, out value) != 0;
 
         /// <summary>
         /// Attempts to retrieve the value for a string variable.
@@ -485,10 +483,8 @@ namespace Tesseract
         /// </summary>
         /// <param name="filename"></param>
         /// <returns></returns>
-        public bool TryPrintVariablesToFile(string filename)
-        {
-            return TessApi.Native.BaseApiPrintVariablesToFile(handle, filename) != 0;
-        }
+        public bool TryPrintVariablesToFile(string filename) => TessApi.Native.BaseApiPrintVariablesToFile(handle, filename) != 0;
+
         #endregion Config
     }
 }

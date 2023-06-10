@@ -14,56 +14,46 @@ namespace TwainWpf
             _right = right;
         }
 
-        public float Bottom
-        {
+        public float Bottom {
             get { return _bottom; }
 
-            private set
-            {
+            private set {
                 _bottom = value;
                 OnPropertyChanged(nameof(Bottom));
             }
         }
 
-        public float Left
-        {
+        public float Left {
             get { return _left; }
 
-            private set
-            {
+            private set {
                 _left = value;
                 OnPropertyChanged(nameof(Left));
             }
         }
 
-        public float Right
-        {
+        public float Right {
             get { return _right; }
 
-            private set
-            {
+            private set {
                 _right = value;
                 OnPropertyChanged(nameof(Right));
             }
         }
 
-        public float Top
-        {
+        public float Top {
             get { return _top; }
 
-            private set
-            {
+            private set {
                 _top = value;
                 OnPropertyChanged(nameof(Top));
             }
         }
 
-        public Units Units
-        {
+        public Units Units {
             get { return _units; }
 
-            set
-            {
+            set {
                 _units = value;
                 OnPropertyChanged(nameof(Units));
             }
@@ -80,14 +70,13 @@ namespace TwainWpf
         private Units _units;
 
         #region INotifyPropertyChanged Members
+
         public event PropertyChangedEventHandler PropertyChanged = delegate
         {
         };
 
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
+        protected void OnPropertyChanged(string propertyName) => PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+
         #endregion INotifyPropertyChanged Members
     }
 }

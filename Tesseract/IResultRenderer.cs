@@ -5,6 +5,12 @@ namespace Tesseract
     public interface IResultRenderer : IDisposable
     {
         /// <summary>
+        /// Gets the current page number; returning -1 if no page has yet been added otherwise the number of the last added page
+        /// (starting from 0).
+        /// </summary>
+        int PageNumber { get; }
+
+        /// <summary>
         /// Add the page to the current document.
         /// </summary>
         /// <param name="page"></param>
@@ -17,11 +23,5 @@ namespace Tesseract
         /// <param name="title">The title of the new document.</param>
         /// <returns>A handle that when disposed of ends the current document.</returns>
         IDisposable BeginDocument(string title);
-
-        /// <summary>
-        /// Gets the current page number; returning -1 if no page has yet been added otherwise the number of the last added page
-        /// (starting from 0).
-        /// </summary>
-        int PageNumber { get; }
     }
 }

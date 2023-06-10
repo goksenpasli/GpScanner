@@ -9,8 +9,6 @@ namespace Tesseract
     /// </summary>
     public sealed class ChoiceIterator : DisposableBase
     {
-        internal ChoiceIterator(IntPtr handle) { _handleRef = new HandleRef(this, handle); }
-
         /// <summary>
         /// Returns the confidence of the current choice.
         /// </summary>
@@ -44,9 +42,12 @@ namespace Tesseract
             return _handleRef.Handle != IntPtr.Zero && TessApi.Native.ChoiceIteratorNext(_handleRef) != 0;
         }
 
+        internal ChoiceIterator(IntPtr handle)
+        { _handleRef = new HandleRef(this, handle); }
+
         protected override void Dispose(bool disposing)
         {
-            if(_handleRef.Handle != IntPtr.Zero)
+            if (_handleRef.Handle != IntPtr.Zero)
             {
                 TessApi.Native.ChoiceIteratorDelete(_handleRef);
             }

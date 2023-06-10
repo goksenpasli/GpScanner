@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:PdfViewer">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:PdfViewer">
     <local:PdfPageToThumbImageConverter x:Key="PdfPageToThumbImageConverter" />
     <DataTemplate x:Key="PdfThumbItemTemplate">
         <StackPanel HorizontalAlignment="Center">

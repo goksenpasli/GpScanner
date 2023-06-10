@@ -6,16 +6,16 @@ namespace TwainControl
 {
     public class ZoomableInkCanvas : InkCanvas, INotifyPropertyChanged
     {
-        public ZoomableInkCanvas() { PropertyChanged += ZoomableInkCanvas_PropertyChanged; }
+        public ZoomableInkCanvas()
+        { PropertyChanged += ZoomableInkCanvas_PropertyChanged; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public double CurrentZoom
-        {
+        public double CurrentZoom {
             get { return currentZoom; }
-            set
-            {
-                if(currentZoom != value)
+
+            set {
+                if (currentZoom != value)
                 {
                     currentZoom = value;
                     OnPropertyChanged(nameof(CurrentZoom));
@@ -23,7 +23,9 @@ namespace TwainControl
             }
         }
 
-        protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
+        protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        private double currentZoom = 1d;
 
         private void ApplyZoom()
         {
@@ -33,12 +35,10 @@ namespace TwainControl
 
         private void ZoomableInkCanvas_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if(e.PropertyName is "CurrentZoom" && CurrentZoom is >= 0.1 and <= 3.0)
+            if (e.PropertyName is "CurrentZoom" && CurrentZoom is >= 0.1 and <= 3.0)
             {
                 ApplyZoom();
             }
         }
-
-        private double currentZoom = 1d;
     }
 }

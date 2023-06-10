@@ -6,38 +6,6 @@ namespace PdfViewer;
 
 public class ShadowedImage : Image
 {
-    public ShadowedImage()
-    {
-        pen.Brush = OverlayColor;
-        pen.Freeze();
-    }
-
-    public Point Location { get { return (Point)GetValue(LocationProperty); } set { SetValue(LocationProperty, value); } }
-
-    public SolidColorBrush OverlayColor { get { return (SolidColorBrush)GetValue(OverlayColorProperty); } set { SetValue(OverlayColorProperty, value); } }
-
-    public SolidColorBrush ShadowColor { get { return (SolidColorBrush)GetValue(ShadowColorProperty); } set { SetValue(ShadowColorProperty, value); } }
-
-    public bool ShowOverlayColor { get { return (bool)GetValue(ShowOverlayColorProperty); } set { SetValue(ShowOverlayColorProperty, value); } }
-
-    public bool ShowShadow { get { return (bool)GetValue(ShowShadowProperty); } set { SetValue(ShowShadowProperty, value); } }
-
-    protected override void OnRender(DrawingContext dc)
-    {
-        if(ShowShadow)
-        {
-            dc.DrawRectangle(ShadowColor, null, new Rect(Location, new Size(ActualWidth, ActualHeight)));
-        }
-
-        base.OnRender(dc);
-
-        if(ShowOverlayColor)
-        {
-            dc.DrawLine(pen, new Point(ActualWidth, 0), new Point(0, ActualHeight));
-            dc.DrawLine(pen, new Point(0, 0), new Point(ActualWidth, ActualHeight));
-        }
-    }
-
     public static readonly DependencyProperty LocationProperty = DependencyProperty.Register(
         "Location",
         typeof(Point),
@@ -64,6 +32,38 @@ public class ShadowedImage : Image
 
     public static readonly DependencyProperty ShowShadowProperty =
         DependencyProperty.Register("ShowShadow", typeof(bool), typeof(ShadowedImage), new PropertyMetadata(false));
+
+    public ShadowedImage()
+    {
+        pen.Brush = OverlayColor;
+        pen.Freeze();
+    }
+
+    public Point Location { get { return (Point)GetValue(LocationProperty); } set { SetValue(LocationProperty, value); } }
+
+    public SolidColorBrush OverlayColor { get { return (SolidColorBrush)GetValue(OverlayColorProperty); } set { SetValue(OverlayColorProperty, value); } }
+
+    public SolidColorBrush ShadowColor { get { return (SolidColorBrush)GetValue(ShadowColorProperty); } set { SetValue(ShadowColorProperty, value); } }
+
+    public bool ShowOverlayColor { get { return (bool)GetValue(ShowOverlayColorProperty); } set { SetValue(ShowOverlayColorProperty, value); } }
+
+    public bool ShowShadow { get { return (bool)GetValue(ShowShadowProperty); } set { SetValue(ShowShadowProperty, value); } }
+
+    protected override void OnRender(DrawingContext dc)
+    {
+        if (ShowShadow)
+        {
+            dc.DrawRectangle(ShadowColor, null, new Rect(Location, new Size(ActualWidth, ActualHeight)));
+        }
+
+        base.OnRender(dc);
+
+        if (ShowOverlayColor)
+        {
+            dc.DrawLine(pen, new Point(ActualWidth, 0), new Point(0, ActualHeight));
+            dc.DrawLine(pen, new Point(0, 0), new Point(ActualWidth, ActualHeight));
+        }
+    }
 
     private readonly Pen pen = new() { Thickness = 3 };
 }

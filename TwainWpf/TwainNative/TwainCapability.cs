@@ -41,9 +41,12 @@ namespace TwainWpf.TwainNative
             }
         }
 
-        ~TwainCapability() { Dispose(false); }
+        ~TwainCapability()
+        {
+            Dispose(false);
+        }
 
-        public void Dispose() { Dispose(true); }
+        public void Dispose() => Dispose(true);
 
         public static TwainCapability From<TValue>(Capabilities capabilities, TValue value)
         {
@@ -71,7 +74,7 @@ namespace TwainWpf.TwainNative
 
         protected virtual void Dispose(bool disposing)
         {
-            if(_handle != IntPtr.Zero)
+            if (_handle != IntPtr.Zero)
             {
                 _ = Kernel32Native.GlobalFree(_handle);
             }

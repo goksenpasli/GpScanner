@@ -15,6 +15,7 @@ namespace Tesseract.Interop
     public interface ILeptonicaApiSignatures
     {
         #region PixA
+
         [RuntimeDllImport(Constants.LeptonicaDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "pixaAddPix")]
         int pixaAddPix(HandleRef pixa, HandleRef pix, PixArrayAccessType copyflag);
 
@@ -38,9 +39,11 @@ namespace Tesseract.Interop
 
         [RuntimeDllImport(Constants.LeptonicaDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "pixaRemovePix")]
         int pixaRemovePix(HandleRef pixa, int index);
+
         #endregion PixA
 
         #region Pix
+
         [RuntimeDllImport(Constants.LeptonicaDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "pixAddGray")]
         IntPtr pixAddGray(HandleRef pixd, HandleRef pixs1, HandleRef pixs2);
 
@@ -208,6 +211,7 @@ namespace Tesseract.Interop
 
         [RuntimeDllImport(Constants.LeptonicaDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "selDestroy")]
         void selDestroy(ref IntPtr psel);
+
         #endregion Pix
 
         #region Color map
@@ -469,9 +473,11 @@ namespace Tesseract.Interop
         /// <returns>Returns 0 if OK, 1 on error.</returns>
         [RuntimeDllImport(Constants.LeptonicaDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "pixcmapUsableColor")]
         int pixcmapUsableColor(HandleRef cmap, int redValue, int greenValue, int blueValue, out int usable);
+
         #endregion Color map
 
         #region Box
+
         [RuntimeDllImport(Constants.LeptonicaDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "boxaDestroy")]
         void boxaDestroy(ref IntPtr box);
 
@@ -486,29 +492,28 @@ namespace Tesseract.Interop
 
         [RuntimeDllImport(Constants.LeptonicaDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "boxGetGeometry")]
         int boxGetGeometry(HandleRef box, out int px, out int py, out int pw, out int ph);
+
         #endregion Box
     }
 
     internal static class LeptonicaApi
     {
-        public static void Initialize()
-        {
-            if(native == null)
-            {
-                native = InteropRuntimeImplementer.CreateInstance<ILeptonicaApiSignatures>();
-            }
-        }
-
-        public static ILeptonicaApiSignatures Native
-        {
-            get
-            {
-                if(native == null)
+        public static ILeptonicaApiSignatures Native {
+            get {
+                if (native == null)
                 {
                     Initialize();
                 }
 
                 return native;
+            }
+        }
+
+        public static void Initialize()
+        {
+            if (native == null)
+            {
+                native = InteropRuntimeImplementer.CreateInstance<ILeptonicaApiSignatures>();
             }
         }
 

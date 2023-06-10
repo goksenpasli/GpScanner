@@ -7,8 +7,11 @@ namespace Tesseract.Interop
     /// </summary>
     internal static class HostProcessInfo
     {
-        static HostProcessInfo() { Is64Bit = IntPtr.Size == 8; }
-
         public static readonly bool Is64Bit;
+
+        static HostProcessInfo()
+        {
+            Is64Bit = IntPtr.Size == 8;
+        }
     }
 }

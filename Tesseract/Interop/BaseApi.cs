@@ -270,9 +270,11 @@ namespace Tesseract.Interop
         /// <returns></returns>
         [RuntimeDllImport(Constants.TesseractDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "TessResultIteratorGetChoiceIterator")]
         IntPtr ResultIteratorGetChoiceIterator(HandleRef handle);
+
         #endregion Choice Iterator
 
         #region Renderer API
+
         [RuntimeDllImport(Constants.TesseractDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "TessAltoRendererCreate")]
         IntPtr AltoRendererCreate(string outputbase);
 
@@ -329,7 +331,8 @@ namespace Tesseract.Interop
 
         [RuntimeDllImport(Constants.TesseractDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "TessWordStrBoxRendererCreate")]
         IntPtr WordStrBoxRendererCreate(string outputbase);
-    #endregion Renderer API
+
+        #endregion Renderer API
     }
 
     internal static class TessApi
@@ -360,26 +363,21 @@ namespace Tesseract.Interop
 
         public const string xhtmlEndTag = " </body>\n</html>\n";
 
-        /// <summary>
-        /// Returns the null terminated UTF-8 encoded text string for the current choice
-        /// </summary>
-        /// <remarks>
-        /// NOTE: Unlike LTRResultIterator::GetUTF8Text, the return points to an internal structure and should NOT be
-        /// delete[]ed to free after use.
-        /// </remarks>
-        /// <param name="choiceIteratorHandle"></param>
-        /// <returns>string</returns>
-        internal static string ChoiceIteratorGetUTF8Text(HandleRef choiceIteratorHandle)
-        {
-            Guard.Require(nameof(choiceIteratorHandle), choiceIteratorHandle.Handle != IntPtr.Zero, "ChoiceIterator Handle cannot be a null IntPtr and is required");
-            IntPtr txtChoiceHandle = Native.ChoiceIteratorGetUTF8TextInternal(choiceIteratorHandle);
-            return MarshalHelper.PtrToString(txtChoiceHandle, Encoding.UTF8);
+        public static ITessApiSignatures Native {
+            get {
+                if (native == null)
+                {
+                    Initialize();
+                }
+
+                return native;
+            }
         }
 
         public static string BaseAPIGetAltoText(HandleRef handle, int pageNum)
         {
             IntPtr txtHandle = Native.BaseApiGetAltoTextInternal(handle, pageNum);
-            if(txtHandle != IntPtr.Zero)
+            if (txtHandle != IntPtr.Zero)
             {
                 string result = MarshalHelper.PtrToString(txtHandle, Encoding.UTF8);
                 Native.DeleteText(txtHandle);
@@ -392,7 +390,7 @@ namespace Tesseract.Interop
         public static string BaseAPIGetBoxText(HandleRef handle, int pageNum)
         {
             IntPtr txtHandle = Native.BaseApiGetBoxTextInternal(handle, pageNum);
-            if(txtHandle != IntPtr.Zero)
+            if (txtHandle != IntPtr.Zero)
             {
                 string result = MarshalHelper.PtrToString(txtHandle, Encoding.UTF8);
                 Native.DeleteText(txtHandle);
@@ -405,7 +403,7 @@ namespace Tesseract.Interop
         public static string BaseAPIGetHOCRText(HandleRef handle, int pageNum)
         {
             IntPtr txtHandle = Native.BaseApiGetHOCRTextInternal(handle, pageNum);
-            if(txtHandle != IntPtr.Zero)
+            if (txtHandle != IntPtr.Zero)
             {
                 string result = MarshalHelper.PtrToString(txtHandle, Encoding.UTF8);
                 Native.DeleteText(txtHandle);
@@ -418,7 +416,7 @@ namespace Tesseract.Interop
         public static string BaseAPIGetHOCRText2(HandleRef handle, int pageNum)
         {
             IntPtr txtHandle = Native.BaseApiGetHOCRTextInternal(handle, pageNum);
-            if(txtHandle != IntPtr.Zero)
+            if (txtHandle != IntPtr.Zero)
             {
                 string result = MarshalHelper.PtrToString(txtHandle, Encoding.UTF8);
                 Native.DeleteText(txtHandle);
@@ -431,7 +429,7 @@ namespace Tesseract.Interop
         public static string BaseAPIGetLSTMBoxText(HandleRef handle, int pageNum)
         {
             IntPtr txtHandle = Native.BaseApiGetLSTMBoxTextInternal(handle, pageNum);
-            if(txtHandle != IntPtr.Zero)
+            if (txtHandle != IntPtr.Zero)
             {
                 string result = MarshalHelper.PtrToString(txtHandle, Encoding.UTF8);
                 Native.DeleteText(txtHandle);
@@ -444,7 +442,7 @@ namespace Tesseract.Interop
         public static string BaseAPIGetTsvText(HandleRef handle, int pageNum)
         {
             IntPtr txtHandle = Native.BaseApiGetTsvTextInternal(handle, pageNum);
-            if(txtHandle != IntPtr.Zero)
+            if (txtHandle != IntPtr.Zero)
             {
                 string result = MarshalHelper.PtrToString(txtHandle, Encoding.UTF8);
                 Native.DeleteText(txtHandle);
@@ -457,7 +455,7 @@ namespace Tesseract.Interop
         public static string BaseAPIGetUNLVText(HandleRef handle)
         {
             IntPtr txtHandle = Native.BaseApiGetUNLVTextInternal(handle);
-            if(txtHandle != IntPtr.Zero)
+            if (txtHandle != IntPtr.Zero)
             {
                 string result = MarshalHelper.PtrToString(txtHandle, Encoding.UTF8);
                 Native.DeleteText(txtHandle);
@@ -470,7 +468,7 @@ namespace Tesseract.Interop
         public static string BaseAPIGetUTF8Text(HandleRef handle)
         {
             IntPtr txtHandle = Native.BaseAPIGetUTF8TextInternal(handle);
-            if(txtHandle != IntPtr.Zero)
+            if (txtHandle != IntPtr.Zero)
             {
                 string result = MarshalHelper.PtrToString(txtHandle, Encoding.UTF8);
                 Native.DeleteText(txtHandle);
@@ -483,7 +481,7 @@ namespace Tesseract.Interop
         public static string BaseAPIGetWordStrBoxText(HandleRef handle, int pageNum)
         {
             IntPtr txtHandle = Native.BaseApiGetWordStrBoxTextInternal(handle, pageNum);
-            if(txtHandle != IntPtr.Zero)
+            if (txtHandle != IntPtr.Zero)
             {
                 string result = MarshalHelper.PtrToString(txtHandle, Encoding.UTF8);
                 Native.DeleteText(txtHandle);
@@ -506,13 +504,13 @@ namespace Tesseract.Interop
         }
 
         public static int BaseApiInit(
-            HandleRef handle,
-            string datapath,
-            string language,
-            int mode,
-            IEnumerable<string> configFiles,
-            IDictionary<string, object> initialValues,
-            bool setOnlyNonDebugParams)
+                    HandleRef handle,
+                    string datapath,
+                    string language,
+                    int mode,
+                    IEnumerable<string> configFiles,
+                    IDictionary<string, object> initialValues,
+                    bool setOnlyNonDebugParams)
         {
             Guard.Require(nameof(handle), handle.Handle != IntPtr.Zero, "Handle for BaseApi, created through BaseApiCreate is required.");
             Guard.RequireNotNullOrEmpty(nameof(language), language);
@@ -524,7 +522,7 @@ namespace Tesseract.Interop
             string[] varNames = new string[initialValues.Count];
             string[] varValues = new string[initialValues.Count];
             int i = 0;
-            foreach(KeyValuePair<string, object> pair in initialValues)
+            foreach (KeyValuePair<string, object> pair in initialValues)
             {
                 Guard.Require(nameof(initialValues), !string.IsNullOrEmpty(pair.Key), "Variable must have a name.");
 
@@ -559,7 +557,7 @@ namespace Tesseract.Interop
             }
             finally
             {
-                if(valuePtr != IntPtr.Zero)
+                if (valuePtr != IntPtr.Zero)
                 {
                     Marshal.FreeHGlobal(valuePtr);
                 }
@@ -576,7 +574,7 @@ namespace Tesseract.Interop
             }
             finally
             {
-                if(valuePtr != IntPtr.Zero)
+                if (valuePtr != IntPtr.Zero)
                 {
                     Marshal.FreeHGlobal(valuePtr);
                 }
@@ -585,7 +583,7 @@ namespace Tesseract.Interop
 
         public static void Initialize()
         {
-            if(native == null)
+            if (native == null)
             {
                 LeptonicaApi.Initialize();
                 native = InteropRuntimeImplementer.CreateInstance<ITessApiSignatures>();
@@ -595,7 +593,7 @@ namespace Tesseract.Interop
         public static string ResultIteratorGetUTF8Text(HandleRef handle, PageIteratorLevel level)
         {
             IntPtr txtHandle = Native.ResultIteratorGetUTF8TextInternal(handle, level);
-            if(txtHandle != IntPtr.Zero)
+            if (txtHandle != IntPtr.Zero)
             {
                 string result = MarshalHelper.PtrToString(txtHandle, Encoding.UTF8);
                 Native.DeleteText(txtHandle);
@@ -613,17 +611,20 @@ namespace Tesseract.Interop
             return txtHandle != IntPtr.Zero ? MarshalHelper.PtrToString(txtHandle, Encoding.UTF8) : null;
         }
 
-        public static ITessApiSignatures Native
+        /// <summary>
+        /// Returns the null terminated UTF-8 encoded text string for the current choice
+        /// </summary>
+        /// <remarks>
+        /// NOTE: Unlike LTRResultIterator::GetUTF8Text, the return points to an internal structure and should NOT be
+        /// delete[]ed to free after use.
+        /// </remarks>
+        /// <param name="choiceIteratorHandle"></param>
+        /// <returns>string</returns>
+        internal static string ChoiceIteratorGetUTF8Text(HandleRef choiceIteratorHandle)
         {
-            get
-            {
-                if(native == null)
-                {
-                    Initialize();
-                }
-
-                return native;
-            }
+            Guard.Require(nameof(choiceIteratorHandle), choiceIteratorHandle.Handle != IntPtr.Zero, "ChoiceIterator Handle cannot be a null IntPtr and is required");
+            IntPtr txtChoiceHandle = Native.ChoiceIteratorGetUTF8TextInternal(choiceIteratorHandle);
+            return MarshalHelper.PtrToString(txtChoiceHandle, Encoding.UTF8);
         }
 
         private static ITessApiSignatures native;

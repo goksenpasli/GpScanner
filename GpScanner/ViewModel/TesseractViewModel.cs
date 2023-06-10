@@ -1,7 +1,4 @@
-﻿using Extensions;
-using GpScanner.Properties;
-using Ocr;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -12,6 +9,9 @@ using System.Net;
 using System.Net.Http;
 using System.Windows;
 using System.Windows.Input;
+using Extensions;
+using GpScanner.Properties;
+using Ocr;
 using TwainControl;
 using InpcBase = Extensions.InpcBase;
 
@@ -32,13 +32,13 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
             parameter =>
             {
                 string path = parameter as string;
-                if(!string.IsNullOrWhiteSpace(path))
+                if (!string.IsNullOrWhiteSpace(path))
                 {
                     try
                     {
                         _ = Process.Start(path);
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
                     }
@@ -49,7 +49,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
         TesseractDownload = new RelayCommand<object>(
             async parameter =>
             {
-                if(parameter is TesseractOcrData ocrData)
+                if (parameter is TesseractOcrData ocrData)
                 {
                     string datafile = Path.Combine(tessdatafolder, ocrData.OcrName);
 
@@ -73,7 +73,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                         byte[] buffer = new byte[bufferSize];
                         int bytesRead;
                         ocrData.IsEnabled = false;
-                        while((bytesRead = await contentStream.ReadAsync(buffer, 0, bufferSize)) > 0)
+                        while ((bytesRead = await contentStream.ReadAsync(buffer, 0, bufferSize)) > 0)
                         {
                             await fileStream.WriteAsync(buffer, 0, bytesRead);
                             ocrData.ProgressValue = fileStream.Length / (double)response.Content.Headers.ContentLength * 100;
@@ -81,10 +81,10 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                         ocrData.IsEnabled = true;
                         TesseractFiles = GetTesseractFiles(Tessdatafolder);
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
-                        if(File.Exists(datafile))
+                        if (File.Exists(datafile))
                         {
                             File.Delete(datafile);
                         }
@@ -99,6 +99,50 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
         PropertyChanged += TesseractViewModel_PropertyChanged;
     }
 
+    public string Error => string.Empty;
+
+    public ObservableCollection<TesseractOcrData> OcrDatas { get; set; }
+
+    public bool ShowAllLanguages {
+        get => showAllLanguages;
+
+        set {
+            if (showAllLanguages != value)
+            {
+                showAllLanguages = value;
+                OnPropertyChanged(nameof(ShowAllLanguages));
+            }
+        }
+    }
+
+    public string Tessdatafolder {
+        get => tessdatafolder;
+
+        set {
+            if (tessdatafolder != value)
+            {
+                tessdatafolder = value;
+                OnPropertyChanged(nameof(Tessdatafolder));
+            }
+        }
+    }
+
+    public ICommand TesseractDataFilesDownloadLink { get; }
+
+    public ICommand TesseractDownload { get; }
+
+    public ObservableCollection<TessFiles> TesseractFiles {
+        get => tesseractFiles;
+
+        set {
+            if (tesseractFiles != value)
+            {
+                tesseractFiles = value;
+                OnPropertyChanged(nameof(TesseractFiles));
+            }
+        }
+    }
+
     public string this[string columnName] => columnName switch
     {
         "TesseractFiles" when TesseractFiles?.Count(z => z.Checked) == 0 || string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) => $"{Translation.GetResStringValue("DESTLANG")}{Environment.NewLine}{Translation.GetResStringValue("NOPROFILE")}",
@@ -107,7 +151,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
 
     public ObservableCollection<TessFiles> GetTesseractFiles(string tesseractfolder)
     {
-        if(Directory.Exists(tesseractfolder))
+        if (Directory.Exists(tesseractfolder))
         {
             string[] defaultTtsLang = Settings.Default.DefaultTtsLang.Split('+');
             return new ObservableCollection<TessFiles>(
@@ -127,63 +171,19 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public string Error => string.Empty;
+    private bool showAllLanguages;
 
-    public ObservableCollection<TesseractOcrData> OcrDatas { get; set; }
+    private string tessdatafolder;
 
-    public bool ShowAllLanguages
-    {
-        get => showAllLanguages;
-
-        set
-        {
-            if(showAllLanguages != value)
-            {
-                showAllLanguages = value;
-                OnPropertyChanged(nameof(ShowAllLanguages));
-            }
-        }
-    }
-
-    public string Tessdatafolder
-    {
-        get => tessdatafolder;
-
-        set
-        {
-            if(tessdatafolder != value)
-            {
-                tessdatafolder = value;
-                OnPropertyChanged(nameof(Tessdatafolder));
-            }
-        }
-    }
-
-    public ICommand TesseractDataFilesDownloadLink { get; }
-
-    public ICommand TesseractDownload { get; }
-
-    public ObservableCollection<TessFiles> TesseractFiles
-    {
-        get => tesseractFiles;
-
-        set
-        {
-            if(tesseractFiles != value)
-            {
-                tesseractFiles = value;
-                OnPropertyChanged(nameof(TesseractFiles));
-            }
-        }
-    }
+    private ObservableCollection<TessFiles> tesseractFiles;
 
     private void Tess_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if(e.PropertyName is "Checked")
+        if (e.PropertyName is "Checked")
         {
             IEnumerable<TessFiles> checkedFiles = TesseractFiles.Where(item => item.Checked);
             Settings.Default.DefaultTtsLang = string.Join("+", checkedFiles.Select(item => item.Name));
-            if(!checkedFiles.Any())
+            if (!checkedFiles.Any())
             {
                 Settings.Default.BatchFolder = string.Empty;
                 PdfGeneration.Scanner.ApplyPdfSaveOcr = false;
@@ -193,9 +193,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    private ObservableCollection<TesseractOcrData> TesseractDownloadData()
-    {
-        return new ObservableCollection<TesseractOcrData>
+    private ObservableCollection<TesseractOcrData> TesseractDownloadData() => new ObservableCollection<TesseractOcrData>
         {
             new TesseractOcrData { OcrName = "afr.traineddata", IsVisible = Visibility.Visible },
             new TesseractOcrData { OcrName = "amh.traineddata" },
@@ -325,22 +323,15 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
             new TesseractOcrData { OcrName = "yid.traineddata" },
             new TesseractOcrData { OcrName = "yor.traineddata" }
         };
-    }
 
     private void TesseractViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if(e.PropertyName is "ShowAllLanguages" && ShowAllLanguages)
+        if (e.PropertyName is "ShowAllLanguages" && ShowAllLanguages)
         {
-            foreach(TesseractOcrData item in OcrDatas)
+            foreach (TesseractOcrData item in OcrDatas)
             {
                 item.IsVisible = Visibility.Visible;
             }
         }
     }
-
-    private bool showAllLanguages;
-
-    private string tessdatafolder;
-
-    private ObservableCollection<TessFiles> tesseractFiles;
 }
