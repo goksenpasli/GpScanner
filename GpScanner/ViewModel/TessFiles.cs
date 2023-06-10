@@ -5,7 +5,7 @@ namespace GpScanner.ViewModel;
 public class TessFiles : InpcBase
 {
     public bool Checked {
-        get { return @checked; }
+        get => @checked;
 
         set {
             if (@checked != value)
@@ -17,7 +17,7 @@ public class TessFiles : InpcBase
     }
 
     public string Name {
-        get { return name; }
+        get => name;
 
         set {
             if (name != value)

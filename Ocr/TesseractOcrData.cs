@@ -5,7 +5,7 @@ namespace Ocr;
 public class TesseractOcrData : InpcBase
 {
     public bool IsEnabled {
-        get { return ısEnabled; }
+        get => ısEnabled;
 
         set {
             if (ısEnabled != value)
@@ -17,7 +17,7 @@ public class TesseractOcrData : InpcBase
     }
 
     public Visibility IsVisible {
-        get { return ısVisible; }
+        get => ısVisible;
 
         set {
             if (ısVisible != value)
@@ -29,7 +29,7 @@ public class TesseractOcrData : InpcBase
     }
 
     public string OcrName {
-        get { return ocrName; }
+        get => ocrName;
 
         set {
             if (ocrName != value)
@@ -41,7 +41,7 @@ public class TesseractOcrData : InpcBase
     }
 
     public double ProgressValue {
-        get { return progressValue; }
+        get => progressValue;
 
         set {
             if (progressValue != value)

@@ -55,23 +55,23 @@ public class NumericUpDownControl : ScrollBar
         DateTimeMode = 2
     }
 
-    public DateTime? DateValue { get { return (DateTime?)GetValue(DateValueProperty); } set { SetValue(DateValueProperty, value); } }
+    public DateTime? DateValue { get => (DateTime?)GetValue(DateValueProperty); set => SetValue(DateValueProperty, value); }
 
-    public bool IsReadOnly { get { return (bool)GetValue(IsReadOnlyProperty); } set { SetValue(IsReadOnlyProperty, value); } }
+    public bool IsReadOnly { get => (bool)GetValue(IsReadOnlyProperty); set => SetValue(IsReadOnlyProperty, value); }
 
     public Visibility NumericUpDownButtonsVisibility {
-        get { return (Visibility)GetValue(NumericUpDownButtonsVisibilityProperty); }
-        set { SetValue(NumericUpDownButtonsVisibilityProperty, value); }
+        get => (Visibility)GetValue(NumericUpDownButtonsVisibilityProperty);
+        set => SetValue(NumericUpDownButtonsVisibilityProperty, value);
     }
 
     public Visibility NumericUpdownTextBoxVisibility {
-        get { return (Visibility)GetValue(NumericUpdownTextBoxVisibilityProperty); }
-        set { SetValue(NumericUpdownTextBoxVisibilityProperty, value); }
+        get => (Visibility)GetValue(NumericUpdownTextBoxVisibilityProperty);
+        set => SetValue(NumericUpdownTextBoxVisibilityProperty, value);
     }
 
-    public Mode ShowMode { get { return (Mode)GetValue(ShowModeProperty); } set { SetValue(ShowModeProperty, value); } }
+    public Mode ShowMode { get => (Mode)GetValue(ShowModeProperty); set => SetValue(ShowModeProperty, value); }
 
-    public double Text { get { return (double)GetValue(TextProperty); } set { SetValue(TextProperty, value); } }
+    public double Text { get => (double)GetValue(TextProperty); set => SetValue(TextProperty, value); }
 
     protected override void OnPreviewKeyDown(KeyEventArgs e)
     {

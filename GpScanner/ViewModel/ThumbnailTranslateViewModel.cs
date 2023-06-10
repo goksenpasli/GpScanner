@@ -10,9 +10,15 @@ public class ThumbnailTranslateViewModel : TranslateViewModel
         typeof(ThumbnailTranslateViewModel),
         new PropertyMetadata(null, AttachedTextChanged));
 
-    public static string GetAttachedText(DependencyObject obj) => (string)obj.GetValue(AttachedTextProperty);
+    public static string GetAttachedText(DependencyObject obj)
+    {
+        return (string)obj.GetValue(AttachedTextProperty);
+    }
 
-    public static void SetAttachedText(DependencyObject obj, string value) => obj.SetValue(AttachedTextProperty, value);
+    public static void SetAttachedText(DependencyObject obj, string value)
+    {
+        obj.SetValue(AttachedTextProperty, value);
+    }
 
     private static void AttachedTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {

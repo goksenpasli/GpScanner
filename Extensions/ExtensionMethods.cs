@@ -84,7 +84,10 @@ public static class ExtensionMethods
         return bitmap.Clone(rect, format);
     }
 
-    public static bool Contains(this string source, string toCheck, StringComparison comp) => source?.IndexOf(toCheck, comp) >= 0;
+    public static bool Contains(this string source, string toCheck, StringComparison comp)
+    {
+        return source?.IndexOf(toCheck, comp) >= 0;
+    }
 
     public static Bitmap ConvertBlackAndWhite(this Bitmap bitmap, int bWthreshold = 160, bool grayscale = false)
     {
@@ -216,7 +219,10 @@ public static class ExtensionMethods
     [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
     public static extern IntPtr ExtractIcon(this IntPtr hInst, string lpszExeFileName, int nIconIndex);
 
-    public static IEnumerable<string> FilterFiles(this string path, params string[] exts) => exts.SelectMany(ext => Directory.EnumerateFiles(path, ext, SearchOption.TopDirectoryOnly));
+    public static IEnumerable<string> FilterFiles(this string path, params string[] exts)
+    {
+        return exts.SelectMany(ext => Directory.EnumerateFiles(path, ext, SearchOption.TopDirectoryOnly));
+    }
 
     public static string GetDisplayName(string path)
     {
@@ -353,7 +359,10 @@ public static class ExtensionMethods
         }
     }
 
-    public static Brush RandomColor() => new SolidColorBrush(System.Windows.Media.Color.FromRgb((byte)_random.Next(0, 256), (byte)_random.Next(0, 256), (byte)_random.Next(0, 256)));
+    public static Brush RandomColor()
+    {
+        return new SolidColorBrush(System.Windows.Media.Color.FromRgb((byte)_random.Next(0, 256), (byte)_random.Next(0, 256), (byte)_random.Next(0, 256)));
+    }
 
     public static BitmapSource Resize(this BitmapSource bfPhoto, double oran)
     {
@@ -391,7 +400,9 @@ public static class ExtensionMethods
         return null;
     }
 
-    public static async Task<BitmapSource> ResizeAsync(this BitmapSource bfPhoto, double oran, double centerx = 0, double centery = 0) => await Task.Run(
+    public static async Task<BitmapSource> ResizeAsync(this BitmapSource bfPhoto, double oran, double centerx = 0, double centery = 0)
+    {
+        return await Task.Run(
             () =>
             {
                 ScaleTransform newTransform = new(oran, oran, centerx, centery);
@@ -399,6 +410,7 @@ public static class ExtensionMethods
                 tb.Freeze();
                 return tb;
             });
+    }
 
     public static string SetUniqueFile(this string path, string file, string extension, string seperator = "_")
     {
@@ -532,5 +544,8 @@ public static class ExtensionMethods
 
     private static readonly IntPtr hwnd = Process.GetCurrentProcess().Handle;
 
-    private static byte GetGrayscaleValue(byte red, byte green, byte blue) => (byte)Math.Round((0.299 * red) + (0.587 * green) + (0.114 * blue));
+    private static byte GetGrayscaleValue(byte red, byte green, byte blue)
+    {
+        return (byte)Math.Round((0.299 * red) + (0.587 * green) + (0.114 * blue));
+    }
 }

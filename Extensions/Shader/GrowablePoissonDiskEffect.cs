@@ -37,12 +37,12 @@ public class GrowablePoissonDiskEffect : ShaderEffect
     /// <summary>
     /// The radius of the Poisson disk (in pixels).
     /// </summary>
-    public double DiskRadius { get { return (double)GetValue(DiskRadiusProperty); } set { SetValue(DiskRadiusProperty, value); } }
+    public double DiskRadius { get => (double)GetValue(DiskRadiusProperty); set => SetValue(DiskRadiusProperty, value); }
 
-    public Brush Input { get { return (Brush)GetValue(InputProperty); } set { SetValue(InputProperty, value); } }
+    public Brush Input { get => (Brush)GetValue(InputProperty); set => SetValue(InputProperty, value); }
 
     /// <summary>
     /// The size of the input (in pixels).
     /// </summary>
-    public Size InputSize { get { return (Size)GetValue(InputSizeProperty); } set { SetValue(InputSizeProperty, value); } }
+    public Size InputSize { get => (Size)GetValue(InputSizeProperty); set => SetValue(InputSizeProperty, value); }
 }

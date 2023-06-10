@@ -15,7 +15,7 @@ namespace TwainWpf.Wpf
         public FilterMessage FilterMessageCallback { get; set; }
 
         public bool UseFilter {
-            get { return _usingFilter; }
+            get => _usingFilter;
 
             set {
                 if (!_usingFilter && value)
@@ -33,7 +33,10 @@ namespace TwainWpf.Wpf
 
         public IntPtr WindowHandle => _interopHelper.Handle;
 
-        public IntPtr FilterMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled) => FilterMessageCallback == null ? IntPtr.Zero : FilterMessageCallback(hwnd, msg, wParam, lParam, ref handled);
+        public IntPtr FilterMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            return FilterMessageCallback == null ? IntPtr.Zero : FilterMessageCallback(hwnd, msg, wParam, lParam, ref handled);
+        }
 
         private readonly WindowInteropHelper _interopHelper;
 

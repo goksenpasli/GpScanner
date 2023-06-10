@@ -239,7 +239,10 @@ namespace Tesseract
         /// </summary>
         /// <param name="outputFilename">The path to the Alto file to be created without the file extension.</param>
         /// <returns></returns>
-        public static IResultRenderer CreateAltoRenderer(string outputFilename) => new AltoResultRenderer(outputFilename);
+        public static IResultRenderer CreateAltoRenderer(string outputFilename)
+        {
+            return new AltoResultRenderer(outputFilename);
+        }
 
         /// <summary>
         /// Creates a <see cref="IResultRenderer">result renderer</see> that render that generates a box text file from
@@ -247,7 +250,10 @@ namespace Tesseract
         /// </summary>
         /// <param name="outputFilename">The path to the box file to be created without the file extension.</param>
         /// <returns></returns>
-        public static IResultRenderer CreateBoxRenderer(string outputFilename) => new BoxResultRenderer(outputFilename);
+        public static IResultRenderer CreateBoxRenderer(string outputFilename)
+        {
+            return new BoxResultRenderer(outputFilename);
+        }
 
         /// <summary>
         /// Creates a <see cref="IResultRenderer">result renderer</see> that render that generates a HOCR file from
@@ -256,7 +262,10 @@ namespace Tesseract
         /// <param name="outputFilename">The path to the hocr file to be generated without the file extension.</param>
         /// <param name="fontInfo">Determines if the generated HOCR file includes font information or not.</param>
         /// <returns></returns>
-        public static IResultRenderer CreateHOcrRenderer(string outputFilename, bool fontInfo = false) => new HOcrResultRenderer(outputFilename, fontInfo);
+        public static IResultRenderer CreateHOcrRenderer(string outputFilename, bool fontInfo = false)
+        {
+            return new HOcrResultRenderer(outputFilename, fontInfo);
+        }
 
         /// <summary>
         /// Creates a <see cref="IResultRenderer">result renderer</see> that render that generates a unlv file from
@@ -264,7 +273,10 @@ namespace Tesseract
         /// </summary>
         /// <param name="outputFilename">The path to the unlv file to be created without the file extension.</param>
         /// <returns></returns>
-        public static IResultRenderer CreateLSTMBoxRenderer(string outputFilename) => new LSTMBoxResultRenderer(outputFilename);
+        public static IResultRenderer CreateLSTMBoxRenderer(string outputFilename)
+        {
+            return new LSTMBoxResultRenderer(outputFilename);
+        }
 
         /// <summary>
         /// Creates a <see cref="IResultRenderer">result renderer</see> that render that generates a searchable pdf file
@@ -274,7 +286,10 @@ namespace Tesseract
         /// <param name="fontDirectory">The directory containing the pdf font data, normally same as your tessdata directory.</param>
         /// <param name="textonly">skip images if set</param>
         /// <returns></returns>
-        public static IResultRenderer CreatePdfRenderer(string outputFilename, string fontDirectory, bool textonly) => new PdfResultRenderer(outputFilename, fontDirectory, textonly);
+        public static IResultRenderer CreatePdfRenderer(string outputFilename, string fontDirectory, bool textonly)
+        {
+            return new PdfResultRenderer(outputFilename, fontDirectory, textonly);
+        }
 
         /// <summary>
         /// Creates renderers for specified output formats.
@@ -344,7 +359,10 @@ namespace Tesseract
         /// </summary>
         /// <param name="outputFilename">The path to the text file to be generated without the file extension.</param>
         /// <returns></returns>
-        public static IResultRenderer CreateTextRenderer(string outputFilename) => new TextResultRenderer(outputFilename);
+        public static IResultRenderer CreateTextRenderer(string outputFilename)
+        {
+            return new TextResultRenderer(outputFilename);
+        }
 
         /// <summary>
         /// Creates a <see cref="IResultRenderer">result renderer</see> that render that generates a Tsv file from
@@ -352,7 +370,10 @@ namespace Tesseract
         /// </summary>
         /// <param name="outputFilename">The path to the Tsv file to be created without the file extension.</param>
         /// <returns></returns>
-        public static IResultRenderer CreateTsvRenderer(string outputFilename) => new TsvResultRenderer(outputFilename);
+        public static IResultRenderer CreateTsvRenderer(string outputFilename)
+        {
+            return new TsvResultRenderer(outputFilename);
+        }
 
         /// <summary>
         /// Creates a <see cref="IResultRenderer">result renderer</see> that render that generates a unlv file from
@@ -360,7 +381,10 @@ namespace Tesseract
         /// </summary>
         /// <param name="outputFilename">The path to the unlv file to be created without the file extension.</param>
         /// <returns></returns>
-        public static IResultRenderer CreateUnlvRenderer(string outputFilename) => new UnlvResultRenderer(outputFilename);
+        public static IResultRenderer CreateUnlvRenderer(string outputFilename)
+        {
+            return new UnlvResultRenderer(outputFilename);
+        }
 
         /// <summary>
         /// Creates a <see cref="IResultRenderer">result renderer</see> that render that generates a unlv file from
@@ -368,7 +392,10 @@ namespace Tesseract
         /// </summary>
         /// <param name="outputFilename">The path to the unlv file to be created without the file extension.</param>
         /// <returns></returns>
-        public static IResultRenderer CreateWordStrBoxRenderer(string outputFilename) => new WordStrBoxResultRenderer(outputFilename);
+        public static IResultRenderer CreateWordStrBoxRenderer(string outputFilename)
+        {
+            return new WordStrBoxResultRenderer(outputFilename);
+        }
 
         #endregion Factory Methods
     }

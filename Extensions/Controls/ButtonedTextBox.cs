@@ -33,7 +33,7 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
     public new ICommand Copy { get; } = new RoutedCommand();
 
     public Visibility CopyButtonVisibility {
-        get { return copyButtonVisibility; }
+        get => copyButtonVisibility;
 
         set {
             if (copyButtonVisibility != value)
@@ -44,12 +44,12 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         }
     }
 
-    public string Description { get { return (string)GetValue(DescriptionProperty); } set { SetValue(DescriptionProperty, value); } }
+    public string Description { get => (string)GetValue(DescriptionProperty); set => SetValue(DescriptionProperty, value); }
 
     public ICommand Open { get; } = new RoutedCommand();
 
     public Visibility OpenButtonVisibility {
-        get { return openButtonVisibility; }
+        get => openButtonVisibility;
 
         set {
             if (openButtonVisibility != value)
@@ -63,7 +63,7 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
     public new ICommand Paste { get; } = new RoutedCommand();
 
     public Visibility PasteButtonVisibility {
-        get { return pasteButtonVisibility; }
+        get => pasteButtonVisibility;
 
         set {
             if (pasteButtonVisibility != value)
@@ -77,7 +77,7 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
     public ICommand Reset { get; } = new RoutedCommand();
 
     public Visibility ResetButtonVisibility {
-        get { return resetButtonVisibility; }
+        get => resetButtonVisibility;
 
         set {
             if (resetButtonVisibility != value)
@@ -88,7 +88,10 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         }
     }
 
-    protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    protected virtual void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
 
     private Visibility copyButtonVisibility = Visibility.Visible;
 
@@ -106,7 +109,10 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         }
     }
 
-    private void CopyCommand(object sender, ExecutedRoutedEventArgs e) => Clipboard.SetText(Text);
+    private void CopyCommand(object sender, ExecutedRoutedEventArgs e)
+    {
+        Clipboard.SetText(Text);
+    }
 
     private void OpenCommand(object sender, ExecutedRoutedEventArgs e)
     {
@@ -128,7 +134,13 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         }
     }
 
-    private void PasteCommand(object sender, ExecutedRoutedEventArgs e) => Text = Clipboard.GetText();
+    private void PasteCommand(object sender, ExecutedRoutedEventArgs e)
+    {
+        Text = Clipboard.GetText();
+    }
 
-    private void ResetCommand(object sender, ExecutedRoutedEventArgs e) => Text = string.Empty;
+    private void ResetCommand(object sender, ExecutedRoutedEventArgs e)
+    {
+        Text = string.Empty;
+    }
 }

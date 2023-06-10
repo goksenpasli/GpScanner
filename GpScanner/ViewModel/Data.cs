@@ -8,7 +8,7 @@ public class Data : InpcBase
 {
     [XmlAttribute(AttributeName = "FileContent")]
     public string FileContent {
-        get { return fileContent; }
+        get => fileContent;
 
         set {
             if (fileContent != value)
@@ -21,7 +21,7 @@ public class Data : InpcBase
 
     [XmlAttribute(AttributeName = "FileName")]
     public string FileName {
-        get { return fileName; }
+        get => fileName;
 
         set {
             if (fileName != value)
@@ -34,7 +34,7 @@ public class Data : InpcBase
 
     [XmlAttribute(AttributeName = "Id")]
     public int Id {
-        get { return ıd; }
+        get => ıd;
 
         set {
             if (ıd != value)
@@ -47,7 +47,7 @@ public class Data : InpcBase
 
     [XmlAttribute(AttributeName = "QrData")]
     public string QrData {
-        get { return qrData; }
+        get => qrData;
 
         set {
             if (qrData != value)

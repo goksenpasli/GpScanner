@@ -5,7 +5,10 @@ namespace Tesseract.Internal.InteropDotNet
 {
     internal class WindowsLibraryLoaderLogic : ILibraryLoaderLogic
     {
-        public string FixUpLibraryName(string fileName) => !string.IsNullOrEmpty(fileName) && !fileName.EndsWith(".dll", StringComparison.OrdinalIgnoreCase) ? $"{fileName}.dll" : fileName;
+        public string FixUpLibraryName(string fileName)
+        {
+            return !string.IsNullOrEmpty(fileName) && !fileName.EndsWith(".dll", StringComparison.OrdinalIgnoreCase) ? $"{fileName}.dll" : fileName;
+        }
 
         public bool FreeLibrary(IntPtr libraryHandle)
         {
@@ -107,7 +110,10 @@ namespace Tesseract.Internal.InteropDotNet
         ThrowOnUnmappableChar = true)]
         private static extern bool WindowsFreeLibrary(IntPtr handle);
 
-        private static int WindowsGetLastError() => Marshal.GetLastWin32Error();
+        private static int WindowsGetLastError()
+        {
+            return Marshal.GetLastWin32Error();
+        }
 
         [DllImport("kernel32", EntryPoint = "GetProcAddress", CallingConvention = CallingConvention.Winapi, SetLastError = true)]
         private static extern IntPtr WindowsGetProcAddress(IntPtr handle, string procedureName);

@@ -58,7 +58,7 @@ public class DocumentViewerModel : InpcBase
     public ICommand Back { get; }
 
     public IEnumerable<string> DirectoryAllPdfFiles {
-        get { return directoryAllPdfFiles; }
+        get => directoryAllPdfFiles;
 
         set {
             if (directoryAllPdfFiles != value)
@@ -72,7 +72,7 @@ public class DocumentViewerModel : InpcBase
     public ICommand Forward { get; }
 
     public byte[] ImgData {
-        get { return ımgData; }
+        get => ımgData;
 
         set {
             if (ımgData != value)
@@ -84,7 +84,7 @@ public class DocumentViewerModel : InpcBase
     }
 
     public int Index {
-        get { return ındex; }
+        get => ındex;
 
         set {
             if (ındex != value)
@@ -96,7 +96,7 @@ public class DocumentViewerModel : InpcBase
     }
 
     public string OcrText {
-        get { return ocrText; }
+        get => ocrText;
 
         set {
             if (ocrText != value)
@@ -108,7 +108,7 @@ public class DocumentViewerModel : InpcBase
     }
 
     public string PdfFileContent {
-        get { return string.Join(" ", GpScannerViewModel.DataYükle()?.Where(z => z.FileName == PdfFilePath).Select(z => z.FileContent)); }
+        get => string.Join(" ", GpScannerViewModel.DataYükle()?.Where(z => z.FileName == PdfFilePath).Select(z => z.FileContent));
 
         set {
             if (pdfFileContent != value)
@@ -120,7 +120,7 @@ public class DocumentViewerModel : InpcBase
     }
 
     public string PdfFilePath {
-        get { return pdfFilePath; }
+        get => pdfFilePath;
 
         set {
             if (pdfFilePath != value)
@@ -134,7 +134,7 @@ public class DocumentViewerModel : InpcBase
     }
 
     public Scanner Scanner {
-        get { return scanner; }
+        get => scanner;
 
         set {
             if (scanner != value)
@@ -146,7 +146,7 @@ public class DocumentViewerModel : InpcBase
     }
 
     public string Title {
-        get { return Path.GetFileName(PdfFilePath); }
+        get => Path.GetFileName(PdfFilePath);
 
         set {
             if (title != value)

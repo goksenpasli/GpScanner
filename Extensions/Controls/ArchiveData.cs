@@ -5,7 +5,7 @@ namespace Extensions;
 public class ArchiveData : InpcBase
 {
     public long Boyut {
-        get { return boyut; }
+        get => boyut;
 
         set {
             if (boyut != value)
@@ -17,7 +17,7 @@ public class ArchiveData : InpcBase
     }
 
     public string DosyaAdı {
-        get { return dosyaAdı; }
+        get => dosyaAdı;
 
         set {
             if (dosyaAdı != value)
@@ -29,7 +29,7 @@ public class ArchiveData : InpcBase
     }
 
     public DateTime DüzenlenmeZamanı {
-        get { return düzenlenmeZamanı; }
+        get => düzenlenmeZamanı;
 
         set {
             if (düzenlenmeZamanı != value)
@@ -41,7 +41,7 @@ public class ArchiveData : InpcBase
     }
 
     public double Oran {
-        get { return oran; }
+        get => oran;
 
         set {
             if (oran != value)
@@ -53,7 +53,7 @@ public class ArchiveData : InpcBase
     }
 
     public long SıkıştırılmışBoyut {
-        get { return sıkıştırılmışBoyut; }
+        get => sıkıştırılmışBoyut;
 
         set {
             if (sıkıştırılmışBoyut != value)
@@ -65,7 +65,7 @@ public class ArchiveData : InpcBase
     }
 
     public string TamYol {
-        get { return tamYol; }
+        get => tamYol;
 
         set {
             if (tamYol != value)

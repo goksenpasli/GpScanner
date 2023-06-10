@@ -15,7 +15,7 @@ namespace TwainWpf
         }
 
         public float Bottom {
-            get { return _bottom; }
+            get => _bottom;
 
             private set {
                 _bottom = value;
@@ -24,7 +24,7 @@ namespace TwainWpf
         }
 
         public float Left {
-            get { return _left; }
+            get => _left;
 
             private set {
                 _left = value;
@@ -33,7 +33,7 @@ namespace TwainWpf
         }
 
         public float Right {
-            get { return _right; }
+            get => _right;
 
             private set {
                 _right = value;
@@ -42,7 +42,7 @@ namespace TwainWpf
         }
 
         public float Top {
-            get { return _top; }
+            get => _top;
 
             private set {
                 _top = value;
@@ -51,7 +51,7 @@ namespace TwainWpf
         }
 
         public Units Units {
-            get { return _units; }
+            get => _units;
 
             set {
                 _units = value;
@@ -75,7 +75,10 @@ namespace TwainWpf
         {
         };
 
-        protected void OnPropertyChanged(string propertyName) => PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         #endregion INotifyPropertyChanged Members
     }

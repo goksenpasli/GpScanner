@@ -14,7 +14,7 @@ namespace QrCode;
 public class QrCode : InpcBase
 {
     public ResultPoint[] BarcodePosition {
-        get { return barcodePosition; }
+        get => barcodePosition;
 
         set {
             if (barcodePosition != value)

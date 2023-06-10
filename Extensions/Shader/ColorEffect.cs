@@ -52,15 +52,15 @@ public class ColorEffect : ShaderEffect
         UpdateShaderValue(BlueProperty);
     }
 
-    public double Blue { get { return (double)GetValue(BlueProperty); } set { SetValue(BlueProperty, value); } }
+    public double Blue { get => (double)GetValue(BlueProperty); set => SetValue(BlueProperty, value); }
 
-    public double Brightness { get { return (double)GetValue(BrightnessProperty); } set { SetValue(BrightnessProperty, value); } }
+    public double Brightness { get => (double)GetValue(BrightnessProperty); set => SetValue(BrightnessProperty, value); }
 
-    public double Contrast { get { return (double)GetValue(ContrastProperty); } set { SetValue(ContrastProperty, value); } }
+    public double Contrast { get => (double)GetValue(ContrastProperty); set => SetValue(ContrastProperty, value); }
 
-    public double Green { get { return (double)GetValue(GreenProperty); } set { SetValue(GreenProperty, value); } }
+    public double Green { get => (double)GetValue(GreenProperty); set => SetValue(GreenProperty, value); }
 
-    public Brush Input { get { return (Brush)GetValue(InputProperty); } set { SetValue(InputProperty, value); } }
+    public Brush Input { get => (Brush)GetValue(InputProperty); set => SetValue(InputProperty, value); }
 
-    public double Red { get { return (double)GetValue(RedProperty); } set { SetValue(RedProperty, value); } }
+    public double Red { get => (double)GetValue(RedProperty); set => SetValue(RedProperty, value); }
 }

@@ -48,10 +48,10 @@ public partial class ArchiveViewer : UserControl, INotifyPropertyChanged
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public string ArchivePath { get { return (string)GetValue(ArchivePathProperty); } set { SetValue(ArchivePathProperty, value); } }
+    public string ArchivePath { get => (string)GetValue(ArchivePathProperty); set => SetValue(ArchivePathProperty, value); }
 
     public ObservableCollection<ArchiveData> Arşivİçerik {
-        get { return arşivİçerik; }
+        get => arşivİçerik;
 
         set {
             if (arşivİçerik != value)
@@ -65,7 +65,7 @@ public partial class ArchiveViewer : UserControl, INotifyPropertyChanged
     public ICommand ArşivTekDosyaÇıkar { get; }
 
     public double ToplamOran {
-        get { return toplamOran; }
+        get => toplamOran;
 
         set {
             toplamOran = value;
@@ -73,7 +73,10 @@ public partial class ArchiveViewer : UserControl, INotifyPropertyChanged
         }
     }
 
-    protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    protected virtual void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
 
     private static double toplamOran;
 

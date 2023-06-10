@@ -34,17 +34,17 @@ public class SplitButton : ButtonBase
         DefaultStyleKeyProperty.OverrideMetadata(typeof(SplitButton), new FrameworkPropertyMetadata(typeof(SplitButton)));
     }
 
-    public double ContentHorizontalOffset { get { return (double)GetValue(ContentHorizontalOffsetProperty); } set { SetValue(ContentHorizontalOffsetProperty, value); } }
+    public double ContentHorizontalOffset { get => (double)GetValue(ContentHorizontalOffsetProperty); set => SetValue(ContentHorizontalOffsetProperty, value); }
 
-    public double ContentVerticalOffset { get { return (double)GetValue(ContentVerticalOffsetProperty); } set { SetValue(ContentVerticalOffsetProperty, value); } }
+    public double ContentVerticalOffset { get => (double)GetValue(ContentVerticalOffsetProperty); set => SetValue(ContentVerticalOffsetProperty, value); }
 
-    public object InternalContent { get { return GetValue(InternalContentProperty); } set { SetValue(InternalContentProperty, value); } }
+    public object InternalContent { get => GetValue(InternalContentProperty); set => SetValue(InternalContentProperty, value); }
 
-    public bool IsSplitPartOpen { get { return (bool)GetValue(IsSplitPartOpenProperty); } set { SetValue(IsSplitPartOpenProperty, value); } }
+    public bool IsSplitPartOpen { get => (bool)GetValue(IsSplitPartOpenProperty); set => SetValue(IsSplitPartOpenProperty, value); }
 
-    public PlacementMode PlacementMode { get { return (PlacementMode)GetValue(PlacementModeProperty); } set { SetValue(PlacementModeProperty, value); } }
+    public PlacementMode PlacementMode { get => (PlacementMode)GetValue(PlacementModeProperty); set => SetValue(PlacementModeProperty, value); }
 
-    public bool SplitContentPartIsEnabled { get { return (bool)GetValue(SplitContentPartIsEnabledProperty); } set { SetValue(SplitContentPartIsEnabledProperty, value); } }
+    public bool SplitContentPartIsEnabled { get => (bool)GetValue(SplitContentPartIsEnabledProperty); set => SetValue(SplitContentPartIsEnabledProperty, value); }
 
-    public bool StayOpen { get { return (bool)GetValue(StayOpenProperty); } set { SetValue(StayOpenProperty, value); } }
+    public bool StayOpen { get => (bool)GetValue(StayOpenProperty); set => SetValue(StayOpenProperty, value); }
 }

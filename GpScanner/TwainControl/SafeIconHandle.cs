@@ -17,7 +17,10 @@ namespace TwainControl
             [return: MarshalAs(UnmanagedType.Bool)]
             internal static extern bool DestroyIcon([In] IntPtr hIcon);
 
-            protected override bool ReleaseHandle() => DestroyIcon(handle);
+            protected override bool ReleaseHandle()
+            {
+                return DestroyIcon(handle);
+            }
 
             private SafeIconHandle() : base(true)
             {

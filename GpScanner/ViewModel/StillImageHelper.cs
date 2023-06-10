@@ -182,7 +182,10 @@ public static class StillImageHelper
 
     private static bool _serverRunning;
 
-    private static string GetPipeName(Process process) => string.Format(PIPE_NAME_FORMAT, process.Id);
+    private static string GetPipeName(Process process)
+    {
+        return string.Format(PIPE_NAME_FORMAT, process.Id);
+    }
 
     private class StreamString
     {

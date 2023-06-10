@@ -15,7 +15,7 @@ namespace TwainWpf
         /// <c>true</c> if [automatic border detection]; otherwise, <c>false</c>.
         /// </value>
         public bool AutomaticBorderDetection {
-            get { return _automaticBorderDetection; }
+            get => _automaticBorderDetection;
 
             set {
                 if (value != _automaticBorderDetection)
@@ -31,7 +31,7 @@ namespace TwainWpf
         /// </summary>
         /// <value><c>true</c> if [automatic deskew]; otherwise, <c>false</c>.</value>
         public bool AutomaticDeskew {
-            get { return _automaticDeskew; }
+            get => _automaticDeskew;
 
             set {
                 if (value != _automaticDeskew)
@@ -47,7 +47,7 @@ namespace TwainWpf
         /// </summary>
         /// <value><c>true</c> if [automatic rotate]; otherwise, <c>false</c>.</value>
         public bool AutomaticRotate {
-            get { return _automaticRotate; }
+            get => _automaticRotate;
 
             set {
                 if (value != _automaticRotate)
@@ -63,7 +63,7 @@ namespace TwainWpf
         /// </summary>
         /// <value>The flip side rotation.</value>
         public FlipRotation FlipSideRotation {
-            get { return _flipSideRotation; }
+            get => _flipSideRotation;
 
             set {
                 if (value != _flipSideRotation)
@@ -88,7 +88,10 @@ namespace TwainWpf
         {
         };
 
-        protected void OnPropertyChanged(string propertyName) => PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         #endregion INotifyPropertyChanged Members
     }

@@ -89,12 +89,12 @@ public class Compressor : Control, INotifyPropertyChanged
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public bool BlackAndWhite { get { return (bool)GetValue(BlackAndWhiteProperty); } set { SetValue(BlackAndWhiteProperty, value); } }
+    public bool BlackAndWhite { get => (bool)GetValue(BlackAndWhiteProperty); set => SetValue(BlackAndWhiteProperty, value); }
 
     public RelayCommand<object> CompressFile { get; }
 
     public double CompressionProgress {
-        get { return compressionProgress; }
+        get => compressionProgress;
 
         set {
             if (compressionProgress != value)
@@ -105,15 +105,15 @@ public class Compressor : Control, INotifyPropertyChanged
         }
     }
 
-    public int Dpi { get { return (int)GetValue(DpiProperty); } set { SetValue(DpiProperty, value); } }
+    public int Dpi { get => (int)GetValue(DpiProperty); set => SetValue(DpiProperty, value); }
 
-    public string LoadedPdfPath { get { return (string)GetValue(LoadedPdfPathProperty); } set { SetValue(LoadedPdfPathProperty, value); } }
+    public string LoadedPdfPath { get => (string)GetValue(LoadedPdfPathProperty); set => SetValue(LoadedPdfPathProperty, value); }
 
     public RelayCommand<object> OpenFile { get; }
 
-    public int Quality { get { return (int)GetValue(QualityProperty); } set { SetValue(QualityProperty, value); } }
+    public int Quality { get => (int)GetValue(QualityProperty); set => SetValue(QualityProperty, value); }
 
-    public bool UseMozJpeg { get { return (bool)GetValue(UseMozJpegProperty); } set { SetValue(UseMozJpegProperty, value); } }
+    public bool UseMozJpeg { get => (bool)GetValue(UseMozJpegProperty); set => SetValue(UseMozJpegProperty, value); }
 
     public static Bitmap BitmapSourceToBitmap(BitmapSource bitmapsource)
     {
@@ -263,7 +263,10 @@ public class Compressor : Control, INotifyPropertyChanged
         return document;
     }
 
-    protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    protected virtual void OnPropertyChanged(string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
 
     private double compressionProgress;
 

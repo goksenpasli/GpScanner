@@ -197,8 +197,10 @@ public static class BitmapMethods
         return deskew ? BitmapFrame.Create(skewedimage) : BitmapFrame.Create(image);
     }
 
-    public static ObservableCollection<Paper> GetPapers() => new ObservableCollection<Paper>
-        {
+    public static ObservableCollection<Paper> GetPapers()
+    {
+        return new()
+    {
             new() { Height = 119, PaperType = "A0", Width = 84.1 },
             new() { Height = 84.1, PaperType = "A1", Width = 59.5 },
             new() { Height = 59.5, PaperType = "A2", Width = 42 },
@@ -215,6 +217,7 @@ public static class BitmapMethods
             new() { Height = 35.6, PaperType = "Legal", Width = 21.6 },
             new() { Height = 26.7, PaperType = "Executive", Width = 18.4 }
         };
+    }
 
     public static WriteableBitmap InvertBitmap(this BitmapSource bitmap)
     {

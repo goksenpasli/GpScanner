@@ -5,7 +5,7 @@ namespace TwainControl;
 public class PdfData : InpcBase
 {
     public int PageNumber {
-        get { return pageNumber; }
+        get => pageNumber;
 
         set {
             if (pageNumber != value)
@@ -17,7 +17,7 @@ public class PdfData : InpcBase
     }
 
     public bool Selected {
-        get { return selected; }
+        get => selected;
 
         set {
             if (selected != value)

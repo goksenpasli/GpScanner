@@ -28,7 +28,7 @@ public class PageRangeDocumentPaginator : DocumentPaginator
 
     public override int PageCount => _startIndex > _paginator.PageCount - 1 || _startIndex > _endIndex ? 0 : _endIndex - _startIndex + 1;
 
-    public override Size PageSize { get { return _paginator.PageSize; } set { _paginator.PageSize = value; } }
+    public override Size PageSize { get => _paginator.PageSize; set => _paginator.PageSize = value; }
 
     public override IDocumentPaginatorSource Source => _paginator.Source;
 
@@ -79,7 +79,7 @@ public partial class XpsViewer : UserControl, INotifyPropertyChanged
     public event PropertyChangedEventHandler PropertyChanged;
 
     public IDocumentPaginatorSource Document {
-        get { return document; }
+        get => document;
 
         set {
             if (document != value)
@@ -90,9 +90,12 @@ public partial class XpsViewer : UserControl, INotifyPropertyChanged
         }
     }
 
-    public string XpsDataFilePath { get { return (string)GetValue(XpsDataFilePathProperty); } set { SetValue(XpsDataFilePathProperty, value); } }
+    public string XpsDataFilePath { get => (string)GetValue(XpsDataFilePathProperty); set => SetValue(XpsDataFilePathProperty, value); }
 
-    protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    protected virtual void OnPropertyChanged(string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
 
     private IDocumentPaginatorSource document;
 

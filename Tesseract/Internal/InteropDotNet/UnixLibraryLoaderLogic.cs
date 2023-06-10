@@ -23,7 +23,10 @@ namespace Tesseract.Internal.InteropDotNet
             return fileName;
         }
 
-        public bool FreeLibrary(IntPtr libraryHandle) => UnixFreeLibrary(libraryHandle) != 0;
+        public bool FreeLibrary(IntPtr libraryHandle)
+        {
+            return UnixFreeLibrary(libraryHandle) != 0;
+        }
 
         public IntPtr GetProcAddress(IntPtr libraryHandle, string functionName)
         {

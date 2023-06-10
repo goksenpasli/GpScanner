@@ -426,18 +426,24 @@ public static class PdfGeneration
         return Task.FromResult(document);
     }
 
-    public static string GetPdfScanPath() => GetSaveFolder().SetUniqueFile(Scanner.SaveFileName, "pdf");
-
-    public static double[] GetPdfTextLayout(PdfPage page) => Scanner.Layout switch
+    public static string GetPdfScanPath()
     {
-        PdfPageLayout.Left => new double[] { 30, 30 },
-        PdfPageLayout.Middle => new[] { page.Width / 2, 30 },
-        PdfPageLayout.Right => new[] { page.Width - 30, 30 },
-        PdfPageLayout.LeftBottom => new[] { 30, page.Height - 30 },
-        PdfPageLayout.MiddleBottom => new[] { page.Width / 2, page.Height - 30 },
-        PdfPageLayout.RightBottom => new[] { page.Width - 30, page.Height - 30 },
-        _ => new double[] { 0, 0 }
-    };
+        return GetSaveFolder().SetUniqueFile(Scanner.SaveFileName, "pdf");
+    }
+
+    public static double[] GetPdfTextLayout(PdfPage page)
+    {
+        return Scanner.Layout switch
+        {
+            PdfPageLayout.Left => new double[] { 30, 30 },
+            PdfPageLayout.Middle => new[] { page.Width / 2, 30 },
+            PdfPageLayout.Right => new[] { page.Width - 30, 30 },
+            PdfPageLayout.LeftBottom => new[] { 30, page.Height - 30 },
+            PdfPageLayout.MiddleBottom => new[] { page.Width / 2, page.Height - 30 },
+            PdfPageLayout.RightBottom => new[] { page.Width - 30, page.Height - 30 },
+            _ => new double[] { 0, 0 }
+        };
+    }
 
     public static string GetSaveFolder()
     {
@@ -493,7 +499,10 @@ public static class PdfGeneration
         }
     }
 
-    public static void SetPaperSize(this Paper paper, PdfPage page) => page.Size = paper == null || !paperSizes.TryGetValue(paper.PaperType, out PageSize pageSize) ? PageSize.A4 : pageSize;
+    public static void SetPaperSize(this Paper paper, PdfPage page)
+    {
+        page.Size = paper == null || !paperSizes.TryGetValue(paper.PaperType, out PageSize pageSize) ? PageSize.A4 : pageSize;
+    }
 
     private static readonly Dictionary<string, PageSize> paperSizes = new()
     {
@@ -514,7 +523,10 @@ public static class PdfGeneration
         { "Executive", PageSize.Executive }
     };
 
-    private static XRect AdjustBounds(this Rect rect, double hAdjust, double vAdjust) => new XRect(rect.X * hAdjust, rect.Y * vAdjust, rect.Width * hAdjust, rect.Height * vAdjust);
+    private static XRect AdjustBounds(this Rect rect, double hAdjust, double vAdjust)
+    {
+        return new(rect.X * hAdjust, rect.Y * vAdjust, rect.Width * hAdjust, rect.Height * vAdjust);
+    }
 
     private static void ApplyPdfSecurity(this PdfDocument document)
     {

@@ -11,7 +11,7 @@ namespace PdfViewer;
 public sealed class PdfPageToThumbImageConverter : InpcBase, IMultiValueConverter
 {
     public int Dpi {
-        get { return dpi; }
+        get => dpi;
 
         set {
             if (dpi != value)
@@ -49,7 +49,10 @@ public sealed class PdfPageToThumbImageConverter : InpcBase, IMultiValueConverte
         return null;
     }
 
-    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => throw new NotImplementedException();
+    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
 
     private int dpi = 9;
 }

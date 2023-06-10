@@ -198,13 +198,13 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public double Angle { get { return (double)GetValue(AngleProperty); } set { SetValue(AngleProperty, value); } }
+    public double Angle { get => (double)GetValue(AngleProperty); set => SetValue(AngleProperty, value); }
 
-    public int DecodeHeight { get { return (int)GetValue(DecodeHeightProperty); } set { SetValue(DecodeHeightProperty, value); } }
+    public int DecodeHeight { get => (int)GetValue(DecodeHeightProperty); set => SetValue(DecodeHeightProperty, value); }
 
     [Browsable(false)]
     public TiffBitmapDecoder Decoder {
-        get { return decoder; }
+        get => decoder;
 
         set {
             if (decoder != value)
@@ -217,12 +217,12 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     public ICommand DosyaAç { get; set; }
 
-    public double Fov { get { return (double)GetValue(FovProperty); } set { SetValue(FovProperty, value); } }
+    public double Fov { get => (double)GetValue(FovProperty); set => SetValue(FovProperty, value); }
 
-    public string ImageFilePath { get { return (string)GetValue(ImageFilePathProperty); } set { SetValue(ImageFilePathProperty, value); } }
+    public string ImageFilePath { get => (string)GetValue(ImageFilePathProperty); set => SetValue(ImageFilePathProperty, value); }
 
     public Visibility OpenButtonVisibility {
-        get { return openButtonVisibility; }
+        get => openButtonVisibility;
 
         set {
             if (openButtonVisibility != value)
@@ -233,14 +233,14 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public FitImageOrientation Orientation { get { return (FitImageOrientation)GetValue(OrientationProperty); } set { SetValue(OrientationProperty, value); } }
+    public FitImageOrientation Orientation { get => (FitImageOrientation)GetValue(OrientationProperty); set => SetValue(OrientationProperty, value); }
 
-    public int OriginalPixelHeight { get { return (int)GetValue(OriginalPixelHeightProperty); } set { SetValue(OriginalPixelHeightProperty, value); } }
+    public int OriginalPixelHeight { get => (int)GetValue(OriginalPixelHeightProperty); set => SetValue(OriginalPixelHeightProperty, value); }
 
-    public int OriginalPixelWidth { get { return (int)GetValue(OriginalPixelWidthProperty); } set { SetValue(OriginalPixelWidthProperty, value); } }
+    public int OriginalPixelWidth { get => (int)GetValue(OriginalPixelWidthProperty); set => SetValue(OriginalPixelWidthProperty, value); }
 
     public Visibility OrijinalResimDosyaAçButtonVisibility {
-        get { return orijinalResimDosyaAçButtonVisibility; }
+        get => orijinalResimDosyaAçButtonVisibility;
 
         set {
             if (orijinalResimDosyaAçButtonVisibility != value)
@@ -253,7 +253,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     [Browsable(false)]
     public IEnumerable<int> Pages {
-        get { return pages; }
+        get => pages;
 
         set {
             if (pages != value)
@@ -265,7 +265,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
     }
 
     public Visibility PanoramaButtonVisibility {
-        get { return panoramaButtonVisibility; }
+        get => panoramaButtonVisibility;
 
         set {
             if (panoramaButtonVisibility != value)
@@ -276,10 +276,10 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public bool PanoramaMode { get { return (bool)GetValue(PanoramaModeProperty); } set { SetValue(PanoramaModeProperty, value); } }
+    public bool PanoramaMode { get => (bool)GetValue(PanoramaModeProperty); set => SetValue(PanoramaModeProperty, value); }
 
     public Visibility PrintButtonVisibility {
-        get { return printButtonVisibility; }
+        get => printButtonVisibility;
 
         set {
             if (printButtonVisibility != value)
@@ -292,12 +292,12 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     public ICommand Resize { get; set; }
 
-    public double RotateX { get { return (double)GetValue(RotateXProperty); } set { SetValue(RotateXProperty, value); } }
+    public double RotateX { get => (double)GetValue(RotateXProperty); set => SetValue(RotateXProperty, value); }
 
-    public double RotateY { get { return (double)GetValue(RotateYProperty); } set { SetValue(RotateYProperty, value); } }
+    public double RotateY { get => (double)GetValue(RotateYProperty); set => SetValue(RotateYProperty, value); }
 
     public int Sayfa {
-        get { return sayfa; }
+        get => sayfa;
 
         set {
             if (sayfa != value)
@@ -308,14 +308,14 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public bool SnapTick { get { return (bool)GetValue(SnapTickProperty); } set { SetValue(SnapTickProperty, value); } }
+    public bool SnapTick { get => (bool)GetValue(SnapTickProperty); set => SetValue(SnapTickProperty, value); }
 
-    public ImageSource Source { get { return (ImageSource)GetValue(SourceProperty); } set { SetValue(SourceProperty, value); } }
+    public ImageSource Source { get => (ImageSource)GetValue(SourceProperty); set => SetValue(SourceProperty, value); }
 
     public Geometry3D SphereModel { get; set; } = MediaViewer.CreateGeometry();
 
     public Visibility TifNavigasyonButtonEtkin {
-        get { return tifNavigasyonButtonEtkin; }
+        get => tifNavigasyonButtonEtkin;
 
         set {
             if (tifNavigasyonButtonEtkin != value)
@@ -327,7 +327,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
     }
 
     public bool ToolBarIsEnabled {
-        get { return toolBarIsEnabled; }
+        get => toolBarIsEnabled;
 
         set {
             if (toolBarIsEnabled != value)
@@ -338,7 +338,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public Visibility ToolBarVisibility { get { return (Visibility)GetValue(ToolBarVisibilityProperty); } set { SetValue(ToolBarVisibilityProperty, value); } }
+    public Visibility ToolBarVisibility { get => (Visibility)GetValue(ToolBarVisibilityProperty); set => SetValue(ToolBarVisibilityProperty, value); }
 
     public virtual ICommand ViewerBack { get; set; }
 
@@ -346,9 +346,11 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     public ICommand Yazdır { get; }
 
-    public double Zoom { get { return (double)GetValue(ZoomProperty); } set { SetValue(ZoomProperty, value); } }
+    public double Zoom { get => (double)GetValue(ZoomProperty); set => SetValue(ZoomProperty, value); }
 
-    public static async Task<BitmapImage> LoadImageAsync(string imagePath, int decodepixelheight = 0) => await Task.Run(
+    public static async Task<BitmapImage> LoadImageAsync(string imagePath, int decodepixelheight = 0)
+    {
+        return await Task.Run(
             () =>
             {
                 BitmapImage image = new();
@@ -365,6 +367,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
                 return image;
             });
+    }
 
     public void Dispose()
     {
@@ -411,7 +414,10 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    protected virtual void OnPropertyChanged(string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
 
     private bool _isOnDrag;
 
@@ -471,7 +477,9 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    private static async Task<int[]> GetImagePixelSizeAsync(string filepath) => await Task.Run(
+    private static async Task<int[]> GetImagePixelSizeAsync(string filepath)
+    {
+        return await Task.Run(
             () =>
             {
                 BitmapDecoder bitmapframe = BitmapDecoder.Create(
@@ -480,6 +488,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
                     BitmapCacheOption.None);
                 return new[] { bitmapframe.Frames[0].PixelHeight, bitmapframe.Frames[0].PixelWidth };
             });
+    }
 
     private static async void ImageFilePathChangedAsync(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -587,7 +596,10 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         _startRotateY = RotateY;
     }
 
-    private void Viewport3D_MouseLeftButtonUp(object sender, MouseButtonEventArgs e) => _isOnDrag = false;
+    private void Viewport3D_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    {
+        _isOnDrag = false;
+    }
 
     private void Viewport3D_MouseMove(object sender, MouseEventArgs e)
     {
@@ -599,5 +611,8 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    private void Viewport3D_MouseWheel(object sender, MouseWheelEventArgs e) => Fov -= e.Delta / 100d;
+    private void Viewport3D_MouseWheel(object sender, MouseWheelEventArgs e)
+    {
+        Fov -= e.Delta / 100d;
+    }
 }

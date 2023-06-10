@@ -248,7 +248,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
     public ICommand BlackAndWhiteImage { get; }
 
     public double BorderSize {
-        get { return borderSize; }
+        get => borderSize;
 
         set {
             if (borderSize != value)
@@ -260,7 +260,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
     }
 
     public bool CompressImage {
-        get { return compressImage; }
+        get => compressImage;
 
         set {
             if (compressImage != value)
@@ -284,7 +284,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
     public ICommand ResetCroppedImage { get; }
 
     public bool ResizeRatioImage {
-        get { return resizeRatioImage; }
+        get => resizeRatioImage;
 
         set {
             if (resizeRatioImage != value)
@@ -302,7 +302,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
     public ICommand SplitImage { get; }
 
     public double ToolBoxPdfMergeProgressValue {
-        get { return toolBoxPdfMergeProgressValue; }
+        get => toolBoxPdfMergeProgressValue;
 
         set {
             if (toolBoxPdfMergeProgressValue != value)
@@ -377,7 +377,10 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
         return croppedBitmaps;
     }
 
-    protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    protected virtual void OnPropertyChanged(string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
 
     private double borderSize;
 

@@ -47,7 +47,10 @@ namespace TwainWpf
                 : basicValue.RawBasicValue;
         }
 
-        public static short SetCapability(Capabilities capability, short value, Identity applicationId, Identity sourceId) => (short)SetBasicCapability(capability, value, TwainType.Int16, applicationId, sourceId);
+        public static short SetCapability(Capabilities capability, short value, Identity applicationId, Identity sourceId)
+        {
+            return (short)SetBasicCapability(capability, value, TwainType.Int16, applicationId, sourceId);
+        }
 
         public static void SetCapability(Capabilities capability, bool value, Identity applicationId, Identity sourceId)
         {
@@ -97,9 +100,15 @@ namespace TwainWpf
             return new BasicCapabilityResult() { RawBasicValue = oneValue.Value };
         }
 
-        public void SetValue(short value) => SetValue<short>(value);
+        public void SetValue(short value)
+        {
+            SetValue<short>(value);
+        }
 
-        protected ConditionCode GetStatus() => DataSourceManager.GetConditionCode(_applicationId, _sourceId);
+        protected ConditionCode GetStatus()
+        {
+            return DataSourceManager.GetConditionCode(_applicationId, _sourceId);
+        }
 
         protected void SetValue<T>(T value)
         {

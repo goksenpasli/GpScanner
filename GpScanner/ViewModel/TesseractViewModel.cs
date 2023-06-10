@@ -193,8 +193,10 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    private ObservableCollection<TesseractOcrData> TesseractDownloadData() => new ObservableCollection<TesseractOcrData>
-        {
+    private ObservableCollection<TesseractOcrData> TesseractDownloadData()
+    {
+        return new()
+    {
             new TesseractOcrData { OcrName = "afr.traineddata", IsVisible = Visibility.Visible },
             new TesseractOcrData { OcrName = "amh.traineddata" },
             new TesseractOcrData { OcrName = "ara.traineddata" },
@@ -323,6 +325,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
             new TesseractOcrData { OcrName = "yid.traineddata" },
             new TesseractOcrData { OcrName = "yor.traineddata" }
         };
+    }
 
     private void TesseractViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {

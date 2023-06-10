@@ -20,11 +20,9 @@ namespace Tesseract
         public int FreeCount => LeptonicaApi.Native.pixcmapGetFreeCount(Handle);
 
         public PixColor this[int index] {
-            get {
-                return LeptonicaApi.Native.pixcmapGetColor32(Handle, index, out int color) == 0
+            get => LeptonicaApi.Native.pixcmapGetColor32(Handle, index, out int color) == 0
                     ? PixColor.FromRgb((uint)color)
                     : throw new InvalidOperationException("Failed to retrieve color.");
-            }
 
             set {
                 if (LeptonicaApi.Native.pixcmapResetColor(Handle, index, value.Red, value.Green, value.Blue) != 0)
@@ -72,13 +70,25 @@ namespace Tesseract
             return handle == IntPtr.Zero ? throw new InvalidOperationException("Failed to create colormap.") : new PixColormap(handle);
         }
 
-        public bool AddBlackOrWhite(int color, out int index) => LeptonicaApi.Native.pixcmapAddBlackOrWhite(Handle, color, out index) == 0;
+        public bool AddBlackOrWhite(int color, out int index)
+        {
+            return LeptonicaApi.Native.pixcmapAddBlackOrWhite(Handle, color, out index) == 0;
+        }
 
-        public bool AddColor(PixColor color) => LeptonicaApi.Native.pixcmapAddColor(Handle, color.Red, color.Green, color.Blue) == 0;
+        public bool AddColor(PixColor color)
+        {
+            return LeptonicaApi.Native.pixcmapAddColor(Handle, color.Red, color.Green, color.Blue) == 0;
+        }
 
-        public bool AddNearestColor(PixColor color, out int index) => LeptonicaApi.Native.pixcmapAddNearestColor(Handle, color.Red, color.Green, color.Blue, out index) == 0;
+        public bool AddNearestColor(PixColor color, out int index)
+        {
+            return LeptonicaApi.Native.pixcmapAddNearestColor(Handle, color.Red, color.Green, color.Blue, out index) == 0;
+        }
 
-        public bool AddNewColor(PixColor color, out int index) => LeptonicaApi.Native.pixcmapAddNewColor(Handle, color.Red, color.Green, color.Blue, out index) == 0;
+        public bool AddNewColor(PixColor color, out int index)
+        {
+            return LeptonicaApi.Native.pixcmapAddNewColor(Handle, color.Red, color.Green, color.Blue, out index) == 0;
+        }
 
         public void Clear()
         {
@@ -95,11 +105,17 @@ namespace Tesseract
             Handle = new HandleRef(this, IntPtr.Zero);
         }
 
-        public bool IsUsableColor(PixColor color) => LeptonicaApi.Native.pixcmapUsableColor(Handle, color.Red, color.Green, color.Blue, out int usable) == 0
+        public bool IsUsableColor(PixColor color)
+        {
+            return LeptonicaApi.Native.pixcmapUsableColor(Handle, color.Red, color.Green, color.Blue, out int usable) == 0
                 ? usable == 1
                 : throw new InvalidOperationException("Failed to detect if color was usable or not.");
+        }
 
-        public bool SetBlackOrWhite(bool setBlack, bool setWhite) => LeptonicaApi.Native.pixcmapSetBlackAndWhite(Handle, setBlack ? 1 : 0, setWhite ? 1 : 0) == 0;
+        public bool SetBlackOrWhite(bool setBlack, bool setWhite)
+        {
+            return LeptonicaApi.Native.pixcmapSetBlackAndWhite(Handle, setBlack ? 1 : 0, setWhite ? 1 : 0) == 0;
+        }
 
         internal PixColormap(IntPtr handle)
         { Handle = new HandleRef(this, handle); }

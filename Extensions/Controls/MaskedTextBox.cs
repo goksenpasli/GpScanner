@@ -68,25 +68,25 @@ public class MaskedTextBox : TextBox
         _ = CommandBindings.Add(new CommandBinding(ApplicationCommands.Cut, null, CanCut));
     }
 
-    public event RoutedPropertyChangedEventHandler<object> ValueChanged { add { AddHandler(ValueChangedEvent, value); } remove { RemoveHandler(ValueChangedEvent, value); } }
+    public event RoutedPropertyChangedEventHandler<object> ValueChanged { add => AddHandler(ValueChangedEvent, value); remove => RemoveHandler(ValueChangedEvent, value); }
 
-    public Visibility ClearButtonVisibility { get { return (Visibility)GetValue(ClearButtonVisibilityProperty); } set { SetValue(ClearButtonVisibilityProperty, value); } }
+    public Visibility ClearButtonVisibility { get => (Visibility)GetValue(ClearButtonVisibilityProperty); set => SetValue(ClearButtonVisibilityProperty, value); }
 
-    public bool IncludeLiterals { get { return (bool)GetValue(IncludeLiteralsProperty); } set { SetValue(IncludeLiteralsProperty, value); } }
+    public bool IncludeLiterals { get => (bool)GetValue(IncludeLiteralsProperty); set => SetValue(IncludeLiteralsProperty, value); }
 
-    public bool IncludePrompt { get { return (bool)GetValue(IncludePromptProperty); } set { SetValue(IncludePromptProperty, value); } }
+    public bool IncludePrompt { get => (bool)GetValue(IncludePromptProperty); set => SetValue(IncludePromptProperty, value); }
 
-    public string Mask { get { return (string)GetValue(MaskProperty); } set { SetValue(MaskProperty, value); } }
+    public string Mask { get => (string)GetValue(MaskProperty); set => SetValue(MaskProperty, value); }
 
-    public char PromptChar { get { return (char)GetValue(PromptCharProperty); } set { SetValue(PromptCharProperty, value); } }
+    public char PromptChar { get => (char)GetValue(PromptCharProperty); set => SetValue(PromptCharProperty, value); }
 
     public ICommand Reset { get; } = new RoutedCommand();
 
-    public bool SelectAllOnGotFocus { get { return (bool)GetValue(SelectAllOnGotFocusProperty); } set { SetValue(SelectAllOnGotFocusProperty, value); } }
+    public bool SelectAllOnGotFocus { get => (bool)GetValue(SelectAllOnGotFocusProperty); set => SetValue(SelectAllOnGotFocusProperty, value); }
 
-    public object Value { get { return GetValue(ValueProperty); } set { SetValue(ValueProperty, value); } }
+    public object Value { get => GetValue(ValueProperty); set => SetValue(ValueProperty, value); }
 
-    public Type ValueType { get { return (Type)GetValue(ValueTypeProperty); } set { SetValue(ValueTypeProperty, value); } }
+    public Type ValueType { get => (Type)GetValue(ValueTypeProperty); set => SetValue(ValueTypeProperty, value); }
 
     public override void OnApplyTemplate()
     {
@@ -112,9 +112,15 @@ public class MaskedTextBox : TextBox
         base.OnGotKeyboardFocus(e);
     }
 
-    protected virtual void OnIncludeLiteralsChanged(bool oldValue, bool newValue) => UpdateMaskProvider(Mask);
+    protected virtual void OnIncludeLiteralsChanged(bool oldValue, bool newValue)
+    {
+        UpdateMaskProvider(Mask);
+    }
 
-    protected virtual void OnIncludePromptChanged(bool oldValue, bool newValue) => UpdateMaskProvider(Mask);
+    protected virtual void OnIncludePromptChanged(bool oldValue, bool newValue)
+    {
+        UpdateMaskProvider(Mask);
+    }
 
     protected override void OnInitialized(EventArgs e)
     {
@@ -152,7 +158,10 @@ public class MaskedTextBox : TextBox
         base.OnPreviewTextInput(e);
     }
 
-    protected virtual void OnPromptCharChanged(char oldValue, char newValue) => UpdateMaskProvider(Mask);
+    protected virtual void OnPromptCharChanged(char oldValue, char newValue)
+    {
+        UpdateMaskProvider(Mask);
+    }
 
     protected virtual void OnTextChanged(string oldValue, string newValue)
     {
@@ -512,11 +521,20 @@ public class MaskedTextBox : TextBox
         _ = MaskProvider.RemoveAt(position, position + length - 1);
     }
 
-    private void RemoveTextFromStart(int endPosition) => RemoveText(0, endPosition);
+    private void RemoveTextFromStart(int endPosition)
+    {
+        RemoveText(0, endPosition);
+    }
 
-    private void RemoveTextToEnd(int startPosition) => RemoveText(startPosition, Text.Length - startPosition);
+    private void RemoveTextToEnd(int startPosition)
+    {
+        RemoveText(startPosition, Text.Length - startPosition);
+    }
 
-    private void ResetCommand(object sender, ExecutedRoutedEventArgs e) => Value = null;
+    private void ResetCommand(object sender, ExecutedRoutedEventArgs e)
+    {
+        Value = null;
+    }
 
     private void SyncTextAndValueProperties(DependencyProperty p, object newValue)
     {
@@ -546,7 +564,10 @@ public class MaskedTextBox : TextBox
         MaskProvider = new MaskedTextProvider(mask) { IncludePrompt = IncludePrompt, IncludeLiterals = IncludeLiterals, PromptChar = PromptChar, ResetOnSpace = false };
     }
 
-    private void UpdateText() => UpdateText(SelectionStart);
+    private void UpdateText()
+    {
+        UpdateText(SelectionStart);
+    }
 
     private void UpdateText(int position)
     {

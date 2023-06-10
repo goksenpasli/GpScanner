@@ -5,7 +5,7 @@ namespace Extensions;
 public class Chart : InpcBase
 {
     public Brush ChartBrush {
-        get { return chartBrush; }
+        get => chartBrush;
 
         set {
             if (chartBrush != value)
@@ -17,7 +17,7 @@ public class Chart : InpcBase
     }
 
     public double ChartValue {
-        get { return chartValue; }
+        get => chartValue;
 
         set {
             if (chartValue != value)
@@ -29,7 +29,7 @@ public class Chart : InpcBase
     }
 
     public string Description {
-        get { return description; }
+        get => description;
 
         set {
             if (description != value)

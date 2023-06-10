@@ -62,7 +62,10 @@ public static class DragDropExtension
         return null;
     }
 
-    public static bool GetScrollOnDragDrop(DependencyObject element) => element == null ? throw new ArgumentNullException(nameof(element)) : (bool)element.GetValue(ScrollOnDragDropProperty);
+    public static bool GetScrollOnDragDrop(DependencyObject element)
+    {
+        return element == null ? throw new ArgumentNullException(nameof(element)) : (bool)element.GetValue(ScrollOnDragDropProperty);
+    }
 
     public static void SetScrollOnDragDrop(DependencyObject element, bool value)
     {
@@ -117,7 +120,13 @@ public static class DragDropExtension
         }
     }
 
-    private static void Subscribe(FrameworkElement container) => container.PreviewDragOver += OnContainerPreviewDragOver;
+    private static void Subscribe(FrameworkElement container)
+    {
+        container.PreviewDragOver += OnContainerPreviewDragOver;
+    }
 
-    private static void Unsubscribe(FrameworkElement container) => container.PreviewDragOver -= OnContainerPreviewDragOver;
+    private static void Unsubscribe(FrameworkElement container)
+    {
+        container.PreviewDragOver -= OnContainerPreviewDragOver;
+    }
 }

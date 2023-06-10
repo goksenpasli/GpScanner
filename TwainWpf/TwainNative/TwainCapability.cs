@@ -46,7 +46,10 @@ namespace TwainWpf.TwainNative
             Dispose(false);
         }
 
-        public void Dispose() => Dispose(true);
+        public void Dispose()
+        {
+            Dispose(true);
+        }
 
         public static TwainCapability From<TValue>(Capabilities capabilities, TValue value)
         {

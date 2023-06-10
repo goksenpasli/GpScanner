@@ -114,7 +114,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     public event PropertyChangedEventHandler PropertyChanged;
 
     public string AnnotationText {
-        get { return annotationText; }
+        get => annotationText;
 
         set {
             if (annotationText != value)
@@ -126,7 +126,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     }
 
     public bool DrawAnnotation {
-        get { return drawAnnotation; }
+        get => drawAnnotation;
 
         set {
             if (drawAnnotation != value)
@@ -138,7 +138,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     }
 
     public bool DrawEllipse {
-        get { return drawEllipse; }
+        get => drawEllipse;
 
         set {
             if (drawEllipse != value)
@@ -150,7 +150,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     }
 
     public bool DrawImage {
-        get { return drawImage; }
+        get => drawImage;
 
         set {
             if (drawImage != value)
@@ -162,7 +162,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     }
 
     public bool DrawLine {
-        get { return drawLine; }
+        get => drawLine;
 
         set {
             if (drawLine != value)
@@ -174,7 +174,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     }
 
     public XImage DrawnImage {
-        get { return drawnImage; }
+        get => drawnImage;
 
         set {
             if (drawnImage != value)
@@ -186,7 +186,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     }
 
     public bool DrawRect {
-        get { return drawRect; }
+        get => drawRect;
 
         set {
             if (drawRect != value)
@@ -198,7 +198,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     }
 
     public bool DrawReverseLine {
-        get { return drawReverseLine; }
+        get => drawReverseLine;
 
         set {
             if (drawReverseLine != value)
@@ -210,7 +210,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     }
 
     public bool DrawRoundedRect {
-        get { return drawRoundedRect; }
+        get => drawRoundedRect;
 
         set {
             if (drawRoundedRect != value)
@@ -222,7 +222,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     }
 
     public bool DrawString {
-        get { return drawString; }
+        get => drawString;
 
         set {
             if (drawString != value)
@@ -234,7 +234,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     }
 
     public XKnownColor GraphObjectColor {
-        get { return graphObjectColor; }
+        get => graphObjectColor;
 
         set {
             if (graphObjectColor != value)
@@ -246,7 +246,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     }
 
     public XKnownColor GraphObjectFillColor {
-        get { return graphObjectFillColor; }
+        get => graphObjectFillColor;
 
         set {
             if (graphObjectFillColor != value)
@@ -262,7 +262,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     public RelayCommand<object> OpenPdfHistoryFile { get; }
 
     public XDashStyle PenDash {
-        get { return penDash; }
+        get => penDash;
 
         set {
             if (penDash != value)
@@ -274,7 +274,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     }
 
     public XLineCap PenLineCap {
-        get { return penLineCap; }
+        get => penLineCap;
 
         set {
             if (penLineCap != value)
@@ -286,7 +286,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     }
 
     public XLineJoin PenLineJoin {
-        get { return penLineJoin; }
+        get => penLineJoin;
 
         set {
             if (penLineJoin != value)
@@ -298,7 +298,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     }
 
     public double PenWidth {
-        get { return penWidth; }
+        get => penWidth;
 
         set {
             if (penWidth != value)
@@ -314,7 +314,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     public RelayCommand<object> RemoveAnnotation { get; }
 
     public string Text {
-        get { return text; }
+        get => text;
 
         set {
             if (text != value)
@@ -326,7 +326,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     }
 
     public double TextSize {
-        get { return textSize; }
+        get => textSize;
 
         set {
             if (textSize != value)
@@ -337,7 +337,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    protected virtual void OnPropertyChanged(string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
 
     private static readonly Ellipse ellipseselectionbox = new()
     {
@@ -668,5 +671,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    private void PdfViewer_PreviewKeyUp(object sender, KeyEventArgs e) => Cursor = Cursors.Arrow;
+    private void PdfViewer_PreviewKeyUp(object sender, KeyEventArgs e)
+    {
+        Cursor = Cursors.Arrow;
+    }
 }

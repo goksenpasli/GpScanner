@@ -37,7 +37,7 @@ namespace Tesseract
         /// The current region of interest being parsed.
         /// </summary>
         public Rect RegionOfInterest {
-            get { return regionOfInterest; }
+            get => regionOfInterest;
 
             set {
                 if (value.X1 < 0 || value.Y1 < 0 || value.X2 > Image.Width || value.Y2 > Image.Height)
@@ -107,7 +107,10 @@ namespace Tesseract
         /// </remarks>
         /// <param name="orientation">The detected clockwise page rotation in degrees (0, 90, 180, or 270).</param>
         /// <param name="confidence">The confidence level of the orientation (15 is reasonably confident).</param>
-        public void DetectBestOrientation(out int orientation, out float confidence) => DetectBestOrientationAndScript(out orientation, out confidence, out _, out _);
+        public void DetectBestOrientation(out int orientation, out float confidence)
+        {
+            DetectBestOrientationAndScript(out orientation, out confidence, out _, out _);
+        }
 
         /// <summary>
         ///     Detects the page orientation, with corresponding confidence when using <see cref="PageSegMode.OsdOnly" />.

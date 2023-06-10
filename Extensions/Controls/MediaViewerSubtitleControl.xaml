@@ -46,7 +46,8 @@
                 IsChecked="{Binding AutoTranslate}" />
             <Controls:TranslateView FontFamily="Segoe UI" IsEnabled="{Binding AutoTranslate}" />
         </StackPanel>
-        <ListBox d:ItemsSource="{d:SampleData ItemCount=5}"
+        <ListBox x:Name="LbSubtitle"
+            d:ItemsSource="{d:SampleData ItemCount=5}"
             FontFamily="Segoe UI"
             ItemsSource="{Binding ParsedSubtitle}"
             VirtualizingPanel.CacheLength="3,3" VirtualizingPanel.CacheLengthUnit="Item"

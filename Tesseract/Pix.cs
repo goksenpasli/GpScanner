@@ -187,7 +187,10 @@ namespace Tesseract
                 : Create(handle);
         }
 
-        public static Pix Create(IntPtr handle) => handle == IntPtr.Zero ? throw new ArgumentException("Pix handle must not be zero (null).", nameof(handle)) : new Pix(handle);
+        public static Pix Create(IntPtr handle)
+        {
+            return handle == IntPtr.Zero ? throw new ArgumentException("Pix handle must not be zero (null).", nameof(handle)) : new Pix(handle);
+        }
 
         public static Pix LoadFromFile(string filename)
         {
@@ -255,7 +258,7 @@ namespace Tesseract
         #region Properties
 
         public PixColormap Colormap {
-            get { return colormap; }
+            get => colormap;
 
             set {
                 if (value != null)
@@ -281,11 +284,14 @@ namespace Tesseract
 
         public int Width { get; }
 
-        public int XRes { get { return LeptonicaApi.Native.pixGetXRes(handle); } set { LeptonicaApi.Native.pixSetXRes(handle, value); } }
+        public int XRes { get => LeptonicaApi.Native.pixGetXRes(handle); set => LeptonicaApi.Native.pixSetXRes(handle, value); }
 
-        public int YRes { get { return LeptonicaApi.Native.pixGetYRes(handle); } set { LeptonicaApi.Native.pixSetYRes(handle, value); } }
+        public int YRes { get => LeptonicaApi.Native.pixGetYRes(handle); set => LeptonicaApi.Native.pixSetYRes(handle, value); }
 
-        public PixData GetData() => new PixData(this);
+        public PixData GetData()
+        {
+            return new PixData(this);
+        }
 
         internal HandleRef Handle => handle;
 
@@ -293,9 +299,15 @@ namespace Tesseract
 
         #region Equals
 
-        public override bool Equals(object obj) => obj != null && GetType() == obj.GetType() && Equals((Pix)obj);
+        public override bool Equals(object obj)
+        {
+            return obj != null && GetType() == obj.GetType() && Equals((Pix)obj);
+        }
 
-        public bool Equals(Pix other) => other != null && (LeptonicaApi.Native.pixEqual(Handle, other.Handle, out int same) != 0 ? throw new TesseractException("Failed to compare pix") : same != 0);
+        public bool Equals(Pix other)
+        {
+            return other != null && (LeptonicaApi.Native.pixEqual(Handle, other.Handle, out int same) != 0 ? throw new TesseractException("Failed to compare pix") : same != 0);
+        }
 
         #endregion Equals
 
@@ -450,7 +462,10 @@ namespace Tesseract
         /// Conversion from RBG to 8bpp grayscale.
         /// </summary>
         /// <returns>The Grayscale pix.</returns>
-        public Pix ConvertRGBToGray() => ConvertRGBToGray(0, 0, 0);
+        public Pix ConvertRGBToGray()
+        {
+            return ConvertRGBToGray(0, 0, 0);
+        }
 
         /// <summary>
         /// Top-level conversion to 8 bpp.
@@ -473,7 +488,10 @@ namespace Tesseract
         /// confidence, it returns a deskewed image; otherwise, it returns a clone.
         /// </remarks>
         /// <returns>Returns deskewed image if confidence was high enough, otherwise returns clone of original pix.</returns>
-        public Pix Deskew() => Deskew(DefaultBinarySearchReduction, out _);
+        public Pix Deskew()
+        {
+            return Deskew(DefaultBinarySearchReduction, out _);
+        }
 
         /// <summary>
         /// Determines the scew angle and if confidence is high enough returns the descewed image as the result,
@@ -485,7 +503,10 @@ namespace Tesseract
         /// </remarks>
         /// <param name="scew">The scew angle and confidence</param>
         /// <returns>Returns deskewed image if confidence was high enough, otherwise returns clone of original pix.</returns>
-        public Pix Deskew(out Scew scew) => Deskew(DefaultBinarySearchReduction, out scew);
+        public Pix Deskew(out Scew scew)
+        {
+            return Deskew(DefaultBinarySearchReduction, out scew);
+        }
 
         /// <summary>
         /// Determines the scew angle and if confidence is high enough returns the descewed image as the result,
@@ -498,7 +519,10 @@ namespace Tesseract
         /// <param name="redSearch">The reduction factor used by the binary search, can be 1, 2, or 4.</param>
         /// <param name="scew">The scew angle and confidence</param>
         /// <returns>Returns deskewed image if confidence was high enough, otherwise returns clone of original pix.</returns>
-        public Pix Deskew(int redSearch, out Scew scew) => Deskew(ScewSweep.Default, redSearch, DefaultBinaryThreshold, out scew);
+        public Pix Deskew(int redSearch, out Scew scew)
+        {
+            return Deskew(ScewSweep.Default, redSearch, DefaultBinaryThreshold, out scew);
+        }
 
         /// <summary>
         /// Determines the scew angle and if confidence is high enough returns the descewed image as the result,
@@ -715,7 +739,10 @@ namespace Tesseract
 
         #region Disposal
 
-        public override int GetHashCode() => throw new NotImplementedException();
+        public override int GetHashCode()
+        {
+            throw new NotImplementedException();
+        }
 
         protected override void Dispose(bool disposing)
         {

@@ -387,11 +387,20 @@ namespace Tesseract.Internal.InteropDotNet
 
         #region Name helpers
 
-        private static string GetAssemblyName(Type interfaceType) => $"InteropRuntimeImplementer.{GetSubstantialName(interfaceType)}Instance";
+        private static string GetAssemblyName(Type interfaceType)
+        {
+            return $"InteropRuntimeImplementer.{GetSubstantialName(interfaceType)}Instance";
+        }
 
-        private static string GetDelegateName(string assemblyName, MethodInfo methodInfo) => $"{assemblyName}.{methodInfo.Name}Delegate";
+        private static string GetDelegateName(string assemblyName, MethodInfo methodInfo)
+        {
+            return $"{assemblyName}.{methodInfo.Name}Delegate";
+        }
 
-        private static string GetImplementationTypeName(string assemblyName, Type interfaceType) => $"{assemblyName}.{GetSubstantialName(interfaceType)}Implementation";
+        private static string GetImplementationTypeName(string assemblyName, Type interfaceType)
+        {
+            return $"{assemblyName}.{GetSubstantialName(interfaceType)}Implementation";
+        }
 
         private static string GetSubstantialName(Type interfaceType)
         {

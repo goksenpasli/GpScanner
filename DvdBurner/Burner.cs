@@ -150,7 +150,7 @@ namespace DvdBurner
         public event PropertyChangedEventHandler PropertyChanged;
 
         public string ActionText {
-            get { return actionText; }
+            get => actionText;
 
             set {
                 if (actionText != value)
@@ -161,12 +161,12 @@ namespace DvdBurner
             }
         }
 
-        public string BurnDirectory { get { return (string)GetValue(BurnDirectoryProperty); } set { SetValue(BurnDirectoryProperty, value); } }
+        public string BurnDirectory { get => (string)GetValue(BurnDirectoryProperty); set => SetValue(BurnDirectoryProperty, value); }
 
         public RelayCommand<object> BurnDvd { get; }
 
         public string CdLabel {
-            get { return cdLabel; }
+            get => cdLabel;
 
             set {
                 if (cdLabel != value)
@@ -178,7 +178,7 @@ namespace DvdBurner
         }
 
         public bool Eject {
-            get { return eject; }
+            get => eject;
 
             set {
                 if (eject != value)
@@ -192,7 +192,7 @@ namespace DvdBurner
         public RelayCommand<object> EraseDvd { get; }
 
         public bool ProgressIndeterminate {
-            get { return progressIndeterminate; }
+            get => progressIndeterminate;
 
             set {
                 if (progressIndeterminate != value)
@@ -204,7 +204,7 @@ namespace DvdBurner
         }
 
         public double ProgressValue {
-            get { return progressValue; }
+            get => progressValue;
 
             set {
                 if (progressValue != value)
@@ -217,7 +217,10 @@ namespace DvdBurner
 
         public RelayCommand<object> SelectBurnDir { get; }
 
-        protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        protected virtual void OnPropertyChanged(string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         private const string WarnText = "İşlem Sürüyor. Bitmesini Bekleyin.";
 

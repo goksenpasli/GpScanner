@@ -3,7 +3,7 @@
 public class Paper : InpcBase
 {
     public double Height {
-        get { return height; }
+        get => height;
 
         set {
             if (height != value)
@@ -15,7 +15,7 @@ public class Paper : InpcBase
     }
 
     public string PaperType {
-        get { return paperType; }
+        get => paperType;
 
         set {
             if (paperType != value)
@@ -27,7 +27,7 @@ public class Paper : InpcBase
     }
 
     public double Width {
-        get { return width; }
+        get => width;
 
         set {
             if (width != value)

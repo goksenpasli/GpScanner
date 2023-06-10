@@ -74,13 +74,22 @@ public class Translation : DependencyObject
     public static readonly DependencyProperty ResourceManagerProperty =
         DependencyProperty.RegisterAttached("ResourceManager", typeof(ResourceManager), typeof(Translation));
 
-    public static ResourceManager GetResourceManager(DependencyObject dependencyObject) => (ResourceManager)dependencyObject.GetValue(ResourceManagerProperty);
+    public static ResourceManager GetResourceManager(DependencyObject dependencyObject)
+    {
+        return (ResourceManager)dependencyObject.GetValue(ResourceManagerProperty);
+    }
 
-    public static string GetResStringValue(string resdata) => string.IsNullOrEmpty(resdata)
+    public static string GetResStringValue(string resdata)
+    {
+        return string.IsNullOrEmpty(resdata)
             ? throw new ArgumentException($"'{nameof(resdata)}' cannot be null or empty.", nameof(resdata))
             : Resources.ResourceManager.GetString(resdata, TranslationSource.Instance.CurrentCulture);
+    }
 
-    public static void SetResourceManager(DependencyObject dependencyObject, ResourceManager value) => dependencyObject.SetValue(ResourceManagerProperty, value);
+    public static void SetResourceManager(DependencyObject dependencyObject, ResourceManager value)
+    {
+        dependencyObject.SetValue(ResourceManagerProperty, value);
+    }
 }
 
 public class TranslationSource : INotifyPropertyChanged
@@ -90,7 +99,7 @@ public class TranslationSource : INotifyPropertyChanged
     public static TranslationSource Instance { get; } = new();
 
     public CultureInfo CurrentCulture {
-        get { return currentCulture; }
+        get => currentCulture;
 
         set {
             if (currentCulture != value)

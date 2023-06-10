@@ -52,7 +52,7 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
     public event PropertyChangedEventHandler PropertyChanged;
 
     public bool DetectQRCode {
-        get { return detectQRCode; }
+        get => detectQRCode;
 
         set {
             if (detectQRCode != value)
@@ -64,7 +64,7 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
     }
 
     public CapDevice Device {
-        get { return device; }
+        get => device;
 
         set {
             if (device != value)
@@ -82,7 +82,7 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
     public ICommand Kaydet { get; }
 
     public FilterInfo[] Liste {
-        get { return liste; }
+        get => liste;
 
         set {
             if (liste != value)
@@ -96,7 +96,7 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
     public ICommand Oynat { get; }
 
     public byte[] ResimData {
-        get { return resimData; }
+        get => resimData;
 
         set {
             if (resimData != value)
@@ -108,7 +108,7 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
     }
 
     public double Rotation {
-        get { return rotation; }
+        get => rotation;
 
         set {
             if (rotation != value)
@@ -120,7 +120,7 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
     }
 
     public FilterInfo SeçiliKamera {
-        get { return seçiliKamera; }
+        get => seçiliKamera;
 
         set {
             if (seçiliKamera != value)
@@ -139,7 +139,10 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
         encoder.Save(ms);
     }
 
-    protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    protected virtual void OnPropertyChanged(string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
 
     private bool detectQRCode;
 

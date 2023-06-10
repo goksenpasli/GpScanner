@@ -39,13 +39,25 @@ public class Policy : DependencyObject
         return true;
     }
 
-    public static bool GetPolicyEnabled(DependencyObject obj) => (bool)obj.GetValue(PolicyEnabledProperty);
+    public static bool GetPolicyEnabled(DependencyObject obj)
+    {
+        return (bool)obj.GetValue(PolicyEnabledProperty);
+    }
 
-    public static string GetPolicyName(DependencyObject obj) => (string)obj.GetValue(PolicyNameProperty);
+    public static string GetPolicyName(DependencyObject obj)
+    {
+        return (string)obj.GetValue(PolicyNameProperty);
+    }
 
-    public static void SetPolicyEnabled(DependencyObject obj, bool value) => obj.SetValue(PolicyEnabledProperty, value);
+    public static void SetPolicyEnabled(DependencyObject obj, bool value)
+    {
+        obj.SetValue(PolicyEnabledProperty, value);
+    }
 
-    public static void SetPolicyName(DependencyObject obj, string value) => obj.SetValue(PolicyNameProperty, value);
+    public static void SetPolicyName(DependencyObject obj, string value)
+    {
+        obj.SetValue(PolicyNameProperty, value);
+    }
 
     private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {

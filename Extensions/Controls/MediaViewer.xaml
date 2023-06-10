@@ -401,7 +401,8 @@
                         Content="(" FontFamily="Webdings" FontSize="18"
                         Foreground="Blue">
                         <local:ContentToggleButton.OverContent>
-                            <Controls:MediaViewerSubtitleControl  Width="550" Height="550" />
+                            <Controls:MediaViewerSubtitleControl x:Name="MediaViewerSubtitleControl"
+                                Width="550" Height="550" />
                         </local:ContentToggleButton.OverContent>
                     </local:ContentToggleButton>
                     <local:ContentToggleButton Content="" FontFamily="Webdings" FontSize="20"

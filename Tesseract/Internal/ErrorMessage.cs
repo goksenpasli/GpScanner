@@ -2,7 +2,10 @@
 {
     internal static class ErrorMessage
     {
-        public static string ErrorPageUrl(int errorNumber) => string.Format(WikiUrlFormat, errorNumber);
+        public static string ErrorPageUrl(int errorNumber)
+        {
+            return string.Format(WikiUrlFormat, errorNumber);
+        }
 
         public static string Format(int errorNumber, string messageFormat, params object[] messageArgs)
         {

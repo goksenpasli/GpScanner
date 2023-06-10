@@ -108,61 +108,61 @@ public class GraphControl : FrameworkElement
 
     [Description("Graph Controls")]
     [Category("Graph")]
-    public Visibility ContextMenuVisibility { get { return (Visibility)GetValue(ContextMenuVisibilityProperty); } set { SetValue(ContextMenuVisibilityProperty, value); } }
+    public Visibility ContextMenuVisibility { get => (Visibility)GetValue(ContextMenuVisibilityProperty); set => SetValue(ContextMenuVisibilityProperty, value); }
 
     [Description("Graph Controls")]
     [Category("Graph")]
-    public Brush DotColor { get { return (Brush)GetValue(DotColorProperty); } set { SetValue(DotColorProperty, value); } }
+    public Brush DotColor { get => (Brush)GetValue(DotColorProperty); set => SetValue(DotColorProperty, value); }
 
     [Description("Graph Controls")]
     [Category("Graph")]
-    public double FontSize { get { return (double)GetValue(FontSizeProperty); } set { SetValue(FontSizeProperty, value); } }
+    public double FontSize { get => (double)GetValue(FontSizeProperty); set => SetValue(FontSizeProperty, value); }
 
     [Description("Graph Controls")]
     [Category("Graph")]
-    public Visibility GraphContentVisibility { get { return (Visibility)GetValue(GraphContentVisibilityProperty); } set { SetValue(GraphContentVisibilityProperty, value); } }
+    public Visibility GraphContentVisibility { get => (Visibility)GetValue(GraphContentVisibilityProperty); set => SetValue(GraphContentVisibilityProperty, value); }
 
     [Description("Graph Controls")]
     [Category("Graph")]
-    public bool IsContextMenuEnabled { get { return (bool)GetValue(IsContextMenuEnabledProperty); } set { SetValue(IsContextMenuEnabledProperty, value); } }
+    public bool IsContextMenuEnabled { get => (bool)GetValue(IsContextMenuEnabledProperty); set => SetValue(IsContextMenuEnabledProperty, value); }
 
     public ICommand Kaydet { get; }
 
     [Description("Graph Controls")]
     [Category("Graph")]
-    public Brush LineColor { get { return (Brush)GetValue(LineColorProperty); } set { SetValue(LineColorProperty, value); } }
+    public Brush LineColor { get => (Brush)GetValue(LineColorProperty); set => SetValue(LineColorProperty, value); }
 
     [Description("Graph Controls")]
     [Category("Graph")]
-    public Visibility LineDotVisibility { get { return (Visibility)GetValue(LineDotVisibilityProperty); } set { SetValue(LineDotVisibilityProperty, value); } }
+    public Visibility LineDotVisibility { get => (Visibility)GetValue(LineDotVisibilityProperty); set => SetValue(LineDotVisibilityProperty, value); }
 
     [Description("Graph Controls")]
     [Category("Graph")]
-    public Visibility LineGraphVisibility { get { return (Visibility)GetValue(LineGraphVisibilityProperty); } set { SetValue(LineGraphVisibilityProperty, value); } }
+    public Visibility LineGraphVisibility { get => (Visibility)GetValue(LineGraphVisibilityProperty); set => SetValue(LineGraphVisibilityProperty, value); }
 
     [Description("Graph Controls")]
     [Category("Graph")]
-    public double LineThickness { get { return (double)GetValue(LineThicknessProperty); } set { SetValue(LineThicknessProperty, value); } }
+    public double LineThickness { get => (double)GetValue(LineThicknessProperty); set => SetValue(LineThicknessProperty, value); }
 
     [Description("Graph Controls")]
     [Category("Graph")]
-    public ObservableCollection<Chart> Series { get { return (ObservableCollection<Chart>)GetValue(SeriesProperty); } set { SetValue(SeriesProperty, value); } }
+    public ObservableCollection<Chart> Series { get => (ObservableCollection<Chart>)GetValue(SeriesProperty); set => SetValue(SeriesProperty, value); }
 
     [Description("Graph Controls")]
     [Category("Graph")]
-    public Visibility SeriesTextVisibility { get { return (Visibility)GetValue(SeriesTextVisibilityProperty); } set { SetValue(SeriesTextVisibilityProperty, value); } }
+    public Visibility SeriesTextVisibility { get => (Visibility)GetValue(SeriesTextVisibilityProperty); set => SetValue(SeriesTextVisibilityProperty, value); }
 
     [Description("Graph Controls")]
     [Category("Graph")]
-    public Brush TextColor { get { return (Brush)GetValue(TextColorProperty); } set { SetValue(TextColorProperty, value); } }
+    public Brush TextColor { get => (Brush)GetValue(TextColorProperty); set => SetValue(TextColorProperty, value); }
 
     [Description("Graph Controls")]
     [Category("Graph")]
-    public Brush ValueColor { get { return (Brush)GetValue(ValueColorProperty); } set { SetValue(ValueColorProperty, value); } }
+    public Brush ValueColor { get => (Brush)GetValue(ValueColorProperty); set => SetValue(ValueColorProperty, value); }
 
     [Description("Graph Controls")]
     [Category("Graph")]
-    public Visibility ValueTextVisibility { get { return (Visibility)GetValue(ValueTextVisibilityProperty); } set { SetValue(ValueTextVisibilityProperty, value); } }
+    public Visibility ValueTextVisibility { get => (Visibility)GetValue(ValueTextVisibilityProperty); set => SetValue(ValueTextVisibilityProperty, value); }
 
     protected override void OnRender(DrawingContext drawingContext)
     {
@@ -269,15 +269,21 @@ public class GraphControl : FrameworkElement
         }
     }
 
-    private FormattedText GenerateFormattedText(Chart item, Pen pen) => new FormattedText(item.Description, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), FontSize, TextColor)
+    private FormattedText GenerateFormattedText(Chart item, Pen pen)
     {
-        MaxTextWidth = pen.Thickness
-    };
+        return new(item.Description, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), FontSize, TextColor)
+        {
+            MaxTextWidth = pen.Thickness
+        };
+    }
 
-    private FormattedText GenerateFormattedValueText(Chart item, Pen pen) => new FormattedText(item.ChartValue.ToString(), CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI Bold"), FontSize, ValueColor)
+    private FormattedText GenerateFormattedValueText(Chart item, Pen pen)
     {
-        MaxTextWidth = pen.Thickness
-    };
+        return new(item.ChartValue.ToString(), CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI Bold"), FontSize, ValueColor)
+        {
+            MaxTextWidth = pen.Thickness
+        };
+    }
 
     private RenderTargetBitmap RenderVisual(FrameworkElement frameworkElement)
     {

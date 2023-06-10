@@ -139,26 +139,26 @@ public class ColorPicker : Control
         MiddleStopColor = HSV.RGBFromHSV(0, 1f, 1f).Color();
     }
 
-    public byte Alpha { get { return (byte)GetValue(AlphaProperty); } set { SetValue(AlphaProperty, value); } }
+    public byte Alpha { get => (byte)GetValue(AlphaProperty); set => SetValue(AlphaProperty, value); }
 
-    public int ColorPickerColumnCount { get { return (int)GetValue(ColorPickerColumnCountProperty); } set { SetValue(ColorPickerColumnCountProperty, value); } }
+    public int ColorPickerColumnCount { get => (int)GetValue(ColorPickerColumnCountProperty); set => SetValue(ColorPickerColumnCountProperty, value); }
 
-    public string HexCode { get { return (string)GetValue(HexCodeProperty); } set { SetValue(HexCodeProperty, value); } }
+    public string HexCode { get => (string)GetValue(HexCodeProperty); set => SetValue(HexCodeProperty, value); }
 
-    public Visibility HexCodeVisibility { get { return (Visibility)GetValue(HexCodeVisibilityProperty); } set { SetValue(HexCodeVisibilityProperty, value); } }
+    public Visibility HexCodeVisibility { get => (Visibility)GetValue(HexCodeVisibilityProperty); set => SetValue(HexCodeVisibilityProperty, value); }
 
-    public Color MiddleStopColor { get { return (Color)GetValue(MiddleStopColorProperty); } set { SetValue(MiddleStopColorProperty, value); } }
+    public Color MiddleStopColor { get => (Color)GetValue(MiddleStopColorProperty); set => SetValue(MiddleStopColorProperty, value); }
 
     public Visibility PredefinedColorVisibility {
-        get { return (Visibility)GetValue(PredefinedColorVisibilityProperty); }
-        set { SetValue(PredefinedColorVisibilityProperty, value); }
+        get => (Visibility)GetValue(PredefinedColorVisibilityProperty);
+        set => SetValue(PredefinedColorVisibilityProperty, value);
     }
 
     public GridLength SelectorLength { get; set; } = new(1, GridUnitType.Star);
 
-    public Visibility SliderVisibility { get { return (Visibility)GetValue(SliderVisibilityProperty); } set { SetValue(SliderVisibilityProperty, value); } }
+    public Visibility SliderVisibility { get => (Visibility)GetValue(SliderVisibilityProperty); set => SetValue(SliderVisibilityProperty, value); }
 
-    public Brush SpectrumGridBackground { get { return (Brush)GetValue(SpectrumGridBackgroundProperty); } set { SetValue(SpectrumGridBackgroundProperty, value); } }
+    public Brush SpectrumGridBackground { get => (Brush)GetValue(SpectrumGridBackgroundProperty); set => SetValue(SpectrumGridBackgroundProperty, value); }
 
     public override void OnApplyTemplate()
     {
@@ -250,7 +250,13 @@ public class RGB
 
     public byte R { get; set; }
 
-    public Color Color() => new Color { R = R, G = G, B = B, A = 255 };
+    public Color Color()
+    {
+        return new() { R = R, G = G, B = B, A = 255 };
+    }
 
-    public string Hex(byte Alpha) => BitConverter.ToString(new[] { Alpha, R, G, B }).Replace("-", string.Empty);
+    public string Hex(byte Alpha)
+    {
+        return BitConverter.ToString(new[] { Alpha, R, G, B }).Replace("-", string.Empty);
+    }
 }

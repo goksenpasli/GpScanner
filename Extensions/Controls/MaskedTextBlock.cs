@@ -22,11 +22,11 @@ public class MaskedTextBlock : TextBlock
     public MaskedTextBlock()
     { Loaded += MaskedTextBlock_Loaded; }
 
-    public string Mask { get { return (string)GetValue(MaskProperty); } set { SetValue(MaskProperty, value); } }
+    public string Mask { get => (string)GetValue(MaskProperty); set => SetValue(MaskProperty, value); }
 
-    public char PromptChar { get { return (char)GetValue(PromptCharProperty); } set { SetValue(PromptCharProperty, value); } }
+    public char PromptChar { get => (char)GetValue(PromptCharProperty); set => SetValue(PromptCharProperty, value); }
 
-    public string UnmaskedText { get { return (string)GetValue(UnmaskedTextProperty); } set { SetValue(UnmaskedTextProperty, value); } }
+    public string UnmaskedText { get => (string)GetValue(UnmaskedTextProperty); set => SetValue(UnmaskedTextProperty, value); }
 
     private MaskedTextProvider _provider;
 

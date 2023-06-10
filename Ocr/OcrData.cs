@@ -5,7 +5,7 @@ namespace Ocr;
 public class OcrData : InpcBase
 {
     public Rect Rect {
-        get { return rect; }
+        get => rect;
 
         set {
             if (rect != value)
@@ -17,7 +17,7 @@ public class OcrData : InpcBase
     }
 
     public string Text {
-        get { return text; }
+        get => text;
 
         set {
             if (text != value)

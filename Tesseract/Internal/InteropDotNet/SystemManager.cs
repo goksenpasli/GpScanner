@@ -37,7 +37,10 @@ namespace Tesseract.Internal.InteropDotNet
 #endif
         }
 
-        public static string GetPlatformName() => IntPtr.Size == sizeof(int) ? "x86" : "x64";
+        public static string GetPlatformName()
+        {
+            return IntPtr.Size == sizeof(int) ? "x86" : "x64";
+        }
     }
 
     internal enum OperatingSystem

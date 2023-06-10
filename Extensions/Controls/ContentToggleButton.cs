@@ -36,17 +36,20 @@ public class ContentToggleButton : ToggleButton
         DefaultStyleKeyProperty.OverrideMetadata(typeof(ContentToggleButton), new FrameworkPropertyMetadata(typeof(ContentToggleButton)));
     }
 
-    public double ContentHorizontalOffset { get { return (double)GetValue(ContentHorizontalOffsetProperty); } set { SetValue(ContentHorizontalOffsetProperty, value); } }
+    public double ContentHorizontalOffset { get => (double)GetValue(ContentHorizontalOffsetProperty); set => SetValue(ContentHorizontalOffsetProperty, value); }
 
-    public double ContentVerticalOffset { get { return (double)GetValue(ContentVerticalOffsetProperty); } set { SetValue(ContentVerticalOffsetProperty, value); } }
+    public double ContentVerticalOffset { get => (double)GetValue(ContentVerticalOffsetProperty); set => SetValue(ContentVerticalOffsetProperty, value); }
 
-    public CornerRadius CornerRadius { get { return (CornerRadius)GetValue(CornerRadiusProperty); } set { SetValue(CornerRadiusProperty, value); } }
+    public CornerRadius CornerRadius { get => (CornerRadius)GetValue(CornerRadiusProperty); set => SetValue(CornerRadiusProperty, value); }
 
-    public object OverContent { get { return GetValue(OverContentProperty); } set { SetValue(OverContentProperty, value); } }
+    public object OverContent { get => GetValue(OverContentProperty); set => SetValue(OverContentProperty, value); }
 
-    public PlacementMode PlacementMode { get { return (PlacementMode)GetValue(PlacementModeProperty); } set { SetValue(PlacementModeProperty, value); } }
+    public PlacementMode PlacementMode { get => (PlacementMode)GetValue(PlacementModeProperty); set => SetValue(PlacementModeProperty, value); }
 
-    public bool StaysOpen { get { return (bool)GetValue(StaysOpenProperty); } set { SetValue(StaysOpenProperty, value); } }
+    public bool StaysOpen { get => (bool)GetValue(StaysOpenProperty); set => SetValue(StaysOpenProperty, value); }
 
-    public override string ToString() => Content?.ToString();
+    public override string ToString()
+    {
+        return Content?.ToString();
+    }
 }

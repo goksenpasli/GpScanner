@@ -49,7 +49,7 @@ namespace TwainControl
         public event PropertyChangedEventHandler PropertyChanged;
 
         public bool DrawControlContextMenu {
-            get { return drawControlContextMenu; }
+            get => drawControlContextMenu;
 
             set {
                 if (drawControlContextMenu != value)
@@ -61,7 +61,7 @@ namespace TwainControl
         }
 
         public Cursor DrawCursor {
-            get { return drawCursor; }
+            get => drawCursor;
 
             set {
                 if (drawCursor != value)
@@ -72,10 +72,10 @@ namespace TwainControl
             }
         }
 
-        public BitmapFrame EditingImage { get { return (BitmapFrame)GetValue(EditingImageProperty); } set { SetValue(EditingImageProperty, value); } }
+        public BitmapFrame EditingImage { get => (BitmapFrame)GetValue(EditingImageProperty); set => SetValue(EditingImageProperty, value); }
 
         public Ellipse Ellipse {
-            get { return ellipse; }
+            get => ellipse;
 
             set {
                 if (ellipse != value)
@@ -87,7 +87,7 @@ namespace TwainControl
         }
 
         public bool Highlighter {
-            get { return highlighter; }
+            get => highlighter;
 
             set {
                 if (highlighter != value)
@@ -99,7 +99,7 @@ namespace TwainControl
         }
 
         public bool IgnorePressure {
-            get { return ıgnorePressure; }
+            get => ıgnorePressure;
 
             set {
                 if (ıgnorePressure != value)
@@ -113,7 +113,7 @@ namespace TwainControl
         public RelayCommand<object> LoadImage { get; }
 
         public bool Lock {
-            get { return @lock; }
+            get => @lock;
 
             set {
                 if (@lock != value)
@@ -125,7 +125,7 @@ namespace TwainControl
         }
 
         public Rectangle Rectangle {
-            get { return rectangle; }
+            get => rectangle;
 
             set {
                 if (rectangle != value)
@@ -139,7 +139,7 @@ namespace TwainControl
         public RelayCommand<object> SaveEditedImage { get; }
 
         public SolidColorBrush SelectedBrush {
-            get { return selectedBrush; }
+            get => selectedBrush;
 
             set {
                 if (selectedBrush != value)
@@ -151,7 +151,7 @@ namespace TwainControl
         }
 
         public string SelectedColor {
-            get { return selectedColor; }
+            get => selectedColor;
 
             set {
                 if (selectedColor != value)
@@ -165,7 +165,7 @@ namespace TwainControl
         }
 
         public StylusTip SelectedStylus {
-            get { return selectedStylus; }
+            get => selectedStylus;
 
             set {
                 if (selectedStylus != value)
@@ -179,7 +179,7 @@ namespace TwainControl
         }
 
         public bool Smooth {
-            get { return smooth; }
+            get => smooth;
 
             set {
                 if (smooth != value)
@@ -191,7 +191,7 @@ namespace TwainControl
         }
 
         public double StylusHeight {
-            get { return stylusHeight; }
+            get => stylusHeight;
 
             set {
                 if (stylusHeight != value)
@@ -203,7 +203,7 @@ namespace TwainControl
         }
 
         public double StylusWidth {
-            get { return stylusWidth; }
+            get => stylusWidth;
 
             set {
                 if (stylusWidth != value)
@@ -215,7 +215,7 @@ namespace TwainControl
         }
 
         public ImageSource TemporaryImage {
-            get { return temporaryImage; }
+            get => temporaryImage;
 
             set {
                 if (temporaryImage != value)
@@ -256,7 +256,10 @@ namespace TwainControl
             return image;
         }
 
-        protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        protected virtual void OnPropertyChanged(string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         private bool @lock = true;
 

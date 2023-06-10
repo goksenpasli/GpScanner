@@ -100,7 +100,10 @@ public partial class MainWindow : Window
         }
     }
 
-    private async void ListBox_DropAsync(object sender, DragEventArgs e) => await TwainCtrl.ListBoxDropFileAsync(e);
+    private async void ListBox_DropAsync(object sender, DragEventArgs e)
+    {
+        await TwainCtrl.ListBoxDropFileAsync(e);
+    }
 
     private void MW_ContentRendered(object sender, EventArgs e)
     {
@@ -200,9 +203,15 @@ public partial class MainWindow : Window
         }
     }
 
-    private void Run_Drop(object sender, DragEventArgs e) => TwainCtrl.DropFile(sender, e);
+    private void Run_Drop(object sender, DragEventArgs e)
+    {
+        TwainCtrl.DropFile(sender, e);
+    }
 
-    private void Run_PreviewMouseMove(object sender, MouseEventArgs e) => TwainCtrl.DropPreviewFile(sender, e);
+    private void Run_PreviewMouseMove(object sender, MouseEventArgs e)
+    {
+        TwainCtrl.DropPreviewFile(sender, e);
+    }
 
     private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {

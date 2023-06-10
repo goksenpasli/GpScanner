@@ -12,7 +12,7 @@ namespace TwainControl
         public event PropertyChangedEventHandler PropertyChanged;
 
         public double CurrentZoom {
-            get { return currentZoom; }
+            get => currentZoom;
 
             set {
                 if (currentZoom != value)
@@ -23,7 +23,10 @@ namespace TwainControl
             }
         }
 
-        protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        protected virtual void OnPropertyChanged(string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         private double currentZoom = 1d;
 

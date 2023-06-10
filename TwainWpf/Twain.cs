@@ -59,7 +59,10 @@ namespace TwainWpf
         /// <summary>
         /// Shows a dialog prompting the use to select the source to scan from.
         /// </summary>
-        public void SelectSource() => _dataSourceManager.SelectSource();
+        public void SelectSource()
+        {
+            _dataSourceManager.SelectSource();
+        }
 
         /// <summary>
         /// Selects a source based on the product name string.
@@ -75,7 +78,10 @@ namespace TwainWpf
         /// <summary>
         /// Starts scanning.
         /// </summary>
-        public void StartScanning(ScanSettings settings) => _dataSourceManager.StartScan(settings);
+        public void StartScanning(ScanSettings settings)
+        {
+            _dataSourceManager.StartScan(settings);
+        }
 
         private readonly DataSourceManager _dataSourceManager;
     }

@@ -22,7 +22,10 @@ public class RelayAsyncCommand<T> : RelayCommand<T>
 
     public bool IsExecuting { get; private set; }
 
-    public override bool CanExecute(object parameter) => base.CanExecute(parameter) && !IsExecuting;
+    public override bool CanExecute(object parameter)
+    {
+        return base.CanExecute(parameter) && !IsExecuting;
+    }
 
     public override void Execute(object parameter)
     {
@@ -73,13 +76,19 @@ public class RelayCommand<T> : ICommand
 
     #region ICommand Members
 
-    public event EventHandler CanExecuteChanged { add { CommandManager.RequerySuggested += value; } remove { CommandManager.RequerySuggested -= value; } }
+    public event EventHandler CanExecuteChanged { add => CommandManager.RequerySuggested += value; remove => CommandManager.RequerySuggested -= value; }
 
     [DebuggerStepThrough]
-    public virtual bool CanExecute(object parameter) => _canExecute == null || _canExecute((T)parameter);
+    public virtual bool CanExecute(object parameter)
+    {
+        return _canExecute == null || _canExecute((T)parameter);
+    }
 
     [DebuggerStepThrough]
-    public virtual void Execute(object parameter) => _execute((T)parameter);
+    public virtual void Execute(object parameter)
+    {
+        _execute((T)parameter);
+    }
 
     #endregion ICommand Members
 }
@@ -112,9 +121,15 @@ public class RelayCommand : ICommand
         }
     }
 
-    public virtual bool CanExecute(object parameter) => canExecute == null || canExecute();
+    public virtual bool CanExecute(object parameter)
+    {
+        return canExecute == null || canExecute();
+    }
 
-    public virtual void Execute(object parameter) => execute();
+    public virtual void Execute(object parameter)
+    {
+        execute();
+    }
 
     protected readonly Func<bool> canExecute;
 

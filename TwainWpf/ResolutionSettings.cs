@@ -32,7 +32,7 @@ namespace TwainWpf
         /// The colour settings to use.
         /// </summary>
         public ColourSetting ColourSetting {
-            get { return _colourSettings; }
+            get => _colourSettings;
 
             set {
                 if (value != _colourSettings)
@@ -47,7 +47,7 @@ namespace TwainWpf
         /// The DPI to scan at. Set to null to use the current default setting.
         /// </summary>
         public int? Dpi {
-            get { return _dpi; }
+            get => _dpi;
 
             set {
                 if (value != _dpi)
@@ -68,7 +68,10 @@ namespace TwainWpf
         {
         };
 
-        protected void OnPropertyChanged(string propertyName) => PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         #endregion INotifyPropertyChanged Members
     }

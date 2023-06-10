@@ -767,25 +767,26 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private static void RenderSubtitle(MediaViewer viewer, TimeSpan position)
     {
-        foreach (SrtContent subtitle in viewer.ParsedSubtitle)
+        foreach (SrtContent srtcontent in viewer.ParsedSubtitle)
         {
-            if (position > subtitle.StartTime && position < subtitle.EndTime)
+            if (position > srtcontent.StartTime && position < srtcontent.EndTime)
             {
-                subtitle.BackgroundColor = Brushes.Yellow;
+                srtcontent.BackgroundColor = Brushes.Yellow;
+                viewer.MediaViewerSubtitleControl.LbSubtitle.ScrollIntoView(srtcontent);
                 if (viewer.AutoTranslate)
                 {
-                    viewer.TooltipOriginalSubtitle = subtitle.Text;
-                    viewer.SubTitle = TranslateViewModel.DileÇevirAsync(subtitle.Text, viewer.MevcutDil, viewer.ÇevrilenDil).ConfigureAwait(false).GetAwaiter().GetResult();
+                    viewer.TooltipOriginalSubtitle = srtcontent.Text;
+                    viewer.SubTitle = TranslateViewModel.DileÇevirAsync(srtcontent.Text, viewer.MevcutDil, viewer.ÇevrilenDil).ConfigureAwait(false).GetAwaiter().GetResult();
                 }
                 else
                 {
-                    viewer.SubTitle = subtitle.Text;
+                    viewer.SubTitle = srtcontent.Text;
                 }
             }
 
-            if (position > subtitle.EndTime)
+            if (position > srtcontent.EndTime)
             {
-                subtitle.BackgroundColor = null;
+                srtcontent.BackgroundColor = null;
                 viewer.TooltipOriginalSubtitle = string.Empty;
                 viewer.SubTitle = string.Empty;
             }
@@ -941,7 +942,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private TextBlock GenerateWhiteTextBlock(string text)
     {
-        return new TextBlock { Text = text, Foreground = Brushes.White, HorizontalAlignment = HorizontalAlignment.Center };
+        return new() { Text = text, Foreground = Brushes.White, HorizontalAlignment = HorizontalAlignment.Center };
     }
 
     private MediaState GetMediaState(MediaElement myMedia)

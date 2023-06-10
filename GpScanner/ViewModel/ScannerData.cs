@@ -9,7 +9,7 @@ public class ScannerData : InpcBase
 {
     [XmlElement(ElementName = "Data")]
     public ObservableCollection<Data> Data {
-        get { return data; }
+        get => data;
 
         set {
             if (data != value)

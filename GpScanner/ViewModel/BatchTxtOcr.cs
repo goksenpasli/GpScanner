@@ -5,7 +5,7 @@ namespace GpScanner.ViewModel;
 public class BatchTxtOcr : InpcBase
 {
     public string FilePath {
-        get { return filePath; }
+        get => filePath;
 
         set {
             if (filePath != value)
@@ -17,7 +17,7 @@ public class BatchTxtOcr : InpcBase
     }
 
     public double ProgressValue {
-        get { return progressValue; }
+        get => progressValue;
 
         set {
             if (progressValue != value)

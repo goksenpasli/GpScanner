@@ -11,7 +11,10 @@ public class Deskew
     public Deskew(BitmapSource bmp)
     { cBmp = bmp; }
 
-    public double GetAlpha(int Index) => cAlphaStart + (Index * cAlphaStep);
+    public double GetAlpha(int Index)
+    {
+        return cAlphaStart + (Index * cAlphaStep);
+    }
 
     public unsafe Color GetPixelColor(WriteableBitmap wb, int x, int y)
     {
@@ -125,7 +128,10 @@ public class Deskew
         }
     }
 
-    private int CalcDIndex(double d) => Convert.ToInt32(d - cDMin);
+    private int CalcDIndex(double d)
+    {
+        return Convert.ToInt32(d - cDMin);
+    }
 
     private HougLine[] GetTop(int Count)
     {
