@@ -64,12 +64,6 @@ public class PageRangeDocumentPaginator : DocumentPaginator
 
 public partial class XpsViewer : UserControl, INotifyPropertyChanged
 {
-    public static readonly DependencyProperty XpsDataFilePathProperty = DependencyProperty.Register(
-        "XpsDataFilePath",
-        typeof(string),
-        typeof(XpsViewer),
-        new PropertyMetadata(null, XpsDataFilePathChanged));
-
     public XpsViewer()
     {
         InitializeComponent();
@@ -92,12 +86,16 @@ public partial class XpsViewer : UserControl, INotifyPropertyChanged
 
     public string XpsDataFilePath { get => (string)GetValue(XpsDataFilePathProperty); set => SetValue(XpsDataFilePathProperty, value); }
 
+    public static readonly DependencyProperty XpsDataFilePathProperty = DependencyProperty.Register(
+                        "XpsDataFilePath",
+        typeof(string),
+        typeof(XpsViewer),
+        new PropertyMetadata(null, XpsDataFilePathChanged));
+
     protected virtual void OnPropertyChanged(string propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
-
-    private IDocumentPaginatorSource document;
 
     private static void XpsDataFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -136,4 +134,6 @@ public partial class XpsViewer : UserControl, INotifyPropertyChanged
             dlg.PrintDocument(paginator, Application.Current?.MainWindow?.Title);
         }
     }
+
+    private IDocumentPaginatorSource document;
 }

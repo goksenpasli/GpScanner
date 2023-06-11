@@ -8,12 +8,6 @@ namespace TwainControl;
 
 public class Policy : DependencyObject
 {
-    public static readonly DependencyProperty PolicyEnabledProperty =
-        DependencyProperty.RegisterAttached("PolicyEnabled", typeof(bool), typeof(Policy), new PropertyMetadata(false, Changed));
-
-    public static readonly DependencyProperty PolicyNameProperty =
-        DependencyProperty.RegisterAttached("PolicyName", typeof(string), typeof(Policy), new PropertyMetadata(string.Empty));
-
     public static bool CheckPolicy(string searchvalue, RegistryKey registryKey)
     {
         try
@@ -58,6 +52,12 @@ public class Policy : DependencyObject
     {
         obj.SetValue(PolicyNameProperty, value);
     }
+
+    public static readonly DependencyProperty PolicyEnabledProperty =
+                            DependencyProperty.RegisterAttached("PolicyEnabled", typeof(bool), typeof(Policy), new PropertyMetadata(false, Changed));
+
+    public static readonly DependencyProperty PolicyNameProperty =
+        DependencyProperty.RegisterAttached("PolicyName", typeof(string), typeof(Policy), new PropertyMetadata(string.Empty));
 
     private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {

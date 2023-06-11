@@ -28,66 +28,6 @@ public enum FitImageOrientation
 [TemplatePart(Name = "panoramaBrush", Type = typeof(DiffuseMaterial))]
 public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 {
-    public static readonly DependencyProperty AngleProperty =
-        DependencyProperty.Register("Angle", typeof(double), typeof(ImageViewer), new PropertyMetadata(0.0));
-
-    public static readonly DependencyProperty DecodeHeightProperty = DependencyProperty.Register(
-        "DecodeHeight",
-        typeof(int),
-        typeof(ImageViewer),
-        new PropertyMetadata(300, DecodeHeightChangedAsync));
-
-    public static readonly DependencyProperty FovProperty = DependencyProperty.Register("Fov", typeof(double), typeof(ImageViewer), new PropertyMetadata(95d, FovChanged));
-
-    public static readonly DependencyProperty ImageFilePathProperty = DependencyProperty.Register(
-        "ImageFilePath",
-        typeof(string),
-        typeof(ImageViewer),
-        new PropertyMetadata(null, ImageFilePathChangedAsync));
-
-    public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
-        "Orientation",
-        typeof(FitImageOrientation),
-        typeof(ImageViewer),
-        new PropertyMetadata(FitImageOrientation.None, OrientationChanged));
-
-    public static readonly DependencyProperty OriginalPixelHeightProperty =
-        DependencyProperty.Register("OriginalPixelHeight", typeof(int), typeof(ImageViewer), new PropertyMetadata(0));
-
-    public static readonly DependencyProperty OriginalPixelWidthProperty =
-        DependencyProperty.Register("OriginalPixelWidth", typeof(int), typeof(ImageViewer), new PropertyMetadata(0));
-
-    public static readonly DependencyProperty PanoramaModeProperty = DependencyProperty.Register(
-        "PanoramaMode",
-        typeof(bool),
-        typeof(ImageViewer),
-        new PropertyMetadata(PanoramaModeChanged));
-
-    public static readonly DependencyProperty RotateXProperty =
-        DependencyProperty.Register("RotateX", typeof(double), typeof(ImageViewer), new PropertyMetadata(0.0));
-
-    public static readonly DependencyProperty RotateYProperty =
-        DependencyProperty.Register("RotateY", typeof(double), typeof(ImageViewer), new PropertyMetadata(0.0));
-
-    public static readonly DependencyProperty SnapTickProperty =
-        DependencyProperty.Register("SnapTick", typeof(bool), typeof(ImageViewer), new PropertyMetadata(false));
-
-    public static readonly DependencyProperty SourceProperty = DependencyProperty.Register(
-        "Source",
-        typeof(ImageSource),
-        typeof(ImageViewer),
-        new PropertyMetadata(null, SourceChanged));
-
-    public static readonly DependencyProperty ToolBarVisibilityProperty =
-        DependencyProperty.Register("ToolBarVisibility", typeof(Visibility), typeof(ImageViewer), new PropertyMetadata(Visibility.Visible));
-
-    public static readonly DependencyProperty ZoomProperty = DependencyProperty.Register(
-        "Zoom",
-        typeof(double),
-        typeof(ImageViewer),
-        new PropertyMetadata(1.0),
-        ZoomValidateCallBack);
-
     static ImageViewer()
     {
         DefaultStyleKeyProperty.OverrideMetadata(typeof(ImageViewer), new FrameworkPropertyMetadata(typeof(ImageViewer)));
@@ -393,6 +333,66 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
+    public static readonly DependencyProperty AngleProperty =
+                                                                                                                                                    DependencyProperty.Register("Angle", typeof(double), typeof(ImageViewer), new PropertyMetadata(0.0));
+
+    public static readonly DependencyProperty DecodeHeightProperty = DependencyProperty.Register(
+        "DecodeHeight",
+        typeof(int),
+        typeof(ImageViewer),
+        new PropertyMetadata(300, DecodeHeightChangedAsync));
+
+    public static readonly DependencyProperty FovProperty = DependencyProperty.Register("Fov", typeof(double), typeof(ImageViewer), new PropertyMetadata(95d, FovChanged));
+
+    public static readonly DependencyProperty ImageFilePathProperty = DependencyProperty.Register(
+        "ImageFilePath",
+        typeof(string),
+        typeof(ImageViewer),
+        new PropertyMetadata(null, ImageFilePathChangedAsync));
+
+    public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
+        "Orientation",
+        typeof(FitImageOrientation),
+        typeof(ImageViewer),
+        new PropertyMetadata(FitImageOrientation.None, OrientationChanged));
+
+    public static readonly DependencyProperty OriginalPixelHeightProperty =
+        DependencyProperty.Register("OriginalPixelHeight", typeof(int), typeof(ImageViewer), new PropertyMetadata(0));
+
+    public static readonly DependencyProperty OriginalPixelWidthProperty =
+        DependencyProperty.Register("OriginalPixelWidth", typeof(int), typeof(ImageViewer), new PropertyMetadata(0));
+
+    public static readonly DependencyProperty PanoramaModeProperty = DependencyProperty.Register(
+        "PanoramaMode",
+        typeof(bool),
+        typeof(ImageViewer),
+        new PropertyMetadata(PanoramaModeChanged));
+
+    public static readonly DependencyProperty RotateXProperty =
+        DependencyProperty.Register("RotateX", typeof(double), typeof(ImageViewer), new PropertyMetadata(0.0));
+
+    public static readonly DependencyProperty RotateYProperty =
+        DependencyProperty.Register("RotateY", typeof(double), typeof(ImageViewer), new PropertyMetadata(0.0));
+
+    public static readonly DependencyProperty SnapTickProperty =
+        DependencyProperty.Register("SnapTick", typeof(bool), typeof(ImageViewer), new PropertyMetadata(false));
+
+    public static readonly DependencyProperty SourceProperty = DependencyProperty.Register(
+        "Source",
+        typeof(ImageSource),
+        typeof(ImageViewer),
+        new PropertyMetadata(null, SourceChanged));
+
+    public static readonly DependencyProperty ToolBarVisibilityProperty =
+        DependencyProperty.Register("ToolBarVisibility", typeof(Visibility), typeof(ImageViewer), new PropertyMetadata(Visibility.Visible));
+
+    public static readonly DependencyProperty ZoomProperty = DependencyProperty.Register(
+        "Zoom",
+        typeof(double),
+        typeof(ImageViewer),
+        new PropertyMetadata(1.0),
+        ZoomValidateCallBack);
+
     internal static Point3D GetPosition(double t, double y)
     {
         double r = Math.Sqrt(1 - (y * y));
@@ -418,38 +418,6 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
-
-    private bool _isOnDrag;
-
-    private DiffuseMaterial _panoramaBrush;
-
-    private Point _startPoint;
-
-    private double _startRotateX;
-
-    private double _startRotateY;
-
-    private Viewport3D _viewport;
-
-    private TiffBitmapDecoder decoder;
-
-    private bool disposedValue;
-
-    private Visibility openButtonVisibility = Visibility.Collapsed;
-
-    private Visibility orijinalResimDosyaAçButtonVisibility;
-
-    private IEnumerable<int> pages;
-
-    private Visibility panoramaButtonVisibility;
-
-    private Visibility printButtonVisibility = Visibility.Collapsed;
-
-    private int sayfa = 1;
-
-    private Visibility tifNavigasyonButtonEtkin = Visibility.Collapsed;
-
-    private bool toolBarIsEnabled = true;
 
     private static async void DecodeHeightChangedAsync(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -615,4 +583,36 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
     {
         Fov -= e.Delta / 100d;
     }
+
+    private bool _isOnDrag;
+
+    private DiffuseMaterial _panoramaBrush;
+
+    private Point _startPoint;
+
+    private double _startRotateX;
+
+    private double _startRotateY;
+
+    private Viewport3D _viewport;
+
+    private TiffBitmapDecoder decoder;
+
+    private bool disposedValue;
+
+    private Visibility openButtonVisibility = Visibility.Collapsed;
+
+    private Visibility orijinalResimDosyaAçButtonVisibility;
+
+    private IEnumerable<int> pages;
+
+    private Visibility panoramaButtonVisibility;
+
+    private Visibility printButtonVisibility = Visibility.Collapsed;
+
+    private int sayfa = 1;
+
+    private Visibility tifNavigasyonButtonEtkin = Visibility.Collapsed;
+
+    private bool toolBarIsEnabled = true;
 }

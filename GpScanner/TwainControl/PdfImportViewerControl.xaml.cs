@@ -342,80 +342,6 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    private static readonly Ellipse ellipseselectionbox = new()
-    {
-        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
-        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
-        StrokeDashArray = new DoubleCollection(new double[] { 1 })
-    };
-
-    private static readonly Line linebox = new()
-    {
-        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
-        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
-        StrokeDashArray = new DoubleCollection(new double[] { 1 })
-    };
-
-    private static readonly Rectangle rectangleselectionbox = new()
-    {
-        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
-        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
-        StrokeDashArray = new DoubleCollection(new double[] { 1 })
-    };
-
-    private static readonly Line reverselinebox = new()
-    {
-        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
-        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
-        StrokeDashArray = new DoubleCollection(new double[] { 1 })
-    };
-
-    private string annotationText = string.Empty;
-
-    private bool drawAnnotation;
-
-    private bool drawEllipse;
-
-    private bool drawImage;
-
-    private bool drawLine;
-
-    private XImage drawnImage;
-
-    private bool drawRect;
-
-    private bool drawReverseLine;
-
-    private bool drawRoundedRect;
-
-    private bool drawString;
-
-    private XKnownColor graphObjectColor = XKnownColor.Black;
-
-    private XKnownColor graphObjectFillColor = XKnownColor.Transparent;
-
-    private double height;
-
-    private bool isDrawMouseDown;
-
-    private bool isMouseDown;
-
-    private Point mousedowncoord;
-
-    private XDashStyle penDash = XDashStyle.Solid;
-
-    private XLineCap penLineCap = XLineCap.Flat;
-
-    private XLineJoin penLineJoin = XLineJoin.Miter;
-
-    private double penWidth = 0.5d;
-
-    private string text = string.Empty;
-
-    private double textSize = 12d;
-
-    private double width;
-
     private void PdfImportViewerControl_MouseDown(object sender, MouseButtonEventArgs e)
     {
         if (e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer && e.LeftButton == MouseButtonState.Pressed)
@@ -675,4 +601,78 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     {
         Cursor = Cursors.Arrow;
     }
+
+    private static readonly Ellipse ellipseselectionbox = new()
+    {
+        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
+        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
+        StrokeDashArray = new DoubleCollection(new double[] { 1 })
+    };
+
+    private static readonly Line linebox = new()
+    {
+        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
+        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
+        StrokeDashArray = new DoubleCollection(new double[] { 1 })
+    };
+
+    private static readonly Rectangle rectangleselectionbox = new()
+    {
+        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
+        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
+        StrokeDashArray = new DoubleCollection(new double[] { 1 })
+    };
+
+    private static readonly Line reverselinebox = new()
+    {
+        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
+        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
+        StrokeDashArray = new DoubleCollection(new double[] { 1 })
+    };
+
+    private string annotationText = string.Empty;
+
+    private bool drawAnnotation;
+
+    private bool drawEllipse;
+
+    private bool drawImage;
+
+    private bool drawLine;
+
+    private XImage drawnImage;
+
+    private bool drawRect;
+
+    private bool drawReverseLine;
+
+    private bool drawRoundedRect;
+
+    private bool drawString;
+
+    private XKnownColor graphObjectColor = XKnownColor.Black;
+
+    private XKnownColor graphObjectFillColor = XKnownColor.Transparent;
+
+    private double height;
+
+    private bool isDrawMouseDown;
+
+    private bool isMouseDown;
+
+    private Point mousedowncoord;
+
+    private XDashStyle penDash = XDashStyle.Solid;
+
+    private XLineCap penLineCap = XLineCap.Flat;
+
+    private XLineJoin penLineJoin = XLineJoin.Miter;
+
+    private double penWidth = 0.5d;
+
+    private string text = string.Empty;
+
+    private double textSize = 12d;
+
+    private double width;
 }

@@ -60,10 +60,6 @@ namespace TwainControl;
 
 public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposable
 {
-    public static DispatcherTimer CameraQrCodeTimer;
-
-    public static Task Filesavetask;
-
     public TwainCtrl()
     {
         InitializeComponent();
@@ -2434,6 +2430,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
+    public static DispatcherTimer CameraQrCodeTimer;
+
+    public static Task Filesavetask;
+
     internal static T DeSerialize<T>(string xmldatapath) where T : class, new()
     {
         try
@@ -2467,112 +2467,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
-
-    private const double Inch = 2.54d;
-
-    private static readonly SolidColorBrush bluesaveprogresscolor = Brushes.DeepSkyBlue;
-
-    private static readonly Rectangle selectionbox = new()
-    {
-        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
-        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
-        StrokeThickness = 2,
-        StrokeDashArray = new DoubleCollection(new double[] { 1 })
-    };
-
-    private readonly int defaultpictureresizeratio = Settings.Default.DefaultPictureResizeRatio;
-
-    private readonly string[] imagefileextensions = { ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp" };
-
-    private ScanSettings _settings;
-
-    private double allImageRotationAngle;
-
-    private PdfAnnotations annotations;
-
-    private byte[] cameraQRCodeData;
-
-    private bool canUndoImage;
-
-    private CroppedBitmap croppedOcrBitmap;
-
-    private byte[] dataBaseQrData;
-
-    private ObservableCollection<OcrData> dataBaseTextData;
-
-    private int decodeHeight;
-
-    private bool disposedValue;
-
-    private GridLength documentGridLength = new(5, GridUnitType.Star);
-
-    private bool documentPreviewIsExpanded = true;
-
-    private bool dragMoveStarted;
-
-    private Task fileloadtask;
-
-    private double height;
-
-    private byte[] ımgData;
-
-    private bool isMouseDown;
-
-    private bool isRightMouseDown;
-
-    private string mailData;
-
-    private Point mousedowncoord;
-
-    private ObservableCollection<Paper> papers;
-
-    private double pdfLoadProgressValue;
-
-    private int pdfMedianValue;
-
-    private ObservableCollection<PdfData> pdfPages;
-
-    private int pdfSplitCount;
-
-    private SolidColorBrush pdfWatermarkColor = Brushes.Red;
-
-    private string pdfWatermarkFont = "Arial";
-
-    private double pdfWatermarkFontAngle = 315d;
-
-    private double pdfWatermarkFontSize = 72d;
-
-    private string pdfWaterMarkText;
-
-    private int saveIndex = 2;
-
-    private int sayfaBaşlangıç = 1;
-
-    private int sayfaBitiş = 1;
-
-    private Scanner scanner;
-
-    private ScannedImage seçiliResim;
-
-    private Tuple<string, int, double, bool, double> selectedCompressionProfile;
-
-    private Orientation selectedOrientation = Orientation.Default;
-
-    private Paper selectedPaper = new();
-
-    private PageRotation selectedRotation = PageRotation.NONE;
-
-    private TabItem selectedTab;
-
-    private Twain twain;
-
-    private GridLength twainGuiControlLength = new(3, GridUnitType.Star);
-
-    private ScannedImage undoImage;
-
-    private int? undoImageIndex;
-
-    private double width;
 
     private static async Task SaveFileAsync(string loadfilename, string savefilename, int start, int end)
     {
@@ -3195,4 +3089,110 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
         }
     }
+
+    private const double Inch = 2.54d;
+
+    private static readonly SolidColorBrush bluesaveprogresscolor = Brushes.DeepSkyBlue;
+
+    private static readonly Rectangle selectionbox = new()
+    {
+        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
+        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
+        StrokeThickness = 2,
+        StrokeDashArray = new DoubleCollection(new double[] { 1 })
+    };
+
+    private readonly int defaultpictureresizeratio = Settings.Default.DefaultPictureResizeRatio;
+
+    private readonly string[] imagefileextensions = { ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp" };
+
+    private ScanSettings _settings;
+
+    private double allImageRotationAngle;
+
+    private PdfAnnotations annotations;
+
+    private byte[] cameraQRCodeData;
+
+    private bool canUndoImage;
+
+    private CroppedBitmap croppedOcrBitmap;
+
+    private byte[] dataBaseQrData;
+
+    private ObservableCollection<OcrData> dataBaseTextData;
+
+    private int decodeHeight;
+
+    private bool disposedValue;
+
+    private GridLength documentGridLength = new(5, GridUnitType.Star);
+
+    private bool documentPreviewIsExpanded = true;
+
+    private bool dragMoveStarted;
+
+    private Task fileloadtask;
+
+    private double height;
+
+    private byte[] ımgData;
+
+    private bool isMouseDown;
+
+    private bool isRightMouseDown;
+
+    private string mailData;
+
+    private Point mousedowncoord;
+
+    private ObservableCollection<Paper> papers;
+
+    private double pdfLoadProgressValue;
+
+    private int pdfMedianValue;
+
+    private ObservableCollection<PdfData> pdfPages;
+
+    private int pdfSplitCount;
+
+    private SolidColorBrush pdfWatermarkColor = Brushes.Red;
+
+    private string pdfWatermarkFont = "Arial";
+
+    private double pdfWatermarkFontAngle = 315d;
+
+    private double pdfWatermarkFontSize = 72d;
+
+    private string pdfWaterMarkText;
+
+    private int saveIndex = 2;
+
+    private int sayfaBaşlangıç = 1;
+
+    private int sayfaBitiş = 1;
+
+    private Scanner scanner;
+
+    private ScannedImage seçiliResim;
+
+    private Tuple<string, int, double, bool, double> selectedCompressionProfile;
+
+    private Orientation selectedOrientation = Orientation.Default;
+
+    private Paper selectedPaper = new();
+
+    private PageRotation selectedRotation = PageRotation.NONE;
+
+    private TabItem selectedTab;
+
+    private Twain twain;
+
+    private GridLength twainGuiControlLength = new(3, GridUnitType.Star);
+
+    private ScannedImage undoImage;
+
+    private int? undoImageIndex;
+
+    private double width;
 }

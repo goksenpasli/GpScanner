@@ -171,12 +171,6 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    private bool showAllLanguages;
-
-    private string tessdatafolder;
-
-    private ObservableCollection<TessFiles> tesseractFiles;
-
     private void Tess_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName is "Checked")
@@ -337,4 +331,10 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
             }
         }
     }
+
+    private bool showAllLanguages;
+
+    private string tessdatafolder;
+
+    private ObservableCollection<TessFiles> tesseractFiles;
 }

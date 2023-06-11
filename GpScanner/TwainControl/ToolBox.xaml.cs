@@ -382,14 +382,6 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    private double borderSize;
-
-    private bool compressImage = true;
-
-    private bool resizeRatioImage;
-
-    private double toolBoxPdfMergeProgressValue;
-
     private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName is "EnAdet")
@@ -445,4 +437,12 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
             Scanner.PropertyChanged += Scanner_PropertyChanged;
         }
     }
+
+    private double borderSize;
+
+    private bool compressImage = true;
+
+    private bool resizeRatioImage;
+
+    private double toolBoxPdfMergeProgressValue;
 }

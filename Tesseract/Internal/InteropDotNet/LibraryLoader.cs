@@ -89,12 +89,6 @@ namespace Tesseract.Internal.InteropDotNet
             }
         }
 
-        private readonly Dictionary<string, IntPtr> loadedAssemblies = new Dictionary<string, IntPtr>();
-
-        private readonly ILibraryLoaderLogic logic;
-
-        private readonly object syncLock = new object();
-
         private LibraryLoader(ILibraryLoaderLogic logic)
         { this.logic = logic; }
 
@@ -173,6 +167,12 @@ namespace Tesseract.Internal.InteropDotNet
             string fullPath = Path.Combine(baseDirectory, Path.Combine(platformName, fileName));
             return File.Exists(fullPath) ? logic.LoadLibrary(fullPath) : IntPtr.Zero;
         }
+
+        private readonly Dictionary<string, IntPtr> loadedAssemblies = new Dictionary<string, IntPtr>();
+
+        private readonly ILibraryLoaderLogic logic;
+
+        private readonly object syncLock = new object();
 
         #region Singleton
 

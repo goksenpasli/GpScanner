@@ -46,22 +46,6 @@ public static class WindowExtensions
         _ = SetWindowLong(hwnd, GWL_STYLE, currentStyle & ~WS_MINIMIZEBOX);
     }
 
-    private const int _AboutSysMenuID = 1001;
-
-    private const int GWL_STYLE = -16, WS_MINIMIZEBOX = 0x20000;
-
-    private const uint MF_BYCOMMAND = 0x00000000;
-
-    private const int MF_BYPOSITION = 0x400;
-
-    private const uint MF_ENABLED = 0x00000000;
-
-    private const uint MF_GRAYED = 0x00000001;
-
-    private const uint SC_CLOSE = 0xF060;
-
-    private const int WM_SYSCOMMAND = 0x112;
-
     [DllImport("user32.dll")]
     private static extern bool EnableMenuItem(IntPtr hMenu, uint uIDEnableItem, uint uEnable);
 
@@ -93,4 +77,20 @@ public static class WindowExtensions
 
         return IntPtr.Zero;
     }
+
+    private const int _AboutSysMenuID = 1001;
+
+    private const int GWL_STYLE = -16, WS_MINIMIZEBOX = 0x20000;
+
+    private const uint MF_BYCOMMAND = 0x00000000;
+
+    private const int MF_BYPOSITION = 0x400;
+
+    private const uint MF_ENABLED = 0x00000000;
+
+    private const uint MF_GRAYED = 0x00000001;
+
+    private const uint SC_CLOSE = 0xF060;
+
+    private const int WM_SYSCOMMAND = 0x112;
 }

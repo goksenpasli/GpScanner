@@ -22,22 +22,6 @@ public partial class DocumentViewerWindow : Window
         DataContext = new DocumentViewerModel();
     }
 
-    private static readonly Rectangle selectionbox = new()
-    {
-        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
-        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
-        StrokeThickness = 2,
-        StrokeDashArray = new DoubleCollection(new double[] { 1 })
-    };
-
-    private double height;
-
-    private bool isMouseDown;
-
-    private Point mousedowncoord;
-
-    private double width;
-
     private void DocumentViewer_MouseDown(object sender, MouseButtonEventArgs e)
     {
         if (e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer && e.LeftButton == MouseButtonState.Pressed && Keyboard.IsKeyDown(Key.LeftCtrl))
@@ -92,4 +76,20 @@ public partial class DocumentViewerWindow : Window
             GC.Collect();
         }
     }
+
+    private static readonly Rectangle selectionbox = new()
+    {
+        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
+        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
+        StrokeThickness = 2,
+        StrokeDashArray = new DoubleCollection(new double[] { 1 })
+    };
+
+    private double height;
+
+    private bool isMouseDown;
+
+    private Point mousedowncoord;
+
+    private double width;
 }

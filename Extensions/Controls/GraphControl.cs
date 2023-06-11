@@ -15,8 +15,74 @@ namespace Extensions;
 
 public class GraphControl : FrameworkElement
 {
+    static GraphControl()
+    {
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(GraphControl), new FrameworkPropertyMetadata(typeof(GraphControl)));
+    }
+
+    public GraphControl()
+    { Kaydet = new RelayCommand<object>(parameter => SaveFile(RenderVisual(this).ToTiffJpegByteArray(Format.Png))); }
+
+    [Description("Graph Controls")]
+    [Category("Graph")]
+    public Visibility ContextMenuVisibility { get => (Visibility)GetValue(ContextMenuVisibilityProperty); set => SetValue(ContextMenuVisibilityProperty, value); }
+
+    [Description("Graph Controls")]
+    [Category("Graph")]
+    public Brush DotColor { get => (Brush)GetValue(DotColorProperty); set => SetValue(DotColorProperty, value); }
+
+    [Description("Graph Controls")]
+    [Category("Graph")]
+    public double FontSize { get => (double)GetValue(FontSizeProperty); set => SetValue(FontSizeProperty, value); }
+
+    [Description("Graph Controls")]
+    [Category("Graph")]
+    public Visibility GraphContentVisibility { get => (Visibility)GetValue(GraphContentVisibilityProperty); set => SetValue(GraphContentVisibilityProperty, value); }
+
+    [Description("Graph Controls")]
+    [Category("Graph")]
+    public bool IsContextMenuEnabled { get => (bool)GetValue(IsContextMenuEnabledProperty); set => SetValue(IsContextMenuEnabledProperty, value); }
+
+    public ICommand Kaydet { get; }
+
+    [Description("Graph Controls")]
+    [Category("Graph")]
+    public Brush LineColor { get => (Brush)GetValue(LineColorProperty); set => SetValue(LineColorProperty, value); }
+
+    [Description("Graph Controls")]
+    [Category("Graph")]
+    public Visibility LineDotVisibility { get => (Visibility)GetValue(LineDotVisibilityProperty); set => SetValue(LineDotVisibilityProperty, value); }
+
+    [Description("Graph Controls")]
+    [Category("Graph")]
+    public Visibility LineGraphVisibility { get => (Visibility)GetValue(LineGraphVisibilityProperty); set => SetValue(LineGraphVisibilityProperty, value); }
+
+    [Description("Graph Controls")]
+    [Category("Graph")]
+    public double LineThickness { get => (double)GetValue(LineThicknessProperty); set => SetValue(LineThicknessProperty, value); }
+
+    [Description("Graph Controls")]
+    [Category("Graph")]
+    public ObservableCollection<Chart> Series { get => (ObservableCollection<Chart>)GetValue(SeriesProperty); set => SetValue(SeriesProperty, value); }
+
+    [Description("Graph Controls")]
+    [Category("Graph")]
+    public Visibility SeriesTextVisibility { get => (Visibility)GetValue(SeriesTextVisibilityProperty); set => SetValue(SeriesTextVisibilityProperty, value); }
+
+    [Description("Graph Controls")]
+    [Category("Graph")]
+    public Brush TextColor { get => (Brush)GetValue(TextColorProperty); set => SetValue(TextColorProperty, value); }
+
+    [Description("Graph Controls")]
+    [Category("Graph")]
+    public Brush ValueColor { get => (Brush)GetValue(ValueColorProperty); set => SetValue(ValueColorProperty, value); }
+
+    [Description("Graph Controls")]
+    [Category("Graph")]
+    public Visibility ValueTextVisibility { get => (Visibility)GetValue(ValueTextVisibilityProperty); set => SetValue(ValueTextVisibilityProperty, value); }
+
     public static readonly DependencyProperty ContextMenuVisibilityProperty =
-        DependencyProperty.Register("ContextMenuVisibility", typeof(Visibility), typeof(GraphControl), new PropertyMetadata(Visibility.Visible));
+                                                                            DependencyProperty.Register("ContextMenuVisibility", typeof(Visibility), typeof(GraphControl), new PropertyMetadata(Visibility.Visible));
 
     public static readonly DependencyProperty DotColorProperty = DependencyProperty.Register(
         "DotColor",
@@ -98,72 +164,6 @@ public class GraphControl : FrameworkElement
         typeof(GraphControl),
         new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.AffectsRender));
 
-    static GraphControl()
-    {
-        DefaultStyleKeyProperty.OverrideMetadata(typeof(GraphControl), new FrameworkPropertyMetadata(typeof(GraphControl)));
-    }
-
-    public GraphControl()
-    { Kaydet = new RelayCommand<object>(parameter => SaveFile(RenderVisual(this).ToTiffJpegByteArray(Format.Png))); }
-
-    [Description("Graph Controls")]
-    [Category("Graph")]
-    public Visibility ContextMenuVisibility { get => (Visibility)GetValue(ContextMenuVisibilityProperty); set => SetValue(ContextMenuVisibilityProperty, value); }
-
-    [Description("Graph Controls")]
-    [Category("Graph")]
-    public Brush DotColor { get => (Brush)GetValue(DotColorProperty); set => SetValue(DotColorProperty, value); }
-
-    [Description("Graph Controls")]
-    [Category("Graph")]
-    public double FontSize { get => (double)GetValue(FontSizeProperty); set => SetValue(FontSizeProperty, value); }
-
-    [Description("Graph Controls")]
-    [Category("Graph")]
-    public Visibility GraphContentVisibility { get => (Visibility)GetValue(GraphContentVisibilityProperty); set => SetValue(GraphContentVisibilityProperty, value); }
-
-    [Description("Graph Controls")]
-    [Category("Graph")]
-    public bool IsContextMenuEnabled { get => (bool)GetValue(IsContextMenuEnabledProperty); set => SetValue(IsContextMenuEnabledProperty, value); }
-
-    public ICommand Kaydet { get; }
-
-    [Description("Graph Controls")]
-    [Category("Graph")]
-    public Brush LineColor { get => (Brush)GetValue(LineColorProperty); set => SetValue(LineColorProperty, value); }
-
-    [Description("Graph Controls")]
-    [Category("Graph")]
-    public Visibility LineDotVisibility { get => (Visibility)GetValue(LineDotVisibilityProperty); set => SetValue(LineDotVisibilityProperty, value); }
-
-    [Description("Graph Controls")]
-    [Category("Graph")]
-    public Visibility LineGraphVisibility { get => (Visibility)GetValue(LineGraphVisibilityProperty); set => SetValue(LineGraphVisibilityProperty, value); }
-
-    [Description("Graph Controls")]
-    [Category("Graph")]
-    public double LineThickness { get => (double)GetValue(LineThicknessProperty); set => SetValue(LineThicknessProperty, value); }
-
-    [Description("Graph Controls")]
-    [Category("Graph")]
-    public ObservableCollection<Chart> Series { get => (ObservableCollection<Chart>)GetValue(SeriesProperty); set => SetValue(SeriesProperty, value); }
-
-    [Description("Graph Controls")]
-    [Category("Graph")]
-    public Visibility SeriesTextVisibility { get => (Visibility)GetValue(SeriesTextVisibilityProperty); set => SetValue(SeriesTextVisibilityProperty, value); }
-
-    [Description("Graph Controls")]
-    [Category("Graph")]
-    public Brush TextColor { get => (Brush)GetValue(TextColorProperty); set => SetValue(TextColorProperty, value); }
-
-    [Description("Graph Controls")]
-    [Category("Graph")]
-    public Brush ValueColor { get => (Brush)GetValue(ValueColorProperty); set => SetValue(ValueColorProperty, value); }
-
-    [Description("Graph Controls")]
-    [Category("Graph")]
-    public Visibility ValueTextVisibility { get => (Visibility)GetValue(ValueTextVisibilityProperty); set => SetValue(ValueTextVisibilityProperty, value); }
-
     protected override void OnRender(DrawingContext drawingContext)
     {
         if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
@@ -180,8 +180,6 @@ public class GraphControl : FrameworkElement
         };
         DrawGraph(drawingContext, MockData);
     }
-
-    private static ObservableCollection<Chart> MockData;
 
     private void DrawGraph(DrawingContext drawingContext, ObservableCollection<Chart> Series)
     {
@@ -302,4 +300,6 @@ public class GraphControl : FrameworkElement
             GC.Collect();
         }
     }
+
+    private static ObservableCollection<Chart> MockData;
 }

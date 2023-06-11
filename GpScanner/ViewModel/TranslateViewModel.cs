@@ -168,6 +168,16 @@ public class TranslateViewModel : InpcBase
 
     public IEnumerable<string> TtsDilleri { get; set; }
 
+    private void TranslateViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is "OkumaDili" && !string.IsNullOrEmpty(OkumaDili))
+        {
+            speechSynthesizer = new SpeechSynthesizer();
+            TtsDilleri = speechSynthesizer.GetInstalledVoices().Select(z => z.VoiceInfo.Name);
+            speechSynthesizer.SelectVoice(OkumaDili);
+        }
+    }
+
     private string çeviri;
 
     private string çevrilenDil = "en";
@@ -183,14 +193,4 @@ public class TranslateViewModel : InpcBase
     private SpeechSynthesizer speechSynthesizer;
 
     private ObservableCollection<string> taramaGeçmiş = new();
-
-    private void TranslateViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName is "OkumaDili" && !string.IsNullOrEmpty(OkumaDili))
-        {
-            speechSynthesizer = new SpeechSynthesizer();
-            TtsDilleri = speechSynthesizer.GetInstalledVoices().Select(z => z.VoiceInfo.Name);
-            speechSynthesizer.SelectVoice(OkumaDili);
-        }
-    }
 }

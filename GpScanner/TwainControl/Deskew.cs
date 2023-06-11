@@ -68,26 +68,6 @@ public class Deskew
         [FieldOffset(3)] public byte A;
     }
 
-    private readonly double cAlphaStart = -20;
-
-    private readonly double cAlphaStep = 0.2;
-
-    private readonly BitmapSource cBmp;
-
-    private readonly double cDStep = 1;
-
-    private readonly int cSteps = 40 * 5;
-
-    private double[] cCosA;
-
-    private int cDCount;
-
-    private double cDMin;
-
-    private int[] cHMatrix;
-
-    private double[] cSinA;
-
     private void Calc(bool fast = false)
     {
         int hMin = cBmp.PixelHeight / 4;
@@ -193,4 +173,24 @@ public class Deskew
         double luminance = (c.R * 0.299) + (c.G * 0.587) + (c.B * 0.114);
         return luminance < 140;
     }
+
+    private readonly double cAlphaStart = -20;
+
+    private readonly double cAlphaStep = 0.2;
+
+    private readonly BitmapSource cBmp;
+
+    private readonly double cDStep = 1;
+
+    private readonly int cSteps = 40 * 5;
+
+    private double[] cCosA;
+
+    private int cDCount;
+
+    private double cDMin;
+
+    private int[] cHMatrix;
+
+    private double[] cSinA;
 }

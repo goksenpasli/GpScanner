@@ -24,30 +24,6 @@ namespace PdfCompressor;
 
 public class Compressor : Control, INotifyPropertyChanged
 {
-    public static readonly DependencyProperty BlackAndWhiteProperty =
-        DependencyProperty.Register("BlackAndWhite", typeof(bool), typeof(Compressor), new PropertyMetadata(Settings.Default.Bw, BwChanged));
-
-    public static readonly DependencyProperty DpiProperty = DependencyProperty.Register(
-        "Dpi",
-        typeof(int),
-        typeof(Compressor),
-        new PropertyMetadata(Settings.Default.Dpi, DpiChanged));
-
-    public static readonly DependencyProperty LoadedPdfPathProperty = DependencyProperty.Register(
-        "LoadedPdfPath",
-        typeof(string),
-        typeof(Compressor),
-        new PropertyMetadata(string.Empty));
-
-    public static readonly DependencyProperty QualityProperty = DependencyProperty.Register(
-        "Quality",
-        typeof(int),
-        typeof(Compressor),
-        new PropertyMetadata(Settings.Default.Quality, QualityChanged));
-
-    public static readonly DependencyProperty UseMozJpegProperty =
-        DependencyProperty.Register("UseMozJpeg", typeof(bool), typeof(Compressor), new PropertyMetadata(false, MozpegChanged));
-
     static Compressor()
     {
         DefaultStyleKeyProperty.OverrideMetadata(typeof(Compressor), new FrameworkPropertyMetadata(typeof(Compressor)));
@@ -263,12 +239,34 @@ public class Compressor : Control, INotifyPropertyChanged
         return document;
     }
 
+    public static readonly DependencyProperty BlackAndWhiteProperty =
+                                                                        DependencyProperty.Register("BlackAndWhite", typeof(bool), typeof(Compressor), new PropertyMetadata(Settings.Default.Bw, BwChanged));
+
+    public static readonly DependencyProperty DpiProperty = DependencyProperty.Register(
+        "Dpi",
+        typeof(int),
+        typeof(Compressor),
+        new PropertyMetadata(Settings.Default.Dpi, DpiChanged));
+
+    public static readonly DependencyProperty LoadedPdfPathProperty = DependencyProperty.Register(
+        "LoadedPdfPath",
+        typeof(string),
+        typeof(Compressor),
+        new PropertyMetadata(string.Empty));
+
+    public static readonly DependencyProperty QualityProperty = DependencyProperty.Register(
+        "Quality",
+        typeof(int),
+        typeof(Compressor),
+        new PropertyMetadata(Settings.Default.Quality, QualityChanged));
+
+    public static readonly DependencyProperty UseMozJpegProperty =
+        DependencyProperty.Register("UseMozJpeg", typeof(bool), typeof(Compressor), new PropertyMetadata(false, MozpegChanged));
+
     protected virtual void OnPropertyChanged(string propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
-
-    private double compressionProgress;
 
     private static void BwChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -304,4 +302,6 @@ public class Compressor : Control, INotifyPropertyChanged
         Settings.Default.Quality = (int)e.NewValue;
         Settings.Default.Save();
     }
+
+    private double compressionProgress;
 }

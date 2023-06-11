@@ -40,57 +40,6 @@ public enum FitImageOrientation
 [TemplatePart(Name = "UpDown", Type = typeof(NumericUpDownControl))]
 public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 {
-    public static readonly DependencyProperty AngleProperty =
-        DependencyProperty.Register("Angle", typeof(double), typeof(PdfViewer), new PropertyMetadata(0.0));
-
-    public static readonly DependencyProperty ContextMenuVisibilityProperty =
-        DependencyProperty.Register("ContextMenuVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Collapsed));
-
-    public static readonly DependencyProperty DpiProperty =
-        DependencyProperty.Register("Dpi", typeof(int), typeof(PdfViewer), new PropertyMetadata(200, DpiChangedAsync));
-
-    public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
-        "Orientation",
-        typeof(FitImageOrientation),
-        typeof(PdfViewer),
-        new PropertyMetadata(FitImageOrientation.Width, Changed));
-
-    public static readonly DependencyProperty PdfFilePathProperty = DependencyProperty.Register(
-        "PdfFilePath",
-        typeof(string),
-        typeof(PdfViewer),
-        new PropertyMetadata(null, PdfFilePathChanged));
-
-    public static readonly DependencyProperty ScrollBarVisibleProperty = DependencyProperty.Register(
-        "ScrollBarVisible",
-        typeof(ScrollBarVisibility),
-        typeof(PdfViewer),
-        new PropertyMetadata(ScrollBarVisibility.Auto));
-
-    public static readonly DependencyProperty SeekingLowerPdfDpiProperty =
-        DependencyProperty.Register("SeekingLowerPdfDpi", typeof(bool), typeof(PdfViewer), new PropertyMetadata(false));
-
-    public static readonly DependencyProperty SeekingPdfDpiProperty =
-            DependencyProperty.Register("SeekingPdfDpi", typeof(int), typeof(PdfViewer), new PropertyMetadata(200));
-
-    public static readonly DependencyProperty SnapTickProperty =
-        DependencyProperty.Register("SnapTick", typeof(bool), typeof(PdfViewer), new PropertyMetadata(false));
-
-    public static readonly DependencyProperty SourceProperty = DependencyProperty.Register(
-        "Source",
-        typeof(ImageSource),
-        typeof(PdfViewer),
-        new PropertyMetadata(null, SourceChanged));
-
-    public static readonly DependencyProperty ThumbsVisibleProperty =
-        DependencyProperty.Register("ThumbsVisible", typeof(bool), typeof(PdfViewer), new PropertyMetadata(true));
-
-    public static readonly DependencyProperty ToolBarVisibilityProperty =
-        DependencyProperty.Register("ToolBarVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Visible));
-
-    public static readonly DependencyProperty ZoomProperty =
-        DependencyProperty.Register("Zoom", typeof(double), typeof(PdfViewer), new PropertyMetadata(1.0));
-
     static PdfViewer()
     {
         DefaultStyleKeyProperty.OverrideMetadata(typeof(PdfViewer), new FrameworkPropertyMetadata(typeof(PdfViewer)));
@@ -678,6 +627,57 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
+    public static readonly DependencyProperty AngleProperty =
+                                                                                                                                                                                                                                                DependencyProperty.Register("Angle", typeof(double), typeof(PdfViewer), new PropertyMetadata(0.0));
+
+    public static readonly DependencyProperty ContextMenuVisibilityProperty =
+        DependencyProperty.Register("ContextMenuVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Collapsed));
+
+    public static readonly DependencyProperty DpiProperty =
+        DependencyProperty.Register("Dpi", typeof(int), typeof(PdfViewer), new PropertyMetadata(200, DpiChangedAsync));
+
+    public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
+        "Orientation",
+        typeof(FitImageOrientation),
+        typeof(PdfViewer),
+        new PropertyMetadata(FitImageOrientation.Width, Changed));
+
+    public static readonly DependencyProperty PdfFilePathProperty = DependencyProperty.Register(
+        "PdfFilePath",
+        typeof(string),
+        typeof(PdfViewer),
+        new PropertyMetadata(null, PdfFilePathChanged));
+
+    public static readonly DependencyProperty ScrollBarVisibleProperty = DependencyProperty.Register(
+        "ScrollBarVisible",
+        typeof(ScrollBarVisibility),
+        typeof(PdfViewer),
+        new PropertyMetadata(ScrollBarVisibility.Auto));
+
+    public static readonly DependencyProperty SeekingLowerPdfDpiProperty =
+        DependencyProperty.Register("SeekingLowerPdfDpi", typeof(bool), typeof(PdfViewer), new PropertyMetadata(false));
+
+    public static readonly DependencyProperty SeekingPdfDpiProperty =
+            DependencyProperty.Register("SeekingPdfDpi", typeof(int), typeof(PdfViewer), new PropertyMetadata(200));
+
+    public static readonly DependencyProperty SnapTickProperty =
+        DependencyProperty.Register("SnapTick", typeof(bool), typeof(PdfViewer), new PropertyMetadata(false));
+
+    public static readonly DependencyProperty SourceProperty = DependencyProperty.Register(
+        "Source",
+        typeof(ImageSource),
+        typeof(PdfViewer),
+        new PropertyMetadata(null, SourceChanged));
+
+    public static readonly DependencyProperty ThumbsVisibleProperty =
+        DependencyProperty.Register("ThumbsVisible", typeof(bool), typeof(PdfViewer), new PropertyMetadata(true));
+
+    public static readonly DependencyProperty ToolBarVisibilityProperty =
+        DependencyProperty.Register("ToolBarVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Visible));
+
+    public static readonly DependencyProperty ZoomProperty =
+        DependencyProperty.Register("Zoom", typeof(double), typeof(PdfViewer), new PropertyMetadata(1.0));
+
     protected virtual void Dispose(bool disposing)
     {
         if (!disposedValue)
@@ -695,52 +695,6 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
-
-    private bool autoFitContent;
-
-    private Visibility bookmarkContentVisibility;
-
-    private bool disposedValue;
-
-    private Visibility dpiListVisibility = Visibility.Visible;
-
-    private bool matchCase;
-
-    private Visibility openButtonVisibility = Visibility.Collapsed;
-
-    private IEnumerable<int> pages;
-
-    private PdfBookmarkCollection pdfBookmarks;
-
-    private byte[] pdfData;
-
-    private ObservableCollection<PdfMatch> pdfMatches;
-
-    private string pdfTextContent;
-
-    private Visibility pdfTextContentVisibility;
-
-    private Visibility printButtonVisibility = Visibility.Collapsed;
-
-    private int sayfa = 1;
-
-    private ScrollViewer scrollvwr;
-
-    private PdfMatch searchPdfMatch;
-
-    private string searchTextContent;
-
-    private Visibility searchTextContentVisibility;
-
-    private Visibility sliderZoomAngleVisibility = Visibility.Visible;
-
-    private Visibility tifNavigasyonButtonEtkin = Visibility.Visible;
-
-    private int toplamSayfa;
-
-    private NumericUpDownControl updown;
-
-    private bool wholeWord;
 
     private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -881,4 +835,50 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             Dpi = SeekingPdfDpi;
         }
     }
+
+    private bool autoFitContent;
+
+    private Visibility bookmarkContentVisibility;
+
+    private bool disposedValue;
+
+    private Visibility dpiListVisibility = Visibility.Visible;
+
+    private bool matchCase;
+
+    private Visibility openButtonVisibility = Visibility.Collapsed;
+
+    private IEnumerable<int> pages;
+
+    private PdfBookmarkCollection pdfBookmarks;
+
+    private byte[] pdfData;
+
+    private ObservableCollection<PdfMatch> pdfMatches;
+
+    private string pdfTextContent;
+
+    private Visibility pdfTextContentVisibility;
+
+    private Visibility printButtonVisibility = Visibility.Collapsed;
+
+    private int sayfa = 1;
+
+    private ScrollViewer scrollvwr;
+
+    private PdfMatch searchPdfMatch;
+
+    private string searchTextContent;
+
+    private Visibility searchTextContentVisibility;
+
+    private Visibility sliderZoomAngleVisibility = Visibility.Visible;
+
+    private Visibility tifNavigasyonButtonEtkin = Visibility.Visible;
+
+    private int toplamSayfa;
+
+    private NumericUpDownControl updown;
+
+    private bool wholeWord;
 }

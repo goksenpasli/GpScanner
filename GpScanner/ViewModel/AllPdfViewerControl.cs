@@ -4,9 +4,6 @@ namespace GpScanner.ViewModel
 {
     public class AllPdfViewerControl : DependencyObject
     {
-        public static readonly DependencyProperty AllPageNumberProperty =
-            DependencyProperty.RegisterAttached("AllPageNumber", typeof(int), typeof(AllPdfViewerControl), new PropertyMetadata(1, AllPageNumberChanged));
-
         public static int GetAllPageNumber(DependencyObject obj)
         {
             return (int)obj.GetValue(AllPageNumberProperty);
@@ -16,6 +13,9 @@ namespace GpScanner.ViewModel
         {
             obj.SetValue(AllPageNumberProperty, value);
         }
+
+        public static readonly DependencyProperty AllPageNumberProperty =
+                            DependencyProperty.RegisterAttached("AllPageNumber", typeof(int), typeof(AllPdfViewerControl), new PropertyMetadata(1, AllPageNumberChanged));
 
         private static void AllPageNumberChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

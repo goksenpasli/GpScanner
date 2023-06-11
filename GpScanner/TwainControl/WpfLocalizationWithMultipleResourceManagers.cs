@@ -71,9 +71,6 @@ public class LocExtension : MarkupExtension
 
 public class Translation : DependencyObject
 {
-    public static readonly DependencyProperty ResourceManagerProperty =
-        DependencyProperty.RegisterAttached("ResourceManager", typeof(ResourceManager), typeof(Translation));
-
     public static ResourceManager GetResourceManager(DependencyObject dependencyObject)
     {
         return (ResourceManager)dependencyObject.GetValue(ResourceManagerProperty);
@@ -90,6 +87,9 @@ public class Translation : DependencyObject
     {
         dependencyObject.SetValue(ResourceManagerProperty, value);
     }
+
+    public static readonly DependencyProperty ResourceManagerProperty =
+                    DependencyProperty.RegisterAttached("ResourceManager", typeof(ResourceManager), typeof(Translation));
 }
 
 public class TranslationSource : INotifyPropertyChanged

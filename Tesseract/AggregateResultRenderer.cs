@@ -126,10 +126,6 @@ namespace Tesseract
             }
         }
 
-        private IDisposable _currentDocumentHandle;
-
-        private List<IResultRenderer> _resultRenderers;
-
         /// <summary>
         /// Ensures the renderer's EndDocument when disposed off.
         /// </summary>
@@ -162,5 +158,9 @@ namespace Tesseract
 
             private List<IDisposable> _children;
         }
+
+        private IDisposable _currentDocumentHandle;
+
+        private List<IResultRenderer> _resultRenderers;
     }
 }

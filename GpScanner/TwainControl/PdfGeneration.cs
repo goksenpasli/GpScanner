@@ -504,25 +504,6 @@ public static class PdfGeneration
         page.Size = paper == null || !paperSizes.TryGetValue(paper.PaperType, out PageSize pageSize) ? PageSize.A4 : pageSize;
     }
 
-    private static readonly Dictionary<string, PageSize> paperSizes = new()
-    {
-        { "A0", PageSize.A0 },
-        { "A1", PageSize.A1 },
-        { "A2", PageSize.A2 },
-        { "A3", PageSize.A3 },
-        { "A4", PageSize.A4 },
-        { "A5", PageSize.A5 },
-        { "B0", PageSize.B0 },
-        { "B1", PageSize.B1 },
-        { "B2", PageSize.B2 },
-        { "B3", PageSize.B3 },
-        { "B4", PageSize.B4 },
-        { "B5", PageSize.B5 },
-        { "Letter", PageSize.Letter },
-        { "Legal", PageSize.Legal },
-        { "Executive", PageSize.Executive }
-    };
-
     private static XRect AdjustBounds(this Rect rect, double hAdjust, double vAdjust)
     {
         return new(rect.X * hAdjust, rect.Y * vAdjust, rect.Width * hAdjust, rect.Height * vAdjust);
@@ -586,4 +567,23 @@ public static class PdfGeneration
             }
         }
     }
+
+    private static readonly Dictionary<string, PageSize> paperSizes = new()
+    {
+        { "A0", PageSize.A0 },
+        { "A1", PageSize.A1 },
+        { "A2", PageSize.A2 },
+        { "A3", PageSize.A3 },
+        { "A4", PageSize.A4 },
+        { "A5", PageSize.A5 },
+        { "B0", PageSize.B0 },
+        { "B1", PageSize.B1 },
+        { "B2", PageSize.B2 },
+        { "B3", PageSize.B3 },
+        { "B4", PageSize.B4 },
+        { "B5", PageSize.B5 },
+        { "Letter", PageSize.Letter },
+        { "Legal", PageSize.Legal },
+        { "Executive", PageSize.Executive }
+    };
 }

@@ -16,9 +16,6 @@ namespace TwainControl;
 
 public class Scanner : InpcBase, IDataErrorInfo
 {
-    public static readonly Brush DefaultSaveProgressforegroundbrush =
-        (Brush)new BrushConverter().ConvertFromString("#FF06B025");
-
     public Scanner()
     {
         PropertyChanged += Scanner_PropertyChanged;
@@ -957,6 +954,17 @@ public class Scanner : InpcBase, IDataErrorInfo
         }
     }
 
+    public static readonly Brush DefaultSaveProgressforegroundbrush =
+                                                                                                                                                                                                                                                                                                                                    (Brush)new BrushConverter().ConvertFromString("#FF06B025");
+
+    private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is "PdfSaveProgressValue" && PdfSaveProgressValue == 1)
+        {
+            ProgressState = TaskbarItemProgressState.None;
+        }
+    }
+
     private bool allowCopy = true;
 
     private bool allowEdit = true;
@@ -1104,12 +1112,4 @@ public class Scanner : InpcBase, IDataErrorInfo
     private string watermarkFont = "Arial";
 
     private double watermarkTextSize = 64;
-
-    private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName is "PdfSaveProgressValue" && PdfSaveProgressValue == 1)
-        {
-            ProgressState = TaskbarItemProgressState.None;
-        }
-    }
 }

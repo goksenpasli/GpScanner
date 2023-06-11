@@ -68,12 +68,6 @@ public class GridViewSort
             drawingContext.DrawGeometry(Brushes.LightGray, new Pen(Brushes.Gray, 1.0), GetDefaultGlyph());
         }
 
-        private readonly GridViewColumnHeader _columnHeader;
-
-        private readonly ListSortDirection _direction;
-
-        private readonly ImageSource _sortGlyph;
-
         private Geometry GetDefaultGlyph()
         {
             double x1 = (_columnHeader.ActualWidth / 2) - 5;
@@ -97,14 +91,80 @@ public class GridViewSort
 
             return new PathGeometry(pathFigureCollection);
         }
+
+        private readonly GridViewColumnHeader _columnHeader;
+
+        private readonly ListSortDirection _direction;
+
+        private readonly ImageSource _sortGlyph;
     }
 
     #endregion SortGlyphAdorner nested class
 
     #region Public attached properties
 
+    public static bool GetAutoSort(DependencyObject obj)
+    {
+        return (bool)obj.GetValue(AutoSortProperty);
+    }
+
+    public static ICommand GetCommand(DependencyObject obj)
+    {
+        return (ICommand)obj.GetValue(CommandProperty);
+    }
+
+    public static string GetPropertyName(DependencyObject obj)
+    {
+        return (string)obj.GetValue(PropertyNameProperty);
+    }
+
+    public static bool GetShowSortGlyph(DependencyObject obj)
+    {
+        return (bool)obj.GetValue(ShowSortGlyphProperty);
+    }
+
+    public static ImageSource GetSortGlyphAscending(DependencyObject obj)
+    {
+        return (ImageSource)obj.GetValue(SortGlyphAscendingProperty);
+    }
+
+    public static ImageSource GetSortGlyphDescending(DependencyObject obj)
+    {
+        return (ImageSource)obj.GetValue(SortGlyphDescendingProperty);
+    }
+
+    public static void SetAutoSort(DependencyObject obj, bool value)
+    {
+        obj.SetValue(AutoSortProperty, value);
+    }
+
+    public static void SetCommand(DependencyObject obj, ICommand value)
+    {
+        obj.SetValue(CommandProperty, value);
+    }
+
+    public static void SetPropertyName(DependencyObject obj, string value)
+    {
+        obj.SetValue(PropertyNameProperty, value);
+    }
+
+    public static void SetShowSortGlyph(DependencyObject obj, bool value)
+    {
+        obj.SetValue(ShowSortGlyphProperty, value);
+    }
+
+    public static void SetSortGlyphAscending(DependencyObject obj, ImageSource value)
+    {
+        obj.SetValue(SortGlyphAscendingProperty, value);
+    }
+
+    public static void SetSortGlyphDescending(DependencyObject obj, ImageSource value)
+    {
+        obj.SetValue(SortGlyphDescendingProperty, value);
+    }
+
     public static readonly DependencyProperty AutoSortProperty =
-        DependencyProperty.RegisterAttached(
+                                                        DependencyProperty.RegisterAttached(
         "AutoSort",
         typeof(bool),
         typeof(GridViewSort),
@@ -169,72 +229,9 @@ public class GridViewSort
     public static readonly DependencyProperty SortGlyphDescendingProperty =
         DependencyProperty.RegisterAttached("SortGlyphDescending", typeof(ImageSource), typeof(GridViewSort), new UIPropertyMetadata(null));
 
-    public static bool GetAutoSort(DependencyObject obj)
-    {
-        return (bool)obj.GetValue(AutoSortProperty);
-    }
-
-    public static ICommand GetCommand(DependencyObject obj)
-    {
-        return (ICommand)obj.GetValue(CommandProperty);
-    }
-
-    public static string GetPropertyName(DependencyObject obj)
-    {
-        return (string)obj.GetValue(PropertyNameProperty);
-    }
-
-    public static bool GetShowSortGlyph(DependencyObject obj)
-    {
-        return (bool)obj.GetValue(ShowSortGlyphProperty);
-    }
-
-    public static ImageSource GetSortGlyphAscending(DependencyObject obj)
-    {
-        return (ImageSource)obj.GetValue(SortGlyphAscendingProperty);
-    }
-
-    public static ImageSource GetSortGlyphDescending(DependencyObject obj)
-    {
-        return (ImageSource)obj.GetValue(SortGlyphDescendingProperty);
-    }
-
-    public static void SetAutoSort(DependencyObject obj, bool value)
-    {
-        obj.SetValue(AutoSortProperty, value);
-    }
-
-    public static void SetCommand(DependencyObject obj, ICommand value)
-    {
-        obj.SetValue(CommandProperty, value);
-    }
-
-    public static void SetPropertyName(DependencyObject obj, string value)
-    {
-        obj.SetValue(PropertyNameProperty, value);
-    }
-
-    public static void SetShowSortGlyph(DependencyObject obj, bool value)
-    {
-        obj.SetValue(ShowSortGlyphProperty, value);
-    }
-
-    public static void SetSortGlyphAscending(DependencyObject obj, ImageSource value)
-    {
-        obj.SetValue(SortGlyphAscendingProperty, value);
-    }
-
-    public static void SetSortGlyphDescending(DependencyObject obj, ImageSource value)
-    {
-        obj.SetValue(SortGlyphDescendingProperty, value);
-    }
-
     #endregion Public attached properties
 
     #region Private attached properties
-
-    private static readonly DependencyProperty SortedColumnHeaderProperty =
-        DependencyProperty.RegisterAttached("SortedColumnHeader", typeof(GridViewColumnHeader), typeof(GridViewSort), new UIPropertyMetadata(null));
 
     private static GridViewColumnHeader GetSortedColumnHeader(DependencyObject obj)
     {
@@ -245,6 +242,9 @@ public class GridViewSort
     {
         obj.SetValue(SortedColumnHeaderProperty, value);
     }
+
+    private static readonly DependencyProperty SortedColumnHeaderProperty =
+                DependencyProperty.RegisterAttached("SortedColumnHeader", typeof(GridViewColumnHeader), typeof(GridViewSort), new UIPropertyMetadata(null));
 
     #endregion Private attached properties
 

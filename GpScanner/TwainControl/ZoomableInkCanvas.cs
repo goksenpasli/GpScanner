@@ -28,8 +28,6 @@ namespace TwainControl
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private double currentZoom = 1d;
-
         private void ApplyZoom()
         {
             ScaleTransform scaleTransform = new(CurrentZoom, CurrentZoom);
@@ -43,5 +41,7 @@ namespace TwainControl
                 ApplyZoom();
             }
         }
+
+        private double currentZoom = 1d;
     }
 }

@@ -20,8 +20,6 @@ namespace GpScanner;
 /// </summary>
 public partial class MainWindow : Window
 {
-    public static CollectionViewSource cvs;
-
     public MainWindow()
     {
         InitializeComponent();
@@ -30,6 +28,8 @@ public partial class MainWindow : Window
         TwainCtrl.PropertyChanged += TwainCtrl_PropertyChangedAsync;
         TwainCtrl.Scanner.PropertyChanged += Scanner_PropertyChanged;
     }
+
+    public static CollectionViewSource cvs;
 
     private async void ContentControl_DropAsync(object sender, DragEventArgs e)
     {

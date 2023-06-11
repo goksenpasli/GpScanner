@@ -314,16 +314,6 @@ namespace Tesseract
         #region Image manipulation
 
         /// <summary>
-        /// HMT (with just misses) for speckle up to 2x2 "oooo" "oC o" "o  o" "oooo"
-        /// </summary>
-        public const string SEL_STR2 = "oooooC oo  ooooo";
-
-        /// <summary>
-        /// HMT (with just misses) for speckle up to 3x3 "oC  o" "o   o" "o   o" "ooooo"
-        /// </summary>
-        public const string SEL_STR3 = "ooooooC  oo   oo   oooooo";
-
-        /// <summary>
         /// Binarization of the input image based on the passed parameters and the Otsu method
         /// </summary>
         /// <param name="sx">sizeX Desired tile X dimension; actual size may vary.</param>
@@ -734,6 +724,16 @@ namespace Tesseract
 
             return resultHandle == IntPtr.Zero ? throw new LeptonicaException("Failed to rotate image.") : new Pix(resultHandle);
         }
+
+        /// <summary>
+        /// HMT (with just misses) for speckle up to 2x2 "oooo" "oC o" "o  o" "oooo"
+        /// </summary>
+        public const string SEL_STR2 = "oooooC oo  ooooo";
+
+        /// <summary>
+        /// HMT (with just misses) for speckle up to 3x3 "oC  o" "o   o" "o   o" "ooooo"
+        /// </summary>
+        public const string SEL_STR3 = "ooooooC  oo   oo   oooooo";
 
         #endregion Image manipulation
 

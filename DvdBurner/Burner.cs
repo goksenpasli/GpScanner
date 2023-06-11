@@ -16,12 +16,6 @@ namespace DvdBurner
 {
     public class Burner : Control, INotifyPropertyChanged
     {
-        public static readonly DependencyProperty BurnDirectoryProperty = DependencyProperty.Register(
-            "BurnDirectory",
-            typeof(string),
-            typeof(Burner),
-            new PropertyMetadata(string.Empty));
-
         static Burner()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(Burner), new FrameworkPropertyMetadata(typeof(Burner)));
@@ -217,28 +211,16 @@ namespace DvdBurner
 
         public RelayCommand<object> SelectBurnDir { get; }
 
+        public static readonly DependencyProperty BurnDirectoryProperty = DependencyProperty.Register(
+                                                                                                            "BurnDirectory",
+            typeof(string),
+            typeof(Burner),
+            new PropertyMetadata(string.Empty));
+
         protected virtual void OnPropertyChanged(string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        private const string WarnText = "İşlem Sürüyor. Bitmesini Bekleyin.";
-
-        private static Task Burntask;
-
-        private static Task Erasetask;
-
-        private readonly string AppName = Application.Current?.MainWindow?.Title;
-
-        private string actionText;
-
-        private string cdLabel = DateTime.Now.ToString();
-
-        private bool eject = true;
-
-        private bool progressIndeterminate;
-
-        private double progressValue;
 
         private void DataWriter_Update(dynamic @object, dynamic progress)
         {
@@ -307,5 +289,23 @@ namespace DvdBurner
             ProgressValue = (double)d;
             return d.ToString("0%");
         }
+
+        private const string WarnText = "İşlem Sürüyor. Bitmesini Bekleyin.";
+
+        private static Task Burntask;
+
+        private static Task Erasetask;
+
+        private readonly string AppName = Application.Current?.MainWindow?.Title;
+
+        private string actionText;
+
+        private string cdLabel = DateTime.Now.ToString();
+
+        private bool eject = true;
+
+        private bool progressIndeterminate;
+
+        private double progressValue;
     }
 }

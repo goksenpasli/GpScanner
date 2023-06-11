@@ -27,18 +27,28 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <RepeatButton Grid.Column="1"
-                        Click="SubtitleMargin_Click" Content="5" FontFamily="Webdings" />
+                        Command="{Binding SetSubtitleMargin}"
+                        CommandParameter="{Binding Content, RelativeSource={RelativeSource Mode=Self}}"
+                        Content="5" FontFamily="Webdings" />
                     <RepeatButton Grid.Row="2" Grid.Column="1"
-                        Click="SubtitleMargin_Click" Content="6" FontFamily="Webdings" />
+                        Command="{Binding SetSubtitleMargin}"
+                        CommandParameter="{Binding Content, RelativeSource={RelativeSource Mode=Self}}"
+                        Content="6" FontFamily="Webdings" />
                     <RepeatButton Grid.Row="1"
-                        Click="SubtitleMargin_Click" Content="3" FontFamily="Webdings" />
+                        Command="{Binding SetSubtitleMargin}"
+                        CommandParameter="{Binding Content, RelativeSource={RelativeSource Mode=Self}}"
+                        Content="3" FontFamily="Webdings" />
                     <RepeatButton Grid.Row="1" Grid.Column="2"
-                        Click="SubtitleMargin_Click" Content="4" FontFamily="Webdings" />
+                        Command="{Binding SetSubtitleMargin}"
+                        CommandParameter="{Binding Content, RelativeSource={RelativeSource Mode=Self}}"
+                        Content="4" FontFamily="Webdings" />
                     <Button Grid.Row="1" Grid.Column="1"
-                        Click="SubtitleMargin_Click" Content="=" FontFamily="Webdings" />
+                        Command="{Binding SetSubtitleMargin}"
+                        CommandParameter="{Binding Content, RelativeSource={RelativeSource Mode=Self}}"
+                        Content="=" FontFamily="Webdings" />
                 </Grid>
                 <UniformGrid Columns="2">
-                    <Button Click="Subtitle_Click" Content="ALTYAZI YÜKLE" />
+                    <Button Command="{Binding LoadSubtitle}" Content="ALTYAZI YÜKLE" />
                     <ToggleButton VerticalContentAlignment="Center"
                         Content="ALTYAZI GÖRÜNÜR"
                         IsChecked="{Binding SubTitleVisibility, Mode=TwoWay, Converter={StaticResource VisibilityToBooleanConverter}}" />

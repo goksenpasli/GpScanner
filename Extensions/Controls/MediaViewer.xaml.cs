@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,8 +21,529 @@ namespace Extensions.Controls;
 
 public partial class MediaViewer : UserControl, INotifyPropertyChanged
 {
+    public MediaViewer()
+    {
+        InitializeComponent();
+        Player.Pause();
+        Player.MediaEnded += MediaElement_MediaEnded;
+        PanoramaViewPort.Visibility = Visibility.Collapsed;
+        DataContext = this;
+        PropertyChanged += MediaViewer_PropertyChanged;
+
+        GoToFrame = new RelayCommand<object>(
+            parameter =>
+            {
+                if (parameter is TimeSpan timeSpan)
+                {
+                    MediaPosition = timeSpan;
+                }
+            },
+            parameter => GetMediaState(Player) == MediaState.Play);
+
+        LoadSubtitle = new RelayCommand<object>(
+            parameter =>
+            {
+                OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = "Srt Dosyası (*.srt)|*.srt" };
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    SubtitleFilePath = openFileDialog.FileName;
+                    ParsedSubtitle = ParseSrtFile(SubtitleFilePath);
+                }
+            },
+         parameter => true);
+
+        OpenFile = new RelayCommand<object>(
+            parameter =>
+            {
+                OpenFileDialog openFileDialog = new()
+                {
+                    Multiselect = false,
+                    Filter = VideoFileExtensions
+                };
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    MediaDataFilePath = openFileDialog.FileName;
+                }
+            },
+         parameter => true);
+
+        CaptureImage = new RelayCommand<object>(
+            parameter =>
+            {
+                string picturesfolder = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+                byte[] data = grid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
+                string dosya = picturesfolder.SetUniqueFile("Resim", "jpg");
+                File.WriteAllBytes(dosya, data);
+                ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, dosya);
+                OsdText = "Görüntü Yakalandı";
+                GC.Collect();
+            },
+         parameter => Player?.NaturalVideoWidth > 0 && MediaDataFilePath != null);
+
+        CaptureThumbnail = new RelayCommand<object>(
+            async parameter =>
+            {
+                string picturesfolder = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+                MediaVolume = 0;
+                long timemultiplier = EndTimeSpan.Ticks / (ThumbWidthCount * ThumbHeightCount);
+                byte[] imgdata;
+
+                Player.Play();
+
+                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                {
+                    string singlefile = null;
+                    for (int i = 1; i <= ThumbHeightCount * ThumbWidthCount; i++)
+                    {
+                        Player.Position = new TimeSpan(i * timemultiplier);
+                        await Task.Delay(MillisecondsDelay);
+                        imgdata = grid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
+                        singlefile = picturesfolder.SetUniqueFile("Resim", "jpg");
+                        File.WriteAllBytes(singlefile, imgdata);
+                    }
+
+                    ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, singlefile);
+                    GC.Collect();
+                    return;
+                }
+
+                UniformGrid uniformgrid = new() { Rows = ThumbHeightCount, Columns = ThumbWidthCount };
+                double oran = 1d / ThumbWidthCount;
+                for (int i = 1; i <= ThumbHeightCount * ThumbWidthCount; i++)
+                {
+                    Player.Position = new TimeSpan(i * timemultiplier);
+                    await Task.Delay(MillisecondsDelay);
+
+                    imgdata = ThumbApplyEffects
+                        ? grid.ToRenderTargetBitmap().Resize(oran).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg)
+                        : Player.ToRenderTargetBitmap().Resize(oran).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
+
+                    Grid imagegrid = GenerateImageGrid();
+                    Image image = GenerateImage(imgdata, ThumbMargin);
+                    image.SetValue(Grid.RowProperty, 0);
+                    _ = imagegrid.Children.Add(image);
+
+                    if (ThumbShowTime)
+                    {
+                        TextBlock textBlock = GenerateWhiteTextBlock(Player.Position.ToString());
+                        textBlock.SetValue(Grid.RowProperty, 1);
+                        _ = imagegrid.Children.Add(textBlock);
+                    }
+
+                    _ = uniformgrid.Children.Add(imagegrid);
+                }
+
+                string dosya = picturesfolder.SetUniqueFile("Resim", "jpg");
+                File.WriteAllBytes(dosya, uniformgrid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg));
+                ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, dosya);
+                MediaVolume = 1;
+                GC.Collect();
+            },
+         parameter => Player?.NaturalVideoWidth > 0 && MediaDataFilePath != null);
+
+        AddToPlaylist = new RelayCommand<object>(
+            parameter =>
+            {
+                OpenFileDialog openFileDialog = new()
+                {
+                    Multiselect = true,
+                    Filter = VideoFileExtensions
+                };
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    foreach (string item in openFileDialog.FileNames)
+                    {
+                        if (!PlayList.Contains(item))
+                        {
+                            PlayList.Add(item);
+                        }
+                    }
+                }
+            },
+         parameter => true);
+
+        SetSubtitleMargin = new RelayCommand<object>(
+            parameter =>
+            {
+                Thickness defaultsubtitlethickness = new(
+                   SubTitleMargin.Left,
+                   SubTitleMargin.Top,
+                   SubTitleMargin.Right,
+                   SubTitleMargin.Bottom);
+                if (parameter is object content)
+                {
+                    switch (content)
+                    {
+                        case "6":
+                            defaultsubtitlethickness.Bottom -= 10;
+                            break;
+
+                        case "5":
+                            defaultsubtitlethickness.Bottom += 10;
+                            break;
+
+                        case "4":
+                            defaultsubtitlethickness.Left += 10;
+                            break;
+
+                        case "3":
+                            defaultsubtitlethickness.Left -= 10;
+                            break;
+
+                        case "=":
+                            defaultsubtitlethickness.Left = 0;
+                            defaultsubtitlethickness.Bottom = 0;
+                            break;
+                    }
+
+                    SubTitleMargin = defaultsubtitlethickness;
+                }
+            },
+         parameter => true);
+    }
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    public RelayCommand<object> AddToPlaylist { get; }
+
+    [Description("Video Controls")]
+    [Category("Controls")]
+    public double Angle { get => (double)GetValue(AngleProperty); set => SetValue(AngleProperty, value); }
+
+    [Description("Video Effects")]
+    [Category("Effects")]
+    public bool ApplyBw { get => (bool)GetValue(ApplyBwProperty); set => SetValue(ApplyBwProperty, value); }
+
+    [Description("Video Effects")]
+    [Category("Effects")]
+    public bool ApplyEmboss { get => (bool)GetValue(ApplyEmbossProperty); set => SetValue(ApplyEmbossProperty, value); }
+
+    [Description("Video Effects")]
+    [Category("Effects")]
+    public bool ApplyGrayscale { get => (bool)GetValue(ApplyGrayscaleProperty); set => SetValue(ApplyGrayscaleProperty, value); }
+
+    [Description("Video Effects")]
+    [Category("Effects")]
+    public bool ApplyPixelate { get => (bool)GetValue(ApplyPixelateProperty); set => SetValue(ApplyPixelateProperty, value); }
+
+    [Description("Video Effects")]
+    [Category("Effects")]
+    public bool ApplySharpen { get => (bool)GetValue(ApplySharpenProperty); set => SetValue(ApplySharpenProperty, value); }
+
+    [Description("Subtitle Controls")]
+    [Category("Subtitle")]
+    public bool AutoLoadSameNameSubtitleFile { get => (bool)GetValue(AutoLoadSameNameSubtitleFileProperty); set => SetValue(AutoLoadSameNameSubtitleFileProperty, value); }
+
+    [Description("Video Controls")]
+    [Category("Controls")]
+    public bool AutoPlay { get => (bool)GetValue(AutoPlayProperty); set => SetValue(AutoPlayProperty, value); }
+
+    [Description("Video Controls")]
+    [Category("Controls")]
+    public bool AutoSkipNextVideo { get; set; }
+
+    [Description("Subtitle Translate")]
+    [Category("Translate")]
+    public bool AutoTranslate { get => (bool)GetValue(AutoTranslateProperty); set => SetValue(AutoTranslateProperty, value); }
+
+    [Description("Video Effects")]
+    [Category("Effects")]
+    public double BlurAmount { get => (double)GetValue(BlurAmountProperty); set => SetValue(BlurAmountProperty, value); }
+
+    [Description("Video Effects")]
+    [Category("Effects")]
+    public bool BlurColor { get => (bool)GetValue(BlurColorProperty); set => SetValue(BlurColorProperty, value); }
+
+    [Description("Video Effects")]
+    [Category("Effects")]
+    public double BwAmount { get => (double)GetValue(BwAmountProperty); set => SetValue(BwAmountProperty, value); }
+
+    public RelayCommand<object> CaptureImage { get; }
+
+    public RelayCommand<object> CaptureThumbnail { get; }
+
+    [Description("Video Controls")]
+    [Category("Controls")]
+    public Visibility ContextMenuVisibility { get => (Visibility)GetValue(ContextMenuVisibilityProperty); set => SetValue(ContextMenuVisibilityProperty, value); }
+
+    [Description("Video Controls")]
+    [Category("Controls")]
+    public Visibility ControlVisible { get => (Visibility)GetValue(ControlVisibleProperty); set => SetValue(ControlVisibleProperty, value); }
+
+    [Description("Subtitle Translate")]
+    [Category("Translate")]
+    public string ÇevrilenDil { get; set; } = "en";
+
+    [Description("Video Controls")]
+    [Category("Controls")]
+    public TimeSpan EndTimeSpan { get => (TimeSpan)GetValue(EndTimeSpanProperty); set => SetValue(EndTimeSpanProperty, value); }
+
+    [Description("Video Controls")]
+    [Category("Controls")]
+    public double FlipX { get => (double)GetValue(FlipXProperty); set => SetValue(FlipXProperty, value); }
+
+    [Description("Video Controls")]
+    [Category("Controls")]
+    public double FlipY { get => (double)GetValue(FlipYProperty); set => SetValue(FlipYProperty, value); }
+
+    [Description("Video Controls")]
+    [Category("Controls")]
+    public int ForwardBackwardSkipSecond { get; set; } = 30;
+
+    [Description("Video Controls")]
+    [Category("Controls")]
+    public double Fov { get => (double)GetValue(FovProperty); set => SetValue(FovProperty, value); }
+
+    public RelayCommand<object> GoToFrame { get; }
+
+    [Description("Video Effects")]
+    [Category("Effects")]
+    public bool InvertColor { get => (bool)GetValue(InvertColorProperty); set => SetValue(InvertColorProperty, value); }
+
+    public RelayCommand<object> LoadSubtitle { get; }
+
+    [Description("Video Controls")]
+    [Category("Controls")]
+    public string MediaDataFilePath { get => (string)GetValue(MediaDataFilePathProperty); set => SetValue(MediaDataFilePathProperty, value); }
+
+    [Description("Video Controls")]
+    [Category("Controls")]
+    public TimeSpan MediaPosition { get => (TimeSpan)GetValue(MediaPositionProperty); set => SetValue(MediaPositionProperty, value); }
+
+    [Description("Video Controls")]
+    [Category("Controls")]
+    public double MediaVolume { get => (double)GetValue(MediaVolumeProperty); set => SetValue(MediaVolumeProperty, value); }
+
+    [Description("Subtitle Translate")]
+    [Category("Translate")]
+    public string MevcutDil { get; set; } = "auto";
+
+    [Description("Video Controls")]
+    [Category("Controls")]
+    public Visibility OpenButtonVisibility { get => (Visibility)GetValue(OpenButtonVisibilityProperty); set => SetValue(OpenButtonVisibilityProperty, value); }
+
+    public RelayCommand<object> OpenFile { get; }
+
+    [Description("Video Controls")]
+    [Category("Controls")]
+    public int OsdDisplayTime { get => (int)GetValue(OsdDisplayTimeProperty); set => SetValue(OsdDisplayTimeProperty, value); }
+
+    [Description("Video Controls")]
+    [Category("Controls")]
+    [Browsable(false)]
+    public string OsdText { get => (string)GetValue(OsdTextProperty); set => SetValue(OsdTextProperty, value); }
+
+    [Description("Video Controls")]
+    [Category("Controls")]
+    public Visibility OsdTextVisibility { get => (Visibility)GetValue(OsdTextVisibilityProperty); set => SetValue(OsdTextVisibilityProperty, value); }
+
+    [Description("Video Controls")]
+    [Category("Controls")]
+    public bool PanoramaMode { get => (bool)GetValue(PanoramaModeProperty); set => SetValue(PanoramaModeProperty, value); }
+
+    [Description("Subtitle Controls")]
+    [Category("Subtitle")]
+    [Browsable(false)]
+    public ObservableCollection<SrtContent> ParsedSubtitle {
+        get => parsedSubtitle;
+
+        set {
+            if (parsedSubtitle != value)
+            {
+                parsedSubtitle = value;
+                OnPropertyChanged(nameof(ParsedSubtitle));
+            }
+        }
+    }
+
+    [Description("Video Effects")]
+    [Category("Effects")]
+    public Size PixelateSize { get => (Size)GetValue(PixelateSizeProperty); set => SetValue(PixelateSizeProperty, value); }
+
+    [Description("Video Controls")]
+    [Category("Controls")]
+    [Browsable(false)]
+    public ObservableCollection<string> PlayList { get; set; } = new();
+
+    [Description("Video Controls")]
+    [Category("Controls")]
+    [Browsable(false)]
+    public double RotateX { get => (double)GetValue(RotateXProperty); set => SetValue(RotateXProperty, value); }
+
+    [Description("Video Controls")]
+    [Category("Controls")]
+    [Browsable(false)]
+    public double RotateY { get => (double)GetValue(RotateYProperty); set => SetValue(RotateYProperty, value); }
+
+    public string SearchSubtitle {
+        get => searchSubtitle; set {
+
+            if (searchSubtitle != value)
+            {
+                searchSubtitle = value;
+                OnPropertyChanged(nameof(SearchSubtitle));
+            }
+        }
+    }
+
+    public RelayCommand<object> SetSubtitleMargin { get; }
+
+    [Description("Video Effects")]
+    [Category("Effects")]
+    public double SharpenAmount { get => (double)GetValue(SharpenAmountProperty); set => SetValue(SharpenAmountProperty, value); }
+
+    [Description("Video Controls")]
+    [Category("Controls")]
+    public Visibility SliderControlVisible { get => (Visibility)GetValue(SliderControlVisibleProperty); set => SetValue(SliderControlVisibleProperty, value); }
+
+    public Geometry3D SphereModel { get; set; } = CreateGeometry();
+
+    [Description("Subtitle Controls")]
+    [Category("Subtitle")]
+    [Browsable(false)]
+    public string SubTitle { get => (string)GetValue(SubTitleProperty); set => SetValue(SubTitleProperty, value); }
+
+    [Description("Subtitle Controls")]
+    [Category("Subtitle")]
+    public Brush SubTitleColor { get => (Brush)GetValue(SubTitleColorProperty); set => SetValue(SubTitleColorProperty, value); }
+
+    [Description("Subtitle Controls")]
+    [Category("Subtitle")]
+    public string SubtitleFilePath { get => (string)GetValue(SubtitleFilePathProperty); set => SetValue(SubtitleFilePathProperty, value); }
+
+    [Description("Subtitle Controls")]
+    [Category("Subtitle")]
+    public HorizontalAlignment SubTitleHorizontalAlignment {
+        get => (HorizontalAlignment)GetValue(SubTitleHorizontalAlignmentProperty);
+        set => SetValue(SubTitleHorizontalAlignmentProperty, value);
+    }
+
+    [Description("Subtitle Controls")]
+    [Category("Subtitle")]
+    public Thickness SubTitleMargin { get => (Thickness)GetValue(SubTitleMarginProperty); set => SetValue(SubTitleMarginProperty, value); }
+
+    [Description("Subtitle Controls")]
+    [Category("Subtitle")]
+    public double SubTitleSize { get => (double)GetValue(SubTitleSizeProperty); set => SetValue(SubTitleSizeProperty, value); }
+
+    [Description("Subtitle Controls")]
+    [Category("Subtitle")]
+    public bool SubtitleTooltipEnabled { get => (bool)GetValue(SubtitleTooltipEnabledProperty); set => SetValue(SubtitleTooltipEnabledProperty, value); }
+
+    [Description("Subtitle Controls")]
+    [Category("Subtitle")]
+    public VerticalAlignment SubTitleVerticalAlignment {
+        get => (VerticalAlignment)GetValue(SubTitleVerticalAlignmentProperty);
+        set => SetValue(SubTitleVerticalAlignmentProperty, value);
+    }
+
+    [Description("Subtitle Controls")]
+    [Category("Subtitle")]
+    public Visibility SubTitleVisibility { get => (Visibility)GetValue(SubTitleVisibilityProperty); set => SetValue(SubTitleVisibilityProperty, value); }
+
+    [Description("Video Controls")]
+    [Category("Controls")]
+    public bool ThumbApplyEffects { get => (bool)GetValue(ThumbApplyEffectsProperty); set => SetValue(ThumbApplyEffectsProperty, value); }
+
+    [Description("Video Controls")]
+    [Category("Controls")]
+    public int ThumbHeightCount { get => (int)GetValue(ThumbHeightCountProperty); set => SetValue(ThumbHeightCountProperty, value); }
+
+    [Description("Video Controls")]
+    [Category("Controls")]
+    public Thickness ThumbMargin { get => (Thickness)GetValue(ThumbMarginProperty); set => SetValue(ThumbMarginProperty, value); }
+
+    [Description("Video Controls")]
+    [Category("Controls")]
+    public bool ThumbShowTime { get => (bool)GetValue(ThumbShowTimeProperty); set => SetValue(ThumbShowTimeProperty, value); }
+
+    [Description("Video Controls")]
+    [Category("Controls")]
+    public int ThumbWidthCount { get => (int)GetValue(ThumbWidthCountProperty); set => SetValue(ThumbWidthCountProperty, value); }
+
+    [Description("Video Controls")]
+    [Category("Controls")]
+    public Visibility TimeDisplayVisibility { get => (Visibility)GetValue(TimeDisplayVisibilityProperty); set => SetValue(TimeDisplayVisibilityProperty, value); }
+
+    [Description("Subtitle Controls")]
+    [Category("Subtitle")]
+    public string TooltipOriginalSubtitle { get => (string)GetValue(TooltipOriginalSubtitleProperty); set => SetValue(TooltipOriginalSubtitleProperty, value); }
+
+    [Description("Video Controls")]
+    [Category("Controls")]
+    public Stretch VideoStretch { get => (Stretch)GetValue(VideoStretchProperty); set => SetValue(VideoStretchProperty, value); }
+
+    public static Geometry3D CreateGeometry()
+    {
+        const int tDiv = 64;
+        const int yDiv = 64;
+        const double maxTheta = 360.0 / 180.0 * Math.PI;
+        const double minY = -1.0;
+        const double maxY = 1.0;
+        const double dt = maxTheta / tDiv;
+        const double dy = (maxY - minY) / yDiv;
+        MeshGeometry3D mesh = new();
+        for (int yi = 0; yi <= yDiv; yi++)
+        {
+            double y = minY + (yi * dy);
+            for (int ti = 0; ti <= tDiv; ti++)
+            {
+                double t = ti * dt;
+                mesh.Positions.Add(GetPosition(t, y));
+                mesh.Normals.Add(GetNormal(t, y));
+                mesh.TextureCoordinates.Add(GetTextureCoordinate(t, y));
+            }
+        }
+
+        for (int yi = 0; yi < yDiv; yi++)
+        {
+            for (int ti = 0; ti < tDiv; ti++)
+            {
+                int x0 = ti;
+                int x1 = ti + 1;
+                int y0 = yi * (tDiv + 1);
+                int y1 = (yi + 1) * (tDiv + 1);
+                mesh.TriangleIndices.Add(x0 + y0);
+                mesh.TriangleIndices.Add(x0 + y1);
+                mesh.TriangleIndices.Add(x1 + y0);
+                mesh.TriangleIndices.Add(x1 + y0);
+                mesh.TriangleIndices.Add(x0 + y1);
+                mesh.TriangleIndices.Add(x1 + y1);
+            }
+        }
+
+        mesh.Freeze();
+        return mesh;
+    }
+
+    public ObservableCollection<SrtContent> ParseSrtFile(string filepath)
+    {
+        try
+        {
+            ObservableCollection<SrtContent> content = new();
+            const string pattern = "<[/]?[ib]>";
+            foreach (string element in File.ReadAllText(filepath, Encoding.GetEncoding("UTF-8")).Split(new[] { "\r\n\r\n" }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                string[] lines = element.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                content.Add(
+                    new SrtContent
+                    {
+                        StartTime = TimeSpan.Parse(lines[1].Substring(0, lines[1].LastIndexOf("-->")).Trim()),
+                        EndTime = TimeSpan.Parse(lines[1].Substring(lines[1].LastIndexOf("-->") + 3).Trim()),
+                        Text = Regex.Replace(string.Concat(lines.Skip(2).Take(lines.Length - 2)), pattern, string.Empty),
+                        Segment = lines[0]
+                    });
+            }
+            return content;
+        }
+        catch (Exception ex)
+        {
+            throw new ArgumentException(nameof(filepath), ex);
+        }
+    }
+
     public static readonly DependencyProperty AngleProperty =
-        DependencyProperty.Register("Angle", typeof(double), typeof(MediaViewer), new PropertyMetadata(0.0d));
+                                                                                                                                                                                                                                                                                        DependencyProperty.Register("Angle", typeof(double), typeof(MediaViewer), new PropertyMetadata(0.0d));
 
     public static readonly DependencyProperty ApplyBwProperty =
         DependencyProperty.Register("ApplyBw", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
@@ -188,13 +708,6 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         typeof(MediaViewer),
         new PropertyMetadata(new Thickness(5)));
 
-    public static readonly DependencyProperty ThumbnailsVisibleProperty =
-        DependencyProperty.Register(
-        "ThumbnailsVisible",
-        typeof(bool),
-        typeof(MediaViewer),
-        new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
-
     public static readonly DependencyProperty ThumbShowTimeProperty =
         DependencyProperty.Register("ThumbShowTime", typeof(bool), typeof(MediaViewer), new PropertyMetadata(true));
 
@@ -213,362 +726,6 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         typeof(MediaViewer),
         new PropertyMetadata(Stretch.Uniform));
 
-    static MediaViewer()
-    {
-        task = new TaskFactory();
-    }
-
-    public MediaViewer()
-    {
-        InitializeComponent();
-        Player.Pause();
-        Player.MediaEnded += MediaElement_MediaEnded;
-        PanoramaViewPort.Visibility = Visibility.Collapsed;
-        DataContext = this;
-        PropertyChanged += MediaViewer_PropertyChanged;
-        GoToFrame = new RelayCommand<object>(
-            parameter =>
-            {
-                if (parameter is TimeSpan timeSpan)
-                {
-                    MediaPosition = timeSpan;
-                }
-            },
-            parameter => GetMediaState(Player) == MediaState.Play);
-    }
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [Description("Video Controls")]
-    [Category("Controls")]
-    public double Angle { get => (double)GetValue(AngleProperty); set => SetValue(AngleProperty, value); }
-
-    [Description("Video Effects")]
-    [Category("Effects")]
-    public bool ApplyBw { get => (bool)GetValue(ApplyBwProperty); set => SetValue(ApplyBwProperty, value); }
-
-    [Description("Video Effects")]
-    [Category("Effects")]
-    public bool ApplyEmboss { get => (bool)GetValue(ApplyEmbossProperty); set => SetValue(ApplyEmbossProperty, value); }
-
-    [Description("Video Effects")]
-    [Category("Effects")]
-    public bool ApplyGrayscale { get => (bool)GetValue(ApplyGrayscaleProperty); set => SetValue(ApplyGrayscaleProperty, value); }
-
-    [Description("Video Effects")]
-    [Category("Effects")]
-    public bool ApplyPixelate { get => (bool)GetValue(ApplyPixelateProperty); set => SetValue(ApplyPixelateProperty, value); }
-
-    [Description("Video Effects")]
-    [Category("Effects")]
-    public bool ApplySharpen { get => (bool)GetValue(ApplySharpenProperty); set => SetValue(ApplySharpenProperty, value); }
-
-    [Description("Subtitle Controls")]
-    [Category("Subtitle")]
-    public bool AutoLoadSameNameSubtitleFile { get => (bool)GetValue(AutoLoadSameNameSubtitleFileProperty); set => SetValue(AutoLoadSameNameSubtitleFileProperty, value); }
-
-    [Description("Video Controls")]
-    [Category("Controls")]
-    public bool AutoPlay { get => (bool)GetValue(AutoPlayProperty); set => SetValue(AutoPlayProperty, value); }
-
-    [Description("Video Controls")]
-    [Category("Controls")]
-    public bool AutoSkipNextVideo { get; set; }
-
-    [Description("Subtitle Translate")]
-    [Category("Translate")]
-    public bool AutoTranslate { get => (bool)GetValue(AutoTranslateProperty); set => SetValue(AutoTranslateProperty, value); }
-
-    [Description("Video Effects")]
-    [Category("Effects")]
-    public double BlurAmount { get => (double)GetValue(BlurAmountProperty); set => SetValue(BlurAmountProperty, value); }
-
-    [Description("Video Effects")]
-    [Category("Effects")]
-    public bool BlurColor { get => (bool)GetValue(BlurColorProperty); set => SetValue(BlurColorProperty, value); }
-
-    [Description("Video Effects")]
-    [Category("Effects")]
-    public double BwAmount { get => (double)GetValue(BwAmountProperty); set => SetValue(BwAmountProperty, value); }
-
-    [Description("Video Controls")]
-    [Category("Controls")]
-    public Visibility ContextMenuVisibility { get => (Visibility)GetValue(ContextMenuVisibilityProperty); set => SetValue(ContextMenuVisibilityProperty, value); }
-
-    [Description("Video Controls")]
-    [Category("Controls")]
-    public Visibility ControlVisible { get => (Visibility)GetValue(ControlVisibleProperty); set => SetValue(ControlVisibleProperty, value); }
-
-    [Description("Subtitle Translate")]
-    [Category("Translate")]
-    public string ÇevrilenDil { get; set; } = "en";
-
-    [Description("Video Controls")]
-    [Category("Controls")]
-    public TimeSpan EndTimeSpan { get => (TimeSpan)GetValue(EndTimeSpanProperty); set => SetValue(EndTimeSpanProperty, value); }
-
-    [Description("Video Controls")]
-    [Category("Controls")]
-    public double FlipX { get => (double)GetValue(FlipXProperty); set => SetValue(FlipXProperty, value); }
-
-    [Description("Video Controls")]
-    [Category("Controls")]
-    public double FlipY { get => (double)GetValue(FlipYProperty); set => SetValue(FlipYProperty, value); }
-
-    [Description("Video Controls")]
-    [Category("Controls")]
-    public int ForwardBackwardSkipSecond { get; set; } = 30;
-
-    [Description("Video Controls")]
-    [Category("Controls")]
-    public double Fov { get => (double)GetValue(FovProperty); set => SetValue(FovProperty, value); }
-
-    public RelayCommand<object> GoToFrame { get; }
-
-    [Description("Video Effects")]
-    [Category("Effects")]
-    public bool InvertColor { get => (bool)GetValue(InvertColorProperty); set => SetValue(InvertColorProperty, value); }
-
-    [Description("Video Controls")]
-    [Category("Controls")]
-    public string MediaDataFilePath { get => (string)GetValue(MediaDataFilePathProperty); set => SetValue(MediaDataFilePathProperty, value); }
-
-    [Description("Video Controls")]
-    [Category("Controls")]
-    public TimeSpan MediaPosition { get => (TimeSpan)GetValue(MediaPositionProperty); set => SetValue(MediaPositionProperty, value); }
-
-    [Description("Video Controls")]
-    [Category("Controls")]
-    public double MediaVolume { get => (double)GetValue(MediaVolumeProperty); set => SetValue(MediaVolumeProperty, value); }
-
-    [Description("Subtitle Translate")]
-    [Category("Translate")]
-    public string MevcutDil { get; set; } = "auto";
-
-    [Description("Video Controls")]
-    [Category("Controls")]
-    public Visibility OpenButtonVisibility { get => (Visibility)GetValue(OpenButtonVisibilityProperty); set => SetValue(OpenButtonVisibilityProperty, value); }
-
-    [Description("Video Controls")]
-    [Category("Controls")]
-    public int OsdDisplayTime { get => (int)GetValue(OsdDisplayTimeProperty); set => SetValue(OsdDisplayTimeProperty, value); }
-
-    [Description("Video Controls")]
-    [Category("Controls")]
-    [Browsable(false)]
-    public string OsdText { get => (string)GetValue(OsdTextProperty); set => SetValue(OsdTextProperty, value); }
-
-    [Description("Video Controls")]
-    [Category("Controls")]
-    public Visibility OsdTextVisibility { get => (Visibility)GetValue(OsdTextVisibilityProperty); set => SetValue(OsdTextVisibilityProperty, value); }
-
-    [Description("Video Controls")]
-    [Category("Controls")]
-    public bool PanoramaMode { get => (bool)GetValue(PanoramaModeProperty); set => SetValue(PanoramaModeProperty, value); }
-
-    [Description("Subtitle Controls")]
-    [Category("Subtitle")]
-    [Browsable(false)]
-    public ObservableCollection<SrtContent> ParsedSubtitle {
-        get => parsedSubtitle;
-
-        set {
-            if (parsedSubtitle != value)
-            {
-                parsedSubtitle = value;
-                OnPropertyChanged(nameof(ParsedSubtitle));
-            }
-        }
-    }
-
-    [Description("Video Effects")]
-    [Category("Effects")]
-    public Size PixelateSize { get => (Size)GetValue(PixelateSizeProperty); set => SetValue(PixelateSizeProperty, value); }
-
-    [Description("Video Controls")]
-    [Category("Controls")]
-    [Browsable(false)]
-    public ObservableCollection<string> PlayList { get; set; } = new();
-
-    [Description("Video Controls")]
-    [Category("Controls")]
-    [Browsable(false)]
-    public double RotateX { get => (double)GetValue(RotateXProperty); set => SetValue(RotateXProperty, value); }
-
-    [Description("Video Controls")]
-    [Category("Controls")]
-    [Browsable(false)]
-    public double RotateY { get => (double)GetValue(RotateYProperty); set => SetValue(RotateYProperty, value); }
-
-    public string SearchSubtitle {
-        get => searchSubtitle; set {
-
-            if (searchSubtitle != value)
-            {
-                searchSubtitle = value;
-                OnPropertyChanged(nameof(SearchSubtitle));
-            }
-        }
-    }
-
-    [Description("Video Effects")]
-    [Category("Effects")]
-    public double SharpenAmount { get => (double)GetValue(SharpenAmountProperty); set => SetValue(SharpenAmountProperty, value); }
-
-    [Description("Video Controls")]
-    [Category("Controls")]
-    public Visibility SliderControlVisible { get => (Visibility)GetValue(SliderControlVisibleProperty); set => SetValue(SliderControlVisibleProperty, value); }
-
-    public Geometry3D SphereModel { get; set; } = CreateGeometry();
-
-    [Description("Subtitle Controls")]
-    [Category("Subtitle")]
-    [Browsable(false)]
-    public string SubTitle { get => (string)GetValue(SubTitleProperty); set => SetValue(SubTitleProperty, value); }
-
-    [Description("Subtitle Controls")]
-    [Category("Subtitle")]
-    public Brush SubTitleColor { get => (Brush)GetValue(SubTitleColorProperty); set => SetValue(SubTitleColorProperty, value); }
-
-    [Description("Subtitle Controls")]
-    [Category("Subtitle")]
-    public string SubtitleFilePath { get => (string)GetValue(SubtitleFilePathProperty); set => SetValue(SubtitleFilePathProperty, value); }
-
-    [Description("Subtitle Controls")]
-    [Category("Subtitle")]
-    public HorizontalAlignment SubTitleHorizontalAlignment {
-        get => (HorizontalAlignment)GetValue(SubTitleHorizontalAlignmentProperty);
-        set => SetValue(SubTitleHorizontalAlignmentProperty, value);
-    }
-
-    [Description("Subtitle Controls")]
-    [Category("Subtitle")]
-    public Thickness SubTitleMargin { get => (Thickness)GetValue(SubTitleMarginProperty); set => SetValue(SubTitleMarginProperty, value); }
-
-    [Description("Subtitle Controls")]
-    [Category("Subtitle")]
-    public double SubTitleSize { get => (double)GetValue(SubTitleSizeProperty); set => SetValue(SubTitleSizeProperty, value); }
-
-    [Description("Subtitle Controls")]
-    [Category("Subtitle")]
-    public bool SubtitleTooltipEnabled { get => (bool)GetValue(SubtitleTooltipEnabledProperty); set => SetValue(SubtitleTooltipEnabledProperty, value); }
-
-    [Description("Subtitle Controls")]
-    [Category("Subtitle")]
-    public VerticalAlignment SubTitleVerticalAlignment {
-        get => (VerticalAlignment)GetValue(SubTitleVerticalAlignmentProperty);
-        set => SetValue(SubTitleVerticalAlignmentProperty, value);
-    }
-
-    [Description("Subtitle Controls")]
-    [Category("Subtitle")]
-    public Visibility SubTitleVisibility { get => (Visibility)GetValue(SubTitleVisibilityProperty); set => SetValue(SubTitleVisibilityProperty, value); }
-
-    [Description("Video Controls")]
-    [Category("Controls")]
-    public bool ThumbApplyEffects { get => (bool)GetValue(ThumbApplyEffectsProperty); set => SetValue(ThumbApplyEffectsProperty, value); }
-
-    [Description("Video Controls")]
-    [Category("Controls")]
-    public int ThumbHeightCount { get => (int)GetValue(ThumbHeightCountProperty); set => SetValue(ThumbHeightCountProperty, value); }
-
-    [Description("Video Controls")]
-    [Category("Controls")]
-    public Thickness ThumbMargin { get => (Thickness)GetValue(ThumbMarginProperty); set => SetValue(ThumbMarginProperty, value); }
-
-    [Description("Video Controls")]
-    [Category("Controls")]
-    public bool ThumbnailsVisible { get => (bool)GetValue(ThumbnailsVisibleProperty); set => SetValue(ThumbnailsVisibleProperty, value); }
-
-    [Description("Video Controls")]
-    [Category("Controls")]
-    public bool ThumbShowTime { get => (bool)GetValue(ThumbShowTimeProperty); set => SetValue(ThumbShowTimeProperty, value); }
-
-    [Description("Video Controls")]
-    [Category("Controls")]
-    public int ThumbWidthCount { get => (int)GetValue(ThumbWidthCountProperty); set => SetValue(ThumbWidthCountProperty, value); }
-
-    [Description("Video Controls")]
-    [Category("Controls")]
-    public Visibility TimeDisplayVisibility { get => (Visibility)GetValue(TimeDisplayVisibilityProperty); set => SetValue(TimeDisplayVisibilityProperty, value); }
-
-    [Description("Subtitle Controls")]
-    [Category("Subtitle")]
-    public string TooltipOriginalSubtitle { get => (string)GetValue(TooltipOriginalSubtitleProperty); set => SetValue(TooltipOriginalSubtitleProperty, value); }
-
-    [Description("Video Controls")]
-    [Category("Controls")]
-    public Stretch VideoStretch { get => (Stretch)GetValue(VideoStretchProperty); set => SetValue(VideoStretchProperty, value); }
-
-    public static Geometry3D CreateGeometry()
-    {
-        const int tDiv = 64;
-        const int yDiv = 64;
-        const double maxTheta = 360.0 / 180.0 * Math.PI;
-        const double minY = -1.0;
-        const double maxY = 1.0;
-        const double dt = maxTheta / tDiv;
-        const double dy = (maxY - minY) / yDiv;
-        MeshGeometry3D mesh = new();
-        for (int yi = 0; yi <= yDiv; yi++)
-        {
-            double y = minY + (yi * dy);
-            for (int ti = 0; ti <= tDiv; ti++)
-            {
-                double t = ti * dt;
-                mesh.Positions.Add(GetPosition(t, y));
-                mesh.Normals.Add(GetNormal(t, y));
-                mesh.TextureCoordinates.Add(GetTextureCoordinate(t, y));
-            }
-        }
-
-        for (int yi = 0; yi < yDiv; yi++)
-        {
-            for (int ti = 0; ti < tDiv; ti++)
-            {
-                int x0 = ti;
-                int x1 = ti + 1;
-                int y0 = yi * (tDiv + 1);
-                int y1 = (yi + 1) * (tDiv + 1);
-                mesh.TriangleIndices.Add(x0 + y0);
-                mesh.TriangleIndices.Add(x0 + y1);
-                mesh.TriangleIndices.Add(x1 + y0);
-                mesh.TriangleIndices.Add(x1 + y0);
-                mesh.TriangleIndices.Add(x0 + y1);
-                mesh.TriangleIndices.Add(x1 + y1);
-            }
-        }
-
-        mesh.Freeze();
-        return mesh;
-    }
-
-    public ObservableCollection<SrtContent> ParseSrtFile(string filepath)
-    {
-        try
-        {
-            ObservableCollection<SrtContent> content = new();
-            const string pattern = "<[/]?[ib]>";
-            foreach (string element in File.ReadAllText(filepath, Encoding.GetEncoding("UTF-8")).Split(new[] { "\r\n\r\n" }, StringSplitOptions.RemoveEmptyEntries))
-            {
-                string[] lines = element.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                content.Add(
-                    new SrtContent
-                    {
-                        StartTime = TimeSpan.Parse(lines[1].Substring(0, lines[1].LastIndexOf("-->")).Trim()),
-                        EndTime = TimeSpan.Parse(lines[1].Substring(lines[1].LastIndexOf("-->") + 3).Trim()),
-                        Text = Regex.Replace(string.Concat(lines.Skip(2).Take(lines.Length - 2)), pattern, string.Empty),
-                        Segment = lines[0]
-                    });
-            }
-            return content;
-        }
-        catch (Exception ex)
-        {
-            throw new ArgumentException(nameof(filepath), ex);
-        }
-    }
-
     internal static Point3D GetPosition(double t, double y)
     {
         double r = Math.Sqrt(1 - (y * y));
@@ -581,46 +738,6 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
-
-    private const int MillisecondsDelay = 500;
-
-    private static readonly Image image = new();
-
-    private static readonly DispatcherTimer osdtimer = new();
-
-    private static readonly TaskFactory task;
-
-    private static readonly MediaElement thumbMediaElement = new()
-    {
-        UnloadedBehavior = MediaState.Manual,
-        ScrubbingEnabled = true,
-        IsMuted = true,
-        Height = 96,
-        Width = 96 * SystemParameters.PrimaryScreenWidth / SystemParameters.PrimaryScreenHeight
-    };
-
-    private static readonly ToolTip tooltip = new()
-    {
-        Width = 96 * SystemParameters.PrimaryScreenWidth / SystemParameters.PrimaryScreenHeight,
-        Height = 96,
-        Placement = PlacementMode.Mouse
-    };
-
-    private static bool dragging;
-
-    private static DispatcherTimer timer;
-
-    private bool _isOnDrag;
-
-    private Point _startPoint;
-
-    private double _startRotateX;
-
-    private double _startRotateY;
-
-    private ObservableCollection<SrtContent> parsedSubtitle;
-
-    private string searchSubtitle;
 
     private static void AutoplayChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -724,7 +841,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private static void MediaPositionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is MediaViewer viewer && e.NewValue != null && !dragging)
+        if (d is MediaViewer viewer && e.NewValue != null && !sliderdragging)
         {
             TimeSpan position = (TimeSpan)e.NewValue;
             viewer.Player.Position = position;
@@ -814,108 +931,12 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         }
     }
 
-    private void AddPlaylist_Click(object sender, RoutedEventArgs e)
-    {
-        OpenFileDialog openFileDialog = new()
-        {
-            Multiselect = true,
-            Filter =
-                "Video Dosyaları (*.*)|*.3g2;*.3gp;*.3gp2;*.3gpp;*.amr;*.amv;*.asf;*.avi;*.bdmv;*.bik;*.d2v;*.divx;*.drc;*.dsa;*.dsm;*.dss;*.dsv;*.evo;*.f4v;*.flc;*.fli;*.flic;*.flv;*.hdmov;*.ifo;*.ivf;*.m1v;*.m2p;*.m2t;*.m2ts;*.m2v;*.m4b;*.m4p;*.m4v;*.mkv;*.mp2v;*.mp4;*.mp4v;*.mpe;*.mpeg;*.mpg;*.mpls;*.mpv2;*.mpv4;*.mov;*.mts;*.ogm;*.ogv;*.pss;*.pva;*.qt;*.ram;*.ratdvd;*.rm;*.rmm;*.rmvb;*.roq;*.rpm;*.smil;*.smk;*.swf;*.tp;*.tpr;*.ts;*.vob;*.vp6;*.webm;*.wm;*.wmp;*.wmv"
-        };
-        if (openFileDialog.ShowDialog() == true)
-        {
-            foreach (string item in openFileDialog.FileNames)
-            {
-                if (!PlayList.Contains(item))
-                {
-                    PlayList.Add(item);
-                }
-            }
-        }
-    }
-
     private void Back_Click(object sender, RoutedEventArgs e)
     {
         if (MediaDataFilePath != null)
         {
             Player.Position = Player.Position.Subtract(new TimeSpan(0, 0, ForwardBackwardSkipSecond));
             OsdText = "Geri";
-        }
-    }
-
-    private void Capture_Click(object sender, RoutedEventArgs e)
-    {
-        if (Player.NaturalVideoWidth > 0 && MediaDataFilePath != null)
-        {
-            string picturesfolder = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-            byte[] data = grid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
-            string dosya = picturesfolder.SetUniqueFile("Resim", "jpg");
-            File.WriteAllBytes(dosya, data);
-            ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, dosya);
-            OsdText = "Görüntü Yakalandı";
-            GC.Collect();
-        }
-    }
-
-    private async void CaptureThumb_ClickAsync(object sender, RoutedEventArgs e)
-    {
-        if (Player.NaturalVideoWidth > 0 && MediaDataFilePath != null)
-        {
-            string picturesfolder = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-            MediaVolume = 0;
-            long timemultiplier = EndTimeSpan.Ticks / (ThumbWidthCount * ThumbHeightCount);
-            byte[] imgdata;
-
-            Player.Play();
-
-            if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
-            {
-                string singlefile = null;
-                for (int i = 1; i <= ThumbHeightCount * ThumbWidthCount; i++)
-                {
-                    Player.Position = new TimeSpan(i * timemultiplier);
-                    await Task.Delay(MillisecondsDelay);
-                    imgdata = grid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
-                    singlefile = picturesfolder.SetUniqueFile("Resim", "jpg");
-                    File.WriteAllBytes(singlefile, imgdata);
-                }
-
-                ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, singlefile);
-                GC.Collect();
-                return;
-            }
-
-            UniformGrid uniformgrid = new() { Rows = ThumbHeightCount, Columns = ThumbWidthCount };
-            double oran = 1d / ThumbWidthCount;
-            for (int i = 1; i <= ThumbHeightCount * ThumbWidthCount; i++)
-            {
-                Player.Position = new TimeSpan(i * timemultiplier);
-                await Task.Delay(MillisecondsDelay);
-
-                imgdata = ThumbApplyEffects
-                    ? grid.ToRenderTargetBitmap().Resize(oran).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg)
-                    : Player.ToRenderTargetBitmap().Resize(oran).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
-
-                Grid imagegrid = GenerateImageGrid();
-                Image image = GenerateImage(imgdata, ThumbMargin);
-                image.SetValue(Grid.RowProperty, 0);
-                _ = imagegrid.Children.Add(image);
-
-                if (ThumbShowTime)
-                {
-                    TextBlock textBlock = GenerateWhiteTextBlock(Player.Position.ToString());
-                    textBlock.SetValue(Grid.RowProperty, 1);
-                    _ = imagegrid.Children.Add(textBlock);
-                }
-
-                _ = uniformgrid.Children.Add(imagegrid);
-            }
-
-            string dosya = picturesfolder.SetUniqueFile("Resim", "jpg");
-            File.WriteAllBytes(dosya, uniformgrid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg));
-            ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, dosya);
-            MediaVolume = 1;
-            GC.Collect();
         }
     }
 
@@ -1004,20 +1025,6 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         OsdText = "Ses Açıldı";
     }
 
-    private void Open_Click(object sender, RoutedEventArgs e)
-    {
-        OpenFileDialog openFileDialog = new()
-        {
-            Multiselect = false,
-            Filter =
-                "Video Dosyaları (*.*)|*.3g2;*.3gp;*.3gp2;*.3gpp;*.amr;*.amv;*.asf;*.avi;*.bdmv;*.bik;*.d2v;*.divx;*.drc;*.dsa;*.dsm;*.dss;*.dsv;*.evo;*.f4v;*.flc;*.fli;*.flic;*.flv;*.hdmov;*.ifo;*.ivf;*.m1v;*.m2p;*.m2t;*.m2ts;*.m2v;*.m4b;*.m4p;*.m4v;*.mkv;*.mp2v;*.mp4;*.mp4v;*.mpe;*.mpeg;*.mpg;*.mpls;*.mpv2;*.mpv4;*.mov;*.mts;*.ogm;*.ogv;*.pss;*.pva;*.qt;*.ram;*.ratdvd;*.rm;*.rmm;*.rmvb;*.roq;*.rpm;*.smil;*.smk;*.swf;*.tp;*.tpr;*.ts;*.vob;*.vp6;*.webm;*.wm;*.wmp;*.wmv"
-        };
-        if (openFileDialog.ShowDialog() == true)
-        {
-            MediaDataFilePath = openFileDialog.FileName;
-        }
-    }
-
     private void Pause_Click(object sender, RoutedEventArgs e)
     {
         if (Player.CanPause)
@@ -1025,13 +1032,6 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
             Player.Pause();
             OsdText = "Durduruldu";
         }
-    }
-
-    private double PixelsToValue(double pixels, double minValue, double maxValue, double width)
-    {
-        double range = maxValue - minValue;
-        double percentage = pixels / width * 100;
-        return (percentage / 100 * range) + minValue;
     }
 
     private void Play_Click(object sender, RoutedEventArgs e)
@@ -1073,56 +1073,15 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private void Sld_DragCompleted(object sender, DragCompletedEventArgs e)
     {
-        dragging = false;
+        sliderdragging = false;
         Player.Position = TimeSpan.FromSeconds(Sld.Value);
         timer.Start();
     }
 
     private void Sld_DragStarted(object sender, DragStartedEventArgs e)
     {
-        dragging = true;
+        sliderdragging = true;
         timer.Stop();
-    }
-
-    private void Sld_MouseLeave(object sender, MouseEventArgs e)
-    {
-        if (ThumbnailsVisible)
-        {
-            tooltip.IsOpen = false;
-            image.Source = null;
-            if (Player.CanPause)
-            {
-                Player.Pause();
-            }
-        }
-    }
-
-    private void Sld_MouseMove(object sender, MouseEventArgs e)
-    {
-        if (ThumbnailsVisible && Player.HasVideo)
-        {
-            _ = task.StartNew(
-                () =>
-                {
-                    _ = Dispatcher.BeginInvoke(
-                        () =>
-                        {
-                            thumbMediaElement.Source = Player.Source;
-                            tooltip.PlacementTarget = Sld;
-                            thumbMediaElement.Position = TimeSpan.FromSeconds(PixelsToValue(e.GetPosition(Sld).X, Sld.Minimum, Sld.Maximum, Sld.ActualWidth));
-                            image.Source = thumbMediaElement.ToRenderTargetBitmap();
-                            image.Source.Freeze();
-                            tooltip.Content = image;
-                            if (!tooltip.IsOpen)
-                            {
-                                tooltip.IsOpen = true;
-                            }
-                        });
-                },
-                CancellationToken.None,
-                TaskCreationOptions.None,
-                TaskScheduler.Default);
-        }
     }
 
     private void Slider_HeightValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -1191,6 +1150,28 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     {
         Fov -= e.Delta / 100d;
     }
+
+    private const int MillisecondsDelay = 500;
+
+    private const string VideoFileExtensions = "Video Dosyaları (*.*)|*.3g2;*.3gp;*.3gp2;*.3gpp;*.amr;*.amv;*.asf;*.avi;*.bdmv;*.bik;*.d2v;*.divx;*.drc;*.dsa;*.dsm;*.dss;*.dsv;*.evo;*.f4v;*.flc;*.fli;*.flic;*.flv;*.hdmov;*.ifo;*.ivf;*.m1v;*.m2p;*.m2t;*.m2ts;*.m2v;*.m4b;*.m4p;*.m4v;*.mkv;*.mp2v;*.mp4;*.mp4v;*.mpe;*.mpeg;*.mpg;*.mpls;*.mpv2;*.mpv4;*.mov;*.mts;*.ogm;*.ogv;*.pss;*.pva;*.qt;*.ram;*.ratdvd;*.rm;*.rmm;*.rmvb;*.roq;*.rpm;*.smil;*.smk;*.swf;*.tp;*.tpr;*.ts;*.vob;*.vp6;*.webm;*.wm;*.wmp;*.wmv";
+
+    private static readonly DispatcherTimer osdtimer = new();
+
+    private static bool sliderdragging;
+
+    private static DispatcherTimer timer;
+
+    private bool _isOnDrag;
+
+    private Point _startPoint;
+
+    private double _startRotateX;
+
+    private double _startRotateY;
+
+    private ObservableCollection<SrtContent> parsedSubtitle;
+
+    private string searchSubtitle;
 }
 
 public class SrtContent : InpcBase

@@ -38,10 +38,6 @@ namespace GpScanner.ViewModel;
 
 public class GpScannerViewModel : InpcBase
 {
-    public Task Filesavetask;
-
-    public CancellationTokenSource ocrcancellationToken;
-
     public GpScannerViewModel()
     {
         if (string.IsNullOrWhiteSpace(Settings.Default.DatabaseFile))
@@ -1329,120 +1325,9 @@ public class GpScannerViewModel : InpcBase
         SeçiliGün = DateTime.Today;
     }
 
-    private static DispatcherTimer timer;
+    public Task Filesavetask;
 
-    private static string xmlDataPath = Settings.Default.DatabaseFile;
-
-    private readonly string[] imagefileextensions = { ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp" };
-
-    private readonly string[] supportedfilesextension =
-    {
-        ".pdf",
-        ".tıff",
-        ".tıf",
-        ".tiff",
-        ".tif",
-        ".jpg",
-        ".png",
-        ".bmp",
-        ".zip",
-        ".xps",
-        ".mp4",
-        ".3gp",
-        ".wmv",
-        ".mpg",
-        ".mov",
-        ".avi",
-        ".mpeg",
-        ".xml",
-        ".xsl",
-        ".xslt",
-        ".xaml"
-    };
-
-    private int allPdfPage;
-
-    private bool anyDataExists;
-
-    private string aramaMetni;
-
-    private string barcodeContent;
-
-    private ObservableCollection<string> barcodeList = new();
-
-    private bool batchDialogOpen;
-
-    private string batchFolder;
-
-    private ObservableCollection<BatchTxtOcr> batchTxtOcrs;
-
-    private XmlLanguage calendarLang;
-
-    private ObservableCollection<Chart> chartData;
-
-    private int? checkedPdfCount = 0;
-
-    private int cycleIndex;
-
-    private bool detectBarCode = true;
-
-    private bool detectPageSeperator;
-
-    private bool documentPanelIsExpanded;
-
-    private ObservableCollection<Scanner> dosyalar;
-
-    private double fold = 0.3;
-
-    private string ftpPassword = string.Empty;
-
-    private string ftpSite = string.Empty;
-
-    private string ftpUserName = string.Empty;
-
-    private ObservableCollection<Size> getPreviewSize;
-
-    private bool listBoxBorderAnimation;
-
-    private GridLength mainWindowDocumentGuiControlLength = new(1, GridUnitType.Star);
-
-    private GridLength mainWindowGuiControlLength = new(3, GridUnitType.Star);
-
-    private bool ocrısBusy;
-
-    private string patchFileName;
-
-    private string patchProfileName = string.Empty;
-
-    private string patchTag;
-
-    private bool pdfBatchRunning;
-
-    private double pdfMergeProgressValue;
-
-    private bool pdfOnlyText;
-
-    private Brush progressBarForegroundBrush = Brushes.Green;
-
-    private ObservableCollection<OcrData> scannedText = new();
-
-    private string seçiliDil;
-
-    private DateTime? seçiliGün;
-
-    private Scanner selectedDocument;
-
-    private string selectedFtp;
-
-    private Size selectedSize;
-
-    private bool shutdown;
-
-    private bool sıralama;
-
-    private TesseractViewModel tesseractViewModel;
-
-    private TranslateViewModel translateViewModel;
+    public CancellationTokenSource ocrcancellationToken;
 
     private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
@@ -1639,4 +1524,119 @@ public class GpScannerViewModel : InpcBase
             Dosyalar = GetScannerFileData();
         };
     }
+
+    private static DispatcherTimer timer;
+
+    private static string xmlDataPath = Settings.Default.DatabaseFile;
+
+    private readonly string[] imagefileextensions = { ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp" };
+
+    private readonly string[] supportedfilesextension =
+    {
+        ".pdf",
+        ".tıff",
+        ".tıf",
+        ".tiff",
+        ".tif",
+        ".jpg",
+        ".png",
+        ".bmp",
+        ".zip",
+        ".xps",
+        ".mp4",
+        ".3gp",
+        ".wmv",
+        ".mpg",
+        ".mov",
+        ".avi",
+        ".mpeg",
+        ".xml",
+        ".xsl",
+        ".xslt",
+        ".xaml"
+    };
+
+    private int allPdfPage;
+
+    private bool anyDataExists;
+
+    private string aramaMetni;
+
+    private string barcodeContent;
+
+    private ObservableCollection<string> barcodeList = new();
+
+    private bool batchDialogOpen;
+
+    private string batchFolder;
+
+    private ObservableCollection<BatchTxtOcr> batchTxtOcrs;
+
+    private XmlLanguage calendarLang;
+
+    private ObservableCollection<Chart> chartData;
+
+    private int? checkedPdfCount = 0;
+
+    private int cycleIndex;
+
+    private bool detectBarCode = true;
+
+    private bool detectPageSeperator;
+
+    private bool documentPanelIsExpanded;
+
+    private ObservableCollection<Scanner> dosyalar;
+
+    private double fold = 0.3;
+
+    private string ftpPassword = string.Empty;
+
+    private string ftpSite = string.Empty;
+
+    private string ftpUserName = string.Empty;
+
+    private ObservableCollection<Size> getPreviewSize;
+
+    private bool listBoxBorderAnimation;
+
+    private GridLength mainWindowDocumentGuiControlLength = new(1, GridUnitType.Star);
+
+    private GridLength mainWindowGuiControlLength = new(3, GridUnitType.Star);
+
+    private bool ocrısBusy;
+
+    private string patchFileName;
+
+    private string patchProfileName = string.Empty;
+
+    private string patchTag;
+
+    private bool pdfBatchRunning;
+
+    private double pdfMergeProgressValue;
+
+    private bool pdfOnlyText;
+
+    private Brush progressBarForegroundBrush = Brushes.Green;
+
+    private ObservableCollection<OcrData> scannedText = new();
+
+    private string seçiliDil;
+
+    private DateTime? seçiliGün;
+
+    private Scanner selectedDocument;
+
+    private string selectedFtp;
+
+    private Size selectedSize;
+
+    private bool shutdown;
+
+    private bool sıralama;
+
+    private TesseractViewModel tesseractViewModel;
+
+    private TranslateViewModel translateViewModel;
 }

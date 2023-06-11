@@ -81,11 +81,6 @@ namespace Tesseract.Internal.InteropDotNet
             return libraryHandle;
         }
 
-        private const int RTLD_NOW = 2;
-
-        private static readonly string FileExtension =
-            SystemManager.GetOperatingSystem() == OperatingSystem.MacOSX ? ".dylib" : ".so";
-
         [DllImport("libdl", EntryPoint = "dlclose", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private static extern int UnixFreeLibrary(IntPtr handle);
 
@@ -97,5 +92,10 @@ namespace Tesseract.Internal.InteropDotNet
 
         [DllImport("libdl", EntryPoint = "dlopen")]
         private static extern IntPtr UnixLoadLibrary(string fileName, int flags);
+
+        private const int RTLD_NOW = 2;
+
+        private static readonly string FileExtension =
+            SystemManager.GetOperatingSystem() == OperatingSystem.MacOSX ? ".dylib" : ".so";
     }
 }

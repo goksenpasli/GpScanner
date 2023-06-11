@@ -72,16 +72,6 @@ namespace TwainWpf.Win32
             _ = Kernel32Native.GlobalFree(_dibHandle);
         }
 
-        private readonly BitmapInfoHeader _bitmapInfo;
-
-        private readonly IntPtr _bitmapPointer;
-
-        private readonly IntPtr _dibHandle;
-
-        private readonly IntPtr _pixelInfoPointer;
-
-        private Rectangle _rectangle;
-
         ~BitmapRenderer()
         {
             Dispose(false);
@@ -93,5 +83,15 @@ namespace TwainWpf.Win32
             double dotsPerInch = pixelsPerMillimeter * 25.4;
             return (float)Math.Round(dotsPerInch, 2);
         }
+
+        private readonly BitmapInfoHeader _bitmapInfo;
+
+        private readonly IntPtr _bitmapPointer;
+
+        private readonly IntPtr _dibHandle;
+
+        private readonly IntPtr _pixelInfoPointer;
+
+        private Rectangle _rectangle;
     }
 }

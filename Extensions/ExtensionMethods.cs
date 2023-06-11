@@ -21,22 +21,6 @@ namespace Extensions;
 
 public static class ExtensionMethods
 {
-    public const uint FILE_ATTRIBUTE_NORMAL = 0x00000080;
-
-    public const uint SHGFI_DISPLAYNAME = 0x000000200;
-
-    public const uint SHGFI_ICON = 0x000000100;
-
-    public const uint SHGFI_LARGEICON = 0x000000000;
-
-    public const uint SHGFI_OPENICON = 0x000000002;
-
-    public const uint SHGFI_SMALLICON = 0x000000001;
-
-    public const uint SHGFI_TYPENAME = 0x000000400;
-
-    public const uint SHGFI_USEFILEATTRIBUTES = 0x000000010;
-
     public enum FolderType
     {
         Closed = 0,
@@ -540,12 +524,28 @@ public static class ExtensionMethods
         }
     }
 
-    private static readonly Random _random = new();
+    public const uint FILE_ATTRIBUTE_NORMAL = 0x00000080;
 
-    private static readonly IntPtr hwnd = Process.GetCurrentProcess().Handle;
+    public const uint SHGFI_DISPLAYNAME = 0x000000200;
+
+    public const uint SHGFI_ICON = 0x000000100;
+
+    public const uint SHGFI_LARGEICON = 0x000000000;
+
+    public const uint SHGFI_OPENICON = 0x000000002;
+
+    public const uint SHGFI_SMALLICON = 0x000000001;
+
+    public const uint SHGFI_TYPENAME = 0x000000400;
+
+    public const uint SHGFI_USEFILEATTRIBUTES = 0x000000010;
 
     private static byte GetGrayscaleValue(byte red, byte green, byte blue)
     {
         return (byte)Math.Round((0.299 * red) + (0.587 * green) + (0.114 * blue));
     }
+
+    private static readonly Random _random = new();
+
+    private static readonly IntPtr hwnd = Process.GetCurrentProcess().Handle;
 }

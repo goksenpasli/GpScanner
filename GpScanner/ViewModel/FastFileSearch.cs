@@ -40,8 +40,6 @@ public static class Win32FileScanner
         return ScanRecursiveFilepath(Path.GetFullPath(path), maxDepth, 0);
     }
 
-    private static readonly IntPtr invalidHandle = new(-1);
-
     [StructLayout(LayoutKind.Sequential)]
     private readonly struct FileTime
     {
@@ -213,6 +211,8 @@ public static class Win32FileScanner
         highBytes = null;
         return DateTime.FromFileTime(longValue);
     }
+
+    private static readonly IntPtr invalidHandle = new(-1);
 }
 
 public sealed class DirectoryStats

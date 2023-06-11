@@ -144,18 +144,6 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    private bool detectQRCode;
-
-    private CapDevice device;
-
-    private FilterInfo[] liste = CapDevice.DeviceMonikers;
-
-    private byte[] resimData;
-
-    private double rotation = 180;
-
-    private FilterInfo seçiliKamera;
-
     private void CameraUserControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName is "SeçiliKamera")
@@ -169,4 +157,16 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
         Device?.Stop();
         DetectQRCode = false;
     }
+
+    private bool detectQRCode;
+
+    private CapDevice device;
+
+    private FilterInfo[] liste = CapDevice.DeviceMonikers;
+
+    private byte[] resimData;
+
+    private double rotation = 180;
+
+    private FilterInfo seçiliKamera;
 }

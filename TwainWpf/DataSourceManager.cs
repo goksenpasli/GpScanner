@@ -12,18 +12,6 @@ namespace TwainWpf
     /// <seealso cref="IDisposable"/>
     public class DataSourceManager : IDisposable
     {
-        public static readonly Identity DefaultApplicationId = new Identity()
-        {
-            Id = BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0),
-            Version = new TwainVersion() { MajorNum = 1, MinorNum = 1, Language = Language.USA, Country = Country.USA, Info = Assembly.GetExecutingAssembly().FullName },
-            ProtocolMajor = TwainConstants.ProtocolMajor,
-            ProtocolMinor = TwainConstants.ProtocolMinor,
-            SupportedGroups = (int)(DataGroup.Image | DataGroup.Control),
-            Manufacturer = "TwainDotNet",
-            ProductFamily = "TwainDotNet",
-            ProductName = "TwainDotNet",
-        };
-
         public DataSourceManager(Identity applicationId, IWindowsMessageHook messageHook)
         {
             ApplicationId = applicationId.Clone();
@@ -109,6 +97,18 @@ namespace TwainWpf
                 }
             }
         }
+
+        public static readonly Identity DefaultApplicationId = new Identity()
+        {
+            Id = BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0),
+            Version = new TwainVersion() { MajorNum = 1, MinorNum = 1, Language = Language.USA, Country = Country.USA, Info = Assembly.GetExecutingAssembly().FullName },
+            ProtocolMajor = TwainConstants.ProtocolMajor,
+            ProtocolMinor = TwainConstants.ProtocolMinor,
+            SupportedGroups = (int)(DataGroup.Image | DataGroup.Control),
+            Manufacturer = "TwainDotNet",
+            ProductFamily = "TwainDotNet",
+            ProductName = "TwainDotNet",
+        };
 
         internal void CloseDsAndCompleteScanning(Exception exception)
         {
@@ -269,11 +269,11 @@ namespace TwainWpf
             }
         }
 
-        private Event _eventMessage;
-
         ~DataSourceManager()
         {
             Dispose(false);
         }
+
+        private Event _eventMessage;
     }
 }

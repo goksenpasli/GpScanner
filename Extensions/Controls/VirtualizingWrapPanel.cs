@@ -538,33 +538,6 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
 
 public class VirtualizingWrapPanel : VirtualizingPanelBase
 {
-    [Obsolete("Use ItemSizeProperty")]
-    public static readonly DependencyProperty ChildrenSizeProperty = ItemSizeProperty;
-
-    public static readonly DependencyProperty ItemSizeProperty = DependencyProperty.Register(
-            nameof(ItemSize),
-            typeof(Size),
-            typeof(VirtualizingWrapPanel),
-            new FrameworkPropertyMetadata(Size.Empty, FrameworkPropertyMetadataOptions.AffectsMeasure));
-
-    public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
-            nameof(Orientation),
-            typeof(Orientation),
-            typeof(VirtualizingWrapPanel),
-            new FrameworkPropertyMetadata(Orientation.Vertical, FrameworkPropertyMetadataOptions.AffectsMeasure, (obj, _) => ((VirtualizingWrapPanel)obj).Orientation_Changed()));
-
-    public static readonly DependencyProperty SpacingModeProperty = DependencyProperty.Register(
-            nameof(SpacingMode),
-            typeof(SpacingMode),
-            typeof(VirtualizingWrapPanel),
-            new FrameworkPropertyMetadata(SpacingMode.Uniform, FrameworkPropertyMetadataOptions.AffectsMeasure));
-
-    public static readonly DependencyProperty StretchItemsProperty = DependencyProperty.Register(
-            nameof(StretchItems),
-            typeof(bool),
-            typeof(VirtualizingWrapPanel),
-            new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsArrange));
-
     /// <summary>
     /// Gets or sets a value that specifies the size of the items. The default value is <see cref="Size.Empty"/>. If the
     /// value is <see cref="Size.Empty"/> the size of the items gots measured by the first realized item.
@@ -593,11 +566,32 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
     /// </remarks>
     public bool StretchItems { get => (bool)GetValue(StretchItemsProperty); set => SetValue(StretchItemsProperty, value); }
 
-    protected Size childSize;
+    [Obsolete("Use ItemSizeProperty")]
+    public static readonly DependencyProperty ChildrenSizeProperty = ItemSizeProperty;
 
-    protected int itemsPerRowCount;
+    public static readonly DependencyProperty ItemSizeProperty = DependencyProperty.Register(
+            nameof(ItemSize),
+            typeof(Size),
+            typeof(VirtualizingWrapPanel),
+            new FrameworkPropertyMetadata(Size.Empty, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
-    protected int rowCount;
+    public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
+            nameof(Orientation),
+            typeof(Orientation),
+            typeof(VirtualizingWrapPanel),
+            new FrameworkPropertyMetadata(Orientation.Vertical, FrameworkPropertyMetadataOptions.AffectsMeasure, (obj, _) => ((VirtualizingWrapPanel)obj).Orientation_Changed()));
+
+    public static readonly DependencyProperty SpacingModeProperty = DependencyProperty.Register(
+            nameof(SpacingMode),
+            typeof(SpacingMode),
+            typeof(VirtualizingWrapPanel),
+            new FrameworkPropertyMetadata(SpacingMode.Uniform, FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+    public static readonly DependencyProperty StretchItemsProperty = DependencyProperty.Register(
+            nameof(StretchItems),
+            typeof(bool),
+            typeof(VirtualizingWrapPanel),
+            new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsArrange));
 
     [Obsolete]
     protected override Size ArrangeOverride(Size finalSize)
@@ -911,6 +905,12 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
         return new ItemRange(startIndex, endIndex);
     }
 
+    protected Size childSize;
+
+    protected int itemsPerRowCount;
+
+    protected int rowCount;
+
     private Size CalculateChildSize()
     {
         if (Items.Count == 0)
@@ -978,17 +978,6 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
 
     #region Deprecated properties
 
-    [Obsolete("Use SpacingMode")]
-    public static readonly DependencyProperty IsSpacingEnabledProperty =
-        DependencyProperty.Register(
-        nameof(IsSpacingEnabled),
-        typeof(bool),
-        typeof(VirtualizingWrapPanel),
-        new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsMeasure));
-
-    [Obsolete("Use IsSpacingEnabledProperty")]
-    public static readonly DependencyProperty SpacingEnabledProperty = IsSpacingEnabledProperty;
-
     [Obsolete("Use ItemSize")]
     public Size ChildrenSize { get => ItemSize; set => ItemSize = value; }
 
@@ -1004,6 +993,17 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
         get => IsSpacingEnabled;
         set => IsSpacingEnabled = value;
     }
+
+    [Obsolete("Use SpacingMode")]
+    public static readonly DependencyProperty IsSpacingEnabledProperty =
+        DependencyProperty.Register(
+        nameof(IsSpacingEnabled),
+        typeof(bool),
+        typeof(VirtualizingWrapPanel),
+        new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+    [Obsolete("Use IsSpacingEnabledProperty")]
+    public static readonly DependencyProperty SpacingEnabledProperty = IsSpacingEnabledProperty;
 
     #endregion Deprecated properties
 }

@@ -317,16 +317,16 @@ namespace Tesseract
                 page.Disposed += OnPageDisposed;
             }
 
-            private readonly Page page;
-
-            private readonly Pix pix;
-
             private void OnPageDisposed(object sender, EventArgs e)
             {
                 page.Disposed -= OnPageDisposed;
 
                 pix.Dispose();
             }
+
+            private readonly Page page;
+
+            private readonly Pix pix;
         }
 
         internal HandleRef Handle => handle;
@@ -339,10 +339,6 @@ namespace Tesseract
                 handle = new HandleRef(this, IntPtr.Zero);
             }
         }
-
-        private HandleRef handle;
-
-        private int processCount;
 
         private void Initialise(
                             string datapath,
@@ -380,6 +376,10 @@ namespace Tesseract
                 throw new TesseractException(ErrorMessage.Format(1, "Failed to initialise tesseract engine."));
             }
         }
+
+        private HandleRef handle;
+
+        private int processCount;
 
         #region Event Handlers
 

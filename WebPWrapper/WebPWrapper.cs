@@ -1032,8 +1032,6 @@ namespace WebPWrapper
     [SuppressUnmanagedCodeSecurityAttribute]
     internal sealed partial class UnsafeNativeMethods
     {
-        internal static WebPMemoryWrite OnCallback;
-
         /// <summary>
         /// The writer type for output compress data
         /// </summary>
@@ -1612,7 +1610,7 @@ namespace WebPWrapper
             }
         }
 
-        private const int WEBP_DECODER_ABI_VERSION = 0x0208;
+        internal static WebPMemoryWrite OnCallback;
 
         [DllImport("libwebp_x64.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "WebPConfigInitInternal")]
         private static extern int WebPConfigInitInternal_x64(ref WebPConfig config, WebPPreset preset, float quality, int WEBP_DECODER_ABI_VERSION);
@@ -1765,6 +1763,8 @@ namespace WebPWrapper
 
         [DllImport("libwebp_x86.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "WebPValidateConfig")]
         private static extern int WebPValidateConfig_x86(ref WebPConfig config);
+
+        private const int WEBP_DECODER_ABI_VERSION = 0x0208;
     }
 
     #endregion | Import libwebp functions |

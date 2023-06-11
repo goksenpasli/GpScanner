@@ -477,10 +477,6 @@ namespace TwainWpf
             }
         }
 
-        private readonly Identity _applicationId;
-
-        private readonly IWindowsMessageHook _messageHook;
-
         ~DataSource()
         {
             Dispose(false);
@@ -516,5 +512,9 @@ namespace TwainWpf
 
             return result != TwainResult.Success ? throw new TwainException("DsImageLayout.GetDefault error", result) : true;
         }
+
+        private readonly Identity _applicationId;
+
+        private readonly IWindowsMessageHook _messageHook;
     }
 }

@@ -10,9 +10,6 @@ namespace Extensions;
 /// </summary>
 public class InvertColorEffect : ShaderEffect
 {
-    public static readonly DependencyProperty InputProperty =
-        RegisterPixelShaderSamplerProperty("Input", typeof(InvertColorEffect), 0);
-
     public InvertColorEffect()
     {
         PixelShader = new PixelShader { UriSource = new Uri("/Extensions;component/Shader/InvertColorEffect.ps", UriKind.Relative) };
@@ -21,4 +18,7 @@ public class InvertColorEffect : ShaderEffect
     }
 
     public Brush Input { get => (Brush)GetValue(InputProperty); set => SetValue(InputProperty, value); }
+
+    public static readonly DependencyProperty InputProperty =
+                RegisterPixelShaderSamplerProperty("Input", typeof(InvertColorEffect), 0);
 }

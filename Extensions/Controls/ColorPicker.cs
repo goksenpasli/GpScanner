@@ -85,40 +85,6 @@ public static class HSV
 [TemplatePart(Name = "RgbGrid", Type = typeof(Rectangle))]
 public class ColorPicker : Control
 {
-    public static readonly DependencyProperty AlphaProperty = DependencyProperty.Register(
-        "Alpha",
-        typeof(byte),
-        typeof(ColorPicker),
-        new PropertyMetadata((byte)0xff, AlphaChanged));
-
-    public static readonly DependencyProperty ColorPickerColumnCountProperty =
-        DependencyProperty.Register("ColorPickerColumnCount", typeof(int), typeof(ColorPicker), new PropertyMetadata(8));
-
-    public static readonly DependencyProperty HexCodeProperty = DependencyProperty.Register("HexCode", typeof(string), typeof(ColorPicker), new PropertyMetadata("#00000000"));
-
-    public static readonly DependencyProperty HexCodeVisibilityProperty =
-        DependencyProperty.Register("HexCodeVisibility", typeof(Visibility), typeof(ColorPicker), new PropertyMetadata(Visibility.Visible));
-
-    public static readonly DependencyProperty MiddleStopColorProperty = DependencyProperty.Register(
-        "MiddleStopColor",
-        typeof(Color),
-        typeof(ColorPicker),
-        new PropertyMetadata(Colors.Gray));
-
-    public static readonly DependencyProperty PredefinedColorVisibilityProperty =
-        DependencyProperty.Register("PredefinedColorVisibility", typeof(Visibility), typeof(ColorPicker), new PropertyMetadata(Visibility.Collapsed));
-
-    public static readonly DependencyProperty SliderVisibilityProperty = DependencyProperty.Register(
-        "SliderVisibility",
-        typeof(Visibility),
-        typeof(ColorPicker),
-        new PropertyMetadata(Visibility.Visible));
-
-    public static readonly DependencyProperty SpectrumGridBackgroundProperty =
-        DependencyProperty.Register("SpectrumGridBackground", typeof(Brush), typeof(ColorPicker), new PropertyMetadata(Brushes.Transparent));
-
-    public RGB Selected = new();
-
     static ColorPicker()
     {
         DefaultStyleKeyProperty.OverrideMetadata(typeof(ColorPicker), new FrameworkPropertyMetadata(typeof(ColorPicker)));
@@ -182,11 +148,39 @@ public class ColorPicker : Control
         }
     }
 
-    private Rectangle _rgbgrid;
+    public static readonly DependencyProperty AlphaProperty = DependencyProperty.Register(
+                                                        "Alpha",
+        typeof(byte),
+        typeof(ColorPicker),
+        new PropertyMetadata((byte)0xff, AlphaChanged));
 
-    private Rectangle _spectrumgrid;
+    public static readonly DependencyProperty ColorPickerColumnCountProperty =
+        DependencyProperty.Register("ColorPickerColumnCount", typeof(int), typeof(ColorPicker), new PropertyMetadata(8));
 
-    private double currH = 360;
+    public static readonly DependencyProperty HexCodeProperty = DependencyProperty.Register("HexCode", typeof(string), typeof(ColorPicker), new PropertyMetadata("#00000000"));
+
+    public static readonly DependencyProperty HexCodeVisibilityProperty =
+        DependencyProperty.Register("HexCodeVisibility", typeof(Visibility), typeof(ColorPicker), new PropertyMetadata(Visibility.Visible));
+
+    public static readonly DependencyProperty MiddleStopColorProperty = DependencyProperty.Register(
+        "MiddleStopColor",
+        typeof(Color),
+        typeof(ColorPicker),
+        new PropertyMetadata(Colors.Gray));
+
+    public static readonly DependencyProperty PredefinedColorVisibilityProperty =
+        DependencyProperty.Register("PredefinedColorVisibility", typeof(Visibility), typeof(ColorPicker), new PropertyMetadata(Visibility.Collapsed));
+
+    public static readonly DependencyProperty SliderVisibilityProperty = DependencyProperty.Register(
+        "SliderVisibility",
+        typeof(Visibility),
+        typeof(ColorPicker),
+        new PropertyMetadata(Visibility.Visible));
+
+    public static readonly DependencyProperty SpectrumGridBackgroundProperty =
+        DependencyProperty.Register("SpectrumGridBackground", typeof(Brush), typeof(ColorPicker), new PropertyMetadata(Brushes.Transparent));
+
+    public RGB Selected = new();
 
     private static void AlphaChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -221,6 +215,12 @@ public class ColorPicker : Control
             MiddleStopColor = HSV.RGBFromHSV(currH, 1f, 1f).Color();
         }
     }
+
+    private Rectangle _rgbgrid;
+
+    private Rectangle _spectrumgrid;
+
+    private double currH = 360;
 }
 
 public class RGB

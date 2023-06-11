@@ -7,18 +7,6 @@ namespace Extensions;
 
 public class MaskedTextBlock : TextBlock
 {
-    public static readonly DependencyProperty MaskProperty =
-        DependencyProperty.Register("Mask", typeof(string), typeof(MaskedTextBlock), null);
-
-    public static readonly DependencyProperty PromptCharProperty =
-        DependencyProperty.Register("PromptChar", typeof(char), typeof(MaskedTextBlock), new PropertyMetadata('_'));
-
-    public static readonly DependencyProperty UnmaskedTextProperty = DependencyProperty.Register(
-        "UnmaskedText",
-        typeof(string),
-        typeof(MaskedTextBlock),
-        new UIPropertyMetadata(string.Empty, Changed));
-
     public MaskedTextBlock()
     { Loaded += MaskedTextBlock_Loaded; }
 
@@ -28,7 +16,17 @@ public class MaskedTextBlock : TextBlock
 
     public string UnmaskedText { get => (string)GetValue(UnmaskedTextProperty); set => SetValue(UnmaskedTextProperty, value); }
 
-    private MaskedTextProvider _provider;
+    public static readonly DependencyProperty MaskProperty =
+                        DependencyProperty.Register("Mask", typeof(string), typeof(MaskedTextBlock), null);
+
+    public static readonly DependencyProperty PromptCharProperty =
+        DependencyProperty.Register("PromptChar", typeof(char), typeof(MaskedTextBlock), new PropertyMetadata('_'));
+
+    public static readonly DependencyProperty UnmaskedTextProperty = DependencyProperty.Register(
+        "UnmaskedText",
+        typeof(string),
+        typeof(MaskedTextBlock),
+        new UIPropertyMetadata(string.Empty, Changed));
 
     private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -45,4 +43,6 @@ public class MaskedTextBlock : TextBlock
         _provider.PromptChar = PromptChar;
         Text = _provider.ToDisplayString();
     }
+
+    private MaskedTextProvider _provider;
 }

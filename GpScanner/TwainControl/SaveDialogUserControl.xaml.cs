@@ -35,10 +35,6 @@ public partial class SaveDialogUserControl : UserControl, INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    private BitmapSource previewImage;
-
-    private TwainCtrl twainCtrl;
-
     private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName is "BwThreshold")
@@ -65,4 +61,8 @@ public partial class SaveDialogUserControl : UserControl, INotifyPropertyChanged
         twainCtrl.PropertyChanged += TwainCtrl_PropertyChanged;
         Settings.Default.PropertyChanged += Default_PropertyChanged;
     }
+
+    private BitmapSource previewImage;
+
+    private TwainCtrl twainCtrl;
 }

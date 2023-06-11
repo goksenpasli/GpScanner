@@ -12,8 +12,6 @@ namespace Ocr;
 
 public static class Ocr
 {
-    public static CancellationTokenSource ocrcancellationToken;
-
     static Ocr()
     {
         TesseractPath = $@"{Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName)}\tessdata";
@@ -76,6 +74,8 @@ public static class Ocr
         ocrcancellationToken = new CancellationTokenSource();
         return await Task.Run(() => dosya.GetOcrData(lang), ocrcancellationToken.Token);
     }
+
+    public static CancellationTokenSource ocrcancellationToken;
 
     private static string TesseractPath { get; }
 

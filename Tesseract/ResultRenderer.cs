@@ -189,10 +189,6 @@ namespace Tesseract
             _handle = new HandleRef(this, handle);
         }
 
-        private IDisposable _currentDocumentHandle;
-
-        private HandleRef _handle;
-
         /// <summary>
         /// Ensures the renderer's EndDocument when disposed off.
         /// </summary>
@@ -230,6 +226,10 @@ namespace Tesseract
 
             private IntPtr _titlePtr;
         }
+
+        private IDisposable _currentDocumentHandle;
+
+        private HandleRef _handle;
 
         #region Factory Methods
 

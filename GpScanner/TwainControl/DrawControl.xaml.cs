@@ -13,12 +13,6 @@ namespace TwainControl
 {
     public partial class DrawControl : UserControl, INotifyPropertyChanged
     {
-        public static readonly DependencyProperty EditingImageProperty = DependencyProperty.Register(
-            "EditingImage",
-            typeof(BitmapFrame),
-            typeof(DrawControl),
-            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
-
         public DrawControl()
         {
             InitializeComponent();
@@ -256,38 +250,16 @@ namespace TwainControl
             return image;
         }
 
+        public static readonly DependencyProperty EditingImageProperty = DependencyProperty.Register(
+                                                                                                                                                                                    "EditingImage",
+            typeof(BitmapFrame),
+            typeof(DrawControl),
+            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
         protected virtual void OnPropertyChanged(string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        private bool @lock = true;
-
-        private bool drawControlContextMenu;
-
-        private Cursor drawCursor;
-
-        private Ellipse ellipse = new();
-
-        private bool highlighter;
-
-        private bool ıgnorePressure;
-
-        private Rectangle rectangle = new();
-
-        private SolidColorBrush selectedBrush;
-
-        private string selectedColor = "Black";
-
-        private StylusTip selectedStylus = StylusTip.Ellipse;
-
-        private bool smooth;
-
-        private double stylusHeight = 2d;
-
-        private double stylusWidth = 2d;
-
-        private ImageSource temporaryImage;
 
         private void DrawControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -369,5 +341,33 @@ namespace TwainControl
             OnPropertyChanged(nameof(StylusHeight));
             OnPropertyChanged(nameof(stylusWidth));
         }
+
+        private bool @lock = true;
+
+        private bool drawControlContextMenu;
+
+        private Cursor drawCursor;
+
+        private Ellipse ellipse = new();
+
+        private bool highlighter;
+
+        private bool ıgnorePressure;
+
+        private Rectangle rectangle = new();
+
+        private SolidColorBrush selectedBrush;
+
+        private string selectedColor = "Black";
+
+        private StylusTip selectedStylus = StylusTip.Ellipse;
+
+        private bool smooth;
+
+        private double stylusHeight = 2d;
+
+        private double stylusWidth = 2d;
+
+        private ImageSource temporaryImage;
     }
 }

@@ -34,10 +34,6 @@ namespace TwainControl
             base.OnMouseDoubleClick(e);
         }
 
-        private ImageViewer imageViewer;
-
-        private Window maximizePdfWindow;
-
         private void MaximizePdfWindow_Closed(object sender, EventArgs e)
         {
             maximizePdfWindow.Closed -= MaximizePdfWindow_Closed;
@@ -45,5 +41,9 @@ namespace TwainControl
             imageViewer?.Dispose();
             imageViewer = null;
         }
+
+        private ImageViewer imageViewer;
+
+        private Window maximizePdfWindow;
     }
 }

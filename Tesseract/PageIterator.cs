@@ -179,10 +179,6 @@ namespace Tesseract
             this.handle = new HandleRef(this, handle);
         }
 
-        protected readonly HandleRef handle;
-
-        protected readonly Page page;
-
         protected override void Dispose(bool disposing)
         {
             if (handle.Handle != IntPtr.Zero)
@@ -190,5 +186,9 @@ namespace Tesseract
                 TessApi.Native.PageIteratorDelete(handle);
             }
         }
+
+        protected readonly HandleRef handle;
+
+        protected readonly Page page;
     }
 }

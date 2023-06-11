@@ -9,12 +9,6 @@ namespace Extensions;
 
 public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 {
-    public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register(
-        "Description",
-        typeof(string),
-        typeof(ButtonedTextBox),
-        new PropertyMetadata(string.Empty));
-
     static ButtonedTextBox()
     {
         DefaultStyleKeyProperty.OverrideMetadata(typeof(ButtonedTextBox), new FrameworkPropertyMetadata(typeof(ButtonedTextBox)));
@@ -88,18 +82,16 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         }
     }
 
+    public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register(
+                                                        "Description",
+        typeof(string),
+        typeof(ButtonedTextBox),
+        new PropertyMetadata(string.Empty));
+
     protected virtual void OnPropertyChanged(string propertyName)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
-
-    private Visibility copyButtonVisibility = Visibility.Visible;
-
-    private Visibility openButtonVisibility = Visibility.Visible;
-
-    private Visibility pasteButtonVisibility = Visibility.Visible;
-
-    private Visibility resetButtonVisibility = Visibility.Visible;
 
     private void CanExecute(object sender, CanExecuteRoutedEventArgs e)
     {
@@ -143,4 +135,12 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
     {
         Text = string.Empty;
     }
+
+    private Visibility copyButtonVisibility = Visibility.Visible;
+
+    private Visibility openButtonVisibility = Visibility.Visible;
+
+    private Visibility pasteButtonVisibility = Visibility.Visible;
+
+    private Visibility resetButtonVisibility = Visibility.Visible;
 }

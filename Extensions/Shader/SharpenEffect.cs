@@ -10,21 +10,6 @@ namespace Extensions;
 /// </summary>
 public class SharpenEffect : ShaderEffect
 {
-    public static readonly DependencyProperty AmountProperty = DependencyProperty.Register(
-        "Amount",
-        typeof(double),
-        typeof(SharpenEffect),
-        new UIPropertyMetadata(1D, PixelShaderConstantCallback(0)));
-
-    public static readonly DependencyProperty InputProperty =
-        RegisterPixelShaderSamplerProperty("Input", typeof(SharpenEffect), 0);
-
-    public static readonly DependencyProperty InputSizeProperty = DependencyProperty.Register(
-        "InputSize",
-        typeof(Size),
-        typeof(SharpenEffect),
-        new UIPropertyMetadata(new Size(800D, 600D), PixelShaderConstantCallback(1)));
-
     public SharpenEffect()
     {
         PixelShader = new PixelShader { UriSource = new Uri("/Extensions;component/Shader/SharpenEffect.ps", UriKind.Relative) };
@@ -45,4 +30,19 @@ public class SharpenEffect : ShaderEffect
     /// The size of the input (in pixels).
     /// </summary>
     public Size InputSize { get => (Size)GetValue(InputSizeProperty); set => SetValue(InputSizeProperty, value); }
+
+    public static readonly DependencyProperty AmountProperty = DependencyProperty.Register(
+                        "Amount",
+        typeof(double),
+        typeof(SharpenEffect),
+        new UIPropertyMetadata(1D, PixelShaderConstantCallback(0)));
+
+    public static readonly DependencyProperty InputProperty =
+        RegisterPixelShaderSamplerProperty("Input", typeof(SharpenEffect), 0);
+
+    public static readonly DependencyProperty InputSizeProperty = DependencyProperty.Register(
+        "InputSize",
+        typeof(Size),
+        typeof(SharpenEffect),
+        new UIPropertyMetadata(new Size(800D, 600D), PixelShaderConstantCallback(1)));
 }
