@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using Microsoft.Win32;
 
 namespace Extensions.Controls
@@ -10,9 +11,12 @@ namespace Extensions.Controls
     /// </summary>
     public partial class MediaViewerSubtitleControl : UserControl, INotifyPropertyChanged
     {
+        public CollectionViewSource cvs;
+
         public MediaViewerSubtitleControl()
         {
             InitializeComponent();
+            cvs = TryFindResource("Subtitle") as CollectionViewSource;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

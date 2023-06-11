@@ -5,9 +5,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:Extensions"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance Type=Controls:MediaViewer}"
-    d:DesignHeight="500" d:DesignWidth="500" UseLayoutRounding="True"
+    d:DesignHeight="480" d:DesignWidth="480" FontFamily="Segoe UI"
+    FontSize="12" UseLayoutRounding="True"
     mc:Ignorable="d">
     <UserControl.Resources>
+        <CollectionViewSource x:Key="Subtitle" Source="{Binding ParsedSubtitle}" />
         <local:VisibilityToBooleanConverter x:Key="VisibilityToBooleanConverter" />
     </UserControl.Resources>
     <UniformGrid Columns="2">
@@ -32,24 +34,29 @@
                 <Button Grid.Row="1" Grid.Column="2"
                     Click="SubtitleMargin_Click" Content="4" FontFamily="Webdings" />
             </Grid>
-            <Button Click="Subtitle_Click" Content="ALTYAZI YÜKLE" FontFamily="Segoe UI" />
-            <ToggleButton VerticalContentAlignment="Center"
-                Content="ALTYAZI GÖRÜNÜR" FontFamily="Segoe UI"
-                IsChecked="{Binding SubTitleVisibility, Mode=TwoWay, Converter={StaticResource VisibilityToBooleanConverter}}" />
+            <UniformGrid Columns="2">
+                <Button Click="Subtitle_Click" Content="ALTYAZI YÜKLE" />
+                <ToggleButton VerticalContentAlignment="Center"
+                    Content="ALTYAZI GÖRÜNÜR"
+                    IsChecked="{Binding SubTitleVisibility, Mode=TwoWay, Converter={StaticResource VisibilityToBooleanConverter}}" />
+            </UniformGrid>
             <Slider Maximum="128" Minimum="1"
+                Style="{DynamicResource Slider}"
                 Value="{Binding SubTitleSize}" />
-            <local:ColorPicker ColorPickerColumnCount="10" FontFamily="Segoe UI"
+            <local:ColorPicker ColorPickerColumnCount="10"
                 HexCode="{Binding SubTitleColor, Mode=TwoWay}"
                 PredefinedColorVisibility="Visible" />
             <ToggleButton VerticalContentAlignment="Center"
-                Content="OTOMATİK ALTYAZI ÇEVİRİ" FontFamily="Segoe UI"
+                Content="OTOMATİK ALTYAZI ÇEVİRİ"
                 IsChecked="{Binding AutoTranslate}" />
-            <Controls:TranslateView FontFamily="Segoe UI" IsEnabled="{Binding AutoTranslate}" />
+            <Controls:TranslateView IsEnabled="{Binding AutoTranslate}" />
+            <local:ButtonedTextBox CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed"
+                Text="{Binding SearchSubtitle, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
         <ListBox x:Name="LbSubtitle"
             d:ItemsSource="{d:SampleData ItemCount=5}"
-            FontFamily="Segoe UI"
-            ItemsSource="{Binding ParsedSubtitle}"
+            IsSynchronizedWithCurrentItem="False"
+            ItemsSource="{Binding Mode=OneWay, Source={StaticResource Subtitle}}"
             VirtualizingPanel.CacheLength="3,3" VirtualizingPanel.CacheLengthUnit="Item"
             VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.ScrollUnit="Pixel"
             VirtualizingPanel.VirtualizationMode="Standard">

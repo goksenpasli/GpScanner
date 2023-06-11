@@ -225,7 +225,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         Player.MediaEnded += MediaElement_MediaEnded;
         PanoramaViewPort.Visibility = Visibility.Collapsed;
         DataContext = this;
-
+        PropertyChanged += MediaViewer_PropertyChanged;
         GoToFrame = new RelayCommand<object>(
             parameter =>
             {
@@ -399,6 +399,17 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     [Category("Controls")]
     [Browsable(false)]
     public double RotateY { get => (double)GetValue(RotateYProperty); set => SetValue(RotateYProperty, value); }
+
+    public string SearchSubtitle {
+        get => searchSubtitle; set {
+
+            if (searchSubtitle != value)
+            {
+                searchSubtitle = value;
+                OnPropertyChanged(nameof(SearchSubtitle));
+            }
+        }
+    }
 
     [Description("Video Effects")]
     [Category("Effects")]
@@ -608,6 +619,8 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     private double _startRotateY;
 
     private ObservableCollection<SrtContent> parsedSubtitle;
+
+    private string searchSubtitle;
 
     private static void AutoplayChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -964,6 +977,18 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         if (PlayList.Any() && AutoSkipNextVideo)
         {
             MediaDataFilePath = GetNextPlayListFile();
+        }
+    }
+
+    private void MediaViewer_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is "SearchSubtitle")
+        {
+            MediaViewerSubtitleControl.cvs.Filter += (s, x) =>
+             {
+                 SrtContent srtContent = x.Item as SrtContent;
+                 x.Accepted = srtContent.Text.Contains(SearchSubtitle);
+             };
         }
     }
 
