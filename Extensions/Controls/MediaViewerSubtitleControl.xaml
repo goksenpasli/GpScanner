@@ -12,70 +12,86 @@
         <CollectionViewSource x:Key="Subtitle" Source="{Binding ParsedSubtitle}" />
         <local:VisibilityToBooleanConverter x:Key="VisibilityToBooleanConverter" />
     </UserControl.Resources>
-    <UniformGrid Columns="2">
-        <StackPanel Background="{StaticResource GroupBoxBackGround}">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Button Grid.Column="1"
-                    Click="SubtitleMargin_Click" Content="5" FontFamily="Webdings" />
-                <Button Grid.Row="2" Grid.Column="1"
-                    Click="SubtitleMargin_Click" Content="6" FontFamily="Webdings" />
-                <Button Grid.Row="1"
-                    Click="SubtitleMargin_Click" Content="3" FontFamily="Webdings" />
-                <Button Grid.Row="1" Grid.Column="2"
-                    Click="SubtitleMargin_Click" Content="4" FontFamily="Webdings" />
-            </Grid>
-            <UniformGrid Columns="2">
-                <Button Click="Subtitle_Click" Content="ALTYAZI YÜKLE" />
+    <GroupBox>
+        <UniformGrid Columns="2">
+            <StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <RepeatButton Grid.Column="1"
+                        Click="SubtitleMargin_Click" Content="5" FontFamily="Webdings" />
+                    <RepeatButton Grid.Row="2" Grid.Column="1"
+                        Click="SubtitleMargin_Click" Content="6" FontFamily="Webdings" />
+                    <RepeatButton Grid.Row="1"
+                        Click="SubtitleMargin_Click" Content="3" FontFamily="Webdings" />
+                    <RepeatButton Grid.Row="1" Grid.Column="2"
+                        Click="SubtitleMargin_Click" Content="4" FontFamily="Webdings" />
+                    <Button Grid.Row="1" Grid.Column="1"
+                        Click="SubtitleMargin_Click" Content="=" FontFamily="Webdings" />
+                </Grid>
+                <UniformGrid Columns="2">
+                    <Button Click="Subtitle_Click" Content="ALTYAZI YÜKLE" />
+                    <ToggleButton VerticalContentAlignment="Center"
+                        Content="ALTYAZI GÖRÜNÜR"
+                        IsChecked="{Binding SubTitleVisibility, Mode=TwoWay, Converter={StaticResource VisibilityToBooleanConverter}}" />
+                </UniformGrid>
+                <Slider Maximum="128" Minimum="1"
+                    Style="{DynamicResource Slider}"
+                    Value="{Binding SubTitleSize}" />
+                <local:ColorPicker ColorPickerColumnCount="10"
+                    HexCode="{Binding SubTitleColor, Mode=TwoWay}"
+                    PredefinedColorVisibility="Visible" />
                 <ToggleButton VerticalContentAlignment="Center"
-                    Content="ALTYAZI GÖRÜNÜR"
-                    IsChecked="{Binding SubTitleVisibility, Mode=TwoWay, Converter={StaticResource VisibilityToBooleanConverter}}" />
-            </UniformGrid>
-            <Slider Maximum="128" Minimum="1"
-                Style="{DynamicResource Slider}"
-                Value="{Binding SubTitleSize}" />
-            <local:ColorPicker ColorPickerColumnCount="10"
-                HexCode="{Binding SubTitleColor, Mode=TwoWay}"
-                PredefinedColorVisibility="Visible" />
-            <ToggleButton VerticalContentAlignment="Center"
-                Content="OTOMATİK ALTYAZI ÇEVİRİ"
-                IsChecked="{Binding AutoTranslate}" />
-            <Controls:TranslateView IsEnabled="{Binding AutoTranslate}" />
-            <local:ButtonedTextBox CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed"
-                Text="{Binding SearchSubtitle, UpdateSourceTrigger=PropertyChanged}" />
-        </StackPanel>
-        <ListBox x:Name="LbSubtitle"
-            d:ItemsSource="{d:SampleData ItemCount=5}"
-            IsSynchronizedWithCurrentItem="False"
-            ItemsSource="{Binding Mode=OneWay, Source={StaticResource Subtitle}}"
-            VirtualizingPanel.CacheLength="3,3" VirtualizingPanel.CacheLengthUnit="Item"
-            VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.ScrollUnit="Pixel"
-            VirtualizingPanel.VirtualizationMode="Standard">
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="Background" Value="{Binding BackgroundColor}" />
-                </Style>
-            </ListBox.ItemContainerStyle>
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock TextWrapping="Wrap">
-                        <Hyperlink Command="{Binding GoToFrame, RelativeSource={RelativeSource AncestorType=Controls:MediaViewer}}" CommandParameter="{Binding StartTime}">
-                            <Run Foreground="Red" Text="{Binding StartTime}" />
-                            <LineBreak />
-                            <Run Text="{Binding Text}" />
-                        </Hyperlink>
-                    </TextBlock>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-    </UniformGrid>
+                    Content="OTOMATİK ALTYAZI ÇEVİRİ"
+                    IsChecked="{Binding AutoTranslate}" />
+                <Controls:TranslateView IsEnabled="{Binding AutoTranslate}" />
+                <local:ButtonedTextBox CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed"
+                    Text="{Binding SearchSubtitle, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="370" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <ListBox x:Name="LbSubtitle"
+                    d:ItemsSource="{d:SampleData ItemCount=5}"
+                    Background="{StaticResource BorderBackground}"
+                    IsSynchronizedWithCurrentItem="False"
+                    ItemsSource="{Binding Mode=OneWay, Source={StaticResource Subtitle}}"
+                    VirtualizingPanel.CacheLength="3,3" VirtualizingPanel.CacheLengthUnit="Item"
+                    VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.ScrollUnit="Pixel"
+                    VirtualizingPanel.VirtualizationMode="Standard">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Background" Value="{Binding BackgroundColor}" />
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <Hyperlink Command="{Binding GoToFrame, RelativeSource={RelativeSource AncestorType=Controls:MediaViewer}}" CommandParameter="{Binding StartTime}">
+                                    <Run Foreground="Red" Text="{Binding StartTime}" />
+                                    <LineBreak />
+                                    <Run Text="{Binding Text}" />
+                                </Hyperlink>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <TextBlock Grid.Row="1"
+                    Margin="0,1,0,0"
+                    Background="{StaticResource BorderBackground}"
+                    Text="{Binding SubTitle}"
+                    TextWrapping="Wrap" />
+            </Grid>
+        </UniformGrid>
+    </GroupBox>
 </UserControl>

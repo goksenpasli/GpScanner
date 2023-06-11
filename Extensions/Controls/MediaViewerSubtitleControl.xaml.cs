@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using Microsoft.Win32;
 
@@ -45,9 +46,9 @@ namespace Extensions.Controls
                     mediaviewer.SubTitleMargin.Top,
                     mediaviewer.SubTitleMargin.Right,
                     mediaviewer.SubTitleMargin.Bottom);
-                if (sender is Button button)
+                if (sender is RepeatButton repeatbutton)
                 {
-                    switch (button.Content)
+                    switch (repeatbutton.Content)
                     {
                         case "6":
                             defaultsubtitlethickness.Bottom -= 10;
@@ -63,6 +64,11 @@ namespace Extensions.Controls
 
                         case "3":
                             defaultsubtitlethickness.Left -= 10;
+                            break;
+
+                        case "=":
+                            defaultsubtitlethickness.Left = 0;
+                            defaultsubtitlethickness.Bottom = 0;
                             break;
                     }
 

@@ -549,7 +549,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         {
             ObservableCollection<SrtContent> content = new();
             const string pattern = "<[/]?[ib]>";
-            foreach (string element in File.ReadAllText(filepath, Encoding.GetEncoding("Windows-1254")).Split(new[] { "\r\n\r\n" }, StringSplitOptions.RemoveEmptyEntries))
+            foreach (string element in File.ReadAllText(filepath, Encoding.GetEncoding("UTF-8")).Split(new[] { "\r\n\r\n" }, StringSplitOptions.RemoveEmptyEntries))
             {
                 string[] lines = element.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
                 content.Add(
