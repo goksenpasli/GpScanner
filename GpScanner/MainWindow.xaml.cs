@@ -116,8 +116,11 @@ public partial class MainWindow : Window
 
         if (Settings.Default.IsFirstRun)
         {
-            WindowExtensions.OpenSettings.Execute(null);
             Settings.Default.IsFirstRun = false;
+            if (WindowExtensions.OpenSettings.CanExecute(null))
+            {
+                WindowExtensions.OpenSettings.Execute(null);
+            }
         }
 
         string[] commandLineArgs = Environment.GetCommandLineArgs();

@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using Extensions;
+using Microsoft.Win32;
 using TwainControl;
 
 namespace GpScanner.ViewModel;
@@ -16,9 +17,9 @@ public static class WindowExtensions
         OpenSettings = new RelayCommand<object>(
             parameter =>
             {
-                SettingsWindowView settingswindow = new() { Owner = Application.Current.MainWindow, DataContext = Application.Current.MainWindow.DataContext };
+                SettingsWindowView settingswindow = new() { Owner = Application.Current?.MainWindow, DataContext = Application.Current?.MainWindow?.DataContext };
                 _ = settingswindow.ShowDialog();
-            });
+            }, parameter => Policy.CheckPolicy("OpenSettings", Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\GpScanner")) && Policy.CheckPolicy("OpenSettings", Registry.CurrentUser.OpenSubKey(@"Software\Policies\GpScanner")));
     }
 
     public static ICommand OpenSettings { get; }

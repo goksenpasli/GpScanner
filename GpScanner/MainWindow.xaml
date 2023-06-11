@@ -218,7 +218,6 @@
                             </StackPanel>
                         </Grid>
                         <UniformGrid Columns="3" Rows="1">
-
                             <Button twainctrl:Policy.PolicyName="OpenSettings" Command="{Binding Source={x:Static ViewModel:WindowExtensions.OpenSettings}}">
                                 <StackPanel Orientation="Horizontal">
                                     <Image Width="32" Height="32">

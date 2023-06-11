@@ -974,10 +974,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
                     if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
                     {
-                        string savefilename = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
-                        await SaveFileAsync(pdfviewer.PdfFilePath, savefilename, pdfviewer.Sayfa, pdfviewer.ToplamSayfa);
-                        AddFiles(new[] { savefilename }, DecodeHeight);
-                        GC.Collect();
+                        if (SayfaBaşlangıç <= SayfaBitiş)
+                        {
+                            string savefilename = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
+                            await SaveFileAsync(pdfviewer.PdfFilePath, savefilename, SayfaBaşlangıç, SayfaBitiş);
+                            AddFiles(new[] { savefilename }, DecodeHeight);
+                            GC.Collect();
+                        }
                         return;
                     }
 
