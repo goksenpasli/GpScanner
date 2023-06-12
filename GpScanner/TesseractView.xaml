@@ -108,7 +108,7 @@
                 </ListBox.ItemContainerStyle>
             </ListBox>
             <FlowDocumentScrollViewer Grid.Row="1" Grid.ColumnSpan="2">
-                <FlowDocument>
+                <FlowDocument IsOptimalParagraphEnabled="True">
                     <Paragraph>
                         <Span>
                             <Hyperlink Command="{Binding TesseractDataFilesDownloadLink}" CommandParameter="https://docs.microsoft.com/tr-tr/cpp/windows/latest-supported-vc-redist?view=msvc-170">

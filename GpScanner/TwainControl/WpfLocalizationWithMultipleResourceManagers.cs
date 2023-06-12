@@ -71,6 +71,11 @@ public class LocExtension : MarkupExtension
 
 public class Translation : DependencyObject
 {
+    public static string GetDesignCulture(DependencyObject obj)
+    {
+        return (string)obj.GetValue(DesignCultureProperty);
+    }
+
     public static ResourceManager GetResourceManager(DependencyObject dependencyObject)
     {
         return (ResourceManager)dependencyObject.GetValue(ResourceManagerProperty);
@@ -83,13 +88,29 @@ public class Translation : DependencyObject
             : Resources.ResourceManager.GetString(resdata, TranslationSource.Instance.CurrentCulture);
     }
 
+    public static void SetDesignCulture(DependencyObject obj, string value)
+    {
+        obj.SetValue(DesignCultureProperty, value);
+    }
+
     public static void SetResourceManager(DependencyObject dependencyObject, ResourceManager value)
     {
         dependencyObject.SetValue(ResourceManagerProperty, value);
     }
 
+    public static readonly DependencyProperty DesignCultureProperty =
+        DependencyProperty.RegisterAttached("DesignCulture", typeof(string), typeof(Translation), new PropertyMetadata("en-EN", CultureChanged));
+
     public static readonly DependencyProperty ResourceManagerProperty =
                     DependencyProperty.RegisterAttached("ResourceManager", typeof(ResourceManager), typeof(Translation));
+
+    private static void CultureChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (DesignerProperties.GetIsInDesignMode(d))
+        {
+            TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo((string)e.NewValue);
+        }
+    }
 }
 
 public class TranslationSource : INotifyPropertyChanged

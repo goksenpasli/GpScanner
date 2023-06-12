@@ -18,6 +18,7 @@ using System.Windows.Interop;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shell;
 using System.Windows.Threading;
 using Extensions;
 using GpScanner.Properties;
@@ -418,6 +419,7 @@ public class GpScannerViewModel : InpcBase
                 List<string> files = Win32FileScanner.EnumerateFilepaths(BatchFolder).Where(s => imagefileextensions.Any(ext => ext == Path.GetExtension(s).ToLower())).ToList();
                 int slicecount = files.Count > Settings.Default.ProcessorCount ? files.Count / Settings.Default.ProcessorCount : 1;
                 Scanner scanner = ToolBox.Scanner;
+                scanner.ProgressState = TaskbarItemProgressState.Normal;
                 BatchTxtOcrs = new ObservableCollection<BatchTxtOcr>();
                 List<Task> Tasks = new();
                 ocrcancellationToken = new CancellationTokenSource();
@@ -442,6 +444,7 @@ public class GpScannerViewModel : InpcBase
                                         batchTxtOcr.ProgressValue = (i + 1) / (double)item.Count;
                                         batchTxtOcr.FilePath = Path.GetFileName(item.ElementAtOrDefault(i));
                                         item.ElementAtOrDefault(i).GeneratePdf(paper, scannedText).Save(pdffile);
+                                        scanner.PdfSaveProgressValue = BatchTxtOcrs.Sum(z => z.ProgressValue) / Tasks.Count;
                                     }
                                 }
                             },
@@ -454,6 +457,7 @@ public class GpScannerViewModel : InpcBase
                 BatchDialogOpen = true;
                 Filesavetask = Task.WhenAll(Tasks);
                 await Filesavetask;
+                scanner.PdfSaveProgressValue = 0;
                 if (Filesavetask?.IsCompleted == true && Shutdown)
                 {
                     ViewModel.Shutdown.DoExitWin(ViewModel.Shutdown.EWX_SHUTDOWN);
@@ -490,6 +494,7 @@ public class GpScannerViewModel : InpcBase
                 List<string> files = Win32FileScanner.EnumerateFilepaths(BatchFolder).Where(s => imagefileextensions.Any(ext => ext == Path.GetExtension(s).ToLower())).ToList();
                 int slicecount = files.Count > Settings.Default.ProcessorCount ? files.Count / Settings.Default.ProcessorCount : 1;
                 Scanner scanner = ToolBox.Scanner;
+                scanner.ProgressState = TaskbarItemProgressState.Normal;
                 BatchTxtOcrs = new ObservableCollection<BatchTxtOcr>();
                 List<Task> Tasks = new();
                 ocrcancellationToken = new CancellationTokenSource();
@@ -510,6 +515,7 @@ public class GpScannerViewModel : InpcBase
                                         string content = string.Join(" ", image.GetOcrData(scanner.SelectedTtsLanguage).Select(z => z.Text));
                                         File.WriteAllText(txtfile, content);
                                         batchTxtOcr.ProgressValue = (i + 1) / (double)item.Count;
+                                        scanner.PdfSaveProgressValue = BatchTxtOcrs.Sum(z => z.ProgressValue) / Tasks.Count;
                                         batchTxtOcr.FilePath = Path.GetFileName(image);
                                     }
                                 }
@@ -523,6 +529,7 @@ public class GpScannerViewModel : InpcBase
                 BatchDialogOpen = true;
                 Filesavetask = Task.WhenAll(Tasks);
                 await Filesavetask;
+                scanner.PdfSaveProgressValue = 0;
                 if (Filesavetask?.IsCompleted == true && Shutdown)
                 {
                     ViewModel.Shutdown.DoExitWin(ViewModel.Shutdown.EWX_SHUTDOWN);
