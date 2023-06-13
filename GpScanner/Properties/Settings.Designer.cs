@@ -240,5 +240,29 @@ namespace GpScanner.Properties {
                 this["ProcessorCount"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SharePointUrl {
+            get {
+                return ((string)(this["SharePointUrl"]));
+            }
+            set {
+                this["SharePointUrl"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SharePointLibraryName {
+            get {
+                return ((string)(this["SharePointLibraryName"]));
+            }
+            set {
+                this["SharePointLibraryName"] = value;
+            }
+        }
     }
 }

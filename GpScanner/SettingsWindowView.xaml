@@ -658,10 +658,20 @@
                     <TabControl>
                         <TabItem>
                             <TabItem.Header>
-                                <TextBlock>
-                                    <Run Text="PDF" />
-                                    <Run Text="{twainctrl:Loc COMPRESS}" />
-                                </TextBlock>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="16" Height="16">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Zipfldr.dll" />
+                                                <Binding Source="0" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock>
+                                        <Run Text="PDF" />
+                                        <Run Text="{twainctrl:Loc COMPRESS}" />
+                                    </TextBlock>
+                                </StackPanel>
                             </TabItem.Header>
                             <ScrollViewer Background="{StaticResource BorderBackground}" VerticalScrollBarVisibility="Auto">
                                 <Grid>
@@ -690,10 +700,44 @@
                                 </Grid>
                             </ScrollViewer>
                         </TabItem>
-                        <TabItem Header="DVD">
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="16" Height="16">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="113" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock Text="DVD" />
+                                </StackPanel>
+                            </TabItem.Header>
                             <ScrollViewer VerticalScrollBarVisibility="Auto">
                                 <dvd:Burner />
                             </ScrollViewer>
+                        </TabItem>
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="16" Height="16">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="135" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock Text="SHAREPOINT" />
+                                </StackPanel>
+                            </TabItem.Header>
+                            <StackPanel>
+                                <Extensions:ButtonedTextBox Description="URL" ResetButtonVisibility="Collapsed"
+                                    Text="{Binding SharePointUrl, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                                <Extensions:ButtonedTextBox Description="LIBRARY" OpenButtonVisibility="Collapsed" ResetButtonVisibility="Collapsed"
+                                    Text="{Binding SharePointLibraryName, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                            </StackPanel>
                         </TabItem>
                     </TabControl>
                 </UniformGrid>

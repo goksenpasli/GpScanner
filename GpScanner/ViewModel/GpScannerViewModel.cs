@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security.Principal;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -344,6 +345,26 @@ public class GpScannerViewModel : InpcBase
                 }
             },
             parameter => !string.IsNullOrWhiteSpace(Settings.Default.SelectedFtp));
+
+        UploadSharePoint = new RelayCommand<object>(
+            parameter =>
+            {
+                if (parameter is Scanner scanner && File.Exists(scanner.FileName))
+                {
+                    using Microsoft.SharePoint.Client.ClientContext clientContext = new(Settings.Default.SharePointUrl);
+                    Microsoft.SharePoint.Client.FileCreationInformation fileCreationInformation = new()
+                    {
+                        Url = Path.GetFileName(scanner.FileName),
+                        Overwrite = true,
+                        Content = File.ReadAllBytes(scanner.FileName)
+                    };
+                    Microsoft.SharePoint.Client.Web web = clientContext.Web;
+                    Microsoft.SharePoint.Client.List list = web.Lists.GetByTitle(Settings.Default.SharePointLibraryName);
+                    _ = list.RootFolder.Files.Add(fileCreationInformation);
+                    clientContext.ExecuteQuery();
+                }
+            },
+            parameter => !string.IsNullOrWhiteSpace(Settings.Default.SharePointLibraryName) && IsValidHttpAddress(Settings.Default.SharePointUrl));
 
         SaveQrImage = new RelayCommand<object>(
             parameter =>
@@ -1179,6 +1200,8 @@ public class GpScannerViewModel : InpcBase
 
     public ICommand UploadFtp { get; }
 
+    public RelayCommand<object> UploadSharePoint { get; }
+
     public static void BackupDataXmlFile()
     {
         if (File.Exists(Settings.Default.DatabaseFile))
@@ -1487,6 +1510,12 @@ public class GpScannerViewModel : InpcBase
 
             Settings.Default.DefaultLang = SeçiliDil;
         }
+    }
+
+    private bool IsValidHttpAddress(string address)
+    {
+        const string pattern = @"^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$";
+        return Regex.IsMatch(address, pattern);
     }
 
     private void OnTick(object sender, EventArgs e)
