@@ -737,6 +737,13 @@
                                     Text="{Binding SharePointUrl, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                                 <Extensions:ButtonedTextBox Description="LIBRARY" OpenButtonVisibility="Collapsed" ResetButtonVisibility="Collapsed"
                                     Text="{Binding SharePointLibraryName, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                                <Separator />
+                                <Extensions:ButtonedTextBox Description="{twainctrl:Loc USERNAME}"
+                                    OpenButtonVisibility="Collapsed"
+                                    Text="{Binding SharePointUserName, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                                <Extensions:ButtonedTextBox Description="{twainctrl:Loc PASSWORD}"
+                                    OpenButtonVisibility="Collapsed"
+                                    Text="{Binding SharePointUserPassword, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                             </StackPanel>
                         </TabItem>
                     </TabControl>

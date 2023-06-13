@@ -352,6 +352,7 @@ public class GpScannerViewModel : InpcBase
                 if (parameter is Scanner scanner && File.Exists(scanner.FileName))
                 {
                     using Microsoft.SharePoint.Client.ClientContext clientContext = new(Settings.Default.SharePointUrl);
+                    clientContext.Credentials = new NetworkCredential(Settings.Default.SharePointUserName, Settings.Default.SharePointUserPassword);
                     Microsoft.SharePoint.Client.FileCreationInformation fileCreationInformation = new()
                     {
                         Url = Path.GetFileName(scanner.FileName),

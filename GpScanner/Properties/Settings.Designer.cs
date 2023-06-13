@@ -264,5 +264,29 @@ namespace GpScanner.Properties {
                 this["SharePointLibraryName"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SharePointUserName {
+            get {
+                return ((string)(this["SharePointUserName"]));
+            }
+            set {
+                this["SharePointUserName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SharePointUserPassword {
+            get {
+                return ((string)(this["SharePointUserPassword"]));
+            }
+            set {
+                this["SharePointUserPassword"] = value;
+            }
+        }
     }
 }
