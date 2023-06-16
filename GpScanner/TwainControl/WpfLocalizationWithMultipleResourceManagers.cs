@@ -11,13 +11,9 @@ using TwainControl.Properties;
 
 namespace TwainControl;
 
-public class LocExtension : MarkupExtension
+public class LocExtension(string stringName) : MarkupExtension
 {
-    public LocExtension(string stringName)
-    { StringName = stringName; }
-
-    public string StringName { get; }
-
+    public string StringName { get; } = stringName;
     public override object ProvideValue(IServiceProvider serviceProvider)
     {
         object targetObject = (serviceProvider as IProvideValueTarget)?.TargetObject;

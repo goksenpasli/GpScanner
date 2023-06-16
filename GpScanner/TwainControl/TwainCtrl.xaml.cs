@@ -110,7 +110,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter => !Environment.Is64BitProcess &&
                 Scanner?.AutoSave == true &&
                 !string.IsNullOrWhiteSpace(Scanner?.FileName) &&
-                Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0 &&
+                FileNameValid(Scanner?.FileName) &&
                 Scanner?.Tarayıcılar?.Count > 0);
 
         ResimSil = new RelayCommand<object>(
@@ -224,7 +224,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     }
                 }
             },
-            parameter => !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0);
+            parameter => !string.IsNullOrWhiteSpace(Scanner?.FileName) && FileNameValid(Scanner?.FileName));
 
         Tümünüİşaretle = new RelayCommand<object>(
             parameter =>
@@ -379,7 +379,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 Scanner.SeçiliResimSayısı = Scanner?.Resimler.Count(z => z.Seçili) ?? 0;
-                return !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.SeçiliResimSayısı > 0 && Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0;
+                return !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
             });
 
         SeçiliDirektPdfKaydet = new RelayCommand<object>(
@@ -439,7 +439,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 return !string.IsNullOrWhiteSpace(Scanner?.FileName) &&
                     Scanner?.AutoSave == true &&
                     Scanner?.SeçiliResimSayısı > 0 &&
-                    Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0;
+                    FileNameValid(Scanner?.FileName);
             });
 
         ListeTemizle = new RelayCommand<object>(
@@ -506,8 +506,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => !string.IsNullOrWhiteSpace(Scanner?.ProfileName) &&
                 !Settings.Default.Profile.Cast<string>().Select(z => z.Split('|')[0]).Contains(Scanner?.ProfileName) &&
-                Scanner?.FileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0 &&
-                Scanner?.ProfileName?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0);
+                 FileNameValid(Scanner?.FileName) &&
+                 FileNameValid(Scanner?.ProfileName));
 
         RemoveProfile = new RelayCommand<object>(
             parameter =>
@@ -1972,6 +1972,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
 
         return null;
+    }
+
+    public static bool FileNameValid(string filename)
+    {
+        return filename.IndexOfAny(Path.GetInvalidFileNameChars()) < 0;
     }
 
     public static BitmapFrame GenerateBitmapFrame(BitmapSource bitmapSource)

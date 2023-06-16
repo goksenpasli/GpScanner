@@ -766,7 +766,8 @@
                                 <Extensions:ButtonedTextBox d:Description="SaveFileName" d:Text="FileName"
                                     Description="{Binding Scanner.SaveFileName}"
                                     GotKeyboardFocus="ButtonedTextBox_GotKeyboardFocus" MaxLength="255" OpenButtonVisibility="Collapsed"
-                                    Text="{Binding Scanner.FileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                                    Text="{Binding Scanner.FileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                    Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
                                     <Extensions:ButtonedTextBox.ContextMenu>
                                         <ContextMenu>
                                             <MenuItem Command="{Binding InsertFileNamePlaceHolder}"

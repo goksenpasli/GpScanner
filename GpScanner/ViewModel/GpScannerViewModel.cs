@@ -312,7 +312,7 @@ public class GpScannerViewModel : InpcBase
             parameter => !string.IsNullOrWhiteSpace(PatchFileName) &&
                 !string.IsNullOrWhiteSpace(PatchTag) &&
                 !Settings.Default.PatchCodes.Cast<string>().Select(z => z.Split('|')[0]).Contains(PatchFileName) &&
-                PatchTag?.IndexOfAny(Path.GetInvalidFileNameChars()) < 0);
+                 TwainCtrl.FileNameValid(PatchTag));
 
         AddFtpSites = new RelayCommand<object>(
             parameter =>

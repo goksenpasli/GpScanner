@@ -109,6 +109,7 @@
     </ApplicationDefinition>
     <Compile Include="Converter\FileNameExtractConverter.cs" />
     <Compile Include="Converter\FilePathCheckConverter.cs" />
+    <Compile Include="Converter\LanguageStringConverter.cs" />
     <Compile Include="Converter\SelectedSizeToCacheLengthConverter.cs" />
     <Compile Include="Converter\StringToQrBitmapImageConverter.cs" />
     <Compile Include="DocumentViewerWindow.xaml.cs">
