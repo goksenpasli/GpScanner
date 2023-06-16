@@ -20,18 +20,17 @@ namespace TwainWpf.Win32
             _rectangle.Width = _bitmapInfo.Width;
             _rectangle.Height = _bitmapInfo.Height;
 
-            if (_bitmapInfo.SizeImage == 0)
+            if(_bitmapInfo.SizeImage == 0)
             {
                 _bitmapInfo.SizeImage = ((((_bitmapInfo.Width * _bitmapInfo.BitCount) + 31) & ~31) >> 3) * _bitmapInfo.Height;
             }
 
-            // The following code only works on x86
             Debug.Assert(Marshal.SizeOf(typeof(IntPtr)) == 4);
 
             int pixelInfoPointer = _bitmapInfo.ClrUsed;
-            if (pixelInfoPointer == 0 && _bitmapInfo.BitCount <= 8)
+            if(pixelInfoPointer == 0 && _bitmapInfo.BitCount <= 8)
             {
-                pixelInfoPointer = 1 << (_bitmapInfo.BitCount); // & 31);
+                pixelInfoPointer = 1 << (_bitmapInfo.BitCount);
             }
             pixelInfoPointer = (pixelInfoPointer * 4) + _bitmapInfo.Size + _bitmapPointer.ToInt32();
 
@@ -48,16 +47,26 @@ namespace TwainWpf.Win32
         {
             Bitmap bitmap = new Bitmap(_rectangle.Width, _rectangle.Height);
 
-            using (Graphics graphics = Graphics.FromImage(bitmap))
+            using(Graphics graphics = Graphics.FromImage(bitmap))
             {
                 IntPtr hdc = graphics.GetHdc();
 
                 try
                 {
-                    _ = Gdi32Native.SetDIBitsToDevice(hdc, 0, 0, _rectangle.Width, _rectangle.Height,
-                        0, 0, 0, _rectangle.Height, _pixelInfoPointer, _bitmapPointer, 0);
-                }
-                finally
+                    _ = Gdi32Native.SetDIBitsToDevice(
+                        hdc,
+                        0,
+                        0,
+                        _rectangle.Width,
+                        _rectangle.Height,
+                        0,
+                        0,
+                        0,
+                        _rectangle.Height,
+                        _pixelInfoPointer,
+                        _bitmapPointer,
+                        0);
+                } finally
                 {
                     graphics.ReleaseHdc(hdc);
                 }
@@ -84,10 +93,7 @@ namespace TwainWpf.Win32
 
         private Rectangle _rectangle;
 
-        ~BitmapRenderer()
-        {
-            Dispose(false);
-        }
+        ~BitmapRenderer() { Dispose(false); }
 
         private static float PpmToDpi(double pixelsPerMeter)
         {

@@ -16,6 +16,7 @@
             </ResourceDictionary.MergedDictionaries>
             <local:FilePathToFileNameConverter x:Key="FilePathToFileNameConverter" />
             <local:TimespanToSecondsConverter x:Key="TimespanToSecondsConverter" />
+            <local:DoubleToThicknessConverter x:Key="DoubleToThicknessConverter" />
             <local:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter" />
             <local:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -379,13 +380,11 @@
                     <TextBlock VerticalAlignment="Center"
                         FontFamily="Webdings" FontSize="20" Foreground="Blue"
                         Text="W" />
-                    <Slider Grid.Column="3"
-                        Width="45"
+                    <Slider Width="45"
                         VerticalAlignment="Center"
                         IsMoveToPointEnabled="True" Maximum="1" Minimum="-1"
                         Value="{Binding ElementName=Player, Path=Balance}" />
-                    <TextBlock Grid.Column="4"
-                        VerticalAlignment="Center"
+                    <TextBlock VerticalAlignment="Center"
                         FontFamily="Webdings" FontSize="20" Foreground="Blue"
                         Text="X" />
                 </StackPanel>
@@ -431,7 +430,7 @@
                                     Value="{Binding SubTitleSize}" />
                                 <local:ColorPicker ColorPickerColumnCount="16" FontFamily="Segoe UI"
                                     HexCode="{Binding SubTitleColor, Mode=TwoWay}"
-                                    HexCodeVisibility="Collapsed" PredefinedColorVisibility="Visible" SelectorLength="0" />
+                                    PredefinedColorVisibility="Visible" />
                                 <ToggleButton VerticalContentAlignment="Center"
                                     Content="OTOMATİK ALTYAZI ÇEVİRİ" FontFamily="Segoe UI"
                                     IsChecked="{Binding AutoTranslate}" />
@@ -469,26 +468,33 @@
                     <local:ContentToggleButton Content="µ" FontFamily="Webdings" FontSize="20"
                         Foreground="Blue" PlacementMode="Top">
                         <local:ContentToggleButton.OverContent>
-                            <StackPanel Background="{StaticResource GroupBoxBackGround}" Orientation="Horizontal">
+                            <UniformGrid Margin="1"
+                                Background="{StaticResource GroupBoxBackGround}"
+                                Columns="7">
                                 <Button x:Name="Capture"
-                                    Width="24" Height="24"
                                     VerticalContentAlignment="Center"
                                     Click="Capture_Click" Content="µ" FontFamily="Webdings"
                                     FontSize="20" Foreground="Blue" />
-                                <UniformGrid Columns="3">
-                                    <local:NumericUpDownControl FontFamily="Segoe UI" Maximum="20" Minimum="1"
-                                        SmallChange="1"
-                                        Value="{Binding ThumbHeightCount}" />
-                                    <local:NumericUpDownControl FontFamily="Segoe UI" Maximum="20" Minimum="1"
-                                        SmallChange="1"
-                                        Value="{Binding ThumbWidthCount}" />
-                                    <Button x:Name="CaptureThumb"
-                                        Width="24" Height="24"
-                                        VerticalContentAlignment="Center"
-                                        Click="CaptureThumb_Click" Content="µ" FontFamily="Webdings"
-                                        FontSize="20" Foreground="Blue" />
-                                </UniformGrid>
-                            </StackPanel>
+                                <local:NumericUpDownControl FontFamily="Segoe UI" Maximum="20" Minimum="1"
+                                    SmallChange="1"
+                                    Value="{Binding ThumbWidthCount}" />
+                                <local:NumericUpDownControl FontFamily="Segoe UI" Maximum="20" Minimum="1"
+                                    SmallChange="1"
+                                    Value="{Binding ThumbHeightCount}" />
+                                <local:NumericUpDownControl BorderBrush="White" BorderThickness="2" FontFamily="Segoe UI"
+                                    FontSize="20" Maximum="30" Minimum="0"
+                                    SmallChange="1"
+                                    Value="{Binding ThumbMargin, Converter={StaticResource DoubleToThicknessConverter}}" />
+                                <ToggleButton Content="" FontFamily="Webdings" Foreground="Blue"
+                                    IsChecked="{Binding ThumbShowTime}" />
+                                <ToggleButton Content="·" FontFamily="Webdings" Foreground="Blue"
+                                    IsChecked="{Binding ThumbApplyEffects}" />
+                                <Button x:Name="CaptureThumb"
+                                    VerticalContentAlignment="Center"
+                                    BorderBrush="Cyan" BorderThickness="2" Click="CaptureThumb_Click"
+                                    Content="µ" FontFamily="Webdings" FontSize="20"
+                                    Foreground="Blue" />
+                            </UniformGrid>
                         </local:ContentToggleButton.OverContent>
                     </local:ContentToggleButton>
                     <local:ContentToggleButton Content="·" FontFamily="Webdings" FontSize="20"

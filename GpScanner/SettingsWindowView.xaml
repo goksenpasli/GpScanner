@@ -3,7 +3,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Converter="clr-namespace:GpScanner.Converter"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:GpScanner"
+    xmlns:PdfCompressor="clr-namespace:PdfCompressor;assembly=PdfCompressor"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dvd="clr-namespace:DvdBurner;assembly=DvdBurner" xmlns:local="clr-namespace:GpScanner"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:properties="clr-namespace:GpScanner.Properties"
     xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
@@ -19,24 +21,34 @@
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Converter:StringToQrBitmapImageConverter x:Key="StringToQrBitmapImageConverter" />
-        <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
         <Extensions:StringNullableToBooleanConverter x:Key="StringNullableToBooleanConverter" />
+        <Style TargetType="Button">
+            <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
+        </Style>
+        <Style TargetType="ListBox">
+            <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
+        </Style>
+        <Style TargetType="Hyperlink">
+            <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
-            <RowDefinition Height="180" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
-        <GroupBox Grid.RowSpan="2">
+        <GroupBox>
             <GroupBox.Header>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SETTİNGS}" />
-                    <Button Background="Red"
+                    <Button twainctrl:Policy.PolicyName="ResetSettings" Background="Red"
                         Command="{Binding ResetSettings}"
                         CommandParameter="{Binding Source={x:Static twainproperties:Settings.Default}}"
                         FontWeight="Bold">
@@ -45,6 +57,26 @@
                                 <Run Text="{twainctrl:Loc SETTİNGS}" />
                                 <Run Text="{twainctrl:Loc RESET}" />
                             </TextBlock>
+                        </Button.Content>
+                    </Button>
+                    <Button twainctrl:Policy.PolicyName="CheckUpdate" Background="Green"
+                        Command="{Binding CheckUpdate}"
+                        CommandParameter="https://github.com/goksenpasli/GpScanner/releases/download/2.0/GpScanner-Setup.txt">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="24" Height="24">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="13" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock VerticalAlignment="Center">
+                                    <Run Text="{Binding Path=Title, RelativeSource={RelativeSource AncestorType=Window}}" />
+                                    <Run Text="{twainctrl:Loc UPDATE}" />
+                                </TextBlock>
+                            </StackPanel>
                         </Button.Content>
                     </Button>
                 </StackPanel>
@@ -60,7 +92,7 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <ListBox VerticalContentAlignment="Center"
-                    d:SelectedValue="TÜRKÇE"
+                    d:SelectedValue="TÜRKÇE" twainctrl:Policy.PolicyName="SeçiliDil"
                     SelectedValue="{Binding SeçiliDil}"
                     SelectedValuePath="Tag" VirtualizingPanel.ScrollUnit="Pixel">
                     <ListBox.Resources>
@@ -116,13 +148,83 @@
                             </StackPanel>
                         </ListBoxItem.Content>
                     </ListBoxItem>
+                    <ListBoxItem Tag="РУССКИЙ">
+                        <ListBoxItem.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="51" Height="30"
+                                    RenderOptions.BitmapScalingMode="Fant" Source="/Resources/flag-of-Russia.png" />
+                                <TextBlock VerticalAlignment="Center" Text="РУССКИЙ" />
+                            </StackPanel>
+                        </ListBoxItem.Content>
+                    </ListBoxItem>
+                    <ListBoxItem Tag="DEUTSCH">
+                        <ListBoxItem.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="51" Height="30"
+                                    RenderOptions.BitmapScalingMode="Fant" Source="/Resources/flag-of-Germany.png" />
+                                <TextBlock VerticalAlignment="Center" Text="DEUTSCH" />
+                            </StackPanel>
+                        </ListBoxItem.Content>
+                    </ListBoxItem>
+                    <ListBoxItem Tag="日本">
+                        <ListBoxItem.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="51" Height="30"
+                                    RenderOptions.BitmapScalingMode="Fant" Source="/Resources/flag-of-Japan.png" />
+                                <TextBlock VerticalAlignment="Center" Text="日本" />
+                            </StackPanel>
+                        </ListBoxItem.Content>
+                    </ListBoxItem>
+                    <ListBoxItem Tag="DUTCH">
+                        <ListBoxItem.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="51" Height="30"
+                                    RenderOptions.BitmapScalingMode="Fant" Source="/Resources/flag-of-Netherlands.png" />
+                                <TextBlock VerticalAlignment="Center" Text="DUTCH" />
+                            </StackPanel>
+                        </ListBoxItem.Content>
+                    </ListBoxItem>
+                    <ListBoxItem Tag="CZECH">
+                        <ListBoxItem.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="51" Height="30"
+                                    RenderOptions.BitmapScalingMode="Fant" Source="/Resources/flag-of-Czech.png" />
+                                <TextBlock VerticalAlignment="Center" Text="CZECH" />
+                            </StackPanel>
+                        </ListBoxItem.Content>
+                    </ListBoxItem>
+                    <ListBoxItem Tag="ESPAÑOL">
+                        <ListBoxItem.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="51" Height="30"
+                                    RenderOptions.BitmapScalingMode="Fant" Source="/Resources/flag-of-Spain.png" />
+                                <TextBlock VerticalAlignment="Center" Text="ESPAÑOL" />
+                            </StackPanel>
+                        </ListBoxItem.Content>
+                    </ListBoxItem>
+                    <ListBoxItem Tag="中國人">
+                        <ListBoxItem.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="51" Height="30"
+                                    RenderOptions.BitmapScalingMode="Fant" Source="/Resources/flag-of-China.png" />
+                                <TextBlock VerticalAlignment="Center" Text="中國人" />
+                            </StackPanel>
+                        </ListBoxItem.Content>
+                    </ListBoxItem>
                 </ListBox>
-                <UniformGrid Grid.Row="1" Columns="3">
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="175" />
+                    </Grid.ColumnDefinitions>
                     <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
                         Description="{twainctrl:Loc FILE}"
-                        IsReadOnly="True" ResetButtonVisibility="Collapsed"
+                        IsReadOnly="True" IsReadOnlyCaretVisible="True" ResetButtonVisibility="Collapsed"
                         Text="{Binding DatabaseFile, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
-                    <Button Command="{Binding ChangeDataFolder}">
+                    <Button Grid.Column="1"
+                        twainctrl:Policy.PolicyName="ChangeDataFolder"
+                        Command="{Binding ChangeDataFolder}">
                         <StackPanel Orientation="Horizontal">
                             <Image Width="24" Height="24">
                                 <Image.Source>
@@ -135,14 +237,15 @@
                             <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc FILE}" />
                         </StackPanel>
                     </Button>
-                    <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
+                    <CheckBox Grid.Column="2"
+                        VerticalAlignment="Center" VerticalContentAlignment="Center"
                         IsChecked="{Binding WatchFolderPdfFileChange, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
                         IsEnabled="{Binding AnyDataExists}">
                         <TextBlock Foreground="Blue"
                             Text="{twainctrl:Loc PDFTRACK}"
                             TextWrapping="Wrap" />
                     </CheckBox>
-                </UniformGrid>
+                </Grid>
                 <GroupBox Grid.Row="2">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -177,7 +280,9 @@
                                         IsEnabled="{Binding DetectPageSeperator}"
                                         OpenButtonVisibility="Collapsed"
                                         Text="{Binding PatchTag, UpdateSourceTrigger=PropertyChanged}" />
-                                    <Button Command="{Binding SavePatchProfile}" IsEnabled="{Binding DetectPageSeperator}">
+                                    <Button twainctrl:Policy.PolicyName="SavePatchProfile"
+                                        Command="{Binding SavePatchProfile}"
+                                        IsEnabled="{Binding DetectPageSeperator}">
                                         <StackPanel Orientation="Horizontal">
                                             <Image Width="16" Height="16"
                                                 Source="/TwainControl;component/Icons/save.png" />
@@ -186,6 +291,7 @@
                                     </Button>
                                 </UniformGrid>
                                 <ListBox d:ItemsSource="{d:SampleData ItemCount=5}"
+                                    twainctrl:Policy.PolicyName="PatchProfileName"
                                     IsEnabled="{Binding DetectPageSeperator}"
                                     ItemsSource="{Binding PatchCodes, Source={x:Static properties:Settings.Default}}"
                                     SelectedItem="{Binding PatchProfileName}">
@@ -215,11 +321,15 @@
                                 Width="80" Height="80"
                                 Source="{Binding ElementName=Tb, Path=Text, Converter={StaticResource StringToQrBitmapImageConverter}, Mode=OneWay}" />
                             <UniformGrid Rows="2">
-                                <Button Command="{Binding SaveQrImage}" CommandParameter="{Binding Path=Source, ElementName=Img, Mode=OneWay}">
+                                <Button twainctrl:Policy.PolicyName="SaveQrImage"
+                                    Command="{Binding SaveQrImage}"
+                                    CommandParameter="{Binding Path=Source, ElementName=Img, Mode=OneWay}">
                                     <Image Width="24" Height="24"
                                         Source="/TwainControl;component/Icons/save.png" />
                                 </Button>
-                                <Button Command="{Binding PrintImage}" CommandParameter="{Binding Path=Source, ElementName=Img, Mode=OneWay}">
+                                <Button twainctrl:Policy.PolicyName="PrintImage"
+                                    Command="{Binding PrintImage}"
+                                    CommandParameter="{Binding Path=Source, ElementName=Img, Mode=OneWay}">
                                     <Image Width="24" Height="24">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -234,85 +344,107 @@
                     </Grid>
                 </GroupBox>
                 <GroupBox Grid.Row="3">
-                    <UniformGrid Columns="5">
-                        <TextBlock VerticalAlignment="Center" TextWrapping="Wrap">
-                            <Run Text="{twainctrl:Loc FILE}" />
-                            <Run Text="{twainctrl:Loc RES}" />
-                        </TextBlock>
-                        <ComboBox VerticalContentAlignment="Center"
-                            ItemStringFormat="%{0}"
-                            ItemsSource="{Binding SettingsPagePictureResizeList}"
-                            SelectedItem="{Binding DefaultPictureResizeRatio, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                        <TextBlock VerticalAlignment="Center" Text="PDF DPI" />
-                        <ComboBox VerticalContentAlignment="Center"
-                            ItemStringFormat="{}{0} Dpi"
-                            ItemsSource="{Binding SettingsPagePdfDpiList}"
-                            SelectedItem="{Binding DefaultThumbNailDpi, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                        <ComboBox VerticalContentAlignment="Center"
-                            ItemsSource="{Binding GetPreviewSize}"
-                            SelectedIndex="{Binding PreviewIndex, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
-                            SelectedItem="{Binding SelectedSize}">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock><Run Text="{Binding Width, StringFormat=\{0\} Pixel}" /><LineBreak /><Run Text="{Binding Height, StringFormat=\{0\} Pixel}" /></TextBlock>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
-                    </UniformGrid>
+                    <StackPanel>
+                        <UniformGrid Columns="5">
+                            <TextBlock VerticalAlignment="Center" TextWrapping="Wrap">
+                                <Run Text="{twainctrl:Loc FILE}" />
+                                <Run Text="{twainctrl:Loc RES}" />
+                            </TextBlock>
+                            <ComboBox VerticalContentAlignment="Center"
+                                twainctrl:Policy.PolicyName="DefaultPictureResizeRatio" ItemStringFormat="%{0}"
+                                ItemsSource="{Binding SettingsPagePictureResizeList}"
+                                SelectedItem="{Binding DefaultPictureResizeRatio, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock VerticalAlignment="Center" Text="PDF DPI" />
+                            <ComboBox VerticalContentAlignment="Center"
+                                twainctrl:Policy.PolicyName="DefaultThumbNailDpi" ItemStringFormat="{}{0} Dpi"
+                                ItemsSource="{Binding SettingsPagePdfDpiList}"
+                                SelectedItem="{Binding DefaultThumbNailDpi, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                            <ComboBox VerticalContentAlignment="Center"
+                                twainctrl:Policy.PolicyName="SelectedSize"
+                                ItemsSource="{Binding GetPreviewSize}"
+                                SelectedIndex="{Binding PreviewIndex, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
+                                SelectedItem="{Binding SelectedSize}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock>
+                                            <Run Text="{Binding Width, StringFormat=\{0\} Pixel}" /><LineBreak />
+                                            <Run Text="{Binding Height, StringFormat=\{0\} Pixel}" />
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </UniformGrid>
+                        <Separator />
+                        <UniformGrid Columns="2">
+                            <CheckBox VerticalContentAlignment="Center"
+                                Content="{twainctrl:Loc PDFOPEN}"
+                                IsChecked="{Binding DirectOpenPdfFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                            <CheckBox VerticalContentAlignment="Center"
+                                Content="{twainctrl:Loc EYPOPEN}"
+                                IsChecked="{Binding DirectOpenEypFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                        </UniformGrid>
+                    </StackPanel>
                 </GroupBox>
-                <GroupBox Grid.Row="4">
-                    <UniformGrid Columns="3" IsEnabled="{Binding Path=SeçiliTarayıcı, Source={x:Static twainctrl:ToolBox.Scanner}, Converter={StaticResource NullableToBooleanConverter}}">
-                        <Button Command="{Binding RegisterSti, Mode=OneWay}" IsEnabled="{Binding Source={x:Static viewmodel:GpScannerViewModel.IsAdministrator}}">
-                            <StackPanel Orientation="Horizontal">
-                                <Canvas Width="32" Height="32">
-                                    <Image Width="32" Height="32">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="sti.dll" />
-                                                <Binding Source="0" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                    <Image Canvas.Bottom="0"
-                                        Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="User32.dll" />
-                                                <Binding Source="6" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                </Canvas>
-                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc REGSTI}" />
-                            </StackPanel>
-                        </Button>
-                        <Button Command="{Binding UnRegisterSti, Mode=OneWay}" IsEnabled="{Binding Source={x:Static viewmodel:GpScannerViewModel.IsAdministrator}}">
-                            <StackPanel Orientation="Horizontal">
-                                <Canvas Width="32" Height="32">
-                                    <Image Width="32" Height="32">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="sti.dll" />
-                                                <Binding Source="0" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                    <Image Width="32" Height="32"
-                                        Source="/TwainControl;component/Icons/delete.png" />
-                                    <Image Canvas.Bottom="0"
-                                        Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="User32.dll" />
-                                                <Binding Source="6" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                </Canvas>
-                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc UNREGSTI}" />
-                            </StackPanel>
-                        </Button>
-                        <ListBox Background="{x:Null}"
+                <GroupBox Grid.Row="4" IsEnabled="{Binding Path=SeçiliTarayıcı, Source={x:Static twainctrl:ToolBox.Scanner}, Converter={StaticResource NullableToBooleanConverter}}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <UniformGrid Columns="2" IsEnabled="{Binding Source={x:Static viewmodel:GpScannerViewModel.IsAdministrator}}">
+                            <Button twainctrl:Policy.PolicyName="RegisterSti" Command="{Binding RegisterSti, Mode=OneWay}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Canvas Width="32" Height="32">
+                                        <Image Width="32" Height="32">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="sti.dll" />
+                                                    <Binding Source="0" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <Image Canvas.Bottom="0"
+                                            Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="User32.dll" />
+                                                    <Binding Source="6" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </Canvas>
+                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc REGSTI}" />
+                                </StackPanel>
+                            </Button>
+                            <Button twainctrl:Policy.PolicyName="UnRegisterSti" Command="{Binding UnRegisterSti, Mode=OneWay}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Canvas Width="32" Height="32">
+                                        <Image Width="32" Height="32">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="sti.dll" />
+                                                    <Binding Source="0" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <Image Width="32" Height="32"
+                                            Source="/TwainControl;component/Icons/delete.png" />
+                                        <Image Canvas.Bottom="0"
+                                            Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="User32.dll" />
+                                                    <Binding Source="6" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </Canvas>
+                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc UNREGSTI}" />
+                                </StackPanel>
+                            </Button>
+                        </UniformGrid>
+                        <ListBox Grid.Column="1"
+                            Background="{x:Null}"
                             BorderBrush="{x:Null}"
                             SelectedIndex="{Binding ButtonScanMode, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                             <ListBox.Resources>
@@ -339,49 +471,52 @@
                                 Content="{twainctrl:Loc FASTSCAN}"
                                 IsEnabled="{Binding Path=AutoSave, Source={x:Static twainctrl:ToolBox.Scanner}}" />
                         </ListBox>
-                    </UniformGrid>
+                    </Grid>
                 </GroupBox>
                 <Grid Grid.Row="5">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="5*" />
                         <ColumnDefinition Width="3*" />
                     </Grid.ColumnDefinitions>
                     <GroupBox>
                         <GroupBox.Header>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock VerticalAlignment="Center"
-                                    FontWeight="Bold"
-                                    Text="{twainctrl:Loc BATCH}" />
-                                <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                    IsChecked="{Binding ApplyPdfSaveOcr, Source={x:Static twainctrl:ToolBox.Scanner}}">
-                                    <CheckBox.Content>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock>
-                                                <Run BaselineAlignment="Center" Text="{twainctrl:Loc FILE}" />
-                                                <Run BaselineAlignment="Center" Text="{twainctrl:Loc OCR}" />
-                                            </TextBlock>
-                                            <Image Width="16" Height="16"
-                                                Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
-                                        </StackPanel>
-                                    </CheckBox.Content>
-                                </CheckBox>
-                                <ToggleButton IsChecked="{Binding Shutdown}">
-                                    <Image Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="27" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                </ToggleButton>
-                                <TextBlock Width="75"
-                                    VerticalAlignment="Center"
-                                    FontWeight="Bold" Foreground="Red"
-                                    Text="{twainctrl:Loc CLOSECOMP}"
-                                    TextTrimming="CharacterEllipsis"
-                                    ToolTip="{twainctrl:Loc WARNREBOOT}"
-                                    Visibility="{Binding Shutdown, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center"
+                                        FontWeight="Bold"
+                                        Text="{twainctrl:Loc BATCH}" />
+                                    <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                        IsChecked="{Binding ApplyPdfSaveOcr, Source={x:Static twainctrl:ToolBox.Scanner}}">
+                                        <CheckBox.Content>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock>
+                                                    <Run BaselineAlignment="Center" Text="{twainctrl:Loc FILE}" />
+                                                    <Run BaselineAlignment="Center" Text="{twainctrl:Loc OCR}" />
+                                                </TextBlock>
+                                                <Image Width="16" Height="16"
+                                                    Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
+                                            </StackPanel>
+                                        </CheckBox.Content>
+                                    </CheckBox>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <ToggleButton IsChecked="{Binding Shutdown}">
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="27" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </ToggleButton>
+                                    <TextBlock VerticalAlignment="Center"
+                                        FontWeight="Bold" Foreground="Red"
+                                        Text="{twainctrl:Loc CLOSECOMP}"
+                                        TextTrimming="CharacterEllipsis"
+                                        ToolTip="{twainctrl:Loc WARNREBOOT}"
+                                        Visibility="{Binding Shutdown, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                </StackPanel>
                             </StackPanel>
                         </GroupBox.Header>
                         <Grid>
@@ -394,10 +529,11 @@
                                 IsReadOnly="True"
                                 Text="{Binding BatchFolder}" />
                             <Button Grid.Column="1"
+                                twainctrl:Policy.PolicyName="SetBatchFolder"
                                 Command="{Binding SetBatchFolder}"
                                 Content="{twainctrl:Loc SRC}" />
                             <UniformGrid Grid.Column="2" Columns="2">
-                                <Button Command="{Binding StartPdfBatch}">
+                                <Button twainctrl:Policy.PolicyName="StartPdfBatch" Command="{Binding StartPdfBatch}">
                                     <Button.Content>
                                         <StackPanel Orientation="Horizontal">
                                             <Image Width="16" Height="16"
@@ -406,7 +542,7 @@
                                         </StackPanel>
                                     </Button.Content>
                                 </Button>
-                                <Button Command="{Binding StartTxtBatch}">
+                                <Button twainctrl:Policy.PolicyName="StartTxtBatch" Command="{Binding StartTxtBatch}">
                                     <Button.Content>
                                         <StackPanel Orientation="Horizontal">
                                             <Image Width="16" Height="16"
@@ -420,58 +556,112 @@
                     </GroupBox>
                     <GroupBox Grid.Column="1">
                         <UniformGrid Rows="2">
+                            <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
+                                CopyButtonVisibility="Collapsed" IsReadOnly="True" OpenButtonVisibility="Collapsed"
+                                PasteButtonVisibility="Collapsed"
+                                Text="{Binding BatchFolder, Source={x:Static properties:Settings.Default}}"
+                                ToolTip="{Binding BatchFolder, Source={x:Static properties:Settings.Default}}" />
                             <UniformGrid Columns="2">
-                                <TextBox Grid.Column="0"
-                                    IsReadOnly="True"
-                                    Text="{Binding BatchFolder, Source={x:Static properties:Settings.Default}}" />
-                                <Button Command="{Binding SetBatchWatchFolder}" Content="{twainctrl:Loc SRC}" />
+                                <Button twainctrl:Policy.PolicyName="SetBatchWatchFolder"
+                                    Command="{Binding SetBatchWatchFolder}"
+                                    Content="{twainctrl:Loc SRC}" />
+                                <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                    IsChecked="{Binding RegisterBatchWatcher, Source={x:Static properties:Settings.Default}}"
+                                    IsEnabled="{Binding BatchFolder, Source={x:Static properties:Settings.Default}, Converter={StaticResource StringNullableToBooleanConverter}}">
+                                    <TextBlock Foreground="Blue" Text="{twainctrl:Loc APPLY}" />
+                                </CheckBox>
                             </UniformGrid>
-                            <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                IsChecked="{Binding RegisterBatchWatcher, Source={x:Static properties:Settings.Default}}"
-                                IsEnabled="{Binding BatchFolder, Source={x:Static properties:Settings.Default}, Converter={StaticResource StringNullableToBooleanConverter}}">
-                                <TextBlock Foreground="Blue" Text="{twainctrl:Loc APPLY}" />
-                            </CheckBox>
                         </UniformGrid>
                     </GroupBox>
                 </Grid>
-                <GroupBox Grid.Row="6">
-                    <Extensions:GraphControl Series="{Binding ChartData}" />
-                </GroupBox>
+                <UniformGrid Grid.Row="6" Columns="2">
+                    <GroupBox Header="FTP">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <StackPanel>
+                                <Extensions:ButtonedTextBox Description="FTP" OpenButtonVisibility="Collapsed"
+                                    Text="{Binding FtpSite, UpdateSourceTrigger=PropertyChanged}"
+                                    ToolTip="ftp://adress:portnumber" />
+                                <Extensions:ButtonedTextBox Description="{twainctrl:Loc USERNAME}"
+                                    OpenButtonVisibility="Collapsed"
+                                    Text="{Binding FtpUserName, UpdateSourceTrigger=PropertyChanged}" />
+                                <Extensions:ButtonedTextBox Description="{twainctrl:Loc PASSWORD}"
+                                    OpenButtonVisibility="Collapsed"
+                                    Text="{Binding FtpPassword, UpdateSourceTrigger=PropertyChanged}" />
+                                <Button twainctrl:Policy.PolicyName="AddFtpSites"
+                                    Command="{Binding AddFtpSites}"
+                                    Content="{twainctrl:Loc APPLY}" />
+                            </StackPanel>
+                            <ListBox Grid.Row="1"
+                                d:ItemsSource="{d:SampleData ItemCount=5}"
+                                twainctrl:Policy.PolicyName="FtpSites"
+                                ItemsSource="{Binding FtpSites, Source={x:Static properties:Settings.Default}}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Margin="1" Orientation="Horizontal">
+                                            <TextBlock Margin="0,0,5,0" VerticalAlignment="Center"
+                                                FontStyle="Italic"
+                                                Text="{Binding Mode=OneWay}">
+                                                <Hyperlink twainctrl:Policy.PolicyName="RemoveSelectedFtp"
+                                                    Command="{Binding DataContext.RemoveSelectedFtp, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                                                    CommandParameter="{Binding Mode=OneWay}">
+                                                    <Run Text="{twainctrl:Loc DELETE}" />
+                                                </Hyperlink>
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Grid>
+                    </GroupBox>
+                    <TabControl>
+                        <TabItem>
+                            <TabItem.Header>
+                                <TextBlock>
+                                    <Run Text="PDF" />
+                                    <Run Text="{twainctrl:Loc COMPRESS}" />
+                                </TextBlock>
+                            </TabItem.Header>
+                            <ScrollViewer Background="{StaticResource BorderBackground}" VerticalScrollBarVisibility="Auto">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <PdfCompressor:Compressor />
+                                    <StackPanel Grid.Row="1" Orientation="Horizontal">
+                                        <Image Width="24" Height="24">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="77" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                            FontWeight="Bold" Foreground="Red"
+                                            IsChecked="{Binding DirectlyOverwriteCompressedPdf, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                            <TextBlock Width="180"
+                                                Text="{twainctrl:Loc OVERWRITECOMPRESSED}"
+                                                TextWrapping="Wrap" />
+                                        </CheckBox>
+                                    </StackPanel>
+                                </Grid>
+                            </ScrollViewer>
+                        </TabItem>
+                        <TabItem Header="DVD">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <dvd:Burner />
+                            </ScrollViewer>
+                        </TabItem>
+                    </TabControl>
+                </UniformGrid>
             </Grid>
         </GroupBox>
         <local:TesseractView Grid.Column="1" />
-        <GroupBox Grid.Row="1" Grid.Column="1"
-            Header="FTP">
-            <UniformGrid Rows="2">
-                <StackPanel>
-                    <Extensions:ButtonedTextBox Description="FTP" OpenButtonVisibility="Collapsed"
-                        Text="{Binding FtpSite, UpdateSourceTrigger=PropertyChanged}"
-                        ToolTip="ftp://adress:portnumber" />
-                    <Extensions:ButtonedTextBox Description="{twainctrl:Loc USERNAME}"
-                        OpenButtonVisibility="Collapsed"
-                        Text="{Binding FtpUserName, UpdateSourceTrigger=PropertyChanged}" />
-                    <Extensions:ButtonedTextBox Description="{twainctrl:Loc PASSWORD}"
-                        OpenButtonVisibility="Collapsed"
-                        Text="{Binding FtpPassword, UpdateSourceTrigger=PropertyChanged}" />
-                    <Button Command="{Binding AddFtpSites}" Content="{twainctrl:Loc APPLY}" />
-                </StackPanel>
-                <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding FtpSites, Source={x:Static properties:Settings.Default}}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Margin="1" Orientation="Horizontal">
-                                <TextBlock Margin="0,0,5,0" VerticalAlignment="Center"
-                                    FontStyle="Italic"
-                                    Text="{Binding Mode=OneWay}">
-                                    <Hyperlink Command="{Binding DataContext.RemoveSelectedFtp, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding Mode=OneWay}">
-                                        <Run Text="{twainctrl:Loc DELETE}" />
-                                    </Hyperlink>
-                                </TextBlock>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </UniformGrid>
-        </GroupBox>
         <StatusBar Grid.Row="2" Grid.ColumnSpan="2"
             Background="Maroon">
             <StatusBarItem>

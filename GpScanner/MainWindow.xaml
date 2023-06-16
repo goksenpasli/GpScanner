@@ -8,7 +8,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:GpScanner"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:properties="clr-namespace:GpScanner.Properties"
-    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:tesseract="clr-namespace:Ocr;assembly=Ocr"
     xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
     xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
     Title="GPSCANNER"
@@ -20,7 +20,6 @@
     mc:Ignorable="d">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
         <Converter:StringToQrBitmapImageConverter x:Key="StringToQrBitmapImageConverter" />
         <Converter:SelectedSizeToCacheLengthConverter x:Key="SelectedSizeToCacheLengthConverter" />
         <CollectionViewSource x:Key="Veriler" Source="{Binding Dosyalar}" />
@@ -92,6 +91,18 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+        <Style TargetType="Button">
+            <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
+        </Style>
+        <Style TargetType="ListBox">
+            <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
+        </Style>
+        <Style TargetType="Hyperlink">
+            <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
+        </Style>
     </Window.Resources>
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo ProgressState="{Binding Scanner.ProgressState, ElementName=TwainCtrl}" ProgressValue="{Binding Scanner.PdfSaveProgressValue, ElementName=TwainCtrl}" />
@@ -153,25 +164,32 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <Button Command="{Binding DateBack}"
+                                <Button twainctrl:Policy.PolicyName="DateBack"
+                                    Command="{Binding DateBack}"
                                     Content="ç" FontFamily="Wingdings" FontSize="16" />
                                 <DatePicker Grid.Column="1"
                                     DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}"
                                     Language="{Binding CalendarLang}"
                                     SelectedDate="{Binding SeçiliGün}" />
                                 <Button Grid.Column="2"
+                                    twainctrl:Policy.PolicyName="DateForward"
                                     Command="{Binding DateForward}"
                                     Content="è" FontFamily="Wingdings" FontSize="16" />
                             </Grid>
                             <Extensions:ButtonedTextBox Grid.Column="1"
                                 VerticalContentAlignment="Center"
-                                CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed"
+                                CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed" PasteButtonVisibility="Collapsed"
                                 Text="{Binding AramaMetni, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <StackPanel Grid.Column="2" Orientation="Horizontal">
-                                <ComboBox ItemsSource="{Binding GetPreviewSize}" SelectedItem="{Binding SelectedSize}">
+                                <ComboBox twainctrl:Policy.PolicyName="SelectedSize"
+                                    ItemsSource="{Binding GetPreviewSize}"
+                                    SelectedItem="{Binding SelectedSize}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
-                                            <TextBlock><Run Text="{Binding Width}" /><Run Text="X" /><Run Text="{Binding Height}" /></TextBlock>
+                                            <TextBlock>
+                                                <Run Text="{Binding Width}" /><Run Text="X" />
+                                                <Run Text="{Binding Height}" />
+                                            </TextBlock>
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
@@ -191,12 +209,14 @@
                                         </Style>
                                     </ToggleButton.Style>
                                 </ToggleButton>
-                                <Button Command="{Binding CycleSelectedDocuments}" CommandParameter="{Binding ElementName=LbDoc}">
+                                <Button twainctrl:Policy.PolicyName="CycleSelectedDocuments"
+                                    Command="{Binding CycleSelectedDocuments}"
+                                    CommandParameter="{Binding ElementName=LbDoc}">
                                     <Image Width="16" Height="16">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="ImageRes.dll" />
-                                                <Binding Source="7" />
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="55" />
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
@@ -208,21 +228,24 @@
                                                 <TextBlock VerticalAlignment="Center"
                                                     d:Text="0"
                                                     Text="{Binding CheckedPdfCount}" />
-                                                <Button BorderBrush="Cyan" Command="{Binding Tümünüİşaretle}">
+                                                <Button twainctrl:Policy.PolicyName="Tümünüİşaretle" BorderBrush="Cyan"
+                                                    Command="{Binding Tümünüİşaretle}">
                                                     <StackPanel Orientation="Horizontal">
                                                         <Image Width="32" Height="32"
                                                             Source="/TwainControl;component/Icons/selectall.png" />
                                                         <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc ALL}" />
                                                     </StackPanel>
                                                 </Button>
-                                                <Button BorderBrush="Cyan" Command="{Binding TümününİşaretiniKaldır}">
+                                                <Button twainctrl:Policy.PolicyName="TümününİşaretiniKaldır" BorderBrush="Cyan"
+                                                    Command="{Binding TümününİşaretiniKaldır}">
                                                     <StackPanel Orientation="Horizontal">
                                                         <Image Width="32" Height="32"
                                                             Source="/TwainControl;component/Icons/none.png" />
                                                         <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc NONE}" />
                                                     </StackPanel>
                                                 </Button>
-                                                <Button BorderBrush="Cyan" Command="{Binding Tersiniİşaretle}">
+                                                <Button twainctrl:Policy.PolicyName="Tersiniİşaretle" BorderBrush="Cyan"
+                                                    Command="{Binding Tersiniİşaretle}">
                                                     <StackPanel Orientation="Horizontal">
                                                         <Image Width="32" Height="32"
                                                             Source="/TwainControl;component/Icons/inverse.png" />
@@ -245,7 +268,7 @@
                         </Grid>
                         <UniformGrid Columns="3" Rows="1">
                             <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
-                                BorderBrush="Cyan"
+                                twainctrl:Policy.PolicyName="PdfBirleştir" BorderBrush="Cyan"
                                 Command="{Binding PdfBirleştir}">
                                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                     <Image Width="32" Height="32">
@@ -273,7 +296,7 @@
                                     </TextBlock>
                                 </StackPanel>
                             </Button>
-                            <Button Command="{Binding Source={x:Static ViewModel:WindowExtensions.OpenSettings}}">
+                            <Button twainctrl:Policy.PolicyName="OpenSettings" Command="{Binding Source={x:Static ViewModel:WindowExtensions.OpenSettings}}">
                                 <StackPanel Orientation="Horizontal">
                                     <Image Width="32" Height="32">
                                         <Image.Source>
@@ -337,6 +360,7 @@
                             Grid.Row="2"
                             HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
                             d:ItemsSource="{d:SampleData ItemCount=5}"
+                            twainctrl:Policy.PolicyName="SelectedDocument"
                             Background="{StaticResource BorderBackground}"
                             BorderThickness="2" IsSynchronizedWithCurrentItem="False"
                             ItemsSource="{Binding Mode=OneWay, Source={StaticResource Veriler}}"
@@ -395,13 +419,19 @@
                                                                 <Grid.ColumnDefinitions>
                                                                     <ColumnDefinition />
                                                                     <ColumnDefinition Width="Auto" />
+                                                                    <ColumnDefinition Width="Auto" />
                                                                 </Grid.ColumnDefinitions>
                                                                 <Extensions:ContentToggleButton Margin="1" HorizontalContentAlignment="Stretch"
+                                                                    d:Content="FileOcrContent"
                                                                     Command="{Binding DataContext.ReadOcrDataFile, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
-                                                                    CommandParameter="{Binding Mode=OneWay}">
+                                                                    CommandParameter="{Binding Mode=OneWay}"
+                                                                    IsEnabled="{Binding FileIsPdfFile, Mode=OneWay}">
                                                                     <Extensions:ContentToggleButton.Style>
                                                                         <Style TargetType="{x:Type Extensions:ContentToggleButton}">
                                                                             <Style.Triggers>
+                                                                                <Trigger Property="IsChecked" Value="False">
+                                                                                    <Setter Property="OverContent" Value="{x:Null}" />
+                                                                                </Trigger>
                                                                                 <Trigger Property="IsChecked" Value="True">
                                                                                     <Setter Property="OverContent">
                                                                                         <Setter.Value>
@@ -409,9 +439,7 @@
                                                                                                 Height="{Binding Parent.DataContext.SelectedSize.Height, Source={x:Reference TwainCtrl}}"
                                                                                                 MinWidth="{Binding Parent.DataContext.SelectedSize.Width, Source={x:Reference TwainCtrl}}"
                                                                                                 MinHeight="{Binding Parent.DataContext.SelectedSize.Height, Source={x:Reference TwainCtrl}}">
-                                                                                                <GroupBox>
-                                                                                                    <local:TranslateView ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding Parent.DataContext.FileOcrContent, RelativeSource={RelativeSource Mode=Self}}" />
-                                                                                                </GroupBox>
+                                                                                                <local:TranslateView ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding Parent.DataContext.FileOcrContent, RelativeSource={RelativeSource Mode=Self}}" />
                                                                                             </Extensions:ResizablePanel>
                                                                                         </Setter.Value>
                                                                                     </Setter>
@@ -419,28 +447,27 @@
                                                                             </Style.Triggers>
                                                                         </Style>
                                                                     </Extensions:ContentToggleButton.Style>
-                                                                    <StackPanel Orientation="Horizontal">
-                                                                        <ItemsControl MaxHeight="120" ItemsSource="{Binding QrData}">
-                                                                            <ItemsControl.Template>
-                                                                                <ControlTemplate>
-                                                                                    <ScrollViewer Padding="{TemplateBinding Padding}"
-                                                                                        CanContentScroll="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                                                                                        <ItemsPresenter />
-                                                                                    </ScrollViewer>
-                                                                                </ControlTemplate>
-                                                                            </ItemsControl.Template>
-                                                                            <ItemsControl.ItemTemplate>
-                                                                                <DataTemplate>
-                                                                                    <Image Source="{Binding Converter={StaticResource StringToQrBitmapImageConverter}, Mode=OneWay}" />
-                                                                                </DataTemplate>
-                                                                            </ItemsControl.ItemTemplate>
-                                                                        </ItemsControl>
-                                                                        <TextBlock Text="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}"
-                                                                            TextTrimming="CharacterEllipsis" TextWrapping="Wrap" />
-                                                                    </StackPanel>
+                                                                    <TextBlock Text="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}"
+                                                                        TextTrimming="CharacterEllipsis" TextWrapping="Wrap" />
                                                                 </Extensions:ContentToggleButton>
                                                                 <Extensions:ContentToggleButton Grid.Column="1"
                                                                     HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                                                                    <Extensions:ContentToggleButton.Style>
+                                                                        <Style TargetType="Extensions:ContentToggleButton">
+                                                                            <Style.Triggers>
+                                                                                <Trigger Property="IsChecked" Value="False">
+                                                                                    <Setter Property="OverContent" Value="{x:Null}" />
+                                                                                </Trigger>
+                                                                                <Trigger Property="IsChecked" Value="True">
+                                                                                    <Setter Property="OverContent">
+                                                                                        <Setter.Value>
+                                                                                            <local:FtpUserControl Width="400" Height="200" />
+                                                                                        </Setter.Value>
+                                                                                    </Setter>
+                                                                                </Trigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </Extensions:ContentToggleButton.Style>
                                                                     <Image Width="16" Height="16">
                                                                         <Image.Source>
                                                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -449,47 +476,32 @@
                                                                             </MultiBinding>
                                                                         </Image.Source>
                                                                     </Image>
+                                                                </Extensions:ContentToggleButton>
+                                                                <Extensions:ContentToggleButton Grid.Column="2" IsEnabled="{Binding FileIsPdfFile, Mode=OneWay}">
+                                                                    <Image Width="16" Height="16">
+                                                                        <Image.Source>
+                                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                                <Binding Source="Zipfldr.dll" />
+                                                                                <Binding Source="0" />
+                                                                            </MultiBinding>
+                                                                        </Image.Source>
+                                                                    </Image>
                                                                     <Extensions:ContentToggleButton.OverContent>
                                                                         <GroupBox>
-                                                                            <StackPanel>
-                                                                                <ProgressBar Width="400" Height="24"
-                                                                                    Background="{x:Null}"
-                                                                                    Maximum="100"
-                                                                                    Value="{Binding FtpLoadProgressValue}" />
-                                                                                <ListBox Width="400" Height="200"
-                                                                                    ItemsSource="{Binding FtpSites, Source={x:Static properties:Settings.Default}}"
-                                                                                    SelectedItem="{Binding SelectedFtp, Source={x:Static properties:Settings.Default}}">
-                                                                                    <ListBox.ItemTemplate>
-                                                                                        <DataTemplate>
-                                                                                            <TextBlock Margin="0,0,5,0" VerticalAlignment="Center"
-                                                                                                FontStyle="Italic"
-                                                                                                Text="{Binding Mode=OneWay}">
-                                                                                                <Hyperlink BaselineAlignment="Center"
-                                                                                                    Command="{Binding DataContext.UploadFtp, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                                                                    CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
-                                                                                                    IsEnabled="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
-                                                                                                    TextDecorations="None">
-                                                                                                    <Image Width="16" Height="16"
-                                                                                                        VerticalAlignment="Center">
-                                                                                                        <Image.Source>
-                                                                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                                                                <Binding Source="Shell32.dll" />
-                                                                                                                <Binding Source="45" />
-                                                                                                            </MultiBinding>
-                                                                                                        </Image.Source>
-                                                                                                    </Image>
-                                                                                                </Hyperlink>
-                                                                                            </TextBlock>
-                                                                                        </DataTemplate>
-                                                                                    </ListBox.ItemTemplate>
-                                                                                </ListBox>
-                                                                            </StackPanel>
+                                                                            <GroupBox.Header>
+                                                                                <TextBlock>
+                                                                                    <Run Text="PDF" />
+                                                                                    <Run Text="{twainctrl:Loc COMPRESS}" />
+                                                                                </TextBlock>
+                                                                            </GroupBox.Header>
+                                                                            <ViewModel:PdfCompressorControl LoadedPdfPath="{Binding Path=FileName, Mode=OneWay}" />
                                                                         </GroupBox>
                                                                     </Extensions:ContentToggleButton.OverContent>
                                                                 </Extensions:ContentToggleButton>
                                                             </Grid>
                                                             <ContentControl Grid.Row="1"
-                                                                d:Width="64"
+                                                                d:ContentTemplate="{StaticResource PdfViewerTemplateFull}"
+                                                                d:ContentTemplateSelector="{StaticResource ThumbViewerSelector}"
                                                                 Content="{Binding FileName, IsAsync=True, Mode=OneWay}"
                                                                 ContentTemplateSelector="{StaticResource ThumbViewerSelector}"
                                                                 MouseDoubleClick="ContentControl_MouseDoubleClick" />
@@ -521,9 +533,21 @@
                                 <ColumnDefinition Width="35.2" />
                             </Grid.ColumnDefinitions>
                             <Button HorizontalContentAlignment="Stretch"
+                                twainctrl:Policy.PolicyName="OcrPage"
                                 Command="{Binding OcrPage, Mode=OneWay}"
-                                CommandParameter="{Binding DataContext, ElementName=TwainCtrl}"
-                                IsEnabled="{Binding OcrIsBusy, Converter={StaticResource ReverseBooleanConverter}}">
+                                CommandParameter="{Binding DataContext, ElementName=TwainCtrl}">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding OcrIsBusy}" Value="true">
+                                                <Setter Property="IsEnabled" Value="False" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}" Value="false">
+                                                <Setter Property="IsEnabled" Value="False" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
                                 <Grid>
                                     <ProgressBar Background="{x:Null}" IsIndeterminate="{Binding OcrIsBusy}" />
                                     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
@@ -540,6 +564,7 @@
                                 </Grid>
                             </Button>
                             <Button Grid.Column="1"
+                                twainctrl:Policy.PolicyName="CancelOcr"
                                 Command="{Binding CancelOcr}"
                                 IsEnabled="{Binding OcrIsBusy}">
                                 <Image Width="32" Height="32"
@@ -618,10 +643,42 @@
                             </MultiBinding>
                         </Image.Source>
                     </Image>
+                    <Extensions:ContentToggleButton Background="{x:Null}" BorderBrush="{x:Null}">
+                        <TextBlock FontFamily="Webdings" FontSize="16" Foreground="GreenYellow"
+                            Text="" />
+                        <Extensions:ContentToggleButton.OverContent>
+                            <GroupBox>
+                                <StackPanel>
+                                    <UniformGrid Columns="4">
+                                        <Extensions:ColorPicker x:Name="Dot"
+                                            Height="60"
+                                            HexCode="#FF0000FF" SliderVisibility="Collapsed" />
+                                        <Extensions:ColorPicker x:Name="Line"
+                                            Height="60"
+                                            HexCode="#FF0000FF" SliderVisibility="Collapsed" />
+                                        <Extensions:ColorPicker x:Name="Text"
+                                            Height="60"
+                                            HexCode="#FF000000" SliderVisibility="Collapsed" />
+                                        <Extensions:ColorPicker x:Name="Value"
+                                            Height="60"
+                                            HexCode="#FFFF0000" SliderVisibility="Collapsed" />
+                                    </UniformGrid>
+                                    <Extensions:GraphControl Width="530" Height="240"
+                                        DotColor="{Binding Source={x:Reference Dot}, Path=HexCode, Mode=OneWay}"
+                                        LineColor="{Binding Source={x:Reference Line}, Path=HexCode, Mode=OneWay}"
+                                        Series="{Binding ChartData}"
+                                        TextColor="{Binding Source={x:Reference Text}, Path=HexCode, Mode=OneWay}"
+                                        ValueColor="{Binding Source={x:Reference Value}, Path=HexCode, Mode=OneWay}" />
+                                </StackPanel>
+                            </GroupBox>
+                        </Extensions:ContentToggleButton.OverContent>
+                    </Extensions:ContentToggleButton>
                     <Extensions:ContentToggleButton Background="{x:Null}"
                         BorderBrush="{x:Null}"
+                        ContentHorizontalOffset="-75" ContentVerticalOffset="-10"
                         IsChecked="{Binding DocumentPanelIsExpanded, Mode=OneWay}"
                         IsEnabled="{Binding DocumentPanelIsExpanded, Mode=OneWay}"
+                        PlacementMode="Top"
                         StaysOpen="{Binding DocumentPanelIsExpanded, Mode=OneWay}">
                         <Image Width="16" Height="16"
                             VerticalAlignment="Bottom">
@@ -635,13 +692,40 @@
                         <Extensions:ContentToggleButton.OverContent>
                             <Extensions:ResizablePanel Width="225" Height="150" MinWidth="225"
                                 MinHeight="150">
-                                <GroupBox Header="{twainctrl:Loc DOCUMENT}">
-                                    <ListBox Extensions:DragDropExtension.ScrollOnDragDrop="True" AllowDrop="True"
+                                <GroupBox>
+                                    <GroupBox.Header>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc DOCUMENT}" />
+                                                <Button twainctrl:Policy.PolicyName="ResimSilGeriAl" Command="{Binding ResimSilGeriAl, Source={x:Reference TwainCtrl}}">
+                                                    <Image Width="16" Height="16"
+                                                        Source="/TwainControl;component/Icons/undo.png" />
+                                                </Button>
+                                            </StackPanel>
+                                            <ToggleButton Grid.Column="1"
+                                                HorizontalAlignment="Right" VerticalAlignment="Top"
+                                                Background="{x:Null}"
+                                                BorderBrush="{x:Null}"
+                                                Command="{Binding ModifyGridWidth}"
+                                                CommandParameter="0"
+                                                IsChecked="{Binding DocumentPanelIsExpanded}">
+                                                <Image Width="16" Height="16"
+                                                    Source="/TwainControl;component/Icons/delete.png" />
+                                            </ToggleButton>
+                                        </Grid>
+                                    </GroupBox.Header>
+                                    <ListBox Extensions:DragDropExtension.ScrollOnDragDrop="True" twainctrl:Policy.PolicyName="LoadImage"
+                                        AllowDrop="True"
                                         Background="{StaticResource BorderBackground}"
+                                        Drop="ListBox_Drop"
                                         ItemsSource="{Binding Source={x:Reference TwainCtrl}, Path=Scanner.Resimler}"
-                                        SelectionMode="Extended" VirtualizingPanel.CacheLength="3,3"
-                                        VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                                        VirtualizingPanel.ScrollUnit="Item" VirtualizingPanel.VirtualizationMode="Standard">
+                                        VirtualizingPanel.CacheLength="3,3" VirtualizingPanel.CacheLengthUnit="Item"
+                                        VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.ScrollUnit="Pixel"
+                                        VirtualizingPanel.VirtualizationMode="Standard">
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>
                                                 <StackPanel>
@@ -653,7 +737,8 @@
                                                         <Run AllowDrop="True" Cursor="SizeAll" Drop="Run_Drop"
                                                             FontFamily="Wingdings" FontSize="24" FontWeight="Bold"
                                                             PreviewMouseMove="Run_PreviewMouseMove" Text="B" />
-                                                        <Hyperlink Command="{Binding Source={x:Reference TwainCtrl}, Path=DataContext.ResimSil}"
+                                                        <Hyperlink twainctrl:Policy.PolicyName="ResimSil"
+                                                            Command="{Binding Source={x:Reference TwainCtrl}, Path=DataContext.ResimSil}"
                                                             CommandParameter="{Binding Mode=OneWay}"
                                                             TextDecorations="None">
                                                             <Image Width="16" Height="16"
@@ -772,7 +857,7 @@
                                             </DataTemplate>
                                         </ListBox.ItemTemplate>
                                     </ListBox>
-                                    <Button Grid.Column="1" Command="{Binding CancelBatchOcr}">
+                                    <Button twainctrl:Policy.PolicyName="CancelBatchOcr" Command="{Binding CancelBatchOcr}">
                                         <Image Width="32" Height="32"
                                             Source="/TwainControl;component/Icons/delete.png" />
                                     </Button>

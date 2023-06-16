@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
 using Tesseract.Interop;
 
 namespace Tesseract
@@ -9,8 +8,8 @@ namespace Tesseract
     public sealed class ResultIterator : PageIterator
     {
         /// <summary>
-        /// Gets an instance of a choice iterator using the current symbol of interest. The ChoiceIterator allows a one-shot iteration over the
-        /// choices for this symbol and after that is is useless.
+        /// Gets an instance of a choice iterator using the current symbol of interest. The ChoiceIterator allows a one-
+        /// shot iteration over the choices for this symbol and after that is is useless.
         /// </summary>
         /// <returns>an instance of a Choice Iterator</returns>
         public ChoiceIterator GetChoiceIterator()
@@ -52,27 +51,30 @@ namespace Tesseract
         public FontAttributes GetWordFontAttributes()
         {
             VerifyNotDisposed();
-            if (handle.Handle == IntPtr.Zero)
+            if(handle.Handle == IntPtr.Zero)
             {
                 return null;
             }
 
-            // per docs (ltrresultiterator.h:104 as of 4897796 in github:tesseract-ocr/tesseract)
-            // this return value points to an internal table and should not be deleted.
             IntPtr nameHandle =
-                TessApi.Native.ResultIteratorWordFontAttributes(
+                TessApi.Native
+                .ResultIteratorWordFontAttributes(
                     handle,
-                    out bool isBold, out bool isItalic, out bool isUnderlined,
-                    out bool isMonospace, out bool isSerif, out bool isSmallCaps,
-                    out int pointSize, out int fontId);
+                    out bool isBold,
+                    out bool isItalic,
+                    out bool isUnderlined,
+                    out bool isMonospace,
+                    out bool isSerif,
+                    out bool isSmallCaps,
+                    out int pointSize,
+                    out int fontId);
 
-            // This can happen in certain error conditions
-            if (nameHandle == IntPtr.Zero)
+            if(nameHandle == IntPtr.Zero)
             {
                 return null;
             }
 
-            if (!_fontInfoCache.TryGetValue(fontId, out FontInfo fontInfo))
+            if(!_fontInfoCache.TryGetValue(fontId, out FontInfo fontInfo))
             {
                 string fontName = MarshalHelper.PtrToString(nameHandle, Encoding.UTF8);
                 fontInfo = new FontInfo(fontName, fontId, isItalic, isBold, isMonospace, isSerif);
@@ -100,8 +102,7 @@ namespace Tesseract
             return handle.Handle == IntPtr.Zero ? null : TessApi.ResultIteratorWordRecognitionLanguage(handle);
         }
 
-        internal ResultIterator(Page page, IntPtr handle)
-                                                                                            : base(page, handle)
+        internal ResultIterator(Page page, IntPtr handle) : base(page, handle)
         {
         }
 

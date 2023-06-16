@@ -23,30 +23,12 @@ namespace Tesseract
         public byte Alpha { get; }
 
         public static PixColor FromRgba(uint value)
-        {
-            return new PixColor(
-               (byte)((value >> 24) & 0xFF),
-               (byte)((value >> 16) & 0xFF),
-               (byte)((value >> 8) & 0xFF),
-               (byte)(value & 0xFF));
-        }
+        { return new PixColor((byte)((value >> 24) & 0xFF), (byte)((value >> 16) & 0xFF), (byte)((value >> 8) & 0xFF), (byte)(value & 0xFF)); }
 
         public static PixColor FromRgb(uint value)
-        {
-            return new PixColor(
-               (byte)((value >> 24) & 0xFF),
-               (byte)((value >> 16) & 0xFF),
-               (byte)((value >> 8) & 0xFF),
-               0xFF);
-        }
+        { return new PixColor((byte)((value >> 24) & 0xFF), (byte)((value >> 16) & 0xFF), (byte)((value >> 8) & 0xFF)); }
 
-        public uint ToRGBA()
-        {
-            return (uint)((Red << 24) |
-               (Green << 16) |
-               (Blue << 8) |
-               Alpha);
-        }
+        public uint ToRGBA() { return (uint)((Red << 24) | (Green << 16) | (Blue << 8) | Alpha); }
 
 #if NETFULL
         public static explicit operator System.Drawing.Color(PixColor color)
@@ -61,16 +43,9 @@ namespace Tesseract
 #endif
 
         #region Equals and GetHashCode implementation
+        public override bool Equals(object obj) { return obj is PixColor && Equals((PixColor)obj); }
 
-        public override bool Equals(object obj)
-        {
-            return (obj is PixColor) && Equals((PixColor)obj);
-        }
-
-        public bool Equals(PixColor other)
-        {
-            return Red == other.Red && Blue == other.Blue && Green == other.Green && Alpha == other.Alpha;
-        }
+        public bool Equals(PixColor other) { return Red == other.Red && Blue == other.Blue && Green == other.Green && Alpha == other.Alpha; }
 
         public override int GetHashCode()
         {
@@ -82,6 +57,7 @@ namespace Tesseract
                 hashCode += 1000000021 * Green.GetHashCode();
                 hashCode += 1000000033 * Alpha.GetHashCode();
             }
+
             return hashCode;
         }
 
@@ -94,12 +70,7 @@ namespace Tesseract
         {
             return !(lhs == rhs);
         }
-
         #endregion Equals and GetHashCode implementation
-
-        public override string ToString()
-        {
-            return string.Format("Color(0x{0:X})", ToRGBA());
-        }
+        public override string ToString() { return $"Color(0x{ToRGBA():X})"; }
     }
 }

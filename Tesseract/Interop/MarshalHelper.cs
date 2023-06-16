@@ -17,7 +17,6 @@ namespace Tesseract.Interop
             _ = encoding.GetEncoder();
             int length = encoding.GetByteCount(value);
 
-            // The encoded value is null terminated that's the reason for the '+1'.
             byte[] encodedValue = new byte[length + 1];
             _ = encoding.GetBytes(value, 0, value.Length, encodedValue, 0);
             IntPtr handle = Marshal.AllocHGlobal(new IntPtr(encodedValue.Length));
@@ -30,17 +29,18 @@ namespace Tesseract.Interop
         /// </summary>
         public static int StrLength(IntPtr handle)
         {
-            if (handle == IntPtr.Zero)
+            if(handle == IntPtr.Zero)
             {
                 return 0;
             }
 
             byte* ptr = (byte*)handle.ToPointer();
             int length = 0;
-            while (*(ptr + length) != 0)
+            while(*(ptr + length) != 0)
             {
                 length++;
             }
+
             return length;
         }
     }

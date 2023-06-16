@@ -1,127 +1,104 @@
-﻿using System;
+﻿using Extensions;
+using GpScanner.ViewModel;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Extensions;
-using GpScanner.ViewModel;
 using TwainControl;
 
-namespace GpScanner
+namespace GpScanner;
+
+/// <summary>
+/// Interaction logic for DocumentViewerWindow.xaml
+/// </summary>
+public partial class DocumentViewerWindow : Window
 {
-    /// <summary>
-    /// Interaction logic for DocumentViewerWindow.xaml
-    /// </summary>
-    public partial class DocumentViewerWindow : Window
+    public DocumentViewerWindow()
     {
-        public DocumentViewerWindow()
+        InitializeComponent();
+        DataContext = new DocumentViewerModel();
+    }
+
+    private static readonly Rectangle selectionbox = new()
+    {
+        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
+        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
+        StrokeThickness = 2,
+        StrokeDashArray = new DoubleCollection(new double[] { 1 })
+    };
+
+    private double height;
+
+    private bool isMouseDown;
+
+    private Point mousedowncoord;
+
+    private double width;
+
+    private void DocumentViewer_MouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if(e.OriginalSource is Image img &&
+            img.Parent is ScrollViewer scrollviewer &&
+            e.LeftButton == MouseButtonState.Pressed &&
+            Keyboard.IsKeyDown(Key.LeftCtrl))
         {
-            InitializeComponent();
-            DataContext = new DocumentViewerModel();
+            isMouseDown = true;
+            Cursor = Cursors.Cross;
+            mousedowncoord = e.GetPosition(scrollviewer);
         }
+    }
 
-        private double height;
-
-        private bool isMouseDown;
-
-        private Point mousedowncoord;
-
-        private double width;
-
-        private void DocumentViewer_MouseDown(object sender, MouseButtonEventArgs e)
+    private void DocumentViewer_MouseMove(object sender, MouseEventArgs e)
+    {
+        if(e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer && isMouseDown && DataContext is DocumentViewerModel documentViewerModel)
         {
-            if (e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer && e.LeftButton == MouseButtonState.Pressed && Keyboard.IsKeyDown(Key.LeftCtrl))
+            Point mousemovecoord = e.GetPosition(scrollviewer);
+            if(!cnv.Children.Contains(selectionbox))
             {
-                isMouseDown = true;
-                Cursor = Cursors.Cross;
-                mousedowncoord = e.GetPosition(scrollviewer);
-            }
-        }
-
-        private void DocumentViewer_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer && isMouseDown && DataContext is DocumentViewerModel documentViewerModel)
-            {
-                Point mousemovecoord = e.GetPosition(scrollviewer);
-                SolidColorBrush fill = new()
-                {
-                    Color = Color.FromArgb(80, 0, 255, 0)
-                };
-                fill.Freeze();
-                SolidColorBrush stroke = new()
-                {
-                    Color = Color.FromArgb(80, 255, 0, 0)
-                };
-                stroke.Freeze();
-                Rectangle selectionbox = new()
-                {
-                    Stroke = stroke,
-                    Fill = fill,
-                    StrokeThickness = 2,
-                    StrokeDashArray = new DoubleCollection(new double[] { 4, 2 }),
-                };
-                cnv.Children.Clear();
                 _ = cnv.Children.Add(selectionbox);
-                if (mousedowncoord.X < mousemovecoord.X)
-                {
-                    Canvas.SetLeft(selectionbox, mousedowncoord.X);
-                    selectionbox.Width = mousemovecoord.X - mousedowncoord.X;
-                }
-                else
-                {
-                    Canvas.SetLeft(selectionbox, mousemovecoord.X);
-                    selectionbox.Width = mousedowncoord.X - mousemovecoord.X;
-                }
+            }
 
-                if (mousedowncoord.Y < mousemovecoord.Y)
-                {
-                    Canvas.SetTop(selectionbox, mousedowncoord.Y);
-                    selectionbox.Height = mousemovecoord.Y - mousedowncoord.Y;
-                }
-                else
-                {
-                    Canvas.SetTop(selectionbox, mousemovecoord.Y);
-                    selectionbox.Height = mousedowncoord.Y - mousemovecoord.Y;
-                }
-                if (e.LeftButton == MouseButtonState.Released)
-                {
-                    cnv.Children.Clear();
-                    width = Math.Abs(mousemovecoord.X - mousedowncoord.X);
-                    height = Math.Abs(mousemovecoord.Y - mousedowncoord.Y);
+            double x1 = Math.Min(mousedowncoord.X, mousemovecoord.X);
+            double x2 = Math.Max(mousedowncoord.X, mousemovecoord.X);
+            double y1 = Math.Min(mousedowncoord.Y, mousemovecoord.Y);
+            double y2 = Math.Max(mousedowncoord.Y, mousemovecoord.Y);
 
-                    if (mousedowncoord.X < mousemovecoord.X && mousedowncoord.Y < mousemovecoord.Y)
-                    {
-                        documentViewerModel.ImgData = BitmapMethods.CaptureScreen(mousedowncoord.X, mousedowncoord.Y, width, height, scrollviewer, BitmapFrame.Create((BitmapSource)img.Source));
-                    }
-                    if (mousedowncoord.X > mousemovecoord.X && mousedowncoord.Y > mousemovecoord.Y)
-                    {
-                        documentViewerModel.ImgData = BitmapMethods.CaptureScreen(mousemovecoord.X, mousemovecoord.Y, width, height, scrollviewer, BitmapFrame.Create((BitmapSource)img.Source));
-                    }
-                    if (mousedowncoord.X < mousemovecoord.X && mousedowncoord.Y > mousemovecoord.Y)
-                    {
-                        documentViewerModel.ImgData = BitmapMethods.CaptureScreen(mousedowncoord.X, mousemovecoord.Y, width, height, scrollviewer, BitmapFrame.Create((BitmapSource)img.Source));
-                    }
-                    if (mousedowncoord.X > mousemovecoord.X && mousedowncoord.Y < mousemovecoord.Y)
-                    {
-                        documentViewerModel.ImgData = BitmapMethods.CaptureScreen(mousemovecoord.X, mousedowncoord.Y, width, height, scrollviewer, BitmapFrame.Create((BitmapSource)img.Source));
-                    }
+            Canvas.SetLeft(selectionbox, x1);
+            Canvas.SetTop(selectionbox, y1);
+            selectionbox.Width = x2 - x1;
+            selectionbox.Height = y2 - y1;
 
-                    mousedowncoord.X = mousedowncoord.Y = 0;
-                    isMouseDown = false;
-                    Cursor = Cursors.Arrow;
-                }
+            if(e.LeftButton == MouseButtonState.Released)
+            {
+                cnv.Children.Remove(selectionbox);
+                width = Math.Abs(mousemovecoord.X - mousedowncoord.X);
+                height = Math.Abs(mousemovecoord.Y - mousedowncoord.Y);
+                double captureX, captureY;
+                captureX = mousedowncoord.X < mousemovecoord.X ? mousedowncoord.X : mousemovecoord.X;
+                captureY = mousedowncoord.Y < mousemovecoord.Y ? mousedowncoord.Y : mousemovecoord.Y;
+                documentViewerModel.ImgData = BitmapMethods.CaptureScreen(
+                    captureX,
+                    captureY,
+                    width,
+                    height,
+                    scrollviewer,
+                    BitmapFrame.Create((BitmapSource)img.Source));
+                mousedowncoord.X = mousedowncoord.Y = 0;
+                isMouseDown = false;
+                Cursor = Cursors.Arrow;
             }
         }
+    }
 
-        private void Window_Unloaded(object sender, RoutedEventArgs e)
+    private void Window_Unloaded(object sender, RoutedEventArgs e)
+    {
+        if(cnt.GetFirstVisualChild<PdfViewer.PdfViewer>() is PdfViewer.PdfViewer pdfvwr)
         {
-            if (cnt.GetFirstVisualChild<PdfViewer.PdfViewer>() is PdfViewer.PdfViewer pdfvwr)
-            {
-                pdfvwr?.Dispose();
-                GC.Collect();
-            }
+            pdfvwr?.Dispose();
+            GC.Collect();
         }
     }
 }

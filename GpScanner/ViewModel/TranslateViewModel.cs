@@ -1,177 +1,211 @@
-﻿using System.Collections.Generic;
+﻿using Extensions;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Speech.Synthesis;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Extensions;
 
-namespace GpScanner.ViewModel
+namespace GpScanner.ViewModel;
+
+public class TranslateViewModel : InpcBase
 {
-    public class TranslateViewModel : InpcBase
+    public TranslateViewModel()
     {
-        public TranslateViewModel()
+        PropertyChanged += TranslateViewModel_PropertyChanged;
+
+        speechSynthesizer = new SpeechSynthesizer();
+        if(speechSynthesizer is not null)
         {
-            PropertyChanged += TranslateViewModel_PropertyChanged;
+            TtsDilleri = speechSynthesizer.GetInstalledVoices().Select(z => z.VoiceInfo.Name);
+            OkumaDili = TtsDilleri?.FirstOrDefault();
+        }
 
-            speechSynthesizer = new();
-            if (speechSynthesizer is not null)
+        Sıfırla = new RelayCommand<object>(
+            parameter =>
             {
-                TtsDilleri = speechSynthesizer.GetInstalledVoices().Select(z => z.VoiceInfo.Name);
-                OkumaDili = TtsDilleri?.FirstOrDefault();
-            }
+                Metin = string.Empty;
+                Çeviri = string.Empty;
+            },
+            parameter => true);
 
-            Sıfırla = new RelayCommand<object>(parameter =>
+        Değiştir = new RelayCommand<object>(
+            parameter =>
             {
-                Metin = "";
-                Çeviri = "";
-            }, parameter => true);
+                string current = MevcutDil;
+                string translated = ÇevrilenDil;
+                ÇevrilenDil = current;
+                MevcutDil = translated;
+            },
+            parameter => ÇevrilenDil != MevcutDil);
 
-            Oku = new RelayCommand<object>(parameter =>
+        Oku = new RelayCommand<object>(
+            parameter =>
             {
-                if (parameter is string metin)
+                if(parameter is string metin)
                 {
-                    if (speechSynthesizer.State == SynthesizerState.Speaking)
+                    if(speechSynthesizer.State == SynthesizerState.Speaking)
                     {
                         speechSynthesizer.Pause();
                         return;
                     }
-                    if (speechSynthesizer.State == SynthesizerState.Paused)
+
+                    if(speechSynthesizer.State == SynthesizerState.Paused)
                     {
                         speechSynthesizer.Resume();
                         return;
                     }
-                    if (speechSynthesizer.State == SynthesizerState.Ready)
+
+                    if(speechSynthesizer.State == SynthesizerState.Ready)
                     {
                         _ = speechSynthesizer.SpeakAsync(metin);
                     }
                 }
-            }, parameter => !string.IsNullOrEmpty(OkumaDili));
-        }
+            },
+            parameter => !string.IsNullOrEmpty(OkumaDili));
+    }
 
-        public string Çeviri {
-            get => çeviri;
+    public string Çeviri
+    {
+        get => çeviri;
 
-            set {
-                if (çeviri != value)
-                {
-                    çeviri = value;
-                    OnPropertyChanged(nameof(Çeviri));
-                }
-            }
-        }
-
-        public string ÇevrilenDil {
-            get => çevrilenDil;
-
-            set {
-                if (çevrilenDil != value)
-                {
-                    çevrilenDil = value;
-                    OnPropertyChanged(nameof(ÇevrilenDil));
-                    OnPropertyChanged(nameof(Metin));
-                }
-            }
-        }
-
-        public string Metin {
-            get {
-                if (!string.IsNullOrEmpty(metin))
-                {
-                    _ = Task.Run(() => Çeviri = Extensions.TranslateViewModel.DileÇevir(metin, MevcutDil, ÇevrilenDil));
-                }
-                return metin;
-            }
-
-            set {
-                if (metin != value)
-                {
-                    metin = value;
-                    OnPropertyChanged(nameof(Metin));
-                    OnPropertyChanged(nameof(Çeviri));
-                }
-            }
-        }
-
-        public bool MetinBoxIsreadOnly {
-            get => metinBoxIsreadOnly;
-
-            set {
-                if (metinBoxIsreadOnly != value)
-                {
-                    metinBoxIsreadOnly = value;
-                    OnPropertyChanged(nameof(MetinBoxIsreadOnly));
-                }
-            }
-        }
-
-        public string MevcutDil {
-            get => mevcutDil;
-
-            set {
-                if (mevcutDil != value)
-                {
-                    mevcutDil = value;
-                    OnPropertyChanged(nameof(MevcutDil));
-                    OnPropertyChanged(nameof(Metin));
-                }
-            }
-        }
-
-        public ICommand Oku { get; }
-
-        public string OkumaDili {
-            get => okumaDili;
-
-            set {
-                if (okumaDili != value)
-                {
-                    okumaDili = value;
-                    OnPropertyChanged(nameof(OkumaDili));
-                }
-            }
-        }
-
-        public ICommand Sıfırla { get; }
-
-        public ObservableCollection<string> TaramaGeçmiş {
-            get => taramaGeçmiş;
-
-            set {
-                if (taramaGeçmiş != value)
-                {
-                    taramaGeçmiş = value;
-                    OnPropertyChanged(nameof(TaramaGeçmiş));
-                }
-            }
-        }
-
-        public IEnumerable<string> TtsDilleri { get; set; }
-
-        private string çeviri;
-
-        private string çevrilenDil = "en";
-
-        private string metin;
-
-        private bool metinBoxIsreadOnly;
-
-        private string mevcutDil = "auto";
-
-        private string okumaDili;
-
-        private SpeechSynthesizer speechSynthesizer;
-
-        private ObservableCollection<string> taramaGeçmiş = new();
-
-        private void TranslateViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        set
         {
-            if (e.PropertyName is "OkumaDili" && !string.IsNullOrEmpty(OkumaDili))
+            if(çeviri != value)
             {
-                speechSynthesizer = new();
-                TtsDilleri = speechSynthesizer.GetInstalledVoices().Select(z => z.VoiceInfo.Name);
-                speechSynthesizer.SelectVoice(OkumaDili);
+                çeviri = value;
+                OnPropertyChanged(nameof(Çeviri));
             }
+        }
+    }
+
+    public string ÇevrilenDil
+    {
+        get => çevrilenDil;
+
+        set
+        {
+            if(çevrilenDil != value)
+            {
+                çevrilenDil = value;
+                OnPropertyChanged(nameof(ÇevrilenDil));
+                OnPropertyChanged(nameof(Metin));
+            }
+        }
+    }
+
+    public ICommand Değiştir { get; }
+
+    public string Metin
+    {
+        get
+        {
+            if(!string.IsNullOrEmpty(metin))
+            {
+                _ = Task.Run(() => Çeviri = Extensions.TranslateViewModel.DileÇevir(metin, MevcutDil, ÇevrilenDil));
+            }
+
+            return metin;
+        }
+
+        set
+        {
+            if(metin != value)
+            {
+                metin = value;
+                OnPropertyChanged(nameof(Metin));
+                OnPropertyChanged(nameof(Çeviri));
+            }
+        }
+    }
+
+    public bool MetinBoxIsreadOnly
+    {
+        get => metinBoxIsreadOnly;
+
+        set
+        {
+            if(metinBoxIsreadOnly != value)
+            {
+                metinBoxIsreadOnly = value;
+                OnPropertyChanged(nameof(MetinBoxIsreadOnly));
+            }
+        }
+    }
+
+    public string MevcutDil
+    {
+        get => mevcutDil;
+
+        set
+        {
+            if(mevcutDil != value)
+            {
+                mevcutDil = value;
+                OnPropertyChanged(nameof(MevcutDil));
+                OnPropertyChanged(nameof(Metin));
+            }
+        }
+    }
+
+    public ICommand Oku { get; }
+
+    public string OkumaDili
+    {
+        get => okumaDili;
+
+        set
+        {
+            if(okumaDili != value)
+            {
+                okumaDili = value;
+                OnPropertyChanged(nameof(OkumaDili));
+            }
+        }
+    }
+
+    public ICommand Sıfırla { get; }
+
+    public ObservableCollection<string> TaramaGeçmiş
+    {
+        get => taramaGeçmiş;
+
+        set
+        {
+            if(taramaGeçmiş != value)
+            {
+                taramaGeçmiş = value;
+                OnPropertyChanged(nameof(TaramaGeçmiş));
+            }
+        }
+    }
+
+    public IEnumerable<string> TtsDilleri { get; set; }
+
+    private string çeviri;
+
+    private string çevrilenDil = "en";
+
+    private string metin;
+
+    private bool metinBoxIsreadOnly;
+
+    private string mevcutDil = "auto";
+
+    private string okumaDili;
+
+    private SpeechSynthesizer speechSynthesizer;
+
+    private ObservableCollection<string> taramaGeçmiş = new();
+
+    private void TranslateViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if(e.PropertyName is "OkumaDili" && !string.IsNullOrEmpty(OkumaDili))
+        {
+            speechSynthesizer = new SpeechSynthesizer();
+            TtsDilleri = speechSynthesizer.GetInstalledVoices().Select(z => z.VoiceInfo.Name);
+            speechSynthesizer.SelectVoice(OkumaDili);
         }
     }
 }

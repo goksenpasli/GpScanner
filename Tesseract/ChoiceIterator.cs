@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Tesseract.Interop;
 
 namespace Tesseract
 {
@@ -18,7 +19,7 @@ namespace Tesseract
         public float GetConfidence()
         {
             VerifyNotDisposed();
-            return _handleRef.Handle == IntPtr.Zero ? 0f : Interop.TessApi.Native.ChoiceIteratorGetConfidence(_handleRef);
+            return _handleRef.Handle == IntPtr.Zero ? 0f : TessApi.Native.ChoiceIteratorGetConfidence(_handleRef);
         }
 
         /// <summary>
@@ -28,7 +29,7 @@ namespace Tesseract
         public string GetText()
         {
             VerifyNotDisposed();
-            return _handleRef.Handle == IntPtr.Zero ? string.Empty : Interop.TessApi.ChoiceIteratorGetUTF8Text(_handleRef);
+            return _handleRef.Handle == IntPtr.Zero ? string.Empty : TessApi.ChoiceIteratorGetUTF8Text(_handleRef);
         }
 
         /// <summary>
@@ -38,19 +39,16 @@ namespace Tesseract
         public bool Next()
         {
             VerifyNotDisposed();
-            return _handleRef.Handle != IntPtr.Zero && Interop.TessApi.Native.ChoiceIteratorNext(_handleRef) != 0;
+            return _handleRef.Handle != IntPtr.Zero && TessApi.Native.ChoiceIteratorNext(_handleRef) != 0;
         }
 
-        internal ChoiceIterator(IntPtr handle)
-        {
-            _handleRef = new HandleRef(this, handle);
-        }
+        internal ChoiceIterator(IntPtr handle) { _handleRef = new HandleRef(this, handle); }
 
         protected override void Dispose(bool disposing)
         {
-            if (_handleRef.Handle != IntPtr.Zero)
+            if(_handleRef.Handle != IntPtr.Zero)
             {
-                Interop.TessApi.Native.ChoiceIteratorDelete(_handleRef);
+                TessApi.Native.ChoiceIteratorDelete(_handleRef);
             }
         }
 

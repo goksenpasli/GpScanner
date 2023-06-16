@@ -11,7 +11,6 @@
 
         public const string TesseractDllName = "tesseract50";
 
-        // tesseract uses an int to represent true false values.
         public const int TRUE = 1;
     }
 }

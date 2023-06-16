@@ -15,17 +15,13 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="Mode" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">2</Value>
     </Setting>
     <Setting Name="DateGroupFolder" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="PreviewWidth" Type="System.Double" Scope="User">
       <Value Profile="(Default)">120</Value>
-    </Setting>
-    <Setting Name="Profile" Type="System.Collections.Specialized.StringCollection" Scope="User">
-      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;ArrayOfString xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" /&gt;</Value>
     </Setting>
     <Setting Name="DefaultProfile" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
@@ -46,7 +42,7 @@
       <Value Profile="(Default)">100</Value>
     </Setting>
     <Setting Name="BackMode" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">2</Value>
     </Setting>
     <Setting Name="FolderDateFormat" Type="System.String" Scope="User">
       <Value Profile="(Default)">d.MM.yyyy</Value>
@@ -56,6 +52,17 @@
     </Setting>
     <Setting Name="BwThreshold" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">160</Value>
+    </Setting>
+    <Setting Name="DirectRemoveImage" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="Profile" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" /&gt;</Value>
+    </Setting>
+    <Setting Name="PdfLoadHistory" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" /&gt;</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -12,7 +12,7 @@ namespace Tesseract
         {
             int result = dividend / divisor;
 
-            return (dividend % divisor != 0 && (divisor > 0) == (dividend > 0)) ? result + 1 : result;
+            return dividend % divisor != 0 && (divisor > 0) == (dividend > 0) ? result + 1 : result;
         }
 
         /// <summary>
@@ -20,19 +20,13 @@ namespace Tesseract
         /// </summary>
         /// <param name="angleInDegrees"></param>
         /// <returns></returns>
-        public static float ToRadians(float angleInDegrees)
-        {
-            return (float)ToRadians((double)angleInDegrees);
-        }
+        public static float ToRadians(float angleInDegrees) { return (float)ToRadians((double)angleInDegrees); }
 
         /// <summary>
         /// Convert a degrees to radians.
         /// </summary>
         /// <param name="angleInDegrees"></param>
         /// <returns></returns>
-        public static double ToRadians(double angleInDegrees)
-        {
-            return angleInDegrees * Math.PI / 180.0;
-        }
+        public static double ToRadians(double angleInDegrees) { return angleInDegrees * Math.PI / 180.0; }
     }
 }

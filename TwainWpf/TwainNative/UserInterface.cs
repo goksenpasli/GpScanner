@@ -12,7 +12,7 @@ namespace TwainWpf.TwainNative
         /// <summary>
         /// TRUE if DS should bring up its UI
         /// </summary>
-        public short ShowUI;				// bool is strictly 32 bit, so use short
+        public short ShowUI;
 
         /// <summary>
         /// For Mac only - true if the DS's UI is modal

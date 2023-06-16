@@ -29,19 +29,7 @@ namespace TwainWpf.Win32
 
         public override string ToString()
         {
-            return string.Format(
-                "s:{0} w:{1} h:{2} p:{3} bc:{4} c:{5} si:{6} xpels:{7} ypels:{8} cu:{9} ci:{10}",
-                Size,
-                Width,
-                Height,
-                Planes,
-                BitCount,
-                Compression,
-                SizeImage,
-                XPelsPerMeter,
-                YPelsPerMeter,
-                ClrUsed,
-                ClrImportant);
+            return $"s:{Size} w:{Width} h:{Height} p:{Planes} bc:{BitCount} c:{Compression} si:{SizeImage} xpels:{XPelsPerMeter} ypels:{YPelsPerMeter} cu:{ClrUsed} ci:{ClrImportant}";
         }
     }
 }

@@ -1,17 +1,16 @@
-﻿using System.Windows.Controls;
-using GpScanner.ViewModel;
+﻿using GpScanner.ViewModel;
+using System.Windows.Controls;
 
-namespace GpScanner
+namespace GpScanner;
+
+/// <summary>
+/// Interaction logic for TranslateView.xaml
+/// </summary>
+public partial class TranslateView : UserControl
 {
-    /// <summary>
-    /// Interaction logic for TranslateView.xaml
-    /// </summary>
-    public partial class TranslateView : UserControl
+    public TranslateView()
     {
-        public TranslateView()
-        {
-            InitializeComponent();
-            DataContext = new TranslateViewModel();
-        }
+        InitializeComponent();
+        DataContext = new TranslateViewModel();
     }
 }

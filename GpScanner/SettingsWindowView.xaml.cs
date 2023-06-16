@@ -1,15 +1,11 @@
 ﻿using System.Windows;
 
-namespace GpScanner
+namespace GpScanner;
+
+/// <summary>
+/// Interaction logic for SettingsWindowView.xaml
+/// </summary>
+public partial class SettingsWindowView : Window
 {
-    /// <summary>
-    /// Interaction logic for SettingsWindowView.xaml
-    /// </summary>
-    public partial class SettingsWindowView : Window
-    {
-        public SettingsWindowView()
-        {
-            InitializeComponent();
-        }
-    }
+    public SettingsWindowView() { InitializeComponent(); }
 }
