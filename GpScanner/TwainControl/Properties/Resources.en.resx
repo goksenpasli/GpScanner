@@ -175,7 +175,7 @@
     <value>RESTART COMPUTER</value>
   </data>
   <data name="FILENAME" xml:space="preserve">
-    <value>FILE NAME:</value>
+    <value>FILE NAME</value>
   </data>
   <data name="DAY" xml:space="preserve">
     <value>[DAY]</value>
@@ -567,5 +567,8 @@ TO FILE</value>
   </data>
   <data name="STOP" xml:space="preserve">
     <value>Stop</value>
+  </data>
+  <data name="EMPTY" xml:space="preserve">
+    <value>EMPTY</value>
   </data>
 </root>

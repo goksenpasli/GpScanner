@@ -176,7 +176,7 @@
     <value>重新启动电脑</value>
   </data>
   <data name="FILENAME" xml:space="preserve">
-    <value>文件名：!</value>
+    <value>文件名</value>
   </data>
   <data name="DAY" xml:space="preserve">
     <value>[天]</value>
@@ -571,5 +571,8 @@ PDF保护也可以被第三方应用程序破坏。</value>
   </data>
   <data name="STOP" xml:space="preserve">
     <value>停止</value>
+  </data>
+  <data name="EMPTY" xml:space="preserve">
+    <value>空的</value>
   </data>
 </root>

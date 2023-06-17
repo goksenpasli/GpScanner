@@ -930,9 +930,8 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public string this[string columnName] => columnName switch
     {
-        "FileName" when string.IsNullOrWhiteSpace(FileName) => "Dosya Adını Boş Geçmeyin.",
-        "FileName" when !TwainCtrl.FileNameValid(FileName) => "Dosya Adında Hatalı Karakter Var Düzeltin.",
-        "ProfileName" when string.IsNullOrWhiteSpace(ProfileName) => "Profil Adını Boş Geçmeyin.",
+        "FileName" when string.IsNullOrWhiteSpace(FileName) || !TwainCtrl.FileNameValid(FileName) => $"{Translation.GetResStringValue("FILENAME")} {Translation.GetResStringValue("EMPTY")}",
+        "ProfileName" when string.IsNullOrWhiteSpace(ProfileName) => Translation.GetResStringValue("EMPTY"),
         _ => null
     };
 

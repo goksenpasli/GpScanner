@@ -175,7 +175,7 @@
     <value>START DE COMPUTER OPNIEUW OP</value>
   </data>
   <data name="FILENAME" xml:space="preserve">
-    <value>BESTANDSNAAM:</value>
+    <value>BESTANDSNAAM</value>
   </data>
   <data name="DAY" xml:space="preserve">
     <value>[DAG]</value>
@@ -567,5 +567,8 @@ PDF 'S SAMENVOEGEN</value>
   </data>
   <data name="STOP" xml:space="preserve">
     <value>Stop</value>
+  </data>
+  <data name="EMPTY" xml:space="preserve">
+    <value>LEEG</value>
   </data>
 </root>

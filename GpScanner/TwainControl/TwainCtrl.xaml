@@ -132,6 +132,9 @@
             <Style TargetType="Button">
                 <Setter Property="local:Policy.PolicyEnabled" Value="True" />
             </Style>
+            <Style TargetType="RepeatButton">
+                <Setter Property="local:Policy.PolicyEnabled" Value="True" />
+            </Style>
             <Style TargetType="ListBox">
                 <Setter Property="local:Policy.PolicyEnabled" Value="True" />
             </Style>
@@ -188,7 +191,7 @@
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
                             <UniformGrid Grid.Row="1" Columns="4">
-                                <Extensions:ContentToggleButton>
+                                <Extensions:ContentToggleButton StaysOpen="True">
                                     <StackPanel Orientation="Horizontal">
                                         <Image Width="32" Height="32">
                                             <Image.Source>
@@ -201,7 +204,7 @@
                                         <TextBlock VerticalAlignment="Center" Text="{local:Loc CAMERA}" />
                                     </StackPanel>
                                     <Extensions:ContentToggleButton.OverContent>
-                                        <Extensions:ResizablePanel Width="480" Height="360" MinWidth="480"
+                                        <Extensions:ResizablePanel Width="680" Height="480" MinWidth="480"
                                             MinHeight="360">
                                             <local:CameraUserControl x:Name="Camera" />
                                         </Extensions:ResizablePanel>

@@ -246,6 +246,9 @@
   <data name="DSTCOLOR" xml:space="preserve">
     <value>اللون المستهدف</value>
   </data>
+  <data name="EMPTY" xml:space="preserve">
+    <value>فارغ</value>
+  </data>
   <data name="EMPTYPAGE" xml:space="preserve">
     <value>تخطي الصفحة الفارغة</value>
   </data>
@@ -266,7 +269,7 @@
     <value>ملف</value>
   </data>
   <data name="FILENAME" xml:space="preserve">
-    <value>اسم الملف:</value>
+    <value>اسم الملف</value>
   </data>
   <data name="FLATBED" xml:space="preserve">
     <value>مسطحة</value>

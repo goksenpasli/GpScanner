@@ -7,6 +7,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using CatenaLogic.Windows.Presentation.WebcamPlayer;
 using Extensions;
+using Extensions.Controls;
 using Microsoft.Win32;
 
 namespace TwainControl;
@@ -29,6 +30,16 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
                 ResimData = ms.ToArray();
             },
             parameter => SeçiliKamera is not null);
+
+        VideodanResimYükle = new RelayCommand<object>(
+            parameter =>
+            {
+                if (parameter is MediaViewer mediaViewer && mediaViewer.FindName("grid") is Grid grid)
+                {
+                    ResimData = grid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
+                }
+            },
+            parameter => parameter is MediaViewer mediaViewer && !string.IsNullOrWhiteSpace(mediaViewer.MediaDataFilePath));
 
         Durdur = new RelayCommand<object>(parameter => Device?.Stop(), parameter => SeçiliKamera is not null && Device?.IsRunning == true);
 
@@ -130,6 +141,8 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
             }
         }
     }
+
+    public RelayCommand<object> VideodanResimYükle { get; }
 
     public void EncodeBitmapImage(Stream ms)
     {

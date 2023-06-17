@@ -246,6 +246,9 @@ DISCO</value>
   <data name="DSTCOLOR" xml:space="preserve">
     <value>COLORE BERSAGLIO</value>
   </data>
+  <data name="EMPTY" xml:space="preserve">
+    <value>VUOTO</value>
+  </data>
   <data name="EMPTYPAGE" xml:space="preserve">
     <value>SALTA LA PAGINA VUOTA</value>
   </data>
@@ -266,7 +269,7 @@ SCANSIONE</value>
     <value>FILE</value>
   </data>
   <data name="FILENAME" xml:space="preserve">
-    <value>NOME DEL FILE:</value>
+    <value>NOME DEL FILE</value>
   </data>
   <data name="FLATBED" xml:space="preserve">
     <value>PIATTAFORMA</value>

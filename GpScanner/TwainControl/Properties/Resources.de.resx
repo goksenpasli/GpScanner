@@ -570,4 +570,7 @@ ENTFERNEN</value>
   <data name="STOP" xml:space="preserve">
     <value>Stoppen</value>
   </data>
+  <data name="EMPTY" xml:space="preserve">
+    <value>LEER</value>
+  </data>
 </root>

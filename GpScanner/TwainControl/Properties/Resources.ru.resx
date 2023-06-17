@@ -175,7 +175,7 @@
     <value>ПЕРЕЗАГРУЗИТЕ КОМПЬЮТЕР</value>
   </data>
   <data name="FILENAME" xml:space="preserve">
-    <value>ИМЯ ФАЙЛА:</value>
+    <value>ИМЯ ФАЙЛА</value>
   </data>
   <data name="DAY" xml:space="preserve">
     <value>[День]</value>
@@ -566,5 +566,8 @@ PDF-ФАЙЛЫ</value>
   </data>
   <data name="STOP" xml:space="preserve">
     <value>Останавливаться</value>
+  </data>
+  <data name="EMPTY" xml:space="preserve">
+    <value>ПУСТОЙ</value>
   </data>
 </root>

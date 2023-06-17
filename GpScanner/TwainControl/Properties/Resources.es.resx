@@ -566,4 +566,7 @@ AL ARCHIVO</value>
   <data name="STOP" xml:space="preserve">
     <value>Detener</value>
   </data>
+  <data name="EMPTY" xml:space="preserve">
+    <value>VACÍO</value>
+  </data>
 </root>

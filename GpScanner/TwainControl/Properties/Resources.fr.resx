@@ -246,6 +246,9 @@ ENREGISTREMENT</value>
   <data name="DSTCOLOR" xml:space="preserve">
     <value>COULEUR CIBLE</value>
   </data>
+  <data name="EMPTY" xml:space="preserve">
+    <value>VIDE</value>
+  </data>
   <data name="EMPTYPAGE" xml:space="preserve">
     <value>PASSER LA PAGE VIDE</value>
   </data>
@@ -266,7 +269,7 @@ ANALYSE</value>
     <value>DOSSIER</value>
   </data>
   <data name="FILENAME" xml:space="preserve">
-    <value>NOM DE FICHIER:</value>
+    <value>NOM DE FICHIER</value>
   </data>
   <data name="FLATBED" xml:space="preserve">
     <value>À PLAT</value>

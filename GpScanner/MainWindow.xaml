@@ -94,6 +94,9 @@
         <Style TargetType="Button">
             <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
         </Style>
+        <Style TargetType="RepeatButton">
+            <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
+        </Style>
         <Style TargetType="ListBox">
             <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
         </Style>

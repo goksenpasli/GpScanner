@@ -176,7 +176,7 @@ BESLEYİCİ</value>
     <value>BİLGİSAYARI YENİDEN BAŞLAT</value>
   </data>
   <data name="FILENAME" xml:space="preserve">
-    <value>DOSYA ADI:</value>
+    <value>DOSYA ADI</value>
   </data>
   <data name="DAY" xml:space="preserve">
     <value>[GÜN]</value>
@@ -573,5 +573,8 @@ BELGE EKLE</value>
   </data>
   <data name="STOP" xml:space="preserve">
     <value>DUR</value>
+  </data>
+  <data name="EMPTY" xml:space="preserve">
+    <value>BOŞ</value>
   </data>
 </root>

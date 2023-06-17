@@ -176,7 +176,7 @@ DOKUMENTŮ</value>
     <value>RESTARTUJTE POČÍTAČ</value>
   </data>
   <data name="FILENAME" xml:space="preserve">
-    <value>NÁZEV SOUBORU:</value>
+    <value>NÁZEV SOUBORU</value>
   </data>
   <data name="DAY" xml:space="preserve">
     <value>[DEN]</value>
@@ -568,5 +568,8 @@ SOUBORY PDF</value>
   </data>
   <data name="STOP" xml:space="preserve">
     <value>Stop</value>
+  </data>
+  <data name="EMPTY" xml:space="preserve">
+    <value>PRÁZDNÝ</value>
   </data>
 </root>

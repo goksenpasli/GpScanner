@@ -175,7 +175,7 @@
     <value>パソコンを再起動</value>
   </data>
   <data name="FILENAME" xml:space="preserve">
-    <value>ファイル名:!</value>
+    <value>ファイル名</value>
   </data>
   <data name="DAY" xml:space="preserve">
     <value>[日]</value>
@@ -571,5 +571,8 @@ PDFをマージ</value>
   </data>
   <data name="STOP" xml:space="preserve">
     <value>ストップ</value>
+  </data>
+  <data name="EMPTY" xml:space="preserve">
+    <value>空</value>
   </data>
 </root>
