@@ -350,15 +350,19 @@ public static class ExtensionMethods
 
     public static BitmapSource Resize(this BitmapSource bfPhoto, double oran)
     {
-        ScaleTransform newTransform = new(oran, oran);
-        newTransform.Freeze();
-        TransformedBitmap tb = new();
-        tb.BeginInit();
-        tb.Source = bfPhoto;
-        tb.Transform = newTransform;
-        tb.EndInit();
-        tb.Freeze();
-        return tb;
+        if (bfPhoto is not null)
+        {
+            ScaleTransform newTransform = new(oran, oran);
+            newTransform.Freeze();
+            TransformedBitmap tb = new();
+            tb.BeginInit();
+            tb.Source = bfPhoto;
+            tb.Transform = newTransform;
+            tb.EndInit();
+            tb.Freeze();
+            return tb;
+        }
+        return null;
     }
 
     public static BitmapSource Resize(this BitmapSource bfPhoto, double nWidth, double nHeight, double? rotate = null, int dpiX = 96, int dpiY = 96)

@@ -107,7 +107,7 @@ public static class PdfGeneration
             {
                 string imagefile = imagefiles[i];
                 PdfPage page = document.AddPage();
-                SetPaperSize(paper, page);
+                page.Size = paper.SetPaperSize();
                 using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
                 using XImage xImage = XImage.FromFile(imagefile);
                 XSize size = PageSizeConverter.ToSize(page.Size);
@@ -164,7 +164,7 @@ public static class PdfGeneration
         try
         {
             PdfPage page = document.AddPage();
-            SetPaperSize(paper, page);
+            page.Size = paper.SetPaperSize();
             using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
             using XImage xImage = XImage.FromFile(imagefile);
             XSize size = PageSizeConverter.ToSize(page.Size);
@@ -222,7 +222,7 @@ public static class PdfGeneration
         {
             using PdfDocument document = new();
             PdfPage page = document.AddPage();
-            SetPaperSize(paper, page);
+            page.Size = paper.SetPaperSize();
             using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
             byte[] data = null;
             MemoryStream ms;
@@ -314,7 +314,7 @@ public static class PdfGeneration
             {
                 ScannedImage scannedimage = bitmapFrames[i];
                 PdfPage page = document.AddPage();
-                SetPaperSize(paper, page);
+                page.Size = paper.SetPaperSize();
 
                 if (Scanner.UseMozJpegEncoding && format != Format.Tiff)
                 {
@@ -499,9 +499,9 @@ public static class PdfGeneration
         }
     }
 
-    public static void SetPaperSize(this Paper paper, PdfPage page)
+    public static PageSize SetPaperSize(this Paper paper)
     {
-        page.Size = paper == null || !paperSizes.TryGetValue(paper.PaperType, out PageSize pageSize) ? PageSize.A4 : pageSize;
+        return paper == null || !paperSizes.TryGetValue(paper.PaperType, out PageSize pageSize) ? PageSize.A4 : pageSize;
     }
 
     private static XRect AdjustBounds(this Rect rect, double hAdjust, double vAdjust)

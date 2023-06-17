@@ -25,15 +25,9 @@ public abstract class InpcBase : INotifyPropertyChanged, INotifyPropertyChanging
     }
 }
 
-public class PropertyChangedExtendedEventArgs<T> : PropertyChangedEventArgs
+public class PropertyChangedExtendedEventArgs<T>(string propertyName, T oldValue, T newValue) : PropertyChangedEventArgs(propertyName)
 {
-    public PropertyChangedExtendedEventArgs(string propertyName, T oldValue, T newValue) : base(propertyName)
-    {
-        OldValue = oldValue;
-        NewValue = newValue;
-    }
+    public virtual T NewValue { get; private set; } = newValue;
 
-    public virtual T NewValue { get; private set; }
-
-    public virtual T OldValue { get; private set; }
+    public virtual T OldValue { get; private set; } = oldValue;
 }

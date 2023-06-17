@@ -63,7 +63,7 @@ public class ScannedImage : InpcBase
     }
 
     public BitmapSource ResimThumb {
-        get => Resim.Resize(Settings.Default.DefaultThumbPictureResizeRatio / 100d);
+        get => Resim?.Resize(Settings.Default.DefaultThumbPictureResizeRatio / 100d);
 
         set {
             if (resimThumb != value)

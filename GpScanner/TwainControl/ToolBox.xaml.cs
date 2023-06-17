@@ -179,7 +179,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                 for (int i = 0; i < seçiliresimler.Count() / (Scanner.SliceCountWidth * Scanner.SliceCountHeight); i++)
                 {
                     page = pdfdocument.AddPage();
-                    Paper.SetPaperSize(page);
+                    page.Size = Paper.SetPaperSize();
                     page.Orientation = pageOrientation;
                     for (int heighindex = 0; heighindex < Scanner.SliceCountHeight; heighindex++)
                     {
@@ -200,8 +200,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                                     BitmapFrame currentimage = seçiliresimler.ElementAtOrDefault(imageindex).Resim;
                                     double xratio = width / currentimage.PixelWidth;
                                     BitmapSource bitmapsource = ResizeRatioImage ? currentimage.Resize(xratio) : CompressImage ? currentimage.Resize(width, height) : currentimage;
-                                    using MemoryStream ms =
-                            new(bitmapsource.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality));
+                                    using MemoryStream ms = new(bitmapsource.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality));
                                     using XImage xImage = XImage.FromStream(ms);
                                     using XGraphics gfx = XGraphics.FromPdfPage(page);
                                     box = new XRect(x + BorderSize, y + BorderSize, width + (BorderSize * -2), height + (BorderSize * -2));
