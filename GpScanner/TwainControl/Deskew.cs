@@ -6,11 +6,8 @@ using System.Windows.Media.Imaging;
 
 namespace TwainControl;
 
-public class Deskew
+public class Deskew(BitmapSource bmp)
 {
-    public Deskew(BitmapSource bmp)
-    { cBmp = bmp; }
-
     public double GetAlpha(int Index)
     {
         return cAlphaStart + (Index * cAlphaStep);
@@ -178,7 +175,7 @@ public class Deskew
 
     private readonly double cAlphaStep = 0.2;
 
-    private readonly BitmapSource cBmp;
+    private readonly BitmapSource cBmp = bmp;
 
     private readonly double cDStep = 1;
 

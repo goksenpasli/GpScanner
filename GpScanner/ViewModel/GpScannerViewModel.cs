@@ -58,7 +58,6 @@ public class GpScannerViewModel : InpcBase
             RegisterSimplePdfFileWatcher();
         }
 
-        PdfGeneration.Scanner.SelectedTtsLanguage = Settings.Default.DefaultTtsLang;
         Settings.Default.PropertyChanged += Default_PropertyChanged;
         PropertyChanged += GpScannerViewModel_PropertyChanged;
 
@@ -460,7 +459,7 @@ public class GpScannerViewModel : InpcBase
                                     {
                                         string pdffile = Path.ChangeExtension(item.ElementAtOrDefault(i), ".pdf");
                                         ObservableCollection<OcrData> scannedText = scanner?.ApplyPdfSaveOcr == true
-                                            ? item.ElementAtOrDefault(i).GetOcrData(scanner.SelectedTtsLanguage)
+                                            ? item.ElementAtOrDefault(i).GetOcrData(Settings.Default.DefaultTtsLang)
                                             : null;
 
                                         batchTxtOcr.ProgressValue = (i + 1) / (double)item.Count;
@@ -534,7 +533,7 @@ public class GpScannerViewModel : InpcBase
                                     {
                                         string image = item[i];
                                         string txtfile = Path.ChangeExtension(image, ".txt");
-                                        string content = string.Join(" ", image.GetOcrData(scanner.SelectedTtsLanguage).Select(z => z.Text));
+                                        string content = string.Join(" ", image.GetOcrData(Settings.Default.DefaultTtsLang).Select(z => z.Text));
                                         File.WriteAllText(txtfile, content);
                                         batchTxtOcr.ProgressValue = (i + 1) / (double)item.Count;
                                         scanner.PdfSaveProgressValue = BatchTxtOcrs.Sum(z => z.ProgressValue) / Tasks.Count;
@@ -1327,7 +1326,7 @@ public class GpScannerViewModel : InpcBase
         return null;
     }
 
-    public void RegisterBatchImageFileWatcher(Scanner scanner, Paper paper, string batchsavefolder)
+    public void RegisterBatchImageFileWatcher(Paper paper, string batchsavefolder)
     {
         FileSystemWatcher watcher = new(batchsavefolder) { NotifyFilter = NotifyFilters.FileName, Filter = "*.*", IncludeSubdirectories = true, EnableRaisingEvents = true };
         watcher.Created += async (s, e) =>
@@ -1335,7 +1334,7 @@ public class GpScannerViewModel : InpcBase
             if (imagefileextensions.Contains(Path.GetExtension(e.Name.ToLower())))
             {
                 await Task.Delay(1000);
-                ObservableCollection<OcrData> scannedText = await e.FullPath.OcrAsync(scanner.SelectedTtsLanguage);
+                ObservableCollection<OcrData> scannedText = await e.FullPath.OcrAsync(Settings.Default.DefaultTtsLang);
                 await Task.Run(
                     () =>
                     {
@@ -1373,11 +1372,6 @@ public class GpScannerViewModel : InpcBase
             {
                 _ = MessageBox.Show(Translation.GetResStringValue("RESTARTAPP"));
             }
-        }
-
-        if (e.PropertyName is "DefaultTtsLang")
-        {
-            PdfGeneration.Scanner.SelectedTtsLanguage = Settings.Default.DefaultTtsLang;
         }
 
         if (e.PropertyName is "WatchFolderPdfFileChange" && Settings.Default.WatchFolderPdfFileChange)

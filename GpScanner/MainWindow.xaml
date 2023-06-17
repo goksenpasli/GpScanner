@@ -479,7 +479,9 @@
                                                                         </Image.Source>
                                                                     </Image>
                                                                 </Extensions:ContentToggleButton>
-                                                                <Button Grid.Column="2" Command="{Binding DataContext.UploadSharePoint, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding Mode=OneWay}" >
+                                                                <Button Grid.Column="2"
+                                                                    Command="{Binding DataContext.UploadSharePoint, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                                                    CommandParameter="{Binding Mode=OneWay}">
                                                                     <Image Width="16" Height="16">
                                                                         <Image.Source>
                                                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">

@@ -111,7 +111,7 @@ public partial class MainWindow : Window
 
         if (DataContext is GpScannerViewModel ViewModel && Settings.Default.RegisterBatchWatcher && Directory.Exists(Settings.Default.BatchFolder))
         {
-            ViewModel.RegisterBatchImageFileWatcher(TwainCtrl.Scanner, TwainCtrl.SelectedPaper, Settings.Default.BatchFolder);
+            ViewModel.RegisterBatchImageFileWatcher(TwainCtrl.SelectedPaper, Settings.Default.BatchFolder);
         }
 
         if (Settings.Default.IsFirstRun)
@@ -221,15 +221,11 @@ public partial class MainWindow : Window
         if ((e.PropertyName is "ApplyPdfSaveOcr" && TwainCtrl?.Scanner?.ApplyPdfSaveOcr == true) ||
             (e.PropertyName is "ApplyDataBaseOcr" && TwainCtrl?.Scanner?.ApplyDataBaseOcr == true))
         {
-            if (DataContext is GpScannerViewModel ViewModel)
+            if (DataContext is GpScannerViewModel ViewModel && ViewModel?.TesseractViewModel?.GetTesseractFiles(ViewModel.TesseractViewModel.Tessdatafolder)?.Count(item => item.Checked) == 0)
             {
-                if (ViewModel?.TesseractViewModel?.GetTesseractFiles(ViewModel.TesseractViewModel.Tessdatafolder)?.Count(item => item.Checked) == 0)
-                {
-                    TwainCtrl.Scanner.ApplyPdfSaveOcr = false;
-                    TwainCtrl.Scanner.ApplyDataBaseOcr = false;
-                    _ = MessageBox.Show(
-                        $"{Translation.GetResStringValue("SETTİNGS")}{Environment.NewLine}{Translation.GetResStringValue("DESTLANG")}{Environment.NewLine}{Translation.GetResStringValue("NOPROFILE")}");
-                }
+                TwainCtrl.Scanner.ApplyPdfSaveOcr = false;
+                TwainCtrl.Scanner.ApplyDataBaseOcr = false;
+                _ = MessageBox.Show($"{Translation.GetResStringValue("SETTİNGS")}{Environment.NewLine}{Translation.GetResStringValue("TESSLANGSELECT")}");
             }
         }
     }

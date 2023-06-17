@@ -166,14 +166,8 @@ public static class StillImageHelper
         return string.Format(PIPE_NAME_FORMAT, process.Id);
     }
 
-    private class StreamString
+    private class StreamString(Stream ioStream)
     {
-        public StreamString(Stream ioStream)
-        {
-            this.ioStream = ioStream;
-            streamEncoding = new UnicodeEncoding();
-        }
-
         public string ReadString()
         {
             int len = ioStream.ReadByte() * 256;
@@ -201,9 +195,9 @@ public static class StillImageHelper
             return outBuffer.Length + 2;
         }
 
-        private readonly Stream ioStream;
+        private readonly Stream ioStream = ioStream;
 
-        private readonly UnicodeEncoding streamEncoding;
+        private readonly UnicodeEncoding streamEncoding = new();
     }
 
     private const string PIPE_NAME_FORMAT = "GPSCANNER_PIPE_143762b8-772a-47af-bae6-08e0a1d0ca89_{0}";

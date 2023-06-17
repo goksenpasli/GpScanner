@@ -213,7 +213,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                         break;
 
                                     case 6:
-                                        await SaveTxtFileAsync(bitmapFrame, fileName, Scanner);
+                                        await SaveTxtFileAsync(bitmapFrame, fileName);
                                         break;
 
                                     case 7:
@@ -357,7 +357,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                     break;
 
                                 case 5:
-                                    await SaveTxtFileAsync(seçiliresimler, fileName, Scanner);
+                                    await SaveTxtFileAsync(seçiliresimler, fileName);
                                     break;
 
                                 case 6:
@@ -2268,10 +2268,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public async Task SavePdfImageAsync(BitmapFrame scannedImage, string filename, Scanner scanner, Paper paper, bool applyocr, bool blackwhite = false)
     {
         ObservableCollection<OcrData> ocrtext = null;
-        if (applyocr && !string.IsNullOrEmpty(scanner?.SelectedTtsLanguage))
+        if (applyocr && !string.IsNullOrEmpty(Scanner.SelectedTtsLanguage))
         {
             scanner.SaveProgressBarForegroundBrush = bluesaveprogresscolor;
-            _ = await Dispatcher.Invoke(async () => ocrtext = await scannedImage.ToTiffJpegByteArray(Format.Jpg).OcrAsync(scanner.SelectedTtsLanguage));
+            _ = await Dispatcher.Invoke(async () => ocrtext = await scannedImage.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Scanner.SelectedTtsLanguage));
         }
 
         scanner.SaveProgressBarForegroundBrush = Scanner.DefaultSaveProgressforegroundbrush;
@@ -2287,7 +2287,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public async Task SavePdfImageAsync(List<ScannedImage> images, string filename, Scanner scanner, Paper paper, bool applyocr, bool blackwhite = false, int dpi = 120)
     {
         List<ObservableCollection<OcrData>> scannedtext = null;
-        if (applyocr && !string.IsNullOrEmpty(scanner?.SelectedTtsLanguage))
+        if (applyocr && !string.IsNullOrEmpty(Scanner.SelectedTtsLanguage))
         {
             scanner.SaveProgressBarForegroundBrush = bluesaveprogresscolor;
             scannedtext = new List<ObservableCollection<OcrData>>();
@@ -2298,7 +2298,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 await Dispatcher.Invoke(
                     async () =>
                     {
-                        ObservableCollection<OcrData> item = await image.Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsync(scanner.SelectedTtsLanguage);
+                        ObservableCollection<OcrData> item = await image.Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Scanner.SelectedTtsLanguage);
                         scannedtext.Add(item);
                     });
                 scanner.PdfSaveProgressValue = i / (double)images.Count;
@@ -2347,29 +2347,29 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             });
     }
 
-    public async Task SaveTxtFileAsync(BitmapFrame bitmapFrame, string fileName, Scanner scanner)
+    public async Task SaveTxtFileAsync(BitmapFrame bitmapFrame, string fileName)
     {
-        if (bitmapFrame is not null && !string.IsNullOrEmpty(scanner.SelectedTtsLanguage))
+        if (bitmapFrame is not null && !string.IsNullOrEmpty(Scanner.SelectedTtsLanguage))
         {
             await Dispatcher.Invoke(
                 async () =>
                 {
-                    ObservableCollection<OcrData> ocrtext = await bitmapFrame.ToTiffJpegByteArray(Format.Jpg).OcrAsync(scanner.SelectedTtsLanguage);
+                    ObservableCollection<OcrData> ocrtext = await bitmapFrame.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Scanner.SelectedTtsLanguage);
                     File.WriteAllText(fileName, string.Join(" ", ocrtext.Select(z => z.Text)));
                 });
         }
     }
 
-    public async Task SaveTxtFileAsync(List<ScannedImage> images, string fileName, Scanner scanner)
+    public async Task SaveTxtFileAsync(List<ScannedImage> images, string fileName)
     {
-        if (images is not null && !string.IsNullOrEmpty(scanner.SelectedTtsLanguage))
+        if (images is not null && !string.IsNullOrEmpty(Scanner.SelectedTtsLanguage))
         {
             for (int i = 0; i < images.Count; i++)
             {
                 await Dispatcher.Invoke(
                     async () =>
                     {
-                        ObservableCollection<OcrData> ocrtext = await images[i].Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsync(scanner.SelectedTtsLanguage);
+                        ObservableCollection<OcrData> ocrtext = await images[i].Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Scanner.SelectedTtsLanguage);
                         File.WriteAllText(
                             Path.Combine(Path.GetDirectoryName(fileName), $"{Path.GetFileNameWithoutExtension(fileName)}{i}.txt"),
                             string.Join(" ", ocrtext.Select(z => z.Text)));

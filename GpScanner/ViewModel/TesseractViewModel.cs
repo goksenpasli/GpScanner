@@ -97,6 +97,11 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
             },
             parameter => true);
         PropertyChanged += TesseractViewModel_PropertyChanged;
+
+        if (PdfGeneration.Scanner is not null)
+        {
+            PdfGeneration.Scanner.SelectedTtsLanguage = Settings.Default.DefaultTtsLang;
+        }
     }
 
     public string Error => string.Empty;
@@ -145,7 +150,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
 
     public string this[string columnName] => columnName switch
     {
-        "TesseractFiles" when TesseractFiles?.Count(z => z.Checked) == 0 || string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) => $"{Translation.GetResStringValue("DESTLANG")}{Environment.NewLine}{Translation.GetResStringValue("NOPROFILE")}",
+        "TesseractFiles" when TesseractFiles?.Count(z => z.Checked) == 0 || string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) => $"{Translation.GetResStringValue("TESSLANGSELECT")}",
         _ => null
     };
 
@@ -176,13 +181,13 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
         if (e.PropertyName is "Checked")
         {
             IEnumerable<TessFiles> checkedFiles = TesseractFiles.Where(item => item.Checked);
-            Settings.Default.DefaultTtsLang = string.Join("+", checkedFiles.Select(item => item.Name));
             if (!checkedFiles.Any())
             {
                 Settings.Default.BatchFolder = string.Empty;
                 PdfGeneration.Scanner.ApplyPdfSaveOcr = false;
                 PdfGeneration.Scanner.ApplyDataBaseOcr = false;
             }
+            PdfGeneration.Scanner.SelectedTtsLanguage = Settings.Default.DefaultTtsLang = string.Join("+", checkedFiles.Select(item => item.Name));
             OnPropertyChanged(nameof(TesseractFiles));
         }
     }
