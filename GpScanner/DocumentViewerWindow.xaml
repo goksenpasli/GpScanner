@@ -7,8 +7,8 @@
     Title="{Binding Title, TargetNullValue=''}"
     Width="800" Height="600"
     d:DataContext="{d:DesignInstance Type=viewmodel:DocumentViewerModel}"
-    Unloaded="Window_Unloaded" UseLayoutRounding="True" WindowStartupLocation="CenterOwner"
-    WindowState="Maximized"
+    Unloaded="Window_Unloaded" UseLayoutRounding="True"
+    WindowStartupLocation="CenterOwner" WindowState="Maximized"
     mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>
@@ -40,15 +40,14 @@
                         <Image Width="24" Height="24"
                             d:Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}"
                             Source="{Binding Mode=OneWay, Converter={StaticResource FilePathToIconConverter}}" />
-                        <TextBlock VerticalAlignment="Center"
-                            d:Text="FileName"
-                            Text="{Binding Mode=OneWay, Converter={StaticResource FileNameExtractConverter}}" />
+                        <TextBlock VerticalAlignment="Center" d:Text="FileName" Text="{Binding Mode=OneWay, Converter={StaticResource FileNameExtractConverter}}" />
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
         <Button Command="{Binding Back}"
-            Content="ç" FontFamily="Wingdings" FontSize="16" />
+            Content="ç" FontFamily="Wingdings"
+            FontSize="16" />
         <Grid Grid.Row="1" Grid.ColumnSpan="3">
             <ContentControl x:Name="cnt"
                 d:ContentTemplate="{StaticResource PdfViewerDocumentViewerTemplateFull}"
@@ -60,6 +59,7 @@
         </Grid>
         <Button Grid.Column="2"
             Command="{Binding Forward}"
-            Content="è" FontFamily="Wingdings" FontSize="16" />
+            Content="è" FontFamily="Wingdings"
+            FontSize="16" />
     </Grid>
 </Window>

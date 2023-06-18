@@ -5,8 +5,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:Extensions"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance Type=Controls:MediaViewer}"
-    d:DesignHeight="480" d:DesignWidth="480" FontFamily="Segoe UI"
-    FontSize="12" UseLayoutRounding="True"
+    d:DesignHeight="480" d:DesignWidth="480"
+    FontFamily="Segoe UI" FontSize="12"
+    UseLayoutRounding="True"
     mc:Ignorable="d">
     <UserControl.Resources>
         <CollectionViewSource x:Key="Subtitle" Source="{Binding ParsedSubtitle}" />
@@ -49,22 +50,15 @@
                 </Grid>
                 <UniformGrid Columns="2">
                     <Button Command="{Binding LoadSubtitle}" Content="ALTYAZI YÜKLE" />
-                    <ToggleButton VerticalContentAlignment="Center"
-                        Content="ALTYAZI GÖRÜNÜR"
-                        IsChecked="{Binding SubTitleVisibility, Mode=TwoWay, Converter={StaticResource VisibilityToBooleanConverter}}" />
+                    <ToggleButton VerticalContentAlignment="Center" Content="ALTYAZI GÖRÜNÜR" IsChecked="{Binding SubTitleVisibility, Mode=TwoWay, Converter={StaticResource VisibilityToBooleanConverter}}" />
                 </UniformGrid>
                 <Slider Maximum="128" Minimum="1"
                     Style="{DynamicResource Slider}"
                     Value="{Binding SubTitleSize}" />
-                <local:ColorPicker ColorPickerColumnCount="10"
-                    HexCode="{Binding SubTitleColor, Mode=TwoWay}"
-                    PredefinedColorVisibility="Visible" />
-                <ToggleButton VerticalContentAlignment="Center"
-                    Content="OTOMATİK ALTYAZI ÇEVİRİ"
-                    IsChecked="{Binding AutoTranslate}" />
+                <local:ColorPicker ColorPickerColumnCount="10" HexCode="{Binding SubTitleColor, Mode=TwoWay}" PredefinedColorVisibility="Visible" />
+                <ToggleButton VerticalContentAlignment="Center" Content="OTOMATİK ALTYAZI ÇEVİRİ" IsChecked="{Binding AutoTranslate}" />
                 <Controls:TranslateView IsEnabled="{Binding AutoTranslate}" />
-                <local:ButtonedTextBox CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed"
-                    Text="{Binding SearchSubtitle, UpdateSourceTrigger=PropertyChanged}" />
+                <local:ButtonedTextBox CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed" Text="{Binding SearchSubtitle, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
             <Grid>
                 <Grid.RowDefinitions>

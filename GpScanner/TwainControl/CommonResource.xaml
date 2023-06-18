@@ -34,51 +34,37 @@
         <GradientStop Offset="0.83" Color="Indigo" />
         <GradientStop Offset="1.0" Color="Violet" />
     </LinearGradientBrush>
-    <ObjectDataProvider x:Key="PdfLayout"
-        MethodName="GetValues"
-        ObjectType="{x:Type System:Enum}">
+    <ObjectDataProvider x:Key="PdfLayout" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
         <ObjectDataProvider.MethodParameters>
             <x:Type TypeName="local:PdfPageLayout" />
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="PdfDashLayout"
-        MethodName="GetValues"
-        ObjectType="{x:Type System:Enum}">
+    <ObjectDataProvider x:Key="PdfDashLayout" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
         <ObjectDataProvider.MethodParameters>
             <x:Type TypeName="pdfsharpdrawing:XDashStyle" />
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="PdfPenLineLayout"
-        MethodName="GetValues"
-        ObjectType="{x:Type System:Enum}">
+    <ObjectDataProvider x:Key="PdfPenLineLayout" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
         <ObjectDataProvider.MethodParameters>
             <x:Type TypeName="pdfsharpdrawing:XLineCap" />
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="PdfPenLineJoinLayout"
-        MethodName="GetValues"
-        ObjectType="{x:Type System:Enum}">
+    <ObjectDataProvider x:Key="PdfPenLineJoinLayout" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
         <ObjectDataProvider.MethodParameters>
             <x:Type TypeName="pdfsharpdrawing:XLineJoin" />
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="PdfColor"
-        MethodName="GetValues"
-        ObjectType="{x:Type System:Enum}">
+    <ObjectDataProvider x:Key="PdfColor" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
         <ObjectDataProvider.MethodParameters>
             <x:Type TypeName="pdfsharpdrawing:XKnownColor" />
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="InkCanvasEditingMode"
-        MethodName="GetValues"
-        ObjectType="{x:Type System:Enum}">
+    <ObjectDataProvider x:Key="InkCanvasEditingMode" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
         <ObjectDataProvider.MethodParameters>
             <x:Type TypeName="InkCanvasEditingMode" />
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="StylusTip"
-        MethodName="GetValues"
-        ObjectType="{x:Type System:Enum}">
+    <ObjectDataProvider x:Key="StylusTip" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
         <ObjectDataProvider.MethodParameters>
             <x:Type TypeName="StylusTip" />
         </ObjectDataProvider.MethodParameters>
@@ -87,68 +73,57 @@
         <DrawingBrush.Drawing>
             <DrawingGroup>
                 <DrawingGroup.Children>
-                    <GeometryDrawing PresentationOptions:Freeze="true" Brush="#FFFFFFFF"
-                        Geometry="F1 M 1.61458,0.75C 2.23015,0.75 2.72917,1.24902 2.72917,1.86458C 2.72917,2.48015 2.23015,2.97917 1.61458,2.97917C 0.999016,2.97917 0.5,2.48015 0.5,1.86458C 0.5,1.24902 0.999017,0.75 1.61458,0.75 Z ">
+                    <GeometryDrawing PresentationOptions:Freeze="true" Brush="#FFFFFFFF" Geometry="F1 M 1.61458,0.75C 2.23015,0.75 2.72917,1.24902 2.72917,1.86458C 2.72917,2.48015 2.23015,2.97917 1.61458,2.97917C 0.999016,2.97917 0.5,2.48015 0.5,1.86458C 0.5,1.24902 0.999017,0.75 1.61458,0.75 Z ">
                         <GeometryDrawing.Pen>
                             <Pen PresentationOptions:Freeze="true" Brush="#FF000000" LineJoin="Round" />
                         </GeometryDrawing.Pen>
                     </GeometryDrawing>
-                    <GeometryDrawing PresentationOptions:Freeze="true" Brush="#FFFFFFFF"
-                        Geometry="F1 M 2.42708,4.70833C 2.99663,4.70833 3.45833,5.17004 3.45833,5.73958C 3.45833,6.30913 2.99663,6.77083 2.42708,6.77083C 1.85754,6.77083 1.39583,6.30913 1.39583,5.73958C 1.39583,5.17004 1.85754,4.70833 2.42708,4.70833 Z ">
+                    <GeometryDrawing PresentationOptions:Freeze="true" Brush="#FFFFFFFF" Geometry="F1 M 2.42708,4.70833C 2.99663,4.70833 3.45833,5.17004 3.45833,5.73958C 3.45833,6.30913 2.99663,6.77083 2.42708,6.77083C 1.85754,6.77083 1.39583,6.30913 1.39583,5.73958C 1.39583,5.17004 1.85754,4.70833 2.42708,4.70833 Z ">
                         <GeometryDrawing.Pen>
                             <Pen PresentationOptions:Freeze="true" Brush="#FF000000" LineJoin="Round" />
                         </GeometryDrawing.Pen>
                     </GeometryDrawing>
-                    <GeometryDrawing PresentationOptions:Freeze="true" Brush="#FFFFFFFF"
-                        Geometry="F1 M 7.375,2.625C 7.9503,2.625 8.41667,3.09137 8.41667,3.66667C 8.41667,4.24196 7.9503,4.70833 7.375,4.70833C 6.7997,4.70833 6.33333,4.24196 6.33333,3.66667C 6.33333,3.09137 6.7997,2.625 7.375,2.625 Z ">
+                    <GeometryDrawing PresentationOptions:Freeze="true" Brush="#FFFFFFFF" Geometry="F1 M 7.375,2.625C 7.9503,2.625 8.41667,3.09137 8.41667,3.66667C 8.41667,4.24196 7.9503,4.70833 7.375,4.70833C 6.7997,4.70833 6.33333,4.24196 6.33333,3.66667C 6.33333,3.09137 6.7997,2.625 7.375,2.625 Z ">
                         <GeometryDrawing.Pen>
                             <Pen PresentationOptions:Freeze="true" Brush="#FF000000" LineJoin="Round" />
                         </GeometryDrawing.Pen>
                     </GeometryDrawing>
-                    <GeometryDrawing PresentationOptions:Freeze="true" Brush="#FFFFFFFF"
-                        Geometry="F1 M 11.8333,2.04167C 11.9714,2.04167 12.0833,2.15359 12.0833,2.29167C 12.0833,2.42974 11.9714,2.54167 11.8333,2.54167C 11.6953,2.54167 11.5833,2.42974 11.5833,2.29167C 11.5833,2.15359 11.6953,2.04167 11.8333,2.04167 Z ">
+                    <GeometryDrawing PresentationOptions:Freeze="true" Brush="#FFFFFFFF" Geometry="F1 M 11.8333,2.04167C 11.9714,2.04167 12.0833,2.15359 12.0833,2.29167C 12.0833,2.42974 11.9714,2.54167 11.8333,2.54167C 11.6953,2.54167 11.5833,2.42974 11.5833,2.29167C 11.5833,2.15359 11.6953,2.04167 11.8333,2.04167 Z ">
                         <GeometryDrawing.Pen>
                             <Pen PresentationOptions:Freeze="true" Brush="#FF000000" LineJoin="Round" />
                         </GeometryDrawing.Pen>
                     </GeometryDrawing>
-                    <GeometryDrawing PresentationOptions:Freeze="true" Brush="#FFFFFFFF"
-                        Geometry="F1 M 7.11458,10.2083C 8.22491,10.2083 9.125,11.1084 9.125,12.2187C 9.125,13.3291 8.22491,14.2292 7.11458,14.2292C 6.00426,14.2292 5.10417,13.3291 5.10417,12.2187C 5.10417,11.1084 6.00426,10.2083 7.11458,10.2083 Z ">
+                    <GeometryDrawing PresentationOptions:Freeze="true" Brush="#FFFFFFFF" Geometry="F1 M 7.11458,10.2083C 8.22491,10.2083 9.125,11.1084 9.125,12.2187C 9.125,13.3291 8.22491,14.2292 7.11458,14.2292C 6.00426,14.2292 5.10417,13.3291 5.10417,12.2187C 5.10417,11.1084 6.00426,10.2083 7.11458,10.2083 Z ">
                         <GeometryDrawing.Pen>
                             <Pen PresentationOptions:Freeze="true" Brush="#FF000000" LineJoin="Round" />
                         </GeometryDrawing.Pen>
                     </GeometryDrawing>
-                    <GeometryDrawing PresentationOptions:Freeze="true" Brush="#FFFFFFFF"
-                        Geometry="F1 M 2.89583,9.8125C 3.14896,9.8125 3.35417,10.0177 3.35417,10.2708C 3.35417,10.524 3.14896,10.7292 2.89583,10.7292C 2.6427,10.7292 2.4375,10.524 2.4375,10.2708C 2.4375,10.0177 2.6427,9.8125 2.89583,9.8125 Z ">
+                    <GeometryDrawing PresentationOptions:Freeze="true" Brush="#FFFFFFFF" Geometry="F1 M 2.89583,9.8125C 3.14896,9.8125 3.35417,10.0177 3.35417,10.2708C 3.35417,10.524 3.14896,10.7292 2.89583,10.7292C 2.6427,10.7292 2.4375,10.524 2.4375,10.2708C 2.4375,10.0177 2.6427,9.8125 2.89583,9.8125 Z ">
                         <GeometryDrawing.Pen>
                             <Pen PresentationOptions:Freeze="true" Brush="#FF000000" LineJoin="Round" />
                         </GeometryDrawing.Pen>
                     </GeometryDrawing>
-                    <GeometryDrawing PresentationOptions:Freeze="true" Brush="#FFFFFFFF"
-                        Geometry="F1 M 13.4896,11.7292C 14.1742,11.7292 14.7292,12.2841 14.7292,12.9687C 14.7292,13.6534 14.1742,14.2083 13.4896,14.2083C 12.805,14.2083 12.25,13.6534 12.25,12.9687C 12.25,12.2841 12.805,11.7292 13.4896,11.7292 Z ">
+                    <GeometryDrawing PresentationOptions:Freeze="true" Brush="#FFFFFFFF" Geometry="F1 M 13.4896,11.7292C 14.1742,11.7292 14.7292,12.2841 14.7292,12.9687C 14.7292,13.6534 14.1742,14.2083 13.4896,14.2083C 12.805,14.2083 12.25,13.6534 12.25,12.9687C 12.25,12.2841 12.805,11.7292 13.4896,11.7292 Z ">
                         <GeometryDrawing.Pen>
                             <Pen PresentationOptions:Freeze="true" Brush="#FF000000" LineJoin="Round" />
                         </GeometryDrawing.Pen>
                     </GeometryDrawing>
-                    <GeometryDrawing PresentationOptions:Freeze="true" Brush="#FFFFFFFF"
-                        Geometry="F1 M 8.6875,0.5C 8.80256,0.5 8.89583,0.593276 8.89583,0.708334C 8.89583,0.823393 8.80256,0.916667 8.6875,0.916667C 8.57244,0.916667 8.47917,0.823393 8.47917,0.708334C 8.47917,0.593276 8.57244,0.5 8.6875,0.5 Z ">
+                    <GeometryDrawing PresentationOptions:Freeze="true" Brush="#FFFFFFFF" Geometry="F1 M 8.6875,0.5C 8.80256,0.5 8.89583,0.593276 8.89583,0.708334C 8.89583,0.823393 8.80256,0.916667 8.6875,0.916667C 8.57244,0.916667 8.47917,0.823393 8.47917,0.708334C 8.47917,0.593276 8.57244,0.5 8.6875,0.5 Z ">
                         <GeometryDrawing.Pen>
                             <Pen PresentationOptions:Freeze="true" Brush="#FF000000" LineJoin="Round" />
                         </GeometryDrawing.Pen>
                     </GeometryDrawing>
-                    <GeometryDrawing PresentationOptions:Freeze="true" Brush="#FFFFFFFF"
-                        Geometry="F1 M 13.9375,0.791667C 13.995,0.791667 14.0417,0.838304 14.0417,0.895834C 14.0417,0.953363 13.995,1 13.9375,1C 13.88,1 13.8333,0.953363 13.8333,0.895834C 13.8333,0.838304 13.88,0.791667 13.9375,0.791667 Z ">
+                    <GeometryDrawing PresentationOptions:Freeze="true" Brush="#FFFFFFFF" Geometry="F1 M 13.9375,0.791667C 13.995,0.791667 14.0417,0.838304 14.0417,0.895834C 14.0417,0.953363 13.995,1 13.9375,1C 13.88,1 13.8333,0.953363 13.8333,0.895834C 13.8333,0.838304 13.88,0.791667 13.9375,0.791667 Z ">
                         <GeometryDrawing.Pen>
                             <Pen PresentationOptions:Freeze="true" Brush="#FF000000" LineJoin="Round" />
                         </GeometryDrawing.Pen>
                     </GeometryDrawing>
-                    <GeometryDrawing PresentationOptions:Freeze="true" Brush="#FFFFFFFF"
-                        Geometry="F1 M 10.3542,3.83333C 10.5152,3.83333 10.6458,3.96392 10.6458,4.125C 10.6458,4.28608 10.5152,4.41667 10.3542,4.41667C 10.1931,4.41667 10.0625,4.28608 10.0625,4.125C 10.0625,3.96392 10.1931,3.83333 10.3542,3.83333 Z ">
+                    <GeometryDrawing PresentationOptions:Freeze="true" Brush="#FFFFFFFF" Geometry="F1 M 10.3542,3.83333C 10.5152,3.83333 10.6458,3.96392 10.6458,4.125C 10.6458,4.28608 10.5152,4.41667 10.3542,4.41667C 10.1931,4.41667 10.0625,4.28608 10.0625,4.125C 10.0625,3.96392 10.1931,3.83333 10.3542,3.83333 Z ">
                         <GeometryDrawing.Pen>
                             <Pen PresentationOptions:Freeze="true" Brush="#FF000000" LineJoin="Round" />
                         </GeometryDrawing.Pen>
                     </GeometryDrawing>
-                    <GeometryDrawing PresentationOptions:Freeze="true" Brush="#FFFFFFFF"
-                        Geometry="F1 M 2,12.4375C 2.51777,12.4375 2.9375,12.8572 2.9375,13.375C 2.9375,13.8928 2.51777,14.3125 2,14.3125C 1.48223,14.3125 1.0625,13.8928 1.0625,13.375C 1.0625,12.8572 1.48223,12.4375 2,12.4375 Z ">
+                    <GeometryDrawing PresentationOptions:Freeze="true" Brush="#FFFFFFFF" Geometry="F1 M 2,12.4375C 2.51777,12.4375 2.9375,12.8572 2.9375,13.375C 2.9375,13.8928 2.51777,14.3125 2,14.3125C 1.48223,14.3125 1.0625,13.8928 1.0625,13.375C 1.0625,12.8572 1.48223,12.4375 2,12.4375 Z ">
                         <GeometryDrawing.Pen>
                             <Pen PresentationOptions:Freeze="true" Brush="#FF000000" LineJoin="Round" />
                         </GeometryDrawing.Pen>

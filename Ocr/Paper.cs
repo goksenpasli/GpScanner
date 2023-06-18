@@ -2,6 +2,18 @@
 
 public class Paper : InpcBase
 {
+    public string Category {
+        get => category;
+
+        set {
+            if (category != value)
+            {
+                category = value;
+                OnPropertyChanged(nameof(Category));
+            }
+        }
+    }
+
     public double Height {
         get => height;
 
@@ -37,6 +49,8 @@ public class Paper : InpcBase
             }
         }
     }
+
+    private string category;
 
     private double height;
 

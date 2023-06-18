@@ -14,6 +14,7 @@ namespace TwainControl;
 public class LocExtension(string stringName) : MarkupExtension
 {
     public string StringName { get; } = stringName;
+
     public override object ProvideValue(IServiceProvider serviceProvider)
     {
         object targetObject = (serviceProvider as IProvideValueTarget)?.TargetObject;

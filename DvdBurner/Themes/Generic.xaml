@@ -1,7 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
-    xmlns:local="clr-namespace:DvdBurner">
+    xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions" xmlns:local="clr-namespace:DvdBurner">
     <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
     <Style TargetType="{x:Type local:Burner}">
         <Setter Property="Template">
@@ -52,15 +51,13 @@
                             </Button>
                         </UniformGrid>
                         <Grid>
-                            <ProgressBar IsIndeterminate="{Binding ProgressIndeterminate, RelativeSource={RelativeSource TemplatedParent}}"
-                                Maximum="1"
-                                Value="{Binding ProgressValue, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <ProgressBar IsIndeterminate="{Binding ProgressIndeterminate, RelativeSource={RelativeSource TemplatedParent}}" Maximum="1" Value="{Binding ProgressValue, RelativeSource={RelativeSource TemplatedParent}}" />
                             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
                                 Text="{Binding ActionText, RelativeSource={RelativeSource TemplatedParent}}"
                                 TextWrapping="Wrap" />
                         </Grid>
-                        <Extensions:ButtonedTextBox CopyButtonVisibility="Visible" Description="ETİKET" OpenButtonVisibility="Collapsed"
-                            ResetButtonVisibility="Visible"
+                        <Extensions:ButtonedTextBox CopyButtonVisibility="Visible" Description="ETİKET"
+                            OpenButtonVisibility="Collapsed" ResetButtonVisibility="Visible"
                             Text="{Binding CdLabel, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}" />
                         <CheckBox Content="BİTİNCE CDYİ ÇIKAR" IsChecked="{Binding Eject, RelativeSource={RelativeSource TemplatedParent}}" />
                     </StackPanel>

@@ -5,7 +5,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:properties="clr-namespace:GpScanner.Properties"
-    d:DesignHeight="200" d:DesignWidth="400" UseLayoutRounding="True"
+    d:DesignHeight="200" d:DesignWidth="400"
+    UseLayoutRounding="True"
     mc:Ignorable="d">
     <GroupBox Header="FTP">
         <Grid>
@@ -31,8 +32,7 @@
                                 CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
                                 IsEnabled="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
                                 TextDecorations="None">
-                                <Image Width="16" Height="16"
-                                    VerticalAlignment="Center">
+                                <Image Width="16" Height="16" VerticalAlignment="Center">
                                     <Image.Source>
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                             <Binding Source="Shell32.dll" />

@@ -75,9 +75,7 @@
             <Diller:DictionaryEntry Key="Cymraeg" Value="cy" />
             <Diller:DictionaryEntry Key="ייִדיש" Value="yi" />
         </Diller:ArrayList>
-        <Style x:Key="ToggleButtonPlayPauseStyle"
-            x:Shared="False"
-            TargetType="{x:Type ToggleButton}">
+        <Style x:Key="ToggleButtonPlayPauseStyle" x:Shared="False" TargetType="{x:Type ToggleButton}">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=Self}}" Value="true">
                     <Setter Property="Content">
@@ -131,8 +129,7 @@
                 </ItemsPanelTemplate>
             </ComboBox.ItemsPanel>
         </ComboBox>
-        <Button Grid.Row="1" Grid.Column="1"
-            Command="{Binding Değiştir}">
+        <Button Grid.Row="1" Grid.Column="1" Command="{Binding Değiştir}">
             <Image Width="16" Height="16">
                 <Image.Source>
                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -174,9 +171,9 @@
         <Extensions:ButtonedTextBox x:Name="BtnTxtÇeviri"
             Grid.Row="3" Grid.ColumnSpan="3"
             VerticalContentAlignment="Top"
-            AcceptsReturn="True" CharacterCasing="Normal" IsReadOnly="True"
-            OpenButtonVisibility="Collapsed" ScrollViewer.VerticalScrollBarVisibility="Auto"
-            SpellCheck.IsEnabled="True"
+            AcceptsReturn="True" CharacterCasing="Normal"
+            IsReadOnly="True" OpenButtonVisibility="Collapsed"
+            ScrollViewer.VerticalScrollBarVisibility="Auto" SpellCheck.IsEnabled="True"
             Text="{Binding Çeviri}"
             TextWrapping="Wrap" />
         <ToggleButton Grid.Row="3" Grid.Column="3"
@@ -220,8 +217,7 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.Template>
                             <ControlTemplate>
-                                <ScrollViewer Padding="{TemplateBinding Padding}"
-                                    CanContentScroll="True" VerticalScrollBarVisibility="Visible">
+                                <ScrollViewer Padding="{TemplateBinding Padding}" CanContentScroll="True" VerticalScrollBarVisibility="Visible">
                                     <ItemsPresenter />
                                 </ScrollViewer>
                             </ControlTemplate>
@@ -229,7 +225,8 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Extensions:ButtonedTextBox Height="80"
-                                    IsReadOnly="True" OpenButtonVisibility="Collapsed" ResetButtonVisibility="Collapsed"
+                                    IsReadOnly="True" OpenButtonVisibility="Collapsed"
+                                    ResetButtonVisibility="Collapsed"
                                     Text="{Binding Mode=OneWay}"
                                     TextWrapping="Wrap" />
                             </DataTemplate>

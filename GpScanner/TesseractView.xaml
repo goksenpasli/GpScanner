@@ -16,9 +16,7 @@
             <UniformGrid Columns="2">
                 <CheckBox Content="{twainctrl:Loc ALL}" IsChecked="{Binding ShowAllLanguages}" />
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Hyperlink Command="{Binding DataContext.ExploreFile, RelativeSource={RelativeSource AncestorType=Window}}"
-                        CommandParameter="{Binding Tessdatafolder}"
-                        TextDecorations="None">
+                    <Hyperlink Command="{Binding DataContext.ExploreFile, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding Tessdatafolder}" TextDecorations="None">
                         <Image Width="16" Height="16">
                             <Image.Source>
                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -43,8 +41,7 @@
             <ItemsControl d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding OcrDatas}">
                 <ItemsControl.Template>
                     <ControlTemplate>
-                        <ScrollViewer Padding="{TemplateBinding Padding}"
-                            CanContentScroll="True" VerticalScrollBarVisibility="Auto">
+                        <ScrollViewer Padding="{TemplateBinding Padding}" CanContentScroll="True" VerticalScrollBarVisibility="Auto">
                             <ItemsPresenter />
                         </ScrollViewer>
                     </ControlTemplate>

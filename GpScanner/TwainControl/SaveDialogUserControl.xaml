@@ -2,11 +2,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:TwainControl"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:TwainControl"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:properties="clr-namespace:TwainControl.Properties"
-    xmlns:tesseract="clr-namespace:Ocr;assembly=Ocr"
+    xmlns:properties="clr-namespace:TwainControl.Properties" xmlns:tesseract="clr-namespace:Ocr;assembly=Ocr"
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
     d:DesignHeight="240" d:DesignWidth="450"
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
@@ -49,22 +47,19 @@
                 </ListBox.ItemsPanel>
                 <ListBoxItem>
                     <StackPanel Orientation="Horizontal">
-                        <Image Width="32" Height="32"
-                            Source="{Binding Source='.tif', Converter={StaticResource FilePathToIconConverter}}" />
+                        <Image Width="32" Height="32" Source="{Binding Source='.tif', Converter={StaticResource FilePathToIconConverter}}" />
                         <TextBlock VerticalAlignment="Center" Text="{Binding Source='.tif', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
                     </StackPanel>
                 </ListBoxItem>
                 <ListBoxItem>
                     <StackPanel Orientation="Horizontal">
-                        <Image Width="32" Height="32"
-                            Source="{Binding Source='.jpg', Converter={StaticResource FilePathToIconConverter}}" />
+                        <Image Width="32" Height="32" Source="{Binding Source='.jpg', Converter={StaticResource FilePathToIconConverter}}" />
                         <TextBlock VerticalAlignment="Center" Text="{Binding Source='.jpg', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
                     </StackPanel>
                 </ListBoxItem>
                 <ListBoxItem>
                     <StackPanel Orientation="Horizontal">
-                        <Image Width="32" Height="32"
-                            Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
+                        <Image Width="32" Height="32" Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
                         <TextBlock VerticalAlignment="Center" Text="{Binding Source='.pdf', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
                     </StackPanel>
                 </ListBoxItem>
@@ -74,8 +69,7 @@
                             <StackPanel.Effect>
                                 <BlurEffect KernelType="Gaussian" Radius="2" RenderingBias="Quality" />
                             </StackPanel.Effect>
-                            <Image Width="32" Height="32"
-                                Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}">
+                            <Image Width="32" Height="32" Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}">
                                 <Image.Effect>
                                     <Extensions:BlackWhiteEffect Threshold="0.8" />
                                 </Image.Effect>
@@ -89,15 +83,13 @@
                 </ListBoxItem>
                 <ListBoxItem>
                     <StackPanel Orientation="Horizontal">
-                        <Image Width="32" Height="32"
-                            Source="{Binding Source='.xps', Converter={StaticResource FilePathToIconConverter}}" />
+                        <Image Width="32" Height="32" Source="{Binding Source='.xps', Converter={StaticResource FilePathToIconConverter}}" />
                         <TextBlock VerticalAlignment="Center" Text="{Binding Source='.xps', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
                     </StackPanel>
                 </ListBoxItem>
                 <ListBoxItem IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">
                     <StackPanel Orientation="Horizontal">
-                        <Image Width="32" Height="32"
-                            Source="{Binding Source='.txt', Converter={StaticResource FilePathToIconConverter}}" />
+                        <Image Width="32" Height="32" Source="{Binding Source='.txt', Converter={StaticResource FilePathToIconConverter}}" />
                         <TextBlock VerticalAlignment="Center">
                             <Run Text="{Binding Mode=OneWay, Source='.txt', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
                             <Run FontWeight="Bold" Foreground="Red" Text="OCR" />
@@ -106,8 +98,7 @@
                 </ListBoxItem>
                 <ListBoxItem>
                     <StackPanel Orientation="Horizontal">
-                        <Image Width="32" Height="32"
-                            Source="{Binding Source='.webp', Converter={StaticResource FilePathToIconConverter}}" />
+                        <Image Width="32" Height="32" Source="{Binding Source='.webp', Converter={StaticResource FilePathToIconConverter}}" />
                         <TextBlock VerticalAlignment="Center" Text="{Binding Source='.webp', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
                     </StackPanel>
                 </ListBoxItem>
@@ -128,21 +119,20 @@
                 CommandParameter="{Binding SeçiliResim.Resim, Mode=OneWay}"
                 IsEnabled="{Binding ElementName=Lb, Path=SelectedItem, Converter={StaticResource NullableToBooleanConverter}}">
                 <StackPanel Orientation="Horizontal">
-                    <Image Width="32" Height="32"
-                        Source="/TwainControl;component/Icons/save.png" />
+                    <Image Width="32" Height="32" Source="/TwainControl;component/Icons/save.png" />
                     <TextBlock VerticalAlignment="Center" Text="{local:Loc SAVESELECTED}" />
                 </StackPanel>
             </Button>
-            <HeaderedContentControl Grid.Row="1" Grid.Column="1"
-                IsEnabled="{Binding ElementName=Img, Path=Source, Converter={StaticResource NullableToBooleanConverter}}">
+            <HeaderedContentControl Grid.Row="1" Grid.Column="1" IsEnabled="{Binding ElementName=Img, Path=Source, Converter={StaticResource NullableToBooleanConverter}}">
                 <HeaderedContentControl.Header>
                     <TextBlock>
                         <Run Text="{local:Loc BW}" />
                         <Run Text="{local:Loc SETTİNGS}" />
                     </TextBlock>
                 </HeaderedContentControl.Header>
-                <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="255"
-                    Minimum="1" SmallChange="1"
+                <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True"
+                    Maximum="255" Minimum="1"
+                    SmallChange="1"
                     Style="{DynamicResource Slider}"
                     ToolTip="{local:Loc BW}"
                     Value="{Binding Path=BwThreshold, Mode=TwoWay, Delay=100, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />

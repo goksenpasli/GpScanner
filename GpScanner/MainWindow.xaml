@@ -7,16 +7,17 @@
     xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=PresentationFramework"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:GpScanner"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:properties="clr-namespace:GpScanner.Properties"
-    xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:tesseract="clr-namespace:Ocr;assembly=Ocr"
+    xmlns:properties="clr-namespace:GpScanner.Properties" xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:tesseract="clr-namespace:Ocr;assembly=Ocr"
     xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
     xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
     Title="GPSCANNER"
     d:DataContext="{d:DesignInstance Type={x:Type ViewModel:GpScannerViewModel}}"
     d:Height="600" d:Width="1280"
     twainctrl:Translation.ResourceManager="{x:Static twainproperties:Resources.ResourceManager}"
-    Closing="Window_Closing" ContentRendered="MW_ContentRendered" UseLayoutRounding="True"
-    WindowStartupLocation="CenterScreen" WindowState="Maximized"
+    Closing="Window_Closing" ContentRendered="MW_ContentRendered"
+    UseLayoutRounding="True" WindowStartupLocation="CenterScreen"
+    WindowState="Maximized"
     mc:Ignorable="d">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -138,8 +139,7 @@
             Width="3"
             HorizontalAlignment="Stretch"
             Background="{StaticResource GroupBoxBackGround}"
-            MouseDoubleClick="GridSplitter_MouseDoubleClick"
-            MouseRightButtonDown="GridSplitter_MouseRightButtonDown"
+            MouseDoubleClick="GridSplitter_MouseDoubleClick" MouseRightButtonDown="GridSplitter_MouseRightButtonDown"
             ToolTip="{twainctrl:Loc SPLITTERTOOLTIP}" />
         <GroupBox Grid.Column="2">
             <TabControl Background="{StaticResource BorderBackground}">
@@ -164,7 +164,8 @@
                                 </Grid.ColumnDefinitions>
                                 <Button twainctrl:Policy.PolicyName="DateBack"
                                     Command="{Binding DateBack}"
-                                    Content="ç" FontFamily="Wingdings" FontSize="16" />
+                                    Content="ç" FontFamily="Wingdings"
+                                    FontSize="16" />
                                 <DatePicker Grid.Column="1"
                                     DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}"
                                     Language="{Binding CalendarLang}"
@@ -172,16 +173,16 @@
                                 <Button Grid.Column="2"
                                     twainctrl:Policy.PolicyName="DateForward"
                                     Command="{Binding DateForward}"
-                                    Content="è" FontFamily="Wingdings" FontSize="16" />
+                                    Content="è" FontFamily="Wingdings"
+                                    FontSize="16" />
                             </Grid>
                             <Extensions:ButtonedTextBox Grid.Column="1"
                                 VerticalContentAlignment="Center"
-                                CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed" PasteButtonVisibility="Collapsed"
+                                CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed"
+                                PasteButtonVisibility="Collapsed"
                                 Text="{Binding AramaMetni, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <StackPanel Grid.Column="2" Orientation="Horizontal">
-                                <ComboBox twainctrl:Policy.PolicyName="SelectedSize"
-                                    ItemsSource="{Binding GetPreviewSize}"
-                                    SelectedItem="{Binding SelectedSize}">
+                                <ComboBox twainctrl:Policy.PolicyName="SelectedSize" ItemsSource="{Binding GetPreviewSize}" SelectedItem="{Binding SelectedSize}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock>
@@ -206,9 +207,7 @@
                                         </Style>
                                     </ToggleButton.Style>
                                 </ToggleButton>
-                                <Button twainctrl:Policy.PolicyName="CycleSelectedDocuments"
-                                    Command="{Binding CycleSelectedDocuments}"
-                                    CommandParameter="{Binding ElementName=LbDoc}">
+                                <Button twainctrl:Policy.PolicyName="CycleSelectedDocuments" Command="{Binding CycleSelectedDocuments}" CommandParameter="{Binding ElementName=LbDoc}">
                                     <Image Width="16" Height="16">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -238,30 +237,22 @@
                                 <Extensions:ContentToggleButton.OverContent>
                                     <GroupBox>
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock VerticalAlignment="Center"
-                                                d:Text="0"
-                                                Text="{Binding CheckedPdfCount}" />
-                                            <Button twainctrl:Policy.PolicyName="Tümünüİşaretle" BorderBrush="Cyan"
-                                                Command="{Binding Tümünüİşaretle}">
+                                            <TextBlock VerticalAlignment="Center" d:Text="0" Text="{Binding CheckedPdfCount}" />
+                                            <Button twainctrl:Policy.PolicyName="Tümünüİşaretle" BorderBrush="Cyan" Command="{Binding Tümünüİşaretle}">
                                                 <StackPanel Orientation="Horizontal">
-                                                    <Image Width="32" Height="32"
-                                                        Source="/TwainControl;component/Icons/selectall.png" />
+                                                    <Image Width="32" Height="32" Source="/TwainControl;component/Icons/selectall.png" />
                                                     <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc ALL}" />
                                                 </StackPanel>
                                             </Button>
-                                            <Button twainctrl:Policy.PolicyName="TümününİşaretiniKaldır" BorderBrush="Cyan"
-                                                Command="{Binding TümününİşaretiniKaldır}">
+                                            <Button twainctrl:Policy.PolicyName="TümününİşaretiniKaldır" BorderBrush="Cyan" Command="{Binding TümününİşaretiniKaldır}">
                                                 <StackPanel Orientation="Horizontal">
-                                                    <Image Width="32" Height="32"
-                                                        Source="/TwainControl;component/Icons/none.png" />
+                                                    <Image Width="32" Height="32" Source="/TwainControl;component/Icons/none.png" />
                                                     <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc NONE}" />
                                                 </StackPanel>
                                             </Button>
-                                            <Button twainctrl:Policy.PolicyName="Tersiniİşaretle" BorderBrush="Cyan"
-                                                Command="{Binding Tersiniİşaretle}">
+                                            <Button twainctrl:Policy.PolicyName="Tersiniİşaretle" BorderBrush="Cyan" Command="{Binding Tersiniİşaretle}">
                                                 <StackPanel Orientation="Horizontal">
-                                                    <Image Width="32" Height="32"
-                                                        Source="/TwainControl;component/Icons/inverse.png" />
+                                                    <Image Width="32" Height="32" Source="/TwainControl;component/Icons/inverse.png" />
                                                     <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc REVERSE}" />
                                                 </StackPanel>
                                             </Button>
@@ -299,23 +290,19 @@
                                                 <LineBreak />
                                                 <Run Text="{twainctrl:Loc PAGENUMBER}" />
                                             </TextBlock>
-                                            <Extensions:NumericUpDownControl Minimum="1" Orientation="Horizontal" SmallChange="1"
+                                            <Extensions:NumericUpDownControl Minimum="1" Orientation="Horizontal"
+                                                SmallChange="1"
                                                 Value="{Binding AllPdfPage, Mode=OneWayToSource}" />
                                         </StackPanel>
                                     </GroupBox>
                                 </Extensions:ContentToggleButton.OverContent>
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Width="32" Height="32"
-                                        Source="/TwainControl;component/Icons/selectall.png" />
-                                    <Image Width="32" Height="32"
-                                        Source="/TwainControl;component/Icons/inverse.png" />
-                                    <Image Width="32" Height="32"
-                                        Source="/TwainControl;component/Icons/none.png" />
+                                    <Image Width="32" Height="32" Source="/TwainControl;component/Icons/selectall.png" />
+                                    <Image Width="32" Height="32" Source="/TwainControl;component/Icons/inverse.png" />
+                                    <Image Width="32" Height="32" Source="/TwainControl;component/Icons/none.png" />
                                 </StackPanel>
                             </Extensions:ContentToggleButton>
-                            <ToggleButton x:Name="TbExpandDocument"
-                                Command="{Binding ModifyGridWidth}"
-                                IsChecked="{Binding DocumentPanelIsExpanded}">
+                            <ToggleButton x:Name="TbExpandDocument" Command="{Binding ModifyGridWidth}" IsChecked="{Binding DocumentPanelIsExpanded}">
                                 <ToggleButton.Style>
                                     <Style TargetType="{x:Type ToggleButton}">
                                         <Style.Triggers>
@@ -323,8 +310,7 @@
                                                 <Setter Property="CommandParameter" Value="1" />
                                                 <Setter Property="Content">
                                                     <Setter.Value>
-                                                        <Image Width="32" Height="32"
-                                                            RenderTransformOrigin="0.5,0.5">
+                                                        <Image Width="32" Height="32" RenderTransformOrigin="0.5,0.5">
                                                             <Image.RenderTransform>
                                                                 <TransformGroup>
                                                                     <RotateTransform Angle="180" />
@@ -377,9 +363,7 @@
                             VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Standard">
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
-                                        ItemSize="{Binding SelectedSize}"
-                                        SpacingMode="None" />
+                                    <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="{Binding SelectedSize}" SpacingMode="None" />
                                 </ItemsPanelTemplate>
                             </ListBox.ItemsPanel>
                             <ListBox.ItemContainerStyle>
@@ -390,8 +374,8 @@
                                                 <CheckBox Width="{Binding DataContext.SelectedSize.Width, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                                                     Height="{Binding DataContext.SelectedSize.Height, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                                                     HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
-                                                    d:Height="50" Background="Transparent" BorderBrush="Cyan"
-                                                    Drop="ContentControl_DropAsync"
+                                                    d:Height="50" Background="Transparent"
+                                                    BorderBrush="Cyan" Drop="ContentControl_DropAsync"
                                                     IsChecked="{Binding Seçili}">
                                                     <CheckBox.Style>
                                                         <Style TargetType="{x:Type CheckBox}">
@@ -404,7 +388,8 @@
                                                         </Style>
                                                     </CheckBox.Style>
                                                     <Border Margin="1"
-                                                        BorderBrush="Black" BorderThickness="1" RenderTransformOrigin="0.5,0.5"
+                                                        BorderBrush="Black" BorderThickness="1"
+                                                        RenderTransformOrigin="0.5,0.5"
                                                         Style="{StaticResource BorderAnimationStyle}">
                                                         <Border.RenderTransform>
                                                             <TransformGroup>
@@ -452,11 +437,9 @@
                                                                             </Style.Triggers>
                                                                         </Style>
                                                                     </Extensions:ContentToggleButton.Style>
-                                                                    <TextBlock Text="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}"
-                                                                        TextTrimming="CharacterEllipsis" TextWrapping="Wrap" />
+                                                                    <TextBlock Text="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" />
                                                                 </Extensions:ContentToggleButton>
-                                                                <Extensions:ContentToggleButton Grid.Column="1"
-                                                                    HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                                                                <Extensions:ContentToggleButton Grid.Column="1" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
                                                                     <Extensions:ContentToggleButton.Style>
                                                                         <Style TargetType="Extensions:ContentToggleButton">
                                                                             <Style.Triggers>
@@ -482,9 +465,7 @@
                                                                         </Image.Source>
                                                                     </Image>
                                                                 </Extensions:ContentToggleButton>
-                                                                <Button Grid.Column="2"
-                                                                    Command="{Binding DataContext.UploadSharePoint, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
-                                                                    CommandParameter="{Binding Mode=OneWay}">
+                                                                <Button Grid.Column="2" Command="{Binding DataContext.UploadSharePoint, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding Mode=OneWay}">
                                                                     <Image Width="16" Height="16">
                                                                         <Image.Source>
                                                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -584,8 +565,7 @@
                                 twainctrl:Policy.PolicyName="CancelOcr"
                                 Command="{Binding CancelOcr}"
                                 IsEnabled="{Binding OcrIsBusy}">
-                                <Image Width="32" Height="32"
-                                    Source="/TwainControl;component/Icons/delete.png" />
+                                <Image Width="32" Height="32" Source="/TwainControl;component/Icons/delete.png" />
                             </Button>
                         </Grid>
                         <GroupBox Grid.Row="1">
@@ -595,8 +575,7 @@
                 </TabItem>
             </TabControl>
         </GroupBox>
-        <StatusBar Grid.Row="1" Grid.ColumnSpan="3"
-            Background="Maroon">
+        <StatusBar Grid.Row="1" Grid.ColumnSpan="3" Background="Maroon">
             <StatusBarItem Visibility="{Binding Scanner.PasswordProtect, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=TwainCtrl}">
                 <Image Width="16" Height="16">
                     <Image.Source>
@@ -637,8 +616,7 @@
             <StatusBarItem>
                 <TextBlock FontStyle="Italic" FontWeight="Bold" Foreground="White">
                     <Run BaselineAlignment="Center" Text="{Binding JpegQuality, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}, StringFormat={}%{0}}" />
-                    <Image Width="16" Height="16"
-                        VerticalAlignment="Center">
+                    <Image Width="16" Height="16" VerticalAlignment="Center">
                         <Image.Source>
                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                 <Binding Source="Shell32.dll" />
@@ -651,8 +629,7 @@
             </StatusBarItem>
             <StatusBarItem HorizontalAlignment="Right">
                 <StackPanel Orientation="Horizontal">
-                    <Image Width="16" Height="16"
-                        Visibility="{Binding PdfBatchRunning, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Image Width="16" Height="16" Visibility="{Binding PdfBatchRunning, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <Image.Source>
                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                 <Binding Source="Shell32.dll" />
@@ -661,8 +638,8 @@
                         </Image.Source>
                     </Image>
                     <Extensions:ContentToggleButton Background="{x:Null}" BorderBrush="{x:Null}">
-                        <TextBlock FontFamily="Webdings" FontSize="16" Foreground="GreenYellow"
-                            Text="" />
+                        <TextBlock FontFamily="Webdings" FontSize="16"
+                            Foreground="GreenYellow" Text="" />
                         <Extensions:ContentToggleButton.OverContent>
                             <GroupBox>
                                 <StackPanel>
@@ -697,8 +674,7 @@
                         IsEnabled="{Binding DocumentPanelIsExpanded, Mode=OneWay}"
                         PlacementMode="Top"
                         StaysOpen="{Binding DocumentPanelIsExpanded, Mode=OneWay}">
-                        <Image Width="16" Height="16"
-                            VerticalAlignment="Bottom">
+                        <Image Width="16" Height="16" VerticalAlignment="Bottom">
                             <Image.Source>
                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                     <Binding Source="Shell32.dll" />
@@ -707,8 +683,8 @@
                             </Image.Source>
                         </Image>
                         <Extensions:ContentToggleButton.OverContent>
-                            <Extensions:ResizablePanel Width="225" Height="150" MinWidth="225"
-                                MinHeight="150">
+                            <Extensions:ResizablePanel Width="225" Height="150"
+                                MinWidth="225" MinHeight="150">
                                 <GroupBox>
                                     <GroupBox.Header>
                                         <Grid>
@@ -719,8 +695,7 @@
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc DOCUMENT}" />
                                                 <Button twainctrl:Policy.PolicyName="ResimSilGeriAl" Command="{Binding ResimSilGeriAl, Source={x:Reference TwainCtrl}}">
-                                                    <Image Width="16" Height="16"
-                                                        Source="/TwainControl;component/Icons/undo.png" />
+                                                    <Image Width="16" Height="16" Source="/TwainControl;component/Icons/undo.png" />
                                                 </Button>
                                             </StackPanel>
                                             <ToggleButton Grid.Column="1"
@@ -730,8 +705,7 @@
                                                 Command="{Binding ModifyGridWidth}"
                                                 CommandParameter="0"
                                                 IsChecked="{Binding DocumentPanelIsExpanded}">
-                                                <Image Width="16" Height="16"
-                                                    Source="/TwainControl;component/Icons/delete.png" />
+                                                <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
                                             </ToggleButton>
                                         </Grid>
                                     </GroupBox.Header>
@@ -748,18 +722,19 @@
                                                 <StackPanel>
                                                     <TextBlock HorizontalAlignment="Center">
                                                         <Extensions:NumericUpDownControl Height="20"
-                                                            LargeChange="1" Maximum="1" Minimum="-1"
-                                                            NumericUpdownTextBoxVisibility="Collapsed" Orientation="Horizontal" SmallChange="1"
+                                                            LargeChange="1" Maximum="1"
+                                                            Minimum="-1" NumericUpdownTextBoxVisibility="Collapsed"
+                                                            Orientation="Horizontal" SmallChange="1"
                                                             Value="{Binding RotationAngle}" />
-                                                        <Run AllowDrop="True" Cursor="SizeAll" Drop="Run_Drop"
-                                                            FontFamily="Wingdings" FontSize="24" FontWeight="Bold"
+                                                        <Run AllowDrop="True" Cursor="SizeAll"
+                                                            Drop="Run_Drop" FontFamily="Wingdings"
+                                                            FontSize="24" FontWeight="Bold"
                                                             PreviewMouseMove="Run_PreviewMouseMove" Text="B" />
                                                         <Hyperlink twainctrl:Policy.PolicyName="ResimSil"
                                                             Command="{Binding Source={x:Reference TwainCtrl}, Path=DataContext.ResimSil}"
                                                             CommandParameter="{Binding Mode=OneWay}"
                                                             TextDecorations="None">
-                                                            <Image Width="16" Height="16"
-                                                                Source="/TwainControl;component/Icons/delete.png" />
+                                                            <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
                                                         </Hyperlink>
                                                     </TextBlock>
                                                     <Image Width="72" Height="72"
@@ -789,8 +764,8 @@
                     <StackPanel Orientation="Horizontal">
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                     </StackPanel>
-                    <Extensions:ContentToggleButton AllowDrop="True" Background="Transparent" BorderThickness="2"
-                        Drop="QrListBox_Drop"
+                    <Extensions:ContentToggleButton AllowDrop="True" Background="Transparent"
+                        BorderThickness="2" Drop="QrListBox_Drop"
                         IsEnabled="{Binding DetectBarCode}"
                         Style="{StaticResource ContentToggleButtonAnimationStyle}">
                         <Extensions:ContentToggleButton.Content>
@@ -821,8 +796,8 @@
                                                 </Grid.ColumnDefinitions>
                                                 <TextBlock VerticalAlignment="Center">
                                                     <Hyperlink Command="{Binding DataContext.TesseractViewModel.TesseractDataFilesDownloadLink, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding Mode=OneWay}">
-                                                        <Run FontFamily="Wingdings" FontSize="16" FontWeight="Bold"
-                                                            Text="8" />
+                                                        <Run FontFamily="Wingdings" FontSize="16"
+                                                            FontWeight="Bold" Text="8" />
                                                     </Hyperlink>
                                                 </TextBlock>
                                                 <Image Grid.Column="1"
@@ -831,15 +806,14 @@
                                                     Tag="{Binding DataContext, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type Window}}}">
                                                     <Image.ContextMenu>
                                                         <ContextMenu DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
-                                                            <MenuItem Command="{Binding Tag.SaveQrImage}"
-                                                                CommandParameter="{Binding Source}"
-                                                                Header="{twainctrl:Loc SAVESELECTED}" />
+                                                            <MenuItem Command="{Binding Tag.SaveQrImage}" CommandParameter="{Binding Source}" Header="{twainctrl:Loc SAVESELECTED}" />
                                                         </ContextMenu>
                                                     </Image.ContextMenu>
                                                 </Image>
                                                 <Extensions:ButtonedTextBox Grid.Column="2"
                                                     Height="80"
-                                                    IsReadOnly="True" OpenButtonVisibility="Collapsed" ResetButtonVisibility="Collapsed"
+                                                    IsReadOnly="True" OpenButtonVisibility="Collapsed"
+                                                    ResetButtonVisibility="Collapsed"
                                                     Text="{Binding Mode=OneWay}"
                                                     TextWrapping="Wrap" />
                                             </Grid>
@@ -867,11 +841,10 @@
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>
                                                 <Grid Height="20">
-                                                    <ProgressBar Foreground="Purple" Maximum="1" Minimum="0"
+                                                    <ProgressBar Foreground="Purple" Maximum="1"
+                                                        Minimum="0"
                                                         Value="{Binding ProgressValue}" />
-                                                    <TextBlock VerticalAlignment="Center"
-                                                        Foreground="OrangeRed"
-                                                        Text="{Binding FilePath, Mode=OneWay}" />
+                                                    <TextBlock VerticalAlignment="Center" Foreground="OrangeRed" Text="{Binding FilePath, Mode=OneWay}" />
                                                 </Grid>
                                             </DataTemplate>
                                         </ListBox.ItemTemplate>
@@ -880,8 +853,7 @@
                                         twainctrl:Policy.PolicyName="CancelBatchOcr"
                                         Command="{Binding CancelBatchOcr}">
                                         <Grid>
-                                            <ProgressBar Maximum="1" Minimum="0"
-                                                Value="{Binding Scanner.PdfSaveProgressValue, Mode=OneWay, Source={x:Reference TwainCtrl}}" />
+                                            <ProgressBar Maximum="1" Minimum="0" Value="{Binding Scanner.PdfSaveProgressValue, Mode=OneWay, Source={x:Reference TwainCtrl}}" />
                                             <Image Width="32" Height="32"
                                                 HorizontalAlignment="Center"
                                                 Source="/TwainControl;component/Icons/delete.png" />

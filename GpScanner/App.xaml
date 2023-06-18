@@ -46,8 +46,7 @@
                                     Background="{TemplateBinding Background}"
                                     BorderBrush="{TemplateBinding BorderBrush}"
                                     BorderThickness="1" CornerRadius="3,3,0,0">
-                                    <ContentPresenter Margin="4"
-                                        ContentSource="Header" RecognizesAccessKey="True" />
+                                    <ContentPresenter Margin="4" ContentSource="Header" RecognizesAccessKey="True" />
                                 </Border>
                                 <Border Grid.Row="1"
                                     Background="{StaticResource BorderBackground}"
@@ -60,16 +59,12 @@
                     </Setter.Value>
                 </Setter>
             </Style>
-            <DrawingBrush x:Key="Dur"
-                ice:Freeze="True" Stretch="Uniform">
+            <DrawingBrush x:Key="Dur" ice:Freeze="True" Stretch="Uniform">
                 <DrawingBrush.Drawing>
                     <DrawingGroup>
-                        <GeometryDrawing ice:Freeze="True" Brush="Black"
-                            Geometry="F1 M 5.27184,18L 0,12.7282L 0,5.27184L 5.27184,1.90735e-006L 12.7282,1.90735e-006L 18,5.27184L 18,12.7282L 12.7282,18L 5.27184,18 Z " />
-                        <GeometryDrawing ice:Freeze="True" Brush="White"
-                            Geometry="F1 M 5.38416,17.7293L 0.26928,12.6158L 0.26928,5.38416L 5.38416,0.269283L 12.6158,0.270723L 17.7293,5.38416L 17.7293,12.6158L 12.6158,17.7293L 5.38416,17.7293 Z " />
-                        <GeometryDrawing ice:Freeze="True" Brush="Red"
-                            Geometry="F1 M 0.684,12.4445L 0.684,5.55552L 5.55552,0.684002L 12.4445,0.684002L 17.316,5.55552L 17.316,12.4445L 12.4445,17.316L 5.55552,17.316L 0.684,12.4445 Z " />
+                        <GeometryDrawing ice:Freeze="True" Brush="Black" Geometry="F1 M 5.27184,18L 0,12.7282L 0,5.27184L 5.27184,1.90735e-006L 12.7282,1.90735e-006L 18,5.27184L 18,12.7282L 12.7282,18L 5.27184,18 Z " />
+                        <GeometryDrawing ice:Freeze="True" Brush="White" Geometry="F1 M 5.38416,17.7293L 0.26928,12.6158L 0.26928,5.38416L 5.38416,0.269283L 12.6158,0.270723L 17.7293,5.38416L 17.7293,12.6158L 12.6158,17.7293L 5.38416,17.7293 Z " />
+                        <GeometryDrawing ice:Freeze="True" Brush="Red" Geometry="F1 M 0.684,12.4445L 0.684,5.55552L 5.55552,0.684002L 12.4445,0.684002L 17.316,5.55552L 17.316,12.4445L 12.4445,17.316L 5.55552,17.316L 0.684,12.4445 Z " />
                     </DrawingGroup>
                 </DrawingBrush.Drawing>
             </DrawingBrush>
@@ -85,11 +80,10 @@
                             <TextBlock Foreground="White" Text="{Binding Source='STOP', Mode=OneWay, Converter={StaticResource LanguageStringConverter}}" />
                         </Viewbox>
                         <Canvas.ToolTip>
-                            <ToolTip Background="{x:Null}"
-                                BorderBrush="{x:Null}"
-                                Foreground="{x:Null}">
+                            <ToolTip Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}">
                                 <Border Padding="4"
-                                    Background="Red" BorderBrush="White" BorderThickness="1">
+                                    Background="Red" BorderBrush="White"
+                                    BorderThickness="1">
                                     <TextBlock Foreground="White" Text="{Binding AdornedElement.(Validation.Errors)/ErrorContent, Mode=OneWay}" />
                                 </Border>
                             </ToolTip>
@@ -116,12 +110,8 @@
                             </Image.LayoutTransform>
                         </Image>
                     </ScrollViewer>
-                    <ContentControl x:Name="Cnt"
-                        Grid.Row="1"
-                        Visibility="{Binding ToolBarVisibility, RelativeSource={RelativeSource TemplatedParent}}">
-                        <StackPanel IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}"
-                            Orientation="Horizontal"
-                            Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}">
+                    <ContentControl x:Name="Cnt" Grid.Row="1" Visibility="{Binding ToolBarVisibility, RelativeSource={RelativeSource TemplatedParent}}">
+                        <StackPanel IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}" Orientation="Horizontal" Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}">
                             <Extensions:ContentToggleButton Command="{Binding ScrollToCurrentPage, RelativeSource={RelativeSource TemplatedParent}}" CommandParameter="{Binding ElementName=Lb}">
                                 <Image Width="16" Height="16">
                                     <Image.Source>
@@ -149,7 +139,8 @@
                                         <ListBox.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <Extensions:VirtualizingWrapPanel Width="460" Height="300"
-                                                    CanHorizontallyScroll="False" ItemSize="140,140" StretchItems="False" />
+                                                    CanHorizontallyScroll="False" ItemSize="140,140"
+                                                    StretchItems="False" />
                                             </ItemsPanelTemplate>
                                         </ListBox.ItemsPanel>
                                     </ListBox>
@@ -157,16 +148,15 @@
                             </Extensions:ContentToggleButton>
                             <Extensions:NumericUpDownControl LargeChange="1"
                                 Maximum="{Binding ToplamSayfa, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                Minimum="1" Orientation="Horizontal" SmallChange="1"
+                                Minimum="1" Orientation="Horizontal"
+                                SmallChange="1"
                                 Value="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
                             <ComboBox ItemStringFormat="{}{0} Dpi"
                                 ItemsSource="{Binding DpiList, RelativeSource={RelativeSource TemplatedParent}}"
                                 SelectedItem="{Binding Dpi, RelativeSource={RelativeSource TemplatedParent}, StringFormat=Dpi}"
                                 Visibility="{Binding DpiListVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
                             <TextBlock VerticalAlignment="Center">
-                                <Hyperlink Command="{Binding DataContext.ExploreFile, RelativeSource={RelativeSource AncestorType=Window}, Mode=OneWay}"
-                                    CommandParameter="{Binding Mode=OneWay}"
-                                    TextDecorations="None">
+                                <Hyperlink Command="{Binding DataContext.ExploreFile, RelativeSource={RelativeSource AncestorType=Window}, Mode=OneWay}" CommandParameter="{Binding Mode=OneWay}" TextDecorations="None">
                                     <Image Width="16" Height="16">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -205,8 +195,9 @@
                         Grid.Column="1"
                         ContextMenuVisibility="Visible" Orientation="Height"
                         PdfFilePath="{Binding Mode=OneWay}"
-                        PrintButtonVisibility="Visible" ScrollBarVisible="Visible" SearchTextContentVisibility="Collapsed"
-                        SeekingLowerPdfDpi="True" SnapTick="True" />
+                        PrintButtonVisibility="Visible" ScrollBarVisible="Visible"
+                        SearchTextContentVisibility="Collapsed" SeekingLowerPdfDpi="True"
+                        SnapTick="True" />
                     <UniformGrid Grid.Column="2" Rows="2">
                         <local:TranslateView ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding DataContext.PdfFileContent, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}" />
                         <TextBox Background="{StaticResource BorderBackground}"
@@ -222,9 +213,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <WrapPanel DataContext="{Binding Path=DataContext, ElementName=TwainCtrl}"
-                        IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfVwr}"
-                        Orientation="Horizontal">
+                    <WrapPanel DataContext="{Binding Path=DataContext, ElementName=TwainCtrl}" IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfVwr}" Orientation="Horizontal">
                         <Extensions:NumericUpDownControl Maximum="{Binding ElementName=PdfVwr, Path=ToplamSayfa}"
                             Minimum="1" SmallChange="1"
                             Value="{Binding SayfaBaşlangıç, UpdateSourceTrigger=PropertyChanged}" />
@@ -242,8 +231,7 @@
                             </Image>
                         </Button>
                         <Button Command="{Binding RemoveSelectedPage}" CommandParameter="{Binding ElementName=PdfVwr}">
-                            <Image Width="16" Height="16"
-                                Source="/TwainControl;component/Icons/delete.png" />
+                            <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
                         </Button>
                         <Button Command="{Binding ArrangePdfFile}" CommandParameter="{Binding ElementName=PdfVwr}">
                             <Image Width="16" Height="16">
@@ -255,15 +243,10 @@
                                 </Image.Source>
                             </Image>
                         </Button>
-                        <Button BorderBrush="Cyan"
-                            Command="{Binding RotateSelectedPage}"
-                            CommandParameter="{Binding ElementName=PdfVwr}">
-                            <Image Width="16" Height="16"
-                                Source="/TwainControl;component/Icons/rotate.png" />
+                        <Button BorderBrush="Cyan" Command="{Binding RotateSelectedPage}" CommandParameter="{Binding ElementName=PdfVwr}">
+                            <Image Width="16" Height="16" Source="/TwainControl;component/Icons/rotate.png" />
                         </Button>
-                        <Button BorderBrush="Cyan"
-                            Command="{Binding AddAllFileToControlPanel}"
-                            CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
+                        <Button BorderBrush="Cyan" Command="{Binding AddAllFileToControlPanel}" CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
                             <Button.Content>
                                 <TextBlock FontFamily="Wingdings" FontSize="16" Text="ç" />
                             </Button.Content>
@@ -275,21 +258,16 @@
                             <Button.Content>
                                 <Grid>
                                     <ProgressBar IsIndeterminate="{Binding DataContext.OcrIsBusy, RelativeSource={RelativeSource AncestorType=Window}}" />
-                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                                        Text="OCR" />
+                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="OCR" />
                                 </Grid>
                             </Button.Content>
                         </Button>
-                        <Button BorderBrush="Cyan"
-                            Command="{Binding ReadPdfTag}"
-                            CommandParameter="{Binding ElementName=PdfVwr, Path=PdfFilePath, Mode=OneWay}">
+                        <Button BorderBrush="Cyan" Command="{Binding ReadPdfTag}" CommandParameter="{Binding ElementName=PdfVwr, Path=PdfFilePath, Mode=OneWay}">
                             <Button.Content>
                                 <TextBlock FontFamily="Wingdings 2" FontSize="16" Text="-" />
                             </Button.Content>
                         </Button>
-                        <Button BorderBrush="Cyan"
-                            Command="{Binding MergeSelectedImagesToPdfFile}"
-                            CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
+                        <Button BorderBrush="Cyan" Command="{Binding MergeSelectedImagesToPdfFile}" CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
                             <Button.Content>
                                 <Image Width="16" Height="16">
                                     <Image.Source>
@@ -311,9 +289,7 @@
                                 </Image.Source>
                             </Image>
                         </Button>
-                        <Button BorderBrush="Cyan"
-                            Command="{Binding PasteFileToPdfFile}"
-                            CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
+                        <Button BorderBrush="Cyan" Command="{Binding PasteFileToPdfFile}" CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
                             <Button.Content>
                                 <Image Width="16" Height="16">
                                     <Image.Source>
@@ -347,7 +323,8 @@
                         Dpi="{Binding DefaultThumbNailDpi, Source={x:Static properties:Settings.Default}}"
                         OpenButtonVisibility="Collapsed"
                         PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                        PrintButtonVisibility="Visible" ScrollBarVisible="Hidden" SnapTick="True"
+                        PrintButtonVisibility="Visible" ScrollBarVisible="Hidden"
+                        SnapTick="True"
                         Tag="{Binding ElementName=TwainCtrl, Mode=OneWay}"
                         Template="{StaticResource PdfViewerThumbTemplate}" />
                 </Grid>
@@ -374,8 +351,7 @@
                             Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=UserControl}}"
                             CommandParameter="{Binding Mode=OneWay}"
                             TextDecorations="None">
-                            <Image Width="16" Height="16"
-                                Source="/TwainControl;component/Icons/delete.png" />
+                            <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
                         </Hyperlink>
                     </TextBlock>
                     <twain:SimpleImageViewer Grid.Row="1"
@@ -422,17 +398,17 @@
             </DataTemplate>
             <DataTemplate x:Key="VideoViewerTemplate">
                 <Controls:MediaViewer Width="300" Height="300"
-                    AutoPlay="False" ContextMenuVisibility="Visible" ControlVisible="Collapsed"
+                    AutoPlay="False" ContextMenuVisibility="Visible"
+                    ControlVisible="Collapsed"
                     MediaDataFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="VideoViewerTemplateMini">
-                <Controls:MediaViewer AutoPlay="False" ContextMenuVisibility="Visible" ControlVisible="Collapsed"
+                <Controls:MediaViewer AutoPlay="False" ContextMenuVisibility="Visible"
+                    ControlVisible="Collapsed"
                     MediaDataFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="VideoViewerTemplateFull">
-                <Controls:MediaViewer AutoPlay="False"
-                    MediaDataFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                    OsdTextVisibility="Visible" />
+                <Controls:MediaViewer AutoPlay="False" MediaDataFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" OsdTextVisibility="Visible" />
             </DataTemplate>
             <DataTemplate x:Key="EmptyTemplate">
                 <TextBlock Width="210" TextWrapping="Wrap">
@@ -440,14 +416,10 @@
                         Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=UserControl}}"
                         CommandParameter="{Binding Mode=OneWay}"
                         TextDecorations="None">
-                        <Image Width="32" Height="32"
-                            Source="/TwainControl;component/Icons/delete.png" />
+                        <Image Width="32" Height="32" Source="/TwainControl;component/Icons/delete.png" />
                     </Hyperlink>
-                    <Image Width="32" Height="32"
-                        Source="{Binding Mode=OneWay, Converter={StaticResource FilePathToIconConverter}}" />
-                    <Hyperlink BaselineAlignment="Center"
-                        Command="{Binding Path=DataContext.WebAdreseGit, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                        CommandParameter="{Binding Mode=OneWay}">
+                    <Image Width="32" Height="32" Source="{Binding Mode=OneWay, Converter={StaticResource FilePathToIconConverter}}" />
+                    <Hyperlink BaselineAlignment="Center" Command="{Binding Path=DataContext.WebAdreseGit, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding Mode=OneWay}">
                         <Run Text="{Binding Mode=OneWay}" />
                     </Hyperlink>
                 </TextBlock>
@@ -463,8 +435,7 @@
                             Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=UserControl}}"
                             CommandParameter="{Binding Mode=OneWay}"
                             TextDecorations="None">
-                            <Image Width="16" Height="16"
-                                Source="/TwainControl;component/Icons/delete.png" />
+                            <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
                         </Hyperlink>
                     </TextBlock>
                     <twain:SimplePdfViewer Grid.Row="1"
@@ -473,8 +444,8 @@
                         Dpi="{Binding DefaultThumbNailDpi, Source={x:Static properties:Settings.Default}}"
                         DpiListVisibility="Collapsed" OpenButtonVisibility="Collapsed"
                         PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                        PrintButtonVisibility="Collapsed" ScrollBarVisible="Hidden" SliderZoomAngleVisibility="Collapsed"
-                        SnapTick="True"
+                        PrintButtonVisibility="Collapsed" ScrollBarVisible="Hidden"
+                        SliderZoomAngleVisibility="Collapsed" SnapTick="True"
                         Tag="{Binding RelativeSource={RelativeSource AncestorType=twain:TwainCtrl}}"
                         ToolBarVisibility="Collapsed" />
                 </Grid>
@@ -490,8 +461,7 @@
                             Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=UserControl}}"
                             CommandParameter="{Binding Mode=OneWay}"
                             TextDecorations="None">
-                            <Image Width="16" Height="16"
-                                Source="/TwainControl;component/Icons/delete.png" />
+                            <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
                         </Hyperlink>
                     </TextBlock>
                     <twain:SimpleXmlViewer Grid.Row="1"

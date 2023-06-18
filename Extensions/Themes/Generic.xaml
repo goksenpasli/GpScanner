@@ -2,18 +2,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
-    xmlns:local="clr-namespace:Extensions"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:Extensions" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Extensions;component/Themes/Skin.xaml" />
     </ResourceDictionary.MergedDictionaries>
-    <ObjectDataProvider x:Key="ColorList"
-        MethodName="GetProperties"
-        ObjectInstance="{x:Type Colors}" />
+    <ObjectDataProvider x:Key="ColorList" MethodName="GetProperties" ObjectInstance="{x:Type Colors}" />
     <DataTemplate x:Key="ColorItemTemplate">
-        <Rectangle Width="16" Height="16"
-            Fill="{Binding Name}">
+        <Rectangle Width="16" Height="16" Fill="{Binding Name}">
             <Rectangle.ToolTip>
                 <TextBlock Text="{Binding Name}" />
             </Rectangle.ToolTip>
@@ -37,28 +33,23 @@
     <Style TargetType="local:GraphControl">
         <Setter Property="ContextMenu">
             <Setter.Value>
-                <ContextMenu DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}"
-                    IsEnabled="{Binding IsContextMenuEnabled}"
-                    Visibility="{Binding ContextMenuVisibility}">
-                    <MenuItem Header="Seri Rakamlarını Göster" IsCheckable="True"
-                        IsChecked="{Binding SeriesTextVisibility, Converter={StaticResource VisibilityToBooleanConverter}}" />
-                    <MenuItem Header="Değer Rakamlarını Göster" IsCheckable="True"
-                        IsChecked="{Binding ValueTextVisibility, Converter={StaticResource VisibilityToBooleanConverter}}" />
+                <ContextMenu DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}" IsEnabled="{Binding IsContextMenuEnabled}" Visibility="{Binding ContextMenuVisibility}">
+                    <MenuItem Header="Seri Rakamlarını Göster" IsCheckable="True" IsChecked="{Binding SeriesTextVisibility, Converter={StaticResource VisibilityToBooleanConverter}}" />
+                    <MenuItem Header="Değer Rakamlarını Göster" IsCheckable="True" IsChecked="{Binding ValueTextVisibility, Converter={StaticResource VisibilityToBooleanConverter}}" />
                     <MenuItem IsCheckable="True" IsChecked="{Binding LineGraphVisibility, Converter={StaticResource VisibilityToBooleanConverter}}">
                         <MenuItem.Header>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock VerticalAlignment="Center" Text="Çizgi Grafik Göster" />
                                 <local:NumericUpDownControl IsEnabled="{Binding LineGraphVisibility, Converter={StaticResource VisibilityToBooleanConverter}}"
-                                    IsReadOnly="True" LargeChange="1" Maximum="30"
-                                    Minimum="1" Orientation="Horizontal" SmallChange="1"
+                                    IsReadOnly="True" LargeChange="1"
+                                    Maximum="30" Minimum="1"
+                                    Orientation="Horizontal" SmallChange="1"
                                     Value="{Binding LineThickness}" />
                             </StackPanel>
                         </MenuItem.Header>
                     </MenuItem>
-                    <MenuItem Header="Çizgi Grafik Tepe Noktaları Göster" IsCheckable="True"
-                        IsChecked="{Binding LineDotVisibility, Converter={StaticResource VisibilityToBooleanConverter}}" />
-                    <MenuItem Header="Grafik İçerik Göster" IsCheckable="True"
-                        IsChecked="{Binding GraphContentVisibility, Converter={StaticResource VisibilityToBooleanConverter}}" />
+                    <MenuItem Header="Çizgi Grafik Tepe Noktaları Göster" IsCheckable="True" IsChecked="{Binding LineDotVisibility, Converter={StaticResource VisibilityToBooleanConverter}}" />
+                    <MenuItem Header="Grafik İçerik Göster" IsCheckable="True" IsChecked="{Binding GraphContentVisibility, Converter={StaticResource VisibilityToBooleanConverter}}" />
                     <MenuItem Command="{Binding Kaydet}" Header="Resim Olarak Kaydet">
                         <MenuItem.Icon>
                             <Image Width="16" Height="16">
@@ -90,8 +81,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <Rectangle Name="RgbGrid"
-                            Grid.Row="0" Grid.Column="0">
+                        <Rectangle Name="RgbGrid" Grid.Row="0" Grid.Column="0">
                             <Rectangle.Fill>
                                 <LinearGradientBrush ice:Freeze="true" StartPoint="0.0,0" EndPoint="1,0">
                                     <GradientStop Color="Black" />
@@ -105,8 +95,8 @@
                             Fill="{Binding SpectrumGridBackground, RelativeSource={RelativeSource TemplatedParent}}"
                             Opacity="1" />
                         <local:ButtonedTextBox Grid.Row="2" Grid.Column="0"
-                            IsReadOnly="True" OpenButtonVisibility="Collapsed" PasteButtonVisibility="Collapsed"
-                            ResetButtonVisibility="Collapsed"
+                            IsReadOnly="True" OpenButtonVisibility="Collapsed"
+                            PasteButtonVisibility="Collapsed" ResetButtonVisibility="Collapsed"
                             Text="{Binding HexCode, RelativeSource={RelativeSource TemplatedParent}}"
                             TextBlock.Foreground="{Binding HexCode, RelativeSource={RelativeSource TemplatedParent}}"
                             Visibility="{Binding HexCodeVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
@@ -163,11 +153,11 @@
                                 </Image.LayoutTransform>
                             </Image>
                         </ScrollViewer>
-                        <Viewport3D x:Name="PanoramaViewPort"
-                            Cursor="ScrollAll" Visibility="Collapsed">
+                        <Viewport3D x:Name="PanoramaViewPort" Cursor="ScrollAll" Visibility="Collapsed">
                             <Viewport3D.Camera>
                                 <PerspectiveCamera FieldOfView="{Binding Fov, RelativeSource={RelativeSource TemplatedParent}}"
-                                    LookDirection="0,0,1" Position="0,0,0" UpDirection="0,1,0" />
+                                    LookDirection="0,0,1" Position="0,0,0"
+                                    UpDirection="0,1,0" />
                             </Viewport3D.Camera>
                             <ModelVisual3D>
                                 <ModelVisual3D.Content>
@@ -212,9 +202,7 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0"
-                                    Command="{Binding DosyaAç, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                    Visibility="{Binding OpenButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
+                                <Button Grid.Column="0" Command="{Binding DosyaAç, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Visibility="{Binding OpenButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                                     <Button.Content>
                                         <Image Width="16" Height="16">
                                             <Image.Source>
@@ -226,30 +214,26 @@
                                         </Image>
                                     </Button.Content>
                                 </Button>
-                                <ListBox Grid.Column="1"
-                                    SelectedValue="{Binding Orientation, RelativeSource={RelativeSource TemplatedParent}}"
-                                    SelectedValuePath="Tag">
+                                <ListBox Grid.Column="1" SelectedValue="{Binding Orientation, RelativeSource={RelativeSource TemplatedParent}}" SelectedValuePath="Tag">
                                     <ListBox.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <VirtualizingStackPanel Orientation="Horizontal" />
                                         </ItemsPanelTemplate>
                                     </ListBox.ItemsPanel>
                                     <ListBoxItem Tag="None">
-                                        <TextBlock FontFamily="Webdings" FontSize="16" FontWeight="Bold"
-                                            Text="1" />
+                                        <TextBlock FontFamily="Webdings" FontSize="16"
+                                            FontWeight="Bold" Text="1" />
                                     </ListBoxItem>
                                     <ListBoxItem Tag="Width">
-                                        <TextBlock FontFamily="Wingdings 3" FontSize="16" FontWeight="Bold"
-                                            Text="F" />
+                                        <TextBlock FontFamily="Wingdings 3" FontSize="16"
+                                            FontWeight="Bold" Text="F" />
                                     </ListBoxItem>
                                     <ListBoxItem Tag="Height">
-                                        <TextBlock FontFamily="Wingdings 3" FontSize="16" FontWeight="Bold"
-                                            Text="G" />
+                                        <TextBlock FontFamily="Wingdings 3" FontSize="16"
+                                            FontWeight="Bold" Text="G" />
                                     </ListBoxItem>
                                 </ListBox>
-                                <StackPanel Grid.Column="2"
-                                    Orientation="Horizontal"
-                                    Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}">
+                                <StackPanel Grid.Column="2" Orientation="Horizontal" Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}">
                                     <RepeatButton Command="{Binding ViewerBack, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ToolTip="Önceki Sayfa">
                                         <Image Width="16" Height="16">
                                             <Image.Source>
@@ -278,9 +262,7 @@
                                         </Image>
                                     </RepeatButton>
                                 </StackPanel>
-                                <Button Grid.Column="3"
-                                    Command="{Binding Yazdır, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                    Visibility="{Binding PrintButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
+                                <Button Grid.Column="3" Command="{Binding Yazdır, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Visibility="{Binding PrintButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                                     <Button.Content>
                                         <Image Width="16" Height="16">
                                             <Image.Source>
@@ -342,7 +324,8 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <ScrollViewer x:Name="PART_ContentHost"
-                                Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" />
+                                Focusable="False" HorizontalScrollBarVisibility="Hidden"
+                                VerticalScrollBarVisibility="Hidden" />
                             <Border Grid.Column="1"
                                 Background="{TemplateBinding Background}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
@@ -430,9 +413,7 @@
                             PopupAnimation="Slide"
                             StaysOpen="{Binding StayOpen, RelativeSource={RelativeSource AncestorType={x:Type local:SplitButton}}}"
                             VerticalOffset="{Binding ContentVerticalOffset, RelativeSource={RelativeSource AncestorType={x:Type local:SplitButton}}}">
-                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                Content="{Binding RelativeSource={RelativeSource AncestorType=local:SplitButton}, Path=InternalContent}" />
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Content="{Binding RelativeSource={RelativeSource AncestorType=local:SplitButton}, Path=InternalContent}" />
                         </Popup>
                     </Grid>
                     <ControlTemplate.Triggers>
@@ -476,9 +457,7 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Name="description"
-                            VerticalAlignment="Center"
-                            Text="{Binding Description, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <TextBlock Name="description" VerticalAlignment="Center" Text="{Binding Description, RelativeSource={RelativeSource TemplatedParent}}" />
                         <Border Name="border"
                             Grid.Column="1"
                             Background="{TemplateBinding Panel.Background}"
@@ -486,7 +465,8 @@
                             BorderThickness="{TemplateBinding Border.BorderThickness}"
                             SnapsToDevicePixels="True">
                             <ScrollViewer Name="PART_ContentHost"
-                                Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" />
+                                Focusable="False" HorizontalScrollBarVisibility="Hidden"
+                                VerticalScrollBarVisibility="Hidden" />
                         </Border>
                         <Border Name="copyborder"
                             Grid.Column="2"
@@ -508,8 +488,7 @@
                             BorderBrush="{TemplateBinding Border.BorderBrush}"
                             BorderThickness="0,1,1,1" SnapsToDevicePixels="True"
                             Visibility="{Binding PasteButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
-                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                                FontSize="14">
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">
                                 <Hyperlink Command="{Binding Paste, RelativeSource={RelativeSource TemplatedParent}}" TextDecorations="None">
                                     <Run FontFamily="Wingdings 2" FontWeight="Bold" Text="2" />
                                 </Hyperlink>
@@ -537,8 +516,8 @@
                             Visibility="{Binding OpenButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <Hyperlink Command="{Binding Open, RelativeSource={RelativeSource TemplatedParent}}" TextDecorations="None">
-                                    <Run FontFamily="Wingdings" FontSize="14" FontWeight="Bold"
-                                        Text="8" />
+                                    <Run FontFamily="Wingdings" FontSize="14"
+                                        FontWeight="Bold" Text="8" />
                                 </Hyperlink>
                             </TextBlock>
                         </Border>
@@ -614,7 +593,8 @@
                                 Focusable="False" RecognizesAccessKey="True" />
                             <Path x:Name="path"
                                 Grid.Column="1"
-                                Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                Margin="2" HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
                                 Data="{StaticResource ArrowGeometry}"
                                 Fill="#606060" Focusable="False" />
                             <Popup Grid.ColumnSpan="2"
@@ -668,8 +648,9 @@
                     <Viewbox>
                         <Path x:Name="Up"
                             Width="9.5" MinHeight="8.5"
-                            Data="M0,0L5,5 10,0z" Fill="Black" RenderTransformOrigin="0.5,0.5"
-                            Stretch="Fill" StrokeLineJoin="Round">
+                            Data="M0,0L5,5 10,0z" Fill="Black"
+                            RenderTransformOrigin="0.5,0.5" Stretch="Fill"
+                            StrokeLineJoin="Round">
                             <Path.RenderTransform>
                                 <RotateTransform Angle="90" />
                             </Path.RenderTransform>
@@ -697,8 +678,9 @@
                     <Viewbox>
                         <Path x:Name="Down"
                             Width="9.5" MinHeight="8.5"
-                            Data="M0,0L5,5 10,0z" Fill="Black" RenderTransformOrigin="0.5,0.5"
-                            Stretch="Fill" StrokeLineJoin="Round">
+                            Data="M0,0L5,5 10,0z" Fill="Black"
+                            RenderTransformOrigin="0.5,0.5" Stretch="Fill"
+                            StrokeLineJoin="Round">
                             <Path.RenderTransform>
                                 <RotateTransform Angle="-90" />
                             </Path.RenderTransform>
@@ -738,8 +720,9 @@
                     <Viewbox>
                         <Path x:Name="Up"
                             Width="9.5" Height="7"
-                            Data="M0,0L5,5 10,0z" Fill="Black" RenderTransformOrigin="0.5,0.5"
-                            Stretch="Fill" StrokeLineJoin="Round">
+                            Data="M0,0L5,5 10,0z" Fill="Black"
+                            RenderTransformOrigin="0.5,0.5" Stretch="Fill"
+                            StrokeLineJoin="Round">
                             <Path.RenderTransform>
                                 <RotateTransform Angle="-180" />
                             </Path.RenderTransform>
@@ -747,7 +730,8 @@
                     </Viewbox>
                 </RepeatButton.Content>
             </RepeatButton>
-            <TextBox Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"
+            <TextBox Grid.Row="0" Grid.RowSpan="2"
+                Grid.Column="0"
                 VerticalContentAlignment="Center"
                 Background="{TemplateBinding Background}"
                 BorderBrush="{TemplateBinding BorderBrush}"
@@ -768,8 +752,9 @@
                     <Viewbox>
                         <Path x:Name="Down"
                             Width="9.5" Height="7"
-                            Data="M0,0L5,5 10,0z" Fill="Black" RenderTransformOrigin="0.5,0.5"
-                            Stretch="Fill" StrokeLineJoin="Round" />
+                            Data="M0,0L5,5 10,0z" Fill="Black"
+                            RenderTransformOrigin="0.5,0.5" Stretch="Fill"
+                            StrokeLineJoin="Round" />
                     </Viewbox>
                 </RepeatButton.Content>
             </RepeatButton>
@@ -800,9 +785,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:Resizer">
-                    <Border Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="0,0,1,1" />
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0,0,1,1" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
