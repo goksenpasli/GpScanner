@@ -215,7 +215,8 @@ public static class BitmapMethods
             new() { Category="B",  Height = 25, PaperType = "B5", Width = 17.6 },
             new() { Height = 27.94, PaperType = "Letter", Width = 21.59 },
             new() { Height = 35.56, PaperType = "Legal", Width = 21.59 },
-            new() { Height = 26.67, PaperType = "Executive", Width = 18.415 }
+            new() { Height = 26.67, PaperType = "Executive", Width = 18.415 },
+            new() { Height = 0, PaperType = "Original", Width = 0 },
         };
     }
 

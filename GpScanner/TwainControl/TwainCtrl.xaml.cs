@@ -205,7 +205,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                         break;
 
                                     case 4:
-                                        await SavePdfImageAsync(bitmapFrame, fileName, Scanner, SelectedPaper, true);
+                                        await SavePdfImageAsync(bitmapFrame, fileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, true);
                                         break;
 
                                     case 5:

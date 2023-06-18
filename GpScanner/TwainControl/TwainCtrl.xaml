@@ -460,7 +460,7 @@
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="75" />
-                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="80" />
                                             </Grid.ColumnDefinitions>
                                             <ComboBox VerticalContentAlignment="Center"
                                                 local:Policy.PolicyName="SelectedPaper"

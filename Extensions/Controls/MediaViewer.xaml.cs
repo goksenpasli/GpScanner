@@ -377,7 +377,6 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     public string SearchSubtitle {
         get => searchSubtitle; set {
-
             if (searchSubtitle != value)
             {
                 searchSubtitle = value;
