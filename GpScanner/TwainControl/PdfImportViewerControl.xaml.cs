@@ -602,28 +602,28 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         Cursor = Cursors.Arrow;
     }
 
-    private static readonly Ellipse ellipseselectionbox = new()
+    private readonly Ellipse ellipseselectionbox = new()
     {
         Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
         Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
         StrokeDashArray = new DoubleCollection(new double[] { 1 })
     };
 
-    private static readonly Line linebox = new()
+    private readonly Line linebox = new()
     {
         Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
         Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
         StrokeDashArray = new DoubleCollection(new double[] { 1 })
     };
 
-    private static readonly Rectangle rectangleselectionbox = new()
+    private readonly Rectangle rectangleselectionbox = new()
     {
         Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
         Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
         StrokeDashArray = new DoubleCollection(new double[] { 1 })
     };
 
-    private static readonly Line reverselinebox = new()
+    private readonly Line reverselinebox = new()
     {
         Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
         Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),

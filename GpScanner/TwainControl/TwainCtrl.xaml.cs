@@ -2274,7 +2274,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             _ = await Dispatcher.Invoke(async () => ocrtext = await scannedImage.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Scanner.SelectedTtsLanguage));
         }
 
-        scanner.SaveProgressBarForegroundBrush = Scanner.DefaultSaveProgressforegroundbrush;
+        scanner.SaveProgressBarForegroundBrush = defaultsaveprogressforegroundcolor;
         if (blackwhite)
         {
             scannedImage.GeneratePdf(ocrtext, Format.Tiff, paper, Settings.Default.JpegQuality, Settings.Default.ImgLoadResolution).Save(filename);
@@ -2307,7 +2307,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             scanner.PdfSaveProgressValue = 0;
         }
 
-        scanner.SaveProgressBarForegroundBrush = Scanner.DefaultSaveProgressforegroundbrush;
+        scanner.SaveProgressBarForegroundBrush = defaultsaveprogressforegroundcolor;
         if (blackwhite)
         {
             (await images.GeneratePdfAsync(Format.Tiff, paper, Settings.Default.JpegQuality, scannedtext, dpi)).Save(filename);
@@ -3100,19 +3100,21 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private const double Inch = 2.54d;
 
-    private static readonly SolidColorBrush bluesaveprogresscolor = Brushes.DeepSkyBlue;
+    private readonly SolidColorBrush bluesaveprogresscolor = Brushes.DeepSkyBlue;
 
-    private static readonly Rectangle selectionbox = new()
+    private readonly int defaultpictureresizeratio = Settings.Default.DefaultPictureResizeRatio;
+
+    private readonly System.Windows.Media.Brush defaultsaveprogressforegroundcolor = (System.Windows.Media.Brush)new BrushConverter().ConvertFromString("#FF06B025");
+
+    private readonly string[] imagefileextensions = { ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp" };
+
+    private readonly Rectangle selectionbox = new()
     {
         Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
         Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
         StrokeThickness = 2,
         StrokeDashArray = new DoubleCollection(new double[] { 1 })
     };
-
-    private readonly int defaultpictureresizeratio = Settings.Default.DefaultPictureResizeRatio;
-
-    private readonly string[] imagefileextensions = { ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp" };
 
     private ScanSettings _settings;
 

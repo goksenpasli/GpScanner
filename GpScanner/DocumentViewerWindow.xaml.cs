@@ -77,7 +77,7 @@ public partial class DocumentViewerWindow : Window
         }
     }
 
-    private static readonly Rectangle selectionbox = new()
+    private readonly Rectangle selectionbox = new()
     {
         Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
         Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),

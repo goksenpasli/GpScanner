@@ -65,6 +65,7 @@ public class GpScannerViewModel : InpcBase
         Dosyalar = GetScannerFileData();
         ChartData = GetChartsData();
         SeçiliDil = Settings.Default.DefaultLang;
+        GenerateJumpList();
         SeçiliGün = DateTime.Today;
         SelectedSize = GetPreviewSize[Settings.Default.PreviewIndex];
         ScannerData = new ScannerData { Data = DataYükle() };
@@ -886,17 +887,7 @@ public class GpScannerViewModel : InpcBase
         }
     }
 
-    public ObservableCollection<Size> GetPreviewSize {
-        get => new() { new Size(175, 280), new Size(230, 370), new Size(280, 450), new Size(350, 563), new Size(425, 645) };
-
-        set {
-            if (getPreviewSize != value)
-            {
-                getPreviewSize = value;
-                OnPropertyChanged(nameof(GetPreviewSize));
-            }
-        }
-    }
+    public ObservableCollection<Size> GetPreviewSize { get => new() { new Size(175, 280), new Size(230, 370), new Size(280, 450), new Size(350, 563), new Size(425, 645) }; }
 
     public bool ListBoxBorderAnimation {
         get => listBoxBorderAnimation;
@@ -1394,6 +1385,29 @@ public class GpScannerViewModel : InpcBase
         timer.Start();
     }
 
+    private void GenerateJumpList()
+    {
+        if (IsWin7OrAbove())
+        {
+            string fileName = Process.GetCurrentProcess().MainModule.FileName;
+            FileVersionInfo version = FileVersionInfo.GetVersionInfo(fileName);
+            JumpTask jumptask = new()
+            {
+                Description = "GPSCANNER " + Translation.GetResStringValue("UPDATE"),
+                ApplicationPath = $@"{Path.GetDirectoryName(fileName)}\twux32.exe",
+                Arguments = $"https://github.com/goksenpasli/GpScanner/releases/download/{version.FileMajorPart}.{version.FileMinorPart}/GpScanner-Setup.txt",
+                Title = Translation.GetResStringValue("UPDATE"),
+            };
+            JumpList list = JumpList.GetJumpList(Application.Current);
+            list ??= new JumpList();
+            list.ShowRecentCategory = true;
+            list.ShowFrequentCategory = true;
+            JumpList.SetJumpList(Application.Current, list);
+            list.JumpItems.Add(jumptask);
+            list.Apply();
+        }
+    }
+
     private void GpScannerViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName is "SeçiliGün")
@@ -1513,6 +1527,12 @@ public class GpScannerViewModel : InpcBase
         return Regex.IsMatch(address, pattern);
     }
 
+    private bool IsWin7OrAbove()
+    {
+        Version os = Environment.OSVersion.Version;
+        return os.Major > 6 || (os.Major == 6 && os.Minor >= 1);
+    }
+
     private void OnTick(object sender, EventArgs e)
     {
         if (StillImageHelper.FirstLanuchScan)
@@ -1626,8 +1646,6 @@ public class GpScannerViewModel : InpcBase
     private string ftpSite = string.Empty;
 
     private string ftpUserName = string.Empty;
-
-    private ObservableCollection<Size> getPreviewSize;
 
     private bool listBoxBorderAnimation;
 

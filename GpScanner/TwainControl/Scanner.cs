@@ -398,7 +398,7 @@ public class Scanner : InpcBase, IDataErrorInfo
         }
     }
 
-    public string[] FolderDateFormats { get; set; } = { "d.MM.yyyy", "dd.MM.yyyy", "d-MM-yyyy", "dd-MM-yyyy", "dddd", "MMMM", "yyyy" };
+    public string[] FolderDateFormats { get; } = { "d.MM.yyyy", "dd.MM.yyyy", "d-MM-yyyy", "dd-MM-yyyy", "dddd", "MMMM", "yyyy" };
 
     public int FtpLoadProgressValue {
         get => ftpLoadProgressValue;
@@ -953,9 +953,6 @@ public class Scanner : InpcBase, IDataErrorInfo
         }
     }
 
-    public static readonly Brush DefaultSaveProgressforegroundbrush =
-                                                                                                                                                                                                                                                                                                                                    (Brush)new BrushConverter().ConvertFromString("#FF06B025");
-
     private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName is "PdfSaveProgressValue" && PdfSaveProgressValue == 1)
@@ -1062,7 +1059,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     private string saveFileName;
 
-    private Brush saveProgressBarForegroundBrush = DefaultSaveProgressforegroundbrush;
+    private Brush saveProgressBarForegroundBrush;
 
     private bool saveProgressIndeterminate;
 
