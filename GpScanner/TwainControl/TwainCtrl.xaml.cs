@@ -252,7 +252,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     }
                 }
             },
-            parameter => Scanner?.Resimler?.Count > 0);
+            parameter => Policy.CheckPolicy("Tümünüİşaretle") && Scanner?.Resimler?.Count > 0);
 
         TümünüİşaretleDikey = new RelayCommand<object>(
             parameter =>
@@ -316,7 +316,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => true);
 
-        Seçilikaydet = new RelayCommand<object>(
+        SeçiliKaydet = new RelayCommand<object>(
             parameter =>
             {
                 if (Filesavetask?.IsCompleted == false)
@@ -379,7 +379,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 Scanner.SeçiliResimSayısı = Scanner?.Resimler.Count(z => z.Seçili) ?? 0;
-                return !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
+                return Policy.CheckPolicy("SeçiliKaydet") && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
             });
 
         SeçiliDirektPdfKaydet = new RelayCommand<object>(
@@ -436,7 +436,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 Scanner.SeçiliResimSayısı = Scanner?.Resimler.Count(z => z.Seçili) ?? 0;
-                return !string.IsNullOrWhiteSpace(Scanner?.FileName) &&
+                return Policy.CheckPolicy("SeçiliDirektPdfKaydet") && !string.IsNullOrWhiteSpace(Scanner?.FileName) &&
                     Scanner?.AutoSave == true &&
                     Scanner?.SeçiliResimSayısı > 0 &&
                     FileNameValid(Scanner?.FileName);
@@ -465,7 +465,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     GC.Collect();
                 }
             },
-            parameter => Scanner?.Resimler?.Count > 0 && Scanner.ArayüzEtkin);
+            parameter => Policy.CheckPolicy("ListeTemizle") && Scanner?.Resimler?.Count > 0 && Scanner.ArayüzEtkin);
 
         SeçiliListeTemizle = new RelayCommand<object>(
             parameter =>
@@ -479,7 +479,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 ToolBox.ResetCropMargin();
                 GC.Collect();
             },
-            parameter => Scanner?.Resimler?.Any(z => z.Seçili) == true);
+            parameter => Policy.CheckPolicy("SeçiliListeTemizle") && Scanner?.Resimler?.Any(z => z.Seçili) == true);
 
         ShowDateFolderHelp = new RelayCommand<object>(
             parameter =>
@@ -1778,7 +1778,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand SeçiliDirektPdfKaydet { get; }
 
-    public ICommand Seçilikaydet { get; }
+    public ICommand SeçiliKaydet { get; }
 
     public ICommand SeçiliListeTemizle { get; }
 

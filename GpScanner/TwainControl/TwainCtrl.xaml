@@ -923,6 +923,10 @@
                                 VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Standard">
                                 <ListBox.InputBindings>
                                     <KeyBinding Key="A" Command="{Binding Tümünüİşaretle}" Modifiers="Ctrl" />
+                                    <KeyBinding Key="Delete" Command="{Binding SeçiliListeTemizle}" />
+                                    <KeyBinding Key="Delete" Command="{Binding ListeTemizle}" Modifiers="Shift" />
+                                    <KeyBinding Key="S" Command="{Binding SeçiliKaydet}" Modifiers="Ctrl" />
+                                    <KeyBinding Key="S" Command="{Binding SeçiliDirektPdfKaydet}" Modifiers="Ctrl+Shift" />
                                 </ListBox.InputBindings>
                                 <ListBox.ItemContainerStyle>
                                     <Style TargetType="{x:Type ListBoxItem}">
@@ -937,7 +941,7 @@
                                                                     NumericUpdownTextBoxVisibility="Collapsed" Orientation="Horizontal"
                                                                     SmallChange="1"
                                                                     Value="{Binding RotationAngle}" />
-                                                            </InlineUIContainer><Run Text=" " /><Run AllowDrop="True" Cursor="SizeAll"
+                                                            </InlineUIContainer><Run AllowDrop="True" Cursor="SizeAll"
                                                                 Drop="Run_Drop" FontFamily="Wingdings"
                                                                 FontSize="24" FontWeight="Bold"
                                                                 PreviewMouseMove="Run_PreviewMouseMove" Text="B">
@@ -1166,8 +1170,8 @@
                         </Grid>
                     </Button>
                     <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
-                        local:Policy.PolicyName="Seçilikaydet"
-                        Command="{Binding Seçilikaydet}">
+                        local:Policy.PolicyName="SeçiliKaydet"
+                        Command="{Binding SeçiliKaydet}">
                         <Grid>
                             <ProgressBar d:Foreground="#FF06B025"
                                 Background="{x:Null}"

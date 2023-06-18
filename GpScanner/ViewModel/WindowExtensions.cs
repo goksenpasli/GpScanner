@@ -5,7 +5,6 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using Extensions;
-using Microsoft.Win32;
 using TwainControl;
 
 namespace GpScanner.ViewModel;
@@ -19,7 +18,7 @@ public static class WindowExtensions
             {
                 SettingsWindowView settingswindow = new() { Owner = Application.Current?.MainWindow, DataContext = Application.Current?.MainWindow?.DataContext };
                 _ = settingswindow.ShowDialog();
-            }, parameter => Policy.CheckPolicy("OpenSettings", Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\GpScanner")) && Policy.CheckPolicy("OpenSettings", Registry.CurrentUser.OpenSubKey(@"Software\Policies\GpScanner")));
+            }, parameter => Policy.CheckPolicy("OpenSettings"));
     }
 
     public static ICommand OpenSettings { get; }
