@@ -2088,8 +2088,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             case ".webp":
                                 {
                                     BitmapImage main = (BitmapImage)filename.WebpDecode(true, decodeheight);
-                                    BitmapFrame bitmapFrame = defaultpictureresizeratio != 100
-                                        ? BitmapFrame.Create(main.Resize(defaultpictureresizeratio / 100d))
+                                    BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100
+                                        ? BitmapFrame.Create(main.Resize(Settings.Default.DefaultPictureResizeRatio / 100d))
                                         : BitmapFrame.Create(main);
                                     bitmapFrame.Freeze();
                                     ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
@@ -2107,8 +2107,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                         {
                                             BitmapFrame image = decoder.Frames[i];
                                             image.Freeze();
-                                            BitmapFrame bitmapFrame = defaultpictureresizeratio != 100
-                                                ? BitmapFrame.Create(image.Resize(defaultpictureresizeratio / 100d))
+                                            BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100
+                                                ? BitmapFrame.Create(image.Resize(Settings.Default.DefaultPictureResizeRatio / 100d))
                                                 : BitmapFrame.Create(image);
                                             bitmapFrame.Freeze();
                                             ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
@@ -2490,7 +2490,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private async Task AddImageFiles(string filename)
     {
         BitmapImage main = await ImageViewer.LoadImageAsync(filename);
-        BitmapFrame bitmapFrame = defaultpictureresizeratio != 100 ? BitmapFrame.Create(main.Resize(defaultpictureresizeratio / 100d)) : BitmapFrame.Create(main);
+        BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(main.Resize(Settings.Default.DefaultPictureResizeRatio / 100d)) : BitmapFrame.Create(main);
         bitmapFrame.Freeze();
         ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
         await Dispatcher.InvokeAsync(() => Scanner?.Resimler.Add(img));
@@ -3101,8 +3101,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private const double Inch = 2.54d;
 
     private readonly SolidColorBrush bluesaveprogresscolor = Brushes.DeepSkyBlue;
-
-    private readonly int defaultpictureresizeratio = Settings.Default.DefaultPictureResizeRatio;
 
     private readonly System.Windows.Media.Brush defaultsaveprogressforegroundcolor = (System.Windows.Media.Brush)new BrushConverter().ConvertFromString("#FF06B025");
 

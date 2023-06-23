@@ -338,7 +338,7 @@
                                 SelectedItem="{Binding DefaultPictureResizeRatio, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PREVIEWFILE}" />
                             <ComboBox VerticalContentAlignment="Center"
-                                twainctrl:Policy.PolicyName="DefaultPictureResizeRatio" ItemStringFormat="%{0}"
+                                twainctrl:Policy.PolicyName="DefaultThumbPictureResizeRatio" ItemStringFormat="%{0}"
                                 ItemsSource="{Binding SettingsPagePictureResizeList}"
                                 SelectedItem="{Binding DefaultThumbPictureResizeRatio, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBlock VerticalAlignment="Center" Text="PDF DPI" />

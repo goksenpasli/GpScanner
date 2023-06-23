@@ -142,15 +142,128 @@
             MouseDoubleClick="GridSplitter_MouseDoubleClick" MouseRightButtonDown="GridSplitter_MouseRightButtonDown"
             ToolTip="{twainctrl:Loc SPLITTERTOOLTIP}" />
         <GroupBox Grid.Column="2">
+            <GroupBox.Header>
+                <UniformGrid Columns="2">
+                    <Button twainctrl:Policy.PolicyName="OpenSettings" Command="{Binding Source={x:Static ViewModel:WindowExtensions.OpenSettings}}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="21" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SETTİNGS}" />
+                        </StackPanel>
+                    </Button>
+                    <ToggleButton x:Name="TbExpandDocument" Command="{Binding ModifyGridWidth}" IsChecked="{Binding DocumentPanelIsExpanded}">
+                        <ToggleButton.Style>
+                            <Style TargetType="{x:Type ToggleButton}">
+                                <Style.Triggers>
+                                    <Trigger Property="IsChecked" Value="True">
+                                        <Setter Property="CommandParameter" Value="1" />
+                                        <Setter Property="Content">
+                                            <Setter.Value>
+                                                <Image Width="16" Height="16" RenderTransformOrigin="0.5,0.5">
+                                                    <Image.RenderTransform>
+                                                        <TransformGroup>
+                                                            <RotateTransform Angle="180" />
+                                                        </TransformGroup>
+                                                    </Image.RenderTransform>
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="252" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
+                                    <Trigger Property="IsChecked" Value="False">
+                                        <Setter Property="CommandParameter" Value="0" />
+                                        <Setter Property="Content">
+                                            <Setter.Value>
+                                                <Image Width="16" Height="16">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="252" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ToggleButton.Style>
+                    </ToggleButton>
+                </UniformGrid>
+            </GroupBox.Header>
             <TabControl Background="{StaticResource BorderBackground}">
                 <TabItem Header="{twainctrl:Loc CALENDAR}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="4.8" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="4.8" />
                             <RowDefinition />
                         </Grid.RowDefinitions>
-                        <Grid Grid.Row="1">
+                        <StackPanel Background="{StaticResource BorderBackground}" Orientation="Horizontal">
+                            <Extensions:SplitButton twainctrl:Policy.PolicyName="Tümünüİşaretle" Background="Transparent"
+                                BorderBrush="Cyan"
+                                Command="{Binding Tümünüİşaretle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" d:Text="0" Text="{Binding CheckedPdfCount}" />
+                                    <Image Width="16" Height="16" Source="/TwainControl;component/Icons/selectall.png" />
+                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc ALL}" />
+                                </StackPanel>
+                                <Extensions:SplitButton.InternalContent>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button twainctrl:Policy.PolicyName="TümününİşaretiniKaldır" BorderBrush="Cyan" Command="{Binding TümününİşaretiniKaldır}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="16" Height="16" Source="/TwainControl;component/Icons/none.png" />
+                                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc NONE}" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button twainctrl:Policy.PolicyName="Tersiniİşaretle" BorderBrush="Cyan" Command="{Binding Tersiniİşaretle}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="16" Height="16" Source="/TwainControl;component/Icons/inverse.png" />
+                                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc REVERSE}" />
+                                            </StackPanel>
+                                        </Button>
+                                    </StackPanel>
+                                </Extensions:SplitButton.InternalContent>
+                            </Extensions:SplitButton>
+                            <TextBlock VerticalAlignment="Center">
+                                <Run Text="{twainctrl:Loc ALL}" />
+                                <Run Text="{twainctrl:Loc PAGENUMBER}" />
+                            </TextBlock>
+                            <Extensions:NumericUpDownControl Minimum="1" Orientation="Horizontal"
+                                SmallChange="1"
+                                Value="{Binding AllPdfPage, Mode=OneWayToSource}" />
+                            <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                                twainctrl:Policy.PolicyName="PdfBirleştir" Background="Transparent"
+                                BorderBrush="Cyan"
+                                Command="{Binding PdfBirleştir}">
+                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                    <Image Width="16" Height="16">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="68" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc MERGEPDF}" />
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                        <Separator Grid.Row="1" />
+                        <Grid Grid.Row="2" Background="{StaticResource BorderBackground}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
                                 <ColumnDefinition />
@@ -162,7 +275,7 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <Button twainctrl:Policy.PolicyName="DateBack"
+                                <Button twainctrl:Policy.PolicyName="DateBack" Background="Transparent"
                                     Command="{Binding DateBack}"
                                     Content="ç" FontFamily="Wingdings"
                                     FontSize="16" />
@@ -171,15 +284,15 @@
                                     Language="{Binding CalendarLang}"
                                     SelectedDate="{Binding SeçiliGün}" />
                                 <Button Grid.Column="2"
-                                    twainctrl:Policy.PolicyName="DateForward"
+                                    twainctrl:Policy.PolicyName="DateForward" Background="Transparent"
                                     Command="{Binding DateForward}"
                                     Content="è" FontFamily="Wingdings"
                                     FontSize="16" />
                             </Grid>
                             <Extensions:ButtonedTextBox Grid.Column="1"
                                 VerticalContentAlignment="Center"
-                                CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed"
-                                PasteButtonVisibility="Collapsed"
+                                Background="Transparent" CopyButtonVisibility="Collapsed"
+                                OpenButtonVisibility="Collapsed" PasteButtonVisibility="Collapsed"
                                 Text="{Binding AramaMetni, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <StackPanel Grid.Column="2" Orientation="Horizontal">
                                 <ComboBox twainctrl:Policy.PolicyName="SelectedSize" ItemsSource="{Binding GetPreviewSize}" SelectedItem="{Binding SelectedSize}">
@@ -191,7 +304,8 @@
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
-                                <ToggleButton FontFamily="Wingdings" FontSize="16"
+                                <ToggleButton Background="Transparent" FontFamily="Wingdings"
+                                    FontSize="16"
                                     IsChecked="{Binding Sıralama}"
                                     IsEnabled="{Binding HasItems, ElementName=LbDoc}">
                                     <ToggleButton.Style>
@@ -207,7 +321,9 @@
                                         </Style>
                                     </ToggleButton.Style>
                                 </ToggleButton>
-                                <Button twainctrl:Policy.PolicyName="CycleSelectedDocuments" Command="{Binding CycleSelectedDocuments}" CommandParameter="{Binding ElementName=LbDoc}">
+                                <Button twainctrl:Policy.PolicyName="CycleSelectedDocuments" Background="Transparent"
+                                    Command="{Binding CycleSelectedDocuments}"
+                                    CommandParameter="{Binding ElementName=LbDoc}">
                                     <Image Width="16" Height="16">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -219,135 +335,9 @@
                                 </Button>
                             </StackPanel>
                         </Grid>
-                        <UniformGrid Columns="3" Rows="1">
-                            <Button twainctrl:Policy.PolicyName="OpenSettings" Command="{Binding Source={x:Static ViewModel:WindowExtensions.OpenSettings}}">
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Width="32" Height="32">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="21" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SETTİNGS}" />
-                                </StackPanel>
-                            </Button>
-                            <Extensions:ContentToggleButton>
-                                <Extensions:ContentToggleButton.OverContent>
-                                    <GroupBox>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock VerticalAlignment="Center" d:Text="0" Text="{Binding CheckedPdfCount}" />
-                                            <Button twainctrl:Policy.PolicyName="Tümünüİşaretle" BorderBrush="Cyan" Command="{Binding Tümünüİşaretle}">
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Image Width="32" Height="32" Source="/TwainControl;component/Icons/selectall.png" />
-                                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc ALL}" />
-                                                </StackPanel>
-                                            </Button>
-                                            <Button twainctrl:Policy.PolicyName="TümününİşaretiniKaldır" BorderBrush="Cyan" Command="{Binding TümününİşaretiniKaldır}">
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Image Width="32" Height="32" Source="/TwainControl;component/Icons/none.png" />
-                                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc NONE}" />
-                                                </StackPanel>
-                                            </Button>
-                                            <Button twainctrl:Policy.PolicyName="Tersiniİşaretle" BorderBrush="Cyan" Command="{Binding Tersiniİşaretle}">
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Image Width="32" Height="32" Source="/TwainControl;component/Icons/inverse.png" />
-                                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc REVERSE}" />
-                                                </StackPanel>
-                                            </Button>
-                                            <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
-                                                twainctrl:Policy.PolicyName="PdfBirleştir" BorderBrush="Cyan"
-                                                Command="{Binding PdfBirleştir}">
-                                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                                    <Image Width="32" Height="32">
-                                                        <Image.Source>
-                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                <Binding Source="Shell32.dll" />
-                                                                <Binding Source="68" />
-                                                            </MultiBinding>
-                                                        </Image.Source>
-                                                    </Image>
-                                                    <TextBlock VerticalAlignment="Center">
-                                                        <TextBlock.Style>
-                                                            <Style TargetType="{x:Type TextBlock}">
-                                                                <Setter Property="Text" Value="{twainctrl:Loc MERGE}" />
-                                                                <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding CheckedPdfCount}" Value="0">
-                                                                        <Setter Property="Text" Value="{twainctrl:Loc MERGESELECTED}" />
-                                                                    </DataTrigger>
-                                                                    <DataTrigger Binding="{Binding CheckedPdfCount}" Value="1">
-                                                                        <Setter Property="Text" Value="{twainctrl:Loc SELECTTWOPDF}" />
-                                                                    </DataTrigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </TextBlock.Style>
-                                                    </TextBlock>
-                                                </StackPanel>
-                                            </Button>
-                                            <TextBlock VerticalAlignment="Center">
-                                                <Run Text="{twainctrl:Loc ALL}" />
-                                                <LineBreak />
-                                                <Run Text="{twainctrl:Loc PAGENUMBER}" />
-                                            </TextBlock>
-                                            <Extensions:NumericUpDownControl Minimum="1" Orientation="Horizontal"
-                                                SmallChange="1"
-                                                Value="{Binding AllPdfPage, Mode=OneWayToSource}" />
-                                        </StackPanel>
-                                    </GroupBox>
-                                </Extensions:ContentToggleButton.OverContent>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Width="32" Height="32" Source="/TwainControl;component/Icons/selectall.png" />
-                                    <Image Width="32" Height="32" Source="/TwainControl;component/Icons/inverse.png" />
-                                    <Image Width="32" Height="32" Source="/TwainControl;component/Icons/none.png" />
-                                </StackPanel>
-                            </Extensions:ContentToggleButton>
-                            <ToggleButton x:Name="TbExpandDocument" Command="{Binding ModifyGridWidth}" IsChecked="{Binding DocumentPanelIsExpanded}">
-                                <ToggleButton.Style>
-                                    <Style TargetType="{x:Type ToggleButton}">
-                                        <Style.Triggers>
-                                            <Trigger Property="IsChecked" Value="True">
-                                                <Setter Property="CommandParameter" Value="1" />
-                                                <Setter Property="Content">
-                                                    <Setter.Value>
-                                                        <Image Width="32" Height="32" RenderTransformOrigin="0.5,0.5">
-                                                            <Image.RenderTransform>
-                                                                <TransformGroup>
-                                                                    <RotateTransform Angle="180" />
-                                                                </TransformGroup>
-                                                            </Image.RenderTransform>
-                                                            <Image.Source>
-                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                    <Binding Source="Shell32.dll" />
-                                                                    <Binding Source="252" />
-                                                                </MultiBinding>
-                                                            </Image.Source>
-                                                        </Image>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Trigger>
-                                            <Trigger Property="IsChecked" Value="False">
-                                                <Setter Property="CommandParameter" Value="0" />
-                                                <Setter Property="Content">
-                                                    <Setter.Value>
-                                                        <Image Width="32" Height="32">
-                                                            <Image.Source>
-                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                    <Binding Source="Shell32.dll" />
-                                                                    <Binding Source="252" />
-                                                                </MultiBinding>
-                                                            </Image.Source>
-                                                        </Image>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ToggleButton.Style>
-                            </ToggleButton>
-                        </UniformGrid>
+                        <Separator Grid.Row="3" />
                         <ListBox x:Name="LbDoc"
-                            Grid.Row="2"
+                            Grid.Row="4"
                             HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
                             d:ItemsSource="{d:SampleData ItemCount=5}"
                             twainctrl:Policy.PolicyName="SelectedDocument"
