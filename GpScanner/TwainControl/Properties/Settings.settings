@@ -73,5 +73,8 @@
     <Setting Name="DefaultThumbPictureResizeRatio" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">10</Value>
     </Setting>
+    <Setting Name="SeçiliTarayıcı" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -300,5 +300,17 @@ namespace TwainControl.Properties {
                 this["DefaultThumbPictureResizeRatio"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SeçiliTarayıcı {
+            get {
+                return ((string)(this["SeçiliTarayıcı"]));
+            }
+            set {
+                this["SeçiliTarayıcı"] = value;
+            }
+        }
     }
 }

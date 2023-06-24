@@ -174,7 +174,7 @@
                             <ComboBox local:Policy.PolicyName="SeçiliTarayıcı"
                                 IsEnabled="{Binding Scanner.ArayüzEtkin}"
                                 ItemsSource="{Binding Scanner.Tarayıcılar}"
-                                SelectedItem="{Binding Scanner.SeçiliTarayıcı, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                SelectedItem="{Binding SeçiliTarayıcı, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
@@ -323,7 +323,7 @@
                                 </ComboBox>
                             </UniformGrid>
                         </GroupBox.Header>
-                        <ScrollViewer HorizontalScrollBarVisibility="Auto" IsEnabled="{Binding Scanner.SeçiliTarayıcı, Converter={StaticResource NullableToBooleanConverter}, Mode=OneWay}" VerticalScrollBarVisibility="Auto">
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                             <StackPanel VerticalAlignment="Top">
                                 <StackPanel.Resources>
                                     <Style BasedOn="{StaticResource {x:Type CheckBox}}" TargetType="{x:Type CheckBox}">

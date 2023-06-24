@@ -676,18 +676,6 @@ public class Scanner : InpcBase, IDataErrorInfo
         }
     }
 
-    public string SeçiliTarayıcı {
-        get => seçiliTarayıcı;
-
-        set {
-            if (seçiliTarayıcı != value)
-            {
-                seçiliTarayıcı = value;
-                OnPropertyChanged(nameof(SeçiliTarayıcı));
-            }
-        }
-    }
-
     public string SelectedProfile {
         get => selectedProfile;
 
@@ -1066,8 +1054,6 @@ public class Scanner : InpcBase, IDataErrorInfo
     private bool seçili;
 
     private int seçiliResimSayısı;
-
-    private string seçiliTarayıcı;
 
     private string selectedProfile;
 

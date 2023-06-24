@@ -144,7 +144,7 @@
         <GroupBox Grid.Column="2">
             <GroupBox.Header>
                 <UniformGrid Columns="2">
-                    <Button twainctrl:Policy.PolicyName="OpenSettings" Command="{Binding Source={x:Static ViewModel:WindowExtensions.OpenSettings}}">
+                    <Button twainctrl:Policy.PolicyName="OpenSettings" Background="{StaticResource BorderBackground}" Command="{Binding Source={x:Static ViewModel:WindowExtensions.OpenSettings}}">
                         <StackPanel Orientation="Horizontal">
                             <Image Width="16" Height="16">
                                 <Image.Source>
@@ -157,7 +157,10 @@
                             <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SETTİNGS}" />
                         </StackPanel>
                     </Button>
-                    <ToggleButton x:Name="TbExpandDocument" Command="{Binding ModifyGridWidth}" IsChecked="{Binding DocumentPanelIsExpanded}">
+                    <ToggleButton x:Name="TbExpandDocument"
+                        Background="{StaticResource BorderBackground}"
+                        Command="{Binding ModifyGridWidth}"
+                        IsChecked="{Binding DocumentPanelIsExpanded}">
                         <ToggleButton.Style>
                             <Style TargetType="{x:Type ToggleButton}">
                                 <Style.Triggers>
@@ -239,6 +242,7 @@
                                 </Extensions:SplitButton.InternalContent>
                             </Extensions:SplitButton>
                             <TextBlock VerticalAlignment="Center">
+                                <Run Text="PDF" />
                                 <Run Text="{twainctrl:Loc ALL}" />
                                 <Run Text="{twainctrl:Loc PAGENUMBER}" />
                             </TextBlock>
@@ -600,7 +604,7 @@
                 <TextBlock FontStyle="Italic" Foreground="White">
                     <Run Text="{Binding ElementName=TwainCtrl, Path=SelectedPaper.PaperType}" />
                     <Run Text="{Binding Çözünürlük, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}, StringFormat={}{0} DPI}" />
-                    <Run Text="{Binding ElementName=TwainCtrl, Path=Scanner.SeçiliTarayıcı}" />
+                    <Run Text="{Binding Path=SeçiliTarayıcı, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}}" />
                 </TextBlock>
             </StatusBarItem>
             <StatusBarItem>

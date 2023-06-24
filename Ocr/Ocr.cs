@@ -26,14 +26,14 @@ public static class Ocr
 
     public static bool TesseractDataExists { get; }
 
-    public static ObservableCollection<OcrData> GetOcrData(this string dosya, string lang)
+    public static ObservableCollection<OcrData> GetOcrData(this string dosya, string tesseractlanguage)
     {
         if (dosya is null)
         {
             throw new ArgumentNullException(nameof(dosya));
         }
 
-        using TesseractEngine engine = new(TesseractPath, lang, EngineMode.LstmOnly);
+        using TesseractEngine engine = new(TesseractPath, tesseractlanguage, EngineMode.LstmOnly);
         using Pix pixImage = Pix.LoadFromFile(dosya);
         using Page page = engine.Process(pixImage);
         using ResultIterator iterator = page.GetIterator();
@@ -43,11 +43,11 @@ public static class Ocr
         return ocrdata;
     }
 
-    public static async Task<ObservableCollection<OcrData>> OcrAsync(this byte[] dosya, string lang)
+    public static async Task<ObservableCollection<OcrData>> OcrAsync(this byte[] dosya, string tesseractlanguage)
     {
-        if (string.IsNullOrWhiteSpace(lang))
+        if (string.IsNullOrWhiteSpace(tesseractlanguage))
         {
-            throw new ArgumentNullException(nameof(lang));
+            throw new ArgumentNullException(nameof(tesseractlanguage));
         }
 
         if (!Directory.Exists(TesseractPath))
@@ -56,14 +56,14 @@ public static class Ocr
         }
 
         ocrcancellationToken = new CancellationTokenSource();
-        return await Task.Run(() => dosya.GetOcrData(lang), ocrcancellationToken.Token);
+        return await Task.Run(() => dosya.GetOcrData(tesseractlanguage), ocrcancellationToken.Token);
     }
 
-    public static async Task<ObservableCollection<OcrData>> OcrAsync(this string dosya, string lang)
+    public static async Task<ObservableCollection<OcrData>> OcrAsync(this string dosya, string tesseractlanguage)
     {
-        if (string.IsNullOrWhiteSpace(lang))
+        if (string.IsNullOrWhiteSpace(tesseractlanguage))
         {
-            throw new ArgumentNullException(nameof(lang));
+            throw new ArgumentNullException(nameof(tesseractlanguage));
         }
 
         if (!Directory.Exists(TesseractPath))
@@ -72,21 +72,21 @@ public static class Ocr
         }
 
         ocrcancellationToken = new CancellationTokenSource();
-        return await Task.Run(() => dosya.GetOcrData(lang), ocrcancellationToken.Token);
+        return await Task.Run(() => dosya.GetOcrData(tesseractlanguage), ocrcancellationToken.Token);
     }
 
     public static CancellationTokenSource ocrcancellationToken;
 
     private static string TesseractPath { get; }
 
-    private static ObservableCollection<OcrData> GetOcrData(this byte[] dosya, string lang)
+    private static ObservableCollection<OcrData> GetOcrData(this byte[] dosya, string tesseractlanguage)
     {
         if (dosya is null)
         {
             throw new ArgumentNullException(nameof(dosya));
         }
 
-        using TesseractEngine engine = new(TesseractPath, lang, EngineMode.LstmOnly);
+        using TesseractEngine engine = new(TesseractPath, tesseractlanguage, EngineMode.LstmOnly);
         using Pix pixImage = Pix.LoadFromMemory(dosya);
         using Page page = engine.Process(pixImage);
         using ResultIterator iterator = page.GetIterator();

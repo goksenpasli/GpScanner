@@ -85,10 +85,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 GC.Collect();
                 ScanCommonSettings();
-                twain.SelectSource(Scanner.SeçiliTarayıcı);
+                twain.SelectSource(Settings.Default.SeçiliTarayıcı);
                 twain.StartScanning(_settings);
             },
-            parameter => !Environment.Is64BitProcess && Scanner?.Tarayıcılar?.Count > 0);
+            parameter => !Environment.Is64BitProcess && Scanner?.Tarayıcılar?.Count > 0 && !string.IsNullOrWhiteSpace(Settings.Default.SeçiliTarayıcı));
 
         FastScanImage = new RelayCommand<object>(
             parameter =>
@@ -103,15 +103,15 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 Scanner.Resimler = new ObservableCollection<ScannedImage>();
                 Scanner.Resimler.CollectionChanged -= Scanner.Resimler_CollectionChanged;
                 Scanner.Resimler.CollectionChanged += Scanner.Resimler_CollectionChanged;
-                twain.SelectSource(Scanner.SeçiliTarayıcı);
+                twain.SelectSource(Settings.Default.SeçiliTarayıcı);
                 twain.StartScanning(_settings);
                 twain.ScanningComplete += FastScanAsync;
             },
-            parameter => !Environment.Is64BitProcess &&
+            parameter => !Environment.Is64BitProcess && Scanner?.Tarayıcılar?.Count > 0 &&
+                !string.IsNullOrWhiteSpace(Settings.Default.SeçiliTarayıcı) &&
                 Scanner?.AutoSave == true &&
                 !string.IsNullOrWhiteSpace(Scanner?.FileName) &&
-                FileNameValid(Scanner?.FileName) &&
-                Scanner?.Tarayıcılar?.Count > 0);
+                FileNameValid(Scanner?.FileName));
 
         ResimSil = new RelayCommand<object>(
             parameter =>
@@ -2664,7 +2664,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         OnPropertyChanged(nameof(Scanner.DetectPageSeperator));
         Scanner.PdfFilePath = PdfGeneration.GetPdfScanPath();
         List<ObservableCollection<OcrData>> PdfFileOcrData = null;
-        if (Scanner.ApplyDataBaseOcr)
+        if (Scanner.ApplyDataBaseOcr && !string.IsNullOrWhiteSpace(Scanner.SelectedTtsLanguage))
         {
             PdfFileOcrData = new();
             Scanner.SaveProgressBarForegroundBrush = bluesaveprogresscolor;
@@ -3083,13 +3083,18 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 twain = new Twain(new WindowMessageHook(Window.GetWindow(Parent)));
                 Scanner.Tarayıcılar = twain.SourceNames;
-                if (Scanner.Tarayıcılar?.Count > 0)
-                {
-                    Scanner.SeçiliTarayıcı = Scanner.Tarayıcılar[0];
-                }
-
                 twain.TransferImage += Twain_TransferImage;
                 twain.ScanningComplete += Twain_ScanningComplete;
+                switch (Scanner?.Tarayıcılar?.Count)
+                {
+                    case 0:
+                        Settings.Default.SeçiliTarayıcı = string.Empty;
+                        return;
+
+                    case 1:
+                        Settings.Default.SeçiliTarayıcı = Scanner.Tarayıcılar[0];
+                        break;
+                }
             }
             catch (Exception)
             {
