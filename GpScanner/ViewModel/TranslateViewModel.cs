@@ -11,14 +11,18 @@ namespace GpScanner.ViewModel;
 
 public class TranslateViewModel : InpcBase
 {
+    static TranslateViewModel()
+    {
+        speechSynthesizer = new SpeechSynthesizer();
+        TtsDilleri = speechSynthesizer.GetInstalledVoices().Select(z => z.VoiceInfo.Name);
+    }
+
     public TranslateViewModel()
     {
         PropertyChanged += TranslateViewModel_PropertyChanged;
 
-        speechSynthesizer = new SpeechSynthesizer();
         if (speechSynthesizer is not null)
         {
-            TtsDilleri = speechSynthesizer.GetInstalledVoices().Select(z => z.VoiceInfo.Name);
             OkumaDili = TtsDilleri?.FirstOrDefault();
         }
 
@@ -45,6 +49,7 @@ public class TranslateViewModel : InpcBase
             {
                 if (parameter is string metin)
                 {
+                    speechSynthesizer?.SelectVoice(OkumaDili);
                     if (speechSynthesizer.State == SynthesizerState.Speaking)
                     {
                         speechSynthesizer.Pause();
@@ -65,6 +70,8 @@ public class TranslateViewModel : InpcBase
             },
             parameter => !string.IsNullOrEmpty(OkumaDili));
     }
+
+    public static IEnumerable<string> TtsDilleri { get; set; }
 
     public string Çeviri {
         get => çeviri;
@@ -166,17 +173,15 @@ public class TranslateViewModel : InpcBase
         }
     }
 
-    public IEnumerable<string> TtsDilleri { get; set; }
-
     private void TranslateViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName is "OkumaDili" && !string.IsNullOrEmpty(OkumaDili))
         {
-            speechSynthesizer = new SpeechSynthesizer();
-            TtsDilleri = speechSynthesizer.GetInstalledVoices().Select(z => z.VoiceInfo.Name);
-            speechSynthesizer.SelectVoice(OkumaDili);
+            speechSynthesizer ??= new SpeechSynthesizer();
         }
     }
+
+    private static SpeechSynthesizer speechSynthesizer;
 
     private string çeviri;
 
@@ -189,8 +194,6 @@ public class TranslateViewModel : InpcBase
     private string mevcutDil = "auto";
 
     private string okumaDili;
-
-    private SpeechSynthesizer speechSynthesizer;
 
     private ObservableCollection<string> taramaGeçmiş = new();
 }

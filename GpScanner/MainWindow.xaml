@@ -423,10 +423,10 @@
                                                                                 <Trigger Property="IsChecked" Value="True">
                                                                                     <Setter Property="OverContent">
                                                                                         <Setter.Value>
-                                                                                            <Extensions:ResizablePanel Width="{Binding Parent.DataContext.SelectedSize.Width, Source={x:Reference TwainCtrl}}"
-                                                                                                Height="{Binding Parent.DataContext.SelectedSize.Height, Source={x:Reference TwainCtrl}}"
-                                                                                                MinWidth="{Binding Parent.DataContext.SelectedSize.Width, Source={x:Reference TwainCtrl}}"
-                                                                                                MinHeight="{Binding Parent.DataContext.SelectedSize.Height, Source={x:Reference TwainCtrl}}">
+                                                                                            <Extensions:ResizablePanel Width="{Binding Parent.DataContext.SelectedSize.Width, Mode=OneWay, Source={x:Reference TwainCtrl}}"
+                                                                                                Height="{Binding Parent.DataContext.SelectedSize.Height, Mode=OneWay, Source={x:Reference TwainCtrl}}"
+                                                                                                MinWidth="{Binding Parent.DataContext.SelectedSize.Width, Mode=OneWay, Source={x:Reference TwainCtrl}}"
+                                                                                                MinHeight="{Binding Parent.DataContext.SelectedSize.Height, Mode=OneWay, Source={x:Reference TwainCtrl}}">
                                                                                                 <local:TranslateView ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding Parent.DataContext.FileOcrContent, RelativeSource={RelativeSource Mode=Self}}" />
                                                                                             </Extensions:ResizablePanel>
                                                                                         </Setter.Value>

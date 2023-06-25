@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Controls="clr-namespace:Extensions.Controls;assembly=Extensions"
     xmlns:Converter="clr-namespace:GpScanner.Converter"
+    xmlns:Diller="clr-namespace:System.Collections;assembly=mscorlib"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
     xmlns:PdfViewer="clr-namespace:PdfViewer;assembly=PdfViewer"
     xmlns:ViewModel="clr-namespace:GpScanner.ViewModel"
@@ -32,6 +33,67 @@
                 <GradientStop ice:Freeze="True" Offset="1" Color="#FE00B6E8" />
                 <GradientStop ice:Freeze="True" Color="#FF48F3CA" />
             </LinearGradientBrush>
+            <Diller:ArrayList x:Key="Diller">
+                <Diller:DictionaryEntry Key="Auto" Value="auto" />
+                <Diller:DictionaryEntry Key="Afrikaans" Value="af" />
+                <Diller:DictionaryEntry Key="Shqip" Value="sq" />
+                <Diller:DictionaryEntry Key="عربي" Value="ar" />
+                <Diller:DictionaryEntry Key="Հայերէն" Value="hy" />
+                <Diller:DictionaryEntry Key="آذربایجان دیلی" Value="az" />
+                <Diller:DictionaryEntry Key="Euskara" Value="eu" />
+                <Diller:DictionaryEntry Key="Беларуская" Value="be" />
+                <Diller:DictionaryEntry Key="Български" Value="bg" />
+                <Diller:DictionaryEntry Key="Català" Value="ca" />
+                <Diller:DictionaryEntry Key="中文简体" Value="zh-CN" />
+                <Diller:DictionaryEntry Key="中文繁體" Value="zh-TW" />
+                <Diller:DictionaryEntry Key="Hrvatski" Value="hr" />
+                <Diller:DictionaryEntry Key="Čeština" Value="cs" />
+                <Diller:DictionaryEntry Key="Dansk" Value="da" />
+                <Diller:DictionaryEntry Key="Nederlands" Value="nl" />
+                <Diller:DictionaryEntry Key="English" Value="en" />
+                <Diller:DictionaryEntry Key="Eesti keel" Value="et" />
+                <Diller:DictionaryEntry Key="Filipino" Value="tl" />
+                <Diller:DictionaryEntry Key="Suomi" Value="fi" />
+                <Diller:DictionaryEntry Key="Français" Value="fr" />
+                <Diller:DictionaryEntry Key="Galego" Value="gl" />
+                <Diller:DictionaryEntry Key="ქართული" Value="ka" />
+                <Diller:DictionaryEntry Key="Deutsch" Value="de" />
+                <Diller:DictionaryEntry Key="Ελληνικά" Value="el" />
+                <Diller:DictionaryEntry Key="Kreyòl ayisyen" Value="ht" />
+                <Diller:DictionaryEntry Key="עברית" Value="iw" />
+                <Diller:DictionaryEntry Key="हिन्दी" Value="hi" />
+                <Diller:DictionaryEntry Key="Magyar" Value="hu" />
+                <Diller:DictionaryEntry Key="Íslenska" Value="is" />
+                <Diller:DictionaryEntry Key="Bahasa Indonesia" Value="id" />
+                <Diller:DictionaryEntry Key="Gaeilge" Value="ga" />
+                <Diller:DictionaryEntry Key="Italiano" Value="it" />
+                <Diller:DictionaryEntry Key="日本語" Value="ja" />
+                <Diller:DictionaryEntry Key="한국어" Value="ko" />
+                <Diller:DictionaryEntry Key="Latviešu" Value="lv" />
+                <Diller:DictionaryEntry Key="Lietuvių kalba" Value="lt" />
+                <Diller:DictionaryEntry Key="Македонски" Value="mk" />
+                <Diller:DictionaryEntry Key="Malay" Value="ms" />
+                <Diller:DictionaryEntry Key="Malti" Value="mt" />
+                <Diller:DictionaryEntry Key="Norsk" Value="no" />
+                <Diller:DictionaryEntry Key="فارسی" Value="fa" />
+                <Diller:DictionaryEntry Key="Polski" Value="pl" />
+                <Diller:DictionaryEntry Key="Português" Value="pt" />
+                <Diller:DictionaryEntry Key="Română" Value="ro" />
+                <Diller:DictionaryEntry Key="Русский" Value="ru" />
+                <Diller:DictionaryEntry Key="Српски" Value="sr" />
+                <Diller:DictionaryEntry Key="Slovenčina" Value="sk" />
+                <Diller:DictionaryEntry Key="Slovensko" Value="sl" />
+                <Diller:DictionaryEntry Key="Español" Value="es" />
+                <Diller:DictionaryEntry Key="Kiswahili" Value="sw" />
+                <Diller:DictionaryEntry Key="Svenska" Value="sv" />
+                <Diller:DictionaryEntry Key="ไทย" Value="th" />
+                <Diller:DictionaryEntry Key="Türkçe" Value="tr" />
+                <Diller:DictionaryEntry Key="Українська" Value="uk" />
+                <Diller:DictionaryEntry Key="اردو" Value="ur" />
+                <Diller:DictionaryEntry Key="Tiếng Việt" Value="vi" />
+                <Diller:DictionaryEntry Key="Cymraeg" Value="cy" />
+                <Diller:DictionaryEntry Key="ייִדיש" Value="yi" />
+            </Diller:ArrayList>
             <Style TargetType="Button">
                 <Setter Property="Background" Value="{StaticResource BorderBackground}" />
             </Style>
@@ -279,7 +341,7 @@
                             IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">
                             <Button.Content>
                                 <Grid>
-                                    <ProgressBar IsIndeterminate="{Binding DataContext.OcrIsBusy, RelativeSource={RelativeSource AncestorType=Window}}" />
+                                    <ProgressBar Background="{x:Null}" IsIndeterminate="{Binding DataContext.OcrIsBusy, RelativeSource={RelativeSource AncestorType=Window}}" />
                                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="OCR" />
                                 </Grid>
                             </Button.Content>
