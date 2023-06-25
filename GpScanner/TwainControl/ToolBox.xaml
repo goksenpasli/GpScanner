@@ -301,24 +301,41 @@
                                 Style="{StaticResource Slider}"
                                 Value="{Binding Scanner.WatermarkAngle}" />
                         </StackPanel>
-                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{local:Loc FONT}" />
-                        <ComboBox Height="25.6"
-                            VerticalContentAlignment="Center"
-                            local:Policy.PolicyName="WatermarkFont"
-                            ItemsSource="{Binding Source={x:Static Fonts.SystemFontFamilies}}"
-                            SelectedValue="{Binding Scanner.WatermarkFont}"
-                            SelectedValuePath="Source">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock FontFamily="{Binding Mode=OneWay}" Text="{Binding Mode=OneWay}" />
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                            <ComboBox.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <VirtualizingStackPanel />
-                                </ItemsPanelTemplate>
-                            </ComboBox.ItemsPanel>
-                        </ComboBox>
+                        <UniformGrid Columns="2">
+                            <Button Command="{Binding AutoCropImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
+                                <TextBlock>
+                                    <Run Text="{local:Loc Auto}" />
+                                    <Run Text="{local:Loc TRIMIMAGE}" />
+                                </TextBlock>
+                            </Button>
+                            <Extensions:ContentToggleButton Background="{Binding Scanner.AutoCropColor, Mode=OneWay}">
+                                <TextBlock d:Text="Black" Text="{Binding Scanner.AutoCropColor, Mode=OneWay}" />
+                                <Extensions:ContentToggleButton.OverContent>
+                                    <Extensions:ColorPicker Width="350" Height="250"
+                                        HexCode="{Binding Scanner.AutoCropColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        PredefinedColorVisibility="Visible" />
+                                </Extensions:ContentToggleButton.OverContent>
+                            </Extensions:ContentToggleButton>
+                        </UniformGrid>
+                        <UniformGrid Columns="2">
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{local:Loc FONT}" />
+                            <ComboBox Margin="0,0,-1,0" VerticalContentAlignment="Center"
+                                local:Policy.PolicyName="WatermarkFont"
+                                ItemsSource="{Binding Source={x:Static Fonts.SystemFontFamilies}}"
+                                SelectedValue="{Binding Scanner.WatermarkFont}"
+                                SelectedValuePath="Source">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock FontFamily="{Binding Mode=OneWay}" Text="{Binding Mode=OneWay}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                                <ComboBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel />
+                                    </ItemsPanelTemplate>
+                                </ComboBox.ItemsPanel>
+                            </ComboBox>
+                        </UniformGrid>
                         <Button local:Policy.PolicyName="SetWatermark" Command="{Binding SetWatermark, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" Content="{local:Loc DRAWTEXT}" />
                         <Button local:Policy.PolicyName="DeskewImage" Command="{Binding DeskewImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" Content="{local:Loc DESKEW}" />
                         <Button local:Policy.PolicyName="OcrPage"

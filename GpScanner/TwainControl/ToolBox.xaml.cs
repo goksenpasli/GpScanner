@@ -44,6 +44,14 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
             parameter => Scanner.CroppedImage = ((BitmapSource)Scanner.CroppedImage).InvertBitmap(),
             parameter => Scanner?.CroppedImage is not null);
 
+        AutoCropImage = new RelayCommand<object>(
+            parameter =>
+            {
+                Color color = (Color)ColorConverter.ConvertFromString(Scanner.AutoCropColor);
+                Scanner.CroppedImage = ((BitmapSource)Scanner.CroppedImage).AutoCropImage(color);
+            },
+            parameter => Scanner?.CroppedImage is not null);
+
         BlackAndWhiteImage = new RelayCommand<object>(
             parameter => Scanner.CroppedImage =
                 ((BitmapSource)Scanner.CroppedImage).BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg),
@@ -243,6 +251,8 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
     public static Scanner Scanner { get; set; }
 
     public ICommand ApplyColorChange { get; }
+
+    public RelayCommand<object> AutoCropImage { get; }
 
     public ICommand BlackAndWhiteImage { get; }
 

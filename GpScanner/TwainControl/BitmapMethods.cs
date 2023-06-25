@@ -69,6 +69,55 @@ public static class BitmapMethods
         return adjustedBitmap;
     }
 
+    public static CroppedBitmap AutoCropImage(this BitmapSource bitmapSource, Color color)
+    {
+        int maxX = 0;
+        int maxY = 0;
+
+        int minX = bitmapSource.PixelWidth;
+        int minY = bitmapSource.PixelHeight;
+
+        int bytesPerPixel = (bitmapSource.Format.BitsPerPixel + 7) / 8;
+        int stride = bytesPerPixel * bitmapSource.PixelWidth;
+        byte[] pixelData = new byte[bitmapSource.PixelHeight * stride];
+        bitmapSource.CopyPixels(pixelData, stride, 0);
+        bitmapSource.Freeze();
+        _ = Parallel.For(0, bitmapSource.PixelHeight, y =>
+        {
+            for (int x = 0; x < bitmapSource.PixelWidth; x++)
+            {
+                int offset = (y * stride) + (x * bytesPerPixel);
+                Color pixelColor = Color.FromArgb(bytesPerPixel == 4 ? pixelData[offset + 3] : (byte)255, pixelData[offset + 2], pixelData[offset + 1], pixelData[offset]);
+                if (pixelColor != color)
+                {
+                    if (x > maxX)
+                    {
+                        maxX = x;
+                    }
+
+                    if (x < minX)
+                    {
+                        minX = x;
+                    }
+
+                    if (y > maxY)
+                    {
+                        maxY = y;
+                    }
+
+                    if (y < minY)
+                    {
+                        minY = y;
+                    }
+                }
+            }
+        });
+        maxX += 2;
+        CroppedBitmap croppedimage = new(bitmapSource, new Int32Rect(minX, minY, maxX - minX - 1, maxY - minY - 1));
+        croppedimage.Freeze();
+        return croppedimage;
+    }
+
     public static Bitmap BitmapSourceToBitmap(this BitmapSource bitmapsource)
     {
         FormatConvertedBitmap src = new();

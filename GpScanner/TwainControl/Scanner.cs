@@ -107,6 +107,18 @@ public class Scanner : InpcBase, IDataErrorInfo
         }
     }
 
+    public string AutoCropColor {
+        get => autoCropColor;
+
+        set {
+            if (autoCropColor != value)
+            {
+                autoCropColor = value;
+                OnPropertyChanged(nameof(AutoCropColor));
+            }
+        }
+    }
+
     public bool AutoSave {
         get => autoSave;
 
@@ -962,6 +974,8 @@ public class Scanner : InpcBase, IDataErrorInfo
     private bool applyPdfSaveOcr;
 
     private bool arayüzetkin = true;
+
+    private string autoCropColor = "Black";
 
     private bool autoSave = Directory.Exists(Settings.Default.AutoFolder);
 
