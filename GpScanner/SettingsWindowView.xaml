@@ -23,7 +23,7 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Converter:StringToQrBitmapImageConverter x:Key="StringToQrBitmapImageConverter" />
         <Extensions:StringNullableToBooleanConverter x:Key="StringNullableToBooleanConverter" />
-        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+        <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
             <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
         </Style>
         <Style TargetType="ListBox">
@@ -31,7 +31,7 @@
         </Style>
         <Style TargetType="ComboBox">
             <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
-            <Setter Property="Template" Value="{StaticResource ComboBoxStyle}"/>
+            <Setter Property="Template" Value="{StaticResource ComboBoxStyle}" />
         </Style>
         <Style TargetType="Hyperlink">
             <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
@@ -606,13 +606,9 @@
                             </StackPanel>
                         </TabItem.Header>
                         <ScrollViewer Background="{StaticResource BorderBackground}" VerticalScrollBarVisibility="Auto">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
+                            <StackPanel>
                                 <PdfCompressor:Compressor />
-                                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal">
                                     <Image Width="24" Height="24">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -624,10 +620,10 @@
                                     <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
                                         FontWeight="Bold" Foreground="Red"
                                         IsChecked="{Binding DirectlyOverwriteCompressedPdf, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
-                                        <TextBlock Width="180" Text="{twainctrl:Loc OVERWRITECOMPRESSED}" TextWrapping="Wrap" />
+                                        <TextBlock Text="{twainctrl:Loc OVERWRITECOMPRESSED}" TextWrapping="Wrap" />
                                     </CheckBox>
                                 </StackPanel>
-                            </Grid>
+                            </StackPanel>
                         </ScrollViewer>
                     </TabItem>
                     <TabItem>

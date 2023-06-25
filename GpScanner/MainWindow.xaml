@@ -361,7 +361,7 @@
                             VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Standard">
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="{Binding SelectedSize}" SpacingMode="None" />
+                                    <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="{Binding SelectedSize, Mode=OneWay}" SpacingMode="None" />
                                 </ItemsPanelTemplate>
                             </ListBox.ItemsPanel>
                             <ListBox.ItemContainerStyle>
@@ -485,10 +485,26 @@
                                                                     <Extensions:ContentToggleButton.OverContent>
                                                                         <GroupBox>
                                                                             <GroupBox.Header>
-                                                                                <TextBlock>
-                                                                                    <Run Text="PDF" />
-                                                                                    <Run Text="{twainctrl:Loc COMPRESS}" />
-                                                                                </TextBlock>
+                                                                                <StackPanel Orientation="Horizontal">
+                                                                                    <TextBlock VerticalAlignment="Center">
+                                                                                        <Run Text="PDF" />
+                                                                                        <Run Text="{twainctrl:Loc COMPRESS}" />
+                                                                                    </TextBlock>
+                                                                                    <StackPanel Orientation="Horizontal" Visibility="{Binding DirectlyOverwriteCompressedPdf, Mode=OneWay, Source={x:Static properties:Settings.Default}, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                                                        <Image Width="24" Height="24" VerticalAlignment="Center">
+                                                                                            <Image.Source>
+                                                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                                                    <Binding Source="Shell32.dll" />
+                                                                                                    <Binding Source="77" />
+                                                                                                </MultiBinding>
+                                                                                            </Image.Source>
+                                                                                        </Image>
+                                                                                        <TextBlock Width="180"
+                                                                                            FontWeight="Bold" Foreground="Red"
+                                                                                            Text="{twainctrl:Loc OVERWRITECOMPRESSED}"
+                                                                                            TextWrapping="Wrap" />
+                                                                                    </StackPanel>
+                                                                                </StackPanel>
                                                                             </GroupBox.Header>
                                                                             <ViewModel:PdfCompressorControl LoadedPdfPath="{Binding Path=FileName, Mode=OneWay}" />
                                                                         </GroupBox>
