@@ -16,6 +16,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Extensions;component/Themes/Skin.xaml" />
                 <ResourceDictionary Source="/PdfViewer;component/Common.xaml" />
+                <ResourceDictionary Source="/TwainControl;component/CommonResource.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
@@ -31,6 +32,27 @@
                 <GradientStop ice:Freeze="True" Offset="1" Color="#FE00B6E8" />
                 <GradientStop ice:Freeze="True" Color="#FF48F3CA" />
             </LinearGradientBrush>
+            <Style TargetType="Button">
+                <Setter Property="Background" Value="{StaticResource BorderBackground}" />
+            </Style>
+            <Style TargetType="RepeatButton">
+                <Setter Property="Background" Value="{StaticResource BorderBackground}" />
+            </Style>
+            <Style TargetType="ToggleButton">
+                <Setter Property="Background" Value="{StaticResource BorderBackground}" />
+            </Style>
+            <Style TargetType="Extensions:ContentToggleButton">
+                <Setter Property="Background" Value="{StaticResource BorderBackground}" />
+            </Style>
+            <Style TargetType="Extensions:SplitButton">
+                <Setter Property="Background" Value="{StaticResource BorderBackground}" />
+            </Style>
+            <Style TargetType="Extensions:ButtonedTextBox">
+                <Setter Property="Background" Value="{StaticResource BorderBackground}" />
+            </Style>
+            <Style TargetType="PasswordBox">
+                <Setter Property="Background" Value="{StaticResource BorderBackground}" />
+            </Style>
             <Style TargetType="{x:Type GroupBox}">
                 <Setter Property="Background" Value="{StaticResource GroupBoxBackGround}" />
                 <Setter Property="BorderBrush" Value="Black" />

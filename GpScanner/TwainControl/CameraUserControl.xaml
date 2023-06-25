@@ -14,6 +14,7 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
+        <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
     </UserControl.Resources>
     <Grid>
         <ToggleButton HorizontalAlignment="Right" VerticalAlignment="Top"

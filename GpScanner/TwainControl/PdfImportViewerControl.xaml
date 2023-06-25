@@ -22,6 +22,9 @@
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
             <Pdfviewer:PdfPageToThumbImageConverter x:Key="PdfPageToThumbImageConverter" />
+            <Style TargetType="ComboBox">
+                <Setter Property="Template" Value="{StaticResource ComboBoxStyle}" />
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>

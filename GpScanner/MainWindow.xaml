@@ -94,18 +94,31 @@
         </Style>
         <Style TargetType="Button">
             <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
+            <Setter Property="Background" Value="{StaticResource BorderBackground}" />
         </Style>
         <Style TargetType="RepeatButton">
             <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
+            <Setter Property="Background" Value="{StaticResource BorderBackground}" />
+        </Style>
+        <Style TargetType="ToggleButton">
+            <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
+            <Setter Property="Background" Value="{StaticResource BorderBackground}" />
         </Style>
         <Style TargetType="ListBox">
             <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
         </Style>
         <Style TargetType="ComboBox">
             <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
+            <Setter Property="Template" Value="{StaticResource ComboBoxStyle}" />
         </Style>
         <Style TargetType="Hyperlink">
             <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
+        </Style>
+        <Style TargetType="Extensions:ContentToggleButton">
+            <Setter Property="Background" Value="{StaticResource BorderBackground}" />
+        </Style>
+        <Style TargetType="Extensions:SplitButton">
+            <Setter Property="Background" Value="{StaticResource BorderBackground}" />
         </Style>
     </Window.Resources>
     <Window.TaskbarItemInfo>
@@ -144,7 +157,7 @@
         <GroupBox Grid.Column="2">
             <GroupBox.Header>
                 <UniformGrid Columns="2">
-                    <Button twainctrl:Policy.PolicyName="OpenSettings" Background="{StaticResource BorderBackground}" Command="{Binding Source={x:Static ViewModel:WindowExtensions.OpenSettings}}">
+                    <Button twainctrl:Policy.PolicyName="OpenSettings" Command="{Binding Source={x:Static ViewModel:WindowExtensions.OpenSettings}}">
                         <StackPanel Orientation="Horizontal">
                             <Image Width="16" Height="16">
                                 <Image.Source>
@@ -157,12 +170,9 @@
                             <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SETTİNGS}" />
                         </StackPanel>
                     </Button>
-                    <ToggleButton x:Name="TbExpandDocument"
-                        Background="{StaticResource BorderBackground}"
-                        Command="{Binding ModifyGridWidth}"
-                        IsChecked="{Binding DocumentPanelIsExpanded}">
+                    <ToggleButton x:Name="TbExpandDocument" Command="{Binding ModifyGridWidth}" IsChecked="{Binding DocumentPanelIsExpanded}">
                         <ToggleButton.Style>
-                            <Style TargetType="{x:Type ToggleButton}">
+                            <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="{x:Type ToggleButton}">
                                 <Style.Triggers>
                                     <Trigger Property="IsChecked" Value="True">
                                         <Setter Property="CommandParameter" Value="1" />
@@ -216,9 +226,7 @@
                             <RowDefinition />
                         </Grid.RowDefinitions>
                         <StackPanel Background="{StaticResource BorderBackground}" Orientation="Horizontal">
-                            <Extensions:SplitButton twainctrl:Policy.PolicyName="Tümünüİşaretle" Background="Transparent"
-                                BorderBrush="Cyan"
-                                Command="{Binding Tümünüİşaretle}">
+                            <Extensions:SplitButton twainctrl:Policy.PolicyName="Tümünüİşaretle" BorderBrush="Cyan" Command="{Binding Tümünüİşaretle}">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock VerticalAlignment="Center" d:Text="0" Text="{Binding CheckedPdfCount}" />
                                     <Image Width="16" Height="16" Source="/TwainControl;component/Icons/selectall.png" />
@@ -250,8 +258,7 @@
                                 SmallChange="1"
                                 Value="{Binding AllPdfPage, Mode=OneWayToSource}" />
                             <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
-                                twainctrl:Policy.PolicyName="PdfBirleştir" Background="Transparent"
-                                BorderBrush="Cyan"
+                                twainctrl:Policy.PolicyName="PdfBirleştir" BorderBrush="Cyan"
                                 Command="{Binding PdfBirleştir}">
                                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                     <Image Width="16" Height="16">
@@ -279,7 +286,7 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <Button twainctrl:Policy.PolicyName="DateBack" Background="Transparent"
+                                <Button twainctrl:Policy.PolicyName="DateBack"
                                     Command="{Binding DateBack}"
                                     Content="ç" FontFamily="Wingdings"
                                     FontSize="16" />
@@ -288,15 +295,15 @@
                                     Language="{Binding CalendarLang}"
                                     SelectedDate="{Binding SeçiliGün}" />
                                 <Button Grid.Column="2"
-                                    twainctrl:Policy.PolicyName="DateForward" Background="Transparent"
+                                    twainctrl:Policy.PolicyName="DateForward"
                                     Command="{Binding DateForward}"
                                     Content="è" FontFamily="Wingdings"
                                     FontSize="16" />
                             </Grid>
                             <Extensions:ButtonedTextBox Grid.Column="1"
                                 VerticalContentAlignment="Center"
-                                Background="Transparent" CopyButtonVisibility="Collapsed"
-                                OpenButtonVisibility="Collapsed" PasteButtonVisibility="Collapsed"
+                                CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed"
+                                PasteButtonVisibility="Collapsed"
                                 Text="{Binding AramaMetni, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <StackPanel Grid.Column="2" Orientation="Horizontal">
                                 <ComboBox twainctrl:Policy.PolicyName="SelectedSize" ItemsSource="{Binding GetPreviewSize}" SelectedItem="{Binding SelectedSize}">
@@ -308,12 +315,11 @@
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
-                                <ToggleButton Background="Transparent" FontFamily="Wingdings"
-                                    FontSize="16"
+                                <ToggleButton FontFamily="Wingdings" FontSize="16"
                                     IsChecked="{Binding Sıralama}"
                                     IsEnabled="{Binding HasItems, ElementName=LbDoc}">
                                     <ToggleButton.Style>
-                                        <Style TargetType="{x:Type ToggleButton}">
+                                        <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="{x:Type ToggleButton}">
                                             <Style.Triggers>
                                                 <Trigger Property="IsChecked" Value="True">
                                                     <Setter Property="Content" Value="é" />
@@ -325,9 +331,7 @@
                                         </Style>
                                     </ToggleButton.Style>
                                 </ToggleButton>
-                                <Button twainctrl:Policy.PolicyName="CycleSelectedDocuments" Background="Transparent"
-                                    Command="{Binding CycleSelectedDocuments}"
-                                    CommandParameter="{Binding ElementName=LbDoc}">
+                                <Button twainctrl:Policy.PolicyName="CycleSelectedDocuments" Command="{Binding CycleSelectedDocuments}" CommandParameter="{Binding ElementName=LbDoc}">
                                     <Image Width="16" Height="16">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -411,7 +415,7 @@
                                                                     CommandParameter="{Binding Mode=OneWay}"
                                                                     IsEnabled="{Binding FileIsPdfFile, Mode=OneWay}">
                                                                     <Extensions:ContentToggleButton.Style>
-                                                                        <Style TargetType="{x:Type Extensions:ContentToggleButton}">
+                                                                        <Style BasedOn="{StaticResource {x:Type Extensions:ContentToggleButton}}" TargetType="{x:Type Extensions:ContentToggleButton}">
                                                                             <Style.Triggers>
                                                                                 <Trigger Property="IsChecked" Value="False">
                                                                                     <Setter Property="OverContent" Value="{x:Null}" />
@@ -435,7 +439,7 @@
                                                                 </Extensions:ContentToggleButton>
                                                                 <Extensions:ContentToggleButton Grid.Column="1" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
                                                                     <Extensions:ContentToggleButton.Style>
-                                                                        <Style TargetType="Extensions:ContentToggleButton">
+                                                                        <Style BasedOn="{StaticResource {x:Type Extensions:ContentToggleButton}}" TargetType="Extensions:ContentToggleButton">
                                                                             <Style.Triggers>
                                                                                 <Trigger Property="IsChecked" Value="False">
                                                                                     <Setter Property="OverContent" Value="{x:Null}" />
@@ -529,7 +533,7 @@
                                 Command="{Binding OcrPage, Mode=OneWay}"
                                 CommandParameter="{Binding DataContext, ElementName=TwainCtrl}">
                                 <Button.Style>
-                                    <Style TargetType="Button">
+                                    <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding OcrIsBusy}" Value="true">
                                                 <Setter Property="IsEnabled" Value="False" />

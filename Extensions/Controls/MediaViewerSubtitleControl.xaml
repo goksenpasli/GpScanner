@@ -67,7 +67,7 @@
                 </Grid.RowDefinitions>
                 <ListBox x:Name="LbSubtitle"
                     d:ItemsSource="{d:SampleData ItemCount=5}"
-                    Background="{StaticResource BorderBackground}"
+                    Background="{DynamicResource BorderBackground}"
                     IsSynchronizedWithCurrentItem="False"
                     ItemsSource="{Binding Mode=OneWay, Source={StaticResource Subtitle}}"
                     VirtualizingPanel.CacheLength="3,3" VirtualizingPanel.CacheLengthUnit="Item"
@@ -92,7 +92,7 @@
                 </ListBox>
                 <TextBlock Grid.Row="1"
                     Margin="0,1,0,0"
-                    Background="{StaticResource BorderBackground}"
+                    Background="{DynamicResource BorderBackground}"
                     Text="{Binding SubTitle}"
                     TextWrapping="Wrap" />
             </Grid>

@@ -133,19 +133,31 @@
                 </CollectionViewSource.SortDescriptions>
             </CollectionViewSource>
             <Style TargetType="{x:Type Button}">
+                <Setter Property="Background" Value="{StaticResource BorderBackground}" />
                 <Setter Property="local:Policy.PolicyEnabled" Value="True" />
             </Style>
             <Style TargetType="{x:Type RepeatButton}">
+                <Setter Property="Background" Value="{StaticResource BorderBackground}" />
                 <Setter Property="local:Policy.PolicyEnabled" Value="True" />
             </Style>
             <Style TargetType="{x:Type ListBox}">
                 <Setter Property="local:Policy.PolicyEnabled" Value="True" />
             </Style>
             <Style TargetType="{x:Type ComboBox}">
+                <Setter Property="Template" Value="{StaticResource ComboBoxStyle}" />
                 <Setter Property="local:Policy.PolicyEnabled" Value="True" />
             </Style>
             <Style TargetType="{x:Type Hyperlink}">
                 <Setter Property="local:Policy.PolicyEnabled" Value="True" />
+            </Style>
+            <Style TargetType="Extensions:ContentToggleButton">
+                <Setter Property="Background" Value="{StaticResource BorderBackground}" />
+            </Style>
+            <Style TargetType="Extensions:SplitButton">
+                <Setter Property="Background" Value="{StaticResource BorderBackground}" />
+            </Style>
+            <Style TargetType="ToggleButton">
+                <Setter Property="Background" Value="{StaticResource BorderBackground}" />
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -224,7 +236,7 @@
                                         <TextBlock VerticalAlignment="Center" Text="{local:Loc SCAN}" />
                                     </StackPanel>
                                 </Button>
-                                <Button local:Policy.PolicyName="FastScanImage" Background="Green"
+                                <Button local:Policy.PolicyName="FastScanImage"
                                     Command="{Binding FastScanImage}"
                                     IsDefault="True"
                                     IsEnabled="{Binding Scanner.ArayüzEtkin}">
@@ -333,9 +345,9 @@
                                 </StackPanel.Resources>
                                 <StackPanel>
                                     <StackPanel Orientation="Horizontal">
-                                        <ToggleButton Background="{x:Null}" IsChecked="{Binding Adf, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                        <ToggleButton IsChecked="{Binding Adf, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                                             <ToggleButton.Style>
-                                                <Style TargetType="{x:Type ToggleButton}">
+                                                <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="{x:Type ToggleButton}">
                                                     <Style.Triggers>
                                                         <Trigger Property="IsChecked" Value="True">
                                                             <Setter Property="Content">

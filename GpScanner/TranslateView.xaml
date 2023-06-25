@@ -75,7 +75,10 @@
             <Diller:DictionaryEntry Key="Cymraeg" Value="cy" />
             <Diller:DictionaryEntry Key="ייִדיש" Value="yi" />
         </Diller:ArrayList>
-        <Style x:Key="ToggleButtonPlayPauseStyle" x:Shared="False" TargetType="{x:Type ToggleButton}">
+        <Style x:Key="ToggleButtonPlayPauseStyle"
+            x:Shared="False"
+            BasedOn="{StaticResource {x:Type ToggleButton}}"
+            TargetType="{x:Type ToggleButton}">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=Self}}" Value="true">
                     <Setter Property="Content">

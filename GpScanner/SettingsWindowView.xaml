@@ -23,7 +23,7 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Converter:StringToQrBitmapImageConverter x:Key="StringToQrBitmapImageConverter" />
         <Extensions:StringNullableToBooleanConverter x:Key="StringNullableToBooleanConverter" />
-        <Style TargetType="Button">
+        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
             <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
         </Style>
         <Style TargetType="ListBox">
@@ -31,6 +31,7 @@
         </Style>
         <Style TargetType="ComboBox">
             <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
+            <Setter Property="Template" Value="{StaticResource ComboBoxStyle}"/>
         </Style>
         <Style TargetType="Hyperlink">
             <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
