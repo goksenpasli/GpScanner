@@ -27,7 +27,9 @@
             </Grid.ColumnDefinitions>
             <StackPanel Margin="2,0,0,0">
                 <TextBlock FontSize="20" TextWrapping="Wrap">
-                    <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/goksenpasli?tab=repositories">
+                    <Hyperlink local:Policy.PolicyName="WebAdreseGit"
+                        Command="{Binding WebAdreseGit}"
+                        CommandParameter="https://github.com/goksenpasli?tab=repositories">
                         <Run Text="{local:Loc OTHERAPPS}" />
                     </Hyperlink>
                 </TextBlock>
@@ -60,11 +62,6 @@
                     </Hyperlink>
                 </TextBlock>
                 <TextBlock>
-                    <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://www.nuget.org/packages/Freeware.Pdf2Png/1.0.1">
-                        Pdf2Png
-                    </Hyperlink>
-                </TextBlock>
-                <TextBlock>
                     <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/JosePineiro/MozJpeg-wrapper">
                         MozJpeg
                     </Hyperlink>
@@ -72,6 +69,16 @@
                 <TextBlock>
                     <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://bitbucket.org/jvandezande/wpfcap/src/master/">
                         WPFCap
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock>
+                    <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/pvginkel/PdfiumViewer">
+                        PdfiumViewer
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock>
+                    <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/JosePineiro/WebP-wrapper">
+                        WebP-Wrapper
                     </Hyperlink>
                 </TextBlock>
             </StackPanel>
@@ -87,7 +94,9 @@
                     Text="{Binding MailData, UpdateSourceTrigger=PropertyChanged}"
                     TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" />
                 <UniformGrid Grid.Row="2" Columns="2">
-                    <Button Command="{Binding WebAdreseGit}" CommandParameter="eventvwr.msc">
+                    <Button local:Policy.PolicyName="WebAdreseGit"
+                        Command="{Binding WebAdreseGit}"
+                        CommandParameter="eventvwr.msc">
                         <Image Width="32" Height="32">
                             <Image.Source>
                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -97,7 +106,7 @@
                             </Image.Source>
                         </Image>
                     </Button>
-                    <Button Command="{Binding SendMail}">
+                    <Button local:Policy.PolicyName="SendMail" Command="{Binding SendMail}">
                         <Image Width="32" Height="32">
                             <Image.Source>
                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">

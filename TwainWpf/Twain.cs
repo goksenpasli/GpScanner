@@ -1,16 +1,18 @@
 using System;
 using System.Collections.Generic;
 
-// ReSharper disable PossibleNullReferenceException
-
 namespace TwainWpf
 {
     public class Twain
     {
         public Twain(IWindowsMessageHook messageHook)
         {
-            ScanningComplete += delegate { };
-            TransferImage += delegate { };
+            ScanningComplete += delegate
+            {
+            };
+            TransferImage += delegate
+            {
+            };
 
             _dataSourceManager = new DataSourceManager(DataSourceManager.DefaultApplicationId, messageHook);
             _dataSourceManager.ScanningComplete += (object sender, ScanningCompleteEventArgs args) => ScanningComplete(this, args);
@@ -42,9 +44,7 @@ namespace TwainWpf
         public IList<string> SourceNames {
             get {
                 List<string> result = new List<string>();
-                List<DataSource> sources = DataSource.GetAllSources(
-                    _dataSourceManager.ApplicationId,
-                    _dataSourceManager.MessageHook);
+                List<DataSource> sources = DataSource.GetAllSources(_dataSourceManager.ApplicationId, _dataSourceManager.MessageHook);
 
                 foreach (DataSource source in sources)
                 {
@@ -70,10 +70,7 @@ namespace TwainWpf
         /// <param name="sourceName">The source product name.</param>
         public void SelectSource(string sourceName)
         {
-            DataSource source = DataSource.GetSource(
-                sourceName,
-                _dataSourceManager.ApplicationId,
-                _dataSourceManager.MessageHook);
+            DataSource source = DataSource.GetSource(sourceName, _dataSourceManager.ApplicationId, _dataSourceManager.MessageHook);
 
             _dataSourceManager.SelectSource(source);
         }

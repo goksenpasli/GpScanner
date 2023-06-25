@@ -3,7 +3,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:properties="clr-namespace:GpScanner.Properties"
     xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
     xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
     xmlns:viewmodel="clr-namespace:GpScanner.ViewModel"
@@ -38,8 +37,8 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="249*" />
-                <ColumnDefinition Width="248*" />
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
             <ItemsControl d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding OcrDatas}">
                 <ItemsControl.Template>
@@ -53,16 +52,27 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Button HorizontalContentAlignment="Stretch"
+                            twainctrl:Policy.PolicyName="TesseractDownload"
                             Command="{Binding DataContext.TesseractDownload, RelativeSource={RelativeSource AncestorType=UserControl}}"
                             CommandParameter="{Binding Mode=OneWay}"
-                            IsEnabled="{Binding IsEnabled}"
+                            IsEnabled="{Binding IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             Visibility="{Binding IsVisible}">
                             <Button.Content>
                                 <Grid>
                                     <ProgressBar Background="{x:Null}"
                                         Maximum="100" Minimum="0"
                                         Value="{Binding ProgressValue}" />
-                                    <TextBlock HorizontalAlignment="Center" Text="{Binding OcrName}" />
+                                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="User32.dll" />
+                                                    <Binding Source="6" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <TextBlock HorizontalAlignment="Center" Text="{Binding OcrName}" />
+                                    </StackPanel>
                                 </Grid>
                             </Button.Content>
                         </Button>
@@ -76,15 +86,28 @@
             </ItemsControl>
             <ListBox Grid.Column="1"
                 d:ItemsSource="{d:SampleData ItemCount=5}"
+                twainctrl:Policy.PolicyName="DefaultTtsLang"
                 Background="{StaticResource BorderBackground}"
-                ItemsSource="{Binding TesseractFiles}"
-                SelectedItem="{Binding DefaultTtsLang, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
-                <ListBox.Resources>
-                    <Style BasedOn="{StaticResource ListBoxItemTemplate}" TargetType="ListBoxItem" />
-                </ListBox.Resources>
+                ItemsSource="{Binding TesseractFiles, ValidatesOnDataErrors=True}"
+                SelectionMode="Extended"
+                Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <CheckBox VerticalContentAlignment="Center"
+                                        d:Content="Name"
+                                        Content="{Binding Path=Name, Mode=OneWay}"
+                                        IsChecked="{Binding Checked}" />
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
             </ListBox>
             <FlowDocumentScrollViewer Grid.Row="1" Grid.ColumnSpan="2">
-                <FlowDocument>
+                <FlowDocument IsOptimalParagraphEnabled="True">
                     <Paragraph>
                         <Span>
                             <Hyperlink Command="{Binding TesseractDataFilesDownloadLink}" CommandParameter="https://docs.microsoft.com/tr-tr/cpp/windows/latest-supported-vc-redist?view=msvc-170">

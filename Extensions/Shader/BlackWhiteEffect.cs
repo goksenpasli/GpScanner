@@ -3,35 +3,34 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 
-namespace Extensions
+namespace Extensions;
+
+/// <summary>
+/// An effect that turns the input into black/white colors.
+/// </summary>
+public class BlackWhiteEffect : ShaderEffect
 {
-    /// <summary>An effect that turns the input into black/white colors.</summary>
-    public class BlackWhiteEffect : ShaderEffect
+    public BlackWhiteEffect()
     {
-        public static readonly DependencyProperty InputProperty = RegisterPixelShaderSamplerProperty("Input", typeof(BlackWhiteEffect), 0);
+        PixelShader = new PixelShader { UriSource = new Uri("/Extensions;component/Shader/BlackWhiteEffect.ps", UriKind.Relative) };
 
-        public static readonly DependencyProperty ThresholdProperty = DependencyProperty.Register("Threshold", typeof(double), typeof(BlackWhiteEffect), new UIPropertyMetadata(0.6D, PixelShaderConstantCallback(1)));
-
-        public BlackWhiteEffect()
-        {
-            PixelShader = new()
-            {
-                UriSource = new Uri("/Extensions;component/Shader/BlackWhiteEffect.ps", UriKind.Relative)
-            };
-
-            UpdateShaderValue(InputProperty);
-            UpdateShaderValue(ThresholdProperty);
-        }
-
-        public Brush Input {
-            get => (Brush)GetValue(InputProperty);
-            set => SetValue(InputProperty, value);
-        }
-
-        /// <summary>The Threshold value to convert pixel from black to white. </summary>
-        public double Threshold {
-            get => (double)GetValue(ThresholdProperty);
-            set => SetValue(ThresholdProperty, value);
-        }
+        UpdateShaderValue(InputProperty);
+        UpdateShaderValue(ThresholdProperty);
     }
+
+    public Brush Input { get => (Brush)GetValue(InputProperty); set => SetValue(InputProperty, value); }
+
+    /// <summary>
+    /// The Threshold value to convert pixel from black to white.
+    /// </summary>
+    public double Threshold { get => (double)GetValue(ThresholdProperty); set => SetValue(ThresholdProperty, value); }
+
+    public static readonly DependencyProperty InputProperty =
+                    RegisterPixelShaderSamplerProperty("Input", typeof(BlackWhiteEffect), 0);
+
+    public static readonly DependencyProperty ThresholdProperty = DependencyProperty.Register(
+        "Threshold",
+        typeof(double),
+        typeof(BlackWhiteEffect),
+        new UIPropertyMetadata(0.6D, PixelShaderConstantCallback(1)));
 }

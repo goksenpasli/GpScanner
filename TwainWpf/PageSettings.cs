@@ -4,20 +4,10 @@ using TwainWpf.TwainNative;
 namespace TwainWpf
 {
     /// <summary>
-    /// Page settings used for automatic document feeders
-    /// scanning.
+    /// Page settings used for automatic document feeders scanning.
     /// </summary>
     public class PageSettings : INotifyPropertyChanged
     {
-        /// <summary>
-        /// Default Page setup - A4 Letter and Portrait orientation
-        /// </summary>
-        public static readonly PageSettings Default = new PageSettings()
-        {
-            Size = PageType.UsLetter,
-            Orientation = Orientation.Default
-        };
-
         public PageSettings()
         {
             Size = PageType.UsLetter;
@@ -56,13 +46,20 @@ namespace TwainWpf
             }
         }
 
+        /// <summary>
+        /// Default Page setup - A4 Letter and Portrait orientation
+        /// </summary>
+        public static readonly PageSettings Default = new PageSettings() { Size = PageType.UsLetter, Orientation = Orientation.Default };
+
         private Orientation _orientation;
 
         private PageType _size;
 
         #region INotifyPropertyChanged Members
 
-        public event PropertyChangedEventHandler PropertyChanged = delegate { };
+        public event PropertyChangedEventHandler PropertyChanged = delegate
+        {
+        };
 
         protected void OnPropertyChanged(string propertyName)
         {

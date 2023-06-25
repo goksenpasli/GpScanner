@@ -124,7 +124,7 @@
     <value>SETTINGS</value>
   </data>
   <data name="RES" xml:space="preserve">
-    <value>RESOLUTİON</value>
+    <value>RESOLUTION</value>
   </data>
   <data name="ADF" xml:space="preserve">
     <value>ADF</value>
@@ -175,7 +175,7 @@
     <value>RESTART COMPUTER</value>
   </data>
   <data name="FILENAME" xml:space="preserve">
-    <value>FILE NAME:</value>
+    <value>FILE NAME</value>
   </data>
   <data name="DAY" xml:space="preserve">
     <value>[DAY]</value>
@@ -326,7 +326,7 @@ ALSO PDF PROTECTION CAN BE BROKEN BY 3rd PARTY APPLICATIONS.</value>
 PDF</value>
   </data>
   <data name="SELECTTWOPDF" xml:space="preserve">
-    <value>SELECT AT LEAST TWO PDF FILE</value>
+    <value>SELECT AT LEAST TWO PDF FILES</value>
   </data>
   <data name="READACTIVEPAGE" xml:space="preserve">
     <value>READ ACTIVE
@@ -369,7 +369,7 @@ PAGE</value>
     <value>Auto Save Path Changed. Old Files Will Not Be Moved To The Newly Determined Folder.</value>
   </data>
   <data name="LISTREMOVEWARN" xml:space="preserve">
-    <value>All Scanned Documents in the Top List Will Be Deleted Do you want to continue?</value>
+    <value>All Scanned Documents in the Bottom List Will Be Deleted Do you want to continue?</value>
   </data>
   <data name="DEFAULTSCANNAME" xml:space="preserve">
     <value>Scan</value>
@@ -546,5 +546,29 @@ TO FILE</value>
   </data>
   <data name="RESTARTAPP" xml:space="preserve">
     <value>RESTARTAPP</value>
+  </data>
+  <data name="REMOVESELECTED" xml:space="preserve">
+    <value>Do You Want to Delete the Selected Image?</value>
+  </data>
+  <data name="UPDATE" xml:space="preserve">
+    <value>UPDATE</value>
+  </data>
+  <data name="EYPOPEN" xml:space="preserve">
+    <value>Open Eyp Files Directly.</value>
+  </data>
+  <data name="PDFOPEN" xml:space="preserve">
+    <value>Open Pdf Files Directly.</value>
+  </data>
+  <data name="COMPRESS" xml:space="preserve">
+    <value>COMPRESS</value>
+  </data>
+  <data name="OVERWRITECOMPRESSED" xml:space="preserve">
+    <value>Directly Overwrite Compressed File in Scanned Documents</value>
+  </data>
+  <data name="STOP" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="EMPTY" xml:space="preserve">
+    <value>EMPTY</value>
   </data>
 </root>

@@ -8,18 +8,18 @@
             Confidence = confidence;
         }
 
-        public float Angle { get; }
-
-        public float Confidence { get; }
-
         #region ToString
 
         public override string ToString()
         {
-            return string.Format("Scew: {0} [conf: {1}]", Angle, Confidence);
+            return $"Scew: {Angle} [conf: {Confidence}]";
         }
 
         #endregion ToString
+
+        public float Angle { get; }
+
+        public float Confidence { get; }
 
         #region Equals and GetHashCode implementation
 
@@ -35,7 +35,7 @@
 
         public override bool Equals(object obj)
         {
-            return (obj is Scew) && Equals((Scew)obj);
+            return obj is Scew && Equals((Scew)obj);
         }
 
         public bool Equals(Scew other)
@@ -51,6 +51,7 @@
                 hashCode += 1000000007 * Angle.GetHashCode();
                 hashCode += 1000000009 * Confidence.GetHashCode();
             }
+
             return hashCode;
         }
 

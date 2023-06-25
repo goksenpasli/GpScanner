@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents the possible page layou analysis modes.
     /// </summary>
-    public enum PageSegMode : int
+    public enum PageSegMode
     {
         /// <summary>
         /// Orientation and script detection (OSD) only.
@@ -69,8 +69,7 @@
         SparseTextOsd = 12,
 
         /// <summary>
-        /// Treat the image as a single text line, bypassing hacks that are
-        /// specific to Tesseract.
+        /// Treat the image as a single text line, bypassing hacks that are specific to Tesseract.
         /// </summary>
         RawLine = 13,
 

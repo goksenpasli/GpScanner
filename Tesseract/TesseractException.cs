@@ -21,7 +21,6 @@ namespace Tesseract
         {
         }
 
-        // This constructor is needed for serialization.
         protected TesseractException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }

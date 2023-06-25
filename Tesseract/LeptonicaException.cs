@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Runtime.Serialization;
 
 namespace Tesseract
 {
     [Serializable]
     public class LeptonicaException : Exception
     {
-        public LeptonicaException() { }
+        public LeptonicaException()
+        {
+        }
 
         public LeptonicaException(string message) : base(message)
         {
@@ -15,9 +18,8 @@ namespace Tesseract
         {
         }
 
-        protected LeptonicaException(
-          System.Runtime.Serialization.SerializationInfo info,
-          System.Runtime.Serialization.StreamingContext context)
-            : base(info, context) { }
+        protected LeptonicaException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
     }
 }

@@ -1,14 +1,11 @@
-// ReSharper disable InconsistentNaming
 using System.ComponentModel;
 
 namespace TwainWpf.TwainNative
 {
     public enum Capabilities : short
     {
-        // all data sources are REQUIRED to support these capabilities
         XferCount = 0x0001,
 
-        // image data sources are REQUIRED to support these capabilities
         ICompression = 0x0100,
 
         IPixelType = 0x0101,
@@ -17,7 +14,6 @@ namespace TwainWpf.TwainNative
 
         IXferMech = 0x0103,
 
-        // all data sources MAY support these capabilities
         Author = 0x1000,
 
         Caption = 0x1001,
@@ -129,7 +125,6 @@ namespace TwainWpf.TwainNative
 
         Feederpocket = 0x103a,
 
-        // image data sources MAY support these capabilities
         Autobright = 0x1100,
 
         Brightness = 0x1101,
@@ -274,21 +269,21 @@ namespace TwainWpf.TwainNative
 
         Autosize = 0x1156,
 
-        AutomaticCropUsesFrame = 0x1157,            /* Added 2.1 */
+        AutomaticCropUsesFrame = 0x1157,
 
-        AutomaticLengthDetection = 0x1158,          /* Added 2.1 */
+        AutomaticLengthDetection = 0x1158,
 
-        AutomaticColorEnabled = 0x1159,             /* Added 2.1 */
+        AutomaticColorEnabled = 0x1159,
 
-        AutomaticColorNonColorPixelType = 0x115a,   /* Added 2.1 */
+        AutomaticColorNonColorPixelType = 0x115a,
 
-        ColorManagementEnabled = 0x115b,            /* Added 2.1 */
+        ColorManagementEnabled = 0x115b,
 
-        ImageMerge = 0x115c,                        /* Added 2.1 */
+        ImageMerge = 0x115c,
 
-        ImageMergeHeightThreshold = 0x115d,       /* Added 2.1 */
+        ImageMergeHeightThreshold = 0x115d,
 
-        SupoortedExtImageInfo = 0x115e,             /* Added 2.1 */
+        SupoortedExtImageInfo = 0x115e,
 
         Audiofileformat = 0x1201,
 

@@ -12,10 +12,5 @@ namespace TwainWpf.TwainNative
         Audio = 0x0004,
 
         DsmMask = 0xFFFF,
-
-        //TWAIN 2.0 values
-        //Dsm2 = 0x10000000,
-        //App2 = 0x20000000,
-        //Ds2 = 0x30000000,
     }
 }

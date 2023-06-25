@@ -399,4 +399,10 @@
   <data name="OCRPDFSAVE" xml:space="preserve">
     <value />
   </data>
+  <data name="STOP" xml:space="preserve">
+    <value />
+  </data>
+  <data name="EMPTY" xml:space="preserve">
+    <value />
+  </data>
 </root>

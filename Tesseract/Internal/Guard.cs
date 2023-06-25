@@ -5,12 +5,10 @@ namespace Tesseract.Internal
 {
     internal static class Guard
     {
-        // Generic pre-condition checks
-
         /// <summary>
         /// Ensures the given <paramref name="condition"/> is true.
         /// </summary>
-        /// <exception cref="System.ArgumentException">The <paramref name="condition"/> is not true.</exception>
+        /// <exception cref="ArgumentException">The <paramref name="condition"/> is not true.</exception>
         /// <param name="paramName">The name of the parameter, used when generating the exception.</param>
         /// <param name="condition">The value of the parameter to check.</param>
         [DebuggerHidden]
@@ -25,7 +23,7 @@ namespace Tesseract.Internal
         /// <summary>
         /// Ensures the given <paramref name="condition"/> is true.
         /// </summary>
-        /// <exception cref="System.ArgumentException">The <paramref name="condition"/> is not true.</exception>
+        /// <exception cref="ArgumentException">The <paramref name="condition"/> is not true.</exception>
         /// <param name="paramName">The name of the parameter, used when generating the exception.</param>
         /// <param name="condition">The value of the parameter to check.</param>
         /// <param name="message">The error message.</param>
@@ -41,11 +39,11 @@ namespace Tesseract.Internal
         /// <summary>
         /// Ensures the given <paramref name="condition"/> is true.
         /// </summary>
-        /// <exception cref="System.ArgumentException">The <paramref name="condition"/> is not true.</exception>
+        /// <exception cref="ArgumentException">The <paramref name="condition"/> is not true.</exception>
         /// <param name="paramName">The name of the parameter, used when generating the exception.</param>
         /// <param name="condition">The value of the parameter to check.</param>
         /// <param name="message">The error message.</param>
-        /// <param name="args">The message argument used to format <paramref name="message" />.</param>
+        /// <param name="args">The message argument used to format <paramref name="message"/>.</param>
         [DebuggerHidden]
         public static void Require(string paramName, bool condition, string message, params object[] args)
         {
@@ -60,14 +58,14 @@ namespace Tesseract.Internal
         {
             if (value == null)
             {
-                throw new ArgumentException(string.Format("Argument \"{0}\" must not be null.", value));
+                throw new ArgumentException($"Argument \"{value}\" must not be null.");
             }
         }
 
         /// <summary>
         /// Ensures the given <paramref name="value"/> is not null or empty.
         /// </summary>
-        /// <exception cref="System.ArgumentException">The <paramref name="value"/> is null or empty.</exception>
+        /// <exception cref="ArgumentException">The <paramref name="value"/> is null or empty.</exception>
         /// <param name="paramName">The name of the parameter, used when generating the exception.</param>
         /// <param name="value">The value of the parameter to check.</param>
         [DebuggerHidden]
@@ -76,13 +74,13 @@ namespace Tesseract.Internal
             RequireNotNull(paramName, value);
             if (value.Length == 0)
             {
-                throw new ArgumentException(paramName,
-                    string.Format(@"The argument ""{0}"" must not be null or empty.", paramName));
+                throw new ArgumentException(paramName, $@"The argument ""{paramName}"" must not be null or empty.");
             }
         }
 
         /// <summary>
-        /// Verifies the given <paramref name="condition"/> is <c>True</c>; throwing an <see cref="InvalidOperationException"/> when the condition is not met.
+        /// Verifies the given <paramref name="condition"/> is <c>True</c>; throwing an <see
+        /// cref="InvalidOperationException"/> when the condition is not met.
         /// </summary>
         /// <param name="condition">The condition to be tested.</param>
         /// <param name="message">The error message to raise if <paramref name="condition"/> is <c>False</c>.</param>

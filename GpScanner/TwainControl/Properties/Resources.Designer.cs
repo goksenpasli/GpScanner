@@ -297,6 +297,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string EMPTY {
+            get {
+                return ResourceManager.GetString("EMPTY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string ENCRYPT {
             get {
                 return ResourceManager.GetString("ENCRYPT", resourceCulture);
@@ -768,6 +777,15 @@ namespace TwainControl.Properties {
         public static string SRC {
             get {
                 return ResourceManager.GetString("SRC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string STOP {
+            get {
+                return ResourceManager.GetString("STOP", resourceCulture);
             }
         }
         

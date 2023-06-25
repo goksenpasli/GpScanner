@@ -1,0 +1,573 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="SRC" xml:space="preserve">
+    <value>СВАРКА</value>
+  </data>
+  <data name="SETTİNGS" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="RES" xml:space="preserve">
+    <value>Разрешающая способность:</value>
+  </data>
+  <data name="ADF" xml:space="preserve">
+    <value>УСТРОЙСТВО ПОДАЧИ ДОКУМЕНТОВ</value>
+  </data>
+  <data name="BW" xml:space="preserve">
+    <value>ЧЕРНО-БЕЛЫЙ</value>
+  </data>
+  <data name="GRAY" xml:space="preserve">
+    <value>СЕРЫЙ</value>
+  </data>
+  <data name="COLOR" xml:space="preserve">
+    <value>КРАСОЧНО</value>
+  </data>
+  <data name="TWOSIDE" xml:space="preserve">
+    <value>ДВУСТОРОННИЙ</value>
+  </data>
+  <data name="GUI" xml:space="preserve">
+    <value>ПОКАЗАТЬ ИНТЕРФЕЙС</value>
+  </data>
+  <data name="SEPERATESCAN" xml:space="preserve">
+    <value>СКАНИРУЙТЕ КАЖДУЮ СТРАНИЦУ ОТДЕЛЬНО</value>
+  </data>
+  <data name="SHOWFILE" xml:space="preserve">
+    <value>ПОКАЗАТЬ ФАЙЛ ПОСЛЕ БЫСТРОГО СКАНИРОВАНИЯ</value>
+  </data>
+  <data name="OTHERSETTINGS" xml:space="preserve">
+    <value>ДРУГИЕ НАСТРОЙКИ</value>
+  </data>
+  <data name="DESKEW" xml:space="preserve">
+    <value>ИСПРАВЬТЕ КРИВИЗНУ</value>
+  </data>
+  <data name="BORDERDETECT" xml:space="preserve">
+    <value>АВТОМАТИЧЕСКОЕ ОБНАРУЖЕНИЕ КРАЕВ</value>
+  </data>
+  <data name="SHOWPROGRESS" xml:space="preserve">
+    <value>ПОКАЖИТЕ МНЕ ПРОЦЕНТ</value>
+  </data>
+  <data name="AUTOROTATE" xml:space="preserve">
+    <value>АВТОМАТИЧЕСКОЕ ВРАЩЕНИЕ</value>
+  </data>
+  <data name="NO ACTION" xml:space="preserve">
+    <value>НИКАКИХ ДЕЙСТВИЙ</value>
+  </data>
+  <data name="CLOSECOMP" xml:space="preserve">
+    <value>ВЫКЛЮЧИТЬ КОМПЬЮТЕР</value>
+  </data>
+  <data name="RESTARTCOMP" xml:space="preserve">
+    <value>ПЕРЕЗАГРУЗИТЕ КОМПЬЮТЕР</value>
+  </data>
+  <data name="FILENAME" xml:space="preserve">
+    <value>ИМЯ ФАЙЛА</value>
+  </data>
+  <data name="DAY" xml:space="preserve">
+    <value>[День]</value>
+  </data>
+  <data name="MONTH" xml:space="preserve">
+    <value>[мес.]</value>
+  </data>
+  <data name="YEAR" xml:space="preserve">
+    <value>[Год]</value>
+  </data>
+  <data name="TIME" xml:space="preserve">
+    <value>[Часовая]</value>
+  </data>
+  <data name="MINUTE" xml:space="preserve">
+    <value>[МИНУТЫ]</value>
+  </data>
+  <data name="SECOND" xml:space="preserve">
+    <value>[СЕКУНДЫ]</value>
+  </data>
+  <data name="GUID" xml:space="preserve">
+    <value>[GUID]</value>
+  </data>
+  <data name="USERNAME" xml:space="preserve">
+    <value>[ИМЯ ПОЛЬЗОВАТЕЛЯ]</value>
+  </data>
+  <data name="SAVEPROFILE" xml:space="preserve">
+    <value>СКРЫТЬ ПРОФИЛЬ</value>
+  </data>
+  <data name="DELETE" xml:space="preserve">
+    <value>УДАЛИТЬ</value>
+  </data>
+  <data name="SCAN" xml:space="preserve">
+    <value>СКАНИРОВАНИЕ</value>
+  </data>
+  <data name="FASTSCAN" xml:space="preserve">
+    <value>БЫСТРОЕ
+СКАНИРОВАНИЕ</value>
+  </data>
+  <data name="AUTOPATH" xml:space="preserve">
+    <value>АВТОСОХРАНЕНИЕ</value>
+  </data>
+  <data name="ALL" xml:space="preserve">
+    <value>ВСЕ</value>
+  </data>
+  <data name="NONE" xml:space="preserve">
+    <value>НИ ОДИН ИЗ НИХ</value>
+  </data>
+  <data name="REVERSE" xml:space="preserve">
+    <value>РЕВЕРС</value>
+  </data>
+  <data name="PREVIEWSIZE" xml:space="preserve">
+    <value>РАЗМЕР ПРЕДВАРИТЕЛЬНОГО ПРОСМОТРА ИЗОБРАЖЕНИЯ</value>
+  </data>
+  <data name="PDFPROTECT" xml:space="preserve">
+    <value>СОХРАНИТЬ PDF</value>
+  </data>
+  <data name="ENCRYPT" xml:space="preserve">
+    <value>ШИФРОВАТЬ</value>
+  </data>
+  <data name="PDFWARN" xml:space="preserve">
+    <value>НАСТРОЙКИ, СДЕЛАННЫЕ ЗДЕСЬ, ВЛИЯЮТ НА ВСЕ ЗАПИСИ PDF.
+ТАКЖЕ ЗАЩИТА PDF МОЖЕТ БЫТЬ НАРУШЕНА СТОРОННИМИ ПРИЛОЖЕНИЯМИ</value>
+  </data>
+  <data name="ALLOWPRINT" xml:space="preserve">
+    <value>РАЗРЕШИТЬ ПЕЧАТЬ</value>
+  </data>
+  <data name="ALLOWCOPY" xml:space="preserve">
+    <value>РАЗРЕШИТЬ КОПИРОВАНИЕ КОНТЕНТА</value>
+  </data>
+  <data name="ALLOWEDIT" xml:space="preserve">
+    <value>РАЗРЕШИТЬ РЕДАКТИРОВАНИЕ ДОКУМЕНТА</value>
+  </data>
+  <data name="SAVESELECTED" xml:space="preserve">
+    <value>СОХРАНИТЬ ПОДБОРКУ</value>
+  </data>
+  <data name="CLEARLIST" xml:space="preserve">
+    <value>ОЧИСТИТЕ СПИСОК</value>
+  </data>
+  <data name="MERGEPDF" xml:space="preserve">
+    <value>ОБЪЕДИНИТЬ PDF</value>
+  </data>
+  <data name="ABOUT" xml:space="preserve">
+    <value>О КОМПАНИИ</value>
+  </data>
+  <data name="DOCUMENT" xml:space="preserve">
+    <value>Документ</value>
+  </data>
+  <data name="TRIMIMAGE" xml:space="preserve">
+    <value>ОБРЕЗАТЬ КАРТИНКУ</value>
+  </data>
+  <data name="RESET" xml:space="preserve">
+    <value>СБРОС</value>
+  </data>
+  <data name="WIDTHCOUNT" xml:space="preserve">
+    <value>КОЛИЧЕСТВО САМЫХ</value>
+  </data>
+  <data name="HEIGHTCOUNT" xml:space="preserve">
+    <value>КОЛИЧЕСТВО ВЫСОТ</value>
+  </data>
+  <data name="SLICE" xml:space="preserve">
+    <value>РАЗБЕЙТЕ ЕГО</value>
+  </data>
+  <data name="TEXT" xml:space="preserve">
+    <value>МЕТИН</value>
+  </data>
+  <data name="TEXTSIZE" xml:space="preserve">
+    <value>РАЗМЕР ТЕКСТА</value>
+  </data>
+  <data name="TEXTANGLE" xml:space="preserve">
+    <value>МЕТИН АЧ</value>
+  </data>
+  <data name="FONT" xml:space="preserve">
+    <value>ШРИФТ</value>
+  </data>
+  <data name="DRAWTEXT" xml:space="preserve">
+    <value>НАРИСУЙТЕ ТЕКСТ</value>
+  </data>
+  <data name="SAVEPDF" xml:space="preserve">
+    <value>СОХРАНИТЬ</value>
+  </data>
+  <data name="FIX" xml:space="preserve">
+    <value />
+  </data>
+  <data name="OCR" xml:space="preserve">
+    <value>OCR</value>
+  </data>
+  <data name="FILE" xml:space="preserve">
+    <value>Файл</value>
+  </data>
+  <data name="CALENDAR" xml:space="preserve">
+    <value>КАЛЕНДАРЬ</value>
+  </data>
+  <data name="GRAPH" xml:space="preserve">
+    <value>ГРАФИКА</value>
+  </data>
+  <data name="VIEWALL" xml:space="preserve">
+    <value>Показать все</value>
+  </data>
+  <data name="PREVIEWFILE" xml:space="preserve">
+    <value>ПРЕДВАРИТЕЛЬНЫЙ ПРОСМОТР ФАЙЛА</value>
+  </data>
+  <data name="TESSERACT" xml:space="preserve">
+    <value>ТЕССЕРАКТ</value>
+  </data>
+  <data name="MERGE" xml:space="preserve">
+    <value>СОБЕРИСЬ</value>
+  </data>
+  <data name="MERGESELECTED" xml:space="preserve">
+    <value>ОБЪЕДИНИТЬ ПОМЕЧЕННЫЕ
+PDF-ФАЙЛЫ</value>
+  </data>
+  <data name="SELECTTWOPDF" xml:space="preserve">
+    <value>ВЫБЕРИТЕ ХОТЯ БЫ ДВА PDF-ФАЙЛА</value>
+  </data>
+  <data name="READACTIVEPAGE" xml:space="preserve">
+    <value>ПРОЧИТАЙТЕ АКТИВНУЮ СТРАНИЦУ</value>
+  </data>
+  <data name="CONTENT" xml:space="preserve">
+    <value>НАПИТКИ ЧИТАЙТЕ</value>
+  </data>
+  <data name="SHOWFOLDER" xml:space="preserve">
+    <value>ПОКАЗАТЬ В ПАПКЕ</value>
+  </data>
+  <data name="CRUNTIME" xml:space="preserve">
+    <value>Поскольку бинарные файлы Tesseract и leptonica скомпилированы с Visual Studio 2019, вам необходимо убедиться, что среда выполнения Visual Studio 2019 установлена</value>
+  </data>
+  <data name="OTHERTESSERACT" xml:space="preserve">
+    <value>Также загрузите другие языковые файлы данных для tesseract 4.1.0 из tesseract-ocr, если это необходимо. Положите его в папку Tessdata</value>
+  </data>
+  <data name="VC" xml:space="preserve">
+    <value>Visual Studio 2019 x86 и x64 Runtime</value>
+  </data>
+  <data name="OTHERTESSERACTLINK" xml:space="preserve">
+    <value>Другие языковые данные tesseract</value>
+  </data>
+  <data name="SCANNER" xml:space="preserve">
+    <value>СКАНЕР</value>
+  </data>
+  <data name="PASSWORD" xml:space="preserve">
+    <value>ПАРОЛЬ</value>
+  </data>
+  <data name="WARNREBOOT" xml:space="preserve">
+    <value>Выключение или перезапуск Set!</value>
+  </data>
+  <data name="FASTSCANAFTER" xml:space="preserve">
+    <value>Действие, которое необходимо предпринять после завершения быстрого сканирования</value>
+  </data>
+  <data name="AUTOFOLDER" xml:space="preserve">
+    <value>Укажите папку автосохранения.</value>
+  </data>
+  <data name="AUTOFOLDERCHANGE" xml:space="preserve">
+    <value>Путь автосохранения изменен. Старые файлы не будут перемещены в новую папку.</value>
+  </data>
+  <data name="LISTREMOVEWARN" xml:space="preserve">
+    <value>Все отсканированные документы в списке выше будут удалены. Продолжить?</value>
+  </data>
+  <data name="DEFAULTSCANNAME" xml:space="preserve">
+    <value>Скрининг.</value>
+  </data>
+  <data name="ROTSAVE" xml:space="preserve">
+    <value>Сохранить с ротацией?</value>
+  </data>
+  <data name="APPRUNNING" xml:space="preserve">
+    <value>Приложение уже запущено</value>
+  </data>
+  <data name="REGSTI" xml:space="preserve">
+    <value>ДОБАВИТЬ В МЕНЮ БРАУЗЕРА</value>
+  </data>
+  <data name="TRANSLATE" xml:space="preserve">
+    <value>ПЕРЕВОД</value>
+  </data>
+  <data name="SOURCELANG" xml:space="preserve">
+    <value>СВАРКА</value>
+  </data>
+  <data name="DESTLANG" xml:space="preserve">
+    <value>Цель</value>
+  </data>
+  <data name="UNREGSTI" xml:space="preserve">
+    <value>УДАЛИТЬ ИЗ МЕНЮ БРАУЗЕРА</value>
+  </data>
+  <data name="SEPERATESCANTOOLTIP" xml:space="preserve">
+    <value>Сохранить каждую страницу в отдельный файл Файлы сохраняются в папку, указанную ниже.</value>
+  </data>
+  <data name="OCRPDFSAVE" xml:space="preserve">
+    <value>СОХРАНИТЬ OCR PDF</value>
+  </data>
+  <data name="ADDDOC" xml:space="preserve">
+    <value>ПРИКРЕПИТЕ ДОКУМЕНТЫ К ФАЙЛУ</value>
+  </data>
+  <data name="ADDOCRTODB" xml:space="preserve">
+    <value>СОХРАНИТЕ ДАННЫЕ OCR</value>
+  </data>
+  <data name="ADDOCRTOOLTIP" xml:space="preserve">
+    <value>Если флажок установлен, текст активного документа слева сохраняется в базе данных.</value>
+  </data>
+  <data name="APPDESC" xml:space="preserve">
+    <value>Это приложение было разработано для облегчения сканирования и отслеживания документов</value>
+  </data>
+  <data name="APPLY" xml:space="preserve">
+    <value>РЕАЛИЗАЦИЯ</value>
+  </data>
+  <data name="APPLYCOLOR" xml:space="preserve">
+    <value>Выполнить</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>АВТОМАТИЧЕСКИ</value>
+  </data>
+  <data name="AutoPicture" xml:space="preserve">
+    <value>АВТОИЗОБРАЖЕНИЕ</value>
+  </data>
+  <data name="AutoText" xml:space="preserve">
+    <value>АВТОТЕКСТ</value>
+  </data>
+  <data name="BATCH" xml:space="preserve">
+    <value>КОЛЛЕКТИВНАЯ РАБОТА</value>
+  </data>
+  <data name="BATCHDESC" xml:space="preserve">
+    <value>Когда файлы изображений добавляются в папку ниже, автоматический перевод выполняется в файл PDF в той же папке, пока программа открыта</value>
+  </data>
+  <data name="CAMERA" xml:space="preserve">
+    <value>Камера</value>
+  </data>
+  <data name="COLORCHANGETIP" xml:space="preserve">
+    <value>Если вы нажмете на это после установки порогового значения, вы можете выбрать второй цвет</value>
+  </data>
+  <data name="COMPRESS" xml:space="preserve">
+    <value>СЖАТИЕ</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>ПО УМОЛЧАНИЮ</value>
+  </data>
+  <data name="DSTCOLOR" xml:space="preserve">
+    <value>ЦВЕТ МИШЕНИ</value>
+  </data>
+  <data name="EMPTYPAGE" xml:space="preserve">
+    <value>ПРОПУСТИТЕ ПУСТЫЕ СТРАНИЦЫ</value>
+  </data>
+  <data name="EYPOPEN" xml:space="preserve">
+    <value>Открывайте файлы Eyp напрямую</value>
+  </data>
+  <data name="FLATBED" xml:space="preserve">
+    <value>ПЛАНШЕТ</value>
+  </data>
+  <data name="JPEGQUALITY" xml:space="preserve">
+    <value>СКОРОСТЬ КАЧЕСТВА JPEG</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>ЛЕВЫЙ</value>
+  </data>
+  <data name="LIMITED" xml:space="preserve">
+    <value>Этот формат файла имеет ограниченную поддержку.</value>
+  </data>
+  <data name="LOAD" xml:space="preserve">
+    <value>Загрузить...</value>
+  </data>
+  <data name="NOPATCHCODE" xml:space="preserve">
+    <value>Код исправления не обнаружен</value>
+  </data>
+  <data name="NOPROFILE" xml:space="preserve">
+    <value>ПРОФИЛЬ НЕ ВЫБРАН</value>
+  </data>
+  <data name="OCRTIME" xml:space="preserve">
+    <value>Pdf OCR занимает много времени</value>
+  </data>
+  <data name="OTHERAPPS" xml:space="preserve">
+    <value>ДРУГИЕ МОИ ЗАЯВКИ</value>
+  </data>
+  <data name="PAGENUMBER" xml:space="preserve">
+    <value>Номер страницы</value>
+  </data>
+  <data name="PDFOPEN" xml:space="preserve">
+    <value>Открывайте PDF-файлы напрямую.</value>
+  </data>
+  <data name="PDFTRACK" xml:space="preserve">
+    <value>ПОСМОТРИТЕ, КАК МЕНЯЕТСЯ ПАПКА PDF</value>
+  </data>
+  <data name="QRDETECT" xml:space="preserve">
+    <value>ОБНАРУЖИТЬ QR</value>
+  </data>
+  <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
+    <value>Удалить обработанные файлы из списка документов</value>
+  </data>
+  <data name="REMOVESELECTED" xml:space="preserve">
+    <value>Удалить выбранное изображение?</value>
+  </data>
+  <data name="REPLACEPAGE" xml:space="preserve">
+    <value>Заменить страницы</value>
+  </data>
+  <data name="RESTARTAPP" xml:space="preserve">
+    <value>Приложение необходимо перезапустить</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>Правая</value>
+  </data>
+  <data name="Rotate180" xml:space="preserve">
+    <value>ПОВЕРНИТЕСЬ НА 180 ГРАДУСОВ</value>
+  </data>
+  <data name="Rotate270" xml:space="preserve">
+    <value>ПОВЕРНИТЕ НА 270 ГРАДУСОВ</value>
+  </data>
+  <data name="Rotate90" xml:space="preserve">
+    <value>ПОВЕРНИТЕСЬ НА 90 ГРАДУСОВ</value>
+  </data>
+  <data name="SEPERATOR" xml:space="preserve">
+    <value>Скобки</value>
+  </data>
+  <data name="SPLIT" xml:space="preserve">
+    <value>Он разбит</value>
+  </data>
+  <data name="SPLITTERTOOLTIP" xml:space="preserve">
+    <value>Двойной щелчок для восстановления, щелчок правой кнопкой мыши для расширения</value>
+  </data>
+  <data name="SRCCOLOR" xml:space="preserve">
+    <value>ИСХОДНЫЙ ЦВЕТ</value>
+  </data>
+  <data name="SRCCOLORTIP" xml:space="preserve">
+    <value>Щелкните правой кнопкой мыши и выберите свой цвет</value>
+  </data>
+  <data name="START" xml:space="preserve">
+    <value>ЗАПУСКАЙТЕ</value>
+  </data>
+  <data name="TAG" xml:space="preserve">
+    <value>ЯРЛЫК</value>
+  </data>
+  <data name="TASKSRUNNING" xml:space="preserve">
+    <value>Дождитесь завершения некоторых заданий</value>
+  </data>
+  <data name="TESSLANGSELECT" xml:space="preserve">
+    <value>Выберите язык Tesseract</value>
+  </data>
+  <data name="THIRDPARTY" xml:space="preserve">
+    <value>СТОРОННИЕ БИБЛИОТЕКИ, ИСПОЛЬЗУЕМЫЕ НА ПРАКТИКЕ</value>
+  </data>
+  <data name="THRESHOLD" xml:space="preserve">
+    <value>ПОРОГ</value>
+  </data>
+  <data name="TRANSLATEPENDING" xml:space="preserve">
+    <value>Выполняется операция. Подождите, пока она закончится.</value>
+  </data>
+  <data name="UPDATE" xml:space="preserve">
+    <value>ОБНОВИТЬ</value>
+  </data>
+  <data name="WATERMARK" xml:space="preserve">
+    <value>ВОДЯНОЙ ЗНАК</value>
+  </data>
+  <data name="OVERWRITECOMPRESSED" xml:space="preserve">
+    <value>Прямая перезапись сжатого файла в отсканированных документах</value>
+  </data>
+  <data name="STOP" xml:space="preserve">
+    <value>Останавливаться</value>
+  </data>
+  <data name="EMPTY" xml:space="preserve">
+    <value>ПУСТОЙ</value>
+  </data>
+</root>

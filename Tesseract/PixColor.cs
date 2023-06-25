@@ -14,39 +14,33 @@ namespace Tesseract
             Alpha = alpha;
         }
 
-        public byte Red { get; }
-
-        public byte Green { get; }
-
-        public byte Blue { get; }
-
-        public byte Alpha { get; }
+        public static PixColor FromRgb(uint value)
+        {
+            return new PixColor((byte)((value >> 24) & 0xFF), (byte)((value >> 16) & 0xFF), (byte)((value >> 8) & 0xFF));
+        }
 
         public static PixColor FromRgba(uint value)
         {
-            return new PixColor(
-               (byte)((value >> 24) & 0xFF),
-               (byte)((value >> 16) & 0xFF),
-               (byte)((value >> 8) & 0xFF),
-               (byte)(value & 0xFF));
-        }
-
-        public static PixColor FromRgb(uint value)
-        {
-            return new PixColor(
-               (byte)((value >> 24) & 0xFF),
-               (byte)((value >> 16) & 0xFF),
-               (byte)((value >> 8) & 0xFF),
-               0xFF);
+            return new PixColor((byte)((value >> 24) & 0xFF), (byte)((value >> 16) & 0xFF), (byte)((value >> 8) & 0xFF), (byte)(value & 0xFF));
         }
 
         public uint ToRGBA()
         {
-            return (uint)((Red << 24) |
-               (Green << 16) |
-               (Blue << 8) |
-               Alpha);
+            return (uint)((Red << 24) | (Green << 16) | (Blue << 8) | Alpha);
         }
+
+        public override string ToString()
+        {
+            return $"Color(0x{ToRGBA():X})";
+        }
+
+        public byte Alpha { get; }
+
+        public byte Blue { get; }
+
+        public byte Green { get; }
+
+        public byte Red { get; }
 
 #if NETFULL
         public static explicit operator System.Drawing.Color(PixColor color)
@@ -64,7 +58,7 @@ namespace Tesseract
 
         public override bool Equals(object obj)
         {
-            return (obj is PixColor) && Equals((PixColor)obj);
+            return obj is PixColor && Equals((PixColor)obj);
         }
 
         public bool Equals(PixColor other)
@@ -82,6 +76,7 @@ namespace Tesseract
                 hashCode += 1000000021 * Green.GetHashCode();
                 hashCode += 1000000033 * Alpha.GetHashCode();
             }
+
             return hashCode;
         }
 
@@ -96,10 +91,5 @@ namespace Tesseract
         }
 
         #endregion Equals and GetHashCode implementation
-
-        public override string ToString()
-        {
-            return string.Format("Color(0x{0:X})", ToRGBA());
-        }
     }
 }

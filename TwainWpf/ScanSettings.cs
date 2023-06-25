@@ -4,25 +4,8 @@ namespace TwainWpf
 {
     public class ScanSettings : INotifyPropertyChanged
     {
-        /// <summary>
-        /// The value to set to scan all available pages.
-        /// </summary>
-        public const short TransferAllPages = -1;
-
-        /// <summary>
-        /// Default scan settings.
-        /// </summary>
-        public static readonly ScanSettings Default = new ScanSettings()
-        {
-            Resolution = ResolutionSettings.ColourPhotocopier,
-            Page = PageSettings.Default,
-            Rotation = new RotationSettings()
-        };
-
         public ScanSettings()
-        {
-            ShouldTransferAllPages = true;
-        }
+        { ShouldTransferAllPages = true; }
 
         /// <summary>
         /// Indicates if the transfer should not start when no paper was detected (e.g. by the ADF).
@@ -101,16 +84,14 @@ namespace TwainWpf
         /// <summary>
         /// Indicates if all pages should be transferred.
         /// </summary>
-        public bool ShouldTransferAllPages {
-            get => _transferCount == TransferAllPages;
-            set => TransferCount = value ? TransferAllPages : (short)1;
-        }
+        public bool ShouldTransferAllPages { get => _transferCount == TransferAllPages; set => TransferCount = value ? TransferAllPages : (short)1; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether [show progress indicator ui].
-        /// If TRUE, the Source will display a progress indicator during acquisition and transfer, regardless of whether the Source's user interface is active.
-        /// If FALSE, the progress indicator will be suppressed if the Source's user interface is inactive.
-        /// The Source will continue to display device-specific instructions and error messages even with the Source user interface and progress indicators turned off.
+        /// Gets or sets a value indicating whether [show progress indicator ui]. If TRUE, the Source will display a
+        /// progress indicator during acquisition and transfer, regardless of whether the Source's user interface is
+        /// active. If FALSE, the progress indicator will be suppressed if the Source's user interface is inactive. The
+        /// Source will continue to display device-specific instructions and error messages even with the Source user
+        /// interface and progress indicators turned off.
         /// </summary>
         /// <value><c>true</c> if [show progress indicator ui]; otherwise, <c>false</c>.</value>
         public bool? ShowProgressIndicatorUi {
@@ -151,14 +132,14 @@ namespace TwainWpf
                 {
                     _transferCount = value;
                     OnPropertyChanged(nameof(TransferCount));
-                    OnPropertyChanged("ShouldTransferAllPages");
+                    OnPropertyChanged(nameof(ShouldTransferAllPages));
                 }
             }
         }
 
         /// <summary>
-        /// Indicates if the automatic document feeder (ADF) should continue feeding document(s) to scan after the negotiated number of pages are acquired.
-        /// UseDocumentFeeder must be true
+        /// Indicates if the automatic document feeder (ADF) should continue feeding document(s) to scan after the
+        /// negotiated number of pages are acquired. UseDocumentFeeder must be true
         /// </summary>
         public bool? UseAutoFeeder {
             get => _useAutoFeeder;
@@ -173,7 +154,8 @@ namespace TwainWpf
         }
 
         /// <summary>
-        /// Indicates if the source should continue scanning without waiting for the application to request the image transfers.
+        /// Indicates if the source should continue scanning without waiting for the application to request the image
+        /// transfers.
         /// </summary>
         public bool? UseAutoScanCache {
             get => _useAutoScanCache;
@@ -232,6 +214,21 @@ namespace TwainWpf
             }
         }
 
+        /// <summary>
+        /// The value to set to scan all available pages.
+        /// </summary>
+        public const short TransferAllPages = -1;
+
+        /// <summary>
+        /// Default scan settings.
+        /// </summary>
+        public static readonly ScanSettings Default = new ScanSettings()
+        {
+            Resolution = ResolutionSettings.ColourPhotocopier,
+            Page = PageSettings.Default,
+            Rotation = new RotationSettings()
+        };
+
         private bool _abortWhenNoPaperDetectable;
 
         private AreaSettings _area;
@@ -260,7 +257,9 @@ namespace TwainWpf
 
         #region INotifyPropertyChanged Members
 
-        public event PropertyChangedEventHandler PropertyChanged = delegate { };
+        public event PropertyChangedEventHandler PropertyChanged = delegate
+        {
+        };
 
         protected void OnPropertyChanged(string propertyName)
         {

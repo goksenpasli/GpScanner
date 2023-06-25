@@ -20,11 +20,11 @@ namespace TwainWpf
                     {
                         bool result = Capability.GetBoolCapability(capability, dataSourceManager.ApplicationId, dataSource.SourceId);
 
-                        Console.WriteLine("{0}: {1}", capability, result);
+                        Console.WriteLine($"{capability}: {result}");
                     }
                     catch (TwainException e)
                     {
-                        Console.WriteLine("{0}: {1} {2} {3}", capability, e.Message, e.ReturnCode, e.ConditionCode);
+                        Console.WriteLine($"{capability}: {e.Message} {e.ReturnCode} {e.ConditionCode}");
                     }
                 }
             }

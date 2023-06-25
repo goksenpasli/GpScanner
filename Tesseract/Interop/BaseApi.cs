@@ -11,9 +11,9 @@ namespace Tesseract.Interop
     /// The exported tesseract api signatures.
     /// </summary>
     /// <remarks>
-    /// Please note this is only public for technical reasons (you can't proxy a internal interface).
-    /// It should be considered an internal interface and is NOT part of the public api and may have
-    /// breaking changes between releases.
+    /// Please note this is only public for technical reasons (you can't proxy a internal interface). It should be
+    /// considered an internal interface and is NOT part of the public api and may have breaking changes between
+    /// releases.
     /// </remarks>
     public interface ITessApiSignatures
     {
@@ -44,8 +44,6 @@ namespace Tesseract.Interop
         [RuntimeDllImport(Constants.TesseractDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "TessBaseAPISetInputName")]
         void BaseAPISetInputName(HandleRef handle, string name);
 
-        //[RuntimeDllImport(Constants.TesseractDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "TessBaseAPIProcessPage")]
-        //int BaseAPIProcessPage(HandleRef handle, Pix pix, int page_index, string filename, string retry_config, int timeout_millisec, HandleRef renderer);
         [RuntimeDllImport(Constants.TesseractDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "TessBaseAPISetOutputName")]
         void BaseAPISetOutputName(HandleRef handle, string name);
 
@@ -59,7 +57,6 @@ namespace Tesseract.Interop
         [RuntimeDllImport(Constants.TesseractDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "TessBaseAPICreate")]
         IntPtr BaseApiCreate();
 
-        // Base API
         /// <summary>
         /// Deletes a base api instance.
         /// </summary>
@@ -103,14 +100,18 @@ namespace Tesseract.Interop
         [RuntimeDllImport(Constants.TesseractDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "TessBaseAPIGetWordStrBoxText")]
         IntPtr BaseApiGetWordStrBoxTextInternal(HandleRef handle, int pageNum);
 
-        // The following were causing issues on Linux/MacOsX when used in .net core
-        //[RuntimeDllImport(Constants.TesseractDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "TessBaseAPIProcessPages")]
-        //int BaseAPIProcessPages(HandleRef handle, string filename, string retry_config, int timeout_millisec, HandleRef renderer);
         [RuntimeDllImport(Constants.TesseractDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "TessBaseAPIInit4")]
-        int BaseApiInit(HandleRef handle, string datapath, string language, int mode,
-                                      string[] configs, int configs_size,
-                                      string[] vars_vec, string[] vars_values, UIntPtr vars_vec_size,
-                                      bool set_only_non_debug_params);
+        int BaseApiInit(
+            HandleRef handle,
+            string datapath,
+            string language,
+            int mode,
+            string[] configs,
+            int configs_size,
+            string[] vars_vec,
+            string[] vars_values,
+            UIntPtr vars_vec_size,
+            bool set_only_non_debug_params);
 
         [RuntimeDllImport(Constants.TesseractDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "TessBaseAPIPrintVariablesToFile")]
         int BaseApiPrintVariablesToFile(HandleRef handle, string filename);
@@ -121,7 +122,6 @@ namespace Tesseract.Interop
         [RuntimeDllImport(Constants.TesseractDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "TessBaseAPISetDebugVariable")]
         int BaseApiSetDebugVariable(HandleRef handle, string name, IntPtr valPtr);
 
-        // image analysis
         [RuntimeDllImport(Constants.TesseractDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "TessBaseAPISetImage2")]
         void BaseApiSetImage(HandleRef handle, HandleRef pixHandle);
 
@@ -143,14 +143,12 @@ namespace Tesseract.Interop
         [RuntimeDllImport(Constants.TesseractDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "TessDeleteTextArray")]
         void DeleteTextArray(IntPtr arr);
 
-        // Helper functions
         [RuntimeDllImport(Constants.TesseractDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "TessVersion")]
         IntPtr GetVersion();
 
         [RuntimeDllImport(Constants.TesseractDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "TessPageIteratorBaseline")]
         int PageIteratorBaseline(HandleRef handle, PageIteratorLevel level, out int x1, out int y1, out int x2, out int y2);
 
-        // result iterator
         [RuntimeDllImport(Constants.TesseractDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "TessPageIteratorBegin")]
         void PageIteratorBegin(HandleRef handle);
 
@@ -178,7 +176,6 @@ namespace Tesseract.Interop
         [RuntimeDllImport(Constants.TesseractDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "TessPageIteratorIsAtFinalElement")]
         int PageIteratorIsAtFinalElement(HandleRef handle, PageIteratorLevel level, PageIteratorLevel element);
 
-        // page iterator
         [RuntimeDllImport(Constants.TesseractDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "TessPageIteratorNext")]
         int PageIteratorNext(HandleRef handle, PageIteratorLevel level);
 
@@ -210,7 +207,16 @@ namespace Tesseract.Interop
         bool ResultIteratorSymbolIsSuperscript(HandleRef handle);
 
         [RuntimeDllImport(Constants.TesseractDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "TessResultIteratorWordFontAttributes")]
-        IntPtr ResultIteratorWordFontAttributes(HandleRef handle, out bool isBold, out bool isItalic, out bool isUnderlined, out bool isMonospace, out bool isSerif, out bool isSmallCaps, out int pointSize, out int fontId);
+        IntPtr ResultIteratorWordFontAttributes(
+            HandleRef handle,
+            out bool isBold,
+            out bool isItalic,
+            out bool isUnderlined,
+            out bool isMonospace,
+            out bool isSerif,
+            out bool isSmallCaps,
+            out int pointSize,
+            out int fontId);
 
         [RuntimeDllImport(Constants.TesseractDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "TessResultIteratorWordIsFromDictionary")]
         bool ResultIteratorWordIsFromDictionary(HandleRef handle);
@@ -331,34 +337,6 @@ namespace Tesseract.Interop
 
     internal static class TessApi
     {
-        public const string htmlBeginTag =
-                    "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
-                    + " \"http://www.w3.org/TR/html4/loose.dtd\">\n"
-                    + "<html>\n<head>\n<title></title>\n"
-                    + "<meta http-equiv=\"Content-Type\" content=\"text/html;"
-                    + "charset=utf-8\" />\n<meta name='ocr-system' content='tesseract'/>\n"
-                    + "</head>\n<body>\n";
-
-        public const string htmlEndTag = "</body>\n</html>\n";
-
-        //XHTML Begin Tag:
-        public const string xhtmlBeginTag =
-            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-            + "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n"
-            + "    \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
-            + "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" "
-            + "lang=\"en\">\n <head>\n  <title></title>\n"
-            + "<meta http-equiv=\"Content-Type\" content=\"text/html;"
-            + "charset=utf-8\" />\n"
-            + "  <meta name='ocr-system' content='tesseract' />\n"
-            + "  <meta name='ocr-capabilities' content='ocr_page ocr_carea ocr_par"
-            + " ocr_line ocrx_word"
-            + "'/>\n"
-            + "</head>\n<body>\n";
-
-        //XHTML End Tag:
-        public const string xhtmlEndTag = " </body>\n</html>\n";
-
         public static ITessApiSignatures Native {
             get {
                 if (native == null)
@@ -379,10 +357,8 @@ namespace Tesseract.Interop
                 Native.DeleteText(txtHandle);
                 return result;
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         public static string BaseAPIGetBoxText(HandleRef handle, int pageNum)
@@ -394,10 +370,8 @@ namespace Tesseract.Interop
                 Native.DeleteText(txtHandle);
                 return result;
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         public static string BaseAPIGetHOCRText(HandleRef handle, int pageNum)
@@ -407,15 +381,12 @@ namespace Tesseract.Interop
             {
                 string result = MarshalHelper.PtrToString(txtHandle, Encoding.UTF8);
                 Native.DeleteText(txtHandle);
-                return htmlBeginTag + result + htmlEndTag;
+                return $"{htmlBeginTag}{result}{htmlEndTag}";
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
-        //Just Copied:
         public static string BaseAPIGetHOCRText2(HandleRef handle, int pageNum)
         {
             IntPtr txtHandle = Native.BaseApiGetHOCRTextInternal(handle, pageNum);
@@ -423,12 +394,10 @@ namespace Tesseract.Interop
             {
                 string result = MarshalHelper.PtrToString(txtHandle, Encoding.UTF8);
                 Native.DeleteText(txtHandle);
-                return xhtmlBeginTag + result + xhtmlEndTag;
+                return $"{xhtmlBeginTag}{result}{xhtmlEndTag}";
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         public static string BaseAPIGetLSTMBoxText(HandleRef handle, int pageNum)
@@ -440,10 +409,8 @@ namespace Tesseract.Interop
                 Native.DeleteText(txtHandle);
                 return result;
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         public static string BaseAPIGetTsvText(HandleRef handle, int pageNum)
@@ -455,10 +422,8 @@ namespace Tesseract.Interop
                 Native.DeleteText(txtHandle);
                 return result;
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         public static string BaseAPIGetUNLVText(HandleRef handle)
@@ -470,10 +435,8 @@ namespace Tesseract.Interop
                 Native.DeleteText(txtHandle);
                 return result;
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         public static string BaseAPIGetUTF8Text(HandleRef handle)
@@ -485,10 +448,8 @@ namespace Tesseract.Interop
                 Native.DeleteText(txtHandle);
                 return result;
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         public static string BaseAPIGetWordStrBoxText(HandleRef handle, int pageNum)
@@ -500,10 +461,8 @@ namespace Tesseract.Interop
                 Native.DeleteText(txtHandle);
                 return result;
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         public static string BaseApiGetStringVariable(HandleRef handle, string name)
@@ -518,7 +477,14 @@ namespace Tesseract.Interop
             return versionHandle != IntPtr.Zero ? MarshalHelper.PtrToString(versionHandle, Encoding.UTF8) : null;
         }
 
-        public static int BaseApiInit(HandleRef handle, string datapath, string language, int mode, IEnumerable<string> configFiles, IDictionary<string, object> initialValues, bool setOnlyNonDebugParams)
+        public static int BaseApiInit(
+                    HandleRef handle,
+                    string datapath,
+                    string language,
+                    int mode,
+                    IEnumerable<string> configFiles,
+                    IDictionary<string, object> initialValues,
+                    bool setOnlyNonDebugParams)
         {
             Guard.Require(nameof(handle), handle.Handle != IntPtr.Zero, "Handle for BaseApi, created through BaseApiCreate is required.");
             Guard.RequireNotNullOrEmpty(nameof(language), language);
@@ -538,16 +504,21 @@ namespace Tesseract.Interop
                 varNames[i] = pair.Key;
                 varValues[i] = TessConvert.TryToString(pair.Value, out string varValue)
                     ? varValue
-                    : throw new ArgumentException(
-                        string.Format("Variable '{0}': The type '{1}' is not supported.", pair.Key, pair.Value.GetType()),
-                        nameof(initialValues)
-                    );
+                    : throw new ArgumentException($"Variable '{pair.Key}': The type '{pair.Value.GetType()}' is not supported.", nameof(initialValues));
                 i++;
             }
 
-            return Native.BaseApiInit(handle, datapath, language, mode,
-                configFilesArray, configFilesArray.Length,
-                varNames, varValues, new UIntPtr((uint)varNames.Length), setOnlyNonDebugParams);
+            return Native.BaseApiInit(
+                handle,
+                datapath,
+                language,
+                mode,
+                configFilesArray,
+                configFilesArray.Length,
+                varNames,
+                varValues,
+                new UIntPtr((uint)varNames.Length),
+                setOnlyNonDebugParams);
         }
 
         public static int BaseApiSetDebugVariable(HandleRef handle, string name, string value)
@@ -602,30 +573,50 @@ namespace Tesseract.Interop
                 Native.DeleteText(txtHandle);
                 return result;
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         public static string ResultIteratorWordRecognitionLanguage(HandleRef handle)
         {
-            // per docs (ltrresultiterator.h:118 as of 4897796 in github:tesseract-ocr/tesseract)
-            // this return value should *NOT* be deleted.
             IntPtr txtHandle =
                 Native.ResultIteratorWordRecognitionLanguageInternal(handle);
 
-            return txtHandle != IntPtr.Zero
-                ? MarshalHelper.PtrToString(txtHandle, Encoding.UTF8)
-                : null;
+            return txtHandle != IntPtr.Zero ? MarshalHelper.PtrToString(txtHandle, Encoding.UTF8) : null;
         }
+
+        public const string htmlBeginTag =
+                                                                                                                                                            "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"" +
+            " \"http://www.w3.org/TR/html4/loose.dtd\">\n" +
+            "<html>\n<head>\n<title></title>\n" +
+            "<meta http-equiv=\"Content-Type\" content=\"text/html;" +
+            "charset=utf-8\" />\n<meta name='ocr-system' content='tesseract'/>\n" +
+            "</head>\n<body>\n";
+
+        public const string htmlEndTag = "</body>\n</html>\n";
+
+        public const string xhtmlBeginTag =
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+            "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n" +
+            "    \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
+            "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" " +
+            "lang=\"en\">\n <head>\n  <title></title>\n" +
+            "<meta http-equiv=\"Content-Type\" content=\"text/html;" +
+            "charset=utf-8\" />\n" +
+            "  <meta name='ocr-system' content='tesseract' />\n" +
+            "  <meta name='ocr-capabilities' content='ocr_page ocr_carea ocr_par" +
+            " ocr_line ocrx_word" +
+            "'/>\n" +
+            "</head>\n<body>\n";
+
+        public const string xhtmlEndTag = " </body>\n</html>\n";
 
         /// <summary>
         /// Returns the null terminated UTF-8 encoded text string for the current choice
         /// </summary>
         /// <remarks>
-        /// NOTE: Unlike LTRResultIterator::GetUTF8Text, the return points to an
-        /// internal structure and should NOT be delete[]ed to free after use.
+        /// NOTE: Unlike LTRResultIterator::GetUTF8Text, the return points to an internal structure and should NOT be
+        /// delete[]ed to free after use.
         /// </remarks>
         /// <param name="choiceIteratorHandle"></param>
         /// <returns>string</returns>
@@ -637,7 +628,5 @@ namespace Tesseract.Interop
         }
 
         private static ITessApiSignatures native;
-
-        // hOCR Extension
     }
 }

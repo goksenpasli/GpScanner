@@ -16,11 +16,13 @@
             </ResourceDictionary.MergedDictionaries>
             <local:FilePathToFileNameConverter x:Key="FilePathToFileNameConverter" />
             <local:TimespanToSecondsConverter x:Key="TimespanToSecondsConverter" />
+            <local:DoubleToThicknessConverter x:Key="DoubleToThicknessConverter" />
             <local:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter" />
             <local:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <local:VisibilityToBooleanConverter x:Key="VisibilityToBooleanConverter" />
             <Style BasedOn="{StaticResource Slider}" TargetType="Slider" />
+            <CollectionViewSource x:Key="Subtitle" Source="{Binding ParsedSubtitle}" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -32,7 +34,8 @@
         <Grid x:Name="grid" Background="Black">
             <Grid.ContextMenu>
                 <ContextMenu Visibility="{Binding ContextMenuVisibility}">
-                    <MenuItem Click="Open_Click" FontFamily="Segoe UI" Header="Dosya Aç"
+                    <MenuItem Command="{Binding OpenFile}"
+                        FontFamily="Segoe UI" Header="Dosya Aç"
                         Visibility="{Binding OpenButtonVisibility}" />
                     <MenuItem>
                         <MenuItem.Template>
@@ -286,8 +289,7 @@
             Background="{StaticResource GroupBoxBackGround}"
             IsMoveToPointEnabled="True"
             Maximum="{Binding EndTimeSpan, Converter={StaticResource TimespanToSecondsConverter}, Mode=OneWay}"
-            MouseLeave="Sld_MouseLeave" MouseMove="Sld_MouseMove" Thumb.DragCompleted="Sld_DragCompleted"
-            Thumb.DragStarted="Sld_DragStarted"
+            Thumb.DragCompleted="Sld_DragCompleted" Thumb.DragStarted="Sld_DragStarted"
             Visibility="{Binding SliderControlVisible}"
             Value="{Binding MediaPosition, Converter={StaticResource TimespanToSecondsConverter}, Mode=TwoWay}" />
         <ContentControl Grid.Row="2" Visibility="{Binding ControlVisible}">
@@ -300,302 +302,276 @@
                     </Style.Triggers>
                 </Style>
             </ContentControl.Style>
-            <Grid Background="{StaticResource GroupBoxBackGround}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <StackPanel Orientation="Horizontal">
-                    <Button x:Name="Open"
-                        Width="24" Height="24"
-                        Click="Open_Click" Content="Ì" FontFamily="Webdings"
-                        FontSize="18" Foreground="Blue"
-                        Visibility="{Binding OpenButtonVisibility}" />
-                    <Button x:Name="Play"
-                        Width="24" Height="24"
-                        Click="Play_Click" Content="4" FontFamily="Webdings"
-                        FontSize="18" Foreground="Blue" />
-                    <Button x:Name="Pause"
-                        Width="24" Height="24"
-                        Click="Pause_Click" Content=";" FontFamily="Webdings"
-                        FontSize="18" Foreground="Blue" />
-                    <Button x:Name="Stop"
-                        Width="24" Height="24"
-                        Click="Stop_Click" Content="&lt;" FontFamily="Webdings"
-                        FontSize="18" Foreground="Blue" />
-                    <Button x:Name="Back"
-                        Width="24" Height="24"
-                        Click="Back_Click" Content="7" FontFamily="Webdings"
-                        FontSize="18" Foreground="Blue" />
-                    <Button x:Name="Forward"
-                        Width="24" Height="24"
-                        Click="Forward_Click" Content="8" FontFamily="Webdings"
-                        FontSize="18" Foreground="Blue" />
-                    <Button x:Name="SlowBackward"
-                        Width="24" Height="24"
-                        Click="SlowBackward_Click" Content="9" FontFamily="Webdings"
-                        FontSize="18" Foreground="Blue" />
-                    <Button x:Name="SlowForward"
-                        Width="24" Height="24"
-                        Click="SlowForward_Click" Content=":" FontFamily="Webdings"
-                        FontSize="18" Foreground="Blue" />
-                    <ToggleButton x:Name="Mute"
-                        Width="24" Height="24"
-                        Margin="0,0,1,0"
-                        Checked="Mute_Checked" FontSize="18" Foreground="Blue"
-                        IsThreeState="False" Unchecked="Mute_Unchecked">
-                        <ToggleButton.Style>
-                            <Style TargetType="{x:Type ToggleButton}">
-                                <Style.Triggers>
-                                    <Trigger Property="IsChecked" Value="True">
-                                        <Setter Property="Content">
-                                            <Setter.Value>
-                                                <TextBlock FontFamily="Webdings" Text="V" />
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Trigger>
-                                    <Trigger Property="IsChecked" Value="False">
-                                        <Setter Property="Content">
-                                            <Setter.Value>
-                                                <TextBlock FontFamily="Webdings" Text="U" />
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ToggleButton.Style>
-                    </ToggleButton>
-                </StackPanel>
-                <Slider x:Name="Volume"
-                    Grid.Column="1"
-                    Width="60"
-                    VerticalAlignment="Center"
-                    IsMoveToPointEnabled="True" Maximum="1"
-                    Value="{Binding MediaVolume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                <StackPanel Grid.Column="2" Orientation="Horizontal">
-                    <TextBlock VerticalAlignment="Center"
-                        FontFamily="Webdings" FontSize="20" Foreground="Blue"
-                        Text="W" />
-                    <Slider Grid.Column="3"
-                        Width="45"
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                <Grid Background="{StaticResource GroupBoxBackGround}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Width="24" Height="24"
+                            Command="{Binding OpenFile}"
+                            Content="Ì" FontFamily="Webdings" FontSize="18"
+                            Foreground="Blue"
+                            Visibility="{Binding OpenButtonVisibility}" />
+                        <Button x:Name="Play"
+                            Width="24" Height="24"
+                            Click="Play_Click" Content="4" FontFamily="Webdings"
+                            FontSize="18" Foreground="Blue" />
+                        <Button x:Name="Pause"
+                            Width="24" Height="24"
+                            Click="Pause_Click" Content=";" FontFamily="Webdings"
+                            FontSize="18" Foreground="Blue" />
+                        <Button x:Name="Stop"
+                            Width="24" Height="24"
+                            Click="Stop_Click" Content="&lt;" FontFamily="Webdings"
+                            FontSize="18" Foreground="Blue" />
+                        <Button x:Name="Back"
+                            Width="24" Height="24"
+                            Click="Back_Click" Content="7" FontFamily="Webdings"
+                            FontSize="18" Foreground="Blue" />
+                        <Button x:Name="Forward"
+                            Width="24" Height="24"
+                            Click="Forward_Click" Content="8" FontFamily="Webdings"
+                            FontSize="18" Foreground="Blue" />
+                        <Button x:Name="SlowBackward"
+                            Width="24" Height="24"
+                            Click="SlowBackward_Click" Content="9" FontFamily="Webdings"
+                            FontSize="18" Foreground="Blue" />
+                        <Button x:Name="SlowForward"
+                            Width="24" Height="24"
+                            Click="SlowForward_Click" Content=":" FontFamily="Webdings"
+                            FontSize="18" Foreground="Blue" />
+                        <ToggleButton x:Name="Mute"
+                            Width="24" Height="24"
+                            Margin="0,0,1,0"
+                            Checked="Mute_Checked" FontSize="18" Foreground="Blue"
+                            IsThreeState="False" Unchecked="Mute_Unchecked">
+                            <ToggleButton.Style>
+                                <Style TargetType="{x:Type ToggleButton}">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsChecked" Value="True">
+                                            <Setter Property="Content">
+                                                <Setter.Value>
+                                                    <TextBlock FontFamily="Webdings" Text="V" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Trigger>
+                                        <Trigger Property="IsChecked" Value="False">
+                                            <Setter Property="Content">
+                                                <Setter.Value>
+                                                    <TextBlock FontFamily="Webdings" Text="U" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ToggleButton.Style>
+                        </ToggleButton>
+                    </StackPanel>
+                    <Slider x:Name="Volume"
+                        Grid.Column="1"
+                        Width="60"
                         VerticalAlignment="Center"
-                        IsMoveToPointEnabled="True" Maximum="1" Minimum="-1"
-                        Value="{Binding ElementName=Player, Path=Balance}" />
-                    <TextBlock Grid.Column="4"
-                        VerticalAlignment="Center"
-                        FontFamily="Webdings" FontSize="20" Foreground="Blue"
-                        Text="X" />
-                </StackPanel>
-                <TextBlock Grid.Column="3"
-                    Margin="1,0,1,0" VerticalAlignment="Center"
-                    Foreground="Black"
-                    Visibility="{Binding TimeDisplayVisibility}">
-                    <Run Text="{Binding MediaPosition, Converter={StaticResource TimeSpanToStringConverter}, Mode=OneWay}" />
-                    <Run Text="" />
-                    <Run Text="{Binding EndTimeSpan, Converter={StaticResource TimeSpanToStringConverter}, Mode=OneWay}" />
-                </TextBlock>
-                <StackPanel Grid.Column="4" Orientation="Horizontal">
-                    <local:ContentToggleButton Height="24"
-                        Content="(" FontFamily="Webdings" FontSize="18"
-                        Foreground="Blue">
-                        <local:ContentToggleButton.OverContent>
-                            <StackPanel Background="{StaticResource GroupBoxBackGround}">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="*" />
-                                    </Grid.RowDefinitions>
-                                    <Button Grid.Column="1"
-                                        Click="SubtitleMargin_Click" Content="5" FontFamily="Webdings" />
-                                    <Button Grid.Row="2" Grid.Column="1"
-                                        Click="SubtitleMargin_Click" Content="6" FontFamily="Webdings" />
-                                    <Button Grid.Row="1"
-                                        Click="SubtitleMargin_Click" Content="3" FontFamily="Webdings" />
-                                    <Button Grid.Row="1" Grid.Column="2"
-                                        Click="SubtitleMargin_Click" Content="4" FontFamily="Webdings" />
-                                </Grid>
-                                <Button Click="Subtitle_Click" Content="ALTYAZI YÜKLE" FontFamily="Segoe UI" />
-                                <ToggleButton VerticalContentAlignment="Center"
-                                    Content="ALTYAZI GÖRÜNÜR" FontFamily="Segoe UI"
-                                    IsChecked="{Binding SubTitleVisibility, Mode=TwoWay, Converter={StaticResource VisibilityToBooleanConverter}}" />
-                                <Slider Maximum="128" Minimum="1"
-                                    Value="{Binding SubTitleSize}" />
-                                <local:ColorPicker ColorPickerColumnCount="16" FontFamily="Segoe UI"
-                                    HexCode="{Binding SubTitleColor, Mode=TwoWay}"
-                                    HexCodeVisibility="Collapsed" PredefinedColorVisibility="Visible" SelectorLength="0" />
-                                <ToggleButton VerticalContentAlignment="Center"
-                                    Content="OTOMATİK ALTYAZI ÇEVİRİ" FontFamily="Segoe UI"
-                                    IsChecked="{Binding AutoTranslate}" />
-                                <Controls:TranslateView FontFamily="Segoe UI" IsEnabled="{Binding AutoTranslate}" />
-                            </StackPanel>
-                        </local:ContentToggleButton.OverContent>
-                    </local:ContentToggleButton>
-                    <local:ContentToggleButton Content="" FontFamily="Webdings" FontSize="20"
-                        Foreground="Blue">
-                        <local:ContentToggleButton.OverContent>
-                            <StackPanel>
-                                <StackPanel Background="{StaticResource GroupBoxBackGround}">
-                                    <Button x:Name="AddPlaylist"
-                                        Click="AddPlaylist_Click" Content="ÇALMA LİSTESİ OLUŞTUR" FontFamily="Segoe UI" />
-                                    <ToggleButton Content="BİTİNCE DİĞER VİDEOYA GEÇ" FontFamily="Segoe UI"
-                                        IsChecked="{Binding AutoSkipNextVideo}" />
+                        IsMoveToPointEnabled="True" Maximum="1"
+                        Value="{Binding MediaVolume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <StackPanel Grid.Column="2" Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center"
+                            FontFamily="Webdings" FontSize="20" Foreground="Blue"
+                            Text="W" />
+                        <Slider Width="45"
+                            VerticalAlignment="Center"
+                            IsMoveToPointEnabled="True" Maximum="1" Minimum="-1"
+                            Value="{Binding ElementName=Player, Path=Balance}" />
+                        <TextBlock VerticalAlignment="Center"
+                            FontFamily="Webdings" FontSize="20" Foreground="Blue"
+                            Text="X" />
+                    </StackPanel>
+                    <TextBlock Grid.Column="3"
+                        Margin="1,0,1,0" VerticalAlignment="Center"
+                        Foreground="Black"
+                        Visibility="{Binding TimeDisplayVisibility}">
+                        <Run Text="{Binding MediaPosition, Converter={StaticResource TimeSpanToStringConverter}, Mode=OneWay}" />
+                        <Run Text="" />
+                        <Run Text="{Binding EndTimeSpan, Converter={StaticResource TimeSpanToStringConverter}, Mode=OneWay}" />
+                    </TextBlock>
+                    <StackPanel Grid.Column="4" Orientation="Horizontal">
+                        <local:ContentToggleButton Height="24"
+                            Content="(" FontFamily="Webdings" FontSize="18"
+                            Foreground="Blue">
+                            <local:ContentToggleButton.OverContent>
+                                <Controls:MediaViewerSubtitleControl x:Name="MediaViewerSubtitleControl"
+                                    Width="480" Height="480" />
+                            </local:ContentToggleButton.OverContent>
+                        </local:ContentToggleButton>
+                        <local:ContentToggleButton Content="" FontFamily="Webdings" FontSize="20"
+                            Foreground="Blue">
+                            <local:ContentToggleButton.OverContent>
+                                <StackPanel>
+                                    <StackPanel Background="{StaticResource GroupBoxBackGround}">
+                                        <Button Command="{Binding AddToPlaylist}"
+                                            Content="ÇALMA LİSTESİ OLUŞTUR" FontFamily="Segoe UI" FontSize="12" />
+                                        <ToggleButton Content="BİTİNCE DİĞER VİDEOYA GEÇ" FontFamily="Segoe UI" FontSize="12"
+                                            IsChecked="{Binding AutoSkipNextVideo}" />
+                                    </StackPanel>
+                                    <ListBox Width="350" Height="250"
+                                        FontFamily="Segoe UI" FontSize="12"
+                                        ItemsSource="{Binding PlayList}"
+                                        SelectedItem="{Binding MediaDataFilePath}">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Width="16" Height="16"
+                                                        Source="{Binding Mode=OneWay, Converter={StaticResource FilePathToIconConverter}}" />
+                                                    <TextBlock Text="{Binding Converter={StaticResource FilePathToFileNameConverter}, Mode=OneWay}" />
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
                                 </StackPanel>
-                                <ListBox Width="350" Height="250"
-                                    FontFamily="Segoe UI" FontSize="12"
-                                    ItemsSource="{Binding PlayList}"
-                                    SelectedItem="{Binding MediaDataFilePath}">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Image Width="16" Height="16"
-                                                    Source="{Binding Mode=OneWay, Converter={StaticResource FilePathToIconConverter}}" />
-                                                <TextBlock Text="{Binding Converter={StaticResource FilePathToFileNameConverter}, Mode=OneWay}" />
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                            </StackPanel>
-                        </local:ContentToggleButton.OverContent>
-                    </local:ContentToggleButton>
-                    <local:ContentToggleButton Content="µ" FontFamily="Webdings" FontSize="20"
-                        Foreground="Blue" PlacementMode="Top">
-                        <local:ContentToggleButton.OverContent>
-                            <StackPanel Background="{StaticResource GroupBoxBackGround}" Orientation="Horizontal">
-                                <Button x:Name="Capture"
-                                    Width="24" Height="24"
-                                    VerticalContentAlignment="Center"
-                                    Click="Capture_Click" Content="µ" FontFamily="Webdings"
-                                    FontSize="20" Foreground="Blue" />
-                                <UniformGrid Columns="3">
-                                    <local:NumericUpDownControl FontFamily="Segoe UI" Maximum="20" Minimum="1"
-                                        SmallChange="1"
-                                        Value="{Binding ThumbHeightCount}" />
-                                    <local:NumericUpDownControl FontFamily="Segoe UI" Maximum="20" Minimum="1"
-                                        SmallChange="1"
+                            </local:ContentToggleButton.OverContent>
+                        </local:ContentToggleButton>
+                        <local:ContentToggleButton Content="µ" FontFamily="Webdings" FontSize="20"
+                            Foreground="Blue" PlacementMode="Top">
+                            <local:ContentToggleButton.OverContent>
+                                <UniformGrid Margin="1"
+                                    Background="{StaticResource GroupBoxBackGround}"
+                                    Columns="7">
+                                    <Button VerticalContentAlignment="Center"
+                                        Command="{Binding CaptureImage}"
+                                        Content="µ" FontFamily="Webdings" FontSize="20"
+                                        Foreground="Blue" />
+                                    <local:NumericUpDownControl FontFamily="Segoe UI" FontSize="12" Maximum="20"
+                                        Minimum="1" SmallChange="1"
                                         Value="{Binding ThumbWidthCount}" />
-                                    <Button x:Name="CaptureThumb"
-                                        Width="24" Height="24"
-                                        VerticalContentAlignment="Center"
-                                        Click="CaptureThumb_Click" Content="µ" FontFamily="Webdings"
-                                        FontSize="20" Foreground="Blue" />
-                                </UniformGrid>
-                            </StackPanel>
-                        </local:ContentToggleButton.OverContent>
-                    </local:ContentToggleButton>
-                    <local:ContentToggleButton Content="·" FontFamily="Webdings" FontSize="20"
-                        Foreground="Blue" PlacementMode="Top">
-                        <local:ContentToggleButton.OverContent>
-                            <StackPanel Background="{StaticResource GroupBoxBackGround}" Orientation="Horizontal">
-                                <UniformGrid Columns="2" Rows="2">
-                                    <local:ContentToggleButton Content="n" FontFamily="Wingdings 3" Foreground="Blue">
-                                        <local:ContentToggleButton.OverContent>
-                                            <ListBox FontFamily="Segoe UI"
-                                                SelectedValue="{Binding VideoStretch}"
-                                                SelectedValuePath="Tag">
-                                                <ListBoxItem Content="Orijinal Boyut" Tag="{x:Static Stretch.None}" />
-                                                <ListBoxItem Content="Doldur" Tag="{x:Static Stretch.Fill}" />
-                                                <ListBoxItem Content="En Boy" Tag="{x:Static Stretch.Uniform}" />
-                                                <ListBoxItem Content="En Boy Doldur" Tag="{x:Static Stretch.UniformToFill}" />
-                                            </ListBox>
-                                        </local:ContentToggleButton.OverContent>
-                                    </local:ContentToggleButton>
-                                    <Button x:Name="Rotate"
-                                        Click="Rotate_Click" Content="P" FontFamily="Wingdings 3"
-                                        Foreground="Blue" />
-                                    <Button x:Name="FlipVer"
-                                        Click="FlipVer_Click" Content="E" FontFamily="Wingdings 3"
-                                        Foreground="Blue" />
-                                    <Button x:Name="FlipHor"
-                                        Click="FlipHor_Click" Content="D" FontFamily="Wingdings 3"
+                                    <local:NumericUpDownControl FontFamily="Segoe UI" FontSize="12" Maximum="20"
+                                        Minimum="1" SmallChange="1"
+                                        Value="{Binding ThumbHeightCount}" />
+                                    <local:NumericUpDownControl BorderBrush="White" BorderThickness="2" FontFamily="Segoe UI"
+                                        FontSize="12" Maximum="30" Minimum="0"
+                                        SmallChange="1"
+                                        Value="{Binding ThumbMargin, Converter={StaticResource DoubleToThicknessConverter}}" />
+                                    <ToggleButton Content="" FontFamily="Webdings" Foreground="Blue"
+                                        IsChecked="{Binding ThumbShowTime}" />
+                                    <ToggleButton Content="·" FontFamily="Webdings" Foreground="Blue"
+                                        IsChecked="{Binding ThumbApplyEffects}" />
+                                    <Button VerticalContentAlignment="Center"
+                                        BorderBrush="Cyan" BorderThickness="2"
+                                        Command="{Binding CaptureThumbnail}"
+                                        Content="µ" FontFamily="Webdings" FontSize="20"
                                         Foreground="Blue" />
                                 </UniformGrid>
-                                <StackPanel Orientation="Horizontal">
-                                    <StackPanel.Resources>
-                                        <Style TargetType="{x:Type Slider}">
-                                            <Setter Property="BorderThickness" Value="3" />
-                                            <Setter Property="Height" Value="64" />
-                                            <Setter Property="Maximum" Value="1" />
-                                            <Setter Property="Minimum" Value="0" />
-                                            <Setter Property="Orientation" Value="Vertical" />
-                                        </Style>
-                                    </StackPanel.Resources>
-                                    <Slider BorderBrush="Red" Value="{Binding Source={x:Reference Color}, Path=Red}" />
-                                    <Slider BorderBrush="Green" Value="{Binding Green, Source={x:Reference Color}}" />
-                                    <Slider BorderBrush="Blue" Value="{Binding Blue, Source={x:Reference Color}}" />
-                                    <Slider Value="{Binding Brightness, Source={x:Reference Color}}">
-                                        <Slider.BorderBrush>
-                                            <LinearGradientBrush ice:Freeze="true" StartPoint="0.5,0" EndPoint="0.5,1">
-                                                <GradientStop Color="Black" />
-                                                <GradientStop Offset="1" Color="White" />
-                                            </LinearGradientBrush>
-                                        </Slider.BorderBrush>
-                                    </Slider>
-                                    <Slider Value="{Binding Contrast, Source={x:Reference Color}}">
-                                        <Slider.BorderBrush>
-                                            <LinearGradientBrush ice:Freeze="true" StartPoint="0.5,0" EndPoint="0.5,1">
-                                                <GradientStop Color="White" />
-                                                <GradientStop Offset="1" Color="Black" />
-                                            </LinearGradientBrush>
-                                        </Slider.BorderBrush>
-                                    </Slider>
+                            </local:ContentToggleButton.OverContent>
+                        </local:ContentToggleButton>
+                        <local:ContentToggleButton Content="·" FontFamily="Webdings" FontSize="20"
+                            Foreground="Blue" PlacementMode="Top">
+                            <local:ContentToggleButton.OverContent>
+                                <StackPanel Background="{StaticResource GroupBoxBackGround}" Orientation="Horizontal">
+                                    <UniformGrid Columns="2" Rows="2">
+                                        <local:ContentToggleButton Content="n" FontFamily="Wingdings 3" Foreground="Blue">
+                                            <local:ContentToggleButton.OverContent>
+                                                <ListBox FontFamily="Segoe UI" FontSize="12"
+                                                    SelectedValue="{Binding VideoStretch}"
+                                                    SelectedValuePath="Tag">
+                                                    <ListBoxItem Content="Orijinal Boyut" Tag="{x:Static Stretch.None}" />
+                                                    <ListBoxItem Content="Doldur" Tag="{x:Static Stretch.Fill}" />
+                                                    <ListBoxItem Content="En Boy" Tag="{x:Static Stretch.Uniform}" />
+                                                    <ListBoxItem Content="En Boy Doldur" Tag="{x:Static Stretch.UniformToFill}" />
+                                                </ListBox>
+                                            </local:ContentToggleButton.OverContent>
+                                        </local:ContentToggleButton>
+                                        <Button x:Name="Rotate"
+                                            Click="Rotate_Click" Content="P" FontFamily="Wingdings 3"
+                                            Foreground="Blue" />
+                                        <Button x:Name="FlipVer"
+                                            Click="FlipVer_Click" Content="E" FontFamily="Wingdings 3"
+                                            Foreground="Blue" />
+                                        <Button x:Name="FlipHor"
+                                            Click="FlipHor_Click" Content="D" FontFamily="Wingdings 3"
+                                            Foreground="Blue" />
+                                    </UniformGrid>
+                                    <StackPanel Orientation="Horizontal">
+                                        <StackPanel.Resources>
+                                            <Style TargetType="{x:Type Slider}">
+                                                <Setter Property="BorderThickness" Value="3" />
+                                                <Setter Property="Height" Value="64" />
+                                                <Setter Property="Maximum" Value="1" />
+                                                <Setter Property="Minimum" Value="0" />
+                                                <Setter Property="Orientation" Value="Vertical" />
+                                            </Style>
+                                        </StackPanel.Resources>
+                                        <Slider BorderBrush="Red" Value="{Binding Source={x:Reference Color}, Path=Red}" />
+                                        <Slider BorderBrush="Green" Value="{Binding Green, Source={x:Reference Color}}" />
+                                        <Slider BorderBrush="Blue" Value="{Binding Blue, Source={x:Reference Color}}" />
+                                        <Slider Value="{Binding Brightness, Source={x:Reference Color}}">
+                                            <Slider.BorderBrush>
+                                                <LinearGradientBrush ice:Freeze="true" StartPoint="0.5,0" EndPoint="0.5,1">
+                                                    <GradientStop Color="Black" />
+                                                    <GradientStop Offset="1" Color="White" />
+                                                </LinearGradientBrush>
+                                            </Slider.BorderBrush>
+                                        </Slider>
+                                        <Slider Value="{Binding Contrast, Source={x:Reference Color}}">
+                                            <Slider.BorderBrush>
+                                                <LinearGradientBrush ice:Freeze="true" StartPoint="0.5,0" EndPoint="0.5,1">
+                                                    <GradientStop Color="White" />
+                                                    <GradientStop Offset="1" Color="Black" />
+                                                </LinearGradientBrush>
+                                            </Slider.BorderBrush>
+                                        </Slider>
+                                    </StackPanel>
+                                    <UniformGrid Columns="4" Rows="2">
+                                        <ToggleButton Content="T" FontFamily="Segoe UI" FontSize="12"
+                                            IsChecked="{Binding InvertColor}"
+                                            ToolTip="Ters Renk" />
+                                        <ToggleButton Content="K" FontFamily="Segoe UI" FontSize="12"
+                                            IsChecked="{Binding ApplySharpen}"
+                                            ToolTip="Keskinlik" />
+                                        <ToggleButton Content="E" FontFamily="Segoe UI" FontSize="12"
+                                            IsChecked="{Binding ApplyEmboss}"
+                                            ToolTip="Emboss" />
+                                        <ToggleButton Content="P" FontFamily="Segoe UI" FontSize="12"
+                                            IsChecked="{Binding ApplyPixelate}"
+                                            ToolTip="Pikselleştir" />
+                                        <ToggleButton Content="SB" FontFamily="Segoe UI" FontSize="12"
+                                            IsChecked="{Binding ApplyBw}"
+                                            ToolTip="Siyah Beyaz" />
+                                        <ToggleButton Content="G" FontFamily="Segoe UI" FontSize="12"
+                                            IsChecked="{Binding ApplyGrayscale}"
+                                            ToolTip="Gri" />
+                                        <ToggleButton Content="B" FontFamily="Segoe UI" FontSize="12"
+                                            IsChecked="{Binding BlurColor}"
+                                            ToolTip="Blur" />
+                                    </UniformGrid>
+                                    <Slider Maximum="10" Minimum="0" Orientation="Vertical"
+                                        Visibility="{Binding ApplySharpen, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        Value="{Binding SharpenAmount}" />
+                                    <Slider Maximum="1" Minimum="0" Orientation="Vertical"
+                                        Visibility="{Binding ApplyBw, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        Value="{Binding BwAmount}" />
+                                    <Slider Maximum="10" Minimum="0" Orientation="Vertical"
+                                        Visibility="{Binding BlurColor, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        Value="{Binding BlurAmount}" />
+                                    <Slider Maximum="250" Minimum="1" Orientation="Vertical"
+                                        ValueChanged="Slider_WidthValueChanged"
+                                        Visibility="{Binding ApplyPixelate, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        Value="60" />
+                                    <Slider Maximum="250" Minimum="1" Orientation="Vertical"
+                                        ValueChanged="Slider_HeightValueChanged"
+                                        Visibility="{Binding ApplyPixelate, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        Value="40" />
                                 </StackPanel>
-                                <UniformGrid Columns="4" Rows="2">
-                                    <ToggleButton Content="T" FontFamily="Segoe UI"
-                                        IsChecked="{Binding InvertColor}"
-                                        ToolTip="Ters Renk" />
-                                    <ToggleButton Content="K" FontFamily="Segoe UI"
-                                        IsChecked="{Binding ApplySharpen}"
-                                        ToolTip="Keskinlik" />
-                                    <ToggleButton Content="E" FontFamily="Segoe UI"
-                                        IsChecked="{Binding ApplyEmboss}"
-                                        ToolTip="Emboss" />
-                                    <ToggleButton Content="P" FontFamily="Segoe UI"
-                                        IsChecked="{Binding ApplyPixelate}"
-                                        ToolTip="Pikselleştir" />
-                                    <ToggleButton Content="SB" FontFamily="Segoe UI"
-                                        IsChecked="{Binding ApplyBw}"
-                                        ToolTip="Siyah Beyaz" />
-                                    <ToggleButton Content="G" FontFamily="Segoe UI"
-                                        IsChecked="{Binding ApplyGrayscale}"
-                                        ToolTip="Gri" />
-                                    <ToggleButton Content="B" FontFamily="Segoe UI"
-                                        IsChecked="{Binding BlurColor}"
-                                        ToolTip="Blur" />
-                                </UniformGrid>
-                                <Slider Maximum="10" Minimum="0" Orientation="Vertical"
-                                    Visibility="{Binding ApplySharpen, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                    Value="{Binding SharpenAmount}" />
-                                <Slider Maximum="1" Minimum="0" Orientation="Vertical"
-                                    Visibility="{Binding ApplyBw, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                    Value="{Binding BwAmount}" />
-                                <Slider Maximum="10" Minimum="0" Orientation="Vertical"
-                                    Visibility="{Binding BlurColor, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                    Value="{Binding BlurAmount}" />
-                                <Slider Maximum="250" Minimum="1" Orientation="Vertical"
-                                    ValueChanged="Slider_WidthValueChanged"
-                                    Visibility="{Binding ApplyPixelate, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                    Value="60" />
-                                <Slider Maximum="250" Minimum="1" Orientation="Vertical"
-                                    ValueChanged="Slider_HeightValueChanged"
-                                    Visibility="{Binding ApplyPixelate, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                    Value="40" />
-                            </StackPanel>
-                        </local:ContentToggleButton.OverContent>
-                    </local:ContentToggleButton>
-                    <ToggleButton Content="360°" IsChecked="{Binding PanoramaMode}" />
-                    <local:NumericUpDownControl IsReadOnly="True" Minimum="0.1"
-                        Value="{Binding SpeedRatio, ElementName=Player}" />
-                </StackPanel>
-            </Grid>
+                            </local:ContentToggleButton.OverContent>
+                        </local:ContentToggleButton>
+                        <ToggleButton Content="360°" IsChecked="{Binding PanoramaMode}" />
+                        <local:NumericUpDownControl IsReadOnly="True" Minimum="0.1"
+                            Value="{Binding SpeedRatio, ElementName=Player}" />
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
         </ContentControl>
     </Grid>
 </UserControl>

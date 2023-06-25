@@ -12,7 +12,7 @@ namespace Tesseract
         {
             int result = dividend / divisor;
 
-            return (dividend % divisor != 0 && (divisor > 0) == (dividend > 0)) ? result + 1 : result;
+            return dividend % divisor != 0 && (divisor > 0) == (dividend > 0) ? result + 1 : result;
         }
 
         /// <summary>

@@ -6,6 +6,15 @@ namespace Tesseract
     {
         public static readonly Rect Empty = new Rect();
 
+        #region ToString
+
+        public override string ToString()
+        {
+            return $"[Rect X={X1}, Y={Y1}, Width={Width}, Height={Height}]";
+        }
+
+        #endregion ToString
+
         #region Constructors + Factory Methods
 
         public Rect(int x, int y, int width, int height)
@@ -53,7 +62,7 @@ namespace Tesseract
 
         public override bool Equals(object obj)
         {
-            return (obj is Rect) && Equals((Rect)obj);
+            return obj is Rect && Equals((Rect)obj);
         }
 
         public bool Equals(Rect other)
@@ -71,18 +80,10 @@ namespace Tesseract
                 hashCode += 1000000021 * Width.GetHashCode();
                 hashCode += 1000000033 * Height.GetHashCode();
             }
+
             return hashCode;
         }
 
         #endregion Equals and GetHashCode implementation
-
-        #region ToString
-
-        public override string ToString()
-        {
-            return string.Format("[Rect X={0}, Y={1}, Width={2}, Height={3}]", X1, Y1, Width, Height);
-        }
-
-        #endregion ToString
     }
 }

@@ -4,8 +4,7 @@ using TwainWpf.TwainNative;
 namespace TwainWpf
 {
     /// <summary>
-    /// Settings for hardware image rotation.  Includes
-    /// hardware deskewing detection
+    /// Settings for hardware image rotation.  Includes hardware deskewing detection
     /// </summary>
     public class RotationSettings : INotifyPropertyChanged
     {
@@ -13,7 +12,7 @@ namespace TwainWpf
         /// Gets or sets a value indicating whether [automatic border detection].
         /// </summary>
         /// <value>
-        /// 	<c>true</c> if [automatic border detection]; otherwise, <c>false</c>.
+        /// <c>true</c> if [automatic border detection]; otherwise, <c>false</c>.
         /// </value>
         public bool AutomaticBorderDetection {
             get => _automaticBorderDetection;
@@ -85,7 +84,9 @@ namespace TwainWpf
 
         #region INotifyPropertyChanged Members
 
-        public event PropertyChangedEventHandler PropertyChanged = delegate { };
+        public event PropertyChangedEventHandler PropertyChanged = delegate
+        {
+        };
 
         protected void OnPropertyChanged(string propertyName)
         {

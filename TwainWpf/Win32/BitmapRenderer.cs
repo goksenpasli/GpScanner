@@ -25,13 +25,12 @@ namespace TwainWpf.Win32
                 _bitmapInfo.SizeImage = ((((_bitmapInfo.Width * _bitmapInfo.BitCount) + 31) & ~31) >> 3) * _bitmapInfo.Height;
             }
 
-            // The following code only works on x86
             Debug.Assert(Marshal.SizeOf(typeof(IntPtr)) == 4);
 
             int pixelInfoPointer = _bitmapInfo.ClrUsed;
             if (pixelInfoPointer == 0 && _bitmapInfo.BitCount <= 8)
             {
-                pixelInfoPointer = 1 << (_bitmapInfo.BitCount); // & 31);
+                pixelInfoPointer = 1 << (_bitmapInfo.BitCount);
             }
             pixelInfoPointer = (pixelInfoPointer * 4) + _bitmapInfo.Size + _bitmapPointer.ToInt32();
 
@@ -54,8 +53,7 @@ namespace TwainWpf.Win32
 
                 try
                 {
-                    _ = Gdi32Native.SetDIBitsToDevice(hdc, 0, 0, _rectangle.Width, _rectangle.Height,
-                        0, 0, 0, _rectangle.Height, _pixelInfoPointer, _bitmapPointer, 0);
+                    _ = Gdi32Native.SetDIBitsToDevice(hdc, 0, 0, _rectangle.Width, _rectangle.Height, 0, 0, 0, _rectangle.Height, _pixelInfoPointer, _bitmapPointer, 0);
                 }
                 finally
                 {
@@ -74,16 +72,6 @@ namespace TwainWpf.Win32
             _ = Kernel32Native.GlobalFree(_dibHandle);
         }
 
-        private readonly BitmapInfoHeader _bitmapInfo;
-
-        private readonly IntPtr _bitmapPointer;
-
-        private readonly IntPtr _dibHandle;
-
-        private readonly IntPtr _pixelInfoPointer;
-
-        private Rectangle _rectangle;
-
         ~BitmapRenderer()
         {
             Dispose(false);
@@ -95,5 +83,15 @@ namespace TwainWpf.Win32
             double dotsPerInch = pixelsPerMillimeter * 25.4;
             return (float)Math.Round(dotsPerInch, 2);
         }
+
+        private readonly BitmapInfoHeader _bitmapInfo;
+
+        private readonly IntPtr _bitmapPointer;
+
+        private readonly IntPtr _dibHandle;
+
+        private readonly IntPtr _pixelInfoPointer;
+
+        private Rectangle _rectangle;
     }
 }

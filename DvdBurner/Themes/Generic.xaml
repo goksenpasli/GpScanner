@@ -1,0 +1,71 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
+    xmlns:local="clr-namespace:DvdBurner">
+    <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
+    <Style TargetType="{x:Type local:Burner}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:Burner}">
+                    <StackPanel>
+                        <UniformGrid Columns="3">
+                            <Button Command="{Binding SelectBurnDir, RelativeSource={RelativeSource TemplatedParent}}">
+                                <Image Width="32" Height="32">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="3" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                            </Button>
+                            <Button Command="{Binding BurnDvd, RelativeSource={RelativeSource TemplatedParent}}">
+                                <Image Width="32" Height="32">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="78" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                            </Button>
+                            <Button Command="{Binding EraseDvd, RelativeSource={RelativeSource TemplatedParent}}">
+                                <Canvas Width="32" Height="32">
+                                    <Image Width="32" Height="32">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="151" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <Image Canvas.Left="16" Canvas.Top="16"
+                                        Width="16" Height="16">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="131" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                </Canvas>
+                            </Button>
+                        </UniformGrid>
+                        <Grid>
+                            <ProgressBar IsIndeterminate="{Binding ProgressIndeterminate, RelativeSource={RelativeSource TemplatedParent}}"
+                                Maximum="1"
+                                Value="{Binding ProgressValue, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                                Text="{Binding ActionText, RelativeSource={RelativeSource TemplatedParent}}"
+                                TextWrapping="Wrap" />
+                        </Grid>
+                        <Extensions:ButtonedTextBox CopyButtonVisibility="Visible" Description="ETİKET" OpenButtonVisibility="Collapsed"
+                            ResetButtonVisibility="Visible"
+                            Text="{Binding CdLabel, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <CheckBox Content="BİTİNCE CDYİ ÇIKAR" IsChecked="{Binding Eject, RelativeSource={RelativeSource TemplatedParent}}" />
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

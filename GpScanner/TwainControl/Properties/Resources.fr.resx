@@ -210,6 +210,9 @@ ENREGISTREMENT</value>
   <data name="COLORCHANGETIP" xml:space="preserve">
     <value>Si vous cliquez dessus après avoir défini la valeur seuil, vous pouvez effectuer une deuxième sélection de couleur.</value>
   </data>
+  <data name="COMPRESS" xml:space="preserve">
+    <value>COMPRESSE</value>
+  </data>
   <data name="CONTENT" xml:space="preserve">
     <value>CONTENU LU</value>
   </data>
@@ -243,11 +246,17 @@ ENREGISTREMENT</value>
   <data name="DSTCOLOR" xml:space="preserve">
     <value>COULEUR CIBLE</value>
   </data>
+  <data name="EMPTY" xml:space="preserve">
+    <value>VIDE</value>
+  </data>
   <data name="EMPTYPAGE" xml:space="preserve">
     <value>PASSER LA PAGE VIDE</value>
   </data>
   <data name="ENCRYPT" xml:space="preserve">
     <value>CHIFFREMENT</value>
+  </data>
+  <data name="EYPOPEN" xml:space="preserve">
+    <value>Ouvrez Eyp Files directement.</value>
   </data>
   <data name="FASTSCAN" xml:space="preserve">
     <value>VITE
@@ -260,7 +269,7 @@ ANALYSE</value>
     <value>DOSSIER</value>
   </data>
   <data name="FILENAME" xml:space="preserve">
-    <value>NOM DE FICHIER:</value>
+    <value>NOM DE FICHIER</value>
   </data>
   <data name="FLATBED" xml:space="preserve">
     <value>À PLAT</value>
@@ -347,11 +356,17 @@ RELIER</value>
   <data name="OTHERTESSERACTLINK" xml:space="preserve">
     <value>Autres données de langue tesseract</value>
   </data>
+  <data name="OVERWRITECOMPRESSED" xml:space="preserve">
+    <value>Remplacer directement le fichier compressé dans les documents numérisés</value>
+  </data>
   <data name="PAGENUMBER" xml:space="preserve">
     <value>NUMÉRO DE PAGE</value>
   </data>
   <data name="PASSWORD" xml:space="preserve">
     <value>LE MOT DE PASSE</value>
+  </data>
+  <data name="PDFOPEN" xml:space="preserve">
+    <value>Ouvrez Pdf Files directement.</value>
   </data>
   <data name="PDFPROTECT" xml:space="preserve">
     <value>PDF PROTÉGER</value>
@@ -383,6 +398,9 @@ AJOUTER</value>
   </data>
   <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
     <value>Supprimer les fichiers traités de la liste</value>
+  </data>
+  <data name="REMOVESELECTED" xml:space="preserve">
+    <value>Voulez-vous supprimer l'image sélectionnée ?</value>
   </data>
   <data name="REPLACEPAGE" xml:space="preserve">
     <value>Permuter les pages</value>
@@ -483,6 +501,9 @@ AJOUTER</value>
   <data name="START" xml:space="preserve">
     <value>DÉBUT</value>
   </data>
+  <data name="STOP" xml:space="preserve">
+    <value>Arrêt</value>
+  </data>
   <data name="TAG" xml:space="preserve">
     <value>ÉTIQUETTE</value>
   </data>
@@ -527,6 +548,9 @@ AJOUTER</value>
   </data>
   <data name="UNREGSTI" xml:space="preserve">
     <value>SUPPRIMER DU MENU DU NAVIGATEUR</value>
+  </data>
+  <data name="UPDATE" xml:space="preserve">
+    <value>MISE À JOUR</value>
   </data>
   <data name="USERNAME" xml:space="preserve">
     <value>[NOM D'UTILISATEUR]</value>

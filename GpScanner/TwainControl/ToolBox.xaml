@@ -1,14 +1,16 @@
 ﻿<UserControl x:Class="TwainControl.ToolBox"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Converter="clr-namespace:TwainControl.Converter"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
     xmlns:local="clr-namespace:TwainControl"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:properties="clr-namespace:TwainControl.Properties"
+    xmlns:tesseract="clr-namespace:Ocr;assembly=Ocr"
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
-    d:DesignHeight="588" d:DesignWidth="345"
+    d:DesignHeight="588" d:DesignWidth="420"
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
     Loaded="UserControl_Loaded" UseLayoutRounding="True"
     mc:Ignorable="d">
@@ -20,6 +22,7 @@
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
+            <Converter:FontSizeConverter x:Key="FontSizeConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -56,9 +59,23 @@
                                 <ProgressBar Background="{x:Null}"
                                     Maximum="1"
                                     Value="{Binding ToolBoxPdfMergeProgressValue, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" />
-                                <local:ShadowedImage x:Name="Img"
-                                    ShowShadow="True"
-                                    Source="{Binding Scanner.CroppedImage}" />
+                                <Image x:Name="Img" Source="{Binding Scanner.CroppedImage}" />
+                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                                    d:FontSize="25" d:Text="Watermark"
+                                    FontFamily="{Binding Scanner.WatermarkFont}"
+                                    FontSize="{Binding Scanner.WatermarkTextSize, Converter={StaticResource FontSizeConverter}}"
+                                    Foreground="{Binding Scanner.WatermarkColor, Mode=OneWay}"
+                                    Opacity="0.33" RenderTransformOrigin="0.5,0.5"
+                                    Text="{Binding Scanner.Watermark, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <TextBlock.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform />
+                                            <SkewTransform />
+                                            <RotateTransform d:Angle="315" Angle="{Binding Scanner.WatermarkAngle}" />
+                                            <TranslateTransform />
+                                        </TransformGroup>
+                                    </TextBlock.RenderTransform>
+                                </TextBlock>
                                 <Grid x:Name="LineGrid"
                                     Width="{Binding ElementName=Img, Path=ActualWidth}"
                                     Height="{Binding ElementName=Img, Path=ActualHeight}"
@@ -71,7 +88,8 @@
                                     </TextBlock.ToolTip>
                                 </TextBlock>
                                 <TextBlock HorizontalAlignment="Right" VerticalAlignment="Top">
-                                    <Hyperlink Command="{Binding PrintCroppedImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
+                                    <Hyperlink local:Policy.PolicyName="PrintCroppedImage"
+                                        Command="{Binding PrintCroppedImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
                                         CommandParameter="{Binding Scanner.CroppedImage}"
                                         TextDecorations="None">
                                         <Image Width="16" Height="16">
@@ -85,44 +103,28 @@
                                     </Hyperlink>
                                 </TextBlock>
                                 <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top">
-                                    <Hyperlink Command="{Binding TransferImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" TextDecorations="None">
+                                    <Hyperlink local:Policy.PolicyName="TransferImage"
+                                        Command="{Binding TransferImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
+                                        TextDecorations="None">
                                         <Run FontFamily="Wingdings" FontSize="16" Foreground="Black"
                                             Text="ç" />
                                     </Hyperlink>
                                 </TextBlock>
-                                <Extensions:ContentToggleButton HorizontalAlignment="Left" VerticalAlignment="Bottom"
-                                    Background="{x:Null}"
-                                    BorderBrush="{x:Null}"
-                                    Command="{Binding LoadHistogram, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
-                                    FontFamily="Webdings">
-                                    <TextBlock FontSize="20" Text="" />
-                                    <Extensions:ContentToggleButton.OverContent>
-                                        <GroupBox>
-                                            <UniformGrid Columns="3">
-                                                <Extensions:GraphControl Width="200" Height="200"
-                                                    Series="{Binding Scanner.RedChart}"
-                                                    SeriesTextVisibility="Collapsed" ValueTextVisibility="Collapsed" />
-                                                <Extensions:GraphControl Width="200" Height="200"
-                                                    Series="{Binding Scanner.GreenChart}"
-                                                    SeriesTextVisibility="Collapsed" ValueTextVisibility="Collapsed" />
-                                                <Extensions:GraphControl Width="200" Height="200"
-                                                    Series="{Binding Scanner.BlueChart}"
-                                                    SeriesTextVisibility="Collapsed" ValueTextVisibility="Collapsed" />
-                                            </UniformGrid>
-                                        </GroupBox>
-                                    </Extensions:ContentToggleButton.OverContent>
-                                </Extensions:ContentToggleButton>
                             </Grid>
                         </Border>
                     </DockPanel>
                     <UniformGrid Columns="2">
                         <StackPanel>
-                            <Slider VerticalAlignment="Center"
-                                IsSnapToTickEnabled="True" Maximum="360" Minimum="0"
-                                Orientation="Horizontal" SmallChange="1"
-                                Style="{StaticResource Slider}"
-                                Ticks="0, 90, 180, 270, 360"
-                                Value="{Binding Scanner.CroppedImageAngle}" />
+                            <UniformGrid Columns="2">
+                                <Slider VerticalAlignment="Center"
+                                    IsSnapToTickEnabled="True" Maximum="360" Minimum="0"
+                                    Orientation="Horizontal" SmallChange="1"
+                                    Style="{StaticResource Slider}"
+                                    Ticks="0, 90, 180, 270, 360"
+                                    Value="{Binding Scanner.CroppedImageAngle}" />
+                                <Extensions:NumericUpDownControl Maximum="10" Minimum="0" SmallChange="1"
+                                    Value="{Binding Scanner.MedianValue, UpdateSourceTrigger=PropertyChanged}" />
+                            </UniformGrid>
                             <UniformGrid Columns="2">
                                 <Slider VerticalAlignment="Center"
                                     Maximum="255" Minimum="-255" Orientation="Horizontal"
@@ -136,22 +138,37 @@
                                         </LinearGradientBrush>
                                     </Slider.Background>
                                 </Slider>
-                                <Button Command="{Binding InvertImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" Content="{local:Loc REVERSE}" />
+                                <Button local:Policy.PolicyName="InvertImage"
+                                    Command="{Binding InvertImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
+                                    Content="{local:Loc REVERSE}" />
                             </UniformGrid>
                         </StackPanel>
-                        <Button Background="Green" Command="{Binding LoadCroppedImage}">
-                            <StackPanel Orientation="Horizontal">
-                                <Image Width="32" Height="32">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="1" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                                <TextBlock VerticalAlignment="Center" Text="{local:Loc PREVIEWFILE}" />
+                        <UniformGrid Columns="2">
+                            <StackPanel>
+                                <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="255"
+                                    Minimum="1" SmallChange="1"
+                                    Style="{StaticResource Slider}"
+                                    ToolTip="{local:Loc BW}"
+                                    Value="{Binding Scanner.ToolBarBwThreshold, UpdateSourceTrigger=PropertyChanged}" />
+                                <Button local:Policy.PolicyName="InvertImage"
+                                    Command="{Binding BlackAndWhiteImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
+                                    Content="{local:Loc BW}" />
                             </StackPanel>
-                        </Button>
+                            <Button local:Policy.PolicyName="LoadCroppedImage" Background="Green"
+                                Command="{Binding LoadCroppedImage}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="32" Height="32">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="1" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc PREVIEWFILE}" />
+                                </StackPanel>
+                            </Button>
+                        </UniformGrid>
                     </UniformGrid>
                     <UniformGrid Columns="2" Rows="10">
                         <UniformGrid Columns="2">
@@ -168,13 +185,23 @@
                                     Value="{Binding Scanner.BoyAdet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </StackPanel>
                         </UniformGrid>
-                        <Button Command="{Binding SplitImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock VerticalAlignment="Center" Text="{local:Loc SLICE}" />
-                                <Image Width="16" Height="16"
-                                    Source="{Binding Source='.jpg', Converter={StaticResource FilePathToIconConverter}}" />
-                            </StackPanel>
-                        </Button>
+                        <UniformGrid Columns="2">
+                            <Button local:Policy.PolicyName="SplitImage" Command="{Binding SplitImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc SLICE}" />
+                                    <Image Width="16" Height="16"
+                                        Source="{Binding Source='.jpg', Converter={StaticResource FilePathToIconConverter}}" />
+                                </StackPanel>
+                            </Button>
+                            <Button local:Policy.PolicyName="MergeHorizontal" BorderBrush="Cyan"
+                                Command="{Binding MergeHorizontal, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc MERGE}" />
+                                    <Image Width="16" Height="16"
+                                        Source="{Binding Source='.jpg', Converter={StaticResource FilePathToIconConverter}}" />
+                                </StackPanel>
+                            </Button>
+                        </UniformGrid>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -189,7 +216,7 @@
                                 SmallChange="1"
                                 Value="{Binding Scanner.SliceCountHeight}" />
                             <Button Grid.Column="2"
-                                BorderBrush="Cyan"
+                                local:Policy.PolicyName="SplitAllImage" BorderBrush="Cyan"
                                 Command="{Binding SplitAllImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal">
@@ -230,8 +257,8 @@
                                 <Image Width="16" Height="16">
                                     <Image.Source>
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Imageres.dll" />
-                                            <Binding Source="226" />
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="140" />
                                         </MultiBinding>
                                     </Image.Source>
                                 </Image>
@@ -252,7 +279,7 @@
                                     Value="{Binding BorderSize, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" />
                             </Border>
                             <Button Grid.Column="5"
-                                BorderBrush="Cyan"
+                                local:Policy.PolicyName="MergeAllImage" BorderBrush="Cyan"
                                 Command="{Binding MergeAllImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
                                 <Button.Content>
                                     <StackPanel Grid.Column="1" Orientation="Horizontal">
@@ -269,7 +296,9 @@
                         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
                             Text="{local:Loc TEXT}" />
                         <UniformGrid Columns="2">
-                            <TextBox MaxWidth="200" Text="{Binding Scanner.Watermark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBox MaxWidth="200"
+                                VerticalContentAlignment="Center"
+                                Text="{Binding Scanner.Watermark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <Extensions:ContentToggleButton Background="{Binding Scanner.WatermarkColor, Mode=OneWay}">
                                 <Extensions:ContentToggleButton.OverContent>
                                     <Extensions:ColorPicker Width="350" Height="250"
@@ -297,8 +326,11 @@
                         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
                             Text="{local:Loc FONT}" />
                         <ComboBox Height="25.6"
+                            VerticalContentAlignment="Center"
+                            local:Policy.PolicyName="WatermarkFont"
                             ItemsSource="{Binding Source={x:Static Fonts.SystemFontFamilies}}"
-                            SelectedItem="{Binding Scanner.WatermarkFont}">
+                            SelectedValue="{Binding Scanner.WatermarkFont}"
+                            SelectedValuePath="Source">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock FontFamily="{Binding Mode=OneWay}" Text="{Binding Mode=OneWay}" />
@@ -310,12 +342,20 @@
                                 </ItemsPanelTemplate>
                             </ComboBox.ItemsPanel>
                         </ComboBox>
-                        <Button Command="{Binding SetWatermark, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" Content="{local:Loc DRAWTEXT}" />
-                        <Button Command="{Binding DeskewImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" Content="{local:Loc DESKEW}" />
-                        <Button Command="{Binding OcrPage}"
+                        <Button local:Policy.PolicyName="SetWatermark"
+                            Command="{Binding SetWatermark, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
+                            Content="{local:Loc DRAWTEXT}" />
+                        <Button local:Policy.PolicyName="DeskewImage"
+                            Command="{Binding DeskewImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
+                            Content="{local:Loc DESKEW}" />
+                        <Button local:Policy.PolicyName="OcrPage"
+                            Command="{Binding OcrPage}"
                             CommandParameter="{Binding Scanner.CroppedImage}"
-                            Content="{local:Loc OCR}" />
-                        <Button Command="{Binding ResetCroppedImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" Content="{local:Loc RESET}" />
+                            Content="{local:Loc OCR}"
+                            IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}" />
+                        <Button local:Policy.PolicyName="ResetCroppedImage"
+                            Command="{Binding ResetCroppedImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
+                            Content="{local:Loc RESET}" />
                         <TextBlock VerticalAlignment="Center" Text="{local:Loc SRCCOLOR}" />
                         <Extensions:ContentToggleButton Background="{Binding Scanner.SourceColor, Mode=OneWay}">
                             <TextBlock d:Text="Red" Text="{Binding Scanner.SourceColor, Mode=OneWay}" />
@@ -334,20 +374,16 @@
                                     PredefinedColorVisibility="Visible" />
                             </Extensions:ContentToggleButton.OverContent>
                         </Extensions:ContentToggleButton>
-                        <UniformGrid Columns="2">
-                            <Slider VerticalAlignment="Center"
-                                IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"
-                                Maximum="128" Minimum="0"
-                                Style="{StaticResource Slider}"
-                                Value="{Binding Scanner.Threshold, Delay=100}" />
-                            <Button x:Name="BtnApply"
-                                Command="{Binding ApplyColorChange, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
-                                Content="{local:Loc APPLY}"
-                                ToolTip="{local:Loc COLORCHANGETIP}" />
-                        </UniformGrid>
-                        <Button Command="{Binding SaveImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
-                            CommandParameter="{Binding Scanner.CroppedImage}"
-                            Content="{local:Loc SAVEPDF}" />
+                        <Slider VerticalAlignment="Center"
+                            IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"
+                            Maximum="128" Minimum="0"
+                            Style="{StaticResource Slider}"
+                            Value="{Binding Scanner.Threshold, Delay=100}" />
+                        <Button x:Name="BtnApply"
+                            local:Policy.PolicyName="ApplyColorChange"
+                            Command="{Binding ApplyColorChange, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
+                            Content="{local:Loc APPLY}"
+                            ToolTip="{local:Loc COLORCHANGETIP}" />
                     </UniformGrid>
                 </StackPanel>
             </Border>

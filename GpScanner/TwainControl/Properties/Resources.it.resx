@@ -210,6 +210,9 @@ DISCO</value>
   <data name="COLORCHANGETIP" xml:space="preserve">
     <value>Se si fa clic su questo dopo aver impostato il valore di soglia, è possibile effettuare una seconda selezione di colore.</value>
   </data>
+  <data name="COMPRESS" xml:space="preserve">
+    <value>COMPRIMERE</value>
+  </data>
   <data name="CONTENT" xml:space="preserve">
     <value>CONTENUTI LEGGI</value>
   </data>
@@ -243,11 +246,17 @@ DISCO</value>
   <data name="DSTCOLOR" xml:space="preserve">
     <value>COLORE BERSAGLIO</value>
   </data>
+  <data name="EMPTY" xml:space="preserve">
+    <value>VUOTO</value>
+  </data>
   <data name="EMPTYPAGE" xml:space="preserve">
     <value>SALTA LA PAGINA VUOTA</value>
   </data>
   <data name="ENCRYPT" xml:space="preserve">
     <value>CRITTOGRAFIA</value>
+  </data>
+  <data name="EYPOPEN" xml:space="preserve">
+    <value>Apri i file Eyp direttamente.</value>
   </data>
   <data name="FASTSCAN" xml:space="preserve">
     <value>VELOCE
@@ -260,7 +269,7 @@ SCANSIONE</value>
     <value>FILE</value>
   </data>
   <data name="FILENAME" xml:space="preserve">
-    <value>NOME DEL FILE:</value>
+    <value>NOME DEL FILE</value>
   </data>
   <data name="FLATBED" xml:space="preserve">
     <value>PIATTAFORMA</value>
@@ -278,7 +287,7 @@ SCANSIONE</value>
     <value>MOSTRA INTERFACCIA</value>
   </data>
   <data name="GUID" xml:space="preserve">
-    <value>[GUIDA]</value>
+    <value>[GUID]</value>
   </data>
   <data name="HEIGHTCOUNT" xml:space="preserve">
     <value>TAGLIA QUANTITÀ</value>
@@ -347,11 +356,17 @@ COLLEGARE</value>
   <data name="OTHERTESSERACTLINK" xml:space="preserve">
     <value>Altri dati sulla lingua tesseract</value>
   </data>
+  <data name="OVERWRITECOMPRESSED" xml:space="preserve">
+    <value>Sovrascrivi direttamente il file compresso nei documenti scansionati</value>
+  </data>
   <data name="PAGENUMBER" xml:space="preserve">
     <value>NUMERO DI PAGINA</value>
   </data>
   <data name="PASSWORD" xml:space="preserve">
     <value>PAROLA D'ORDINE</value>
+  </data>
+  <data name="PDFOPEN" xml:space="preserve">
+    <value>Apri i file Pdf direttamente.</value>
   </data>
   <data name="PDFPROTECT" xml:space="preserve">
     <value>PDF PROTEGGI</value>
@@ -383,6 +398,9 @@ INSERISCI</value>
   </data>
   <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
     <value>Elimina i file elaborati dall'elenco</value>
+  </data>
+  <data name="REMOVESELECTED" xml:space="preserve">
+    <value>Vuoi eliminare l'immagine selezionata?</value>
   </data>
   <data name="REPLACEPAGE" xml:space="preserve">
     <value>Scambia pagine</value>
@@ -483,6 +501,9 @@ INSERISCI</value>
   <data name="START" xml:space="preserve">
     <value>INIZIO</value>
   </data>
+  <data name="STOP" xml:space="preserve">
+    <value>Fermare</value>
+  </data>
   <data name="TAG" xml:space="preserve">
     <value>ETICHETTA</value>
   </data>
@@ -527,6 +548,9 @@ INSERISCI</value>
   </data>
   <data name="UNREGSTI" xml:space="preserve">
     <value>RIMUOVI DAL MENU' DEL BROWSER</value>
+  </data>
+  <data name="UPDATE" xml:space="preserve">
+    <value>AGGIORNAMENTO</value>
   </data>
   <data name="USERNAME" xml:space="preserve">
     <value>[NOME UTENTE]</value>

@@ -19,17 +19,17 @@
         public float DeskewAngle { get; }
 
         /// <summary>
-        /// Gets the <see cref="Orientation" /> for corresponding text block.
+        /// Gets the <see cref="Orientation"/> for corresponding text block.
         /// </summary>
         public Orientation Orientation { get; }
 
         /// <summary>
-        /// Gets the <see cref="TextLineOrder" /> for corresponding text block.
+        /// Gets the <see cref="TextLineOrder"/> for corresponding text block.
         /// </summary>
         public TextLineOrder TextLineOrder { get; }
 
         /// <summary>
-        /// Gets the <see cref="WritingDirection" /> for corresponding text block.
+        /// Gets the <see cref="WritingDirection"/> for corresponding text block.
         /// </summary>
         public WritingDirection WritingDirection { get; }
     }

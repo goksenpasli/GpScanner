@@ -176,7 +176,7 @@ BESLEYİCİ</value>
     <value>BİLGİSAYARI YENİDEN BAŞLAT</value>
   </data>
   <data name="FILENAME" xml:space="preserve">
-    <value>DOSYA ADI:</value>
+    <value>DOSYA ADI</value>
   </data>
   <data name="DAY" xml:space="preserve">
     <value>[GÜN]</value>
@@ -374,7 +374,7 @@ OKU</value>
     <value>Otomatik Kayıt Yolu Değişti. Eski Dosyalar Yeni Belirlenen Klasöre Taşınmayacaktır.</value>
   </data>
   <data name="LISTREMOVEWARN" xml:space="preserve">
-    <value>Üstteki Listede Bulunan Tüm Taranan Evrak Silinecek Devam Etmek İstiyor Musun?</value>
+    <value>Alttaki Listede Bulunan Tüm Taranan Evrak Silinecek Devam Etmek İstiyor Musun?</value>
   </data>
   <data name="DEFAULTSCANNAME" xml:space="preserve">
     <value>Tarama</value>
@@ -552,5 +552,29 @@ BELGE EKLE</value>
   </data>
   <data name="RESTARTAPP" xml:space="preserve">
     <value>Uygulamanın Yeniden Başlatılması Gerekir.</value>
+  </data>
+  <data name="REMOVESELECTED" xml:space="preserve">
+    <value>Seçili Resimi Silmek İstiyor musun?</value>
+  </data>
+  <data name="UPDATE" xml:space="preserve">
+    <value>GÜNCELLE</value>
+  </data>
+  <data name="EYPOPEN" xml:space="preserve">
+    <value>Eyp Dosyalarını Direkt Aç</value>
+  </data>
+  <data name="PDFOPEN" xml:space="preserve">
+    <value>Pdf Dosyalarını Direkt Aç</value>
+  </data>
+  <data name="COMPRESS" xml:space="preserve">
+    <value>SIKIŞTIR</value>
+  </data>
+  <data name="OVERWRITECOMPRESSED" xml:space="preserve">
+    <value>Taranan Belgelerde Sıkıştırılan Dosyayı Direkt Üzerine Yaz</value>
+  </data>
+  <data name="STOP" xml:space="preserve">
+    <value>DUR</value>
+  </data>
+  <data name="EMPTY" xml:space="preserve">
+    <value>BOŞ</value>
   </data>
 </root>

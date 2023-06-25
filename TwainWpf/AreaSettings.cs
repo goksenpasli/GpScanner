@@ -1,8 +1,6 @@
 using System.ComponentModel;
 using TwainWpf.TwainNative;
 
-// ReSharper disable UnusedMember.Local
-
 namespace TwainWpf
 {
     public class AreaSettings : INotifyPropertyChanged
@@ -73,7 +71,9 @@ namespace TwainWpf
 
         #region INotifyPropertyChanged Members
 
-        public event PropertyChangedEventHandler PropertyChanged = delegate { };
+        public event PropertyChangedEventHandler PropertyChanged = delegate
+        {
+        };
 
         protected void OnPropertyChanged(string propertyName)
         {

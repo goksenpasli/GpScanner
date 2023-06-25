@@ -1,7 +1,4 @@
-﻿//  Copyright (c) 2014 Andrey Akinshin
-//  Project URL: https://github.com/AndreyAkinshin/InteropDotNet
-//  Distributed under the MIT License: http://opensource.org/licenses/MIT
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -22,11 +19,13 @@ namespace Tesseract.Internal.InteropDotNet
                     Logger.TraceWarning("Failed to free library \"{0}\" because it is not loaded", fileName);
                     return false;
                 }
+
                 if (logic.FreeLibrary(loadedAssemblies[fileName]))
                 {
                     _ = loadedAssemblies.Remove(fileName);
                     return true;
                 }
+
                 return false;
             }
         }
@@ -34,7 +33,7 @@ namespace Tesseract.Internal.InteropDotNet
         public IntPtr GetProcAddress(IntPtr dllHandle, string name)
         {
             IntPtr procAddress = logic.GetProcAddress(dllHandle, name);
-            return procAddress == IntPtr.Zero ? throw new LoadLibraryException(string.Format("Failed to load proc {0}", name)) : procAddress;
+            return procAddress == IntPtr.Zero ? throw new LoadLibraryException($"Failed to load proc {name}") : procAddress;
         }
 
         public bool IsLibraryLoaded(string fileName)
@@ -58,7 +57,7 @@ namespace Tesseract.Internal.InteropDotNet
                         platformName = SystemManager.GetPlatformName();
                     }
 
-                    Logger.TraceInformation("Current platform: " + platformName);
+                    Logger.TraceInformation($"Current platform: {platformName}");
 
                     IntPtr dllHandle = CheckCustomSearchPath(fileName, platformName);
                     if (dllHandle == IntPtr.Zero)
@@ -83,23 +82,15 @@ namespace Tesseract.Internal.InteropDotNet
 
                     loadedAssemblies[fileName] = dllHandle != IntPtr.Zero
                         ? dllHandle
-                        : throw new DllNotFoundException(string.Format("Failed to find library \"{0}\" for platform {1}.", fileName, platformName));
+                        : throw new DllNotFoundException($"Failed to find library \"{fileName}\" for platform {platformName}.");
                 }
 
                 return loadedAssemblies[fileName];
             }
         }
 
-        private readonly Dictionary<string, IntPtr> loadedAssemblies = new Dictionary<string, IntPtr>();
-
-        private readonly ILibraryLoaderLogic logic;
-
-        private readonly object syncLock = new object();
-
         private LibraryLoader(ILibraryLoaderLogic logic)
-        {
-            this.logic = logic;
-        }
+        { this.logic = logic; }
 
         private IntPtr CheckCurrentAppDomain(string fileName, string platformName)
         {
@@ -112,12 +103,10 @@ namespace Tesseract.Internal.InteropDotNet
         /// Special test for web applications.
         /// </summary>
         /// <remarks>
-        /// Note that this makes a couple of assumptions these being:
-        ///
-        /// <list type="bullet">
-        ///     <item>That the current application domain's location for web applications corresponds to the web applications root directory.</item>
-        ///     <item>That the tesseract\leptonica dlls reside in the corresponding x86 or x64 directories in the bin directory under the apps root directory.</item>
-        /// </list>
+        /// Note that this makes a couple of assumptions these being: <list type="bullet"><item>That the current
+        /// application domain's location for web applications corresponds to the web applications root
+        /// directory.</item><item>That the tesseract\leptonica dlls reside in the corresponding x86 or x64 directories
+        /// in the bin directory under the apps root directory.</item></list>
         /// </remarks>
         /// <param name="fileName"></param>
         /// <param name="platformName"></param>
@@ -130,11 +119,9 @@ namespace Tesseract.Internal.InteropDotNet
                 Logger.TraceInformation("Checking current application domain's bin location '{0}' for '{1}' on platform {2}.", baseDirectory, fileName, platformName);
                 return InternalLoadLibrary(baseDirectory, platformName, fileName);
             }
-            else
-            {
-                Logger.TraceInformation("No bin directory exists under the current application domain's location, skipping.");
-                return IntPtr.Zero;
-            }
+
+            Logger.TraceInformation("No bin directory exists under the current application domain's location, skipping.");
+            return IntPtr.Zero;
         }
 
         private IntPtr CheckCustomSearchPath(string fileName, string platformName)
@@ -145,11 +132,9 @@ namespace Tesseract.Internal.InteropDotNet
                 Logger.TraceInformation("Checking custom search location '{0}' for '{1}' on platform {2}.", baseDirectory, fileName, platformName);
                 return InternalLoadLibrary(baseDirectory, platformName, fileName);
             }
-            else
-            {
-                Logger.TraceInformation("Custom search path is not defined, skipping.");
-                return IntPtr.Zero;
-            }
+
+            Logger.TraceInformation("Custom search path is not defined, skipping.");
+            return IntPtr.Zero;
         }
 
         private IntPtr CheckExecutingAssemblyDomain(string fileName, string platformName)
@@ -157,7 +142,6 @@ namespace Tesseract.Internal.InteropDotNet
             Assembly executingAssembly = Assembly.GetExecutingAssembly();
             if (executingAssembly == null)
             {
-                // #591 Executing assembly may be null in some cases
                 return IntPtr.Zero;
             }
 
@@ -183,6 +167,12 @@ namespace Tesseract.Internal.InteropDotNet
             string fullPath = Path.Combine(baseDirectory, Path.Combine(platformName, fileName));
             return File.Exists(fullPath) ? logic.LoadLibrary(fullPath) : IntPtr.Zero;
         }
+
+        private readonly Dictionary<string, IntPtr> loadedAssemblies = new Dictionary<string, IntPtr>();
+
+        private readonly ILibraryLoaderLogic logic;
+
+        private readonly object syncLock = new object();
 
         #region Singleton
 
@@ -211,6 +201,7 @@ namespace Tesseract.Internal.InteropDotNet
                             throw new Exception("Unsupported operation system");
                     }
                 }
+
                 return instance;
             }
         }

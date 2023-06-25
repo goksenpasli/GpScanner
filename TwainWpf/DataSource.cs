@@ -48,7 +48,6 @@ namespace TwainWpf
                 {
                     Capability cap = new Capability(Capabilities.Lightpath, TwainType.Int16, _applicationId, SourceId);
 
-                    //return ((Lightpath)cap.GetBasicValue().Int16Value) != Lightpath.Transmissive;
                     return true;
                 }
                 catch
@@ -63,14 +62,7 @@ namespace TwainWpf
             List<DataSource> sources = new List<DataSource>();
             Identity id = new Identity();
 
-            // Get the first source
-            TwainResult result = Twain32Native.DsmIdentity(
-                applicationId,
-                IntPtr.Zero,
-                DataGroup.Control,
-                DataArgumentType.Identity,
-                Message.GetFirst,
-                id);
+            TwainResult result = Twain32Native.DsmIdentity(applicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Identity, Message.GetFirst, id);
 
             if (result == TwainResult.EndOfList)
             {
@@ -87,14 +79,7 @@ namespace TwainWpf
 
             while (true)
             {
-                // Get the next source
-                result = Twain32Native.DsmIdentity(
-                    applicationId,
-                    IntPtr.Zero,
-                    DataGroup.Control,
-                    DataArgumentType.Identity,
-                    Message.GetNext,
-                    id);
+                result = Twain32Native.DsmIdentity(applicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Identity, Message.GetNext, id);
 
                 if (result == TwainResult.EndOfList)
                 {
@@ -115,19 +100,12 @@ namespace TwainWpf
         {
             Identity defaultSourceId = new Identity();
 
-            // Attempt to get information about the system default source
-            TwainResult result = Twain32Native.DsmIdentity(
-                applicationId,
-                IntPtr.Zero,
-                DataGroup.Control,
-                DataArgumentType.Identity,
-                Message.GetDefault,
-                defaultSourceId);
+            TwainResult result = Twain32Native.DsmIdentity(applicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Identity, Message.GetDefault, defaultSourceId);
 
             if (result != TwainResult.Success)
             {
                 ConditionCode status = DataSourceManager.GetConditionCode(applicationId, null);
-                throw new TwainException("Error getting information about the default source: " + result, result, status);
+                throw new TwainException($"Error getting information about the default source: {result}", result, status);
             }
 
             return new DataSource(applicationId, defaultSourceId, messageHook);
@@ -135,7 +113,6 @@ namespace TwainWpf
 
         public static DataSource GetSource(string sourceProductName, Identity applicationId, IWindowsMessageHook messageHook)
         {
-            // A little slower than it could be, if enumerating unnecessary sources is slow. But less code duplication.
             foreach (DataSource source in GetAllSources(applicationId, messageHook))
             {
                 if (sourceProductName.Equals(source.SourceId.ProductName, StringComparison.InvariantCultureIgnoreCase))
@@ -151,14 +128,7 @@ namespace TwainWpf
         {
             Identity defaultSourceId = new Identity();
 
-            // Show the TWAIN interface to allow the user to select a source
-            _ = Twain32Native.DsmIdentity(
-                applicationId,
-                IntPtr.Zero,
-                DataGroup.Control,
-                DataArgumentType.Identity,
-                Message.UserSelect,
-                defaultSourceId);
+            _ = Twain32Native.DsmIdentity(applicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Identity, Message.UserSelect, defaultSourceId);
 
             return new DataSource(applicationId, defaultSourceId, messageHook);
         }
@@ -181,18 +151,11 @@ namespace TwainWpf
 
                     if (result != TwainResult.Failure)
                     {
-                        result = Twain32Native.DsmIdentity(
-                            _applicationId,
-                            IntPtr.Zero,
-                            DataGroup.Control,
-                            DataArgumentType.Identity,
-                            Message.CloseDS,
-                            SourceId);
+                        result = Twain32Native.DsmIdentity(_applicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Identity, Message.CloseDS, SourceId);
                     }
                 }
                 catch
                 {
-                    // ignore this is bypass an error that if trigerd needs the whole twain classto be reinitialised
                 }
             }
         }
@@ -205,20 +168,9 @@ namespace TwainWpf
 
         public bool Enable(ScanSettings settings)
         {
-            UserInterface ui = new UserInterface
-            {
-                ShowUI = (short)(settings.ShowTwainUi ? 1 : 0),
-                ModalUI = 1,
-                ParentHand = _messageHook.WindowHandle
-            };
+            UserInterface ui = new UserInterface { ShowUI = (short)(settings.ShowTwainUi ? 1 : 0), ModalUI = 1, ParentHand = _messageHook.WindowHandle };
 
-            TwainResult result = Twain32Native.DsUserInterface(
-                _applicationId,
-                SourceId,
-                DataGroup.Control,
-                DataArgumentType.UserInterface,
-                Message.EnableDS,
-                ui);
+            TwainResult result = Twain32Native.DsUserInterface(_applicationId, SourceId, DataGroup.Control, DataArgumentType.UserInterface, Message.EnableDS, ui);
 
             if (result != TwainResult.Success)
             {
@@ -277,7 +229,6 @@ namespace TwainWpf
             }
             catch
             {
-                // Do nothing if the data source does not support the requested capability
             }
         }
 
@@ -296,7 +247,6 @@ namespace TwainWpf
             }
             catch
             {
-                // Do nothing if the data source does not support the requested capability
             }
         }
 
@@ -308,7 +258,6 @@ namespace TwainWpf
             }
             catch
             {
-                // Do nothing if the data source does not support the requested capability
             }
 
             // TODO: Also set this for colour scanning
@@ -321,7 +270,6 @@ namespace TwainWpf
             }
             catch
             {
-                // Do nothing if the data source does not support the requested capability
             }
         }
 
@@ -336,7 +284,6 @@ namespace TwainWpf
             }
             catch
             {
-                // Do nothing if the data source does not support the requested capability
             }
         }
 
@@ -351,7 +298,6 @@ namespace TwainWpf
             }
             catch
             {
-                // Do nothing if the data source does not support the requested capability
             }
 
             try
@@ -363,7 +309,6 @@ namespace TwainWpf
             }
             catch
             {
-                // Do nothing if the data source does not support the requested capability
             }
 
             try
@@ -375,7 +320,6 @@ namespace TwainWpf
             }
             catch
             {
-                // Do nothing if the data source does not support the requested capability
             }
         }
 
@@ -385,19 +329,18 @@ namespace TwainWpf
             {
                 if (scanSettings.UseFilmScanner.HasValue && SupportsFilmScanner)
                 {
-                    _ = scanSettings.UseFilmScanner.Value ? Capability.SetBasicCapability(Capabilities.Lightpath, (ushort)Lightpath.Transmissive, TwainType.UInt16, _applicationId, SourceId)
+                    _ = scanSettings.UseFilmScanner.Value
+                        ? Capability.SetBasicCapability(Capabilities.Lightpath, (ushort)Lightpath.Transmissive, TwainType.UInt16, _applicationId, SourceId)
                         : Capability.SetBasicCapability(Capabilities.Lightpath, (ushort)Lightpath.Reflective, TwainType.UInt16, _applicationId, SourceId);
                 }
             }
             catch
             {
-                // Do nothing if the data source does not support the requested capability
             }
         }
 
         public void NegotiateOrientation(ScanSettings scanSettings)
         {
-            // Set orientation (default is portrait)
             try
             {
                 Capability cap = new Capability(Capabilities.Orientation, TwainType.Int16, _applicationId, SourceId);
@@ -408,7 +351,6 @@ namespace TwainWpf
             }
             catch
             {
-                // Do nothing if the data source does not support the requested capability
             }
         }
 
@@ -428,7 +370,6 @@ namespace TwainWpf
             }
             catch
             {
-                // Do nothing if the data source does not support the requested capability
             }
         }
 
@@ -447,7 +388,6 @@ namespace TwainWpf
             }
             catch
             {
-                // Do nothing if the data source does not support the requested capability
             }
         }
 
@@ -464,7 +404,6 @@ namespace TwainWpf
             }
             catch
             {
-                // Do nothing if the data source does not support the requested capability
             }
         }
 
@@ -472,15 +411,10 @@ namespace TwainWpf
         {
             try
             {
-                scanSettings.TransferCount = Capability.SetCapability(
-                        Capabilities.XferCount,
-                        scanSettings.TransferCount,
-                        _applicationId,
-                        SourceId);
+                scanSettings.TransferCount = Capability.SetCapability(Capabilities.XferCount, scanSettings.TransferCount, _applicationId, SourceId);
             }
             catch
             {
-                // Do nothing if the data source does not support the requested capability
             }
         }
 
@@ -493,15 +427,13 @@ namespace TwainWpf
                 throw new FeederEmptyException();
             }
 
-            // Set whether or not to show progress window
             NegotiateProgressIndicator(settings);
             NegotiateTransferCount(settings);
             NegotiateFeeder(settings);
             NegotiateDuplex(settings);
             NegotiateLightPath(settings);
 
-            if (settings.UseDocumentFeeder == true &&
-                settings.Page != null)
+            if (settings.UseDocumentFeeder == true && settings.Page != null)
             {
                 NegotiatePageSize(settings);
                 NegotiateOrientation(settings);
@@ -518,7 +450,6 @@ namespace TwainWpf
                 NegotiateResolution(settings);
             }
 
-            // Configure automatic rotation and image border detection
             if (settings.Rotation != null)
             {
                 NegotiateAutomaticRotate(settings);
@@ -530,13 +461,7 @@ namespace TwainWpf
 
         public void OpenSource()
         {
-            TwainResult result = Twain32Native.DsmIdentity(
-                   _applicationId,
-                   IntPtr.Zero,
-                   DataGroup.Control,
-                   DataArgumentType.Identity,
-                   Message.OpenDS,
-                   SourceId);
+            TwainResult result = Twain32Native.DsmIdentity(_applicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Identity, Message.OpenDS, SourceId);
 
             if (result != TwainResult.Success)
             {
@@ -551,10 +476,6 @@ namespace TwainWpf
                 Close();
             }
         }
-
-        private readonly Identity _applicationId;
-
-        private readonly IWindowsMessageHook _messageHook;
 
         ~DataSource()
         {
@@ -580,29 +501,20 @@ namespace TwainWpf
             }
             catch
             {
-                // Do nothing if the data source does not support the requested capability
             }
 
             ImageLayout imageLayout = new ImageLayout
             {
-                Frame = new Frame
-                {
-                    Left = new Fix32(area.Left),
-                    Top = new Fix32(area.Top),
-                    Right = new Fix32(area.Right),
-                    Bottom = new Fix32(area.Bottom)
-                }
+                Frame = new Frame { Left = new Fix32(area.Left), Top = new Fix32(area.Top), Right = new Fix32(area.Right), Bottom = new Fix32(area.Bottom) }
             };
 
-            TwainResult result = Twain32Native.DsImageLayout(
-                _applicationId,
-                SourceId,
-                DataGroup.Image,
-                DataArgumentType.ImageLayout,
-                Message.Set,
-                imageLayout);
+            TwainResult result = Twain32Native.DsImageLayout(_applicationId, SourceId, DataGroup.Image, DataArgumentType.ImageLayout, Message.Set, imageLayout);
 
             return result != TwainResult.Success ? throw new TwainException("DsImageLayout.GetDefault error", result) : true;
         }
+
+        private readonly Identity _applicationId;
+
+        private readonly IWindowsMessageHook _messageHook;
     }
 }

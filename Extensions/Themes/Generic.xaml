@@ -13,7 +13,11 @@
         ObjectInstance="{x:Type Colors}" />
     <DataTemplate x:Key="ColorItemTemplate">
         <Rectangle Width="16" Height="16"
-            Fill="{Binding Name}" />
+            Fill="{Binding Name}">
+            <Rectangle.ToolTip>
+                <TextBlock Text="{Binding Name}" />
+            </Rectangle.ToolTip>
+        </Rectangle>
     </DataTemplate>
     <local:SystemFileIconConverter x:Key="SystemFileIconConverter" />
     <local:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
@@ -100,8 +104,9 @@
                             Grid.Row="1" Grid.Column="0"
                             Fill="{Binding SpectrumGridBackground, RelativeSource={RelativeSource TemplatedParent}}"
                             Opacity="1" />
-                        <TextBox Grid.Row="2" Grid.Column="0"
-                            IsReadOnly="True"
+                        <local:ButtonedTextBox Grid.Row="2" Grid.Column="0"
+                            IsReadOnly="True" OpenButtonVisibility="Collapsed" PasteButtonVisibility="Collapsed"
+                            ResetButtonVisibility="Collapsed"
                             Text="{Binding HexCode, RelativeSource={RelativeSource TemplatedParent}}"
                             TextBlock.Foreground="{Binding HexCode, RelativeSource={RelativeSource TemplatedParent}}"
                             Visibility="{Binding HexCodeVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
@@ -125,6 +130,7 @@
                         <Slider Grid.Row="3" Grid.ColumnSpan="2"
                             Maximum="255" Minimum="0"
                             Style="{StaticResource Slider}"
+                            Visibility="{Binding SliderVisibility, RelativeSource={RelativeSource TemplatedParent}}"
                             Value="{Binding Alpha, RelativeSource={RelativeSource TemplatedParent}}" />
                     </Grid>
                     <ControlTemplate.Triggers>
@@ -202,7 +208,6 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition />
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="Auto" />
@@ -229,6 +234,10 @@
                                             <VirtualizingStackPanel Orientation="Horizontal" />
                                         </ItemsPanelTemplate>
                                     </ListBox.ItemsPanel>
+                                    <ListBoxItem Tag="None">
+                                        <TextBlock FontFamily="Webdings" FontSize="16" FontWeight="Bold"
+                                            Text="1" />
+                                    </ListBoxItem>
                                     <ListBoxItem Tag="Width">
                                         <TextBlock FontFamily="Wingdings 3" FontSize="16" FontWeight="Bold"
                                             Text="F" />
@@ -238,19 +247,7 @@
                                             Text="G" />
                                     </ListBoxItem>
                                 </ListBox>
-                                <Button Grid.Column="2" Command="{Binding Resize, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
-                                    <Button.Content>
-                                        <Image Width="16" Height="16">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Imageres.dll" />
-                                                    <Binding Source="226" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                    </Button.Content>
-                                </Button>
-                                <StackPanel Grid.Column="3"
+                                <StackPanel Grid.Column="2"
                                     Orientation="Horizontal"
                                     Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}">
                                     <RepeatButton Command="{Binding ViewerBack, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ToolTip="Önceki Sayfa">
@@ -281,7 +278,7 @@
                                         </Image>
                                     </RepeatButton>
                                 </StackPanel>
-                                <Button Grid.Column="4"
+                                <Button Grid.Column="3"
                                     Command="{Binding Yazdır, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
                                     Visibility="{Binding PrintButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                                     <Button.Content>
@@ -295,14 +292,14 @@
                                         </Image>
                                     </Button.Content>
                                 </Button>
-                                <Slider Grid.Column="5"
+                                <Slider Grid.Column="4"
                                     Margin="2"
                                     AutoToolTipPlacement="TopLeft"
                                     IsEnabled="{Binding Source, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource NullableToBooleanConverter}}"
                                     Minimum="0.01" SmallChange="1"
                                     Style="{StaticResource Slider}"
                                     Value="{Binding Zoom, RelativeSource={RelativeSource TemplatedParent}}" />
-                                <Slider Grid.Column="6"
+                                <Slider Grid.Column="5"
                                     Margin="2"
                                     AutoToolTipPlacement="TopLeft"
                                     IsEnabled="{Binding Source, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource NullableToBooleanConverter}}"
@@ -311,7 +308,7 @@
                                     Style="{StaticResource Slider}"
                                     Ticks="0, 90, 180, 270, 360"
                                     Value="{Binding Angle, RelativeSource={RelativeSource TemplatedParent}}" />
-                                <ToggleButton Grid.Column="7"
+                                <ToggleButton Grid.Column="6"
                                     Content="360°"
                                     IsChecked="{Binding PanoramaMode, RelativeSource={RelativeSource TemplatedParent}}"
                                     Visibility="{Binding PanoramaButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
@@ -373,44 +370,50 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="local:SplitButton">
-        <Setter Property="HorizontalContentAlignment" Value="Center" />
-        <Setter Property="SnapsToDevicePixels" Value="true" />
+    <Style TargetType="local:SplitButton">
+        <Setter Property="Border.BorderBrush" Value="#707070" />
+        <Setter Property="Border.BorderThickness" Value="1" />
+        <Setter Property="Control.HorizontalContentAlignment" Value="Center" />
+        <Setter Property="Control.Padding" Value="1" />
+        <Setter Property="Control.VerticalContentAlignment" Value="Center" />
+        <Setter Property="Panel.Background" Value="#DDDDDD" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="local:SplitButton">
+                <ControlTemplate TargetType="{x:Type ButtonBase}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
                             <ColumnDefinition Width="14" />
                         </Grid.ColumnDefinitions>
-                        <Button x:Name="btn"
-                            Grid.Column="0"
-                            Padding="{TemplateBinding Padding}"
-                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            Command="{TemplateBinding Command}"
-                            CommandParameter="{TemplateBinding CommandParameter}"
-                            Content="{TemplateBinding Content}"
-                            IsTabStop="{TemplateBinding IsTabStop}" />
+                        <Border x:Name="border"
+                            Background="{TemplateBinding Panel.Background}"
+                            BorderBrush="{TemplateBinding Border.BorderBrush}"
+                            BorderThickness="{TemplateBinding Border.BorderThickness}"
+                            SnapsToDevicePixels="True">
+                            <ContentPresenter Name="contentPresenter"
+                                Margin="{TemplateBinding Control.Padding}"
+                                HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}"
+                                Content="{TemplateBinding ContentControl.Content}"
+                                ContentStringFormat="{TemplateBinding ContentControl.ContentStringFormat}"
+                                ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}"
+                                Focusable="False" RecognizesAccessKey="True"
+                                SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                        </Border>
                         <ToggleButton x:Name="Tb"
                             Grid.Column="1"
-                            IsChecked="{TemplateBinding IsSplitPartOpen}"
-                            IsEnabled="{TemplateBinding SplitContentPartIsEnabled}"
+                            IsChecked="{Binding RelativeSource={RelativeSource AncestorType=local:SplitButton}, Path=IsSplitPartOpen}"
+                            IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=local:SplitButton}, Path=SplitContentPartIsEnabled}"
                             IsTabStop="{TemplateBinding IsTabStop}">
                             <Path x:Name="path"
                                 HorizontalAlignment="Center" VerticalAlignment="Center"
                                 Data="{StaticResource ArrowGeometry}"
-                                Focusable="False">
+                                Fill="#606060" Focusable="False">
                                 <Path.Style>
                                     <Style TargetType="Path">
-                                        <Setter Property="Fill" Value="Black" />
                                         <Style.Triggers>
                                             <Trigger Property="IsEnabled" Value="False">
-                                                <Setter Property="Fill" Value="#FF838383" />
+                                                <Setter Property="Fill" Value="#BFBFBF" />
                                             </Trigger>
                                         </Style.Triggers>
                                     </Style>
@@ -420,33 +423,42 @@
                         <Popup x:Name="PART_Popup"
                             Grid.ColumnSpan="2"
                             AllowsTransparency="True" Focusable="False"
-                            IsOpen="{TemplateBinding IsSplitPartOpen}"
-                            Placement="{TemplateBinding PlacementMode}"
+                            HorizontalOffset="{Binding ContentHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type local:SplitButton}}}"
+                            IsOpen="{Binding IsSplitPartOpen, RelativeSource={RelativeSource AncestorType={x:Type local:SplitButton}}}"
+                            Placement="{Binding PlacementMode, RelativeSource={RelativeSource AncestorType={x:Type local:SplitButton}}}"
                             PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:SplitButton}}}"
                             PopupAnimation="Slide"
-                            StaysOpen="{TemplateBinding StayOpen}">
+                            StaysOpen="{Binding StayOpen, RelativeSource={RelativeSource AncestorType={x:Type local:SplitButton}}}"
+                            VerticalOffset="{Binding ContentVerticalOffset, RelativeSource={RelativeSource AncestorType={x:Type local:SplitButton}}}">
                             <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                 VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                Content="{TemplateBinding InternalContent}" />
+                                Content="{Binding RelativeSource={RelativeSource AncestorType=local:SplitButton}, Path=InternalContent}" />
                         </Popup>
                     </Grid>
                     <ControlTemplate.Triggers>
+                        <Trigger Property="Button.IsDefaulted" Value="True">
+                            <Setter TargetName="border" Property="Border.BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                        </Trigger>
+                        <Trigger Property="UIElement.IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Border.BorderBrush" Value="#3C7FB1" />
+                            <Setter TargetName="border" Property="Panel.Background" Value="#BEE6FD" />
+                        </Trigger>
+                        <Trigger Property="ButtonBase.IsPressed" Value="True">
+                            <Setter TargetName="border" Property="Border.BorderBrush" Value="#2C628B" />
+                            <Setter TargetName="border" Property="Panel.Background" Value="#C4E5F6" />
+                        </Trigger>
                         <Trigger SourceName="Tb" Property="IsChecked" Value="True">
                             <Setter TargetName="PART_Popup" Property="IsOpen" Value="true" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="TextElement.Foreground" Value="#838383" />
-                            <Setter TargetName="btn" Property="Background" Value="#F4F4F4" />
-                            <Setter TargetName="btn" Property="BorderBrush" Value="#ADB2B5" />
-                        </Trigger>
-                        <Trigger SourceName="PART_Popup" Property="IsOpen" Value="true">
-                            <Setter Property="IsEnabled" Value="False" />
+                            <Setter TargetName="border" Property="Border.BorderBrush" Value="#ADB2B5" />
+                            <Setter TargetName="border" Property="Panel.Background" Value="#F4F4F4" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
     <Style TargetType="local:ButtonedTextBox">
         <Setter Property="Border.BorderBrush" Value="#ABADB3" />
@@ -459,6 +471,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
@@ -488,8 +501,22 @@
                                 </Hyperlink>
                             </TextBlock>
                         </Border>
-                        <Border Name="clearborder"
+                        <Border Name="pasteborder"
                             Grid.Column="3"
+                            Width="16"
+                            Background="{TemplateBinding Panel.Background}"
+                            BorderBrush="{TemplateBinding Border.BorderBrush}"
+                            BorderThickness="0,1,1,1" SnapsToDevicePixels="True"
+                            Visibility="{Binding PasteButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                                FontSize="14">
+                                <Hyperlink Command="{Binding Paste, RelativeSource={RelativeSource TemplatedParent}}" TextDecorations="None">
+                                    <Run FontFamily="Wingdings 2" FontWeight="Bold" Text="2" />
+                                </Hyperlink>
+                            </TextBlock>
+                        </Border>
+                        <Border Name="clearborder"
+                            Grid.Column="4"
                             Width="16"
                             Background="{TemplateBinding Panel.Background}"
                             BorderBrush="{TemplateBinding Border.BorderBrush}"
@@ -502,7 +529,7 @@
                             </TextBlock>
                         </Border>
                         <Border Name="openborder"
-                            Grid.Column="4"
+                            Grid.Column="5"
                             Width="16"
                             Background="{TemplateBinding Panel.Background}"
                             BorderBrush="{TemplateBinding Border.BorderBrush}"
@@ -523,18 +550,21 @@
                             <Setter TargetName="copyborder" Property="UIElement.Opacity" Value="0.56" />
                             <Setter TargetName="description" Property="UIElement.Opacity" Value="0.56" />
                             <Setter TargetName="openborder" Property="UIElement.Opacity" Value="0.56" />
+                            <Setter TargetName="pasteborder" Property="UIElement.Opacity" Value="0.56" />
                         </Trigger>
                         <Trigger Property="UIElement.IsMouseOver" Value="True">
                             <Setter TargetName="border" Property="Border.BorderBrush" Value="#7EB4EA" />
                             <Setter TargetName="clearborder" Property="Border.BorderBrush" Value="#7EB4EA" />
                             <Setter TargetName="copyborder" Property="Border.BorderBrush" Value="#7EB4EA" />
                             <Setter TargetName="openborder" Property="Border.BorderBrush" Value="#7EB4EA" />
+                            <Setter TargetName="pasteborder" Property="Border.BorderBrush" Value="#7EB4EA" />
                         </Trigger>
                         <Trigger Property="UIElement.IsKeyboardFocused" Value="True">
                             <Setter TargetName="border" Property="Border.BorderBrush" Value="#569DE5" />
                             <Setter TargetName="clearborder" Property="Border.BorderBrush" Value="#569DE5" />
                             <Setter TargetName="copyborder" Property="Border.BorderBrush" Value="#569DE5" />
                             <Setter TargetName="openborder" Property="Border.BorderBrush" Value="#569DE5" />
+                            <Setter TargetName="pasteborder" Property="Border.BorderBrush" Value="#569DE5" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -589,11 +619,13 @@
                                 Fill="#606060" Focusable="False" />
                             <Popup Grid.ColumnSpan="2"
                                 AllowsTransparency="True"
+                                HorizontalOffset="{Binding ContentHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}"
                                 IsOpen="{Binding IsChecked, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}"
-                                Placement="{TemplateBinding PlacementMode}"
+                                Placement="{Binding PlacementMode, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}"
                                 PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}"
                                 PopupAnimation="Slide"
-                                StaysOpen="{Binding StaysOpen, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}">
+                                StaysOpen="{Binding StaysOpen, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}"
+                                VerticalOffset="{Binding ContentVerticalOffset, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}">
                                 <ContentPresenter Content="{TemplateBinding OverContent}" />
                             </Popup>
                         </Grid>

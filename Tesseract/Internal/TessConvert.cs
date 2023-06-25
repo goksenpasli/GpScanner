@@ -108,6 +108,7 @@ namespace Tesseract.Internal
                 result = null;
                 return false;
             }
+
             return true;
         }
     }

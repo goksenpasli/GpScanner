@@ -23,7 +23,8 @@ namespace Tesseract
         /// Gets the name of the image being ocr'd.
         /// </summary>
         /// <remarks>
-        /// This is also used for some of the more advanced functionality such as identifying the associated UZN file if present.
+        /// This is also used for some of the more advanced functionality such as identifying the associated UZN file if
+        /// present.
         /// </remarks>
         public string ImageName { get; }
 
@@ -41,24 +42,23 @@ namespace Tesseract
             set {
                 if (value.X1 < 0 || value.Y1 < 0 || value.X2 > Image.Width || value.Y2 > Image.Height)
                 {
-                    throw new ArgumentException("The region of interest to be processed must be within the image bounds.", "value");
+                    throw new ArgumentException("The region of interest to be processed must be within the image bounds.", nameof(value));
                 }
 
                 if (regionOfInterest != value)
                 {
                     regionOfInterest = value;
 
-                    // update region of interest in image
                     TessApi.Native.BaseApiSetRectangle(Engine.Handle, regionOfInterest.X1, regionOfInterest.Y1, regionOfInterest.Width, regionOfInterest.Height);
 
-                    // request rerun of recognition on the next call that requires recognition
                     runRecognitionPhase = false;
                 }
             }
         }
 
         /// <summary>
-        /// Creates a <see cref="PageIterator"/> object that is used to iterate over the page's layout as defined by the current <see cref="Page.RegionOfInterest"/>.
+        /// Creates a <see cref="PageIterator"/> object that is used to iterate over the page's layout as defined by the
+        /// current <see cref="RegionOfInterest"/>.
         /// </summary>
         /// <returns></returns>
         public PageIterator AnalyseLayout()
@@ -73,18 +73,16 @@ namespace Tesseract
         /// Detects the page orientation, with corresponding confidence when using <see cref="PageSegMode.OsdOnly"/>.
         /// </summary>
         /// <remarks>
-        /// If using full page segmentation mode (i.e. AutoOsd) then consider using <see cref="AnalyseLayout"/> instead as this also provides a
-        /// deskew angle which isn't available when just performing orientation detection.
+        /// If using full page segmentation mode (i.e. AutoOsd) then consider using <see cref="AnalyseLayout"/> instead
+        /// as this also provides a deskew angle which isn't available when just performing orientation detection.
         /// </remarks>
         /// <param name="orientation">The page orientation.</param>
         /// <param name="confidence">The confidence level of the orientation (15 is reasonably confident).</param>
-        ///
         [Obsolete("Use DetectBestOrientation(int orientationDegrees, float confidence) that returns orientation in degrees instead.")]
         public void DetectBestOrientation(out Orientation orientation, out float confidence)
         {
             DetectBestOrientation(out int orientationDegrees, out float orientationConfidence);
 
-            // convert angle to 0-360 (shouldn't be required but do it just o be safe).
             orientationDegrees %= 360;
             if (orientationDegrees < 0)
             {
@@ -104,8 +102,8 @@ namespace Tesseract
         /// Detects the page orientation, with corresponding confidence when using <see cref="PageSegMode.OsdOnly"/>.
         /// </summary>
         /// <remarks>
-        /// If using full page segmentation mode (i.e. AutoOsd) then consider using <see cref="AnalyseLayout"/> instead as this also provides a
-        /// deskew angle which isn't available when just performing orientation detection.
+        /// If using full page segmentation mode (i.e. AutoOsd) then consider using <see cref="AnalyseLayout"/> instead
+        /// as this also provides a deskew angle which isn't available when just performing orientation detection.
         /// </remarks>
         /// <param name="orientation">The detected clockwise page rotation in degrees (0, 90, 180, or 270).</param>
         /// <param name="confidence">The confidence level of the orientation (15 is reasonably confident).</param>
@@ -115,16 +113,19 @@ namespace Tesseract
         }
 
         /// <summary>
-        /// Detects the page orientation, with corresponding confidence when using <see cref="PageSegMode.OsdOnly"/>.
+        ///     Detects the page orientation, with corresponding confidence when using <see cref="PageSegMode.OsdOnly" />.
         /// </summary>
         /// <remarks>
-        /// If using full page segmentation mode (i.e. AutoOsd) then consider using <see cref="AnalyseLayout"/> instead as this also provides a
-        /// deskew angle which isn't available when just performing orientation detection.
+        ///     If using full page segmentation mode (i.e. AutoOsd) then consider using <see cref="AnalyseLayout" /> instead as
+        ///     this also provides a
+        ///     deskew angle which isn't available when just performing orientation detection.
         /// </remarks>
         /// <param name="orientation">The detected clockwise page rotation in degrees (0, 90, 180, or 270).</param>
         /// <param name="confidence">The confidence level of the orientation (15 is reasonably confident).</param>
-        /// <param name="scriptName">The name of the script (e.g. Latin)<param>
-        /// <param name="scriptConfidence">The confidence level in the script</param>
+        /// <param name="scriptName">
+        ///     The name of the script (e.g. Latin)
+        ///     <param>
+        ///         <param name="scriptConfidence">The confidence level in the script</param>
         public void DetectBestOrientationAndScript(out int orientation, out float confidence, out string scriptName, out float scriptConfidence)
         {
             if (TessApi.Native.TessBaseAPIDetectOrientationScript(Engine.Handle, out int orient_deg, out float orient_conf, out IntPtr script_nameHandle, out float script_conf) != 0)
@@ -172,14 +173,14 @@ namespace Tesseract
         /// <returns>The OCR'd output as an HOCR text string.</returns>
         public string GetHOCRText(int pageNum, bool useXHtml = false)
         {
-            //Why Not Use 'nameof(pageNum)' instead of '"pageNum"'
             Guard.Require(nameof(pageNum), pageNum >= 0, "Page number must be greater than or equal to zero (0).");
             Recognize();
             return useXHtml ? TessApi.BaseAPIGetHOCRText2(Engine.Handle, pageNum) : TessApi.BaseAPIGetHOCRText(Engine.Handle, pageNum);
         }
 
         /// <summary>
-        /// Creates a <see cref="ResultIterator"/> object that is used to iterate over the page as defined by the current <see cref="Page.RegionOfInterest"/>.
+        /// Creates a <see cref="ResultIterator"/> object that is used to iterate over the page as defined by the
+        /// current <see cref="RegionOfInterest"/>.
         /// </summary>
         /// <returns></returns>
         public ResultIterator GetIterator()
@@ -319,7 +320,6 @@ namespace Tesseract
 
                 runRecognitionPhase = true;
 
-                // now write out the thresholded image if required to do so
                 if (Engine.TryGetBoolVariable("tessedit_write_images", out bool tesseditWriteImages) && tesseditWriteImages)
                 {
                     using (Pix thresholdedImage = GetThresholdedImage())
