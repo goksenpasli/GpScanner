@@ -571,4 +571,7 @@ TO FILE</value>
   <data name="EMPTY" xml:space="preserve">
     <value>EMPTY</value>
   </data>
+  <data name="DESPECKLE" xml:space="preserve">
+    <value>DESPECKLE</value>
+  </data>
 </root>

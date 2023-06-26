@@ -665,9 +665,10 @@
                                         <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition />
-                                        <RowDefinition />
-                                        <RowDefinition />
+                                        <RowDefinition Height="30.4" />
+                                        <RowDefinition Height="15.2" />
+                                        <RowDefinition Height="22.4" />
+                                        <RowDefinition Height="16.8" />
                                     </Grid.RowDefinitions>
                                     <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding Scanner.Duplex}" IsEnabled="{Binding Adf, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                                         <StackPanel Orientation="Horizontal">
@@ -717,17 +718,9 @@
                                     <CheckBox Grid.Row="1" Grid.Column="0"
                                         Content="{local:Loc SHOWFILE}"
                                         IsChecked="{Binding ShowFile, Source={x:Static properties:Settings.Default}}" />
-                                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-                                        <CheckBox Content="{local:Loc SHOWPROGRESS}" IsChecked="{Binding Scanner.ShowProgress}" />
-                                        <CheckBox IsChecked="{Binding Scanner.ApplyMedian}">
-                                            <Extensions:NumericUpDownControl Background="{StaticResource Despeckle}"
-                                                FontWeight="Bold" Foreground="Magenta"
-                                                IsEnabled="{Binding Scanner.ApplyMedian}"
-                                                Maximum="10" Minimum="0"
-                                                Orientation="Horizontal" SmallChange="1"
-                                                Value="{Binding MedianValue, Source={x:Static properties:Settings.Default}}" />
-                                        </CheckBox>
-                                    </StackPanel>
+                                    <CheckBox Grid.Row="1" Grid.Column="1"
+                                        Content="{local:Loc SHOWPROGRESS}"
+                                        IsChecked="{Binding Scanner.ShowProgress}" />
                                     <CheckBox Grid.Row="2" IsChecked="{Binding Scanner.DetectEmptyPage}" IsEnabled="{Binding Adf, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock VerticalAlignment="Center" Text="{local:Loc EMPTYPAGE}" />
@@ -756,6 +749,30 @@
                                             </ComboBox.ItemTemplate>
                                         </ComboBox>
                                     </StackPanel>
+                                    <CheckBox Grid.Row="3" IsChecked="{Binding Scanner.ApplyMedian}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc DESPECKLE}" />
+                                            <Extensions:NumericUpDownControl Background="{StaticResource Despeckle}"
+                                                FontWeight="Bold" Foreground="Magenta"
+                                                IsEnabled="{Binding Scanner.ApplyMedian}"
+                                                Maximum="10" Minimum="0"
+                                                Orientation="Horizontal" SmallChange="1"
+                                                Value="{Binding MedianValue, Source={x:Static properties:Settings.Default}}" />
+                                        </StackPanel>
+                                    </CheckBox>
+                                    <CheckBox Grid.Row="3" Grid.Column="1" IsChecked="{Binding AutoCropImage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
+                                        <StackPanel IsEnabled="{Binding AutoCropImage, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Orientation="Horizontal">
+                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc TRIMIMAGE}" />
+                                            <Extensions:ContentToggleButton Background="{Binding AutoCropColor, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
+                                                <TextBlock d:Text="Black" Text="{Binding AutoCropColor, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
+                                                <Extensions:ContentToggleButton.OverContent>
+                                                    <Extensions:ColorPicker Width="350" Height="250"
+                                                        HexCode="{Binding AutoCropColor, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
+                                                        PredefinedColorVisibility="Visible" />
+                                                </Extensions:ContentToggleButton.OverContent>
+                                            </Extensions:ContentToggleButton>
+                                        </StackPanel>
+                                    </CheckBox>
                                 </Grid>
                                 <Separator />
                                 <Extensions:ButtonedTextBox d:Description="SaveFileName" d:Text="FileName"

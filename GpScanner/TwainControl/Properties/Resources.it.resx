@@ -234,6 +234,9 @@ DISCO</value>
   <data name="DESKEW" xml:space="preserve">
     <value>CURVA CURVA</value>
   </data>
+  <data name="DESPECKLE" xml:space="preserve">
+    <value>SCOPRIRE</value>
+  </data>
   <data name="DESTLANG" xml:space="preserve">
     <value>LINGUA DI DESTINAZIONE</value>
   </data>

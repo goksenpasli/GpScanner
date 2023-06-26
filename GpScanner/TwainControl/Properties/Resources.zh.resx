@@ -575,4 +575,7 @@ PDF保护也可以被第三方应用程序破坏。</value>
   <data name="EMPTY" xml:space="preserve">
     <value>空的</value>
   </data>
+  <data name="DESPECKLE" xml:space="preserve">
+    <value>去斑</value>
+  </data>
 </root>

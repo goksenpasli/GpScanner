@@ -570,4 +570,7 @@ PDF-ФАЙЛЫ</value>
   <data name="EMPTY" xml:space="preserve">
     <value>ПУСТОЙ</value>
   </data>
+  <data name="DESPECKLE" xml:space="preserve">
+    <value>УДАЛИТЬ</value>
+  </data>
 </root>

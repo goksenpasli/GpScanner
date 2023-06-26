@@ -11,7 +11,7 @@
     xmlns:tesseract="clr-namespace:Ocr;assembly=Ocr"
     xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
     xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
-    Title="GPSCANNER"
+    x:Name="Window" Title="GPSCANNER"
     d:DataContext="{d:DesignInstance Type={x:Type ViewModel:GpScannerViewModel}}"
     d:Height="600" d:Width="1280"
     twainctrl:Translation.ResourceManager="{x:Static twainproperties:Resources.ResourceManager}"
@@ -423,10 +423,10 @@
                                                                                 <Trigger Property="IsChecked" Value="True">
                                                                                     <Setter Property="OverContent">
                                                                                         <Setter.Value>
-                                                                                            <Extensions:ResizablePanel Width="{Binding Parent.DataContext.SelectedSize.Width, Mode=OneWay, Source={x:Reference TwainCtrl}}"
-                                                                                                Height="{Binding Parent.DataContext.SelectedSize.Height, Mode=OneWay, Source={x:Reference TwainCtrl}}"
-                                                                                                MinWidth="{Binding Parent.DataContext.SelectedSize.Width, Mode=OneWay, Source={x:Reference TwainCtrl}}"
-                                                                                                MinHeight="{Binding Parent.DataContext.SelectedSize.Height, Mode=OneWay, Source={x:Reference TwainCtrl}}">
+                                                                                            <Extensions:ResizablePanel Width="{Binding DataContext.SelectedSize.Width, Mode=OneWay, Source={x:Reference Window}}"
+                                                                                                Height="{Binding DataContext.SelectedSize.Height, Mode=OneWay, Source={x:Reference Window}}"
+                                                                                                MinWidth="{Binding DataContext.SelectedSize.Width, Mode=OneWay, Source={x:Reference Window}}"
+                                                                                                MinHeight="{Binding DataContext.SelectedSize.Height, Mode=OneWay, Source={x:Reference Window}}">
                                                                                                 <local:TranslateView ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding Parent.DataContext.FileOcrContent, RelativeSource={RelativeSource Mode=Self}}" />
                                                                                             </Extensions:ResizablePanel>
                                                                                         </Setter.Value>

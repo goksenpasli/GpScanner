@@ -5,7 +5,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Extensions;component/Themes/Skin.xaml" />
         <ResourceDictionary Source="/PdfViewer;component/Common.xaml" />
-		<ResourceDictionary Source="/TwainControl;component/CommonResource.xaml"/>
+        <ResourceDictionary Source="/TwainControl;component/CommonResource.xaml" />
     </ResourceDictionary.MergedDictionaries>
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
@@ -200,7 +200,8 @@
                                         ItemStringFormat="{}{0} Dpi"
                                         ItemsSource="{Binding DpiList, RelativeSource={RelativeSource TemplatedParent}}"
                                         SelectedItem="{Binding Dpi, RelativeSource={RelativeSource TemplatedParent}, StringFormat=Dpi}"
-                                        Visibility="{Binding DpiListVisibility, RelativeSource={RelativeSource TemplatedParent}}" Template="{StaticResource ComboBoxStyle}" />
+                                        Template="{StaticResource ComboBoxStyle}"
+                                        Visibility="{Binding DpiListVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
                                     <Button Grid.Column="5" Command="{Binding SaveImage, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
                                         <Image Width="16" Height="16">
                                             <Image.Source>

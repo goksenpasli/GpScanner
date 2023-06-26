@@ -569,4 +569,7 @@ AL ARCHIVO</value>
   <data name="EMPTY" xml:space="preserve">
     <value>VACÍO</value>
   </data>
+  <data name="DESPECKLE" xml:space="preserve">
+    <value>DESMANCHAR</value>
+  </data>
 </root>

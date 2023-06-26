@@ -575,4 +575,7 @@ PDFをマージ</value>
   <data name="EMPTY" xml:space="preserve">
     <value>空</value>
   </data>
+  <data name="DESPECKLE" xml:space="preserve">
+    <value>斑点除去</value>
+  </data>
 </root>

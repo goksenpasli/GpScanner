@@ -498,7 +498,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 string profile =
-                    $"{Scanner.ProfileName}|{Settings.Default.Çözünürlük}|{Settings.Default.Adf}|{Settings.Default.Mode}|{Scanner.Duplex}|{Scanner.ShowUi}|false|{Settings.Default.ShowFile}|{Scanner.DetectEmptyPage}|{Scanner.FileName}|{Scanner.InvertImage}|{Scanner.ApplyMedian}";
+                    $"{Scanner.ProfileName}|{Settings.Default.Çözünürlük}|{Settings.Default.Adf}|{Settings.Default.Mode}|{Scanner.Duplex}|{Scanner.ShowUi}|false|{Settings.Default.ShowFile}|{Scanner.DetectEmptyPage}|{Scanner.FileName}|{Scanner.InvertImage}|{Scanner.ApplyMedian}|{Settings.Default.SeçiliTarayıcı}|{Settings.Default.AutoCropImage}";
                 _ = Settings.Default.Profile.Add(profile);
                 Settings.Default.Save();
                 Settings.Default.Reload();
@@ -507,7 +507,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter => !string.IsNullOrWhiteSpace(Scanner?.ProfileName) &&
                 !Settings.Default.Profile.Cast<string>().Select(z => z.Split('|')[0]).Contains(Scanner?.ProfileName) &&
                  FileNameValid(Scanner?.FileName) &&
-                 FileNameValid(Scanner?.ProfileName));
+                 FileNameValid(Scanner?.ProfileName) &&
+                 Scanner?.Tarayıcılar?.Count > 0 &&
+                 !string.IsNullOrWhiteSpace(Settings.Default.SeçiliTarayıcı));
 
         RemoveProfile = new RelayCommand<object>(
             parameter =>
@@ -2975,6 +2977,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             Scanner.FileName = selectedprofile[9];
             Scanner.InvertImage = bool.Parse(selectedprofile[10]);
             Scanner.ApplyMedian = bool.Parse(selectedprofile[11]);
+            Settings.Default.SeçiliTarayıcı = selectedprofile[12];
+            Settings.Default.AutoCropImage = bool.Parse(selectedprofile[13]);
             Settings.Default.DefaultProfile = Scanner.SelectedProfile;
             Settings.Default.Save();
         }
@@ -3010,13 +3014,18 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 : Scanner?.PaperBackScan == true
                     ? EvrakOluştur(bitmap, (ColourSetting)Settings.Default.BackMode, decodepixelheight)
                     : EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, decodepixelheight);
-            if (Scanner.InvertImage)
-            {
-                evrak = evrak.InvertBitmap();
-            }
             if (Scanner.ApplyMedian)
             {
                 evrak = evrak.MedianFilterBitmap(Settings.Default.MedianValue);
+            }
+            if (Settings.Default.AutoCropImage)
+            {
+                Color color = (Color)System.Windows.Media.ColorConverter.ConvertFromString(Settings.Default.AutoCropColor);
+                evrak = evrak.AutoCropImage(color);
+            }
+            if (Scanner.InvertImage)
+            {
+                evrak = evrak.InvertBitmap();
             }
             evrak.Freeze();
             BitmapFrame bitmapFrame = BitmapFrame.Create(evrak);

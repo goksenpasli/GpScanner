@@ -577,4 +577,7 @@ BELGE EKLE</value>
   <data name="EMPTY" xml:space="preserve">
     <value>BOŞ</value>
   </data>
+  <data name="DESPECKLE" xml:space="preserve">
+    <value>NOKTA KALDIR</value>
+  </data>
 </root>

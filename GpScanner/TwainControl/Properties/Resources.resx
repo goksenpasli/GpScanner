@@ -405,4 +405,7 @@
   <data name="EMPTY" xml:space="preserve">
     <value />
   </data>
+  <data name="DESPECKLE" xml:space="preserve">
+    <value />
+  </data>
 </root>

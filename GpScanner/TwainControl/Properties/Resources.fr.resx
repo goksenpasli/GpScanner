@@ -234,6 +234,9 @@ ENREGISTREMENT</value>
   <data name="DESKEW" xml:space="preserve">
     <value>COURBE COURBE</value>
   </data>
+  <data name="DESPECKLE" xml:space="preserve">
+    <value>DÉPÊCHE</value>
+  </data>
   <data name="DESTLANG" xml:space="preserve">
     <value>LANGUE CIBLE</value>
   </data>

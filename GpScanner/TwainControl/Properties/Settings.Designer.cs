@@ -312,5 +312,29 @@ namespace TwainControl.Properties {
                 this["SeçiliTarayıcı"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AutoCropImage {
+            get {
+                return ((bool)(this["AutoCropImage"]));
+            }
+            set {
+                this["AutoCropImage"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Black")]
+        public string AutoCropColor {
+            get {
+                return ((string)(this["AutoCropColor"]));
+            }
+            set {
+                this["AutoCropColor"] = value;
+            }
+        }
     }
 }

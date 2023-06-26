@@ -572,4 +572,7 @@ SOUBORY PDF</value>
   <data name="EMPTY" xml:space="preserve">
     <value>PRÁZDNÝ</value>
   </data>
+  <data name="DESPECKLE" xml:space="preserve">
+    <value>DESPECKLE</value>
+  </data>
 </root>

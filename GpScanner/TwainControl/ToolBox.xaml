@@ -302,7 +302,7 @@
                                 Value="{Binding Scanner.WatermarkAngle}" />
                         </StackPanel>
                         <UniformGrid Columns="2">
-                            <Button Command="{Binding AutoCropImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
+                            <Button local:Policy.PolicyName="AutoCropImage" Command="{Binding AutoCropImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
                                 <TextBlock>
                                     <Run Text="{local:Loc Auto}" />
                                     <Run Text="{local:Loc TRIMIMAGE}" />

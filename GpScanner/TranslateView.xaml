@@ -13,31 +13,6 @@
     UseLayoutRounding="True"
     mc:Ignorable="d">
     <UserControl.Resources>
-        <Style x:Key="ToggleButtonPlayPauseStyle"
-            x:Shared="False"
-            BasedOn="{StaticResource {x:Type ToggleButton}}"
-            TargetType="{x:Type ToggleButton}">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=Self}}" Value="true">
-                    <Setter Property="Content">
-                        <Setter.Value>
-                            <Viewbox>
-                                <TextBlock FontFamily="Webdings" FontSize="16" Text=";" />
-                            </Viewbox>
-                        </Setter.Value>
-                    </Setter>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=Self}}" Value="false">
-                    <Setter Property="Content">
-                        <Setter.Value>
-                            <Viewbox>
-                                <TextBlock FontFamily="Webdings" FontSize="16" Text="4" />
-                            </Viewbox>
-                        </Setter.Value>
-                    </Setter>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
         <Style TargetType="ComboBox">
             <Setter Property="Template" Value="{StaticResource ComboBoxStyle}" />
         </Style>
@@ -110,8 +85,32 @@
         <ToggleButton Grid.Row="2" Grid.Column="3"
             twainctrl:Policy.PolicyName="Oku"
             Command="{Binding Oku}"
-            CommandParameter="{Binding ElementName=BtnTxtMetin, Path=Text}"
-            Style="{StaticResource ToggleButtonPlayPauseStyle}" />
+            CommandParameter="{Binding ElementName=BtnTxtMetin, Path=Text}">
+            <ToggleButton.Style>
+                <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="{x:Type ToggleButton}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=Self}}" Value="true">
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <Viewbox>
+                                        <TextBlock FontFamily="Webdings" FontSize="16" Text=";" />
+                                    </Viewbox>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=Self}}" Value="false">
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <Viewbox>
+                                        <TextBlock FontFamily="Webdings" FontSize="16" Text="4" />
+                                    </Viewbox>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ToggleButton.Style>
+        </ToggleButton>
         <Extensions:ButtonedTextBox x:Name="BtnTxtÇeviri"
             Grid.Row="3" Grid.ColumnSpan="3"
             VerticalContentAlignment="Top"
@@ -123,8 +122,32 @@
         <ToggleButton Grid.Row="3" Grid.Column="3"
             twainctrl:Policy.PolicyName="Oku"
             Command="{Binding Oku}"
-            CommandParameter="{Binding ElementName=BtnTxtÇeviri, Path=Text}"
-            Style="{StaticResource ToggleButtonPlayPauseStyle}" />
+            CommandParameter="{Binding ElementName=BtnTxtÇeviri, Path=Text}">
+            <ToggleButton.Style>
+                <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="{x:Type ToggleButton}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=Self}}" Value="true">
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <Viewbox>
+                                        <TextBlock FontFamily="Webdings" FontSize="16" Text=";" />
+                                    </Viewbox>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=Self}}" Value="false">
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <Viewbox>
+                                        <TextBlock FontFamily="Webdings" FontSize="16" Text="4" />
+                                    </Viewbox>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ToggleButton.Style>
+        </ToggleButton>
         <Button Grid.Row="4" Grid.ColumnSpan="3"
             twainctrl:Policy.PolicyName="Sıfırla"
             Command="{Binding Sıfırla}">

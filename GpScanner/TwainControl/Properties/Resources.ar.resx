@@ -234,6 +234,9 @@
   <data name="DESKEW" xml:space="preserve">
     <value>منحنى منحني</value>
   </data>
+  <data name="DESPECKLE" xml:space="preserve">
+    <value>الحقير</value>
+  </data>
   <data name="DESTLANG" xml:space="preserve">
     <value>اللغة المستهدفة</value>
   </data>

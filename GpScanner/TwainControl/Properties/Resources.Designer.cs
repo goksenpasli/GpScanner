@@ -270,6 +270,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string DESPECKLE {
+            get {
+                return ResourceManager.GetString("DESPECKLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string DESTLANG {
             get {
                 return ResourceManager.GetString("DESTLANG", resourceCulture);
