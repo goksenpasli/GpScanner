@@ -172,9 +172,9 @@
                             </ListBox.ItemsPanel>
                         </ListBox>
                         <ComboBox VerticalContentAlignment="Center"
-                            local:Policy.PolicyName="PdfAlignTextColor"
+                            local:Policy.PolicyName="PdfPageNumberAlignTextColor"
                             ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfColor}}"
-                            SelectedItem="{Binding Scanner.PdfAlignTextColor}">
+                            SelectedItem="{Binding Scanner.PdfPageNumberAlignTextColor}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
@@ -186,6 +186,32 @@
                         </ComboBox>
                     </StackPanel>
                 </CheckBox.Content>
+            </CheckBox>
+            <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding Scanner.PdfPageTextDraw}">
+                <StackPanel IsEnabled="{Binding Scanner.PdfPageTextDraw}" Orientation="Horizontal">
+                    <Extensions:ButtonedTextBox Width="150"
+                        VerticalAlignment="Center"
+                        d:Text="TEXT"
+                        Description="{local:Loc TEXT}"
+                        OpenButtonVisibility="Collapsed"
+                        Text="{Binding Scanner.PdfPageText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <Extensions:ContentToggleButton Width="32" Background="{Binding Scanner.PdfPageTextColor, Mode=OneWay}">
+                        <Extensions:ContentToggleButton.OverContent>
+                            <Extensions:ColorPicker Height="250"
+                                HexCode="{Binding Scanner.PdfPageTextColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                PredefinedColorVisibility="Visible" SelectorLength="0"
+                                SliderVisibility="Collapsed" />
+                        </Extensions:ContentToggleButton.OverContent>
+                    </Extensions:ContentToggleButton>
+                    <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXTSIZE}" />
+                    <Extensions:NumericUpDownControl IsReadOnly="True" Maximum="144"
+                        Minimum="1" Orientation="Horizontal"
+                        Value="{Binding Scanner.PdfPageTextSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXTANGLE}" />
+                    <Extensions:NumericUpDownControl IsReadOnly="True" Maximum="360"
+                        Minimum="0" Orientation="Horizontal"
+                        Value="{Binding Scanner.PdfPageTextAngle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
             </CheckBox>
         </StackPanel>
     </GroupBox>

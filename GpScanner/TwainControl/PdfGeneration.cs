@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shell;
 using Microsoft.Win32;
@@ -67,6 +68,17 @@ public static class PdfGeneration
         doc.Options.UseFlateDecoderForJpegImages = PdfUseFlateDecoderForJpegImages.Automatic;
         doc.Options.NoCompression = false;
         doc.Options.EnableCcittCompressionForBilevelImages = true;
+    }
+
+    public static void DrawPdfOverlayText(PdfPage page, XGraphics gfx, double textsize, string text, XBrush xBrush, string familyName, double angle = 315)
+    {
+        XFont font = new(familyName, textsize);
+        XSize fontsize = gfx.MeasureString(text, font);
+        XStringFormat textformat = new() { Alignment = XStringAlignment.Near, LineAlignment = XLineAlignment.Near };
+        gfx.TranslateTransform(page.Width / 2, page.Height / 2);
+        gfx.RotateTransform(angle);
+        gfx.TranslateTransform(-page.Width / 2, -page.Height / 2);
+        gfx.DrawString(text, font, xBrush, new XPoint((page.Width - fontsize.Width) / 2, (page.Height - fontsize.Height) / 2), textformat);
     }
 
     public static void DrawText(this XGraphics gfx, XBrush xBrush, string item, double x, double y, double fontsize = 16)
@@ -134,9 +146,14 @@ public static class PdfGeneration
 
                 if (Scanner.PdfPageNumberDraw)
                 {
-                    gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfAlignTextColor)), (i + 1).ToString(), GetPdfTextLayout(page)[0], GetPdfTextLayout(page)[1]);
+                    gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfPageNumberAlignTextColor)), (i + 1).ToString(), GetPdfTextLayout(page)[0], GetPdfTextLayout(page)[1]);
                 }
-
+                if (Scanner.PdfPageTextDraw)
+                {
+                    Color color = (Color)ColorConverter.ConvertFromString(Scanner.PdfPageTextColor);
+                    XBrush brush = new XSolidBrush(XColor.FromArgb(color.A, color.R, color.G, color.B));
+                    DrawPdfOverlayText(page, gfx, Scanner.PdfPageTextSize, Scanner.PdfPageText, brush, "Times New Roman", Scanner.PdfPageTextAngle);
+                }
                 Scanner.PdfSaveProgressValue = i / (double)imagefiles.Count;
             }
 
@@ -191,9 +208,14 @@ public static class PdfGeneration
 
             if (Scanner.PdfPageNumberDraw)
             {
-                gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfAlignTextColor)), "1", GetPdfTextLayout(page)[0], GetPdfTextLayout(page)[1]);
+                gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfPageNumberAlignTextColor)), "1", GetPdfTextLayout(page)[0], GetPdfTextLayout(page)[1]);
             }
-
+            if (Scanner.PdfPageTextDraw)
+            {
+                Color color = (Color)ColorConverter.ConvertFromString(Scanner.PdfPageTextColor);
+                XBrush brush = new XSolidBrush(XColor.FromArgb(color.A, color.R, color.G, color.B));
+                DrawPdfOverlayText(page, gfx, Scanner.PdfPageTextSize, Scanner.PdfPageText, brush, "Times New Roman", Scanner.PdfPageTextAngle);
+            }
             if (Scanner.PasswordProtect)
             {
                 ApplyPdfSecurity(document);
@@ -274,7 +296,13 @@ public static class PdfGeneration
             }
             if (Scanner.PdfPageNumberDraw)
             {
-                gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfAlignTextColor)), "1", GetPdfTextLayout(page)[0], GetPdfTextLayout(page)[1]);
+                gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfPageNumberAlignTextColor)), "1", GetPdfTextLayout(page)[0], GetPdfTextLayout(page)[1]);
+            }
+            if (Scanner.PdfPageTextDraw)
+            {
+                Color color = (Color)ColorConverter.ConvertFromString(Scanner.PdfPageTextColor);
+                XBrush brush = new XSolidBrush(XColor.FromArgb(color.A, color.R, color.G, color.B));
+                DrawPdfOverlayText(page, gfx, Scanner.PdfPageTextSize, Scanner.PdfPageText, brush, "Times New Roman", Scanner.PdfPageTextAngle);
             }
             if (Scanner.PasswordProtect)
             {
@@ -312,6 +340,10 @@ public static class PdfGeneration
                 page.Orientation = (scannedimage.Resim.PixelWidth < scannedimage.Resim.PixelHeight) ? PageOrientation.Portrait : PageOrientation.Landscape;
                 bool resizepaper = paper.SetPaperSize() != PageSize.Undefined;
                 XSize size = default;
+
+                Color pdfpagetextcolor = (Color)ColorConverter.ConvertFromString(Scanner.PdfPageTextColor);
+                XBrush pdfpagetextbrush = new XSolidBrush(XColor.FromArgb(pdfpagetextcolor.A, pdfpagetextcolor.R, pdfpagetextcolor.G, pdfpagetextcolor.B));
+
                 if (resizepaper)
                 {
                     page.Size = paper.SetPaperSize();
@@ -350,7 +382,11 @@ public static class PdfGeneration
                     }
                     if (Scanner.PdfPageNumberDraw)
                     {
-                        gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfAlignTextColor)), (i + 1).ToString(), GetPdfTextLayout(page)[0], GetPdfTextLayout(page)[1]);
+                        gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfPageNumberAlignTextColor)), (i + 1).ToString(), GetPdfTextLayout(page)[0], GetPdfTextLayout(page)[1]);
+                    }
+                    if (Scanner.PdfPageTextDraw)
+                    {
+                        DrawPdfOverlayText(page, gfx, Scanner.PdfPageTextSize, Scanner.PdfPageText, pdfpagetextbrush, "Times New Roman", Scanner.PdfPageTextAngle);
                     }
                 }
                 else
@@ -378,10 +414,13 @@ public static class PdfGeneration
                     }
                     if (Scanner.PdfPageNumberDraw)
                     {
-                        gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfAlignTextColor)), (i + 1).ToString(), GetPdfTextLayout(page)[0], GetPdfTextLayout(page)[1]);
+                        gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfPageNumberAlignTextColor)), (i + 1).ToString(), GetPdfTextLayout(page)[0], GetPdfTextLayout(page)[1]);
+                    }
+                    if (Scanner.PdfPageTextDraw)
+                    {
+                        DrawPdfOverlayText(page, gfx, Scanner.PdfPageTextSize, Scanner.PdfPageText, pdfpagetextbrush, "Times New Roman", Scanner.PdfPageTextAngle);
                     }
                 }
-
                 Scanner.PdfSaveProgressValue = i / (double)bitmapFrames.Count;
                 if (Settings.Default.RemoveProcessedImage)
                 {
@@ -504,7 +543,7 @@ public static class PdfGeneration
         }
     }
 
-    private static void DrawGfx(this XGraphics gfx, XBrush xBrush, XTextFormatter textformatter, OcrData item, XRect adjustedBounds)
+    private static void DrawPdfOcrGfx(this XGraphics gfx, XBrush xBrush, XTextFormatter textformatter, OcrData item, XRect adjustedBounds)
     {
         int adjustedFontSize = CalculateFontSize(item.Text, adjustedBounds, gfx);
         XFont font = new("Times New Roman", adjustedFontSize, XFontStyle.Regular, new XPdfFontOptions(PdfFontEncoding.Unicode));
@@ -528,7 +567,7 @@ public static class PdfGeneration
             foreach (OcrData item in ScannedText)
             {
                 XRect adjustedBounds = AdjustBounds(item.Rect, page.Width / bitmapframe.PixelWidth, page.Height / bitmapframe.PixelHeight);
-                DrawGfx(gfx, xBrush, textformatter, item, adjustedBounds);
+                DrawPdfOcrGfx(gfx, xBrush, textformatter, item, adjustedBounds);
             }
         }
     }
@@ -546,7 +585,7 @@ public static class PdfGeneration
             foreach (OcrData item in ScannedText)
             {
                 XRect adjustedBounds = AdjustBounds(item.Rect, page.Width / xImage.PixelWidth, page.Height / xImage.PixelHeight);
-                DrawGfx(gfx, xBrush, textformatter, item, adjustedBounds);
+                DrawPdfOcrGfx(gfx, xBrush, textformatter, item, adjustedBounds);
             }
         }
     }

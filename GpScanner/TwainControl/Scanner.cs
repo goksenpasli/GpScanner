@@ -508,18 +508,6 @@ public class Scanner : InpcBase, IDataErrorInfo
         }
     }
 
-    public XKnownColor PdfAlignTextColor {
-        get => pdfAlignTextColor;
-
-        set {
-            if (pdfAlignTextColor != value)
-            {
-                pdfAlignTextColor = value;
-                OnPropertyChanged(nameof(PdfAlignTextColor));
-            }
-        }
-    }
-
     public string PdfFilePath {
         get => pdfFilePath;
 
@@ -532,6 +520,18 @@ public class Scanner : InpcBase, IDataErrorInfo
         }
     }
 
+    public XKnownColor PdfPageNumberAlignTextColor {
+        get => pdfPageNumberAlignTextColor;
+
+        set {
+            if (pdfPageNumberAlignTextColor != value)
+            {
+                pdfPageNumberAlignTextColor = value;
+                OnPropertyChanged(nameof(PdfPageNumberAlignTextColor));
+            }
+        }
+    }
+
     public bool PdfPageNumberDraw {
         get => pdfPageNumberDraw;
 
@@ -540,6 +540,65 @@ public class Scanner : InpcBase, IDataErrorInfo
             {
                 pdfPageNumberDraw = value;
                 OnPropertyChanged(nameof(PdfPageNumberDraw));
+            }
+        }
+    }
+
+    public string PdfPageText {
+        get => pdfPageText; set {
+
+            if (pdfPageText != value)
+            {
+                pdfPageText = value;
+                OnPropertyChanged(nameof(PdfPageText));
+            }
+        }
+    }
+
+    public double PdfPageTextAngle {
+        get => pdfPageTextAngle;
+
+        set {
+            if (pdfPageTextAngle != value)
+            {
+                pdfPageTextAngle = value;
+                OnPropertyChanged(nameof(PdfPageTextAngle));
+            }
+        }
+    }
+
+    public string PdfPageTextColor {
+        get => pdfPageTextColor;
+
+        set {
+            if (pdfPageTextColor != value)
+            {
+                pdfPageTextColor = value;
+                OnPropertyChanged(nameof(PdfPageTextColor));
+            }
+        }
+    }
+
+    public bool PdfPageTextDraw {
+        get => pdfPageTextDraw;
+
+        set {
+            if (pdfPageTextDraw != value)
+            {
+                pdfPageTextDraw = value;
+                OnPropertyChanged(nameof(PdfPageTextDraw));
+            }
+        }
+    }
+
+    public double PdfPageTextSize {
+        get => pdfPageTextSize;
+
+        set {
+            if (pdfPageTextSize != value)
+            {
+                pdfPageTextSize = value;
+                OnPropertyChanged(nameof(PdfPageTextSize));
             }
         }
     }
@@ -1053,11 +1112,21 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     private bool passwordProtect;
 
-    private XKnownColor pdfAlignTextColor = XKnownColor.Black;
-
     private string pdfFilePath;
 
+    private XKnownColor pdfPageNumberAlignTextColor = XKnownColor.Black;
+
     private bool pdfPageNumberDraw;
+
+    private string pdfPageText;
+
+    private double pdfPageTextAngle = 315d;
+
+    private string pdfPageTextColor = "Black";
+
+    private bool pdfPageTextDraw;
+
+    private double pdfPageTextSize = 32d;
 
     private SecureString pdfPassword;
 

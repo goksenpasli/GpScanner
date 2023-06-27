@@ -1309,7 +1309,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             PdfPage pageall = document.Pages[i];
                             using XGraphics gfxall = XGraphics.FromPdfPage(pageall, XGraphicsPdfPageOptions.Append);
                             gfxall.DrawText(
-                                new XSolidBrush(XColor.FromKnownColor(Scanner.PdfAlignTextColor)),
+                                new XSolidBrush(XColor.FromKnownColor(Scanner.PdfPageNumberAlignTextColor)),
                                 (i + 1).ToString(),
                                 PdfGeneration.GetPdfTextLayout(pageall)[0],
                                 PdfGeneration.GetPdfTextLayout(pageall)[1]);
@@ -1325,7 +1325,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     PdfPage page = document.Pages[pdfviewer.Sayfa - 1];
                     using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
                     gfx.DrawText(
-                        new XSolidBrush(XColor.FromKnownColor(Scanner.PdfAlignTextColor)),
+                        new XSolidBrush(XColor.FromKnownColor(Scanner.PdfPageNumberAlignTextColor)),
                         pdfviewer.Sayfa.ToString(),
                         PdfGeneration.GetPdfTextLayout(page)[0],
                         PdfGeneration.GetPdfTextLayout(page)[1]);
@@ -2724,14 +2724,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     {
         PdfPage page = pdfdocument.Pages[sayfa];
         XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
-        gfx.TranslateTransform(page.Width / 2, page.Height / 2);
-        gfx.RotateTransform(rotation);
-        gfx.TranslateTransform(-page.Width / 2, -page.Height / 2);
-        XStringFormat format = new() { Alignment = XStringAlignment.Near, LineAlignment = XLineAlignment.Near };
         XBrush brush = new XSolidBrush(XColor.FromArgb(PdfWatermarkColor.Color.A, PdfWatermarkColor.Color.R, PdfWatermarkColor.Color.G, PdfWatermarkColor.Color.B));
-        XFont font = new(PdfWatermarkFont, PdfWatermarkFontSize);
-        XSize size = gfx.MeasureString(PdfWaterMarkText, font);
-        gfx.DrawString(PdfWaterMarkText, font, brush, new XPoint((page.Width - size.Width) / 2, (page.Height - size.Height) / 2), format);
+        PdfGeneration.DrawPdfOverlayText(page, gfx, PdfWatermarkFontSize, PdfWaterMarkText, brush, PdfWatermarkFont, rotation);
         return pdfdocument;
     }
 

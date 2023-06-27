@@ -453,14 +453,7 @@ public static class BitmapMethods
         }
     }
 
-    public static RenderTargetBitmap ÜstüneResimÇiz(
-        this ImageSource Source,
-        Point konum,
-        Brush brushes,
-        double emSize = 64,
-        string metin = null,
-        double angle = 315,
-        string font = "Arial")
+    public static RenderTargetBitmap ÜstüneResimÇiz(this ImageSource Source, Point konum, Brush brushes, double emSize = 64, string metin = null, double angle = 315, string font = "Arial")
     {
         FlowDirection flowDirection = (CultureInfo.CurrentCulture == CultureInfo.GetCultureInfo("ar-AR")) ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
         FormattedText formattedText =
