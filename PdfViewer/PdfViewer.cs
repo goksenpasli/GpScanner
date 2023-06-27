@@ -482,8 +482,8 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                     () =>
                     {
                         using PdfDocument pdfDoc = PdfDocument.Load(pdffilepath);
-                        int width = (int)(pdfDoc.PageSizes[page - 1].Width / 72 * dpi);
-                        int height = (int)(pdfDoc.PageSizes[page - 1].Height / 72 * dpi);
+                        int width = (int)(pdfDoc.PageSizes[page - 1].Width / 96 * dpi);
+                        int height = (int)(pdfDoc.PageSizes[page - 1].Height / 96 * dpi);
                         using Bitmap bitmap = pdfDoc.Render(page - 1, width, height, dpi, dpi, false) as Bitmap;
                         BitmapSource bitmapImage = bitmap.ToBitmapSource();
                         bitmapImage.Freeze();
@@ -507,8 +507,8 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                     {
                         using MemoryStream ms = new(pdffilestream);
                         using PdfDocument pdfDoc = PdfDocument.Load(ms);
-                        int width = (int)(pdfDoc.PageSizes[page - 1].Width / 72 * dpi);
-                        int height = (int)(pdfDoc.PageSizes[page - 1].Height / 72 * dpi);
+                        int width = (int)(pdfDoc.PageSizes[page - 1].Width / 96 * dpi);
+                        int height = (int)(pdfDoc.PageSizes[page - 1].Height / 96 * dpi);
                         System.Drawing.Image image = pdfDoc.Render(page - 1, width, height, dpi, dpi, false);
                         MemoryStream stream = new();
                         image.Save(stream, ImageFormat.Jpeg);
@@ -714,7 +714,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    private static void PdfFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static async void PdfFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is PdfViewer pdfViewer &&
             e.NewValue is not null &&
@@ -727,21 +727,26 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 using PdfDocument pdfDoc = PdfDocument.Load(e.NewValue as string);
                 int dpi = pdfViewer.Dpi;
                 int page = pdfViewer.Sayfa - 1;
-                int width = (int)(pdfDoc.PageSizes[page].Width / 72 * dpi);
-                int height = (int)(pdfDoc.PageSizes[page].Height / 72 * dpi);
-                using (System.Drawing.Image image = pdfDoc.Render(page, width, height, dpi, dpi, false))
-                {
-                    pdfViewer.Source = image.ToBitmapImage(ImageFormat.Jpeg);
-                }
-
+                int width = (int)(pdfDoc.PageSizes[page].Width / 96 * dpi);
+                int height = (int)(pdfDoc.PageSizes[page].Height / 96 * dpi);
                 pdfViewer.ToplamSayfa = pdfDoc.PageCount;
                 pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
+                pdfViewer.Source = await RenderPdf(pdfDoc, dpi, page, width, height);
             }
             catch (Exception)
             {
                 pdfViewer.Source = null;
             }
         }
+    }
+
+    private static Task<BitmapImage> RenderPdf(PdfDocument pdfDoc, int dpi, int page, int width, int height)
+    {
+        return Task.Run(() =>
+        {
+            using System.Drawing.Image image = pdfDoc.Render(page, width, height, dpi, dpi, false);
+            return image.ToBitmapImage(ImageFormat.Jpeg);
+        });
     }
 
     private static void SourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

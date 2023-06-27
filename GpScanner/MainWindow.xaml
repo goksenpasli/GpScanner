@@ -399,15 +399,15 @@
                                                         </Border.RenderTransform>
                                                         <Grid>
                                                             <Grid.RowDefinitions>
-                                                                <RowDefinition Height="Auto" />
+                                                                <RowDefinition Height="19.2" />
                                                                 <RowDefinition />
                                                             </Grid.RowDefinitions>
                                                             <Grid Grid.Row="0">
                                                                 <Grid.ColumnDefinitions>
                                                                     <ColumnDefinition />
-                                                                    <ColumnDefinition Width="Auto" />
-                                                                    <ColumnDefinition Width="Auto" />
-                                                                    <ColumnDefinition Width="Auto" />
+                                                                    <ColumnDefinition Width="27.2" />
+                                                                    <ColumnDefinition Width="19.2" />
+                                                                    <ColumnDefinition Width="27.2" />
                                                                 </Grid.ColumnDefinitions>
                                                                 <Extensions:ContentToggleButton Margin="1" HorizontalContentAlignment="Stretch"
                                                                     d:Content="FileOcrContent"
@@ -427,7 +427,7 @@
                                                                                                 Height="{Binding DataContext.SelectedSize.Height, Mode=OneWay, Source={x:Reference Window}}"
                                                                                                 MinWidth="{Binding DataContext.SelectedSize.Width, Mode=OneWay, Source={x:Reference Window}}"
                                                                                                 MinHeight="{Binding DataContext.SelectedSize.Height, Mode=OneWay, Source={x:Reference Window}}">
-                                                                                                <local:TranslateView ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding Parent.DataContext.FileOcrContent, RelativeSource={RelativeSource Mode=Self}}" />
+                                                                                                <local:TranslateView ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding Parent.DataContext.FileOcrContent, Mode=OneWay, RelativeSource={RelativeSource Mode=Self}}" />
                                                                                             </Extensions:ResizablePanel>
                                                                                         </Setter.Value>
                                                                                     </Setter>
@@ -435,7 +435,7 @@
                                                                             </Style.Triggers>
                                                                         </Style>
                                                                     </Extensions:ContentToggleButton.Style>
-                                                                    <TextBlock Text="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" />
+                                                                    <TextBlock Text="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}" TextTrimming="CharacterEllipsis" />
                                                                 </Extensions:ContentToggleButton>
                                                                 <Extensions:ContentToggleButton Grid.Column="1" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
                                                                     <Extensions:ContentToggleButton.Style>
