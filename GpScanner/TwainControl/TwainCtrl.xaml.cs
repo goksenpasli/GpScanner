@@ -163,6 +163,18 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => CanUndoImage && UndoImage is not null);
 
+        InvertImage = new RelayCommand<object>(
+            parameter =>
+            {
+                if (parameter is ScannedImage item)
+                {
+                    BitmapFrame bitmapFrame = BitmapFrame.Create(item.Resim.InvertBitmap());
+                    bitmapFrame.Freeze();
+                    item.Resim = bitmapFrame;
+                }
+            },
+            parameter => Scanner.ArayüzEtkin);
+
         ExploreFile =
             new RelayCommand<object>(parameter => OpenFolderAndSelectItem(Path.GetDirectoryName(parameter as string), Path.GetFileName(parameter as string)), parameter => true);
 
@@ -526,6 +538,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 Scanner.CroppedImage = SeçiliResim.Resim;
+                Scanner.CroppedImageIndex = SeçiliResim.Index;
                 Scanner.CroppedImage.Freeze();
                 Scanner.CopyCroppedImage = Scanner.CroppedImage;
                 Scanner.CroppedImage.Freeze();
@@ -1547,6 +1560,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public ICommand InsertClipBoardImage { get; }
 
     public ICommand InsertFileNamePlaceHolder { get; }
+
+    public RelayCommand<object> InvertImage { get; }
 
     public ICommand Kaydet { get; }
 
@@ -2772,6 +2787,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     croppedbitmap.CopyPixels(pixels, 4, 0);
                     croppedbitmap.Freeze();
                     Scanner.SourceColor = Color.FromRgb(pixels[2], pixels[1], pixels[0]).ToString();
+                    Scanner.AutoCropColor = Color.FromRgb(pixels[2], pixels[1], pixels[0]).ToString();
                 }
 
                 if (e.RightButton == MouseButtonState.Released)

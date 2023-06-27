@@ -996,7 +996,7 @@
                                                                         </Style.Triggers>
                                                                     </Style>
                                                                 </Run.Style>
-                                                            </Run><Run Text=" " /><InlineUIContainer BaselineAlignment="Center">
+                                                            </Run><InlineUIContainer BaselineAlignment="Center">
                                                                 <Extensions:ContentToggleButton Background="{x:Null}" BorderBrush="{x:Null}" IsEnabled="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}">
                                                                     <Extensions:ContentToggleButton.Style>
                                                                         <Style TargetType="{x:Type Extensions:ContentToggleButton}">
@@ -1016,14 +1016,22 @@
                                                                     </Extensions:ContentToggleButton.Style>
                                                                     <Image Width="24" Height="24" Source="/TwainControl;component/Icons/save.png" />
                                                                 </Extensions:ContentToggleButton>
-                                                            </InlineUIContainer><Run Text=" " /><Hyperlink local:Policy.PolicyName="ResimSil" BaselineAlignment="Center"
+                                                            </InlineUIContainer><Hyperlink local:Policy.PolicyName="InvertImage"
+                                                                Command="{Binding DataContext.InvertImage, ElementName=UserControl}"
+                                                                CommandParameter="{Binding Mode=OneWay}"
+                                                                TextDecorations="None">
+                                                                <Run FontFamily="Wingdings" FontSize="26"
+                                                                    Foreground="Black" Text="[" />
+                                                            </Hyperlink>
+                                                            <Hyperlink local:Policy.PolicyName="ResimSil" BaselineAlignment="Center"
                                                                 Command="{Binding DataContext.ResimSil, ElementName=UserControl}"
                                                                 CommandParameter="{Binding Mode=OneWay}"
                                                                 FontFamily="Segoe UI Black" TextDecorations="None">
                                                                 <InlineUIContainer>
                                                                     <Image Width="24" Height="24" Source="/TwainControl;component/Icons/delete.png" />
                                                                 </InlineUIContainer>
-                                                            </Hyperlink></TextBlock>
+                                                            </Hyperlink>
+                                                        </TextBlock>
                                                         <Canvas Width="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}" Height="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}">
                                                             <ToggleButton Width="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}"
                                                                 Height="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}"

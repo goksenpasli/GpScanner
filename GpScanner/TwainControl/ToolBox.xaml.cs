@@ -106,7 +106,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                 BitmapFrame bitmapFrame = TwainCtrl.GenerateBitmapFrame((BitmapSource)Scanner.CroppedImage);
                 bitmapFrame.Freeze();
                 ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
-                Scanner?.Resimler.Add(scannedImage);
+                Scanner?.Resimler.Insert(Scanner.CroppedImageIndex, scannedImage);
                 scannedImage = null;
             },
             parameter => Scanner?.CroppedImage is not null);

@@ -287,6 +287,18 @@ public class Scanner : InpcBase, IDataErrorInfo
         }
     }
 
+    public int CroppedImageIndex {
+        get => croppedImageIndex;
+
+        set {
+            if (croppedImageIndex != value)
+            {
+                croppedImageIndex = value;
+                OnPropertyChanged(nameof(CroppedImageIndex));
+            }
+        }
+    }
+
     public double CropRight {
         get => cropRight;
 
@@ -1004,6 +1016,8 @@ public class Scanner : InpcBase, IDataErrorInfo
     private ImageSource croppedImage;
 
     private double croppedImageAngle;
+
+    private int croppedImageIndex;
 
     private double cropRight;
 

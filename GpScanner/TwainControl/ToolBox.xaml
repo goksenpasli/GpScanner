@@ -32,22 +32,30 @@
                 <StackPanel>
                     <DockPanel>
                         <Extensions:NumericUpDownControl HorizontalAlignment="Center"
-                            DockPanel.Dock="Top" IsReadOnly="True"
+                            DockPanel.Dock="Top"
+                            IsEnabled="{Binding ElementName=BtnPreview, Path=IsEnabled}"
+                            IsReadOnly="True"
                             Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
                             Minimum="0" SmallChange="1"
                             Value="{Binding Scanner.CropTop}" />
                         <Extensions:NumericUpDownControl HorizontalAlignment="Center"
-                            DockPanel.Dock="Bottom" IsReadOnly="True"
+                            DockPanel.Dock="Bottom"
+                            IsEnabled="{Binding ElementName=BtnPreview, Path=IsEnabled}"
+                            IsReadOnly="True"
                             Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
                             Minimum="0" SmallChange="1"
                             Value="{Binding Scanner.CropBottom}" />
                         <Extensions:NumericUpDownControl VerticalAlignment="Center"
-                            DockPanel.Dock="Left" IsReadOnly="True"
+                            DockPanel.Dock="Left"
+                            IsEnabled="{Binding ElementName=BtnPreview, Path=IsEnabled}"
+                            IsReadOnly="True"
                             Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
                             Minimum="0" SmallChange="1"
                             Value="{Binding Scanner.CropLeft}" />
                         <Extensions:NumericUpDownControl VerticalAlignment="Center"
-                            DockPanel.Dock="Right" IsReadOnly="True"
+                            DockPanel.Dock="Right"
+                            IsEnabled="{Binding ElementName=BtnPreview, Path=IsEnabled}"
+                            IsReadOnly="True"
                             Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
                             Minimum="0" SmallChange="1"
                             Value="{Binding Scanner.CropRight}" />
@@ -146,7 +154,9 @@
                                     Value="{Binding Scanner.ToolBarBwThreshold, UpdateSourceTrigger=PropertyChanged}" />
                                 <Button local:Policy.PolicyName="InvertImage" Command="{Binding BlackAndWhiteImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" Content="{local:Loc BW}" />
                             </StackPanel>
-                            <Button local:Policy.PolicyName="LoadCroppedImage" Background="Green" Command="{Binding LoadCroppedImage}">
+                            <Button x:Name="BtnPreview"
+                                local:Policy.PolicyName="LoadCroppedImage" Background="Green"
+                                Command="{Binding LoadCroppedImage}">
                                 <StackPanel Orientation="Horizontal">
                                     <Image Width="32" Height="32">
                                         <Image.Source>
