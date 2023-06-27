@@ -340,10 +340,6 @@ public static class PdfGeneration
                 page.Orientation = (scannedimage.Resim.PixelWidth < scannedimage.Resim.PixelHeight) ? PageOrientation.Portrait : PageOrientation.Landscape;
                 bool resizepaper = paper.SetPaperSize() != PageSize.Undefined;
                 XSize size = default;
-
-                Color pdfpagetextcolor = (Color)ColorConverter.ConvertFromString(Scanner.PdfPageTextColor);
-                XBrush pdfpagetextbrush = new XSolidBrush(XColor.FromArgb(pdfpagetextcolor.A, pdfpagetextcolor.R, pdfpagetextcolor.G, pdfpagetextcolor.B));
-
                 if (resizepaper)
                 {
                     page.Size = paper.SetPaperSize();
@@ -386,6 +382,8 @@ public static class PdfGeneration
                     }
                     if (Scanner.PdfPageTextDraw)
                     {
+                        Color pdfpagetextcolor = (Color)ColorConverter.ConvertFromString(Scanner.PdfPageTextColor);
+                        XBrush pdfpagetextbrush = new XSolidBrush(XColor.FromArgb(pdfpagetextcolor.A, pdfpagetextcolor.R, pdfpagetextcolor.G, pdfpagetextcolor.B));
                         DrawPdfOverlayText(page, gfx, Scanner.PdfPageTextSize, Scanner.PdfPageText, pdfpagetextbrush, "Times New Roman", Scanner.PdfPageTextAngle);
                     }
                 }
@@ -418,6 +416,8 @@ public static class PdfGeneration
                     }
                     if (Scanner.PdfPageTextDraw)
                     {
+                        Color pdfpagetextcolor = (Color)ColorConverter.ConvertFromString(Scanner.PdfPageTextColor);
+                        XBrush pdfpagetextbrush = new XSolidBrush(XColor.FromArgb(pdfpagetextcolor.A, pdfpagetextcolor.R, pdfpagetextcolor.G, pdfpagetextcolor.B));
                         DrawPdfOverlayText(page, gfx, Scanner.PdfPageTextSize, Scanner.PdfPageText, pdfpagetextbrush, "Times New Roman", Scanner.PdfPageTextAngle);
                     }
                 }
