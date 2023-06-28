@@ -7,7 +7,7 @@
     xmlns:mozjpeg="clr-namespace:MozJpeg;assembly=MozJpeg"
     xmlns:properties="clr-namespace:TwainControl.Properties" xmlns:tesseract="clr-namespace:Ocr;assembly=Ocr"
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
-    d:DesignHeight="440" d:DesignWidth="500"
+    d:DesignHeight="440" d:DesignWidth="550"
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
     UseLayoutRounding="True"
     mc:Ignorable="d">
@@ -43,13 +43,19 @@
                         TextWrapping="Wrap" />
                 </StackPanel>
                 <Separator />
-                <UniformGrid Columns="2">
-                    <CheckBox VerticalContentAlignment="Center"
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
                         Content="{local:Loc REMOVEPROCESSEDIMAGE}"
                         FontStyle="Italic" FontWeight="Bold"
                         Foreground="Red"
                         IsChecked="{Binding RemoveProcessedImage, Source={x:Static properties:Settings.Default}}" />
-                    <CheckBox VerticalContentAlignment="Center"
+                    <CheckBox Grid.Column="1"
+                        VerticalAlignment="Center" VerticalContentAlignment="Center"
                         FontStyle="Italic" FontWeight="Bold"
                         Foreground="Red"
                         IsChecked="{Binding DirectRemoveImage, Source={x:Static properties:Settings.Default}}">
@@ -58,7 +64,13 @@
                             <Run Text="{local:Loc DELETE}" />
                         </TextBlock>
                     </CheckBox>
-                </UniformGrid>
+                    <StackPanel Grid.Column="2" Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center" Text="Custom Width" />
+                        <Extensions:NumericUpDownControl Minimum="1" Value="{Binding Path=CustomPaperWidth, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock VerticalAlignment="Center" Text="Custom Height" />
+                        <Extensions:NumericUpDownControl Minimum="1" Value="{Binding Path=CustomPaperHeight, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                </Grid>
             </StackPanel>
         </GroupBox.Header>
         <StackPanel>

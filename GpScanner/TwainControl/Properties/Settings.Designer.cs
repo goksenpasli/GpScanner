@@ -336,5 +336,29 @@ namespace TwainControl.Properties {
                 this["AutoCropColor"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("29.7")]
+        public double CustomPaperHeight {
+            get {
+                return ((double)(this["CustomPaperHeight"]));
+            }
+            set {
+                this["CustomPaperHeight"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("21")]
+        public double CustomPaperWidth {
+            get {
+                return ((double)(this["CustomPaperWidth"]));
+            }
+            set {
+                this["CustomPaperWidth"] = value;
+            }
+        }
     }
 }

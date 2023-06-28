@@ -72,8 +72,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         PropertyChanged += TwainCtrl_PropertyChangedAsync;
         Camera.PropertyChanged += CameraUserControl_PropertyChangedAsync;
         SelectedTab = TbCtrl?.Items[0] as TabItem;
-        Papers = BitmapMethods.GetPapers();
-        ToolBox.Paper = SelectedPaper = Papers.FirstOrDefault(z => z.PaperType == "A4");
+        SelectedPaper = Papers.FirstOrDefault(z => z.PaperType == "A4");
 
         if (Settings.Default.UseSelectedProfile)
         {
@@ -2004,6 +2003,30 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         return bitmapFrame;
     }
 
+    public static ObservableCollection<Paper> GetPapers()
+    {
+        return new()
+        {
+            new() { Category="A",  Height = 118.9, PaperType = "A0", Width = 84.1 },
+            new() { Category="A",  Height = 84.1, PaperType = "A1", Width = 59.4 },
+            new() { Category="A",  Height = 59.4, PaperType = "A2", Width = 42 },
+            new() { Category="A",  Height = 42, PaperType = "A3", Width = 29.7 },
+            new() { Category="A",  Height = 29.7, PaperType = "A4", Width = 21 },
+            new() { Category="A",  Height = 21, PaperType = "A5", Width = 14.8 },
+            new() { Category="B",  Height = 141.4, PaperType = "B0", Width = 100 },
+            new() { Category="B",  Height = 100, PaperType = "B1", Width = 70.7 },
+            new() { Category="B",  Height = 70.7, PaperType = "B2", Width = 50 },
+            new() { Category="B",  Height = 50, PaperType = "B3", Width = 35.3 },
+            new() { Category="B",  Height = 35.3, PaperType = "B4", Width = 25 },
+            new() { Category="B",  Height = 25, PaperType = "B5", Width = 17.6 },
+            new() { Height = 27.94, PaperType = "Letter", Width = 21.59 },
+            new() { Height = 35.56, PaperType = "Legal", Width = 21.59 },
+            new() { Height = 26.67, PaperType = "Executive", Width = 18.415 },
+            new() {Category="", Height = 0, PaperType = "Original", Width = 0 },
+            new() {Category="", Height = Settings.Default.CustomPaperHeight, PaperType = "Custom", Width = Settings.Default.CustomPaperWidth },
+        };
+    }
+
     public static void GotoPage(string path)
     {
         if (!string.IsNullOrWhiteSpace(path))
@@ -3178,7 +3201,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private Point mousedowncoord;
 
-    private ObservableCollection<Paper> papers;
+    private ObservableCollection<Paper> papers = GetPapers();
 
     private double pdfLoadProgressValue;
 
@@ -3212,7 +3235,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private Orientation selectedOrientation = Orientation.Default;
 
-    private Paper selectedPaper = new();
+    private Paper selectedPaper;
 
     private PageRotation selectedRotation = PageRotation.NONE;
 

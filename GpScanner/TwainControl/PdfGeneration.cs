@@ -119,7 +119,7 @@ public static class PdfGeneration
             {
                 string imagefile = imagefiles[i];
                 PdfPage page = document.AddPage();
-                page.Size = paper.SetPaperSize();
+                page.Size = paper.GetPaperSize();
                 using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
                 using XImage xImage = XImage.FromFile(imagefile);
                 XSize size = PageSizeConverter.ToSize(page.Size);
@@ -181,7 +181,7 @@ public static class PdfGeneration
         try
         {
             PdfPage page = document.AddPage();
-            page.Size = paper.SetPaperSize();
+            page.Size = paper.GetPaperSize();
             using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
             using XImage xImage = XImage.FromFile(imagefile);
             XSize size = PageSizeConverter.ToSize(page.Size);
@@ -245,12 +245,21 @@ public static class PdfGeneration
             using PdfDocument document = new();
             PdfPage page = document.AddPage();
             page.Orientation = (bitmapframe.PixelWidth < bitmapframe.PixelHeight) ? PageOrientation.Portrait : PageOrientation.Landscape;
-            bool resizepaper = paper.SetPaperSize() != PageSize.Undefined;
+            bool resizepaper = paper.GetPaperSize() != PageSize.Undefined;
             XSize size = default;
             if (resizepaper)
             {
-                page.Size = paper.SetPaperSize();
-                size = PageSizeConverter.ToSize(page.Size);
+                if (paper.PaperType == "Custom")
+                {
+                    size.Width = Settings.Default.CustomPaperWidth / 2.54 * 72;
+                    size.Height = Settings.Default.CustomPaperHeight / 2.54 * 72;
+                    page.MediaBox = new PdfRectangle(new XRect(0, 0, size.Width, size.Height));
+                }
+                else
+                {
+                    page.Size = paper.GetPaperSize();
+                    size = PageSizeConverter.ToSize(page.Size);
+                }
             }
             else
             {
@@ -338,12 +347,21 @@ public static class PdfGeneration
                 ScannedImage scannedimage = bitmapFrames[i];
                 PdfPage page = document.AddPage();
                 page.Orientation = (scannedimage.Resim.PixelWidth < scannedimage.Resim.PixelHeight) ? PageOrientation.Portrait : PageOrientation.Landscape;
-                bool resizepaper = paper.SetPaperSize() != PageSize.Undefined;
+                bool resizepaper = paper.GetPaperSize() != PageSize.Undefined;
                 XSize size = default;
                 if (resizepaper)
                 {
-                    page.Size = paper.SetPaperSize();
-                    size = PageSizeConverter.ToSize(page.Size);
+                    if (paper.PaperType == "Custom")
+                    {
+                        size.Width = Settings.Default.CustomPaperWidth / 2.54 * 72;
+                        size.Height = Settings.Default.CustomPaperHeight / 2.54 * 72;
+                        page.MediaBox = new PdfRectangle(new XRect(0, 0, size.Width, size.Height));
+                    }
+                    else
+                    {
+                        page.Size = paper.GetPaperSize();
+                        size = PageSizeConverter.ToSize(page.Size);
+                    }
                 }
                 else
                 {
@@ -448,6 +466,11 @@ public static class PdfGeneration
         return Task.FromResult(document);
     }
 
+    public static PageSize GetPaperSize(this Paper paper)
+    {
+        return paper == null || !paperSizes.TryGetValue(paper.PaperType, out PageSize pageSize) ? PageSize.A4 : pageSize;
+    }
+
     public static string GetPdfScanPath()
     {
         return GetSaveFolder().SetUniqueFile(Scanner.SaveFileName, "pdf");
@@ -519,11 +542,6 @@ public static class PdfGeneration
                 throw new ArgumentException(nameof(files), ex);
             }
         }
-    }
-
-    public static PageSize SetPaperSize(this Paper paper)
-    {
-        return paper == null || !paperSizes.TryGetValue(paper.PaperType, out PageSize pageSize) ? PageSize.A4 : pageSize;
     }
 
     private static XRect AdjustBounds(this Rect rect, double hAdjust, double vAdjust)

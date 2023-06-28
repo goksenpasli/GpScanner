@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Ocr;
+using TwainControl.Properties;
 using WebPWrapper;
 using static Extensions.ExtensionMethods;
 using Brush = System.Windows.Media.Brush;
@@ -244,29 +245,6 @@ public static class BitmapMethods
         }
 
         return deskew ? BitmapFrame.Create(skewedimage) : BitmapFrame.Create(image);
-    }
-
-    public static ObservableCollection<Paper> GetPapers()
-    {
-        return new()
-        {
-            new() { Category="A",  Height = 118.9, PaperType = "A0", Width = 84.1 },
-            new() { Category="A",  Height = 84.1, PaperType = "A1", Width = 59.4 },
-            new() { Category="A",  Height = 59.4, PaperType = "A2", Width = 42 },
-            new() { Category="A",  Height = 42, PaperType = "A3", Width = 29.7 },
-            new() { Category="A",  Height = 29.7, PaperType = "A4", Width = 21 },
-            new() { Category="A",  Height = 21, PaperType = "A5", Width = 14.8 },
-            new() { Category="B",  Height = 141.4, PaperType = "B0", Width = 100 },
-            new() { Category="B",  Height = 100, PaperType = "B1", Width = 70.7 },
-            new() { Category="B",  Height = 70.7, PaperType = "B2", Width = 50 },
-            new() { Category="B",  Height = 50, PaperType = "B3", Width = 35.3 },
-            new() { Category="B",  Height = 35.3, PaperType = "B4", Width = 25 },
-            new() { Category="B",  Height = 25, PaperType = "B5", Width = 17.6 },
-            new() { Height = 27.94, PaperType = "Letter", Width = 21.59 },
-            new() { Height = 35.56, PaperType = "Legal", Width = 21.59 },
-            new() { Height = 26.67, PaperType = "Executive", Width = 18.415 },
-            new() { Height = 0, PaperType = "Original", Width = 0 },
-        };
     }
 
     public static WriteableBitmap InvertBitmap(this BitmapSource bitmap)

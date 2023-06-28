@@ -187,7 +187,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                 for (int i = 0; i < seçiliresimler.Count() / (Scanner.SliceCountWidth * Scanner.SliceCountHeight); i++)
                 {
                     page = pdfdocument.AddPage();
-                    page.Size = Paper.SetPaperSize() == PageSize.Undefined ? PageSize.A4 : Paper.SetPaperSize();
+                    page.Size = Paper.GetPaperSize() == PageSize.Undefined ? PageSize.A4 : Paper.GetPaperSize();
                     page.Orientation = pageOrientation;
                     for (int heighindex = 0; heighindex < Scanner.SliceCountHeight; heighindex++)
                     {

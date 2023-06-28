@@ -617,8 +617,6 @@ public class GpScannerViewModel : InpcBase
             new RelayCommand<object>(parameter => PdfViewer.PdfViewer.PrintImageSource(parameter as ImageSource, 300, false), parameter => parameter is ImageSource);
     }
 
-    public static event EventHandler<PropertyChangedEventArgs> StaticPropertyChanged;
-
     public static bool IsAdministrator {
         get {
             using WindowsIdentity identity = WindowsIdentity.GetCurrent();
@@ -627,17 +625,7 @@ public class GpScannerViewModel : InpcBase
         }
     }
 
-    public static string XmlDataPath {
-        get => xmlDataPath;
-
-        set {
-            if (xmlDataPath != value)
-            {
-                xmlDataPath = value;
-                StaticPropertyChanged?.Invoke(null, new PropertyChangedEventArgs(nameof(XmlDataPath)));
-            }
-        }
-    }
+    public static string XmlDataPath { get; set; } = Settings.Default.DatabaseFile;
 
     public ICommand AddFtpSites { get; }
 
@@ -1577,8 +1565,6 @@ public class GpScannerViewModel : InpcBase
     }
 
     private static DispatcherTimer timer;
-
-    private static string xmlDataPath = Settings.Default.DatabaseFile;
 
     private readonly string[] imagefileextensions = { ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp" };
 

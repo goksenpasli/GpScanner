@@ -484,7 +484,7 @@
                                                     <GroupStyle>
                                                         <GroupStyle.Panel>
                                                             <ItemsPanelTemplate>
-                                                                <UniformGrid Columns="3" />
+                                                                <UniformGrid Columns="4" />
                                                             </ItemsPanelTemplate>
                                                         </GroupStyle.Panel>
                                                         <GroupStyle.HeaderTemplate>
@@ -815,7 +815,7 @@
                                 Value="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}" />
                             <Extensions:ContentToggleButton Grid.Column="1">
                                 <Extensions:ContentToggleButton.OverContent>
-                                    <local:PdfSettings Width="500" />
+                                    <local:PdfSettings Width="550" />
                                 </Extensions:ContentToggleButton.OverContent>
                                 <StackPanel Orientation="Horizontal">
                                     <Image Width="24" Height="24">

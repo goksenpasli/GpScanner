@@ -5,9 +5,16 @@ namespace Extensions;
 
 public abstract class InpcBase : INotifyPropertyChanged, INotifyPropertyChanging
 {
+    [field: NonSerialized] public static event EventHandler<PropertyChangedEventArgs> StaticEventPropertyChanged = delegate { };
+
     [field: NonSerialized] public event PropertyChangedEventHandler PropertyChanged;
 
     [field: NonSerialized] public event PropertyChangingEventHandler PropertyChanging;
+
+    protected static void StaticPropertyChanged(string propertyName)
+    {
+        StaticEventPropertyChanged?.Invoke(null, new PropertyChangedEventArgs(nameof(propertyName)));
+    }
 
     protected virtual void OnPropertyChanged(string propertyName)
     {

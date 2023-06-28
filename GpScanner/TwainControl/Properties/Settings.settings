@@ -82,5 +82,11 @@
     <Setting Name="AutoCropColor" Type="System.String" Scope="User">
       <Value Profile="(Default)">Black</Value>
     </Setting>
+    <Setting Name="CustomPaperHeight" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">29.7</Value>
+    </Setting>
+    <Setting Name="CustomPaperWidth" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">21</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
