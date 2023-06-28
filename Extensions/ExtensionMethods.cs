@@ -152,6 +152,8 @@ public static class ExtensionMethods
         writableBitmap.AddDirtyRect(new Int32Rect(0, 0, writableBitmap.PixelWidth, writableBitmap.PixelHeight));
         writableBitmap.Unlock();
         writableBitmap.Freeze();
+        pixelData = null;
+        bitmapSource = null;
         return writableBitmap;
     }
 
@@ -312,6 +314,8 @@ public static class ExtensionMethods
         }
 
         bitmap.UnlockBits(bmData);
+        bmData = null;
+        bitmap = null;
         return stdDev < emptythreshold;
     }
 

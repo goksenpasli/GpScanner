@@ -12,7 +12,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -174,6 +173,18 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 }
             },
             parameter => Scanner.ArayüzEtkin);
+
+        InvertSelectedImage = new RelayCommand<object>(
+            parameter =>
+            {
+                foreach (ScannedImage item in Scanner?.Resimler?.Where(z => z.Seçili))
+                {
+                    BitmapFrame bitmapFrame = BitmapFrame.Create(item.Resim.InvertBitmap());
+                    bitmapFrame.Freeze();
+                    item.Resim = bitmapFrame;
+                }
+            },
+            parameter => Scanner.Resimler.Count(z => z.Seçili) > 0);
 
         ExploreFile =
             new RelayCommand<object>(parameter => OpenFolderAndSelectItem(Path.GetDirectoryName(parameter as string), Path.GetFileName(parameter as string)), parameter => true);
@@ -459,11 +470,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 if (Filesavetask?.IsCompleted == false)
                 {
-                    _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
+                    _ = MessageBox.Show(Application.Current.MainWindow, Translation.GetResStringValue("TASKSRUNNING"));
                     return;
                 }
 
-                if (MessageBox.Show(
+                if (MessageBox.Show(Application.Current.MainWindow,
                     Translation.GetResStringValue("LISTREMOVEWARN"),
                     Application.Current.MainWindow.Title,
                     MessageBoxButton.YesNo,
@@ -1562,6 +1573,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public ICommand InsertFileNamePlaceHolder { get; }
 
     public RelayCommand<object> InvertImage { get; }
+
+    public RelayCommand<object> InvertSelectedImage { get; }
 
     public ICommand Kaydet { get; }
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
@@ -10,8 +9,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Ocr;
-using TwainControl.Properties;
 using WebPWrapper;
 using static Extensions.ExtensionMethods;
 using Brush = System.Windows.Media.Brush;
@@ -67,6 +64,8 @@ public static class BitmapMethods
         WriteableBitmap adjustedBitmap = new(width, height, bitmap.DpiX, bitmap.DpiY, bitmap.Format, bitmap.Palette);
         adjustedBitmap.WritePixels(new Int32Rect(0, 0, width, height), pixelData, stride, 0);
         adjustedBitmap.Freeze();
+        pixelData = null;
+        bitmap = null;
         return adjustedBitmap;
     }
 
@@ -116,6 +115,8 @@ public static class BitmapMethods
         maxX += 2;
         CroppedBitmap croppedimage = new(bitmapSource, new Int32Rect(minX, minY, maxX - minX - 1, maxY - minY - 1));
         croppedimage.Freeze();
+        bitmapSource = null;
+        pixelData = null;
         return croppedimage;
     }
 
@@ -274,6 +275,8 @@ public static class BitmapMethods
         WriteableBitmap invertedBitmap = new(width, height, bitmap.DpiX, bitmap.DpiY, bitmap.Format, bitmap.Palette);
         invertedBitmap.WritePixels(new Int32Rect(0, 0, width, height), pixelData, stride, 0);
         invertedBitmap.Freeze();
+        bitmap = null;
+        pixelData = null;
         return invertedBitmap;
     }
 
@@ -326,6 +329,8 @@ public static class BitmapMethods
 
         outputBitmap.WritePixels(new Int32Rect(0, 0, width, height), outputPixels, stride, 0);
         outputBitmap.Freeze();
+        inputPixels = null;
+        outputPixels = null;
         return outputBitmap;
     }
 
@@ -371,6 +376,8 @@ public static class BitmapMethods
         WriteableBitmap target = new(width, height, source.DpiX, source.DpiY, source.Format, null);
         target.WritePixels(new Int32Rect(0, 0, width, height), targetPixels, stride, 0);
         target.Freeze();
+        sourcePixels = null;
+        targetPixels = null;
         return target;
     }
 
