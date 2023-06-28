@@ -407,6 +407,7 @@
                         </ToggleButton>
                         <Popup x:Name="PART_Popup"
                             Grid.ColumnSpan="2"
+                            local:SplitButton.AlwaysOnTop="{Binding TopMost, RelativeSource={RelativeSource AncestorType={x:Type local:SplitButton}}}"
                             AllowsTransparency="True" Focusable="False"
                             HorizontalOffset="{Binding ContentHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type local:SplitButton}}}"
                             IsOpen="{Binding IsSplitPartOpen, RelativeSource={RelativeSource AncestorType={x:Type local:SplitButton}}}"
@@ -600,6 +601,7 @@
                                 Data="{StaticResource ArrowGeometry}"
                                 Fill="#606060" Focusable="False" />
                             <Popup Grid.ColumnSpan="2"
+                                local:ContentToggleButton.AlwaysOnTop="{Binding TopMost, RelativeSource={RelativeSource AncestorType={x:Type local:ContentToggleButton}}}"
                                 AllowsTransparency="True"
                                 HorizontalOffset="{Binding ContentHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}"
                                 IsOpen="{Binding IsChecked, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}"

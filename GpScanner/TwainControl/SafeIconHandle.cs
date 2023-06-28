@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
 
 namespace TwainControl
@@ -13,13 +12,9 @@ namespace TwainControl
                 SetHandle(hIcon);
             }
 
-            [DllImport("user32.dll", SetLastError = true)]
-            [return: MarshalAs(UnmanagedType.Bool)]
-            internal static extern bool DestroyIcon([In] IntPtr hIcon);
-
             protected override bool ReleaseHandle()
             {
-                return DestroyIcon(handle);
+                return Extensions.Helpers.DestroyIcon(handle);
             }
 
             private SafeIconHandle() : base(true)

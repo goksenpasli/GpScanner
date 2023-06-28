@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls.Primitives;
+using System.Windows.Interop;
 
 namespace Extensions;
 
@@ -24,17 +26,30 @@ public class SplitButton : ButtonBase
 
     public bool StayOpen { get => (bool)GetValue(StayOpenProperty); set => SetValue(StayOpenProperty, value); }
 
-    public static readonly DependencyProperty ContentHorizontalOffsetProperty =
-                                        DependencyProperty.Register("ContentHorizontalOffset", typeof(double), typeof(SplitButton), new PropertyMetadata(0d));
+    public bool TopMost {
+        get { return (bool)GetValue(TopMostProperty); }
+        set { SetValue(TopMostProperty, value); }
+    }
 
-    public static readonly DependencyProperty ContentVerticalOffsetProperty =
-        DependencyProperty.Register("ContentVerticalOffset", typeof(double), typeof(SplitButton), new PropertyMetadata(0d));
+    public static bool GetAlwaysOnTop(DependencyObject obj)
+    {
+        return (bool)obj.GetValue(AlwaysOnTopProperty);
+    }
 
-    public static readonly DependencyProperty InternalContentProperty =
-        DependencyProperty.Register("InternalContent", typeof(object), typeof(SplitButton), new PropertyMetadata(null));
+    public static void SetAlwaysOnTop(DependencyObject obj, bool value)
+    {
+        obj.SetValue(AlwaysOnTopProperty, value);
+    }
 
-    public static readonly DependencyProperty IsSplitPartOpenProperty =
-        DependencyProperty.Register("IsSplitPartOpen", typeof(bool), typeof(SplitButton), new PropertyMetadata(false));
+    public static readonly DependencyProperty AlwaysOnTopProperty = DependencyProperty.RegisterAttached("AlwaysOnTop", typeof(bool), typeof(SplitButton), new PropertyMetadata(true, OnTopChanged));
+
+    public static readonly DependencyProperty ContentHorizontalOffsetProperty = DependencyProperty.Register("ContentHorizontalOffset", typeof(double), typeof(SplitButton), new PropertyMetadata(0d));
+
+    public static readonly DependencyProperty ContentVerticalOffsetProperty = DependencyProperty.Register("ContentVerticalOffset", typeof(double), typeof(SplitButton), new PropertyMetadata(0d));
+
+    public static readonly DependencyProperty InternalContentProperty = DependencyProperty.Register("InternalContent", typeof(object), typeof(SplitButton), new PropertyMetadata(null));
+
+    public static readonly DependencyProperty IsSplitPartOpenProperty = DependencyProperty.Register("IsSplitPartOpen", typeof(bool), typeof(SplitButton), new PropertyMetadata(false));
 
     public static readonly DependencyProperty PlacementModeProperty = DependencyProperty.Register(
         "PlacementMode",
@@ -42,9 +57,25 @@ public class SplitButton : ButtonBase
         typeof(SplitButton),
         new PropertyMetadata(PlacementMode.Bottom));
 
-    public static readonly DependencyProperty SplitContentPartIsEnabledProperty =
-        DependencyProperty.Register("SplitContentPartIsEnabled", typeof(bool), typeof(SplitButton), new PropertyMetadata(true));
+    public static readonly DependencyProperty SplitContentPartIsEnabledProperty = DependencyProperty.Register("SplitContentPartIsEnabled", typeof(bool), typeof(SplitButton), new PropertyMetadata(true));
 
-    public static readonly DependencyProperty StayOpenProperty =
-        DependencyProperty.Register("StayOpen", typeof(bool), typeof(SplitButton), new PropertyMetadata(false));
+    public static readonly DependencyProperty StayOpenProperty = DependencyProperty.Register("StayOpen", typeof(bool), typeof(SplitButton), new PropertyMetadata(false));
+
+    public static readonly DependencyProperty TopMostProperty = DependencyProperty.Register("TopMost", typeof(bool), typeof(SplitButton), new PropertyMetadata(false));
+
+    private static void OnTopChanged(DependencyObject d, DependencyPropertyChangedEventArgs f)
+    {
+        if (d is Popup popup)
+        {
+            popup.Opened += (s, e) =>
+            {
+                IntPtr hwnd = ((HwndSource)PresentationSource.FromVisual(popup.Child)).Handle;
+
+                if (Helpers.GetWindowRect(hwnd, out Helpers.RECT rect))
+                {
+                    _ = Helpers.SetWindowPos(hwnd, (bool)f.NewValue ? -1 : -2, rect.Left, rect.Top, (int)popup.Width, (int)popup.Height, 0);
+                }
+            };
+        }
+    }
 }

@@ -167,13 +167,6 @@ public static class ExtensionMethods
         return Color.FromArgb(sb.Color.A, sb.Color.R, sb.Color.G, sb.Color.B);
     }
 
-    [DllImport("gdi32.dll")]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool DeleteObject([In] IntPtr hObject);
-
-    [DllImport("user32.dll", CharSet = CharSet.Auto)]
-    public static extern bool DestroyIcon(this IntPtr handle);
-
     public static ConcurrentBag<string> DirSearch(this string path, string pattern = "*.*")
     {
         ConcurrentBag<string> filesNames = new();
@@ -211,7 +204,7 @@ public static class ExtensionMethods
     public static string GetDisplayName(string path)
     {
         _ = new SHFILEINFO();
-        return SHGetFileInfo(path, FILE_ATTRIBUTE_NORMAL, out SHFILEINFO shfi, (uint)Marshal.SizeOf(typeof(SHFILEINFO)), SHGFI_DISPLAYNAME) != IntPtr.Zero
+        return Helpers.SHGetFileInfo(path, FILE_ATTRIBUTE_NORMAL, out SHFILEINFO shfi, (uint)Marshal.SizeOf(typeof(SHFILEINFO)), SHGFI_DISPLAYNAME) != IntPtr.Zero
             ? shfi.szDisplayName
             : null;
     }
@@ -220,7 +213,7 @@ public static class ExtensionMethods
     {
         _ = new SHFILEINFO();
         SHFILEINFO shinfo = default;
-        _ = SHGetFileInfo(filename, FILE_ATTRIBUTE_NORMAL, out shinfo, (uint)Marshal.SizeOf(shinfo), SHGFI_TYPENAME | SHGFI_USEFILEATTRIBUTES);
+        _ = Helpers.SHGetFileInfo(filename, FILE_ATTRIBUTE_NORMAL, out shinfo, (uint)Marshal.SizeOf(shinfo), SHGFI_TYPENAME | SHGFI_USEFILEATTRIBUTES);
 
         return shinfo.szTypeName;
     }
@@ -243,7 +236,7 @@ public static class ExtensionMethods
             _ = new
                 SHFILEINFO();
             SHFILEINFO shfi = default;
-            IntPtr res = SHGetFileInfo(path, FILE_ATTRIBUTE_NORMAL, out shfi, (uint)Marshal.SizeOf(shfi), flags);
+            IntPtr res = Helpers.SHGetFileInfo(path, FILE_ATTRIBUTE_NORMAL, out shfi, (uint)Marshal.SizeOf(shfi), flags);
 
             if (res == IntPtr.Zero)
             {
@@ -252,7 +245,7 @@ public static class ExtensionMethods
 
             _ = Icon.FromHandle(shfi.hIcon);
             using Icon icon = (Icon)Icon.FromHandle(shfi.hIcon).Clone();
-            _ = DestroyIcon(shfi.hIcon);
+            _ = Helpers.DestroyIcon(shfi.hIcon);
             BitmapSource bitmapsource =
                 Imaging.CreateBitmapSourceFromHIcon(icon.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
             bitmapsource.Freeze();
@@ -324,17 +317,17 @@ public static class ExtensionMethods
 
     public static void OpenFolderAndSelectItem(string folderPath, string file)
     {
-        SHParseDisplayName(folderPath, IntPtr.Zero, out IntPtr nativeFolder, 0, out _);
+        Helpers.SHParseDisplayName(folderPath, IntPtr.Zero, out IntPtr nativeFolder, 0, out _);
 
         if (nativeFolder == IntPtr.Zero)
         {
             return;
         }
 
-        SHParseDisplayName(Path.Combine(folderPath, file), IntPtr.Zero, out IntPtr nativeFile, 0, out _);
+        Helpers.SHParseDisplayName(Path.Combine(folderPath, file), IntPtr.Zero, out IntPtr nativeFile, 0, out _);
 
         IntPtr[] fileArray = nativeFile == IntPtr.Zero ? (new IntPtr[0]) : (new[] { nativeFile });
-        _ = SHOpenFolderAndSelectItems(nativeFolder, (uint)fileArray.Length, fileArray, 0);
+        _ = Helpers.SHOpenFolderAndSelectItems(nativeFolder, (uint)fileArray.Length, fileArray, 0);
 
         Marshal.FreeCoTaskMem(nativeFolder);
         if (nativeFile != IntPtr.Zero)
@@ -415,20 +408,6 @@ public static class ExtensionMethods
 
         return $@"{path}\{file}{seperator}{i}.{extension}";
     }
-
-    [DllImport("shell32.dll", CharSet = CharSet.Auto)]
-    public static extern IntPtr SHGetFileInfo(string pszPath, uint dwFileAttributes, out SHFILEINFO psfi, uint cbFileInfo, uint uFlags);
-
-    [DllImport("shell32.dll", SetLastError = true)]
-    public static extern int SHOpenFolderAndSelectItems(IntPtr pidlFolder, uint cidl, [In][MarshalAs(UnmanagedType.LPArray)] IntPtr[] apidl, uint dwFlags);
-
-    [DllImport("shell32.dll", SetLastError = true)]
-    public static extern void SHParseDisplayName(
-        [MarshalAs(UnmanagedType.LPWStr)] string name,
-        IntPtr bindingContext,
-        [Out] out IntPtr pidl,
-        uint sfgaoIn,
-        [Out] out uint psfgaoOut);
 
     public static BitmapImage ToBitmapImage(this Image bitmap, ImageFormat format, double decodeheight = 0)
     {

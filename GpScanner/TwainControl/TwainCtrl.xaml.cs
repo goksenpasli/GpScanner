@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -2478,6 +2479,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
+    public const double Inch = 2.54d;
+
     public static DispatcherTimer CameraQrCodeTimer;
 
     public static Task Filesavetask;
@@ -3144,8 +3147,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
         }
     }
-
-    private const double Inch = 2.54d;
 
     private readonly SolidColorBrush bluesaveprogresscolor = Brushes.DeepSkyBlue;
 

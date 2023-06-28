@@ -378,7 +378,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     {
                         _ = cnv.Children.Add(rectangleselectionbox);
                     }
-                    rectangleselectionbox.StrokeThickness = PenWidth * 2.54;
+                    rectangleselectionbox.StrokeThickness = PenWidth * TwainCtrl.Inch;
                     Canvas.SetLeft(rectangleselectionbox, x1);
                     Canvas.SetTop(rectangleselectionbox, y1);
                     rectangleselectionbox.Width = x2 - x1;
@@ -390,7 +390,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     {
                         _ = cnv.Children.Add(linebox);
                     }
-                    linebox.StrokeThickness = PenWidth * 2.54;
+                    linebox.StrokeThickness = PenWidth * TwainCtrl.Inch;
                     linebox.X1 = x1;
                     linebox.Y1 = y1;
                     linebox.X2 = x2;
@@ -402,7 +402,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     {
                         _ = cnv.Children.Add(reverselinebox);
                     }
-                    reverselinebox.StrokeThickness = PenWidth * 2.54;
+                    reverselinebox.StrokeThickness = PenWidth * TwainCtrl.Inch;
                     reverselinebox.X1 = x2;
                     reverselinebox.Y1 = y1;
                     reverselinebox.X2 = x1;
@@ -414,7 +414,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     {
                         _ = cnv.Children.Add(ellipseselectionbox);
                     }
-                    ellipseselectionbox.StrokeThickness = PenWidth * 2.54;
+                    ellipseselectionbox.StrokeThickness = PenWidth * TwainCtrl.Inch;
                     Canvas.SetLeft(ellipseselectionbox, x1);
                     Canvas.SetTop(ellipseselectionbox, y1);
                     ellipseselectionbox.Width = x2 - x1;

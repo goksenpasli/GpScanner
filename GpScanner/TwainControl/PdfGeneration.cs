@@ -251,8 +251,8 @@ public static class PdfGeneration
             {
                 if (paper.PaperType == "Custom")
                 {
-                    size.Width = Settings.Default.CustomPaperWidth / 2.54 * 72;
-                    size.Height = Settings.Default.CustomPaperHeight / 2.54 * 72;
+                    size.Width = Settings.Default.CustomPaperWidth / TwainCtrl.Inch * 72;
+                    size.Height = Settings.Default.CustomPaperHeight / TwainCtrl.Inch * 72;
                     page.MediaBox = new PdfRectangle(new XRect(0, 0, size.Width, size.Height));
                 }
                 else
@@ -353,8 +353,8 @@ public static class PdfGeneration
                 {
                     if (paper.PaperType == "Custom")
                     {
-                        size.Width = Settings.Default.CustomPaperWidth / 2.54 * 72;
-                        size.Height = Settings.Default.CustomPaperHeight / 2.54 * 72;
+                        size.Width = Settings.Default.CustomPaperWidth / TwainCtrl.Inch * 72;
+                        size.Height = Settings.Default.CustomPaperHeight / TwainCtrl.Inch * 72;
                         page.MediaBox = new PdfRectangle(new XRect(0, 0, size.Width, size.Height));
                     }
                     else
