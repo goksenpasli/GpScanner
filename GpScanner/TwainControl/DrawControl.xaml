@@ -172,9 +172,10 @@
                 ValueChanged="Slider_ValueChanged"
                 Value="{Binding ElementName=Ink, Path=CurrentZoom}" />
         </StackPanel>
-        <Extension:ColorPicker Grid.RowSpan="2" Grid.Column="1"
-            HexCode="{Binding SelectedColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
-            HexCodeVisibility="Collapsed" PredefinedColorVisibility="Visible"
-            SliderVisibility="Collapsed" />
+        <Expander Grid.RowSpan="2" Grid.Column="1" ExpandDirection="Left">
+            <Extension:ColorPicker HexCode="{Binding SelectedColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
+                HexCodeVisibility="Collapsed" PredefinedColorVisibility="Visible"
+                SliderVisibility="Collapsed" />
+        </Expander>
     </Grid>
 </UserControl>

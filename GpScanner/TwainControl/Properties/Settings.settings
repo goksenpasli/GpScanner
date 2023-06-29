@@ -48,7 +48,7 @@
       <Value Profile="(Default)">d.MM.yyyy</Value>
     </Setting>
     <Setting Name="RemoveProcessedImage" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="BwThreshold" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">160</Value>

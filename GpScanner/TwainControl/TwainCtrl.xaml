@@ -783,14 +783,20 @@
                                     Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
                                     <Extensions:ButtonedTextBox.ContextMenu>
                                         <ContextMenu>
-                                            <MenuItem Command="{Binding InsertFileNamePlaceHolder}" CommandParameter="[DATE]" Header="{local:Loc DAY}" />
-                                            <MenuItem Command="{Binding InsertFileNamePlaceHolder}" CommandParameter="[MONTH]" Header="{local:Loc MONTH}" />
-                                            <MenuItem Command="{Binding InsertFileNamePlaceHolder}" CommandParameter="[YEAR]" Header="{local:Loc YEAR}" />
-                                            <MenuItem Command="{Binding InsertFileNamePlaceHolder}" CommandParameter="[HOUR]" Header="{local:Loc TIME}" />
-                                            <MenuItem Command="{Binding InsertFileNamePlaceHolder}" CommandParameter="[MINUTE]" Header="{local:Loc MINUTE}" />
-                                            <MenuItem Command="{Binding InsertFileNamePlaceHolder}" CommandParameter="[SECOND]" Header="{local:Loc SECOND}" />
-                                            <MenuItem Command="{Binding InsertFileNamePlaceHolder}" CommandParameter="[GUID]" Header="{local:Loc GUID}" />
-                                            <MenuItem Command="{Binding InsertFileNamePlaceHolder}" CommandParameter="[USERNAME]" Header="{local:Loc USERNAME}" />
+                                            <ContextMenu.Resources>
+                                                <Style TargetType="MenuItem">
+                                                    <Setter Property="Command" Value="{Binding InsertFileNamePlaceHolder}" />
+                                                </Style>
+                                            </ContextMenu.Resources>
+                                            <MenuItem CommandParameter="[DATE]" Header="{local:Loc DAY}" />
+                                            <MenuItem CommandParameter="[MONTH]" Header="{local:Loc MONTH}" />
+                                            <MenuItem CommandParameter="[YEAR]" Header="{local:Loc YEAR}" />
+                                            <MenuItem CommandParameter="[HOUR]" Header="{local:Loc TIME}" />
+                                            <MenuItem CommandParameter="[MINUTE]" Header="{local:Loc MINUTE}" />
+                                            <MenuItem CommandParameter="[SECOND]" Header="{local:Loc SECOND}" />
+                                            <MenuItem CommandParameter="[GUID]" Header="{local:Loc GUID}" />
+                                            <MenuItem CommandParameter="[USERNAME]" Header="{local:Loc USERNAME}" />
+                                            <MenuItem CommandParameter="[RESOLUTION]" Header="{local:Loc RES}" />
                                         </ContextMenu>
                                     </Extensions:ButtonedTextBox.ContextMenu>
                                 </Extensions:ButtonedTextBox>
@@ -815,7 +821,7 @@
                                 Value="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}" />
                             <Extensions:ContentToggleButton Grid.Column="1">
                                 <Extensions:ContentToggleButton.OverContent>
-                                    <local:PdfSettings Width="550" />
+                                    <local:PdfSettings Width="500" />
                                 </Extensions:ContentToggleButton.OverContent>
                                 <StackPanel Orientation="Horizontal">
                                     <Image Width="24" Height="24">

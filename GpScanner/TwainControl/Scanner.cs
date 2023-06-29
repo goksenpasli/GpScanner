@@ -698,6 +698,7 @@ public class Scanner : InpcBase, IDataErrorInfo
                     .Replace("[SECOND]", DateTime.Now.Second.ToString())
                     .Replace("[GUID]", Guid.NewGuid().ToString())
                     .Replace("[USERNAME]", Environment.UserName)
+                    .Replace("[RESOLUTION]", Settings.Default.Çözünürlük.ToString())
                 : FileName;
             return saveFileName;
         }

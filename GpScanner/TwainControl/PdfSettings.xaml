@@ -7,7 +7,7 @@
     xmlns:mozjpeg="clr-namespace:MozJpeg;assembly=MozJpeg"
     xmlns:properties="clr-namespace:TwainControl.Properties" xmlns:tesseract="clr-namespace:Ocr;assembly=Ocr"
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
-    d:DesignHeight="440" d:DesignWidth="550"
+    d:DesignHeight="440" d:DesignWidth="500"
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
     UseLayoutRounding="True"
     mc:Ignorable="d">
@@ -43,12 +43,7 @@
                         TextWrapping="Wrap" />
                 </StackPanel>
                 <Separator />
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+                <UniformGrid Columns="2">
                     <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
                         Content="{local:Loc REMOVEPROCESSEDIMAGE}"
                         FontStyle="Italic" FontWeight="Bold"
@@ -64,20 +59,14 @@
                             <Run Text="{local:Loc DELETE}" />
                         </TextBlock>
                     </CheckBox>
-                    <StackPanel Grid.Column="2" Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center" Text="Custom Width" />
-                        <Extensions:NumericUpDownControl Minimum="1" Value="{Binding Path=CustomPaperWidth, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <TextBlock VerticalAlignment="Center" Text="Custom Height" />
-                        <Extensions:NumericUpDownControl Minimum="1" Value="{Binding Path=CustomPaperHeight, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    </StackPanel>
-                </Grid>
+                </UniformGrid>
             </StackPanel>
         </GroupBox.Header>
         <StackPanel>
             <HeaderedContentControl Header="{local:Loc PASSWORD}">
                 <PasswordBox IsEnabled="{Binding Scanner.PasswordProtect}" PasswordChanged="PasswordBox_PasswordChanged" />
             </HeaderedContentControl>
-            <UniformGrid Columns="3">
+            <UniformGrid Columns="2">
                 <GroupBox>
                     <StackPanel IsEnabled="{Binding Scanner.PdfPassword, Converter={StaticResource NullableToBooleanConverter}}">
                         <CheckBox Content="{local:Loc ALLOWPRINT}" IsChecked="{Binding Scanner.AllowPrint}" />
@@ -92,47 +81,62 @@
                             OpenButtonVisibility="Collapsed"
                             Text="{Binding Scanner.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <Extensions:ButtonedTextBox CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed" Text="{Binding Scanner.CreatorAppName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    </StackPanel>
-                </GroupBox>
-                <GroupBox Header="WEBP">
-                    <StackPanel>
-                        <Slider AutoToolTipPlacement="TopLeft" Maximum="95"
-                            Minimum="10" SmallChange="1"
-                            Style="{DynamicResource Slider}"
-                            Value="{Binding Path=WebpQuality, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                        <StackPanel Grid.Column="2" Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Text="Custom Width" />
+                            <Extensions:NumericUpDownControl Minimum="1" Value="{Binding Path=CustomPaperWidth, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" />
+                            <TextBlock VerticalAlignment="Center" Text="Custom Height" />
+                            <Extensions:NumericUpDownControl Minimum="1" Value="{Binding Path=CustomPaperHeight, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" />
+                        </StackPanel>
                     </StackPanel>
                 </GroupBox>
             </UniformGrid>
             <Separator />
-            <HeaderedContentControl Header="{local:Loc JPEGQUALITY}">
-                <Slider AutoToolTipPlacement="TopLeft" Maximum="95"
-                    Minimum="10" SmallChange="1"
-                    Style="{DynamicResource Slider}"
-                    Value="{Binding Path=JpegQuality, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-            </HeaderedContentControl>
-            <HeaderedContentControl Header="{local:Loc RES}">
-                <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True"
-                    Maximum="1200" Minimum="72"
-                    SmallChange="1"
-                    Style="{StaticResource Slider}"
-                    Ticks="72,96,120,150,200,300,450,600,1200"
-                    ToolTip="{local:Loc RES}"
-                    Value="{Binding Path=ImgLoadResolution, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-            </HeaderedContentControl>
-            <HeaderedContentControl>
-                <HeaderedContentControl.Header>
-                    <TextBlock>
-                        <Run Text="{local:Loc BW}" />
-                        <Run Text="{local:Loc SETTİNGS}" />
-                    </TextBlock>
-                </HeaderedContentControl.Header>
-                <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True"
-                    Maximum="255" Minimum="1"
-                    SmallChange="1"
-                    Style="{DynamicResource Slider}"
-                    ToolTip="{local:Loc BW}"
-                    Value="{Binding Path=BwThreshold, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-            </HeaderedContentControl>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="36.8" />
+                    <RowDefinition Height="36.8" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <HeaderedContentControl Header="{local:Loc JPEGQUALITY}">
+                    <Slider AutoToolTipPlacement="TopLeft" Maximum="95"
+                        Minimum="10" SmallChange="1"
+                        Style="{DynamicResource Slider}"
+                        Value="{Binding Path=JpegQuality, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                </HeaderedContentControl>
+                <HeaderedContentControl Grid.Column="2" Header="WEBP">
+                    <Slider AutoToolTipPlacement="TopLeft" Maximum="95"
+                        Minimum="10" SmallChange="1"
+                        Style="{DynamicResource Slider}"
+                        Value="{Binding Path=WebpQuality, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                </HeaderedContentControl>
+                <HeaderedContentControl Grid.Row="1" Header="{local:Loc RES}">
+                    <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True"
+                        Maximum="1200" Minimum="72"
+                        SmallChange="1"
+                        Style="{StaticResource Slider}"
+                        Ticks="72,96,120,150,200,300,450,600,1200"
+                        ToolTip="{local:Loc RES}"
+                        Value="{Binding Path=ImgLoadResolution, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                </HeaderedContentControl>
+                <HeaderedContentControl Grid.Row="1" Grid.Column="2">
+                    <HeaderedContentControl.Header>
+                        <TextBlock>
+                            <Run Text="{local:Loc BW}" />
+                            <Run Text="{local:Loc SETTİNGS}" />
+                        </TextBlock>
+                    </HeaderedContentControl.Header>
+                    <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True"
+                        Maximum="255" Minimum="1"
+                        SmallChange="1"
+                        Style="{DynamicResource Slider}"
+                        ToolTip="{local:Loc BW}"
+                        Value="{Binding Path=BwThreshold, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                </HeaderedContentControl>
+            </Grid>
             <Separator />
             <CheckBox IsChecked="{Binding Scanner.Deskew}">
                 <CheckBox.Content>

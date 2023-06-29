@@ -29,13 +29,6 @@ using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
 
 namespace PdfViewer;
 
-public enum FitImageOrientation
-{
-    Width = 0,
-
-    Height = 1
-}
-
 [TemplatePart(Name = "ScrollVwr", Type = typeof(ScrollViewer))]
 [TemplatePart(Name = "UpDown", Type = typeof(NumericUpDownControl))]
 public class PdfViewer : Control, INotifyPropertyChanged, IDisposable

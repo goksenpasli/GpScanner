@@ -502,7 +502,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 ToolBox.ResetCropMargin();
                 GC.Collect();
             },
-            parameter => Policy.CheckPolicy("SeçiliListeTemizle") && Scanner?.Resimler?.Any(z => z.Seçili) == true);
+            parameter => Policy.CheckPolicy("SeçiliListeTemizle") && Scanner?.Resimler?.Any(z => z.Seçili) == true && Scanner.ArayüzEtkin);
 
         ShowDateFolderHelp = new RelayCommand<object>(
             parameter =>

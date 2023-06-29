@@ -105,11 +105,13 @@
       <DependentUpon>DrawControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="EypPdfViewer.cs" />
+    <Compile Include="PageRotation.cs" />
     <Compile Include="PdfData.cs" />
     <Compile Include="PdfGeneration.cs" />
     <Compile Include="PdfImportViewerControl.xaml.cs">
       <DependentUpon>PdfImportViewerControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PdfPageLayout.cs" />
     <Compile Include="PdfSettings.xaml.cs">
       <DependentUpon>PdfSettings.xaml</DependentUpon>
     </Compile>
@@ -164,6 +166,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.it.resx</DependentUpon>
     </Compile>
+    <Compile Include="Quality.cs" />
     <Compile Include="Resolution.cs" />
     <Compile Include="SafeIconHandle.cs" />
     <Compile Include="SaveDialogUserControl.xaml.cs">
