@@ -27,6 +27,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     public PdfImportViewerControl()
     {
         InitializeComponent();
+        PropertyChanged += PdfImportViewerControl_PropertyChanged;
         LoadDrawImage = new RelayCommand<object>(
             parameter =>
             {
@@ -257,6 +258,18 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
+    public byte[] ImgData {
+        get => ımgData;
+
+        set {
+            if (ımgData != value)
+            {
+                ımgData = value;
+                OnPropertyChanged(nameof(ImgData));
+            }
+        }
+    }
+
     public RelayCommand<object> LoadDrawImage { get; }
 
     public RelayCommand<object> OpenPdfHistoryFile { get; }
@@ -362,7 +375,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     private void PdfImportViewerControl_MouseMove(object sender, MouseEventArgs e)
     {
-        if (e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer && DataContext is TwainCtrl twainctrl)
+        if (e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer)
         {
             Point mousemovecoord = e.GetPosition(scrollviewer);
             double x1 = Math.Min(mousedowncoord.X, mousemovecoord.X);
@@ -548,11 +561,13 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                         pdftextannotaiton.Rectangle = new PdfRectangle(annotrect);
                         page.Annotations.Add(pdftextannotaiton);
                     }
-
-                    string oldpdfpath = PdfViewer.PdfFilePath;
-                    reader.Save(PdfViewer.PdfFilePath);
-                    PdfViewer.PdfFilePath = null;
-                    PdfViewer.PdfFilePath = oldpdfpath;
+                    if (!Keyboard.IsKeyDown(Key.Escape))
+                    {
+                        string oldpdfpath = PdfViewer.PdfFilePath;
+                        reader.Save(PdfViewer.PdfFilePath);
+                        PdfViewer.PdfFilePath = null;
+                        PdfViewer.PdfFilePath = oldpdfpath;
+                    }
                     mousedowncoord.X = mousedowncoord.Y = 0;
                     isDrawMouseDown = false;
                     Cursor = Cursors.Arrow;
@@ -580,12 +595,21 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     captureY = mousedowncoord.Y < mousemovecoord.Y ? mousedowncoord.Y : mousemovecoord.Y;
                     BitmapFrame bitmapFrame = BitmapFrame.Create((BitmapSource)img.Source);
                     bitmapFrame.Freeze();
-                    twainctrl.ImgData = BitmapMethods.CaptureScreen(captureX, captureY, width, height, scrollviewer, bitmapFrame);
+                    ImgData = BitmapMethods.CaptureScreen(captureX, captureY, width, height, scrollviewer, bitmapFrame);
                     mousedowncoord.X = mousedowncoord.Y = 0;
                     isMouseDown = false;
                     Cursor = Cursors.Arrow;
                 }
             }
+        }
+    }
+
+    private void PdfImportViewerControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is "ImgData" && ImgData is not null && DataContext is TwainCtrl twainCtrl)
+        {
+            twainCtrl.ImgData = ImgData;
+            ImgData = null;
         }
     }
 
@@ -655,6 +679,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     private XKnownColor graphObjectFillColor = XKnownColor.Transparent;
 
     private double height;
+
+    private byte[] ımgData;
 
     private bool isDrawMouseDown;
 

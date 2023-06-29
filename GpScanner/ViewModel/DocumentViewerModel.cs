@@ -159,10 +159,12 @@ public class DocumentViewerModel : InpcBase
 
     private async void DocumentViewerModel_PropertyChangedAsync(object sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName is "ImgData" && ImgData is not null && !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang))
+        string defaultTtsLang = Settings.Default.DefaultTtsLang;
+        if (e.PropertyName is "ImgData" && ImgData is not null && !string.IsNullOrWhiteSpace(defaultTtsLang))
         {
-            ObservableCollection<Ocr.OcrData> ocrtext = await Ocr.Ocr.OcrAsync(ImgData, Settings.Default.DefaultTtsLang);
+            ObservableCollection<Ocr.OcrData> ocrtext = await Ocr.Ocr.OcrAsync(ImgData, defaultTtsLang);
             OcrText = string.Join(" ", ocrtext?.Select(z => z.Text));
+            ImgData = null;
         }
     }
 

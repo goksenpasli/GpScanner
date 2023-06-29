@@ -60,7 +60,9 @@ public partial class DocumentViewerWindow : Window
                 double captureX, captureY;
                 captureX = mousedowncoord.X < mousemovecoord.X ? mousedowncoord.X : mousemovecoord.X;
                 captureY = mousedowncoord.Y < mousemovecoord.Y ? mousedowncoord.Y : mousemovecoord.Y;
-                documentViewerModel.ImgData = BitmapMethods.CaptureScreen(captureX, captureY, width, height, scrollviewer, BitmapFrame.Create((BitmapSource)img.Source));
+                BitmapFrame bitmapFrame = BitmapFrame.Create((BitmapSource)img.Source);
+                bitmapFrame.Freeze();
+                documentViewerModel.ImgData = BitmapMethods.CaptureScreen(captureX, captureY, width, height, scrollviewer, bitmapFrame);
                 mousedowncoord.X = mousedowncoord.Y = 0;
                 isMouseDown = false;
                 Cursor = Cursors.Arrow;
