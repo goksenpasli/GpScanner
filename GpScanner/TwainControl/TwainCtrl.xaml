@@ -212,7 +212,7 @@
                                 Minimum="0" SmallChange="1"
                                 Value="{Binding ScanDelay, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Source={x:Static properties:Settings.Default}}" />
                             <UniformGrid Grid.Row="1" Grid.ColumnSpan="2" Columns="4">
-                                <Extensions:ContentToggleButton StaysOpen="True">
+                                <Extensions:ContentToggleButton StaysOpen="True" TopMost="False">
                                     <Extensions:ContentToggleButton.OverContent>
                                         <Extensions:ResizablePanel Width="680" Height="480"
                                             MinWidth="480" MinHeight="360">
@@ -1019,10 +1019,7 @@
                                                                     </Style>
                                                                 </Run.Style>
                                                             </Run><InlineUIContainer BaselineAlignment="Center">
-                                                                <Extensions:ContentToggleButton Background="{x:Null}"
-                                                                    BorderBrush="{x:Null}"
-                                                                    IsEnabled="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"
-                                                                    TopMost="True">
+                                                                <Extensions:ContentToggleButton Background="{x:Null}" BorderBrush="{x:Null}" IsEnabled="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}">
                                                                     <Extensions:ContentToggleButton.Style>
                                                                         <Style TargetType="{x:Type Extensions:ContentToggleButton}">
                                                                             <Style.Triggers>

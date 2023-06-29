@@ -70,7 +70,7 @@ public class ContentToggleButton : ToggleButton
 
     public static readonly DependencyProperty StaysOpenProperty = DependencyProperty.Register("StaysOpen", typeof(bool), typeof(ContentToggleButton), new PropertyMetadata(false));
 
-    public static readonly DependencyProperty TopMostProperty = DependencyProperty.Register("TopMost", typeof(bool), typeof(ContentToggleButton), new PropertyMetadata(false));
+    public static readonly DependencyProperty TopMostProperty = DependencyProperty.Register("TopMost", typeof(bool), typeof(ContentToggleButton), new PropertyMetadata(true));
 
     private static void OnTopChanged(DependencyObject d, DependencyPropertyChangedEventArgs f)
     {

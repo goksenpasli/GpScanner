@@ -61,7 +61,7 @@ public class SplitButton : ButtonBase
 
     public static readonly DependencyProperty StayOpenProperty = DependencyProperty.Register("StayOpen", typeof(bool), typeof(SplitButton), new PropertyMetadata(false));
 
-    public static readonly DependencyProperty TopMostProperty = DependencyProperty.Register("TopMost", typeof(bool), typeof(SplitButton), new PropertyMetadata(false));
+    public static readonly DependencyProperty TopMostProperty = DependencyProperty.Register("TopMost", typeof(bool), typeof(SplitButton), new PropertyMetadata(true));
 
     private static void OnTopChanged(DependencyObject d, DependencyPropertyChangedEventArgs f)
     {
