@@ -270,7 +270,7 @@ namespace MozJpeg
 
     public class MozJpeg : IDisposable
     {
-        public static bool MozJpegDllExists { get; set; } = File.Exists("turbojpeg_x86.dll");
+        public static bool MozJpegDllExists { get; } = Environment.Is64BitProcess ? File.Exists("turbojpeg_x64.dll") : File.Exists("turbojpeg_x86.dll");
 
         private readonly object _lock = new object();
 
