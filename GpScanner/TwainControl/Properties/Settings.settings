@@ -88,5 +88,8 @@
     <Setting Name="CustomPaperWidth" Type="System.Double" Scope="User">
       <Value Profile="(Default)">21</Value>
     </Setting>
+    <Setting Name="ScanDelay" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

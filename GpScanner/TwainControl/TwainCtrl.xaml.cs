@@ -71,7 +71,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         Settings.Default.PropertyChanged += Default_PropertyChanged;
         PropertyChanged += TwainCtrl_PropertyChangedAsync;
         Camera.PropertyChanged += CameraUserControl_PropertyChangedAsync;
-        SelectedTab = TbCtrl?.Items[0] as TabItem;
+        SelectedTab = TbCtrl.Items[0] as TabItem;
         SelectedPaper = Papers.FirstOrDefault(z => z.PaperType == "A4");
 
         if (Settings.Default.UseSelectedProfile)
@@ -80,9 +80,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
 
         ScanImage = new RelayCommand<object>(
-            parameter =>
+            async parameter =>
             {
                 GC.Collect();
+                await Task.Delay(TimeSpan.FromSeconds(Settings.Default.ScanDelay));
                 ScanCommonSettings();
                 twain.SelectSource(Settings.Default.SeçiliTarayıcı);
                 twain.StartScanning(_settings);
@@ -90,7 +91,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter => !Environment.Is64BitProcess && Scanner?.Tarayıcılar?.Count > 0 && !string.IsNullOrWhiteSpace(Settings.Default.SeçiliTarayıcı));
 
         FastScanImage = new RelayCommand<object>(
-            parameter =>
+            async parameter =>
             {
                 if (Filesavetask?.IsCompleted == false)
                 {
@@ -98,6 +99,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     return;
                 }
                 GC.Collect();
+                await Task.Delay(TimeSpan.FromSeconds(Settings.Default.ScanDelay));
                 ScanCommonSettings();
                 Scanner.Resimler = new ObservableCollection<ScannedImage>();
                 Scanner.Resimler.CollectionChanged -= Scanner.Resimler_CollectionChanged;

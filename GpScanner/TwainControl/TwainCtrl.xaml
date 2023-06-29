@@ -183,6 +183,10 @@
                                 <RowDefinition />
                                 <RowDefinition />
                             </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
                             <ComboBox local:Policy.PolicyName="SeçiliTarayıcı"
                                 IsEnabled="{Binding Scanner.ArayüzEtkin}"
                                 ItemsSource="{Binding Scanner.Tarayıcılar}"
@@ -203,7 +207,11 @@
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
-                            <UniformGrid Grid.Row="1" Columns="4">
+                            <Extensions:NumericUpDownControl Grid.Column="1"
+                                IsReadOnly="True" Maximum="120"
+                                Minimum="0" SmallChange="1"
+                                Value="{Binding ScanDelay, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Source={x:Static properties:Settings.Default}}" />
+                            <UniformGrid Grid.Row="1" Grid.ColumnSpan="2" Columns="4">
                                 <Extensions:ContentToggleButton StaysOpen="True">
                                     <Extensions:ContentToggleButton.OverContent>
                                         <Extensions:ResizablePanel Width="680" Height="480"
@@ -1011,7 +1019,10 @@
                                                                     </Style>
                                                                 </Run.Style>
                                                             </Run><InlineUIContainer BaselineAlignment="Center">
-                                                                <Extensions:ContentToggleButton Background="{x:Null}" BorderBrush="{x:Null}" IsEnabled="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}">
+                                                                <Extensions:ContentToggleButton Background="{x:Null}"
+                                                                    BorderBrush="{x:Null}"
+                                                                    IsEnabled="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"
+                                                                    TopMost="True">
                                                                     <Extensions:ContentToggleButton.Style>
                                                                         <Style TargetType="{x:Type Extensions:ContentToggleButton}">
                                                                             <Style.Triggers>
