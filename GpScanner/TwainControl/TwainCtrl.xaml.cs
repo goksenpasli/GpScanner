@@ -169,6 +169,16 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 if (parameter is ScannedImage item)
                 {
+                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                    {
+                        item.Resim = BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg));
+                        return;
+                    }
+                    if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                    {
+                        item.Resim = BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg));
+                        return;
+                    }
                     BitmapFrame bitmapFrame = BitmapFrame.Create(item.Resim.InvertBitmap());
                     bitmapFrame.Freeze();
                     item.Resim = bitmapFrame;
@@ -179,11 +189,24 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         InvertSelectedImage = new RelayCommand<object>(
             parameter =>
             {
+                bool bw = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt);
+                bool grayscale = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
                 foreach (ScannedImage item in Scanner?.Resimler?.Where(z => z.Seçili))
                 {
-                    BitmapFrame bitmapFrame = BitmapFrame.Create(item.Resim.InvertBitmap());
-                    bitmapFrame.Freeze();
-                    item.Resim = bitmapFrame;
+                    if (bw)
+                    {
+                        item.Resim = BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg));
+                    }
+                    if (grayscale)
+                    {
+                        item.Resim = BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg));
+                    }
+                    else
+                    {
+                        BitmapFrame bitmapFrame = BitmapFrame.Create(item.Resim.InvertBitmap());
+                        bitmapFrame.Freeze();
+                        item.Resim = bitmapFrame;
+                    }
                 }
             },
             parameter => Scanner.Resimler.Count(z => z.Seçili) > 0);
@@ -1961,7 +1984,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             () =>
             {
                 using PdfDocument outputDocument = loadfilename.ArrangePdfPages(start, end);
-                outputDocument.DefaultPdfCompression();
+                outputDocument.ApplyDefaultPdfCompression();
                 outputDocument.Save(savefilename);
             });
     }
@@ -2540,7 +2563,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             () =>
             {
                 using PdfDocument outputDocument = loadfilename.ExtractPdfPages(start, end);
-                outputDocument.DefaultPdfCompression();
+                outputDocument.ApplyDefaultPdfCompression();
                 outputDocument.Save(savefilename);
             });
     }

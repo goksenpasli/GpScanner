@@ -27,6 +27,18 @@ public static class PdfGeneration
 {
     public static Scanner Scanner { get; set; }
 
+    public static void ApplyDefaultPdfCompression(this PdfDocument doc)
+    {
+        doc.Info.Author = Scanner.UserName;
+        doc.Info.Creator = Scanner.CreatorAppName;
+        doc.Info.CreationDate = DateTime.Now;
+        doc.Options.FlateEncodeMode = PdfFlateEncodeMode.BestCompression;
+        doc.Options.CompressContentStreams = true;
+        doc.Options.UseFlateDecoderForJpegImages = PdfUseFlateDecoderForJpegImages.Automatic;
+        doc.Options.NoCompression = false;
+        doc.Options.EnableCcittCompressionForBilevelImages = true;
+    }
+
     public static PdfDocument ArrangePdfPages(this string filename, int oldindex, int newindex)
     {
         using PdfDocument inputDocument = PdfReader.Open(filename, PdfDocumentOpenMode.Modify);
@@ -41,18 +53,6 @@ public static class PdfGeneration
             gfx.MeasureString(text, new XFont("Times New Roman", fontSizeGuess, XFontStyle.Regular));
         double adjustmentFactor = adjustedBounds.Width / measuredBoundsForGuess.Width;
         return Math.Max(1, (int)Math.Floor(fontSizeGuess * adjustmentFactor));
-    }
-
-    public static void DefaultPdfCompression(this PdfDocument doc)
-    {
-        doc.Info.Author = Scanner.UserName;
-        doc.Info.Creator = Scanner.CreatorAppName;
-        doc.Info.CreationDate = DateTime.Now;
-        doc.Options.FlateEncodeMode = PdfFlateEncodeMode.BestCompression;
-        doc.Options.CompressContentStreams = true;
-        doc.Options.UseFlateDecoderForJpegImages = PdfUseFlateDecoderForJpegImages.Automatic;
-        doc.Options.NoCompression = false;
-        doc.Options.EnableCcittCompressionForBilevelImages = true;
     }
 
     public static void DrawPdfOverlayText(PdfPage page, XGraphics gfx, double textsize, string text, XBrush xBrush, string familyName, double angle = 315)
@@ -144,10 +144,10 @@ public static class PdfGeneration
 
             if (Scanner.PasswordProtect)
             {
-                ApplyPdfSecurity(document);
+                document.ApplyPdfSecurity();
             }
 
-            document.DefaultPdfCompression();
+            document.ApplyDefaultPdfCompression();
             Scanner.PdfSaveProgressValue = 0;
         }
         catch (Exception ex)
@@ -203,10 +203,10 @@ public static class PdfGeneration
             }
             if (Scanner.PasswordProtect)
             {
-                ApplyPdfSecurity(document);
+                document.ApplyPdfSecurity();
             }
 
-            document.DefaultPdfCompression();
+            document.ApplyDefaultPdfCompression();
         }
         catch (Exception ex)
         {
@@ -300,10 +300,10 @@ public static class PdfGeneration
             }
             if (Scanner.PasswordProtect)
             {
-                ApplyPdfSecurity(document);
+                document.ApplyPdfSecurity();
             }
 
-            document.DefaultPdfCompression();
+            document.ApplyDefaultPdfCompression();
             ms = null;
             data = null;
             bitmapframe = null;
@@ -435,10 +435,10 @@ public static class PdfGeneration
 
             if (Scanner.PasswordProtect)
             {
-                ApplyPdfSecurity(document);
+                document.ApplyPdfSecurity();
             }
 
-            document.DefaultPdfCompression();
+            document.ApplyDefaultPdfCompression();
             Scanner.PdfSaveProgressValue = 0;
         }
         catch (Exception ex)

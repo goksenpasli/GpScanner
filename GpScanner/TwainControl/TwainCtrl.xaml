@@ -933,12 +933,10 @@
                                         SmallChange="1"
                                         Value="{Binding AllImageRotationAngle}" />
                                 </StackPanel>
-                                <TextBlock Width="26" Height="28">
-                                    <Hyperlink local:Policy.PolicyName="InvertSelectedImage" Command="{Binding InvertSelectedImage}" TextDecorations="None">
-                                        <Run FontFamily="Wingdings" FontSize="30"
-                                            Foreground="Black" Text="[" />
-                                    </Hyperlink>
-                                </TextBlock>
+                                <Button local:Policy.PolicyName="InvertSelectedImage" BorderBrush="Cyan"
+                                    Command="{Binding InvertSelectedImage}"
+                                    Content="[" FontFamily="Wingdings"
+                                    FontSize="23" />
                             </StackPanel>
                         </Grid>
                     </GroupBox.Header>

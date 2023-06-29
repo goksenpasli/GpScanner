@@ -53,8 +53,15 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
             parameter => Scanner?.CroppedImage is not null);
 
         BlackAndWhiteImage = new RelayCommand<object>(
-            parameter => Scanner.CroppedImage =
-                ((BitmapSource)Scanner.CroppedImage).BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg),
+            parameter =>
+            {
+                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                {
+                    Scanner.CroppedImage = ((BitmapSource)Scanner.CroppedImage).BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg);
+                    return;
+                }
+                Scanner.CroppedImage = ((BitmapSource)Scanner.CroppedImage).BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg);
+            },
             parameter => Scanner?.CroppedImage is not null);
 
         ApplyColorChange = new RelayCommand<object>(parameter => Scanner.CopyCroppedImage = Scanner.CroppedImage, parameter => Scanner?.CroppedImage is not null);
@@ -229,7 +236,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                     }
                 }
 
-                pdfdocument.DefaultPdfCompression();
+                pdfdocument.ApplyDefaultPdfCompression();
                 pdfdocument.Save(savefolder.SetUniqueFile(Translation.GetResStringValue("MERGE"), "pdf"));
                 WebAdreseGit.Execute(savefolder);
                 pdfdocument = null;

@@ -152,7 +152,9 @@
                                     Style="{StaticResource Slider}"
                                     ToolTip="{local:Loc BW}"
                                     Value="{Binding Scanner.ToolBarBwThreshold, UpdateSourceTrigger=PropertyChanged}" />
-                                <Button local:Policy.PolicyName="InvertImage" Command="{Binding BlackAndWhiteImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" Content="{local:Loc BW}" />
+                                <Button local:Policy.PolicyName="InvertImage" BorderBrush="Cyan"
+                                    Command="{Binding BlackAndWhiteImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
+                                    Content="{local:Loc BW}" />
                             </StackPanel>
                             <Button x:Name="BtnPreview"
                                 local:Policy.PolicyName="LoadCroppedImage" Background="Green"
