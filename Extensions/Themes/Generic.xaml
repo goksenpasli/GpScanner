@@ -7,7 +7,6 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Extensions;component/Themes/Skin.xaml" />
     </ResourceDictionary.MergedDictionaries>
-    <ObjectDataProvider x:Key="ColorList" MethodName="GetProperties" ObjectInstance="{x:Type Colors}" />
     <DataTemplate x:Key="ColorItemTemplate">
         <Rectangle Width="16" Height="16" Fill="{Binding Name}">
             <Rectangle.ToolTip>
@@ -102,7 +101,7 @@
                             Visibility="{Binding HexCodeVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
                         <ListBox Grid.RowSpan="3" Grid.Column="1"
                             ItemTemplate="{StaticResource ColorItemTemplate}"
-                            ItemsSource="{Binding Mode=OneWay, Source={StaticResource ColorList}}"
+                            ItemsSource="{Binding ListBoxColors, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
                             SelectedValue="{Binding HexCode, RelativeSource={RelativeSource TemplatedParent}}"
                             SelectedValuePath="Name"
                             Visibility="{Binding PredefinedColorVisibility, RelativeSource={RelativeSource TemplatedParent}}">
