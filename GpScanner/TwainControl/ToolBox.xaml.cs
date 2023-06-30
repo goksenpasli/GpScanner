@@ -35,8 +35,8 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
         DeskewImage = new RelayCommand<object>(
             async parameter =>
             {
-                double skewAngle = GetDeskewAngle(Scanner.CroppedImage, true);
-                Scanner.CroppedImage = await Scanner.CroppedImage.RotateImageAsync(skewAngle);
+                double deskewAngle = Deskew.GetDeskewAngle((BitmapSource)Scanner.CroppedImage);
+                Scanner.CroppedImage = await Scanner.CroppedImage.RotateImageAsync(deskewAngle);
             },
             parameter => Scanner?.CroppedImage is not null);
 
@@ -342,12 +342,6 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
         }
 
         return savefolder;
-    }
-
-    public static double GetDeskewAngle(ImageSource ımageSource, bool fast = false)
-    {
-        Deskew sk = new((BitmapSource)ımageSource);
-        return -1 * sk.GetSkewAngle(fast);
     }
 
     public static void ResetCropMargin()

@@ -1,193 +1,86 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace TwainControl;
 
-public class Deskew(BitmapSource bmp)
+public class Deskew()
 {
-    public double GetAlpha(int Index)
+    public static double GetDeskewAngle(BitmapSource image)
     {
-        return cAlphaStart + (Index * cAlphaStep);
+        BitmapSource grayscaleImage = ConvertToGrayscale(image);
+        ImageMoments moments = CalculateImageMoments(grayscaleImage);
+        return CalculateSkewAngle(moments);
     }
 
-    public unsafe Color GetPixelColor(WriteableBitmap wb, int x, int y)
+    public class ImageMoments
     {
-        Pixel* data = (Pixel*)wb.BackBuffer;
-        int stride = wb.BackBufferStride / 4;
-        wb.Lock();
-        Pixel pixel = *(data + (y * stride) + x);
-        wb.Unlock();
-        return Color.FromRgb(pixel.R, pixel.G, pixel.B);
-    }
-
-    public double GetSkewAngle(bool fast = false)
-    {
-        double sum = 0;
-        int count = 0;
-
-        Calc(fast);
-
-        HougLine[] hl = GetTop(20);
-        int i;
-
-        for (i = 0; i <= 19; i++)
+        public ImageMoments(double mu20, double mu02, double mu11)
         {
-            sum += hl[i].Alpha;
-            count++;
+            Mu20 = mu20;
+            Mu02 = mu02;
+            Mu11 = mu11;
         }
 
-        return sum / count;
+        public double Mu02 { get; }
+
+        public double Mu11 { get; }
+
+        public double Mu20 { get; }
     }
 
-    public class HougLine
+    private static ImageMoments CalculateImageMoments(BitmapSource image)
     {
-        public double Alpha;
+        int width = image.PixelWidth;
+        int height = image.PixelHeight;
+        double m00 = 0, m10 = 0, m01 = 0;
 
-        public int Count;
+        byte[] pixels = new byte[width * height];
+        image.CopyPixels(pixels, width, 0);
 
-        public double d;
-
-        public int Index;
-    }
-
-    [StructLayout(LayoutKind.Explicit)]
-    protected struct Pixel
-    {
-        [FieldOffset(0)] public byte B;
-
-        [FieldOffset(1)] public byte G;
-
-        [FieldOffset(2)] public byte R;
-
-        [FieldOffset(3)] public byte A;
-    }
-
-    private void Calc(bool fast = false)
-    {
-        int hMin = cBmp.PixelHeight / 4;
-        int hMax = cBmp.PixelHeight * 3 / 4;
-        int pixelwidth = fast ? (int)cBmp.Width : cBmp.PixelWidth;
-        WriteableBitmap wb = new(cBmp);
-        Init();
-        int y;
-        for (y = hMin; y <= hMax; y++)
+        for (int y = 0; y < height; y++)
         {
-            int x;
-            for (x = 1; x <= pixelwidth - 2; x++)
+            for (int x = 0; x < width; x++)
             {
-                if (IsBlack(x, y, wb) && !IsBlack(x, y + 1, wb))
-                {
-                    Calc(x, y);
-                }
-            }
-        }
-    }
+                byte grayValue = pixels[(y * width) + x];
 
-    private void Calc(int x, int y)
-    {
-        int alpha;
-        for (alpha = 0; alpha <= cSteps - 1; alpha++)
-        {
-            double d = (y * cCosA[alpha]) - (x * cSinA[alpha]);
-            int dIndex = CalcDIndex(d);
-            int Index = (dIndex * cSteps) + alpha;
-            try
-            {
-                cHMatrix[Index]++;
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.ToString());
-            }
-        }
-    }
-
-    private int CalcDIndex(double d)
-    {
-        return Convert.ToInt32(d - cDMin);
-    }
-
-    private HougLine[] GetTop(int Count)
-    {
-        HougLine[] hl = new HougLine[Count + 1];
-        int i;
-        for (i = 0; i <= Count - 1; i++)
-        {
-            hl[i] = new HougLine();
-        }
-
-        for (i = 0; i <= cHMatrix.Length - 1; i++)
-        {
-            if (cHMatrix[i] > hl[Count - 1].Count)
-            {
-                hl[Count - 1].Count = cHMatrix[i];
-                hl[Count - 1].Index = i;
-                int j = Count - 1;
-                while (j > 0 && hl[j].Count > hl[j - 1].Count)
-                {
-                    HougLine tmp = hl[j];
-                    hl[j] = hl[j - 1];
-                    hl[j - 1] = tmp;
-                    j--;
-                }
+                m00 += grayValue;
+                m10 += x * grayValue;
+                m01 += y * grayValue;
             }
         }
 
-        for (i = 0; i <= Count - 1; i++)
+        double xCenter = m10 / m00;
+        double yCenter = m01 / m00;
+
+        double mu20 = 0, mu02 = 0, mu11 = 0;
+        for (int y = 0; y < height; y++)
         {
-            int dIndex = hl[i].Index / cSteps;
-            int AlphaIndex = hl[i].Index - (dIndex * cSteps);
-            hl[i].Alpha = GetAlpha(AlphaIndex);
-            hl[i].d = dIndex + cDMin;
+            for (int x = 0; x < width; x++)
+            {
+                byte grayValue = pixels[(y * width) + x];
+
+                double xShift = x - xCenter;
+                double yShift = y - yCenter;
+
+                mu20 += xShift * xShift * grayValue;
+                mu02 += yShift * yShift * grayValue;
+                mu11 += xShift * yShift * grayValue;
+            }
         }
 
-        return hl;
+        return new ImageMoments(mu20 / m00, mu02 / m00, mu11 / m00);
     }
 
-    private void Init()
+    private static double CalculateSkewAngle(ImageMoments moments)
     {
-        cSinA = new double[cSteps];
-        cCosA = new double[cSteps];
-        int i;
-        for (i = 0; i <= cSteps - 1; i++)
-        {
-            double angle = GetAlpha(i) * Math.PI / 180.0;
-            cSinA[i] = Math.Sin(angle);
-            cCosA[i] = Math.Cos(angle);
-        }
-
-        cDMin = -cBmp.PixelWidth;
-        cDCount = (int)(2 * (cBmp.PixelWidth + cBmp.PixelHeight) / cDStep);
-        cHMatrix = new int[(cDCount * cSteps) + 1];
+        double skewAngleRad = Math.Atan2(2 * moments.Mu11, moments.Mu20 - moments.Mu02) / 2;
+        double skewAngleDeg = skewAngleRad * (180 / Math.PI);
+        return skewAngleDeg > 0 ? 90 - skewAngleDeg : -(90 + skewAngleDeg);
     }
 
-    private bool IsBlack(int x, int y, WriteableBitmap wb)
+    private static BitmapSource ConvertToGrayscale(BitmapSource image)
     {
-        Color c = GetPixelColor(wb, x, y);
-        double luminance = (c.R * 0.299) + (c.G * 0.587) + (c.B * 0.114);
-        return luminance < 140;
+        return (FormatConvertedBitmap)new(image, PixelFormats.Gray8, null, 0);
     }
-
-    private readonly double cAlphaStart = -20;
-
-    private readonly double cAlphaStep = 0.2;
-
-    private readonly BitmapSource cBmp = bmp;
-
-    private readonly double cDStep = 1;
-
-    private readonly int cSteps = 40 * 5;
-
-    private double[] cCosA;
-
-    private int cDCount;
-
-    private double cDMin;
-
-    private int[] cHMatrix;
-
-    private double[] cSinA;
 }

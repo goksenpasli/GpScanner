@@ -21,7 +21,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="PreviewWidth" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">120</Value>
+      <Value Profile="(Default)">155</Value>
     </Setting>
     <Setting Name="DefaultProfile" Type="System.String" Scope="User">
       <Value Profile="(Default)" />

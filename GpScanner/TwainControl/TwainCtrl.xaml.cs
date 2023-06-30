@@ -186,6 +186,20 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => Scanner.ArayüzEtkin);
 
+        AutoDeskewImage = new RelayCommand<object>(
+            async parameter =>
+            {
+                if (parameter is ScannedImage item)
+                {
+                    if (MessageBox.Show(Application.Current.MainWindow, $"{Translation.GetResStringValue("DESKEW")} {Translation.GetResStringValue("APPLY")}", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                    {
+                        double deskewAngle = Deskew.GetDeskewAngle(item.Resim);
+                        item.Resim = BitmapFrame.Create(await ((BitmapSource)item.Resim).RotateImageAsync(deskewAngle));
+                    }
+                }
+            },
+            parameter => Scanner.ArayüzEtkin);
+
         InvertSelectedImage = new RelayCommand<object>(
             parameter =>
             {
@@ -1429,6 +1443,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public ICommand ApplyPdfMedianFilter { get; }
 
     public ICommand ArrangePdfFile { get; }
+
+    public RelayCommand<object> AutoDeskewImage { get; }
 
     public byte[] CameraQRCodeData {
         get => cameraQRCodeData;

@@ -97,7 +97,7 @@ namespace TwainControl.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("120")]
+        [global::System.Configuration.DefaultSettingValueAttribute("155")]
         public double PreviewWidth {
             get {
                 return ((double)(this["PreviewWidth"]));

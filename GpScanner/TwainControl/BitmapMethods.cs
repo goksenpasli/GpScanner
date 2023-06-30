@@ -240,7 +240,7 @@ public static class BitmapMethods
         RenderTargetBitmap skewedimage = null;
         if (deskew)
         {
-            double deskewAngle = ToolBox.GetDeskewAngle(image, true);
+            double deskewAngle = Deskew.GetDeskewAngle(image);
             skewedimage = await image.RotateImageAsync(deskewAngle);
             skewedimage.Freeze();
         }
@@ -392,7 +392,7 @@ public static class BitmapMethods
                     DrawingVisual dv = new();
                     using (DrawingContext dc = dv.RenderOpen())
                     {
-                        dc.PushTransform(new RotateTransform(angle));
+                        dc.PushTransform(new RotateTransform(angle, bitmapSource.PixelWidth / 2, bitmapSource.PixelHeight / 2));
                         dc.DrawImage(Source, new Rect(0, 0, bitmapSource.PixelWidth, bitmapSource.PixelHeight));
                         dc.Pop();
                     }
@@ -400,6 +400,7 @@ public static class BitmapMethods
                     RenderTargetBitmap rtb = new(bitmapSource.PixelWidth, bitmapSource.PixelHeight, 96, 96, PixelFormats.Default);
                     rtb.Render(dv);
                     rtb.Freeze();
+                    bitmapSource = null;
                     Source = null;
                     dv = null;
                     return rtb;
@@ -421,6 +422,7 @@ public static class BitmapMethods
 
         TransformedBitmap transformedBitmap = new(bitmapFrame, new RotateTransform(angle * 90));
         transformedBitmap.Freeze();
+        bitmapFrame = null;
         return await Task.Run(
             () =>
             {

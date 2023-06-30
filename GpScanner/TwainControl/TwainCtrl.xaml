@@ -1042,6 +1042,12 @@
                                                                 TextDecorations="None">
                                                                 <Run FontFamily="Wingdings" FontSize="26"
                                                                     Foreground="Black" Text="[" />
+                                                            </Hyperlink><Hyperlink local:Policy.PolicyName="AutoDeskewImage"
+                                                                Command="{Binding DataContext.AutoDeskewImage, ElementName=UserControl}"
+                                                                CommandParameter="{Binding Mode=OneWay}"
+                                                                TextDecorations="None">
+                                                                <Run FontFamily="Wingdings 3" FontSize="26"
+                                                                    Foreground="Black" Text="R" />
                                                             </Hyperlink>
                                                             <Hyperlink local:Policy.PolicyName="ResimSil" BaselineAlignment="Center"
                                                                 Command="{Binding DataContext.ResimSil, ElementName=UserControl}"
