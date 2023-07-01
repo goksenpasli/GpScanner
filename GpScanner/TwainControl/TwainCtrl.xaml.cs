@@ -88,7 +88,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 twain.SelectSource(Settings.Default.SeçiliTarayıcı);
                 twain.StartScanning(_settings);
             },
-            parameter => !Environment.Is64BitProcess && Scanner?.Tarayıcılar?.Count > 0 && !string.IsNullOrWhiteSpace(Settings.Default.SeçiliTarayıcı));
+            parameter => !Environment.Is64BitProcess && Scanner?.Tarayıcılar?.Count > 0 && !string.IsNullOrWhiteSpace(Settings.Default.SeçiliTarayıcı) && Policy.CheckPolicy("ScanImage"));
 
         FastScanImage = new RelayCommand<object>(
             async parameter =>
@@ -112,7 +112,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 !string.IsNullOrWhiteSpace(Settings.Default.SeçiliTarayıcı) &&
                 Scanner?.AutoSave == true &&
                 !string.IsNullOrWhiteSpace(Scanner?.FileName) &&
-                FileNameValid(Scanner?.FileName));
+                FileNameValid(Scanner?.FileName) && Policy.CheckPolicy("FastScanImage"));
 
         ResimSil = new RelayCommand<object>(
             parameter =>

@@ -220,10 +220,15 @@
                                 Command="{Binding SplitAllImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock VerticalAlignment="Center">
-                                            <Run FontFamily="Webdings" Text="§" />
-                                            <Run Text="{local:Loc SLICE}" />
-                                        </TextBlock>
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Compstui.dll" />
+                                                    <Binding Source="33" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc SLICE}" />
                                         <Image Width="16" Height="16" Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
                                     </StackPanel>
                                 </Button.Content>
@@ -277,10 +282,15 @@
                                 Command="{Binding MergeAllImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
                                 <Button.Content>
                                     <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                        <TextBlock VerticalAlignment="Center">
-                                            <Run FontFamily="Webdings" Text="§" />
-                                            <Run Text="{local:Loc MERGE}" />
-                                        </TextBlock>
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Compstui.dll" />
+                                                    <Binding Source="33" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc MERGE}" />
                                         <Image Width="16" Height="16" Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
                                     </StackPanel>
                                 </Button.Content>
@@ -315,10 +325,20 @@
                         </StackPanel>
                         <UniformGrid Columns="2">
                             <Button local:Policy.PolicyName="AutoCropImage" Command="{Binding AutoCropImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
-                                <TextBlock>
-                                    <Run Text="{local:Loc Auto}" />
-                                    <Run Text="{local:Loc TRIMIMAGE}" />
-                                </TextBlock>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center">
+                                        <Run Text="{local:Loc Auto}" />
+                                        <Run Text="{local:Loc TRIMIMAGE}" />
+                                    </TextBlock>
+                                    <Image Width="16" Height="16">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Compstui.dll" />
+                                                <Binding Source="25" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                </StackPanel>
                             </Button>
                             <Extensions:ContentToggleButton Background="{Binding Scanner.AutoCropColor, Mode=OneWay}">
                                 <TextBlock d:Text="Black" Text="{Binding Scanner.AutoCropColor, Mode=OneWay}" />

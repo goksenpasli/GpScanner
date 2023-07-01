@@ -875,7 +875,7 @@ public class GpScannerViewModel : InpcBase
         }
     }
 
-    public ObservableCollection<Size> GetPreviewSize { get => new() { new Size(175, 280), new Size(230, 370), new Size(280, 450), new Size(350, 563), new Size(425, 645) }; }
+    public ObservableCollection<Size> GetPreviewSize => new() { new Size(175, 280), new Size(230, 370), new Size(280, 450), new Size(350, 563), new Size(425, 645) };
 
     public bool ListBoxBorderAnimation {
         get => listBoxBorderAnimation;
@@ -1379,19 +1379,28 @@ public class GpScannerViewModel : InpcBase
         {
             string fileName = Process.GetCurrentProcess().MainModule.FileName;
             FileVersionInfo version = FileVersionInfo.GetVersionInfo(fileName);
-            JumpTask jumptask = new()
+            JumpTask update = new()
             {
+                IconResourcePath = $@"{Path.GetDirectoryName(fileName)}\twux32.exe",
                 Description = "GPSCANNER " + Translation.GetResStringValue("UPDATE"),
                 ApplicationPath = $@"{Path.GetDirectoryName(fileName)}\twux32.exe",
                 Arguments = $"https://github.com/goksenpasli/GpScanner/releases/download/{version.FileMajorPart}.{version.FileMinorPart}/GpScanner-Setup.txt",
                 Title = Translation.GetResStringValue("UPDATE"),
+            };
+            JumpTask scan = new()
+            {
+                Arguments = "/StiDevice:",
+                Description = Translation.GetResStringValue("SCAN"),
+                ApplicationPath = fileName,
+                Title = Translation.GetResStringValue("SCAN"),
             };
             JumpList list = JumpList.GetJumpList(Application.Current);
             list ??= new JumpList();
             list.ShowRecentCategory = true;
             list.ShowFrequentCategory = true;
             JumpList.SetJumpList(Application.Current, list);
-            list.JumpItems.Add(jumptask);
+            list.JumpItems.Add(update);
+            list.JumpItems.Add(scan);
             list.Apply();
         }
     }

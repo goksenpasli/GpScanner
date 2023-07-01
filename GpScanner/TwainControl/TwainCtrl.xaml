@@ -1319,7 +1319,20 @@
             MouseDoubleClick="GridSplitter_MouseDoubleClick" MouseRightButtonDown="GridSplitter_MouseRightButtonDown"
             ToolTip="{local:Loc SPLITTERTOOLTIP}" />
         <TabControl Grid.Column="2">
-            <TabItem Header="{local:Loc DOCUMENT}">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Width="16" Height="16">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                    <Binding Source="Shell32.dll" />
+                                    <Binding Source="1" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                        <TextBlock VerticalAlignment="Center" Text="{local:Loc DOCUMENT}" />
+                    </StackPanel>
+                </TabItem.Header>
                 <GroupBox Panel.ZIndex="-1" Background="{StaticResource GroupBoxBackGround}">
                     <GroupBox.Header>
                         <StackPanel Orientation="Horizontal">
@@ -1393,7 +1406,20 @@
                     </Grid>
                 </GroupBox>
             </TabItem>
-            <TabItem Header="{local:Loc GRAPH}">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Width="16" Height="16">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                    <Binding Source="pifmgr.dll" />
+                                    <Binding Source="16" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                        <TextBlock VerticalAlignment="Center" Text="{local:Loc GRAPH}" />
+                    </StackPanel>
+                </TabItem.Header>
                 <GroupBox Header="{local:Loc GRAPH}">
                     <local:DrawControl EditingImage="{Binding SeçiliResim.Resim}" />
                 </GroupBox>

@@ -216,7 +216,20 @@
                 </UniformGrid>
             </GroupBox.Header>
             <TabControl Background="{StaticResource BorderBackground}">
-                <TabItem Header="{twainctrl:Loc CALENDAR}">
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="TimeDate.cpl" />
+                                        <Binding Source="0" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc CALENDAR}" />
+                        </StackPanel>
+                    </TabItem.Header>
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -533,7 +546,20 @@
                         </ListBox>
                     </Grid>
                 </TabItem>
-                <TabItem Header="{twainctrl:Loc OCR}">
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="70" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc OCR}" />
+                        </StackPanel>
+                    </TabItem.Header>
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="35.2" />
