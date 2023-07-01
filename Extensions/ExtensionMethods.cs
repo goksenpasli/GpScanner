@@ -247,7 +247,7 @@ public static class ExtensionMethods
 
             _ = Icon.FromHandle(shfi.hIcon);
             using Icon icon = (Icon)Icon.FromHandle(shfi.hIcon).Clone();
-            _ = Helpers.DestroyIcon(shfi.hIcon);
+            _ = shfi.hIcon.DestroyIcon();
             BitmapSource bitmapsource =
                 Imaging.CreateBitmapSourceFromHIcon(icon.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
             bitmapsource.Freeze();

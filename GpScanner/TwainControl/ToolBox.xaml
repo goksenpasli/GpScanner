@@ -22,6 +22,7 @@
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
             <Converter:FontSizeConverter x:Key="FontSizeConverter" />
+            <Style BasedOn="{StaticResource Slider}" TargetType="Slider" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -120,9 +121,7 @@
                                 <Slider VerticalAlignment="Center"
                                     IsSnapToTickEnabled="True" Maximum="360"
                                     Minimum="0" Orientation="Horizontal"
-                                    SmallChange="1"
-                                    Style="{StaticResource Slider}"
-                                    Ticks="0, 90, 180, 270, 360"
+                                    SmallChange="1" Ticks="0, 90, 180, 270, 360"
                                     Value="{Binding Scanner.CroppedImageAngle}" />
                                 <Extensions:NumericUpDownControl Maximum="10" Minimum="0"
                                     SmallChange="1"
@@ -132,7 +131,6 @@
                                 <Slider VerticalAlignment="Center"
                                     Maximum="255" Minimum="-255"
                                     Orientation="Horizontal" SmallChange="1"
-                                    Style="{StaticResource Slider}"
                                     Value="{Binding Scanner.Brightness, Delay=100}">
                                     <Slider.Background>
                                         <LinearGradientBrush ice:Freeze="true" StartPoint="0,0.5" EndPoint="1,0.5">
@@ -149,7 +147,6 @@
                                 <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True"
                                     Maximum="255" Minimum="1"
                                     SmallChange="1"
-                                    Style="{StaticResource Slider}"
                                     ToolTip="{local:Loc BW}"
                                     Value="{Binding Scanner.ToolBarBwThreshold, UpdateSourceTrigger=PropertyChanged}" />
                                 <Button local:Policy.PolicyName="InvertImage" BorderBrush="Cyan"
@@ -173,7 +170,7 @@
                             </Button>
                         </UniformGrid>
                     </UniformGrid>
-                    <UniformGrid Columns="2" Rows="10">
+                    <UniformGrid Columns="2" Rows="13">
                         <UniformGrid Columns="2">
                             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                 <TextBlock VerticalAlignment="Center" Text="{local:Loc WIDTHCOUNT}" />
@@ -312,7 +309,6 @@
                             <Slider Width="50"
                                 AutoToolTipPlacement="TopLeft" Maximum="1024"
                                 Minimum="12" SmallChange="1"
-                                Style="{StaticResource Slider}"
                                 Value="{Binding Scanner.WatermarkTextSize}" />
                         </StackPanel>
                         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
@@ -320,7 +316,6 @@
                             <Slider Width="50"
                                 AutoToolTipPlacement="TopLeft" Maximum="360"
                                 Minimum="0" SmallChange="1"
-                                Style="{StaticResource Slider}"
                                 Value="{Binding Scanner.WatermarkAngle}" />
                         </StackPanel>
                         <UniformGrid Columns="2">
@@ -394,10 +389,15 @@
                                     PredefinedColorVisibility="Visible" />
                             </Extensions:ContentToggleButton.OverContent>
                         </Extensions:ContentToggleButton>
+                        <TextBlock VerticalAlignment="Center" Text="HUE" />
+                        <Slider Maximum="1" Minimum="0" Value="{Binding Scanner.Hue, Delay=100}"   IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"/>
+                        <TextBlock VerticalAlignment="Center" Text="SATURATION" />
+                        <Slider Maximum="2" Minimum="0" Value="{Binding Scanner.Saturation, Delay=100}"   IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"/>
+                        <TextBlock VerticalAlignment="Center" Text="LIGHTNESS" />
+                        <Slider Maximum="1" Minimum="0" Value="{Binding Scanner.Lightness, Delay=100}"   IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"/>
                         <Slider VerticalAlignment="Center"
                             IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"
                             Maximum="128" Minimum="0"
-                            Style="{StaticResource Slider}"
                             Value="{Binding Scanner.Threshold, Delay=100}" />
                         <Button x:Name="BtnApply"
                             local:Policy.PolicyName="ApplyColorChange"

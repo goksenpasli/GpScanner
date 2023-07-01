@@ -357,6 +357,9 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
         Scanner.Brightness = 0;
         Scanner.CroppedImageAngle = 0;
         Scanner.Threshold = 0;
+        Scanner.Hue = 0;
+        Scanner.Saturation = 1;
+        Scanner.Lightness = 1;
         Scanner.Watermark = string.Empty;
         Scanner.Chart = null;
         GC.Collect();
@@ -429,6 +432,11 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
             Color source = (Color)ColorConverter.ConvertFromString(Scanner.SourceColor);
             Color target = (Color)ColorConverter.ConvertFromString(Scanner.TargetColor);
             Scanner.CroppedImage = ((BitmapSource)Scanner.CopyCroppedImage).ReplaceColor(source, target, (int)Scanner.Threshold);
+        }
+
+        if (e.PropertyName is "Hue" or "Saturation" or "Lightness" && Scanner.CopyCroppedImage is not null)
+        {
+            Scanner.CroppedImage = ((BitmapSource)Scanner.CopyCroppedImage).ApplyHueSaturationLightness(Scanner.Hue, Scanner.Saturation, Scanner.Lightness);
         }
 
         if (e.PropertyName is "MedianValue" && Scanner.CopyCroppedImage is not null)

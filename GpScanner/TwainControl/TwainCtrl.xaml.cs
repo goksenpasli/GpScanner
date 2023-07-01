@@ -589,9 +589,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 Scanner.CroppedImage = SeçiliResim.Resim;
                 Scanner.CroppedImageIndex = SeçiliResim.Index;
-                Scanner.CroppedImage.Freeze();
                 Scanner.CopyCroppedImage = Scanner.CroppedImage;
-                Scanner.CroppedImage.Freeze();
             },
             parameter => SeçiliResim is not null);
 

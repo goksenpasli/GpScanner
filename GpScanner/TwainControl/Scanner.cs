@@ -70,7 +70,30 @@ public class Scanner : InpcBase, IDataErrorInfo
             }
         }
     }
-
+    public double Hue { get => hue; set {
+            if (hue != value)
+            {
+                hue = value;
+                OnPropertyChanged(nameof(Hue));
+            }
+        }
+    }
+    public double Saturation { get => saturation; set {
+            if (saturation != value)
+            {
+                saturation = value;
+                OnPropertyChanged(nameof(Saturation));
+            }
+        }
+    }
+    public double Lightness { get => lightness; set {
+            if (lightness != value)
+            {
+                lightness = value;
+                OnPropertyChanged(nameof(Lightness));
+            }
+        }
+    }
     public bool ApplyMedian {
         get => applyMedian;
 
@@ -1171,7 +1194,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     private string targetColor = "Transparent";
 
-    private double threshold = 1;
+    private double threshold;
 
     private int toolBarBwThreshold = 160;
 
@@ -1192,4 +1215,7 @@ public class Scanner : InpcBase, IDataErrorInfo
     private string watermarkFont = "Arial";
 
     private double watermarkTextSize = 64;
+    private double lightness=1;
+    private double saturation=1;
+    private double hue;
 }
