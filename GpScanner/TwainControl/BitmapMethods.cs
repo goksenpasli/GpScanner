@@ -69,21 +69,22 @@ public static class BitmapMethods
         return adjustedBitmap;
     }
 
-    public static BitmapSource ApplyHueSaturationLightness(this BitmapSource source, double hue, double saturation, double lightness)
+    public static WriteableBitmap ApplyHueSaturationLightness(this BitmapSource source, double hue, double saturation, double lightness)
     {
-        FormatConvertedBitmap formatConvertedBitmap = new(source, PixelFormats.Bgr32, null, 0);
-
         int width = source.PixelWidth;
         int height = source.PixelHeight;
-        int stride = width * 4;
+        int stride = ((width * source.Format.BitsPerPixel) + 7) / 8;
+        int bytesPerPixel = source.Format.BitsPerPixel / 8;
         byte[] pixelData = new byte[height * stride];
-        formatConvertedBitmap.CopyPixels(pixelData, stride, 0);
+        source.CopyPixels(pixelData, stride, 0);
 
-        for (int i = 0; i < pixelData.Length; i += 4)
+        _ = Parallel.For(0, pixelData.Length / bytesPerPixel, i =>
         {
-            byte r = pixelData[i + 2];
-            byte g = pixelData[i + 1];
-            byte b = pixelData[i];
+            int offset = i * bytesPerPixel;
+
+            byte r = pixelData[offset + 2];
+            byte g = pixelData[offset + 1];
+            byte b = pixelData[offset];
 
             RgbToHsv(r, g, b, out double h, out double s, out double v);
 
@@ -93,13 +94,16 @@ public static class BitmapMethods
 
             HsvToRgb(h, s, v, out byte newR, out byte newG, out byte newB);
 
-            pixelData[i + 2] = newR;
-            pixelData[i + 1] = newG;
-            pixelData[i] = newB;
-        }
+            pixelData[offset + 2] = newR;
+            pixelData[offset + 1] = newG;
+            pixelData[offset] = newB;
+        });
 
-        BitmapSource modifiedBitmap = BitmapSource.Create(width, height, 96, 96, PixelFormats.Bgr32, null, pixelData, stride);
+        WriteableBitmap modifiedBitmap = new(width, height, source.DpiX, source.DpiY, source.Format, source.Palette);
+        modifiedBitmap.WritePixels(new Int32Rect(0, 0, width, height), pixelData, width * bytesPerPixel, 0);
         modifiedBitmap.Freeze();
+        pixelData = null;
+        source = null;
         return modifiedBitmap;
     }
 
