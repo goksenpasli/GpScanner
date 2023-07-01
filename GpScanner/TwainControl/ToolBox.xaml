@@ -63,7 +63,7 @@
                         <Border Background="{StaticResource BorderBackground}" BorderBrush="{StaticResource GroupBoxBackGround}" BorderThickness="1">
                             <Grid Width="200" Height="200">
                                 <ProgressBar Background="{x:Null}" Maximum="1" Value="{Binding ToolBoxPdfMergeProgressValue, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" />
-                                <Image x:Name="Img" Source="{Binding Scanner.CroppedImage}" />
+                                <Image x:Name="Img" Source="{Binding Scanner.CroppedImageThumb}" />
                                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
                                     d:FontSize="25" d:Text="Watermark"
                                     FontFamily="{Binding Scanner.WatermarkFont}"

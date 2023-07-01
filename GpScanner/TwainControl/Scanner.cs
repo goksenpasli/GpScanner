@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Security;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Shell;
 using Extensions;
 using PdfSharp.Drawing;
@@ -70,30 +71,7 @@ public class Scanner : InpcBase, IDataErrorInfo
             }
         }
     }
-    public double Hue { get => hue; set {
-            if (hue != value)
-            {
-                hue = value;
-                OnPropertyChanged(nameof(Hue));
-            }
-        }
-    }
-    public double Saturation { get => saturation; set {
-            if (saturation != value)
-            {
-                saturation = value;
-                OnPropertyChanged(nameof(Saturation));
-            }
-        }
-    }
-    public double Lightness { get => lightness; set {
-            if (lightness != value)
-            {
-                lightness = value;
-                OnPropertyChanged(nameof(Lightness));
-            }
-        }
-    }
+
     public bool ApplyMedian {
         get => applyMedian;
 
@@ -294,6 +272,7 @@ public class Scanner : InpcBase, IDataErrorInfo
             {
                 croppedImage = value;
                 OnPropertyChanged(nameof(CroppedImage));
+                OnPropertyChanged(nameof(CroppedImageThumb));
             }
         }
     }
@@ -318,6 +297,18 @@ public class Scanner : InpcBase, IDataErrorInfo
             {
                 croppedImageIndex = value;
                 OnPropertyChanged(nameof(CroppedImageIndex));
+            }
+        }
+    }
+
+    public BitmapSource CroppedImageThumb {
+        get => ((BitmapSource)CroppedImage).Resize(Settings.Default.DefaultThumbPictureResizeRatio / 100d);
+
+        set {
+            if (croppedImageThumb != value)
+            {
+                croppedImageThumb = value;
+                OnPropertyChanged(nameof(CroppedImageThumb));
             }
         }
     }
@@ -459,6 +450,17 @@ public class Scanner : InpcBase, IDataErrorInfo
         }
     }
 
+    public double Hue {
+        get => hue; set {
+
+            if (hue != value)
+            {
+                hue = value;
+                OnPropertyChanged(nameof(Hue));
+            }
+        }
+    }
+
     public bool InvertImage {
         get => ınvertImage;
 
@@ -479,6 +481,17 @@ public class Scanner : InpcBase, IDataErrorInfo
             {
                 layout = value;
                 OnPropertyChanged(nameof(Layout));
+            }
+        }
+    }
+
+    public double Lightness {
+        get => lightness; set {
+
+            if (lightness != value)
+            {
+                lightness = value;
+                OnPropertyChanged(nameof(Lightness));
             }
         }
     }
@@ -706,6 +719,17 @@ public class Scanner : InpcBase, IDataErrorInfo
             {
                 rotateAngle = value;
                 OnPropertyChanged(nameof(RotateAngle));
+            }
+        }
+    }
+
+    public double Saturation {
+        get => saturation; set {
+
+            if (saturation != value)
+            {
+                saturation = value;
+                OnPropertyChanged(nameof(Saturation));
             }
         }
     }
@@ -1102,6 +1126,8 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     private int croppedImageIndex;
 
+    private BitmapSource croppedImageThumb;
+
     private double cropRight;
 
     private double cropTop;
@@ -1124,9 +1150,13 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     private int ftpLoadProgressValue;
 
+    private double hue;
+
     private bool ınvertImage;
 
     private PdfPageLayout layout = PdfPageLayout.Middle;
+
+    private double lightness = 1;
 
     private string localizedPath;
 
@@ -1165,6 +1195,8 @@ public class Scanner : InpcBase, IDataErrorInfo
     private ObservableCollection<ScannedImage> resimler = new();
 
     private double rotateAngle;
+
+    private double saturation = 1;
 
     private string saveFileName;
 
@@ -1215,7 +1247,4 @@ public class Scanner : InpcBase, IDataErrorInfo
     private string watermarkFont = "Arial";
 
     private double watermarkTextSize = 64;
-    private double lightness=1;
-    private double saturation=1;
-    private double hue;
 }
