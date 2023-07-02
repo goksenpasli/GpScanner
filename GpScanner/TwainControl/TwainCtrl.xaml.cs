@@ -2145,6 +2145,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                 {
                                     byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(filename);
                                     await AddPdfFileAsync(filedata, filename);
+                                    filedata = null;
                                 }
 
                                 break;
@@ -2183,6 +2184,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                     bitmapFrame.Freeze();
                                     ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
                                     await Dispatcher.InvokeAsync(() => Scanner?.Resimler.Add(img));
+                                    main = null;
+                                    bitmapFrame = null;
                                     break;
                                 }
 
@@ -2204,6 +2207,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                             Scanner?.Resimler.Add(img);
                                             double progressvalue = (i + 1) / (double)pagecount;
                                             Scanner.PdfSaveProgressValue = progressvalue == 1 ? 0 : progressvalue;
+                                            image = null;
+                                            bitmapFrame = null;
                                         }
                                     });
                                 break;
@@ -2239,8 +2244,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                                 double progressvalue = (i + 1) / (double)pagecount;
                                                 Scanner.PdfSaveProgressValue = progressvalue == 1 ? 0 : progressvalue;
                                             });
+                                        img = null;
                                     }
-
+                                    bitmapframe = null;
                                     break;
                                 }
                         }
@@ -2585,6 +2591,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         bitmapFrame.Freeze();
         ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
         await Dispatcher.InvokeAsync(() => Scanner?.Resimler.Add(img));
+        main = null;
+        bitmapFrame = null;
     }
 
     private async Task AddPdfFileAsync(byte[] filedata, string filepath = null)
@@ -2602,6 +2610,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     Scanner?.Resimler.Add(new ScannedImage { Resim = bitmapFrame, FilePath = filepath });
                     PdfLoadProgressValue = i / totalpagecount;
                 });
+            bitmapFrame = null;
         }
 
         _ = await Dispatcher.InvokeAsync(() => PdfLoadProgressValue = 0);
