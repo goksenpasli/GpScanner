@@ -21,54 +21,6 @@ namespace TwainControl;
 
 public static class BitmapMethods
 {
-    public static WriteableBitmap AdjustBrightness(this BitmapSource bitmap, int brightness)
-    {
-        int width = bitmap.PixelWidth;
-        int height = bitmap.PixelHeight;
-        int stride = ((width * bitmap.Format.BitsPerPixel) + 7) / 8;
-        int bytesPerPixel = bitmap.Format.BitsPerPixel / 8;
-        int totalBytes = height * stride;
-
-        byte[] pixelData = new byte[totalBytes];
-        bitmap.CopyPixels(pixelData, stride, 0);
-
-        _ = Parallel.For(
-            0,
-            height,
-            y =>
-            {
-                int rowOffset = y * stride;
-
-                for (int x = 0; x < width; x++)
-                {
-                    int offset = rowOffset + (x * bytesPerPixel);
-
-                    for (int i = 0; i < bytesPerPixel; i++)
-                    {
-                        int value = pixelData[offset + i] + brightness;
-
-                        if (value < 0)
-                        {
-                            value = 0;
-                        }
-                        else if (value > 255)
-                        {
-                            value = 255;
-                        }
-
-                        pixelData[offset + i] = (byte)value;
-                    }
-                }
-            });
-
-        WriteableBitmap adjustedBitmap = new(width, height, bitmap.DpiX, bitmap.DpiY, bitmap.Format, bitmap.Palette);
-        adjustedBitmap.WritePixels(new Int32Rect(0, 0, width, height), pixelData, stride, 0);
-        adjustedBitmap.Freeze();
-        pixelData = null;
-        bitmap = null;
-        return adjustedBitmap;
-    }
-
     public static WriteableBitmap ApplyHueSaturationLightness(this BitmapSource source, double hue, double saturation, double lightness)
     {
         int width = source.PixelWidth;

@@ -604,8 +604,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
         WebAdreseGit = new RelayCommand<object>(parameter => GotoPage(parameter as string), parameter => true);
 
-        OcrPage = new RelayCommand<object>(parameter => ImgData = Scanner.CroppedImage.ToTiffJpegByteArray(Format.Jpg), parameter => Scanner?.CroppedImage is not null);
-
         LoadImage = new RelayCommand<object>(
             parameter =>
             {
@@ -1646,8 +1644,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public ICommand MaximizePdfControl { get; }
 
     public ICommand MergeSelectedImagesToPdfFile { get; }
-
-    public ICommand OcrPage { get; }
 
     public ObservableCollection<Paper> Papers {
         get => papers;

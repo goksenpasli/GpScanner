@@ -57,10 +57,10 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
             {
                 if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                 {
-                    Scanner.CroppedImage = ((BitmapSource)Scanner.CroppedImage).BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg);
+                    Scanner.CroppedImage = ((BitmapSource)Scanner.CopyCroppedImage).BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg);
                     return;
                 }
-                Scanner.CroppedImage = ((BitmapSource)Scanner.CroppedImage).BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg);
+                Scanner.CroppedImage = ((BitmapSource)Scanner.CopyCroppedImage).BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg);
             },
             parameter => Scanner?.CroppedImage is not null);
 
@@ -413,11 +413,6 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
             {
                 LineGrid.RowDefinitions.Add(new RowDefinition());
             }
-        }
-
-        if (e.PropertyName is "Brightness" && Scanner.CopyCroppedImage is not null)
-        {
-            Scanner.CroppedImage = ((BitmapSource)Scanner.CopyCroppedImage).AdjustBrightness((int)Scanner.Brightness);
         }
 
         if (e.PropertyName is "CroppedImageAngle" && Scanner.CopyCroppedImage is not null)

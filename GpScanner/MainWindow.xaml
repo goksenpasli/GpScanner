@@ -573,7 +573,7 @@
                             <Button HorizontalContentAlignment="Stretch"
                                 twainctrl:Policy.PolicyName="OcrPage"
                                 Command="{Binding OcrPage, Mode=OneWay}"
-                                CommandParameter="{Binding DataContext, ElementName=TwainCtrl}">
+                                CommandParameter="{Binding SeçiliResim.Resim, ElementName=TwainCtrl}">
                                 <Button.Style>
                                     <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
                                         <Style.Triggers>

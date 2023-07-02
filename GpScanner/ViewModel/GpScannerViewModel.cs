@@ -122,9 +122,9 @@ public class GpScannerViewModel : InpcBase
         OcrPage = new RelayCommand<object>(
             async parameter =>
             {
-                if (parameter is TwainCtrl twainCtrl)
+                if (parameter is BitmapFrame bitmapframe)
                 {
-                    byte[] imgdata = twainCtrl.SeçiliResim.Resim.ToTiffJpegByteArray(Format.Jpg);
+                    byte[] imgdata = bitmapframe.ToTiffJpegByteArray(Format.Jpg);
                     OcrIsBusy = true;
                     ScannedText = await imgdata.OcrAsync(Settings.Default.DefaultTtsLang);
                     OcrIsBusy = false;
@@ -136,18 +136,18 @@ public class GpScannerViewModel : InpcBase
 
                     if (DetectBarCode)
                     {
-                        string result = await Task.Run(() => QrCode.QrCode.GetImageBarcodeResult(twainCtrl.SeçiliResim.Resim));
+                        string result = await Task.Run(() => QrCode.QrCode.GetImageBarcodeResult(bitmapframe));
                         if (result != null)
                         {
                             BarcodeList.Add(result);
                         }
                     }
-
+                    bitmapframe = null;
                     imgdata = null;
                     GC.Collect();
                 }
             },
-            parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && parameter is TwainCtrl twainCtrl && twainCtrl.SeçiliResim is not null);
+            parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && parameter is BitmapFrame bitmapFrame && bitmapFrame is not null);
 
         OcrPdfThumbnailPage = new RelayCommand<object>(
             async parameter =>

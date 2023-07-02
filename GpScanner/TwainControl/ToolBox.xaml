@@ -117,7 +117,7 @@
                     </DockPanel>
                     <UniformGrid Columns="2">
                         <StackPanel>
-                            <UniformGrid Columns="2">
+                            <UniformGrid Columns="2" IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}">
                                 <Slider VerticalAlignment="Center"
                                     IsSnapToTickEnabled="True" Maximum="360"
                                     Minimum="0" Orientation="Horizontal"
@@ -127,28 +127,23 @@
                                     SmallChange="1"
                                     Value="{Binding Scanner.MedianValue, UpdateSourceTrigger=PropertyChanged}" />
                             </UniformGrid>
-                            <UniformGrid Columns="2">
-                                <Slider VerticalAlignment="Center"
-                                    Maximum="255" Minimum="-255"
-                                    Orientation="Horizontal" SmallChange="1"
-                                    Value="{Binding Scanner.Brightness, Delay=100}">
-                                    <Slider.Background>
-                                        <LinearGradientBrush ice:Freeze="true" StartPoint="0,0.5" EndPoint="1,0.5">
-                                            <GradientStop Offset="0" Color="Black" />
-                                            <GradientStop Offset="1" Color="White" />
-                                        </LinearGradientBrush>
-                                    </Slider.Background>
-                                </Slider>
-                                <Button local:Policy.PolicyName="InvertImage" Command="{Binding InvertImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" Content="{local:Loc REVERSE}" />
-                            </UniformGrid>
+                            <Button local:Policy.PolicyName="InvertImage" Command="{Binding InvertImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" Content="{local:Loc REVERSE}" />
                         </StackPanel>
                         <UniformGrid Columns="2">
                             <StackPanel>
-                                <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True"
-                                    Maximum="255" Minimum="1"
-                                    SmallChange="1"
+                                <Slider AutoToolTipPlacement="TopLeft"
+                                    IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"
+                                    IsSnapToTickEnabled="True" Maximum="255"
+                                    Minimum="1" SmallChange="1"
                                     ToolTip="{local:Loc BW}"
-                                    Value="{Binding Scanner.ToolBarBwThreshold, UpdateSourceTrigger=PropertyChanged}" />
+                                    Value="{Binding Scanner.ToolBarBwThreshold, UpdateSourceTrigger=PropertyChanged}">
+                                    <Slider.Background>
+                                        <LinearGradientBrush ice:Freeze="true" StartPoint="0,0.5" EndPoint="1,0.5">
+                                            <GradientStop Offset="0" Color="White" />
+                                            <GradientStop Offset="1" Color="Black" />
+                                        </LinearGradientBrush>
+                                    </Slider.Background>
+                                </Slider>
                                 <Button local:Policy.PolicyName="InvertImage" BorderBrush="Cyan"
                                     Command="{Binding BlackAndWhiteImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
                                     Content="{local:Loc BW}" />
@@ -365,12 +360,6 @@
                         </UniformGrid>
                         <Button local:Policy.PolicyName="SetWatermark" Command="{Binding SetWatermark, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" Content="{local:Loc DRAWTEXT}" />
                         <Button local:Policy.PolicyName="DeskewImage" Command="{Binding DeskewImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" Content="{local:Loc DESKEW}" />
-                        <Button local:Policy.PolicyName="OcrPage"
-                            Command="{Binding OcrPage}"
-                            CommandParameter="{Binding Scanner.CroppedImage}"
-                            Content="{local:Loc OCR}"
-                            IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}" />
-                        <Button local:Policy.PolicyName="ResetCroppedImage" Command="{Binding ResetCroppedImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" Content="{local:Loc RESET}" />
                         <TextBlock VerticalAlignment="Center" Text="{local:Loc SRCCOLOR}" />
                         <Extensions:ContentToggleButton Background="{Binding Scanner.SourceColor, Mode=OneWay}">
                             <TextBlock d:Text="Red" Text="{Binding Scanner.SourceColor, Mode=OneWay}" />
@@ -389,16 +378,39 @@
                                     PredefinedColorVisibility="Visible" />
                             </Extensions:ContentToggleButton.OverContent>
                         </Extensions:ContentToggleButton>
-                        <TextBlock VerticalAlignment="Center" Text="HUE" />
-                        <Slider Maximum="1" Minimum="0" Value="{Binding Scanner.Hue, Delay=100}"   IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"/>
-                        <TextBlock VerticalAlignment="Center" Text="SATURATION" />
-                        <Slider Maximum="2" Minimum="0" Value="{Binding Scanner.Saturation, Delay=100}"   IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"/>
-                        <TextBlock VerticalAlignment="Center" Text="LIGHTNESS" />
-                        <Slider Maximum="1" Minimum="0" Value="{Binding Scanner.Lightness, Delay=100}"   IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"/>
+                        <TextBlock Text="{local:Loc THRESHOLD}" />
                         <Slider VerticalAlignment="Center"
                             IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"
                             Maximum="128" Minimum="0"
                             Value="{Binding Scanner.Threshold, Delay=100}" />
+                        <TextBlock VerticalAlignment="Center" Text="HUE" />
+                        <Slider Background="{StaticResource Colorfull}"
+                            IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"
+                            Maximum="1" Minimum="0"
+                            Value="{Binding Scanner.Hue, Delay=100}" />
+                        <TextBlock VerticalAlignment="Center" Text="SATURATION" />
+                        <Slider IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"
+                            Maximum="2" Minimum="0"
+                            Value="{Binding Scanner.Saturation, Delay=100}">
+                            <Slider.Background>
+                                <LinearGradientBrush ice:Freeze="true" StartPoint="0,0.5" EndPoint="1,0.5">
+                                    <GradientStop Offset="0" Color="Gray" />
+                                    <GradientStop Offset="1" Color="White" />
+                                </LinearGradientBrush>
+                            </Slider.Background>
+                        </Slider>
+                        <TextBlock VerticalAlignment="Center" Text="LIGHTNESS" />
+                        <Slider IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"
+                            Maximum="1" Minimum="0"
+                            Value="{Binding Scanner.Lightness, Delay=100}">
+                            <Slider.Background>
+                                <LinearGradientBrush ice:Freeze="true" StartPoint="0,0.5" EndPoint="1,0.5">
+                                    <GradientStop Offset="0" Color="Black" />
+                                    <GradientStop Offset="1" Color="White" />
+                                </LinearGradientBrush>
+                            </Slider.Background>
+                        </Slider>
+                        <Button local:Policy.PolicyName="ResetCroppedImage" Command="{Binding ResetCroppedImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" Content="{local:Loc RESET}" />
                         <Button x:Name="BtnApply"
                             local:Policy.PolicyName="ApplyColorChange"
                             Command="{Binding ApplyColorChange, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
