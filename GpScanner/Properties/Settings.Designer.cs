@@ -288,5 +288,40 @@ namespace GpScanner.Properties {
                 this["SharePointUserPassword"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CheckAppUpdate {
+            get {
+                return ((bool)(this["CheckAppUpdate"]));
+            }
+            set {
+                this["CheckAppUpdate"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("30")]
+        public int UpdateInterval {
+            get {
+                return ((int)(this["UpdateInterval"]));
+            }
+            set {
+                this["UpdateInterval"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.DateTime LastCheckDate {
+            get {
+                return ((global::System.DateTime)(this["LastCheckDate"]));
+            }
+            set {
+                this["LastCheckDate"] = value;
+            }
+        }
     }
 }

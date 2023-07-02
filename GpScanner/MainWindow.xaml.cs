@@ -108,10 +108,16 @@ public partial class MainWindow : Window
     private void MW_ContentRendered(object sender, EventArgs e)
     {
         this.SystemMenu();
-
-        if (DataContext is GpScannerViewModel ViewModel && Settings.Default.RegisterBatchWatcher && Directory.Exists(Settings.Default.BatchFolder))
+        if (DataContext is GpScannerViewModel ViewModel)
         {
-            ViewModel.RegisterBatchImageFileWatcher(TwainCtrl.SelectedPaper, Settings.Default.BatchFolder);
+            if (Settings.Default.RegisterBatchWatcher && Directory.Exists(Settings.Default.BatchFolder))
+            {
+                ViewModel.RegisterBatchImageFileWatcher(TwainCtrl.SelectedPaper, Settings.Default.BatchFolder);
+            }
+            if (ViewModel.NeedAppUpdate() && ViewModel.CheckUpdate.CanExecute(null))
+            {
+                ViewModel.CheckUpdate.Execute(null);
+            }
         }
 
         if (Settings.Default.IsFirstRun)

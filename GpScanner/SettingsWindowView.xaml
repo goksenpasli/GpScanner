@@ -57,9 +57,9 @@
                             </TextBlock>
                         </Button.Content>
                     </Button>
-                    <Button twainctrl:Policy.PolicyName="CheckUpdate" Background="Green"
-                        Command="{Binding CheckUpdate}"
-                        CommandParameter="https://github.com/goksenpasli/GpScanner/releases/download/2.0/GpScanner-Setup.txt">
+                    <Button x:Name="BtnUpdate"
+                        twainctrl:Policy.PolicyName="CheckUpdate" Background="Green"
+                        Command="{Binding CheckUpdate}">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
                                 <Image Width="24" Height="24">
@@ -77,6 +77,17 @@
                             </StackPanel>
                         </Button.Content>
                     </Button>
+                    <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
+                        IsChecked="{Binding Path=CheckAppUpdate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
+                        IsEnabled="{Binding ElementName=BtnUpdate, Path=IsEnabled}">
+                        <StackPanel Orientation="Horizontal">
+                            <Extensions:NumericUpDownControl IsEnabled="{Binding Path=CheckAppUpdate, Mode=OneWay, Source={x:Static properties:Settings.Default}}"
+                                Maximum="120" Minimum="1"
+                                SmallChange="1"
+                                Value="{Binding Path=UpdateInterval, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc DAY}" />
+                        </StackPanel>
+                    </CheckBox>
                 </StackPanel>
             </GroupBox.Header>
             <Grid>

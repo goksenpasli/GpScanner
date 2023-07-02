@@ -295,11 +295,11 @@ public class GpScannerViewModel : InpcBase
             parameter =>
             {
                 FileVersionInfo version = FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess().MainModule.FileName);
-                _ = Process.Start(
-                    "twux32.exe",
-                    $"/w:{new WindowInteropHelper(Application.Current.MainWindow).Handle} https://github.com/goksenpasli/GpScanner/releases/download/{version.FileMajorPart}.{version.FileMinorPart}/GpScanner-Setup.txt");
+                _ = Process.Start("twux32.exe", $"/w:{new WindowInteropHelper(Application.Current.MainWindow).Handle} https://github.com/goksenpasli/GpScanner/releases/download/{version.FileMajorPart}.{version.FileMinorPart}/GpScanner-Setup.txt");
+                Settings.Default.LastCheckDate = DateTime.Now;
+                Settings.Default.Save();
             },
-            parameter => File.Exists("twux32.exe"));
+            parameter => File.Exists("twux32.exe") && Policy.CheckPolicy("CheckUpdate"));
 
         SavePatchProfile = new RelayCommand<object>(
             parameter =>
@@ -1303,6 +1303,11 @@ public class GpScannerViewModel : InpcBase
         }
 
         return null;
+    }
+
+    public bool NeedAppUpdate()
+    {
+        return Settings.Default.CheckAppUpdate && DateTime.Now > Settings.Default.LastCheckDate.AddDays(Settings.Default.UpdateInterval);
     }
 
     public void RegisterBatchImageFileWatcher(Paper paper, string batchsavefolder)
