@@ -31,6 +31,30 @@
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
+            <ControlTemplate x:Key="ValidationErrorTemplate">
+                <Grid Focusable="False">
+                    <Canvas x:Name="Cnv"
+                        Width="18" Height="18"
+                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                        Background="{StaticResource Dur}"
+                        DataContext="{Binding ElementName=Adorner, Mode=OneWay}"
+                        RenderTransformOrigin="0.5,0.5" UseLayoutRounding="True">
+                        <Viewbox Width="18" Height="18">
+                            <TextBlock Foreground="White" Text="{local:Loc STOP}" />
+                        </Viewbox>
+                        <Canvas.ToolTip>
+                            <ToolTip Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}">
+                                <Border Padding="4"
+                                    Background="Red" BorderBrush="White"
+                                    BorderThickness="1">
+                                    <TextBlock Foreground="White" Text="{Binding AdornedElement.(Validation.Errors)/ErrorContent, Mode=OneWay}" />
+                                </Border>
+                            </ToolTip>
+                        </Canvas.ToolTip>
+                    </Canvas>
+                    <AdornedElementPlaceholder x:Name="Adorner" />
+                </Grid>
+            </ControlTemplate>
             <Style x:Key="ToggleButtonAnimationStyle" TargetType="{x:Type ToggleButton}">
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding Animate}" Value="true">
