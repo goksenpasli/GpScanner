@@ -129,12 +129,8 @@ public static class BitmapMethods
     {
         try
         {
-            coordx += scrollviewer.HorizontalOffset;
-            coordy += scrollviewer.VerticalOffset;
-
             double widthmultiply = bitmapFrame.PixelWidth / (scrollviewer.ExtentWidth < scrollviewer.ViewportWidth ? scrollviewer.ViewportWidth : scrollviewer.ExtentWidth);
             double heightmultiply = bitmapFrame.PixelHeight / (scrollviewer.ExtentHeight < scrollviewer.ViewportHeight ? scrollviewer.ViewportHeight : scrollviewer.ExtentHeight);
-
             Int32Rect ınt32Rect = new((int)(coordx * widthmultiply), (int)(coordy * heightmultiply), (int)(selectionwidth * widthmultiply), (int)(selectionheight * heightmultiply));
             CroppedBitmap cb = new(bitmapFrame, ınt32Rect);
             bitmapFrame = null;

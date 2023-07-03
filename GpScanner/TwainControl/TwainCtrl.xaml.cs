@@ -2850,13 +2850,14 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         {
             if (isRightMouseDown && SeçiliResim.Resim is not null)
             {
-                Point mousemovecoord = img.DesiredSize.Width < img.ActualWidth ? e.GetPosition(img) : e.GetPosition(scrollviewer);
-                mousemovecoord.X += scrollviewer.HorizontalOffset;
-                mousemovecoord.Y += scrollviewer.VerticalOffset;
-                double widthmultiply = SeçiliResim.Resim.PixelWidth / (img.DesiredSize.Width < img.ActualWidth ? img.ActualWidth : img.DesiredSize.Width);
-                double heightmultiply = SeçiliResim.Resim.PixelHeight / (img.DesiredSize.Height < img.ActualHeight ? img.ActualHeight : img.DesiredSize.Height);
-
-                Int32Rect sourceRect = new((int)(mousemovecoord.X * widthmultiply), (int)(mousemovecoord.Y * heightmultiply), 1, 1);
+                Point mousemovecoord = e.GetPosition(scrollviewer);
+                double x1 = Math.Min(mousedowncoord.X, mousemovecoord.X);
+                double y1 = Math.Min(mousedowncoord.Y, mousemovecoord.Y);
+                double coordx = x1 + scrollviewer.HorizontalOffset;
+                double coordy = y1 + scrollviewer.VerticalOffset;
+                double widthmultiply = SeçiliResim.Resim.PixelWidth / (scrollviewer.ExtentWidth < scrollviewer.ViewportWidth ? scrollviewer.ViewportWidth : scrollviewer.ExtentWidth);
+                double heightmultiply = SeçiliResim.Resim.PixelHeight / (scrollviewer.ExtentHeight < scrollviewer.ViewportHeight ? scrollviewer.ViewportHeight : scrollviewer.ExtentHeight);
+                Int32Rect sourceRect = new((int)(coordx * widthmultiply), (int)(coordy * heightmultiply), 1, 1);
                 if (sourceRect.X < SeçiliResim.Resim.PixelWidth && sourceRect.Y < SeçiliResim.Resim.PixelHeight)
                 {
                     CroppedBitmap croppedbitmap = new(SeçiliResim.Resim, sourceRect);
@@ -2881,12 +2882,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     _ = cnv.Children.Add(selectionbox);
                 }
-
                 double x1 = Math.Min(mousedowncoord.X, mousemovecoord.X);
                 double x2 = Math.Max(mousedowncoord.X, mousemovecoord.X);
                 double y1 = Math.Min(mousedowncoord.Y, mousemovecoord.Y);
                 double y2 = Math.Max(mousedowncoord.Y, mousemovecoord.Y);
-
                 Canvas.SetLeft(selectionbox, x1);
                 Canvas.SetTop(selectionbox, y1);
                 selectionbox.Width = x2 - x1;
@@ -2895,12 +2894,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (e.LeftButton == MouseButtonState.Released)
                 {
                     cnv.Children.Remove(selectionbox);
-                    width = Math.Abs(mousemovecoord.X - mousedowncoord.X);
-                    height = Math.Abs(mousemovecoord.Y - mousedowncoord.Y);
-                    double captureX, captureY;
-                    captureX = mousedowncoord.X < mousemovecoord.X ? mousedowncoord.X : mousemovecoord.X;
-                    captureY = mousedowncoord.Y < mousemovecoord.Y ? mousedowncoord.Y : mousemovecoord.Y;
-                    ImgData = BitmapMethods.CaptureScreen(captureX, captureY, width, height, scrollviewer, BitmapFrame.Create((BitmapSource)img.Source));
+                    width = Math.Abs(x2 - x1);
+                    height = Math.Abs(y2 - y1);
+                    double coordx = x1 + scrollviewer.HorizontalOffset;
+                    double coordy = y1 + scrollviewer.VerticalOffset;
+                    ImgData = BitmapMethods.CaptureScreen(coordx, coordy, width, height, scrollviewer, BitmapFrame.Create((BitmapSource)img.Source));
 
                     if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
                     {

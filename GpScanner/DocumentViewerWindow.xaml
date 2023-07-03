@@ -48,15 +48,11 @@
         <Button Command="{Binding Back}"
             Content="ç" FontFamily="Wingdings"
             FontSize="16" />
-        <Grid Grid.Row="1" Grid.ColumnSpan="3">
-            <ContentControl x:Name="cnt"
-                d:ContentTemplate="{StaticResource PdfViewerDocumentViewerTemplateFull}"
-                d:ContentTemplateSelector="{StaticResource DocumentViewerSelector}"
-                Content="{Binding PdfFilePath, IsAsync=True, Mode=OneWay}"
-                ContentTemplateSelector="{StaticResource DocumentViewerSelector}"
-                PreviewMouseDown="DocumentViewer_MouseDown" PreviewMouseMove="DocumentViewer_MouseMove" />
-            <Canvas x:Name="cnv" />
-        </Grid>
+        <ContentControl x:Name="cnt" Grid.Row="1" Grid.ColumnSpan="3"
+            d:ContentTemplate="{StaticResource PdfViewerDocumentViewerTemplateFull}"
+            d:ContentTemplateSelector="{StaticResource DocumentViewerSelector}"
+            Content="{Binding PdfFilePath, IsAsync=True, Mode=OneWay}"
+            ContentTemplateSelector="{StaticResource DocumentViewerSelector}" />
         <Button Grid.Column="2"
             Command="{Binding Forward}"
             Content="è" FontFamily="Wingdings"
