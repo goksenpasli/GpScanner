@@ -220,13 +220,7 @@
                         PrintButtonVisibility="Visible" ScrollBarVisible="Visible"
                         SearchTextContentVisibility="Collapsed" SeekingLowerPdfDpi="True"
                         SnapTick="True" />
-                    <UniformGrid Grid.Column="2" Rows="2">
-                        <local:TranslateView ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding DataContext.PdfFileContent, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}" />
-                        <TextBox Background="{StaticResource BorderBackground}"
-                            IsReadOnly="True"
-                            Text="{Binding DataContext.OcrText, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}"
-                            TextWrapping="Wrap" />
-                    </UniformGrid>
+                    <local:TranslateView Grid.Column="2" ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding DataContext.PdfFileContent, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}" />
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="PdfViewerTemplateFull">

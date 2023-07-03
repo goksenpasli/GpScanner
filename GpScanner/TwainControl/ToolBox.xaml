@@ -384,7 +384,7 @@
                             Maximum="128" Minimum="0"
                             Value="{Binding Scanner.Threshold, Delay=100}" />
                         <TextBlock VerticalAlignment="Center" Text="HUE" />
-                        <Slider Background="{StaticResource Colorfull}"
+                        <Slider Background="{DynamicResource Colorfull}"
                             IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"
                             Maximum="1" Minimum="0"
                             Value="{Binding Scanner.Hue, Delay=100}" />
