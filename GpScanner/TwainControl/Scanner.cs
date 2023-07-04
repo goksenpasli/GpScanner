@@ -436,7 +436,8 @@ public class Scanner : InpcBase, IDataErrorInfo
         }
     }
 
-    public string[] FolderDateFormats { get; } = { "d.MM.yyyy", "dd.MM.yyyy", "d-MM-yyyy", "dd-MM-yyyy", "dddd", "MMMM", "yyyy" };
+    public string[] FolderDateFormats { get; } =
+        { "d.MM.yyyy", "dd.MM.yyyy", "d-MM-yyyy", "dd-MM-yyyy", "dddd", "MMMM", "yyyy" };
 
     public int FtpLoadProgressValue {
         get => ftpLoadProgressValue;
@@ -451,8 +452,9 @@ public class Scanner : InpcBase, IDataErrorInfo
     }
 
     public double Hue {
-        get => hue; set {
+        get => hue;
 
+        set {
             if (hue != value)
             {
                 hue = value;
@@ -486,8 +488,9 @@ public class Scanner : InpcBase, IDataErrorInfo
     }
 
     public double Lightness {
-        get => lightness; set {
+        get => lightness;
 
+        set {
             if (lightness != value)
             {
                 lightness = value;
@@ -581,8 +584,9 @@ public class Scanner : InpcBase, IDataErrorInfo
     }
 
     public string PdfPageText {
-        get => pdfPageText; set {
+        get => pdfPageText;
 
+        set {
             if (pdfPageText != value)
             {
                 pdfPageText = value;
@@ -724,8 +728,9 @@ public class Scanner : InpcBase, IDataErrorInfo
     }
 
     public double Saturation {
-        get => saturation; set {
+        get => saturation;
 
+        set {
             if (saturation != value)
             {
                 saturation = value;
@@ -1049,7 +1054,8 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public string this[string columnName] => columnName switch
     {
-        "FileName" when string.IsNullOrWhiteSpace(FileName) || !TwainCtrl.FileNameValid(FileName) => $"{Translation.GetResStringValue("FILENAME")} {Translation.GetResStringValue("EMPTY")}",
+        "FileName" when string.IsNullOrWhiteSpace(FileName) || !TwainCtrl.FileNameValid(FileName) =>
+            $"{Translation.GetResStringValue("FILENAME")} {Translation.GetResStringValue("EMPTY")}",
         "ProfileName" when string.IsNullOrWhiteSpace(ProfileName) => Translation.GetResStringValue("EMPTY"),
         _ => null
     };

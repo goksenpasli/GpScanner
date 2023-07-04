@@ -9,7 +9,9 @@ namespace TwainControl;
 public class ScannedImage : InpcBase
 {
     public ScannedImage()
-    { PropertyChanged += ScannedImage_PropertyChangedAsync; }
+    {
+        PropertyChanged += ScannedImage_PropertyChangedAsync;
+    }
 
     public bool Animate {
         get => animate;

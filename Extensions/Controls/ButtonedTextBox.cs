@@ -11,7 +11,8 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 {
     static ButtonedTextBox()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(typeof(ButtonedTextBox), new FrameworkPropertyMetadata(typeof(ButtonedTextBox)));
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(ButtonedTextBox),
+            new FrameworkPropertyMetadata(typeof(ButtonedTextBox)));
     }
 
     public ButtonedTextBox()
@@ -38,7 +39,10 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         }
     }
 
-    public string Description { get => (string)GetValue(DescriptionProperty); set => SetValue(DescriptionProperty, value); }
+    public string Description {
+        get => (string)GetValue(DescriptionProperty);
+        set => SetValue(DescriptionProperty, value);
+    }
 
     public ICommand Open { get; } = new RoutedCommand();
 

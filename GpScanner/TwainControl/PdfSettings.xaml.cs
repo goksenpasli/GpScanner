@@ -4,12 +4,14 @@ using System.Windows.Controls;
 namespace TwainControl;
 
 /// <summary>
-/// Interaction logic for PdfSettings.xaml
+///     Interaction logic for PdfSettings.xaml
 /// </summary>
 public partial class PdfSettings : UserControl
 {
     public PdfSettings()
-    { InitializeComponent(); }
+    {
+        InitializeComponent();
+    }
 
     private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
     {

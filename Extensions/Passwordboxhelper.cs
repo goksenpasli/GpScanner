@@ -17,7 +17,7 @@ public class PasswordBoxHelper
     }
 
     public static readonly DependencyProperty PasswordProperty =
-        DependencyProperty.RegisterAttached("Password", typeof(string), typeof(PasswordBoxHelper),
+                DependencyProperty.RegisterAttached("Password", typeof(string), typeof(PasswordBoxHelper),
             new FrameworkPropertyMetadata(string.Empty, HandleBoundPasswordChanged)
             {
                 BindsTwoWayByDefault = true,
@@ -54,8 +54,10 @@ public class PasswordBoxHelper
     }
 
     private static readonly DependencyProperty PasswordInitializedProperty =
-                            DependencyProperty.RegisterAttached("PasswordInitialized", typeof(bool), typeof(PasswordBoxHelper), new PropertyMetadata(false));
+                DependencyProperty.RegisterAttached("PasswordInitialized", typeof(bool), typeof(PasswordBoxHelper),
+            new PropertyMetadata(false));
 
     private static readonly DependencyProperty SettingPasswordProperty =
-        DependencyProperty.RegisterAttached("SettingPassword", typeof(bool), typeof(PasswordBoxHelper), new PropertyMetadata(false));
+        DependencyProperty.RegisterAttached("SettingPassword", typeof(bool), typeof(PasswordBoxHelper),
+            new PropertyMetadata(false));
 }

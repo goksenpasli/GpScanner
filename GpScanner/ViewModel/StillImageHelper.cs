@@ -28,7 +28,8 @@ public static class StillImageHelper
     public static IEnumerable<Process> GetAllGPScannerProcess()
     {
         Process currentProcess = Process.GetCurrentProcess();
-        return Process.GetProcessesByName(currentProcess.ProcessName).Where(x => x.Id != currentProcess.Id).OrderByDescending(x => x.StartTime);
+        return Process.GetProcessesByName(currentProcess.ProcessName).Where(x => x.Id != currentProcess.Id)
+            .OrderByDescending(x => x.StartTime);
     }
 
     public static void KillServer()
@@ -69,7 +70,8 @@ public static class StillImageHelper
         }
         catch (Exception ex)
         {
-            _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+            _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK,
+                MessageBoxImage.Error);
         }
     }
 
@@ -85,7 +87,8 @@ public static class StillImageHelper
         }
         catch (Exception ex)
         {
-            _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+            _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK,
+                MessageBoxImage.Error);
         }
 
         return false;
@@ -105,7 +108,8 @@ public static class StillImageHelper
                 {
                     try
                     {
-                        using NamedPipeServerStream pipeServer = new(GetPipeName(Process.GetCurrentProcess()), PipeDirection.In);
+                        using NamedPipeServerStream pipeServer = new(GetPipeName(Process.GetCurrentProcess()),
+                            PipeDirection.In);
                         while (_serverRunning)
                         {
                             pipeServer.WaitForConnection();
@@ -153,7 +157,8 @@ public static class StillImageHelper
         }
         catch (Exception ex)
         {
-            _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+            _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK,
+                MessageBoxImage.Error);
         }
     }
 

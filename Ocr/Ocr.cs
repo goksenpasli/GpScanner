@@ -17,7 +17,8 @@ public static class Ocr
         TesseractPath = $@"{Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName)}\tessdata";
         if (Directory.Exists(TesseractPath))
         {
-            TesseractDataExists = Directory.EnumerateFiles(TesseractPath).Any(z => string.Equals(Path.GetExtension(z), ".traineddata", StringComparison.OrdinalIgnoreCase));
+            TesseractDataExists = Directory.EnumerateFiles(TesseractPath).Any(z =>
+                string.Equals(Path.GetExtension(z), ".traineddata", StringComparison.OrdinalIgnoreCase));
             return;
         }
 
@@ -97,7 +98,8 @@ public static class Ocr
         return ocrdata;
     }
 
-    private static ObservableCollection<OcrData> IterateOcr(this ResultIterator iterator, PageIteratorLevel pageIteratorLevel)
+    private static ObservableCollection<OcrData> IterateOcr(this ResultIterator iterator,
+        PageIteratorLevel pageIteratorLevel)
     {
         ObservableCollection<OcrData> ocrdata = new();
         do
@@ -111,8 +113,7 @@ public static class Ocr
                     ocrdata.Add(item);
                 }
             }
-        }
-        while (iterator.Next(pageIteratorLevel));
+        } while (iterator.Next(pageIteratorLevel));
 
         return ocrdata;
     }

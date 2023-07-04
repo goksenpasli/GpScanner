@@ -88,7 +88,8 @@ public class ColorPicker : Control
 {
     static ColorPicker()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(typeof(ColorPicker), new FrameworkPropertyMetadata(typeof(ColorPicker)));
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(ColorPicker),
+            new FrameworkPropertyMetadata(typeof(ColorPicker)));
     }
 
     public ColorPicker()
@@ -106,20 +107,37 @@ public class ColorPicker : Control
         MiddleStopColor = HSV.RGBFromHSV(0, 1f, 1f).Color();
     }
 
-    public byte Alpha { get => (byte)GetValue(AlphaProperty); set => SetValue(AlphaProperty, value); }
+    public byte Alpha {
+        get => (byte)GetValue(AlphaProperty);
+        set => SetValue(AlphaProperty, value);
+    }
 
-    public int ColorPickerColumnCount { get => (int)GetValue(ColorPickerColumnCountProperty); set => SetValue(ColorPickerColumnCountProperty, value); }
+    public int ColorPickerColumnCount {
+        get => (int)GetValue(ColorPickerColumnCountProperty);
+        set => SetValue(ColorPickerColumnCountProperty, value);
+    }
 
-    public string HexCode { get => (string)GetValue(HexCodeProperty); set => SetValue(HexCodeProperty, value); }
+    public string HexCode {
+        get => (string)GetValue(HexCodeProperty);
+        set => SetValue(HexCodeProperty, value);
+    }
 
-    public Visibility HexCodeVisibility { get => (Visibility)GetValue(HexCodeVisibilityProperty); set => SetValue(HexCodeVisibilityProperty, value); }
+    public Visibility HexCodeVisibility {
+        get => (Visibility)GetValue(HexCodeVisibilityProperty);
+        set => SetValue(HexCodeVisibilityProperty, value);
+    }
 
     public Color HexColor {
         get => (Color)GetValue(HexColorProperty);
         set => SetValue(HexColorProperty, value);
     }
 
-    public Color MiddleStopColor { get => (Color)GetValue(MiddleStopColorProperty); set => SetValue(MiddleStopColorProperty, value); }
+    public PropertyInfo[] ListBoxColors { get; } = typeof(Colors).GetProperties();
+
+    public Color MiddleStopColor {
+        get => (Color)GetValue(MiddleStopColorProperty);
+        set => SetValue(MiddleStopColorProperty, value);
+    }
 
     public Visibility PredefinedColorVisibility {
         get => (Visibility)GetValue(PredefinedColorVisibilityProperty);
@@ -128,11 +146,15 @@ public class ColorPicker : Control
 
     public GridLength SelectorLength { get; set; } = new(1, GridUnitType.Star);
 
-    public Visibility SliderVisibility { get => (Visibility)GetValue(SliderVisibilityProperty); set => SetValue(SliderVisibilityProperty, value); }
+    public Visibility SliderVisibility {
+        get => (Visibility)GetValue(SliderVisibilityProperty);
+        set => SetValue(SliderVisibilityProperty, value);
+    }
 
-    public Brush SpectrumGridBackground { get => (Brush)GetValue(SpectrumGridBackgroundProperty); set => SetValue(SpectrumGridBackgroundProperty, value); }
-
-    public PropertyInfo[] ListBoxColors { get; } = typeof(Colors).GetProperties();
+    public Brush SpectrumGridBackground {
+        get => (Brush)GetValue(SpectrumGridBackgroundProperty);
+        set => SetValue(SpectrumGridBackgroundProperty, value);
+    }
 
     public override void OnApplyTemplate()
     {
@@ -156,15 +178,22 @@ public class ColorPicker : Control
         }
     }
 
-    public static readonly DependencyProperty AlphaProperty = DependencyProperty.Register("Alpha", typeof(byte), typeof(ColorPicker), new PropertyMetadata((byte)0xff, AlphaChanged));
+    public static readonly DependencyProperty AlphaProperty = DependencyProperty.Register("Alpha", typeof(byte),
+                                                                typeof(ColorPicker), new PropertyMetadata((byte)0xff, AlphaChanged));
 
-    public static readonly DependencyProperty ColorPickerColumnCountProperty = DependencyProperty.Register("ColorPickerColumnCount", typeof(int), typeof(ColorPicker), new PropertyMetadata(8));
+    public static readonly DependencyProperty ColorPickerColumnCountProperty =
+        DependencyProperty.Register("ColorPickerColumnCount", typeof(int), typeof(ColorPicker),
+            new PropertyMetadata(8));
 
-    public static readonly DependencyProperty HexCodeProperty = DependencyProperty.Register("HexCode", typeof(string), typeof(ColorPicker), new PropertyMetadata("#00000000"));
+    public static readonly DependencyProperty HexCodeProperty = DependencyProperty.Register("HexCode", typeof(string),
+        typeof(ColorPicker), new PropertyMetadata("#00000000"));
 
-    public static readonly DependencyProperty HexCodeVisibilityProperty = DependencyProperty.Register("HexCodeVisibility", typeof(Visibility), typeof(ColorPicker), new PropertyMetadata(Visibility.Visible));
+    public static readonly DependencyProperty HexCodeVisibilityProperty =
+        DependencyProperty.Register("HexCodeVisibility", typeof(Visibility), typeof(ColorPicker),
+            new PropertyMetadata(Visibility.Visible));
 
-    public static readonly DependencyProperty HexColorProperty = DependencyProperty.Register("HexColor", typeof(Color), typeof(ColorPicker), new PropertyMetadata(Colors.Black));
+    public static readonly DependencyProperty HexColorProperty = DependencyProperty.Register("HexColor", typeof(Color),
+        typeof(ColorPicker), new PropertyMetadata(Colors.Black));
 
     public static readonly DependencyProperty MiddleStopColorProperty = DependencyProperty.Register(
         "MiddleStopColor",
@@ -172,7 +201,9 @@ public class ColorPicker : Control
         typeof(ColorPicker),
         new PropertyMetadata(Colors.Gray));
 
-    public static readonly DependencyProperty PredefinedColorVisibilityProperty = DependencyProperty.Register("PredefinedColorVisibility", typeof(Visibility), typeof(ColorPicker), new PropertyMetadata(Visibility.Collapsed));
+    public static readonly DependencyProperty PredefinedColorVisibilityProperty =
+        DependencyProperty.Register("PredefinedColorVisibility", typeof(Visibility), typeof(ColorPicker),
+            new PropertyMetadata(Visibility.Collapsed));
 
     public static readonly DependencyProperty SliderVisibilityProperty = DependencyProperty.Register(
         "SliderVisibility",
@@ -180,7 +211,9 @@ public class ColorPicker : Control
         typeof(ColorPicker),
         new PropertyMetadata(Visibility.Visible));
 
-    public static readonly DependencyProperty SpectrumGridBackgroundProperty = DependencyProperty.Register("SpectrumGridBackground", typeof(Brush), typeof(ColorPicker), new PropertyMetadata(Brushes.Transparent));
+    public static readonly DependencyProperty SpectrumGridBackgroundProperty =
+        DependencyProperty.Register("SpectrumGridBackground", typeof(Brush), typeof(ColorPicker),
+            new PropertyMetadata(Brushes.Transparent));
 
     public RGB Selected = new();
 
@@ -201,7 +234,8 @@ public class ColorPicker : Control
             _ = pos.Y;
             RGB c = x < _rgbgrid.ActualWidth / 2
                 ? HSV.RGBFromHSV(currH, 1f, x / (_rgbgrid.ActualWidth / 2))
-                : HSV.RGBFromHSV(currH, ((_rgbgrid.ActualWidth / 2) - (x - (_rgbgrid.ActualWidth / 2))) / _rgbgrid.ActualWidth, 1f);
+                : HSV.RGBFromHSV(currH,
+                    ((_rgbgrid.ActualWidth / 2) - (x - (_rgbgrid.ActualWidth / 2))) / _rgbgrid.ActualWidth, 1f);
 
             HexCode = $"#{c.Hex(Alpha)}";
             HexColor = (Color)ColorConverter.ConvertFromString(HexCode);
@@ -255,7 +289,7 @@ public class RGB
 
     public Color Color()
     {
-        return new() { R = R, G = G, B = B, A = 255 };
+        return new Color { R = R, G = G, B = B, A = 255 };
     }
 
     public string Hex(byte Alpha)

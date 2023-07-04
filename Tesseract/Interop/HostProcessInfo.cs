@@ -3,7 +3,7 @@
 namespace Tesseract.Interop
 {
     /// <summary>
-    /// Provides information about the hosting process.
+    ///     Provides information about the hosting process.
     /// </summary>
     internal static class HostProcessInfo
     {

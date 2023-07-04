@@ -1,25 +1,25 @@
 ﻿using System;
+using Extensions;
 using Microsoft.Win32.SafeHandles;
 
-namespace TwainControl
+namespace TwainControl;
+
+public partial class DrawControl
 {
-    public partial class DrawControl
+    public class SafeIconHandle : SafeHandleZeroOrMinusOneIsInvalid
     {
-        public class SafeIconHandle : SafeHandleZeroOrMinusOneIsInvalid
+        public SafeIconHandle(IntPtr hIcon) : base(true)
         {
-            public SafeIconHandle(IntPtr hIcon) : base(true)
-            {
-                SetHandle(hIcon);
-            }
+            SetHandle(hIcon);
+        }
 
-            protected override bool ReleaseHandle()
-            {
-                return Extensions.Helpers.DestroyIcon(handle);
-            }
+        protected override bool ReleaseHandle()
+        {
+            return Helpers.DestroyIcon(handle);
+        }
 
-            private SafeIconHandle() : base(true)
-            {
-            }
+        private SafeIconHandle() : base(true)
+        {
         }
     }
 }

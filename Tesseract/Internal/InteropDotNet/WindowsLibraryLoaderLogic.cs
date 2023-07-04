@@ -7,7 +7,9 @@ namespace Tesseract.Internal.InteropDotNet
     {
         public string FixUpLibraryName(string fileName)
         {
-            return !string.IsNullOrEmpty(fileName) && !fileName.EndsWith(".dll", StringComparison.OrdinalIgnoreCase) ? $"{fileName}.dll" : fileName;
+            return !string.IsNullOrEmpty(fileName) && !fileName.EndsWith(".dll", StringComparison.OrdinalIgnoreCase)
+                ? $"{fileName}.dll"
+                : fileName;
         }
 
         public bool FreeLibrary(IntPtr libraryHandle)
@@ -22,7 +24,8 @@ namespace Tesseract.Internal.InteropDotNet
                 }
                 else
                 {
-                    Logger.TraceError("Failed to free native library with handle {0}.\r\nCheck windows event log.", libraryHandle);
+                    Logger.TraceError("Failed to free native library with handle {0}.\r\nCheck windows event log.",
+                        libraryHandle);
                 }
 
                 return isSuccess;
@@ -43,15 +46,18 @@ namespace Tesseract.Internal.InteropDotNet
         {
             try
             {
-                Logger.TraceInformation("Trying to load native function \"{0}\" from the library with handle {1}...", functionName, libraryHandle);
+                Logger.TraceInformation("Trying to load native function \"{0}\" from the library with handle {1}...",
+                    functionName, libraryHandle);
                 IntPtr functionHandle = WindowsGetProcAddress(libraryHandle, functionName);
                 if (functionHandle != IntPtr.Zero)
                 {
-                    Logger.TraceInformation("Successfully loaded native function \"{0}\", function handle = {1}.", functionName, functionHandle);
+                    Logger.TraceInformation("Successfully loaded native function \"{0}\", function handle = {1}.",
+                        functionName, functionHandle);
                 }
                 else
                 {
-                    throw new LoadLibraryException($"Failed to load native function \"{functionName}\" from library with handle  {libraryHandle}.");
+                    throw new LoadLibraryException(
+                        $"Failed to load native function \"{functionName}\" from library with handle  {libraryHandle}.");
                 }
 
                 return functionHandle;
@@ -80,7 +86,8 @@ namespace Tesseract.Internal.InteropDotNet
                 libraryHandle = WindowsLoadLibrary(fileName);
                 if (libraryHandle != IntPtr.Zero)
                 {
-                    Logger.TraceInformation("Successfully loaded native library \"{0}\", handle = {1}.", fileName, libraryHandle);
+                    Logger.TraceInformation("Successfully loaded native library \"{0}\", handle = {1}.", fileName,
+                        libraryHandle);
                 }
                 else
                 {
@@ -101,13 +108,13 @@ namespace Tesseract.Internal.InteropDotNet
         }
 
         [DllImport(
-        "kernel32",
-        EntryPoint = "FreeLibrary",
-        CallingConvention = CallingConvention.Winapi,
-        SetLastError = true,
-        CharSet = CharSet.Auto,
-        BestFitMapping = false,
-        ThrowOnUnmappableChar = true)]
+            "kernel32",
+            EntryPoint = "FreeLibrary",
+            CallingConvention = CallingConvention.Winapi,
+            SetLastError = true,
+            CharSet = CharSet.Auto,
+            BestFitMapping = false,
+            ThrowOnUnmappableChar = true)]
         private static extern bool WindowsFreeLibrary(IntPtr handle);
 
         private static int WindowsGetLastError()
@@ -115,17 +122,18 @@ namespace Tesseract.Internal.InteropDotNet
             return Marshal.GetLastWin32Error();
         }
 
-        [DllImport("kernel32", EntryPoint = "GetProcAddress", CallingConvention = CallingConvention.Winapi, SetLastError = true)]
+        [DllImport("kernel32", EntryPoint = "GetProcAddress", CallingConvention = CallingConvention.Winapi,
+            SetLastError = true)]
         private static extern IntPtr WindowsGetProcAddress(IntPtr handle, string procedureName);
 
         [DllImport(
-        "kernel32",
-        EntryPoint = "LoadLibrary",
-        CallingConvention = CallingConvention.Winapi,
-        SetLastError = true,
-        CharSet = CharSet.Auto,
-        BestFitMapping = false,
-        ThrowOnUnmappableChar = true)]
+            "kernel32",
+            EntryPoint = "LoadLibrary",
+            CallingConvention = CallingConvention.Winapi,
+            SetLastError = true,
+            CharSet = CharSet.Auto,
+            BestFitMapping = false,
+            ThrowOnUnmappableChar = true)]
         private static extern IntPtr WindowsLoadLibrary(string dllPath);
     }
 }

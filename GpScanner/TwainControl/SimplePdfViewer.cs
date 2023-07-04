@@ -18,7 +18,7 @@ public class SimplePdfViewer : PdfViewer.PdfViewer
 
         if (maximizePdfWindow == null)
         {
-            maximizePdfWindow = new Window()
+            maximizePdfWindow = new Window
             {
                 WindowState = WindowState.Maximized,
                 ShowInTaskbar = true,

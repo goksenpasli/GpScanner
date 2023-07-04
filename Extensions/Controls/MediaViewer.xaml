@@ -20,9 +20,7 @@
             <local:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter" />
             <local:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-            <local:VisibilityToBooleanConverter x:Key="VisibilityToBooleanConverter" />
             <Style BasedOn="{StaticResource Slider}" TargetType="Slider" />
-            <CollectionViewSource x:Key="Subtitle" Source="{Binding ParsedSubtitle}" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>

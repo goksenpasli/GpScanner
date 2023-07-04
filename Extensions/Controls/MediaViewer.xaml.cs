@@ -50,7 +50,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                     ParsedSubtitle = ParseSrtFile(SubtitleFilePath);
                 }
             },
-         parameter => true);
+            parameter => true);
 
         OpenFile = new RelayCommand<object>(
             parameter =>
@@ -65,7 +65,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                     MediaDataFilePath = openFileDialog.FileName;
                 }
             },
-         parameter => true);
+            parameter => true);
 
         CaptureImage = new RelayCommand<object>(
             parameter =>
@@ -78,7 +78,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                 OsdText = "Görüntü Yakalandı";
                 GC.Collect();
             },
-         parameter => Player?.NaturalVideoWidth > 0 && MediaDataFilePath != null);
+            parameter => Player?.NaturalVideoWidth > 0 && MediaDataFilePath != null);
 
         CaptureThumbnail = new RelayCommand<object>(
             async parameter =>
@@ -134,12 +134,13 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                 }
 
                 string dosya = picturesfolder.SetUniqueFile("Resim", "jpg");
-                File.WriteAllBytes(dosya, uniformgrid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg));
+                File.WriteAllBytes(dosya,
+                    uniformgrid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg));
                 ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, dosya);
                 MediaVolume = 1;
                 GC.Collect();
             },
-         parameter => Player?.NaturalVideoWidth > 0 && MediaDataFilePath != null);
+            parameter => Player?.NaturalVideoWidth > 0 && MediaDataFilePath != null);
 
         AddToPlaylist = new RelayCommand<object>(
             parameter =>
@@ -160,16 +161,16 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                     }
                 }
             },
-         parameter => true);
+            parameter => true);
 
         SetSubtitleMargin = new RelayCommand<object>(
             parameter =>
             {
                 Thickness defaultsubtitlethickness = new(
-                   SubTitleMargin.Left,
-                   SubTitleMargin.Top,
-                   SubTitleMargin.Right,
-                   SubTitleMargin.Bottom);
+                    SubTitleMargin.Left,
+                    SubTitleMargin.Top,
+                    SubTitleMargin.Right,
+                    SubTitleMargin.Bottom);
                 if (parameter is object content)
                 {
                     switch (content)
@@ -199,7 +200,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                     SubTitleMargin = defaultsubtitlethickness;
                 }
             },
-         parameter => true);
+            parameter => true);
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -208,35 +209,59 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public double Angle { get => (double)GetValue(AngleProperty); set => SetValue(AngleProperty, value); }
+    public double Angle {
+        get => (double)GetValue(AngleProperty);
+        set => SetValue(AngleProperty, value);
+    }
 
     [Description("Video Effects")]
     [Category("Effects")]
-    public bool ApplyBw { get => (bool)GetValue(ApplyBwProperty); set => SetValue(ApplyBwProperty, value); }
+    public bool ApplyBw {
+        get => (bool)GetValue(ApplyBwProperty);
+        set => SetValue(ApplyBwProperty, value);
+    }
 
     [Description("Video Effects")]
     [Category("Effects")]
-    public bool ApplyEmboss { get => (bool)GetValue(ApplyEmbossProperty); set => SetValue(ApplyEmbossProperty, value); }
+    public bool ApplyEmboss {
+        get => (bool)GetValue(ApplyEmbossProperty);
+        set => SetValue(ApplyEmbossProperty, value);
+    }
 
     [Description("Video Effects")]
     [Category("Effects")]
-    public bool ApplyGrayscale { get => (bool)GetValue(ApplyGrayscaleProperty); set => SetValue(ApplyGrayscaleProperty, value); }
+    public bool ApplyGrayscale {
+        get => (bool)GetValue(ApplyGrayscaleProperty);
+        set => SetValue(ApplyGrayscaleProperty, value);
+    }
 
     [Description("Video Effects")]
     [Category("Effects")]
-    public bool ApplyPixelate { get => (bool)GetValue(ApplyPixelateProperty); set => SetValue(ApplyPixelateProperty, value); }
+    public bool ApplyPixelate {
+        get => (bool)GetValue(ApplyPixelateProperty);
+        set => SetValue(ApplyPixelateProperty, value);
+    }
 
     [Description("Video Effects")]
     [Category("Effects")]
-    public bool ApplySharpen { get => (bool)GetValue(ApplySharpenProperty); set => SetValue(ApplySharpenProperty, value); }
+    public bool ApplySharpen {
+        get => (bool)GetValue(ApplySharpenProperty);
+        set => SetValue(ApplySharpenProperty, value);
+    }
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
-    public bool AutoLoadSameNameSubtitleFile { get => (bool)GetValue(AutoLoadSameNameSubtitleFileProperty); set => SetValue(AutoLoadSameNameSubtitleFileProperty, value); }
+    public bool AutoLoadSameNameSubtitleFile {
+        get => (bool)GetValue(AutoLoadSameNameSubtitleFileProperty);
+        set => SetValue(AutoLoadSameNameSubtitleFileProperty, value);
+    }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public bool AutoPlay { get => (bool)GetValue(AutoPlayProperty); set => SetValue(AutoPlayProperty, value); }
+    public bool AutoPlay {
+        get => (bool)GetValue(AutoPlayProperty);
+        set => SetValue(AutoPlayProperty, value);
+    }
 
     [Description("Video Controls")]
     [Category("Controls")]
@@ -244,19 +269,31 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     [Description("Subtitle Translate")]
     [Category("Translate")]
-    public bool AutoTranslate { get => (bool)GetValue(AutoTranslateProperty); set => SetValue(AutoTranslateProperty, value); }
+    public bool AutoTranslate {
+        get => (bool)GetValue(AutoTranslateProperty);
+        set => SetValue(AutoTranslateProperty, value);
+    }
 
     [Description("Video Effects")]
     [Category("Effects")]
-    public double BlurAmount { get => (double)GetValue(BlurAmountProperty); set => SetValue(BlurAmountProperty, value); }
+    public double BlurAmount {
+        get => (double)GetValue(BlurAmountProperty);
+        set => SetValue(BlurAmountProperty, value);
+    }
 
     [Description("Video Effects")]
     [Category("Effects")]
-    public bool BlurColor { get => (bool)GetValue(BlurColorProperty); set => SetValue(BlurColorProperty, value); }
+    public bool BlurColor {
+        get => (bool)GetValue(BlurColorProperty);
+        set => SetValue(BlurColorProperty, value);
+    }
 
     [Description("Video Effects")]
     [Category("Effects")]
-    public double BwAmount { get => (double)GetValue(BwAmountProperty); set => SetValue(BwAmountProperty, value); }
+    public double BwAmount {
+        get => (double)GetValue(BwAmountProperty);
+        set => SetValue(BwAmountProperty, value);
+    }
 
     public RelayCommand<object> CaptureImage { get; }
 
@@ -264,11 +301,17 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public Visibility ContextMenuVisibility { get => (Visibility)GetValue(ContextMenuVisibilityProperty); set => SetValue(ContextMenuVisibilityProperty, value); }
+    public Visibility ContextMenuVisibility {
+        get => (Visibility)GetValue(ContextMenuVisibilityProperty);
+        set => SetValue(ContextMenuVisibilityProperty, value);
+    }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public Visibility ControlVisible { get => (Visibility)GetValue(ControlVisibleProperty); set => SetValue(ControlVisibleProperty, value); }
+    public Visibility ControlVisible {
+        get => (Visibility)GetValue(ControlVisibleProperty);
+        set => SetValue(ControlVisibleProperty, value);
+    }
 
     [Description("Subtitle Translate")]
     [Category("Translate")]
@@ -276,15 +319,24 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public TimeSpan EndTimeSpan { get => (TimeSpan)GetValue(EndTimeSpanProperty); set => SetValue(EndTimeSpanProperty, value); }
+    public TimeSpan EndTimeSpan {
+        get => (TimeSpan)GetValue(EndTimeSpanProperty);
+        set => SetValue(EndTimeSpanProperty, value);
+    }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public double FlipX { get => (double)GetValue(FlipXProperty); set => SetValue(FlipXProperty, value); }
+    public double FlipX {
+        get => (double)GetValue(FlipXProperty);
+        set => SetValue(FlipXProperty, value);
+    }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public double FlipY { get => (double)GetValue(FlipYProperty); set => SetValue(FlipYProperty, value); }
+    public double FlipY {
+        get => (double)GetValue(FlipYProperty);
+        set => SetValue(FlipYProperty, value);
+    }
 
     [Description("Video Controls")]
     [Category("Controls")]
@@ -292,27 +344,42 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public double Fov { get => (double)GetValue(FovProperty); set => SetValue(FovProperty, value); }
+    public double Fov {
+        get => (double)GetValue(FovProperty);
+        set => SetValue(FovProperty, value);
+    }
 
     public RelayCommand<object> GoToFrame { get; }
 
     [Description("Video Effects")]
     [Category("Effects")]
-    public bool InvertColor { get => (bool)GetValue(InvertColorProperty); set => SetValue(InvertColorProperty, value); }
+    public bool InvertColor {
+        get => (bool)GetValue(InvertColorProperty);
+        set => SetValue(InvertColorProperty, value);
+    }
 
     public RelayCommand<object> LoadSubtitle { get; }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public string MediaDataFilePath { get => (string)GetValue(MediaDataFilePathProperty); set => SetValue(MediaDataFilePathProperty, value); }
+    public string MediaDataFilePath {
+        get => (string)GetValue(MediaDataFilePathProperty);
+        set => SetValue(MediaDataFilePathProperty, value);
+    }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public TimeSpan MediaPosition { get => (TimeSpan)GetValue(MediaPositionProperty); set => SetValue(MediaPositionProperty, value); }
+    public TimeSpan MediaPosition {
+        get => (TimeSpan)GetValue(MediaPositionProperty);
+        set => SetValue(MediaPositionProperty, value);
+    }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public double MediaVolume { get => (double)GetValue(MediaVolumeProperty); set => SetValue(MediaVolumeProperty, value); }
+    public double MediaVolume {
+        get => (double)GetValue(MediaVolumeProperty);
+        set => SetValue(MediaVolumeProperty, value);
+    }
 
     [Description("Subtitle Translate")]
     [Category("Translate")]
@@ -320,26 +387,41 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public Visibility OpenButtonVisibility { get => (Visibility)GetValue(OpenButtonVisibilityProperty); set => SetValue(OpenButtonVisibilityProperty, value); }
+    public Visibility OpenButtonVisibility {
+        get => (Visibility)GetValue(OpenButtonVisibilityProperty);
+        set => SetValue(OpenButtonVisibilityProperty, value);
+    }
 
     public RelayCommand<object> OpenFile { get; }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public int OsdDisplayTime { get => (int)GetValue(OsdDisplayTimeProperty); set => SetValue(OsdDisplayTimeProperty, value); }
+    public int OsdDisplayTime {
+        get => (int)GetValue(OsdDisplayTimeProperty);
+        set => SetValue(OsdDisplayTimeProperty, value);
+    }
 
     [Description("Video Controls")]
     [Category("Controls")]
     [Browsable(false)]
-    public string OsdText { get => (string)GetValue(OsdTextProperty); set => SetValue(OsdTextProperty, value); }
+    public string OsdText {
+        get => (string)GetValue(OsdTextProperty);
+        set => SetValue(OsdTextProperty, value);
+    }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public Visibility OsdTextVisibility { get => (Visibility)GetValue(OsdTextVisibilityProperty); set => SetValue(OsdTextVisibilityProperty, value); }
+    public Visibility OsdTextVisibility {
+        get => (Visibility)GetValue(OsdTextVisibilityProperty);
+        set => SetValue(OsdTextVisibilityProperty, value);
+    }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public bool PanoramaMode { get => (bool)GetValue(PanoramaModeProperty); set => SetValue(PanoramaModeProperty, value); }
+    public bool PanoramaMode {
+        get => (bool)GetValue(PanoramaModeProperty);
+        set => SetValue(PanoramaModeProperty, value);
+    }
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
@@ -358,7 +440,10 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     [Description("Video Effects")]
     [Category("Effects")]
-    public Size PixelateSize { get => (Size)GetValue(PixelateSizeProperty); set => SetValue(PixelateSizeProperty, value); }
+    public Size PixelateSize {
+        get => (Size)GetValue(PixelateSizeProperty);
+        set => SetValue(PixelateSizeProperty, value);
+    }
 
     [Description("Video Controls")]
     [Category("Controls")]
@@ -368,15 +453,23 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     [Description("Video Controls")]
     [Category("Controls")]
     [Browsable(false)]
-    public double RotateX { get => (double)GetValue(RotateXProperty); set => SetValue(RotateXProperty, value); }
+    public double RotateX {
+        get => (double)GetValue(RotateXProperty);
+        set => SetValue(RotateXProperty, value);
+    }
 
     [Description("Video Controls")]
     [Category("Controls")]
     [Browsable(false)]
-    public double RotateY { get => (double)GetValue(RotateYProperty); set => SetValue(RotateYProperty, value); }
+    public double RotateY {
+        get => (double)GetValue(RotateYProperty);
+        set => SetValue(RotateYProperty, value);
+    }
 
     public string SearchSubtitle {
-        get => searchSubtitle; set {
+        get => searchSubtitle;
+
+        set {
             if (searchSubtitle != value)
             {
                 searchSubtitle = value;
@@ -389,26 +482,41 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     [Description("Video Effects")]
     [Category("Effects")]
-    public double SharpenAmount { get => (double)GetValue(SharpenAmountProperty); set => SetValue(SharpenAmountProperty, value); }
+    public double SharpenAmount {
+        get => (double)GetValue(SharpenAmountProperty);
+        set => SetValue(SharpenAmountProperty, value);
+    }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public Visibility SliderControlVisible { get => (Visibility)GetValue(SliderControlVisibleProperty); set => SetValue(SliderControlVisibleProperty, value); }
+    public Visibility SliderControlVisible {
+        get => (Visibility)GetValue(SliderControlVisibleProperty);
+        set => SetValue(SliderControlVisibleProperty, value);
+    }
 
     public Geometry3D SphereModel { get; set; } = CreateGeometry();
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
     [Browsable(false)]
-    public string SubTitle { get => (string)GetValue(SubTitleProperty); set => SetValue(SubTitleProperty, value); }
+    public string SubTitle {
+        get => (string)GetValue(SubTitleProperty);
+        set => SetValue(SubTitleProperty, value);
+    }
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
-    public Brush SubTitleColor { get => (Brush)GetValue(SubTitleColorProperty); set => SetValue(SubTitleColorProperty, value); }
+    public Brush SubTitleColor {
+        get => (Brush)GetValue(SubTitleColorProperty);
+        set => SetValue(SubTitleColorProperty, value);
+    }
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
-    public string SubtitleFilePath { get => (string)GetValue(SubtitleFilePathProperty); set => SetValue(SubtitleFilePathProperty, value); }
+    public string SubtitleFilePath {
+        get => (string)GetValue(SubtitleFilePathProperty);
+        set => SetValue(SubtitleFilePathProperty, value);
+    }
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
@@ -419,15 +527,24 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
-    public Thickness SubTitleMargin { get => (Thickness)GetValue(SubTitleMarginProperty); set => SetValue(SubTitleMarginProperty, value); }
+    public Thickness SubTitleMargin {
+        get => (Thickness)GetValue(SubTitleMarginProperty);
+        set => SetValue(SubTitleMarginProperty, value);
+    }
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
-    public double SubTitleSize { get => (double)GetValue(SubTitleSizeProperty); set => SetValue(SubTitleSizeProperty, value); }
+    public double SubTitleSize {
+        get => (double)GetValue(SubTitleSizeProperty);
+        set => SetValue(SubTitleSizeProperty, value);
+    }
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
-    public bool SubtitleTooltipEnabled { get => (bool)GetValue(SubtitleTooltipEnabledProperty); set => SetValue(SubtitleTooltipEnabledProperty, value); }
+    public bool SubtitleTooltipEnabled {
+        get => (bool)GetValue(SubtitleTooltipEnabledProperty);
+        set => SetValue(SubtitleTooltipEnabledProperty, value);
+    }
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
@@ -438,39 +555,66 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
-    public Visibility SubTitleVisibility { get => (Visibility)GetValue(SubTitleVisibilityProperty); set => SetValue(SubTitleVisibilityProperty, value); }
+    public Visibility SubTitleVisibility {
+        get => (Visibility)GetValue(SubTitleVisibilityProperty);
+        set => SetValue(SubTitleVisibilityProperty, value);
+    }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public bool ThumbApplyEffects { get => (bool)GetValue(ThumbApplyEffectsProperty); set => SetValue(ThumbApplyEffectsProperty, value); }
+    public bool ThumbApplyEffects {
+        get => (bool)GetValue(ThumbApplyEffectsProperty);
+        set => SetValue(ThumbApplyEffectsProperty, value);
+    }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public int ThumbHeightCount { get => (int)GetValue(ThumbHeightCountProperty); set => SetValue(ThumbHeightCountProperty, value); }
+    public int ThumbHeightCount {
+        get => (int)GetValue(ThumbHeightCountProperty);
+        set => SetValue(ThumbHeightCountProperty, value);
+    }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public Thickness ThumbMargin { get => (Thickness)GetValue(ThumbMarginProperty); set => SetValue(ThumbMarginProperty, value); }
+    public Thickness ThumbMargin {
+        get => (Thickness)GetValue(ThumbMarginProperty);
+        set => SetValue(ThumbMarginProperty, value);
+    }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public bool ThumbShowTime { get => (bool)GetValue(ThumbShowTimeProperty); set => SetValue(ThumbShowTimeProperty, value); }
+    public bool ThumbShowTime {
+        get => (bool)GetValue(ThumbShowTimeProperty);
+        set => SetValue(ThumbShowTimeProperty, value);
+    }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public int ThumbWidthCount { get => (int)GetValue(ThumbWidthCountProperty); set => SetValue(ThumbWidthCountProperty, value); }
+    public int ThumbWidthCount {
+        get => (int)GetValue(ThumbWidthCountProperty);
+        set => SetValue(ThumbWidthCountProperty, value);
+    }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public Visibility TimeDisplayVisibility { get => (Visibility)GetValue(TimeDisplayVisibilityProperty); set => SetValue(TimeDisplayVisibilityProperty, value); }
+    public Visibility TimeDisplayVisibility {
+        get => (Visibility)GetValue(TimeDisplayVisibilityProperty);
+        set => SetValue(TimeDisplayVisibilityProperty, value);
+    }
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
-    public string TooltipOriginalSubtitle { get => (string)GetValue(TooltipOriginalSubtitleProperty); set => SetValue(TooltipOriginalSubtitleProperty, value); }
+    public string TooltipOriginalSubtitle {
+        get => (string)GetValue(TooltipOriginalSubtitleProperty);
+        set => SetValue(TooltipOriginalSubtitleProperty, value);
+    }
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public Stretch VideoStretch { get => (Stretch)GetValue(VideoStretchProperty); set => SetValue(VideoStretchProperty, value); }
+    public Stretch VideoStretch {
+        get => (Stretch)GetValue(VideoStretchProperty);
+        set => SetValue(VideoStretchProperty, value);
+    }
 
     public static Geometry3D CreateGeometry()
     {
@@ -521,7 +665,8 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         {
             ObservableCollection<SrtContent> content = new();
             const string pattern = "<[/]?[ib]>";
-            foreach (string element in File.ReadAllText(filepath, Encoding.GetEncoding("UTF-8")).Split(new[] { "\r\n\r\n" }, StringSplitOptions.RemoveEmptyEntries))
+            foreach (string element in File.ReadAllText(filepath, Encoding.GetEncoding("UTF-8"))
+                         .Split(new[] { "\r\n\r\n" }, StringSplitOptions.RemoveEmptyEntries))
             {
                 string[] lines = element.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
                 content.Add(
@@ -529,10 +674,12 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                     {
                         StartTime = TimeSpan.Parse(lines[1].Substring(0, lines[1].LastIndexOf("-->")).Trim()),
                         EndTime = TimeSpan.Parse(lines[1].Substring(lines[1].LastIndexOf("-->") + 3).Trim()),
-                        Text = Regex.Replace(string.Concat(lines.Skip(2).Take(lines.Length - 2)), pattern, string.Empty),
+                        Text = Regex.Replace(string.Concat(lines.Skip(2).Take(lines.Length - 2)), pattern,
+                            string.Empty),
                         Segment = lines[0]
                     });
             }
+
             return content;
         }
         catch (Exception ex)
@@ -542,7 +689,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     }
 
     public static readonly DependencyProperty AngleProperty =
-                                                                                                                                                                                                                                                                                        DependencyProperty.Register("Angle", typeof(double), typeof(MediaViewer), new PropertyMetadata(0.0d));
+        DependencyProperty.Register("Angle", typeof(double), typeof(MediaViewer), new PropertyMetadata(0.0d));
 
     public static readonly DependencyProperty ApplyBwProperty =
         DependencyProperty.Register("ApplyBw", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
@@ -560,7 +707,8 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         DependencyProperty.Register("ApplySharpen", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
 
     public static readonly DependencyProperty AutoLoadSameNameSubtitleFileProperty =
-        DependencyProperty.Register("AutoLoadSameNameSubtitleFile", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
+        DependencyProperty.Register("AutoLoadSameNameSubtitleFile", typeof(bool), typeof(MediaViewer),
+            new PropertyMetadata(false));
 
     public static readonly DependencyProperty AutoPlayProperty = DependencyProperty.Register(
         "AutoPlay",
@@ -581,7 +729,8 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         DependencyProperty.Register("BwAmount", typeof(double), typeof(MediaViewer), new PropertyMetadata(0.6D));
 
     public static readonly DependencyProperty ContextMenuVisibilityProperty =
-        DependencyProperty.Register("ContextMenuVisibility", typeof(Visibility), typeof(MediaElement), new PropertyMetadata(Visibility.Collapsed));
+        DependencyProperty.Register("ContextMenuVisibility", typeof(Visibility), typeof(MediaElement),
+            new PropertyMetadata(Visibility.Collapsed));
 
     public static readonly DependencyProperty ControlVisibleProperty = DependencyProperty.Register(
         "ControlVisible",
@@ -601,13 +750,15 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     public static readonly DependencyProperty FlipYProperty =
         DependencyProperty.Register("FlipY", typeof(double), typeof(MediaViewer), new PropertyMetadata(1.0d));
 
-    public static readonly DependencyProperty FovProperty = DependencyProperty.Register("Fov", typeof(double), typeof(MediaViewer), new PropertyMetadata(95d, FovChanged));
+    public static readonly DependencyProperty FovProperty = DependencyProperty.Register("Fov", typeof(double),
+        typeof(MediaViewer), new PropertyMetadata(95d, FovChanged));
 
     public static readonly DependencyProperty InvertColorProperty =
         DependencyProperty.Register("InvertColor", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
 
     public static readonly DependencyProperty MediaDataFilePathProperty =
-        DependencyProperty.Register("MediaDataFilePath", typeof(string), typeof(MediaViewer), new PropertyMetadata(null, MediaDataFilePathChanged));
+        DependencyProperty.Register("MediaDataFilePath", typeof(string), typeof(MediaViewer),
+            new PropertyMetadata(null, MediaDataFilePathChanged));
 
     public static readonly DependencyProperty MediaPositionProperty = DependencyProperty.Register(
         "MediaPosition",
@@ -622,7 +773,8 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         new PropertyMetadata(1d, MediaVolumeChanged));
 
     public static readonly DependencyProperty OpenButtonVisibilityProperty =
-        DependencyProperty.Register("OpenButtonVisibility", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Collapsed));
+        DependencyProperty.Register("OpenButtonVisibility", typeof(Visibility), typeof(MediaViewer),
+            new PropertyMetadata(Visibility.Collapsed));
 
     public static readonly DependencyProperty OsdDisplayTimeProperty =
         DependencyProperty.Register("OsdDisplayTime", typeof(int), typeof(MediaViewer), new PropertyMetadata(3));
@@ -634,7 +786,8 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         new PropertyMetadata(null, OsdTextChanged));
 
     public static readonly DependencyProperty OsdTextVisibilityProperty =
-        DependencyProperty.Register("OsdTextVisibility", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Collapsed));
+        DependencyProperty.Register("OsdTextVisibility", typeof(Visibility), typeof(MediaViewer),
+            new PropertyMetadata(Visibility.Collapsed));
 
     public static readonly DependencyProperty PanoramaModeProperty = DependencyProperty.Register(
         "PanoramaMode",
@@ -658,7 +811,8 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         DependencyProperty.Register("SharpenAmount", typeof(double), typeof(MediaViewer), new PropertyMetadata(1.0d));
 
     public static readonly DependencyProperty SliderControlVisibleProperty =
-        DependencyProperty.Register("SliderControlVisible", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Visible));
+        DependencyProperty.Register("SliderControlVisible", typeof(Visibility), typeof(MediaViewer),
+            new PropertyMetadata(Visibility.Visible));
 
     public static readonly DependencyProperty SubTitleColorProperty = DependencyProperty.Register(
         "SubTitleColor",
@@ -673,7 +827,8 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         new PropertyMetadata(null, SubtitleFilePathChanged));
 
     public static readonly DependencyProperty SubTitleHorizontalAlignmentProperty =
-        DependencyProperty.Register("SubTitleHorizontalAlignment", typeof(HorizontalAlignment), typeof(MediaViewer), new PropertyMetadata(HorizontalAlignment.Center));
+        DependencyProperty.Register("SubTitleHorizontalAlignment", typeof(HorizontalAlignment), typeof(MediaViewer),
+            new PropertyMetadata(HorizontalAlignment.Center));
 
     public static readonly DependencyProperty SubTitleMarginProperty = DependencyProperty.Register(
         "SubTitleMargin",
@@ -681,22 +836,27 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         typeof(MediaViewer),
         new PropertyMetadata(new Thickness(0d, 0d, 0d, 10d)));
 
-    public static readonly DependencyProperty SubTitleProperty = DependencyProperty.Register("SubTitle", typeof(string), typeof(MediaViewer), new PropertyMetadata(string.Empty));
+    public static readonly DependencyProperty SubTitleProperty = DependencyProperty.Register("SubTitle", typeof(string),
+        typeof(MediaViewer), new PropertyMetadata(string.Empty));
 
     public static readonly DependencyProperty SubTitleSizeProperty =
         DependencyProperty.Register("SubTitleSize", typeof(double), typeof(MediaViewer), new PropertyMetadata(32.0d));
 
     public static readonly DependencyProperty SubtitleTooltipEnabledProperty =
-        DependencyProperty.Register("SubtitleTooltipEnabled", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
+        DependencyProperty.Register("SubtitleTooltipEnabled", typeof(bool), typeof(MediaViewer),
+            new PropertyMetadata(false));
 
     public static readonly DependencyProperty SubTitleVerticalAlignmentProperty =
-        DependencyProperty.Register("SubTitleVerticalAlignment", typeof(VerticalAlignment), typeof(MediaViewer), new PropertyMetadata(VerticalAlignment.Bottom));
+        DependencyProperty.Register("SubTitleVerticalAlignment", typeof(VerticalAlignment), typeof(MediaViewer),
+            new PropertyMetadata(VerticalAlignment.Bottom));
 
     public static readonly DependencyProperty SubTitleVisibilityProperty =
-        DependencyProperty.Register("SubTitleVisibility", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Visible));
+        DependencyProperty.Register("SubTitleVisibility", typeof(Visibility), typeof(MediaViewer),
+            new PropertyMetadata(Visibility.Visible));
 
     public static readonly DependencyProperty ThumbApplyEffectsProperty =
-        DependencyProperty.Register("ThumbApplyEffects", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
+        DependencyProperty.Register("ThumbApplyEffects", typeof(bool), typeof(MediaViewer),
+            new PropertyMetadata(false));
 
     public static readonly DependencyProperty ThumbHeightCountProperty =
         DependencyProperty.Register("ThumbHeightCount", typeof(int), typeof(MediaViewer), new PropertyMetadata(1));
@@ -714,10 +874,12 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         DependencyProperty.Register("ThumbWidthCount", typeof(int), typeof(MediaViewer), new PropertyMetadata(1));
 
     public static readonly DependencyProperty TimeDisplayVisibilityProperty =
-        DependencyProperty.Register("TimeDisplayVisibility", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Visible));
+        DependencyProperty.Register("TimeDisplayVisibility", typeof(Visibility), typeof(MediaViewer),
+            new PropertyMetadata(Visibility.Visible));
 
     public static readonly DependencyProperty TooltipOriginalSubtitleProperty =
-        DependencyProperty.Register("TooltipOriginalSubtitle", typeof(string), typeof(MediaViewer), new PropertyMetadata(null));
+        DependencyProperty.Register("TooltipOriginalSubtitle", typeof(string), typeof(MediaViewer),
+            new PropertyMetadata(null));
 
     public static readonly DependencyProperty VideoStretchProperty = DependencyProperty.Register(
         "VideoStretch",
@@ -740,7 +902,8 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private static void AutoplayChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is MediaViewer viewer && (bool)e.NewValue && viewer.MediaDataFilePath != null)
+        if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is MediaViewer viewer &&
+            (bool)e.NewValue && viewer.MediaDataFilePath != null)
         {
             viewer.Player.Play();
         }
@@ -792,7 +955,8 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private static void MediaDataFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is MediaViewer viewer && e.NewValue != null)
+        if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is MediaViewer viewer &&
+            e.NewValue != null)
         {
             try
             {
@@ -905,7 +1069,9 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                 if (viewer.AutoTranslate)
                 {
                     viewer.TooltipOriginalSubtitle = srtcontent.Text;
-                    viewer.SubTitle = TranslateViewModel.DileÇevirAsync(srtcontent.Text, viewer.MevcutDil, viewer.ÇevrilenDil).ConfigureAwait(false).GetAwaiter().GetResult();
+                    viewer.SubTitle = TranslateViewModel
+                        .DileÇevirAsync(srtcontent.Text, viewer.MevcutDil, viewer.ÇevrilenDil).ConfigureAwait(false)
+                        .GetAwaiter().GetResult();
                 }
                 else
                 {
@@ -924,7 +1090,8 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private static void SubtitleFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is MediaViewer viewer && e.NewValue != null)
+        if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is MediaViewer viewer &&
+            e.NewValue != null)
         {
             viewer.ParsedSubtitle = viewer.ParseSrtFile((string)e.NewValue);
         }
@@ -975,14 +1142,16 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private TextBlock GenerateWhiteTextBlock(string text)
     {
-        return new() { Text = text, Foreground = Brushes.White, HorizontalAlignment = HorizontalAlignment.Center };
+        return new TextBlock
+        { Text = text, Foreground = Brushes.White, HorizontalAlignment = HorizontalAlignment.Center };
     }
 
     private MediaState GetMediaState(MediaElement myMedia)
     {
         FieldInfo hlp = typeof(MediaElement).GetField("_helper", BindingFlags.NonPublic | BindingFlags.Instance);
         object helperObject = hlp.GetValue(myMedia);
-        FieldInfo stateField = helperObject.GetType().GetField("_currentState", BindingFlags.NonPublic | BindingFlags.Instance);
+        FieldInfo stateField = helperObject.GetType()
+            .GetField("_currentState", BindingFlags.NonPublic | BindingFlags.Instance);
         return (MediaState)stateField.GetValue(helperObject);
     }
 
@@ -1005,10 +1174,10 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         if (e.PropertyName is "SearchSubtitle")
         {
             MediaViewerSubtitleControl.cvs.Filter += (s, x) =>
-             {
-                 SrtContent srtContent = x.Item as SrtContent;
-                 x.Accepted = srtContent.Text.Contains(SearchSubtitle);
-             };
+            {
+                SrtContent srtContent = x.Item as SrtContent;
+                x.Accepted = srtContent.Text.Contains(SearchSubtitle);
+            };
         }
     }
 
@@ -1152,7 +1321,8 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private const int MillisecondsDelay = 500;
 
-    private const string VideoFileExtensions = "Video Dosyaları (*.*)|*.3g2;*.3gp;*.3gp2;*.3gpp;*.amr;*.amv;*.asf;*.avi;*.bdmv;*.bik;*.d2v;*.divx;*.drc;*.dsa;*.dsm;*.dss;*.dsv;*.evo;*.f4v;*.flc;*.fli;*.flic;*.flv;*.hdmov;*.ifo;*.ivf;*.m1v;*.m2p;*.m2t;*.m2ts;*.m2v;*.m4b;*.m4p;*.m4v;*.mkv;*.mp2v;*.mp4;*.mp4v;*.mpe;*.mpeg;*.mpg;*.mpls;*.mpv2;*.mpv4;*.mov;*.mts;*.ogm;*.ogv;*.pss;*.pva;*.qt;*.ram;*.ratdvd;*.rm;*.rmm;*.rmvb;*.roq;*.rpm;*.smil;*.smk;*.swf;*.tp;*.tpr;*.ts;*.vob;*.vp6;*.webm;*.wm;*.wmp;*.wmv";
+    private const string VideoFileExtensions =
+        "Video Dosyaları (*.*)|*.3g2;*.3gp;*.3gp2;*.3gpp;*.amr;*.amv;*.asf;*.avi;*.bdmv;*.bik;*.d2v;*.divx;*.drc;*.dsa;*.dsm;*.dss;*.dsv;*.evo;*.f4v;*.flc;*.fli;*.flic;*.flv;*.hdmov;*.ifo;*.ivf;*.m1v;*.m2p;*.m2t;*.m2ts;*.m2v;*.m4b;*.m4p;*.m4v;*.mkv;*.mp2v;*.mp4;*.mp4v;*.mpe;*.mpeg;*.mpg;*.mpls;*.mpv2;*.mpv4;*.mov;*.mts;*.ogm;*.ogv;*.pss;*.pva;*.qt;*.ram;*.ratdvd;*.rm;*.rmm;*.rmvb;*.roq;*.rpm;*.smil;*.smk;*.swf;*.tp;*.tpr;*.ts;*.vob;*.vp6;*.webm;*.wm;*.wmp;*.wmv";
 
     private static readonly DispatcherTimer osdtimer = new();
 
@@ -1225,7 +1395,7 @@ public class SrtContent : InpcBase
         }
     }
 
-    private SolidColorBrush backgroundColor = null;
+    private SolidColorBrush backgroundColor;
 
     private TimeSpan endTime;
 

@@ -96,10 +96,11 @@ public class Translation : DependencyObject
     }
 
     public static readonly DependencyProperty DesignCultureProperty =
-        DependencyProperty.RegisterAttached("DesignCulture", typeof(string), typeof(Translation), new PropertyMetadata("en-EN", CultureChanged));
+                            DependencyProperty.RegisterAttached("DesignCulture", typeof(string), typeof(Translation),
+            new PropertyMetadata("en-EN", CultureChanged));
 
     public static readonly DependencyProperty ResourceManagerProperty =
-                    DependencyProperty.RegisterAttached("ResourceManager", typeof(ResourceManager), typeof(Translation));
+        DependencyProperty.RegisterAttached("ResourceManager", typeof(ResourceManager), typeof(Translation));
 
     private static void CultureChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {

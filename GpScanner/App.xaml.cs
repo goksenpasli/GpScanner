@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
@@ -9,7 +7,7 @@ using GpScanner.ViewModel;
 namespace GpScanner;
 
 /// <summary>
-/// Interaction logic for App.xaml
+///     Interaction logic for App.xaml
 /// </summary>
 public partial class App : Application
 {
@@ -22,7 +20,7 @@ public partial class App : Application
         {
             if (arg.StartsWith(StillImageHelper.DEVICE_PREFIX, StringComparison.InvariantCultureIgnoreCase))
             {
-                IEnumerable<Process> processes = StillImageHelper.GetAllGPScannerProcess();
+                System.Collections.Generic.IEnumerable<System.Diagnostics.Process> processes = StillImageHelper.GetAllGPScannerProcess();
                 if (!processes.Any())
                 {
                     StillImageHelper.FirstLanuchScan = true;
@@ -32,7 +30,7 @@ public partial class App : Application
                 if (processes.Any())
                 {
                     StillImageHelper.FirstLanuchScan = false;
-                    foreach (Process process in processes)
+                    foreach (System.Diagnostics.Process process in processes)
                     {
                         StillImageHelper.ActivateProcess(process);
                         if (StillImageHelper.SendMessage(process, StillImageHelper.DEVICE_PREFIX))

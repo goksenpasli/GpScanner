@@ -20,25 +20,52 @@ public class MaskedTextBox : TextBox
         _ = CommandBindings.Add(new CommandBinding(ApplicationCommands.Cut, null, CanCut));
     }
 
-    public event RoutedPropertyChangedEventHandler<object> ValueChanged { add => AddHandler(ValueChangedEvent, value); remove => RemoveHandler(ValueChangedEvent, value); }
+    public event RoutedPropertyChangedEventHandler<object> ValueChanged {
+        add => AddHandler(ValueChangedEvent, value);
+        remove => RemoveHandler(ValueChangedEvent, value);
+    }
 
-    public Visibility ClearButtonVisibility { get => (Visibility)GetValue(ClearButtonVisibilityProperty); set => SetValue(ClearButtonVisibilityProperty, value); }
+    public Visibility ClearButtonVisibility {
+        get => (Visibility)GetValue(ClearButtonVisibilityProperty);
+        set => SetValue(ClearButtonVisibilityProperty, value);
+    }
 
-    public bool IncludeLiterals { get => (bool)GetValue(IncludeLiteralsProperty); set => SetValue(IncludeLiteralsProperty, value); }
+    public bool IncludeLiterals {
+        get => (bool)GetValue(IncludeLiteralsProperty);
+        set => SetValue(IncludeLiteralsProperty, value);
+    }
 
-    public bool IncludePrompt { get => (bool)GetValue(IncludePromptProperty); set => SetValue(IncludePromptProperty, value); }
+    public bool IncludePrompt {
+        get => (bool)GetValue(IncludePromptProperty);
+        set => SetValue(IncludePromptProperty, value);
+    }
 
-    public string Mask { get => (string)GetValue(MaskProperty); set => SetValue(MaskProperty, value); }
+    public string Mask {
+        get => (string)GetValue(MaskProperty);
+        set => SetValue(MaskProperty, value);
+    }
 
-    public char PromptChar { get => (char)GetValue(PromptCharProperty); set => SetValue(PromptCharProperty, value); }
+    public char PromptChar {
+        get => (char)GetValue(PromptCharProperty);
+        set => SetValue(PromptCharProperty, value);
+    }
 
     public ICommand Reset { get; } = new RoutedCommand();
 
-    public bool SelectAllOnGotFocus { get => (bool)GetValue(SelectAllOnGotFocusProperty); set => SetValue(SelectAllOnGotFocusProperty, value); }
+    public bool SelectAllOnGotFocus {
+        get => (bool)GetValue(SelectAllOnGotFocusProperty);
+        set => SetValue(SelectAllOnGotFocusProperty, value);
+    }
 
-    public object Value { get => GetValue(ValueProperty); set => SetValue(ValueProperty, value); }
+    public object Value {
+        get => GetValue(ValueProperty);
+        set => SetValue(ValueProperty, value);
+    }
 
-    public Type ValueType { get => (Type)GetValue(ValueTypeProperty); set => SetValue(ValueTypeProperty, value); }
+    public Type ValueType {
+        get => (Type)GetValue(ValueTypeProperty);
+        set => SetValue(ValueTypeProperty, value);
+    }
 
     public override void OnApplyTemplate()
     {
@@ -48,7 +75,8 @@ public class MaskedTextBox : TextBox
     }
 
     public static readonly DependencyProperty ClearButtonVisibilityProperty =
-                                                            DependencyProperty.Register("ClearButtonVisibility", typeof(Visibility), typeof(MaskedTextBox), new PropertyMetadata(Visibility.Collapsed));
+                                                            DependencyProperty.Register("ClearButtonVisibility", typeof(Visibility), typeof(MaskedTextBox),
+            new PropertyMetadata(Visibility.Collapsed));
 
     public static readonly DependencyProperty IncludeLiteralsProperty = DependencyProperty.Register(
         "IncludeLiterals",
@@ -75,7 +103,8 @@ public class MaskedTextBox : TextBox
         new UIPropertyMetadata('_', OnPromptCharChanged));
 
     public static readonly DependencyProperty SelectAllOnGotFocusProperty =
-        DependencyProperty.Register("SelectAllOnGotFocus", typeof(bool), typeof(MaskedTextBox), new PropertyMetadata(false));
+        DependencyProperty.Register("SelectAllOnGotFocus", typeof(bool), typeof(MaskedTextBox),
+            new PropertyMetadata(false));
 
     public static readonly RoutedEvent ValueChangedEvent = EventManager.RegisterRoutedEvent(
         "ValueChanged",
@@ -552,7 +581,13 @@ public class MaskedTextBox : TextBox
             return;
         }
 
-        MaskProvider = new MaskedTextProvider(mask) { IncludePrompt = IncludePrompt, IncludeLiterals = IncludeLiterals, PromptChar = PromptChar, ResetOnSpace = false };
+        MaskProvider = new MaskedTextProvider(mask)
+        {
+            IncludePrompt = IncludePrompt,
+            IncludeLiterals = IncludeLiterals,
+            PromptChar = PromptChar,
+            ResetOnSpace = false
+        };
     }
 
     private void UpdateText()
@@ -573,7 +608,7 @@ public class MaskedTextBox : TextBox
     private bool _isInitialized;
 
     /// <summary>
-    /// Flags if the Text and Value properties are in the process of being sync'd
+    ///     Flags if the Text and Value properties are in the process of being sync'd
     /// </summary>
     private bool _isSyncingTextAndValueProperties;
 }

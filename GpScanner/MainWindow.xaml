@@ -323,7 +323,8 @@
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock>
-                                                <Run Text="{Binding Width}" /><Run Text="X" /><Run Text="{Binding Height}" />
+                                                <Run Text="{Binding Width}" /><Run Text="X" />
+                                                <Run Text="{Binding Height}" />
                                             </TextBlock>
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>

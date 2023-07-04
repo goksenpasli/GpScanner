@@ -3,10 +3,12 @@
 namespace GpScanner;
 
 /// <summary>
-/// Interaction logic for SettingsWindowView.xaml
+///     Interaction logic for SettingsWindowView.xaml
 /// </summary>
 public partial class SettingsWindowView : Window
 {
     public SettingsWindowView()
-    { InitializeComponent(); }
+    {
+        InitializeComponent();
+    }
 }

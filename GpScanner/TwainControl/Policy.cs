@@ -35,12 +35,15 @@ public class Policy : DependencyObject
 
     public static bool CheckPolicy(DependencyObject dependencyObject)
     {
-        return CheckKeyPolicy(GetPolicyName(dependencyObject), Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\GpScanner")) && CheckKeyPolicy(GetPolicyName(dependencyObject), Registry.CurrentUser.OpenSubKey(@"Software\Policies\GpScanner"));
+        return CheckKeyPolicy(GetPolicyName(dependencyObject),
+            Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\GpScanner")) && CheckKeyPolicy(
+            GetPolicyName(dependencyObject), Registry.CurrentUser.OpenSubKey(@"Software\Policies\GpScanner"));
     }
 
     public static bool CheckPolicy(string policyname)
     {
-        return CheckKeyPolicy(policyname, Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\GpScanner")) && CheckKeyPolicy(policyname, Registry.CurrentUser.OpenSubKey(@"Software\Policies\GpScanner"));
+        return CheckKeyPolicy(policyname, Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\GpScanner")) &&
+               CheckKeyPolicy(policyname, Registry.CurrentUser.OpenSubKey(@"Software\Policies\GpScanner"));
     }
 
     public static bool GetPolicyEnabled(DependencyObject obj)
@@ -63,9 +66,13 @@ public class Policy : DependencyObject
         obj.SetValue(PolicyNameProperty, value);
     }
 
-    public static readonly DependencyProperty PolicyEnabledProperty = DependencyProperty.RegisterAttached("PolicyEnabled", typeof(bool), typeof(Policy), new PropertyMetadata(false, Changed));
+    public static readonly DependencyProperty PolicyEnabledProperty =
+                                    DependencyProperty.RegisterAttached("PolicyEnabled", typeof(bool), typeof(Policy),
+            new PropertyMetadata(false, Changed));
 
-    public static readonly DependencyProperty PolicyNameProperty = DependencyProperty.RegisterAttached("PolicyName", typeof(string), typeof(Policy), new PropertyMetadata(string.Empty));
+    public static readonly DependencyProperty PolicyNameProperty =
+        DependencyProperty.RegisterAttached("PolicyName", typeof(string), typeof(Policy),
+            new PropertyMetadata(string.Empty));
 
     private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {

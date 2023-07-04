@@ -63,7 +63,8 @@ namespace DvdBurner
                                     dataWriter.ClientName = AppName;
                                     FSI.VolumeName = CdLabel;
                                     FSI.ChooseImageDefaults(recorder);
-                                    dataWriter.Update += new DDiscFormat2DataEvents_UpdateEventHandler(DataWriter_Update);
+                                    dataWriter.Update +=
+                                        new DDiscFormat2DataEvents_UpdateEventHandler(DataWriter_Update);
                                     Dir?.AddTree(FolderPath, false);
                                     dynamic result = FSI.CreateResultImage();
                                     Stream = result?.ImageStream;
@@ -84,7 +85,8 @@ namespace DvdBurner
                             }
                         });
                 },
-                parameter => Directory.Exists(BurnDirectory) && !string.IsNullOrWhiteSpace(CdLabel) && Directory.EnumerateFiles(BurnDirectory)?.Any() == true);
+                parameter => Directory.Exists(BurnDirectory) && !string.IsNullOrWhiteSpace(CdLabel) &&
+                             Directory.EnumerateFiles(BurnDirectory)?.Any() == true);
 
             SelectBurnDir = new RelayCommand<object>(
                 parameter =>
@@ -121,7 +123,8 @@ namespace DvdBurner
                                     recorder = new MsftDiscRecorder2();
                                     uniqueId = g_DiscMaster.Item(Index);
                                     recorder.InitializeDiscRecorder(uniqueId);
-                                    discFormatErase = new MsftDiscFormat2Erase { Recorder = recorder, ClientName = AppName, FullErase = false };
+                                    discFormatErase = new MsftDiscFormat2Erase
+                                    { Recorder = recorder, ClientName = AppName, FullErase = false };
                                     discFormatErase.EraseMedia();
                                 }
                             }
@@ -155,7 +158,10 @@ namespace DvdBurner
             }
         }
 
-        public string BurnDirectory { get => (string)GetValue(BurnDirectoryProperty); set => SetValue(BurnDirectoryProperty, value); }
+        public string BurnDirectory {
+            get => (string)GetValue(BurnDirectoryProperty);
+            set => SetValue(BurnDirectoryProperty, value);
+        }
 
         public RelayCommand<object> BurnDvd { get; }
 
@@ -212,7 +218,7 @@ namespace DvdBurner
         public RelayCommand<object> SelectBurnDir { get; }
 
         public static readonly DependencyProperty BurnDirectoryProperty = DependencyProperty.Register(
-                                                                                                            "BurnDirectory",
+            "BurnDirectory",
             typeof(string),
             typeof(Burner),
             new PropertyMetadata(string.Empty));

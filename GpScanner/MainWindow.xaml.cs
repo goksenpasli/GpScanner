@@ -16,7 +16,7 @@ using static Extensions.ExtensionMethods;
 namespace GpScanner;
 
 /// <summary>
-/// Interaction logic for MainWindow.xaml
+///     Interaction logic for MainWindow.xaml
 /// </summary>
 public partial class MainWindow : Window
 {
@@ -33,7 +33,8 @@ public partial class MainWindow : Window
 
     private async void ContentControl_DropAsync(object sender, DragEventArgs e)
     {
-        if (e.OriginalSource is Image image && e.Data.GetData(typeof(ScannedImage)) is ScannedImage droppedData && image.TemplatedParent is PdfViewer.PdfViewer pdfviewer)
+        if (e.OriginalSource is Image image && e.Data.GetData(typeof(ScannedImage)) is ScannedImage droppedData &&
+            image.TemplatedParent is PdfViewer.PdfViewer pdfviewer)
         {
             try
             {
@@ -42,7 +43,8 @@ public partial class MainWindow : Window
                 int curpage = pdfviewer.Sayfa;
                 droppedData.Resim.GeneratePdf(null, Format.Jpg, TwainCtrl.SelectedPaper).Save(temporarypdf);
                 string[] processedfiles = { temporarypdf, pdfFilePath };
-                if ((Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.LeftShift)) || (Keyboard.IsKeyDown(Key.RightAlt) && Keyboard.IsKeyDown(Key.RightShift)))
+                if ((Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.LeftShift)) ||
+                    (Keyboard.IsKeyDown(Key.RightAlt) && Keyboard.IsKeyDown(Key.RightShift)))
                 {
                     await TwainCtrl.RemovePdfPageAsync(pdfFilePath, curpage, curpage);
                     processedfiles.MergePdf().Save(pdfFilePath);
@@ -59,20 +61,24 @@ public partial class MainWindow : Window
                     return;
                 }
 
-                string[] pdffiles = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt) ? new[] { pdfFilePath, temporarypdf } : new[] { temporarypdf, pdfFilePath };
+                string[] pdffiles = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)
+                    ? new[] { pdfFilePath, temporarypdf }
+                    : new[] { temporarypdf, pdfFilePath };
                 pdffiles.MergePdf().Save(pdfFilePath);
                 TwainCtrl.NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
             }
             catch (Exception ex)
             {
-                _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+                _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK,
+                    MessageBoxImage.Error);
             }
         }
     }
 
     private void ContentControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
-        if (DataContext is GpScannerViewModel gpScannerViewModel && e.LeftButton is MouseButtonState.Pressed && e.MouseDevice.DirectlyOver is Image image)
+        if (DataContext is GpScannerViewModel gpScannerViewModel && e.LeftButton is MouseButtonState.Pressed &&
+            e.MouseDevice.DirectlyOver is Image image)
         {
             string filepath = image.DataContext.ToString();
             if (gpScannerViewModel.OpenOriginalFile.CanExecute(filepath))
@@ -114,6 +120,7 @@ public partial class MainWindow : Window
             {
                 ViewModel.RegisterBatchImageFileWatcher(TwainCtrl.SelectedPaper, Settings.Default.BatchFolder);
             }
+
             if (ViewModel.NeedAppUpdate() && ViewModel.CheckUpdate.CanExecute(null))
             {
                 ViewModel.CheckUpdate.Execute(null);
@@ -227,11 +234,13 @@ public partial class MainWindow : Window
         if ((e.PropertyName is "ApplyPdfSaveOcr" && TwainCtrl?.Scanner?.ApplyPdfSaveOcr == true) ||
             (e.PropertyName is "ApplyDataBaseOcr" && TwainCtrl?.Scanner?.ApplyDataBaseOcr == true))
         {
-            if (DataContext is GpScannerViewModel ViewModel && ViewModel?.TesseractViewModel?.GetTesseractFiles(ViewModel.TesseractViewModel.Tessdatafolder)?.Count(item => item.Checked) == 0)
+            if (DataContext is GpScannerViewModel ViewModel && ViewModel?.TesseractViewModel
+                    ?.GetTesseractFiles(ViewModel.TesseractViewModel.Tessdatafolder)?.Count(item => item.Checked) == 0)
             {
                 TwainCtrl.Scanner.ApplyPdfSaveOcr = false;
                 TwainCtrl.Scanner.ApplyDataBaseOcr = false;
-                _ = MessageBox.Show($"{Translation.GetResStringValue("SETTİNGS")}{Environment.NewLine}{Translation.GetResStringValue("TESSLANGSELECT")}");
+                _ = MessageBox.Show(
+                    $"{Translation.GetResStringValue("SETTİNGS")}{Environment.NewLine}{Translation.GetResStringValue("TESSLANGSELECT")}");
             }
         }
     }
@@ -259,13 +268,13 @@ public partial class MainWindow : Window
             {
                 ViewModel.ScannedText = TwainCtrl.DataBaseTextData;
                 ViewModel.ScannerData?.Data?.Add(
-                new Data
-                {
-                    Id = DataSerialize.RandomNumber(),
-                    FileName = TwainCtrl?.Scanner?.PdfFilePath,
-                    FileContent = string.Join(" ", ViewModel.ScannedText?.Select(z => z.Text)),
-                    QrData = TwainCtrl?.Scanner?.BarcodeContent
-                });
+                    new Data
+                    {
+                        Id = DataSerialize.RandomNumber(),
+                        FileName = TwainCtrl?.Scanner?.PdfFilePath,
+                        FileContent = string.Join(" ", ViewModel.ScannedText?.Select(z => z.Text)),
+                        QrData = TwainCtrl?.Scanner?.BarcodeContent
+                    });
                 ViewModel.DatabaseSave.Execute(null);
                 ViewModel.ScannedText = null;
             }
@@ -308,6 +317,7 @@ public partial class MainWindow : Window
                     _ = MessageBox.Show(Translation.GetResStringValue("NOPATCHCODE"));
                     return;
                 }
+
                 ViewModel.DetectPageSeperator = TwainCtrl.Scanner.UsePageSeperator;
             }
         }
@@ -315,7 +325,8 @@ public partial class MainWindow : Window
 
     private void Window_Closing(object sender, CancelEventArgs e)
     {
-        if (TwainCtrl.Filesavetask?.IsCompleted == false || (DataContext as GpScannerViewModel)?.Filesavetask?.IsCompleted == false)
+        if (TwainCtrl.Filesavetask?.IsCompleted == false ||
+            (DataContext as GpScannerViewModel)?.Filesavetask?.IsCompleted == false)
         {
             _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
             e.Cancel = true;

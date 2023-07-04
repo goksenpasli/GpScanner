@@ -1,7 +1,7 @@
 ﻿namespace Tesseract
 {
     /// <summary>
-    /// Description of BitmapHelper.
+    ///     Description of BitmapHelper.
     /// </summary>
     public static unsafe class BitmapHelper
     {
@@ -115,7 +115,8 @@
             uint green = (val & 0x3E0) >> 5;
             uint blue = val & 0x1F;
 
-            return (((red << 3) | (red >> 2)) << 24) | (((green << 3) | (green >> 2)) << 16) | (((blue << 3) | (blue >> 2)) << 8) | 0xFF;
+            return (((red << 3) | (red >> 2)) << 24) | (((green << 3) | (green >> 2)) << 16) |
+                   (((blue << 3) | (blue >> 2)) << 8) | 0xFF;
         }
 
 #if Net45 || NETSTANDARD
@@ -128,7 +129,8 @@
             uint green = (val & 0x7E0) >> 5;
             uint blue = val & 0x1F;
 
-            return (((red << 3) | (red >> 2)) << 24) | (((green << 2) | (green >> 4)) << 16) | (((blue << 3) | (blue >> 2)) << 8) | 0xFF;
+            return (((red << 3) | (red >> 2)) << 24) | (((green << 2) | (green >> 4)) << 16) |
+                   (((blue << 3) | (blue >> 2)) << 8) | 0xFF;
         }
 
 #if Net45 || NETSTANDARD
@@ -142,7 +144,8 @@
             uint green = (val & 0x3E0) >> 5;
             uint blue = val & 0x1F;
 
-            return (((red << 3) | (red >> 2)) << 24) | (((green << 3) | (green >> 2)) << 16) | (((blue << 3) | (blue >> 2)) << 8) | ((alpha << 8) - alpha);
+            return (((red << 3) | (red >> 2)) << 24) | (((green << 3) | (green >> 2)) << 16) |
+                   (((blue << 3) | (blue >> 2)) << 8) | ((alpha << 8) - alpha);
         }
 
 #if Net45 || NETSTANDARD

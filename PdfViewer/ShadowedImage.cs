@@ -12,15 +12,30 @@ public class ShadowedImage : Image
         pen.Freeze();
     }
 
-    public Point Location { get => (Point)GetValue(LocationProperty); set => SetValue(LocationProperty, value); }
+    public Point Location {
+        get => (Point)GetValue(LocationProperty);
+        set => SetValue(LocationProperty, value);
+    }
 
-    public SolidColorBrush OverlayColor { get => (SolidColorBrush)GetValue(OverlayColorProperty); set => SetValue(OverlayColorProperty, value); }
+    public SolidColorBrush OverlayColor {
+        get => (SolidColorBrush)GetValue(OverlayColorProperty);
+        set => SetValue(OverlayColorProperty, value);
+    }
 
-    public SolidColorBrush ShadowColor { get => (SolidColorBrush)GetValue(ShadowColorProperty); set => SetValue(ShadowColorProperty, value); }
+    public SolidColorBrush ShadowColor {
+        get => (SolidColorBrush)GetValue(ShadowColorProperty);
+        set => SetValue(ShadowColorProperty, value);
+    }
 
-    public bool ShowOverlayColor { get => (bool)GetValue(ShowOverlayColorProperty); set => SetValue(ShowOverlayColorProperty, value); }
+    public bool ShowOverlayColor {
+        get => (bool)GetValue(ShowOverlayColorProperty);
+        set => SetValue(ShowOverlayColorProperty, value);
+    }
 
-    public bool ShowShadow { get => (bool)GetValue(ShowShadowProperty); set => SetValue(ShowShadowProperty, value); }
+    public bool ShowShadow {
+        get => (bool)GetValue(ShowShadowProperty);
+        set => SetValue(ShowShadowProperty, value);
+    }
 
     public static readonly DependencyProperty LocationProperty = DependencyProperty.Register(
                                 "Location",

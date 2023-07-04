@@ -28,7 +28,8 @@ public class ResizablePanel : ContentControl
 {
     static ResizablePanel()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(typeof(ResizablePanel), new FrameworkPropertyMetadata(typeof(ResizablePanel)));
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(ResizablePanel),
+            new FrameworkPropertyMetadata(typeof(ResizablePanel)));
     }
 }
 
@@ -40,9 +41,14 @@ public class Resizer : Thumb
     }
 
     public Resizer()
-    { DragDelta += Resizer_DragDelta; }
+    {
+        DragDelta += Resizer_DragDelta;
+    }
 
-    public ResizeDirections ThumbDirection { get => (ResizeDirections)GetValue(ThumbDirectionProperty); set => SetValue(ThumbDirectionProperty, value); }
+    public ResizeDirections ThumbDirection {
+        get => (ResizeDirections)GetValue(ThumbDirectionProperty);
+        set => SetValue(ThumbDirectionProperty, value);
+    }
 
     public static DependencyProperty ThumbDirectionProperty =
                     DependencyProperty.Register("ThumbDirection", typeof(ResizeDirections), typeof(Resizer));

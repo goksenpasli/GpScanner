@@ -6,7 +6,7 @@ using GpScanner.ViewModel;
 namespace GpScanner;
 
 /// <summary>
-/// Interaction logic for DocumentViewerWindow.xaml
+///     Interaction logic for DocumentViewerWindow.xaml
 /// </summary>
 public partial class DocumentViewerWindow : Window
 {
@@ -21,7 +21,7 @@ public partial class DocumentViewerWindow : Window
         if (cnt.GetFirstVisualChild<PdfViewer.PdfViewer>() is PdfViewer.PdfViewer pdfvwr)
         {
             pdfvwr.PdfFilePath = null;
-            pdfvwr.Source=null;
+            pdfvwr.Source = null;
             GC.Collect();
         }
     }

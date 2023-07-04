@@ -20,24 +20,24 @@ public enum ScrollDirection
 public enum SpacingMode
 {
     /// <summary>
-    /// Spacing is disabled and all items will be arranged as closely as possible.
+    ///     Spacing is disabled and all items will be arranged as closely as possible.
     /// </summary>
     None,
 
     /// <summary>
-    /// The remaining space is evenly distributed between the items on a layout row, as well as the start and end of
-    /// each row.
+    ///     The remaining space is evenly distributed between the items on a layout row, as well as the start and end of
+    ///     each row.
     /// </summary>
     Uniform,
 
     /// <summary>
-    /// The remaining space is evenly distributed between the items on a layout row, excluding the start and end of each
-    /// row.
+    ///     The remaining space is evenly distributed between the items on a layout row, excluding the start and end of each
+    ///     row.
     /// </summary>
     BetweenItemsOnly,
 
     /// <summary>
-    /// The remaining space is evenly distributed between start and end of each row.
+    ///     The remaining space is evenly distributed between start and end of each row.
     /// </summary>
     StartAndEndOnly
 }
@@ -73,17 +73,17 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     public double HorizontalOffset => Offset.X;
 
     /// <summary>
-    /// Mouse wheel delta for pixel based scrolling. The default value is 48 dp.
+    ///     Mouse wheel delta for pixel based scrolling. The default value is 48 dp.
     /// </summary>
     public double MouseWheelDelta { get; set; } = 48.0;
 
     /// <summary>
-    /// Mouse wheel delta for item based scrolling. The default value is 3 items.
+    ///     Mouse wheel delta for item based scrolling. The default value is 3 items.
     /// </summary>
     public int MouseWheelDeltaItem { get; set; } = 3;
 
     /// <summary>
-    /// Scroll line delta for pixel based scrolling. The default value is 16 dp.
+    ///     Scroll line delta for pixel based scrolling. The default value is 16 dp.
     /// </summary>
     public double ScrollLineDelta { get; set; } = 16.0;
 
@@ -237,13 +237,13 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     }
 
     /// <summary>
-    /// The cache length before and after the viewport.
+    ///     The cache length before and after the viewport.
     /// </summary>
     protected VirtualizationCacheLength CacheLength { get; private set; }
 
     /// <summary>
-    /// The Unit of the cache length. Can be Pixel, Item or Page. When the ItemsOwner is a group item it can only be
-    /// pixel or item.
+    ///     The Unit of the cache length. Can be Pixel, Item or Page. When the ItemsOwner is a group item it can only be
+    ///     pixel or item.
     /// </summary>
     protected VirtualizationCacheLengthUnit CacheLengthUnit { get; private set; }
 
@@ -252,7 +252,7 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     protected Size Extent { get; private set; } = new(0, 0);
 
     /// <summary>
-    /// Returns true if the panel is in VirtualizationMode.Recycling, otherwise false.
+    ///     Returns true if the panel is in VirtualizationMode.Recycling, otherwise false.
     /// </summary>
     protected bool IsRecycling => VirtualizationMode == VirtualizationMode.Recycling;
 
@@ -271,35 +271,35 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     }
 
     /// <summary>
-    /// The range of items that a realized in viewport or cache.
+    ///     The range of items that a realized in viewport or cache.
     /// </summary>
     protected ItemRange ItemRange { get; set; }
 
     protected ReadOnlyCollection<object> Items => ((ItemContainerGenerator)ItemContainerGenerator).Items;
 
     /// <summary>
-    /// The ItemsControl (e.g. ListView).
+    ///     The ItemsControl (e.g. ListView).
     /// </summary>
     protected ItemsControl ItemsControl => ItemsControl.GetItemsOwner(this);
 
     /// <summary>
-    /// The ItemsControl (e.g. ListView) or if the ItemsControl is grouping a GroupItem.
+    ///     The ItemsControl (e.g. ListView) or if the ItemsControl is grouping a GroupItem.
     /// </summary>
     protected DependencyObject ItemsOwner {
         get {
             _itemsOwner ??= (DependencyObject)typeof(ItemsControl).GetMethod(
-                "GetItemsOwnerInternal",
-                BindingFlags.Static | BindingFlags.NonPublic,
-                null,
-                new[] { typeof(DependencyObject) },
-                null)
+                    "GetItemsOwnerInternal",
+                    BindingFlags.Static | BindingFlags.NonPublic,
+                    null,
+                    new[] { typeof(DependencyObject) },
+                    null)
                 .Invoke(null, new object[] { this });
             return _itemsOwner;
         }
     }
 
     /// <summary>
-    /// The direction in which the panel scrolls when user turns the mouse wheel.
+    ///     The direction in which the panel scrolls when user turns the mouse wheel.
     /// </summary>
     protected ScrollDirection MouseWheelScrollDirection { get; set; } = ScrollDirection.Vertical;
 
@@ -312,13 +312,13 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     protected VirtualizationMode VirtualizationMode => GetVirtualizationMode(ItemsControl);
 
     /// <summary>
-    /// Calculates the extent that would be needed to show all items.
+    ///     Calculates the extent that would be needed to show all items.
     /// </summary>
     protected abstract Size CalculateExtent(Size availableSize);
 
     protected virtual GeneratorPosition GetGeneratorPositionFromChildIndex(int childIndex)
     {
-        return new(childIndex, 0);
+        return new GeneratorPosition(childIndex, 0);
     }
 
     protected int GetItemIndexFromChildIndex(int childIndex)
@@ -418,7 +418,7 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     }
 
     /// <summary>
-    /// Realizes visible and cached items.
+    ///     Realizes visible and cached items.
     /// </summary>
     protected virtual void RealizeItems()
     {
@@ -473,7 +473,7 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     }
 
     /// <summary>
-    /// Calculates the item range that is visible in the viewport or cached.
+    ///     Calculates the item range that is visible in the viewport or cached.
     /// </summary>
     protected abstract ItemRange UpdateItemRange();
 
@@ -505,7 +505,7 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     }
 
     /// <summary>
-    /// Virtualizes (cleanups) no longer visible or cached items.
+    ///     Virtualizes (cleanups) no longer visible or cached items.
     /// </summary>
     protected virtual void VirtualizeItems()
     {
@@ -539,59 +539,76 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
 public class VirtualizingWrapPanel : VirtualizingPanelBase
 {
     /// <summary>
-    /// Gets or sets a value that specifies the size of the items. The default value is <see cref="Size.Empty"/>. If the
-    /// value is <see cref="Size.Empty"/> the size of the items gots measured by the first realized item.
+    ///     Gets or sets a value that specifies the size of the items. The default value is <see cref="Size.Empty" />. If the
+    ///     value is <see cref="Size.Empty" /> the size of the items gots measured by the first realized item.
     /// </summary>
-    public Size ItemSize { get => (Size)GetValue(ItemSizeProperty); set => SetValue(ItemSizeProperty, value); }
+    public Size ItemSize {
+        get => (Size)GetValue(ItemSizeProperty);
+        set => SetValue(ItemSizeProperty, value);
+    }
 
     /// <summary>
-    /// Gets or sets a value that specifies the orientation in which items are arranged. The default value is <see
-    /// cref="Orientation.Vertical"/>.
+    ///     Gets or sets a value that specifies the orientation in which items are arranged. The default value is
+    ///     <see
+    ///         cref="Orientation.Vertical" />
+    ///     .
     /// </summary>
-    public Orientation Orientation { get => (Orientation)GetValue(OrientationProperty); set => SetValue(OrientationProperty, value); }
+    public Orientation Orientation {
+        get => (Orientation)GetValue(OrientationProperty);
+        set => SetValue(OrientationProperty, value);
+    }
 
     /// <summary>
-    /// Gets or sets the spacing mode used when arranging the items. The default value is <see
-    /// cref="SpacingMode.Uniform"/>.
+    ///     Gets or sets the spacing mode used when arranging the items. The default value is
+    ///     <see
+    ///         cref="SpacingMode.Uniform" />
+    ///     .
     /// </summary>
-    public SpacingMode SpacingMode { get => (SpacingMode)GetValue(SpacingModeProperty); set => SetValue(SpacingModeProperty, value); }
+    public SpacingMode SpacingMode {
+        get => (SpacingMode)GetValue(SpacingModeProperty);
+        set => SetValue(SpacingModeProperty, value);
+    }
 
     /// <summary>
-    /// Gets or sets a value that specifies if the items get stretched to fill up remaining space. The default value is
-    /// false.
+    ///     Gets or sets a value that specifies if the items get stretched to fill up remaining space. The default value is
+    ///     false.
     /// </summary>
     /// <remarks>
-    /// The MaxWidth and MaxHeight properties of the ItemContainerStyle can be used to limit the stretching. In this
-    /// case the use of the remaining space will be determined by the SpacingMode property.
+    ///     The MaxWidth and MaxHeight properties of the ItemContainerStyle can be used to limit the stretching. In this
+    ///     case the use of the remaining space will be determined by the SpacingMode property.
     /// </remarks>
-    public bool StretchItems { get => (bool)GetValue(StretchItemsProperty); set => SetValue(StretchItemsProperty, value); }
+    public bool StretchItems {
+        get => (bool)GetValue(StretchItemsProperty);
+        set => SetValue(StretchItemsProperty, value);
+    }
 
     [Obsolete("Use ItemSizeProperty")]
     public static readonly DependencyProperty ChildrenSizeProperty = ItemSizeProperty;
 
     public static readonly DependencyProperty ItemSizeProperty = DependencyProperty.Register(
-            nameof(ItemSize),
-            typeof(Size),
-            typeof(VirtualizingWrapPanel),
-            new FrameworkPropertyMetadata(Size.Empty, FrameworkPropertyMetadataOptions.AffectsMeasure));
+        nameof(ItemSize),
+        typeof(Size),
+        typeof(VirtualizingWrapPanel),
+        new FrameworkPropertyMetadata(Size.Empty, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
     public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
-            nameof(Orientation),
-            typeof(Orientation),
-            typeof(VirtualizingWrapPanel),
-            new FrameworkPropertyMetadata(Orientation.Vertical, FrameworkPropertyMetadataOptions.AffectsMeasure, (obj, _) => ((VirtualizingWrapPanel)obj).Orientation_Changed()));
+        nameof(Orientation),
+        typeof(Orientation),
+        typeof(VirtualizingWrapPanel),
+        new FrameworkPropertyMetadata(Orientation.Vertical, FrameworkPropertyMetadataOptions.AffectsMeasure,
+            (obj, _) => ((VirtualizingWrapPanel)obj).Orientation_Changed()));
 
     public static readonly DependencyProperty SpacingModeProperty = DependencyProperty.Register(
-            nameof(SpacingMode),
-            typeof(SpacingMode),
-            typeof(VirtualizingWrapPanel),
-            new FrameworkPropertyMetadata(SpacingMode.Uniform, FrameworkPropertyMetadataOptions.AffectsMeasure));
+        nameof(SpacingMode),
+        typeof(SpacingMode),
+        typeof(VirtualizingWrapPanel),
+        new FrameworkPropertyMetadata(SpacingMode.Uniform, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
     public static readonly DependencyProperty StretchItemsProperty = DependencyProperty.Register(
-            nameof(StretchItems),
-            typeof(bool),
-            typeof(VirtualizingWrapPanel),
-            new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsArrange));
+        nameof(StretchItems),
+        typeof(bool),
+        typeof(VirtualizingWrapPanel),
+        new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsArrange));
 
     [Obsolete]
     protected override Size ArrangeOverride(Size finalSize)
@@ -670,12 +687,15 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
     [Obsolete]
     protected override Size CalculateExtent(Size availableSize)
     {
-        double extentWidth = IsSpacingEnabled && SpacingMode != SpacingMode.None && !double.IsInfinity(GetWidth(availableSize))
+        double extentWidth = IsSpacingEnabled && SpacingMode != SpacingMode.None &&
+                          !double.IsInfinity(GetWidth(availableSize))
             ? GetWidth(availableSize)
             : GetWidth(childSize) * itemsPerRowCount;
         if (ItemsOwner is IHierarchicalVirtualizationAndScrollInfo)
         {
-            extentWidth = Orientation == Orientation.Vertical ? Math.Max(extentWidth - (Margin.Left + Margin.Right), 0) : Math.Max(extentWidth - (Margin.Top + Margin.Bottom), 0);
+            extentWidth = Orientation == Orientation.Vertical
+                ? Math.Max(extentWidth - (Margin.Left + Margin.Right), 0)
+                : Math.Max(extentWidth - (Margin.Top + Margin.Bottom), 0);
         }
 
         double extentHeight = GetHeight(childSize) * rowCount;
@@ -842,13 +862,15 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
             }
             else
             {
-                offsetInPixel = Math.Min(Math.Max(GetY(Offset) - GetHeight(groupItem.HeaderDesiredSizes.PixelSize), 0), GetHeight(Extent));
+                offsetInPixel = Math.Min(Math.Max(GetY(Offset) - GetHeight(groupItem.HeaderDesiredSizes.PixelSize), 0),
+                    GetHeight(Extent));
                 offsetRowIndex = GetRowIndex(offsetInPixel);
             }
 
             double viewportHeight = Math.Min(GetHeight(Viewport), Math.Max(GetHeight(Extent) - offsetInPixel, 0));
 
-            rowCountInViewport = (int)Math.Ceiling((offsetInPixel + viewportHeight) / GetHeight(childSize)) - (int)Math.Floor(offsetInPixel / GetHeight(childSize));
+            rowCountInViewport = (int)Math.Ceiling((offsetInPixel + viewportHeight) / GetHeight(childSize)) -
+                                 (int)Math.Floor(offsetInPixel / GetHeight(childSize));
 
             startIndex = offsetRowIndex * itemsPerRowCount;
             endIndex = Math.Min(((offsetRowIndex + rowCountInViewport) * itemsPerRowCount) - 1, Items.Count - 1);
@@ -856,7 +878,8 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
             if (CacheLengthUnit == VirtualizationCacheLengthUnit.Pixel)
             {
                 double cacheBeforeInPixel = Math.Min(CacheLength.CacheBeforeViewport, offsetInPixel);
-                double cacheAfterInPixel = Math.Min(CacheLength.CacheAfterViewport, GetHeight(Extent) - viewportHeight - offsetInPixel);
+                double cacheAfterInPixel = Math.Min(CacheLength.CacheAfterViewport,
+                    GetHeight(Extent) - viewportHeight - offsetInPixel);
                 int rowCountInCacheBefore = (int)(cacheBeforeInPixel / GetHeight(childSize));
                 int rowCountInCacheAfter =
                     (int)Math.Ceiling((offsetInPixel + viewportHeight + cacheAfterInPixel) / GetHeight(childSize)) -
@@ -949,13 +972,15 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
 
     private T ReadItemContainerStyle<T>(DependencyProperty property, T fallbackValue = default)
     {
-        object value = ItemsControl.ItemContainerStyle?.Setters.OfType<Setter>().FirstOrDefault(setter => setter.Property == property)?.Value;
+        object value = ItemsControl.ItemContainerStyle?.Setters.OfType<Setter>()
+            .FirstOrDefault(setter => setter.Property == property)?.Value;
         return (T)(value ?? fallbackValue);
     }
 
     private void UpdateChildSize(Size availableSize)
     {
-        if (ItemsOwner is IHierarchicalVirtualizationAndScrollInfo groupItem && GetIsVirtualizingWhenGrouping(ItemsControl))
+        if (ItemsOwner is IHierarchicalVirtualizationAndScrollInfo groupItem &&
+            GetIsVirtualizingWhenGrouping(ItemsControl))
         {
             if (Orientation == Orientation.Vertical)
             {
@@ -969,9 +994,12 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
             }
         }
 
-        childSize = ItemSize != Size.Empty ? ItemSize : InternalChildren.Count != 0 ? InternalChildren[0].DesiredSize : CalculateChildSize();
+        childSize = ItemSize != Size.Empty ? ItemSize :
+            InternalChildren.Count != 0 ? InternalChildren[0].DesiredSize : CalculateChildSize();
 
-        itemsPerRowCount = double.IsInfinity(GetWidth(availableSize)) ? Items.Count : Math.Max(1, (int)Math.Floor(GetWidth(availableSize) / GetWidth(childSize)));
+        itemsPerRowCount = double.IsInfinity(GetWidth(availableSize))
+            ? Items.Count
+            : Math.Max(1, (int)Math.Floor(GetWidth(availableSize) / GetWidth(childSize)));
 
         rowCount = (int)Math.Ceiling((double)Items.Count / itemsPerRowCount);
     }
@@ -979,14 +1007,20 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
     #region Deprecated properties
 
     [Obsolete("Use ItemSize")]
-    public Size ChildrenSize { get => ItemSize; set => ItemSize = value; }
+    public Size ChildrenSize {
+        get => ItemSize;
+        set => ItemSize = value;
+    }
 
     /// <summary>
-    /// Gets or sets a value that specifies whether the items are distributed evenly across the width (horizontal
-    /// orientation) or height (vertical orientation). The default value is true.
+    ///     Gets or sets a value that specifies whether the items are distributed evenly across the width (horizontal
+    ///     orientation) or height (vertical orientation). The default value is true.
     /// </summary>
     [Obsolete("Use SpacingMode")]
-    public bool IsSpacingEnabled { get => (bool)GetValue(IsSpacingEnabledProperty); set => SetValue(IsSpacingEnabledProperty, value); }
+    public bool IsSpacingEnabled {
+        get => (bool)GetValue(IsSpacingEnabledProperty);
+        set => SetValue(IsSpacingEnabledProperty, value);
+    }
 
     [Obsolete("Use IsSpacingEnabled")]
     public bool SpacingEnabled {
@@ -997,10 +1031,10 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
     [Obsolete("Use SpacingMode")]
     public static readonly DependencyProperty IsSpacingEnabledProperty =
         DependencyProperty.Register(
-        nameof(IsSpacingEnabled),
-        typeof(bool),
-        typeof(VirtualizingWrapPanel),
-        new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsMeasure));
+            nameof(IsSpacingEnabled),
+            typeof(bool),
+            typeof(VirtualizingWrapPanel),
+            new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
     [Obsolete("Use IsSpacingEnabledProperty")]
     public static readonly DependencyProperty SpacingEnabledProperty = IsSpacingEnabledProperty;

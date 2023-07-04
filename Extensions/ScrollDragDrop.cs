@@ -13,6 +13,7 @@ public static class DragDropExtension
     public static IEnumerable<T> FindVisualChildren<T>(this DependencyObject parent) where T : DependencyObject
     {
         return parent == null ? throw new ArgumentNullException(nameof(parent)) : FindChildren();
+
         IEnumerable<T> FindChildren()
         {
             Queue<DependencyObject> queue = new(new[] { parent });
@@ -61,7 +62,9 @@ public static class DragDropExtension
 
     public static bool GetScrollOnDragDrop(DependencyObject element)
     {
-        return element == null ? throw new ArgumentNullException(nameof(element)) : (bool)element.GetValue(ScrollOnDragDropProperty);
+        return element == null
+            ? throw new ArgumentNullException(nameof(element))
+            : (bool)element.GetValue(ScrollOnDragDropProperty);
     }
 
     public static void SetScrollOnDragDrop(DependencyObject element, bool value)
@@ -75,7 +78,8 @@ public static class DragDropExtension
     }
 
     public static readonly DependencyProperty ScrollOnDragDropProperty =
-                        DependencyProperty.RegisterAttached("ScrollOnDragDrop", typeof(bool), typeof(DragDropExtension), new PropertyMetadata(false, HandleScrollOnDragDropChanged));
+                        DependencyProperty.RegisterAttached("ScrollOnDragDrop", typeof(bool), typeof(DragDropExtension),
+            new PropertyMetadata(false, HandleScrollOnDragDropChanged));
 
     private static void HandleScrollOnDragDropChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {

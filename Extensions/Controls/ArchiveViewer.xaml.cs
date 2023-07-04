@@ -12,7 +12,7 @@ using System.Windows.Input;
 namespace Extensions.Controls;
 
 /// <summary>
-/// Interaction logic for ArchiveViewer.xaml
+///     Interaction logic for ArchiveViewer.xaml
 /// </summary>
 public partial class ArchiveViewer : UserControl, INotifyPropertyChanged
 {
@@ -42,7 +42,10 @@ public partial class ArchiveViewer : UserControl, INotifyPropertyChanged
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public string ArchivePath { get => (string)GetValue(ArchivePathProperty); set => SetValue(ArchivePathProperty, value); }
+    public string ArchivePath {
+        get => (string)GetValue(ArchivePathProperty);
+        set => SetValue(ArchivePathProperty, value);
+    }
 
     public ObservableCollection<ArchiveData> Arşivİçerik {
         get => arşivİçerik;
@@ -100,7 +103,8 @@ public partial class ArchiveViewer : UserControl, INotifyPropertyChanged
                 }
             }
 
-            archiveViewer.ToplamOran = (double)archiveViewer.Arşivİçerik.Sum(z => z.SıkıştırılmışBoyut) / archiveViewer.Arşivİçerik.Sum(z => z.Boyut) * 100;
+            archiveViewer.ToplamOran = (double)archiveViewer.Arşivİçerik.Sum(z => z.SıkıştırılmışBoyut) /
+                archiveViewer.Arşivİçerik.Sum(z => z.Boyut) * 100;
         }
     }
 

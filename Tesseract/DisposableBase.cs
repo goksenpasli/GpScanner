@@ -20,7 +20,9 @@ namespace Tesseract
         }
 
         protected DisposableBase()
-        { IsDisposed = false; }
+        {
+            IsDisposed = false;
+        }
 
         protected abstract void Dispose(bool disposing);
 

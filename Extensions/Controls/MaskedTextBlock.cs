@@ -8,13 +8,24 @@ namespace Extensions;
 public class MaskedTextBlock : TextBlock
 {
     public MaskedTextBlock()
-    { Loaded += MaskedTextBlock_Loaded; }
+    {
+        Loaded += MaskedTextBlock_Loaded;
+    }
 
-    public string Mask { get => (string)GetValue(MaskProperty); set => SetValue(MaskProperty, value); }
+    public string Mask {
+        get => (string)GetValue(MaskProperty);
+        set => SetValue(MaskProperty, value);
+    }
 
-    public char PromptChar { get => (char)GetValue(PromptCharProperty); set => SetValue(PromptCharProperty, value); }
+    public char PromptChar {
+        get => (char)GetValue(PromptCharProperty);
+        set => SetValue(PromptCharProperty, value);
+    }
 
-    public string UnmaskedText { get => (string)GetValue(UnmaskedTextProperty); set => SetValue(UnmaskedTextProperty, value); }
+    public string UnmaskedText {
+        get => (string)GetValue(UnmaskedTextProperty);
+        set => SetValue(UnmaskedTextProperty, value);
+    }
 
     public static readonly DependencyProperty MaskProperty =
                         DependencyProperty.Register("Mask", typeof(string), typeof(MaskedTextBlock), null);
@@ -32,7 +43,9 @@ public class MaskedTextBlock : TextBlock
     {
         MaskedTextBlock maskedTextBlock = d as MaskedTextBlock;
         maskedTextBlock._provider = new MaskedTextProvider(maskedTextBlock.Mask, CultureInfo.CurrentCulture);
-        _ = maskedTextBlock._provider.Set(string.IsNullOrWhiteSpace(maskedTextBlock.UnmaskedText) ? string.Empty : e.NewValue as string);
+        _ = maskedTextBlock._provider.Set(string.IsNullOrWhiteSpace(maskedTextBlock.UnmaskedText)
+            ? string.Empty
+            : e.NewValue as string);
         maskedTextBlock.Text = maskedTextBlock._provider.ToDisplayString();
     }
 

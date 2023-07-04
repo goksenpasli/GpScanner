@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using Extensions;
 using GpScanner.Properties;
 using TwainControl;
@@ -40,7 +38,7 @@ public class DocumentViewerModel : InpcBase
                 if (parameter is ImageSource imageSource)
                 {
                     MemoryStream ms = new(imageSource.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg));
-                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms);
+                    System.Windows.Media.Imaging.BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms);
                     bitmapFrame.Freeze();
                     ScannedImage scannedImage = new() { Seçili = false, FilePath = PdfFilePath, Resim = bitmapFrame };
                     Scanner?.Resimler.Add(scannedImage);
@@ -108,7 +106,8 @@ public class DocumentViewerModel : InpcBase
     }
 
     public string PdfFileContent {
-        get => string.Join(" ", GpScannerViewModel.DataYükle()?.Where(z => z.FileName == PdfFilePath).Select(z => z.FileContent));
+        get => string.Join(" ",
+            GpScannerViewModel.DataYükle()?.Where(z => z.FileName == PdfFilePath).Select(z => z.FileContent));
 
         set {
             if (pdfFileContent != value)
@@ -162,7 +161,7 @@ public class DocumentViewerModel : InpcBase
         string defaultTtsLang = Settings.Default.DefaultTtsLang;
         if (e.PropertyName is "ImgData" && ImgData is not null && !string.IsNullOrWhiteSpace(defaultTtsLang))
         {
-            ObservableCollection<Ocr.OcrData> ocrtext = await Ocr.Ocr.OcrAsync(ImgData, defaultTtsLang);
+            System.Collections.ObjectModel.ObservableCollection<Ocr.OcrData> ocrtext = await Ocr.Ocr.OcrAsync(ImgData, defaultTtsLang);
             OcrText = string.Join(" ", ocrtext?.Select(z => z.Text));
             ImgData = null;
         }

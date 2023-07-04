@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
 using System.Printing;
@@ -110,7 +109,9 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             {
                 if (Source is not null)
                 {
-                    Zoom = Orientation != FitImageOrientation.Width ? ActualHeight / Source.Height : ActualWidth / Source.Width;
+                    Zoom = Orientation != FitImageOrientation.Width
+                        ? ActualHeight / Source.Height
+                        : ActualWidth / Source.Width;
                     if (Zoom == 0)
                     {
                         Zoom = 1;
@@ -171,7 +172,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public static int[] DpiList { get; } = { 12, 24, 36, 48, 72, 96, 120, 150, 200, 300, 400, 500, 600, 1200 };
 
-    public double Angle { get => (double)GetValue(AngleProperty); set => SetValue(AngleProperty, value); }
+    public double Angle {
+        get => (double)GetValue(AngleProperty);
+        set => SetValue(AngleProperty, value);
+    }
 
     public bool AutoFitContent {
         get => autoFitContent;
@@ -197,7 +201,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public Visibility ContextMenuVisibility { get => (Visibility)GetValue(ContextMenuVisibilityProperty); set => SetValue(ContextMenuVisibilityProperty, value); }
+    public Visibility ContextMenuVisibility {
+        get => (Visibility)GetValue(ContextMenuVisibilityProperty);
+        set => SetValue(ContextMenuVisibilityProperty, value);
+    }
 
     public int CurrentDpi { get; set; }
 
@@ -205,7 +212,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public RelayCommand<object> DosyaAç { get; }
 
-    public int Dpi { get => (int)GetValue(DpiProperty); set => SetValue(DpiProperty, value); }
+    public int Dpi {
+        get => (int)GetValue(DpiProperty);
+        set => SetValue(DpiProperty, value);
+    }
 
     public Visibility DpiListVisibility {
         get => dpiListVisibility;
@@ -245,7 +255,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public FitImageOrientation Orientation { get => (FitImageOrientation)GetValue(OrientationProperty); set => SetValue(OrientationProperty, value); }
+    public FitImageOrientation Orientation {
+        get => (FitImageOrientation)GetValue(OrientationProperty);
+        set => SetValue(OrientationProperty, value);
+    }
 
     [Browsable(false)]
     public IEnumerable<int> Pages {
@@ -284,7 +297,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public string PdfFilePath { get => (string)GetValue(PdfFilePathProperty); set => SetValue(PdfFilePathProperty, value); }
+    public string PdfFilePath {
+        get => (string)GetValue(PdfFilePathProperty);
+        set => SetValue(PdfFilePathProperty, value);
+    }
 
     public ObservableCollection<PdfMatch> PdfMatches {
         get => pdfMatches;
@@ -354,7 +370,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public ScrollBarVisibility ScrollBarVisible { get => (ScrollBarVisibility)GetValue(ScrollBarVisibleProperty); set => SetValue(ScrollBarVisibleProperty, value); }
+    public ScrollBarVisibility ScrollBarVisible {
+        get => (ScrollBarVisibility)GetValue(ScrollBarVisibleProperty);
+        set => SetValue(ScrollBarVisibleProperty, value);
+    }
 
     public RelayCommand<object> ScrollToCurrentPage { get; }
 
@@ -396,9 +415,15 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public bool SeekingLowerPdfDpi { get => (bool)GetValue(SeekingLowerPdfDpiProperty); set => SetValue(SeekingLowerPdfDpiProperty, value); }
+    public bool SeekingLowerPdfDpi {
+        get => (bool)GetValue(SeekingLowerPdfDpiProperty);
+        set => SetValue(SeekingLowerPdfDpiProperty, value);
+    }
 
-    public int SeekingPdfDpi { get => (int)GetValue(SeekingPdfDpiProperty); set => SetValue(SeekingPdfDpiProperty, value); }
+    public int SeekingPdfDpi {
+        get => (int)GetValue(SeekingPdfDpiProperty);
+        set => SetValue(SeekingPdfDpiProperty, value);
+    }
 
     public Visibility SliderZoomAngleVisibility {
         get => sliderZoomAngleVisibility;
@@ -412,11 +437,20 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public bool SnapTick { get => (bool)GetValue(SnapTickProperty); set => SetValue(SnapTickProperty, value); }
+    public bool SnapTick {
+        get => (bool)GetValue(SnapTickProperty);
+        set => SetValue(SnapTickProperty, value);
+    }
 
-    public ImageSource Source { get => (ImageSource)GetValue(SourceProperty); set => SetValue(SourceProperty, value); }
+    public ImageSource Source {
+        get => (ImageSource)GetValue(SourceProperty);
+        set => SetValue(SourceProperty, value);
+    }
 
-    public bool ThumbsVisible { get => (bool)GetValue(ThumbsVisibleProperty); set => SetValue(ThumbsVisibleProperty, value); }
+    public bool ThumbsVisible {
+        get => (bool)GetValue(ThumbsVisibleProperty);
+        set => SetValue(ThumbsVisibleProperty, value);
+    }
 
     public Visibility TifNavigasyonButtonEtkin {
         get => tifNavigasyonButtonEtkin;
@@ -430,7 +464,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public Visibility ToolBarVisibility { get => (Visibility)GetValue(ToolBarVisibilityProperty); set => SetValue(ToolBarVisibilityProperty, value); }
+    public Visibility ToolBarVisibility {
+        get => (Visibility)GetValue(ToolBarVisibilityProperty);
+        set => SetValue(ToolBarVisibilityProperty, value);
+    }
 
     [Browsable(false)]
     public int ToplamSayfa {
@@ -463,7 +500,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public ICommand Yazdır { get; }
 
-    public double Zoom { get => (double)GetValue(ZoomProperty); set => SetValue(ZoomProperty, value); }
+    public double Zoom {
+        get => (double)GetValue(ZoomProperty);
+        set => SetValue(ZoomProperty, value);
+    }
 
     public static async Task<BitmapSource> ConvertToImgAsync(string pdffilepath, int page, int dpi = 96)
     {
@@ -561,8 +601,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 if (resize)
                 {
                     bs = Source.Width > Source.Height
-                        ? ((BitmapSource)Source)?.Resize((int)pd.PrintableAreaHeight, (int)pd.PrintableAreaWidth, 90, Dpi, Dpi)
-                        : ((BitmapSource)Source)?.Resize((int)pd.PrintableAreaWidth, (int)pd.PrintableAreaHeight, 0, Dpi, Dpi);
+                        ? ((BitmapSource)Source)?.Resize((int)pd.PrintableAreaHeight, (int)pd.PrintableAreaWidth, 90,
+                            Dpi, Dpi)
+                        : ((BitmapSource)Source)?.Resize((int)pd.PrintableAreaWidth, (int)pd.PrintableAreaHeight, 0,
+                            Dpi, Dpi);
                     bs.Freeze();
                     dc.DrawImage(bs, new Rect(0, 0, pd.PrintableAreaWidth, pd.PrintableAreaHeight));
                 }
@@ -624,7 +666,8 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                                                                                                                                                                                                                                                 DependencyProperty.Register("Angle", typeof(double), typeof(PdfViewer), new PropertyMetadata(0.0));
 
     public static readonly DependencyProperty ContextMenuVisibilityProperty =
-        DependencyProperty.Register("ContextMenuVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Collapsed));
+        DependencyProperty.Register("ContextMenuVisibility", typeof(Visibility), typeof(PdfViewer),
+            new PropertyMetadata(Visibility.Collapsed));
 
     public static readonly DependencyProperty DpiProperty =
         DependencyProperty.Register("Dpi", typeof(int), typeof(PdfViewer), new PropertyMetadata(200, DpiChangedAsync));
@@ -651,7 +694,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         DependencyProperty.Register("SeekingLowerPdfDpi", typeof(bool), typeof(PdfViewer), new PropertyMetadata(false));
 
     public static readonly DependencyProperty SeekingPdfDpiProperty =
-            DependencyProperty.Register("SeekingPdfDpi", typeof(int), typeof(PdfViewer), new PropertyMetadata(200));
+        DependencyProperty.Register("SeekingPdfDpi", typeof(int), typeof(PdfViewer), new PropertyMetadata(200));
 
     public static readonly DependencyProperty SnapTickProperty =
         DependencyProperty.Register("SnapTick", typeof(bool), typeof(PdfViewer), new PropertyMetadata(false));
@@ -666,7 +709,8 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         DependencyProperty.Register("ThumbsVisible", typeof(bool), typeof(PdfViewer), new PropertyMetadata(true));
 
     public static readonly DependencyProperty ToolBarVisibilityProperty =
-        DependencyProperty.Register("ToolBarVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Visible));
+        DependencyProperty.Register("ToolBarVisibility", typeof(Visibility), typeof(PdfViewer),
+            new PropertyMetadata(Visibility.Visible));
 
     public static readonly DependencyProperty ZoomProperty =
         DependencyProperty.Register("Zoom", typeof(double), typeof(PdfViewer), new PropertyMetadata(1.0));
@@ -691,7 +735,8 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is PdfViewer pdfViewer && pdfViewer.Source is not null && !DesignerProperties.GetIsInDesignMode(pdfViewer))
+        if (d is PdfViewer pdfViewer && pdfViewer.Source is not null &&
+            !DesignerProperties.GetIsInDesignMode(pdfViewer))
         {
             pdfViewer.Resize.Execute(null);
         }
@@ -791,7 +836,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     private void PrintPdf(PdfDocument pdfDocument)
     {
         using System.Windows.Forms.PrintDialog form = new();
-        using PrintDocument document = pdfDocument.CreatePrintDocument(PdfPrintMode.ShrinkToMargin);
+        using System.Drawing.Printing.PrintDocument document = pdfDocument.CreatePrintDocument(PdfPrintMode.ShrinkToMargin);
         form.AllowSomePages = true;
         form.Document = document;
         form.UseEXDialog = true;

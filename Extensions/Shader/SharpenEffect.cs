@@ -6,13 +6,14 @@ using System.Windows.Media.Effects;
 namespace Extensions;
 
 /// <summary>
-/// An effect that sharpens the input.
+///     An effect that sharpens the input.
 /// </summary>
 public class SharpenEffect : ShaderEffect
 {
     public SharpenEffect()
     {
-        PixelShader = new PixelShader { UriSource = new Uri("/Extensions;component/Shader/SharpenEffect.ps", UriKind.Relative) };
+        PixelShader = new PixelShader
+        { UriSource = new Uri("/Extensions;component/Shader/SharpenEffect.ps", UriKind.Relative) };
 
         UpdateShaderValue(InputProperty);
         UpdateShaderValue(AmountProperty);
@@ -20,16 +21,25 @@ public class SharpenEffect : ShaderEffect
     }
 
     /// <summary>
-    /// The amount of sharpening.
+    ///     The amount of sharpening.
     /// </summary>
-    public double Amount { get => (double)GetValue(AmountProperty); set => SetValue(AmountProperty, value); }
+    public double Amount {
+        get => (double)GetValue(AmountProperty);
+        set => SetValue(AmountProperty, value);
+    }
 
-    public Brush Input { get => (Brush)GetValue(InputProperty); set => SetValue(InputProperty, value); }
+    public Brush Input {
+        get => (Brush)GetValue(InputProperty);
+        set => SetValue(InputProperty, value);
+    }
 
     /// <summary>
-    /// The size of the input (in pixels).
+    ///     The size of the input (in pixels).
     /// </summary>
-    public Size InputSize { get => (Size)GetValue(InputSizeProperty); set => SetValue(InputSizeProperty, value); }
+    public Size InputSize {
+        get => (Size)GetValue(InputSizeProperty);
+        set => SetValue(InputSizeProperty, value);
+    }
 
     public static readonly DependencyProperty AmountProperty = DependencyProperty.Register(
                         "Amount",

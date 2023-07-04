@@ -22,13 +22,13 @@ namespace Tesseract
         }
 
         /// <summary>
-        /// Swaps the bytes on little-endian platforms within a word; bytes 0 and 3 swapped, and bytes `1 and 2 are
-        /// swapped.
+        ///     Swaps the bytes on little-endian platforms within a word; bytes 0 and 3 swapped, and bytes `1 and 2 are
+        ///     swapped.
         /// </summary>
         /// <remarks>
-        /// This is required for little-endians in situations where we convert from a serialized byte order that is in
-        /// raster order, as one typically has in file formats, to one with MSB-to-the-left in each 32-bit word, or v.v.
-        /// See <seealso href="http://www.leptonica.com/byte-addressing.html"/>
+        ///     This is required for little-endians in situations where we convert from a serialized byte order that is in
+        ///     raster order, as one typically has in file formats, to one with MSB-to-the-left in each 32-bit word, or v.v.
+        ///     See <seealso href="http://www.leptonica.com/byte-addressing.html" />
         /// </remarks>
         public void EndianByteSwap()
         {
@@ -36,7 +36,7 @@ namespace Tesseract
         }
 
         /// <summary>
-        /// Gets the pixel value for a 1bpp image.
+        ///     Gets the pixel value for a 1bpp image.
         /// </summary>
 #if Net45
       	[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -48,7 +48,7 @@ namespace Tesseract
         }
 
         /// <summary>
-        /// Gets the pixel value for a 8bpp image.
+        ///     Gets the pixel value for a 8bpp image.
         /// </summary>
 #if Net45
       	[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -56,11 +56,13 @@ namespace Tesseract
 
         public static uint GetDataByte(uint* data, int index)
         {
-            return IntPtr.Size == 8 ? *(byte*)((ulong)((byte*)data + index) ^ 3) : *(byte*)((uint)((byte*)data + index) ^ 3);
+            return IntPtr.Size == 8
+                ? *(byte*)((ulong)((byte*)data + index) ^ 3)
+                : *(byte*)((uint)((byte*)data + index) ^ 3);
         }
 
         /// <summary>
-        /// Gets the pixel value for a 2bpp image.
+        ///     Gets the pixel value for a 2bpp image.
         /// </summary>
 #if Net45
       	[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -72,7 +74,7 @@ namespace Tesseract
         }
 
         /// <summary>
-        /// Gets the pixel value for a 32bpp image.
+        ///     Gets the pixel value for a 32bpp image.
         /// </summary>
 #if Net45
       	[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -84,7 +86,7 @@ namespace Tesseract
         }
 
         /// <summary>
-        /// Gets the pixel value for a 4bpp image.
+        ///     Gets the pixel value for a 4bpp image.
         /// </summary>
 #if Net45
       	[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -96,7 +98,7 @@ namespace Tesseract
         }
 
         /// <summary>
-        /// Gets the pixel value for a 16bpp image.
+        ///     Gets the pixel value for a 16bpp image.
         /// </summary>
 #if Net45
       	[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -104,11 +106,13 @@ namespace Tesseract
 
         public static uint GetDataTwoByte(uint* data, int index)
         {
-            return IntPtr.Size == 8 ? *(ushort*)((ulong)((ushort*)data + index) ^ 2) : *(ushort*)((uint)((ushort*)data + index) ^ 2);
+            return IntPtr.Size == 8
+                ? *(ushort*)((ulong)((ushort*)data + index) ^ 2)
+                : *(ushort*)((uint)((ushort*)data + index) ^ 2);
         }
 
         /// <summary>
-        /// Sets the pixel value for a 1bpp image.
+        ///     Sets the pixel value for a 1bpp image.
         /// </summary>
 #if Net45
       	[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -122,7 +126,7 @@ namespace Tesseract
         }
 
         /// <summary>
-        /// Sets the pixel value for a 8bpp image.
+        ///     Sets the pixel value for a 8bpp image.
         /// </summary>
 #if Net45
       	[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -141,7 +145,7 @@ namespace Tesseract
         }
 
         /// <summary>
-        /// Sets the pixel value for a 2bpp image.
+        ///     Sets the pixel value for a 2bpp image.
         /// </summary>
 #if Net45
       	[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -155,7 +159,7 @@ namespace Tesseract
         }
 
         /// <summary>
-        /// Sets the pixel value for a 32bpp image.
+        ///     Sets the pixel value for a 32bpp image.
         /// </summary>
 #if Net45
       	[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -167,7 +171,7 @@ namespace Tesseract
         }
 
         /// <summary>
-        /// Sets the pixel value for a 4bpp image.
+        ///     Sets the pixel value for a 4bpp image.
         /// </summary>
 #if Net45
       	[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -181,7 +185,7 @@ namespace Tesseract
         }
 
         /// <summary>
-        /// Sets the pixel value for a 16bpp image.
+        ///     Sets the pixel value for a 16bpp image.
         /// </summary>
 #if Net45
       	[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -200,14 +204,14 @@ namespace Tesseract
         }
 
         /// <summary>
-        /// Pointer to the data.
+        ///     Pointer to the data.
         /// </summary>
         public IntPtr Data { get; private set; }
 
         public Pix Pix { get; }
 
         /// <summary>
-        /// Number of 32-bit words per line.
+        ///     Number of 32-bit words per line.
         /// </summary>
         public int WordsPerLine { get; }
     }

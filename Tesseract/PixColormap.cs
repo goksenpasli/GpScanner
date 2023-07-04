@@ -5,11 +5,11 @@ using Tesseract.Interop;
 namespace Tesseract
 {
     /// <summary>
-    /// Represents a colormap.
+    ///     Represents a colormap.
     /// </summary>
     /// <remarks>
-    /// Once the colormap is assigned to a pix it is owned by that pix and will be disposed off automatically when the
-    /// pix is disposed off.
+    ///     Once the colormap is assigned to a pix it is owned by that pix and will be disposed off automatically when the
+    ///     pix is disposed off.
     /// </remarks>
     public sealed class PixColormap : IDisposable
     {
@@ -21,8 +21,8 @@ namespace Tesseract
 
         public PixColor this[int index] {
             get => LeptonicaApi.Native.pixcmapGetColor32(Handle, index, out int color) == 0
-                    ? PixColor.FromRgb((uint)color)
-                    : throw new InvalidOperationException("Failed to retrieve color.");
+                ? PixColor.FromRgb((uint)color)
+                : throw new InvalidOperationException("Failed to retrieve color.");
 
             set {
                 if (LeptonicaApi.Native.pixcmapResetColor(Handle, index, value.Red, value.Green, value.Blue) != 0)
@@ -40,7 +40,9 @@ namespace Tesseract
             }
 
             IntPtr handle = LeptonicaApi.Native.pixcmapCreate(depth);
-            return handle == IntPtr.Zero ? throw new InvalidOperationException("Failed to create colormap.") : new PixColormap(handle);
+            return handle == IntPtr.Zero
+                ? throw new InvalidOperationException("Failed to create colormap.")
+                : new PixColormap(handle);
         }
 
         public static PixColormap CreateLinear(int depth, int levels)
@@ -56,7 +58,9 @@ namespace Tesseract
             }
 
             IntPtr handle = LeptonicaApi.Native.pixcmapCreateLinear(depth, levels);
-            return handle == IntPtr.Zero ? throw new InvalidOperationException("Failed to create colormap.") : new PixColormap(handle);
+            return handle == IntPtr.Zero
+                ? throw new InvalidOperationException("Failed to create colormap.")
+                : new PixColormap(handle);
         }
 
         public static PixColormap CreateLinear(int depth, bool firstIsBlack, bool lastIsWhite)
@@ -67,7 +71,9 @@ namespace Tesseract
             }
 
             IntPtr handle = LeptonicaApi.Native.pixcmapCreateRandom(depth, firstIsBlack ? 1 : 0, lastIsWhite ? 1 : 0);
-            return handle == IntPtr.Zero ? throw new InvalidOperationException("Failed to create colormap.") : new PixColormap(handle);
+            return handle == IntPtr.Zero
+                ? throw new InvalidOperationException("Failed to create colormap.")
+                : new PixColormap(handle);
         }
 
         public bool AddBlackOrWhite(int color, out int index)
@@ -82,7 +88,8 @@ namespace Tesseract
 
         public bool AddNearestColor(PixColor color, out int index)
         {
-            return LeptonicaApi.Native.pixcmapAddNearestColor(Handle, color.Red, color.Green, color.Blue, out index) == 0;
+            return LeptonicaApi.Native.pixcmapAddNearestColor(Handle, color.Red, color.Green, color.Blue, out index) ==
+                   0;
         }
 
         public bool AddNewColor(PixColor color, out int index)
@@ -107,7 +114,8 @@ namespace Tesseract
 
         public bool IsUsableColor(PixColor color)
         {
-            return LeptonicaApi.Native.pixcmapUsableColor(Handle, color.Red, color.Green, color.Blue, out int usable) == 0
+            return LeptonicaApi.Native.pixcmapUsableColor(Handle, color.Red, color.Green, color.Blue, out int usable) ==
+                   0
                 ? usable == 1
                 : throw new InvalidOperationException("Failed to detect if color was usable or not.");
         }
@@ -118,7 +126,9 @@ namespace Tesseract
         }
 
         internal PixColormap(IntPtr handle)
-        { Handle = new HandleRef(this, handle); }
+        {
+            Handle = new HandleRef(this, handle);
+        }
 
         internal HandleRef Handle { get; private set; }
     }

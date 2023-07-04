@@ -17,20 +17,26 @@
         <SolidColorBrush x:Key="xmlMarkBrush" ice:Freeze="true" Color="Blue" />
         <DataTemplate x:Key="attributeTemplate">
             <TextBlock Margin="3,0,0,0" VerticalAlignment="Center">
-                <Run BaselineAlignment="Center" Foreground="{StaticResource xmAttributeBrush}" Text="{Binding Path=Name, Mode=OneWay}" /><Run BaselineAlignment="Center" Foreground="{StaticResource xmlMarkBrush}" Text="=&quot;" /><Run BaselineAlignment="Center" Foreground="{StaticResource xmlValueBrush}" Text="{Binding Path=Value, Mode=OneWay}" /><Run BaselineAlignment="Center" Foreground="{StaticResource xmlMarkBrush}" Text="&quot;" />
+                <Run BaselineAlignment="Center" Foreground="{StaticResource xmAttributeBrush}" Text="{Binding Path=Name, Mode=OneWay}" />
+                <Run BaselineAlignment="Center" Foreground="{StaticResource xmlMarkBrush}" Text="=&quot;" />
+                <Run BaselineAlignment="Center" Foreground="{StaticResource xmlValueBrush}" Text="{Binding Path=Value, Mode=OneWay}" />
+                <Run BaselineAlignment="Center" Foreground="{StaticResource xmlMarkBrush}" Text="&quot;" />
             </TextBlock>
         </DataTemplate>
         <Style TargetType="{x:Type TreeViewItem}">
             <Setter Property="IsExpanded" Value="True" />
         </Style>
         <HierarchicalDataTemplate x:Key="treeViewTemplate" ItemsSource="{Binding XPath=child::node()}">
-            <TextBlock Margin="3,0,0,0" VerticalAlignment="Center"><Run x:Name="startTag"
+            <TextBlock Margin="3,0,0,0" VerticalAlignment="Center">
+                <Run x:Name="startTag"
                     BaselineAlignment="Center"
                     Foreground="{StaticResource xmlMarkBrush}"
-                    Text="&lt;" /><Run x:Name="xmlTag"
+                    Text="&lt;" />
+                <Run x:Name="xmlTag"
                     BaselineAlignment="Center"
                     Foreground="{StaticResource xmlTagBrush}"
-                    Text="{Binding Path=Name, Mode=OneWay}" /><InlineUIContainer>
+                    Text="{Binding Path=Name, Mode=OneWay}" />
+                <InlineUIContainer>
                     <ItemsControl HorizontalAlignment="Center" VerticalAlignment="Center"
                         VerticalContentAlignment="Center"
                         ItemTemplate="{StaticResource attributeTemplate}"
@@ -51,7 +57,8 @@
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                     </ItemsControl>
-                </InlineUIContainer><Run x:Name="endTag"
+                </InlineUIContainer>
+                <Run x:Name="endTag"
                     BaselineAlignment="Center"
                     Foreground="{StaticResource xmlMarkBrush}"
                     Text="&gt;" />

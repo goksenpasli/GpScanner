@@ -77,7 +77,8 @@ public static class ExtensionMethods
     {
         unsafe
         {
-            BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, bitmap.PixelFormat);
+            BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly,
+                bitmap.PixelFormat);
             int bytesPerPixel = Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
             int heightInPixels = bitmapData.Height;
             int widthInBytes = bitmapData.Width * bytesPerPixel;
@@ -90,7 +91,8 @@ public static class ExtensionMethods
                     byte* currentLine = ptrFirstPixel + (y * bitmapData.Stride);
                     for (int x = 0; x < widthInBytes; x += bytesPerPixel)
                     {
-                        byte gray = (byte)((currentLine[x] * 0.299) + (currentLine[x + 1] * 0.587) + (currentLine[x + 2] * 0.114));
+                        byte gray = (byte)((currentLine[x] * 0.299) + (currentLine[x + 1] * 0.587) +
+                                          (currentLine[x + 2] * 0.114));
                         if (grayscale)
                         {
                             currentLine[x] = gray;
@@ -112,13 +114,16 @@ public static class ExtensionMethods
         return bitmap;
     }
 
-    public static WriteableBitmap ConvertBlackAndWhite(this BitmapSource bitmapSource, int threshold = 160, bool grayscale = false)
+    public static WriteableBitmap ConvertBlackAndWhite(this BitmapSource bitmapSource, int threshold = 160,
+        bool grayscale = false)
     {
         if (bitmapSource.Format != PixelFormats.Bgr24 && bitmapSource.Format != PixelFormats.Bgra32)
         {
             return (WriteableBitmap)bitmapSource;
         }
-        WriteableBitmap writableBitmap = new(bitmapSource.PixelWidth, bitmapSource.PixelHeight, bitmapSource.DpiX, bitmapSource.DpiY, PixelFormats.Gray8, null);
+
+        WriteableBitmap writableBitmap = new(bitmapSource.PixelWidth, bitmapSource.PixelHeight, bitmapSource.DpiX,
+            bitmapSource.DpiY, PixelFormats.Gray8, null);
         int bytesPerPixel = (bitmapSource.Format.BitsPerPixel + 7) / 8;
         int stride = bitmapSource.PixelWidth * bytesPerPixel;
         byte[] pixelData = new byte[bitmapSource.PixelHeight * stride];
@@ -206,7 +211,8 @@ public static class ExtensionMethods
     public static string GetDisplayName(string path)
     {
         _ = new SHFILEINFO();
-        return Helpers.SHGetFileInfo(path, FILE_ATTRIBUTE_NORMAL, out SHFILEINFO shfi, (uint)Marshal.SizeOf(typeof(SHFILEINFO)), SHGFI_DISPLAYNAME) != IntPtr.Zero
+        return Helpers.SHGetFileInfo(path, FILE_ATTRIBUTE_NORMAL, out SHFILEINFO shfi,
+            (uint)Marshal.SizeOf(typeof(SHFILEINFO)), SHGFI_DISPLAYNAME) != IntPtr.Zero
             ? shfi.szDisplayName
             : null;
     }
@@ -215,7 +221,8 @@ public static class ExtensionMethods
     {
         _ = new SHFILEINFO();
         SHFILEINFO shinfo = default;
-        _ = Helpers.SHGetFileInfo(filename, FILE_ATTRIBUTE_NORMAL, out shinfo, (uint)Marshal.SizeOf(shinfo), SHGFI_TYPENAME | SHGFI_USEFILEATTRIBUTES);
+        _ = Helpers.SHGetFileInfo(filename, FILE_ATTRIBUTE_NORMAL, out shinfo, (uint)Marshal.SizeOf(shinfo),
+            SHGFI_TYPENAME | SHGFI_USEFILEATTRIBUTES);
 
         return shinfo.szTypeName;
     }
@@ -283,7 +290,8 @@ public static class ExtensionMethods
         double total = 0, totalVariance = 0;
         int count = 0;
         double stdDev = 0;
-        BitmapData bmData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, bitmap.PixelFormat);
+        BitmapData bmData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly,
+            bitmap.PixelFormat);
         int stride = bmData.Stride;
         unsafe
         {
@@ -330,7 +338,7 @@ public static class ExtensionMethods
 
         Helpers.SHParseDisplayName(Path.Combine(folderPath, file), IntPtr.Zero, out IntPtr nativeFile, 0, out _);
 
-        IntPtr[] fileArray = nativeFile == IntPtr.Zero ? (new IntPtr[0]) : (new[] { nativeFile });
+        IntPtr[] fileArray = nativeFile == IntPtr.Zero ? new IntPtr[0] : new[] { nativeFile };
         _ = Helpers.SHOpenFolderAndSelectItems(nativeFolder, (uint)fileArray.Length, fileArray, 0);
 
         Marshal.FreeCoTaskMem(nativeFolder);
@@ -342,7 +350,8 @@ public static class ExtensionMethods
 
     public static Brush RandomColor()
     {
-        return new SolidColorBrush(System.Windows.Media.Color.FromRgb((byte)_random.Next(0, 256), (byte)_random.Next(0, 256), (byte)_random.Next(0, 256)));
+        return new SolidColorBrush(System.Windows.Media.Color.FromRgb((byte)_random.Next(0, 256),
+            (byte)_random.Next(0, 256), (byte)_random.Next(0, 256)));
     }
 
     public static BitmapSource Resize(this BitmapSource bfPhoto, double oran)
@@ -359,10 +368,12 @@ public static class ExtensionMethods
             tb.Freeze();
             return tb;
         }
+
         return null;
     }
 
-    public static BitmapSource Resize(this BitmapSource bfPhoto, double nWidth, double nHeight, double? rotate = null, int dpiX = 96, int dpiY = 96)
+    public static BitmapSource Resize(this BitmapSource bfPhoto, double nWidth, double nHeight, double? rotate = null,
+        int dpiX = 96, int dpiY = 96)
     {
         if (bfPhoto is not null)
         {
@@ -385,7 +396,8 @@ public static class ExtensionMethods
         return null;
     }
 
-    public static async Task<BitmapSource> ResizeAsync(this BitmapSource bfPhoto, double oran, double centerx = 0, double centery = 0)
+    public static async Task<BitmapSource> ResizeAsync(this BitmapSource bfPhoto, double oran, double centerx = 0,
+        double centery = 0)
     {
         return await Task.Run(
             () =>
@@ -440,7 +452,8 @@ public static class ExtensionMethods
 
     public static BitmapSource ToBitmapSource(this Bitmap bitmap)
     {
-        BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
+        BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly,
+            PixelFormat.Format24bppRgb);
         BitmapSource bitmapSource = BitmapSource.Create(
             bitmapData.Width,
             bitmapData.Height,
@@ -461,7 +474,8 @@ public static class ExtensionMethods
         double scale = resolution / 96d;
         uiElement.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
         uiElement.Arrange(new Rect(uiElement.DesiredSize));
-        RenderTargetBitmap bmp = new((int)(scale * uiElement.RenderSize.Width), (int)(scale * uiElement.RenderSize.Height), scale * 96, scale * 96, PixelFormats.Pbgra32);
+        RenderTargetBitmap bmp = new((int)(scale * uiElement.RenderSize.Width),
+            (int)(scale * uiElement.RenderSize.Height), scale * 96, scale * 96, PixelFormats.Pbgra32);
         bmp.Render(uiElement);
         bmp.Freeze();
         return bmp;

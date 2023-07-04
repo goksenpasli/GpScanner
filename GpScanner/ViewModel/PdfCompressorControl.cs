@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Windows;
-using System.Windows.Media.Imaging;
 using Extensions;
 using GpScanner.Properties;
 using PdfCompressor;
@@ -23,7 +21,7 @@ public class PdfCompressorControl : Compressor
                     PdfDocument pdfDocument;
                     using (PdfiumViewer.PdfDocument loadedpdfdoc = PdfiumViewer.PdfDocument.Load(LoadedPdfPath))
                     {
-                        List<BitmapImage> images = await AddToListAsync(loadedpdfdoc, Dpi);
+                        System.Collections.Generic.List<System.Windows.Media.Imaging.BitmapImage> images = await AddToListAsync(loadedpdfdoc, Dpi);
                         pdfDocument = await GeneratePdfAsync(images, UseMozJpeg, BlackAndWhite, Quality, Dpi);
                         images = null;
                     }

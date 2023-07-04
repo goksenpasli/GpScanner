@@ -8,8 +8,8 @@ namespace Tesseract
     public sealed class ResultIterator : PageIterator
     {
         /// <summary>
-        /// Gets an instance of a choice iterator using the current symbol of interest. The ChoiceIterator allows a one-
-        /// shot iteration over the choices for this symbol and after that is is useless.
+        ///     Gets an instance of a choice iterator using the current symbol of interest. The ChoiceIterator allows a one-
+        ///     shot iteration over the choices for this symbol and after that is is useless.
         /// </summary>
         /// <returns>an instance of a Choice Iterator</returns>
         public ChoiceIterator GetChoiceIterator()
@@ -58,16 +58,16 @@ namespace Tesseract
 
             IntPtr nameHandle =
                 TessApi.Native
-                .ResultIteratorWordFontAttributes(
-                    handle,
-                    out bool isBold,
-                    out bool isItalic,
-                    out bool isUnderlined,
-                    out bool isMonospace,
-                    out bool isSerif,
-                    out bool isSmallCaps,
-                    out int pointSize,
-                    out int fontId);
+                    .ResultIteratorWordFontAttributes(
+                        handle,
+                        out bool isBold,
+                        out bool isItalic,
+                        out bool isUnderlined,
+                        out bool isMonospace,
+                        out bool isSerif,
+                        out bool isSmallCaps,
+                        out int pointSize,
+                        out int fontId);
 
             if (nameHandle == IntPtr.Zero)
             {

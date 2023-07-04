@@ -104,7 +104,8 @@ public class TranslateViewModel : InpcBase
         get {
             if (!string.IsNullOrEmpty(metin))
             {
-                _ = Task.Run(async () => Çeviri = await Extensions.TranslateViewModel.DileÇevirAsync(metin, MevcutDil, ÇevrilenDil));
+                _ = Task.Run(async () =>
+                    Çeviri = await Extensions.TranslateViewModel.DileÇevirAsync(metin, MevcutDil, ÇevrilenDil));
             }
 
             return metin;

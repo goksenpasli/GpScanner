@@ -15,7 +15,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Extensions;component/Themes/Skin.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
     <GroupBox Background="{StaticResource GroupBoxBackGround}" Header="{local:Loc ABOUT}">

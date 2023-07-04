@@ -16,7 +16,11 @@ public static class WindowExtensions
         OpenSettings = new RelayCommand<object>(
             parameter =>
             {
-                SettingsWindowView settingswindow = new() { Owner = Application.Current?.MainWindow, DataContext = Application.Current?.MainWindow?.DataContext };
+                SettingsWindowView settingswindow = new()
+                {
+                    Owner = Application.Current?.MainWindow,
+                    DataContext = Application.Current?.MainWindow?.DataContext
+                };
                 _ = settingswindow.ShowDialog();
             }, parameter => Policy.CheckPolicy("OpenSettings"));
     }
@@ -27,7 +31,9 @@ public static class WindowExtensions
     {
         IntPtr hwnd = new WindowInteropHelper(window).Handle;
         IntPtr sysMenu = GetSystemMenu(hwnd, false);
-        _ = disable ? EnableMenuItem(sysMenu, SC_CLOSE, MF_BYCOMMAND | MF_GRAYED) : EnableMenuItem(sysMenu, SC_CLOSE, MF_BYCOMMAND | MF_ENABLED);
+        _ = disable
+            ? EnableMenuItem(sysMenu, SC_CLOSE, MF_BYCOMMAND | MF_GRAYED)
+            : EnableMenuItem(sysMenu, SC_CLOSE, MF_BYCOMMAND | MF_ENABLED);
     }
 
     public static void SystemMenu(this MainWindow form)

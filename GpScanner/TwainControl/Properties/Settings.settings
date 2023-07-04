@@ -1,95 +1,100 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="TwainControl.Properties" GeneratedClassName="Settings">
-  <Profiles />
-  <Settings>
-    <Setting Name="Çözünürlük" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">200</Value>
-    </Setting>
-    <Setting Name="AutoFolder" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="Adf" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="ShowFile" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="Mode" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">2</Value>
-    </Setting>
-    <Setting Name="DateGroupFolder" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="PreviewWidth" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">155</Value>
-    </Setting>
-    <Setting Name="DefaultProfile" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="EmptyThreshold" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">10</Value>
-    </Setting>
-    <Setting Name="UseSelectedProfile" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="ImgLoadResolution" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">200</Value>
-    </Setting>
-    <Setting Name="JpegQuality" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">80</Value>
-    </Setting>
-    <Setting Name="DefaultPictureResizeRatio" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">100</Value>
-    </Setting>
-    <Setting Name="BackMode" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">2</Value>
-    </Setting>
-    <Setting Name="FolderDateFormat" Type="System.String" Scope="User">
-      <Value Profile="(Default)">d.MM.yyyy</Value>
-    </Setting>
-    <Setting Name="RemoveProcessedImage" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="BwThreshold" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">160</Value>
-    </Setting>
-    <Setting Name="DirectRemoveImage" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="Profile" Type="System.Collections.Specialized.StringCollection" Scope="User">
-      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;ArrayOfString xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" /&gt;</Value>
-    </Setting>
-    <Setting Name="PdfLoadHistory" Type="System.Collections.Specialized.StringCollection" Scope="User">
-      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;ArrayOfString xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" /&gt;</Value>
-    </Setting>
-    <Setting Name="MedianValue" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">2</Value>
-    </Setting>
-    <Setting Name="WebpQuality" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">70</Value>
-    </Setting>
-    <Setting Name="DefaultThumbPictureResizeRatio" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">10</Value>
-    </Setting>
-    <Setting Name="SeçiliTarayıcı" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="AutoCropImage" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="AutoCropColor" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Black</Value>
-    </Setting>
-    <Setting Name="CustomPaperHeight" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">29.7</Value>
-    </Setting>
-    <Setting Name="CustomPaperWidth" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">21</Value>
-    </Setting>
-    <Setting Name="ScanDelay" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
-  </Settings>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)"
+              GeneratedClassNamespace="TwainControl.Properties" GeneratedClassName="Settings">
+    <Profiles/>
+    <Settings>
+        <Setting Name="Çözünürlük" Type="System.Double" Scope="User">
+            <Value Profile="(Default)">200</Value>
+        </Setting>
+        <Setting Name="AutoFolder" Type="System.String" Scope="User">
+            <Value Profile="(Default)"/>
+        </Setting>
+        <Setting Name="Adf" Type="System.Boolean" Scope="User">
+            <Value Profile="(Default)">False</Value>
+        </Setting>
+        <Setting Name="ShowFile" Type="System.Boolean" Scope="User">
+            <Value Profile="(Default)">False</Value>
+        </Setting>
+        <Setting Name="Mode" Type="System.Int32" Scope="User">
+            <Value Profile="(Default)">2</Value>
+        </Setting>
+        <Setting Name="DateGroupFolder" Type="System.Boolean" Scope="User">
+            <Value Profile="(Default)">True</Value>
+        </Setting>
+        <Setting Name="PreviewWidth" Type="System.Double" Scope="User">
+            <Value Profile="(Default)">155</Value>
+        </Setting>
+        <Setting Name="DefaultProfile" Type="System.String" Scope="User">
+            <Value Profile="(Default)"/>
+        </Setting>
+        <Setting Name="EmptyThreshold" Type="System.Int32" Scope="User">
+            <Value Profile="(Default)">10</Value>
+        </Setting>
+        <Setting Name="UseSelectedProfile" Type="System.Boolean" Scope="User">
+            <Value Profile="(Default)">False</Value>
+        </Setting>
+        <Setting Name="ImgLoadResolution" Type="System.Int32" Scope="User">
+            <Value Profile="(Default)">200</Value>
+        </Setting>
+        <Setting Name="JpegQuality" Type="System.Int32" Scope="User">
+            <Value Profile="(Default)">80</Value>
+        </Setting>
+        <Setting Name="DefaultPictureResizeRatio" Type="System.Int32" Scope="User">
+            <Value Profile="(Default)">100</Value>
+        </Setting>
+        <Setting Name="BackMode" Type="System.Int32" Scope="User">
+            <Value Profile="(Default)">2</Value>
+        </Setting>
+        <Setting Name="FolderDateFormat" Type="System.String" Scope="User">
+            <Value Profile="(Default)">d.MM.yyyy</Value>
+        </Setting>
+        <Setting Name="RemoveProcessedImage" Type="System.Boolean" Scope="User">
+            <Value Profile="(Default)">False</Value>
+        </Setting>
+        <Setting Name="BwThreshold" Type="System.Int32" Scope="User">
+            <Value Profile="(Default)">160</Value>
+        </Setting>
+        <Setting Name="DirectRemoveImage" Type="System.Boolean" Scope="User">
+            <Value Profile="(Default)">True</Value>
+        </Setting>
+        <Setting Name="Profile" Type="System.Collections.Specialized.StringCollection" Scope="User">
+            <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+                &lt;ArrayOfString xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" /&gt;
+            </Value>
+        </Setting>
+        <Setting Name="PdfLoadHistory" Type="System.Collections.Specialized.StringCollection" Scope="User">
+            <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+                &lt;ArrayOfString xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" /&gt;
+            </Value>
+        </Setting>
+        <Setting Name="MedianValue" Type="System.Int32" Scope="User">
+            <Value Profile="(Default)">2</Value>
+        </Setting>
+        <Setting Name="WebpQuality" Type="System.Int32" Scope="User">
+            <Value Profile="(Default)">70</Value>
+        </Setting>
+        <Setting Name="DefaultThumbPictureResizeRatio" Type="System.Int32" Scope="User">
+            <Value Profile="(Default)">10</Value>
+        </Setting>
+        <Setting Name="SeçiliTarayıcı" Type="System.String" Scope="User">
+            <Value Profile="(Default)"/>
+        </Setting>
+        <Setting Name="AutoCropImage" Type="System.Boolean" Scope="User">
+            <Value Profile="(Default)">False</Value>
+        </Setting>
+        <Setting Name="AutoCropColor" Type="System.String" Scope="User">
+            <Value Profile="(Default)">Black</Value>
+        </Setting>
+        <Setting Name="CustomPaperHeight" Type="System.Double" Scope="User">
+            <Value Profile="(Default)">29.7</Value>
+        </Setting>
+        <Setting Name="CustomPaperWidth" Type="System.Double" Scope="User">
+            <Value Profile="(Default)">21</Value>
+        </Setting>
+        <Setting Name="ScanDelay" Type="System.Double" Scope="User">
+            <Value Profile="(Default)">0</Value>
+        </Setting>
+    </Settings>
 </SettingsFile>

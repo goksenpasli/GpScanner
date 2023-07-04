@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -46,7 +45,8 @@ public static class UdfParser
             System.Windows.Controls.Image v = new()
             {
                 Source = bi,
-                Margin = new Thickness(bgimage.BgImageLeftMargin * 4 / 3, bgimage.BgImageUpMargin * 4 / 3, bgimage.BgImageRigtMargin * 4 / 3, bgimage.BgImageBottomMargin * 4 / 3)
+                Margin = new Thickness(bgimage.BgImageLeftMargin * 4 / 3, bgimage.BgImageUpMargin * 4 / 3,
+                    bgimage.BgImageRigtMargin * 4 / 3, bgimage.BgImageBottomMargin * 4 / 3)
             };
             flowdocument.Blocks.Add(new BlockUIContainer(v));
             GC.Collect();
@@ -55,7 +55,7 @@ public static class UdfParser
 
     private static Run[,] Getcellcontent(Table table, Template content, int genişlik, int yükseklik)
     {
-        IEnumerable<Content> cellparagrafcontent = table.Row
+        System.Collections.Generic.IEnumerable<Content> cellparagrafcontent = table.Row
             .SelectMany(z => z.Cell)
             .SelectMany(z => z.Paragraph)
             .Select(
@@ -113,18 +113,22 @@ public static class UdfParser
             if (xmlparagraphcontent.Foreground != 0)
             {
                 inline.Foreground =
-                    new SolidColorBrush((Color)ColorConverter.ConvertFromString($"#{xmlparagraphcontent.Foreground:X}"));
+                    new SolidColorBrush(
+                        (Color)ColorConverter.ConvertFromString($"#{xmlparagraphcontent.Foreground:X}"));
             }
 
             if (xmlparagraphcontent.Background != 0)
             {
                 inline.Background =
-                    new SolidColorBrush((Color)ColorConverter.ConvertFromString($"#{xmlparagraphcontent.Background:X}"));
+                    new SolidColorBrush(
+                        (Color)ColorConverter.ConvertFromString($"#{xmlparagraphcontent.Background:X}"));
             }
 
             inline.FontSize = xmlparagraphcontent.Size == 0 ? 16 : xmlparagraphcontent.Size * 4 / 3;
 
-            inline.FontFamily = string.IsNullOrWhiteSpace(xmlparagraphcontent.Family) ? new FontFamily("Times New Roman") : new FontFamily(xmlparagraphcontent.Family);
+            inline.FontFamily = string.IsNullOrWhiteSpace(xmlparagraphcontent.Family)
+                ? new FontFamily("Times New Roman")
+                : new FontFamily(xmlparagraphcontent.Family);
             if (xmlparagraphcontent.Bold)
             {
                 inline.FontWeight = FontWeights.Bold;
@@ -169,7 +173,8 @@ public static class UdfParser
             bi.StreamSource = new MemoryStream(binaryData);
             bi.EndInit();
             bi.Freeze();
-            System.Windows.Controls.Image v = new() { Source = bi, Width = image.Width * 4 / 3, Height = image.Height * 4 / 3 };
+            System.Windows.Controls.Image v = new()
+            { Source = bi, Width = image.Width * 4 / 3, Height = image.Height * 4 / 3 };
             flowdocument.Blocks.Add(new BlockUIContainer(v));
             binaryData = null;
             GC.Collect();
@@ -197,7 +202,8 @@ public static class UdfParser
                     Run textrun = Getcellcontent(udftable, content, udftable.ColumnCount, udftable.Row.Count)[x, i];
                     if (textrun is not null)
                     {
-                        TableCell tc = new(new System.Windows.Documents.Paragraph(textrun)) { BorderThickness = new Thickness(1), BorderBrush = Brushes.Black };
+                        TableCell tc = new(new System.Windows.Documents.Paragraph(textrun))
+                        { BorderThickness = new Thickness(1), BorderBrush = Brushes.Black };
                         currentRow.Cells.Add(tc);
                     }
                 }
@@ -209,7 +215,7 @@ public static class UdfParser
 
     private static void Textcreate(Template content, FlowDocument flowdocument)
     {
-        IEnumerable<Content> documentcontent = content.Elements.Paragraph
+        System.Collections.Generic.IEnumerable<Content> documentcontent = content.Elements.Paragraph
             .Select(
                 z => new Content
                 {

@@ -1,581 +1,586 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-    <xsd:element name="root" msdata:IsDataSet="true">
-      <xsd:complexType>
-        <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="metadata">
+    <!-- 
+      Microsoft ResX Schema 
+      
+      Version 2.0
+      
+      The primary goals of this format is to allow a simple XML format 
+      that is mostly human readable. The generation and parsing of the 
+      various data types are done through the TypeConverter classes 
+      associated with the data types.
+      
+      Example:
+      
+      ... ado.net/XML headers & schema ...
+      <resheader name="resmimetype">text/microsoft-resx</resheader>
+      <resheader name="version">2.0</resheader>
+      <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+      <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+      <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+      <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+      <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+          <value>[base64 mime encoded serialized .NET Framework object]</value>
+      </data>
+      <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+          <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+          <comment>This is a comment</comment>
+      </data>
+                  
+      There are any number of "resheader" rows that contain simple 
+      name/value pairs.
+      
+      Each data row contains a name, and value. The row also contains a 
+      type or mimetype. Type corresponds to a .NET class that support 
+      text/value conversion through the TypeConverter architecture. 
+      Classes that don't support this are serialized and stored with the 
+      mimetype set.
+      
+      The mimetype is used for serialized objects, and tells the 
+      ResXResourceReader how to depersist the object. This is currently not 
+      extensible. For a given mimetype the value must be set accordingly:
+      
+      Note - application/x-microsoft.net.object.binary.base64 is the format 
+      that the ResXResourceWriter will generate, however the reader can 
+      read any of the formats listed below.
+      
+      mimetype: application/x-microsoft.net.object.binary.base64
+      value   : The object must be serialized with 
+              : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+              : and then encoded with base64 encoding.
+      
+      mimetype: application/x-microsoft.net.object.soap.base64
+      value   : The object must be serialized with 
+              : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+              : and then encoded with base64 encoding.
+  
+      mimetype: application/x-microsoft.net.object.bytearray.base64
+      value   : The object must be serialized into a byte array 
+              : using a System.ComponentModel.TypeConverter
+              : and then encoded with base64 encoding.
+      -->
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root"
+                xmlns="">
+        <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+        <xsd:element name="root" msdata:IsDataSet="true">
             <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
-              </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+                <xsd:choice maxOccurs="unbounded">
+                    <xsd:element name="metadata">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                            </xsd:sequence>
+                            <xsd:attribute name="name" use="required" type="xsd:string"/>
+                            <xsd:attribute name="type" type="xsd:string"/>
+                            <xsd:attribute name="mimetype" type="xsd:string"/>
+                            <xsd:attribute ref="xml:space"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="assembly">
+                        <xsd:complexType>
+                            <xsd:attribute name="alias" type="xsd:string"/>
+                            <xsd:attribute name="name" type="xsd:string"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="data">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+                            </xsd:sequence>
+                            <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+                            <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+                            <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+                            <xsd:attribute ref="xml:space"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="resheader">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                            </xsd:sequence>
+                            <xsd:attribute name="name" type="xsd:string" use="required"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:choice>
             </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="assembly">
-            <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="data">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="resheader">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:choice>
-      </xsd:complexType>
-    </xsd:element>
-  </xsd:schema>
-  <resheader name="resmimetype">
-    <value>text/microsoft-resx</value>
-  </resheader>
-  <resheader name="version">
-    <value>2.0</value>
-  </resheader>
-  <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <data name="SRC" xml:space="preserve">
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>2.0</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <data name="SRC" xml:space="preserve">
     <value>ソースを選択</value>
   </data>
-  <data name="SETTİNGS" xml:space="preserve">
+    <data name="SETTİNGS" xml:space="preserve">
     <value>調整</value>
   </data>
-  <data name="RES" xml:space="preserve">
+    <data name="RES" xml:space="preserve">
     <value>解像度</value>
   </data>
-  <data name="ADF" xml:space="preserve">
+    <data name="ADF" xml:space="preserve">
     <value>ドキュメントフィーダー</value>
   </data>
-  <data name="BW" xml:space="preserve">
+    <data name="BW" xml:space="preserve">
     <value>黒と白</value>
   </data>
-  <data name="GRAY" xml:space="preserve">
+    <data name="GRAY" xml:space="preserve">
     <value>グレイ</value>
   </data>
-  <data name="COLOR" xml:space="preserve">
+    <data name="COLOR" xml:space="preserve">
     <value>カラフル</value>
   </data>
-  <data name="TWOSIDE" xml:space="preserve">
+    <data name="TWOSIDE" xml:space="preserve">
     <value>双方向</value>
   </data>
-  <data name="GUI" xml:space="preserve">
+    <data name="GUI" xml:space="preserve">
     <value>インターフェースを表示</value>
   </data>
-  <data name="SEPERATESCAN" xml:space="preserve">
+    <data name="SEPERATESCAN" xml:space="preserve">
     <value>各ページを個別にスキャン</value>
   </data>
-  <data name="SHOWFILE" xml:space="preserve">
+    <data name="SHOWFILE" xml:space="preserve">
     <value>クイックスキャン後にファイルを表示</value>
   </data>
-  <data name="OTHERSETTINGS" xml:space="preserve">
+    <data name="OTHERSETTINGS" xml:space="preserve">
     <value>その他の設定</value>
   </data>
-  <data name="DESKEW" xml:space="preserve">
+    <data name="DESKEW" xml:space="preserve">
     <value>曲線を修正してください</value>
   </data>
-  <data name="BORDERDETECT" xml:space="preserve">
+    <data name="BORDERDETECT" xml:space="preserve">
     <value>自動エッジ検出</value>
   </data>
-  <data name="SHOWPROGRESS" xml:space="preserve">
+    <data name="SHOWPROGRESS" xml:space="preserve">
     <value>比率を教えてください</value>
   </data>
-  <data name="AUTOROTATE" xml:space="preserve">
+    <data name="AUTOROTATE" xml:space="preserve">
     <value>自動回転</value>
   </data>
-  <data name="NO ACTION" xml:space="preserve">
+    <data name="NO ACTION" xml:space="preserve">
     <value>アクションなし</value>
   </data>
-  <data name="CLOSECOMP" xml:space="preserve">
+    <data name="CLOSECOMP" xml:space="preserve">
     <value>パソコンを消せ</value>
   </data>
-  <data name="RESTARTCOMP" xml:space="preserve">
+    <data name="RESTARTCOMP" xml:space="preserve">
     <value>パソコンを再起動</value>
   </data>
-  <data name="FILENAME" xml:space="preserve">
+    <data name="FILENAME" xml:space="preserve">
     <value>ファイル名</value>
   </data>
-  <data name="DAY" xml:space="preserve">
+    <data name="DAY" xml:space="preserve">
     <value>[日]</value>
   </data>
-  <data name="MONTH" xml:space="preserve">
+    <data name="MONTH" xml:space="preserve">
     <value>[月]</value>
   </data>
-  <data name="YEAR" xml:space="preserve">
+    <data name="YEAR" xml:space="preserve">
     <value>[年]</value>
   </data>
-  <data name="TIME" xml:space="preserve">
+    <data name="TIME" xml:space="preserve">
     <value>[時間]</value>
   </data>
-  <data name="MINUTE" xml:space="preserve">
+    <data name="MINUTE" xml:space="preserve">
     <value>[分]</value>
   </data>
-  <data name="SECOND" xml:space="preserve">
+    <data name="SECOND" xml:space="preserve">
     <value>[2番]</value>
   </data>
-  <data name="GUID" xml:space="preserve">
+    <data name="GUID" xml:space="preserve">
     <value>[GUID]</value>
   </data>
-  <data name="USERNAME" xml:space="preserve">
+    <data name="USERNAME" xml:space="preserve">
     <value>[ユーザー名]</value>
   </data>
-  <data name="SAVEPROFILE" xml:space="preserve">
+    <data name="SAVEPROFILE" xml:space="preserve">
     <value>プロフィールを隠す</value>
   </data>
-  <data name="DELETE" xml:space="preserve">
+    <data name="DELETE" xml:space="preserve">
     <value>削除</value>
   </data>
-  <data name="SCAN" xml:space="preserve">
+    <data name="SCAN" xml:space="preserve">
     <value>タラ</value>
   </data>
-  <data name="FASTSCAN" xml:space="preserve">
+    <data name="FASTSCAN" xml:space="preserve">
     <value>クイック
 スキャン</value>
   </data>
-  <data name="AUTOPATH" xml:space="preserve">
+    <data name="AUTOPATH" xml:space="preserve">
     <value>自動
 保存</value>
   </data>
-  <data name="ALL" xml:space="preserve">
+    <data name="ALL" xml:space="preserve">
     <value>全員だ</value>
   </data>
-  <data name="NONE" xml:space="preserve">
+    <data name="NONE" xml:space="preserve">
     <value>どれでもない</value>
   </data>
-  <data name="REVERSE" xml:space="preserve">
+    <data name="REVERSE" xml:space="preserve">
     <value>リバース</value>
   </data>
-  <data name="PREVIEWSIZE" xml:space="preserve">
+    <data name="PREVIEWSIZE" xml:space="preserve">
     <value>画像プレビューサイズ</value>
   </data>
-  <data name="PDFPROTECT" xml:space="preserve">
+    <data name="PDFPROTECT" xml:space="preserve">
     <value>PDFを保存</value>
   </data>
-  <data name="ENCRYPT" xml:space="preserve">
+    <data name="ENCRYPT" xml:space="preserve">
     <value>暗号化</value>
   </data>
-  <data name="PDFWARN" xml:space="preserve">
+    <data name="PDFWARN" xml:space="preserve">
     <value>ここで行われた設定は、すべてのPDFレコードに影響します。
 また、PDF保護はサードパーティアプリケーションによって破られる可能性があります。</value>
   </data>
-  <data name="ALLOWPRINT" xml:space="preserve">
+    <data name="ALLOWPRINT" xml:space="preserve">
     <value>印刷させてください</value>
   </data>
-  <data name="ALLOWCOPY" xml:space="preserve">
+    <data name="ALLOWCOPY" xml:space="preserve">
     <value>コンテンツのコピーを許可します</value>
   </data>
-  <data name="ALLOWEDIT" xml:space="preserve">
+    <data name="ALLOWEDIT" xml:space="preserve">
     <value>ドキュメントの編集を許可します。</value>
   </data>
-  <data name="SAVESELECTED" xml:space="preserve">
+    <data name="SAVESELECTED" xml:space="preserve">
     <value>おすすめを保存</value>
   </data>
-  <data name="CLEARLIST" xml:space="preserve">
+    <data name="CLEARLIST" xml:space="preserve">
     <value>リストをクリア</value>
   </data>
-  <data name="MERGEPDF" xml:space="preserve">
+    <data name="MERGEPDF" xml:space="preserve">
     <value>PDFをマージ</value>
   </data>
-  <data name="ABOUT" xml:space="preserve">
+    <data name="ABOUT" xml:space="preserve">
     <value>詳細はこちら</value>
   </data>
-  <data name="DOCUMENT" xml:space="preserve">
+    <data name="DOCUMENT" xml:space="preserve">
     <value>書類作成</value>
   </data>
-  <data name="TRIMIMAGE" xml:space="preserve">
+    <data name="TRIMIMAGE" xml:space="preserve">
     <value>絵をトリミング</value>
   </data>
-  <data name="RESET" xml:space="preserve">
+    <data name="RESET" xml:space="preserve">
     <value>リセット</value>
   </data>
-  <data name="WIDTHCOUNT" xml:space="preserve">
+    <data name="WIDTHCOUNT" xml:space="preserve">
     <value>最多の数</value>
   </data>
-  <data name="HEIGHTCOUNT" xml:space="preserve">
+    <data name="HEIGHTCOUNT" xml:space="preserve">
     <value>高さの数</value>
   </data>
-  <data name="SLICE" xml:space="preserve">
+    <data name="SLICE" xml:space="preserve">
     <value>叩き潰せ</value>
   </data>
-  <data name="TEXT" xml:space="preserve">
+    <data name="TEXT" xml:space="preserve">
     <value>メティン</value>
   </data>
-  <data name="TEXTSIZE" xml:space="preserve">
+    <data name="TEXTSIZE" xml:space="preserve">
     <value>文字サイズ</value>
   </data>
-  <data name="TEXTANGLE" xml:space="preserve">
+    <data name="TEXTANGLE" xml:space="preserve">
     <value>文字角度</value>
   </data>
-  <data name="FONT" xml:space="preserve">
+    <data name="FONT" xml:space="preserve">
     <value>フォント</value>
   </data>
-  <data name="DRAWTEXT" xml:space="preserve">
+    <data name="DRAWTEXT" xml:space="preserve">
     <value>テキストを描く</value>
   </data>
-  <data name="SAVEPDF" xml:space="preserve">
+    <data name="SAVEPDF" xml:space="preserve">
     <value>PDFを保存</value>
   </data>
-  <data name="FIX" xml:space="preserve">
-    <value />
+    <data name="FIX" xml:space="preserve">
+    <value/>
   </data>
-  <data name="OCR" xml:space="preserve">
+    <data name="OCR" xml:space="preserve">
     <value>OCR</value>
   </data>
-  <data name="FILE" xml:space="preserve">
+    <data name="FILE" xml:space="preserve">
     <value>ファイルは？</value>
   </data>
-  <data name="CALENDAR" xml:space="preserve">
+    <data name="CALENDAR" xml:space="preserve">
     <value>カレンダー</value>
   </data>
-  <data name="GRAPH" xml:space="preserve">
+    <data name="GRAPH" xml:space="preserve">
     <value>グラフィック</value>
   </data>
-  <data name="VIEWALL" xml:space="preserve">
+    <data name="VIEWALL" xml:space="preserve">
     <value>すべて見る</value>
   </data>
-  <data name="PREVIEWFILE" xml:space="preserve">
+    <data name="PREVIEWFILE" xml:space="preserve">
     <value>ファイル
 プレビュー</value>
   </data>
-  <data name="TESSERACT" xml:space="preserve">
+    <data name="TESSERACT" xml:space="preserve">
     <value>テッセラクト</value>
   </data>
-  <data name="MERGE" xml:space="preserve">
+    <data name="MERGE" xml:space="preserve">
     <value>まとめて</value>
   </data>
-  <data name="MERGESELECTED" xml:space="preserve">
+    <data name="MERGESELECTED" xml:space="preserve">
     <value>マークされた
 PDFをマージ</value>
   </data>
-  <data name="SELECTTWOPDF" xml:space="preserve">
+    <data name="SELECTTWOPDF" xml:space="preserve">
     <value>少なくとも2つのPDF
 ファイルを選択してください</value>
   </data>
-  <data name="READACTIVEPAGE" xml:space="preserve">
+    <data name="READACTIVEPAGE" xml:space="preserve">
     <value>アクティブなページ
 を読む</value>
   </data>
-  <data name="CONTENT" xml:space="preserve">
+    <data name="CONTENT" xml:space="preserve">
     <value>ドリンクを読もう</value>
   </data>
-  <data name="SHOWFOLDER" xml:space="preserve">
+    <data name="SHOWFOLDER" xml:space="preserve">
     <value>フォルダに表示</value>
   </data>
-  <data name="CRUNTIME" xml:space="preserve">
+    <data name="CRUNTIME" xml:space="preserve">
     <value>TesseractとleptonicaのバイナリはVisual Studio 2019でコンパイルされているため、Visual Studio 2019 Runtimeがインストールされていることを確認する必要があります。</value>
   </data>
-  <data name="OTHERTESSERACT" xml:space="preserve">
+    <data name="OTHERTESSERACT" xml:space="preserve">
     <value>また、必要に応じてtesseract -ocrからtesseract 4.1.0用の他の言語データファイルをダウンロードします。それをTessdataフォルダに入れてください</value>
   </data>
-  <data name="VC" xml:space="preserve">
+    <data name="VC" xml:space="preserve">
     <value>Visual Studio 2019 x 86およびx 64ランタイム</value>
   </data>
-  <data name="OTHERTESSERACTLINK" xml:space="preserve">
+    <data name="OTHERTESSERACTLINK" xml:space="preserve">
     <value>その他のtesseract言語データ</value>
   </data>
-  <data name="SCANNER" xml:space="preserve">
+    <data name="SCANNER" xml:space="preserve">
     <value>スキャナー</value>
   </data>
-  <data name="PASSWORD" xml:space="preserve">
+    <data name="PASSWORD" xml:space="preserve">
     <value>パスワード</value>
   </data>
-  <data name="WARNREBOOT" xml:space="preserve">
+    <data name="WARNREBOOT" xml:space="preserve">
     <value>シャットダウンまたは再起動セット!!</value>
   </data>
-  <data name="FASTSCANAFTER" xml:space="preserve">
+    <data name="FASTSCANAFTER" xml:space="preserve">
     <value>クイックスキャンが完了した後に実行するアクション</value>
   </data>
-  <data name="AUTOFOLDER" xml:space="preserve">
+    <data name="AUTOFOLDER" xml:space="preserve">
     <value>自動保存フォルダを指定します。!</value>
   </data>
-  <data name="AUTOFOLDERCHANGE" xml:space="preserve">
+    <data name="AUTOFOLDERCHANGE" xml:space="preserve">
     <value>自動保存パスが変更されました。古いファイルは新しいフォルダに移動されません。</value>
   </data>
-  <data name="LISTREMOVEWARN" xml:space="preserve">
+    <data name="LISTREMOVEWARN" xml:space="preserve">
     <value>上記のリスト内のすべてのスキャンされたドキュメントが削除されます。続行しますか？</value>
   </data>
-  <data name="DEFAULTSCANNAME" xml:space="preserve">
+    <data name="DEFAULTSCANNAME" xml:space="preserve">
     <value>スキャンしないでください</value>
   </data>
-  <data name="ROTSAVE" xml:space="preserve">
+    <data name="ROTSAVE" xml:space="preserve">
     <value>回転を適用して保存しますか？</value>
   </data>
-  <data name="APPRUNNING" xml:space="preserve">
+    <data name="APPRUNNING" xml:space="preserve">
     <value>アプリは既に実行されています</value>
   </data>
-  <data name="REGSTI" xml:space="preserve">
+    <data name="REGSTI" xml:space="preserve">
     <value>ブラウザメニューに追加</value>
   </data>
-  <data name="TRANSLATE" xml:space="preserve">
+    <data name="TRANSLATE" xml:space="preserve">
     <value>翻訳</value>
   </data>
-  <data name="SOURCELANG" xml:space="preserve">
+    <data name="SOURCELANG" xml:space="preserve">
     <value>ソース言語</value>
   </data>
-  <data name="DESTLANG" xml:space="preserve">
+    <data name="DESTLANG" xml:space="preserve">
     <value>対象</value>
   </data>
-  <data name="UNREGSTI" xml:space="preserve">
+    <data name="UNREGSTI" xml:space="preserve">
     <value>ブラウザメニューから削除</value>
   </data>
-  <data name="SEPERATESCANTOOLTIP" xml:space="preserve">
+    <data name="SEPERATESCANTOOLTIP" xml:space="preserve">
     <value>各ページを別々のファイルに保存するファイルは、以下に指定されたフォルダに保存されます。</value>
   </data>
-  <data name="OCRPDFSAVE" xml:space="preserve">
+    <data name="OCRPDFSAVE" xml:space="preserve">
     <value>OCR PDFを保存</value>
   </data>
-  <data name="ADDDOC" xml:space="preserve">
+    <data name="ADDDOC" xml:space="preserve">
     <value>ファイルに
 ドキュメントを添付してください</value>
   </data>
-  <data name="ADDOCRTODB" xml:space="preserve">
+    <data name="ADDOCRTODB" xml:space="preserve">
     <value>OCRデータを保存</value>
   </data>
-  <data name="OCRTIME" xml:space="preserve">
+    <data name="OCRTIME" xml:space="preserve">
     <value>Pdf Ocr プロセスに余分な時間がかかります。</value>
   </data>
-  <data name="OTHERAPPS" xml:space="preserve">
+    <data name="OTHERAPPS" xml:space="preserve">
     <value>私の他のアプリ</value>
   </data>
-  <data name="PAGENUMBER" xml:space="preserve">
+    <data name="PAGENUMBER" xml:space="preserve">
     <value>ページ番号</value>
   </data>
-  <data name="PDFOPEN" xml:space="preserve">
+    <data name="PDFOPEN" xml:space="preserve">
     <value>PDFファイルを直接開く</value>
   </data>
-  <data name="PDFTRACK" xml:space="preserve">
+    <data name="PDFTRACK" xml:space="preserve">
     <value>PDF フォルダの変更を見る</value>
   </data>
-  <data name="QRDETECT" xml:space="preserve">
+    <data name="QRDETECT" xml:space="preserve">
     <value>QR検出</value>
   </data>
-  <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
+    <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
     <value>ドキュメント一覧から処理済みファイルを削除</value>
   </data>
-  <data name="REMOVESELECTED" xml:space="preserve">
+    <data name="REMOVESELECTED" xml:space="preserve">
     <value>選択した画像を削除しますか?</value>
   </data>
-  <data name="REPLACEPAGE" xml:space="preserve">
+    <data name="REPLACEPAGE" xml:space="preserve">
     <value>ページを入れ替える</value>
   </data>
-  <data name="RESTARTAPP" xml:space="preserve">
+    <data name="RESTARTAPP" xml:space="preserve">
     <value>アプリケーションを再起動する必要があります。</value>
   </data>
-  <data name="Right" xml:space="preserve">
+    <data name="Right" xml:space="preserve">
     <value>右</value>
   </data>
-  <data name="Rotate180" xml:space="preserve">
+    <data name="Rotate180" xml:space="preserve">
     <value>180 度回転</value>
   </data>
-  <data name="Rotate270" xml:space="preserve">
+    <data name="Rotate270" xml:space="preserve">
     <value>270 度回転</value>
   </data>
-  <data name="Rotate90" xml:space="preserve">
+    <data name="Rotate90" xml:space="preserve">
     <value>90度回転</value>
   </data>
-  <data name="SEPERATOR" xml:space="preserve">
+    <data name="SEPERATOR" xml:space="preserve">
     <value>ブラケット</value>
   </data>
-  <data name="SPLIT" xml:space="preserve">
+    <data name="SPLIT" xml:space="preserve">
     <value>壊れた</value>
   </data>
-  <data name="SPLITTERTOOLTIP" xml:space="preserve">
+    <data name="SPLITTERTOOLTIP" xml:space="preserve">
     <value>ダブルクリックで復元、右クリックで展開</value>
   </data>
-  <data name="SRCCOLOR" xml:space="preserve">
+    <data name="SRCCOLOR" xml:space="preserve">
     <value>ソースカラー</value>
   </data>
-  <data name="SRCCOLORTIP" xml:space="preserve">
+    <data name="SRCCOLORTIP" xml:space="preserve">
     <value>右クリックして色を選択</value>
   </data>
-  <data name="START" xml:space="preserve">
+    <data name="START" xml:space="preserve">
     <value>始める</value>
   </data>
-  <data name="TAG" xml:space="preserve">
+    <data name="TAG" xml:space="preserve">
     <value>チケット</value>
   </data>
-  <data name="TASKSRUNNING" xml:space="preserve">
+    <data name="TASKSRUNNING" xml:space="preserve">
     <value>一部のタスクが実行中です。終了するまで待ちます。</value>
   </data>
-  <data name="TESSLANGSELECT" xml:space="preserve">
+    <data name="TESSLANGSELECT" xml:space="preserve">
     <value>Tesseract 言語を選択</value>
   </data>
-  <data name="THIRDPARTY" xml:space="preserve">
+    <data name="THIRDPARTY" xml:space="preserve">
     <value>アプリケーションで使用されるサードパーティ ライブラリ</value>
   </data>
-  <data name="THRESHOLD" xml:space="preserve">
+    <data name="THRESHOLD" xml:space="preserve">
     <value>しきい値</value>
   </data>
-  <data name="TRANSLATEPENDING" xml:space="preserve">
+    <data name="TRANSLATEPENDING" xml:space="preserve">
     <value>プロセスは進行中です。完了するまで待ちます。</value>
   </data>
-  <data name="UPDATE" xml:space="preserve">
+    <data name="UPDATE" xml:space="preserve">
     <value>アップデート</value>
   </data>
-  <data name="WATERMARK" xml:space="preserve">
+    <data name="WATERMARK" xml:space="preserve">
     <value>透かし</value>
   </data>
-  <data name="ADDOCRTOOLTIP" xml:space="preserve">
+    <data name="ADDOCRTOOLTIP" xml:space="preserve">
     <value>これがチェックされている場合、下にマークされた文書は、左側のアクティブな文書のテキストとしてデータベースに保存されます。</value>
   </data>
-  <data name="APPDESC" xml:space="preserve">
+    <data name="APPDESC" xml:space="preserve">
     <value>このアプリケーションは、スキャンとドキュメントの追跡を容易にするために開発されました。</value>
   </data>
-  <data name="APPLY" xml:space="preserve">
+    <data name="APPLY" xml:space="preserve">
     <value>申し込み</value>
   </data>
-  <data name="APPLYCOLOR" xml:space="preserve">
+    <data name="APPLYCOLOR" xml:space="preserve">
     <value>色を適用</value>
   </data>
-  <data name="Auto" xml:space="preserve">
+    <data name="Auto" xml:space="preserve">
     <value>自動</value>
   </data>
-  <data name="AutoPicture" xml:space="preserve">
+    <data name="AutoPicture" xml:space="preserve">
     <value>オートピクチャー</value>
   </data>
-  <data name="AutoText" xml:space="preserve">
+    <data name="AutoText" xml:space="preserve">
     <value>自動テキスト</value>
   </data>
-  <data name="BATCH" xml:space="preserve">
+    <data name="BATCH" xml:space="preserve">
     <value>共同作業</value>
   </data>
-  <data name="BATCHDESC" xml:space="preserve">
+    <data name="BATCHDESC" xml:space="preserve">
     <value>以下のフォルダに画像ファイルを追加すると、プログラムを開いている限り、同じフォルダ内で自動的にPDFファイルに変換されます</value>
   </data>
-  <data name="CAMERA" xml:space="preserve">
+    <data name="CAMERA" xml:space="preserve">
     <value>カメラ</value>
   </data>
-  <data name="COLORCHANGETIP" xml:space="preserve">
+    <data name="COLORCHANGETIP" xml:space="preserve">
     <value>しきい値を設定した後にこれをクリックすると、2 番目の色の選択を行うことができます。</value>
   </data>
-  <data name="COMPRESS" xml:space="preserve">
+    <data name="COMPRESS" xml:space="preserve">
     <value>圧縮する</value>
   </data>
-  <data name="Default" xml:space="preserve">
+    <data name="Default" xml:space="preserve">
     <value>デフォルト</value>
   </data>
-  <data name="DSTCOLOR" xml:space="preserve">
+    <data name="DSTCOLOR" xml:space="preserve">
     <value>ターゲットカラー</value>
   </data>
-  <data name="EMPTYPAGE" xml:space="preserve">
+    <data name="EMPTYPAGE" xml:space="preserve">
     <value>空白ページをスキップ</value>
   </data>
-  <data name="EYPOPEN" xml:space="preserve">
+    <data name="EYPOPEN" xml:space="preserve">
     <value>Eyp ファイルを直接開く</value>
   </data>
-  <data name="FLATBED" xml:space="preserve">
+    <data name="FLATBED" xml:space="preserve">
     <value>フラットベッド</value>
   </data>
-  <data name="JPEGQUALITY" xml:space="preserve">
+    <data name="JPEGQUALITY" xml:space="preserve">
     <value>JPEG品質率</value>
   </data>
-  <data name="Left" xml:space="preserve">
+    <data name="Left" xml:space="preserve">
     <value>左</value>
   </data>
-  <data name="LIMITED" xml:space="preserve">
+    <data name="LIMITED" xml:space="preserve">
     <value>このファイル形式のサポートは限定的です。</value>
   </data>
-  <data name="LOAD" xml:space="preserve">
+    <data name="LOAD" xml:space="preserve">
     <value>ロード</value>
   </data>
-  <data name="NOPATCHCODE" xml:space="preserve">
+    <data name="NOPATCHCODE" xml:space="preserve">
     <value>パッチ コードが検出されませんでした</value>
   </data>
-  <data name="NOPROFILE" xml:space="preserve">
+    <data name="NOPROFILE" xml:space="preserve">
     <value>プロファイルが選択されていません</value>
   </data>
-  <data name="OVERWRITECOMPRESSED" xml:space="preserve">
+    <data name="OVERWRITECOMPRESSED" xml:space="preserve">
     <value>スキャン文書の圧縮ファイルを直接上書き</value>
   </data>
-  <data name="STOP" xml:space="preserve">
+    <data name="STOP" xml:space="preserve">
     <value>ストップ</value>
   </data>
-  <data name="EMPTY" xml:space="preserve">
+    <data name="EMPTY" xml:space="preserve">
     <value>空</value>
   </data>
-  <data name="DESPECKLE" xml:space="preserve">
+    <data name="DESPECKLE" xml:space="preserve">
     <value>斑点除去</value>
   </data>
 </root>

@@ -13,7 +13,7 @@ using Microsoft.Win32;
 namespace TwainControl;
 
 /// <summary>
-/// Interaction logic for CameraUserControl.xaml
+///     Interaction logic for CameraUserControl.xaml
 /// </summary>
 public partial class CameraUserControl : UserControl, INotifyPropertyChanged
 {
@@ -39,16 +39,20 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
                     ResimData = grid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
                 }
             },
-            parameter => parameter is MediaViewer mediaViewer && !string.IsNullOrWhiteSpace(mediaViewer.MediaDataFilePath));
+            parameter => parameter is MediaViewer mediaViewer &&
+                         !string.IsNullOrWhiteSpace(mediaViewer.MediaDataFilePath));
 
-        Durdur = new RelayCommand<object>(parameter => Device?.Stop(), parameter => SeçiliKamera is not null && Device?.IsRunning == true);
+        Durdur = new RelayCommand<object>(parameter => Device?.Stop(),
+            parameter => SeçiliKamera is not null && Device?.IsRunning == true);
 
-        Oynat = new RelayCommand<object>(parameter => Device?.Start(), parameter => SeçiliKamera is not null && Device?.IsRunning == false);
+        Oynat = new RelayCommand<object>(parameter => Device?.Start(),
+            parameter => SeçiliKamera is not null && Device?.IsRunning == false);
 
         Kaydet = new RelayCommand<object>(
             parameter =>
             {
-                SaveFileDialog saveFileDialog = new() { Filter = "Jpg Dosyası (*.jpg)|*.jpg", AddExtension = true, Title = "Kaydet" };
+                SaveFileDialog saveFileDialog = new()
+                { Filter = "Jpg Dosyası (*.jpg)|*.jpg", AddExtension = true, Title = "Kaydet" };
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     using FileStream ms = new(saveFileDialog.FileName, FileMode.Create, FileAccess.Write);
@@ -147,7 +151,8 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
     public void EncodeBitmapImage(Stream ms)
     {
         JpegBitmapEncoder encoder = new();
-        encoder.Frames.Add(BitmapFrame.Create(new TransformedBitmap(Device.BitmapSource, new RotateTransform(Rotation))));
+        encoder.Frames.Add(
+            BitmapFrame.Create(new TransformedBitmap(Device.BitmapSource, new RotateTransform(Rotation))));
         encoder.QualityLevel = 90;
         encoder.Save(ms);
     }

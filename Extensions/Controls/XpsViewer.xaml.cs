@@ -12,7 +12,7 @@ using System.Windows.Xps.Packaging;
 namespace Extensions.Controls;
 
 /// <summary>
-/// Interaction logic for XpsViewer.xaml
+///     Interaction logic for XpsViewer.xaml
 /// </summary>
 public class PageRangeDocumentPaginator : DocumentPaginator
 {
@@ -26,9 +26,14 @@ public class PageRangeDocumentPaginator : DocumentPaginator
 
     public override bool IsPageCountValid => true;
 
-    public override int PageCount => _startIndex > _paginator.PageCount - 1 || _startIndex > _endIndex ? 0 : _endIndex - _startIndex + 1;
+    public override int PageCount => _startIndex > _paginator.PageCount - 1 || _startIndex > _endIndex
+        ? 0
+        : _endIndex - _startIndex + 1;
 
-    public override Size PageSize { get => _paginator.PageSize; set => _paginator.PageSize = value; }
+    public override Size PageSize {
+        get => _paginator.PageSize;
+        set => _paginator.PageSize = value;
+    }
 
     public override IDocumentPaginatorSource Source => _paginator.Source;
 
@@ -40,8 +45,10 @@ public class PageRangeDocumentPaginator : DocumentPaginator
         {
             foreach (object child in page1.Children)
             {
-                UIElement childClone = (UIElement)child.GetType().GetMethod("MemberwiseClone", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(child, null);
-                FieldInfo parentField = childClone.GetType().GetField("_parent", BindingFlags.Instance | BindingFlags.NonPublic);
+                UIElement childClone = (UIElement)child.GetType()
+                    .GetMethod("MemberwiseClone", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(child, null);
+                FieldInfo parentField = childClone.GetType()
+                    .GetField("_parent", BindingFlags.Instance | BindingFlags.NonPublic);
                 if (parentField != null)
                 {
                     parentField.SetValue(childClone, null);
@@ -84,7 +91,10 @@ public partial class XpsViewer : UserControl, INotifyPropertyChanged
         }
     }
 
-    public string XpsDataFilePath { get => (string)GetValue(XpsDataFilePathProperty); set => SetValue(XpsDataFilePathProperty, value); }
+    public string XpsDataFilePath {
+        get => (string)GetValue(XpsDataFilePathProperty);
+        set => SetValue(XpsDataFilePathProperty, value);
+    }
 
     public static readonly DependencyProperty XpsDataFilePathProperty = DependencyProperty.Register(
                         "XpsDataFilePath",

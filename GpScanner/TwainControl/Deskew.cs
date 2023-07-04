@@ -4,7 +4,7 @@ using System.Windows.Media.Imaging;
 
 namespace TwainControl;
 
-public class Deskew()
+public abstract class Deskew()
 {
     public static double GetDeskewAngle(BitmapSource image)
     {
@@ -81,6 +81,6 @@ public class Deskew()
 
     private static BitmapSource ConvertToGrayscale(BitmapSource image)
     {
-        return (FormatConvertedBitmap)new(image, PixelFormats.Gray8, null, 0);
+        return new FormatConvertedBitmap(image, PixelFormats.Gray8, null, 0);
     }
 }

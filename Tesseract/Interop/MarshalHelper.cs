@@ -25,7 +25,7 @@ namespace Tesseract.Interop
         }
 
         /// <summary>
-        /// Gets the number of bytes in a null terminated byte array.
+        ///     Gets the number of bytes in a null terminated byte array.
         /// </summary>
         public static int StrLength(IntPtr handle)
         {

@@ -9,12 +9,14 @@ using TwainControl.Properties;
 namespace TwainControl;
 
 /// <summary>
-/// Interaction logic for SaveDialogUserControl.xaml
+///     Interaction logic for SaveDialogUserControl.xaml
 /// </summary>
 public partial class SaveDialogUserControl : UserControl, INotifyPropertyChanged
 {
     public SaveDialogUserControl()
-    { InitializeComponent(); }
+    {
+        InitializeComponent();
+    }
 
     public event PropertyChangedEventHandler PropertyChanged;
 
@@ -46,7 +48,8 @@ public partial class SaveDialogUserControl : UserControl, INotifyPropertyChanged
     private void GenerateImage()
     {
         PreviewImage = twainCtrl.SaveIndex == 3
-            ? twainCtrl?.SeçiliResim?.Resim?.Resize(512, 512).BitmapSourceToBitmap().ConvertBlackAndWhite(Settings.Default.BwThreshold).ToBitmapImage(ImageFormat.Jpeg)
+            ? twainCtrl?.SeçiliResim?.Resim?.Resize(512, 512).BitmapSourceToBitmap()
+                .ConvertBlackAndWhite(Settings.Default.BwThreshold).ToBitmapImage(ImageFormat.Jpeg)
             : null;
     }
 

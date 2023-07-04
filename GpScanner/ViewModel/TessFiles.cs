@@ -1,4 +1,4 @@
-﻿using InpcBase = Extensions.InpcBase;
+﻿using Extensions;
 
 namespace GpScanner.ViewModel;
 

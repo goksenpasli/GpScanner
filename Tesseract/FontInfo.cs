@@ -16,7 +16,8 @@ namespace Tesseract
 
         public string Name { get; }
 
-        internal FontInfo(string name, int id, bool isItalic, bool isBold, bool isFixedPitch, bool isSerif, bool isFraktur = false)
+        internal FontInfo(string name, int id, bool isItalic, bool isBold, bool isFixedPitch, bool isSerif,
+                                                                    bool isFraktur = false)
         {
             Name = name;
             Id = id;

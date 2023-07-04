@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -40,7 +39,8 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                     }
                     catch (Exception ex)
                     {
-                        _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+                        _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK,
+                            MessageBoxImage.Error);
                     }
                 }
             },
@@ -76,14 +76,17 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                         while ((bytesRead = await contentStream.ReadAsync(buffer, 0, bufferSize)) > 0)
                         {
                             await fileStream.WriteAsync(buffer, 0, bytesRead);
-                            ocrData.ProgressValue = fileStream.Length / (double)response.Content.Headers.ContentLength * 100;
+                            ocrData.ProgressValue =
+                                fileStream.Length / (double)response.Content.Headers.ContentLength * 100;
                         }
+
                         ocrData.IsEnabled = true;
                         TesseractFiles = GetTesseractFiles(Tessdatafolder);
                     }
                     catch (Exception ex)
                     {
-                        _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+                        _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK,
+                            MessageBoxImage.Error);
                         if (File.Exists(datafile))
                         {
                             File.Delete(datafile);
@@ -150,7 +153,9 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
 
     public string this[string columnName] => columnName switch
     {
-        "TesseractFiles" when TesseractFiles?.Count(z => z.Checked) == 0 || string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) => $"{Translation.GetResStringValue("TESSLANGSELECT")}",
+        "TesseractFiles" when TesseractFiles?.Count(z => z.Checked) == 0 ||
+                              string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) =>
+            $"{Translation.GetResStringValue("TESSLANGSELECT")}",
         _ => null
     };
 
@@ -165,37 +170,38 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                         filePath =>
                         {
                             string tessFileName = Path.GetFileNameWithoutExtension(filePath);
-                            TessFiles tessfiles = new() { Name = tessFileName, Checked = defaultTtsLang.Contains(tessFileName) };
+                            TessFiles tessfiles = new()
+                            { Name = tessFileName, Checked = defaultTtsLang.Contains(tessFileName) };
                             tessfiles.PropertyChanged += Tess_PropertyChanged;
                             return tessfiles;
                         }));
         }
-        else
-        {
-            return null;
-        }
+
+        return null;
     }
 
     private void Tess_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName is "Checked")
         {
-            IEnumerable<TessFiles> checkedFiles = TesseractFiles.Where(item => item.Checked);
+            System.Collections.Generic.IEnumerable<TessFiles> checkedFiles = TesseractFiles.Where(item => item.Checked);
             if (!checkedFiles.Any())
             {
                 Settings.Default.BatchFolder = string.Empty;
                 PdfGeneration.Scanner.ApplyPdfSaveOcr = false;
                 PdfGeneration.Scanner.ApplyDataBaseOcr = false;
             }
-            PdfGeneration.Scanner.SelectedTtsLanguage = Settings.Default.DefaultTtsLang = string.Join("+", checkedFiles.Select(item => item.Name));
+
+            PdfGeneration.Scanner.SelectedTtsLanguage = Settings.Default.DefaultTtsLang =
+                string.Join("+", checkedFiles.Select(item => item.Name));
             OnPropertyChanged(nameof(TesseractFiles));
         }
     }
 
     private ObservableCollection<TesseractOcrData> TesseractDownloadData()
     {
-        return new()
-    {
+        return new ObservableCollection<TesseractOcrData>
+        {
             new TesseractOcrData { OcrName = "afr.traineddata", IsVisible = Visibility.Visible },
             new TesseractOcrData { OcrName = "amh.traineddata" },
             new TesseractOcrData { OcrName = "ara.traineddata" },

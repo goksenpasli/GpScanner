@@ -16,23 +16,24 @@ public enum FileType
 public static class Win32FileScanner
 {
     /// <summary>
-    /// Provides a enumerable of file results that contain a range of information about both files and directories
-    /// discovered in the provided directory path.
+    ///     Provides a enumerable of file results that contain a range of information about both files and directories
+    ///     discovered in the provided directory path.
     /// </summary>
     /// <param name="path">The folder path.</param>
     /// <param name="rootStats">
-    /// A cumulative stat object representing total files, folder, sizes, etc for the base directory provided.
+    ///     A cumulative stat object representing total files, folder, sizes, etc for the base directory provided.
     /// </param>
     /// <param name="maxDepth">Maximum folder depth to recurse. Set -1 to disable max depth.</param>
-    public static IEnumerable<FileResult> EnumerateFileItems(string path, out DirectoryStats rootStats, int maxDepth = -1)
+    public static IEnumerable<FileResult> EnumerateFileItems(string path, out DirectoryStats rootStats,
+        int maxDepth = -1)
     {
         rootStats = new DirectoryStats();
         return ScanRecursive(Path.GetFullPath(path), maxDepth, 0, rootStats);
     }
 
     /// <summary>
-    /// A barebones version of EnumerateFiles() provides only the path and not statistics. Only provides files and not
-    /// directories.
+    ///     A barebones version of EnumerateFiles() provides only the path and not statistics. Only provides files and not
+    ///     directories.
     /// </summary>
     /// <param name="maxDepth">Maximum folder depth to recurse. Set -1 to disable max depth.</param>
     public static IEnumerable<string> EnumerateFilepaths(string path, int maxDepth = -1)
@@ -105,7 +106,8 @@ public static class Win32FileScanner
             {
                 do
                 {
-                    if (findData.dwFileAttributes.HasFlag(FileAttributes.ReparsePoint | FileAttributes.Directory) || !IsValidFile(findData))
+                    if (findData.dwFileAttributes.HasFlag(FileAttributes.ReparsePoint | FileAttributes.Directory) ||
+                        !IsValidFile(findData))
                     {
                         continue;
                     }
@@ -132,7 +134,8 @@ public static class Win32FileScanner
 
                         parent.AddDirectory(ref stats);
 
-                        yield return new FileResult(fullPath, 0, findData.dwFileAttributes, creationTime, lastWriteTime, lastAccessTime, FileType.Folder, depth, stats);
+                        yield return new FileResult(fullPath, 0, findData.dwFileAttributes, creationTime, lastWriteTime,
+                            lastAccessTime, FileType.Folder, depth, stats);
                     }
                     else
                     {
@@ -140,10 +143,10 @@ public static class Win32FileScanner
 
                         parent.AddFile(filesize);
 
-                        yield return new FileResult(fullPath, filesize, findData.dwFileAttributes, creationTime, lastWriteTime, lastAccessTime, FileType.File, depth);
+                        yield return new FileResult(fullPath, filesize, findData.dwFileAttributes, creationTime,
+                            lastWriteTime, lastAccessTime, FileType.File, depth);
                     }
-                }
-                while (FindNextFile(handle, out findData));
+                } while (FindNextFile(handle, out findData));
             }
         }
         finally
@@ -164,7 +167,8 @@ public static class Win32FileScanner
             {
                 do
                 {
-                    if (findData.dwFileAttributes.HasFlag(FileAttributes.ReparsePoint | FileAttributes.Directory) || !IsValidFile(findData))
+                    if (findData.dwFileAttributes.HasFlag(FileAttributes.ReparsePoint | FileAttributes.Directory) ||
+                        !IsValidFile(findData))
                     {
                         continue;
                     }
@@ -187,8 +191,7 @@ public static class Win32FileScanner
                     {
                         yield return fullPath;
                     }
-                }
-                while (FindNextFile(handle, out findData));
+                } while (FindNextFile(handle, out findData));
             }
         }
         finally
@@ -198,7 +201,7 @@ public static class Win32FileScanner
     }
 
     /// <summary>
-    /// Converts the provided Win32 FileTime struct into a .NET DateTime struct.
+    ///     Converts the provided Win32 FileTime struct into a .NET DateTime struct.
     /// </summary>
     private static DateTime ToDateTime(FileTime fileTime)
     {
@@ -277,12 +280,12 @@ public sealed class FileResult(
     public DateTime LastWriteTime { get; } = lastWriteTime;
 
     /// <summary>
-    /// Gets the absolute path to this file.
+    ///     Gets the absolute path to this file.
     /// </summary>
     public string Path { get; } = path;
 
     /// <summary>
-    /// Gets the size of this file in bytes.
+    ///     Gets the size of this file in bytes.
     /// </summary>
     public long Size { get; } = filesize;
 

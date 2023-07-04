@@ -1,15 +1,16 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="PdfCompressor.Properties" GeneratedClassName="Settings">
-  <Profiles />
-  <Settings>
-    <Setting Name="Dpi" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">120</Value>
-    </Setting>
-    <Setting Name="Quality" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">65</Value>
-    </Setting>
-    <Setting Name="Bw" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-  </Settings>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)"
+              GeneratedClassNamespace="PdfCompressor.Properties" GeneratedClassName="Settings">
+    <Profiles/>
+    <Settings>
+        <Setting Name="Dpi" Type="System.Int32" Scope="User">
+            <Value Profile="(Default)">120</Value>
+        </Setting>
+        <Setting Name="Quality" Type="System.Int32" Scope="User">
+            <Value Profile="(Default)">65</Value>
+        </Setting>
+        <Setting Name="Bw" Type="System.Boolean" Scope="User">
+            <Value Profile="(Default)">False</Value>
+        </Setting>
+    </Settings>
 </SettingsFile>

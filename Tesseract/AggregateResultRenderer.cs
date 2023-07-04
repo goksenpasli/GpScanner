@@ -5,20 +5,21 @@ using Tesseract.Internal;
 namespace Tesseract
 {
     /// <summary>
-    /// Aggregate result renderer.
+    ///     Aggregate result renderer.
     /// </summary>
     public class AggregateResultRenderer : DisposableBase, IResultRenderer
     {
         /// <summary>
-        /// Create a new aggregate result renderer with the specified child result renderers.
+        ///     Create a new aggregate result renderer with the specified child result renderers.
         /// </summary>
         /// <param name="resultRenderers">The child result renderers.</param>
-        public AggregateResultRenderer(params IResultRenderer[] resultRenderers) : this((IEnumerable<IResultRenderer>)resultRenderers)
+        public AggregateResultRenderer(params IResultRenderer[] resultRenderers) : this(
+            (IEnumerable<IResultRenderer>)resultRenderers)
         {
         }
 
         /// <summary>
-        /// Create a new aggregate result renderer with the specified child result renderers.
+        ///     Create a new aggregate result renderer with the specified child result renderers.
         /// </summary>
         /// <param name="resultRenderers">The child result renderers.</param>
         public AggregateResultRenderer(IEnumerable<IResultRenderer> resultRenderers)
@@ -29,17 +30,17 @@ namespace Tesseract
         }
 
         /// <summary>
-        /// Get's the current page number.
+        ///     Get's the current page number.
         /// </summary>
         public int PageNumber { get; private set; } = -1;
 
         /// <summary>
-        /// Get's the child result renderers.
+        ///     Get's the child result renderers.
         /// </summary>
         public IEnumerable<IResultRenderer> ResultRenderers => _resultRenderers;
 
         /// <summary>
-        /// Adds a page to each of the child result renderers.
+        ///     Adds a page to each of the child result renderers.
         /// </summary>
         /// <param name="page"></param>
         /// <returns></returns>
@@ -61,7 +62,7 @@ namespace Tesseract
         }
 
         /// <summary>
-        /// Begins a new document with the specified title.
+        ///     Begins a new document with the specified title.
         /// </summary>
         /// <param name="title">The title of the document.</param>
         /// <returns></returns>
@@ -69,7 +70,9 @@ namespace Tesseract
         {
             Guard.RequireNotNull("title", title);
             VerifyNotDisposed();
-            Guard.Verify(_currentDocumentHandle == null, "Cannot begin document \"{0}\" as another document is currently being processed which must be dispose off first.", title);
+            Guard.Verify(_currentDocumentHandle == null,
+                "Cannot begin document \"{0}\" as another document is currently being processed which must be dispose off first.",
+                title);
 
             PageNumber = -1;
 
@@ -127,7 +130,7 @@ namespace Tesseract
         }
 
         /// <summary>
-        /// Ensures the renderer's EndDocument when disposed off.
+        ///     Ensures the renderer's EndDocument when disposed off.
         /// </summary>
         private class EndDocumentOnDispose : DisposableBase
         {
@@ -141,7 +144,8 @@ namespace Tesseract
             {
                 if (disposing)
                 {
-                    Guard.Verify(_renderer._currentDocumentHandle == this, "Expected the Result Render's active document to be this document.");
+                    Guard.Verify(_renderer._currentDocumentHandle == this,
+                        "Expected the Result Render's active document to be this document.");
 
                     foreach (IDisposable child in _children)
                     {

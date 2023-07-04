@@ -9,8 +9,9 @@
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
     d:DesignHeight="240" d:DesignWidth="450"
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
-    Loaded="UserControl_Loaded" UseLayoutRounding="True"
-    mc:Ignorable="d" Unloaded="UserControl_Unloaded">
+    Loaded="UserControl_Loaded" Unloaded="UserControl_Unloaded"
+    UseLayoutRounding="True"
+    mc:Ignorable="d">
     <UserControl.Resources>
         <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
         <Extensions:FilePathToFileDescriptionConverter x:Key="FilePathToFileDescriptionConverter" />

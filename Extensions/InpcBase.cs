@@ -5,7 +5,8 @@ namespace Extensions;
 
 public abstract class InpcBase : INotifyPropertyChanged, INotifyPropertyChanging
 {
-    [field: NonSerialized] public static event EventHandler<PropertyChangedEventArgs> StaticEventPropertyChanged = delegate { };
+    [field: NonSerialized]
+    public static event EventHandler<PropertyChangedEventArgs> StaticEventPropertyChanged = delegate { };
 
     [field: NonSerialized] public event PropertyChangedEventHandler PropertyChanged;
 
@@ -32,7 +33,8 @@ public abstract class InpcBase : INotifyPropertyChanged, INotifyPropertyChanging
     }
 }
 
-public class PropertyChangedExtendedEventArgs<T>(string propertyName, T oldValue, T newValue) : PropertyChangedEventArgs(propertyName)
+public class PropertyChangedExtendedEventArgs<T>
+    (string propertyName, T oldValue, T newValue) : PropertyChangedEventArgs(propertyName)
 {
     public virtual T NewValue { get; private set; } = newValue;
 

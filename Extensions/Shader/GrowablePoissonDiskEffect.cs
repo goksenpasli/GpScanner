@@ -6,13 +6,14 @@ using System.Windows.Media.Effects;
 namespace Extensions;
 
 /// <summary>
-/// An effect that blurs the input using Poisson disk sampling.
+///     An effect that blurs the input using Poisson disk sampling.
 /// </summary>
 public class GrowablePoissonDiskEffect : ShaderEffect
 {
     public GrowablePoissonDiskEffect()
     {
-        PixelShader = new PixelShader { UriSource = new Uri("/Extensions;component/Shader/GrowablePoissonDiskEffect.ps", UriKind.Relative) };
+        PixelShader = new PixelShader
+        { UriSource = new Uri("/Extensions;component/Shader/GrowablePoissonDiskEffect.ps", UriKind.Relative) };
 
         UpdateShaderValue(InputProperty);
         UpdateShaderValue(DiskRadiusProperty);
@@ -20,16 +21,25 @@ public class GrowablePoissonDiskEffect : ShaderEffect
     }
 
     /// <summary>
-    /// The radius of the Poisson disk (in pixels).
+    ///     The radius of the Poisson disk (in pixels).
     /// </summary>
-    public double DiskRadius { get => (double)GetValue(DiskRadiusProperty); set => SetValue(DiskRadiusProperty, value); }
+    public double DiskRadius {
+        get => (double)GetValue(DiskRadiusProperty);
+        set => SetValue(DiskRadiusProperty, value);
+    }
 
-    public Brush Input { get => (Brush)GetValue(InputProperty); set => SetValue(InputProperty, value); }
+    public Brush Input {
+        get => (Brush)GetValue(InputProperty);
+        set => SetValue(InputProperty, value);
+    }
 
     /// <summary>
-    /// The size of the input (in pixels).
+    ///     The size of the input (in pixels).
     /// </summary>
-    public Size InputSize { get => (Size)GetValue(InputSizeProperty); set => SetValue(InputSizeProperty, value); }
+    public Size InputSize {
+        get => (Size)GetValue(InputSizeProperty);
+        set => SetValue(InputSizeProperty, value);
+    }
 
     public static readonly DependencyProperty DiskRadiusProperty = DependencyProperty.Register(
                         "DiskRadius",

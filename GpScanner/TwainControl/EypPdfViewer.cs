@@ -4,14 +4,13 @@ using System.Linq;
 using System.Windows;
 using Extensions;
 using Microsoft.Win32;
-using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
 using TwainControl.Properties;
 
 namespace TwainControl;
 
 /// <summary>
-/// Interaction logic for PdfImportViewerControl.xaml
+///     Interaction logic for PdfImportViewerControl.xaml
 /// </summary>
 public class EypPdfViewer : PdfViewer.PdfViewer
 {
@@ -20,7 +19,8 @@ public class EypPdfViewer : PdfViewer.PdfViewer
         DosyaAç = new RelayCommand<object>(
             parameter =>
             {
-                OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = "Doküman (*.pdf;*.eyp)|*.pdf;*.eyp" };
+                OpenFileDialog openFileDialog = new()
+                { Multiselect = false, Filter = "Doküman (*.pdf;*.eyp)|*.pdf;*.eyp" };
                 openFileDialog.Multiselect = false;
                 if (openFileDialog.ShowDialog() == true)
                 {
@@ -31,16 +31,20 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                         {
                             return;
                         }
+
                         PdfFilePath = eypfile;
                     }
+
                     if (Path.GetExtension(openFileDialog.FileName.ToLower()) == ".pdf")
                     {
                         if (PdfReader.TestPdfFile(openFileDialog.FileName) == 0)
                         {
                             return;
                         }
+
                         PdfFilePath = openFileDialog.FileName;
                     }
+
                     AddToHistoryList(PdfFilePath);
                 }
             });
@@ -60,7 +64,8 @@ public class EypPdfViewer : PdfViewer.PdfViewer
 
     public string ExtractEypFilesToPdf(string filename)
     {
-        using PdfDocument document = TwainCtrl.EypFileExtract(filename).Where(z => Path.GetExtension(z.ToLower()) == ".pdf").ToArray().MergePdf();
+        using PdfSharp.Pdf.PdfDocument document = TwainCtrl.EypFileExtract(filename).Where(z => Path.GetExtension(z.ToLower()) == ".pdf")
+            .ToArray().MergePdf();
         string source = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
         document.Save(source);
         return source;

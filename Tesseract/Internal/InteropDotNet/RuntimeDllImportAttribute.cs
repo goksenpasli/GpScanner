@@ -8,7 +8,9 @@ namespace Tesseract.Internal.InteropDotNet
     internal sealed class RuntimeDllImportAttribute : Attribute
     {
         public RuntimeDllImportAttribute(string libraryFileName)
-        { LibraryFileName = libraryFileName; }
+        {
+            LibraryFileName = libraryFileName;
+        }
 
         public string LibraryFileName { get; }
 

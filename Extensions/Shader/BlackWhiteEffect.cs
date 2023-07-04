@@ -6,24 +6,31 @@ using System.Windows.Media.Effects;
 namespace Extensions;
 
 /// <summary>
-/// An effect that turns the input into black/white colors.
+///     An effect that turns the input into black/white colors.
 /// </summary>
 public class BlackWhiteEffect : ShaderEffect
 {
     public BlackWhiteEffect()
     {
-        PixelShader = new PixelShader { UriSource = new Uri("/Extensions;component/Shader/BlackWhiteEffect.ps", UriKind.Relative) };
+        PixelShader = new PixelShader
+        { UriSource = new Uri("/Extensions;component/Shader/BlackWhiteEffect.ps", UriKind.Relative) };
 
         UpdateShaderValue(InputProperty);
         UpdateShaderValue(ThresholdProperty);
     }
 
-    public Brush Input { get => (Brush)GetValue(InputProperty); set => SetValue(InputProperty, value); }
+    public Brush Input {
+        get => (Brush)GetValue(InputProperty);
+        set => SetValue(InputProperty, value);
+    }
 
     /// <summary>
-    /// The Threshold value to convert pixel from black to white.
+    ///     The Threshold value to convert pixel from black to white.
     /// </summary>
-    public double Threshold { get => (double)GetValue(ThresholdProperty); set => SetValue(ThresholdProperty, value); }
+    public double Threshold {
+        get => (double)GetValue(ThresholdProperty);
+        set => SetValue(ThresholdProperty, value);
+    }
 
     public static readonly DependencyProperty InputProperty =
                     RegisterPixelShaderSamplerProperty("Input", typeof(BlackWhiteEffect), 0);

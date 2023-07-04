@@ -40,7 +40,11 @@ public class Compressor : Control, INotifyPropertyChanged
                     List<BitmapImage> images = await AddToListAsync(loadedpdfdoc, Dpi);
                     using PdfDocument pdfDocument = await GeneratePdfAsync(images, UseMozJpeg, BlackAndWhite, Quality, Dpi);
                     images = null;
-                    SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası (*.pdf)|*.pdf", FileName = $"{Path.GetFileNameWithoutExtension(LoadedPdfPath)}_Compressed.pdf" };
+                    SaveFileDialog saveFileDialog = new()
+                    {
+                        Filter = "Pdf Dosyası (*.pdf)|*.pdf",
+                        FileName = $"{Path.GetFileNameWithoutExtension(LoadedPdfPath)}_Compressed.pdf"
+                    };
                     if (saveFileDialog.ShowDialog() == true)
                     {
                         pdfDocument.Save(saveFileDialog.FileName);
@@ -65,7 +69,10 @@ public class Compressor : Control, INotifyPropertyChanged
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public bool BlackAndWhite { get => (bool)GetValue(BlackAndWhiteProperty); set => SetValue(BlackAndWhiteProperty, value); }
+    public bool BlackAndWhite {
+        get => (bool)GetValue(BlackAndWhiteProperty);
+        set => SetValue(BlackAndWhiteProperty, value);
+    }
 
     public RelayCommand<object> CompressFile { get; }
 
@@ -81,15 +88,27 @@ public class Compressor : Control, INotifyPropertyChanged
         }
     }
 
-    public int Dpi { get => (int)GetValue(DpiProperty); set => SetValue(DpiProperty, value); }
+    public int Dpi {
+        get => (int)GetValue(DpiProperty);
+        set => SetValue(DpiProperty, value);
+    }
 
-    public string LoadedPdfPath { get => (string)GetValue(LoadedPdfPathProperty); set => SetValue(LoadedPdfPathProperty, value); }
+    public string LoadedPdfPath {
+        get => (string)GetValue(LoadedPdfPathProperty);
+        set => SetValue(LoadedPdfPathProperty, value);
+    }
 
     public RelayCommand<object> OpenFile { get; }
 
-    public int Quality { get => (int)GetValue(QualityProperty); set => SetValue(QualityProperty, value); }
+    public int Quality {
+        get => (int)GetValue(QualityProperty);
+        set => SetValue(QualityProperty, value);
+    }
 
-    public bool UseMozJpeg { get => (bool)GetValue(UseMozJpegProperty); set => SetValue(UseMozJpegProperty, value); }
+    public bool UseMozJpeg {
+        get => (bool)GetValue(UseMozJpegProperty);
+        set => SetValue(UseMozJpegProperty, value);
+    }
 
     public static Bitmap BitmapSourceToBitmap(BitmapSource bitmapsource)
     {
@@ -105,7 +124,8 @@ public class Compressor : Control, INotifyPropertyChanged
         src.EndInit();
         src.Freeze();
         Bitmap bitmap = new(src.PixelWidth, src.PixelHeight, PixelFormat.Format32bppArgb);
-        BitmapData data = bitmap.LockBits(new Rectangle(Point.Empty, bitmap.Size), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+        BitmapData data = bitmap.LockBits(new Rectangle(Point.Empty, bitmap.Size), ImageLockMode.WriteOnly,
+            PixelFormat.Format32bppArgb);
         src.CopyPixels(Int32Rect.Empty, data.Scan0, data.Height * data.Stride, data.Stride);
         bitmap.UnlockBits(data);
         return bitmap;
@@ -157,11 +177,13 @@ public class Compressor : Control, INotifyPropertyChanged
         return images;
     }
 
-    public async Task<PdfDocument> GeneratePdfAsync(List<BitmapImage> bitmapFrames, bool UseMozJpegEncoding, bool bw, int jpegquality = 80, int dpi = 200)
+    public async Task<PdfDocument> GeneratePdfAsync(List<BitmapImage> bitmapFrames, bool UseMozJpegEncoding, bool bw,
+        int jpegquality = 80, int dpi = 200)
     {
         if (bitmapFrames?.Count == 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(bitmapFrames), "bitmap frames count should be greater than zero");
+            throw new ArgumentOutOfRangeException(nameof(bitmapFrames),
+                "bitmap frames count should be greater than zero");
         }
 
         using PdfDocument document = new();
@@ -180,7 +202,8 @@ public class Compressor : Control, INotifyPropertyChanged
                             using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
                             using MozJpeg.MozJpeg mozJpeg = new();
                             BitmapSource resizedimage = pdfimage.Resize(page.Width, page.Height, 0, dpi, dpi);
-                            byte[] data = mozJpeg.Encode(BitmapSourceToBitmap(resizedimage), jpegquality, false, TJFlags.ACCURATEDCT | TJFlags.DC_SCAN_OPT2 | TJFlags.TUNE_MS_SSIM);
+                            byte[] data = mozJpeg.Encode(BitmapSourceToBitmap(resizedimage), jpegquality, false,
+                                TJFlags.ACCURATEDCT | TJFlags.DC_SCAN_OPT2 | TJFlags.TUNE_MS_SSIM);
                             using MemoryStream ms = new(data);
                             using XImage xImage = XImage.FromStream(ms);
                             XSize size = PageSizeConverter.ToSize(page.Size);
@@ -206,7 +229,7 @@ public class Compressor : Control, INotifyPropertyChanged
                                 ? pdfimage.Resize(page.Width, page.Height, 0, dpi, dpi).ConvertBlackAndWhite()
                                 : pdfimage.Resize(page.Width, page.Height, 0, dpi, dpi);
                             using MemoryStream ms =
-                            new(resizedimage.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg, jpegquality));
+                                new(resizedimage.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg, jpegquality));
                             using XImage xImage = XImage.FromStream(ms);
                             XSize size = PageSizeConverter.ToSize(page.Size);
                             resizedimage = null;
@@ -240,7 +263,8 @@ public class Compressor : Control, INotifyPropertyChanged
     }
 
     public static readonly DependencyProperty BlackAndWhiteProperty =
-                                                                        DependencyProperty.Register("BlackAndWhite", typeof(bool), typeof(Compressor), new PropertyMetadata(Settings.Default.Bw, BwChanged));
+                                                                        DependencyProperty.Register("BlackAndWhite", typeof(bool), typeof(Compressor),
+            new PropertyMetadata(Settings.Default.Bw, BwChanged));
 
     public static readonly DependencyProperty DpiProperty = DependencyProperty.Register(
         "Dpi",
@@ -261,7 +285,8 @@ public class Compressor : Control, INotifyPropertyChanged
         new PropertyMetadata(Settings.Default.Quality, QualityChanged));
 
     public static readonly DependencyProperty UseMozJpegProperty =
-        DependencyProperty.Register("UseMozJpeg", typeof(bool), typeof(Compressor), new PropertyMetadata(false, MozpegChanged));
+        DependencyProperty.Register("UseMozJpeg", typeof(bool), typeof(Compressor),
+            new PropertyMetadata(false, MozpegChanged));
 
     protected virtual void OnPropertyChanged(string propertyName = null)
     {
@@ -278,6 +303,7 @@ public class Compressor : Control, INotifyPropertyChanged
                 Settings.Default.Save();
                 return;
             }
+
             compressor.BlackAndWhite = Settings.Default.Bw = false;
             Settings.Default.Save();
         }

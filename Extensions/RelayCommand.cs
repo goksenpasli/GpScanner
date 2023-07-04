@@ -35,7 +35,8 @@ public class RelayAsyncCommand<T> : RelayCommand<T>
             Started?.Invoke(this, EventArgs.Empty);
 
             Task task = Task.Run(() => _execute((T)parameter));
-            _ = task.ContinueWith(_ => OnRunWorkerCompleted(EventArgs.Empty), TaskScheduler.FromCurrentSynchronizationContext());
+            _ = task.ContinueWith(_ => OnRunWorkerCompleted(EventArgs.Empty),
+                TaskScheduler.FromCurrentSynchronizationContext());
         }
         catch (Exception ex)
         {
@@ -76,7 +77,10 @@ public class RelayCommand<T> : ICommand
 
     #region ICommand Members
 
-    public event EventHandler CanExecuteChanged { add => CommandManager.RequerySuggested += value; remove => CommandManager.RequerySuggested -= value; }
+    public event EventHandler CanExecuteChanged {
+        add => CommandManager.RequerySuggested += value;
+        remove => CommandManager.RequerySuggested -= value;
+    }
 
     [DebuggerStepThrough]
     public virtual bool CanExecute(object parameter)

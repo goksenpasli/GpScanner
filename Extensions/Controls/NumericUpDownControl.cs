@@ -10,7 +10,8 @@ public class NumericUpDownControl : ScrollBar
 {
     static NumericUpDownControl()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(typeof(NumericUpDownControl), new FrameworkPropertyMetadata(typeof(NumericUpDownControl)));
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(NumericUpDownControl),
+            new FrameworkPropertyMetadata(typeof(NumericUpDownControl)));
         MaximumProperty.OverrideMetadata(typeof(NumericUpDownControl), new FrameworkPropertyMetadata(double.MaxValue));
         MinimumProperty.OverrideMetadata(typeof(NumericUpDownControl), new FrameworkPropertyMetadata(double.MinValue));
     }
@@ -24,9 +25,15 @@ public class NumericUpDownControl : ScrollBar
         DateTimeMode = 2
     }
 
-    public DateTime? DateValue { get => (DateTime?)GetValue(DateValueProperty); set => SetValue(DateValueProperty, value); }
+    public DateTime? DateValue {
+        get => (DateTime?)GetValue(DateValueProperty);
+        set => SetValue(DateValueProperty, value);
+    }
 
-    public bool IsReadOnly { get => (bool)GetValue(IsReadOnlyProperty); set => SetValue(IsReadOnlyProperty, value); }
+    public bool IsReadOnly {
+        get => (bool)GetValue(IsReadOnlyProperty);
+        set => SetValue(IsReadOnlyProperty, value);
+    }
 
     public Visibility NumericUpDownButtonsVisibility {
         get => (Visibility)GetValue(NumericUpDownButtonsVisibilityProperty);
@@ -38,12 +45,18 @@ public class NumericUpDownControl : ScrollBar
         set => SetValue(NumericUpdownTextBoxVisibilityProperty, value);
     }
 
-    public Mode ShowMode { get => (Mode)GetValue(ShowModeProperty); set => SetValue(ShowModeProperty, value); }
+    public Mode ShowMode {
+        get => (Mode)GetValue(ShowModeProperty);
+        set => SetValue(ShowModeProperty, value);
+    }
 
-    public double Text { get => (double)GetValue(TextProperty); set => SetValue(TextProperty, value); }
+    public double Text {
+        get => (double)GetValue(TextProperty);
+        set => SetValue(TextProperty, value);
+    }
 
     public static readonly DependencyProperty DateValueProperty = DependencyProperty.Register(
-                                        "DateValue",
+                                "DateValue",
         typeof(DateTime?),
         typeof(NumericUpDownControl),
         new PropertyMetadata(null));
@@ -55,10 +68,12 @@ public class NumericUpDownControl : ScrollBar
         new PropertyMetadata(false));
 
     public static readonly DependencyProperty NumericUpDownButtonsVisibilityProperty =
-        DependencyProperty.Register("NumericUpDownButtonsVisibility", typeof(Visibility), typeof(NumericUpDownControl), new PropertyMetadata(Visibility.Visible));
+        DependencyProperty.Register("NumericUpDownButtonsVisibility", typeof(Visibility), typeof(NumericUpDownControl),
+            new PropertyMetadata(Visibility.Visible));
 
     public static readonly DependencyProperty NumericUpdownTextBoxVisibilityProperty =
-        DependencyProperty.Register("NumericUpdownTextBoxVisibility", typeof(Visibility), typeof(NumericUpDownControl), new PropertyMetadata(Visibility.Visible));
+        DependencyProperty.Register("NumericUpdownTextBoxVisibility", typeof(Visibility), typeof(NumericUpDownControl),
+            new PropertyMetadata(Visibility.Visible));
 
     public static readonly DependencyProperty ShowModeProperty = DependencyProperty.Register(
         "ShowMode",
