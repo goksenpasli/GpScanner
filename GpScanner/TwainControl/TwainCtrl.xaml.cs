@@ -673,20 +673,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => true);
 
-        SendMail = new RelayCommand<object>(
-            parameter =>
-            {
-                try
-                {
-                    Mail.Mail.SendMail(MailData);
-                }
-                catch (Exception ex)
-                {
-                    throw new ArgumentException(nameof(MailData), ex);
-                }
-            },
-            parameter => !string.IsNullOrWhiteSpace(MailData));
-
         SplitPdf = new RelayCommand<object>(
             parameter =>
             {
@@ -1629,18 +1615,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand LoadSingleUdfFile { get; }
 
-    public string MailData {
-        get => mailData;
-
-        set {
-            if (mailData != value)
-            {
-                mailData = value;
-                OnPropertyChanged(nameof(MailData));
-            }
-        }
-    }
-
     public ICommand MaximizePdfControl { get; }
 
     public ICommand MergeSelectedImagesToPdfFile { get; }
@@ -1918,8 +1892,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
         }
     }
-
-    public ICommand SendMail { get; }
 
     public ICommand ShowDateFolderHelp { get; }
 
@@ -3121,6 +3093,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             evrak.Freeze();
             BitmapFrame bitmapFrame = BitmapFrame.Create(evrak);
             bitmapFrame.Freeze();
+            evrak = null;
             Scanner?.Resimler?.Add(new ScannedImage { Resim = bitmapFrame, RotationAngle = (double)SelectedRotation });
         }
     }
@@ -3252,8 +3225,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private bool isMouseDown;
 
     private bool isRightMouseDown;
-
-    private string mailData;
 
     private Point mousedowncoord;
 
