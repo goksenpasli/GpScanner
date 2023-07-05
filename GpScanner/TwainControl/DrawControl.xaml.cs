@@ -218,15 +218,8 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
     }
 
     public ImageSource TemporaryImage {
-        get => temporaryImage;
-
-        set {
-            if (temporaryImage != value)
-            {
-                temporaryImage = value;
-                OnPropertyChanged(nameof(TemporaryImage));
-            }
-        }
+        get => (ImageSource)GetValue(TemporaryImageProperty);
+        set => SetValue(TemporaryImageProperty, value);
     }
 
     public Cursor ConvertToCursor(FrameworkElement fe)
@@ -262,11 +255,12 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
         return image;
     }
 
-    public static readonly DependencyProperty EditingImageProperty = DependencyProperty.Register(
-                                                                                            "EditingImage",
+    public static readonly DependencyProperty EditingImageProperty = DependencyProperty.Register("EditingImage",
         typeof(BitmapFrame),
         typeof(DrawControl),
         new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+    public static readonly DependencyProperty TemporaryImageProperty = DependencyProperty.Register("TemporaryImage", typeof(ImageSource), typeof(DrawControl), new PropertyMetadata(null));
 
     protected virtual void OnPropertyChanged(string propertyName = null)
     {
@@ -390,6 +384,4 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
     private double stylusHeight = 2d;
 
     private double stylusWidth = 2d;
-
-    private ImageSource temporaryImage;
 }

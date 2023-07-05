@@ -51,6 +51,40 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             },
             parameter => true);
 
+        LoadInkDrawImage = new RelayCommand<object>(
+            parameter =>
+            {
+                try
+                {
+                    RenderTargetBitmap renderTargetBitmap = new((int)Ink.ActualWidth, (int)Ink.ActualHeight, 96, 96, PixelFormats.Default);
+                    renderTargetBitmap.Render(Ink);
+                    renderTargetBitmap.Freeze();
+                    DrawnImage = XImage.FromBitmapSource(renderTargetBitmap);
+                    DrawImage = true;
+                }
+                catch (Exception ex)
+                {
+                    _ = MessageBox.Show(ex.Message);
+                }
+            },
+            parameter => Ink?.Strokes?.Any() == true);
+
+        ClearInkDrawImage = new RelayCommand<object>(
+            parameter =>
+            {
+                try
+                {
+                    Ink?.Strokes?.Clear();
+                    DrawImage = false;
+                    DrawnImage = null;
+                }
+                catch (Exception ex)
+                {
+                    _ = MessageBox.Show(ex.Message);
+                }
+            },
+            parameter => Ink?.Strokes?.Any() == true);
+
         ReadAnnotation = new RelayCommand<object>(
             parameter =>
             {
@@ -127,6 +161,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             }
         }
     }
+
+    public RelayCommand<object> ClearInkDrawImage { get; }
 
     public bool DrawAnnotation {
         get => drawAnnotation;
@@ -272,7 +308,21 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
+    public BitmapSource InkSource {
+        get => ınkSource;
+
+        set {
+            if (ınkSource != value)
+            {
+                ınkSource = value;
+                OnPropertyChanged(nameof(InkSource));
+            }
+        }
+    }
+
     public RelayCommand<object> LoadDrawImage { get; }
+
+    public RelayCommand<object> LoadInkDrawImage { get; }
 
     public RelayCommand<object> OpenPdfHistoryFile { get; }
 
@@ -704,6 +754,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     private double height;
 
     private byte[] ımgData;
+
+    private BitmapSource ınkSource;
 
     private bool isDrawMouseDown;
 

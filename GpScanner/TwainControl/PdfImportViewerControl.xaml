@@ -564,6 +564,27 @@
                             </Image>
                         </Button.Content>
                     </Button>
+                    <Extensions:ContentToggleButton>
+                        <Extensions:ContentToggleButton.OverContent>
+                            <Extensions:ResizablePanel Width="300" Height="200"
+                                MinWidth="300" MinHeight="200">
+                                <Grid DataContext="{Binding Parent.Parent.Parent, Source={x:Reference PdfViewer}}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <GroupBox Header="{local:Loc DRAWTEXT}">
+                                        <InkCanvas x:Name="Ink" Background="Transparent" />
+                                    </GroupBox>
+                                    <UniformGrid Grid.Row="1" Columns="2">
+                                        <Button Command="{Binding LoadInkDrawImage}" Content="{local:Loc LOAD}" />
+                                        <Button Command="{Binding ClearInkDrawImage}" Content="{local:Loc DELETE}" />
+                                    </UniformGrid>
+                                </Grid>
+                            </Extensions:ResizablePanel>
+                        </Extensions:ContentToggleButton.OverContent>
+                    </Extensions:ContentToggleButton>
+
                     <StackPanel Orientation="Horizontal">
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                     </StackPanel>

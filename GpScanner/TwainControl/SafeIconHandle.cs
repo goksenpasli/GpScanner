@@ -15,7 +15,7 @@ public partial class DrawControl
 
         protected override bool ReleaseHandle()
         {
-            return Helpers.DestroyIcon(handle);
+            return handle.DestroyIcon();
         }
 
         private SafeIconHandle() : base(true)

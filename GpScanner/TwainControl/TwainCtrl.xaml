@@ -1005,14 +1005,11 @@
                                     </Image>
                                     <TextBlock VerticalAlignment="Center" FontWeight="Bold" TextAlignment="Center">
                                         <Run d:Text="0" BaselineAlignment="Center" Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" />
-                                        <Run Text=" " />
-                                        <Run d:Text="/" BaselineAlignment="Center" Text="/" /><Run Text=" " />
+                                        <Run d:Text="/" BaselineAlignment="Center" Text="/" />
                                         <Run d:Text="0" BaselineAlignment="Center" Text="{Binding Scanner.Resimler.Count, Mode=OneWay}" />
-                                        <Run Text=" " />
                                         <Hyperlink BaselineAlignment="Center" Command="{Binding ReverseData}" TextDecorations="None">
                                             <Run FontFamily="Wingdings 3" FontSize="16" Text="E" />
                                         </Hyperlink>
-                                        <Run Text=" " />
                                         <Hyperlink BaselineAlignment="Center" Command="{Binding ReverseDataHorizontal}" TextDecorations="None">
                                             <Run FontFamily="Wingdings 3" FontSize="16" Text="D" />
                                         </Hyperlink>
