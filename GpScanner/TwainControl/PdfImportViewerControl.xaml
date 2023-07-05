@@ -589,10 +589,10 @@
                                         <Button Command="{Binding ClearInkDrawImage}" Content="{local:Loc DELETE}" />
                                     </UniformGrid>
                                     <Extensions:ColorPicker Grid.RowSpan="2" Grid.Column="1"
-                                        ColorPickerColumnCount="5" HexCodeVisibility="Collapsed"
-                                        HexColor="{Binding InkDrawColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                        PredefinedColorVisibility="Visible" SelectorLength="0*"
-                                        SliderVisibility="Collapsed" />
+                                        ColorPickerColumnCount="5"
+                                        HexCode="{Binding InkDrawColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        HexCodeVisibility="Collapsed" PredefinedColorVisibility="Visible"
+                                        SelectorLength="0*" SliderVisibility="Collapsed" />
                                 </Grid>
                             </Extensions:ResizablePanel>
                         </Extensions:ContentToggleButton.OverContent>

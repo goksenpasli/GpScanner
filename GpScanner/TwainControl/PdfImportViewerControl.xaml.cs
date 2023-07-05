@@ -162,15 +162,6 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public Color InkDrawColor { get => ınkDrawColor;
-        set {
-            if (ınkDrawColor != value)
-            {
-                ınkDrawColor = value;
-                OnPropertyChanged(nameof(InkDrawColor));
-            }
-        }
-    }
     public RelayCommand<object> ClearInkDrawImage { get; }
 
     public bool DrawAnnotation {
@@ -313,6 +304,18 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             {
                 ımgData = value;
                 OnPropertyChanged(nameof(ImgData));
+            }
+        }
+    }
+
+    public string InkDrawColor {
+        get => ınkDrawColor;
+
+        set {
+            if (ınkDrawColor != value)
+            {
+                ınkDrawColor = value;
+                OnPropertyChanged(nameof(InkDrawColor));
             }
         }
     }
@@ -695,7 +698,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
         if (e.PropertyName is "InkDrawColor")
         {
-            DrawingAttribute.Color = InkDrawColor;
+            DrawingAttribute.Color = (Color)ColorConverter.ConvertFromString(InkDrawColor);
         }
     }
 
@@ -768,6 +771,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     private byte[] ımgData;
 
+    private string ınkDrawColor = "Black";
+
     private BitmapSource ınkSource;
 
     private bool isDrawMouseDown;
@@ -789,5 +794,4 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     private double textSize = 12d;
 
     private double width;
-    private Color ınkDrawColor = Colors.Black;
 }

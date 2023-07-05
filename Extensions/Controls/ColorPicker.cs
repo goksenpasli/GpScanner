@@ -127,11 +127,6 @@ public class ColorPicker : Control
         set => SetValue(HexCodeVisibilityProperty, value);
     }
 
-    public Color HexColor {
-        get => (Color)GetValue(HexColorProperty);
-        set => SetValue(HexColorProperty, value);
-    }
-
     public PropertyInfo[] ListBoxColors { get; } = typeof(Colors).GetProperties();
 
     public Color MiddleStopColor {
@@ -192,9 +187,6 @@ public class ColorPicker : Control
         DependencyProperty.Register("HexCodeVisibility", typeof(Visibility), typeof(ColorPicker),
             new PropertyMetadata(Visibility.Visible));
 
-    public static readonly DependencyProperty HexColorProperty = DependencyProperty.Register("HexColor", typeof(Color),
-        typeof(ColorPicker), new PropertyMetadata(Colors.Black));
-
     public static readonly DependencyProperty MiddleStopColorProperty = DependencyProperty.Register(
         "MiddleStopColor",
         typeof(Color),
@@ -238,7 +230,6 @@ public class ColorPicker : Control
                     ((_rgbgrid.ActualWidth / 2) - (x - (_rgbgrid.ActualWidth / 2))) / _rgbgrid.ActualWidth, 1f);
 
             HexCode = $"#{c.Hex(Alpha)}";
-            HexColor = (Color)ColorConverter.ConvertFromString(HexCode);
             Selected = c;
         }
     }
