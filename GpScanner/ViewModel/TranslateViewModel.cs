@@ -14,7 +14,7 @@ public class TranslateViewModel : InpcBase
     static TranslateViewModel()
     {
         speechSynthesizer = new SpeechSynthesizer();
-        TtsDilleri = speechSynthesizer.GetInstalledVoices().Select(z => z.VoiceInfo.Name);
+        TtsDilleri = speechSynthesizer.GetInstalledVoices().Select(z => z.VoiceInfo.Name).ToList();
     }
 
     public TranslateViewModel()
@@ -71,7 +71,7 @@ public class TranslateViewModel : InpcBase
             parameter => !string.IsNullOrEmpty(OkumaDili));
     }
 
-    public static IEnumerable<string> TtsDilleri { get; set; }
+    public static List<string> TtsDilleri { get; set; }
 
     public string Çeviri {
         get => çeviri;

@@ -73,13 +73,13 @@ public class QrCode : InpcBase
         return null;
     }
 
-    public static IEnumerable<string> GetMultipleImageBarcodeResult(BitmapFrame bitmapFrame)
+    public static List<string> GetMultipleImageBarcodeResult(BitmapFrame bitmapFrame)
     {
         if (bitmapFrame is not null)
         {
             BarcodeReader reader = new();
             reader.Options.TryHarder = true;
-            return reader.DecodeMultiple(bitmapFrame)?.Select(z => z.Text);
+            return reader.DecodeMultiple(bitmapFrame)?.Select(z => z.Text).ToList();
         }
 
         return null;

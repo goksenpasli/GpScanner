@@ -85,10 +85,10 @@ public class GpScannerViewModel : InpcBase
                     await Task.Run(
                         async () =>
                         {
-                            IEnumerable<string> pdffilelist = Dosyalar.Where(
+                            List<string> pdffilelist = Dosyalar.Where(
                                     z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf",
                                         StringComparison.OrdinalIgnoreCase))
-                                .Select(z => z.FileName);
+                                .Select(z => z.FileName).ToList();
                             pdffilelist.ToArray().MergePdf().Save(PdfGeneration.GetPdfScanPath());
                             await Application.Current?.Dispatcher?.InvokeAsync(() => ReloadFileDatas());
                         });
@@ -104,10 +104,10 @@ public class GpScannerViewModel : InpcBase
                         await Task.Run(
                             () =>
                             {
-                                IEnumerable<string> pdffilelist = Dosyalar.Where(
+                                List<string> pdffilelist = Dosyalar.Where(
                                         z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf",
                                             StringComparison.OrdinalIgnoreCase))
-                                    .Select(z => z.FileName);
+                                    .Select(z => z.FileName).ToList();
                                 pdffilelist.ToArray().MergePdf().Save(saveFileDialog.FileName);
                             });
                     }
@@ -650,7 +650,7 @@ public class GpScannerViewModel : InpcBase
             {
                 if (parameter is Scanner scanner)
                 {
-                    IEnumerable<Data> data = DataYükle()?.Where(z => z.FileName == scanner.FileName);
+                    List<Data> data = DataYükle()?.Where(z => z.FileName == scanner.FileName).ToList();
                     scanner.FileOcrContent = string.Join(" ", data?.Select(z => z.FileContent));
                 }
             },
@@ -1322,7 +1322,7 @@ public class GpScannerViewModel : InpcBase
     {
         if (!string.IsNullOrWhiteSpace(barcode))
         {
-            IEnumerable<string> patchcodes = Settings.Default.PatchCodes.Cast<string>();
+            List<string> patchcodes = Settings.Default.PatchCodes.Cast<string>().ToList();
             string matchingPatchCode = patchcodes.FirstOrDefault(z => z.Split('|')[0] == barcode);
             return matchingPatchCode != null ? matchingPatchCode.Split('|')[1] : "Tarama";
         }

@@ -210,7 +210,7 @@ public partial class MainWindow : Window
     {
         if (e.Data.GetData(typeof(ScannedImage)) is ScannedImage scannedImage &&
             DataContext is GpScannerViewModel ViewModel &&
-            QrCode.QrCode.GetMultipleImageBarcodeResult(scannedImage.Resim) is IEnumerable<string> barcodes)
+            QrCode.QrCode.GetMultipleImageBarcodeResult(scannedImage.Resim) is List<string> barcodes)
         {
             foreach (string barcode in barcodes)
             {

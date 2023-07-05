@@ -55,7 +55,7 @@ public static class UdfParser
 
     private static Run[,] Getcellcontent(Table table, Template content, int genişlik, int yükseklik)
     {
-        System.Collections.Generic.IEnumerable<Content> cellparagrafcontent = table.Row
+        System.Collections.Generic.List<Content> cellparagrafcontent = table.Row
             .SelectMany(z => z.Cell)
             .SelectMany(z => z.Paragraph)
             .Select(
@@ -78,7 +78,7 @@ public static class UdfParser
                     Superscript = z.Content.FirstOrDefault().Superscript,
                     Underline = z.Content.FirstOrDefault().Underline,
                     Subscript = z.Content.FirstOrDefault().Subscript
-                });
+                }).ToList();
 
         Run[,] array = new Run[genişlik, yükseklik];
         int j = 0;
@@ -215,7 +215,7 @@ public static class UdfParser
 
     private static void Textcreate(Template content, FlowDocument flowdocument)
     {
-        System.Collections.Generic.IEnumerable<Content> documentcontent = content.Elements.Paragraph
+        System.Collections.Generic.List<Content> documentcontent = content.Elements.Paragraph
             .Select(
                 z => new Content
                 {
@@ -236,7 +236,7 @@ public static class UdfParser
                     Superscript = z.Content.FirstOrDefault().Superscript,
                     Underline = z.Content.FirstOrDefault().Underline,
                     Subscript = z.Content.FirstOrDefault().Subscript
-                });
+                }).ToList();
         foreach (Content element in documentcontent)
         {
             System.Windows.Documents.Paragraph paragraph = new();

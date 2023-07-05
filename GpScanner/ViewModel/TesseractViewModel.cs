@@ -184,7 +184,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
     {
         if (e.PropertyName is "Checked")
         {
-            System.Collections.Generic.IEnumerable<TessFiles> checkedFiles = TesseractFiles.Where(item => item.Checked);
+            System.Collections.Generic.List<TessFiles> checkedFiles = TesseractFiles.Where(item => item.Checked).ToList();
             if (!checkedFiles.Any())
             {
                 Settings.Default.BatchFolder = string.Empty;

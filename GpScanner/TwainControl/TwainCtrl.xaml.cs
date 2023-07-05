@@ -879,7 +879,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
                 {
-                    IEnumerable<ScannedImage> seçiliresimler = Scanner.Resimler.Where(z => z.Seçili);
+                    List<ScannedImage> seçiliresimler = Scanner.Resimler.Where(z => z.Seçili).ToList();
                     if (seçiliresimler.Any() &&
                         MessageBox.Show(
                             $"{Translation.GetResStringValue("SAVESELECTED")}",
@@ -897,7 +897,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         await Task.Run(
                             async () =>
                             {
-                                using PdfDocument pdfDocument = await seçiliresimler.ToList()
+                                using PdfDocument pdfDocument = await seçiliresimler
                                     .GeneratePdfAsync(Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, null,
                                         (int)Settings.Default.Çözünürlük);
                                 pdfDocument.Save(temporarypdf);
@@ -1211,7 +1211,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         ReverseData = new RelayCommand<object>(
             parameter =>
             {
-                IEnumerable<ScannedImage> scannedImages = Scanner.Resimler.Reverse();
+                List<ScannedImage> scannedImages = Scanner.Resimler.Reverse().ToList();
                 Scanner.Resimler = new ObservableCollection<ScannedImage>(scannedImages);
             },
             parameter => Scanner?.Resimler?.Count > 1);
@@ -1230,7 +1230,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter =>
             {
-                IEnumerable<ScannedImage> selected = Scanner?.Resimler?.Where(z => z.Seçili);
+                List<ScannedImage> selected = Scanner?.Resimler?.Where(z => z.Seçili).ToList();
                 int start = Scanner?.Resimler?.IndexOf(selected?.FirstOrDefault()) ?? 0;
                 int end = Scanner?.Resimler?.IndexOf(selected?.LastOrDefault()) ?? 0;
                 return Scanner?.Resimler?.Count(z => z.Seçili) > 1 && selected?.Count() == end - start + 1;
@@ -1359,7 +1359,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     string savefolder = ToolBox.CreateSaveFolder("SPLIT");
                     List<string> files = new();
-                    foreach (PdfData currentpage in PdfPages.Where(currentpage => currentpage.Selected))
+                    List<PdfData> currentpages = PdfPages.Where(currentpage => currentpage.Selected).ToList();
+                    foreach (PdfData currentpage in currentpages)
                     {
                         string savefilename =
                             $"{savefolder}\\{Path.GetFileNameWithoutExtension(pdfViewer.PdfFilePath)} {currentpage.PageNumber}.pdf";
@@ -1368,7 +1369,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         files.Add(savefilename);
                     }
 
-                    if (MessageBox.Show(
+                    if (currentpages.Count() > 1 && MessageBox.Show(
                             $"{Translation.GetResStringValue("MERGEPDF")}",
                             Application.Current.MainWindow.Title,
                             MessageBoxButton.YesNo,

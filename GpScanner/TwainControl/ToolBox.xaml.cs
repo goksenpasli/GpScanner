@@ -203,12 +203,12 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                     ? PageOrientation.Portrait
                     : PageOrientation.Landscape;
                 string savefolder = CreateSaveFolder("MERGE");
-                IEnumerable<ScannedImage> seçiliresimler = Scanner.Resimler.Where(z => z.Seçili);
+                List<ScannedImage> seçiliresimler = Scanner.Resimler.Where(z => z.Seçili).ToList();
                 PdfDocument pdfdocument = new();
                 XRect box;
                 PdfPage page = null;
                 int imageindex = 0;
-                for (int i = 0; i < seçiliresimler.Count() / (Scanner.SliceCountWidth * Scanner.SliceCountHeight); i++)
+                for (int i = 0; i < seçiliresimler.Count / (Scanner.SliceCountWidth * Scanner.SliceCountHeight); i++)
                 {
                     page = pdfdocument.AddPage();
                     page.Size = Paper.GetPaperSize() == PageSize.Undefined ? PageSize.A4 : Paper.GetPaperSize();
