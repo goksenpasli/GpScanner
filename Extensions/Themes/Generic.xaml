@@ -102,7 +102,7 @@
                         <ListBox Grid.RowSpan="3" Grid.Column="1"
                             ItemTemplate="{StaticResource ColorItemTemplate}"
                             ItemsSource="{Binding ListBoxColors, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                            SelectedValue="{Binding HexCode, RelativeSource={RelativeSource TemplatedParent}}"
+                            SelectedValue="{Binding HexColor, RelativeSource={RelativeSource TemplatedParent}}"
                             SelectedValuePath="Name"
                             Visibility="{Binding PredefinedColorVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                             <ListBox.ItemsPanel>

@@ -573,13 +573,26 @@
                                         <RowDefinition />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
                                     <GroupBox Header="{local:Loc DRAWTEXT}">
-                                        <InkCanvas x:Name="Ink" Background="Transparent" />
+                                        <InkCanvas x:Name="Ink" Background="Transparent">
+                                            <InkCanvas.DefaultDrawingAttributes>
+                                                <DrawingAttributes x:Name="DrawingAttribute" />
+                                            </InkCanvas.DefaultDrawingAttributes>
+                                        </InkCanvas>
                                     </GroupBox>
                                     <UniformGrid Grid.Row="1" Columns="2">
                                         <Button Command="{Binding LoadInkDrawImage}" Content="{local:Loc LOAD}" />
                                         <Button Command="{Binding ClearInkDrawImage}" Content="{local:Loc DELETE}" />
                                     </UniformGrid>
+                                    <Extensions:ColorPicker Grid.RowSpan="2" Grid.Column="1"
+                                        ColorPickerColumnCount="5" HexCodeVisibility="Collapsed"
+                                        HexColor="{Binding InkDrawColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        PredefinedColorVisibility="Visible" SelectorLength="0*"
+                                        SliderVisibility="Collapsed" />
                                 </Grid>
                             </Extensions:ResizablePanel>
                         </Extensions:ContentToggleButton.OverContent>

@@ -48,8 +48,9 @@ public class Compressor : Control, INotifyPropertyChanged
                     if (saveFileDialog.ShowDialog() == true)
                     {
                         pdfDocument.Save(saveFileDialog.FileName);
+                        LoadedPdfPath = null;
                     }
-
+                    loadedpdfdoc?.Dispose();
                     GC.Collect();
                 }
             },
@@ -167,8 +168,8 @@ public class Compressor : Control, INotifyPropertyChanged
             {
                 for (int i = 0; i < pdfDoc.PageCount; i++)
                 {
-                    int width = (int)(pdfDoc.PageSizes[i].Width / 72 * dpi);
-                    int height = (int)(pdfDoc.PageSizes[i].Height / 72 * dpi);
+                    int width = (int)(pdfDoc.PageSizes[i].Width / 96 * dpi);
+                    int height = (int)(pdfDoc.PageSizes[i].Height / 96 * dpi);
                     using System.Drawing.Image image = pdfDoc.Render(i, width, height, dpi, dpi, false);
                     images.Add(image.ToBitmapImage(ImageFormat.Jpeg));
                     CompressionProgress = (i + 1) / (double)pdfDoc.PageCount;
@@ -262,9 +263,7 @@ public class Compressor : Control, INotifyPropertyChanged
         return document;
     }
 
-    public static readonly DependencyProperty BlackAndWhiteProperty =
-                                                                        DependencyProperty.Register("BlackAndWhite", typeof(bool), typeof(Compressor),
-            new PropertyMetadata(Settings.Default.Bw, BwChanged));
+    public static readonly DependencyProperty BlackAndWhiteProperty = DependencyProperty.Register("BlackAndWhite", typeof(bool), typeof(Compressor), new PropertyMetadata(Settings.Default.Bw, BwChanged));
 
     public static readonly DependencyProperty DpiProperty = DependencyProperty.Register(
         "Dpi",
@@ -284,9 +283,7 @@ public class Compressor : Control, INotifyPropertyChanged
         typeof(Compressor),
         new PropertyMetadata(Settings.Default.Quality, QualityChanged));
 
-    public static readonly DependencyProperty UseMozJpegProperty =
-        DependencyProperty.Register("UseMozJpeg", typeof(bool), typeof(Compressor),
-            new PropertyMetadata(false, MozpegChanged));
+    public static readonly DependencyProperty UseMozJpegProperty = DependencyProperty.Register("UseMozJpeg", typeof(bool), typeof(Compressor), new PropertyMetadata(false, MozpegChanged));
 
     protected virtual void OnPropertyChanged(string propertyName = null)
     {

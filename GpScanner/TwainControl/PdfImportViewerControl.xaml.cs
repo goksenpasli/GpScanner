@@ -162,6 +162,15 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
+    public Color InkDrawColor { get => ınkDrawColor;
+        set {
+            if (ınkDrawColor != value)
+            {
+                ınkDrawColor = value;
+                OnPropertyChanged(nameof(InkDrawColor));
+            }
+        }
+    }
     public RelayCommand<object> ClearInkDrawImage { get; }
 
     public bool DrawAnnotation {
@@ -684,6 +693,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             twainCtrl.ImgData = ImgData;
             ImgData = null;
         }
+        if (e.PropertyName is "InkDrawColor")
+        {
+            DrawingAttribute.Color = InkDrawColor;
+        }
     }
 
     private void PdfViewer_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -776,4 +789,5 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     private double textSize = 12d;
 
     private double width;
+    private Color ınkDrawColor = Colors.Black;
 }
