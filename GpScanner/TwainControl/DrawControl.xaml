@@ -41,19 +41,31 @@
                             <ControlTemplate>
                                 <GroupBox>
                                     <GroupBox.Header>
-                                        <StackPanel>
-                                            <Slider Width="256"
-                                                VerticalAlignment="Center"
-                                                AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True"
-                                                Maximum="256" Minimum="0.5"
-                                                Style="{DynamicResource Slider}"
-                                                Value="{Binding StylusWidth, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" />
-                                            <Slider Width="256"
-                                                VerticalAlignment="Center"
-                                                AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True"
-                                                Maximum="256" Minimum="0.5"
-                                                Style="{DynamicResource Slider}"
-                                                Value="{Binding StylusHeight, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <ToggleButton VerticalAlignment="Center" IsChecked="{Binding Lock, RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
+                                                <Image Width="32" Height="32">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="47" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                            </ToggleButton>
+                                            <StackPanel>
+                                                <Slider Width="256"
+                                                    VerticalAlignment="Center"
+                                                    AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True"
+                                                    Maximum="512" Minimum="0.5"
+                                                    Style="{DynamicResource Slider}"
+                                                    Value="{Binding StylusWidth, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" />
+                                                <Slider Width="256"
+                                                    VerticalAlignment="Center"
+                                                    AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True"
+                                                    Maximum="512" Minimum="0.5"
+                                                    Style="{DynamicResource Slider}"
+                                                    Value="{Binding StylusHeight, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" />
+                                            </StackPanel>
                                         </StackPanel>
                                     </GroupBox.Header>
                                     <StackPanel Orientation="Horizontal">

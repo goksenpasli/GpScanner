@@ -369,6 +369,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string FOLDERFORMAT {
+            get {
+                return ResourceManager.GetString("FOLDERFORMAT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string FONT {
             get {
                 return ResourceManager.GetString("FONT", resourceCulture);

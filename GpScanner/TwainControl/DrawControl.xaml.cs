@@ -381,7 +381,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
     private bool smooth;
 
-    private double stylusHeight = 2d;
+    private double stylusHeight = 0.5d;
 
-    private double stylusWidth = 2d;
+    private double stylusWidth = 0.5d;
 }

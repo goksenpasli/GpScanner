@@ -581,7 +581,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     _ = sb.Append(item).Append(' ')
                         .AppendLine(DateTime.Today.ToString(item, TranslationSource.Instance.CurrentCulture));
                 }
-
+                sb.AppendLine().AppendLine(Translation.GetResStringValue("FOLDERFORMAT"));
                 _ = MessageBox.Show(sb.ToString(), Application.Current?.MainWindow?.Title);
             },
             parameter => true);
