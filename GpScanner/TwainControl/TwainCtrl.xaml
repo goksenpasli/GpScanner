@@ -1269,7 +1269,7 @@
                                         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                             <Image Width="32" Height="32" Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
                                             <TextBlock VerticalAlignment="Center">
-                                                <Run Text="{local:Loc ALL}" /><Run Text=" " />
+                                                <Run Text="{local:Loc ALL}" />
                                                 <Run Text="{local:Loc MERGE}" />
                                             </TextBlock>
                                         </StackPanel>

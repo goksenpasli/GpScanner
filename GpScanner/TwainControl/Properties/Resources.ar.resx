@@ -20,10 +20,10 @@
     <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
     <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
     <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
+        <value>base64 mime encoded serialized .NET Framework object</value>
     </data>
     <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <value>base64 mime encoded string representing a byte array form of the .NET Framework object</value>
         <comment>This is a comment</comment>
     </data>
                 
@@ -220,7 +220,7 @@
     <value>نظرًا لأنه يتم تجميع ثنائيات tesseract و leptonica باستخدام Visual Studio 2019 ، فأنت بحاجة إلى التأكد من تثبيت Visual Studio 2019 Runtime.</value>
   </data>
   <data name="DAY" xml:space="preserve">
-    <value>[يوم]</value>
+    <value>يوم</value>
   </data>
   <data name="Default" xml:space="preserve">
     <value>إفتراضي</value>
@@ -293,7 +293,7 @@
     <value>عرض الواجهة</value>
   </data>
   <data name="GUID" xml:space="preserve">
-    <value>[GUID]</value>
+    <value>GUID</value>
   </data>
   <data name="HEIGHTCOUNT" xml:space="preserve">
     <value>كمية الحجم</value>
@@ -324,10 +324,10 @@
 الاتصال</value>
   </data>
   <data name="MINUTE" xml:space="preserve">
-    <value>[اللحظة]</value>
+    <value>اللحظة</value>
   </data>
   <data name="MONTH" xml:space="preserve">
-    <value>[قمر]</value>
+    <value>قمر</value>
   </data>
   <data name="NO ACTION" xml:space="preserve">
     <value>لا رد فعل</value>
@@ -457,7 +457,7 @@
     <value>الماسح الضوئي</value>
   </data>
   <data name="SECOND" xml:space="preserve">
-    <value>[ثانيا]</value>
+    <value>ثانيا</value>
   </data>
   <data name="SELECTTWOPDF" xml:space="preserve">
     <value>حدد ملفي PDF على الأقل</value>
@@ -538,7 +538,7 @@
     <value>عتبة</value>
   </data>
   <data name="TIME" xml:space="preserve">
-    <value>[ساعة]</value>
+    <value>ساعة</value>
   </data>
   <data name="TRANSLATE" xml:space="preserve">
     <value>ترجمة</value>
@@ -559,7 +559,7 @@
     <value>تحديث</value>
   </data>
   <data name="USERNAME" xml:space="preserve">
-    <value>[اسم االمستخدم]</value>
+    <value>اسم االمستخدم</value>
   </data>
   <data name="VC" xml:space="preserve">
     <value>أوقات تشغيل Visual Studio 2019 x86 و x64</value>
@@ -578,6 +578,6 @@
     <value>أكثر</value>
   </data>
   <data name="YEAR" xml:space="preserve">
-    <value>[عام]</value>
+    <value>عام</value>
   </data>
 </root>

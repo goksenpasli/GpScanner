@@ -20,10 +20,10 @@
     <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
     <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
     <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
+        <value>base64 mime encoded serialized .NET Framework object</value>
     </data>
     <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <value>base64 mime encoded string representing a byte array form of the .NET Framework object</value>
         <comment>This is a comment</comment>
     </data>
                 
@@ -220,7 +220,7 @@ ENREGISTREMENT</value>
     <value>Étant donné que les binaires tesseract et leptonica sont compilés avec Visual Studio 2019, vous devez vous assurer que le Runtime Visual Studio 2019 est installé.</value>
   </data>
   <data name="DAY" xml:space="preserve">
-    <value>[JOURNÉE]</value>
+    <value>JOURNÉE</value>
   </data>
   <data name="Default" xml:space="preserve">
     <value>DÉFAUT</value>
@@ -293,7 +293,7 @@ ANALYSE</value>
     <value>AFFICHER L'INTERFACE</value>
   </data>
   <data name="GUID" xml:space="preserve">
-    <value>[GUID]</value>
+    <value>GUID</value>
   </data>
   <data name="HEIGHTCOUNT" xml:space="preserve">
     <value>TAILLE QUANTITÉ</value>
@@ -324,10 +324,10 @@ ANALYSE</value>
 RELIER</value>
   </data>
   <data name="MINUTE" xml:space="preserve">
-    <value>[MINUTE]</value>
+    <value>MINUTE</value>
   </data>
   <data name="MONTH" xml:space="preserve">
-    <value>[LUNE]</value>
+    <value>LUNE</value>
   </data>
   <data name="NO ACTION" xml:space="preserve">
     <value>PAS D'ACTION</value>
@@ -457,7 +457,7 @@ AJOUTER</value>
     <value>SCANNER</value>
   </data>
   <data name="SECOND" xml:space="preserve">
-    <value>[DEUXIÈME]</value>
+    <value>DEUXIÈME</value>
   </data>
   <data name="SELECTTWOPDF" xml:space="preserve">
     <value>SÉLECTIONNEZ AU MOINS DEUX FICHIERS PDF</value>
@@ -538,7 +538,7 @@ AJOUTER</value>
     <value>AU SEUIL</value>
   </data>
   <data name="TIME" xml:space="preserve">
-    <value>[HEURE]</value>
+    <value>HEURE</value>
   </data>
   <data name="TRANSLATE" xml:space="preserve">
     <value>TRADUCTION</value>
@@ -559,7 +559,7 @@ AJOUTER</value>
     <value>MISE À JOUR</value>
   </data>
   <data name="USERNAME" xml:space="preserve">
-    <value>[NOM D'UTILISATEUR]</value>
+    <value>NOM D'UTILISATEUR</value>
   </data>
   <data name="VC" xml:space="preserve">
     <value>Exécutions Visual Studio 2019 x86 et x64</value>
@@ -578,6 +578,6 @@ VOIR</value>
     <value>LE PLUS</value>
   </data>
   <data name="YEAR" xml:space="preserve">
-    <value>[AN]</value>
+    <value>AN</value>
   </data>
 </root>

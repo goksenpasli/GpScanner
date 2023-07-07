@@ -20,10 +20,10 @@
     <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
     <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
     <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
+        <value>base64 mime encoded serialized .NET Framework object</value>
     </data>
     <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <value>base64 mime encoded string representing a byte array form of the .NET Framework object</value>
         <comment>This is a comment</comment>
     </data>
                 
@@ -179,28 +179,28 @@ DOKUMENTŮ</value>
     <value>NÁZEV SOUBORU</value>
   </data>
   <data name="DAY" xml:space="preserve">
-    <value>[DEN]</value>
+    <value>DEN</value>
   </data>
   <data name="MONTH" xml:space="preserve">
-    <value>[MONTH]</value>
+    <value>MONTH</value>
   </data>
   <data name="YEAR" xml:space="preserve">
-    <value>[ROK]</value>
+    <value>ROK</value>
   </data>
   <data name="TIME" xml:space="preserve">
     <value>Hodiny</value>
   </data>
   <data name="MINUTE" xml:space="preserve">
-    <value>[MINUTY]</value>
+    <value>MINUTY</value>
   </data>
   <data name="SECOND" xml:space="preserve">
-    <value>[SEKUNDY]</value>
+    <value>SEKUNDY</value>
   </data>
   <data name="GUID" xml:space="preserve">
-    <value>[GUID]</value>
+    <value>GUID</value>
   </data>
   <data name="USERNAME" xml:space="preserve">
-    <value>[UŽIVATELSKÉ JMÉNO]</value>
+    <value>UŽIVATELSKÉ JMÉNO</value>
   </data>
   <data name="SAVEPROFILE" xml:space="preserve">
     <value>SKRÝT PROFIL</value>

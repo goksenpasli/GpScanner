@@ -437,7 +437,7 @@ public class Scanner : InpcBase, IDataErrorInfo
     }
 
     public string[] FolderDateFormats { get; } =
-        { "d.MM.yyyy", "dd.MM.yyyy", "d-MM-yyyy", "dd-MM-yyyy", "MM-dd-yyyy", "MM-d-yyyy", "MM.dd.yyyy", "MM.d.yyyy", "dddd", "MMMM", "yyyy" };
+        { "d.MM.yyyy", "dd.MM.yyyy", "d-MM-yyyy", "dd-MM-yyyy", "yyyy.MM.dd", "yyyy-MM-dd", "MM-dd-yyyy", "MM-d-yyyy", "MM.dd.yyyy", "MM.d.yyyy", "dddd", "MMMM", "yyyy" };
 
     public int FtpLoadProgressValue {
         get => ftpLoadProgressValue;
