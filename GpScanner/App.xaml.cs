@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace GpScanner;
 
@@ -42,5 +43,11 @@ public partial class App : Application
                 }
             }
         }
+    }
+
+    private void Current_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+    {
+        _ = MessageBox.Show(e.Exception.Message);
+        e.Handled = true;
     }
 }
