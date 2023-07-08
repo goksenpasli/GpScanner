@@ -3,12 +3,9 @@
 namespace Extensions.Controls;
 
 /// <summary>
-///     Interaction logic for TranslateView.xaml
+/// Interaction logic for TranslateView.xaml
 /// </summary>
 public partial class TranslateView : UserControl
 {
-    public TranslateView()
-    {
-        InitializeComponent();
-    }
+    public TranslateView() { InitializeComponent(); }
 }

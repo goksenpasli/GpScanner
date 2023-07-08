@@ -292,6 +292,7 @@
                                 </UniformGrid>
                                 <ListBox d:ItemsSource="{d:SampleData ItemCount=5}"
                                     twainctrl:Policy.PolicyName="PatchProfileName"
+                                    Background="{StaticResource BorderBackground}"
                                     IsEnabled="{Binding DetectPageSeperator}"
                                     ItemsSource="{Binding PatchCodes, Source={x:Static properties:Settings.Default}}"
                                     SelectedItem="{Binding PatchProfileName}">
@@ -534,7 +535,7 @@
                                     <TextBlock VerticalAlignment="Center" Text="DVD" />
                                 </StackPanel>
                             </TabItem.Header>
-                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <ScrollViewer Background="{StaticResource BorderBackground}" VerticalScrollBarVisibility="Auto">
                                 <dvd:Burner />
                             </ScrollViewer>
                         </TabItem>
@@ -552,7 +553,7 @@
                                     <TextBlock VerticalAlignment="Center" Text="SHAREPOINT" />
                                 </StackPanel>
                             </TabItem.Header>
-                            <StackPanel>
+                            <StackPanel Background="{StaticResource BorderBackground}">
                                 <Extensions:ButtonedTextBox Description="URL" ResetButtonVisibility="Collapsed" Text="{Binding SharePointUrl, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                                 <Extensions:ButtonedTextBox Description="LIBRARY" OpenButtonVisibility="Collapsed"
                                     ResetButtonVisibility="Collapsed"
@@ -583,7 +584,7 @@
                                     <TextBlock VerticalAlignment="Center" Text="FTP" />
                                 </StackPanel>
                             </TabItem.Header>
-                            <Grid>
+                            <Grid Background="{StaticResource BorderBackground}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition />
@@ -606,6 +607,7 @@
                                 <ListBox Grid.Row="1"
                                     d:ItemsSource="{d:SampleData ItemCount=5}"
                                     twainctrl:Policy.PolicyName="FtpSites"
+                                    Background="{StaticResource BorderBackground}"
                                     ItemsSource="{Binding FtpSites, Source={x:Static properties:Settings.Default}}">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>

@@ -34,22 +34,23 @@ namespace TwainWpf.TwainNative
             try
             {
                 Marshal.StructureToPtr(value, p, false);
-            }
-            finally
+            } finally
             {
                 _ = Kernel32Native.GlobalUnlock(_handle);
             }
         }
 
-        ~TwainCapability()
+        ~TwainCapability() { Dispose(false); }
+
+        protected virtual void Dispose(bool disposing)
         {
-            Dispose(false);
+            if(_handle != IntPtr.Zero)
+            {
+                _ = Kernel32Native.GlobalFree(_handle);
+            }
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-        }
+        public void Dispose() { Dispose(true); }
 
         public static TwainCapability From<TValue>(Capabilities capabilities, TValue value)
         {
@@ -68,18 +69,9 @@ namespace TwainWpf.TwainNative
             try
             {
                 Marshal.PtrToStructure(p, _value);
-            }
-            finally
+            } finally
             {
                 _ = Kernel32Native.GlobalUnlock(_handle);
-            }
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (_handle != IntPtr.Zero)
-            {
-                _ = Kernel32Native.GlobalFree(_handle);
             }
         }
     }

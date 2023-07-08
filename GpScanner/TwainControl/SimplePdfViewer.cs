@@ -6,9 +6,21 @@ namespace TwainControl;
 
 public class SimplePdfViewer : PdfViewer.PdfViewer
 {
+    private Window maximizePdfWindow;
+
+    private PdfImportViewerControl pdfImportViewerControl;
+
+    private void MaximizePdfWindow_Closed(object sender, EventArgs e)
+    {
+        pdfImportViewerControl?.PdfViewer?.Dispose();
+        maximizePdfWindow.Closed -= MaximizePdfWindow_Closed;
+        maximizePdfWindow = null;
+        pdfImportViewerControl = null;
+    }
+
     protected override void OnMouseDoubleClick(MouseButtonEventArgs e)
     {
-        if (pdfImportViewerControl == null)
+        if(pdfImportViewerControl == null)
         {
             pdfImportViewerControl = new PdfImportViewerControl { DataContext = Tag };
             string pdffilepath = (string)DataContext;
@@ -16,7 +28,7 @@ public class SimplePdfViewer : PdfViewer.PdfViewer
             pdfImportViewerControl.PdfViewer.AddToHistoryList(pdffilepath);
         }
 
-        if (maximizePdfWindow == null)
+        if(maximizePdfWindow == null)
         {
             maximizePdfWindow = new Window
             {
@@ -33,16 +45,4 @@ public class SimplePdfViewer : PdfViewer.PdfViewer
 
         base.OnMouseDoubleClick(e);
     }
-
-    private void MaximizePdfWindow_Closed(object sender, EventArgs e)
-    {
-        pdfImportViewerControl?.PdfViewer?.Dispose();
-        maximizePdfWindow.Closed -= MaximizePdfWindow_Closed;
-        maximizePdfWindow = null;
-        pdfImportViewerControl = null;
-    }
-
-    private Window maximizePdfWindow;
-
-    private PdfImportViewerControl pdfImportViewerControl;
 }

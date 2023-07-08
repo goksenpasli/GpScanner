@@ -9,12 +9,10 @@
         }
 
         #region ToString
-
         public override string ToString()
         {
             return $"Scew: {Angle} [conf: {Confidence}]";
         }
-
         #endregion ToString
 
         public float Angle { get; }
@@ -22,7 +20,6 @@
         public float Confidence { get; }
 
         #region Equals and GetHashCode implementation
-
         public static bool operator !=(Scew lhs, Scew rhs)
         {
             return !(lhs == rhs);
@@ -33,15 +30,9 @@
             return lhs.Equals(rhs);
         }
 
-        public override bool Equals(object obj)
-        {
-            return obj is Scew && Equals((Scew)obj);
-        }
+        public override bool Equals(object obj) { return obj is Scew && Equals((Scew)obj); }
 
-        public bool Equals(Scew other)
-        {
-            return Confidence == other.Confidence && Angle == other.Angle;
-        }
+        public bool Equals(Scew other) { return Confidence == other.Confidence && Angle == other.Angle; }
 
         public override int GetHashCode()
         {
@@ -54,7 +45,6 @@
 
             return hashCode;
         }
-
         #endregion Equals and GetHashCode implementation
     }
 }

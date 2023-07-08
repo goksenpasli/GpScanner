@@ -7,6 +7,16 @@ namespace TwainWpf.Win32
 {
     public class BitmapRenderer : IDisposable
     {
+        private readonly BitmapInfoHeader _bitmapInfo;
+
+        private readonly IntPtr _bitmapPointer;
+
+        private readonly IntPtr _dibHandle;
+
+        private readonly IntPtr _pixelInfoPointer;
+
+        private Rectangle _rectangle;
+
         public BitmapRenderer(IntPtr dibHandle)
         {
             _dibHandle = dibHandle;
@@ -20,7 +30,7 @@ namespace TwainWpf.Win32
             _rectangle.Width = _bitmapInfo.Width;
             _rectangle.Height = _bitmapInfo.Height;
 
-            if (_bitmapInfo.SizeImage == 0)
+            if(_bitmapInfo.SizeImage == 0)
             {
                 _bitmapInfo.SizeImage = ((((_bitmapInfo.Width * _bitmapInfo.BitCount) + 31) & ~31) >> 3) * _bitmapInfo.Height;
             }
@@ -28,13 +38,28 @@ namespace TwainWpf.Win32
             Debug.Assert(Marshal.SizeOf(typeof(IntPtr)) == 4);
 
             int pixelInfoPointer = _bitmapInfo.ClrUsed;
-            if (pixelInfoPointer == 0 && _bitmapInfo.BitCount <= 8)
+            if(pixelInfoPointer == 0 && _bitmapInfo.BitCount <= 8)
             {
                 pixelInfoPointer = 1 << (_bitmapInfo.BitCount);
             }
             pixelInfoPointer = (pixelInfoPointer * 4) + _bitmapInfo.Size + _bitmapPointer.ToInt32();
 
             _pixelInfoPointer = new IntPtr(pixelInfoPointer);
+        }
+
+        ~BitmapRenderer() { Dispose(false); }
+
+        private static float PpmToDpi(double pixelsPerMeter)
+        {
+            double pixelsPerMillimeter = pixelsPerMeter / 1000.0;
+            double dotsPerInch = pixelsPerMillimeter * 25.4;
+            return (float)Math.Round(dotsPerInch, 2);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            _ = Kernel32Native.GlobalUnlock(_dibHandle);
+            _ = Kernel32Native.GlobalFree(_dibHandle);
         }
 
         public void Dispose()
@@ -47,15 +72,14 @@ namespace TwainWpf.Win32
         {
             Bitmap bitmap = new Bitmap(_rectangle.Width, _rectangle.Height);
 
-            using (Graphics graphics = Graphics.FromImage(bitmap))
+            using(Graphics graphics = Graphics.FromImage(bitmap))
             {
                 IntPtr hdc = graphics.GetHdc();
 
                 try
                 {
                     _ = Gdi32Native.SetDIBitsToDevice(hdc, 0, 0, _rectangle.Width, _rectangle.Height, 0, 0, 0, _rectangle.Height, _pixelInfoPointer, _bitmapPointer, 0);
-                }
-                finally
+                } finally
                 {
                     graphics.ReleaseHdc(hdc);
                 }
@@ -65,33 +89,5 @@ namespace TwainWpf.Win32
 
             return bitmap;
         }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            _ = Kernel32Native.GlobalUnlock(_dibHandle);
-            _ = Kernel32Native.GlobalFree(_dibHandle);
-        }
-
-        ~BitmapRenderer()
-        {
-            Dispose(false);
-        }
-
-        private static float PpmToDpi(double pixelsPerMeter)
-        {
-            double pixelsPerMillimeter = pixelsPerMeter / 1000.0;
-            double dotsPerInch = pixelsPerMillimeter * 25.4;
-            return (float)Math.Round(dotsPerInch, 2);
-        }
-
-        private readonly BitmapInfoHeader _bitmapInfo;
-
-        private readonly IntPtr _bitmapPointer;
-
-        private readonly IntPtr _dibHandle;
-
-        private readonly IntPtr _pixelInfoPointer;
-
-        private Rectangle _rectangle;
     }
 }

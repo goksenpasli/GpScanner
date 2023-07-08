@@ -1,10 +1,10 @@
-﻿using System.Windows.Controls;
-using GpScanner.ViewModel;
+﻿using GpScanner.ViewModel;
+using System.Windows.Controls;
 
 namespace GpScanner;
 
 /// <summary>
-///     Interaction logic for TranslateView.xaml
+/// Interaction logic for TranslateView.xaml
 /// </summary>
 public partial class TranslateView : UserControl
 {

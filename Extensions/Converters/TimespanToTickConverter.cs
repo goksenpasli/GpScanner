@@ -12,8 +12,5 @@ public sealed class TimespanToTickConverter : IValueConverter
         return timeSpan.Ticks;
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        return TimeSpan.FromTicks((long)value);
-    }
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) { return TimeSpan.FromTicks((long)value); }
 }

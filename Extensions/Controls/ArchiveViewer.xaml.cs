@@ -12,10 +12,16 @@ using System.Windows.Input;
 namespace Extensions.Controls;
 
 /// <summary>
-///     Interaction logic for ArchiveViewer.xaml
+/// Interaction logic for ArchiveViewer.xaml
 /// </summary>
 public partial class ArchiveViewer : UserControl, INotifyPropertyChanged
 {
+    private static double toplamOran;
+
+    public static readonly DependencyProperty ArchivePathProperty = DependencyProperty.Register("ArchivePath", typeof(string), typeof(ArchiveViewer), new PropertyMetadata(null, Changed));
+
+    private ObservableCollection<ArchiveData> arşivİçerik;
+
     public ArchiveViewer()
     {
         InitializeComponent();
@@ -31,8 +37,7 @@ public partial class ArchiveViewer : UserControl, INotifyPropertyChanged
                     string extractpath = Path.Combine(Path.GetTempPath(), dosya.Name);
                     dosya?.ExtractToFile(extractpath, true);
                     _ = Process.Start(extractpath);
-                }
-                catch (Exception ex)
+                } catch(Exception ex)
                 {
                     throw new ArgumentException(ArchivePath, ex);
                 }
@@ -42,53 +47,14 @@ public partial class ArchiveViewer : UserControl, INotifyPropertyChanged
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public string ArchivePath {
-        get => (string)GetValue(ArchivePathProperty);
-        set => SetValue(ArchivePathProperty, value);
-    }
-
-    public ObservableCollection<ArchiveData> Arşivİçerik {
-        get => arşivİçerik;
-
-        set {
-            if (arşivİçerik != value)
-            {
-                arşivİçerik = value;
-                OnPropertyChanged(nameof(Arşivİçerik));
-            }
-        }
-    }
-
-    public ICommand ArşivTekDosyaÇıkar { get; }
-
-    public double ToplamOran {
-        get => toplamOran;
-
-        set {
-            toplamOran = value;
-            OnPropertyChanged(nameof(ToplamOran));
-        }
-    }
-
-    public static readonly DependencyProperty ArchivePathProperty = DependencyProperty.Register(
-                                "ArchivePath",
-        typeof(string),
-        typeof(ArchiveViewer),
-        new PropertyMetadata(null, Changed));
-
-    protected virtual void OnPropertyChanged(string propertyName)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
     private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is ArchiveViewer archiveViewer && e.NewValue is not null)
+        if(d is ArchiveViewer archiveViewer && e.NewValue is not null)
         {
             archiveViewer.Arşivİçerik = new ObservableCollection<ArchiveData>();
-            using (ZipArchive archive = ZipFile.Open((string)e.NewValue, ZipArchiveMode.Read))
+            using(ZipArchive archive = ZipFile.Open((string)e.NewValue, ZipArchiveMode.Read))
             {
-                foreach (ZipArchiveEntry item in archive.Entries.Where(z => z.Length > 0))
+                foreach(ZipArchiveEntry item in archive.Entries.Where(z => z.Length > 0))
                 {
                     ArchiveData archiveData = new()
                     {
@@ -103,12 +69,38 @@ public partial class ArchiveViewer : UserControl, INotifyPropertyChanged
                 }
             }
 
-            archiveViewer.ToplamOran = (double)archiveViewer.Arşivİçerik.Sum(z => z.SıkıştırılmışBoyut) /
-                archiveViewer.Arşivİçerik.Sum(z => z.Boyut) * 100;
+            archiveViewer.ToplamOran = (double)archiveViewer.Arşivİçerik.Sum(z => z.SıkıştırılmışBoyut) / archiveViewer.Arşivİçerik.Sum(z => z.Boyut) * 100;
         }
     }
 
-    private static double toplamOran;
+    protected virtual void OnPropertyChanged(string propertyName) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
 
-    private ObservableCollection<ArchiveData> arşivİçerik;
+    public string ArchivePath { get => (string)GetValue(ArchivePathProperty); set => SetValue(ArchivePathProperty, value); }
+
+    public ObservableCollection<ArchiveData> Arşivİçerik
+    {
+        get => arşivİçerik;
+
+        set
+        {
+            if(arşivİçerik != value)
+            {
+                arşivİçerik = value;
+                OnPropertyChanged(nameof(Arşivİçerik));
+            }
+        }
+    }
+
+    public ICommand ArşivTekDosyaÇıkar { get; }
+
+    public double ToplamOran
+    {
+        get => toplamOran;
+
+        set
+        {
+            toplamOran = value;
+            OnPropertyChanged(nameof(ToplamOran));
+        }
+    }
 }

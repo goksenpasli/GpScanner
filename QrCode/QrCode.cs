@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Extensions;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Media.Imaging;
-using Extensions;
 using ZXing;
 using ZXing.Common;
 using ZXing.QrCode.Internal;
@@ -13,21 +13,11 @@ namespace QrCode;
 
 public class QrCode : InpcBase
 {
-    public ResultPoint[] BarcodePosition {
-        get => barcodePosition;
-
-        set {
-            if (barcodePosition != value)
-            {
-                barcodePosition = value;
-                OnPropertyChanged(nameof(BarcodePosition));
-            }
-        }
-    }
+    private ResultPoint[] barcodePosition;
 
     public static WriteableBitmap GenerateQr(string text, int width = 120, int height = 120)
     {
-        if (!string.IsNullOrWhiteSpace(text))
+        if(!string.IsNullOrWhiteSpace(text))
         {
             BarcodeWriter barcodeWriter = new() { Format = BarcodeFormat.QR_CODE, Renderer = new BitmapRenderer() };
             EncodingOptions encodingOptions = new() { Width = width, Height = height, Margin = 0 };
@@ -41,7 +31,7 @@ public class QrCode : InpcBase
 
     public static string GetImageBarcodeResult(BitmapFrame bitmapFrame)
     {
-        if (bitmapFrame is not null)
+        if(bitmapFrame is not null)
         {
             BarcodeReader reader = new();
             reader.Options.TryHarder = true;
@@ -53,7 +43,7 @@ public class QrCode : InpcBase
 
     public static string GetImageBarcodeResult(byte[] imgbyte)
     {
-        if (imgbyte is not null)
+        if(imgbyte is not null)
         {
             using MemoryStream ms = new(imgbyte);
             BitmapImage bitmapImage = new();
@@ -75,7 +65,7 @@ public class QrCode : InpcBase
 
     public static List<string> GetMultipleImageBarcodeResult(BitmapFrame bitmapFrame)
     {
-        if (bitmapFrame is not null)
+        if(bitmapFrame is not null)
         {
             BarcodeReader reader = new();
             reader.Options.TryHarder = true;
@@ -85,5 +75,17 @@ public class QrCode : InpcBase
         return null;
     }
 
-    private ResultPoint[] barcodePosition;
+    public ResultPoint[] BarcodePosition
+    {
+        get => barcodePosition;
+
+        set
+        {
+            if(barcodePosition != value)
+            {
+                barcodePosition = value;
+                OnPropertyChanged(nameof(BarcodePosition));
+            }
+        }
+    }
 }

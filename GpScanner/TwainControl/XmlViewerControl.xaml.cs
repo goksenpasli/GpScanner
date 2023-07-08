@@ -3,7 +3,7 @@
 namespace TwainControl;
 
 /// <summary>
-///     Interaction logic for XmlViewerControl.xaml
+/// Interaction logic for XmlViewerControl.xaml
 /// </summary>
 public partial class XmlViewerControl : UserControl
 {

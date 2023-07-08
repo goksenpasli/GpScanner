@@ -1,17 +1,27 @@
-﻿using System.Xml.Serialization;
-using Extensions;
+﻿using Extensions;
+using System.Xml.Serialization;
 
 namespace GpScanner.ViewModel;
 
 [XmlRoot(ElementName = "Data")]
 public class Data : InpcBase
 {
+    private string fileContent;
+
+    private string fileName;
+
+    private int ıd;
+
+    private string qrData;
+
     [XmlAttribute(AttributeName = "FileContent")]
-    public string FileContent {
+    public string FileContent
+    {
         get => fileContent;
 
-        set {
-            if (fileContent != value)
+        set
+        {
+            if(fileContent != value)
             {
                 fileContent = value;
                 OnPropertyChanged(nameof(FileContent));
@@ -20,11 +30,13 @@ public class Data : InpcBase
     }
 
     [XmlAttribute(AttributeName = "FileName")]
-    public string FileName {
+    public string FileName
+    {
         get => fileName;
 
-        set {
-            if (fileName != value)
+        set
+        {
+            if(fileName != value)
             {
                 fileName = value;
                 OnPropertyChanged(nameof(FileName));
@@ -33,11 +45,13 @@ public class Data : InpcBase
     }
 
     [XmlAttribute(AttributeName = "Id")]
-    public int Id {
+    public int Id
+    {
         get => ıd;
 
-        set {
-            if (ıd != value)
+        set
+        {
+            if(ıd != value)
             {
                 ıd = value;
                 OnPropertyChanged(nameof(Id));
@@ -46,23 +60,17 @@ public class Data : InpcBase
     }
 
     [XmlAttribute(AttributeName = "QrData")]
-    public string QrData {
+    public string QrData
+    {
         get => qrData;
 
-        set {
-            if (qrData != value)
+        set
+        {
+            if(qrData != value)
             {
                 qrData = value;
                 OnPropertyChanged(nameof(QrData));
             }
         }
     }
-
-    private string fileContent;
-
-    private string fileName;
-
-    private int ıd;
-
-    private string qrData;
 }

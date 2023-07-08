@@ -4,11 +4,17 @@ namespace GpScanner.ViewModel;
 
 public class TessFiles : InpcBase
 {
-    public bool Checked {
+    private bool @checked;
+
+    private string name;
+
+    public bool Checked
+    {
         get => @checked;
 
-        set {
-            if (@checked != value)
+        set
+        {
+            if(@checked != value)
             {
                 @checked = value;
                 OnPropertyChanged(nameof(Checked));
@@ -16,19 +22,17 @@ public class TessFiles : InpcBase
         }
     }
 
-    public string Name {
+    public string Name
+    {
         get => name;
 
-        set {
-            if (name != value)
+        set
+        {
+            if(name != value)
             {
                 name = value;
                 OnPropertyChanged(nameof(Name));
             }
         }
     }
-
-    private bool @checked;
-
-    private string name;
 }

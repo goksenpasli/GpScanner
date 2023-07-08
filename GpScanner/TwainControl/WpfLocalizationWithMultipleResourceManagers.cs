@@ -13,48 +13,13 @@ namespace TwainControl;
 
 public class LocExtension(string stringName) : MarkupExtension
 {
-    public string StringName { get; } = stringName;
-
-    public override object ProvideValue(IServiceProvider serviceProvider)
-    {
-        object targetObject = (serviceProvider as IProvideValueTarget)?.TargetObject;
-
-        if (targetObject?.GetType().Name == "SharedDp")
-        {
-            return targetObject;
-        }
-
-        string baseName = GetResourceManager(targetObject)?.BaseName ?? string.Empty;
-
-        if (string.IsNullOrEmpty(baseName))
-        {
-            object rootObject = (serviceProvider as IRootObjectProvider)?.RootObject;
-            baseName = GetResourceManager(rootObject)?.BaseName ?? string.Empty;
-        }
-
-        if (string.IsNullOrEmpty(baseName) && targetObject is FrameworkElement frameworkElement)
-        {
-            baseName = GetResourceManager(frameworkElement.TemplatedParent)?.BaseName ?? string.Empty;
-        }
-
-        Binding binding = new()
-        {
-            Mode = BindingMode.OneWay,
-            Path = new PropertyPath($"[{baseName}.{StringName}]"),
-            Source = TranslationSource.Instance,
-            FallbackValue = StringName
-        };
-
-        return binding.ProvideValue(serviceProvider);
-    }
-
     private ResourceManager GetResourceManager(object control)
     {
-        if (control is DependencyObject dependencyObject)
+        if(control is DependencyObject dependencyObject)
         {
             object localValue = dependencyObject.ReadLocalValue(Translation.ResourceManagerProperty);
 
-            if (localValue != DependencyProperty.UnsetValue && localValue is ResourceManager resourceManager)
+            if(localValue != DependencyProperty.UnsetValue && localValue is ResourceManager resourceManager)
             {
                 TranslationSource.Instance.AddResourceManager(resourceManager);
 
@@ -64,19 +29,56 @@ public class LocExtension(string stringName) : MarkupExtension
 
         return null;
     }
+
+    public override object ProvideValue(IServiceProvider serviceProvider)
+    {
+        object targetObject = (serviceProvider as IProvideValueTarget)?.TargetObject;
+
+        if(targetObject?.GetType().Name == "SharedDp")
+        {
+            return targetObject;
+        }
+
+        string baseName = GetResourceManager(targetObject)?.BaseName ?? string.Empty;
+
+        if(string.IsNullOrEmpty(baseName))
+        {
+            object rootObject = (serviceProvider as IRootObjectProvider)?.RootObject;
+            baseName = GetResourceManager(rootObject)?.BaseName ?? string.Empty;
+        }
+
+        if(string.IsNullOrEmpty(baseName) && targetObject is FrameworkElement frameworkElement)
+        {
+            baseName = GetResourceManager(frameworkElement.TemplatedParent)?.BaseName ?? string.Empty;
+        }
+
+        Binding binding = new() { Mode = BindingMode.OneWay, Path = new PropertyPath($"[{baseName}.{StringName}]"), Source = TranslationSource.Instance, FallbackValue = StringName };
+
+        return binding.ProvideValue(serviceProvider);
+    }
+
+    public string StringName { get; } = stringName;
 }
 
 public class Translation : DependencyObject
 {
-    public static string GetDesignCulture(DependencyObject obj)
+    public static readonly DependencyProperty DesignCultureProperty =
+                            DependencyProperty.RegisterAttached("DesignCulture", typeof(string), typeof(Translation), new PropertyMetadata("en-EN", CultureChanged));
+
+    public static readonly DependencyProperty ResourceManagerProperty =
+        DependencyProperty.RegisterAttached("ResourceManager", typeof(ResourceManager), typeof(Translation));
+
+    private static void CultureChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        return (string)obj.GetValue(DesignCultureProperty);
+        if(DesignerProperties.GetIsInDesignMode(d))
+        {
+            TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo((string)e.NewValue);
+        }
     }
 
-    public static ResourceManager GetResourceManager(DependencyObject dependencyObject)
-    {
-        return (ResourceManager)dependencyObject.GetValue(ResourceManagerProperty);
-    }
+    public static string GetDesignCulture(DependencyObject obj) { return (string)obj.GetValue(DesignCultureProperty); }
+
+    public static ResourceManager GetResourceManager(DependencyObject dependencyObject) { return (ResourceManager)dependencyObject.GetValue(ResourceManagerProperty); }
 
     public static string GetResStringValue(string resdata)
     {
@@ -85,55 +87,25 @@ public class Translation : DependencyObject
             : Resources.ResourceManager.GetString(resdata, TranslationSource.Instance.CurrentCulture);
     }
 
-    public static void SetDesignCulture(DependencyObject obj, string value)
-    {
-        obj.SetValue(DesignCultureProperty, value);
-    }
+    public static void SetDesignCulture(DependencyObject obj, string value) { obj.SetValue(DesignCultureProperty, value); }
 
-    public static void SetResourceManager(DependencyObject dependencyObject, ResourceManager value)
-    {
-        dependencyObject.SetValue(ResourceManagerProperty, value);
-    }
-
-    public static readonly DependencyProperty DesignCultureProperty =
-                            DependencyProperty.RegisterAttached("DesignCulture", typeof(string), typeof(Translation),
-            new PropertyMetadata("en-EN", CultureChanged));
-
-    public static readonly DependencyProperty ResourceManagerProperty =
-        DependencyProperty.RegisterAttached("ResourceManager", typeof(ResourceManager), typeof(Translation));
-
-    private static void CultureChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        if (DesignerProperties.GetIsInDesignMode(d))
-        {
-            TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo((string)e.NewValue);
-        }
-    }
+    public static void SetResourceManager(DependencyObject dependencyObject, ResourceManager value) { dependencyObject.SetValue(ResourceManagerProperty, value); }
 }
 
 public class TranslationSource : INotifyPropertyChanged
 {
+    private CultureInfo currentCulture = CultureInfo.InstalledUICulture;
+
+    private readonly Dictionary<string, ResourceManager> resourceManagerDictionary = new();
+
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public static TranslationSource Instance { get; } = new();
-
-    public CultureInfo CurrentCulture {
-        get => currentCulture;
-
-        set {
-            if (currentCulture != value)
-            {
-                currentCulture = value;
-
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(string.Empty));
-            }
-        }
-    }
-
-    public string this[string key] {
-        get {
+    public string this[string key]
+    {
+        get
+        {
             string translation = null;
-            if (resourceManagerDictionary.ContainsKey(SplitName(key).Item1))
+            if(resourceManagerDictionary.ContainsKey(SplitName(key).Item1))
             {
                 translation = resourceManagerDictionary[SplitName(key).Item1]
                     .GetString(SplitName(key).Item2, currentCulture);
@@ -143,21 +115,34 @@ public class TranslationSource : INotifyPropertyChanged
         }
     }
 
+    public void AddResourceManager(ResourceManager resourceManager)
+    {
+        if(!resourceManagerDictionary.ContainsKey(resourceManager.BaseName))
+        {
+            resourceManagerDictionary.Add(resourceManager.BaseName, resourceManager);
+        }
+    }
+
     public static Tuple<string, string> SplitName(string name)
     {
         int idx = name.LastIndexOf('.');
         return Tuple.Create(name.Substring(0, idx), name.Substring(idx + 1));
     }
 
-    public void AddResourceManager(ResourceManager resourceManager)
+    public CultureInfo CurrentCulture
     {
-        if (!resourceManagerDictionary.ContainsKey(resourceManager.BaseName))
+        get => currentCulture;
+
+        set
         {
-            resourceManagerDictionary.Add(resourceManager.BaseName, resourceManager);
+            if(currentCulture != value)
+            {
+                currentCulture = value;
+
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(string.Empty));
+            }
         }
     }
 
-    private readonly Dictionary<string, ResourceManager> resourceManagerDictionary = new();
-
-    private CultureInfo currentCulture = CultureInfo.InstalledUICulture;
+    public static TranslationSource Instance { get; } = new();
 }

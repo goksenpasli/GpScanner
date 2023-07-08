@@ -6,29 +6,6 @@ namespace TwainControl;
 
 public abstract class Deskew()
 {
-    public static double GetDeskewAngle(BitmapSource image)
-    {
-        BitmapSource grayscaleImage = ConvertToGrayscale(image);
-        ImageMoments moments = CalculateImageMoments(grayscaleImage);
-        return CalculateSkewAngle(moments);
-    }
-
-    public class ImageMoments
-    {
-        public ImageMoments(double mu20, double mu02, double mu11)
-        {
-            Mu20 = mu20;
-            Mu02 = mu02;
-            Mu11 = mu11;
-        }
-
-        public double Mu02 { get; }
-
-        public double Mu11 { get; }
-
-        public double Mu20 { get; }
-    }
-
     private static ImageMoments CalculateImageMoments(BitmapSource image)
     {
         int width = image.PixelWidth;
@@ -38,9 +15,9 @@ public abstract class Deskew()
         byte[] pixels = new byte[width * height];
         image.CopyPixels(pixels, width, 0);
 
-        for (int y = 0; y < height; y++)
+        for(int y = 0; y < height; y++)
         {
-            for (int x = 0; x < width; x++)
+            for(int x = 0; x < width; x++)
             {
                 byte grayValue = pixels[(y * width) + x];
 
@@ -54,9 +31,9 @@ public abstract class Deskew()
         double yCenter = m01 / m00;
 
         double mu20 = 0, mu02 = 0, mu11 = 0;
-        for (int y = 0; y < height; y++)
+        for(int y = 0; y < height; y++)
         {
-            for (int x = 0; x < width; x++)
+            for(int x = 0; x < width; x++)
             {
                 byte grayValue = pixels[(y * width) + x];
 
@@ -79,8 +56,28 @@ public abstract class Deskew()
         return skewAngleDeg > 0 ? 90 - skewAngleDeg : -(90 + skewAngleDeg);
     }
 
-    private static BitmapSource ConvertToGrayscale(BitmapSource image)
+    private static BitmapSource ConvertToGrayscale(BitmapSource image) { return new FormatConvertedBitmap(image, PixelFormats.Gray8, null, 0); }
+
+    public static double GetDeskewAngle(BitmapSource image)
     {
-        return new FormatConvertedBitmap(image, PixelFormats.Gray8, null, 0);
+        BitmapSource grayscaleImage = ConvertToGrayscale(image);
+        ImageMoments moments = CalculateImageMoments(grayscaleImage);
+        return CalculateSkewAngle(moments);
+    }
+
+    public class ImageMoments
+    {
+        public ImageMoments(double mu20, double mu02, double mu11)
+        {
+            Mu20 = mu20;
+            Mu02 = mu02;
+            Mu11 = mu11;
+        }
+
+        public double Mu02 { get; }
+
+        public double Mu11 { get; }
+
+        public double Mu20 { get; }
     }
 }

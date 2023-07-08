@@ -14,36 +14,6 @@ namespace TwainWpf
     public class ResolutionSettings : INotifyPropertyChanged
     {
         /// <summary>
-        /// The colour settings to use.
-        /// </summary>
-        public ColourSetting ColourSetting {
-            get => _colourSettings;
-
-            set {
-                if (value != _colourSettings)
-                {
-                    _colourSettings = value;
-                    OnPropertyChanged(nameof(ColourSetting));
-                }
-            }
-        }
-
-        /// <summary>
-        /// The DPI to scan at. Set to null to use the current default setting.
-        /// </summary>
-        public int? Dpi {
-            get => _dpi;
-
-            set {
-                if (value != _dpi)
-                {
-                    _dpi = value;
-                    OnPropertyChanged(nameof(Dpi));
-                }
-            }
-        }
-
-        /// <summary>
         /// Colour photocopier quality resolution.
         /// </summary>
         public static readonly ResolutionSettings ColourPhotocopier = new ResolutionSettings() { Dpi = 300, ColourSetting = ColourSetting.Colour };
@@ -62,8 +32,41 @@ namespace TwainWpf
 
         private int? _dpi;
 
-        #region INotifyPropertyChanged Members
+        /// <summary>
+        /// The colour settings to use.
+        /// </summary>
+        public ColourSetting ColourSetting
+        {
+            get => _colourSettings;
 
+            set
+            {
+                if(value != _colourSettings)
+                {
+                    _colourSettings = value;
+                    OnPropertyChanged(nameof(ColourSetting));
+                }
+            }
+        }
+
+        /// <summary>
+        /// The DPI to scan at. Set to null to use the current default setting.
+        /// </summary>
+        public int? Dpi
+        {
+            get => _dpi;
+
+            set
+            {
+                if(value != _dpi)
+                {
+                    _dpi = value;
+                    OnPropertyChanged(nameof(Dpi));
+                }
+            }
+        }
+
+        #region INotifyPropertyChanged Members
         public event PropertyChangedEventHandler PropertyChanged = delegate
         {
         };
@@ -72,7 +75,6 @@ namespace TwainWpf
         {
             PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
-
         #endregion INotifyPropertyChanged Members
     }
 }

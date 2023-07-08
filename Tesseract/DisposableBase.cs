@@ -5,9 +5,27 @@ namespace Tesseract
 {
     public abstract class DisposableBase : IDisposable
     {
+        private static readonly TraceSource trace = new TraceSource("Tesseract");
+
+        protected DisposableBase() { IsDisposed = false; }
+
+        ~DisposableBase()
+        {
+            Dispose(false);
+            trace.TraceEvent(TraceEventType.Warning, 0, "{0} was not disposed off.", this);
+        }
+
         public event EventHandler<EventArgs> Disposed;
 
-        public bool IsDisposed { get; private set; }
+        protected abstract void Dispose(bool disposing);
+
+        protected virtual void VerifyNotDisposed()
+        {
+            if(IsDisposed)
+            {
+                throw new ObjectDisposedException(ToString());
+            }
+        }
 
         public void Dispose()
         {
@@ -19,27 +37,6 @@ namespace Tesseract
             Disposed?.Invoke(this, EventArgs.Empty);
         }
 
-        protected DisposableBase()
-        {
-            IsDisposed = false;
-        }
-
-        protected abstract void Dispose(bool disposing);
-
-        protected virtual void VerifyNotDisposed()
-        {
-            if (IsDisposed)
-            {
-                throw new ObjectDisposedException(ToString());
-            }
-        }
-
-        ~DisposableBase()
-        {
-            Dispose(false);
-            trace.TraceEvent(TraceEventType.Warning, 0, "{0} was not disposed off.", this);
-        }
-
-        private static readonly TraceSource trace = new TraceSource("Tesseract");
+        public bool IsDisposed { get; private set; }
     }
 }

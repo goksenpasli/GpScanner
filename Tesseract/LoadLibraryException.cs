@@ -6,6 +6,9 @@ namespace Tesseract
     [Serializable]
     public class LoadLibraryException : SystemException
     {
+        protected LoadLibraryException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
         public LoadLibraryException()
         {
         }
@@ -15,10 +18,6 @@ namespace Tesseract
         }
 
         public LoadLibraryException(string message, Exception inner) : base(message, inner)
-        {
-        }
-
-        protected LoadLibraryException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

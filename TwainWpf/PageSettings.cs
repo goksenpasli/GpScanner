@@ -8,6 +8,15 @@ namespace TwainWpf
     /// </summary>
     public class PageSettings : INotifyPropertyChanged
     {
+        /// <summary>
+        /// Default Page setup - A4 Letter and Portrait orientation
+        /// </summary>
+        public static readonly PageSettings Default = new PageSettings() { Size = PageType.UsLetter, Orientation = Orientation.Default };
+
+        private Orientation _orientation;
+
+        private PageType _size;
+
         public PageSettings()
         {
             Size = PageType.UsLetter;
@@ -18,11 +27,13 @@ namespace TwainWpf
         /// Gets or sets the page orientation.
         /// </summary>
         /// <value>The orientation.</value>
-        public Orientation Orientation {
+        public Orientation Orientation
+        {
             get => _orientation;
 
-            set {
-                if (value != _orientation)
+            set
+            {
+                if(value != _orientation)
                 {
                     _orientation = value;
                     OnPropertyChanged(nameof(Orientation));
@@ -34,11 +45,13 @@ namespace TwainWpf
         /// Gets or sets the Page Size.
         /// </summary>
         /// <value>The size.</value>
-        public PageType Size {
+        public PageType Size
+        {
             get => _size;
 
-            set {
-                if (value != _size)
+            set
+            {
+                if(value != _size)
                 {
                     _size = value;
                     OnPropertyChanged("PaperSize");
@@ -46,17 +59,7 @@ namespace TwainWpf
             }
         }
 
-        /// <summary>
-        /// Default Page setup - A4 Letter and Portrait orientation
-        /// </summary>
-        public static readonly PageSettings Default = new PageSettings() { Size = PageType.UsLetter, Orientation = Orientation.Default };
-
-        private Orientation _orientation;
-
-        private PageType _size;
-
         #region INotifyPropertyChanged Members
-
         public event PropertyChangedEventHandler PropertyChanged = delegate
         {
         };
@@ -65,7 +68,6 @@ namespace TwainWpf
         {
             PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
-
         #endregion INotifyPropertyChanged Members
     }
 }

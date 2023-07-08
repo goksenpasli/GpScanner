@@ -1,4 +1,9 @@
-﻿using System;
+﻿using Extensions;
+using Ocr;
+using PdfSharp;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Imaging;
@@ -10,28 +15,30 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Extensions;
-using Ocr;
-using PdfSharp;
-using PdfSharp.Drawing;
-using PdfSharp.Pdf;
 using TwainControl.Properties;
 using static Extensions.ExtensionMethods;
 
 namespace TwainControl;
 
 /// <summary>
-///     Interaction logic for ToolBox.xaml
+/// Interaction logic for ToolBox.xaml
 /// </summary>
 public partial class ToolBox : UserControl, INotifyPropertyChanged
 {
+    private double borderSize;
+
+    private bool compressImage = true;
+
+    private bool resizeRatioImage;
+
+    private double toolBoxPdfMergeProgressValue;
+
     public ToolBox()
     {
         InitializeComponent();
 
         PrintCroppedImage =
-            new RelayCommand<object>(parameter => PdfViewer.PdfViewer.PrintImageSource(parameter as ImageSource),
-                parameter => Scanner?.CroppedImage is not null);
+            new RelayCommand<object>(parameter => PdfViewer.PdfViewer.PrintImageSource(parameter as ImageSource), parameter => Scanner?.CroppedImage is not null);
 
         DeskewImage = new RelayCommand<object>(
             async parameter =>
@@ -41,9 +48,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
             },
             parameter => Scanner?.CroppedImage is not null);
 
-        InvertImage = new RelayCommand<object>(
-            parameter => Scanner.CroppedImage = ((BitmapSource)Scanner.CroppedImage).InvertBitmap(),
-            parameter => Scanner?.CroppedImage is not null);
+        InvertImage = new RelayCommand<object>(parameter => Scanner.CroppedImage = ((BitmapSource)Scanner.CroppedImage).InvertBitmap(), parameter => Scanner?.CroppedImage is not null);
 
         AutoCropImage = new RelayCommand<object>(
             parameter =>
@@ -56,23 +61,19 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
         BlackAndWhiteImage = new RelayCommand<object>(
             parameter =>
             {
-                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                if(Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                 {
-                    Scanner.CroppedImage = ((BitmapSource)Scanner.CopyCroppedImage).BitmapSourceToBitmap()
-                        .ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg);
+                    Scanner.CroppedImage = ((BitmapSource)Scanner.CopyCroppedImage).BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg);
                     return;
                 }
 
-                Scanner.CroppedImage = ((BitmapSource)Scanner.CopyCroppedImage).BitmapSourceToBitmap()
-                    .ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg);
+                Scanner.CroppedImage = ((BitmapSource)Scanner.CopyCroppedImage).BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg);
             },
             parameter => Scanner?.CroppedImage is not null);
 
-        ApplyColorChange = new RelayCommand<object>(parameter => Scanner.CopyCroppedImage = Scanner.CroppedImage,
-            parameter => Scanner?.CroppedImage is not null);
+        ApplyColorChange = new RelayCommand<object>(parameter => Scanner.CopyCroppedImage = Scanner.CroppedImage, parameter => Scanner?.CroppedImage is not null);
 
-        ResetCroppedImage = new RelayCommand<object>(parameter => ResetCropMargin(),
-            parameter => Scanner?.CroppedImage is not null);
+        ResetCroppedImage = new RelayCommand<object>(parameter => ResetCropMargin(), parameter => Scanner?.CroppedImage is not null);
 
         SetWatermark = new RelayCommand<object>(
             parameter => Scanner.CroppedImage =
@@ -97,15 +98,13 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                 await Task.Run(
                     () =>
                     {
-                        for (int i = 0; i < croppedBitmaps.Count; i++)
+                        for(int i = 0; i < croppedBitmaps.Count; i++)
                         {
                             CroppedBitmap croppedBitmap = croppedBitmaps[i];
                             Dispatcher.Invoke(
                                 () =>
                                 {
-                                    File.WriteAllBytes(
-                                        savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "jpg"),
-                                        croppedBitmap.ToTiffJpegByteArray(Format.Jpg));
+                                    File.WriteAllBytes(savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "jpg"), croppedBitmap.ToTiffJpegByteArray(Format.Jpg));
                                     ToolBoxPdfMergeProgressValue = (i + 1) / (double)croppedBitmaps.Count;
                                 });
                         }
@@ -113,8 +112,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                 WebAdreseGit.Execute(savefolder);
                 ToolBoxPdfMergeProgressValue = 0;
             },
-            parameter => Scanner?.AutoSave == true && Scanner?.CroppedImage is not null &&
-                         (Scanner?.EnAdet > 1 || Scanner?.BoyAdet > 1));
+            parameter => Scanner?.AutoSave == true && Scanner?.CroppedImage is not null && (Scanner?.EnAdet > 1 || Scanner?.BoyAdet > 1));
 
         TransferImage = new RelayCommand<object>(
             parameter =>
@@ -130,7 +128,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
         SplitAllImage = new RelayCommand<object>(
             async parameter =>
             {
-                if (DataContext is TwainCtrl twainControl)
+                if(DataContext is TwainCtrl twainControl)
                 {
                     List<ScannedImage> listcroppedimages;
                     PdfDocument pdfdocument = null;
@@ -141,18 +139,15 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                             listcroppedimages = Scanner.Resimler
                                 .Where(z => z.Seçili)
                                 .SelectMany(
-                                    scannedimage => CropImageToList(scannedimage.Resim, (int)Scanner.SliceCountWidth,
-                                            (int)Scanner.SliceCountHeight)
-                                        .Select(croppedBitmap => new ScannedImage
-                                        { Resim = BitmapFrame.Create(croppedBitmap) }))
+                                    scannedimage => CropImageToList(scannedimage.Resim, (int)Scanner.SliceCountWidth, (int)Scanner.SliceCountHeight)
+                                            .Select(croppedBitmap => new ScannedImage { Resim = BitmapFrame.Create(croppedBitmap) }))
                                 .ToList();
-                            pdfdocument = await listcroppedimages.GeneratePdfAsync(Format.Jpg, Paper,
-                                Settings.Default.JpegQuality, null, (int)Settings.Default.Çözünürlük);
+                            pdfdocument = await listcroppedimages.GeneratePdfAsync(Format.Jpg, Paper, Settings.Default.JpegQuality, null, (int)Settings.Default.Çözünürlük);
                         });
                     string savefolder = CreateSaveFolder("SPLIT");
                     string path = savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "pdf");
                     pdfdocument.Save(path);
-                    if (splitpdfbypage)
+                    if(splitpdfbypage)
                     {
                         twainControl.SplitPdfPageCount(path, savefolder, 1);
                     }
@@ -160,7 +155,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                     WebAdreseGit.Execute(savefolder);
                     listcroppedimages = null;
                     pdfdocument = null;
-                    if (Settings.Default.RemoveProcessedImage)
+                    if(Settings.Default.RemoveProcessedImage)
                     {
                         twainControl.SeçiliListeTemizle.Execute(null);
                     }
@@ -171,24 +166,21 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
         MergeHorizontal = new RelayCommand<object>(
             async parameter =>
             {
-                if (DataContext is TwainCtrl twainControl)
+                if(DataContext is TwainCtrl twainControl)
                 {
                     List<ScannedImage> listcroppedimages;
-                    Orientation orientation = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)
-                        ? Orientation.Vertical
-                        : Orientation.Horizontal;
+                    Orientation orientation = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt) ? Orientation.Vertical : Orientation.Horizontal;
                     string savefolder = CreateSaveFolder("MERGE");
                     string path = savefolder.SetUniqueFile(Translation.GetResStringValue("MERGE"), "jpg");
                     await Task.Run(
                         () =>
                         {
                             listcroppedimages = Scanner.Resimler.Where(z => z.Seçili).ToList();
-                            File.WriteAllBytes(path,
-                                listcroppedimages.CombineImages(orientation).ToTiffJpegByteArray(Format.Jpg));
+                            File.WriteAllBytes(path, listcroppedimages.CombineImages(orientation).ToTiffJpegByteArray(Format.Jpg));
                         });
                     WebAdreseGit.Execute(savefolder);
                     listcroppedimages = null;
-                    if (Settings.Default.RemoveProcessedImage)
+                    if(Settings.Default.RemoveProcessedImage)
                     {
                         twainControl.SeçiliListeTemizle.Execute(null);
                     }
@@ -199,25 +191,23 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
         MergeAllImage = new RelayCommand<object>(
             async parameter =>
             {
-                PageOrientation pageOrientation = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)
-                    ? PageOrientation.Portrait
-                    : PageOrientation.Landscape;
+                PageOrientation pageOrientation = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt) ? PageOrientation.Portrait : PageOrientation.Landscape;
                 string savefolder = CreateSaveFolder("MERGE");
                 List<ScannedImage> seçiliresimler = Scanner.Resimler.Where(z => z.Seçili).ToList();
                 PdfDocument pdfdocument = new();
                 XRect box;
                 PdfPage page = null;
                 int imageindex = 0;
-                for (int i = 0; i < seçiliresimler.Count / (Scanner.SliceCountWidth * Scanner.SliceCountHeight); i++)
+                for(int i = 0; i < seçiliresimler.Count / (Scanner.SliceCountWidth * Scanner.SliceCountHeight); i++)
                 {
                     page = pdfdocument.AddPage();
                     page.Size = Paper.GetPaperSize() == PageSize.Undefined ? PageSize.A4 : Paper.GetPaperSize();
                     page.Orientation = pageOrientation;
-                    for (int heighindex = 0; heighindex < Scanner.SliceCountHeight; heighindex++)
+                    for(int heighindex = 0; heighindex < Scanner.SliceCountHeight; heighindex++)
                     {
-                        for (int widthindex = 0; widthindex < Scanner.SliceCountWidth; widthindex++)
+                        for(int widthindex = 0; widthindex < Scanner.SliceCountWidth; widthindex++)
                         {
-                            if (imageindex >= seçiliresimler.Count())
+                            if(imageindex >= seçiliresimler.Count)
                             {
                                 break;
                             }
@@ -231,25 +221,22 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                                     double height = page.Height / Scanner.SliceCountHeight;
                                     BitmapFrame currentimage = seçiliresimler.ElementAtOrDefault(imageindex).Resim;
                                     double xratio = width / currentimage.PixelWidth;
-                                    BitmapSource bitmapsource = ResizeRatioImage ? currentimage.Resize(xratio) :
-                                        CompressImage ? currentimage.Resize(width, height) : currentimage;
+                                    BitmapSource bitmapsource = ResizeRatioImage ? currentimage.Resize(xratio) : CompressImage ? currentimage.Resize(width, height) : currentimage;
                                     using MemoryStream ms =
                                         new(bitmapsource.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality));
                                     using XImage xImage = XImage.FromStream(ms);
                                     using XGraphics gfx = XGraphics.FromPdfPage(page);
-                                    box = new XRect(x + BorderSize, y + BorderSize, width + (BorderSize * -2),
-                                        height + (BorderSize * -2));
-                                    if (ResizeRatioImage)
+                                    box = new XRect(x + BorderSize, y + BorderSize, width + (BorderSize * -2), height + (BorderSize * -2));
+                                    if(ResizeRatioImage)
                                     {
                                         gfx.DrawImage(xImage, new Point(x, y));
-                                    }
-                                    else
+                                    } else
                                     {
                                         gfx.DrawImage(xImage, box);
                                     }
 
                                     imageindex++;
-                                    ToolBoxPdfMergeProgressValue = imageindex / (double)seçiliresimler.Count();
+                                    ToolBoxPdfMergeProgressValue = imageindex / (double)seçiliresimler.Count;
                                     GC.Collect();
                                 });
                         }
@@ -261,7 +248,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                 WebAdreseGit.Execute(savefolder);
                 pdfdocument = null;
                 page = null;
-                if (Settings.Default.RemoveProcessedImage)
+                if(Settings.Default.RemoveProcessedImage)
                 {
                     (DataContext as TwainCtrl)?.SeçiliListeTemizle.Execute(null);
                 }
@@ -273,95 +260,100 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public static Paper Paper { get; set; }
-
-    public static Scanner Scanner { get; set; }
-
-    public ICommand ApplyColorChange { get; }
-
-    public RelayCommand<object> AutoCropImage { get; }
-
-    public ICommand BlackAndWhiteImage { get; }
-
-    public double BorderSize {
-        get => borderSize;
-
-        set {
-            if (borderSize != value)
+    private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if(e.PropertyName is "EnAdet")
+        {
+            LineGrid.ColumnDefinitions.Clear();
+            for(int i = 0; i < Scanner.EnAdet; i++)
             {
-                borderSize = value;
-                OnPropertyChanged(nameof(BorderSize));
+                LineGrid.ColumnDefinitions.Add(new ColumnDefinition());
             }
+        }
+
+        if(e.PropertyName is "BoyAdet")
+        {
+            LineGrid.RowDefinitions.Clear();
+            for(int i = 0; i < Scanner.BoyAdet; i++)
+            {
+                LineGrid.RowDefinitions.Add(new RowDefinition());
+            }
+        }
+
+        if(e.PropertyName is "CroppedImageAngle" && Scanner.CopyCroppedImage is not null)
+        {
+            TransformedBitmap transformedBitmap = new((BitmapSource)Scanner.CopyCroppedImage, new RotateTransform(Scanner.CroppedImageAngle));
+            transformedBitmap.Freeze();
+            Scanner.CroppedImage = transformedBitmap;
+        }
+
+        if(e.PropertyName is "Threshold" && Scanner.CopyCroppedImage is not null)
+        {
+            Color source = (Color)ColorConverter.ConvertFromString(Scanner.SourceColor);
+            Color target = (Color)ColorConverter.ConvertFromString(Scanner.TargetColor);
+            Scanner.CroppedImage =
+                ((BitmapSource)Scanner.CopyCroppedImage).ReplaceColor(source, target, (int)Scanner.Threshold);
+        }
+
+        if(e.PropertyName is "Hue" or "Saturation" or "Lightness" && Scanner.CopyCroppedImage is not null)
+        {
+            Scanner.CroppedImage =
+                ((BitmapSource)Scanner.CopyCroppedImage).ApplyHueSaturationLightness(Scanner.Hue, Scanner.Saturation, Scanner.Lightness);
+        }
+
+        if(e.PropertyName is "MedianValue" && Scanner.CopyCroppedImage is not null)
+        {
+            WriteableBitmap writeableBitmap = ((BitmapSource)Scanner.CopyCroppedImage).MedianFilterBitmap(Scanner.MedianValue);
+            writeableBitmap.Freeze();
+            Scanner.CroppedImage = writeableBitmap;
         }
     }
 
-    public bool CompressImage {
-        get => compressImage;
-
-        set {
-            if (compressImage != value)
-            {
-                compressImage = value;
-                OnPropertyChanged(nameof(CompressImage));
-            }
+    private void UserControl_Loaded(object sender, RoutedEventArgs e)
+    {
+        if(DataContext is TwainCtrl twainCtrl)
+        {
+            Scanner = twainCtrl.Scanner;
+            Scanner.PropertyChanged += Scanner_PropertyChanged;
         }
     }
 
-    public ICommand DeskewImage { get; }
-
-    public ICommand InvertImage { get; }
-
-    public ICommand MergeAllImage { get; }
-
-    public ICommand MergeHorizontal { get; }
-
-    public ICommand PrintCroppedImage { get; }
-
-    public ICommand ResetCroppedImage { get; }
-
-    public bool ResizeRatioImage {
-        get => resizeRatioImage;
-
-        set {
-            if (resizeRatioImage != value)
-            {
-                resizeRatioImage = value;
-                OnPropertyChanged(nameof(ResizeRatioImage));
-            }
-        }
-    }
-
-    public ICommand SetWatermark { get; }
-
-    public ICommand SplitAllImage { get; }
-
-    public ICommand SplitImage { get; }
-
-    public double ToolBoxPdfMergeProgressValue {
-        get => toolBoxPdfMergeProgressValue;
-
-        set {
-            if (toolBoxPdfMergeProgressValue != value)
-            {
-                toolBoxPdfMergeProgressValue = value;
-                OnPropertyChanged(nameof(ToolBoxPdfMergeProgressValue));
-            }
-        }
-    }
-
-    public ICommand TransferImage { get; }
-
-    public ICommand WebAdreseGit { get; }
+    protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
 
     public static string CreateSaveFolder(string langdata)
     {
         string savefolder = $@"{PdfGeneration.GetSaveFolder()}\{Translation.GetResStringValue(langdata)}";
-        if (!Directory.Exists(savefolder))
+        if(!Directory.Exists(savefolder))
         {
             _ = Directory.CreateDirectory(savefolder);
         }
 
         return savefolder;
+    }
+
+    public List<CroppedBitmap> CropImageToList(ImageSource imageSource, int en, int boy)
+    {
+        List<CroppedBitmap> croppedBitmaps = new();
+        BitmapSource image = (BitmapSource)imageSource;
+
+        for(int j = 0; j < boy; j++)
+        {
+            for(int i = 0; i < en; i++)
+            {
+                int x = i * image.PixelWidth / en;
+                int y = j * image.PixelHeight / boy;
+                int width = image.PixelWidth / en;
+                int height = image.PixelHeight / boy;
+                Int32Rect sourceRect = new(x, y, width, height);
+                if(sourceRect.HasArea)
+                {
+                    CroppedBitmap croppedBitmap = new(image, sourceRect);
+                    croppedBitmaps.Add(croppedBitmap);
+                }
+            }
+        }
+
+        return croppedBitmaps;
     }
 
     public static void ResetCropMargin()
@@ -385,101 +377,91 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
         GC.Collect();
     }
 
-    public List<CroppedBitmap> CropImageToList(ImageSource imageSource, int en, int boy)
-    {
-        List<CroppedBitmap> croppedBitmaps = new();
-        BitmapSource image = (BitmapSource)imageSource;
+    public ICommand ApplyColorChange { get; }
 
-        for (int j = 0; j < boy; j++)
+    public RelayCommand<object> AutoCropImage { get; }
+
+    public ICommand BlackAndWhiteImage { get; }
+
+    public double BorderSize
+    {
+        get => borderSize;
+
+        set
         {
-            for (int i = 0; i < en; i++)
+            if(borderSize != value)
             {
-                int x = i * image.PixelWidth / en;
-                int y = j * image.PixelHeight / boy;
-                int width = image.PixelWidth / en;
-                int height = image.PixelHeight / boy;
-                Int32Rect sourceRect = new(x, y, width, height);
-                if (sourceRect.HasArea)
-                {
-                    CroppedBitmap croppedBitmap = new(image, sourceRect);
-                    croppedBitmaps.Add(croppedBitmap);
-                }
+                borderSize = value;
+                OnPropertyChanged(nameof(BorderSize));
             }
         }
-
-        return croppedBitmaps;
     }
 
-    protected virtual void OnPropertyChanged(string propertyName = null)
+    public bool CompressImage
     {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
+        get => compressImage;
 
-    private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName is "EnAdet")
+        set
         {
-            LineGrid.ColumnDefinitions.Clear();
-            for (int i = 0; i < Scanner.EnAdet; i++)
+            if(compressImage != value)
             {
-                LineGrid.ColumnDefinitions.Add(new ColumnDefinition());
+                compressImage = value;
+                OnPropertyChanged(nameof(CompressImage));
             }
         }
+    }
 
-        if (e.PropertyName is "BoyAdet")
+    public ICommand DeskewImage { get; }
+
+    public ICommand InvertImage { get; }
+
+    public ICommand MergeAllImage { get; }
+
+    public ICommand MergeHorizontal { get; }
+
+    public static Paper Paper { get; set; }
+
+    public ICommand PrintCroppedImage { get; }
+
+    public ICommand ResetCroppedImage { get; }
+
+    public bool ResizeRatioImage
+    {
+        get => resizeRatioImage;
+
+        set
         {
-            LineGrid.RowDefinitions.Clear();
-            for (int i = 0; i < Scanner.BoyAdet; i++)
+            if(resizeRatioImage != value)
             {
-                LineGrid.RowDefinitions.Add(new RowDefinition());
+                resizeRatioImage = value;
+                OnPropertyChanged(nameof(ResizeRatioImage));
             }
         }
-
-        if (e.PropertyName is "CroppedImageAngle" && Scanner.CopyCroppedImage is not null)
-        {
-            TransformedBitmap transformedBitmap = new((BitmapSource)Scanner.CopyCroppedImage,
-                new RotateTransform(Scanner.CroppedImageAngle));
-            transformedBitmap.Freeze();
-            Scanner.CroppedImage = transformedBitmap;
-        }
-
-        if (e.PropertyName is "Threshold" && Scanner.CopyCroppedImage is not null)
-        {
-            Color source = (Color)ColorConverter.ConvertFromString(Scanner.SourceColor);
-            Color target = (Color)ColorConverter.ConvertFromString(Scanner.TargetColor);
-            Scanner.CroppedImage =
-                ((BitmapSource)Scanner.CopyCroppedImage).ReplaceColor(source, target, (int)Scanner.Threshold);
-        }
-
-        if (e.PropertyName is "Hue" or "Saturation" or "Lightness" && Scanner.CopyCroppedImage is not null)
-        {
-            Scanner.CroppedImage =
-                ((BitmapSource)Scanner.CopyCroppedImage).ApplyHueSaturationLightness(Scanner.Hue, Scanner.Saturation,
-                    Scanner.Lightness);
-        }
-
-        if (e.PropertyName is "MedianValue" && Scanner.CopyCroppedImage is not null)
-        {
-            WriteableBitmap writeableBitmap = ((BitmapSource)Scanner.CopyCroppedImage).MedianFilterBitmap(Scanner.MedianValue);
-            writeableBitmap.Freeze();
-            Scanner.CroppedImage = writeableBitmap;
-        }
     }
 
-    private void UserControl_Loaded(object sender, RoutedEventArgs e)
+    public static Scanner Scanner { get; set; }
+
+    public ICommand SetWatermark { get; }
+
+    public ICommand SplitAllImage { get; }
+
+    public ICommand SplitImage { get; }
+
+    public double ToolBoxPdfMergeProgressValue
     {
-        if (DataContext is TwainCtrl twainCtrl)
+        get => toolBoxPdfMergeProgressValue;
+
+        set
         {
-            Scanner = twainCtrl.Scanner;
-            Scanner.PropertyChanged += Scanner_PropertyChanged;
+            if(toolBoxPdfMergeProgressValue != value)
+            {
+                toolBoxPdfMergeProgressValue = value;
+                OnPropertyChanged(nameof(ToolBoxPdfMergeProgressValue));
+            }
         }
     }
 
-    private double borderSize;
+    public ICommand TransferImage { get; }
 
-    private bool compressImage = true;
-
-    private bool resizeRatioImage;
-
-    private double toolBoxPdfMergeProgressValue;
+    public ICommand WebAdreseGit { get; }
 }

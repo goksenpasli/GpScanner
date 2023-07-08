@@ -8,25 +8,11 @@ namespace TwainControl;
 
 public class XmlViewerControlModel
 {
-    public static string GetXmlContent(DependencyObject obj)
-    {
-        return (string)obj.GetValue(XmlContentProperty);
-    }
-
-    public static void SetXmlContent(DependencyObject obj, string value)
-    {
-        obj.SetValue(XmlContentProperty, value);
-    }
-
-    public static readonly DependencyProperty XmlContentProperty = DependencyProperty.RegisterAttached(
-                "XmlContent",
-        typeof(string),
-        typeof(XmlViewerControlModel),
-        new PropertyMetadata(null, Changed));
+    public static readonly DependencyProperty XmlContentProperty = DependencyProperty.RegisterAttached("XmlContent", typeof(string), typeof(XmlViewerControlModel), new PropertyMetadata(null, Changed));
 
     private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is XmlViewerControl xmlViewerControl && e.NewValue is string path)
+        if(d is XmlViewerControl xmlViewerControl && e.NewValue is string path)
         {
             try
             {
@@ -34,11 +20,14 @@ public class XmlViewerControlModel
                 XMLdoc.Load(path);
                 Binding binding = new() { Source = new XmlDataProvider { Document = XMLdoc }, XPath = "child::node()" };
                 _ = xmlViewerControl.xmlTree.SetBinding(ItemsControl.ItemsSourceProperty, binding);
-            }
-            catch (XmlException ex)
+            } catch(XmlException ex)
             {
                 throw new ArgumentException(nameof(path), ex);
             }
         }
     }
+
+    public static string GetXmlContent(DependencyObject obj) { return (string)obj.GetValue(XmlContentProperty); }
+
+    public static void SetXmlContent(DependencyObject obj, string value) { obj.SetValue(XmlContentProperty, value); }
 }
