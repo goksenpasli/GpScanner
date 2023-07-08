@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
+using System.Windows.Media.Imaging;
 using TwainControl;
 
 namespace GpScanner.ViewModel;
@@ -22,14 +23,12 @@ public class PdfCompressorControl : Compressor
                     PdfDocument pdfDocument;
                     using(PdfiumViewer.PdfDocument loadedpdfdoc = PdfiumViewer.PdfDocument.Load(LoadedPdfPath))
                     {
-                        List<System.Windows.Media.Imaging.BitmapImage> images = await AddToListAsync(loadedpdfdoc, Dpi);
+                        List<BitmapImage> images = await AddToListAsync(loadedpdfdoc, Dpi);
                         pdfDocument = await GeneratePdfAsync(images, UseMozJpeg, BlackAndWhite, Quality, Dpi);
                         images = null;
                     }
 
-                    string savefilename = Settings.Default.DirectlyOverwriteCompressedPdf
-                        ? LoadedPdfPath
-                        : $"{Path.GetDirectoryName(LoadedPdfPath)}\\{Path.GetFileNameWithoutExtension(LoadedPdfPath)}{Translation.GetResStringValue("COMPRESS")}.pdf";
+                    string savefilename = Settings.Default.DirectlyOverwriteCompressedPdf ? LoadedPdfPath : $"{Path.GetDirectoryName(LoadedPdfPath)}\\{Path.GetFileNameWithoutExtension(LoadedPdfPath)}{Translation.GetResStringValue("COMPRESS")}.pdf";
                     pdfDocument?.Save(savefilename);
                     pdfDocument?.Dispose();
                     if(Application.Current?.MainWindow?.DataContext is GpScannerViewModel gpScannerViewModel)

@@ -198,9 +198,7 @@ public partial class MainWindow : Window
 
     private void QrListBox_Drop(object sender, DragEventArgs e)
     {
-        if(e.Data.GetData(typeof(ScannedImage)) is ScannedImage scannedImage &&
-            DataContext is GpScannerViewModel ViewModel &&
-            QrCode.QrCode.GetMultipleImageBarcodeResult(scannedImage.Resim) is List<string> barcodes)
+        if(e.Data.GetData(typeof(ScannedImage)) is ScannedImage scannedImage && DataContext is GpScannerViewModel ViewModel && QrCode.QrCode.GetMultipleImageBarcodeResult(scannedImage.Resim) is List<string> barcodes)
         {
             foreach(string barcode in barcodes)
             {
@@ -252,13 +250,7 @@ public partial class MainWindow : Window
             {
                 ViewModel.ScannedText = TwainCtrl.DataBaseTextData;
                 ViewModel.ScannerData?.Data?.Add(
-                new Data
-                {
-                    Id = DataSerialize.RandomNumber(),
-                    FileName = TwainCtrl?.Scanner?.PdfFilePath,
-                    FileContent = string.Join(" ", ViewModel.ScannedText?.Select(z => z.Text)),
-                    QrData = TwainCtrl?.Scanner?.BarcodeContent
-                });
+                new Data { Id = DataSerialize.RandomNumber(), FileName = TwainCtrl?.Scanner?.PdfFilePath, FileContent = string.Join(" ", ViewModel.ScannedText?.Select(z => z.Text)), QrData = TwainCtrl?.Scanner?.BarcodeContent });
                 ViewModel.DatabaseSave.Execute(null);
                 ViewModel.ScannedText = null;
             }

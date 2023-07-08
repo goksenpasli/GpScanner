@@ -77,14 +77,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
 
         SetWatermark = new RelayCommand<object>(
             parameter => Scanner.CroppedImage =
-                Scanner.CroppedImage
-                    .ÜstüneResimÇiz(
-                        new Point(Scanner.CroppedImage.Width / 2, Scanner.CroppedImage.Height / 2),
-                        Scanner.WatermarkColor,
-                        Scanner.WatermarkTextSize,
-                        Scanner.Watermark,
-                        Scanner.WatermarkAngle,
-                        Scanner.WatermarkFont),
+                Scanner.CroppedImage.ÜstüneResimÇiz(new Point(Scanner.CroppedImage.Width / 2, Scanner.CroppedImage.Height / 2), Scanner.WatermarkColor, Scanner.WatermarkTextSize, Scanner.Watermark, Scanner.WatermarkAngle, Scanner.WatermarkFont),
             parameter => Scanner?.CroppedImage is not null && !string.IsNullOrWhiteSpace(Scanner?.Watermark));
 
         WebAdreseGit =
@@ -138,9 +131,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                         {
                             listcroppedimages = Scanner.Resimler
                                 .Where(z => z.Seçili)
-                                .SelectMany(
-                                    scannedimage => CropImageToList(scannedimage.Resim, (int)Scanner.SliceCountWidth, (int)Scanner.SliceCountHeight)
-                                            .Select(croppedBitmap => new ScannedImage { Resim = BitmapFrame.Create(croppedBitmap) }))
+                                .SelectMany(scannedimage => CropImageToList(scannedimage.Resim, (int)Scanner.SliceCountWidth, (int)Scanner.SliceCountHeight).Select(croppedBitmap => new ScannedImage { Resim = BitmapFrame.Create(croppedBitmap) }))
                                 .ToList();
                             pdfdocument = await listcroppedimages.GeneratePdfAsync(Format.Jpg, Paper, Settings.Default.JpegQuality, null, (int)Settings.Default.Çözünürlük);
                         });

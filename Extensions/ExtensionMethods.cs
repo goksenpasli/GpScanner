@@ -410,16 +410,7 @@ public static class ExtensionMethods
     public static BitmapSource ToBitmapSource(this Bitmap bitmap)
     {
         BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
-        BitmapSource bitmapSource = BitmapSource.Create(
-            bitmapData.Width,
-            bitmapData.Height,
-            bitmap.HorizontalResolution,
-            bitmap.VerticalResolution,
-            PixelFormats.Bgr24,
-            null,
-            bitmapData.Scan0,
-            bitmapData.Stride * bitmapData.Height,
-            bitmapData.Stride);
+        BitmapSource bitmapSource = BitmapSource.Create(bitmapData.Width, bitmapData.Height, bitmap.HorizontalResolution, bitmap.VerticalResolution, PixelFormats.Bgr24, null, bitmapData.Scan0, bitmapData.Stride * bitmapData.Height, bitmapData.Stride);
         bitmapSource.Freeze();
         bitmap.UnlockBits(bitmapData);
         return bitmapSource;

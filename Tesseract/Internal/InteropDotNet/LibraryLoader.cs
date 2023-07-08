@@ -26,9 +26,9 @@ namespace Tesseract.Internal.InteropDotNet
         /// Special test for web applications.
         /// </summary>
         /// <remarks>
-        /// Note that this makes a couple of assumptions these being: <list type="bullet"><item> That the current
+        /// Note that this makes a couple of assumptions these being: <list type="bullet"><item>That the current
         /// application domain's location for web applications corresponds to the web applications root
-        /// directory.</item><item> That the tesseract\leptonica dlls reside in the corresponding x86 or x64 directories
+        /// directory.</item><item>That the tesseract\leptonica dlls reside in the corresponding x86 or x64 directories
         /// in the bin directory under the apps root directory.</item></list>
         /// </remarks>
         /// <param name="fileName"></param>

@@ -29,27 +29,15 @@ public enum FitImageOrientation
 public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 {
     public static readonly DependencyProperty AngleProperty =
-                                                                                                                                                    DependencyProperty.Register(
-        "Angle",
-        typeof(double),
-        typeof(ImageViewer),
-        new PropertyMetadata(0.0));
+                                                                                                                                                    DependencyProperty.Register("Angle", typeof(double), typeof(ImageViewer), new PropertyMetadata(0.0));
 
     public static readonly DependencyProperty DecodeHeightProperty = DependencyProperty.Register("DecodeHeight", typeof(int), typeof(ImageViewer), new PropertyMetadata(300, DecodeHeightChangedAsync));
 
     public static readonly DependencyProperty FovProperty = DependencyProperty.Register("Fov", typeof(double), typeof(ImageViewer), new PropertyMetadata(95d, FovChanged));
 
-    public static readonly DependencyProperty ImageFilePathProperty = DependencyProperty.Register(
-        "ImageFilePath",
-        typeof(string),
-        typeof(ImageViewer),
-        new PropertyMetadata(null, ImageFilePathChangedAsync));
+    public static readonly DependencyProperty ImageFilePathProperty = DependencyProperty.Register("ImageFilePath", typeof(string), typeof(ImageViewer), new PropertyMetadata(null, ImageFilePathChangedAsync));
 
-    public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
-        "Orientation",
-        typeof(FitImageOrientation),
-        typeof(ImageViewer),
-        new PropertyMetadata(FitImageOrientation.None, OrientationChanged));
+    public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(FitImageOrientation), typeof(ImageViewer), new PropertyMetadata(FitImageOrientation.None, OrientationChanged));
 
     public static readonly DependencyProperty OriginalPixelHeightProperty =
         DependencyProperty.Register("OriginalPixelHeight", typeof(int), typeof(ImageViewer), new PropertyMetadata(0));
@@ -244,10 +232,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         return await Task.Run(
             () =>
             {
-                BitmapDecoder bitmapframe = BitmapDecoder.Create(
-                    new Uri(filepath),
-                    BitmapCreateOptions.DelayCreation | BitmapCreateOptions.IgnoreImageCache | BitmapCreateOptions.IgnoreColorProfile,
-                    BitmapCacheOption.None);
+                BitmapDecoder bitmapframe = BitmapDecoder.Create(new Uri(filepath), BitmapCreateOptions.DelayCreation | BitmapCreateOptions.IgnoreImageCache | BitmapCreateOptions.IgnoreColorProfile, BitmapCacheOption.None);
                 return new[] { bitmapframe.Frames[0].PixelHeight, bitmapframe.Frames[0].PixelWidth };
             });
     }
@@ -291,9 +276,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
                     imageViewer.Pages = Enumerable.Range(1, imageViewer.Decoder.Frames.Count);
                     if(imageViewer.TemplatedParent is ContentPresenter contentpresenter)
                     {
-                        imageViewer.Zoom = imageViewer.Orientation != FitImageOrientation.Width
-                            ? contentpresenter.ActualHeight / imageViewer.Source.Height
-                            : contentpresenter.ActualWidth / imageViewer.Source.Width;
+                        imageViewer.Zoom = imageViewer.Orientation != FitImageOrientation.Width ? contentpresenter.ActualHeight / imageViewer.Source.Height : contentpresenter.ActualWidth / imageViewer.Source.Width;
                     }
 
                     return;

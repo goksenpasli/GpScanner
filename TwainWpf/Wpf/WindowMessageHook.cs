@@ -18,8 +18,7 @@ namespace TwainWpf.Wpf
             _interopHelper = new WindowInteropHelper(window);
         }
 
-        public IntPtr FilterMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
-        { return FilterMessageCallback == null ? IntPtr.Zero : FilterMessageCallback(hwnd, msg, wParam, lParam, ref handled); }
+        public IntPtr FilterMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled) { return FilterMessageCallback == null ? IntPtr.Zero : FilterMessageCallback(hwnd, msg, wParam, lParam, ref handled); }
 
         public FilterMessage FilterMessageCallback { get; set; }
 

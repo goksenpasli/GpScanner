@@ -21,11 +21,7 @@ public class SplitButton : ButtonBase
     public static readonly DependencyProperty IsSplitPartOpenProperty =
         DependencyProperty.Register("IsSplitPartOpen", typeof(bool), typeof(SplitButton), new PropertyMetadata(false));
 
-    public static readonly DependencyProperty PlacementModeProperty = DependencyProperty.Register(
-        "PlacementMode",
-        typeof(PlacementMode),
-        typeof(SplitButton),
-        new PropertyMetadata(PlacementMode.Bottom));
+    public static readonly DependencyProperty PlacementModeProperty = DependencyProperty.Register("PlacementMode", typeof(PlacementMode), typeof(SplitButton), new PropertyMetadata(PlacementMode.Bottom));
 
     public static readonly DependencyProperty SplitContentPartIsEnabledProperty =
         DependencyProperty.Register("SplitContentPartIsEnabled", typeof(bool), typeof(SplitButton), new PropertyMetadata(true));

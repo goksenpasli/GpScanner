@@ -11,17 +11,9 @@ public class MaskedTextBox : TextBox
     public static readonly DependencyProperty ClearButtonVisibilityProperty =
                                                             DependencyProperty.Register("ClearButtonVisibility", typeof(Visibility), typeof(MaskedTextBox), new PropertyMetadata(Visibility.Collapsed));
 
-    public static readonly DependencyProperty IncludeLiteralsProperty = DependencyProperty.Register(
-        "IncludeLiterals",
-        typeof(bool),
-        typeof(MaskedTextBox),
-        new UIPropertyMetadata(true, OnIncludeLiteralsPropertyChanged));
+    public static readonly DependencyProperty IncludeLiteralsProperty = DependencyProperty.Register("IncludeLiterals", typeof(bool), typeof(MaskedTextBox), new UIPropertyMetadata(true, OnIncludeLiteralsPropertyChanged));
 
-    public static readonly DependencyProperty IncludePromptProperty = DependencyProperty.Register(
-        "IncludePrompt",
-        typeof(bool),
-        typeof(MaskedTextBox),
-        new UIPropertyMetadata(false, OnIncludePromptPropertyChanged));
+    public static readonly DependencyProperty IncludePromptProperty = DependencyProperty.Register("IncludePrompt", typeof(bool), typeof(MaskedTextBox), new UIPropertyMetadata(false, OnIncludePromptPropertyChanged));
 
     public static readonly DependencyProperty MaskProperty = DependencyProperty.Register("Mask", typeof(string), typeof(MaskedTextBox), new UIPropertyMetadata("<>", OnMaskPropertyChanged));
 
@@ -30,23 +22,11 @@ public class MaskedTextBox : TextBox
     public static readonly DependencyProperty SelectAllOnGotFocusProperty =
         DependencyProperty.Register("SelectAllOnGotFocus", typeof(bool), typeof(MaskedTextBox), new PropertyMetadata(false));
 
-    public static readonly RoutedEvent ValueChangedEvent = EventManager.RegisterRoutedEvent(
-        "ValueChanged",
-        RoutingStrategy.Bubble,
-        typeof(RoutedPropertyChangedEventHandler<object>),
-        typeof(MaskedTextBox));
+    public static readonly RoutedEvent ValueChangedEvent = EventManager.RegisterRoutedEvent("ValueChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<object>), typeof(MaskedTextBox));
 
-    public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-        "Value",
-        typeof(object),
-        typeof(MaskedTextBox),
-        new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged));
+    public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(object), typeof(MaskedTextBox), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged));
 
-    public static readonly DependencyProperty ValueTypeProperty = DependencyProperty.Register(
-        "ValueType",
-        typeof(Type),
-        typeof(MaskedTextBox),
-        new UIPropertyMetadata(typeof(string), OnValueTypeChanged));
+    public static readonly DependencyProperty ValueTypeProperty = DependencyProperty.Register("ValueType", typeof(Type), typeof(MaskedTextBox), new UIPropertyMetadata(typeof(string), OnValueTypeChanged));
 
     private bool _convertExceptionOccurred;
 

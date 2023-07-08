@@ -24,11 +24,7 @@ namespace PdfCompressor;
 
 public class Compressor : Control, INotifyPropertyChanged
 {
-    public static readonly DependencyProperty BlackAndWhiteProperty = DependencyProperty.Register(
-        "BlackAndWhite",
-        typeof(bool),
-        typeof(Compressor),
-        new PropertyMetadata(Settings.Default.Bw, BwChanged));
+    public static readonly DependencyProperty BlackAndWhiteProperty = DependencyProperty.Register("BlackAndWhite", typeof(bool), typeof(Compressor), new PropertyMetadata(Settings.Default.Bw, BwChanged));
 
     public static readonly DependencyProperty DpiProperty = DependencyProperty.Register("Dpi", typeof(int), typeof(Compressor), new PropertyMetadata(Settings.Default.Dpi, DpiChanged));
 

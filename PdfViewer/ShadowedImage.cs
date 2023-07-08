@@ -8,23 +8,11 @@ public class ShadowedImage : Image
 {
     public static readonly DependencyProperty LocationProperty = DependencyProperty.Register("Location", typeof(Point), typeof(ShadowedImage), new PropertyMetadata(new Point(2.5, 2.5)));
 
-    public static readonly DependencyProperty OverlayColorProperty = DependencyProperty.Register(
-        "OverlayColor",
-        typeof(SolidColorBrush),
-        typeof(ShadowedImage),
-        new PropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 255, 0, 0))));
+    public static readonly DependencyProperty OverlayColorProperty = DependencyProperty.Register("OverlayColor", typeof(SolidColorBrush), typeof(ShadowedImage), new PropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 255, 0, 0))));
 
-    public static readonly DependencyProperty ShadowColorProperty = DependencyProperty.Register(
-        "ShadowColor",
-        typeof(SolidColorBrush),
-        typeof(ShadowedImage),
-        new PropertyMetadata(new SolidColorBrush(Color.FromArgb(70, 128, 128, 128))));
+    public static readonly DependencyProperty ShadowColorProperty = DependencyProperty.Register("ShadowColor", typeof(SolidColorBrush), typeof(ShadowedImage), new PropertyMetadata(new SolidColorBrush(Color.FromArgb(70, 128, 128, 128))));
 
-    public static readonly DependencyProperty ShowOverlayColorProperty = DependencyProperty.Register(
-        "ShowOverlayColor",
-        typeof(bool),
-        typeof(ShadowedImage),
-        new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsRender));
+    public static readonly DependencyProperty ShowOverlayColorProperty = DependencyProperty.Register("ShowOverlayColor", typeof(bool), typeof(ShadowedImage), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsRender));
 
     public static readonly DependencyProperty ShowShadowProperty =
         DependencyProperty.Register("ShowShadow", typeof(bool), typeof(ShadowedImage), new PropertyMetadata(false));

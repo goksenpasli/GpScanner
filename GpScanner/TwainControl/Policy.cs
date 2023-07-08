@@ -57,16 +57,9 @@ public class Policy : DependencyObject
     }
 
     public static bool CheckPolicy(DependencyObject dependencyObject)
-    {
-        return CheckKeyPolicy(GetPolicyName(dependencyObject), Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\GpScanner")) &&
-            CheckKeyPolicy(GetPolicyName(dependencyObject), Registry.CurrentUser.OpenSubKey(@"Software\Policies\GpScanner"));
-    }
+    { return CheckKeyPolicy(GetPolicyName(dependencyObject), Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\GpScanner")) && CheckKeyPolicy(GetPolicyName(dependencyObject), Registry.CurrentUser.OpenSubKey(@"Software\Policies\GpScanner")); }
 
-    public static bool CheckPolicy(string policyname)
-    {
-        return CheckKeyPolicy(policyname, Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\GpScanner")) &&
-            CheckKeyPolicy(policyname, Registry.CurrentUser.OpenSubKey(@"Software\Policies\GpScanner"));
-    }
+    public static bool CheckPolicy(string policyname) { return CheckKeyPolicy(policyname, Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\GpScanner")) && CheckKeyPolicy(policyname, Registry.CurrentUser.OpenSubKey(@"Software\Policies\GpScanner")); }
 
     public static bool GetPolicyEnabled(DependencyObject obj) { return (bool)obj.GetValue(PolicyEnabledProperty); }
 

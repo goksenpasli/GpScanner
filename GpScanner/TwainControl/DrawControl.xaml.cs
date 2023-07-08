@@ -18,11 +18,7 @@ namespace TwainControl;
 
 public partial class DrawControl : UserControl, INotifyPropertyChanged
 {
-    public static readonly DependencyProperty EditingImageProperty = DependencyProperty.Register(
-        "EditingImage",
-        typeof(BitmapFrame),
-        typeof(DrawControl),
-        new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+    public static readonly DependencyProperty EditingImageProperty = DependencyProperty.Register("EditingImage", typeof(BitmapFrame), typeof(DrawControl), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
     public static readonly DependencyProperty TemporaryImageProperty = DependencyProperty.Register("TemporaryImage", typeof(ImageSource), typeof(DrawControl), new PropertyMetadata(null));
 
@@ -63,13 +59,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
             parameter =>
             {
                 if(parameter is BitmapFrame &&
-                    MessageBox.Show(
-                    $"{Translation.GetResStringValue("GRAPH")} {Translation.GetResStringValue("APPLY")}",
-                    Application.Current.MainWindow.Title,
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Question,
-                    MessageBoxResult.No) ==
-                    MessageBoxResult.Yes)
+                    MessageBox.Show($"{Translation.GetResStringValue("GRAPH")} {Translation.GetResStringValue("APPLY")}", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     EditingImage = SaveInkCanvasToImage();
                 }

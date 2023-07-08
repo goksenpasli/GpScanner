@@ -44,12 +44,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     private bool drawString;
 
-    private readonly Ellipse ellipseselectionbox = new()
-    {
-        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
-        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
-        StrokeDashArray = new DoubleCollection(new double[] { 1 })
-    };
+    private readonly Ellipse ellipseselectionbox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeDashArray = new DoubleCollection(new double[] { 1 }) };
 
     private XKnownColor graphObjectColor = XKnownColor.Black;
 
@@ -67,12 +62,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     private bool isMouseDown;
 
-    private readonly Line linebox = new()
-    {
-        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
-        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
-        StrokeDashArray = new DoubleCollection(new double[] { 1 })
-    };
+    private readonly Line linebox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeDashArray = new DoubleCollection(new double[] { 1 }) };
 
     private Point mousedowncoord;
 
@@ -84,19 +74,9 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     private double penWidth = 0.5d;
 
-    private readonly Rectangle rectangleselectionbox = new()
-    {
-        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
-        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
-        StrokeDashArray = new DoubleCollection(new double[] { 1 })
-    };
+    private readonly Rectangle rectangleselectionbox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeDashArray = new DoubleCollection(new double[] { 1 }) };
 
-    private readonly Line reverselinebox = new()
-    {
-        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
-        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
-        StrokeDashArray = new DoubleCollection(new double[] { 1 })
-    };
+    private readonly Line reverselinebox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeDashArray = new DoubleCollection(new double[] { 1 }) };
 
     private string text = string.Empty;
 

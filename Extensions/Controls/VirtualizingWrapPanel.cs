@@ -197,10 +197,7 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
 
                     if(child is IHierarchicalVirtualizationAndScrollInfo groupItem)
                     {
-                        groupItem.Constraints = new HierarchicalVirtualizationConstraints(
-                            new VirtualizationCacheLength(0),
-                            VirtualizationCacheLengthUnit.Item,
-                            new Rect(0, 0, ViewportWidth, ViewportHeight));
+                        groupItem.Constraints = new HierarchicalVirtualizationConstraints(new VirtualizationCacheLength(0), VirtualizationCacheLengthUnit.Item, new Rect(0, 0, ViewportWidth, ViewportHeight));
                         child.Measure(new Size(ViewportWidth, ViewportHeight));
                     }
                 }
@@ -325,8 +322,7 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     {
         get
         {
-            _itemsOwner ??= (DependencyObject)typeof(ItemsControl).GetMethod("GetItemsOwnerInternal", BindingFlags.Static | BindingFlags.NonPublic, null, new[] { typeof(DependencyObject) }, null)
-                .Invoke(null, new object[] { this });
+            _itemsOwner ??= (DependencyObject)typeof(ItemsControl).GetMethod("GetItemsOwnerInternal", BindingFlags.Static | BindingFlags.NonPublic, null, new[] { typeof(DependencyObject) }, null).Invoke(null, new object[] { this });
             return _itemsOwner;
         }
     }
@@ -485,11 +481,7 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
 
 public class VirtualizingWrapPanel : VirtualizingPanelBase
 {
-    public static readonly DependencyProperty ItemSizeProperty = DependencyProperty.Register(
-        nameof(ItemSize),
-        typeof(Size),
-        typeof(VirtualizingWrapPanel),
-        new FrameworkPropertyMetadata(Size.Empty, FrameworkPropertyMetadataOptions.AffectsMeasure));
+    public static readonly DependencyProperty ItemSizeProperty = DependencyProperty.Register(nameof(ItemSize), typeof(Size), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(Size.Empty, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
     public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
         nameof(Orientation),
@@ -503,11 +495,7 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
         typeof(VirtualizingWrapPanel),
         new FrameworkPropertyMetadata(SpacingMode.Uniform, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
-    public static readonly DependencyProperty StretchItemsProperty = DependencyProperty.Register(
-        nameof(StretchItems),
-        typeof(bool),
-        typeof(VirtualizingWrapPanel),
-        new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsArrange));
+    public static readonly DependencyProperty StretchItemsProperty = DependencyProperty.Register(nameof(StretchItems), typeof(bool), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsArrange));
 
     protected Size childSize;
 

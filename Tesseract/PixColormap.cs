@@ -92,11 +92,7 @@ namespace Tesseract
         }
 
         public bool IsUsableColor(PixColor color)
-        {
-            return LeptonicaApi.Native.pixcmapUsableColor(Handle, color.Red, color.Green, color.Blue, out int usable) == 0
-                ? usable == 1
-                : throw new InvalidOperationException("Failed to detect if color was usable or not.");
-        }
+        { return LeptonicaApi.Native.pixcmapUsableColor(Handle, color.Red, color.Green, color.Blue, out int usable) == 0 ? usable == 1 : throw new InvalidOperationException("Failed to detect if color was usable or not."); }
 
         public bool SetBlackOrWhite(bool setBlack, bool setWhite) { return LeptonicaApi.Native.pixcmapSetBlackAndWhite(Handle, setBlack ? 1 : 0, setWhite ? 1 : 0) == 0; }
 

@@ -9,17 +9,9 @@ public class ColorEffect : ShaderEffect
 {
     public static readonly DependencyProperty BlueProperty = DependencyProperty.Register("Blue", typeof(double), typeof(ColorEffect), new UIPropertyMetadata(0D, PixelShaderConstantCallback(4)));
 
-    public static readonly DependencyProperty BrightnessProperty = DependencyProperty.Register(
-        "Brightness",
-        typeof(double),
-        typeof(ColorEffect),
-        new UIPropertyMetadata(0D, PixelShaderConstantCallback(0)));
+    public static readonly DependencyProperty BrightnessProperty = DependencyProperty.Register("Brightness", typeof(double), typeof(ColorEffect), new UIPropertyMetadata(0D, PixelShaderConstantCallback(0)));
 
-    public static readonly DependencyProperty ContrastProperty = DependencyProperty.Register(
-        "Contrast",
-        typeof(double),
-        typeof(ColorEffect),
-        new UIPropertyMetadata(0D, PixelShaderConstantCallback(1)));
+    public static readonly DependencyProperty ContrastProperty = DependencyProperty.Register("Contrast", typeof(double), typeof(ColorEffect), new UIPropertyMetadata(0D, PixelShaderConstantCallback(1)));
 
     public static readonly DependencyProperty GreenProperty = DependencyProperty.Register("Green", typeof(double), typeof(ColorEffect), new UIPropertyMetadata(0D, PixelShaderConstantCallback(3)));
 

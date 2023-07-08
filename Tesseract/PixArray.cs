@@ -100,9 +100,7 @@ namespace Tesseract
             }
 
             /// <inheritdoc/>
-            object IEnumerator.Current => index == 0 || index == items.Length + 1
-                ? throw new InvalidOperationException("The enumerator is positioned either before the first item or after the last item .")
-                : (object)Current;
+            object IEnumerator.Current => index == 0 || index == items.Length + 1 ? throw new InvalidOperationException("The enumerator is positioned either before the first item or after the last item .") : (object)Current;
 
             /// <inheritdoc/>
             public bool MoveNext()

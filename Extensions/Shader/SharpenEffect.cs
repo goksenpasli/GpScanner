@@ -15,11 +15,7 @@ public class SharpenEffect : ShaderEffect
     public static readonly DependencyProperty InputProperty =
         RegisterPixelShaderSamplerProperty("Input", typeof(SharpenEffect), 0);
 
-    public static readonly DependencyProperty InputSizeProperty = DependencyProperty.Register(
-        "InputSize",
-        typeof(Size),
-        typeof(SharpenEffect),
-        new UIPropertyMetadata(new Size(800D, 600D), PixelShaderConstantCallback(1)));
+    public static readonly DependencyProperty InputSizeProperty = DependencyProperty.Register("InputSize", typeof(Size), typeof(SharpenEffect), new UIPropertyMetadata(new Size(800D, 600D), PixelShaderConstantCallback(1)));
 
     public SharpenEffect()
     {

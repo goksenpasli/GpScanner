@@ -21,10 +21,10 @@ namespace Tesseract
         /// <remarks>
         /// A "clone" is simply a reference to an existing pix. It is implemented this way because image can be large
         /// and hence expensive to copy and extra handles need to be made with a simple policy to avoid double frees and
-        /// memory leaks. The general usage protocol is: <list type="number"><item> Whenever you want a new reference to
-        /// an existing <see cref="Pix"/> call <see cref="Clone"/>.</item><item> Always call <see cref="Dispose"/> on
-        /// all references. This decrements the reference count and will destroy the pix when the reference count
-        /// reaches zero.</item></list>
+        /// memory leaks. The general usage protocol is: <list type="number"><item>Whenever you want a new reference to
+        /// an existing <see cref="Pix"/> call <see cref="Clone"/>.</item><item>Always call <see cref="Dispose"/> on all
+        /// references. This decrements the reference count and will destroy the pix when the reference count reaches
+        /// zero.</item></list>
         /// </remarks>
         /// <returns>The pix with it's reference count incremented.</returns>
         public Pix Clone()
@@ -75,43 +75,43 @@ namespace Tesseract
         /// <param name="scaleY"></param>
         /// <returns>The scaled image.</returns>
         /// <remarks>
-        /// <para> This function scales 32 bpp RGB; 2, 4 or 8 bpp palette color; 2, 4, 8 or 16 bpp gray; and binary
-        /// images.</para> <para> When the input has palette color, the colormap is removed and the result is either 8
+        /// <para>This function scales 32 bpp RGB; 2, 4 or 8 bpp palette color; 2, 4, 8 or 16 bpp gray; and binary
+        /// images.</para> <para>When the input has palette color, the colormap is removed and the result is either 8
         /// bpp gray or 32 bpp RGB, depending on whether the colormap has color entries.  Images with 2, 4 or 16 bpp are
-        /// converted to 8 bpp.</para> <para> Because Scale() is meant to be a very simple interface to a number of
+        /// converted to 8 bpp.</para> <para>Because Scale() is meant to be a very simple interface to a number of
         /// scaling functions, including the use of unsharp masking, the type of scaling and the sharpening parameters
         /// are chosen by default.  Grayscale and color images are scaled using one of four methods, depending on the
-        /// scale factors:<list type="number"><item><description> antialiased subsampling (lowpass filtering followed by
+        /// scale factors:<list type="number"><item><description>antialiased subsampling (lowpass filtering followed by
         /// subsampling, implemented here by area mapping), for scale factors less than
-        /// 0.2</description></item><item><description> antialiased subsampling with sharpening, for scale factors
-        /// between 0.2 and 0.7.</description></item><item><description> linear interpolation with sharpening, for scale
-        /// factors between 0.7 and 1.4.</description></item><item><description> linear interpolation without
-        /// sharpening, for scale factors >= 1.4.</description></item></list> One could use subsampling for scale
-        /// factors very close to 1.0, because it preserves sharp edges.  Linear interpolation blurs edges because the
-        /// dest pixels will typically straddle two src edge pixels.  Subsmpling removes entire columns and rows, so the
-        /// edge is not blurred.  However, there are two reasons for not doing this. First, it moves edges, so that a
-        /// straight line at a large angle to both horizontal and vertical will have noticable kinks where horizontal
-        /// and vertical rasters are removed.  Second, although it is very fast, you get good results on sharp edges by
-        /// applying a sharpening filter.</para> <para> For images with sharp edges, sharpening substantially improves
-        /// the image quality for scale factors between about 0.2 and about 2.0. pixScale() uses a small amount of
-        /// sharpening by default because it strengthens edge pixels that are weak due to anti-aliasing. The default
-        /// sharpening factors are:<list type="bullet"><item><description><![CDATA[for scaling factors < 0.7:  
-        /// sharpfract = 0.2 sharpwidth = 1]]></description></item><item><description> for scaling factors >= 0.7: 
-        /// sharpfract = 0.4 sharpwidth = 2</description></item></list> The cases where the sharpening halfwidth is 1 or
-        /// 2 have special implementations and are about twice as fast as the general case.</para> <para> However,
-        /// sharpening is computationally expensive, and one needs to consider the speed-quality tradeoff:<list
-        /// type="bullet"><item><description> For upscaling of RGB images, linear interpolation plus default sharpening
-        /// is about 5 times slower than upscaling alone.</description></item><item><description> For downscaling, area
+        /// 0.2</description></item><item><description>antialiased subsampling with sharpening, for scale factors
+        /// between 0.2 and 0.7.</description></item><item><description>linear interpolation with sharpening, for scale
+        /// factors between 0.7 and 1.4.</description></item><item><description>linear interpolation without sharpening,
+        /// for scale factors >= 1.4.</description></item></list> One could use subsampling for scale factors very close
+        /// to 1.0, because it preserves sharp edges.  Linear interpolation blurs edges because the dest pixels will
+        /// typically straddle two src edge pixels.  Subsmpling removes entire columns and rows, so the edge is not
+        /// blurred.  However, there are two reasons for not doing this. First, it moves edges, so that a straight line
+        /// at a large angle to both horizontal and vertical will have noticable kinks where horizontal and vertical
+        /// rasters are removed.  Second, although it is very fast, you get good results on sharp edges by applying a
+        /// sharpening filter.</para> <para>For images with sharp edges, sharpening substantially improves the image
+        /// quality for scale factors between about 0.2 and about 2.0. pixScale() uses a small amount of sharpening by
+        /// default because it strengthens edge pixels that are weak due to anti-aliasing. The default sharpening
+        /// factors are:<list type="bullet"><item><description><![CDATA[for scaling factors < 0.7:   sharpfract = 0.2
+        /// sharpwidth = 1]]></description></item><item><description>for scaling factors >= 0.7:  sharpfract = 0.4
+        /// sharpwidth = 2</description></item></list> The cases where the sharpening halfwidth is 1 or 2 have special
+        /// implementations and are about twice as fast as the general case.</para> <para>However, sharpening is
+        /// computationally expensive, and one needs to consider the speed-quality tradeoff:<list
+        /// type="bullet"><item><description>For upscaling of RGB images, linear interpolation plus default sharpening
+        /// is about 5 times slower than upscaling alone.</description></item><item><description>For downscaling, area
         /// mapping plus default sharpening is about 10 times slower than downscaling alone.</description></item></list>
         /// When the scale factor is larger than 1.4, the cost of sharpening, which is proportional to image area, is
         /// very large compared to the incremental quality improvement, so we cut off the default use of sharpening at
-        /// 1.4.  Thus, for scale factors greater than 1.4, pixScale() only does linear interpolation.</para> <para> In
+        /// 1.4.  Thus, for scale factors greater than 1.4, pixScale() only does linear interpolation.</para> <para>In
         /// many situations you will get a satisfactory result by scaling without sharpening: call pixScaleGeneral()
         /// with @sharpfract = 0.0. Alternatively, if you wish to sharpen but not use the default value, first call
         /// pixScaleGeneral() with @sharpfract = 0.0, and then sharpen explicitly using pixUnsharpMasking().</para>
-        /// <para> Binary images are scaled to binary by sampling the closest pixel, without any low-pass filtering
+        /// <para>Binary images are scaled to binary by sampling the closest pixel, without any low-pass filtering
         /// (averaging of neighboring pixels). This will introduce aliasing for reductions.  Aliasing can be prevented
-        /// by using pixScaleToGray() instead.</para> <para> Warning: implicit assumption about RGB component order for
+        /// by using pixScaleToGray() instead.</para> <para>Warning: implicit assumption about RGB component order for
         /// LI color scaling</para>
         /// </remarks>
         public Pix Scale(float scaleX, float scaleY)
@@ -140,15 +140,7 @@ namespace Tesseract
         /// Used to lookup image formats by extension.
         /// </summary>
         private static readonly Dictionary<string, ImageFormat> imageFomatLookup = new Dictionary<string, ImageFormat>
-        {
-            { ".jpg", ImageFormat.JfifJpeg },
-            { ".jpeg", ImageFormat.JfifJpeg },
-            { ".gif", ImageFormat.Gif },
-            { ".tif", ImageFormat.Tiff },
-            { ".tiff", ImageFormat.Tiff },
-            { ".png", ImageFormat.Png },
-            { ".bmp", ImageFormat.Bmp }
-        };
+        { { ".jpg", ImageFormat.JfifJpeg }, { ".jpeg", ImageFormat.JfifJpeg }, { ".gif", ImageFormat.Gif }, { ".tif", ImageFormat.Tiff }, { ".tiff", ImageFormat.Tiff }, { ".png", ImageFormat.Png }, { ".bmp", ImageFormat.Bmp } };
         #endregion Constants
 
         #region Create\Load methods
@@ -170,9 +162,7 @@ namespace Tesseract
             }
 
             IntPtr handle = LeptonicaApi.Native.pixCreate(width, height, depth);
-            return handle == IntPtr.Zero
-                ? throw new InvalidOperationException("Failed to create pix, this normally occurs because the requested image size is too large, please check Standard Error Output.")
-                : Create(handle);
+            return handle == IntPtr.Zero ? throw new InvalidOperationException("Failed to create pix, this normally occurs because the requested image size is too large, please check Standard Error Output.") : Create(handle);
         }
 
         public static Pix Create(IntPtr handle) { return handle == IntPtr.Zero ? throw new ArgumentException("Pix handle must not be zero (null).", nameof(handle)) : new Pix(handle); }
@@ -318,15 +308,15 @@ namespace Tesseract
         /// 8 bpp grayscale; not colormapped.
         /// </summary>
         /// <remarks>
-        /// <list type="number"><listheader>Notes</listheader><item> The window width and height are 2 *<paramref
+        /// <list type="number"><listheader>Notes</listheader><item>The window width and height are 2 *<paramref
         /// name="whsize"/> + 1. The minimum value for<paramref name="whsize"/> is 2; typically it is >= 7.</item><item>
-        /// The local statistics, measured over the window, are the average and standard deviation.</item><item> The
+        /// The local statistics, measured over the window, are the average and standard deviation.</item><item>The
         /// measurements of the mean and standard deviation are performed inside a border of (<paramref name="whsize"/>
-        /// + 1) pixels. If source pix does not have these added border pixels, use<paramref name="addborder"/> =
-        /// <c>True</c> to add it here; otherwise use<paramref name="addborder"/> =<c>False</c>.</item><item> The
+        /// + 1) pixels. If source pix does not have these added border pixels, use<paramref name="addborder"/>
+        /// =<c>True</c> to add it here; otherwise use<paramref name="addborder"/> =<c>False</c>.</item><item>The
         /// Sauvola threshold is determined from the formula:  t = m * (1 - k * (1 - s / 128)) where t = local
         /// threshold, m = local mean, k = <paramref name="factor"/>, and s = local standard deviation which is
-        /// maximised at 127.5 when half the samples are 0 and the other half are 255.</item><item> The basic idea of
+        /// maximised at 127.5 when half the samples are 0 and the other half are 255.</item><item>The basic idea of
         /// Niblack and Sauvola binarization is that the local threshold should be less than the median value, and the
         /// larger the variance, the closer to the median it should be chosen. Typical values for k are between 0.2 and
         /// 0.5.</item></list>
@@ -552,7 +542,7 @@ namespace Tesseract
 
         /// <summary>
         /// Removes horizontal lines from a grayscale image. The algorithm is based on Leptonica
-        /// <code>lineremoval.c</code> example. See <a href="http://www.leptonica.com/line-removal.html"> line-
+        /// <code>lineremoval.c</code> example. See <a href="http://www.leptonica.com/line-removal.html">line-
         /// removal</a> .
         /// </summary>
         /// <returns>image with lines removed</returns>
@@ -634,10 +624,10 @@ namespace Tesseract
         /// Creates a new image by rotating this image about it's centre.
         /// </summary>
         /// <remarks>
-        /// Please note the following: <list type="bullet"><item> Rotation will bring in either white or black pixels,
-        /// as specified by <paramref name="fillColor"/> from the outside as required.</item><item> Above 20 degrees,
-        /// sampling rotation will be used if shear was requested.</item><item> Colormaps are removed for rotation by
-        /// area map and shear.</item><item> The resulting image can be expanded so that no image pixels are lost. To
+        /// Please note the following: <list type="bullet"><item>Rotation will bring in either white or black pixels, as
+        /// specified by <paramref name="fillColor"/> from the outside as required.</item><item>Above 20 degrees,
+        /// sampling rotation will be used if shear was requested.</item><item>Colormaps are removed for rotation by
+        /// area map and shear.</item><item>The resulting image can be expanded so that no image pixels are lost. To
         /// invoke expansion, input the original width and height. For repeated rotation, use of the original width and
         /// heigh allows expansion to stop at the maximum required size which is a square of side = sqrt(w*w +
         /// h*h).</item></list> <para>Please note there is an implicit assumption about RGB component ordering.</para>
@@ -668,9 +658,7 @@ namespace Tesseract
             IntPtr resultHandle;
 
             double rotations = 2 * angleInRadians / Math.PI;
-            resultHandle = Math.Abs(rotations - Math.Floor(rotations)) < VerySmallAngle
-                ? LeptonicaApi.Native.pixRotateOrth(Handle, (int)rotations)
-                : LeptonicaApi.Native.pixRotate(Handle, angleInRadians, method, fillColor, width.Value, height.Value);
+            resultHandle = Math.Abs(rotations - Math.Floor(rotations)) < VerySmallAngle ? LeptonicaApi.Native.pixRotateOrth(Handle, (int)rotations) : LeptonicaApi.Native.pixRotate(Handle, angleInRadians, method, fillColor, width.Value, height.Value);
 
             return resultHandle == IntPtr.Zero ? throw new LeptonicaException("Failed to rotate image around its centre.") : new Pix(resultHandle);
         }
