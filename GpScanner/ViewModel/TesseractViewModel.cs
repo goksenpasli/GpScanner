@@ -175,7 +175,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
 
     public ObservableCollection<TessFiles> GetTesseractFiles(string tesseractfolder)
     {
-        if(Directory.Exists(tesseractfolder) && FolderWritable(tesseractfolder))
+        if(Directory.Exists(tesseractfolder))
         {
             string[] defaultTtsLang = Settings.Default.DefaultTtsLang.Split('+');
             return new ObservableCollection<TessFiles>(
