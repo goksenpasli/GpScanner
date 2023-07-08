@@ -10,7 +10,6 @@ namespace Tesseract
     public class AggregateResultRenderer : DisposableBase, IResultRenderer
     {
         private IDisposable _currentDocumentHandle;
-
         private List<IResultRenderer> _resultRenderers;
 
         /// <summary>
@@ -32,28 +31,15 @@ namespace Tesseract
             _resultRenderers = new List<IResultRenderer>(resultRenderers);
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            try
-            {
-                if(disposing)
-                {
-                    if(_currentDocumentHandle != null)
-                    {
-                        _currentDocumentHandle.Dispose();
-                        _currentDocumentHandle = null;
-                    }
-                }
-            } finally
-            {
-                foreach(IResultRenderer renderer in ResultRenderers)
-                {
-                    renderer.Dispose();
-                }
+        /// <summary>
+        /// Get's the current page number.
+        /// </summary>
+        public int PageNumber { get; private set; } = -1;
 
-                _resultRenderers = null;
-            }
-        }
+        /// <summary>
+        /// Get's the child result renderers.
+        /// </summary>
+        public IEnumerable<IResultRenderer> ResultRenderers => _resultRenderers;
 
         /// <summary>
         /// Adds a page to each of the child result renderers.
@@ -117,24 +103,36 @@ namespace Tesseract
             }
         }
 
-        /// <summary>
-        /// Get's the current page number.
-        /// </summary>
-        public int PageNumber { get; private set; } = -1;
+        protected override void Dispose(bool disposing)
+        {
+            try
+            {
+                if(disposing)
+                {
+                    if(_currentDocumentHandle != null)
+                    {
+                        _currentDocumentHandle.Dispose();
+                        _currentDocumentHandle = null;
+                    }
+                }
+            } finally
+            {
+                foreach(IResultRenderer renderer in ResultRenderers)
+                {
+                    renderer.Dispose();
+                }
 
-        /// <summary>
-        /// Get's the child result renderers.
-        /// </summary>
-        public IEnumerable<IResultRenderer> ResultRenderers => _resultRenderers;
+                _resultRenderers = null;
+            }
+        }
 
         /// <summary>
         /// Ensures the renderer's EndDocument when disposed off.
         /// </summary>
         private class EndDocumentOnDispose : DisposableBase
         {
-            private List<IDisposable> _children;
-
             private readonly AggregateResultRenderer _renderer;
+            private List<IDisposable> _children;
 
             public EndDocumentOnDispose(AggregateResultRenderer renderer, IEnumerable<IDisposable> children)
             {

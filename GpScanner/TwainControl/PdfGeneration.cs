@@ -45,66 +45,7 @@ public static class PdfGeneration
         { "Original", PageSize.Undefined }
     };
 
-    private static XRect AdjustBounds(this Rect rect, double hAdjust, double vAdjust) { return new XRect(rect.X * hAdjust, rect.Y * vAdjust, rect.Width * hAdjust, rect.Height * vAdjust); }
-
-    private static void ApplyPdfSecurity(this PdfDocument document)
-    {
-        PdfSecuritySettings securitySettings = document.SecuritySettings;
-        if(Scanner.PdfPassword is not null)
-        {
-            securitySettings.OwnerPassword = Scanner.PdfPassword.ToString();
-            securitySettings.PermitModifyDocument = Scanner.AllowEdit;
-            securitySettings.PermitPrint = Scanner.AllowPrint;
-            securitySettings.PermitExtractContent = Scanner.AllowCopy;
-        }
-    }
-
-    private static void DrawPdfOcrGfx(this XGraphics gfx, XBrush xBrush, XTextFormatter textformatter, OcrData item, XRect adjustedBounds)
-    {
-        int adjustedFontSize = CalculateFontSize(item.Text, adjustedBounds, gfx);
-        XFont font = new("Times New Roman", adjustedFontSize, XFontStyle.Regular, new XPdfFontOptions(PdfFontEncoding.Unicode));
-        XSize adjustedTextSize = gfx.MeasureString(item.Text, font);
-        double verticalOffset = (adjustedBounds.Height - adjustedTextSize.Height) / 2;
-        double horizontalOffset = (adjustedBounds.Width - adjustedTextSize.Width) / 2;
-        adjustedBounds.Offset(horizontalOffset, verticalOffset);
-        textformatter.DrawString(item.Text, font, xBrush, adjustedBounds);
-    }
-
-    private static void WritePdfTextContent(this BitmapSource bitmapframe, ObservableCollection<OcrData> ScannedText, PdfPage page, XGraphics gfx, XBrush xBrush)
-    {
-        if(ScannedText is not null)
-        {
-            if(bitmapframe is null)
-            {
-                throw new ArgumentNullException(nameof(bitmapframe), "bitmapframe can not be null");
-            }
-
-            XTextFormatter textformatter = new(gfx);
-            foreach(OcrData item in ScannedText)
-            {
-                XRect adjustedBounds = AdjustBounds(item.Rect, page.Width / bitmapframe.PixelWidth, page.Height / bitmapframe.PixelHeight);
-                DrawPdfOcrGfx(gfx, xBrush, textformatter, item, adjustedBounds);
-            }
-        }
-    }
-
-    private static void WritePdfTextContent(this XImage xImage, ObservableCollection<OcrData> ScannedText, PdfPage page, XGraphics gfx, XBrush xBrush)
-    {
-        if(ScannedText is not null)
-        {
-            if(xImage is null)
-            {
-                throw new ArgumentNullException(nameof(xImage), "bitmapframe can not be null");
-            }
-
-            XTextFormatter textformatter = new(gfx);
-            foreach(OcrData item in ScannedText)
-            {
-                XRect adjustedBounds = AdjustBounds(item.Rect, page.Width / xImage.PixelWidth, page.Height / xImage.PixelHeight);
-                DrawPdfOcrGfx(gfx, xBrush, textformatter, item, adjustedBounds);
-            }
-        }
-    }
+    public static Scanner Scanner { get; set; }
 
     public static void ApplyDefaultPdfCompression(this PdfDocument doc)
     {
@@ -546,9 +487,7 @@ public static class PdfGeneration
     }
 
     public static PageSize GetPaperSize(this Paper paper) { return paper == null || !paperSizes.TryGetValue(paper.PaperType, out PageSize pageSize) ? PageSize.A4 : pageSize; }
-
     public static string GetPdfScanPath() { return GetSaveFolder().SetUniqueFile(Scanner.SaveFileName, "pdf"); }
-
     public static double[] GetPdfTextLayout(PdfPage page)
     {
         return Scanner.Layout switch
@@ -615,5 +554,64 @@ public static class PdfGeneration
         }
     }
 
-    public static Scanner Scanner { get; set; }
+    private static XRect AdjustBounds(this Rect rect, double hAdjust, double vAdjust) { return new XRect(rect.X * hAdjust, rect.Y * vAdjust, rect.Width * hAdjust, rect.Height * vAdjust); }
+
+    private static void ApplyPdfSecurity(this PdfDocument document)
+    {
+        PdfSecuritySettings securitySettings = document.SecuritySettings;
+        if(Scanner.PdfPassword is not null)
+        {
+            securitySettings.OwnerPassword = Scanner.PdfPassword.ToString();
+            securitySettings.PermitModifyDocument = Scanner.AllowEdit;
+            securitySettings.PermitPrint = Scanner.AllowPrint;
+            securitySettings.PermitExtractContent = Scanner.AllowCopy;
+        }
+    }
+
+    private static void DrawPdfOcrGfx(this XGraphics gfx, XBrush xBrush, XTextFormatter textformatter, OcrData item, XRect adjustedBounds)
+    {
+        int adjustedFontSize = CalculateFontSize(item.Text, adjustedBounds, gfx);
+        XFont font = new("Times New Roman", adjustedFontSize, XFontStyle.Regular, new XPdfFontOptions(PdfFontEncoding.Unicode));
+        XSize adjustedTextSize = gfx.MeasureString(item.Text, font);
+        double verticalOffset = (adjustedBounds.Height - adjustedTextSize.Height) / 2;
+        double horizontalOffset = (adjustedBounds.Width - adjustedTextSize.Width) / 2;
+        adjustedBounds.Offset(horizontalOffset, verticalOffset);
+        textformatter.DrawString(item.Text, font, xBrush, adjustedBounds);
+    }
+
+    private static void WritePdfTextContent(this BitmapSource bitmapframe, ObservableCollection<OcrData> ScannedText, PdfPage page, XGraphics gfx, XBrush xBrush)
+    {
+        if(ScannedText is not null)
+        {
+            if(bitmapframe is null)
+            {
+                throw new ArgumentNullException(nameof(bitmapframe), "bitmapframe can not be null");
+            }
+
+            XTextFormatter textformatter = new(gfx);
+            foreach(OcrData item in ScannedText)
+            {
+                XRect adjustedBounds = AdjustBounds(item.Rect, page.Width / bitmapframe.PixelWidth, page.Height / bitmapframe.PixelHeight);
+                DrawPdfOcrGfx(gfx, xBrush, textformatter, item, adjustedBounds);
+            }
+        }
+    }
+
+    private static void WritePdfTextContent(this XImage xImage, ObservableCollection<OcrData> ScannedText, PdfPage page, XGraphics gfx, XBrush xBrush)
+    {
+        if(ScannedText is not null)
+        {
+            if(xImage is null)
+            {
+                throw new ArgumentNullException(nameof(xImage), "bitmapframe can not be null");
+            }
+
+            XTextFormatter textformatter = new(gfx);
+            foreach(OcrData item in ScannedText)
+            {
+                XRect adjustedBounds = AdjustBounds(item.Rect, page.Width / xImage.PixelWidth, page.Height / xImage.PixelHeight);
+                DrawPdfOcrGfx(gfx, xBrush, textformatter, item, adjustedBounds);
+            }
+        }
+    }
 }

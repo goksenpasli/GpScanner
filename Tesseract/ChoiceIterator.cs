@@ -13,14 +13,6 @@ namespace Tesseract
 
         internal ChoiceIterator(IntPtr handle) { _handleRef = new HandleRef(this, handle); }
 
-        protected override void Dispose(bool disposing)
-        {
-            if(_handleRef.Handle != IntPtr.Zero)
-            {
-                TessApi.Native.ChoiceIteratorDelete(_handleRef);
-            }
-        }
-
         /// <summary>
         /// Returns the confidence of the current choice.
         /// </summary>
@@ -52,6 +44,14 @@ namespace Tesseract
         {
             VerifyNotDisposed();
             return _handleRef.Handle != IntPtr.Zero && TessApi.Native.ChoiceIteratorNext(_handleRef) != 0;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if(_handleRef.Handle != IntPtr.Zero)
+            {
+                TessApi.Native.ChoiceIteratorDelete(_handleRef);
+            }
         }
     }
 }

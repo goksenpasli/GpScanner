@@ -9,17 +9,12 @@ namespace Extensions;
 public class NumericUpDownControl : ScrollBar
 {
     public static readonly DependencyProperty DateValueProperty = DependencyProperty.Register("DateValue", typeof(DateTime?), typeof(NumericUpDownControl), new PropertyMetadata(null));
-
     public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(NumericUpDownControl), new PropertyMetadata(false));
-
     public static readonly DependencyProperty NumericUpDownButtonsVisibilityProperty =
         DependencyProperty.Register("NumericUpDownButtonsVisibility", typeof(Visibility), typeof(NumericUpDownControl), new PropertyMetadata(Visibility.Visible));
-
     public static readonly DependencyProperty NumericUpdownTextBoxVisibilityProperty =
         DependencyProperty.Register("NumericUpdownTextBoxVisibility", typeof(Visibility), typeof(NumericUpDownControl), new PropertyMetadata(Visibility.Visible));
-
     public static readonly DependencyProperty ShowModeProperty = DependencyProperty.Register("ShowMode", typeof(Mode), typeof(NumericUpDownControl), new PropertyMetadata(Mode.NumberMode, ModeChanged));
-
     [Browsable(false)]
     public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(double), typeof(NumericUpDownControl), new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
@@ -30,14 +25,26 @@ public class NumericUpDownControl : ScrollBar
         MinimumProperty.OverrideMetadata(typeof(NumericUpDownControl), new FrameworkPropertyMetadata(double.MinValue));
     }
 
-    private static void ModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    public enum Mode
     {
-        if((Mode)e.NewValue == Mode.DateTimeMode && d is NumericUpDownControl numericUpDownControl)
-        {
-            numericUpDownControl.SmallChange = 1;
-            numericUpDownControl.LargeChange = 1;
-        }
+        NumberMode = 0,
+
+        CurrencyMode = 1,
+
+        DateTimeMode = 2
     }
+
+    public DateTime? DateValue { get => (DateTime?)GetValue(DateValueProperty); set => SetValue(DateValueProperty, value); }
+
+    public bool IsReadOnly { get => (bool)GetValue(IsReadOnlyProperty); set => SetValue(IsReadOnlyProperty, value); }
+
+    public Visibility NumericUpDownButtonsVisibility { get => (Visibility)GetValue(NumericUpDownButtonsVisibilityProperty); set => SetValue(NumericUpDownButtonsVisibilityProperty, value); }
+
+    public Visibility NumericUpdownTextBoxVisibility { get => (Visibility)GetValue(NumericUpdownTextBoxVisibilityProperty); set => SetValue(NumericUpdownTextBoxVisibilityProperty, value); }
+
+    public Mode ShowMode { get => (Mode)GetValue(ShowModeProperty); set => SetValue(ShowModeProperty, value); }
+
+    public double Text { get => (double)GetValue(TextProperty); set => SetValue(TextProperty, value); }
 
     protected override void OnPreviewKeyDown(KeyEventArgs e)
     {
@@ -72,24 +79,12 @@ public class NumericUpDownControl : ScrollBar
         base.OnKeyDown(e);
     }
 
-    public DateTime? DateValue { get => (DateTime?)GetValue(DateValueProperty); set => SetValue(DateValueProperty, value); }
-
-    public bool IsReadOnly { get => (bool)GetValue(IsReadOnlyProperty); set => SetValue(IsReadOnlyProperty, value); }
-
-    public Visibility NumericUpDownButtonsVisibility { get => (Visibility)GetValue(NumericUpDownButtonsVisibilityProperty); set => SetValue(NumericUpDownButtonsVisibilityProperty, value); }
-
-    public Visibility NumericUpdownTextBoxVisibility { get => (Visibility)GetValue(NumericUpdownTextBoxVisibilityProperty); set => SetValue(NumericUpdownTextBoxVisibilityProperty, value); }
-
-    public Mode ShowMode { get => (Mode)GetValue(ShowModeProperty); set => SetValue(ShowModeProperty, value); }
-
-    public double Text { get => (double)GetValue(TextProperty); set => SetValue(TextProperty, value); }
-
-    public enum Mode
+    private static void ModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        NumberMode = 0,
-
-        CurrencyMode = 1,
-
-        DateTimeMode = 2
+        if((Mode)e.NewValue == Mode.DateTimeMode && d is NumericUpDownControl numericUpDownControl)
+        {
+            numericUpDownControl.SmallChange = 1;
+            numericUpDownControl.LargeChange = 1;
+        }
     }
 }

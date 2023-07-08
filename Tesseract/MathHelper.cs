@@ -21,7 +21,6 @@ namespace Tesseract
         /// <param name="angleInDegrees"></param>
         /// <returns></returns>
         public static float ToRadians(float angleInDegrees) { return (float)ToRadians((double)angleInDegrees); }
-
         /// <summary>
         /// Convert a degrees to radians.
         /// </summary>

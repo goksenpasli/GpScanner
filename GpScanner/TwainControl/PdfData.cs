@@ -5,7 +5,6 @@ namespace TwainControl;
 public class PdfData : InpcBase
 {
     private int pageNumber;
-
     private bool selected;
 
     public int PageNumber

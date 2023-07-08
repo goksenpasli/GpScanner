@@ -12,9 +12,7 @@ namespace TwainWpf
         /// Default Page setup - A4 Letter and Portrait orientation
         /// </summary>
         public static readonly PageSettings Default = new PageSettings() { Size = PageType.UsLetter, Orientation = Orientation.Default };
-
         private Orientation _orientation;
-
         private PageType _size;
 
         public PageSettings()

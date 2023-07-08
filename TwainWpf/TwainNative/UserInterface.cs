@@ -13,12 +13,10 @@ namespace TwainWpf.TwainNative
         /// TRUE if DS should bring up its UI
         /// </summary>
         public short ShowUI;
-
         /// <summary>
         /// For Mac only - true if the DS's UI is modal
         /// </summary>
         public short ModalUI;
-
         /// <summary>
         /// For windows only - Application window handle
         /// </summary>

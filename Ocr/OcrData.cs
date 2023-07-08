@@ -5,7 +5,6 @@ namespace Ocr;
 public class OcrData : InpcBase
 {
     private Rect rect;
-
     private string text;
 
     public Rect Rect

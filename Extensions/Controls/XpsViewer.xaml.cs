@@ -17,9 +17,7 @@ namespace Extensions.Controls;
 public class PageRangeDocumentPaginator : DocumentPaginator
 {
     private readonly int _endIndex;
-
     private readonly DocumentPaginator _paginator;
-
     private readonly int _startIndex;
 
     public PageRangeDocumentPaginator(DocumentPaginator paginator, PageRange pageRange)
@@ -29,6 +27,14 @@ public class PageRangeDocumentPaginator : DocumentPaginator
         _paginator = paginator;
         _endIndex = Math.Min(_endIndex, _paginator.PageCount - 1);
     }
+
+    public override bool IsPageCountValid => true;
+
+    public override int PageCount => _startIndex > _paginator.PageCount - 1 || _startIndex > _endIndex ? 0 : _endIndex - _startIndex + 1;
+
+    public override Size PageSize { get => _paginator.PageSize; set => _paginator.PageSize = value; }
+
+    public override IDocumentPaginatorSource Source => _paginator.Source;
 
     public override DocumentPage GetPage(int pageNumber)
     {
@@ -52,20 +58,11 @@ public class PageRangeDocumentPaginator : DocumentPaginator
 
         return page;
     }
-
-    public override bool IsPageCountValid => true;
-
-    public override int PageCount => _startIndex > _paginator.PageCount - 1 || _startIndex > _endIndex ? 0 : _endIndex - _startIndex + 1;
-
-    public override Size PageSize { get => _paginator.PageSize; set => _paginator.PageSize = value; }
-
-    public override IDocumentPaginatorSource Source => _paginator.Source;
 }
 
 public partial class XpsViewer : UserControl, INotifyPropertyChanged
 {
     public static readonly DependencyProperty XpsDataFilePathProperty = DependencyProperty.Register("XpsDataFilePath", typeof(string), typeof(XpsViewer), new PropertyMetadata(null, XpsDataFilePathChanged));
-
     private IDocumentPaginatorSource document;
 
     public XpsViewer()
@@ -75,6 +72,39 @@ public partial class XpsViewer : UserControl, INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
+
+    public IDocumentPaginatorSource Document
+    {
+        get => document;
+
+        set
+        {
+            if(document != value)
+            {
+                document = value;
+                OnPropertyChanged(nameof(Document));
+            }
+        }
+    }
+
+    public string XpsDataFilePath { get => (string)GetValue(XpsDataFilePathProperty); set => SetValue(XpsDataFilePathProperty, value); }
+
+    protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
+
+    private static void XpsDataFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if(d is XpsViewer xpsViewer && e.NewValue != null)
+        {
+            try
+            {
+                XpsDocument doc = new(e.NewValue as string, FileAccess.Read);
+                xpsViewer.Document = doc.GetFixedDocumentSequence();
+            } catch(Exception ex)
+            {
+                throw new ArgumentException(nameof(xpsViewer), ex);
+            }
+        }
+    }
 
     private void CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
     {
@@ -97,37 +127,4 @@ public partial class XpsViewer : UserControl, INotifyPropertyChanged
             dlg.PrintDocument(paginator, Application.Current?.MainWindow?.Title);
         }
     }
-
-    private static void XpsDataFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        if(d is XpsViewer xpsViewer && e.NewValue != null)
-        {
-            try
-            {
-                XpsDocument doc = new(e.NewValue as string, FileAccess.Read);
-                xpsViewer.Document = doc.GetFixedDocumentSequence();
-            } catch(Exception ex)
-            {
-                throw new ArgumentException(nameof(xpsViewer), ex);
-            }
-        }
-    }
-
-    protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
-
-    public IDocumentPaginatorSource Document
-    {
-        get => document;
-
-        set
-        {
-            if(document != value)
-            {
-                document = value;
-                OnPropertyChanged(nameof(Document));
-            }
-        }
-    }
-
-    public string XpsDataFilePath { get => (string)GetValue(XpsDataFilePathProperty); set => SetValue(XpsDataFilePathProperty, value); }
 }

@@ -50,6 +50,26 @@ public class EypPdfViewer : PdfViewer.PdfViewer
             });
     }
 
+    public new RelayCommand<object> DosyaAç { get; }
+
+    public void AddToHistoryList(string pdffilepath)
+    {
+        if(!Settings.Default.PdfLoadHistory.Contains(PdfFilePath))
+        {
+            _ = Settings.Default.PdfLoadHistory.Add(pdffilepath);
+            Settings.Default.Save();
+            Settings.Default.Reload();
+        }
+    }
+
+    public string ExtractEypFilesToPdf(string filename)
+    {
+        using PdfDocument document = TwainCtrl.EypFileExtract(filename).Where(z => Path.GetExtension(z.ToLower()) == ".pdf").ToArray().MergePdf();
+        string source = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
+        document.Save(source);
+        return source;
+    }
+
     protected override void OnDrop(DragEventArgs e)
     {
         string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
@@ -72,24 +92,4 @@ public class EypPdfViewer : PdfViewer.PdfViewer
             }
         }
     }
-
-    public void AddToHistoryList(string pdffilepath)
-    {
-        if(!Settings.Default.PdfLoadHistory.Contains(PdfFilePath))
-        {
-            _ = Settings.Default.PdfLoadHistory.Add(pdffilepath);
-            Settings.Default.Save();
-            Settings.Default.Reload();
-        }
-    }
-
-    public string ExtractEypFilesToPdf(string filename)
-    {
-        using PdfDocument document = TwainCtrl.EypFileExtract(filename).Where(z => Path.GetExtension(z.ToLower()) == ".pdf").ToArray().MergePdf();
-        string source = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
-        document.Save(source);
-        return source;
-    }
-
-    public new RelayCommand<object> DosyaAç { get; }
 }

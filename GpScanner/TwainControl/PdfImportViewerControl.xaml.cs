@@ -24,64 +24,35 @@ namespace TwainControl;
 /// </summary>
 public partial class PdfImportViewerControl : UserControl, INotifyPropertyChanged
 {
-    private string annotationText = string.Empty;
-
-    private bool drawAnnotation;
-
-    private bool drawEllipse;
-
-    private bool drawImage;
-
-    private bool drawLine;
-
-    private XImage drawnImage;
-
-    private bool drawRect;
-
-    private bool drawReverseLine;
-
-    private bool drawRoundedRect;
-
-    private bool drawString;
-
     private readonly Ellipse ellipseselectionbox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeDashArray = new DoubleCollection(new double[] { 1 }) };
-
-    private XKnownColor graphObjectColor = XKnownColor.Black;
-
-    private XKnownColor graphObjectFillColor = XKnownColor.Transparent;
-
-    private double height;
-
-    private byte[] ımgData;
-
-    private string ınkDrawColor = "Black";
-
-    private BitmapSource ınkSource;
-
-    private bool isDrawMouseDown;
-
-    private bool isMouseDown;
-
     private readonly Line linebox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeDashArray = new DoubleCollection(new double[] { 1 }) };
-
-    private Point mousedowncoord;
-
-    private XDashStyle penDash = XDashStyle.Solid;
-
-    private XLineCap penLineCap = XLineCap.Flat;
-
-    private XLineJoin penLineJoin = XLineJoin.Miter;
-
-    private double penWidth = 0.5d;
-
     private readonly Rectangle rectangleselectionbox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeDashArray = new DoubleCollection(new double[] { 1 }) };
-
     private readonly Line reverselinebox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeDashArray = new DoubleCollection(new double[] { 1 }) };
-
+    private string annotationText = string.Empty;
+    private bool drawAnnotation;
+    private bool drawEllipse;
+    private bool drawImage;
+    private bool drawLine;
+    private XImage drawnImage;
+    private bool drawRect;
+    private bool drawReverseLine;
+    private bool drawRoundedRect;
+    private bool drawString;
+    private XKnownColor graphObjectColor = XKnownColor.Black;
+    private XKnownColor graphObjectFillColor = XKnownColor.Transparent;
+    private double height;
+    private byte[] ımgData;
+    private string ınkDrawColor = "Black";
+    private BitmapSource ınkSource;
+    private bool isDrawMouseDown;
+    private bool isMouseDown;
+    private Point mousedowncoord;
+    private XDashStyle penDash = XDashStyle.Solid;
+    private XLineCap penLineCap = XLineCap.Flat;
+    private XLineJoin penLineJoin = XLineJoin.Miter;
+    private double penWidth = 0.5d;
     private string text = string.Empty;
-
     private double textSize = 12d;
-
     private double width;
 
     public PdfImportViewerControl()
@@ -200,282 +171,6 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
-
-    private void PdfImportViewerControl_MouseDown(object sender, MouseButtonEventArgs e)
-    {
-        if(e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer && e.LeftButton == MouseButtonState.Pressed)
-        {
-            if(Keyboard.IsKeyDown(Key.LeftCtrl))
-            {
-                isMouseDown = true;
-                mousedowncoord = e.GetPosition(scrollviewer);
-            }
-
-            if(Keyboard.IsKeyDown(Key.LeftShift) && (DrawAnnotation || DrawString || DrawImage || DrawEllipse || DrawRect || DrawLine || DrawReverseLine || DrawRoundedRect))
-            {
-                isDrawMouseDown = true;
-                mousedowncoord = e.GetPosition(scrollviewer);
-            }
-        }
-    }
-
-    private void PdfImportViewerControl_MouseMove(object sender, MouseEventArgs e)
-    {
-        if(e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer)
-        {
-            Point mousemovecoord = e.GetPosition(scrollviewer);
-            double x1 = Math.Min(mousedowncoord.X, mousemovecoord.X);
-            double x2 = Math.Max(mousedowncoord.X, mousemovecoord.X);
-            double y1 = Math.Min(mousedowncoord.Y, mousemovecoord.Y);
-            double y2 = Math.Max(mousedowncoord.Y, mousemovecoord.Y);
-
-            if(isDrawMouseDown)
-            {
-                if(DrawRect || DrawImage || DrawRoundedRect || DrawAnnotation || DrawString)
-                {
-                    if(!cnv.Children.Contains(rectangleselectionbox))
-                    {
-                        _ = cnv.Children.Add(rectangleselectionbox);
-                    }
-
-                    rectangleselectionbox.StrokeThickness = PenWidth * TwainCtrl.Inch;
-                    Canvas.SetLeft(rectangleselectionbox, x1);
-                    Canvas.SetTop(rectangleselectionbox, y1);
-                    rectangleselectionbox.Width = x2 - x1;
-                    rectangleselectionbox.Height = y2 - y1;
-                }
-
-                if(DrawLine)
-                {
-                    if(!cnv.Children.Contains(linebox))
-                    {
-                        _ = cnv.Children.Add(linebox);
-                    }
-
-                    linebox.StrokeThickness = PenWidth * TwainCtrl.Inch;
-                    linebox.X1 = x1;
-                    linebox.Y1 = y1;
-                    linebox.X2 = x2;
-                    linebox.Y2 = y2;
-                }
-
-                if(DrawReverseLine)
-                {
-                    if(!cnv.Children.Contains(reverselinebox))
-                    {
-                        _ = cnv.Children.Add(reverselinebox);
-                    }
-
-                    reverselinebox.StrokeThickness = PenWidth * TwainCtrl.Inch;
-                    reverselinebox.X1 = x2;
-                    reverselinebox.Y1 = y1;
-                    reverselinebox.X2 = x1;
-                    reverselinebox.Y2 = y2;
-                }
-
-                if(DrawEllipse)
-                {
-                    if(!cnv.Children.Contains(ellipseselectionbox))
-                    {
-                        _ = cnv.Children.Add(ellipseselectionbox);
-                    }
-
-                    ellipseselectionbox.StrokeThickness = PenWidth * TwainCtrl.Inch;
-                    Canvas.SetLeft(ellipseselectionbox, x1);
-                    Canvas.SetTop(ellipseselectionbox, y1);
-                    ellipseselectionbox.Width = x2 - x1;
-                    ellipseselectionbox.Height = y2 - y1;
-                }
-
-                if(e.LeftButton == MouseButtonState.Released)
-                {
-                    cnv.Children?.Clear();
-
-                    using PdfDocument reader = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.Modify);
-                    PdfPage page = reader.Pages[PdfViewer.Sayfa - 1];
-                    using XGraphics gfx = XGraphics.FromPdfPage(page);
-
-                    double coordx = 0, coordy = 0;
-                    width = Math.Abs(x2 - x1);
-                    height = Math.Abs(y2 - y1);
-                    coordx = x1 + scrollviewer.HorizontalOffset;
-                    coordy = y1 + scrollviewer.VerticalOffset;
-                    double widthmultiply = page.Width / (scrollviewer.ExtentWidth < scrollviewer.ViewportWidth ? scrollviewer.ViewportWidth : scrollviewer.ExtentWidth);
-                    double heightmultiply = page.Height / (scrollviewer.ExtentHeight < scrollviewer.ViewportHeight ? scrollviewer.ViewportHeight : scrollviewer.ExtentHeight);
-
-                    Rect rect = page.Orientation == PageOrientation.Portrait
-                        ? new Rect(coordx * widthmultiply, coordy * heightmultiply, width * widthmultiply, height * heightmultiply)
-                        : new Rect(coordy * widthmultiply, page.Height - (coordx * heightmultiply) - (width * widthmultiply), height * widthmultiply, width * heightmultiply);
-
-                    XPen pen = new(XColor.FromKnownColor(GraphObjectColor)) { DashStyle = PenDash, LineCap = PenLineCap, LineJoin = PenLineJoin, Width = PenWidth };
-                    XBrush brush = new XSolidBrush(XColor.FromKnownColor(GraphObjectFillColor));
-
-                    if(DrawRect)
-                    {
-                        if(GraphObjectFillColor == XKnownColor.Transparent)
-                        {
-                            gfx.DrawRectangle(pen, rect);
-                        } else
-                        {
-                            gfx.DrawRectangle(pen, brush, rect);
-                        }
-                    }
-
-                    if(DrawEllipse)
-                    {
-                        if(GraphObjectFillColor == XKnownColor.Transparent)
-                        {
-                            gfx.DrawEllipse(pen, rect);
-                        } else
-                        {
-                            gfx.DrawEllipse(pen, brush, rect);
-                        }
-                    }
-
-                    if(DrawLine)
-                    {
-                        if(page.Orientation == PageOrientation.Portrait)
-                        {
-                            gfx.DrawLine(pen, rect.TopLeft, rect.BottomRight);
-                        } else
-                        {
-                            gfx.DrawLine(pen, rect.TopRight, rect.BottomLeft);
-                        }
-                    }
-
-                    if(DrawReverseLine)
-                    {
-                        if(page.Orientation == PageOrientation.Portrait)
-                        {
-                            gfx.DrawLine(pen, rect.TopRight, rect.BottomLeft);
-                        } else
-                        {
-                            gfx.DrawLine(pen, rect.TopLeft, rect.BottomRight);
-                        }
-                    }
-
-                    if(DrawImage && DrawnImage is not null)
-                    {
-                        gfx.DrawImage(DrawnImage, rect);
-                        DrawnImage = null;
-                        GC.Collect();
-                    }
-
-                    if(DrawRoundedRect)
-                    {
-                        if(GraphObjectFillColor == XKnownColor.Transparent)
-                        {
-                            gfx.DrawRoundedRectangle(pen, rect, new Size(2, 2));
-                        } else
-                        {
-                            gfx.DrawRoundedRectangle(pen, brush, rect, new Size(2, 2));
-                        }
-                    }
-
-                    if(DrawString && !string.IsNullOrWhiteSpace(Text))
-                    {
-                        XFont font = new("Times New Roman", TextSize, XFontStyle.Regular);
-
-                        if(GraphObjectFillColor == XKnownColor.Transparent)
-                        {
-                            if(page.Orientation == PageOrientation.Portrait)
-                            {
-                                gfx.DrawString(Text, font, XBrushes.Black, rect, XStringFormats.TopLeft);
-                            } else
-                            {
-                                gfx.RotateAtTransform(-90, rect.Location);
-                                gfx.DrawString(Text, font, XBrushes.Black, rect, XStringFormats.TopLeft);
-                            }
-                        } else
-                        {
-                            if(page.Orientation == PageOrientation.Portrait)
-                            {
-                                gfx.DrawString(Text, font, brush, rect, XStringFormats.TopLeft);
-                            } else
-                            {
-                                gfx.RotateAtTransform(-90, rect.Location);
-                                gfx.DrawString(Text, font, brush, rect, XStringFormats.TopLeft);
-                            }
-                        }
-                    }
-
-                    if(DrawAnnotation && !string.IsNullOrWhiteSpace(AnnotationText))
-                    {
-                        PdfTextAnnotation pdftextannotaiton = new() { Contents = AnnotationText, Icon = PdfTextAnnotationIcon.Note };
-                        XRect annotrect = gfx.Transformer.WorldToDefaultPage(rect);
-                        pdftextannotaiton.Rectangle = new PdfRectangle(annotrect);
-                        page.Annotations.Add(pdftextannotaiton);
-                    }
-
-                    if(!Keyboard.IsKeyDown(Key.Escape))
-                    {
-                        string oldpdfpath = PdfViewer.PdfFilePath;
-                        reader.Save(PdfViewer.PdfFilePath);
-                        PdfViewer.PdfFilePath = null;
-                        PdfViewer.PdfFilePath = oldpdfpath;
-                    }
-
-                    mousedowncoord.X = mousedowncoord.Y = 0;
-                    isDrawMouseDown = false;
-                    Cursor = Cursors.Arrow;
-                }
-            }
-
-            if(isMouseDown)
-            {
-                if(!cnv.Children.Contains(rectangleselectionbox))
-                {
-                    _ = cnv.Children.Add(rectangleselectionbox);
-                }
-
-                Canvas.SetLeft(rectangleselectionbox, x1);
-                Canvas.SetTop(rectangleselectionbox, y1);
-                rectangleselectionbox.Width = x2 - x1;
-                rectangleselectionbox.Height = y2 - y1;
-
-                if(e.LeftButton == MouseButtonState.Released)
-                {
-                    cnv.Children?.Clear();
-                    width = Math.Abs(mousemovecoord.X - mousedowncoord.X);
-                    height = Math.Abs(mousemovecoord.Y - mousedowncoord.Y);
-                    double captureX, captureY;
-                    captureX = mousedowncoord.X < mousemovecoord.X ? mousedowncoord.X : mousemovecoord.X;
-                    captureY = mousedowncoord.Y < mousemovecoord.Y ? mousedowncoord.Y : mousemovecoord.Y;
-                    BitmapFrame bitmapFrame = BitmapFrame.Create((BitmapSource)img.Source);
-                    bitmapFrame.Freeze();
-                    ImgData = BitmapMethods.CaptureScreen(captureX, captureY, width, height, scrollviewer, bitmapFrame);
-                    mousedowncoord.X = mousedowncoord.Y = 0;
-                    isMouseDown = false;
-                    Cursor = Cursors.Arrow;
-                }
-            }
-        }
-    }
-
-    private void PdfImportViewerControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
-    {
-        if(e.PropertyName is "ImgData" && ImgData is not null && DataContext is TwainCtrl twainCtrl)
-        {
-            twainCtrl.ImgData = ImgData;
-            ImgData = null;
-        }
-        if(e.PropertyName is "InkDrawColor")
-        {
-            DrawingAttribute.Color = (Color)ColorConverter.ConvertFromString(InkDrawColor);
-        }
-    }
-
-    private void PdfViewer_PreviewKeyDown(object sender, KeyEventArgs e)
-    {
-        if(Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.LeftCtrl))
-        {
-            Cursor = Cursors.Cross;
-        }
-    }
-
-    private void PdfViewer_PreviewKeyUp(object sender, KeyEventArgs e) { Cursor = Cursors.Arrow; }
-
-    protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
 
     public string AnnotationText
     {
@@ -782,4 +477,280 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             }
         }
     }
+
+    protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
+
+    private void PdfImportViewerControl_MouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if(e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer && e.LeftButton == MouseButtonState.Pressed)
+        {
+            if(Keyboard.IsKeyDown(Key.LeftCtrl))
+            {
+                isMouseDown = true;
+                mousedowncoord = e.GetPosition(scrollviewer);
+            }
+
+            if(Keyboard.IsKeyDown(Key.LeftShift) && (DrawAnnotation || DrawString || DrawImage || DrawEllipse || DrawRect || DrawLine || DrawReverseLine || DrawRoundedRect))
+            {
+                isDrawMouseDown = true;
+                mousedowncoord = e.GetPosition(scrollviewer);
+            }
+        }
+    }
+
+    private void PdfImportViewerControl_MouseMove(object sender, MouseEventArgs e)
+    {
+        if(e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer)
+        {
+            Point mousemovecoord = e.GetPosition(scrollviewer);
+            double x1 = Math.Min(mousedowncoord.X, mousemovecoord.X);
+            double x2 = Math.Max(mousedowncoord.X, mousemovecoord.X);
+            double y1 = Math.Min(mousedowncoord.Y, mousemovecoord.Y);
+            double y2 = Math.Max(mousedowncoord.Y, mousemovecoord.Y);
+
+            if(isDrawMouseDown)
+            {
+                if(DrawRect || DrawImage || DrawRoundedRect || DrawAnnotation || DrawString)
+                {
+                    if(!cnv.Children.Contains(rectangleselectionbox))
+                    {
+                        _ = cnv.Children.Add(rectangleselectionbox);
+                    }
+
+                    rectangleselectionbox.StrokeThickness = PenWidth * TwainCtrl.Inch;
+                    Canvas.SetLeft(rectangleselectionbox, x1);
+                    Canvas.SetTop(rectangleselectionbox, y1);
+                    rectangleselectionbox.Width = x2 - x1;
+                    rectangleselectionbox.Height = y2 - y1;
+                }
+
+                if(DrawLine)
+                {
+                    if(!cnv.Children.Contains(linebox))
+                    {
+                        _ = cnv.Children.Add(linebox);
+                    }
+
+                    linebox.StrokeThickness = PenWidth * TwainCtrl.Inch;
+                    linebox.X1 = x1;
+                    linebox.Y1 = y1;
+                    linebox.X2 = x2;
+                    linebox.Y2 = y2;
+                }
+
+                if(DrawReverseLine)
+                {
+                    if(!cnv.Children.Contains(reverselinebox))
+                    {
+                        _ = cnv.Children.Add(reverselinebox);
+                    }
+
+                    reverselinebox.StrokeThickness = PenWidth * TwainCtrl.Inch;
+                    reverselinebox.X1 = x2;
+                    reverselinebox.Y1 = y1;
+                    reverselinebox.X2 = x1;
+                    reverselinebox.Y2 = y2;
+                }
+
+                if(DrawEllipse)
+                {
+                    if(!cnv.Children.Contains(ellipseselectionbox))
+                    {
+                        _ = cnv.Children.Add(ellipseselectionbox);
+                    }
+
+                    ellipseselectionbox.StrokeThickness = PenWidth * TwainCtrl.Inch;
+                    Canvas.SetLeft(ellipseselectionbox, x1);
+                    Canvas.SetTop(ellipseselectionbox, y1);
+                    ellipseselectionbox.Width = x2 - x1;
+                    ellipseselectionbox.Height = y2 - y1;
+                }
+
+                if(e.LeftButton == MouseButtonState.Released)
+                {
+                    cnv.Children?.Clear();
+
+                    using PdfDocument reader = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.Modify);
+                    PdfPage page = reader.Pages[PdfViewer.Sayfa - 1];
+                    using XGraphics gfx = XGraphics.FromPdfPage(page);
+
+                    double coordx = 0, coordy = 0;
+                    width = Math.Abs(x2 - x1);
+                    height = Math.Abs(y2 - y1);
+                    coordx = x1 + scrollviewer.HorizontalOffset;
+                    coordy = y1 + scrollviewer.VerticalOffset;
+                    double widthmultiply = page.Width / (scrollviewer.ExtentWidth < scrollviewer.ViewportWidth ? scrollviewer.ViewportWidth : scrollviewer.ExtentWidth);
+                    double heightmultiply = page.Height / (scrollviewer.ExtentHeight < scrollviewer.ViewportHeight ? scrollviewer.ViewportHeight : scrollviewer.ExtentHeight);
+
+                    Rect rect = page.Orientation == PageOrientation.Portrait
+                        ? new Rect(coordx * widthmultiply, coordy * heightmultiply, width * widthmultiply, height * heightmultiply)
+                        : new Rect(coordy * widthmultiply, page.Height - (coordx * heightmultiply) - (width * widthmultiply), height * widthmultiply, width * heightmultiply);
+
+                    XPen pen = new(XColor.FromKnownColor(GraphObjectColor)) { DashStyle = PenDash, LineCap = PenLineCap, LineJoin = PenLineJoin, Width = PenWidth };
+                    XBrush brush = new XSolidBrush(XColor.FromKnownColor(GraphObjectFillColor));
+
+                    if(DrawRect)
+                    {
+                        if(GraphObjectFillColor == XKnownColor.Transparent)
+                        {
+                            gfx.DrawRectangle(pen, rect);
+                        } else
+                        {
+                            gfx.DrawRectangle(pen, brush, rect);
+                        }
+                    }
+
+                    if(DrawEllipse)
+                    {
+                        if(GraphObjectFillColor == XKnownColor.Transparent)
+                        {
+                            gfx.DrawEllipse(pen, rect);
+                        } else
+                        {
+                            gfx.DrawEllipse(pen, brush, rect);
+                        }
+                    }
+
+                    if(DrawLine)
+                    {
+                        if(page.Orientation == PageOrientation.Portrait)
+                        {
+                            gfx.DrawLine(pen, rect.TopLeft, rect.BottomRight);
+                        } else
+                        {
+                            gfx.DrawLine(pen, rect.TopRight, rect.BottomLeft);
+                        }
+                    }
+
+                    if(DrawReverseLine)
+                    {
+                        if(page.Orientation == PageOrientation.Portrait)
+                        {
+                            gfx.DrawLine(pen, rect.TopRight, rect.BottomLeft);
+                        } else
+                        {
+                            gfx.DrawLine(pen, rect.TopLeft, rect.BottomRight);
+                        }
+                    }
+
+                    if(DrawImage && DrawnImage is not null)
+                    {
+                        gfx.DrawImage(DrawnImage, rect);
+                        DrawnImage = null;
+                        GC.Collect();
+                    }
+
+                    if(DrawRoundedRect)
+                    {
+                        if(GraphObjectFillColor == XKnownColor.Transparent)
+                        {
+                            gfx.DrawRoundedRectangle(pen, rect, new Size(2, 2));
+                        } else
+                        {
+                            gfx.DrawRoundedRectangle(pen, brush, rect, new Size(2, 2));
+                        }
+                    }
+
+                    if(DrawString && !string.IsNullOrWhiteSpace(Text))
+                    {
+                        XFont font = new("Times New Roman", TextSize, XFontStyle.Regular);
+
+                        if(GraphObjectFillColor == XKnownColor.Transparent)
+                        {
+                            if(page.Orientation == PageOrientation.Portrait)
+                            {
+                                gfx.DrawString(Text, font, XBrushes.Black, rect, XStringFormats.TopLeft);
+                            } else
+                            {
+                                gfx.RotateAtTransform(-90, rect.Location);
+                                gfx.DrawString(Text, font, XBrushes.Black, rect, XStringFormats.TopLeft);
+                            }
+                        } else
+                        {
+                            if(page.Orientation == PageOrientation.Portrait)
+                            {
+                                gfx.DrawString(Text, font, brush, rect, XStringFormats.TopLeft);
+                            } else
+                            {
+                                gfx.RotateAtTransform(-90, rect.Location);
+                                gfx.DrawString(Text, font, brush, rect, XStringFormats.TopLeft);
+                            }
+                        }
+                    }
+
+                    if(DrawAnnotation && !string.IsNullOrWhiteSpace(AnnotationText))
+                    {
+                        PdfTextAnnotation pdftextannotaiton = new() { Contents = AnnotationText, Icon = PdfTextAnnotationIcon.Note };
+                        XRect annotrect = gfx.Transformer.WorldToDefaultPage(rect);
+                        pdftextannotaiton.Rectangle = new PdfRectangle(annotrect);
+                        page.Annotations.Add(pdftextannotaiton);
+                    }
+
+                    if(!Keyboard.IsKeyDown(Key.Escape))
+                    {
+                        string oldpdfpath = PdfViewer.PdfFilePath;
+                        reader.Save(PdfViewer.PdfFilePath);
+                        PdfViewer.PdfFilePath = null;
+                        PdfViewer.PdfFilePath = oldpdfpath;
+                    }
+
+                    mousedowncoord.X = mousedowncoord.Y = 0;
+                    isDrawMouseDown = false;
+                    Cursor = Cursors.Arrow;
+                }
+            }
+
+            if(isMouseDown)
+            {
+                if(!cnv.Children.Contains(rectangleselectionbox))
+                {
+                    _ = cnv.Children.Add(rectangleselectionbox);
+                }
+
+                Canvas.SetLeft(rectangleselectionbox, x1);
+                Canvas.SetTop(rectangleselectionbox, y1);
+                rectangleselectionbox.Width = x2 - x1;
+                rectangleselectionbox.Height = y2 - y1;
+
+                if(e.LeftButton == MouseButtonState.Released)
+                {
+                    cnv.Children?.Clear();
+                    width = Math.Abs(mousemovecoord.X - mousedowncoord.X);
+                    height = Math.Abs(mousemovecoord.Y - mousedowncoord.Y);
+                    double captureX, captureY;
+                    captureX = mousedowncoord.X < mousemovecoord.X ? mousedowncoord.X : mousemovecoord.X;
+                    captureY = mousedowncoord.Y < mousemovecoord.Y ? mousedowncoord.Y : mousemovecoord.Y;
+                    BitmapFrame bitmapFrame = BitmapFrame.Create((BitmapSource)img.Source);
+                    bitmapFrame.Freeze();
+                    ImgData = BitmapMethods.CaptureScreen(captureX, captureY, width, height, scrollviewer, bitmapFrame);
+                    mousedowncoord.X = mousedowncoord.Y = 0;
+                    isMouseDown = false;
+                    Cursor = Cursors.Arrow;
+                }
+            }
+        }
+    }
+
+    private void PdfImportViewerControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if(e.PropertyName is "ImgData" && ImgData is not null && DataContext is TwainCtrl twainCtrl)
+        {
+            twainCtrl.ImgData = ImgData;
+            ImgData = null;
+        }
+        if(e.PropertyName is "InkDrawColor")
+        {
+            DrawingAttribute.Color = (Color)ColorConverter.ConvertFromString(InkDrawColor);
+        }
+    }
+
+    private void PdfViewer_PreviewKeyDown(object sender, KeyEventArgs e)
+    {
+        if(Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.LeftCtrl))
+        {
+            Cursor = Cursors.Cross;
+        }
+    }
+
+    private void PdfViewer_PreviewKeyUp(object sender, KeyEventArgs e) { Cursor = Cursors.Arrow; }
 }

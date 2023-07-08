@@ -50,18 +50,221 @@ public readonly struct ItemRange
         EndIndex = endIndex;
     }
 
-    public bool Contains(int itemIndex) { return itemIndex >= StartIndex && itemIndex <= EndIndex; }
-
     public int EndIndex { get; }
 
     public int StartIndex { get; }
+
+    public bool Contains(int itemIndex) { return itemIndex >= StartIndex && itemIndex <= EndIndex; }
 }
 
 public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
 {
     private IRecyclingItemContainerGenerator _itemContainerGenerator;
-
     private DependencyObject _itemsOwner;
+
+    public bool CanHorizontallyScroll { get; set; }
+
+    public bool CanVerticallyScroll { get; set; }
+
+    public double ExtentHeight => Extent.Height;
+
+    public double ExtentWidth => Extent.Width;
+
+    public double HorizontalOffset => Offset.X;
+
+    /// <summary>
+    /// Mouse wheel delta for pixel based scrolling. The default value is 48 dp.
+    /// </summary>
+    public double MouseWheelDelta { get; set; } = 48.0;
+
+    /// <summary>
+    /// Mouse wheel delta for item based scrolling. The default value is 3 items.
+    /// </summary>
+    public int MouseWheelDeltaItem { get; set; } = 3;
+
+    /// <summary>
+    /// Scroll line delta for pixel based scrolling. The default value is 16 dp.
+    /// </summary>
+    public double ScrollLineDelta { get; set; } = 16.0;
+
+    public ScrollViewer ScrollOwner { get; set; }
+
+    public double VerticalOffset => Offset.Y;
+
+    public double ViewportHeight => Viewport.Height;
+
+    public double ViewportWidth => Viewport.Width;
+
+    /// <summary>
+    /// The cache length before and after the viewport.
+    /// </summary>
+    protected VirtualizationCacheLength CacheLength { get; private set; }
+
+    /// <summary>
+    /// The Unit of the cache length. Can be Pixel, Item or Page. When the ItemsOwner is a group item it can only be
+    /// pixel or item.
+    /// </summary>
+    protected VirtualizationCacheLengthUnit CacheLengthUnit { get; private set; }
+
+    protected override bool CanHierarchicallyScrollAndVirtualizeCore => true;
+
+    protected Size Extent { get; private set; } = new(0, 0);
+
+    /// <summary>
+    /// Returns true if the panel is in VirtualizationMode.Recycling, otherwise false.
+    /// </summary>
+    protected bool IsRecycling => VirtualizationMode == VirtualizationMode.Recycling;
+
+    protected bool IsVirtualizing => GetIsVirtualizing(ItemsControl);
+
+    protected new IRecyclingItemContainerGenerator ItemContainerGenerator
+    {
+        get
+        {
+            if(_itemContainerGenerator == null)
+            {
+                _ = InternalChildren;
+                _itemContainerGenerator = (IRecyclingItemContainerGenerator)base.ItemContainerGenerator;
+            }
+
+            return _itemContainerGenerator;
+        }
+    }
+
+    /// <summary>
+    /// The range of items that a realized in viewport or cache.
+    /// </summary>
+    protected ItemRange ItemRange { get; set; }
+
+    protected ReadOnlyCollection<object> Items => ((ItemContainerGenerator)ItemContainerGenerator).Items;
+
+    /// <summary>
+    /// The ItemsControl (e.g. ListView).
+    /// </summary>
+    protected ItemsControl ItemsControl => ItemsControl.GetItemsOwner(this);
+
+    /// <summary>
+    /// The ItemsControl (e.g. ListView) or if the ItemsControl is grouping a GroupItem.
+    /// </summary>
+    protected DependencyObject ItemsOwner
+    {
+        get
+        {
+            _itemsOwner ??= (DependencyObject)typeof(ItemsControl).GetMethod("GetItemsOwnerInternal", BindingFlags.Static | BindingFlags.NonPublic, null, new[] { typeof(DependencyObject) }, null).Invoke(null, new object[] { this });
+            return _itemsOwner;
+        }
+    }
+
+    /// <summary>
+    /// The direction in which the panel scrolls when user turns the mouse wheel.
+    /// </summary>
+    protected ScrollDirection MouseWheelScrollDirection { get; set; } = ScrollDirection.Vertical;
+
+    protected Point Offset { get; private set; } = new(0, 0);
+
+    protected ScrollUnit ScrollUnit => GetScrollUnit(ItemsControl);
+
+    protected Size Viewport { get; private set; } = new(0, 0);
+
+    protected VirtualizationMode VirtualizationMode => GetVirtualizationMode(ItemsControl);
+
+    public void LineDown() { ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? ScrollLineDelta : GetLineDownScrollAmount()); }
+    public void LineLeft() { ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? -ScrollLineDelta : GetLineLeftScrollAmount()); }
+    public void LineRight() { ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? ScrollLineDelta : GetLineRightScrollAmount()); }
+    public void LineUp() { ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? -ScrollLineDelta : GetLineUpScrollAmount()); }
+
+    public virtual Rect MakeVisible(Visual visual, Rect rectangle)
+    {
+        Point pos = visual.TransformToAncestor(this).Transform(Offset);
+
+        double scrollAmountX = 0;
+        double scrollAmountY = 0;
+
+        if(pos.X < Offset.X)
+        {
+            scrollAmountX = -(Offset.X - pos.X);
+        } else if(pos.X + rectangle.Width > Offset.X + Viewport.Width)
+        {
+            scrollAmountX = pos.X + rectangle.Width - (Offset.X + Viewport.Width);
+        }
+
+        if(pos.Y < Offset.Y)
+        {
+            scrollAmountY = -(Offset.Y - pos.Y);
+        } else if(pos.Y + rectangle.Height > Offset.Y + Viewport.Height)
+        {
+            scrollAmountY = pos.Y + rectangle.Height - (Offset.Y + Viewport.Height);
+        }
+
+        SetHorizontalOffset(Offset.X + scrollAmountX);
+
+        SetVerticalOffset(Offset.Y + scrollAmountY);
+
+        double visibleRectWidth = Math.Min(rectangle.Width, Viewport.Width);
+        double visibleRectHeight = Math.Min(rectangle.Height, Viewport.Height);
+
+        return new Rect(scrollAmountX, scrollAmountY, visibleRectWidth, visibleRectHeight);
+    }
+
+    public void MouseWheelDown()
+    {
+        if(MouseWheelScrollDirection == ScrollDirection.Vertical)
+        {
+            ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? MouseWheelDelta : GetMouseWheelDownScrollAmount());
+        } else
+        {
+            MouseWheelRight();
+        }
+    }
+
+    public void MouseWheelLeft() { ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? -MouseWheelDelta : GetMouseWheelLeftScrollAmount()); }
+    public void MouseWheelRight() { ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? MouseWheelDelta : GetMouseWheelRightScrollAmount()); }
+
+    public void MouseWheelUp()
+    {
+        if(MouseWheelScrollDirection == ScrollDirection.Vertical)
+        {
+            ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? -MouseWheelDelta : GetMouseWheelUpScrollAmount());
+        } else
+        {
+            MouseWheelLeft();
+        }
+    }
+
+    public void PageDown() { ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? ViewportHeight : GetPageDownScrollAmount()); }
+    public void PageLeft() { ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? -ViewportHeight : GetPageLeftScrollAmount()); }
+    public void PageRight() { ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? ViewportHeight : GetPageRightScrollAmount()); }
+    public void PageUp() { ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? -ViewportHeight : GetPageUpScrollAmount()); }
+
+    public void SetHorizontalOffset(double offset)
+    {
+        if(offset < 0 || Viewport.Width >= Extent.Width)
+        {
+            offset = 0;
+        } else if(offset + Viewport.Width >= Extent.Width)
+        {
+            offset = Extent.Width - Viewport.Width;
+        }
+
+        Offset = new Point(offset, Offset.Y);
+        ScrollOwner?.InvalidateScrollInfo();
+        InvalidateMeasure();
+    }
+
+    public void SetVerticalOffset(double offset)
+    {
+        if(offset < 0 || Viewport.Height >= Extent.Height)
+        {
+            offset = 0;
+        } else if(offset + Viewport.Height >= Extent.Height)
+        {
+            offset = Extent.Height - Viewport.Height;
+        }
+
+        Offset = new Point(Offset.X, offset);
+        ScrollOwner?.InvalidateScrollInfo();
+        InvalidateMeasure();
+    }
 
     /// <summary>
     /// Calculates the extent that would be needed to show all items.
@@ -206,7 +409,6 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     }
 
     protected void ScrollHorizontal(double amount) { SetHorizontalOffset(HorizontalOffset + amount); }
-
     protected void ScrollVertical(double amount) { SetVerticalOffset(VerticalOffset + amount); }
 
     /// <summary>
@@ -266,306 +468,53 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
             }
         }
     }
-
-    /// <summary>
-    /// The cache length before and after the viewport.
-    /// </summary>
-    protected VirtualizationCacheLength CacheLength { get; private set; }
-
-    /// <summary>
-    /// The Unit of the cache length. Can be Pixel, Item or Page. When the ItemsOwner is a group item it can only be
-    /// pixel or item.
-    /// </summary>
-    protected VirtualizationCacheLengthUnit CacheLengthUnit { get; private set; }
-
-    protected override bool CanHierarchicallyScrollAndVirtualizeCore => true;
-
-    protected Size Extent { get; private set; } = new(0, 0);
-
-    /// <summary>
-    /// Returns true if the panel is in VirtualizationMode.Recycling, otherwise false.
-    /// </summary>
-    protected bool IsRecycling => VirtualizationMode == VirtualizationMode.Recycling;
-
-    protected bool IsVirtualizing => GetIsVirtualizing(ItemsControl);
-
-    protected new IRecyclingItemContainerGenerator ItemContainerGenerator
-    {
-        get
-        {
-            if(_itemContainerGenerator == null)
-            {
-                _ = InternalChildren;
-                _itemContainerGenerator = (IRecyclingItemContainerGenerator)base.ItemContainerGenerator;
-            }
-
-            return _itemContainerGenerator;
-        }
-    }
-
-    /// <summary>
-    /// The range of items that a realized in viewport or cache.
-    /// </summary>
-    protected ItemRange ItemRange { get; set; }
-
-    protected ReadOnlyCollection<object> Items => ((ItemContainerGenerator)ItemContainerGenerator).Items;
-
-    /// <summary>
-    /// The ItemsControl (e.g. ListView).
-    /// </summary>
-    protected ItemsControl ItemsControl => ItemsControl.GetItemsOwner(this);
-
-    /// <summary>
-    /// The ItemsControl (e.g. ListView) or if the ItemsControl is grouping a GroupItem.
-    /// </summary>
-    protected DependencyObject ItemsOwner
-    {
-        get
-        {
-            _itemsOwner ??= (DependencyObject)typeof(ItemsControl).GetMethod("GetItemsOwnerInternal", BindingFlags.Static | BindingFlags.NonPublic, null, new[] { typeof(DependencyObject) }, null).Invoke(null, new object[] { this });
-            return _itemsOwner;
-        }
-    }
-
-    /// <summary>
-    /// The direction in which the panel scrolls when user turns the mouse wheel.
-    /// </summary>
-    protected ScrollDirection MouseWheelScrollDirection { get; set; } = ScrollDirection.Vertical;
-
-    protected Point Offset { get; private set; } = new(0, 0);
-
-    protected ScrollUnit ScrollUnit => GetScrollUnit(ItemsControl);
-
-    protected Size Viewport { get; private set; } = new(0, 0);
-
-    protected VirtualizationMode VirtualizationMode => GetVirtualizationMode(ItemsControl);
-
-    public void LineDown() { ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? ScrollLineDelta : GetLineDownScrollAmount()); }
-
-    public void LineLeft() { ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? -ScrollLineDelta : GetLineLeftScrollAmount()); }
-
-    public void LineRight() { ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? ScrollLineDelta : GetLineRightScrollAmount()); }
-
-    public void LineUp() { ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? -ScrollLineDelta : GetLineUpScrollAmount()); }
-
-    public virtual Rect MakeVisible(Visual visual, Rect rectangle)
-    {
-        Point pos = visual.TransformToAncestor(this).Transform(Offset);
-
-        double scrollAmountX = 0;
-        double scrollAmountY = 0;
-
-        if(pos.X < Offset.X)
-        {
-            scrollAmountX = -(Offset.X - pos.X);
-        } else if(pos.X + rectangle.Width > Offset.X + Viewport.Width)
-        {
-            scrollAmountX = pos.X + rectangle.Width - (Offset.X + Viewport.Width);
-        }
-
-        if(pos.Y < Offset.Y)
-        {
-            scrollAmountY = -(Offset.Y - pos.Y);
-        } else if(pos.Y + rectangle.Height > Offset.Y + Viewport.Height)
-        {
-            scrollAmountY = pos.Y + rectangle.Height - (Offset.Y + Viewport.Height);
-        }
-
-        SetHorizontalOffset(Offset.X + scrollAmountX);
-
-        SetVerticalOffset(Offset.Y + scrollAmountY);
-
-        double visibleRectWidth = Math.Min(rectangle.Width, Viewport.Width);
-        double visibleRectHeight = Math.Min(rectangle.Height, Viewport.Height);
-
-        return new Rect(scrollAmountX, scrollAmountY, visibleRectWidth, visibleRectHeight);
-    }
-
-    public void MouseWheelDown()
-    {
-        if(MouseWheelScrollDirection == ScrollDirection.Vertical)
-        {
-            ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? MouseWheelDelta : GetMouseWheelDownScrollAmount());
-        } else
-        {
-            MouseWheelRight();
-        }
-    }
-
-    public void MouseWheelLeft() { ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? -MouseWheelDelta : GetMouseWheelLeftScrollAmount()); }
-
-    public void MouseWheelRight() { ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? MouseWheelDelta : GetMouseWheelRightScrollAmount()); }
-
-    public void MouseWheelUp()
-    {
-        if(MouseWheelScrollDirection == ScrollDirection.Vertical)
-        {
-            ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? -MouseWheelDelta : GetMouseWheelUpScrollAmount());
-        } else
-        {
-            MouseWheelLeft();
-        }
-    }
-
-    public void PageDown() { ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? ViewportHeight : GetPageDownScrollAmount()); }
-
-    public void PageLeft() { ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? -ViewportHeight : GetPageLeftScrollAmount()); }
-
-    public void PageRight() { ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? ViewportHeight : GetPageRightScrollAmount()); }
-
-    public void PageUp() { ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? -ViewportHeight : GetPageUpScrollAmount()); }
-
-    public void SetHorizontalOffset(double offset)
-    {
-        if(offset < 0 || Viewport.Width >= Extent.Width)
-        {
-            offset = 0;
-        } else if(offset + Viewport.Width >= Extent.Width)
-        {
-            offset = Extent.Width - Viewport.Width;
-        }
-
-        Offset = new Point(offset, Offset.Y);
-        ScrollOwner?.InvalidateScrollInfo();
-        InvalidateMeasure();
-    }
-
-    public void SetVerticalOffset(double offset)
-    {
-        if(offset < 0 || Viewport.Height >= Extent.Height)
-        {
-            offset = 0;
-        } else if(offset + Viewport.Height >= Extent.Height)
-        {
-            offset = Extent.Height - Viewport.Height;
-        }
-
-        Offset = new Point(Offset.X, offset);
-        ScrollOwner?.InvalidateScrollInfo();
-        InvalidateMeasure();
-    }
-
-    public bool CanHorizontallyScroll { get; set; }
-
-    public bool CanVerticallyScroll { get; set; }
-
-    public double ExtentHeight => Extent.Height;
-
-    public double ExtentWidth => Extent.Width;
-
-    public double HorizontalOffset => Offset.X;
-
-    /// <summary>
-    /// Mouse wheel delta for pixel based scrolling. The default value is 48 dp.
-    /// </summary>
-    public double MouseWheelDelta { get; set; } = 48.0;
-
-    /// <summary>
-    /// Mouse wheel delta for item based scrolling. The default value is 3 items.
-    /// </summary>
-    public int MouseWheelDeltaItem { get; set; } = 3;
-
-    /// <summary>
-    /// Scroll line delta for pixel based scrolling. The default value is 16 dp.
-    /// </summary>
-    public double ScrollLineDelta { get; set; } = 16.0;
-
-    public ScrollViewer ScrollOwner { get; set; }
-
-    public double VerticalOffset => Offset.Y;
-
-    public double ViewportHeight => Viewport.Height;
-
-    public double ViewportWidth => Viewport.Width;
 }
 
 public class VirtualizingWrapPanel : VirtualizingPanelBase
 {
     public static readonly DependencyProperty ItemSizeProperty = DependencyProperty.Register(nameof(ItemSize), typeof(Size), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(Size.Empty, FrameworkPropertyMetadataOptions.AffectsMeasure));
-
     public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
         nameof(Orientation),
         typeof(Orientation),
         typeof(VirtualizingWrapPanel),
         new FrameworkPropertyMetadata(Orientation.Vertical, FrameworkPropertyMetadataOptions.AffectsMeasure, (obj, _) => ((VirtualizingWrapPanel)obj).Orientation_Changed()));
-
     public static readonly DependencyProperty SpacingModeProperty = DependencyProperty.Register(
         nameof(SpacingMode),
         typeof(SpacingMode),
         typeof(VirtualizingWrapPanel),
         new FrameworkPropertyMetadata(SpacingMode.Uniform, FrameworkPropertyMetadataOptions.AffectsMeasure));
-
     public static readonly DependencyProperty StretchItemsProperty = DependencyProperty.Register(nameof(StretchItems), typeof(bool), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsArrange));
-
     protected Size childSize;
-
     protected int itemsPerRowCount;
-
     protected int rowCount;
 
-    private Size CalculateChildSize()
-    {
-        if(Items.Count == 0)
-        {
-            return new Size(0, 0);
-        }
+    /// <summary>
+    /// Gets or sets a value that specifies the size of the items. The default value is <see cref="Size.Empty"/>. If the
+    /// value is <see cref="Size.Empty"/> the size of the items gots measured by the first realized item.
+    /// </summary>
+    public Size ItemSize { get => (Size)GetValue(ItemSizeProperty); set => SetValue(ItemSizeProperty, value); }
 
-        GeneratorPosition startPosition = ItemContainerGenerator.GeneratorPositionFromIndex(0);
-        using(ItemContainerGenerator.StartAt(startPosition, GeneratorDirection.Forward, true))
-        {
-            UIElement child = (UIElement)ItemContainerGenerator.GenerateNext();
-            if(child != null)
-            {
-                AddInternalChild(child);
-                ItemContainerGenerator.PrepareItemContainer(child);
-                child.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-                return child.DesiredSize;
-            }
-        }
+    /// <summary>
+    /// Gets or sets a value that specifies the orientation in which items are arranged. The default value is <see
+    /// cref="Orientation.Vertical"/> .
+    /// </summary>
+    public Orientation Orientation { get => (Orientation)GetValue(OrientationProperty); set => SetValue(OrientationProperty, value); }
 
-        return default;
-    }
+    /// <summary>
+    /// Gets or sets the spacing mode used when arranging the items. The default value is <see
+    /// cref="SpacingMode.Uniform"/> .
+    /// </summary>
+    public SpacingMode SpacingMode { get => (SpacingMode)GetValue(SpacingModeProperty); set => SetValue(SpacingModeProperty, value); }
 
-    private int GetRowIndex(double location)
-    {
-        int calculatedRowIndex = (int)Math.Floor(location / GetHeight(childSize));
-        int maxRowIndex = (int)Math.Ceiling(Items.Count / (double)itemsPerRowCount);
-        return Math.Max(Math.Min(calculatedRowIndex, maxRowIndex), 0);
-    }
-
-    private void Orientation_Changed()
-    {
-        MouseWheelScrollDirection =
-            Orientation == Orientation.Vertical ? ScrollDirection.Vertical : ScrollDirection.Horizontal;
-    }
-
-    private T ReadItemContainerStyle<T>(DependencyProperty property, T fallbackValue = default)
-    {
-        object value = ItemsControl.ItemContainerStyle?.Setters.OfType<Setter>().FirstOrDefault(setter => setter.Property == property)?.Value;
-        return (T)(value ?? fallbackValue);
-    }
-
-    private void UpdateChildSize(Size availableSize)
-    {
-        if(ItemsOwner is IHierarchicalVirtualizationAndScrollInfo groupItem && GetIsVirtualizingWhenGrouping(ItemsControl))
-        {
-            if(Orientation == Orientation.Vertical)
-            {
-                availableSize.Width = groupItem.Constraints.Viewport.Size.Width;
-                availableSize.Width = Math.Max(availableSize.Width - (Margin.Left + Margin.Right), 0);
-            } else
-            {
-                availableSize.Height = groupItem.Constraints.Viewport.Size.Height;
-                availableSize.Height = Math.Max(availableSize.Height - (Margin.Top + Margin.Bottom), 0);
-            }
-        }
-
-        childSize = ItemSize != Size.Empty ? ItemSize : InternalChildren.Count != 0 ? InternalChildren[0].DesiredSize : CalculateChildSize();
-
-        itemsPerRowCount = double.IsInfinity(GetWidth(availableSize)) ? Items.Count : Math.Max(1, (int)Math.Floor(GetWidth(availableSize) / GetWidth(childSize)));
-
-        rowCount = (int)Math.Ceiling((double)Items.Count / itemsPerRowCount);
-    }
+    /// <summary>
+    /// Gets or sets a value that specifies if the items get stretched to fill up remaining space. The default value is
+    /// false.
+    /// </summary>
+    /// <remarks>
+    /// The MaxWidth and MaxHeight properties of the ItemContainerStyle can be used to limit the stretching. In this
+    /// case the use of the remaining space will be determined by the SpacingMode property.
+    /// </remarks>
+    public bool StretchItems { get => (bool)GetValue(StretchItemsProperty); set => SetValue(StretchItemsProperty, value); }
 
     [Obsolete]
     protected override Size ArrangeOverride(Size finalSize)
@@ -687,39 +636,22 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
     }
 
     protected Rect CreateRect(double x, double y, double width, double height) { return Orientation == Orientation.Vertical ? new Rect(x, y, width, height) : new Rect(y, x, width, height); }
-
     protected Size CreateSize(double width, double height) { return Orientation == Orientation.Vertical ? new Size(width, height) : new Size(height, width); }
-
     protected double GetHeight(Size size) { return Orientation == Orientation.Vertical ? size.Height : size.Width; }
-
     protected override double GetLineDownScrollAmount() { return childSize.Height; }
-
     protected override double GetLineLeftScrollAmount() { return -childSize.Width; }
-
     protected override double GetLineRightScrollAmount() { return childSize.Width; }
-
     protected override double GetLineUpScrollAmount() { return -childSize.Height; }
-
     protected override double GetMouseWheelDownScrollAmount() { return Math.Min(childSize.Height * MouseWheelDeltaItem, Viewport.Height); }
-
     protected override double GetMouseWheelLeftScrollAmount() { return -Math.Min(childSize.Width * MouseWheelDeltaItem, Viewport.Width); }
-
     protected override double GetMouseWheelRightScrollAmount() { return Math.Min(childSize.Width * MouseWheelDeltaItem, Viewport.Width); }
-
     protected override double GetMouseWheelUpScrollAmount() { return -Math.Min(childSize.Height * MouseWheelDeltaItem, Viewport.Height); }
-
     protected override double GetPageDownScrollAmount() { return Viewport.Height; }
-
     protected override double GetPageLeftScrollAmount() { return -Viewport.Width; }
-
     protected override double GetPageRightScrollAmount() { return Viewport.Width; }
-
     protected override double GetPageUpScrollAmount() { return -Viewport.Height; }
-
     protected double GetWidth(Size size) { return Orientation == Orientation.Vertical ? size.Width : size.Height; }
-
     protected double GetX(Point point) { return Orientation == Orientation.Vertical ? point.X : point.Y; }
-
     protected double GetY(Point point) { return Orientation == Orientation.Vertical ? point.Y : point.X; }
 
     protected override Size MeasureOverride(Size availableSize)
@@ -816,33 +748,69 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
         return new ItemRange(startIndex, endIndex);
     }
 
-    /// <summary>
-    /// Gets or sets a value that specifies the size of the items. The default value is <see cref="Size.Empty"/>. If the
-    /// value is <see cref="Size.Empty"/> the size of the items gots measured by the first realized item.
-    /// </summary>
-    public Size ItemSize { get => (Size)GetValue(ItemSizeProperty); set => SetValue(ItemSizeProperty, value); }
+    private Size CalculateChildSize()
+    {
+        if(Items.Count == 0)
+        {
+            return new Size(0, 0);
+        }
 
-    /// <summary>
-    /// Gets or sets a value that specifies the orientation in which items are arranged. The default value is <see
-    /// cref="Orientation.Vertical"/> .
-    /// </summary>
-    public Orientation Orientation { get => (Orientation)GetValue(OrientationProperty); set => SetValue(OrientationProperty, value); }
+        GeneratorPosition startPosition = ItemContainerGenerator.GeneratorPositionFromIndex(0);
+        using(ItemContainerGenerator.StartAt(startPosition, GeneratorDirection.Forward, true))
+        {
+            UIElement child = (UIElement)ItemContainerGenerator.GenerateNext();
+            if(child != null)
+            {
+                AddInternalChild(child);
+                ItemContainerGenerator.PrepareItemContainer(child);
+                child.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                return child.DesiredSize;
+            }
+        }
 
-    /// <summary>
-    /// Gets or sets the spacing mode used when arranging the items. The default value is <see
-    /// cref="SpacingMode.Uniform"/> .
-    /// </summary>
-    public SpacingMode SpacingMode { get => (SpacingMode)GetValue(SpacingModeProperty); set => SetValue(SpacingModeProperty, value); }
+        return default;
+    }
 
-    /// <summary>
-    /// Gets or sets a value that specifies if the items get stretched to fill up remaining space. The default value is
-    /// false.
-    /// </summary>
-    /// <remarks>
-    /// The MaxWidth and MaxHeight properties of the ItemContainerStyle can be used to limit the stretching. In this
-    /// case the use of the remaining space will be determined by the SpacingMode property.
-    /// </remarks>
-    public bool StretchItems { get => (bool)GetValue(StretchItemsProperty); set => SetValue(StretchItemsProperty, value); }
+    private int GetRowIndex(double location)
+    {
+        int calculatedRowIndex = (int)Math.Floor(location / GetHeight(childSize));
+        int maxRowIndex = (int)Math.Ceiling(Items.Count / (double)itemsPerRowCount);
+        return Math.Max(Math.Min(calculatedRowIndex, maxRowIndex), 0);
+    }
+
+    private void Orientation_Changed()
+    {
+        MouseWheelScrollDirection =
+            Orientation == Orientation.Vertical ? ScrollDirection.Vertical : ScrollDirection.Horizontal;
+    }
+
+    private T ReadItemContainerStyle<T>(DependencyProperty property, T fallbackValue = default)
+    {
+        object value = ItemsControl.ItemContainerStyle?.Setters.OfType<Setter>().FirstOrDefault(setter => setter.Property == property)?.Value;
+        return (T)(value ?? fallbackValue);
+    }
+
+    private void UpdateChildSize(Size availableSize)
+    {
+        if(ItemsOwner is IHierarchicalVirtualizationAndScrollInfo groupItem && GetIsVirtualizingWhenGrouping(ItemsControl))
+        {
+            if(Orientation == Orientation.Vertical)
+            {
+                availableSize.Width = groupItem.Constraints.Viewport.Size.Width;
+                availableSize.Width = Math.Max(availableSize.Width - (Margin.Left + Margin.Right), 0);
+            } else
+            {
+                availableSize.Height = groupItem.Constraints.Viewport.Size.Height;
+                availableSize.Height = Math.Max(availableSize.Height - (Margin.Top + Margin.Bottom), 0);
+            }
+        }
+
+        childSize = ItemSize != Size.Empty ? ItemSize : InternalChildren.Count != 0 ? InternalChildren[0].DesiredSize : CalculateChildSize();
+
+        itemsPerRowCount = double.IsInfinity(GetWidth(availableSize)) ? Items.Count : Math.Max(1, (int)Math.Floor(GetWidth(availableSize) / GetWidth(childSize)));
+
+        rowCount = (int)Math.Ceiling((double)Items.Count / itemsPerRowCount);
+    }
 
     [Obsolete("Use ItemSizeProperty")]
     public static readonly DependencyProperty ChildrenSizeProperty = ItemSizeProperty;

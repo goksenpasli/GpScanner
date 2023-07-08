@@ -493,14 +493,6 @@ namespace Tesseract.Interop
     {
         private static ILeptonicaApiSignatures native;
 
-        public static void Initialize()
-        {
-            if(native == null)
-            {
-                native = InteropRuntimeImplementer.CreateInstance<ILeptonicaApiSignatures>();
-            }
-        }
-
         public static ILeptonicaApiSignatures Native
         {
             get
@@ -511,6 +503,14 @@ namespace Tesseract.Interop
                 }
 
                 return native;
+            }
+        }
+
+        public static void Initialize()
+        {
+            if(native == null)
+            {
+                native = InteropRuntimeImplementer.CreateInstance<ILeptonicaApiSignatures>();
             }
         }
     }

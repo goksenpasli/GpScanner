@@ -5,9 +5,7 @@ namespace Extensions;
 public class Chart : InpcBase
 {
     private Brush chartBrush = Brushes.Gray;
-
     private double chartValue;
-
     private string description = string.Empty;
 
     public Brush ChartBrush

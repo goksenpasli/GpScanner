@@ -6,6 +6,13 @@ namespace TwainControl;
 
 public abstract class Deskew()
 {
+    public static double GetDeskewAngle(BitmapSource image)
+    {
+        BitmapSource grayscaleImage = ConvertToGrayscale(image);
+        ImageMoments moments = CalculateImageMoments(grayscaleImage);
+        return CalculateSkewAngle(moments);
+    }
+
     private static ImageMoments CalculateImageMoments(BitmapSource image)
     {
         int width = image.PixelWidth;
@@ -57,13 +64,6 @@ public abstract class Deskew()
     }
 
     private static BitmapSource ConvertToGrayscale(BitmapSource image) { return new FormatConvertedBitmap(image, PixelFormats.Gray8, null, 0); }
-
-    public static double GetDeskewAngle(BitmapSource image)
-    {
-        BitmapSource grayscaleImage = ConvertToGrayscale(image);
-        ImageMoments moments = CalculateImageMoments(grayscaleImage);
-        return CalculateSkewAngle(moments);
-    }
 
     public class ImageMoments
     {

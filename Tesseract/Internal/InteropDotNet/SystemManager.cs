@@ -2,6 +2,17 @@
 
 namespace Tesseract.Internal.InteropDotNet
 {
+    internal enum OperatingSystem
+    {
+        Windows,
+
+        Unix,
+
+        MacOSX,
+
+        Unknown
+    }
+
     internal static class SystemManager
     {
         public static OperatingSystem GetOperatingSystem()
@@ -38,16 +49,5 @@ namespace Tesseract.Internal.InteropDotNet
         }
 
         public static string GetPlatformName() { return IntPtr.Size == sizeof(int) ? "x86" : "x64"; }
-    }
-
-    internal enum OperatingSystem
-    {
-        Windows,
-
-        Unix,
-
-        MacOSX,
-
-        Unknown
     }
 }

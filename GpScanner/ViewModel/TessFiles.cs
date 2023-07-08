@@ -5,7 +5,6 @@ namespace GpScanner.ViewModel;
 public class TessFiles : InpcBase
 {
     private bool @checked;
-
     private string name;
 
     public bool Checked

@@ -8,85 +8,12 @@ namespace Tesseract.Internal.InteropDotNet
     public sealed class LibraryLoader
     {
         private readonly Dictionary<string, IntPtr> loadedAssemblies = new Dictionary<string, IntPtr>();
-
         private readonly ILibraryLoaderLogic logic;
-
         private readonly object syncLock = new object();
 
         private LibraryLoader(ILibraryLoaderLogic logic) { this.logic = logic; }
 
-        private IntPtr CheckCurrentAppDomain(string fileName, string platformName)
-        {
-            string baseDirectory = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory);
-            Logger.TraceInformation("Checking current application domain location '{0}' for '{1}' on platform {2}.", baseDirectory, fileName, platformName);
-            return InternalLoadLibrary(baseDirectory, platformName, fileName);
-        }
-
-        /// <summary>
-        /// Special test for web applications.
-        /// </summary>
-        /// <remarks>
-        /// Note that this makes a couple of assumptions these being: <list type="bullet"><item>That the current
-        /// application domain's location for web applications corresponds to the web applications root
-        /// directory.</item><item>That the tesseract\leptonica dlls reside in the corresponding x86 or x64 directories
-        /// in the bin directory under the apps root directory.</item></list>
-        /// </remarks>
-        /// <param name="fileName"></param>
-        /// <param name="platformName"></param>
-        /// <returns></returns>
-        private IntPtr CheckCurrentAppDomainBin(string fileName, string platformName)
-        {
-            string baseDirectory = Path.Combine(Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory), "bin");
-            if(Directory.Exists(baseDirectory))
-            {
-                Logger.TraceInformation("Checking current application domain's bin location '{0}' for '{1}' on platform {2}.", baseDirectory, fileName, platformName);
-                return InternalLoadLibrary(baseDirectory, platformName, fileName);
-            }
-
-            Logger.TraceInformation("No bin directory exists under the current application domain's location, skipping.");
-            return IntPtr.Zero;
-        }
-
-        private IntPtr CheckCustomSearchPath(string fileName, string platformName)
-        {
-            string baseDirectory = CustomSearchPath;
-            if(!string.IsNullOrEmpty(baseDirectory))
-            {
-                Logger.TraceInformation("Checking custom search location '{0}' for '{1}' on platform {2}.", baseDirectory, fileName, platformName);
-                return InternalLoadLibrary(baseDirectory, platformName, fileName);
-            }
-
-            Logger.TraceInformation("Custom search path is not defined, skipping.");
-            return IntPtr.Zero;
-        }
-
-        private IntPtr CheckExecutingAssemblyDomain(string fileName, string platformName)
-        {
-            Assembly executingAssembly = Assembly.GetExecutingAssembly();
-            if(executingAssembly == null)
-            {
-                return IntPtr.Zero;
-            }
-
-            string baseDirectory = Path.GetDirectoryName(executingAssembly.Location);
-            Logger.TraceInformation("Checking executing application domain location '{0}' for '{1}' on platform {2}.", baseDirectory, fileName, platformName);
-            return InternalLoadLibrary(baseDirectory, platformName, fileName);
-        }
-
-        private IntPtr CheckWorkingDirecotry(string fileName, string platformName)
-        {
-            string baseDirectory = Path.GetFullPath(Environment.CurrentDirectory);
-            Logger.TraceInformation("Checking working directory '{0}' for '{1}' on platform {2}.", baseDirectory, fileName, platformName);
-            return InternalLoadLibrary(baseDirectory, platformName, fileName);
-        }
-
-        private string FixUpLibraryName(string fileName) { return logic.FixUpLibraryName(fileName); }
-
-        private IntPtr InternalLoadLibrary(string baseDirectory, string platformName, string fileName)
-        {
-            string fullPath = Path.Combine(baseDirectory, Path.Combine(platformName, fileName));
-            return File.Exists(fullPath) ? logic.LoadLibrary(fullPath) : IntPtr.Zero;
-        }
+        public string CustomSearchPath { get; set; }
 
         public bool FreeLibrary(string fileName)
         {
@@ -166,7 +93,78 @@ namespace Tesseract.Internal.InteropDotNet
             }
         }
 
-        public string CustomSearchPath { get; set; }
+        private IntPtr CheckCurrentAppDomain(string fileName, string platformName)
+        {
+            string baseDirectory = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory);
+            Logger.TraceInformation("Checking current application domain location '{0}' for '{1}' on platform {2}.", baseDirectory, fileName, platformName);
+            return InternalLoadLibrary(baseDirectory, platformName, fileName);
+        }
+
+        /// <summary>
+        /// Special test for web applications.
+        /// </summary>
+        /// <remarks>
+        /// Note that this makes a couple of assumptions these being: <list type="bullet"><item>That the current
+        /// application domain's location for web applications corresponds to the web applications root
+        /// directory.</item><item>That the tesseract\leptonica dlls reside in the corresponding x86 or x64 directories
+        /// in the bin directory under the apps root directory.</item></list>
+        /// </remarks>
+        /// <param name="fileName"></param>
+        /// <param name="platformName"></param>
+        /// <returns></returns>
+        private IntPtr CheckCurrentAppDomainBin(string fileName, string platformName)
+        {
+            string baseDirectory = Path.Combine(Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory), "bin");
+            if(Directory.Exists(baseDirectory))
+            {
+                Logger.TraceInformation("Checking current application domain's bin location '{0}' for '{1}' on platform {2}.", baseDirectory, fileName, platformName);
+                return InternalLoadLibrary(baseDirectory, platformName, fileName);
+            }
+
+            Logger.TraceInformation("No bin directory exists under the current application domain's location, skipping.");
+            return IntPtr.Zero;
+        }
+
+        private IntPtr CheckCustomSearchPath(string fileName, string platformName)
+        {
+            string baseDirectory = CustomSearchPath;
+            if(!string.IsNullOrEmpty(baseDirectory))
+            {
+                Logger.TraceInformation("Checking custom search location '{0}' for '{1}' on platform {2}.", baseDirectory, fileName, platformName);
+                return InternalLoadLibrary(baseDirectory, platformName, fileName);
+            }
+
+            Logger.TraceInformation("Custom search path is not defined, skipping.");
+            return IntPtr.Zero;
+        }
+
+        private IntPtr CheckExecutingAssemblyDomain(string fileName, string platformName)
+        {
+            Assembly executingAssembly = Assembly.GetExecutingAssembly();
+            if(executingAssembly == null)
+            {
+                return IntPtr.Zero;
+            }
+
+            string baseDirectory = Path.GetDirectoryName(executingAssembly.Location);
+            Logger.TraceInformation("Checking executing application domain location '{0}' for '{1}' on platform {2}.", baseDirectory, fileName, platformName);
+            return InternalLoadLibrary(baseDirectory, platformName, fileName);
+        }
+
+        private IntPtr CheckWorkingDirecotry(string fileName, string platformName)
+        {
+            string baseDirectory = Path.GetFullPath(Environment.CurrentDirectory);
+            Logger.TraceInformation("Checking working directory '{0}' for '{1}' on platform {2}.", baseDirectory, fileName, platformName);
+            return InternalLoadLibrary(baseDirectory, platformName, fileName);
+        }
+
+        private string FixUpLibraryName(string fileName) { return logic.FixUpLibraryName(fileName); }
+
+        private IntPtr InternalLoadLibrary(string baseDirectory, string platformName, string fileName)
+        {
+            string fullPath = Path.Combine(baseDirectory, Path.Combine(platformName, fileName));
+            return File.Exists(fullPath) ? logic.LoadLibrary(fullPath) : IntPtr.Zero;
+        }
 
         #region Singleton
         public static LibraryLoader Instance

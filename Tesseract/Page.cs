@@ -13,9 +13,7 @@ namespace Tesseract
     public sealed class Page : DisposableBase
     {
         private static readonly TraceSource trace = new TraceSource("Tesseract");
-
         private Rect regionOfInterest;
-
         private bool runRecognitionPhase;
 
         internal Page(TesseractEngine engine, Pix image, string imageName, Rect regionOfInterest, PageSegMode pageSegmentMode)
@@ -27,40 +25,48 @@ namespace Tesseract
             PageSegmentMode = pageSegmentMode;
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if(disposing)
-            {
-                TessApi.Native.BaseAPIClear(Engine.Handle);
-            }
-        }
+        public TesseractEngine Engine { get; }
 
-        internal void Recognize()
+        /// <summary>
+        /// Gets the <see cref="Pix"/> that is being ocr'd.
+        /// </summary>
+        public Pix Image { get; }
+
+        /// <summary>
+        /// Gets the name of the image being ocr'd.
+        /// </summary>
+        /// <remarks>
+        /// This is also used for some of the more advanced functionality such as identifying the associated UZN file if
+        /// present.
+        /// </remarks>
+        public string ImageName { get; }
+
+        /// <summary>
+        /// Gets the page segmentation mode used to OCR the specified image.
+        /// </summary>
+        public PageSegMode PageSegmentMode { get; }
+
+        /// <summary>
+        /// The current region of interest being parsed.
+        /// </summary>
+        public Rect RegionOfInterest
         {
-            Guard.Verify(PageSegmentMode != PageSegMode.OsdOnly, "Cannot OCR image when using OSD only page segmentation, please use DetectBestOrientation instead.");
-            if(!runRecognitionPhase)
+            get => regionOfInterest;
+
+            set
             {
-                if(TessApi.Native.BaseApiRecognize(Engine.Handle, new HandleRef(this, IntPtr.Zero)) != 0)
+                if(value.X1 < 0 || value.Y1 < 0 || value.X2 > Image.Width || value.Y2 > Image.Height)
                 {
-                    throw new InvalidOperationException("Recognition of image failed.");
+                    throw new ArgumentException("The region of interest to be processed must be within the image bounds.", nameof(value));
                 }
 
-                runRecognitionPhase = true;
-
-                if(Engine.TryGetBoolVariable("tessedit_write_images", out bool tesseditWriteImages) && tesseditWriteImages)
+                if(regionOfInterest != value)
                 {
-                    using(Pix thresholdedImage = GetThresholdedImage())
-                    {
-                        string filePath = Path.Combine(Environment.CurrentDirectory, "tessinput.tif");
-                        try
-                        {
-                            thresholdedImage.Save(filePath, ImageFormat.TiffG4);
-                            trace.TraceEvent(TraceEventType.Information, 2, "Successfully saved the thresholded image to '{0}'", filePath);
-                        } catch(Exception error)
-                        {
-                            trace.TraceEvent(TraceEventType.Error, 2, "Failed to save the thresholded image to '{0}'.\nError: {1}", filePath, error.Message);
-                        }
-                    }
+                    regionOfInterest = value;
+
+                    TessApi.Native.BaseApiSetRectangle(Engine.Handle, regionOfInterest.X1, regionOfInterest.Y1, regionOfInterest.Width, regionOfInterest.Height);
+
+                    runRecognitionPhase = false;
                 }
             }
         }
@@ -302,49 +308,41 @@ namespace Tesseract
             return TessApi.BaseAPIGetWordStrBoxText(Engine.Handle, pageNum);
         }
 
-        public TesseractEngine Engine { get; }
-
-        /// <summary>
-        /// Gets the <see cref="Pix"/> that is being ocr'd.
-        /// </summary>
-        public Pix Image { get; }
-
-        /// <summary>
-        /// Gets the name of the image being ocr'd.
-        /// </summary>
-        /// <remarks>
-        /// This is also used for some of the more advanced functionality such as identifying the associated UZN file if
-        /// present.
-        /// </remarks>
-        public string ImageName { get; }
-
-        /// <summary>
-        /// Gets the page segmentation mode used to OCR the specified image.
-        /// </summary>
-        public PageSegMode PageSegmentMode { get; }
-
-        /// <summary>
-        /// The current region of interest being parsed.
-        /// </summary>
-        public Rect RegionOfInterest
+        internal void Recognize()
         {
-            get => regionOfInterest;
-
-            set
+            Guard.Verify(PageSegmentMode != PageSegMode.OsdOnly, "Cannot OCR image when using OSD only page segmentation, please use DetectBestOrientation instead.");
+            if(!runRecognitionPhase)
             {
-                if(value.X1 < 0 || value.Y1 < 0 || value.X2 > Image.Width || value.Y2 > Image.Height)
+                if(TessApi.Native.BaseApiRecognize(Engine.Handle, new HandleRef(this, IntPtr.Zero)) != 0)
                 {
-                    throw new ArgumentException("The region of interest to be processed must be within the image bounds.", nameof(value));
+                    throw new InvalidOperationException("Recognition of image failed.");
                 }
 
-                if(regionOfInterest != value)
+                runRecognitionPhase = true;
+
+                if(Engine.TryGetBoolVariable("tessedit_write_images", out bool tesseditWriteImages) && tesseditWriteImages)
                 {
-                    regionOfInterest = value;
-
-                    TessApi.Native.BaseApiSetRectangle(Engine.Handle, regionOfInterest.X1, regionOfInterest.Y1, regionOfInterest.Width, regionOfInterest.Height);
-
-                    runRecognitionPhase = false;
+                    using(Pix thresholdedImage = GetThresholdedImage())
+                    {
+                        string filePath = Path.Combine(Environment.CurrentDirectory, "tessinput.tif");
+                        try
+                        {
+                            thresholdedImage.Save(filePath, ImageFormat.TiffG4);
+                            trace.TraceEvent(TraceEventType.Information, 2, "Successfully saved the thresholded image to '{0}'", filePath);
+                        } catch(Exception error)
+                        {
+                            trace.TraceEvent(TraceEventType.Error, 2, "Failed to save the thresholded image to '{0}'.\nError: {1}", filePath, error.Message);
+                        }
+                    }
                 }
+            }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if(disposing)
+            {
+                TessApi.Native.BaseAPIClear(Engine.Handle);
             }
         }
     }

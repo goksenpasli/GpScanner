@@ -14,14 +14,6 @@ namespace Tesseract
             Alpha = alpha;
         }
 
-        public static PixColor FromRgb(uint value) { return new PixColor((byte)((value >> 24) & 0xFF), (byte)((value >> 16) & 0xFF), (byte)((value >> 8) & 0xFF)); }
-
-        public static PixColor FromRgba(uint value) { return new PixColor((byte)((value >> 24) & 0xFF), (byte)((value >> 16) & 0xFF), (byte)((value >> 8) & 0xFF), (byte)(value & 0xFF)); }
-
-        public uint ToRGBA() { return (uint)((Red << 24) | (Green << 16) | (Blue << 8) | Alpha); }
-
-        public override string ToString() { return $"Color(0x{ToRGBA():X})"; }
-
         public byte Alpha { get; }
 
         public byte Blue { get; }
@@ -29,6 +21,12 @@ namespace Tesseract
         public byte Green { get; }
 
         public byte Red { get; }
+
+        public static PixColor FromRgb(uint value) { return new PixColor((byte)((value >> 24) & 0xFF), (byte)((value >> 16) & 0xFF), (byte)((value >> 8) & 0xFF)); }
+        public static PixColor FromRgba(uint value) { return new PixColor((byte)((value >> 24) & 0xFF), (byte)((value >> 16) & 0xFF), (byte)((value >> 8) & 0xFF), (byte)(value & 0xFF)); }
+
+        public uint ToRGBA() { return (uint)((Red << 24) | (Green << 16) | (Blue << 8) | Alpha); }
+        public override string ToString() { return $"Color(0x{ToRGBA():X})"; }
 
 #if NETFULL
         public static explicit operator System.Drawing.Color(PixColor color)

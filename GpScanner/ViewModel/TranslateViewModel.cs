@@ -12,19 +12,12 @@ namespace GpScanner.ViewModel;
 public class TranslateViewModel : InpcBase
 {
     private static SpeechSynthesizer speechSynthesizer;
-
     private string çeviri;
-
     private string çevrilenDil = "en";
-
     private string metin;
-
     private bool metinBoxIsreadOnly;
-
     private string mevcutDil = "auto";
-
     private string okumaDili;
-
     private ObservableCollection<string> taramaGeçmiş = new();
 
     static TranslateViewModel()
@@ -87,13 +80,7 @@ public class TranslateViewModel : InpcBase
             parameter => !string.IsNullOrEmpty(OkumaDili));
     }
 
-    private void TranslateViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
-    {
-        if(e.PropertyName is "OkumaDili" && !string.IsNullOrEmpty(OkumaDili))
-        {
-            speechSynthesizer ??= new SpeechSynthesizer();
-        }
-    }
+    public static List<string> TtsDilleri { get; set; }
 
     public string Çeviri
     {
@@ -210,5 +197,11 @@ public class TranslateViewModel : InpcBase
         }
     }
 
-    public static List<string> TtsDilleri { get; set; }
+    private void TranslateViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if(e.PropertyName is "OkumaDili" && !string.IsNullOrEmpty(OkumaDili))
+        {
+            speechSynthesizer ??= new SpeechSynthesizer();
+        }
+    }
 }

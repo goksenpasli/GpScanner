@@ -5,17 +5,6 @@ namespace Tesseract.Internal.InteropDotNet
 {
     internal class WindowsLibraryLoaderLogic : ILibraryLoaderLogic
     {
-        [DllImport("kernel32", EntryPoint = "FreeLibrary", CallingConvention = CallingConvention.Winapi, SetLastError = true, CharSet = CharSet.Auto, BestFitMapping = false, ThrowOnUnmappableChar = true)]
-        private static extern bool WindowsFreeLibrary(IntPtr handle);
-
-        private static int WindowsGetLastError() { return Marshal.GetLastWin32Error(); }
-
-        [DllImport("kernel32", EntryPoint = "GetProcAddress", CallingConvention = CallingConvention.Winapi, SetLastError = true)]
-        private static extern IntPtr WindowsGetProcAddress(IntPtr handle, string procedureName);
-
-        [DllImport("kernel32", EntryPoint = "LoadLibrary", CallingConvention = CallingConvention.Winapi, SetLastError = true, CharSet = CharSet.Auto, BestFitMapping = false, ThrowOnUnmappableChar = true)]
-        private static extern IntPtr WindowsLoadLibrary(string dllPath);
-
         public string FixUpLibraryName(string fileName) { return !string.IsNullOrEmpty(fileName) && !fileName.EndsWith(".dll", StringComparison.OrdinalIgnoreCase) ? $"{fileName}.dll" : fileName; }
 
         public bool FreeLibrary(IntPtr libraryHandle)
@@ -88,5 +77,15 @@ namespace Tesseract.Internal.InteropDotNet
 
             return libraryHandle;
         }
+
+        [DllImport("kernel32", EntryPoint = "FreeLibrary", CallingConvention = CallingConvention.Winapi, SetLastError = true, CharSet = CharSet.Auto, BestFitMapping = false, ThrowOnUnmappableChar = true)]
+        private static extern bool WindowsFreeLibrary(IntPtr handle);
+
+        private static int WindowsGetLastError() { return Marshal.GetLastWin32Error(); }
+        [DllImport("kernel32", EntryPoint = "GetProcAddress", CallingConvention = CallingConvention.Winapi, SetLastError = true)]
+        private static extern IntPtr WindowsGetProcAddress(IntPtr handle, string procedureName);
+
+        [DllImport("kernel32", EntryPoint = "LoadLibrary", CallingConvention = CallingConvention.Winapi, SetLastError = true, CharSet = CharSet.Auto, BestFitMapping = false, ThrowOnUnmappableChar = true)]
+        private static extern IntPtr WindowsLoadLibrary(string dllPath);
     }
 }

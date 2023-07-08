@@ -23,7 +23,6 @@ namespace TwainWpf
             ProductFamily = "TwainDotNet",
             ProductName = "TwainDotNet",
         };
-
         private Event _eventMessage;
 
         public DataSourceManager(Identity applicationId, IWindowsMessageHook messageHook)
@@ -56,6 +55,73 @@ namespace TwainWpf
         public event EventHandler<ScanningCompleteEventArgs> ScanningComplete;
 
         public event EventHandler<TransferImageEventArgs> TransferImage;
+
+        public Identity ApplicationId { get; }
+
+        public DataSource DataSource { get; private set; }
+
+        public IWindowsMessageHook MessageHook { get; }
+
+        public static ConditionCode GetConditionCode(Identity applicationId, Identity sourceId)
+        {
+            Status status = new Status();
+
+            _ = Twain32Native.DsmStatus(applicationId, sourceId, DataGroup.Control, DataArgumentType.Status, Message.Get, status);
+
+            return status.ConditionCode;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        public void SelectSource()
+        {
+            DataSource.Dispose();
+            DataSource = DataSource.UserSelected(ApplicationId, MessageHook);
+        }
+
+        public void SelectSource(DataSource dataSource)
+        {
+            DataSource.Dispose();
+            DataSource = dataSource;
+        }
+
+        public void StartScan(ScanSettings settings)
+        {
+            bool scanning = false;
+
+            try
+            {
+                MessageHook.UseFilter = true;
+                scanning = DataSource.Open(settings);
+            } catch(TwainException)
+            {
+                DataSource.Close();
+                EndingScan();
+                throw;
+            } finally
+            {
+                if(!scanning)
+                {
+                    EndingScan();
+                }
+            }
+        }
+
+        internal void CloseDsAndCompleteScanning(Exception exception)
+        {
+            EndingScan();
+            DataSource.Close();
+            try
+            {
+                ScanningComplete?.Invoke(this, new ScanningCompleteEventArgs(exception));
+            } catch
+            {
+            }
+        }
 
         protected virtual void Dispose(bool disposing)
         {
@@ -187,72 +253,5 @@ namespace TwainWpf
                 _ = Twain32Native.DsPendingTransfer(ApplicationId, DataSource.SourceId, DataGroup.Control, DataArgumentType.PendingXfers, Message.Reset, pendingTransfer);
             }
         }
-
-        internal void CloseDsAndCompleteScanning(Exception exception)
-        {
-            EndingScan();
-            DataSource.Close();
-            try
-            {
-                ScanningComplete?.Invoke(this, new ScanningCompleteEventArgs(exception));
-            } catch
-            {
-            }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        public static ConditionCode GetConditionCode(Identity applicationId, Identity sourceId)
-        {
-            Status status = new Status();
-
-            _ = Twain32Native.DsmStatus(applicationId, sourceId, DataGroup.Control, DataArgumentType.Status, Message.Get, status);
-
-            return status.ConditionCode;
-        }
-
-        public void SelectSource()
-        {
-            DataSource.Dispose();
-            DataSource = DataSource.UserSelected(ApplicationId, MessageHook);
-        }
-
-        public void SelectSource(DataSource dataSource)
-        {
-            DataSource.Dispose();
-            DataSource = dataSource;
-        }
-
-        public void StartScan(ScanSettings settings)
-        {
-            bool scanning = false;
-
-            try
-            {
-                MessageHook.UseFilter = true;
-                scanning = DataSource.Open(settings);
-            } catch(TwainException)
-            {
-                DataSource.Close();
-                EndingScan();
-                throw;
-            } finally
-            {
-                if(!scanning)
-                {
-                    EndingScan();
-                }
-            }
-        }
-
-        public Identity ApplicationId { get; }
-
-        public DataSource DataSource { get; private set; }
-
-        public IWindowsMessageHook MessageHook { get; }
     }
 }

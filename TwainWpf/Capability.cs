@@ -6,11 +6,8 @@ namespace TwainWpf
     public class Capability
     {
         private readonly Identity _applicationId;
-
         private readonly Capabilities _capability;
-
         private readonly Identity _sourceId;
-
         private readonly TwainType _twainType;
 
         public Capability(Capabilities capability, TwainType twainType, Identity applicationId, Identity sourceId)
@@ -19,49 +16,6 @@ namespace TwainWpf
             _applicationId = applicationId;
             _sourceId = sourceId;
             _twainType = twainType;
-        }
-
-        protected ConditionCode GetStatus() { return DataSourceManager.GetConditionCode(_applicationId, _sourceId); }
-
-        protected void SetValue<T>(T value)
-        {
-            int rawValue = Convert.ToInt32(value);
-            CapabilityOneValue oneValue = new CapabilityOneValue(_twainType, rawValue);
-            TwainCapability twainCapability = TwainCapability.From(_capability, oneValue);
-
-            TwainResult result = Twain32Native.DsCapability(_applicationId, _sourceId, DataGroup.Control, DataArgumentType.Capability, Message.Set, twainCapability);
-
-            if(result == TwainResult.Success)
-            {
-                return;
-            }
-            if(result == TwainResult.Failure)
-            {
-                throw new TwainException("Failed to set capability.", result, GetStatus());
-            }
-            if(result != TwainResult.CheckStatus)
-            {
-                throw new TwainException("Failed to set capability.", result);
-            }
-        }
-
-        public BasicCapabilityResult GetBasicValue()
-        {
-            CapabilityOneValue oneValue = new CapabilityOneValue(_twainType, 0);
-            TwainCapability twainCapability = TwainCapability.From(_capability, oneValue);
-
-            TwainResult result = Twain32Native.DsCapability(_applicationId, _sourceId, DataGroup.Control, DataArgumentType.Capability, Message.Get, twainCapability);
-
-            if(result != TwainResult.Success)
-            {
-                ConditionCode conditionCode = GetStatus();
-
-                return new BasicCapabilityResult() { ConditionCode = conditionCode, ErrorCode = result };
-            }
-
-            twainCapability.ReadBackValue();
-
-            return new BasicCapabilityResult() { RawBasicValue = oneValue.Value };
         }
 
         public static bool GetBoolCapability(Capabilities capability, Identity applicationId, Identity sourceId)
@@ -124,6 +78,48 @@ namespace TwainWpf
             }
         }
 
+        public BasicCapabilityResult GetBasicValue()
+        {
+            CapabilityOneValue oneValue = new CapabilityOneValue(_twainType, 0);
+            TwainCapability twainCapability = TwainCapability.From(_capability, oneValue);
+
+            TwainResult result = Twain32Native.DsCapability(_applicationId, _sourceId, DataGroup.Control, DataArgumentType.Capability, Message.Get, twainCapability);
+
+            if(result != TwainResult.Success)
+            {
+                ConditionCode conditionCode = GetStatus();
+
+                return new BasicCapabilityResult() { ConditionCode = conditionCode, ErrorCode = result };
+            }
+
+            twainCapability.ReadBackValue();
+
+            return new BasicCapabilityResult() { RawBasicValue = oneValue.Value };
+        }
+
         public void SetValue(short value) { SetValue<short>(value); }
+        protected ConditionCode GetStatus() { return DataSourceManager.GetConditionCode(_applicationId, _sourceId); }
+
+        protected void SetValue<T>(T value)
+        {
+            int rawValue = Convert.ToInt32(value);
+            CapabilityOneValue oneValue = new CapabilityOneValue(_twainType, rawValue);
+            TwainCapability twainCapability = TwainCapability.From(_capability, oneValue);
+
+            TwainResult result = Twain32Native.DsCapability(_applicationId, _sourceId, DataGroup.Control, DataArgumentType.Capability, Message.Set, twainCapability);
+
+            if(result == TwainResult.Success)
+            {
+                return;
+            }
+            if(result == TwainResult.Failure)
+            {
+                throw new TwainException("Failed to set capability.", result, GetStatus());
+            }
+            if(result != TwainResult.CheckStatus)
+            {
+                throw new TwainException("Failed to set capability.", result);
+            }
+        }
     }
 }

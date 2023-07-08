@@ -14,12 +14,27 @@ namespace TwainControl;
 public partial class SaveDialogUserControl : UserControl, INotifyPropertyChanged
 {
     private BitmapSource previewImage;
-
     private TwainCtrl twainCtrl;
 
     public SaveDialogUserControl() { InitializeComponent(); }
 
     public event PropertyChangedEventHandler PropertyChanged;
+
+    public BitmapSource PreviewImage
+    {
+        get => previewImage;
+
+        set
+        {
+            if(previewImage != value)
+            {
+                previewImage = value;
+                OnPropertyChanged(nameof(PreviewImage));
+            }
+        }
+    }
+
+    protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
 
     private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
@@ -30,7 +45,6 @@ public partial class SaveDialogUserControl : UserControl, INotifyPropertyChanged
     }
 
     private void GenerateImage() { PreviewImage = twainCtrl.SaveIndex == 3 ? twainCtrl?.SeçiliResim?.Resim?.Resize(512, 512).BitmapSourceToBitmap().ConvertBlackAndWhite(Settings.Default.BwThreshold).ToBitmapImage(ImageFormat.Jpeg) : null; }
-
     private void TwainCtrl_PropertyChanged(object sender, PropertyChangedEventArgs e) { GenerateImage(); }
 
     private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -45,22 +59,6 @@ public partial class SaveDialogUserControl : UserControl, INotifyPropertyChanged
         if(PreviewImage is not null)
         {
             PreviewImage = null;
-        }
-    }
-
-    protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
-
-    public BitmapSource PreviewImage
-    {
-        get => previewImage;
-
-        set
-        {
-            if(previewImage != value)
-            {
-                previewImage = value;
-                OnPropertyChanged(nameof(PreviewImage));
-            }
         }
     }
 }

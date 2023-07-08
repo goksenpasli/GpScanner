@@ -106,38 +106,14 @@ namespace Tesseract
 
         protected ResultRenderer() { Handle = new HandleRef(this, IntPtr.Zero); }
 
-        protected override void Dispose(bool disposing)
+        public int PageNumber
         {
-            try
+            get
             {
-                if(disposing)
-                {
-                    if(_currentDocumentHandle != null)
-                    {
-                        _currentDocumentHandle.Dispose();
-                        _currentDocumentHandle = null;
-                    }
-                }
-            } finally
-            {
-                if(Handle.Handle != IntPtr.Zero)
-                {
-                    TessApi.Native.DeleteResultRenderer(Handle);
-                    Handle = new HandleRef(this, IntPtr.Zero);
-                }
+                VerifyNotDisposed();
+
+                return TessApi.Native.ResultRendererImageNum(Handle);
             }
-        }
-
-        /// <summary>
-        /// Initialise the render to use the specified native result renderer.
-        /// </summary>
-        /// <param name="handle"></param>
-        protected void Initialise(IntPtr handle)
-        {
-            Guard.Require(nameof(handle), handle != IntPtr.Zero, "handle must be initialised.");
-            Guard.Verify(Handle.Handle == IntPtr.Zero, "Rensult renderer has already been initialised.");
-
-            Handle = new HandleRef(this, handle);
         }
 
         protected HandleRef Handle { get; private set; }
@@ -181,14 +157,38 @@ namespace Tesseract
             return _currentDocumentHandle;
         }
 
-        public int PageNumber
+        protected override void Dispose(bool disposing)
         {
-            get
+            try
             {
-                VerifyNotDisposed();
-
-                return TessApi.Native.ResultRendererImageNum(Handle);
+                if(disposing)
+                {
+                    if(_currentDocumentHandle != null)
+                    {
+                        _currentDocumentHandle.Dispose();
+                        _currentDocumentHandle = null;
+                    }
+                }
+            } finally
+            {
+                if(Handle.Handle != IntPtr.Zero)
+                {
+                    TessApi.Native.DeleteResultRenderer(Handle);
+                    Handle = new HandleRef(this, IntPtr.Zero);
+                }
             }
+        }
+
+        /// <summary>
+        /// Initialise the render to use the specified native result renderer.
+        /// </summary>
+        /// <param name="handle"></param>
+        protected void Initialise(IntPtr handle)
+        {
+            Guard.Require(nameof(handle), handle != IntPtr.Zero, "handle must be initialised.");
+            Guard.Verify(Handle.Handle == IntPtr.Zero, "Rensult renderer has already been initialised.");
+
+            Handle = new HandleRef(this, handle);
         }
 
         /// <summary>
@@ -197,7 +197,6 @@ namespace Tesseract
         private class EndDocumentOnDispose : DisposableBase
         {
             private readonly ResultRenderer _renderer;
-
             private IntPtr _titlePtr;
 
             public EndDocumentOnDispose(ResultRenderer renderer, IntPtr titlePtr)

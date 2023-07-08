@@ -3,11 +3,8 @@
 public class Paper : InpcBase
 {
     private string category;
-
     private double height;
-
     private string paperType;
-
     private double width;
 
     public string Category

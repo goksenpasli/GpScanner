@@ -15,6 +15,20 @@ public class QrCode : InpcBase
 {
     private ResultPoint[] barcodePosition;
 
+    public ResultPoint[] BarcodePosition
+    {
+        get => barcodePosition;
+
+        set
+        {
+            if(barcodePosition != value)
+            {
+                barcodePosition = value;
+                OnPropertyChanged(nameof(BarcodePosition));
+            }
+        }
+    }
+
     public static WriteableBitmap GenerateQr(string text, int width = 120, int height = 120)
     {
         if(!string.IsNullOrWhiteSpace(text))
@@ -73,19 +87,5 @@ public class QrCode : InpcBase
         }
 
         return null;
-    }
-
-    public ResultPoint[] BarcodePosition
-    {
-        get => barcodePosition;
-
-        set
-        {
-            if(barcodePosition != value)
-            {
-                barcodePosition = value;
-                OnPropertyChanged(nameof(BarcodePosition));
-            }
-        }
     }
 }

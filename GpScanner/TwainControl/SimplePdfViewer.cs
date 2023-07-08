@@ -7,16 +7,7 @@ namespace TwainControl;
 public class SimplePdfViewer : PdfViewer.PdfViewer
 {
     private Window maximizePdfWindow;
-
     private PdfImportViewerControl pdfImportViewerControl;
-
-    private void MaximizePdfWindow_Closed(object sender, EventArgs e)
-    {
-        pdfImportViewerControl?.PdfViewer?.Dispose();
-        maximizePdfWindow.Closed -= MaximizePdfWindow_Closed;
-        maximizePdfWindow = null;
-        pdfImportViewerControl = null;
-    }
 
     protected override void OnMouseDoubleClick(MouseButtonEventArgs e)
     {
@@ -38,5 +29,13 @@ public class SimplePdfViewer : PdfViewer.PdfViewer
         _ = maximizePdfWindow.ShowDialog();
 
         base.OnMouseDoubleClick(e);
+    }
+
+    private void MaximizePdfWindow_Closed(object sender, EventArgs e)
+    {
+        pdfImportViewerControl?.PdfViewer?.Dispose();
+        maximizePdfWindow.Closed -= MaximizePdfWindow_Closed;
+        maximizePdfWindow = null;
+        pdfImportViewerControl = null;
     }
 }

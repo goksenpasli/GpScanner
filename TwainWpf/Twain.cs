@@ -29,27 +29,6 @@ namespace TwainWpf
         public event EventHandler<TransferImageEventArgs> TransferImage;
 
         /// <summary>
-        /// Shows a dialog prompting the use to select the source to scan from.
-        /// </summary>
-        public void SelectSource() { _dataSourceManager.SelectSource(); }
-
-        /// <summary>
-        /// Selects a source based on the product name string.
-        /// </summary>
-        /// <param name="sourceName">The source product name.</param>
-        public void SelectSource(string sourceName)
-        {
-            DataSource source = DataSource.GetSource(sourceName, _dataSourceManager.ApplicationId, _dataSourceManager.MessageHook);
-
-            _dataSourceManager.SelectSource(source);
-        }
-
-        /// <summary>
-        /// Starts scanning.
-        /// </summary>
-        public void StartScanning(ScanSettings settings) { _dataSourceManager.StartScan(settings); }
-
-        /// <summary>
         /// Gets the product name for the default source.
         /// </summary>
         public string DefaultSourceName
@@ -82,5 +61,26 @@ namespace TwainWpf
                 return result;
             }
         }
+
+        /// <summary>
+        /// Shows a dialog prompting the use to select the source to scan from.
+        /// </summary>
+        public void SelectSource() { _dataSourceManager.SelectSource(); }
+
+        /// <summary>
+        /// Selects a source based on the product name string.
+        /// </summary>
+        /// <param name="sourceName">The source product name.</param>
+        public void SelectSource(string sourceName)
+        {
+            DataSource source = DataSource.GetSource(sourceName, _dataSourceManager.ApplicationId, _dataSourceManager.MessageHook);
+
+            _dataSourceManager.SelectSource(source);
+        }
+
+        /// <summary>
+        /// Starts scanning.
+        /// </summary>
+        public void StartScanning(ScanSettings settings) { _dataSourceManager.StartScan(settings); }
     }
 }

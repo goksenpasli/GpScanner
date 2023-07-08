@@ -7,11 +7,8 @@ namespace GpScanner.ViewModel;
 public class Data : InpcBase
 {
     private string fileContent;
-
     private string fileName;
-
     private int ıd;
-
     private string qrData;
 
     [XmlAttribute(AttributeName = "FileContent")]

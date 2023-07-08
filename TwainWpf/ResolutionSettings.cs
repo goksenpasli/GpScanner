@@ -17,19 +17,15 @@ namespace TwainWpf
         /// Colour photocopier quality resolution.
         /// </summary>
         public static readonly ResolutionSettings ColourPhotocopier = new ResolutionSettings() { Dpi = 300, ColourSetting = ColourSetting.Colour };
-
         /// <summary>
         /// Fax quality resolution.
         /// </summary>
         public static readonly ResolutionSettings Fax = new ResolutionSettings() { Dpi = 200, ColourSetting = ColourSetting.BlackAndWhite };
-
         /// <summary>
         /// Photocopier quality resolution.
         /// </summary>
         public static readonly ResolutionSettings Photocopier = new ResolutionSettings() { Dpi = 300, ColourSetting = ColourSetting.GreyScale };
-
         private ColourSetting _colourSettings;
-
         private int? _dpi;
 
         /// <summary>

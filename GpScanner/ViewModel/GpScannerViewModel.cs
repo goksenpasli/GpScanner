@@ -42,97 +42,52 @@ namespace GpScanner.ViewModel;
 
 public class GpScannerViewModel : InpcBase
 {
-    private static DispatcherTimer timer;
-
-    private int allPdfPage;
-
-    private bool anyDataExists;
-
-    private string aramaMetni;
-
-    private string barcodeContent;
-
-    private ObservableCollection<string> barcodeList = new();
-
-    private bool batchDialogOpen;
-
-    private string batchFolder;
-
-    private ObservableCollection<BatchTxtOcr> batchTxtOcrs;
-
-    private XmlLanguage calendarLang;
-
-    private ObservableCollection<Chart> chartData;
-
-    private int? checkedPdfCount = 0;
-
-    private int cycleIndex;
-
-    private bool detectBarCode = true;
-
-    private bool detectPageSeperator;
-
-    private bool documentPanelIsExpanded;
-
-    private ObservableCollection<Scanner> dosyalar;
-
-    private double fold = 0.3;
-
-    private string ftpPassword = string.Empty;
-
-    private string ftpSite = string.Empty;
-
-    private string ftpUserName = string.Empty;
-
-    private readonly string[] imagefileextensions = { ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp" };
-
-    private bool listBoxBorderAnimation;
-
-    private GridLength mainWindowDocumentGuiControlLength = new(1, GridUnitType.Star);
-
-    private GridLength mainWindowGuiControlLength = new(3, GridUnitType.Star);
-
-    private bool ocrısBusy;
-
-    private string patchFileName;
-
-    private string patchProfileName = string.Empty;
-
-    private string patchTag;
-
-    private bool pdfBatchRunning;
-
-    private double pdfMergeProgressValue;
-
-    private bool pdfOnlyText;
-
-    private Brush progressBarForegroundBrush = Brushes.Green;
-
-    private ObservableCollection<OcrData> scannedText = new();
-
-    private string seçiliDil;
-
-    private DateTime? seçiliGün;
-
-    private Scanner selectedDocument;
-
-    private string selectedFtp;
-
-    private Size selectedSize;
-
-    private bool shutdown;
-
-    private bool sıralama;
-
-    private readonly string[] supportedfilesextension = { ".pdf", ".tıff", ".tıf", ".tiff", ".tif", ".jpg", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml" };
-
-    private TesseractViewModel tesseractViewModel;
-
-    private TranslateViewModel translateViewModel;
-
     public Task Filesavetask;
-
     public CancellationTokenSource ocrcancellationToken;
+    private static DispatcherTimer timer;
+    private readonly string[] imagefileextensions = { ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp" };
+    private readonly string[] supportedfilesextension = { ".pdf", ".tıff", ".tıf", ".tiff", ".tif", ".jpg", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml" };
+    private int allPdfPage;
+    private bool anyDataExists;
+    private string aramaMetni;
+    private string barcodeContent;
+    private ObservableCollection<string> barcodeList = new();
+    private bool batchDialogOpen;
+    private string batchFolder;
+    private ObservableCollection<BatchTxtOcr> batchTxtOcrs;
+    private XmlLanguage calendarLang;
+    private ObservableCollection<Chart> chartData;
+    private int? checkedPdfCount = 0;
+    private int cycleIndex;
+    private bool detectBarCode = true;
+    private bool detectPageSeperator;
+    private bool documentPanelIsExpanded;
+    private ObservableCollection<Scanner> dosyalar;
+    private double fold = 0.3;
+    private string ftpPassword = string.Empty;
+    private string ftpSite = string.Empty;
+    private string ftpUserName = string.Empty;
+    private bool listBoxBorderAnimation;
+    private GridLength mainWindowDocumentGuiControlLength = new(1, GridUnitType.Star);
+    private GridLength mainWindowGuiControlLength = new(3, GridUnitType.Star);
+    private bool ocrısBusy;
+    private string patchFileName;
+    private string patchProfileName = string.Empty;
+    private string patchTag;
+    private bool pdfBatchRunning;
+    private double pdfMergeProgressValue;
+    private bool pdfOnlyText;
+    private Brush progressBarForegroundBrush = Brushes.Green;
+    private ObservableCollection<OcrData> scannedText = new();
+    private string seçiliDil;
+    private DateTime? seçiliGün;
+    private Scanner selectedDocument;
+    private string selectedFtp;
+    private Size selectedSize;
+    private bool shutdown;
+    private bool sıralama;
+    private TesseractViewModel tesseractViewModel;
+    private TranslateViewModel translateViewModel;
 
     public GpScannerViewModel()
     {
@@ -679,378 +634,17 @@ public class GpScannerViewModel : InpcBase
             new RelayCommand<object>(parameter => PdfViewer.PdfViewer.PrintImageSource(parameter as ImageSource, 300, false), parameter => parameter is ImageSource);
     }
 
-    private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    public static bool IsAdministrator
     {
-        if(e.PropertyName is "RegisterBatchWatcher" && Settings.Default.RegisterBatchWatcher)
+        get
         {
-            if(!Directory.Exists(Settings.Default.BatchFolder))
-            {
-                Settings.Default.RegisterBatchWatcher = false;
-                Settings.Default.BatchFolder = null;
-            } else
-            {
-                _ = MessageBox.Show(Translation.GetResStringValue("RESTARTAPP"));
-            }
-        }
-
-        if(e.PropertyName is "WatchFolderPdfFileChange" && Settings.Default.WatchFolderPdfFileChange)
-        {
-            _ = MessageBox.Show(Translation.GetResStringValue("RESTARTAPP"));
-        }
-
-        if(e.PropertyName is "BatchFolder" && Settings.Default.BatchFolder?.Length == 0)
-        {
-            Settings.Default.RegisterBatchWatcher = false;
-        }
-
-        Settings.Default.Save();
-    }
-
-    private void GenerateFoldTimer()
-    {
-        timer = new DispatcherTimer(DispatcherPriority.Normal) { Interval = TimeSpan.FromMilliseconds(15) };
-        timer.Tick += OnTick;
-        timer.Start();
-    }
-
-    private void GenerateJumpList()
-    {
-        if(IsWin7OrAbove())
-        {
-            string fileName = Process.GetCurrentProcess().MainModule.FileName;
-            FileVersionInfo version = FileVersionInfo.GetVersionInfo(fileName);
-            JumpTask update = new()
-            {
-                IconResourcePath = $@"{Path.GetDirectoryName(fileName)}\twux32.exe",
-                Description = $"GPSCANNER {Translation.GetResStringValue("UPDATE")}",
-                ApplicationPath = $@"{Path.GetDirectoryName(fileName)}\twux32.exe",
-                Arguments = $"https://github.com/goksenpasli/GpScanner/releases/download/{version.FileMajorPart}.{version.FileMinorPart}/GpScanner-Setup.txt",
-                Title = Translation.GetResStringValue("UPDATE")
-            };
-            JumpTask scan = new() { Arguments = "/StiDevice:", Description = Translation.GetResStringValue("SCAN"), ApplicationPath = fileName, Title = Translation.GetResStringValue("SCAN") };
-            JumpList list = JumpList.GetJumpList(Application.Current);
-            list ??= new JumpList();
-            list.ShowRecentCategory = true;
-            list.ShowFrequentCategory = true;
-            JumpList.SetJumpList(Application.Current, list);
-            list.JumpItems.Add(update);
-            list.JumpItems.Add(scan);
-            list.Apply();
+            using WindowsIdentity identity = WindowsIdentity.GetCurrent();
+            WindowsPrincipal principal = new(identity);
+            return principal.IsInRole(WindowsBuiltInRole.Administrator);
         }
     }
 
-    private void GpScannerViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
-    {
-        if(e.PropertyName is "SeçiliGün")
-        {
-            MainWindow.cvs.Filter += (s, x) =>
-            {
-                Scanner scanner = x.Item as Scanner;
-                string seçiligün = SeçiliGün.Value.ToString(Twainsettings.Settings.Default.FolderDateFormat);
-                x.Accepted = Directory.GetParent(scanner?.FileName).Name.StartsWith(seçiligün);
-            };
-        }
-
-        if(e.PropertyName is "Sıralama")
-        {
-            MainWindow.cvs?.SortDescriptions.Clear();
-            if(Sıralama)
-            {
-                MainWindow.cvs?.SortDescriptions.Add(new SortDescription("FileName", ListSortDirection.Descending));
-                return;
-            }
-
-            MainWindow.cvs?.SortDescriptions.Add(new SortDescription("FileName", ListSortDirection.Ascending));
-        }
-
-        if(e.PropertyName is "AramaMetni")
-        {
-            if(string.IsNullOrEmpty(AramaMetni))
-            {
-                OnPropertyChanged(nameof(SeçiliGün));
-                return;
-            }
-
-            MainWindow.cvs.Filter += (s, x) =>
-            {
-                Scanner scanner = x.Item as Scanner;
-                x.Accepted = Path.GetFileNameWithoutExtension(scanner?.FileName).Contains(AramaMetni, StringComparison.OrdinalIgnoreCase) ||
-                    ScannerData.Data.Any(z => z.FileName == scanner?.FileName && z.FileContent?.Contains(AramaMetni, StringComparison.OrdinalIgnoreCase) == true);
-            };
-        }
-
-        if(e.PropertyName is "SeçiliDil")
-        {
-            Application.Current?.Windows?.Cast<Window>()?.ToList()
-                ?.ForEach(z => z.FlowDirection = FlowDirection.LeftToRight);
-            switch(SeçiliDil)
-            {
-                case "TÜRKÇE":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("tr-TR");
-                    CalendarLang = XmlLanguage.GetLanguage("tr-TR");
-                    break;
-
-                case "ENGLISH":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("en-EN");
-                    CalendarLang = XmlLanguage.GetLanguage("en-EN");
-                    break;
-
-                case "FRANÇAIS":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("fr-FR");
-                    CalendarLang = XmlLanguage.GetLanguage("fr-FR");
-                    break;
-
-                case "ITALIANO":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("it-IT");
-                    CalendarLang = XmlLanguage.GetLanguage("it-IT");
-                    break;
-
-                case "عربي":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("ar-AR");
-                    CalendarLang = XmlLanguage.GetLanguage("ar-AR");
-                    Application.Current?.Windows?.Cast<Window>()?.ToList()
-                        ?.ForEach(z => z.FlowDirection = FlowDirection.RightToLeft);
-                    break;
-
-                case "РУССКИЙ":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("ru-RU");
-                    CalendarLang = XmlLanguage.GetLanguage("ru-RU");
-                    break;
-
-                case "DEUTSCH":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("de-DE");
-                    CalendarLang = XmlLanguage.GetLanguage("de-DE");
-                    break;
-
-                case "日本":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("ja-JP");
-                    CalendarLang = XmlLanguage.GetLanguage("ja-JP");
-                    break;
-
-                case "DUTCH":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("nl-NL");
-                    CalendarLang = XmlLanguage.GetLanguage("nl-NL");
-                    break;
-
-                case "CZECH":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("cs-CZ");
-                    CalendarLang = XmlLanguage.GetLanguage("cs-CZ");
-                    break;
-
-                case "ESPAÑOL":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("es-ES");
-                    CalendarLang = XmlLanguage.GetLanguage("es-ES");
-                    break;
-
-                case "中國人":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("zh-CN");
-                    CalendarLang = XmlLanguage.GetLanguage("zh-CN");
-                    break;
-            }
-
-            Settings.Default.DefaultLang = SeçiliDil;
-        }
-    }
-
-    private bool IsValidHttpAddress(string address)
-    {
-        const string pattern = @"^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$";
-        return Regex.IsMatch(address, pattern);
-    }
-
-    private bool IsWin7OrAbove()
-    {
-        Version os = Environment.OSVersion.Version;
-        return os.Major > 6 || (os.Major == 6 && os.Minor >= 1);
-    }
-
-    private void OnTick(object sender, EventArgs e)
-    {
-        if(StillImageHelper.FirstLanuchScan)
-        {
-            TimerFold();
-            return;
-        }
-
-        Fold -= 0.01;
-        if(Fold <= 0)
-        {
-            TimerFold();
-        }
-
-        void TimerFold()
-        {
-            Fold = 0;
-            timer.Stop();
-            timer.Tick -= OnTick;
-        }
-    }
-
-    private void RegisterSimplePdfFileWatcher()
-    {
-        FileSystemWatcher watcher = new(Twainsettings.Settings.Default.AutoFolder) { NotifyFilter = NotifyFilters.FileName, Filter = "*.pdf", IncludeSubdirectories = true, EnableRaisingEvents = true };
-        watcher.Renamed += (s, e) =>
-        {
-            foreach(Data item in ScannerData?.Data?.Where(z => z.FileName == e.OldFullPath))
-            {
-                item.FileName = e.FullPath;
-            }
-
-            DatabaseSave.Execute(null);
-            Dosyalar = GetScannerFileData();
-        };
-    }
-
-    public void AddBarcodeToList(string barcodecontent)
-    {
-        if(!string.IsNullOrWhiteSpace(barcodecontent))
-        {
-            BarcodeList.Add(barcodecontent);
-        }
-    }
-
-    public static void BackupDataXmlFile()
-    {
-        if(File.Exists(Settings.Default.DatabaseFile))
-        {
-            FileInfo fi = new(Settings.Default.DatabaseFile);
-            if(fi.Length > 0)
-            {
-                File.Copy(fi.FullName, $"{fi.FullName}{DateTime.Today.DayOfWeek}.bak", true);
-            }
-        }
-    }
-
-    public static ObservableCollection<Data> DataYükle()
-    {
-        try
-        {
-            if(DesignerProperties.GetIsInDesignMode(new DependencyObject()))
-            {
-                return null;
-            }
-
-            if(File.Exists(XmlDataPath))
-            {
-                return XmlDataPath.DeSerialize<ScannerData>().Data;
-            }
-
-            _ = Directory.CreateDirectory(Path.GetDirectoryName(XmlDataPath));
-            return new ObservableCollection<Data>();
-        } catch(Exception ex)
-        {
-            _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
-            return null;
-        }
-    }
-
-    public static async Task FtpUploadAsync(string uri, string userName, string password, Scanner scanner)
-    {
-        try
-        {
-            using WebClient webClient = new();
-            webClient.Credentials = new NetworkCredential(userName, password.Decrypt());
-            webClient.UploadProgressChanged += (sender, args) => scanner.FtpLoadProgressValue = args.ProgressPercentage;
-            string address = $"{uri}/{Directory.GetParent(scanner.FileName).Name}{Path.GetFileName(scanner.FileName)}";
-            _ = await webClient.UploadFileTaskAsync(address, WebRequestMethods.Ftp.UploadFile, scanner.FileName);
-        } catch(Exception ex)
-        {
-            _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
-        }
-    }
-
-    public ObservableCollection<Chart> GetChartsData()
-    {
-        ObservableCollection<Chart> list = new();
-        try
-        {
-            IOrderedEnumerable<IGrouping<int, Scanner>> chartdata = Dosyalar?
-                .Where(z => DateTime.TryParse(Directory.GetParent(z.FileName).Name, out DateTime _))?
-                .GroupBy(z => DateTime.Parse(Directory.GetParent(z.FileName).Name).Day)?
-                .OrderBy(z => z.Key);
-            if(chartdata != null)
-            {
-                foreach(IGrouping<int, Scanner> chart in chartdata)
-                {
-                    list.Add(new Chart { Description = chart?.Key.ToString(), ChartBrush = RandomColor(), ChartValue = chart.Count() });
-                }
-            }
-        } catch(Exception)
-        {
-        }
-
-        return list;
-    }
-
-    public string GetPatchCodeResult(string barcode)
-    {
-        if(!string.IsNullOrWhiteSpace(barcode))
-        {
-            List<string> patchcodes = Settings.Default.PatchCodes.Cast<string>().ToList();
-            string matchingPatchCode = patchcodes.Find(z => z.Split('|')[0] == barcode);
-            return matchingPatchCode != null ? matchingPatchCode.Split('|')[1] : "Tarama";
-        }
-
-        return string.Empty;
-    }
-
-    public ObservableCollection<Scanner> GetScannerFileData()
-    {
-        if(Directory.Exists(Twainsettings.Settings.Default.AutoFolder))
-        {
-            ObservableCollection<Scanner> list = new();
-            try
-            {
-                List<string> files = Directory
-                    .EnumerateFiles(Twainsettings.Settings.Default.AutoFolder, "*.*", SearchOption.AllDirectories)
-                    .Where(s => supportedfilesextension.Contains(Path.GetExtension(s).ToLower()))
-                    .ToList();
-                files.Sort(new StrCmpLogicalComparer());
-                foreach(string dosya in files)
-                {
-                    list.Add(new Scanner { FileName = dosya });
-                }
-
-                return list;
-            } catch(UnauthorizedAccessException)
-            {
-                return list;
-            }
-        }
-
-        return null;
-    }
-
-    public bool NeedAppUpdate() { return Settings.Default.CheckAppUpdate && DateTime.Now > Settings.Default.LastCheckDate.AddDays(Settings.Default.UpdateInterval); }
-
-    public void RegisterBatchImageFileWatcher(Paper paper, string batchsavefolder)
-    {
-        FileSystemWatcher watcher = new(batchsavefolder) { NotifyFilter = NotifyFilters.FileName, Filter = "*.*", IncludeSubdirectories = true, EnableRaisingEvents = true };
-        watcher.Created += async (s, e) =>
-        {
-            if(imagefileextensions.Contains(Path.GetExtension(e.Name.ToLower())))
-            {
-                await Task.Delay(1000);
-                ObservableCollection<OcrData> scannedText = await e.FullPath.OcrAsync(Settings.Default.DefaultTtsLang);
-                await Task.Run(
-                    () =>
-                    {
-                        PdfBatchRunning = true;
-                        using PdfDocument pfdocument = e.FullPath.GeneratePdf(paper, scannedText);
-                        pfdocument.Save($"{batchsavefolder}\\{Path.ChangeExtension(e.Name, ".pdf")}");
-                        PdfBatchRunning = false;
-                        GC.Collect();
-                    });
-            }
-        };
-    }
-
-    public void ReloadFileDatas()
-    {
-        Dosyalar = GetScannerFileData();
-        ChartData = GetChartsData();
-        SeçiliGün = DateTime.Today;
-    }
+    public static string XmlDataPath { get; set; } = Settings.Default.DatabaseFile;
 
     public ICommand AddFtpSites { get; }
 
@@ -1339,16 +933,6 @@ public class GpScannerViewModel : InpcBase
     }
 
     public ObservableCollection<Size> GetPreviewSize => new() { new Size(175, 280), new Size(230, 370), new Size(280, 450), new Size(350, 563), new Size(425, 645) };
-
-    public static bool IsAdministrator
-    {
-        get
-        {
-            using WindowsIdentity identity = WindowsIdentity.GetCurrent();
-            WindowsPrincipal principal = new(identity);
-            return principal.IsInRole(WindowsBuiltInRole.Administrator);
-        }
-    }
 
     public bool ListBoxBorderAnimation
     {
@@ -1696,5 +1280,376 @@ public class GpScannerViewModel : InpcBase
 
     public RelayCommand<object> UploadSharePoint { get; }
 
-    public static string XmlDataPath { get; set; } = Settings.Default.DatabaseFile;
+    public static void BackupDataXmlFile()
+    {
+        if(File.Exists(Settings.Default.DatabaseFile))
+        {
+            FileInfo fi = new(Settings.Default.DatabaseFile);
+            if(fi.Length > 0)
+            {
+                File.Copy(fi.FullName, $"{fi.FullName}{DateTime.Today.DayOfWeek}.bak", true);
+            }
+        }
+    }
+
+    public static ObservableCollection<Data> DataYükle()
+    {
+        try
+        {
+            if(DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+            {
+                return null;
+            }
+
+            if(File.Exists(XmlDataPath))
+            {
+                return XmlDataPath.DeSerialize<ScannerData>().Data;
+            }
+
+            _ = Directory.CreateDirectory(Path.GetDirectoryName(XmlDataPath));
+            return new ObservableCollection<Data>();
+        } catch(Exception ex)
+        {
+            _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+            return null;
+        }
+    }
+
+    public static async Task FtpUploadAsync(string uri, string userName, string password, Scanner scanner)
+    {
+        try
+        {
+            using WebClient webClient = new();
+            webClient.Credentials = new NetworkCredential(userName, password.Decrypt());
+            webClient.UploadProgressChanged += (sender, args) => scanner.FtpLoadProgressValue = args.ProgressPercentage;
+            string address = $"{uri}/{Directory.GetParent(scanner.FileName).Name}{Path.GetFileName(scanner.FileName)}";
+            _ = await webClient.UploadFileTaskAsync(address, WebRequestMethods.Ftp.UploadFile, scanner.FileName);
+        } catch(Exception ex)
+        {
+            _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    public void AddBarcodeToList(string barcodecontent)
+    {
+        if(!string.IsNullOrWhiteSpace(barcodecontent))
+        {
+            BarcodeList.Add(barcodecontent);
+        }
+    }
+
+    public ObservableCollection<Chart> GetChartsData()
+    {
+        ObservableCollection<Chart> list = new();
+        try
+        {
+            IOrderedEnumerable<IGrouping<int, Scanner>> chartdata = Dosyalar?
+                .Where(z => DateTime.TryParse(Directory.GetParent(z.FileName).Name, out DateTime _))?
+                .GroupBy(z => DateTime.Parse(Directory.GetParent(z.FileName).Name).Day)?
+                .OrderBy(z => z.Key);
+            if(chartdata != null)
+            {
+                foreach(IGrouping<int, Scanner> chart in chartdata)
+                {
+                    list.Add(new Chart { Description = chart?.Key.ToString(), ChartBrush = RandomColor(), ChartValue = chart.Count() });
+                }
+            }
+        } catch(Exception)
+        {
+        }
+
+        return list;
+    }
+
+    public string GetPatchCodeResult(string barcode)
+    {
+        if(!string.IsNullOrWhiteSpace(barcode))
+        {
+            List<string> patchcodes = Settings.Default.PatchCodes.Cast<string>().ToList();
+            string matchingPatchCode = patchcodes.Find(z => z.Split('|')[0] == barcode);
+            return matchingPatchCode != null ? matchingPatchCode.Split('|')[1] : "Tarama";
+        }
+
+        return string.Empty;
+    }
+
+    public ObservableCollection<Scanner> GetScannerFileData()
+    {
+        if(Directory.Exists(Twainsettings.Settings.Default.AutoFolder))
+        {
+            ObservableCollection<Scanner> list = new();
+            try
+            {
+                List<string> files = Directory
+                    .EnumerateFiles(Twainsettings.Settings.Default.AutoFolder, "*.*", SearchOption.AllDirectories)
+                    .Where(s => supportedfilesextension.Contains(Path.GetExtension(s).ToLower()))
+                    .ToList();
+                files.Sort(new StrCmpLogicalComparer());
+                foreach(string dosya in files)
+                {
+                    list.Add(new Scanner { FileName = dosya });
+                }
+
+                return list;
+            } catch(UnauthorizedAccessException)
+            {
+                return list;
+            }
+        }
+
+        return null;
+    }
+
+    public bool NeedAppUpdate() { return Settings.Default.CheckAppUpdate && DateTime.Now > Settings.Default.LastCheckDate.AddDays(Settings.Default.UpdateInterval); }
+
+    public void RegisterBatchImageFileWatcher(Paper paper, string batchsavefolder)
+    {
+        FileSystemWatcher watcher = new(batchsavefolder) { NotifyFilter = NotifyFilters.FileName, Filter = "*.*", IncludeSubdirectories = true, EnableRaisingEvents = true };
+        watcher.Created += async (s, e) =>
+        {
+            if(imagefileextensions.Contains(Path.GetExtension(e.Name.ToLower())))
+            {
+                await Task.Delay(1000);
+                ObservableCollection<OcrData> scannedText = await e.FullPath.OcrAsync(Settings.Default.DefaultTtsLang);
+                await Task.Run(
+                    () =>
+                    {
+                        PdfBatchRunning = true;
+                        using PdfDocument pfdocument = e.FullPath.GeneratePdf(paper, scannedText);
+                        pfdocument.Save($"{batchsavefolder}\\{Path.ChangeExtension(e.Name, ".pdf")}");
+                        PdfBatchRunning = false;
+                        GC.Collect();
+                    });
+            }
+        };
+    }
+
+    public void ReloadFileDatas()
+    {
+        Dosyalar = GetScannerFileData();
+        ChartData = GetChartsData();
+        SeçiliGün = DateTime.Today;
+    }
+
+    private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if(e.PropertyName is "RegisterBatchWatcher" && Settings.Default.RegisterBatchWatcher)
+        {
+            if(!Directory.Exists(Settings.Default.BatchFolder))
+            {
+                Settings.Default.RegisterBatchWatcher = false;
+                Settings.Default.BatchFolder = null;
+            } else
+            {
+                _ = MessageBox.Show(Translation.GetResStringValue("RESTARTAPP"));
+            }
+        }
+
+        if(e.PropertyName is "WatchFolderPdfFileChange" && Settings.Default.WatchFolderPdfFileChange)
+        {
+            _ = MessageBox.Show(Translation.GetResStringValue("RESTARTAPP"));
+        }
+
+        if(e.PropertyName is "BatchFolder" && Settings.Default.BatchFolder?.Length == 0)
+        {
+            Settings.Default.RegisterBatchWatcher = false;
+        }
+
+        Settings.Default.Save();
+    }
+
+    private void GenerateFoldTimer()
+    {
+        timer = new DispatcherTimer(DispatcherPriority.Normal) { Interval = TimeSpan.FromMilliseconds(15) };
+        timer.Tick += OnTick;
+        timer.Start();
+    }
+
+    private void GenerateJumpList()
+    {
+        if(IsWin7OrAbove())
+        {
+            string fileName = Process.GetCurrentProcess().MainModule.FileName;
+            FileVersionInfo version = FileVersionInfo.GetVersionInfo(fileName);
+            JumpTask update = new()
+            {
+                IconResourcePath = $@"{Path.GetDirectoryName(fileName)}\twux32.exe",
+                Description = $"GPSCANNER {Translation.GetResStringValue("UPDATE")}",
+                ApplicationPath = $@"{Path.GetDirectoryName(fileName)}\twux32.exe",
+                Arguments = $"https://github.com/goksenpasli/GpScanner/releases/download/{version.FileMajorPart}.{version.FileMinorPart}/GpScanner-Setup.txt",
+                Title = Translation.GetResStringValue("UPDATE")
+            };
+            JumpTask scan = new() { Arguments = "/StiDevice:", Description = Translation.GetResStringValue("SCAN"), ApplicationPath = fileName, Title = Translation.GetResStringValue("SCAN") };
+            JumpList list = JumpList.GetJumpList(Application.Current);
+            list ??= new JumpList();
+            list.ShowRecentCategory = true;
+            list.ShowFrequentCategory = true;
+            JumpList.SetJumpList(Application.Current, list);
+            list.JumpItems.Add(update);
+            list.JumpItems.Add(scan);
+            list.Apply();
+        }
+    }
+
+    private void GpScannerViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if(e.PropertyName is "SeçiliGün")
+        {
+            MainWindow.cvs.Filter += (s, x) =>
+            {
+                Scanner scanner = x.Item as Scanner;
+                string seçiligün = SeçiliGün.Value.ToString(Twainsettings.Settings.Default.FolderDateFormat);
+                x.Accepted = Directory.GetParent(scanner?.FileName).Name.StartsWith(seçiligün);
+            };
+        }
+
+        if(e.PropertyName is "Sıralama")
+        {
+            MainWindow.cvs?.SortDescriptions.Clear();
+            if(Sıralama)
+            {
+                MainWindow.cvs?.SortDescriptions.Add(new SortDescription("FileName", ListSortDirection.Descending));
+                return;
+            }
+
+            MainWindow.cvs?.SortDescriptions.Add(new SortDescription("FileName", ListSortDirection.Ascending));
+        }
+
+        if(e.PropertyName is "AramaMetni")
+        {
+            if(string.IsNullOrEmpty(AramaMetni))
+            {
+                OnPropertyChanged(nameof(SeçiliGün));
+                return;
+            }
+
+            MainWindow.cvs.Filter += (s, x) =>
+            {
+                Scanner scanner = x.Item as Scanner;
+                x.Accepted = Path.GetFileNameWithoutExtension(scanner?.FileName).Contains(AramaMetni, StringComparison.OrdinalIgnoreCase) ||
+                    ScannerData.Data.Any(z => z.FileName == scanner?.FileName && z.FileContent?.Contains(AramaMetni, StringComparison.OrdinalIgnoreCase) == true);
+            };
+        }
+
+        if(e.PropertyName is "SeçiliDil")
+        {
+            Application.Current?.Windows?.Cast<Window>()?.ToList()
+                ?.ForEach(z => z.FlowDirection = FlowDirection.LeftToRight);
+            switch(SeçiliDil)
+            {
+                case "TÜRKÇE":
+                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("tr-TR");
+                    CalendarLang = XmlLanguage.GetLanguage("tr-TR");
+                    break;
+
+                case "ENGLISH":
+                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("en-EN");
+                    CalendarLang = XmlLanguage.GetLanguage("en-EN");
+                    break;
+
+                case "FRANÇAIS":
+                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("fr-FR");
+                    CalendarLang = XmlLanguage.GetLanguage("fr-FR");
+                    break;
+
+                case "ITALIANO":
+                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("it-IT");
+                    CalendarLang = XmlLanguage.GetLanguage("it-IT");
+                    break;
+
+                case "عربي":
+                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("ar-AR");
+                    CalendarLang = XmlLanguage.GetLanguage("ar-AR");
+                    Application.Current?.Windows?.Cast<Window>()?.ToList()
+                        ?.ForEach(z => z.FlowDirection = FlowDirection.RightToLeft);
+                    break;
+
+                case "РУССКИЙ":
+                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("ru-RU");
+                    CalendarLang = XmlLanguage.GetLanguage("ru-RU");
+                    break;
+
+                case "DEUTSCH":
+                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("de-DE");
+                    CalendarLang = XmlLanguage.GetLanguage("de-DE");
+                    break;
+
+                case "日本":
+                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("ja-JP");
+                    CalendarLang = XmlLanguage.GetLanguage("ja-JP");
+                    break;
+
+                case "DUTCH":
+                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("nl-NL");
+                    CalendarLang = XmlLanguage.GetLanguage("nl-NL");
+                    break;
+
+                case "CZECH":
+                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("cs-CZ");
+                    CalendarLang = XmlLanguage.GetLanguage("cs-CZ");
+                    break;
+
+                case "ESPAÑOL":
+                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("es-ES");
+                    CalendarLang = XmlLanguage.GetLanguage("es-ES");
+                    break;
+
+                case "中國人":
+                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("zh-CN");
+                    CalendarLang = XmlLanguage.GetLanguage("zh-CN");
+                    break;
+            }
+
+            Settings.Default.DefaultLang = SeçiliDil;
+        }
+    }
+
+    private bool IsValidHttpAddress(string address)
+    {
+        const string pattern = @"^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$";
+        return Regex.IsMatch(address, pattern);
+    }
+
+    private bool IsWin7OrAbove()
+    {
+        Version os = Environment.OSVersion.Version;
+        return os.Major > 6 || (os.Major == 6 && os.Minor >= 1);
+    }
+
+    private void OnTick(object sender, EventArgs e)
+    {
+        if(StillImageHelper.FirstLanuchScan)
+        {
+            TimerFold();
+            return;
+        }
+
+        Fold -= 0.01;
+        if(Fold <= 0)
+        {
+            TimerFold();
+        }
+
+        void TimerFold()
+        {
+            Fold = 0;
+            timer.Stop();
+            timer.Tick -= OnTick;
+        }
+    }
+
+    private void RegisterSimplePdfFileWatcher()
+    {
+        FileSystemWatcher watcher = new(Twainsettings.Settings.Default.AutoFolder) { NotifyFilter = NotifyFilters.FileName, Filter = "*.pdf", IncludeSubdirectories = true, EnableRaisingEvents = true };
+        watcher.Renamed += (s, e) =>
+        {
+            foreach(Data item in ScannerData?.Data?.Where(z => z.FileName == e.OldFullPath))
+            {
+                item.FileName = e.FullPath;
+            }
+
+            DatabaseSave.Execute(null);
+            Dosyalar = GetScannerFileData();
+        };
+    }
 }

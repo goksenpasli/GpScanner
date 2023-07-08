@@ -322,9 +322,7 @@ namespace Tesseract.Interop
             "<meta http-equiv=\"Content-Type\" content=\"text/html;" +
             "charset=utf-8\" />\n<meta name='ocr-system' content='tesseract'/>\n" +
             "</head>\n<body>\n";
-
         public const string htmlEndTag = "</body>\n</html>\n";
-
         public const string xhtmlBeginTag =
             "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
             "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n" +
@@ -338,25 +336,20 @@ namespace Tesseract.Interop
             " ocr_line ocrx_word" +
             "'/>\n" +
             "</head>\n<body>\n";
-
         public const string xhtmlEndTag = " </body>\n</html>\n";
-
         private static ITessApiSignatures native;
 
-        /// <summary>
-        /// Returns the null terminated UTF-8 encoded text string for the current choice
-        /// </summary>
-        /// <remarks>
-        /// NOTE: Unlike LTRResultIterator::GetUTF8Text, the return points to an internal structure and should NOT be
-        /// delete[]ed to free after use.
-        /// </remarks>
-        /// <param name="choiceIteratorHandle"></param>
-        /// <returns>string</returns>
-        internal static string ChoiceIteratorGetUTF8Text(HandleRef choiceIteratorHandle)
+        public static ITessApiSignatures Native
         {
-            Guard.Require(nameof(choiceIteratorHandle), choiceIteratorHandle.Handle != IntPtr.Zero, "ChoiceIterator Handle cannot be a null IntPtr and is required");
-            IntPtr txtChoiceHandle = Native.ChoiceIteratorGetUTF8TextInternal(choiceIteratorHandle);
-            return MarshalHelper.PtrToString(txtChoiceHandle, Encoding.UTF8);
+            get
+            {
+                if(native == null)
+                {
+                    Initialize();
+                }
+
+                return native;
+            }
         }
 
         public static string BaseAPIGetAltoText(HandleRef handle, int pageNum)
@@ -575,17 +568,20 @@ namespace Tesseract.Interop
             return txtHandle != IntPtr.Zero ? MarshalHelper.PtrToString(txtHandle, Encoding.UTF8) : null;
         }
 
-        public static ITessApiSignatures Native
+        /// <summary>
+        /// Returns the null terminated UTF-8 encoded text string for the current choice
+        /// </summary>
+        /// <remarks>
+        /// NOTE: Unlike LTRResultIterator::GetUTF8Text, the return points to an internal structure and should NOT be
+        /// delete[]ed to free after use.
+        /// </remarks>
+        /// <param name="choiceIteratorHandle"></param>
+        /// <returns>string</returns>
+        internal static string ChoiceIteratorGetUTF8Text(HandleRef choiceIteratorHandle)
         {
-            get
-            {
-                if(native == null)
-                {
-                    Initialize();
-                }
-
-                return native;
-            }
+            Guard.Require(nameof(choiceIteratorHandle), choiceIteratorHandle.Handle != IntPtr.Zero, "ChoiceIterator Handle cannot be a null IntPtr and is required");
+            IntPtr txtChoiceHandle = Native.ChoiceIteratorGetUTF8TextInternal(choiceIteratorHandle);
+            return MarshalHelper.PtrToString(txtChoiceHandle, Encoding.UTF8);
         }
     }
 }

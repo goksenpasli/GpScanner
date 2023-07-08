@@ -16,24 +16,15 @@ namespace DvdBurner
 {
     public class Burner : Control, INotifyPropertyChanged
     {
-        private const string WarnText = "İşlem Sürüyor. Bitmesini Bekleyin.";
-
-        private static Task Burntask;
-
-        private static Task Erasetask;
-
         public static readonly DependencyProperty BurnDirectoryProperty = DependencyProperty.Register("BurnDirectory", typeof(string), typeof(Burner), new PropertyMetadata(string.Empty));
-
-        private string actionText;
-
+        private const string WarnText = "İşlem Sürüyor. Bitmesini Bekleyin.";
+        private static Task Burntask;
+        private static Task Erasetask;
         private readonly string AppName = Application.Current?.MainWindow?.Title;
-
+        private string actionText;
         private string cdLabel = DateTime.Now.ToString();
-
         private bool eject = true;
-
         private bool progressIndeterminate;
-
         private double progressValue;
 
         static Burner() { DefaultStyleKeyProperty.OverrideMetadata(typeof(Burner), new FrameworkPropertyMetadata(typeof(Burner))); }
@@ -157,75 +148,6 @@ namespace DvdBurner
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void DataWriter_Update(dynamic @object, dynamic progress)
-        {
-            try
-            {
-                switch((int)progress.CurrentAction)
-                {
-                    case (int)IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_CALIBRATING_POWER:
-                        ActionText = "Kalibrasyon Gücü (OPC).";
-                        break;
-
-                    case (int)IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_COMPLETED:
-                        ActionText = "Bitti.";
-                        ProgressIndeterminate = false;
-                        break;
-
-                    case (int)IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_FINALIZATION:
-                        ProgressIndeterminate = true;
-                        ActionText = "Sonlandırılıyor.";
-                        break;
-
-                    case (int)IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_FORMATTING_MEDIA:
-                        ActionText = "Medya Biçimlendiriliyor.";
-                        break;
-
-                    case (int)IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_INITIALIZING_HARDWARE:
-                        ActionText = "Başlatılıyor.";
-                        break;
-
-                    case (int)IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_VALIDATING_MEDIA:
-                        ActionText = "Medya Doğrulanıyor.";
-                        break;
-
-                    case (int)IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_VERIFYING:
-                        ActionText = "Veri Doğrulanıyor.";
-                        break;
-
-                    case (int)IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_WRITING_DATA:
-                        dynamic totalSectors;
-                        dynamic writtenSectors;
-                        dynamic startLba;
-                        dynamic lastWrittenLba;
-                        dynamic percentDone;
-                        totalSectors = progress.SectorCount;
-                        startLba = progress.StartLba;
-                        lastWrittenLba = progress.LastWrittenLba;
-                        writtenSectors = lastWrittenLba - startLba;
-                        percentDone =
-                            FormatPercent(Convert.ToDecimal(writtenSectors) / Convert.ToDecimal(totalSectors));
-                        ActionText = percentDone;
-                        break;
-
-                    default:
-                        ActionText = "Bilinmeyen İşlem." + progress?.CurrentAction.ToString();
-                        break;
-                }
-            } catch(Exception ex)
-            {
-                ActionText = $"Hata{ex.Message}";
-            }
-        }
-
-        private dynamic FormatPercent(dynamic d)
-        {
-            ProgressValue = (double)d;
-            return d.ToString("0%");
-        }
-
-        protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
-
         public string ActionText
         {
             get => actionText;
@@ -303,5 +225,74 @@ namespace DvdBurner
         }
 
         public RelayCommand<object> SelectBurnDir { get; }
+
+        protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
+
+        private void DataWriter_Update(dynamic @object, dynamic progress)
+        {
+            try
+            {
+                switch((int)progress.CurrentAction)
+                {
+                    case (int)IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_CALIBRATING_POWER:
+                        ActionText = "Kalibrasyon Gücü (OPC).";
+                        break;
+
+                    case (int)IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_COMPLETED:
+                        ActionText = "Bitti.";
+                        ProgressIndeterminate = false;
+                        break;
+
+                    case (int)IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_FINALIZATION:
+                        ProgressIndeterminate = true;
+                        ActionText = "Sonlandırılıyor.";
+                        break;
+
+                    case (int)IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_FORMATTING_MEDIA:
+                        ActionText = "Medya Biçimlendiriliyor.";
+                        break;
+
+                    case (int)IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_INITIALIZING_HARDWARE:
+                        ActionText = "Başlatılıyor.";
+                        break;
+
+                    case (int)IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_VALIDATING_MEDIA:
+                        ActionText = "Medya Doğrulanıyor.";
+                        break;
+
+                    case (int)IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_VERIFYING:
+                        ActionText = "Veri Doğrulanıyor.";
+                        break;
+
+                    case (int)IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_WRITING_DATA:
+                        dynamic totalSectors;
+                        dynamic writtenSectors;
+                        dynamic startLba;
+                        dynamic lastWrittenLba;
+                        dynamic percentDone;
+                        totalSectors = progress.SectorCount;
+                        startLba = progress.StartLba;
+                        lastWrittenLba = progress.LastWrittenLba;
+                        writtenSectors = lastWrittenLba - startLba;
+                        percentDone =
+                            FormatPercent(Convert.ToDecimal(writtenSectors) / Convert.ToDecimal(totalSectors));
+                        ActionText = percentDone;
+                        break;
+
+                    default:
+                        ActionText = "Bilinmeyen İşlem." + progress?.CurrentAction.ToString();
+                        break;
+                }
+            } catch(Exception ex)
+            {
+                ActionText = $"Hata{ex.Message}";
+            }
+        }
+
+        private dynamic FormatPercent(dynamic d)
+        {
+            ProgressValue = (double)d;
+            return d.ToString("0%");
+        }
     }
 }

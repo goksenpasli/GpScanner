@@ -5,7 +5,6 @@ namespace GpScanner.ViewModel;
 public class BatchTxtOcr : InpcBase
 {
     private string filePath;
-
     private double progressValue;
 
     public string FilePath

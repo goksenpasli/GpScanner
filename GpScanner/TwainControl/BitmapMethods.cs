@@ -22,77 +22,6 @@ namespace TwainControl;
 
 public static class BitmapMethods
 {
-    private static void HsvToRgb(double h, double s, double v, out byte r, out byte g, out byte b)
-    {
-        if(s == 0)
-        {
-            r = (byte)(v * 255);
-            g = (byte)(v * 255);
-            b = (byte)(v * 255);
-            return;
-        }
-
-        double c = v * s;
-        double x = c * (1 - Math.Abs((h * 6 % 2) - 1));
-        double m = v - c;
-
-        double rf, gf, bf;
-        if(h < 1.0 / 6.0)
-        {
-            rf = c;
-            gf = x;
-            bf = 0;
-        } else if(h < 2.0 / 6.0)
-        {
-            rf = x;
-            gf = c;
-            bf = 0;
-        } else if(h < 3.0 / 6.0)
-        {
-            rf = 0;
-            gf = c;
-            bf = x;
-        } else if(h < 4.0 / 6.0)
-        {
-            rf = 0;
-            gf = x;
-            bf = c;
-        } else if(h < 5.0 / 6.0)
-        {
-            rf = x;
-            gf = 0;
-            bf = c;
-        } else
-        {
-            rf = c;
-            gf = 0;
-            bf = x;
-        }
-
-        r = (byte)((rf + m) * 255);
-        g = (byte)((gf + m) * 255);
-        b = (byte)((bf + m) * 255);
-    }
-
-    private static void RgbToHsv(byte r, byte g, byte b, out double h, out double s, out double v)
-    {
-        double rf = r / 255.0;
-        double gf = g / 255.0;
-        double bf = b / 255.0;
-
-        double max = Math.Max(rf, Math.Max(gf, bf));
-        double min = Math.Min(rf, Math.Min(gf, bf));
-        double delta = max - min;
-
-        h = delta == 0 ? 0 : max == rf ? (gf - bf) / delta % 6.0 : max == gf ? ((bf - rf) / delta) + 2.0 : ((rf - gf) / delta) + 4.0;
-
-        h /= 6.0;
-
-        s = max == 0 ? 0 : delta / max;
-
-        v = max;
-    }
-
     public static WriteableBitmap ApplyHueSaturationLightness(this BitmapSource source, double hue, double saturation, double lightness)
     {
         int width = source.PixelWidth;
@@ -543,5 +472,76 @@ public static class BitmapMethods
         {
             return null;
         }
+    }
+
+    private static void HsvToRgb(double h, double s, double v, out byte r, out byte g, out byte b)
+    {
+        if(s == 0)
+        {
+            r = (byte)(v * 255);
+            g = (byte)(v * 255);
+            b = (byte)(v * 255);
+            return;
+        }
+
+        double c = v * s;
+        double x = c * (1 - Math.Abs((h * 6 % 2) - 1));
+        double m = v - c;
+
+        double rf, gf, bf;
+        if(h < 1.0 / 6.0)
+        {
+            rf = c;
+            gf = x;
+            bf = 0;
+        } else if(h < 2.0 / 6.0)
+        {
+            rf = x;
+            gf = c;
+            bf = 0;
+        } else if(h < 3.0 / 6.0)
+        {
+            rf = 0;
+            gf = c;
+            bf = x;
+        } else if(h < 4.0 / 6.0)
+        {
+            rf = 0;
+            gf = x;
+            bf = c;
+        } else if(h < 5.0 / 6.0)
+        {
+            rf = x;
+            gf = 0;
+            bf = c;
+        } else
+        {
+            rf = c;
+            gf = 0;
+            bf = x;
+        }
+
+        r = (byte)((rf + m) * 255);
+        g = (byte)((gf + m) * 255);
+        b = (byte)((bf + m) * 255);
+    }
+
+    private static void RgbToHsv(byte r, byte g, byte b, out double h, out double s, out double v)
+    {
+        double rf = r / 255.0;
+        double gf = g / 255.0;
+        double bf = b / 255.0;
+
+        double max = Math.Max(rf, Math.Max(gf, bf));
+        double min = Math.Min(rf, Math.Min(gf, bf));
+        double delta = max - min;
+
+        h = delta == 0 ? 0 : max == rf ? (gf - bf) / delta % 6.0 : max == gf ? ((bf - rf) / delta) + 2.0 : ((rf - gf) / delta) + 4.0;
+
+        h /= 6.0;
+
+        s = max == 0 ? 0 : delta / max;
+
+        v = max;
     }
 }

@@ -8,15 +8,10 @@ namespace Tesseract.Internal.InteropDotNet
     internal sealed class RuntimeDllImportAttribute : Attribute
     {
         public bool BestFitMapping;
-
         public CallingConvention CallingConvention;
-
         public CharSet CharSet;
-
         public string EntryPoint;
-
         public bool SetLastError;
-
         public bool ThrowOnUnmappableChar;
 
         public RuntimeDllImportAttribute(string libraryFileName) { LibraryFileName = libraryFileName; }

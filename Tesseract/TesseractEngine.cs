@@ -32,7 +32,6 @@ namespace Tesseract
         public TesseractEngine(string datapath, string language) : this(datapath, language, EngineMode.Default, new string[0], new Dictionary<string, object>(), false)
         {
         }
-
         /// <summary>
         /// Creates a new instance of <see cref="TesseractEngine"/> with the specified <paramref name="configFile"/>
         /// using the <see cref="EngineMode.Default">Default Engine Mode</see>.
@@ -57,7 +56,6 @@ namespace Tesseract
         public TesseractEngine(string datapath, string language, string configFile) : this(datapath, language, EngineMode.Default, configFile != null ? new[] { configFile } : new string[0], new Dictionary<string, object>(), false)
         {
         }
-
         /// <summary>
         /// Creates a new instance of <see cref="TesseractEngine"/> with the specified <paramref name="configFiles"/>
         /// using the <see cref="EngineMode.Default">Default Engine Mode</see>.
@@ -81,7 +79,6 @@ namespace Tesseract
         public TesseractEngine(string datapath, string language, IEnumerable<string> configFiles) : this(datapath, language, EngineMode.Default, configFiles, new Dictionary<string, object>(), false)
         {
         }
-
         /// <summary>
         /// Creates a new instance of <see cref="TesseractEngine"/> with the specified <paramref name="engineMode"/>.
         /// </summary>
@@ -101,7 +98,6 @@ namespace Tesseract
         public TesseractEngine(string datapath, string language, EngineMode engineMode) : this(datapath, language, engineMode, new string[0], new Dictionary<string, object>(), false)
         {
         }
-
         /// <summary>
         /// Creates a new instance of <see cref="TesseractEngine"/> with the specified <paramref name="engineMode"/> and
         /// <paramref name="configFile"/>.
@@ -127,7 +123,6 @@ namespace Tesseract
         public TesseractEngine(string datapath, string language, EngineMode engineMode, string configFile) : this(datapath, language, engineMode, configFile != null ? new[] { configFile } : new string[0], new Dictionary<string, object>(), false)
         {
         }
-
         /// <summary>
         /// Creates a new instance of <see cref="TesseractEngine"/> with the specified <paramref name="engineMode"/> and
         /// <paramref name="configFiles"/>.
@@ -184,44 +179,7 @@ namespace Tesseract
             Initialise(datapath, language, engineMode, configFiles, initialOptions, setOnlyNonDebugVariables);
         }
 
-        private void Initialise(string datapath, string language, EngineMode engineMode, IEnumerable<string> configFiles, IDictionary<string, object> initialValues, bool setOnlyNonDebugVariables)
-        {
-            Guard.RequireNotNullOrEmpty(nameof(language), language);
-
-            if(!string.IsNullOrEmpty(datapath))
-            {
-                datapath = datapath.Trim();
-
-                if(datapath.EndsWith("\\", StringComparison.Ordinal) || datapath.EndsWith("/", StringComparison.Ordinal))
-                {
-                    datapath = datapath.Substring(0, datapath.Length - 1);
-                }
-            }
-
-            if(TessApi.BaseApiInit(Handle, datapath, language, (int)engineMode, configFiles ?? new List<string>(), initialValues ?? new Dictionary<string, object>(), setOnlyNonDebugVariables) != 0)
-            {
-                Handle = new HandleRef(this, IntPtr.Zero);
-                GC.SuppressFinalize(this);
-
-                throw new TesseractException(ErrorMessage.Format(1, "Failed to initialise tesseract engine."));
-            }
-        }
-
-        #region Event Handlers
-        private void OnIteratorDisposed(object sender, EventArgs e)
-        {
-            processCount--;
-        }
-        #endregion Event Handlers
-
-        protected override void Dispose(bool disposing)
-        {
-            if(Handle.Handle != IntPtr.Zero)
-            {
-                TessApi.Native.BaseApiDelete(Handle);
-                Handle = new HandleRef(this, IntPtr.Zero);
-            }
-        }
+        public string Version => TessApi.BaseApiGetVersion();
 
         internal HandleRef Handle { get; private set; }
 
@@ -234,7 +192,6 @@ namespace Tesseract
         /// <param name="image">The image to process.</param>
         /// <param name="pageSegMode">The page layout analyasis method to use.</param>
         public Page Process(Pix image, PageSegMode? pageSegMode = null) { return Process(image, null, new Rect(0, 0, image.Width, image.Height), pageSegMode); }
-
         /// <summary>
         /// Processes a specified region in the image using the specified page layout analysis mode.
         /// </summary>
@@ -246,7 +203,6 @@ namespace Tesseract
         /// <param name="pageSegMode">The page layout analyasis method to use.</param>
         /// <returns>A result iterator</returns>
         public Page Process(Pix image, Rect region, PageSegMode? pageSegMode = null) { return Process(image, null, region, pageSegMode); }
-
         /// <summary>
         /// Processes the specific image.
         /// </summary>
@@ -301,7 +257,44 @@ namespace Tesseract
             return page;
         }
 
-        public string Version => TessApi.BaseApiGetVersion();
+        protected override void Dispose(bool disposing)
+        {
+            if(Handle.Handle != IntPtr.Zero)
+            {
+                TessApi.Native.BaseApiDelete(Handle);
+                Handle = new HandleRef(this, IntPtr.Zero);
+            }
+        }
+
+        private void Initialise(string datapath, string language, EngineMode engineMode, IEnumerable<string> configFiles, IDictionary<string, object> initialValues, bool setOnlyNonDebugVariables)
+        {
+            Guard.RequireNotNullOrEmpty(nameof(language), language);
+
+            if(!string.IsNullOrEmpty(datapath))
+            {
+                datapath = datapath.Trim();
+
+                if(datapath.EndsWith("\\", StringComparison.Ordinal) || datapath.EndsWith("/", StringComparison.Ordinal))
+                {
+                    datapath = datapath.Substring(0, datapath.Length - 1);
+                }
+            }
+
+            if(TessApi.BaseApiInit(Handle, datapath, language, (int)engineMode, configFiles ?? new List<string>(), initialValues ?? new Dictionary<string, object>(), setOnlyNonDebugVariables) != 0)
+            {
+                Handle = new HandleRef(this, IntPtr.Zero);
+                GC.SuppressFinalize(this);
+
+                throw new TesseractException(ErrorMessage.Format(1, "Failed to initialise tesseract engine."));
+            }
+        }
+
+        #region Event Handlers
+        private void OnIteratorDisposed(object sender, EventArgs e)
+        {
+            processCount--;
+        }
+        #endregion Event Handlers
 
         /// <summary>
         /// Ties the specified pix to the lifecycle of a page.
@@ -309,7 +302,6 @@ namespace Tesseract
         public class PageDisposalHandle
         {
             private readonly Page page;
-
             private readonly Pix pix;
 
             public PageDisposalHandle(Page page, Pix pix)

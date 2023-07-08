@@ -13,22 +13,7 @@ namespace TwainControl;
 
 public class LocExtension(string stringName) : MarkupExtension
 {
-    private ResourceManager GetResourceManager(object control)
-    {
-        if(control is DependencyObject dependencyObject)
-        {
-            object localValue = dependencyObject.ReadLocalValue(Translation.ResourceManagerProperty);
-
-            if(localValue != DependencyProperty.UnsetValue && localValue is ResourceManager resourceManager)
-            {
-                TranslationSource.Instance.AddResourceManager(resourceManager);
-
-                return resourceManager;
-            }
-        }
-
-        return null;
-    }
+    public string StringName { get; } = stringName;
 
     public override object ProvideValue(IServiceProvider serviceProvider)
     {
@@ -57,16 +42,37 @@ public class LocExtension(string stringName) : MarkupExtension
         return binding.ProvideValue(serviceProvider);
     }
 
-    public string StringName { get; } = stringName;
+    private ResourceManager GetResourceManager(object control)
+    {
+        if(control is DependencyObject dependencyObject)
+        {
+            object localValue = dependencyObject.ReadLocalValue(Translation.ResourceManagerProperty);
+
+            if(localValue != DependencyProperty.UnsetValue && localValue is ResourceManager resourceManager)
+            {
+                TranslationSource.Instance.AddResourceManager(resourceManager);
+
+                return resourceManager;
+            }
+        }
+
+        return null;
+    }
 }
 
 public class Translation : DependencyObject
 {
     public static readonly DependencyProperty DesignCultureProperty =
                             DependencyProperty.RegisterAttached("DesignCulture", typeof(string), typeof(Translation), new PropertyMetadata("en-EN", CultureChanged));
-
     public static readonly DependencyProperty ResourceManagerProperty =
         DependencyProperty.RegisterAttached("ResourceManager", typeof(ResourceManager), typeof(Translation));
+
+    public static string GetDesignCulture(DependencyObject obj) { return (string)obj.GetValue(DesignCultureProperty); }
+    public static ResourceManager GetResourceManager(DependencyObject dependencyObject) { return (ResourceManager)dependencyObject.GetValue(ResourceManagerProperty); }
+    public static string GetResStringValue(string resdata)
+    { return string.IsNullOrEmpty(resdata) ? throw new ArgumentException($"'{nameof(resdata)}' cannot be null or empty.", nameof(resdata)) : Resources.ResourceManager.GetString(resdata, TranslationSource.Instance.CurrentCulture); }
+    public static void SetDesignCulture(DependencyObject obj, string value) { obj.SetValue(DesignCultureProperty, value); }
+    public static void SetResourceManager(DependencyObject dependencyObject, ResourceManager value) { dependencyObject.SetValue(ResourceManagerProperty, value); }
 
     private static void CultureChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -75,55 +81,16 @@ public class Translation : DependencyObject
             TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo((string)e.NewValue);
         }
     }
-
-    public static string GetDesignCulture(DependencyObject obj) { return (string)obj.GetValue(DesignCultureProperty); }
-
-    public static ResourceManager GetResourceManager(DependencyObject dependencyObject) { return (ResourceManager)dependencyObject.GetValue(ResourceManagerProperty); }
-
-    public static string GetResStringValue(string resdata)
-    { return string.IsNullOrEmpty(resdata) ? throw new ArgumentException($"'{nameof(resdata)}' cannot be null or empty.", nameof(resdata)) : Resources.ResourceManager.GetString(resdata, TranslationSource.Instance.CurrentCulture); }
-
-    public static void SetDesignCulture(DependencyObject obj, string value) { obj.SetValue(DesignCultureProperty, value); }
-
-    public static void SetResourceManager(DependencyObject dependencyObject, ResourceManager value) { dependencyObject.SetValue(ResourceManagerProperty, value); }
 }
 
 public class TranslationSource : INotifyPropertyChanged
 {
-    private CultureInfo currentCulture = CultureInfo.InstalledUICulture;
-
     private readonly Dictionary<string, ResourceManager> resourceManagerDictionary = new();
+    private CultureInfo currentCulture = CultureInfo.InstalledUICulture;
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public string this[string key]
-    {
-        get
-        {
-            string translation = null;
-            if(resourceManagerDictionary.ContainsKey(SplitName(key).Item1))
-            {
-                translation = resourceManagerDictionary[SplitName(key).Item1]
-                    .GetString(SplitName(key).Item2, currentCulture);
-            }
-
-            return translation ?? key;
-        }
-    }
-
-    public void AddResourceManager(ResourceManager resourceManager)
-    {
-        if(!resourceManagerDictionary.ContainsKey(resourceManager.BaseName))
-        {
-            resourceManagerDictionary.Add(resourceManager.BaseName, resourceManager);
-        }
-    }
-
-    public static Tuple<string, string> SplitName(string name)
-    {
-        int idx = name.LastIndexOf('.');
-        return Tuple.Create(name.Substring(0, idx), name.Substring(idx + 1));
-    }
+    public static TranslationSource Instance { get; } = new();
 
     public CultureInfo CurrentCulture
     {
@@ -140,5 +107,32 @@ public class TranslationSource : INotifyPropertyChanged
         }
     }
 
-    public static TranslationSource Instance { get; } = new();
+    public string this[string key]
+    {
+        get
+        {
+            string translation = null;
+            if(resourceManagerDictionary.ContainsKey(SplitName(key).Item1))
+            {
+                translation = resourceManagerDictionary[SplitName(key).Item1]
+                    .GetString(SplitName(key).Item2, currentCulture);
+            }
+
+            return translation ?? key;
+        }
+    }
+
+    public static Tuple<string, string> SplitName(string name)
+    {
+        int idx = name.LastIndexOf('.');
+        return Tuple.Create(name.Substring(0, idx), name.Substring(idx + 1));
+    }
+
+    public void AddResourceManager(ResourceManager resourceManager)
+    {
+        if(!resourceManagerDictionary.ContainsKey(resourceManager.BaseName))
+        {
+            resourceManagerDictionary.Add(resourceManager.BaseName, resourceManager);
+        }
+    }
 }

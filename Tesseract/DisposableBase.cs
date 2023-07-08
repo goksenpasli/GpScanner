@@ -17,15 +17,7 @@ namespace Tesseract
 
         public event EventHandler<EventArgs> Disposed;
 
-        protected abstract void Dispose(bool disposing);
-
-        protected virtual void VerifyNotDisposed()
-        {
-            if(IsDisposed)
-            {
-                throw new ObjectDisposedException(ToString());
-            }
-        }
+        public bool IsDisposed { get; private set; }
 
         public void Dispose()
         {
@@ -37,6 +29,14 @@ namespace Tesseract
             Disposed?.Invoke(this, EventArgs.Empty);
         }
 
-        public bool IsDisposed { get; private set; }
+        protected abstract void Dispose(bool disposing);
+
+        protected virtual void VerifyNotDisposed()
+        {
+            if(IsDisposed)
+            {
+                throw new ObjectDisposedException(ToString());
+            }
+        }
     }
 }

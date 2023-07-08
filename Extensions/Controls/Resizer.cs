@@ -35,8 +35,9 @@ public class Resizer : Thumb
                     DependencyProperty.Register("ThumbDirection", typeof(ResizeDirections), typeof(Resizer));
 
     static Resizer() { DefaultStyleKeyProperty.OverrideMetadata(typeof(Resizer), new FrameworkPropertyMetadata(typeof(Resizer))); }
-
     public Resizer() { DragDelta += Resizer_DragDelta; }
+
+    public ResizeDirections ThumbDirection { get => (ResizeDirections)GetValue(ThumbDirectionProperty); set => SetValue(ThumbDirectionProperty, value); }
 
     private static double ResizeBottom(DragDeltaEventArgs e, Control designerItem)
     {
@@ -51,6 +52,21 @@ public class Resizer : Thumb
         Canvas.SetLeft(designerItem, Canvas.GetLeft(designerItem) + deltaHorizontal);
         designerItem.Width -= deltaHorizontal;
         return deltaHorizontal;
+    }
+
+    private static double ResizeRight(DragDeltaEventArgs e, Control designerItem)
+    {
+        double deltaHorizontal = Math.Min(-e.HorizontalChange, designerItem.ActualWidth - designerItem.MinWidth);
+        designerItem.Width -= deltaHorizontal;
+        return deltaHorizontal;
+    }
+
+    private static double ResizeTop(DragDeltaEventArgs e, Control designerItem)
+    {
+        double deltaVertical = Math.Min(e.VerticalChange, designerItem.ActualHeight - designerItem.MinHeight);
+        Canvas.SetTop(designerItem, Canvas.GetTop(designerItem) + deltaVertical);
+        designerItem.Height -= deltaVertical;
+        return deltaVertical;
     }
 
     private void Resizer_DragDelta(object sender, DragDeltaEventArgs e)
@@ -99,21 +115,4 @@ public class Resizer : Thumb
 
         e.Handled = true;
     }
-
-    private static double ResizeRight(DragDeltaEventArgs e, Control designerItem)
-    {
-        double deltaHorizontal = Math.Min(-e.HorizontalChange, designerItem.ActualWidth - designerItem.MinWidth);
-        designerItem.Width -= deltaHorizontal;
-        return deltaHorizontal;
-    }
-
-    private static double ResizeTop(DragDeltaEventArgs e, Control designerItem)
-    {
-        double deltaVertical = Math.Min(e.VerticalChange, designerItem.ActualHeight - designerItem.MinHeight);
-        Canvas.SetTop(designerItem, Canvas.GetTop(designerItem) + deltaVertical);
-        designerItem.Height -= deltaVertical;
-        return deltaVertical;
-    }
-
-    public ResizeDirections ThumbDirection { get => (ResizeDirections)GetValue(ThumbDirectionProperty); set => SetValue(ThumbDirectionProperty, value); }
 }

@@ -9,11 +9,8 @@ namespace TwainWpf
     public class RotationSettings : INotifyPropertyChanged
     {
         private bool _automaticBorderDetection;
-
         private bool _automaticDeskew;
-
         private bool _automaticRotate;
-
         private FlipRotation _flipSideRotation;
 
         /// <summary>

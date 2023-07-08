@@ -11,7 +11,6 @@ public class RelayAsyncCommand<T> : RelayCommand<T>
     public RelayAsyncCommand(Action<T> execute) : base(execute)
     {
     }
-
     public RelayAsyncCommand(Action<T> execute, Predicate<T> canExecute) : base(execute, canExecute)
     {
     }
@@ -20,11 +19,7 @@ public class RelayAsyncCommand<T> : RelayCommand<T>
 
     public event EventHandler Started;
 
-    private void OnRunWorkerCompleted(EventArgs e)
-    {
-        IsExecuting = false;
-        Ended?.Invoke(this, e);
-    }
+    public bool IsExecuting { get; private set; }
 
     public override bool CanExecute(object parameter) { return base.CanExecute(parameter) && !IsExecuting; }
 
@@ -43,7 +38,11 @@ public class RelayAsyncCommand<T> : RelayCommand<T>
         }
     }
 
-    public bool IsExecuting { get; private set; }
+    private void OnRunWorkerCompleted(EventArgs e)
+    {
+        IsExecuting = false;
+        Ended?.Invoke(this, e);
+    }
 }
 
 public class RelayCommand<T> : ICommand
@@ -80,7 +79,6 @@ public class RelayCommand<T> : ICommand
 public class RelayCommand : ICommand
 {
     protected readonly Func<bool> canExecute;
-
     protected readonly Action execute;
 
     public RelayCommand(Action execute) : this(execute, null)
@@ -113,6 +111,5 @@ public class RelayCommand : ICommand
     }
 
     public virtual bool CanExecute(object parameter) { return canExecute == null || canExecute(); }
-
     public virtual void Execute(object parameter) { execute(); }
 }

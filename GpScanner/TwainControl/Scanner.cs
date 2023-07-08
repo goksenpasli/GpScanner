@@ -18,171 +18,88 @@ namespace TwainControl;
 public class Scanner : InpcBase, IDataErrorInfo
 {
     private bool allowCopy = true;
-
     private bool allowEdit = true;
-
     private bool allowPrint = true;
-
     private bool applyDataBaseOcr = Ocr.Ocr.TesseractDataExists;
-
     private bool applyMedian;
-
     private bool applyPdfSaveOcr;
-
     private bool arayüzetkin = true;
-
     private string autoCropColor = "Black";
-
     private bool autoSave = Directory.Exists(Settings.Default.AutoFolder);
-
     private string barcodeContent;
-
     private bool borderAnimation;
-
     private int boyAdet = 1;
-
     private double brightness;
-
     private int caretPosition;
-
     private ObservableCollection<Chart> chart;
-
     private ImageSource copyCroppedImage;
-
     private string creatorAppName = "GPSCANNER";
-
     private double cropBottom;
-
     private bool cropDialogExpanded;
-
     private double cropLeft;
-
     private ImageSource croppedImage;
-
     private double croppedImageAngle;
-
     private int croppedImageIndex;
-
     private BitmapSource croppedImageThumb;
-
     private double cropRight;
-
     private double cropTop;
-
     private bool deskew;
-
     private bool detectEmptyPage;
-
     private bool detectPageSeperator;
-
     private bool duplex;
-
     private int enAdet = 1;
-
     private bool fileisPdfFile;
-
     private string fileName = "Tarama";
-
     private string fileOcrContent;
-
     private int ftpLoadProgressValue;
-
     private double hue;
-
     private bool ınvertImage;
-
     private PdfPageLayout layout = PdfPageLayout.Middle;
-
     private double lightness = 1;
-
     private string localizedPath;
-
     private int medianValue;
-
     private bool paperBackScan;
-
     private bool passwordProtect;
-
     private string pdfFilePath;
-
     private XKnownColor pdfPageNumberAlignTextColor = XKnownColor.Black;
-
     private bool pdfPageNumberDraw;
-
     private string pdfPageText;
-
     private double pdfPageTextAngle = 315d;
-
     private string pdfPageTextColor = "Black";
-
     private bool pdfPageTextDraw;
-
     private double pdfPageTextSize = 32d;
-
     private SecureString pdfPassword;
-
     private double pdfSaveProgressValue;
-
     private string profileName;
-
     private TaskbarItemProgressState progressState = TaskbarItemProgressState.None;
-
     private IEnumerable<string> qrData;
-
     private ObservableCollection<ScannedImage> resimler = new();
-
     private double rotateAngle;
-
     private double saturation = 1;
-
     private string saveFileName;
-
     private Brush saveProgressBarForegroundBrush;
-
     private bool saveProgressIndeterminate;
-
     private bool seçili;
-
     private int seçiliResimSayısı;
-
     private string selectedProfile;
-
     private string selectedTtsLanguage;
-
     private bool showProgress;
-
     private bool showUi;
-
     private double sliceCountHeight = 1;
-
     private double sliceCountWidth = 2;
-
     private string sourceColor = "Transparent";
-
     private IList<string> tarayıcılar;
-
     private string targetColor = "Transparent";
-
     private double threshold;
-
     private int toolBarBwThreshold = 160;
-
     private ObservableCollection<string> unsupportedFiles = new();
-
     private bool useMozJpegEncoding;
-
     private bool usePageSeperator;
-
     private string userName = Environment.UserName;
-
     private string watermark;
-
     private double watermarkAngle = 315;
-
     private SolidColorBrush watermarkColor = Brushes.Red;
-
     private string watermarkFont = "Arial";
-
     private double watermarkTextSize = 64;
 
     public Scanner()
@@ -190,38 +107,6 @@ public class Scanner : InpcBase, IDataErrorInfo
         PropertyChanged += Scanner_PropertyChanged;
         Resimler.CollectionChanged -= Resimler_CollectionChanged;
         Resimler.CollectionChanged += Resimler_CollectionChanged;
-    }
-
-    public string this[string columnName] => columnName switch
-    {
-        "FileName" when string.IsNullOrWhiteSpace(FileName) || !TwainCtrl.FileNameValid(FileName) => $"{Translation.GetResStringValue("FILENAME")} {Translation.GetResStringValue("EMPTY")}",
-        "ProfileName" when string.IsNullOrWhiteSpace(ProfileName) => Translation.GetResStringValue("EMPTY"),
-        _ => null
-    };
-
-    private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
-    {
-        if(e.PropertyName is "PdfSaveProgressValue" && PdfSaveProgressValue == 1)
-        {
-            ProgressState = TaskbarItemProgressState.None;
-        }
-    }
-
-    public void Resimler_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-    {
-        if(e.Action == NotifyCollectionChangedAction.Add)
-        {
-            for(int i = e.NewStartingIndex; i < Resimler.Count; i++)
-            {
-                Resimler[i].Index = i + 1;
-            }
-        } else if(e.Action == NotifyCollectionChangedAction.Remove)
-        {
-            for(int i = e.OldStartingIndex; i < Resimler.Count; i++)
-            {
-                Resimler[i].Index = i + 1;
-            }
-        }
     }
 
     public bool AllowCopy
@@ -1417,6 +1302,38 @@ public class Scanner : InpcBase, IDataErrorInfo
                 watermarkTextSize = value;
                 OnPropertyChanged(nameof(WatermarkTextSize));
             }
+        }
+    }
+
+    public string this[string columnName] => columnName switch
+    {
+        "FileName" when string.IsNullOrWhiteSpace(FileName) || !TwainCtrl.FileNameValid(FileName) => $"{Translation.GetResStringValue("FILENAME")} {Translation.GetResStringValue("EMPTY")}",
+        "ProfileName" when string.IsNullOrWhiteSpace(ProfileName) => Translation.GetResStringValue("EMPTY"),
+        _ => null
+    };
+
+    public void Resimler_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        if(e.Action == NotifyCollectionChangedAction.Add)
+        {
+            for(int i = e.NewStartingIndex; i < Resimler.Count; i++)
+            {
+                Resimler[i].Index = i + 1;
+            }
+        } else if(e.Action == NotifyCollectionChangedAction.Remove)
+        {
+            for(int i = e.OldStartingIndex; i < Resimler.Count; i++)
+            {
+                Resimler[i].Index = i + 1;
+            }
+        }
+    }
+
+    private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if(e.PropertyName is "PdfSaveProgressValue" && PdfSaveProgressValue == 1)
+        {
+            ProgressState = TaskbarItemProgressState.None;
         }
     }
 }

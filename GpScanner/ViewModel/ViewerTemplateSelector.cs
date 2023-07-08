@@ -8,6 +8,20 @@ namespace GpScanner.ViewModel;
 
 public class ViewerTemplateSelector : DataTemplateSelector
 {
+    public DataTemplate Empty { get; set; }
+
+    public DataTemplate Img { get; set; }
+
+    public DataTemplate Pdf { get; set; }
+
+    public DataTemplate Vid { get; set; }
+
+    public DataTemplate Xml { get; set; }
+
+    public DataTemplate Xps { get; set; }
+
+    public DataTemplate Zip { get; set; }
+
     public override DataTemplate SelectTemplate(object item, DependencyObject container)
     {
         if(!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && item is string dosya)
@@ -27,18 +41,4 @@ public class ViewerTemplateSelector : DataTemplateSelector
 
         return null;
     }
-
-    public DataTemplate Empty { get; set; }
-
-    public DataTemplate Img { get; set; }
-
-    public DataTemplate Pdf { get; set; }
-
-    public DataTemplate Vid { get; set; }
-
-    public DataTemplate Xml { get; set; }
-
-    public DataTemplate Xps { get; set; }
-
-    public DataTemplate Zip { get; set; }
 }

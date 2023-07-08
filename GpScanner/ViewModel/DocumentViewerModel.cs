@@ -16,19 +16,12 @@ namespace GpScanner.ViewModel;
 public class DocumentViewerModel : InpcBase
 {
     private IEnumerable<string> directoryAllPdfFiles;
-
     private byte[] ımgData;
-
     private int ındex;
-
     private string ocrText;
-
     private string pdfFileContent;
-
     private string pdfFilePath;
-
     private Scanner scanner;
-
     private string title;
 
     public DocumentViewerModel()
@@ -67,17 +60,6 @@ public class DocumentViewerModel : InpcBase
                 }
             },
             parameter => true);
-    }
-
-    private async void DocumentViewerModel_PropertyChangedAsync(object sender, PropertyChangedEventArgs e)
-    {
-        string defaultTtsLang = Settings.Default.DefaultTtsLang;
-        if(e.PropertyName is "ImgData" && ImgData is not null && !string.IsNullOrWhiteSpace(defaultTtsLang))
-        {
-            ObservableCollection<Ocr.OcrData> ocrtext = await Ocr.Ocr.OcrAsync(ImgData, defaultTtsLang);
-            OcrText = string.Join(" ", ocrtext?.Select(z => z.Text));
-            ImgData = null;
-        }
     }
 
     public ICommand AddFileToControlPanel { get; }
@@ -197,6 +179,17 @@ public class DocumentViewerModel : InpcBase
                 title = value;
                 OnPropertyChanged(nameof(Title));
             }
+        }
+    }
+
+    private async void DocumentViewerModel_PropertyChangedAsync(object sender, PropertyChangedEventArgs e)
+    {
+        string defaultTtsLang = Settings.Default.DefaultTtsLang;
+        if(e.PropertyName is "ImgData" && ImgData is not null && !string.IsNullOrWhiteSpace(defaultTtsLang))
+        {
+            ObservableCollection<Ocr.OcrData> ocrtext = await Ocr.Ocr.OcrAsync(ImgData, defaultTtsLang);
+            OcrText = string.Join(" ", ocrtext?.Select(z => z.Text));
+            ImgData = null;
         }
     }
 }

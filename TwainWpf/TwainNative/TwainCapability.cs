@@ -14,11 +14,8 @@ namespace TwainWpf.TwainNative
     public class TwainCapability : IDisposable
     {
         private readonly Capabilities _capabilities;
-
         private readonly ContainerType _containerType;
-
         private readonly IntPtr _handle;
-
         private readonly object _value;
 
         protected TwainCapability(Capabilities capabilities, ContainerType containerType, object value)
@@ -42,16 +39,6 @@ namespace TwainWpf.TwainNative
 
         ~TwainCapability() { Dispose(false); }
 
-        protected virtual void Dispose(bool disposing)
-        {
-            if(_handle != IntPtr.Zero)
-            {
-                _ = Kernel32Native.GlobalFree(_handle);
-            }
-        }
-
-        public void Dispose() { Dispose(true); }
-
         public static TwainCapability From<TValue>(Capabilities capabilities, TValue value)
         {
             ContainerType containerType;
@@ -61,6 +48,8 @@ namespace TwainWpf.TwainNative
 
             return new TwainCapability(capabilities, containerType, value);
         }
+
+        public void Dispose() { Dispose(true); }
 
         public void ReadBackValue()
         {
@@ -72,6 +61,14 @@ namespace TwainWpf.TwainNative
             } finally
             {
                 _ = Kernel32Native.GlobalUnlock(_handle);
+            }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if(_handle != IntPtr.Zero)
+            {
+                _ = Kernel32Native.GlobalFree(_handle);
             }
         }
     }

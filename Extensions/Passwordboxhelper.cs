@@ -6,18 +6,19 @@ namespace Extensions;
 
 public class PasswordBoxHelper
 {
-    private static readonly DependencyProperty PasswordInitializedProperty =
-                DependencyProperty.RegisterAttached("PasswordInitialized", typeof(bool), typeof(PasswordBoxHelper), new PropertyMetadata(false));
-
-    private static readonly DependencyProperty SettingPasswordProperty =
-        DependencyProperty.RegisterAttached("SettingPassword", typeof(bool), typeof(PasswordBoxHelper), new PropertyMetadata(false));
-
     public static readonly DependencyProperty PasswordProperty =
                 DependencyProperty.RegisterAttached(
         "Password",
         typeof(string),
         typeof(PasswordBoxHelper),
         new FrameworkPropertyMetadata(string.Empty, HandleBoundPasswordChanged) { BindsTwoWayByDefault = true, DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus });
+    private static readonly DependencyProperty PasswordInitializedProperty =
+                DependencyProperty.RegisterAttached("PasswordInitialized", typeof(bool), typeof(PasswordBoxHelper), new PropertyMetadata(false));
+    private static readonly DependencyProperty SettingPasswordProperty =
+        DependencyProperty.RegisterAttached("SettingPassword", typeof(bool), typeof(PasswordBoxHelper), new PropertyMetadata(false));
+
+    public static string GetPassword(DependencyObject obj) { return (string)obj.GetValue(PasswordProperty); }
+    public static void SetPassword(DependencyObject obj, string value) { obj.SetValue(PasswordProperty, value); }
 
     private static void HandleBoundPasswordChanged(DependencyObject dp, DependencyPropertyChangedEventArgs e)
     {
@@ -47,8 +48,4 @@ public class PasswordBoxHelper
         SetPassword(passwordBox, passwordBox.Password);
         passwordBox.SetValue(SettingPasswordProperty, false);
     }
-
-    public static string GetPassword(DependencyObject obj) { return (string)obj.GetValue(PasswordProperty); }
-
-    public static void SetPassword(DependencyObject obj, string value) { obj.SetValue(PasswordProperty, value); }
 }

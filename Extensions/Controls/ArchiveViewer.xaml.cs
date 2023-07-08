@@ -16,10 +16,8 @@ namespace Extensions.Controls;
 /// </summary>
 public partial class ArchiveViewer : UserControl, INotifyPropertyChanged
 {
-    private static double toplamOran;
-
     public static readonly DependencyProperty ArchivePathProperty = DependencyProperty.Register("ArchivePath", typeof(string), typeof(ArchiveViewer), new PropertyMetadata(null, Changed));
-
+    private static double toplamOran;
     private ObservableCollection<ArchiveData> arşivİçerik;
 
     public ArchiveViewer()
@@ -47,34 +45,6 @@ public partial class ArchiveViewer : UserControl, INotifyPropertyChanged
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        if(d is ArchiveViewer archiveViewer && e.NewValue is not null)
-        {
-            archiveViewer.Arşivİçerik = new ObservableCollection<ArchiveData>();
-            using(ZipArchive archive = ZipFile.Open((string)e.NewValue, ZipArchiveMode.Read))
-            {
-                foreach(ZipArchiveEntry item in archive.Entries.Where(z => z.Length > 0))
-                {
-                    ArchiveData archiveData = new()
-                    {
-                        SıkıştırılmışBoyut = item.CompressedLength,
-                        DosyaAdı = item.Name,
-                        TamYol = item.FullName,
-                        Boyut = item.Length,
-                        Oran = (double)item.CompressedLength / item.Length,
-                        DüzenlenmeZamanı = item.LastWriteTime.Date
-                    };
-                    archiveViewer.Arşivİçerik.Add(archiveData);
-                }
-            }
-
-            archiveViewer.ToplamOran = (double)archiveViewer.Arşivİçerik.Sum(z => z.SıkıştırılmışBoyut) / archiveViewer.Arşivİçerik.Sum(z => z.Boyut) * 100;
-        }
-    }
-
-    protected virtual void OnPropertyChanged(string propertyName) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
-
     public string ArchivePath { get => (string)GetValue(ArchivePathProperty); set => SetValue(ArchivePathProperty, value); }
 
     public ObservableCollection<ArchiveData> Arşivİçerik
@@ -101,6 +71,34 @@ public partial class ArchiveViewer : UserControl, INotifyPropertyChanged
         {
             toplamOran = value;
             OnPropertyChanged(nameof(ToplamOran));
+        }
+    }
+
+    protected virtual void OnPropertyChanged(string propertyName) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
+
+    private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if(d is ArchiveViewer archiveViewer && e.NewValue is not null)
+        {
+            archiveViewer.Arşivİçerik = new ObservableCollection<ArchiveData>();
+            using(ZipArchive archive = ZipFile.Open((string)e.NewValue, ZipArchiveMode.Read))
+            {
+                foreach(ZipArchiveEntry item in archive.Entries.Where(z => z.Length > 0))
+                {
+                    ArchiveData archiveData = new()
+                    {
+                        SıkıştırılmışBoyut = item.CompressedLength,
+                        DosyaAdı = item.Name,
+                        TamYol = item.FullName,
+                        Boyut = item.Length,
+                        Oran = (double)item.CompressedLength / item.Length,
+                        DüzenlenmeZamanı = item.LastWriteTime.Date
+                    };
+                    archiveViewer.Arşivİçerik.Add(archiveData);
+                }
+            }
+
+            archiveViewer.ToplamOran = (double)archiveViewer.Arşivİçerik.Sum(z => z.SıkıştırılmışBoyut) / archiveViewer.Arşivİçerik.Sum(z => z.Boyut) * 100;
         }
     }
 }

@@ -12,22 +12,6 @@ public class ZoomableInkCanvas : InkCanvas, INotifyPropertyChanged
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    private void ApplyZoom()
-    {
-        ScaleTransform scaleTransform = new(CurrentZoom, CurrentZoom);
-        LayoutTransform = scaleTransform;
-    }
-
-    private void ZoomableInkCanvas_PropertyChanged(object sender, PropertyChangedEventArgs e)
-    {
-        if(e.PropertyName is "CurrentZoom" && CurrentZoom is >= 0.1 and <= 3.0)
-        {
-            ApplyZoom();
-        }
-    }
-
-    protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
-
     public double CurrentZoom
     {
         get => currentZoom;
@@ -39,6 +23,22 @@ public class ZoomableInkCanvas : InkCanvas, INotifyPropertyChanged
                 currentZoom = value;
                 OnPropertyChanged(nameof(CurrentZoom));
             }
+        }
+    }
+
+    protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
+
+    private void ApplyZoom()
+    {
+        ScaleTransform scaleTransform = new(CurrentZoom, CurrentZoom);
+        LayoutTransform = scaleTransform;
+    }
+
+    private void ZoomableInkCanvas_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if(e.PropertyName is "CurrentZoom" && CurrentZoom is >= 0.1 and <= 3.0)
+        {
+            ApplyZoom();
         }
     }
 }

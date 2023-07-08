@@ -17,6 +17,28 @@ public static class Win32FileScanner
 {
     private static readonly IntPtr invalidHandle = new(-1);
 
+    /// <summary>
+    /// Provides a enumerable of file results that contain a range of information about both files and directories
+    /// discovered in the provided directory path.
+    /// </summary>
+    /// <param name="path">The folder path.</param>
+    /// <param name="rootStats">
+    /// A cumulative stat object representing total files, folder, sizes, etc for the base directory provided.
+    /// </param>
+    /// <param name="maxDepth">Maximum folder depth to recurse. Set -1 to disable max depth.</param>
+    public static IEnumerable<FileResult> EnumerateFileItems(string path, out DirectoryStats rootStats, int maxDepth = -1)
+    {
+        rootStats = new DirectoryStats();
+        return ScanRecursive(Path.GetFullPath(path), maxDepth, 0, rootStats);
+    }
+
+    /// <summary>
+    /// A barebones version of EnumerateFiles() provides only the path and not statistics. Only provides files and not
+    /// directories.
+    /// </summary>
+    /// <param name="maxDepth">Maximum folder depth to recurse. Set -1 to disable max depth.</param>
+    public static IEnumerable<string> EnumerateFilepaths(string path, int maxDepth = -1) { return ScanRecursiveFilepath(Path.GetFullPath(path), maxDepth, 0); }
+
     [DllImport("kernel32.dll", SetLastError = true)]
     private static extern bool FindClose(IntPtr hFindFile);
 
@@ -27,7 +49,6 @@ public static class Win32FileScanner
     private static extern bool FindNextFile(IntPtr hFindFile, out Win32FindData lpFindFileData);
 
     private static long GetFilesize(Win32FindData findData) { return findData.nFileSizeLow + ((long)findData.nFileSizeHigh * uint.MaxValue); }
-
     private static bool IsValidFile(Win32FindData findData) { return !findData.cFileName.Equals(".") && !findData.cFileName.Equals(".."); }
 
     private static IEnumerable<FileResult> ScanRecursive(string path, int maxDepth, int depth, DirectoryStats parent)
@@ -143,33 +164,10 @@ public static class Win32FileScanner
         return DateTime.FromFileTime(longValue);
     }
 
-    /// <summary>
-    /// Provides a enumerable of file results that contain a range of information about both files and directories
-    /// discovered in the provided directory path.
-    /// </summary>
-    /// <param name="path">The folder path.</param>
-    /// <param name="rootStats">
-    /// A cumulative stat object representing total files, folder, sizes, etc for the base directory provided.
-    /// </param>
-    /// <param name="maxDepth">Maximum folder depth to recurse. Set -1 to disable max depth.</param>
-    public static IEnumerable<FileResult> EnumerateFileItems(string path, out DirectoryStats rootStats, int maxDepth = -1)
-    {
-        rootStats = new DirectoryStats();
-        return ScanRecursive(Path.GetFullPath(path), maxDepth, 0, rootStats);
-    }
-
-    /// <summary>
-    /// A barebones version of EnumerateFiles() provides only the path and not statistics. Only provides files and not
-    /// directories.
-    /// </summary>
-    /// <param name="maxDepth">Maximum folder depth to recurse. Set -1 to disable max depth.</param>
-    public static IEnumerable<string> EnumerateFilepaths(string path, int maxDepth = -1) { return ScanRecursiveFilepath(Path.GetFullPath(path), maxDepth, 0); }
-
     [StructLayout(LayoutKind.Sequential)]
     private readonly struct FileTime
     {
         public readonly uint dwLowDateTime;
-
         public readonly uint dwHighDateTime;
     }
 
@@ -177,24 +175,15 @@ public static class Win32FileScanner
     private readonly struct Win32FindData
     {
         public readonly FileAttributes dwFileAttributes;
-
         public readonly FileTime ftCreationTime;
-
         public readonly FileTime ftLastAccessTime;
-
         public readonly FileTime ftLastWriteTime;
-
         public readonly uint nFileSizeHigh;
-
         public readonly uint nFileSizeLow;
-
         public readonly uint dwReserved0;
-
         public readonly uint dwReserved1;
-
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
         public readonly string cFileName;
-
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 14)]
         public readonly string cAlternateFileName;
     }
@@ -202,6 +191,22 @@ public static class Win32FileScanner
 
 public sealed class DirectoryStats
 {
+    public long Files { get; private set; }
+
+    public long Items => Files + Subdirectories;
+
+    public long Size { get; private set; }
+
+    public long Subdirectories { get; private set; }
+
+    public long TotalFiles { get; private set; }
+
+    public long TotalItems => TotalFiles + TotalSubdirectories;
+
+    public long TotalSize { get; private set; }
+
+    public long TotalSubdirectories { get; private set; }
+
     public void AddDirectory(ref DirectoryStats stats)
     {
         Subdirectories++;
@@ -220,22 +225,6 @@ public sealed class DirectoryStats
         Size += size;
         TotalSize += size;
     }
-
-    public long Files { get; private set; }
-
-    public long Items => Files + Subdirectories;
-
-    public long Size { get; private set; }
-
-    public long Subdirectories { get; private set; }
-
-    public long TotalFiles { get; private set; }
-
-    public long TotalItems => TotalFiles + TotalSubdirectories;
-
-    public long TotalSize { get; private set; }
-
-    public long TotalSubdirectories { get; private set; }
 }
 
 public sealed class FileResult(string path, long filesize, FileAttributes attributes, DateTime creationTime, DateTime lastWriteTime, DateTime lastAccessTime, FileType type, int depth, DirectoryStats stats = null)

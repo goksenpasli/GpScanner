@@ -22,26 +22,40 @@ namespace Extensions;
 public static class ExtensionMethods
 {
     public const uint FILE_ATTRIBUTE_NORMAL = 0x00000080;
-
     public const uint SHGFI_DISPLAYNAME = 0x000000200;
-
     public const uint SHGFI_ICON = 0x000000100;
-
     public const uint SHGFI_LARGEICON = 0x000000000;
-
     public const uint SHGFI_OPENICON = 0x000000002;
-
     public const uint SHGFI_SMALLICON = 0x000000001;
-
     public const uint SHGFI_TYPENAME = 0x000000400;
-
     public const uint SHGFI_USEFILEATTRIBUTES = 0x000000010;
-
     private static readonly Random _random = new();
-
     private static readonly IntPtr hwnd = Process.GetCurrentProcess().Handle;
 
-    private static byte GetGrayscaleValue(byte red, byte green, byte blue) { return (byte)Math.Round((0.299 * red) + (0.587 * green) + (0.114 * blue)); }
+    public enum FolderType
+    {
+        Closed = 0,
+
+        Open = 1
+    }
+
+    public enum Format
+    {
+        Tiff = 0,
+
+        TiffRenkli = 1,
+
+        Jpg = 2,
+
+        Png = 3
+    }
+
+    public enum IconSize
+    {
+        Large = 0,
+
+        Small = 1
+    }
 
     public static Bitmap BitmapChangeFormat(this Bitmap bitmap, PixelFormat format)
     {
@@ -470,43 +484,16 @@ public static class ExtensionMethods
         }
     }
 
-    public enum FolderType
-    {
-        Closed = 0,
-
-        Open = 1
-    }
-
-    public enum Format
-    {
-        Tiff = 0,
-
-        TiffRenkli = 1,
-
-        Jpg = 2,
-
-        Png = 3
-    }
-
-    public enum IconSize
-    {
-        Large = 0,
-
-        Small = 1
-    }
+    private static byte GetGrayscaleValue(byte red, byte green, byte blue) { return (byte)Math.Round((0.299 * red) + (0.587 * green) + (0.114 * blue)); }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct SHFILEINFO
     {
         public IntPtr hIcon;
-
         public int iIcon;
-
         public uint dwAttributes;
-
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
         public string szDisplayName;
-
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)]
         public string szTypeName;
     }

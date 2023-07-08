@@ -11,6 +11,22 @@ namespace UdfParser;
 
 public static class UdfParser
 {
+    public static IDocumentPaginatorSource RenderDocument(Template content)
+    {
+        FlowDocument flowdocument = new();
+        FlowDocumentScrollViewer flowdocumentscrollviewer = new();
+        Textcreate(content, flowdocument);
+        Tblcreate(content, flowdocument);
+        Imgcreate(content, flowdocument);
+        Bgimgcreate(content, flowdocument);
+        PrintDialog pd = new();
+        PageFormat pageformat = content.Properties.PageFormat;
+        flowdocumentscrollviewer.Document = flowdocument;
+        flowdocumentscrollviewer.Document.PagePadding = new Thickness(pageformat.LeftMargin * 4 / 3, pageformat.TopMargin * 4 / 3, pageformat.RightMargin * 4 / 3, pageformat.BottomMargin * 4 / 3);
+        flowdocumentscrollviewer.Document.ColumnWidth = pd.PrintableAreaWidth;
+        return flowdocumentscrollviewer.Document;
+    }
+
     private static void Bgimgcreate(Template content, FlowDocument flowdocument)
     {
         BgImage bgimage = content.Properties.BgImage;
@@ -240,21 +256,5 @@ public static class UdfParser
             paragraph.Inlines.Add(inlinetext);
             flowdocument.Blocks.Add(paragraph);
         }
-    }
-
-    public static IDocumentPaginatorSource RenderDocument(Template content)
-    {
-        FlowDocument flowdocument = new();
-        FlowDocumentScrollViewer flowdocumentscrollviewer = new();
-        Textcreate(content, flowdocument);
-        Tblcreate(content, flowdocument);
-        Imgcreate(content, flowdocument);
-        Bgimgcreate(content, flowdocument);
-        PrintDialog pd = new();
-        PageFormat pageformat = content.Properties.PageFormat;
-        flowdocumentscrollviewer.Document = flowdocument;
-        flowdocumentscrollviewer.Document.PagePadding = new Thickness(pageformat.LeftMargin * 4 / 3, pageformat.TopMargin * 4 / 3, pageformat.RightMargin * 4 / 3, pageformat.BottomMargin * 4 / 3);
-        flowdocumentscrollviewer.Document.ColumnWidth = pd.PrintableAreaWidth;
-        return flowdocumentscrollviewer.Document;
     }
 }

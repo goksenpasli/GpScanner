@@ -26,42 +26,7 @@ public static class Ocr
         TesseractDataExists = false;
     }
 
-    private static ObservableCollection<OcrData> GetOcrData(this byte[] dosya, string tesseractlanguage)
-    {
-        if(dosya is null)
-        {
-            throw new ArgumentNullException(nameof(dosya));
-        }
-
-        using TesseractEngine engine = new(TesseractPath, tesseractlanguage, EngineMode.LstmOnly);
-        using Pix pixImage = Pix.LoadFromMemory(dosya);
-        using Page page = engine.Process(pixImage);
-        using ResultIterator iterator = page.GetIterator();
-        iterator.Begin();
-        ObservableCollection<OcrData> ocrdata = iterator.IterateOcr(PageIteratorLevel.Word);
-        dosya = null;
-        GC.Collect();
-        return ocrdata;
-    }
-
-    private static ObservableCollection<OcrData> IterateOcr(this ResultIterator iterator, PageIteratorLevel pageIteratorLevel)
-    {
-        ObservableCollection<OcrData> ocrdata = new();
-        do
-        {
-            if(iterator.TryGetBoundingBox(pageIteratorLevel, out Tesseract.Rect rect))
-            {
-                Rect imgrect = new(rect.X1, rect.Y1, rect.Width, rect.Height);
-                OcrData item = new() { Text = iterator.GetText(pageIteratorLevel), Rect = imgrect };
-                if(!string.IsNullOrWhiteSpace(item.Text))
-                {
-                    ocrdata.Add(item);
-                }
-            }
-        } while (iterator.Next(pageIteratorLevel));
-
-        return ocrdata;
-    }
+    public static bool TesseractDataExists { get; }
 
     private static string TesseractPath { get; }
 
@@ -114,5 +79,40 @@ public static class Ocr
         return await Task.Run(() => dosya.GetOcrData(tesseractlanguage), ocrcancellationToken.Token);
     }
 
-    public static bool TesseractDataExists { get; }
+    private static ObservableCollection<OcrData> GetOcrData(this byte[] dosya, string tesseractlanguage)
+    {
+        if(dosya is null)
+        {
+            throw new ArgumentNullException(nameof(dosya));
+        }
+
+        using TesseractEngine engine = new(TesseractPath, tesseractlanguage, EngineMode.LstmOnly);
+        using Pix pixImage = Pix.LoadFromMemory(dosya);
+        using Page page = engine.Process(pixImage);
+        using ResultIterator iterator = page.GetIterator();
+        iterator.Begin();
+        ObservableCollection<OcrData> ocrdata = iterator.IterateOcr(PageIteratorLevel.Word);
+        dosya = null;
+        GC.Collect();
+        return ocrdata;
+    }
+
+    private static ObservableCollection<OcrData> IterateOcr(this ResultIterator iterator, PageIteratorLevel pageIteratorLevel)
+    {
+        ObservableCollection<OcrData> ocrdata = new();
+        do
+        {
+            if(iterator.TryGetBoundingBox(pageIteratorLevel, out Tesseract.Rect rect))
+            {
+                Rect imgrect = new(rect.X1, rect.Y1, rect.Width, rect.Height);
+                OcrData item = new() { Text = iterator.GetText(pageIteratorLevel), Rect = imgrect };
+                if(!string.IsNullOrWhiteSpace(item.Text))
+                {
+                    ocrdata.Add(item);
+                }
+            }
+        } while (iterator.Next(pageIteratorLevel));
+
+        return ocrdata;
+    }
 }

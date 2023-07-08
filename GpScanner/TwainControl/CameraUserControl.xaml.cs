@@ -18,15 +18,10 @@ namespace TwainControl;
 public partial class CameraUserControl : UserControl, INotifyPropertyChanged
 {
     private bool detectQRCode;
-
     private CapDevice device;
-
     private FilterInfo[] liste = CapDevice.DeviceMonikers;
-
     private byte[] resimData;
-
     private double rotation = 180;
-
     private FilterInfo seçiliKamera;
 
     public CameraUserControl()
@@ -73,30 +68,6 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
-
-    private void CameraUserControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
-    {
-        if(e.PropertyName is "SeçiliKamera")
-        {
-            Device = new CapDevice(SeçiliKamera.MonikerString) { MaxHeightInPixels = 1080 };
-        }
-    }
-
-    private void CameraUserControl_Unloaded(object sender, RoutedEventArgs e)
-    {
-        Device?.Stop();
-        DetectQRCode = false;
-    }
-
-    protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
-
-    public void EncodeBitmapImage(Stream ms)
-    {
-        JpegBitmapEncoder encoder = new();
-        encoder.Frames.Add(BitmapFrame.Create(new TransformedBitmap(Device.BitmapSource, new RotateTransform(Rotation))));
-        encoder.QualityLevel = 90;
-        encoder.Save(ms);
-    }
 
     public bool DetectQRCode
     {
@@ -191,4 +162,28 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
     }
 
     public RelayCommand<object> VideodanResimYükle { get; }
+
+    public void EncodeBitmapImage(Stream ms)
+    {
+        JpegBitmapEncoder encoder = new();
+        encoder.Frames.Add(BitmapFrame.Create(new TransformedBitmap(Device.BitmapSource, new RotateTransform(Rotation))));
+        encoder.QualityLevel = 90;
+        encoder.Save(ms);
+    }
+
+    protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
+
+    private void CameraUserControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if(e.PropertyName is "SeçiliKamera")
+        {
+            Device = new CapDevice(SeçiliKamera.MonikerString) { MaxHeightInPixels = 1080 };
+        }
+    }
+
+    private void CameraUserControl_Unloaded(object sender, RoutedEventArgs e)
+    {
+        Device?.Stop();
+        DetectQRCode = false;
+    }
 }

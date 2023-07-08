@@ -15,32 +15,23 @@ namespace GpScanner.ViewModel;
 
 public static class StillImageHelper
 {
+    public const string MSG_KILL_PIPE_SERVER = "KILL_PIPE_SERVER";
+    public static string DEVICE_PREFIX = "/StiDevice:";
     private const string PIPE_NAME_FORMAT = "GPSCANNER_PIPE_143762b8-772a-47af-bae6-08e0a1d0ca89_{0}";
-
     private const string REGKEY_AUTOPLAY_HANDLER_GPSCANNER =
         @"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\WIA_{143762b8-772a-47af-bae6-08e0a1d0ca89}";
-
     private const string REGKEY_IMAGE_EVENTS =
         @"SYSTEM\CurrentControlSet\Control\Class\{6bdd1fc6-810f-11d0-bec7-08002be2092f}\0000\Events";
-
     private const string REGKEY_STI_APP =
         @"SOFTWARE\Microsoft\Windows\CurrentVersion\StillImage\Registered Applications";
-
     private const string REGKEY_STI_EVENT_GPSCANNER =
         @"SYSTEM\CurrentControlSet\Control\StillImage\Events\STIProxyEvent\{143762b8-772a-47af-bae6-08e0a1d0ca89}";
-
     private const string REGKEY_STI_EVENT_SCANBUTTON =
         @"SYSTEM\CurrentControlSet\Control\StillImage\Events\ScanButton\{143762b8-772a-47af-bae6-08e0a1d0ca89}";
-
     private const int TIMEOUT = 1000;
-
-    public const string MSG_KILL_PIPE_SERVER = "KILL_PIPE_SERVER";
-
     private static bool _serverRunning;
 
-    public static string DEVICE_PREFIX = "/StiDevice:";
-
-    private static string GetPipeName(Process process) { return string.Format(PIPE_NAME_FORMAT, process.Id); }
+    public static bool FirstLanuchScan { get; set; }
 
     public static void ActivateProcess(Process process)
     {
@@ -177,7 +168,7 @@ public static class StillImageHelper
         }
     }
 
-    public static bool FirstLanuchScan { get; set; }
+    private static string GetPipeName(Process process) { return string.Format(PIPE_NAME_FORMAT, process.Id); }
 
     private class StreamString(Stream ioStream)
     {

@@ -6,21 +6,14 @@ namespace TwainWpf.TwainNative
     public class Identity
     {
         public int Id;
-
         public TwainVersion Version;
-
         public short ProtocolMajor;
-
         public short ProtocolMinor;
-
         public int SupportedGroups;
-
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 34)]
         public string Manufacturer;
-
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 34)]
         public string ProductFamily;
-
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 34)]
         public string ProductName;
 

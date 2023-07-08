@@ -5,11 +5,8 @@ namespace Ocr;
 public class TesseractOcrData : InpcBase
 {
     private bool ısEnabled = true;
-
     private Visibility ısVisible = Visibility.Collapsed;
-
     private string ocrName;
-
     private double progressValue;
 
     public bool IsEnabled

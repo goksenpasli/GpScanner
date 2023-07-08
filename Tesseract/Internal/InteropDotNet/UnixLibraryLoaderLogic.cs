@@ -6,21 +6,8 @@ namespace Tesseract.Internal.InteropDotNet
     internal class UnixLibraryLoaderLogic : ILibraryLoaderLogic
     {
         private const int RTLD_NOW = 2;
-
         private static readonly string FileExtension =
             SystemManager.GetOperatingSystem() == OperatingSystem.MacOSX ? ".dylib" : ".so";
-
-        [DllImport("libdl", EntryPoint = "dlclose", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private static extern int UnixFreeLibrary(IntPtr handle);
-
-        [DllImport("libdl", EntryPoint = "dlerror", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private static extern IntPtr UnixGetLastError();
-
-        [DllImport("libdl", EntryPoint = "dlsym", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private static extern IntPtr UnixGetProcAddress(IntPtr handle, string symbol);
-
-        [DllImport("libdl", EntryPoint = "dlopen")]
-        private static extern IntPtr UnixLoadLibrary(string fileName, int flags);
 
         public string FixUpLibraryName(string fileName)
         {
@@ -87,5 +74,17 @@ namespace Tesseract.Internal.InteropDotNet
 
             return libraryHandle;
         }
+
+        [DllImport("libdl", EntryPoint = "dlclose", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern int UnixFreeLibrary(IntPtr handle);
+
+        [DllImport("libdl", EntryPoint = "dlerror", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern IntPtr UnixGetLastError();
+
+        [DllImport("libdl", EntryPoint = "dlsym", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern IntPtr UnixGetProcAddress(IntPtr handle, string symbol);
+
+        [DllImport("libdl", EntryPoint = "dlopen")]
+        private static extern IntPtr UnixLoadLibrary(string fileName, int flags);
     }
 }

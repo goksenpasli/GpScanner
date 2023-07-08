@@ -208,7 +208,6 @@ public partial class MainWindow : Window
     }
 
     private void Run_Drop(object sender, DragEventArgs e) { TwainCtrl.DropFile(sender, e); }
-
     private void Run_PreviewMouseMove(object sender, MouseEventArgs e) { TwainCtrl.DropPreviewFile(sender, e); }
 
     private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)

@@ -5,15 +5,10 @@ namespace Extensions;
 public class ArchiveData : InpcBase
 {
     private long boyut;
-
     private string dosyaAdı;
-
     private DateTime düzenlenmeZamanı;
-
     private double oran;
-
     private long sıkıştırılmışBoyut;
-
     private string tamYol;
 
     public long Boyut

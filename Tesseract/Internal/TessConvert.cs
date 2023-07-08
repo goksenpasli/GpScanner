@@ -8,23 +8,14 @@ namespace Tesseract.Internal
     internal static class TessConvert
     {
         public static string ToString(bool value) { return value ? "TRUE" : "FALSE"; }
-
         public static string ToString(decimal value) { return value.ToString("R", CultureInfo.InvariantCulture.NumberFormat); }
-
         public static string ToString(double value) { return value.ToString("R", CultureInfo.InvariantCulture.NumberFormat); }
-
         public static string ToString(float value) { return value.ToString("R", CultureInfo.InvariantCulture.NumberFormat); }
-
         public static string ToString(short value) { return value.ToString("D", CultureInfo.InvariantCulture.NumberFormat); }
-
         public static string ToString(int value) { return value.ToString("D", CultureInfo.InvariantCulture.NumberFormat); }
-
         public static string ToString(long value) { return value.ToString("D", CultureInfo.InvariantCulture.NumberFormat); }
-
         public static string ToString(ushort value) { return value.ToString("D", CultureInfo.InvariantCulture.NumberFormat); }
-
         public static string ToString(uint value) { return value.ToString("D", CultureInfo.InvariantCulture.NumberFormat); }
-
         public static string ToString(ulong value) { return value.ToString("D", CultureInfo.InvariantCulture.NumberFormat); }
 
         public static bool TryToString(object value, out string result)

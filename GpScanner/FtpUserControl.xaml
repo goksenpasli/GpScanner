@@ -20,6 +20,7 @@
                 Value="{Binding FtpLoadProgressValue}" />
             <ListBox Grid.Row="1"
                 d:ItemsSource="{d:SampleData ItemCount=5}"
+                Background="{StaticResource BorderBackground}"
                 ItemsSource="{Binding FtpSites, Source={x:Static properties:Settings.Default}}"
                 SelectedItem="{Binding SelectedFtp, Source={x:Static properties:Settings.Default}}">
                 <ListBox.ItemTemplate>

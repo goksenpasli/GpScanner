@@ -7,15 +7,7 @@ namespace TwainControl;
 public class SimpleXmlViewer : XmlViewerControl
 {
     private Window maximizePdfWindow;
-
     private XmlViewerControl xmlViewerControl;
-
-    private void MaximizePdfWindow_Closed(object sender, EventArgs e)
-    {
-        maximizePdfWindow.Closed -= MaximizePdfWindow_Closed;
-        xmlViewerControl = null;
-        maximizePdfWindow = null;
-    }
 
     protected override void OnMouseDoubleClick(MouseButtonEventArgs e)
     {
@@ -34,5 +26,12 @@ public class SimpleXmlViewer : XmlViewerControl
         _ = maximizePdfWindow.ShowDialog();
 
         base.OnMouseDoubleClick(e);
+    }
+
+    private void MaximizePdfWindow_Closed(object sender, EventArgs e)
+    {
+        maximizePdfWindow.Closed -= MaximizePdfWindow_Closed;
+        xmlViewerControl = null;
+        maximizePdfWindow = null;
     }
 }

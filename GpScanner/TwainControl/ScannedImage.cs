@@ -9,36 +9,14 @@ namespace TwainControl;
 public class ScannedImage : InpcBase
 {
     private bool animate;
-
     private string filePath;
-
     private int ındex;
-
     private BitmapFrame resim;
-
     private BitmapSource resimThumb;
-
     private double rotationAngle;
-
     private bool seçili;
 
     public ScannedImage() { PropertyChanged += ScannedImage_PropertyChangedAsync; }
-
-    private async void ScannedImage_PropertyChangedAsync(object sender, PropertyChangedEventArgs e)
-    {
-        if(e.PropertyName is "RotationAngle" && RotationAngle != 0)
-        {
-            if(Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
-            {
-                Resim = await Resim.FlipImageAsync(RotationAngle);
-                RotationAngle = 0;
-                return;
-            }
-
-            Resim = await Resim.RotateImageAsync(RotationAngle);
-            RotationAngle = 0;
-        }
-    }
 
     public bool Animate
     {
@@ -138,6 +116,22 @@ public class ScannedImage : InpcBase
                 seçili = value;
                 OnPropertyChanged(nameof(Seçili));
             }
+        }
+    }
+
+    private async void ScannedImage_PropertyChangedAsync(object sender, PropertyChangedEventArgs e)
+    {
+        if(e.PropertyName is "RotationAngle" && RotationAngle != 0)
+        {
+            if(Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+            {
+                Resim = await Resim.FlipImageAsync(RotationAngle);
+                RotationAngle = 0;
+                return;
+            }
+
+            Resim = await Resim.RotateImageAsync(RotationAngle);
+            RotationAngle = 0;
         }
     }
 }

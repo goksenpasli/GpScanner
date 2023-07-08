@@ -13,53 +13,6 @@ public static class DragDropExtension
     public static readonly DependencyProperty ScrollOnDragDropProperty =
                         DependencyProperty.RegisterAttached("ScrollOnDragDrop", typeof(bool), typeof(DragDropExtension), new PropertyMetadata(false, HandleScrollOnDragDropChanged));
 
-    private static void HandleScrollOnDragDropChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        if(d is FrameworkElement container)
-        {
-            Unsubscribe(container);
-
-            if(true.Equals(e.NewValue))
-            {
-                Subscribe(container);
-            }
-
-            return;
-        }
-
-        Debug.Fail("Invalid type!");
-    }
-
-    private static void OnContainerPreviewDragOver(object sender, DragEventArgs e)
-    {
-        if(sender is FrameworkElement container)
-        {
-            ScrollViewer scrollViewer = container.GetFirstVisualChild<ScrollViewer>();
-
-            if(scrollViewer != null)
-            {
-                const double tolerance = 60;
-                double verticalPos = e.GetPosition(container).Y;
-                const double offset = 20;
-
-                if(verticalPos < tolerance)
-                {
-                    scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - offset);
-                    return;
-                }
-
-                if(verticalPos > container.ActualHeight - tolerance)
-                {
-                    scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset + offset);
-                }
-            }
-        }
-    }
-
-    private static void Subscribe(FrameworkElement container) { container.PreviewDragOver += OnContainerPreviewDragOver; }
-
-    private static void Unsubscribe(FrameworkElement container) { container.PreviewDragOver -= OnContainerPreviewDragOver; }
-
     public static IEnumerable<T> FindVisualChildren<T>(this DependencyObject parent) where T : DependencyObject
     {
         return parent == null ? throw new ArgumentNullException(nameof(parent)) : FindChildren();
@@ -121,4 +74,50 @@ public static class DragDropExtension
 
         element.SetValue(ScrollOnDragDropProperty, value);
     }
+
+    private static void HandleScrollOnDragDropChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if(d is FrameworkElement container)
+        {
+            Unsubscribe(container);
+
+            if(true.Equals(e.NewValue))
+            {
+                Subscribe(container);
+            }
+
+            return;
+        }
+
+        Debug.Fail("Invalid type!");
+    }
+
+    private static void OnContainerPreviewDragOver(object sender, DragEventArgs e)
+    {
+        if(sender is FrameworkElement container)
+        {
+            ScrollViewer scrollViewer = container.GetFirstVisualChild<ScrollViewer>();
+
+            if(scrollViewer != null)
+            {
+                const double tolerance = 60;
+                double verticalPos = e.GetPosition(container).Y;
+                const double offset = 20;
+
+                if(verticalPos < tolerance)
+                {
+                    scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - offset);
+                    return;
+                }
+
+                if(verticalPos > container.ActualHeight - tolerance)
+                {
+                    scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset + offset);
+                }
+            }
+        }
+    }
+
+    private static void Subscribe(FrameworkElement container) { container.PreviewDragOver += OnContainerPreviewDragOver; }
+    private static void Unsubscribe(FrameworkElement container) { container.PreviewDragOver -= OnContainerPreviewDragOver; }
 }
