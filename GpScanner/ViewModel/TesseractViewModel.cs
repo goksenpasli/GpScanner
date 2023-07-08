@@ -20,6 +20,7 @@ namespace GpScanner.ViewModel;
 public class TesseractViewModel : InpcBase, IDataErrorInfo
 
 {
+    private bool ısFolderWritable;
     private bool showAllLanguages;
     private string tessdatafolder;
     private ObservableCollection<TessFiles> tesseractFiles;
@@ -29,7 +30,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
         Tessdatafolder = $@"{Path.GetDirectoryName(Process.GetCurrentProcess()?.MainModule?.FileName)}\tessdata";
         TesseractFiles = GetTesseractFiles(Tessdatafolder);
-
+        IsFolderWritable = FolderWritable(Tessdatafolder);
         OcrDatas = TesseractDownloadData();
 
         TesseractDataFilesDownloadLink = new RelayCommand<object>(
@@ -104,6 +105,19 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
 
     public string Error => string.Empty;
 
+    public bool IsFolderWritable
+    {
+        get => ısFolderWritable;
+        set
+        {
+            if(ısFolderWritable != value)
+            {
+                ısFolderWritable = value;
+                OnPropertyChanged(nameof(IsFolderWritable));
+            }
+        }
+    }
+
     public ObservableCollection<TesseractOcrData> OcrDatas { get; set; }
 
     public bool ShowAllLanguages
@@ -155,12 +169,13 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
     public string this[string columnName] => columnName switch
     {
         "TesseractFiles" when TesseractFiles?.Count(z => z.Checked) == 0 || string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) => $"{Translation.GetResStringValue("TESSLANGSELECT")}",
+        "IsFolderWritable" when !IsFolderWritable => $"{Translation.GetResStringValue("NO ACTION")}",
         _ => null
     };
 
     public ObservableCollection<TessFiles> GetTesseractFiles(string tesseractfolder)
     {
-        if(Directory.Exists(tesseractfolder))
+        if(Directory.Exists(tesseractfolder) && FolderWritable(tesseractfolder))
         {
             string[] defaultTtsLang = Settings.Default.DefaultTtsLang.Split('+');
             return new ObservableCollection<TessFiles>(
@@ -176,6 +191,26 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
         }
 
         return null;
+    }
+
+    private bool FolderWritable(string folderPath)
+    {
+        string tempFilePath = Path.Combine(folderPath, Path.GetRandomFileName());
+        try
+        {
+            FileStream fs = File.Create(tempFilePath);
+            fs.Dispose();
+            return true;
+        } catch(UnauthorizedAccessException)
+        {
+            return false;
+        } catch(Exception)
+        {
+            return false;
+        } finally
+        {
+            File.Delete(tempFilePath);
+        }
     }
 
     private void Tess_PropertyChanged(object sender, PropertyChangedEventArgs e)

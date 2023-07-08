@@ -38,7 +38,10 @@
                 <ColumnDefinition Width="2*" />
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
-            <ItemsControl d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding OcrDatas}">
+            <ItemsControl d:ItemsSource="{d:SampleData ItemCount=5}"
+                IsEnabled="{Binding IsFolderWritable, ValidatesOnDataErrors=True}"
+                ItemsSource="{Binding OcrDatas}"
+                Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
                 <ItemsControl.Template>
                     <ControlTemplate>
                         <ScrollViewer Padding="{TemplateBinding Padding}" CanContentScroll="True" VerticalScrollBarVisibility="Auto">
@@ -59,17 +62,7 @@
                                     <ProgressBar Background="{x:Null}"
                                         Maximum="100" Minimum="0"
                                         Value="{Binding ProgressValue}" />
-                                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                        <Image Width="16" Height="16">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="User32.dll" />
-                                                    <Binding Source="6" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                        <TextBlock HorizontalAlignment="Center" Text="{Binding OcrName}" />
-                                    </StackPanel>
+                                    <TextBlock HorizontalAlignment="Center" Text="{Binding OcrName}" />
                                 </Grid>
                             </Button.Content>
                         </Button>

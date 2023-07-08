@@ -214,10 +214,7 @@ public partial class MainWindow : Window
     {
         if((e.PropertyName is "ApplyPdfSaveOcr" && TwainCtrl?.Scanner?.ApplyPdfSaveOcr == true) || (e.PropertyName is "ApplyDataBaseOcr" && TwainCtrl?.Scanner?.ApplyDataBaseOcr == true))
         {
-            if(DataContext is GpScannerViewModel ViewModel &&
-                ViewModel?.TesseractViewModel
-                    ?.GetTesseractFiles(ViewModel.TesseractViewModel.Tessdatafolder)?.Count(item => item.Checked) ==
-                0)
+            if(DataContext is GpScannerViewModel ViewModel && ViewModel?.TesseractViewModel?.GetTesseractFiles(ViewModel.TesseractViewModel.Tessdatafolder)?.Count(item => item.Checked) == 0)
             {
                 TwainCtrl.Scanner.ApplyPdfSaveOcr = false;
                 TwainCtrl.Scanner.ApplyDataBaseOcr = false;
