@@ -27,6 +27,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shell;
 using System.Windows.Threading;
 using TwainControl;
+using Xceed.Words.NET;
 using static Extensions.ExtensionMethods;
 using Application = System.Windows.Application;
 using File = System.IO.File;
@@ -223,6 +224,33 @@ public class GpScannerViewModel : InpcBase
                         filedata = null;
                         ocrdata = null;
                         OcrIsBusy = false;
+                        GC.Collect();
+                    }
+                }
+            },
+            parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && !OcrIsBusy);
+
+        WordOcrPdfThumbnailPage = new RelayCommand<object>(
+            async parameter =>
+            {
+                if(parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
+                {
+                    byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfviewer.PdfFilePath);
+                    if(filedata != null)
+                    {
+                        OcrIsBusy = true;
+                        ObservableCollection<OcrData> ocrdata;
+                        using MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfviewer.Sayfa, Twainsettings.Settings.Default.ImgLoadResolution);
+                        ocrdata = await ms.ToArray().WordFileOcrAsync(Settings.Default.DefaultTtsLang);
+                        OcrIsBusy = false;
+                        filedata = null;
+                        SaveFileDialog saveFileDialog = new() { Filter = "Docx Dosyası(*.docx)|*.docx", FileName = Translation.GetResStringValue("FILE") };
+                        if(saveFileDialog.ShowDialog() == true)
+                        {
+                            using DocX document = WriteDocxFile(ocrdata, saveFileDialog.FileName);
+                            document.Save(saveFileDialog.FileName);
+                        }
+                        ocrdata = null;
                         GC.Collect();
                     }
                 }
@@ -1280,6 +1308,8 @@ public class GpScannerViewModel : InpcBase
 
     public RelayCommand<object> UploadSharePoint { get; }
 
+    public RelayCommand<object> WordOcrPdfThumbnailPage { get; }
+
     public static void BackupDataXmlFile()
     {
         if(File.Exists(Settings.Default.DatabaseFile))
@@ -1429,6 +1459,19 @@ public class GpScannerViewModel : InpcBase
         Dosyalar = GetScannerFileData();
         ChartData = GetChartsData();
         SeçiliGün = DateTime.Today;
+    }
+
+    private static DocX WriteDocxFile(ObservableCollection<OcrData> ocrdata, string filename)
+    {
+        DocX document = DocX.Create(filename);
+        document.SetDefaultFont(new Xceed.Document.NET.Font("Times New Roman"), 12d);
+        foreach(OcrData item in ocrdata)
+        {
+            Xceed.Document.NET.Paragraph paragraph = document.InsertParagraph();
+            paragraph.Append(item.Text).FontSize(12).Alignment = Xceed.Document.NET.Alignment.both;
+            paragraph.IndentationFirstLine = (float)(1.25 / TwainCtrl.Inch * 72);
+        }
+        return document;
     }
 
     private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
