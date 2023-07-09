@@ -914,8 +914,6 @@
                                                         <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
                                                         <TextBlock VerticalAlignment="Center">
                                                             <Run Text="{local:Loc ALL}" />
-                                                            <Run Text=" " />
-                                                            <Run Text=" " />
                                                             <Run Text="{local:Loc CLEARLIST}" />
                                                         </TextBlock>
                                                     </StackPanel>
@@ -1289,7 +1287,10 @@
                         local:Policy.PolicyName="LoadImage"
                         Command="{Binding LoadImage}">
                         <Grid>
-                            <ProgressBar Background="{x:Null}" Maximum="1" Value="{Binding PdfLoadProgressValue}" />
+                            <ProgressBar Background="{x:Null}"
+                                BorderBrush="{x:Null}"
+                                Maximum="1"
+                                Value="{Binding PdfLoadProgressValue}" />
                             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                 <Image Width="32" Height="32">
                                     <Image.Source>
@@ -1310,6 +1311,7 @@
                         <Grid>
                             <ProgressBar d:Foreground="#FF06B025"
                                 Background="{x:Null}"
+                                BorderBrush="{x:Null}"
                                 Foreground="{Binding Scanner.SaveProgressBarForegroundBrush}"
                                 IsIndeterminate="{Binding Scanner.SaveProgressIndeterminate}"
                                 Maximum="1"
@@ -1331,6 +1333,7 @@
                         <Grid>
                             <ProgressBar d:Foreground="#FF06B025"
                                 Background="{x:Null}"
+                                BorderBrush="{x:Null}"
                                 Foreground="{Binding Scanner.SaveProgressBarForegroundBrush}"
                                 Maximum="1"
                                 Value="{Binding Scanner.PdfSaveProgressValue}" />

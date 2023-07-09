@@ -448,7 +448,10 @@
                                                                             </Style.Triggers>
                                                                         </Style>
                                                                     </Extensions:ContentToggleButton.Style>
-                                                                    <TextBlock Text="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}" TextTrimming="CharacterEllipsis" />
+                                                                    <Grid>
+                                                                        <ProgressBar Background="{x:Null}" BorderBrush="{x:Null}" IsIndeterminate="{Binding DataContext.OcrIsBusy, RelativeSource={RelativeSource AncestorType=Window}}" />
+                                                                        <TextBlock Text="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}" TextTrimming="CharacterEllipsis" />
+                                                                    </Grid>
                                                                 </Extensions:ContentToggleButton>
                                                                 <Extensions:ContentToggleButton Grid.Column="1" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
                                                                     <Extensions:ContentToggleButton.Style>
@@ -587,7 +590,7 @@
                                     </Style>
                                 </Button.Style>
                                 <Grid>
-                                    <ProgressBar Background="{x:Null}" IsIndeterminate="{Binding OcrIsBusy}" />
+                                    <ProgressBar Background="{x:Null}" BorderBrush="{x:Null}" IsIndeterminate="{Binding OcrIsBusy}" />
                                     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                         <Image Width="32" Height="32">
                                             <Image.Source>
@@ -894,7 +897,10 @@
                                         twainctrl:Policy.PolicyName="CancelBatchOcr"
                                         Command="{Binding CancelBatchOcr}">
                                         <Grid>
-                                            <ProgressBar Maximum="1" Minimum="0" Value="{Binding Scanner.PdfSaveProgressValue, Mode=OneWay, Source={x:Reference TwainCtrl}}" />
+                                            <ProgressBar Background="{x:Null}"
+                                                BorderBrush="{x:Null}"
+                                                Maximum="1" Minimum="0"
+                                                Value="{Binding Scanner.PdfSaveProgressValue, Mode=OneWay, Source={x:Reference TwainCtrl}}" />
                                             <Image Width="32" Height="32"
                                                 HorizontalAlignment="Center"
                                                 Source="/TwainControl;component/Icons/delete.png" />

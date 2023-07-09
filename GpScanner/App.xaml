@@ -270,22 +270,12 @@
                         <Button BorderBrush="Cyan"
                             Command="{Binding DataContext.OcrPdfThumbnailPage, RelativeSource={RelativeSource AncestorType=Window}}"
                             CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}"
-                            IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">
-                            <Button.Content>
-                                <Grid>
-                                    <ProgressBar Background="{x:Null}" IsIndeterminate="{Binding DataContext.OcrIsBusy, RelativeSource={RelativeSource AncestorType=Window}}" />
-                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="OCR" />
-                                </Grid>
-                            </Button.Content>
-                        </Button>
-                        <Button Command="{Binding DataContext.WordOcrPdfThumbnailPage, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}" IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">
-                            <Button.Content>
-                                <Grid>
-                                    <ProgressBar Background="{x:Null}" IsIndeterminate="{Binding DataContext.OcrIsBusy, RelativeSource={RelativeSource AncestorType=Window}}" />
-                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="WORD" />
-                                </Grid>
-                            </Button.Content>
-                        </Button>
+                            Content="OCR"
+                            IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}" />
+                        <Button Command="{Binding DataContext.WordOcrPdfThumbnailPage, RelativeSource={RelativeSource AncestorType=Window}}"
+                            CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}"
+                            Content="WORD"
+                            IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}" />
                         <Button BorderBrush="Cyan" Command="{Binding ReadPdfTag}" CommandParameter="{Binding ElementName=PdfVwr, Path=PdfFilePath, Mode=OneWay}">
                             <Button.Content>
                                 <TextBlock FontFamily="Wingdings 2" FontSize="16" Text="-" />
