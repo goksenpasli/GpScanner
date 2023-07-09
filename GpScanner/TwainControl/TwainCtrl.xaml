@@ -876,7 +876,7 @@
                                 <ColumnDefinition />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <Slider AutoToolTipPlacement="TopLeft" Maximum="300"
+                            <Slider AutoToolTipPlacement="TopLeft" Maximum="400"
                                 Minimum="85" Orientation="Vertical"
                                 SmallChange="1"
                                 Style="{StaticResource Slider}"

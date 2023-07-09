@@ -209,7 +209,10 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
             return false;
         } finally
         {
-            File.Delete(tempFilePath);
+            if(File.Exists(tempFilePath))
+            {
+                File.Delete(tempFilePath);
+            }
         }
     }
 

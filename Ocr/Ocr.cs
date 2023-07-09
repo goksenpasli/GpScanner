@@ -21,15 +21,15 @@ public static class Ocr
         {
             try
             {
-            TesseractDataExists = Directory.EnumerateFiles(TesseractPath).Any(z => string.Equals(Path.GetExtension(z), ".traineddata", StringComparison.OrdinalIgnoreCase));
-            }
-            catch (UnauthorizedAccessException)
+                TesseractDataExists = Directory.EnumerateFiles(TesseractPath).Any(z => string.Equals(Path.GetExtension(z), ".traineddata", StringComparison.OrdinalIgnoreCase));
+            } catch(UnauthorizedAccessException)
             {
                 TesseractDataExists = false;
             }
+        } else
+        {
+            TesseractDataExists = false;
         }
-
-        TesseractDataExists = false;
     }
 
     public static bool TesseractDataExists { get; }
