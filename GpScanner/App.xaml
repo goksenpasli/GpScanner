@@ -344,10 +344,10 @@
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="ZipViewerTemplate">
-                <Controls:ArchiveViewer ArchivePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                <ViewModel:CustomArchiveViewer AllowDrop="True" ArchivePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" Tag="{Binding ElementName=TwainCtrl, Mode=OneWay}" />
             </DataTemplate>
             <DataTemplate x:Key="ZipViewerTemplateFull">
-                <Controls:ArchiveViewer ArchivePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                <Extensions:ArchiveViewer ArchivePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="ImgViewerTemplate">
                 <Extensions:ImageViewer DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"

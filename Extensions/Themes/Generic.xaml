@@ -18,6 +18,7 @@
     <local:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
     <local:FilePathToIconConverter x:Key="FilePathToIconConverter" />
     <local:VisibilityToBooleanConverter x:Key="VisibilityToBooleanConverter" />
+    <local:FilePathToFileDescriptionConverter x:Key="FilePathToFileDescriptionConverter" />
     <Style x:Key="NumericUpDownTextBoxStyle" TargetType="{x:Type TextBox}">
         <Setter Property="Text" Value="{Binding Value, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
         <Style.Triggers>
@@ -439,6 +440,136 @@
                             <Setter TargetName="border" Property="Panel.Background" Value="#F4F4F4" />
                         </Trigger>
                     </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="local:ArchiveViewer">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:ArchiveViewer">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <ListView x:Name="Lv"
+                            d:ItemsSource="{d:SampleData ItemCount=5}"
+                            local:GridViewSort.AutoSort="True" AlternationCount="2"
+                            Foreground="Black" IsSynchronizedWithCurrentItem="False"
+                            ItemsSource="{Binding Arşivİçerik, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                            ScrollViewer.IsDeferredScrollingEnabled="False" SelectionMode="Single">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="{x:Type ListViewItem}">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                                <Border Background="{TemplateBinding Background}">
+                                                    <Border.InputBindings>
+                                                        <MouseBinding Command="{Binding ArşivTekDosyaÇıkar, RelativeSource={RelativeSource AncestorType=local:ArchiveViewer}}" CommandParameter="{Binding TamYol}" MouseAction="LeftDoubleClick" />
+                                                    </Border.InputBindings>
+                                                    <GridViewRowPresenter Margin="0" HorizontalAlignment="Stretch"
+                                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                        Content="{TemplateBinding Content}" />
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#D9EBF9" />
+                                                    </Trigger>
+                                                    <Trigger Property="IsMouseOver" Value="False">
+                                                        <Setter Property="Background" Value="Transparent" />
+                                                    </Trigger>
+                                                    <Trigger Property="IsSelected" Value="True">
+                                                        <Setter Property="Background" Value="#CCE8FF" />
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Width="28">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Image Width="16" Height="16" Source="{Binding DosyaAdı, Converter={StaticResource FilePathToIconConverter}}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Width="100"
+                                        local:GridViewSort.PropertyName="DosyaAdı"
+                                        DisplayMemberBinding="{Binding DosyaAdı, Mode=OneWay}"
+                                        Header="DOSYA ADI" />
+                                    <GridViewColumn Width="80"
+                                        local:GridViewSort.PropertyName="Boyut"
+                                        DisplayMemberBinding="{Binding Boyut, Mode=OneWay}"
+                                        Header="BOYUT" />
+                                    <GridViewColumn Width="80"
+                                        local:GridViewSort.PropertyName="SıkıştırılmışBoyut"
+                                        DisplayMemberBinding="{Binding SıkıştırılmışBoyut, Mode=OneWay}"
+                                        Header="SIKIŞTIRILMIŞ&#x0a;BOYUT" />
+                                    <GridViewColumn Width="70" DisplayMemberBinding="{Binding DosyaAdı, Converter={StaticResource FilePathToFileDescriptionConverter}, Mode=OneWay}" Header="TİP" />
+                                    <GridViewColumn Width="45" local:GridViewSort.PropertyName="Oran" Header="ORAN">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <ProgressBar Width="32"
+                                                    d:Value="0.5" Maximum="1"
+                                                    Style="{Binding Mode=OneWay, Source={StaticResource ProgressBarStyle}}"
+                                                    Value="{Binding Oran}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <Grid Grid.Column="1">
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=Lv, Path=Items.IsEmpty}" Value="true">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+                            <ProgressBar Width="20"
+                                d:Value="50"
+                                Foreground="{StaticResource ProgressBarPinkForeground}"
+                                Maximum="100" Orientation="Vertical"
+                                Value="{Binding ToplamOran, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                                d:Text="50" FontSize="11"
+                                FontWeight="Bold"
+                                Text="{Binding ToplamOran, RelativeSource={RelativeSource Mode=TemplatedParent}, StringFormat=\{0:F0\}}" />
+                        </Grid>
+                        <StatusBar Grid.Row="1" Grid.ColumnSpan="2">
+                            <StatusBar.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                    </Grid>
+                                </ItemsPanelTemplate>
+                            </StatusBar.ItemsPanel>
+                            <StatusBarItem Grid.Column="0">
+                                <TextBlock Text="{Binding ElementName=Lv, Path=SelectedItem.DosyaAdı}" />
+                            </StatusBarItem>
+                            <StatusBarItem Grid.Column="1">
+                                <TextBlock Text="{Binding ElementName=Lv, Path=SelectedItem.DüzenlenmeZamanı}" />
+                            </StatusBarItem>
+                            <StatusBarItem Grid.Column="2" HorizontalAlignment="Right">
+                                <TextBlock Text="{Binding ElementName=Lv, Path=ItemsSource.Count, StringFormat=Toplam {0} Dosya}" />
+                            </StatusBarItem>
+                        </StatusBar>
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

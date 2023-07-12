@@ -87,6 +87,8 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Speech" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
@@ -140,6 +142,7 @@
     </Compile>
     <Compile Include="ViewModel\AllPdfViewerControl.cs" />
     <Compile Include="ViewModel\BatchTxtOcr.cs" />
+    <Compile Include="ViewModel\CustomArchiveViewer.cs" />
     <Compile Include="ViewModel\Data.cs" />
     <Compile Include="ViewModel\DataSerialize.cs" />
     <Compile Include="ViewModel\DocumentViewerModel.cs" />
