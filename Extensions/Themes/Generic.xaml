@@ -461,7 +461,7 @@
                             d:ItemsSource="{d:SampleData ItemCount=5}"
                             local:GridViewSort.AutoSort="True" AlternationCount="2"
                             Foreground="Black" IsSynchronizedWithCurrentItem="False"
-                            ItemsSource="{Binding Arşivİçerik, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                            ItemsSource="{Binding Arşivİçerik, RelativeSource={RelativeSource AncestorType=local:ArchiveViewer}}"
                             ScrollViewer.IsDeferredScrollingEnabled="False" SelectionMode="Single">
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="{x:Type ListViewItem}">
@@ -501,10 +501,17 @@
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn Width="100"
-                                        local:GridViewSort.PropertyName="DosyaAdı"
-                                        DisplayMemberBinding="{Binding DosyaAdı, Mode=OneWay}"
-                                        Header="DOSYA ADI" />
+                                    <GridViewColumn Width="150" local:GridViewSort.PropertyName="DosyaAdı" DisplayMemberBinding="{Binding DosyaAdı, Mode=OneWay}">
+                                        <GridViewColumn.Header>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock VerticalAlignment="Center" Text="DOSYA ADI" />
+                                                <local:ButtonedTextBox Width="60"
+                                                    CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed"
+                                                    PasteButtonVisibility="Collapsed"
+                                                    Text="{Binding Search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=local:ArchiveViewer}}" />
+                                            </StackPanel>
+                                        </GridViewColumn.Header>
+                                    </GridViewColumn>
                                     <GridViewColumn Width="80"
                                         local:GridViewSort.PropertyName="Boyut"
                                         DisplayMemberBinding="{Binding Boyut, Mode=OneWay}"

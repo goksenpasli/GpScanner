@@ -7,6 +7,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace Extensions
 {
@@ -14,7 +15,9 @@ namespace Extensions
     {
         public static readonly DependencyProperty ArchivePathProperty = DependencyProperty.Register("ArchivePath", typeof(string), typeof(ArchiveViewer), new PropertyMetadata(null, Changed));
         private ObservableCollection<ArchiveData> arşivİçerik;
+        private ICollectionView cvs;
         private bool disposedValue;
+        private string search = string.Empty;
         private string[] selectedFiles;
         private double toplamOran;
 
@@ -22,16 +25,14 @@ namespace Extensions
 
         public ArchiveViewer()
         {
+            PropertyChanged += ArchiveViewer_PropertyChanged;
             ArşivTekDosyaÇıkar = new RelayCommand<object>(
                 parameter =>
                 {
                     try
                     {
-                        using ZipArchive archive = ZipFile.Open(ArchivePath, ZipArchiveMode.Read);
-                        ZipArchiveEntry dosya = archive.GetEntry(parameter as string);
-                        string extractpath = $"{Path.GetTempPath()}{Guid.NewGuid()}{Path.GetExtension(dosya.Name)}";
-                        dosya?.ExtractToFile(extractpath, true);
-                        _ = Process.Start(extractpath);
+                        string extractedfile = ExtractToFile(parameter as string);
+                        _ = Process.Start(extractedfile);
                     } catch(Exception ex)
                     {
                         throw new ArgumentException(ArchivePath, ex);
@@ -75,6 +76,19 @@ namespace Extensions
 
         public RelayCommand<object> ArşivTekDosyaÇıkar { get; }
 
+        public string Search
+        {
+            get => search;
+            set
+            {
+                if(search != value)
+                {
+                    search = value;
+                    OnPropertyChanged(nameof(Search));
+                }
+            }
+        }
+
         public string[] SelectedFiles
         {
             get => selectedFiles;
@@ -105,7 +119,16 @@ namespace Extensions
             GC.SuppressFinalize(this);
         }
 
-        public  void ReadArchiveContent(string ArchiveFilePath, ArchiveViewer archiveViewer)
+        public string ExtractToFile(string entryname)
+        {
+            using ZipArchive archive = ZipFile.Open(ArchivePath, ZipArchiveMode.Read);
+            ZipArchiveEntry dosya = archive.GetEntry(entryname);
+            string extractpath = $"{Path.GetTempPath()}{Guid.NewGuid()}{Path.GetExtension(dosya.Name)}";
+            dosya?.ExtractToFile(extractpath, true);
+            return extractpath;
+        }
+
+        public void ReadArchiveContent(string ArchiveFilePath, ArchiveViewer archiveViewer)
         {
             archiveViewer.Arşivİçerik = new ObservableCollection<ArchiveData>();
             using(ZipArchive archive = ZipFile.Open(ArchiveFilePath, ZipArchiveMode.Read))
@@ -124,7 +147,7 @@ namespace Extensions
                     archiveViewer.Arşivİçerik.Add(archiveData);
                 }
             }
-
+            cvs = CollectionViewSource.GetDefaultView(Arşivİçerik);
             archiveViewer.ToplamOran = (double)archiveViewer.Arşivİçerik.Sum(z => z.SıkıştırılmışBoyut) / archiveViewer.Arşivİçerik.Sum(z => z.Boyut) * 100;
         }
 
@@ -162,6 +185,20 @@ namespace Extensions
             {
                 FileInfo fileInfo = new(file);
                 _ = zipArchive.CreateEntryFromFile(fileInfo.FullName, fileInfo.Name);
+            }
+        }
+
+        private void ArchiveViewer_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName is "Search" && cvs is not null)
+            {
+                cvs.Filter = !string.IsNullOrWhiteSpace(Search)
+                    ? (x =>
+                    {
+                        ArchiveData archiveData = x as ArchiveData;
+                        return archiveData?.DosyaAdı?.Contains(Search, StringComparison.CurrentCultureIgnoreCase) == true;
+                    })
+                    : null;
             }
         }
     }
