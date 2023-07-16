@@ -15,6 +15,8 @@ namespace TwainControl;
 /// </summary>
 public class EypPdfViewer : PdfViewer.PdfViewer
 {
+    public static readonly DependencyProperty EypFilePathProperty = DependencyProperty.Register("EypFilePath", typeof(string), typeof(EypPdfViewer), new PropertyMetadata(null, Changed));
+
     public EypPdfViewer()
     {
         DosyaAç = new RelayCommand<object>(
@@ -51,6 +53,8 @@ public class EypPdfViewer : PdfViewer.PdfViewer
     }
 
     public new RelayCommand<object> DosyaAç { get; }
+
+    public string EypFilePath { get => (string)GetValue(EypFilePathProperty); set => SetValue(EypFilePathProperty, value); }
 
     public void AddToHistoryList(string pdffilepath)
     {
@@ -89,6 +93,18 @@ public class EypPdfViewer : PdfViewer.PdfViewer
             if(PdfReader.TestPdfFile(droppedfiles[0]) != 0)
             {
                 PdfFilePath = droppedfiles[0];
+            }
+        }
+    }
+
+    static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if(d is EypPdfViewer eypPdfViewer)
+        {
+            string eypfile = eypPdfViewer.ExtractEypFilesToPdf((string)e.NewValue);
+            if(PdfReader.TestPdfFile(eypfile) != 0)
+            {
+                eypPdfViewer.PdfFilePath = eypfile;
             }
         }
     }

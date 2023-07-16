@@ -10,6 +10,8 @@ public class ViewerTemplateSelector : DataTemplateSelector
 {
     public DataTemplate Empty { get; set; }
 
+    public DataTemplate Eyp { get; set; }
+
     public DataTemplate Img { get; set; }
 
     public DataTemplate Pdf { get; set; }
@@ -32,6 +34,7 @@ public class ViewerTemplateSelector : DataTemplateSelector
             return ext switch
             {
                 ".pdf" => Pdf,
+                ".eyp" => Eyp,
                 ".zip" => Zip,
                 ".xps" => Xps,
                 ".xml" or ".xsl" or ".xslt" or ".xaml" => Xml,

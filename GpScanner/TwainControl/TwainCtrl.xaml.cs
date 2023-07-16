@@ -585,9 +585,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 StringBuilder sb = new();
-                foreach(string item in Scanner.FolderDateFormats)
+                foreach(var item in Scanner.FolderDateFormats)
                 {
-                    _ = sb.Append(item).Append(' ').AppendLine(DateTime.Today.ToString(item, TranslationSource.Instance.CurrentCulture));
+                    _ = sb.Append(item.Key).Append(' ').AppendLine(DateTime.Today.ToString(item.Key, TranslationSource.Instance.CurrentCulture));
                 }
                 _ = sb.AppendLine().AppendLine(Translation.GetResStringValue("FOLDERFORMAT"));
                 _ = MessageBox.Show(sb.ToString(), Application.Current?.MainWindow?.Title);

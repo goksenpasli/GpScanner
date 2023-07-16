@@ -589,7 +589,27 @@ public class Scanner : InpcBase, IDataErrorInfo
         }
     }
 
-    public string[] FolderDateFormats { get; } = { "d.MM.yyyy", "dd.MM.yyyy", "d-MM-yyyy", "dd-MM-yyyy", "yyyy.MM.dd", "yyyy-MM-dd", "yyyy-MM-d", "yyyy.MM.d", "MM-dd-yyyy", "MM-d-yyyy", "MM.dd.yyyy", "MM.d.yyyy", "dddd", "MMMM", "yyyy" };
+    public Dictionary<string, int> FolderDateFormats
+    {
+        get;
+    } = new Dictionary<string, int>
+    {
+        { "d.MM.yyyy", 1 },
+        { "dd.MM.yyyy", 1 },
+        { "d-MM-yyyy", 1 },
+        { "dd-MM-yyyy", 1 },
+        { "yyyy.MM.dd", 2 },
+        { "yyyy-MM-dd", 2 },
+        { "yyyy-MM-d", 2 },
+        { "yyyy.MM.d", 2 },
+        { "MM-dd-yyyy", 3 },
+        { "MM-d-yyyy", 3 },
+        { "MM.dd.yyyy", 3 },
+        { "MM.d.yyyy", 3 },
+        { "dddd", 4 },
+        { "MMMM", 4 },
+        { "yyyy", 4 }
+    };
 
     public int FtpLoadProgressValue
     {

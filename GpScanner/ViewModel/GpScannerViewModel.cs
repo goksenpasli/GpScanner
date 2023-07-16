@@ -47,7 +47,7 @@ public class GpScannerViewModel : InpcBase
     public CancellationTokenSource ocrcancellationToken;
     private static DispatcherTimer timer;
     private readonly string[] imagefileextensions = { ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp" };
-    private readonly string[] supportedfilesextension = { ".pdf", ".tıff", ".tıf", ".tiff", ".tif", ".jpg", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml" };
+    private readonly string[] supportedfilesextension = { ".pdf", ".eyp", ".tıff", ".tıf", ".tiff", ".tif", ".jpg", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml" };
     private int allPdfPage;
     private bool anyDataExists;
     private string aramaMetni;

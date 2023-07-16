@@ -1002,7 +1002,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private void Viewport3D_MouseMove(object sender, MouseEventArgs e)
     {
-        if(_isOnDrag && e.LeftButton == MouseButtonState.Pressed)
+        if(_isOnDrag && e.RightButton == MouseButtonState.Pressed)
         {
             Vector delta = _startPoint - e.GetPosition(this);
             RotateX = _startRotateX + (delta.X / ActualWidth * 360);

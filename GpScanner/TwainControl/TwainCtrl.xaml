@@ -169,6 +169,11 @@
                     <ComponentModel:SortDescription PropertyName="Height" />
                 </CollectionViewSource.SortDescriptions>
             </CollectionViewSource>
+            <CollectionViewSource x:Key="FolderDates" Source="{Binding Scanner.FolderDateFormats}">
+                <CollectionViewSource.GroupDescriptions>
+                    <PropertyGroupDescription PropertyName="Value" />
+                </CollectionViewSource.GroupDescriptions>
+            </CollectionViewSource>
             <Style TargetType="{x:Type Button}">
                 <Setter Property="Background" Value="{StaticResource BorderBackground}" />
                 <Setter Property="local:Policy.PolicyEnabled" Value="True" />
@@ -328,11 +333,26 @@
                     <GroupBox IsEnabled="{Binding Scanner.ArayüzEtkin}">
                         <GroupBox.Header>
                             <UniformGrid Margin="1" Columns="4">
-                                <ComboBox local:Policy.PolicyName="FolderDateFormat" ItemsSource="{Binding Scanner.FolderDateFormats}" SelectedItem="{Binding FolderDateFormat, Source={x:Static properties:Settings.Default}}">
+                                <ComboBox local:Policy.PolicyName="FolderDateFormat"
+                                    ItemsSource="{Binding Source={StaticResource FolderDates}}"
+                                    SelectedValue="{Binding FolderDateFormat, Source={x:Static properties:Settings.Default}}"
+                                    SelectedValuePath="Key">
+                                    <ComboBox.GroupStyle>
+                                        <GroupStyle>
+                                            <GroupStyle.Panel>
+                                                <ItemsPanelTemplate>
+                                                    <UniformGrid Columns="4" />
+                                                </ItemsPanelTemplate>
+                                            </GroupStyle.Panel>
+                                            <GroupStyle.HeaderTemplate>
+                                                <DataTemplate />
+                                            </GroupStyle.HeaderTemplate>
+                                        </GroupStyle>
+                                    </ComboBox.GroupStyle>
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay}" />
+                                                <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay, Path=Key}" />
                                                 <Button VerticalAlignment="Center"
                                                     Background="{x:Null}"
                                                     BorderBrush="{x:Null}"

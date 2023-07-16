@@ -410,6 +410,14 @@
             <DataTemplate x:Key="XpsViewerTemplate">
                 <Controls:XpsViewer XpsDataFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
+            <DataTemplate x:Key="EypViewerTemplate">
+                <twain:EypPdfViewer AutoFitContent="True"
+                    EypFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                    SeekingLowerPdfDpi="True" ToolBarVisibility="Collapsed" />
+            </DataTemplate>
+            <DataTemplate x:Key="EypViewerTemplateFull">
+                <twain:EypPdfViewer AutoFitContent="True" EypFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" SeekingLowerPdfDpi="True" />
+            </DataTemplate>
             <DataTemplate x:Key="VideoViewerTemplate">
                 <Controls:MediaViewer Width="300" Height="300"
                     AutoPlay="False" ContextMenuVisibility="Visible"
@@ -514,6 +522,7 @@
                 </Style.Triggers>
             </Style>
             <ViewModel:ViewerTemplateSelector x:Key="DocumentViewerSelector"
+                Eyp="{StaticResource EypViewerTemplateFull}"
                 Img="{StaticResource ImgViewerDocumentViewerTemplateFull}"
                 Pdf="{StaticResource PdfViewerDocumentViewerTemplateFull}"
                 Vid="{StaticResource VideoViewerTemplateFull}"
@@ -521,6 +530,7 @@
                 Xps="{StaticResource XpsViewerTemplate}"
                 Zip="{StaticResource ZipViewerTemplateFull}" />
             <ViewModel:ViewerTemplateSelector x:Key="ThumbViewerSelector"
+                Eyp="{StaticResource EypViewerTemplate}"
                 Img="{StaticResource ImgViewerTemplate}"
                 Pdf="{StaticResource PdfViewerTemplateFull}"
                 Vid="{StaticResource VideoViewerTemplateMini}"
