@@ -50,6 +50,27 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
             },
             parameter => true);
 
+        TesseractRemove = new RelayCommand<object>(
+            parameter =>
+            {
+                if(parameter is TessFiles tessFile)
+                {
+                    string filepath = $"{Tessdatafolder}\\{tessFile.Name}.traineddata";
+                    if(File.Exists(filepath) && MessageBox.Show(Translation.GetResStringValue("DELETE"), Application.Current?.MainWindow?.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                    {
+                        try
+                        {
+                            File.Delete(filepath);
+                            TesseractFiles = GetTesseractFiles(Tessdatafolder);
+                        } catch(Exception ex)
+                        {
+                            _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                }
+            },
+            parameter => parameter is TessFiles tessFile && !tessFile.Checked && TesseractFiles?.Count > 1);
+
         TesseractDownload = new RelayCommand<object>(
             async parameter =>
             {
@@ -166,6 +187,8 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
         }
     }
 
+    public RelayCommand<object> TesseractRemove { get; }
+
     public string this[string columnName] => columnName switch
     {
         "TesseractFiles" when TesseractFiles?.Count(z => z.Checked) == 0 || string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) => $"{Translation.GetResStringValue("TESSLANGSELECT")}",
@@ -184,7 +207,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                         filePath =>
                         {
                             string tessFileName = Path.GetFileNameWithoutExtension(filePath);
-                            TessFiles tessfiles = new() { Name = tessFileName, Checked = defaultTtsLang.Contains(tessFileName) };
+                            TessFiles tessfiles = new() { Name = tessFileName, Checked = defaultTtsLang.Contains(tessFileName), FileSize = new FileInfo(filePath).Length / 1_048_576d };
                             tessfiles.PropertyChanged += Tess_PropertyChanged;
                             return tessfiles;
                         }));

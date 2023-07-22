@@ -99,7 +99,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
 
     static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if(d is EypPdfViewer eypPdfViewer)
+        if(d is EypPdfViewer eypPdfViewer && e.NewValue is not null)
         {
             string eypfile = eypPdfViewer.ExtractEypFilesToPdf((string)e.NewValue);
             if(PdfReader.TestPdfFile(eypfile) != 0)

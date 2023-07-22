@@ -35,8 +35,8 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*" />
                 <ColumnDefinition Width="2*" />
-                <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
             <ItemsControl d:ItemsSource="{d:SampleData ItemCount=5}"
                 IsEnabled="{Binding IsFolderWritable, ValidatesOnDataErrors=True}"
@@ -86,10 +86,27 @@
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate>
-                                    <CheckBox VerticalContentAlignment="Center"
-                                        d:Content="Name"
-                                        Content="{Binding Path=Name, Mode=OneWay}"
-                                        IsChecked="{Binding Checked}" />
+                                    <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding Checked}">
+                                        <CheckBox.Content>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock>
+                                                    <Run d:Text="Name" Text="{Binding Path=Name, Mode=OneWay}" />
+                                                    <LineBreak />
+                                                    <Run d:Text="FileSize" Text="{Binding FileSize, Mode=OneWay, StringFormat=\{0:F\}MB}" />
+                                                </TextBlock>
+                                                <TextBlock VerticalAlignment="Center">
+                                                    <Hyperlink BaselineAlignment="Center"
+                                                        Command="{Binding DataContext.TesseractRemove, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding Mode=OneWay}"
+                                                        FontFamily="Segoe UI Black" TextDecorations="None">
+                                                        <InlineUIContainer>
+                                                            <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
+                                                        </InlineUIContainer>
+                                                    </Hyperlink>
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </CheckBox.Content>
+                                    </CheckBox>
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>

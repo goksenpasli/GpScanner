@@ -2029,32 +2029,34 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public static List<string> EypFileExtract(string eypfilepath)
     {
-        using ZipArchive archive = ZipFile.Open(eypfilepath, ZipArchiveMode.Read);
-        if(archive != null)
+        if (eypfilepath is not null)
         {
-            List<string> data = new();
-            ZipArchiveEntry üstveri = archive.Entries.FirstOrDefault(entry => entry.Name == "NihaiOzet.xml");
-            string source = $"{Path.GetTempPath()}{Guid.NewGuid()}.xml";
-            üstveri?.ExtractToFile(source, true);
-            XDocument xdoc = XDocument.Load(source);
-            if(xdoc != null)
+            using ZipArchive archive = ZipFile.Open(eypfilepath, ZipArchiveMode.Read);
+            if (archive != null)
             {
-                foreach(string file in xdoc.Descendants().Select(z => Path.GetFileName((string)z.Attribute("URI"))).Where(z => !string.IsNullOrEmpty(z)))
+                List<string> data = new();
+                ZipArchiveEntry üstveri = archive.Entries.FirstOrDefault(entry => entry.Name == "NihaiOzet.xml");
+                string source = $"{Path.GetTempPath()}{Guid.NewGuid()}.xml";
+                üstveri?.ExtractToFile(source, true);
+                XDocument xdoc = XDocument.Load(source);
+                if (xdoc != null)
                 {
-                    ZipArchiveEntry zipArchiveEntry = archive.Entries.FirstOrDefault(entry => entry.Name == file);
-                    if(zipArchiveEntry != null)
+                    foreach (string file in xdoc.Descendants().Select(z => Path.GetFileName((string)z.Attribute("URI"))).Where(z => !string.IsNullOrEmpty(z)))
                     {
-                        string destinationFileName =
-                            $"{Path.GetTempPath()}{Guid.NewGuid()}{Path.GetExtension(file.ToLower())}";
-                        zipArchiveEntry.ExtractToFile(destinationFileName, true);
-                        data.Add(destinationFileName);
+                        ZipArchiveEntry zipArchiveEntry = archive.Entries.FirstOrDefault(entry => entry.Name == file);
+                        if (zipArchiveEntry != null)
+                        {
+                            string destinationFileName =
+                                $"{Path.GetTempPath()}{Guid.NewGuid()}{Path.GetExtension(file.ToLower())}";
+                            zipArchiveEntry.ExtractToFile(destinationFileName, true);
+                            data.Add(destinationFileName);
+                        }
                     }
                 }
+
+                return data;
             }
-
-            return data;
         }
-
         return null;
     }
 

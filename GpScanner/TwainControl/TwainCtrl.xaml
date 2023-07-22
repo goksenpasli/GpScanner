@@ -823,9 +823,6 @@
                                                 <DataTemplate>
                                                     <TextBlock>
                                                         <Run Text="{Binding Converter={StaticResource EnumOrientationToConvertedLanguageTextConverter}, Mode=OneWay}" />
-                                                        <Run Text=" " />
-                                                        <Run Text=" " />
-                                                        <Run Text=" " />
                                                         <Run FontStyle="Italic" Foreground="Red" Text="{Binding Converter={StaticResource EnumOrientationToTwainVersionConverter}, Mode=OneWay}" />
                                                     </TextBlock>
                                                 </DataTemplate>

@@ -5,6 +5,7 @@ namespace GpScanner.ViewModel;
 public class TessFiles : InpcBase
 {
     private bool @checked;
+    private double fileSize;
     private string name;
 
     public bool Checked
@@ -17,6 +18,19 @@ public class TessFiles : InpcBase
             {
                 @checked = value;
                 OnPropertyChanged(nameof(Checked));
+            }
+        }
+    }
+
+    public double FileSize
+    {
+        get => fileSize;
+        set
+        {
+            if(fileSize != value)
+            {
+                fileSize = value;
+                OnPropertyChanged(nameof(FileSize));
             }
         }
     }
