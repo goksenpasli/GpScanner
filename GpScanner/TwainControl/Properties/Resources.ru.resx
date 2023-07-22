@@ -576,4 +576,10 @@ PDF-ФАЙЛЫ</value>
   <data name="FOLDERFORMAT" xml:space="preserve">
     <value>Рекомендуется выбрать соответствующий формат индекса папок вашего старого браузерного приложения. Здесь будет производиться фильтрация по выбранному формату.</value>
   </data>
+  <data name="CHEIGHT" xml:space="preserve">
+    <value>ПОЛЬЗОВАТЕЛЬСКАЯ ВЫСОТА!</value>
+  </data>
+  <data name="CWIDTH" xml:space="preserve">
+    <value>ПОЛЬЗОВАТЕЛЬСКАЯ ШИРИНА!</value>
+  </data>
 </root>

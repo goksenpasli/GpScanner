@@ -22,6 +22,7 @@
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Converter:StringToQrBitmapImageConverter x:Key="StringToQrBitmapImageConverter" />
+        <Converter:FolderExsistToVisibilityConverter x:Key="FolderExsistToVisibilityConverter" />
         <Extensions:StringNullableToBooleanConverter x:Key="StringNullableToBooleanConverter" />
         <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
             <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
@@ -111,7 +112,7 @@
                             <VirtualizingStackPanel Orientation="Horizontal" />
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
-                    <ListBoxItem Tag="TÜRKÇE">
+                    <ListBoxItem Tag="TÜRKÇE" Visibility="{Binding Source='tr', Converter={StaticResource FolderExsistToVisibilityConverter}}">
                         <ListBoxItem.Content>
                             <StackPanel Orientation="Horizontal">
                                 <Image Width="51" Height="30"
@@ -120,7 +121,7 @@
                             </StackPanel>
                         </ListBoxItem.Content>
                     </ListBoxItem>
-                    <ListBoxItem Tag="ENGLISH">
+                    <ListBoxItem Tag="ENGLISH" Visibility="{Binding Source='en', Converter={StaticResource FolderExsistToVisibilityConverter}}">
                         <ListBoxItem.Content>
                             <StackPanel Orientation="Horizontal">
                                 <Image Width="51" Height="30"
@@ -129,7 +130,7 @@
                             </StackPanel>
                         </ListBoxItem.Content>
                     </ListBoxItem>
-                    <ListBoxItem Tag="FRANÇAIS">
+                    <ListBoxItem Tag="FRANÇAIS" Visibility="{Binding Source='fr', Converter={StaticResource FolderExsistToVisibilityConverter}}">
                         <ListBoxItem.Content>
                             <StackPanel Orientation="Horizontal">
                                 <Image Width="51" Height="30"
@@ -138,7 +139,7 @@
                             </StackPanel>
                         </ListBoxItem.Content>
                     </ListBoxItem>
-                    <ListBoxItem Tag="ITALIANO">
+                    <ListBoxItem Tag="ITALIANO" Visibility="{Binding Source='it', Converter={StaticResource FolderExsistToVisibilityConverter}}">
                         <ListBoxItem.Content>
                             <StackPanel Orientation="Horizontal">
                                 <Image Width="51" Height="30"
@@ -147,7 +148,7 @@
                             </StackPanel>
                         </ListBoxItem.Content>
                     </ListBoxItem>
-                    <ListBoxItem Tag="عربي">
+                    <ListBoxItem Tag="عربي" Visibility="{Binding Source='ar', Converter={StaticResource FolderExsistToVisibilityConverter}}">
                         <ListBoxItem.Content>
                             <StackPanel Orientation="Horizontal">
                                 <Image Width="51" Height="30"
@@ -156,7 +157,7 @@
                             </StackPanel>
                         </ListBoxItem.Content>
                     </ListBoxItem>
-                    <ListBoxItem Tag="РУССКИЙ">
+                    <ListBoxItem Tag="РУССКИЙ" Visibility="{Binding Source='ru', Converter={StaticResource FolderExsistToVisibilityConverter}}">
                         <ListBoxItem.Content>
                             <StackPanel Orientation="Horizontal">
                                 <Image Width="51" Height="30"
@@ -165,7 +166,7 @@
                             </StackPanel>
                         </ListBoxItem.Content>
                     </ListBoxItem>
-                    <ListBoxItem Tag="DEUTSCH">
+                    <ListBoxItem Tag="DEUTSCH" Visibility="{Binding Source='de', Converter={StaticResource FolderExsistToVisibilityConverter}}">
                         <ListBoxItem.Content>
                             <StackPanel Orientation="Horizontal">
                                 <Image Width="51" Height="30"
@@ -174,7 +175,7 @@
                             </StackPanel>
                         </ListBoxItem.Content>
                     </ListBoxItem>
-                    <ListBoxItem Tag="日本">
+                    <ListBoxItem Tag="日本" Visibility="{Binding Source='ja', Converter={StaticResource FolderExsistToVisibilityConverter}}">
                         <ListBoxItem.Content>
                             <StackPanel Orientation="Horizontal">
                                 <Image Width="51" Height="30"
@@ -183,7 +184,7 @@
                             </StackPanel>
                         </ListBoxItem.Content>
                     </ListBoxItem>
-                    <ListBoxItem Tag="DUTCH">
+                    <ListBoxItem Tag="DUTCH" Visibility="{Binding Source='nl', Converter={StaticResource FolderExsistToVisibilityConverter}}">
                         <ListBoxItem.Content>
                             <StackPanel Orientation="Horizontal">
                                 <Image Width="51" Height="30"
@@ -192,7 +193,7 @@
                             </StackPanel>
                         </ListBoxItem.Content>
                     </ListBoxItem>
-                    <ListBoxItem Tag="CZECH">
+                    <ListBoxItem Tag="CZECH" Visibility="{Binding Source='cs', Converter={StaticResource FolderExsistToVisibilityConverter}}">
                         <ListBoxItem.Content>
                             <StackPanel Orientation="Horizontal">
                                 <Image Width="51" Height="30"
@@ -201,7 +202,7 @@
                             </StackPanel>
                         </ListBoxItem.Content>
                     </ListBoxItem>
-                    <ListBoxItem Tag="ESPAÑOL">
+                    <ListBoxItem Tag="ESPAÑOL" Visibility="{Binding Source='es', Converter={StaticResource FolderExsistToVisibilityConverter}}">
                         <ListBoxItem.Content>
                             <StackPanel Orientation="Horizontal">
                                 <Image Width="51" Height="30"
@@ -210,12 +211,21 @@
                             </StackPanel>
                         </ListBoxItem.Content>
                     </ListBoxItem>
-                    <ListBoxItem Tag="中國人">
+                    <ListBoxItem Tag="中國人" Visibility="{Binding Source='zh', Converter={StaticResource FolderExsistToVisibilityConverter}}">
                         <ListBoxItem.Content>
                             <StackPanel Orientation="Horizontal">
                                 <Image Width="51" Height="30"
                                     RenderOptions.BitmapScalingMode="Fant" Source="/Resources/flag-of-China.png" />
                                 <TextBlock VerticalAlignment="Center" Text="中國人" />
+                            </StackPanel>
+                        </ListBoxItem.Content>
+                    </ListBoxItem>
+                    <ListBoxItem Tag="УКРАЇНСЬКА" Visibility="{Binding Source='uk', Converter={StaticResource FolderExsistToVisibilityConverter}}">
+                        <ListBoxItem.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="51" Height="30"
+                                    RenderOptions.BitmapScalingMode="Fant" Source="/Resources/flag-of-Ukraina.png" />
+                                <TextBlock VerticalAlignment="Center" Text="УКРАЇНСЬКА" />
                             </StackPanel>
                         </ListBoxItem.Content>
                     </ListBoxItem>
@@ -748,6 +758,6 @@
                 </GroupBox>
             </Grid>
         </GroupBox>
-        <local:TesseractView Grid.Column="1" />
+        <local:TesseractView Grid.Column="1" Visibility="{Binding Source='tessdata', Converter={StaticResource FolderExsistToVisibilityConverter}}" />
     </Grid>
 </Window>

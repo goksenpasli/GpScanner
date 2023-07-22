@@ -577,4 +577,10 @@ TO FILE</value>
   <data name="FOLDERFORMAT" xml:space="preserve">
     <value>It is recommended to choose the appropriate format for the folder index of your old browser application. Here, Filtering Will Be Made According to the Selected Format.</value>
   </data>
+  <data name="CHEIGHT" xml:space="preserve">
+    <value>CUSTOM HEIGHT!</value>
+  </data>
+  <data name="CWIDTH" xml:space="preserve">
+    <value>CUSTOM WIDTH!</value>
+  </data>
 </root>

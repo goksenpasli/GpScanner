@@ -580,4 +580,10 @@ VEDERE</value>
   <data name="YEAR" xml:space="preserve">
     <value>ANNO</value>
   </data>
+  <data name="CWIDTH" xml:space="preserve">
+    <value>LARGHEZZA PERSONALIZZATA!</value>
+  </data>
+  <data name="CHEIGHT" xml:space="preserve">
+    <value>ALTEZZA PERSONALIZZATA!</value>
+  </data>
 </root>

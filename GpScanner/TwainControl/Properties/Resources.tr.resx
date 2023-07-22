@@ -583,4 +583,10 @@ BELGE EKLE</value>
   <data name="FOLDERFORMAT" xml:space="preserve">
     <value>Eski Tarayıcı Uygulamanızın Klasör Dizinine Uygun Formatı Seçmeniz Önerilir. Burada Seçilen Formata Göre Filtreleme Yapılacaktır.</value>
   </data>
+  <data name="CWIDTH" xml:space="preserve">
+    <value>ÖZEL GENİŞLİK</value>
+  </data>
+  <data name="CHEIGHT" xml:space="preserve">
+    <value>ÖZEL YÜKSEKLİK</value>
+  </data>
 </root>

@@ -411,4 +411,10 @@
   <data name="FOLDERFORMAT" xml:space="preserve">
     <value />
   </data>
+  <data name="CWIDTH" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="CHEIGHT" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

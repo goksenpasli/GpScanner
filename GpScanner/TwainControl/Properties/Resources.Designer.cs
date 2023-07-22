@@ -189,6 +189,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string CHEIGHT {
+            get {
+                return ResourceManager.GetString("CHEIGHT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string CLEARLIST {
             get {
                 return ResourceManager.GetString("CLEARLIST", resourceCulture);
@@ -228,6 +237,15 @@ namespace TwainControl.Properties {
         public static string CRUNTIME {
             get {
                 return ResourceManager.GetString("CRUNTIME", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string CWIDTH {
+            get {
+                return ResourceManager.GetString("CWIDTH", resourceCulture);
             }
         }
         

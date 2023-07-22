@@ -580,4 +580,10 @@
   <data name="YEAR" xml:space="preserve">
     <value>عام</value>
   </data>
+  <data name="CHEIGHT" xml:space="preserve">
+    <value>ارتفاع مخصص!</value>
+  </data>
+  <data name="CWIDTH" xml:space="preserve">
+    <value>عرض مخصص!</value>
+  </data>
 </root>

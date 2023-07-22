@@ -578,4 +578,10 @@ SOUBORY PDF</value>
   <data name="FOLDERFORMAT" xml:space="preserve">
     <value>Doporučuje se zvolit vhodný formát pro index složek vaší staré aplikace prohlížeče. Zde bude filtrování provedeno podle vybraného formátu.</value>
   </data>
+  <data name="CHEIGHT" xml:space="preserve">
+    <value>VLASTNÍ VÝŠKA!</value>
+  </data>
+  <data name="CWIDTH" xml:space="preserve">
+    <value>VLASTNÍ ŠÍŘKA!</value>
+  </data>
 </root>

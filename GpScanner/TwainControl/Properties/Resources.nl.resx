@@ -577,4 +577,10 @@ PDF 'S SAMENVOEGEN</value>
   <data name="FOLDERFORMAT" xml:space="preserve">
     <value>Het wordt aanbevolen om het juiste formaat te kiezen voor de mapindex van uw oude browsertoepassing. Hier wordt gefilterd volgens het geselecteerde formaat.</value>
   </data>
+  <data name="CHEIGHT" xml:space="preserve">
+    <value>AANGEPASTE HOOGTE!</value>
+  </data>
+  <data name="CWIDTH" xml:space="preserve">
+    <value>AANGEPASTE BREEDTE!</value>
+  </data>
 </root>

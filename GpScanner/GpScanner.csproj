@@ -117,6 +117,7 @@
     </ApplicationDefinition>
     <Compile Include="Converter\FileNameExtractConverter.cs" />
     <Compile Include="Converter\FilePathCheckConverter.cs" />
+    <Compile Include="Converter\FolderExsistToVisibilityConverter.cs" />
     <Compile Include="Converter\LanguageStringConverter.cs" />
     <Compile Include="Converter\SelectedSizeToCacheLengthConverter.cs" />
     <Compile Include="Converter\StringToQrBitmapImageConverter.cs" />
@@ -302,6 +303,7 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>AssemblyInfo.cs</LastGenOutput>
     </Content>
+    <Resource Include="Resources\flag-of-Ukraina.png" />
     <Resource Include="Resources\flag-of-China.png" />
     <Resource Include="Resources\flag-of-Spain.png" />
     <Resource Include="Resources\flag-of-Czech.png" />

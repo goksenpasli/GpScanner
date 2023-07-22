@@ -20,10 +20,10 @@
     <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
     <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
     <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>base64 mime encoded serialized .NET Framework object</value>
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
     </data>
     <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>base64 mime encoded string representing a byte array form of the .NET Framework object</value>
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
                 
@@ -118,184 +118,183 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="SRC" xml:space="preserve">
-    <value>ソースを選択</value>
+    <value>Виберіть джерело</value>
   </data>
   <data name="SETTİNGS" xml:space="preserve">
-    <value>調整</value>
+    <value>НАЛАШТУВАННЯ</value>
   </data>
   <data name="RES" xml:space="preserve">
-    <value>解像度</value>
+    <value>ПОСТАНОВА</value>
   </data>
   <data name="ADF" xml:space="preserve">
-    <value>ドキュメントフィーダー</value>
+    <value>КДК</value>
   </data>
   <data name="BW" xml:space="preserve">
-    <value>黒と白</value>
+    <value>Чорний. білий</value>
   </data>
   <data name="GRAY" xml:space="preserve">
-    <value>グレイ</value>
+    <value>СІРИЙ</value>
   </data>
   <data name="COLOR" xml:space="preserve">
-    <value>カラフル</value>
+    <value>КОЛІР</value>
   </data>
   <data name="TWOSIDE" xml:space="preserve">
-    <value>双方向</value>
+    <value>ДВІ СТОРОНИ!</value>
   </data>
   <data name="GUI" xml:space="preserve">
-    <value>インターフェースを表示</value>
+    <value>ПОКАЗАТИ ГРАФІЧНИЙ ІНТЕРФЕЙС!</value>
   </data>
   <data name="SEPERATESCAN" xml:space="preserve">
-    <value>各ページを個別にスキャン</value>
+    <value>ОКРЕМЕ СКАНУВАННЯ!</value>
   </data>
   <data name="SHOWFILE" xml:space="preserve">
-    <value>クイックスキャン後にファイルを表示</value>
+    <value>ПОКАЗАТИ ФАЙЛ ПІСЛЯ ШВИДКОГО СКАНУВАННЯ!</value>
   </data>
   <data name="OTHERSETTINGS" xml:space="preserve">
-    <value>その他の設定</value>
+    <value>ІНШІ ПАРАМЕТРИ</value>
   </data>
   <data name="DESKEW" xml:space="preserve">
-    <value>曲線を修正してください</value>
+    <value>DESKEW!</value>
   </data>
   <data name="BORDERDETECT" xml:space="preserve">
-    <value>自動エッジ検出</value>
+    <value>АВТОМАТИЧНЕ ВИЯВЛЕННЯ КОРДОНУ!</value>
   </data>
   <data name="SHOWPROGRESS" xml:space="preserve">
-    <value>比率を教えてください</value>
+    <value>Прогрес</value>
   </data>
   <data name="AUTOROTATE" xml:space="preserve">
-    <value>自動回転</value>
+    <value>Автоповорот</value>
   </data>
   <data name="NO ACTION" xml:space="preserve">
-    <value>アクションなし</value>
+    <value>Немає дій</value>
   </data>
   <data name="CLOSECOMP" xml:space="preserve">
-    <value>パソコンを消せ</value>
+    <value>ЗАКРИТИ КОМП 'ЮТЕР!</value>
   </data>
   <data name="RESTARTCOMP" xml:space="preserve">
-    <value>パソコンを再起動</value>
+    <value>Перезавантажити комп’ ютер</value>
   </data>
   <data name="FILENAME" xml:space="preserve">
-    <value>ファイル名</value>
+    <value>НАЗВА ФАЙЛУ</value>
   </data>
   <data name="DAY" xml:space="preserve">
-    <value>日</value>
+    <value>ДЕНЬ</value>
   </data>
   <data name="MONTH" xml:space="preserve">
-    <value>月</value>
+    <value>МІСЯЦЬ</value>
   </data>
   <data name="YEAR" xml:space="preserve">
-    <value>年</value>
+    <value>РІК</value>
   </data>
   <data name="TIME" xml:space="preserve">
-    <value>時間</value>
+    <value>ЧАС</value>
   </data>
   <data name="MINUTE" xml:space="preserve">
-    <value>分</value>
+    <value>хвилина</value>
   </data>
   <data name="SECOND" xml:space="preserve">
-    <value>2番</value>
+    <value>секунда</value>
   </data>
   <data name="GUID" xml:space="preserve">
-    <value>GUID</value>
+    <value>Посібник</value>
   </data>
   <data name="USERNAME" xml:space="preserve">
-    <value>ユーザー名</value>
+    <value>Іменем користувача</value>
   </data>
   <data name="SAVEPROFILE" xml:space="preserve">
-    <value>プロフィールを隠す</value>
+    <value>Зберегти профільNAME OF TRANSLATORS</value>
   </data>
   <data name="DELETE" xml:space="preserve">
-    <value>削除</value>
+    <value>Видалити</value>
   </data>
   <data name="SCAN" xml:space="preserve">
-    <value>タラ</value>
+    <value>Пошук</value>
   </data>
   <data name="FASTSCAN" xml:space="preserve">
-    <value>クイック
-スキャン</value>
+    <value>ШВИДКЕ
+СКАНУВАННЯ!</value>
   </data>
   <data name="AUTOPATH" xml:space="preserve">
-    <value>自動
-保存</value>
+    <value>Автосканування</value>
   </data>
   <data name="ALL" xml:space="preserve">
-    <value>全員だ</value>
+    <value>ВСЕ!</value>
   </data>
   <data name="NONE" xml:space="preserve">
-    <value>どれでもない</value>
+    <value>НЕМАЄ</value>
   </data>
   <data name="REVERSE" xml:space="preserve">
-    <value>リバース</value>
+    <value>зворотний</value>
   </data>
   <data name="PREVIEWSIZE" xml:space="preserve">
-    <value>画像プレビューサイズ</value>
+    <value>Перегляд Зображення</value>
   </data>
   <data name="PDFPROTECT" xml:space="preserve">
-    <value>PDFを保存</value>
+    <value>ЗАХИСТ PDF-ФАЙЛІВ!</value>
   </data>
   <data name="ENCRYPT" xml:space="preserve">
-    <value>暗号化</value>
+    <value>зашифруйте</value>
   </data>
   <data name="PDFWARN" xml:space="preserve">
-    <value>ここで行われた設定は、すべてのPDFレコードに影響します。
-また、PDF保護はサードパーティアプリケーションによって破られる可能性があります。</value>
+    <value>НАЛАШТУВАННЯ, ЗРОБЛЕНІ ТУТ, ВПЛИВАЮТЬ НА ВСІ PDF-ЗАПИСИ. 
+ТАКОЖ ЗАХИСТ PDF МОЖЕ бути ПОРУШЕНИЙ СТОРОННІМИ ПРОГРАМАМИ.!</value>
   </data>
   <data name="ALLOWPRINT" xml:space="preserve">
-    <value>印刷させてください</value>
+    <value>ДОЗВОЛИТИ ДРУК!</value>
   </data>
   <data name="ALLOWCOPY" xml:space="preserve">
-    <value>コンテンツのコピーを許可します</value>
+    <value>ДОЗВОЛИТИ КОПІЮВАННЯ!</value>
   </data>
   <data name="ALLOWEDIT" xml:space="preserve">
-    <value>ドキュメントの編集を許可します。</value>
+    <value>ДОЗВОЛИТИ РЕДАГУВАННЯ!</value>
   </data>
   <data name="SAVESELECTED" xml:space="preserve">
-    <value>おすすめを保存</value>
+    <value>&amp;amp; Зберегти вибране</value>
   </data>
   <data name="CLEARLIST" xml:space="preserve">
-    <value>リストをクリア</value>
+    <value>Очистити список</value>
   </data>
   <data name="MERGEPDF" xml:space="preserve">
-    <value>PDFをマージ</value>
+    <value>З'ЄДНАТИ</value>
   </data>
   <data name="ABOUT" xml:space="preserve">
-    <value>詳細はこちら</value>
+    <value>ПРО ПРИСТРІЙ</value>
   </data>
   <data name="DOCUMENT" xml:space="preserve">
-    <value>書類作成</value>
+    <value>ПОСИЛАННЯ НА</value>
   </data>
   <data name="TRIMIMAGE" xml:space="preserve">
-    <value>絵をトリミング</value>
+    <value>ОБРІЗАТИ ЗОБРАЖЕННЯ!</value>
   </data>
   <data name="RESET" xml:space="preserve">
-    <value>リセット</value>
+    <value>ПЕРЕЗАВАНТАЖЕННЯ</value>
   </data>
   <data name="WIDTHCOUNT" xml:space="preserve">
-    <value>最多の数</value>
+    <value>ПІДРАХУНОК ШИРИНИ!</value>
   </data>
   <data name="HEIGHTCOUNT" xml:space="preserve">
-    <value>高さの数</value>
+    <value>ПІДРАХУНОК ВИСОТИ!</value>
   </data>
   <data name="SLICE" xml:space="preserve">
-    <value>叩き潰せ</value>
+    <value>скибка</value>
   </data>
   <data name="TEXT" xml:space="preserve">
-    <value>メティン</value>
+    <value>TEXT</value>
   </data>
   <data name="TEXTSIZE" xml:space="preserve">
-    <value>文字サイズ</value>
+    <value>Розмір тексту</value>
   </data>
   <data name="TEXTANGLE" xml:space="preserve">
-    <value>文字角度</value>
+    <value>Кут</value>
   </data>
   <data name="FONT" xml:space="preserve">
-    <value>フォント</value>
+    <value>ШРИФТ</value>
   </data>
   <data name="DRAWTEXT" xml:space="preserve">
-    <value>テキストを描く</value>
+    <value>малювати</value>
   </data>
   <data name="SAVEPDF" xml:space="preserve">
-    <value>PDFを保存</value>
+    <value>PDF</value>
   </data>
   <data name="FIX" xml:space="preserve">
     <value />
@@ -304,287 +303,285 @@
     <value>OCR</value>
   </data>
   <data name="FILE" xml:space="preserve">
-    <value>ファイルは？</value>
+    <value>файл</value>
   </data>
   <data name="CALENDAR" xml:space="preserve">
-    <value>カレンダー</value>
+    <value>КАЛЕНДАР</value>
   </data>
   <data name="GRAPH" xml:space="preserve">
-    <value>グラフィック</value>
+    <value>Графік</value>
   </data>
   <data name="VIEWALL" xml:space="preserve">
-    <value>すべて見る</value>
+    <value>Дивитись все</value>
   </data>
   <data name="PREVIEWFILE" xml:space="preserve">
-    <value>ファイル
-プレビュー</value>
+    <value>ПЕРЕГЛЯД</value>
   </data>
   <data name="TESSERACT" xml:space="preserve">
-    <value>テッセラクト</value>
+    <value>ТЕССЕРАКТ!</value>
   </data>
   <data name="MERGE" xml:space="preserve">
-    <value>まとめて</value>
+    <value>З'ЄДНАТИ</value>
   </data>
   <data name="MERGESELECTED" xml:space="preserve">
-    <value>マークされた
-PDFをマージ</value>
+    <value>ОБ 'ЄДНАТИ ВИБРАНИЙ
+PDF-ФАЙЛ!</value>
   </data>
   <data name="SELECTTWOPDF" xml:space="preserve">
-    <value>少なくとも2つのPDF
-ファイルを選択してください</value>
+    <value>ВИБЕРІТЬ ПРИНАЙМНІ ДВА PDF-ФАЙЛИ!</value>
   </data>
   <data name="READACTIVEPAGE" xml:space="preserve">
-    <value>アクティブなページ
-を読む</value>
+    <value>ЧИТАТИ АКТИВНУ
+СТОРІНКУ!</value>
   </data>
   <data name="CONTENT" xml:space="preserve">
-    <value>ドリンクを読もう</value>
+    <value>ЗМІСТ</value>
   </data>
   <data name="SHOWFOLDER" xml:space="preserve">
-    <value>フォルダに表示</value>
+    <value>ПОКАЗАТИ В ПАПЦІ!</value>
   </data>
   <data name="CRUNTIME" xml:space="preserve">
-    <value>TesseractとleptonicaのバイナリはVisual Studio 2019でコンパイルされているため、Visual Studio 2019 Runtimeがインストールされていることを確認する必要があります。</value>
+    <value>Оскільки бінарні файли tesseract і leptonica компілюються за допомогою Visual Studio 2019, вам потрібно переконатися, що у вас встановлено середовище виконання Visual Studio 2019!</value>
   </data>
   <data name="OTHERTESSERACT" xml:space="preserve">
-    <value>また、必要に応じてtesseract -ocrからtesseract 4.1.0用の他の言語データファイルをダウンロードします。それをTessdataフォルダに入れてください</value>
+    <value>Також завантажте інші файли мовних даних для tesseract 4.1.0 з tesseract-ocr, якщо це необхідно. Покладіть його в папку tessdata.!</value>
   </data>
   <data name="VC" xml:space="preserve">
-    <value>Visual Studio 2019 x 86およびx 64ランタイム</value>
+    <value>Visual Studio 2019 x86 і x64 Runtimes!</value>
   </data>
   <data name="OTHERTESSERACTLINK" xml:space="preserve">
-    <value>その他のtesseract言語データ</value>
+    <value>Інші мовні дані tesseract!</value>
   </data>
   <data name="SCANNER" xml:space="preserve">
-    <value>スキャナー</value>
+    <value>Сканер</value>
   </data>
   <data name="PASSWORD" xml:space="preserve">
-    <value>パスワード</value>
+    <value>Пароль</value>
   </data>
   <data name="WARNREBOOT" xml:space="preserve">
-    <value>シャットダウンまたは再起動セット!!</value>
+    <value>Вимкнення або перезапуск встановлено.!</value>
   </data>
   <data name="FASTSCANAFTER" xml:space="preserve">
-    <value>クイックスキャンが完了した後に実行するアクション</value>
+    <value>Після завдання швидкого сканування!</value>
   </data>
   <data name="AUTOFOLDER" xml:space="preserve">
-    <value>自動保存フォルダを指定します。!</value>
+    <value>Встановити автоматичне збереження папки!</value>
   </data>
   <data name="AUTOFOLDERCHANGE" xml:space="preserve">
-    <value>自動保存パスが変更されました。古いファイルは新しいフォルダに移動されません。</value>
+    <value>Шлях автоматичного збереження змінено. Старі файли не будуть переміщені до нової визначеної папки.!</value>
   </data>
   <data name="LISTREMOVEWARN" xml:space="preserve">
-    <value>上記のリスト内のすべてのスキャンされたドキュメントが削除されます。続行しますか？</value>
+    <value>Всі відскановані документи в нижньому списку будуть видалені Ви хочете продовжити?!</value>
   </data>
   <data name="DEFAULTSCANNAME" xml:space="preserve">
-    <value>スキャンしないでください</value>
+    <value>Пошук</value>
   </data>
   <data name="ROTSAVE" xml:space="preserve">
-    <value>回転を適用して保存しますか？</value>
+    <value>Застосувати обертання!</value>
   </data>
   <data name="APPRUNNING" xml:space="preserve">
-    <value>アプリは既に実行されています</value>
+    <value>Програма вже запущена.!</value>
   </data>
   <data name="REGSTI" xml:space="preserve">
-    <value>ブラウザメニューに追加</value>
+    <value>ЗАРЕЄСТРУЙТЕ ПРИСТРІЙ ІПСШ!</value>
   </data>
   <data name="TRANSLATE" xml:space="preserve">
-    <value>翻訳</value>
+    <value>переводити</value>
   </data>
   <data name="SOURCELANG" xml:space="preserve">
-    <value>ソース言語</value>
+    <value>«Вихідна мова»</value>
   </data>
   <data name="DESTLANG" xml:space="preserve">
-    <value>対象</value>
+    <value>МОВА ПРИЗНАЧЕННЯ!</value>
   </data>
   <data name="UNREGSTI" xml:space="preserve">
-    <value>ブラウザメニューから削除</value>
+    <value>СКАСУВАТИ РЕЄСТРАЦІЮ ПРИСТРОЮ ІПСШ!</value>
   </data>
   <data name="SEPERATESCANTOOLTIP" xml:space="preserve">
-    <value>各ページを別々のファイルに保存するファイルは、以下に指定されたフォルダに保存されます。</value>
+    <value>Зберегти кожну сторінку в окремі файли Файли зберігаються в папці, зазначеної нижче.!</value>
   </data>
   <data name="OCRPDFSAVE" xml:space="preserve">
-    <value>OCR PDFを保存</value>
-  </data>
-  <data name="ADDDOC" xml:space="preserve">
-    <value>ファイルに
-ドキュメントを添付してください</value>
-  </data>
-  <data name="ADDOCRTODB" xml:space="preserve">
-    <value>OCRデータを保存</value>
-  </data>
-  <data name="OCRTIME" xml:space="preserve">
-    <value>Pdf Ocr プロセスに余分な時間がかかります。</value>
-  </data>
-  <data name="OTHERAPPS" xml:space="preserve">
-    <value>私の他のアプリ</value>
-  </data>
-  <data name="PAGENUMBER" xml:space="preserve">
-    <value>ページ番号</value>
-  </data>
-  <data name="PDFOPEN" xml:space="preserve">
-    <value>PDFファイルを直接開く</value>
-  </data>
-  <data name="PDFTRACK" xml:space="preserve">
-    <value>PDF フォルダの変更を見る</value>
-  </data>
-  <data name="QRDETECT" xml:space="preserve">
-    <value>QR検出</value>
-  </data>
-  <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
-    <value>ドキュメント一覧から処理済みファイルを削除</value>
-  </data>
-  <data name="REMOVESELECTED" xml:space="preserve">
-    <value>選択した画像を削除しますか?</value>
-  </data>
-  <data name="REPLACEPAGE" xml:space="preserve">
-    <value>ページを入れ替える</value>
-  </data>
-  <data name="RESTARTAPP" xml:space="preserve">
-    <value>アプリケーションを再起動する必要があります。</value>
-  </data>
-  <data name="Right" xml:space="preserve">
-    <value>右</value>
-  </data>
-  <data name="Rotate180" xml:space="preserve">
-    <value>180 度回転</value>
-  </data>
-  <data name="Rotate270" xml:space="preserve">
-    <value>270 度回転</value>
-  </data>
-  <data name="Rotate90" xml:space="preserve">
-    <value>90度回転</value>
-  </data>
-  <data name="SEPERATOR" xml:space="preserve">
-    <value>ブラケット</value>
-  </data>
-  <data name="SPLIT" xml:space="preserve">
-    <value>壊れた</value>
-  </data>
-  <data name="SPLITTERTOOLTIP" xml:space="preserve">
-    <value>ダブルクリックで復元、右クリックで展開</value>
-  </data>
-  <data name="SRCCOLOR" xml:space="preserve">
-    <value>ソースカラー</value>
-  </data>
-  <data name="SRCCOLORTIP" xml:space="preserve">
-    <value>右クリックして色を選択</value>
-  </data>
-  <data name="START" xml:space="preserve">
-    <value>始める</value>
-  </data>
-  <data name="TAG" xml:space="preserve">
-    <value>チケット</value>
-  </data>
-  <data name="TASKSRUNNING" xml:space="preserve">
-    <value>一部のタスクが実行中です。終了するまで待ちます。</value>
-  </data>
-  <data name="TESSLANGSELECT" xml:space="preserve">
-    <value>Tesseract 言語を選択</value>
-  </data>
-  <data name="THIRDPARTY" xml:space="preserve">
-    <value>アプリケーションで使用されるサードパーティ ライブラリ</value>
-  </data>
-  <data name="THRESHOLD" xml:space="preserve">
-    <value>しきい値</value>
-  </data>
-  <data name="TRANSLATEPENDING" xml:space="preserve">
-    <value>プロセスは進行中です。完了するまで待ちます。</value>
-  </data>
-  <data name="UPDATE" xml:space="preserve">
-    <value>アップデート</value>
-  </data>
-  <data name="WATERMARK" xml:space="preserve">
-    <value>透かし</value>
-  </data>
-  <data name="ADDOCRTOOLTIP" xml:space="preserve">
-    <value>これがチェックされている場合、下にマークされた文書は、左側のアクティブな文書のテキストとしてデータベースに保存されます。</value>
-  </data>
-  <data name="APPDESC" xml:space="preserve">
-    <value>このアプリケーションは、スキャンとドキュメントの追跡を容易にするために開発されました。</value>
-  </data>
-  <data name="APPLY" xml:space="preserve">
-    <value>申し込み</value>
-  </data>
-  <data name="APPLYCOLOR" xml:space="preserve">
-    <value>色を適用</value>
-  </data>
-  <data name="Auto" xml:space="preserve">
-    <value>自動</value>
-  </data>
-  <data name="AutoPicture" xml:space="preserve">
-    <value>オートピクチャー</value>
-  </data>
-  <data name="AutoText" xml:space="preserve">
-    <value>自動テキスト</value>
-  </data>
-  <data name="BATCH" xml:space="preserve">
-    <value>共同作業</value>
-  </data>
-  <data name="BATCHDESC" xml:space="preserve">
-    <value>以下のフォルダに画像ファイルを追加すると、プログラムを開いている限り、同じフォルダ内で自動的にPDFファイルに変換されます</value>
-  </data>
-  <data name="CAMERA" xml:space="preserve">
-    <value>カメラ</value>
-  </data>
-  <data name="COLORCHANGETIP" xml:space="preserve">
-    <value>しきい値を設定した後にこれをクリックすると、2 番目の色の選択を行うことができます。</value>
-  </data>
-  <data name="COMPRESS" xml:space="preserve">
-    <value>圧縮する</value>
-  </data>
-  <data name="Default" xml:space="preserve">
-    <value>デフォルト</value>
-  </data>
-  <data name="DSTCOLOR" xml:space="preserve">
-    <value>ターゲットカラー</value>
-  </data>
-  <data name="EMPTYPAGE" xml:space="preserve">
-    <value>空白ページをスキップ</value>
-  </data>
-  <data name="EYPOPEN" xml:space="preserve">
-    <value>Eyp ファイルを直接開く</value>
-  </data>
-  <data name="FLATBED" xml:space="preserve">
-    <value>フラットベッド</value>
-  </data>
-  <data name="JPEGQUALITY" xml:space="preserve">
-    <value>JPEG品質率</value>
-  </data>
-  <data name="Left" xml:space="preserve">
-    <value>左</value>
-  </data>
-  <data name="LIMITED" xml:space="preserve">
-    <value>このファイル形式のサポートは限定的です。</value>
-  </data>
-  <data name="LOAD" xml:space="preserve">
-    <value>ロード</value>
-  </data>
-  <data name="NOPATCHCODE" xml:space="preserve">
-    <value>パッチ コードが検出されませんでした</value>
-  </data>
-  <data name="NOPROFILE" xml:space="preserve">
-    <value>プロファイルが選択されていません</value>
-  </data>
-  <data name="OVERWRITECOMPRESSED" xml:space="preserve">
-    <value>スキャン文書の圧縮ファイルを直接上書き</value>
+    <value>ЗБЕРЕЖІТЬ OCR PDF!</value>
   </data>
   <data name="STOP" xml:space="preserve">
-    <value>ストップ</value>
+    <value>Стійте!</value>
   </data>
   <data name="EMPTY" xml:space="preserve">
-    <value>空</value>
+    <value>Порожній</value>
   </data>
   <data name="DESPECKLE" xml:space="preserve">
-    <value>斑点除去</value>
+    <value>DESPECKLE!</value>
   </data>
   <data name="FOLDERFORMAT" xml:space="preserve">
-    <value>古いブラウザ アプリケーションのフォルダー インデックスには適切な形式を選択することをお勧めします。ここでは、選択したフォーマットに従ってフィルタリングが行われます。</value>
-  </data>
-  <data name="CHEIGHT" xml:space="preserve">
-    <value>カスタムの高さ！</value>
+    <value>Рекомендується вибрати відповідний формат для індексу папок вашої старої програми браузера. Тут фільтрація буде виконана відповідно до вибраного формату.!</value>
   </data>
   <data name="CWIDTH" xml:space="preserve">
-    <value>カスタム幅！</value>
+    <value>Своя ширина</value>
+  </data>
+  <data name="CHEIGHT" xml:space="preserve">
+    <value>Настроювана висота</value>
+  </data>
+  <data name="ADDDOC" xml:space="preserve">
+    <value>ДОДАТИ ДОКУМЕНТ
+ДО ФАЙЛУ!</value>
+  </data>
+  <data name="ADDOCRTODB" xml:space="preserve">
+    <value>ДОДАТИ OCR ДО БАЗИ ДАНИХ!</value>
+  </data>
+  <data name="ADDOCRTOOLTIP" xml:space="preserve">
+    <value>Якщо це позначено, документ, позначений нижче, зберігається в базі даних як текст активного документа зліва.!</value>
+  </data>
+  <data name="APPDESC" xml:space="preserve">
+    <value>Ця програма була розроблена для полегшення сканування та відстеження документів.!</value>
+  </data>
+  <data name="APPLY" xml:space="preserve">
+    <value>ЗАСТОСУВАТИ</value>
+  </data>
+  <data name="APPLYCOLOR" xml:space="preserve">
+    <value>Змінити колір...</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>Автоматична</value>
+  </data>
+  <data name="AutoPicture" xml:space="preserve">
+    <value>АВТОМАТИЧНЕ ЗОБРАЖЕННЯ!</value>
+  </data>
+  <data name="AutoText" xml:space="preserve">
+    <value>автоматичний</value>
+  </data>
+  <data name="BATCH" xml:space="preserve">
+    <value>ПАРТІЯ</value>
+  </data>
+  <data name="BATCHDESC" xml:space="preserve">
+    <value>Коли файли зображень додаються до папки, зазначеної нижче, автоматичне перетворення у файли PDF в тій самій папці здійснюється до тих пір, поки програма відкрита!</value>
+  </data>
+  <data name="CAMERA" xml:space="preserve">
+    <value>Камера</value>
+  </data>
+  <data name="COLORCHANGETIP" xml:space="preserve">
+    <value>Якщо ви натиснете це після встановлення порогового значення, ви можете зробити другий вибір кольору.!</value>
+  </data>
+  <data name="COMPRESS" xml:space="preserve">
+    <value>СТИСНЕННЯ</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>НЕВИКОНАННЯ</value>
+  </data>
+  <data name="DSTCOLOR" xml:space="preserve">
+    <value>КОЛІР МІСЦЯ ПРИЗНАЧЕННЯ!</value>
+  </data>
+  <data name="EMPTYPAGE" xml:space="preserve">
+    <value>ПРОПУСТИТИ ПОРОЖНЮ СТОРІНКУ!</value>
+  </data>
+  <data name="EYPOPEN" xml:space="preserve">
+    <value>Відкрийте файли Eyp безпосередньо.!</value>
+  </data>
+  <data name="FLATBED" xml:space="preserve">
+    <value>ПЛАНШЕТ!</value>
+  </data>
+  <data name="JPEGQUALITY" xml:space="preserve">
+    <value>JPEG</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>лівий</value>
+  </data>
+  <data name="LIMITED" xml:space="preserve">
+    <value>Цей формат файлів має обмежену підтримку.!</value>
+  </data>
+  <data name="LOAD" xml:space="preserve">
+    <value>ЗАВАНТАЖЕННЯ</value>
+  </data>
+  <data name="NOPATCHCODE" xml:space="preserve">
+    <value>Патч-код не виявлено!</value>
+  </data>
+  <data name="NOPROFILE" xml:space="preserve">
+    <value>Не вибрано жодного профілю</value>
+  </data>
+  <data name="OCRTIME" xml:space="preserve">
+    <value>Процес Pdf Ocr займає додатковий час!</value>
+  </data>
+  <data name="OTHERAPPS" xml:space="preserve">
+    <value>Інші додатки</value>
+  </data>
+  <data name="OVERWRITECOMPRESSED" xml:space="preserve">
+    <value>Безпосередньо перезаписувати стиснений файл у відсканованих документах!</value>
+  </data>
+  <data name="PAGENUMBER" xml:space="preserve">
+    <value>Номер сторінки</value>
+  </data>
+  <data name="PDFOPEN" xml:space="preserve">
+    <value>Відкрийте Pdf-файли безпосередньо.!</value>
+  </data>
+  <data name="PDFTRACK" xml:space="preserve">
+    <value>ПЕРЕГЛЯНЬТЕ ЗМІНУ ПАПКИ PDF!</value>
+  </data>
+  <data name="QRDETECT" xml:space="preserve">
+    <value>ВИЯВИТИ QR-КОД!</value>
+  </data>
+  <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
+    <value>Видалити оброблені файли зі списку документів!</value>
+  </data>
+  <data name="REMOVESELECTED" xml:space="preserve">
+    <value>Видалити вибране зображення?!</value>
+  </data>
+  <data name="REPLACEPAGE" xml:space="preserve">
+    <value>Замініть сторінки!</value>
+  </data>
+  <data name="RESTARTAPP" xml:space="preserve">
+    <value>RESTARTAPP!</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>ПРАВО</value>
+  </data>
+  <data name="Rotate180" xml:space="preserve">
+    <value>ПОВЕРНІТЬ НА 180 ГРАДУСІВ!</value>
+  </data>
+  <data name="Rotate270" xml:space="preserve">
+    <value>ПОВЕРНІТЬ НА 270 ГРАДУСІВ!</value>
+  </data>
+  <data name="Rotate90" xml:space="preserve">
+    <value>ПОВЕРНІТЬ НА 90 ГРАДУСІВ!</value>
+  </data>
+  <data name="SEPERATOR" xml:space="preserve">
+    <value>Сеператор</value>
+  </data>
+  <data name="SPLIT" xml:space="preserve">
+    <value>Розділено!</value>
+  </data>
+  <data name="SPLITTERTOOLTIP" xml:space="preserve">
+    <value>Двічі клацніть, щоб відновити, клацніть правою кнопкою миші, щоб розгорнути!</value>
+  </data>
+  <data name="SRCCOLOR" xml:space="preserve">
+    <value>КОЛІР ДЖЕРЕЛА!</value>
+  </data>
+  <data name="SRCCOLORTIP" xml:space="preserve">
+    <value>Клацніть правою кнопкою миші, щоб вибрати вихідний колір.</value>
+  </data>
+  <data name="START" xml:space="preserve">
+    <value>ПОЧАТИ</value>
+  </data>
+  <data name="TAG" xml:space="preserve">
+    <value>Мітка</value>
+  </data>
+  <data name="TASKSRUNNING" xml:space="preserve">
+    <value>Деякі завдання виконуються в очікуванні завершення.!</value>
+  </data>
+  <data name="TESSLANGSELECT" xml:space="preserve">
+    <value>Виберіть мову Tesseract!</value>
+  </data>
+  <data name="THIRDPARTY" xml:space="preserve">
+    <value>СТОРОННІ БІБЛІОТЕКИ, ЩО ВИКОРИСТОВУЮТЬСЯ В ДОДАТКУ!</value>
+  </data>
+  <data name="THRESHOLD" xml:space="preserve">
+    <value>Граничне значення</value>
+  </data>
+  <data name="TRANSLATEPENDING" xml:space="preserve">
+    <value>Процес триває. Зачекайте, поки він закінчиться.!</value>
+  </data>
+  <data name="UPDATE" xml:space="preserve">
+    <value>Оновити</value>
+  </data>
+  <data name="WATERMARK" xml:space="preserve">
+    <value>Водяний знак</value>
   </data>
 </root>

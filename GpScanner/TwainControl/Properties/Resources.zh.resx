@@ -581,4 +581,10 @@ PDF保护也可以被第三方应用程序破坏。</value>
   <data name="FOLDERFORMAT" xml:space="preserve">
     <value>建议为旧浏览器应用程序的文件夹索引选择适当的格式。这里会根据选择的格式进行过滤。</value>
   </data>
+  <data name="CHEIGHT" xml:space="preserve">
+    <value>自定义高度！</value>
+  </data>
+  <data name="CWIDTH" xml:space="preserve">
+    <value>自定义宽度！</value>
+  </data>
 </root>

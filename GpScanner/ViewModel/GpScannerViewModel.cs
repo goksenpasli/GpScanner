@@ -1640,6 +1640,11 @@ public class GpScannerViewModel : InpcBase
                 case "中國人":
                     TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("zh-CN");
                     CalendarLang = XmlLanguage.GetLanguage("zh-CN");
+                    break;    
+                
+                case "УКРАЇНСЬКА":
+                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("uk-UA");
+                    CalendarLang = XmlLanguage.GetLanguage("uk-UA");
                     break;
             }
 

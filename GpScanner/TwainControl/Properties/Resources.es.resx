@@ -575,4 +575,10 @@ AL ARCHIVO</value>
   <data name="FOLDERFORMAT" xml:space="preserve">
     <value>Se recomienda elegir el formato apropiado para el índice de carpetas de su antigua aplicación de navegador. Aquí, el filtrado se realizará de acuerdo con el formato seleccionado.</value>
   </data>
+  <data name="CHEIGHT" xml:space="preserve">
+    <value>¡ALTURA PERSONALIZADA!</value>
+  </data>
+  <data name="CWIDTH" xml:space="preserve">
+    <value>¡ANCHO PERSONALIZADO!</value>
+  </data>
 </root>

@@ -579,4 +579,10 @@ ENTFERNEN</value>
   <data name="FOLDERFORMAT" xml:space="preserve">
     <value>Es wird empfohlen, das entsprechende Format für den Ordnerindex Ihrer alten Browseranwendung zu wählen. Hier erfolgt die Filterung entsprechend dem ausgewählten Format.</value>
   </data>
+  <data name="CHEIGHT" xml:space="preserve">
+    <value>BENUTZERDEFINIERTE HÖHE!</value>
+  </data>
+  <data name="CWIDTH" xml:space="preserve">
+    <value>BENUTZERDEFINIERTE BREITE!</value>
+  </data>
 </root>
