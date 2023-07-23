@@ -20,6 +20,7 @@ namespace GpScanner.ViewModel;
 public class TesseractViewModel : InpcBase, IDataErrorInfo
 
 {
+    private List<TessFiles> checkedFiles;
     private bool ısFolderWritable;
     private bool showAllLanguages;
     private string tessdatafolder;
@@ -124,6 +125,19 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
         }
     }
 
+    public List<TessFiles> CheckedFiles
+    {
+        get => checkedFiles;
+        set
+        {
+            if(checkedFiles != value)
+            {
+                checkedFiles = value;
+                OnPropertyChanged(nameof(CheckedFiles));
+            }
+        }
+    }
+
     public string Error => string.Empty;
 
     public bool IsFolderWritable
@@ -201,7 +215,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
         if(Directory.Exists(tesseractfolder))
         {
             string[] defaultTtsLang = Settings.Default.DefaultTtsLang.Split('+');
-            return new ObservableCollection<TessFiles>(
+            ObservableCollection<TessFiles> tesseractfiles = new(
                 Directory.EnumerateFiles(tesseractfolder, "*.traineddata")
                     .Select(
                         filePath =>
@@ -211,6 +225,8 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                             tessfiles.PropertyChanged += Tess_PropertyChanged;
                             return tessfiles;
                         }));
+            CheckedFiles = tesseractfiles?.Where(item => item.Checked).ToList();
+            return tesseractfiles;
         }
 
         return null;
@@ -243,15 +259,15 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
     {
         if(e.PropertyName is "Checked")
         {
-            List<TessFiles> checkedFiles = TesseractFiles.Where(item => item.Checked).ToList();
-            if(!checkedFiles.Any())
+            CheckedFiles = TesseractFiles?.Where(item => item.Checked).ToList();
+            if(!CheckedFiles.Any())
             {
                 Settings.Default.BatchFolder = string.Empty;
                 PdfGeneration.Scanner.ApplyPdfSaveOcr = false;
                 PdfGeneration.Scanner.ApplyDataBaseOcr = false;
             }
 
-            PdfGeneration.Scanner.SelectedTtsLanguage = Settings.Default.DefaultTtsLang = string.Join("+", checkedFiles.Select(item => item.Name));
+            PdfGeneration.Scanner.SelectedTtsLanguage = Settings.Default.DefaultTtsLang = string.Join("+", CheckedFiles.Select(item => item.Name));
             OnPropertyChanged(nameof(TesseractFiles));
         }
     }

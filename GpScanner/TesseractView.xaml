@@ -1,6 +1,7 @@
 ﻿<UserControl x:Class="GpScanner.TesseractView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Converter="clr-namespace:GpScanner.Converter"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
@@ -11,6 +12,9 @@
     twainctrl:Translation.ResourceManager="{x:Static twainproperties:Resources.ResourceManager}"
     UseLayoutRounding="True"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <Converter:NumberRangeToColorConverter x:Key="ListBoxNumberRangeToColorConverter" MaxNumber="6" MinNumber="1" />
+    </UserControl.Resources>
     <GroupBox>
         <GroupBox.Header>
             <UniformGrid Columns="2">
@@ -91,6 +95,8 @@
                 d:ItemsSource="{d:SampleData ItemCount=5}"
                 twainctrl:Policy.PolicyName="DefaultTtsLang"
                 Background="{StaticResource BorderBackground}"
+                BorderBrush="{Binding CheckedFiles.Count, Mode=OneWay, Converter={StaticResource ListBoxNumberRangeToColorConverter}}"
+                BorderThickness="2"
                 ItemsSource="{Binding TesseractFiles, ValidatesOnDataErrors=True}"
                 SelectionMode="Extended"
                 Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
