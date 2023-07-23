@@ -201,6 +201,17 @@
             <Style TargetType="{x:Type ToggleButton}">
                 <Setter Property="Background" Value="{StaticResource BorderBackground}" />
             </Style>
+            <Style x:Key="BorderGroupStyleContainerStyle" TargetType="{x:Type GroupItem}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <Border BorderBrush="Black" BorderThickness="0.5">
+                                <ItemsPresenter />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -338,7 +349,7 @@
                                     SelectedValue="{Binding FolderDateFormat, Source={x:Static properties:Settings.Default}}"
                                     SelectedValuePath="Key">
                                     <ComboBox.GroupStyle>
-                                        <GroupStyle>
+                                        <GroupStyle ContainerStyle="{StaticResource BorderGroupStyleContainerStyle}">
                                             <GroupStyle.Panel>
                                                 <ItemsPanelTemplate>
                                                     <UniformGrid Columns="4" />
@@ -550,7 +561,7 @@
                                                 SelectedValue="{Binding SelectedPaper.PaperType}"
                                                 SelectedValuePath="PaperType">
                                                 <ComboBox.GroupStyle>
-                                                    <GroupStyle>
+                                                    <GroupStyle ContainerStyle="{StaticResource BorderGroupStyleContainerStyle}">
                                                         <GroupStyle.Panel>
                                                             <ItemsPanelTemplate>
                                                                 <UniformGrid Columns="4" />

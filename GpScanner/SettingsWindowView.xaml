@@ -23,6 +23,10 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Converter:StringToQrBitmapImageConverter x:Key="StringToQrBitmapImageConverter" />
         <Converter:FolderExsistToVisibilityConverter x:Key="FolderExsistToVisibilityConverter" />
+        <Converter:NumberRangeToColorConverter x:Key="NumberRangeToColorConverter" MaxNumber="{Binding Source={x:Static System:Environment.ProcessorCount}}" MinNumber="1" />
+        <Converter:NumberRangeToColorConverter x:Key="ComboBoxNumberRangeToColorConverter" MaxNumber="100" MinNumber="5" />
+        <Converter:NumberRangeToColorConverter x:Key="UpdateNumberRangeToColorConverter" MaxNumber="120" MinNumber="1" />
+        <Converter:NumberRangeToColorConverter x:Key="ComboBoxPdfNumberRangeToColorConverter" MaxNumber="1200" MinNumber="12" />
         <Extensions:StringNullableToBooleanConverter x:Key="StringNullableToBooleanConverter" />
         <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
             <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
@@ -82,7 +86,8 @@
                         IsChecked="{Binding Path=CheckAppUpdate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
                         IsEnabled="{Binding ElementName=BtnUpdate, Path=IsEnabled}">
                         <StackPanel Orientation="Horizontal">
-                            <Extensions:NumericUpDownControl IsEnabled="{Binding Path=CheckAppUpdate, Mode=OneWay, Source={x:Static properties:Settings.Default}}"
+                            <Extensions:NumericUpDownControl Foreground="{Binding Path=UpdateInterval, Mode=OneWay, Source={x:Static properties:Settings.Default}, Converter={StaticResource UpdateNumberRangeToColorConverter}}"
+                                IsEnabled="{Binding Path=CheckAppUpdate, Mode=OneWay, Source={x:Static properties:Settings.Default}}"
                                 Maximum="120" Minimum="1"
                                 SmallChange="1"
                                 Value="{Binding Path=UpdateInterval, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
@@ -357,17 +362,35 @@
                             <ComboBox VerticalContentAlignment="Center"
                                 twainctrl:Policy.PolicyName="DefaultPictureResizeRatio" ItemStringFormat="%{0}"
                                 ItemsSource="{Binding SettingsPagePictureResizeList}"
-                                SelectedItem="{Binding DefaultPictureResizeRatio, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                                SelectedItem="{Binding DefaultPictureResizeRatio, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                <ComboBox.ItemContainerStyle>
+                                    <Style TargetType="ComboBoxItem">
+                                        <Setter Property="Background" Value="{Binding Mode=OneWay, Converter={StaticResource ComboBoxNumberRangeToColorConverter}}" />
+                                    </Style>
+                                </ComboBox.ItemContainerStyle>
+                            </ComboBox>
                             <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PREVIEWFILE}" />
                             <ComboBox VerticalContentAlignment="Center"
                                 twainctrl:Policy.PolicyName="DefaultThumbPictureResizeRatio" ItemStringFormat="%{0}"
                                 ItemsSource="{Binding SettingsPagePictureResizeList}"
-                                SelectedItem="{Binding DefaultThumbPictureResizeRatio, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                                SelectedItem="{Binding DefaultThumbPictureResizeRatio, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                <ComboBox.ItemContainerStyle>
+                                    <Style TargetType="ComboBoxItem">
+                                        <Setter Property="Background" Value="{Binding Mode=OneWay, Converter={StaticResource ComboBoxNumberRangeToColorConverter}}" />
+                                    </Style>
+                                </ComboBox.ItemContainerStyle>
+                            </ComboBox>
                             <TextBlock VerticalAlignment="Center" Text="PDF DPI" />
                             <ComboBox VerticalContentAlignment="Center"
                                 twainctrl:Policy.PolicyName="DefaultThumbNailDpi" ItemStringFormat="{}{0} Dpi"
                                 ItemsSource="{Binding SettingsPagePdfDpiList}"
-                                SelectedItem="{Binding DefaultThumbNailDpi, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                                SelectedItem="{Binding DefaultThumbNailDpi, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                <ComboBox.ItemContainerStyle>
+                                    <Style TargetType="ComboBoxItem">
+                                        <Setter Property="Background" Value="{Binding Mode=OneWay, Converter={StaticResource ComboBoxPdfNumberRangeToColorConverter}}" />
+                                    </Style>
+                                </ComboBox.ItemContainerStyle>
+                            </ComboBox>
                             <ComboBox VerticalContentAlignment="Center"
                                 twainctrl:Policy.PolicyName="SelectedSize"
                                 ItemsSource="{Binding GetPreviewSize}"
@@ -651,8 +674,8 @@
                             </TabItem.Header>
                             <StackPanel Background="{StaticResource BorderBackground}">
                                 <StackPanel Orientation="Horizontal">
-                                    <Canvas Width="32" Height="32">
-                                        <Image Width="32" Height="32">
+                                    <Canvas Width="44" Height="32">
+                                        <Image Canvas.Left="6" Width="32" Height="32">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                     <Binding Source="Shell32.dll" />
@@ -660,12 +683,14 @@
                                                 </MultiBinding>
                                             </Image.Source>
                                         </Image>
-                                        <Extensions:NumericUpDownControl Canvas.Right="3"
-                                            Height="32"
-                                            FontWeight="Bold" Foreground="Red"
+                                        <Extensions:NumericUpDownControl Canvas.Top="7"
+                                            Width="44"
+                                            FontWeight="Bold"
+                                            Foreground="{Binding ProcessorCount, Converter={StaticResource NumberRangeToColorConverter}, Source={x:Static properties:Settings.Default}, Mode=OneWay}"
                                             IsReadOnly="True"
                                             Maximum="{Binding Source={x:Static System:Environment.ProcessorCount}}"
-                                            Minimum="1" SmallChange="1"
+                                            Minimum="1" Orientation="Horizontal"
+                                            SmallChange="1" TextBlock.TextAlignment="Center"
                                             Value="{Binding ProcessorCount, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                                     </Canvas>
                                     <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center" IsChecked="{Binding ApplyPdfSaveOcr, Source={x:Static twainctrl:ToolBox.Scanner}}">
@@ -758,6 +783,6 @@
                 </GroupBox>
             </Grid>
         </GroupBox>
-        <local:TesseractView Grid.Column="1" Visibility="{Binding Source='tessdata', Converter={StaticResource FolderExsistToVisibilityConverter}}" />
+        <local:TesseractView Grid.Column="1" Visibility="{Binding DataContext.Tessdatafolder, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource FolderExsistToVisibilityConverter}}" />
     </Grid>
 </Window>

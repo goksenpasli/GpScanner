@@ -59,10 +59,23 @@
                             Visibility="{Binding IsVisible}">
                             <Button.Content>
                                 <Grid>
-                                    <ProgressBar Background="{x:Null}"
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="16" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <ProgressBar Grid.ColumnSpan="2"
+                                        Background="{x:Null}"
                                         Maximum="100" Minimum="0"
                                         Value="{Binding ProgressValue}" />
-                                    <TextBlock HorizontalAlignment="Center" Text="{Binding OcrName}" />
+                                    <Image Width="16" Height="16">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="122" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock Grid.Column="1" HorizontalAlignment="Center" Text="{Binding OcrName}" />
                                 </Grid>
                             </Button.Content>
                         </Button>
