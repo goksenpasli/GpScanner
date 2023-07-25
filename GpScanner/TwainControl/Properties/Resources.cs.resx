@@ -298,8 +298,8 @@ TAKÉ OCHRANA PDF MŮŽE BÝT PORUŠENA APLIKACEMI TŘETÍCH STRAN.</value>
   <data name="SAVEPDF" xml:space="preserve">
     <value>Uložit</value>
   </data>
-  <data name="FIX" xml:space="preserve">
-    <value />
+  <data name="HELP" xml:space="preserve">
+    <value>POMOC</value>
   </data>
   <data name="OCR" xml:space="preserve">
     <value>OCR</value>
@@ -583,5 +583,8 @@ SOUBORY PDF</value>
   </data>
   <data name="CWIDTH" xml:space="preserve">
     <value>VLASTNÍ ŠÍŘKA!</value>
+  </data>
+  <data name="CYANCONTROL" xml:space="preserve">
+    <value>Jakékoli azurové barevné ovládání funguje odlišně s jedním nebo více klávesami Alt Shift Ctrl!</value>
   </data>
 </root>

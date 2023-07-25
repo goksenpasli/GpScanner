@@ -586,4 +586,10 @@ VEDERE</value>
   <data name="CHEIGHT" xml:space="preserve">
     <value>ALTEZZA PERSONALIZZATA!</value>
   </data>
+  <data name="CYANCONTROL" xml:space="preserve">
+    <value>Qualsiasi controllo di colore ciano funziona in modo diverso con uno o più tasti Alt Shift Ctrl!</value>
+  </data>
+  <data name="HELP" xml:space="preserve">
+    <value>AIUTO</value>
+  </data>
 </root>

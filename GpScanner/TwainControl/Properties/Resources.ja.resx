@@ -297,8 +297,8 @@
   <data name="SAVEPDF" xml:space="preserve">
     <value>PDFを保存</value>
   </data>
-  <data name="FIX" xml:space="preserve">
-    <value />
+  <data name="HELP" xml:space="preserve">
+    <value>ヘルプ</value>
   </data>
   <data name="OCR" xml:space="preserve">
     <value>OCR</value>
@@ -586,5 +586,8 @@ PDFをマージ</value>
   </data>
   <data name="CWIDTH" xml:space="preserve">
     <value>カスタム幅！</value>
+  </data>
+  <data name="CYANCONTROL" xml:space="preserve">
+    <value>任意のシアン色のコントロールは、Alt Shift CTRLキーの1つ以上で異なる働きをします！</value>
   </data>
 </root>

@@ -586,4 +586,10 @@
   <data name="CWIDTH" xml:space="preserve">
     <value>عرض مخصص!</value>
   </data>
+  <data name="CYANCONTROL" xml:space="preserve">
+    <value>يعمل أي تحكم بلون سماوي بشكل مختلف مع واحد أو أكثر من مفاتيح التحكم في ناقل الحركة البديل!</value>
+  </data>
+  <data name="HELP" xml:space="preserve">
+    <value>يساعد</value>
+  </data>
 </root>

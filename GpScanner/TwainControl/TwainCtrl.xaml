@@ -220,7 +220,44 @@
             <ColumnDefinition Width="3" />
             <ColumnDefinition Width="{Binding DocumentGridLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" d:Width="5*" />
         </Grid.ColumnDefinitions>
-        <GroupBox Grid.Column="0" Header="{local:Loc SRC}">
+        <GroupBox Grid.Column="0">
+            <GroupBox.Header>
+                <UniformGrid Columns="2">
+                    <TextBlock Text="{local:Loc SRC}" />
+                    <Extensions:ContentToggleButton HorizontalAlignment="Right" Background="{x:Null}" BorderBrush="{x:Null}">
+                        <Image Width="16" Height="16">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                    <Binding Source="Shell32.dll" />
+                                    <Binding Source="23" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                        <Extensions:ContentToggleButton.OverContent>
+                            <GroupBox Width="300" Height="400" Header="{local:Loc HELP}">
+                                <FlowDocumentScrollViewer>
+                                    <FlowDocument IsOptimalParagraphEnabled="True">
+                                        <Paragraph>
+                                            <InlineUIContainer>
+                                                <Rectangle Width="124" Height="24" Stroke="Cyan" />
+                                            </InlineUIContainer>
+                                            <Run Text="{local:Loc CYANCONTROL}" />
+                                            <LineBreak />
+                                            <Rectangle Width="124" Height="24">
+                                                <Rectangle.Fill>
+                                                    <VisualBrush Stretch="Fill" Visual="{Binding Source={x:Reference CbFolderFormat}}" />
+                                                </Rectangle.Fill>
+                                            </Rectangle>
+                                            <Run Text="{local:Loc FOLDERFORMAT}" />
+                                        </Paragraph>
+                                    </FlowDocument>
+                                </FlowDocumentScrollViewer>
+                            </GroupBox>
+                        </Extensions:ContentToggleButton.OverContent>
+                    </Extensions:ContentToggleButton>
+
+                </UniformGrid>
+            </GroupBox.Header>
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -344,7 +381,8 @@
                     <GroupBox IsEnabled="{Binding Scanner.ArayüzEtkin}">
                         <GroupBox.Header>
                             <UniformGrid Margin="1" Columns="4">
-                                <ComboBox local:Policy.PolicyName="FolderDateFormat"
+                                <ComboBox x:Name="CbFolderFormat"
+                                    local:Policy.PolicyName="FolderDateFormat"
                                     ItemsSource="{Binding Source={StaticResource FolderDates}}"
                                     SelectedValue="{Binding FolderDateFormat, Source={x:Static properties:Settings.Default}}"
                                     SelectedValuePath="Key">

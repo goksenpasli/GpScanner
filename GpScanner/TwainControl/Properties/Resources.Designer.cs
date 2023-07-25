@@ -378,15 +378,6 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string FIX {
-            get {
-                return ResourceManager.GetString("FIX", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
         public static string FOLDERFORMAT {
             get {
                 return ResourceManager.GetString("FOLDERFORMAT", resourceCulture);
@@ -444,6 +435,15 @@ namespace TwainControl.Properties {
         public static string HEIGHTCOUNT {
             get {
                 return ResourceManager.GetString("HEIGHTCOUNT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string HELP {
+            get {
+                return ResourceManager.GetString("HELP", resourceCulture);
             }
         }
         

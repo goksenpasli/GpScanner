@@ -296,8 +296,8 @@
   <data name="SAVEPDF" xml:space="preserve">
     <value>PDF</value>
   </data>
-  <data name="FIX" xml:space="preserve">
-    <value />
+  <data name="HELP" xml:space="preserve">
+    <value>ДОПОМОГА</value>
   </data>
   <data name="OCR" xml:space="preserve">
     <value>OCR</value>
@@ -583,5 +583,8 @@ PDF-ФАЙЛ!</value>
   </data>
   <data name="WATERMARK" xml:space="preserve">
     <value>Водяний знак</value>
+  </data>
+  <data name="CYANCONTROL" xml:space="preserve">
+    <value>Будь-яке блакитне кольорове керування працює по-різному з однією або декількома клавішами Alt Shift Ctrl!</value>
   </data>
 </root>

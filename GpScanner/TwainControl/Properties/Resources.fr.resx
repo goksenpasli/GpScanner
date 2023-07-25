@@ -586,4 +586,10 @@ VOIR</value>
   <data name="CWIDTH" xml:space="preserve">
     <value>LARGEUR PERSONNALISÉE !</value>
   </data>
+  <data name="CYANCONTROL" xml:space="preserve">
+    <value>Tout contrôle de couleur cyan fonctionne différemment avec une ou plusieurs des touches Alt Shift Ctrl !</value>
+  </data>
+  <data name="HELP" xml:space="preserve">
+    <value>AIDER</value>
+  </data>
 </root>

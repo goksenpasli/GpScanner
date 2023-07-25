@@ -297,8 +297,8 @@ AUCH PDF-SCHUTZ KANN DURCH ANWENDUNGEN VON DRITTANBIETERN GEBROCHEN WERDEN.!</va
   <data name="SAVEPDF" xml:space="preserve">
     <value>Speichern</value>
   </data>
-  <data name="FIX" xml:space="preserve">
-    <value />
+  <data name="HELP" xml:space="preserve">
+    <value>HILFE</value>
   </data>
   <data name="OCR" xml:space="preserve">
     <value>GEBÄUDE</value>
@@ -584,5 +584,8 @@ ENTFERNEN</value>
   </data>
   <data name="CWIDTH" xml:space="preserve">
     <value>BENUTZERDEFINIERTE BREITE!</value>
+  </data>
+  <data name="CYANCONTROL" xml:space="preserve">
+    <value>Jede cyanfarbene Steuerung funktioniert anders mit einer oder mehreren der Alt-Shift-Ctrl-Tasten!</value>
   </data>
 </root>

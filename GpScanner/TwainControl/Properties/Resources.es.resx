@@ -295,8 +295,8 @@ TAMBIÉN LA PROTECCIÓN PDF PUEDE ser ROTA por APLICACIONES DE TERCEROS.</value>
   <data name="SAVEPDF" xml:space="preserve">
     <value>Guardar PDF</value>
   </data>
-  <data name="FIX" xml:space="preserve">
-    <value />
+  <data name="HELP" xml:space="preserve">
+    <value>AYUDA</value>
   </data>
   <data name="OCR" xml:space="preserve">
     <value>OCR</value>
@@ -580,5 +580,8 @@ AL ARCHIVO</value>
   </data>
   <data name="CWIDTH" xml:space="preserve">
     <value>¡ANCHO PERSONALIZADO!</value>
+  </data>
+  <data name="CYANCONTROL" xml:space="preserve">
+    <value>¡Cualquier control de color cian funciona de manera diferente con una o más de las teclas Alt Shift Ctrl!</value>
   </data>
 </root>

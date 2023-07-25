@@ -20,10 +20,10 @@
     <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
     <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
     <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>base64 mime encoded serialized .NET Framework object</value>
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
     </data>
     <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>base64 mime encoded string representing a byte array form of the .NET Framework object</value>
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
                 
@@ -582,5 +582,11 @@ TO FILE</value>
   </data>
   <data name="CWIDTH" xml:space="preserve">
     <value>CUSTOM WIDTH!</value>
+  </data>
+  <data name="CYANCONTROL" xml:space="preserve">
+    <value>Any Cyan Colored Control Works Differently With One or More Of The Alt Shift Ctrl Keys</value>
+  </data>
+  <data name="HELP" xml:space="preserve">
+    <value>HELP</value>
   </data>
 </root>

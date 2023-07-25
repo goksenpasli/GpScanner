@@ -589,4 +589,10 @@ BELGE EKLE</value>
   <data name="CHEIGHT" xml:space="preserve">
     <value>ÖZEL YÜKSEKLİK</value>
   </data>
+  <data name="CYANCONTROL" xml:space="preserve">
+    <value>Herhangi Bir Camgöbeği Renkli Kontrol, Alt Shift Ctrl Tuşlarından Bir veya Daha Fazlası ile Farklı Şekilde Çalışır!</value>
+  </data>
+  <data name="HELP" xml:space="preserve">
+    <value>YARDIM</value>
+  </data>
 </root>

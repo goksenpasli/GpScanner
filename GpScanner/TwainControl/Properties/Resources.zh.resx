@@ -298,8 +298,8 @@ PDF保护也可以被第三方应用程序破坏。</value>
   <data name="SAVEPDF" xml:space="preserve">
     <value>保存</value>
   </data>
-  <data name="FIX" xml:space="preserve">
-    <value />
+  <data name="HELP" xml:space="preserve">
+    <value>帮助</value>
   </data>
   <data name="OCR" xml:space="preserve">
     <value>OCR!</value>
@@ -586,5 +586,8 @@ PDF保护也可以被第三方应用程序破坏。</value>
   </data>
   <data name="CWIDTH" xml:space="preserve">
     <value>自定义宽度！</value>
+  </data>
+  <data name="CYANCONTROL" xml:space="preserve">
+    <value>任何青色控制与一个或多个Alt Shift Ctrl键的工作方式不同！</value>
   </data>
 </root>
