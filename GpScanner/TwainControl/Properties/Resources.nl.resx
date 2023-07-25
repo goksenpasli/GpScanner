@@ -586,4 +586,16 @@ PDF 'S SAMENVOEGEN</value>
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Elke cyaankleurige bediening werkt anders met een of meer van de Alt Shift Ctrl-toetsen!</value>
   </data>
+  <data name="AUTOFOLDERHELP" xml:space="preserve">
+    <value>Specificeer de map voor automatisch opslaan. In het Quick Scan-proces wordt deze map opgeslagen!</value>
+  </data>
+  <data name="KNOWNPROBLEMS" xml:space="preserve">
+    <value>Bekende problemen!</value>
+  </data>
+  <data name="ERROR1" xml:space="preserve">
+    <value>Soms verschijnt het niet in de lijst ondanks het toevoegen van bestanden aan de lijst. Om het op te lossen, moet je het wiel van de muis schuiven!</value>
+  </data>
+  <data name="SCANDELAYHELP" xml:space="preserve">
+    <value>Toont hoeveel seconden de scanner zal wachten voordat hij scant!</value>
+  </data>
 </root>

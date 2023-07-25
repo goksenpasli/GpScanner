@@ -592,4 +592,16 @@ VOIR</value>
   <data name="HELP" xml:space="preserve">
     <value>AIDER</value>
   </data>
+  <data name="AUTOFOLDERHELP" xml:space="preserve">
+    <value>Spécifiez le dossier d'enregistrement automatique. Dans le processus d'analyse rapide, ce dossier est enregistré !</value>
+  </data>
+  <data name="KNOWNPROBLEMS" xml:space="preserve">
+    <value>Problèmes connus !</value>
+  </data>
+  <data name="ERROR1" xml:space="preserve">
+    <value>Parfois, il n'apparaît pas dans la liste malgré l'ajout de fichiers à la liste. Pour le résoudre, il faut faire glisser la molette de la souris !</value>
+  </data>
+  <data name="SCANDELAYHELP" xml:space="preserve">
+    <value>Indique combien de secondes le scanner attendra avant de numériser !</value>
+  </data>
 </root>

@@ -590,4 +590,16 @@ PDF保护也可以被第三方应用程序破坏。</value>
   <data name="CYANCONTROL" xml:space="preserve">
     <value>任何青色控制与一个或多个Alt Shift Ctrl键的工作方式不同！</value>
   </data>
+  <data name="AUTOFOLDERHELP" xml:space="preserve">
+    <value>指定自动保存文件夹。在快速扫描过程中，此文件夹已保存！</value>
+  </data>
+  <data name="KNOWNPROBLEMS" xml:space="preserve">
+    <value>已知问题！</value>
+  </data>
+  <data name="ERROR1" xml:space="preserve">
+    <value>有时它不会出现在列表中，尽管列表中添加了文件。要解决这个问题，你必须滑动鼠标的轮子！</value>
+  </data>
+  <data name="SCANDELAYHELP" xml:space="preserve">
+    <value>显示扫描仪在扫描前等待的秒数！</value>
+  </data>
 </root>

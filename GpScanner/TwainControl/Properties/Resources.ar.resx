@@ -592,4 +592,16 @@
   <data name="HELP" xml:space="preserve">
     <value>يساعد</value>
   </data>
+  <data name="AUTOFOLDERHELP" xml:space="preserve">
+    <value>حدد مجلد الحفظ التلقائي. في عملية المسح السريع، يتم حفظ هذا المجلد!</value>
+  </data>
+  <data name="KNOWNPROBLEMS" xml:space="preserve">
+    <value>مشاكل معروفة!</value>
+  </data>
+  <data name="ERROR1" xml:space="preserve">
+    <value>في بعض الأحيان لا يظهر في القائمة على الرغم من إضافة ملفات إلى القائمة. لحلها، عليك تحريك عجلة الفأرة!</value>
+  </data>
+  <data name="SCANDELAYHELP" xml:space="preserve">
+    <value>يعرض عدد الثواني التي سينتظرها الماسح الضوئي قبل المسح الضوئي!</value>
+  </data>
 </root>

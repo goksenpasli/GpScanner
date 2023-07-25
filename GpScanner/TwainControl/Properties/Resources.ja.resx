@@ -590,4 +590,16 @@ PDFをマージ</value>
   <data name="CYANCONTROL" xml:space="preserve">
     <value>任意のシアン色のコントロールは、Alt Shift CTRLキーの1つ以上で異なる働きをします！</value>
   </data>
+  <data name="AUTOFOLDERHELP" xml:space="preserve">
+    <value>自動保存フォルダを指定します。クイックスキャンプロセスでは、このフォルダが保存されます！</value>
+  </data>
+  <data name="KNOWNPROBLEMS" xml:space="preserve">
+    <value>既知の問題！</value>
+  </data>
+  <data name="ERROR1" xml:space="preserve">
+    <value>ファイルがリストに追加されたにもかかわらず、リストに表示されないことがあります。それを解決するには、マウスのホイールをスライドさせる必要があります！</value>
+  </data>
+  <data name="SCANDELAYHELP" xml:space="preserve">
+    <value>スキャンする前にスキャナーが待つ秒数を表示します！</value>
+  </data>
 </root>

@@ -587,4 +587,16 @@ PDF!</value>
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Οποιοσδήποτε έλεγχος κυανού χρώματος λειτουργεί διαφορετικά με ένα ή περισσότερα από τα πλήκτρα Alt Shift Ctrl!</value>
   </data>
+  <data name="AUTOFOLDERHELP" xml:space="preserve">
+    <value>Καθορίστε τον φάκελο αυτόματης αποθήκευσης. Στη διαδικασία γρήγορης σάρωσης, αυτός ο φάκελος αποθηκεύεται!</value>
+  </data>
+  <data name="KNOWNPROBLEMS" xml:space="preserve">
+    <value>Γνωστά προβλήματα!</value>
+  </data>
+  <data name="ERROR1" xml:space="preserve">
+    <value>Μερικές φορές δεν εμφανίζεται στη λίστα παρά την προσθήκη αρχείων στη λίστα. Για να το λύσετε, πρέπει να σύρετε τον τροχό του ποντικιού!</value>
+  </data>
+  <data name="SCANDELAYHELP" xml:space="preserve">
+    <value>Δείχνει πόσα δευτερόλεπτα θα περιμένει ο σαρωτής πριν από τη σάρωση!</value>
+  </data>
 </root>

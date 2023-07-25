@@ -592,4 +592,16 @@ VEDERE</value>
   <data name="HELP" xml:space="preserve">
     <value>AIUTO</value>
   </data>
+  <data name="AUTOFOLDERHELP" xml:space="preserve">
+    <value>Specificare la cartella di salvataggio automatico. Nel processo di scansione rapida, questa cartella viene salvata!</value>
+  </data>
+  <data name="KNOWNPROBLEMS" xml:space="preserve">
+    <value>Problemi noti!</value>
+  </data>
+  <data name="ERROR1" xml:space="preserve">
+    <value>A volte non compare nell'elenco nonostante l'aggiunta di file all'elenco. Per risolverlo, devi far scorrere la rotellina del mouse!</value>
+  </data>
+  <data name="SCANDELAYHELP" xml:space="preserve">
+    <value>Mostra quanti secondi lo scanner aspetterà prima di eseguire la scansione!</value>
+  </data>
 </root>

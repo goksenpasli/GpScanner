@@ -589,4 +589,16 @@ TO FILE</value>
   <data name="HELP" xml:space="preserve">
     <value>HELP</value>
   </data>
+  <data name="AUTOFOLDERHELP" xml:space="preserve">
+    <value>Specify Auto Save Folder. In the Quick Scan Process, This Folder Is Recorded.</value>
+  </data>
+  <data name="KNOWNPROBLEMS" xml:space="preserve">
+    <value>Known Problems</value>
+  </data>
+  <data name="ERROR1" xml:space="preserve">
+    <value>Sometimes, although a file is added to the list, it does not appear in the list. For the solution, it is necessary to scroll the mouse wheel.</value>
+  </data>
+  <data name="SCANDELAYHELP" xml:space="preserve">
+    <value>Shows how many seconds the scanner will wait before scanning!</value>
+  </data>
 </root>

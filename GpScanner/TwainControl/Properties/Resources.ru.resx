@@ -585,4 +585,16 @@ PDF-ФАЙЛЫ</value>
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Любой элемент управления голубого цвета работает по-разному с одной или несколькими клавишами Alt Shift Ctrl!</value>
   </data>
+  <data name="AUTOFOLDERHELP" xml:space="preserve">
+    <value>Укажите папку автоматического сохранения. В процессе быстрого сканирования эта папка сохраняется!</value>
+  </data>
+  <data name="KNOWNPROBLEMS" xml:space="preserve">
+    <value>Известные проблемы!</value>
+  </data>
+  <data name="ERROR1" xml:space="preserve">
+    <value>Иногда он не появляется в списке, несмотря на добавление файлов в список. Чтобы решить эту проблему, вы должны сдвинуть колесико мыши!</value>
+  </data>
+  <data name="SCANDELAYHELP" xml:space="preserve">
+    <value>Показывает, сколько секунд сканер будет ждать перед сканированием!</value>
+  </data>
 </root>

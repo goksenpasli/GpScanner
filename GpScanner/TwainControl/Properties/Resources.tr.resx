@@ -595,4 +595,16 @@ BELGE EKLE</value>
   <data name="HELP" xml:space="preserve">
     <value>YARDIM</value>
   </data>
+  <data name="AUTOFOLDERHELP" xml:space="preserve">
+    <value>Otomatik Kayıt Klasörünü Belirtin. Hızlı Tarama İşleminde Bu Klasöre Kayıt Yapılır.</value>
+  </data>
+  <data name="KNOWNPROBLEMS" xml:space="preserve">
+    <value>Bilinen Sorunlar</value>
+  </data>
+  <data name="ERROR1" xml:space="preserve">
+    <value>Bazı Zamanlar Listeye Dosya Eklenmesine Rağmen Listede Görünmemektedir. Çözüm İçin Farenin Tekerleğini Kaydırmak Gerekir.</value>
+  </data>
+  <data name="SCANDELAYHELP" xml:space="preserve">
+    <value>Tarayıcının Tarama İşleminden Önce Kaç Saniye Bekleyeceğini Gösterir.</value>
+  </data>
 </root>

@@ -144,6 +144,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string AUTOFOLDERHELP {
+            get {
+                return ResourceManager.GetString("AUTOFOLDERHELP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string AUTOPATH {
             get {
                 return ResourceManager.GetString("AUTOPATH", resourceCulture);
@@ -342,6 +351,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string ERROR1 {
+            get {
+                return ResourceManager.GetString("ERROR1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string FASTSCAN {
             get {
                 return ResourceManager.GetString("FASTSCAN", resourceCulture);
@@ -444,6 +462,15 @@ namespace TwainControl.Properties {
         public static string HELP {
             get {
                 return ResourceManager.GetString("HELP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string KNOWNPROBLEMS {
+            get {
+                return ResourceManager.GetString("KNOWNPROBLEMS", resourceCulture);
             }
         }
         
@@ -705,6 +732,15 @@ namespace TwainControl.Properties {
         public static string SCAN {
             get {
                 return ResourceManager.GetString("SCAN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string SCANDELAYHELP {
+            get {
+                return ResourceManager.GetString("SCANDELAYHELP", resourceCulture);
             }
         }
         

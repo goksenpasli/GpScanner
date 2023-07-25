@@ -587,4 +587,16 @@ SOUBORY PDF</value>
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Jakékoli azurové barevné ovládání funguje odlišně s jedním nebo více klávesami Alt Shift Ctrl!</value>
   </data>
+  <data name="AUTOFOLDERHELP" xml:space="preserve">
+    <value>Zadejte složku pro automatické ukládání. V procesu rychlého skenování je tato složka uložena!</value>
+  </data>
+  <data name="KNOWNPROBLEMS" xml:space="preserve">
+    <value>Známé problémy!</value>
+  </data>
+  <data name="ERROR1" xml:space="preserve">
+    <value>Někdy se v seznamu neobjeví i přes přidání souborů do seznamu. Chcete-li to vyřešit, musíte posunout kolečko myši!</value>
+  </data>
+  <data name="SCANDELAYHELP" xml:space="preserve">
+    <value>Zobrazuje, kolik sekund bude skener čekat před skenováním!</value>
+  </data>
 </root>

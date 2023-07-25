@@ -588,4 +588,16 @@ ENTFERNEN</value>
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Jede cyanfarbene Steuerung funktioniert anders mit einer oder mehreren der Alt-Shift-Ctrl-Tasten!</value>
   </data>
+  <data name="AUTOFOLDERHELP" xml:space="preserve">
+    <value>Geben Sie den automatischen Speicherordner an. Im Schnellscan-Prozess wird dieser Ordner gespeichert!</value>
+  </data>
+  <data name="KNOWNPROBLEMS" xml:space="preserve">
+    <value>Bekannte Probleme!</value>
+  </data>
+  <data name="ERROR1" xml:space="preserve">
+    <value>Manchmal erscheint es nicht in der Liste, obwohl Dateien zur Liste hinzugefügt wurden. Um es zu lösen, müssen Sie das Mausrad schieben!</value>
+  </data>
+  <data name="SCANDELAYHELP" xml:space="preserve">
+    <value>Zeigt an, wie viele Sekunden der Scanner warten wird, bevor er scannt!</value>
+  </data>
 </root>

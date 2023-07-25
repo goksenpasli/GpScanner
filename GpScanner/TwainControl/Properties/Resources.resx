@@ -412,9 +412,21 @@
     <value />
   </data>
   <data name="CWIDTH" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="CHEIGHT" xml:space="preserve">
-    <value></value>
+    <value />
+  </data>
+  <data name="AUTOFOLDERHELP" xml:space="preserve">
+    <value />
+  </data>
+  <data name="KNOWNPROBLEMS" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ERROR1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="SCANDELAYHELP" xml:space="preserve">
+    <value />
   </data>
 </root>

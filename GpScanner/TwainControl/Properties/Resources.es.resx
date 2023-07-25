@@ -584,4 +584,16 @@ AL ARCHIVO</value>
   <data name="CYANCONTROL" xml:space="preserve">
     <value>¡Cualquier control de color cian funciona de manera diferente con una o más de las teclas Alt Shift Ctrl!</value>
   </data>
+  <data name="AUTOFOLDERHELP" xml:space="preserve">
+    <value>Especifique la carpeta de guardado automático. En el proceso de análisis rápido, ¡esta carpeta se ha guardado!</value>
+  </data>
+  <data name="KNOWNPROBLEMS" xml:space="preserve">
+    <value>¡Problemas conocidos!</value>
+  </data>
+  <data name="ERROR1" xml:space="preserve">
+    <value>A veces no aparece en la lista a pesar de la adición de archivos a la lista. ¡Para resolverlo, tienes que deslizar la rueda del ratón!</value>
+  </data>
+  <data name="SCANDELAYHELP" xml:space="preserve">
+    <value>¡Muestra cuántos segundos esperará el escáner antes de escanear!</value>
+  </data>
 </root>

@@ -587,4 +587,16 @@ PDF-ФАЙЛ!</value>
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Будь-яке блакитне кольорове керування працює по-різному з однією або декількома клавішами Alt Shift Ctrl!</value>
   </data>
+  <data name="AUTOFOLDERHELP" xml:space="preserve">
+    <value>Вкажіть папку автоматичного збереження. У процесі швидкого сканування цю папку збережено!</value>
+  </data>
+  <data name="KNOWNPROBLEMS" xml:space="preserve">
+    <value>Відомі проблеми!</value>
+  </data>
+  <data name="ERROR1" xml:space="preserve">
+    <value>Іноді він не з 'являється в списку, незважаючи на додавання файлів до списку. Щоб розв' язати її, потрібно просунути колесо миші!</value>
+  </data>
+  <data name="SCANDELAYHELP" xml:space="preserve">
+    <value>Показує, скільки секунд сканер чекатиме перед скануванням!</value>
+  </data>
 </root>
