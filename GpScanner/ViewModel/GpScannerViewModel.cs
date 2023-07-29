@@ -1403,7 +1403,7 @@ public class GpScannerViewModel : InpcBase
                 {
                     contributiondata.Add(new ContributionData { ContrubutionDate = file?.Key, Count = file.Count() });
                 }
-                IOrderedEnumerable<ContributionData> orderedcontributiondata = contributiondata.Take(53 * 7).OrderBy(z => z.ContrubutionDate);
+                IOrderedEnumerable<ContributionData> orderedcontributiondata = contributiondata.Where(z => z.ContrubutionDate >= DateTime.Today.AddYears(-1)).Take(53 * 7).OrderBy(z => z.ContrubutionDate);
                 contributiondata = null;
                 return new ObservableCollection<ContributionData>(orderedcontributiondata);
             }
