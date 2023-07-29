@@ -494,7 +494,8 @@
                         <ListBox Grid.Row="1" Grid.Column="1"
                             d:ItemsSource="{d:SampleData ItemCount=10}"
                             ItemsSource="{Binding Contributions, RelativeSource={RelativeSource TemplatedParent}}"
-                            ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                            ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                            SelectedItem="{Binding SelectedContribution, RelativeSource={RelativeSource TemplatedParent}}">
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="ListBoxItem">
                                     <Setter Property="HorizontalContentAlignment" Value="Center" />

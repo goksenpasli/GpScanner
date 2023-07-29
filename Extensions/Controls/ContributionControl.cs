@@ -15,6 +15,7 @@ namespace Extensions
         public static readonly DependencyProperty ContributionColumnCountProperty = DependencyProperty.Register("ContributionColumnCount", typeof(int), typeof(ContributionControl), new PropertyMetadata(7));
         public static readonly DependencyProperty ContributionRowCountProperty = DependencyProperty.Register("ContributionRowCount", typeof(int), typeof(ContributionControl), new PropertyMetadata(53));
         public static readonly DependencyProperty ContributionsProperty = DependencyProperty.Register("Contributions", typeof(ObservableCollection<ContributionData>), typeof(ContributionControl), new PropertyMetadata(null, Changed));
+        public static readonly DependencyProperty SelectedContributionProperty = DependencyProperty.Register("SelectedContribution", typeof(ContributionData), typeof(ContributionControl), new PropertyMetadata(null));
         private IEnumerable<string> days;
         private int maxContribution;
         private IEnumerable<string> months;
@@ -51,6 +52,7 @@ namespace Extensions
 
         public ObservableCollection<ContributionData> Contributions { get => (ObservableCollection<ContributionData>)GetValue(ContributionsProperty); set => SetValue(ContributionsProperty, value); }
 
+        [Browsable(false)]
         public IEnumerable<string> Days
         {
             get => days;
@@ -64,6 +66,7 @@ namespace Extensions
             }
         }
 
+        [Browsable(false)]
         public int MaxContribution
         {
             get => maxContribution;
@@ -77,6 +80,7 @@ namespace Extensions
             }
         }
 
+        [Browsable(false)]
         public IEnumerable<string> Months
         {
             get => months;
@@ -90,6 +94,7 @@ namespace Extensions
             }
         }
 
+        [Browsable(false)]
         public int? MonthTotalContribution
         {
             get => monthTotalContribution;
@@ -103,6 +108,9 @@ namespace Extensions
             }
         }
 
+        public ContributionData SelectedContribution { get => (ContributionData)GetValue(SelectedContributionProperty); set => SetValue(SelectedContributionProperty, value); }
+
+        [Browsable(false)]
         public string SelectedMonth
         {
             get => selectedMonth;

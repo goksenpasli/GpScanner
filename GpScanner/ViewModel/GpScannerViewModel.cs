@@ -82,6 +82,7 @@ public class GpScannerViewModel : InpcBase
     private ObservableCollection<OcrData> scannedText = new();
     private string seçiliDil;
     private DateTime? seçiliGün;
+    private ContributionData selectedContribution;
     private Scanner selectedDocument;
     private string selectedFtp;
     private Size selectedSize;
@@ -1185,6 +1186,19 @@ public class GpScannerViewModel : InpcBase
         }
     }
 
+    public ContributionData SelectedContribution
+    {
+        get => selectedContribution;
+        set
+        {
+            if(selectedContribution != value)
+            {
+                selectedContribution = value;
+                OnPropertyChanged(nameof(SelectedContribution));
+            }
+        }
+    }
+
     public Scanner SelectedDocument
     {
         get => selectedDocument;
@@ -1369,22 +1383,34 @@ public class GpScannerViewModel : InpcBase
 
     public ObservableCollection<ContributionData> GetContributionData()
     {
-        ObservableCollection<ContributionData> list = new();
         try
         {
-            IOrderedEnumerable<IGrouping<DateTime, Scanner>> contributionData = Dosyalar?.GroupBy(z => DateTime.Parse(Directory.GetParent(z.FileName).Name))?.OrderBy(z => z.Key);
-            if(contributionData != null)
+            ObservableCollection<ContributionData> contributiondata = new();
+            IEnumerable<IGrouping<DateTime, Scanner>> files = Dosyalar?.GroupBy(z => DateTime.Parse(Directory.GetParent(z.FileName).Name));
+            if(files?.Any() == true)
             {
-                foreach(IGrouping<DateTime, Scanner> chart in contributionData)
+                DateTime first = files.Min(z => z.Key);
+                DateTime last = files.Max(z => z.Key);
+                for(DateTime? date = first; date <= last; date = date.Value.AddDays(1))
                 {
-                    list.Add(new ContributionData { ContrubutionDate = chart?.Key, Count = chart.Count() });
+                    if(!files.Select(z => z.Key).Contains(date.Value))
+                    {
+                        contributiondata.Add(new ContributionData { ContrubutionDate = date, Count = 0 });
+                    }
                 }
+
+                foreach(IGrouping<DateTime, Scanner> file in files)
+                {
+                    contributiondata.Add(new ContributionData { ContrubutionDate = file?.Key, Count = file.Count() });
+                }
+                IOrderedEnumerable<ContributionData> orderedcontributiondata = contributiondata.Take(53 * 7).OrderBy(z => z.ContrubutionDate);
+                contributiondata = null;
+                return new ObservableCollection<ContributionData>(orderedcontributiondata);
             }
         } catch(Exception)
         {
         }
-
-        return list;
+        return null;
     }
 
     public string GetPatchCodeResult(string barcode)
@@ -1540,6 +1566,11 @@ public class GpScannerViewModel : InpcBase
                 string seçiligün = SeçiliGün.Value.ToString(Twainsettings.Settings.Default.FolderDateFormat);
                 x.Accepted = Directory.GetParent(scanner?.FileName).Name.StartsWith(seçiligün);
             };
+        }
+
+        if(e.PropertyName is "SelectedContribution" && SelectedContribution is not null)
+        {
+            SeçiliGün = SelectedContribution.ContrubutionDate;
         }
 
         if(e.PropertyName is "Sıralama")

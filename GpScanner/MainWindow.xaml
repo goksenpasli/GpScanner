@@ -686,7 +686,9 @@
                             Foreground="GreenYellow" Text="" />
                         <Extensions:ContentToggleButton.OverContent>
                             <GroupBox>
-                                <Extensions:ContributionControl Width="700" Height="120" Contributions="{Binding ContributionData}" />
+                                <Extensions:ContributionControl Width="700" Height="120"
+                                    Contributions="{Binding ContributionData}"
+                                    SelectedContribution="{Binding SelectedContribution, Mode=TwoWay}" />
                             </GroupBox>
                         </Extensions:ContentToggleButton.OverContent>
                     </Extensions:ContentToggleButton>
