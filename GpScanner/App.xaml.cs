@@ -2,8 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
+using System.Windows.Documents;
+using System.Windows.Markup;
 using System.Windows.Threading;
 
 namespace GpScanner;
@@ -18,6 +21,7 @@ public partial class App : Application
 #if !DEBUG
         Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
 #endif
+        FrameworkElement.LanguageProperty.OverrideMetadata(typeof(Run), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
         foreach(string arg in e.Args)
         {
             if(arg.StartsWith(StillImageHelper.DEVICE_PREFIX, StringComparison.InvariantCultureIgnoreCase))

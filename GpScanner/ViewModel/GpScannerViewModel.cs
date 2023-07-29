@@ -57,8 +57,8 @@ public class GpScannerViewModel : InpcBase
     private string batchFolder;
     private ObservableCollection<BatchTxtOcr> batchTxtOcrs;
     private XmlLanguage calendarLang;
-    private ObservableCollection<Chart> chartData;
     private int? checkedPdfCount = 0;
+    private ObservableCollection<ContributionData> contributionData;
     private int cycleIndex;
     private bool detectBarCode = true;
     private bool detectPageSeperator;
@@ -113,7 +113,7 @@ public class GpScannerViewModel : InpcBase
 
         GenerateFoldTimer();
         Dosyalar = GetScannerFileData();
-        ChartData = GetChartsData();
+        ContributionData = GetContributionData();
         SeçiliDil = Settings.Default.DefaultLang;
         GenerateJumpList();
         SeçiliGün = DateTime.Today;
@@ -808,20 +808,6 @@ public class GpScannerViewModel : InpcBase
 
     public ICommand ChangeDataFolder { get; }
 
-    public ObservableCollection<Chart> ChartData
-    {
-        get => chartData;
-
-        set
-        {
-            if(chartData != value)
-            {
-                chartData = value;
-                OnPropertyChanged(nameof(ChartData));
-            }
-        }
-    }
-
     public int? CheckedPdfCount
     {
         get => checkedPdfCount;
@@ -837,6 +823,19 @@ public class GpScannerViewModel : InpcBase
     }
 
     public ICommand CheckUpdate { get; }
+
+    public ObservableCollection<ContributionData> ContributionData
+    {
+        get => contributionData;
+        set
+        {
+            if(contributionData != value)
+            {
+                contributionData = value;
+                OnPropertyChanged(nameof(ContributionData));
+            }
+        }
+    }
 
     public ICommand CycleSelectedDocuments { get; }
 
@@ -1368,20 +1367,17 @@ public class GpScannerViewModel : InpcBase
         }
     }
 
-    public ObservableCollection<Chart> GetChartsData()
+    public ObservableCollection<ContributionData> GetContributionData()
     {
-        ObservableCollection<Chart> list = new();
+        ObservableCollection<ContributionData> list = new();
         try
         {
-            IOrderedEnumerable<IGrouping<int, Scanner>> chartdata = Dosyalar?
-                .Where(z => DateTime.TryParse(Directory.GetParent(z.FileName).Name, out DateTime _))?
-                .GroupBy(z => DateTime.Parse(Directory.GetParent(z.FileName).Name).Day)?
-                .OrderBy(z => z.Key);
-            if(chartdata != null)
+            IOrderedEnumerable<IGrouping<DateTime, Scanner>> contributionData = Dosyalar?.GroupBy(z => DateTime.Parse(Directory.GetParent(z.FileName).Name))?.OrderBy(z => z.Key);
+            if(contributionData != null)
             {
-                foreach(IGrouping<int, Scanner> chart in chartdata)
+                foreach(IGrouping<DateTime, Scanner> chart in contributionData)
                 {
-                    list.Add(new Chart { Description = chart?.Key.ToString(), ChartBrush = RandomColor(), ChartValue = chart.Count() });
+                    list.Add(new ContributionData { ContrubutionDate = chart?.Key, Count = chart.Count() });
                 }
             }
         } catch(Exception)
@@ -1419,7 +1415,7 @@ public class GpScannerViewModel : InpcBase
                 {
                     list.Add(new Scanner { FileName = dosya });
                 }
-
+                files = null;
                 return list;
             } catch(UnauthorizedAccessException)
             {
@@ -1457,7 +1453,7 @@ public class GpScannerViewModel : InpcBase
     public void ReloadFileDatas()
     {
         Dosyalar = GetScannerFileData();
-        ChartData = GetChartsData();
+        ContributionData = GetContributionData();
         SeçiliGün = DateTime.Today;
     }
 

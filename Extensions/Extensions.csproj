@@ -66,6 +66,8 @@
     <Compile Include="Controls\ArchiveData.cs" />
     <Compile Include="Controls\ArchiveViewer.cs" />
     <Compile Include="Controls\ButtonedTextBox.cs" />
+    <Compile Include="Controls\ContributionControl.cs" />
+    <Compile Include="Controls\ContributionData.cs" />
     <Compile Include="Controls\Helpers.cs" />
     <Compile Include="Controls\Chart.cs" />
     <Compile Include="Controls\ColorPicker.cs" />
@@ -77,6 +79,7 @@
     </Compile>
     <Compile Include="Controls\VirtualizingWrapPanel.cs" />
     <Compile Include="Converters\CloneConverter.cs" />
+    <Compile Include="Converters\ContributionToColorConverter.cs" />
     <Compile Include="Converters\DoubleToThicknessConverter.cs" />
     <Compile Include="Converters\FilePathToFileNameConverter.cs" />
     <Compile Include="Converters\TimespanToTickConverter.cs" />
