@@ -15,6 +15,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -141,6 +142,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 ScanCommonSettings();
                 twain.SelectSource(Settings.Default.SeçiliTarayıcı);
                 twain.StartScanning(_settings);
+                twain.ScanningComplete += ScanComplete;
             },
             parameter => !Environment.Is64BitProcess && Scanner?.Tarayıcılar?.Count > 0 && !string.IsNullOrWhiteSpace(Settings.Default.SeçiliTarayıcı) && Policy.CheckPolicy("ScanImage"));
 
@@ -161,7 +163,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 Scanner.Resimler.CollectionChanged += Scanner.Resimler_CollectionChanged;
                 twain.SelectSource(Settings.Default.SeçiliTarayıcı);
                 twain.StartScanning(_settings);
-                twain.ScanningComplete += FastScanAsync;
+                twain.ScanningComplete += FastScanComplete;
             },
             parameter => !Environment.Is64BitProcess &&
                 Scanner?.Tarayıcılar?.Count > 0 &&
@@ -585,7 +587,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 StringBuilder sb = new();
-                foreach(var item in Scanner.FolderDateFormats)
+                foreach(KeyValuePair<string, int> item in Scanner.FolderDateFormats)
                 {
                     _ = sb.Append(item.Key).Append(' ').AppendLine(DateTime.Today.ToString(item.Key, TranslationSource.Instance.CurrentCulture));
                 }
@@ -875,7 +877,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     await Task.Run(
                         async () =>
                         {
-                            using PdfDocument pdfDocument = await seçiliresimler .GeneratePdfAsync(Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, null, (int)Settings.Default.Çözünürlük);
+                            using PdfDocument pdfDocument = await seçiliresimler.GeneratePdfAsync(Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, null, (int)Settings.Default.Çözünürlük);
                             pdfDocument.Save(temporarypdf);
                             processedfiles.MergePdf().Save(pdfFilePath);
                         });
@@ -2029,22 +2031,22 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public static List<string> EypFileExtract(string eypfilepath)
     {
-        if (eypfilepath is not null)
+        if(eypfilepath is not null)
         {
             using ZipArchive archive = ZipFile.Open(eypfilepath, ZipArchiveMode.Read);
-            if (archive != null)
+            if(archive != null)
             {
                 List<string> data = new();
                 ZipArchiveEntry üstveri = archive.Entries.FirstOrDefault(entry => entry.Name == "NihaiOzet.xml");
                 string source = $"{Path.GetTempPath()}{Guid.NewGuid()}.xml";
                 üstveri?.ExtractToFile(source, true);
                 XDocument xdoc = XDocument.Load(source);
-                if (xdoc != null)
+                if(xdoc != null)
                 {
-                    foreach (string file in xdoc.Descendants().Select(z => Path.GetFileName((string)z.Attribute("URI"))).Where(z => !string.IsNullOrEmpty(z)))
+                    foreach(string file in xdoc.Descendants().Select(z => Path.GetFileName((string)z.Attribute("URI"))).Where(z => !string.IsNullOrEmpty(z)))
                     {
                         ZipArchiveEntry zipArchiveEntry = archive.Entries.FirstOrDefault(entry => entry.Name == file);
-                        if (zipArchiveEntry != null)
+                        if(zipArchiveEntry != null)
                         {
                             string destinationFileName =
                                 $"{Path.GetTempPath()}{Guid.NewGuid()}{Path.GetExtension(file.ToLower())}";
@@ -2672,11 +2674,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     {
         using Bitmap bitmap = (Bitmap)clipboardData.GetData(DataFormats.Bitmap);
         BitmapSource image = Imaging.CreateBitmapSourceFromHBitmap(bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-        if(image != null)
-        {
-            return GenerateBitmapFrame(image);
-        }
-        return null;
+        return image != null ? GenerateBitmapFrame(image) : null;
     }
 
     private Int32Rect CropPreviewImage(ImageSource imageSource)
@@ -2769,7 +2767,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         };
     }
 
-    private async void FastScanAsync(object sender, ScanningCompleteEventArgs e)
+    private async void FastScanComplete(object sender, ScanningCompleteEventArgs e)
     {
         Scanner.ArayüzEtkin = false;
         Scanner.BarcodeContent = QrCode.QrCode.GetImageBarcodeResult(Scanner?.Resimler?.LastOrDefault()?.Resim);
@@ -2805,11 +2803,16 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             ExploreFile.Execute(Scanner.PdfFilePath);
         }
 
+        if(Settings.Default.PlayNotificationAudio)
+        {
+            PlayNotificationSound($"{Environment.GetFolderPath(Environment.SpecialFolder.Windows)}\\Media\\Tada.wav");
+        }
+
         OnPropertyChanged(nameof(Scanner.Resimler));
         Scanner.Resimler.Clear();
         DataBaseTextData = null;
         PdfFileOcrData = null;
-        twain.ScanningComplete -= FastScanAsync;
+        twain.ScanningComplete -= FastScanComplete;
         Scanner.ArayüzEtkin = true;
     }
 
@@ -2980,6 +2983,20 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
+    private void PlayNotificationSound(string file)
+    {
+        try
+        {
+            if(File.Exists(file))
+            {
+                using SoundPlayer player = new(file);
+                player.Play();
+            }
+        } catch(Exception)
+        {
+        }
+    }
+
     private void Run_Drop(object sender, DragEventArgs e) { DropFile(sender, e); }
 
     private void Run_EypDrop(object sender, DragEventArgs e)
@@ -3036,6 +3053,15 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         Scanner.ArayüzEtkin = false;
         _settings = DefaultScanSettings();
         _settings.Rotation = new RotationSettings { AutomaticBorderDetection = true, AutomaticRotate = true, AutomaticDeskew = true };
+    }
+
+    private void ScanComplete(object sender, ScanningCompleteEventArgs e)
+    {
+        if(Settings.Default.PlayNotificationAudio)
+        {
+            PlayNotificationSound($"{Environment.GetFolderPath(Environment.SpecialFolder.Windows)}\\Media\\Tada.wav");
+        }
+        twain.ScanningComplete -= ScanComplete;
     }
 
     private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)

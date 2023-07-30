@@ -444,24 +444,62 @@
                                             </StackPanel>
                                         </CheckBox.Content>
                                     </CheckBox>
-                                    <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding ContributionIsImageMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
-                                        <CheckBox.Content>
-                                            <Canvas Width="32" Height="32">
-                                                <Image Width="32" Height="32">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Shell32.dll" />
-                                                            <Binding Source="19" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                                <TextBlock Canvas.Bottom="2"
-                                                    FontFamily="Webdings" FontSize="26"
-                                                    FontWeight="Bold" Foreground="GreenYellow"
-                                                    Text="" />
-                                            </Canvas>
-                                        </CheckBox.Content>
-                                    </CheckBox>
+                                    <StackPanel Orientation="Horizontal">
+                                        <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding ContributionIsImageMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                            <CheckBox.Content>
+                                                <Canvas Width="32" Height="32">
+                                                    <Image Width="32" Height="32">
+                                                        <Image.Source>
+                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                <Binding Source="Shell32.dll" />
+                                                                <Binding Source="19" />
+                                                            </MultiBinding>
+                                                        </Image.Source>
+                                                    </Image>
+                                                    <TextBlock Canvas.Bottom="2"
+                                                        FontFamily="Webdings" FontSize="26"
+                                                        FontWeight="Bold" Foreground="GreenYellow"
+                                                        Text="" />
+                                                </Canvas>
+                                            </CheckBox.Content>
+                                        </CheckBox>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                        </StackPanel>
+                                        <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding PlayNotificationAudio, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                            <CheckBox.Content>
+                                                <Canvas Width="32" Height="32">
+                                                    <Image Width="32" Height="32">
+                                                        <Image.Source>
+                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                <Binding Source="Shell32.dll" />
+                                                                <Binding Source="201" />
+                                                            </MultiBinding>
+                                                        </Image.Source>
+                                                    </Image>
+                                                    <Image Canvas.Right="0" Canvas.Bottom="0"
+                                                        Width="16" Height="16">
+                                                        <Image.Source>
+                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                <Binding Source="Shell32.dll" />
+                                                                <Binding Source="168" />
+                                                            </MultiBinding>
+                                                        </Image.Source>
+                                                    </Image>
+                                                    <Image Canvas.Left="0" Canvas.Bottom="0"
+                                                        Width="16" Height="16">
+                                                        <Image.Source>
+                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                <Binding Source="Shell32.dll" />
+                                                                <Binding Source="137" />
+                                                            </MultiBinding>
+                                                        </Image.Source>
+                                                    </Image>
+                                                </Canvas>
+                                            </CheckBox.Content>
+                                        </CheckBox>
+
+                                    </StackPanel>
                                 </UniformGrid>
                             </StackPanel>
                         </GroupBox>

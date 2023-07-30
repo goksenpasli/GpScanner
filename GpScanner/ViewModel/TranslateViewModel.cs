@@ -30,11 +30,6 @@ public class TranslateViewModel : InpcBase
     {
         PropertyChanged += TranslateViewModel_PropertyChanged;
 
-        if(speechSynthesizer is not null)
-        {
-            OkumaDili = TtsDilleri?.FirstOrDefault();
-        }
-
         Sıfırla = new RelayCommand<object>(
             parameter =>
             {
