@@ -72,7 +72,13 @@
         <ComboBox Grid.Row="1" Grid.Column="3"
             twainctrl:Policy.PolicyName="OkumaDili"
             ItemsSource="{Binding TtsDilleri, Mode=OneWay}"
-            SelectedItem="{Binding OkumaDili}" />
+            SelectedItem="{Binding OkumaDili}">
+            <ComboBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel />
+                </ItemsPanelTemplate>
+            </ComboBox.ItemsPanel>
+        </ComboBox>
         <Extensions:ButtonedTextBox x:Name="BtnTxtMetin"
             Grid.Row="2" Grid.ColumnSpan="3"
             VerticalContentAlignment="Top"
@@ -92,18 +98,28 @@
                         <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=Self}}" Value="true">
                             <Setter Property="Content">
                                 <Setter.Value>
-                                    <Viewbox>
-                                        <TextBlock FontFamily="Webdings" FontSize="16" Text=";" />
-                                    </Viewbox>
+                                    <Image Width="32" Height="32">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="131" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
                                 </Setter.Value>
                             </Setter>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=Self}}" Value="false">
                             <Setter Property="Content">
                                 <Setter.Value>
-                                    <Viewbox>
-                                        <TextBlock FontFamily="Webdings" FontSize="16" Text="4" />
-                                    </Viewbox>
+                                    <Image Width="32" Height="32">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="137" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
                                 </Setter.Value>
                             </Setter>
                         </DataTrigger>
@@ -117,7 +133,7 @@
             AcceptsReturn="True" CharacterCasing="Normal"
             IsReadOnly="True" OpenButtonVisibility="Collapsed"
             ScrollViewer.VerticalScrollBarVisibility="Auto" SpellCheck.IsEnabled="True"
-            Text="{Binding Çeviri}"
+            Text="{Binding Çeviri, Mode=OneWay}"
             TextWrapping="Wrap" />
         <ToggleButton Grid.Row="3" Grid.Column="3"
             twainctrl:Policy.PolicyName="Oku"
@@ -129,18 +145,28 @@
                         <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=Self}}" Value="true">
                             <Setter Property="Content">
                                 <Setter.Value>
-                                    <Viewbox>
-                                        <TextBlock FontFamily="Webdings" FontSize="16" Text=";" />
-                                    </Viewbox>
+                                    <Image Width="32" Height="32">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="131" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
                                 </Setter.Value>
                             </Setter>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=Self}}" Value="false">
                             <Setter Property="Content">
                                 <Setter.Value>
-                                    <Viewbox>
-                                        <TextBlock FontFamily="Webdings" FontSize="16" Text="4" />
-                                    </Viewbox>
+                                    <Image Width="32" Height="32">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="137" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
                                 </Setter.Value>
                             </Setter>
                         </DataTrigger>

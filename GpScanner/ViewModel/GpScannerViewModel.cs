@@ -1395,13 +1395,13 @@ public class GpScannerViewModel : InpcBase
                 {
                     if(!files.Select(z => z.Key).Contains(date.Value))
                     {
-                        contributiondata.Add(new ContributionData { ContrubutionDate = date, Count = 0 });
+                        contributiondata.Add(new ExtendedContributionData { ContrubutionDate = date, Count = 0 });
                     }
                 }
 
                 foreach(IGrouping<DateTime, Scanner> file in files)
                 {
-                    contributiondata.Add(new ContributionData { ContrubutionDate = file?.Key, Count = file.Count() });
+                    contributiondata.Add(new ExtendedContributionData { Name = file.Select(z => z.FileName), ContrubutionDate = file?.Key, Count = file.Count() });
                 }
                 IOrderedEnumerable<ContributionData> orderedcontributiondata = contributiondata.Where(z => z.ContrubutionDate >= DateTime.Today.AddYears(-1)).Take(53 * 7).OrderBy(z => z.ContrubutionDate);
                 contributiondata = null;

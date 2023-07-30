@@ -688,7 +688,8 @@
                             <GroupBox>
                                 <Extensions:ContributionControl Width="700" Height="120"
                                     Contributions="{Binding ContributionData}"
-                                    SelectedContribution="{Binding SelectedContribution, Mode=TwoWay}" />
+                                    SelectedContribution="{Binding SelectedContribution, Mode=TwoWay}"
+                                    Template="{StaticResource CustomContributionTemplate}" />
                             </GroupBox>
                         </Extensions:ContentToggleButton.OverContent>
                     </Extensions:ContentToggleButton>

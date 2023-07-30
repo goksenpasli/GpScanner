@@ -21,6 +21,7 @@
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
+            <Extensions:ContributionToColorConverter x:Key="ContributionToColorConverter" />
             <Converter:FilePathCheckConverter x:Key="FilePathCheckConverter" />
             <Converter:FileNameExtractConverter x:Key="FileNameExtractConverter" />
             <Converter:LanguageStringConverter x:Key="LanguageStringConverter" />
@@ -521,6 +522,103 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
+            <ControlTemplate x:Key="CustomContributionTemplate" TargetType="{x:Type Extensions:ContributionControl}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0"
+                        VerticalAlignment="Center"
+                        FontSize="9"
+                        Text="{Binding MonthTotalContribution, RelativeSource={RelativeSource TemplatedParent}}" />
+                    <ListBox Grid.Row="1" Grid.Column="0"
+                        FontSize="9"
+                        ItemsSource="{Binding Days, RelativeSource={RelativeSource TemplatedParent}}">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Padding" Value="0" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="1" Rows="7" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ListBox>
+                    <ListBox Grid.Row="0" Grid.Column="1"
+                        FontSize="9"
+                        ItemsSource="{Binding Months, RelativeSource={RelativeSource TemplatedParent}}"
+                        SelectedItem="{Binding SelectedMonth, RelativeSource={RelativeSource TemplatedParent}}">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Padding" Value="0" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="12" Rows="1" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ListBox>
+                    <ListBox Grid.Row="1" Grid.Column="1"
+                        ItemsSource="{Binding Contributions, RelativeSource={RelativeSource TemplatedParent}}"
+                        ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                        SelectedItem="{Binding SelectedContribution, RelativeSource={RelativeSource TemplatedParent}}">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                <Setter Property="Padding" Value="0" />
+                                <Setter Property="Margin" Value="0" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="{Binding ContributionColumnCount, RelativeSource={RelativeSource AncestorType=Extensions:ContributionControl}}" Rows="{Binding ContributionRowCount, RelativeSource={RelativeSource AncestorType=Extensions:ContributionControl}}">
+                                    <UniformGrid.LayoutTransform>
+                                        <TransformGroup>
+                                            <RotateTransform Angle="90" />
+                                            <ScaleTransform ScaleX="-1" />
+                                        </TransformGroup>
+                                    </UniformGrid.LayoutTransform>
+                                </UniformGrid>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Rectangle Width="10" Height="10" Stroke="{Binding Stroke}">
+                                    <Rectangle.Fill>
+                                        <MultiBinding Converter="{StaticResource ContributionToColorConverter}">
+                                            <Binding Path="Count" />
+                                            <Binding Path="MaxContribution" RelativeSource="{RelativeSource AncestorType=Extensions:ContributionControl}" />
+                                            <Binding Path="ContributionColor" RelativeSource="{RelativeSource AncestorType=Extensions:ContributionControl}" />
+                                        </MultiBinding>
+                                    </Rectangle.Fill>
+                                    <Rectangle.ToolTip>
+                                        <TextBlock>
+                                            <Run Text="{Binding Count}" />
+                                            <LineBreak />
+                                            <Run Text="{Binding ContrubutionDate, StringFormat=\{0:d\}}" />
+                                            <LineBreak />
+                                            <ListBox FontSize="9" ItemsSource="{Binding Name}">
+                                                <ListBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}" />
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>
+                                        </TextBlock>
+                                    </Rectangle.ToolTip>
+                                </Rectangle>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </ControlTemplate>
             <ViewModel:ViewerTemplateSelector x:Key="DocumentViewerSelector"
                 Eyp="{StaticResource EypViewerTemplateFull}"
                 Img="{StaticResource ImgViewerDocumentViewerTemplateFull}"
