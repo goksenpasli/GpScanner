@@ -427,7 +427,7 @@
                                     </ComboBox>
                                 </UniformGrid>
                                 <Separator />
-                                <UniformGrid Columns="2">
+                                <UniformGrid Columns="3">
                                     <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding DirectOpenPdfFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                                         <CheckBox.Content>
                                             <StackPanel Orientation="Horizontal">
@@ -442,6 +442,24 @@
                                                 <Image Width="32" Height="32" Source="{Binding Source='.eyp', Converter={StaticResource FilePathToIconConverter}}" />
                                                 <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc EYPOPEN}" />
                                             </StackPanel>
+                                        </CheckBox.Content>
+                                    </CheckBox>
+                                    <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding ContributionIsImageMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                        <CheckBox.Content>
+                                            <Canvas Width="32" Height="32">
+                                                <Image Width="32" Height="32">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="19" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                                <TextBlock Canvas.Bottom="2"
+                                                    FontFamily="Webdings" FontSize="26"
+                                                    FontWeight="Bold" Foreground="GreenYellow"
+                                                    Text="" />
+                                            </Canvas>
                                         </CheckBox.Content>
                                     </CheckBox>
                                 </UniformGrid>

@@ -205,8 +205,9 @@ namespace GpScanner.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfString xmlns:xsd=\"http://www.w3." +
-            "org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" />")]
+        [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n                <ArrayOfString xmlns:xsd" +
+            "=\"http://www.w3.org/2001/XMLSchema\"\r\n                xmlns:xsi=\"http://www.w3.or" +
+            "g/2001/XMLSchema-instance\" />\r\n            ")]
         public global::System.Collections.Specialized.StringCollection PatchCodes {
             get {
                 return ((global::System.Collections.Specialized.StringCollection)(this["PatchCodes"]));
@@ -218,8 +219,9 @@ namespace GpScanner.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfString xmlns:xsd=\"http://www.w3." +
-            "org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" />")]
+        [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n                <ArrayOfString xmlns:xsd" +
+            "=\"http://www.w3.org/2001/XMLSchema\"\r\n                xmlns:xsi=\"http://www.w3.or" +
+            "g/2001/XMLSchema-instance\" />\r\n            ")]
         public global::System.Collections.Specialized.StringCollection FtpSites {
             get {
                 return ((global::System.Collections.Specialized.StringCollection)(this["FtpSites"]));
@@ -321,6 +323,18 @@ namespace GpScanner.Properties {
             }
             set {
                 this["LastCheckDate"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ContributionIsImageMode {
+            get {
+                return ((bool)(this["ContributionIsImageMode"]));
+            }
+            set {
+                this["ContributionIsImageMode"] = value;
             }
         }
     }

@@ -560,6 +560,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 : await Task.Run(
                     () =>
                     {
+                        if(!IsValidPdfFile(pdffilepath))
+                        {
+                            return null;
+                        }
                         using PdfDocument pdfDoc = PdfDocument.Load(pdffilepath);
                         int width = (int)(pdfDoc.PageSizes[page - 1].Width / 96 * dpi);
                         int height = (int)(pdfDoc.PageSizes[page - 1].Height / 96 * dpi);
