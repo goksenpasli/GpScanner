@@ -1386,10 +1386,17 @@ public class GpScannerViewModel : InpcBase
         try
         {
             ObservableCollection<ContributionData> contributiondata = new();
-            IEnumerable<IGrouping<DateTime, Scanner>> files = Dosyalar?.GroupBy(z => DateTime.Parse(Directory.GetParent(z.FileName).Name));
+            IEnumerable<IGrouping<DateTime, Scanner>> files = Dosyalar?.Select(
+                scanner =>
+                {
+                    string parentDirectoryName = Directory.GetParent(scanner.FileName)?.Name;
+                    _ = DateTime.TryParse(parentDirectoryName, out DateTime parsedDateTime);
+                    return new { Scanner = scanner, ParentDate = parsedDateTime };
+                })
+                .GroupBy(item => item.ParentDate, item => item.Scanner);
             if(files?.Any() == true)
             {
-                DateTime first = files.Min(z => z.Key);
+                DateTime first = files.Where(z => z.Key > DateTime.MinValue).Min(z => z.Key);
                 DateTime last = files.Max(z => z.Key);
                 for(DateTime? date = first; date <= last; date = date.Value.AddDays(1))
                 {
@@ -1563,8 +1570,11 @@ public class GpScannerViewModel : InpcBase
             MainWindow.cvs.Filter += (s, x) =>
             {
                 Scanner scanner = x.Item as Scanner;
-                string seçiligün = SeçiliGün.Value.ToString(Twainsettings.Settings.Default.FolderDateFormat);
-                x.Accepted = Directory.GetParent(scanner?.FileName).Name.StartsWith(seçiligün);
+                if(DateTime.TryParse(Directory.GetParent(scanner?.FileName).Name, out DateTime result))
+                {
+                    string seçiligün = SeçiliGün.Value.ToString(Twainsettings.Settings.Default.FolderDateFormat);
+                    x.Accepted = result.ToString(Twainsettings.Settings.Default.FolderDateFormat).StartsWith(seçiligün);
+                }
             };
         }
 
