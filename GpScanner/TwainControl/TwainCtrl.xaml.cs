@@ -2117,6 +2117,20 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         pdfviewer.PdfFilePath = pdfFilePath;
     }
 
+    public static void PlayNotificationSound(string file)
+    {
+        try
+        {
+            if(File.Exists(file))
+            {
+                using SoundPlayer player = new(file);
+                player.Play();
+            }
+        } catch(Exception)
+        {
+        }
+    }
+
     public static async Task RemovePdfPageAsync(string pdffilepath, int start, int end)
     {
         await Task.Run(
@@ -2805,7 +2819,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
         if(Settings.Default.PlayNotificationAudio)
         {
-            PlayNotificationSound($"{Environment.GetFolderPath(Environment.SpecialFolder.Windows)}\\Media\\Tada.wav");
+            PlayNotificationSound(Settings.Default.AudioFilePath);
         }
 
         OnPropertyChanged(nameof(Scanner.Resimler));
@@ -2983,20 +2997,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    private void PlayNotificationSound(string file)
-    {
-        try
-        {
-            if(File.Exists(file))
-            {
-                using SoundPlayer player = new(file);
-                player.Play();
-            }
-        } catch(Exception)
-        {
-        }
-    }
-
     private void Run_Drop(object sender, DragEventArgs e) { DropFile(sender, e); }
 
     private void Run_EypDrop(object sender, DragEventArgs e)
@@ -3059,7 +3059,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     {
         if(Settings.Default.PlayNotificationAudio)
         {
-            PlayNotificationSound($"{Environment.GetFolderPath(Environment.SpecialFolder.Windows)}\\Media\\Tada.wav");
+            PlayNotificationSound(Settings.Default.AudioFilePath);
         }
         twain.ScanningComplete -= ScanComplete;
     }

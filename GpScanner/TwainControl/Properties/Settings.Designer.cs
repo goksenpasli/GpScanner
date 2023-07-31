@@ -386,5 +386,17 @@ namespace TwainControl.Properties {
                 this["PlayNotificationAudio"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string AudioFilePath {
+            get {
+                return ((string)(this["AudioFilePath"]));
+            }
+            set {
+                this["AudioFilePath"] = value;
+            }
+        }
     }
 }

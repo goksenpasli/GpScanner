@@ -466,7 +466,7 @@
                                         <StackPanel Grid.Column="1" Orientation="Horizontal">
                                             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                         </StackPanel>
-                                        <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding PlayNotificationAudio, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                        <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding PlayNotificationAudio, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding ElementName=CbMusic, Path=SelectedItem, Mode=OneWay, Converter={StaticResource NullableToBooleanConverter}}">
                                             <CheckBox.Content>
                                                 <Canvas Width="32" Height="32">
                                                     <Image Width="32" Height="32">
@@ -486,19 +486,34 @@
                                                             </MultiBinding>
                                                         </Image.Source>
                                                     </Image>
-                                                    <Image Canvas.Left="0" Canvas.Bottom="0"
-                                                        Width="16" Height="16">
-                                                        <Image.Source>
-                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                <Binding Source="Shell32.dll" />
-                                                                <Binding Source="137" />
-                                                            </MultiBinding>
-                                                        </Image.Source>
-                                                    </Image>
                                                 </Canvas>
                                             </CheckBox.Content>
                                         </CheckBox>
-
+                                        <ComboBox x:Name="CbMusic"
+                                            VerticalContentAlignment="Center"
+                                            ItemsSource="{Binding AudioFiles, Mode=OneWay}"
+                                            SelectedItem="{Binding AudioFilePath, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock VerticalAlignment="Center">
+                                                        <Run Text="{Binding Mode=OneWay, Converter={StaticResource FileNameExtractConverter}}" />
+                                                        <Hyperlink BaselineAlignment="Center"
+                                                            Command="{Binding DataContext.PlayAudio, RelativeSource={RelativeSource AncestorType=ComboBox}}"
+                                                            CommandParameter="{Binding Mode=OneWay}"
+                                                            TextDecorations="None">
+                                                            <Image Width="16" Height="16">
+                                                                <Image.Source>
+                                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                        <Binding Source="Shell32.dll" />
+                                                                        <Binding Source="137" />
+                                                                    </MultiBinding>
+                                                                </Image.Source>
+                                                            </Image>
+                                                        </Hyperlink>
+                                                    </TextBlock>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
                                     </StackPanel>
                                 </UniformGrid>
                             </StackPanel>

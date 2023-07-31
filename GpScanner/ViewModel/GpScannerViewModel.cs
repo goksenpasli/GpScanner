@@ -659,8 +659,9 @@ public class GpScannerViewModel : InpcBase
             },
             parameter => true);
 
-        PrintImage =
-            new RelayCommand<object>(parameter => PdfViewer.PdfViewer.PrintImageSource(parameter as ImageSource, 300, false), parameter => parameter is ImageSource);
+        PrintImage = new RelayCommand<object>(parameter => PdfViewer.PdfViewer.PrintImageSource(parameter as ImageSource, 300, false), parameter => parameter is ImageSource);
+
+        PlayAudio = new RelayCommand<object>(parameter => TwainCtrl.PlayNotificationSound(parameter as string), parameter => true);
     }
 
     public static bool IsAdministrator
@@ -716,6 +717,15 @@ public class GpScannerViewModel : InpcBase
                 aramaMetni = value;
                 OnPropertyChanged(nameof(AramaMetni));
             }
+        }
+    }
+
+    public IEnumerable<string> AudioFiles
+    {
+        get
+        {
+            string folder = $"{Environment.GetFolderPath(Environment.SpecialFolder.Windows)}\\Media";
+            return Directory.Exists(folder) ? Directory.EnumerateFiles(folder, "*.wav", SearchOption.TopDirectoryOnly) : null;
         }
     }
 
@@ -1112,6 +1122,8 @@ public class GpScannerViewModel : InpcBase
         }
     }
 
+    public RelayCommand<object> PlayAudio { get; }
+
     public ICommand PrintImage { get; }
 
     public Brush ProgressBarForegroundBrush
@@ -1394,26 +1406,22 @@ public class GpScannerViewModel : InpcBase
                     return new { Scanner = scanner, ParentDate = parsedDateTime };
                 })
                 .GroupBy(item => item.ParentDate, item => item.Scanner);
-            if(files?.Any() == true)
+            DateTime first = files.Where(z => z.Key > DateTime.MinValue).Min(z => z.Key);
+            DateTime last = files.Max(z => z.Key);
+            for(DateTime? date = first; date <= last; date = date.Value.AddDays(1))
             {
-                DateTime first = files.Where(z => z.Key > DateTime.MinValue).Min(z => z.Key);
-                DateTime last = files.Max(z => z.Key);
-                for(DateTime? date = first; date <= last; date = date.Value.AddDays(1))
+                if(!files.Select(z => z.Key).Contains(date.Value))
                 {
-                    if(!files.Select(z => z.Key).Contains(date.Value))
-                    {
-                        contributiondata.Add(new ExtendedContributionData { ContrubutionDate = date, Count = 0 });
-                    }
+                    contributiondata.Add(new ExtendedContributionData { ContrubutionDate = date, Count = 0 });
                 }
-
-                foreach(IGrouping<DateTime, Scanner> file in files)
-                {
-                    contributiondata.Add(new ExtendedContributionData { Name = file.Select(z => z.FileName), ContrubutionDate = file?.Key, Count = file.Count() });
-                }
-                IOrderedEnumerable<ContributionData> orderedcontributiondata = contributiondata.Where(z => z.ContrubutionDate >= DateTime.Today.AddYears(-1)).Take(53 * 7).OrderBy(z => z.ContrubutionDate);
-                contributiondata = null;
-                return new ObservableCollection<ContributionData>(orderedcontributiondata);
             }
+
+            foreach(IGrouping<DateTime, Scanner> file in files)
+            {
+                contributiondata.Add(new ExtendedContributionData { Name = file.Select(z => z.FileName), ContrubutionDate = file?.Key, Count = file.Count() });
+            }
+            IOrderedEnumerable<ContributionData> orderedcontributiondata = contributiondata.Where(z => z.ContrubutionDate >= DateTime.Today.AddYears(-1)).Take(53 * 7).OrderBy(z => z.ContrubutionDate);
+            return new ObservableCollection<ContributionData>(orderedcontributiondata);
         } catch(Exception)
         {
         }
