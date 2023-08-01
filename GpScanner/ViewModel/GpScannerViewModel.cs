@@ -1582,6 +1582,9 @@ public class GpScannerViewModel : InpcBase
                 {
                     string seçiligün = SeçiliGün.Value.ToString(Twainsettings.Settings.Default.FolderDateFormat);
                     x.Accepted = result.ToString(Twainsettings.Settings.Default.FolderDateFormat).StartsWith(seçiligün);
+                } else
+                {
+                    x.Accepted = false;
                 }
             };
         }
