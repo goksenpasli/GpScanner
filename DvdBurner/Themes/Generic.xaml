@@ -1,7 +1,14 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions" xmlns:local="clr-namespace:DvdBurner">
+    xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
+    xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:local="clr-namespace:DvdBurner">
+    <ObjectDataProvider x:Key="DiscSizes" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="local:DiscSizes" />
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
     <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
+    <Extensions:EnumToIntValueConverter x:Key="EnumToIntValueConverter" />
     <Style TargetType="{x:Type local:Burner}">
         <Setter Property="Template">
             <Setter.Value>
@@ -56,6 +63,27 @@
                                 Text="{Binding ActionText, RelativeSource={RelativeSource TemplatedParent}}"
                                 TextWrapping="Wrap" />
                         </Grid>
+                        <UniformGrid Columns="2">
+                            <Grid>
+                                <ProgressBar Foreground="{Binding ProgressForegroundBrush, RelativeSource={RelativeSource TemplatedParent}}"
+                                    Maximum="{Binding DiscMaxSize, RelativeSource={RelativeSource TemplatedParent}}"
+                                    Minimum="0"
+                                    Value="{Binding TotalFileSize, RelativeSource={RelativeSource TemplatedParent}}" />
+                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                                    Text="{Binding TotalFileSize, RelativeSource={RelativeSource TemplatedParent}, StringFormat={}{0} MB}"
+                                    TextWrapping="Wrap" />
+                            </Grid>
+                            <ComboBox ItemsSource="{Binding Source={StaticResource DiscSizes}}" SelectedItem="{Binding SelectedDiscSize, RelativeSource={RelativeSource TemplatedParent}}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock>
+                                            <Run Text="{Binding Mode=OneWay}" />
+                                            <Run Text="{Binding Mode=OneWay, Converter={StaticResource EnumToIntValueConverter}, StringFormat={}{0} MB}" />
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </UniformGrid>
                         <Extensions:ButtonedTextBox CopyButtonVisibility="Visible" Description="ETİKET"
                             OpenButtonVisibility="Collapsed" ResetButtonVisibility="Visible"
                             Text="{Binding CdLabel, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}" />

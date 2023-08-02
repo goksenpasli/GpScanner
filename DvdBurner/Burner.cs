@@ -8,12 +8,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
+using System.Windows.Media;
 using Application = System.Windows.Application;
 using Control = System.Windows.Controls.Control;
 using MessageBox = System.Windows.MessageBox;
 
 namespace DvdBurner
 {
+    public enum DiscSizes
+    {
+        CD = 700,
+        MINIDVD = (int)(1.3 * 1024),
+        DVD5 = (int)(4.37 * 1024),
+        DVD9 = (int)(7.91 * 1024),
+    }
+
     public class Burner : Control, INotifyPropertyChanged
     {
         public static readonly DependencyProperty BurnDirectoryProperty = DependencyProperty.Register("BurnDirectory", typeof(string), typeof(Burner), new PropertyMetadata(string.Empty));
@@ -23,14 +32,19 @@ namespace DvdBurner
         private readonly string AppName = Application.Current?.MainWindow?.Title;
         private string actionText;
         private string cdLabel = DateTime.Now.ToString();
+        private long discMaxSize = (int)DiscSizes.CD;
         private bool eject = true;
+        private Brush progressForegroundBrush;
         private bool progressIndeterminate;
         private double progressValue;
+        private DiscSizes selectedDiscSize = DiscSizes.CD;
+        private long totalFileSize;
 
         static Burner() { DefaultStyleKeyProperty.OverrideMetadata(typeof(Burner), new FrameworkPropertyMetadata(typeof(Burner))); }
 
         public Burner()
         {
+            PropertyChanged += Burner_PropertyChanged;
             BurnDvd = new RelayCommand<object>(
                 parameter =>
                 {
@@ -100,6 +114,8 @@ namespace DvdBurner
                     if(dialog.ShowDialog() == DialogResult.OK)
                     {
                         BurnDirectory = dialog.SelectedPath;
+                        TotalFileSize = GetTotalFileLength(BurnDirectory);
+                        ProgressForegroundBrush = TotalFileSize > (int)SelectedDiscSize ? Brushes.Red : Brushes.Green;
                     }
                 },
                 parameter => true);
@@ -180,6 +196,19 @@ namespace DvdBurner
             }
         }
 
+        public long DiscMaxSize
+        {
+            get => discMaxSize;
+            set
+            {
+                if(discMaxSize != value)
+                {
+                    discMaxSize = value;
+                    OnPropertyChanged(nameof(DiscMaxSize));
+                }
+            }
+        }
+
         public bool Eject
         {
             get => eject;
@@ -195,6 +224,19 @@ namespace DvdBurner
         }
 
         public RelayCommand<object> EraseDvd { get; }
+
+        public Brush ProgressForegroundBrush
+        {
+            get => progressForegroundBrush;
+            set
+            {
+                if(progressForegroundBrush != value)
+                {
+                    progressForegroundBrush = value;
+                    OnPropertyChanged(nameof(ProgressForegroundBrush));
+                }
+            }
+        }
 
         public bool ProgressIndeterminate
         {
@@ -226,7 +268,42 @@ namespace DvdBurner
 
         public RelayCommand<object> SelectBurnDir { get; }
 
+        public DiscSizes SelectedDiscSize
+        {
+            get => selectedDiscSize;
+            set
+            {
+                if(selectedDiscSize != value)
+                {
+                    selectedDiscSize = value;
+                    OnPropertyChanged(nameof(SelectedDiscSize));
+                }
+            }
+        }
+
+        public long TotalFileSize
+        {
+            get => totalFileSize;
+            set
+            {
+                if(totalFileSize != value)
+                {
+                    totalFileSize = value;
+                    OnPropertyChanged(nameof(TotalFileSize));
+                }
+            }
+        }
+
         protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
+
+        private void Burner_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName is "SelectedDiscSize")
+            {
+                DiscMaxSize = (int)SelectedDiscSize;
+                ProgressForegroundBrush = TotalFileSize > (int)SelectedDiscSize ? Brushes.Red : Brushes.Green;
+            }
+        }
 
         private void DataWriter_Update(dynamic @object, dynamic progress)
         {
@@ -293,6 +370,23 @@ namespace DvdBurner
         {
             ProgressValue = (double)d;
             return d.ToString("0%");
+        }
+
+        private long GetTotalFileLength(string directoryPath)
+        {
+            try
+            {
+                long totalLength = 0;
+                foreach(string file in Directory.GetFiles(directoryPath, "*.*", SearchOption.AllDirectories))
+                {
+                    FileInfo fileInfo = new FileInfo(file);
+                    totalLength += fileInfo.Length;
+                }
+                return totalLength / 1024 / 1024;
+            } catch(UnauthorizedAccessException)
+            {
+            }
+            return 0;
         }
     }
 }

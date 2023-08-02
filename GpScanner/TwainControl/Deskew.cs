@@ -65,19 +65,12 @@ public abstract class Deskew()
 
     private static BitmapSource ConvertToGrayscale(BitmapSource image) { return new FormatConvertedBitmap(image, PixelFormats.Gray8, null, 0); }
 
-    public class ImageMoments
+    public class ImageMoments(double mu20, double mu02, double mu11)
     {
-        public ImageMoments(double mu20, double mu02, double mu11)
-        {
-            Mu20 = mu20;
-            Mu02 = mu02;
-            Mu11 = mu11;
-        }
+        public double Mu02 { get; } = mu02;
 
-        public double Mu02 { get; }
+        public double Mu11 { get; } = mu11;
 
-        public double Mu11 { get; }
-
-        public double Mu20 { get; }
+        public double Mu20 { get; } = mu20;
     }
 }
