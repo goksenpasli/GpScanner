@@ -9,6 +9,7 @@
     </ObjectDataProvider>
     <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
     <Extensions:EnumToIntValueConverter x:Key="EnumToIntValueConverter" />
+    <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
     <Style TargetType="{x:Type local:Burner}">
         <Setter Property="Template">
             <Setter.Value>
@@ -57,6 +58,29 @@
                                 </Canvas>
                             </Button>
                         </UniformGrid>
+                        <ListBox Height="250" ItemsSource="{Binding Files, RelativeSource={RelativeSource TemplatedParent}}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock VerticalAlignment="Center">
+                                        <Image Width="16" Height="16" Source="{Binding Converter={StaticResource FilePathToIconConverter}, Mode=OneWay}" />
+                                        <Run BaselineAlignment="Center" Text="{Binding Mode=OneWay}" />
+                                        <Hyperlink BaselineAlignment="Center"
+                                            Command="{Binding RemoveFile, RelativeSource={RelativeSource AncestorType=local:Burner}}"
+                                            CommandParameter="{Binding Mode=OneWay}"
+                                            TextDecorations="None">
+                                            <Image Width="16" Height="16">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="131" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </Hyperlink>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
                         <Grid>
                             <ProgressBar IsIndeterminate="{Binding ProgressIndeterminate, RelativeSource={RelativeSource TemplatedParent}}" Maximum="1" Value="{Binding ProgressValue, RelativeSource={RelativeSource TemplatedParent}}" />
                             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
