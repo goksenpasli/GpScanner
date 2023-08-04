@@ -3,6 +3,7 @@ using IMAPI2;
 using IMAPI2FS;
 using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
@@ -33,12 +34,15 @@ namespace DvdBurner
         private string actionText;
         private string cdLabel = DateTime.Now.ToString();
         private long discMaxSize = (int)DiscSizes.CD;
+        private Dictionary<string, string> drives;
         private bool eject = true;
         private ObservableCollection<string> files = new ObservableCollection<string>();
+        private bool ısCdWriterAvailable = true;
         private Brush progressForegroundBrush;
         private bool progressIndeterminate;
         private double progressValue;
         private DiscSizes selectedDiscSize = DiscSizes.CD;
+        private dynamic selectedDrive;
         private long totalFileSize;
 
         static Burner() { DefaultStyleKeyProperty.OverrideMetadata(typeof(Burner), new FrameworkPropertyMetadata(typeof(Burner))); }
@@ -46,6 +50,16 @@ namespace DvdBurner
         public Burner()
         {
             PropertyChanged += Burner_PropertyChanged;
+
+            MsftDiscMaster2 g_DiscMaster = new MsftDiscMaster2();
+            if(!g_DiscMaster.IsSupportedEnvironment)
+            {
+                IsCdWriterAvailable = false;
+                return;
+            }
+
+            Drives = GetCdWriters(g_DiscMaster);
+
             BurnDvd = new RelayCommand<object>(
                 parameter =>
                 {
@@ -55,22 +69,17 @@ namespace DvdBurner
                         return;
                     }
 
-                    dynamic Index;
                     dynamic recorder = null;
                     dynamic Stream;
-                    Index = 0;
                     Burntask = Task.Run(
                         () =>
                         {
                             try
                             {
-                                dynamic g_DiscMaster = new MsftDiscMaster2();
                                 if(g_DiscMaster.Count > 0)
                                 {
-                                    dynamic uniqueId;
                                     recorder = new MsftDiscRecorder2();
-                                    uniqueId = g_DiscMaster.Item(Index);
-                                    recorder.InitializeDiscRecorder(uniqueId);
+                                    recorder.InitializeDiscRecorder(SelectedDrive);
 
                                     dynamic FSI;
                                     dynamic dataWriter;
@@ -107,7 +116,7 @@ namespace DvdBurner
                             }
                         });
                 },
-                parameter => !string.IsNullOrWhiteSpace(CdLabel) && Files?.Any() == true);
+                parameter => !string.IsNullOrWhiteSpace(CdLabel) && Files?.Any() == true && SelectedDrive != null);
 
             SelectBurnDir = new RelayCommand<object>(
                 parameter =>
@@ -156,15 +165,11 @@ namespace DvdBurner
                             MsftDiscRecorder2 recorder = null;
                             try
                             {
-                                dynamic g_DiscMaster = new MsftDiscMaster2();
-                                dynamic uniqueId;
-                                dynamic Index = 0;
                                 MsftDiscFormat2Erase discFormatErase = null;
                                 if(g_DiscMaster.Count > 0)
                                 {
                                     recorder = new MsftDiscRecorder2();
-                                    uniqueId = g_DiscMaster.Item(Index);
-                                    recorder.InitializeDiscRecorder(uniqueId);
+                                    recorder.InitializeDiscRecorder(SelectedDrive);
                                     discFormatErase = new MsftDiscFormat2Erase { Recorder = recorder, ClientName = AppName, FullErase = false };
                                     discFormatErase.EraseMedia();
                                 }
@@ -180,7 +185,7 @@ namespace DvdBurner
                             }
                         });
                 },
-                parameter => true);
+                parameter => SelectedDrive != null);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -228,6 +233,19 @@ namespace DvdBurner
             }
         }
 
+        public Dictionary<string, string> Drives
+        {
+            get => drives;
+            set
+            {
+                if(drives != value)
+                {
+                    drives = value;
+                    OnPropertyChanged(nameof(Drives));
+                }
+            }
+        }
+
         public bool Eject
         {
             get => eject;
@@ -253,6 +271,19 @@ namespace DvdBurner
                 {
                     files = value;
                     OnPropertyChanged(nameof(Files));
+                }
+            }
+        }
+
+        public bool IsCdWriterAvailable
+        {
+            get => ısCdWriterAvailable;
+            set
+            {
+                if(ısCdWriterAvailable != value)
+                {
+                    ısCdWriterAvailable = value;
+                    OnPropertyChanged(nameof(IsCdWriterAvailable));
                 }
             }
         }
@@ -311,6 +342,19 @@ namespace DvdBurner
                 {
                     selectedDiscSize = value;
                     OnPropertyChanged(nameof(SelectedDiscSize));
+                }
+            }
+        }
+
+        public dynamic SelectedDrive
+        {
+            get => selectedDrive;
+            set
+            {
+                if(selectedDrive != value)
+                {
+                    selectedDrive = value;
+                    OnPropertyChanged(nameof(SelectedDrive));
                 }
             }
         }
@@ -404,6 +448,26 @@ namespace DvdBurner
         {
             ProgressValue = (double)d;
             return d.ToString("0%");
+        }
+
+        private Dictionary<string, string> GetCdWriters(dynamic discMaster)
+        {
+            if(discMaster.Count > 0)
+            {
+                Dictionary<string, string> listdrives = new Dictionary<string, string>();
+                dynamic discRecorder = new MsftDiscRecorder2();
+                for(int i = 0; i < discMaster.Count; i++)
+                {
+                    dynamic uniqueId = discMaster.Item[i];
+                    discRecorder.InitializeDiscRecorder(uniqueId);
+                    string volumePathName = discRecorder.VolumePathNames[0];
+                    string productId = discRecorder.ProductId;
+                    listdrives.Add($"{volumePathName} {productId}", uniqueId);
+                }
+                return listdrives;
+            }
+
+            return null;
         }
 
         private long GetTotalFileSize(string[] files)

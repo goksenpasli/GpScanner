@@ -14,7 +14,16 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:Burner}">
-                    <StackPanel>
+                    <Grid IsEnabled="{Binding IsCdWriterAvailable, RelativeSource={RelativeSource TemplatedParent}}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
                         <UniformGrid Columns="3">
                             <Button Command="{Binding SelectBurnDir, RelativeSource={RelativeSource TemplatedParent}}">
                                 <Image Width="32" Height="32">
@@ -58,7 +67,27 @@
                                 </Canvas>
                             </Button>
                         </UniformGrid>
-                        <ListBox Height="250" ItemsSource="{Binding Files, RelativeSource={RelativeSource TemplatedParent}}">
+                        <ComboBox Grid.Row="1"
+                            ItemsSource="{Binding Drives, RelativeSource={RelativeSource TemplatedParent}}"
+                            SelectedValue="{Binding SelectedDrive, RelativeSource={RelativeSource TemplatedParent}}"
+                            SelectedValuePath="Value">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="188" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay, Path=Key}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <ListBox Grid.Row="2" ItemsSource="{Binding Files, RelativeSource={RelativeSource TemplatedParent}}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock VerticalAlignment="Center">
@@ -81,13 +110,13 @@
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
-                        <Grid>
+                        <Grid Grid.Row="3">
                             <ProgressBar IsIndeterminate="{Binding ProgressIndeterminate, RelativeSource={RelativeSource TemplatedParent}}" Maximum="1" Value="{Binding ProgressValue, RelativeSource={RelativeSource TemplatedParent}}" />
                             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
                                 Text="{Binding ActionText, RelativeSource={RelativeSource TemplatedParent}}"
                                 TextWrapping="Wrap" />
                         </Grid>
-                        <UniformGrid Columns="2">
+                        <UniformGrid Grid.Row="4" Columns="2">
                             <Grid>
                                 <ProgressBar Foreground="{Binding ProgressForegroundBrush, RelativeSource={RelativeSource TemplatedParent}}"
                                     Maximum="{Binding DiscMaxSize, RelativeSource={RelativeSource TemplatedParent}}"
@@ -108,11 +137,12 @@
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
                         </UniformGrid>
-                        <Extensions:ButtonedTextBox CopyButtonVisibility="Visible" Description="ETİKET"
+                        <Extensions:ButtonedTextBox Grid.Row="5"
+                            CopyButtonVisibility="Visible" Description="ETİKET"
                             OpenButtonVisibility="Collapsed" ResetButtonVisibility="Visible"
                             Text="{Binding CdLabel, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}" />
-                        <CheckBox Content="BİTİNCE CDYİ ÇIKAR" IsChecked="{Binding Eject, RelativeSource={RelativeSource TemplatedParent}}" />
-                    </StackPanel>
+                        <CheckBox Grid.Row="6" Content="BİTİNCE CDYİ ÇIKAR" IsChecked="{Binding Eject, RelativeSource={RelativeSource TemplatedParent}}" />
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
