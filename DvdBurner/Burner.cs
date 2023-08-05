@@ -36,7 +36,7 @@ namespace DvdBurner
         private long discMaxSize = (int)DiscSizes.CD;
         private Dictionary<string, string> drives;
         private bool eject = true;
-        private ObservableCollection<string> files = new ObservableCollection<string>();
+        private ObservableCollection<string> files = new();
         private bool ısCdWriterAvailable = true;
         private Brush progressForegroundBrush;
         private bool progressIndeterminate;
@@ -51,7 +51,7 @@ namespace DvdBurner
         {
             PropertyChanged += Burner_PropertyChanged;
 
-            MsftDiscMaster2 g_DiscMaster = new MsftDiscMaster2();
+            MsftDiscMaster2 g_DiscMaster = new();
             if(!g_DiscMaster.IsSupportedEnvironment)
             {
                 IsCdWriterAvailable = false;
@@ -121,7 +121,13 @@ namespace DvdBurner
             SelectBurnDir = new RelayCommand<object>(
                 parameter =>
                 {
-                    OpenFileDialog openFileDialog = new OpenFileDialog { Multiselect = true, Filter = "Tüm Dosyalar (*.*)|*.*", };
+                    if(Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
+                    {
+                        _ = MessageBox.Show(WarnText);
+                        return;
+                    }
+
+                    OpenFileDialog openFileDialog = new() { Multiselect = true, Filter = "Tüm Dosyalar (*.*)|*.*", };
                     if(openFileDialog.ShowDialog() == true)
                     {
                         foreach(string item in openFileDialog.FileNames)
@@ -168,6 +174,7 @@ namespace DvdBurner
                                 MsftDiscFormat2Erase discFormatErase = null;
                                 if(g_DiscMaster.Count > 0)
                                 {
+                                    ActionText = "Medya Siliniyor.";
                                     recorder = new MsftDiscRecorder2();
                                     recorder.InitializeDiscRecorder(SelectedDrive);
                                     discFormatErase = new MsftDiscFormat2Erase { Recorder = recorder, ClientName = AppName, FullErase = false };
@@ -184,6 +191,25 @@ namespace DvdBurner
                                 }
                             }
                         });
+                },
+                parameter => SelectedDrive != null);
+
+            GetSupportedDiscFormats = new RelayCommand<object>(
+                parameter =>
+                {
+                    dynamic recorder = new MsftDiscRecorder2();
+                    recorder.InitializeDiscRecorder(SelectedDrive);
+                    IEnumerable<int> values = Enum.GetValues(typeof(IMAPI_PROFILE_TYPE)).OfType<IMAPI_PROFILE_TYPE>().Select(z => (int)z);
+                    List<string> supportedformats = new();
+                    foreach(object supportedMediaType in (object[])recorder.SupportedProfiles)
+                    {
+                        if(values.Contains((int)supportedMediaType))
+                        {
+                            supportedformats.Add(Enum.GetName(typeof(IMAPI_PROFILE_TYPE), supportedMediaType));
+                        }
+                    }
+                    _ = MessageBox.Show(string.Join("\n", supportedformats));
+                    recorder = null;
                 },
                 parameter => SelectedDrive != null);
         }
@@ -274,6 +300,8 @@ namespace DvdBurner
                 }
             }
         }
+
+        public RelayCommand<object> GetSupportedDiscFormats { get; }
 
         public bool IsCdWriterAvailable
         {
@@ -424,14 +452,11 @@ namespace DvdBurner
                         dynamic writtenSectors;
                         dynamic startLba;
                         dynamic lastWrittenLba;
-                        dynamic percentDone;
                         totalSectors = progress.SectorCount;
                         startLba = progress.StartLba;
                         lastWrittenLba = progress.LastWrittenLba;
                         writtenSectors = lastWrittenLba - startLba;
-                        percentDone =
-                            FormatPercent(Convert.ToDecimal(writtenSectors) / Convert.ToDecimal(totalSectors));
-                        ActionText = percentDone;
+                        ActionText = FormatPercent(Convert.ToDecimal(writtenSectors) / Convert.ToDecimal(totalSectors));
                         break;
 
                     default:
@@ -454,7 +479,7 @@ namespace DvdBurner
         {
             if(discMaster.Count > 0)
             {
-                Dictionary<string, string> listdrives = new Dictionary<string, string>();
+                Dictionary<string, string> listdrives = new();
                 dynamic discRecorder = new MsftDiscRecorder2();
                 for(int i = 0; i < discMaster.Count; i++)
                 {
@@ -475,7 +500,7 @@ namespace DvdBurner
             long totalLength = 0;
             foreach(string item in files)
             {
-                FileInfo fileInfo = new FileInfo(item);
+                FileInfo fileInfo = new(item);
                 totalLength += fileInfo.Length;
             }
             return totalLength / 1024 / 1024;

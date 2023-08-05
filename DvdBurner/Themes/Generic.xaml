@@ -24,7 +24,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <UniformGrid Columns="3">
+                        <UniformGrid Columns="4">
                             <Button Command="{Binding SelectBurnDir, RelativeSource={RelativeSource TemplatedParent}}">
                                 <Image Width="32" Height="32">
                                     <Image.Source>
@@ -65,6 +65,16 @@
                                         </Image.Source>
                                     </Image>
                                 </Canvas>
+                            </Button>
+                            <Button Command="{Binding GetSupportedDiscFormats, RelativeSource={RelativeSource TemplatedParent}}">
+                                <Image Width="32" Height="32">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="179" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
                             </Button>
                         </UniformGrid>
                         <ComboBox Grid.Row="1"
