@@ -481,13 +481,19 @@ namespace DvdBurner
             {
                 Dictionary<string, string> listdrives = new();
                 dynamic discRecorder = new MsftDiscRecorder2();
-                for(int i = 0; i < discMaster.Count; i++)
+                try
                 {
-                    dynamic uniqueId = discMaster.Item[i];
-                    discRecorder.InitializeDiscRecorder(uniqueId);
-                    string volumePathName = discRecorder.VolumePathNames[0];
-                    string productId = discRecorder.ProductId;
-                    listdrives.Add($"{volumePathName} {productId}", uniqueId);
+                    for (int i = 0; i < discMaster.Count; i++)
+                    {
+                        dynamic uniqueId = discMaster.Item[i];
+                        discRecorder.InitializeDiscRecorder(uniqueId);
+                        string volumePathName = discRecorder.VolumePathNames[0];
+                        string productId = discRecorder.ProductId;
+                        listdrives.Add($"{volumePathName} {productId}", uniqueId);
+                    }
+                }
+                catch (Exception)
+                {
                 }
                 return listdrives;
             }
