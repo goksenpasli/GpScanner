@@ -143,8 +143,7 @@ namespace DvdBurner
                                 ActionText = "Aynı İsimde Dosya Var.";
                             }
                         }
-                        TotalFileSize = GetTotalFileSizeMB(Files.ToArray());
-                        ProgressForegroundBrush = TotalFileSize > (int)SelectedDiscSize ? Brushes.Red : Brushes.Green;
+                        UpdateProgressFileSize();
                     }
                 },
                 parameter => true);
@@ -159,8 +158,7 @@ namespace DvdBurner
                     }
                     if(parameter is string file && Files.Remove(file))
                     {
-                        TotalFileSize = GetTotalFileSizeMB(Files.ToArray());
-                        ProgressForegroundBrush = TotalFileSize > (int)SelectedDiscSize ? Brushes.Red : Brushes.Green;
+                        UpdateProgressFileSize();
                     }
                 },
                 parameter => true);
@@ -216,6 +214,14 @@ namespace DvdBurner
                     recorder = null;
                 },
                 parameter => SelectedDrive != null);
+
+            RemoveAllFile = new RelayCommand<object>(
+                parameter =>
+                {
+                    Files.Clear();
+                    UpdateProgressFileSize();
+                },
+                parameter => Files?.Any() == true);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -375,6 +381,8 @@ namespace DvdBurner
             }
         }
 
+        public RelayCommand<object> RemoveAllFile { get; }
+
         public RelayCommand<object> RemoveFile { get; }
 
         public RelayCommand<object> SelectBurnDir { get; }
@@ -496,23 +504,25 @@ namespace DvdBurner
         private Dictionary<string, string> GetCdWriters(dynamic discMaster)
         {
             Dictionary<string, string> listdrives = new();
-            try
+            dynamic discRecorder;
+            for(int i = 0; i < discMaster.Count; i++)
             {
-                dynamic discRecorder = new MsftDiscRecorder2();
-                for(int i = 0; i < discMaster.Count; i++)
-                {
-                    dynamic uniqueId = discMaster.Item[i];
-                    discRecorder.InitializeDiscRecorder(uniqueId);
-                    string volumePathName = discRecorder.VolumePathNames[0];
-                    string productId = discRecorder.ProductId;
-                    listdrives.Add($"{volumePathName} {productId}", uniqueId);
-                }
-            } catch(Exception)
-            {
+                discRecorder = new MsftDiscRecorder2();
+                dynamic uniqueId = discMaster.Item[i];
+                discRecorder.InitializeDiscRecorder(uniqueId);
+                string volumePathName = discRecorder.VolumePathNames[0];
+                string productId = discRecorder.ProductId;
+                listdrives.Add($"{volumePathName} {productId}", uniqueId);
             }
             return listdrives;
         }
 
         private long GetTotalFileSizeMB(string[] files) { return files.Aggregate(0L, (accumulator, item) => accumulator += new FileInfo(item).Length) / 1024 / 1024; }
+
+        private void UpdateProgressFileSize()
+        {
+            TotalFileSize = GetTotalFileSizeMB(Files.ToArray());
+            ProgressForegroundBrush = TotalFileSize > (int)SelectedDiscSize ? Brushes.Red : Brushes.Green;
+        }
     }
 }

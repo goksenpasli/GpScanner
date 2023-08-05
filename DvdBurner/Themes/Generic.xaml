@@ -24,7 +24,7 @@
         <Controls:MediaViewer AutoPlay="False" MediaDataFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
     </DataTemplate>
     <DataTemplate x:Key="ImgViewerTemplate">
-        <Extensions:ImageViewer DecodeHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=UniformGrid}}"
+        <Extensions:ImageViewer DecodeHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}}"
             ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
             PanoramaButtonVisibility="Collapsed" PrintButtonVisibility="Collapsed" />
     </DataTemplate>
@@ -120,8 +120,21 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
-                        <UniformGrid Grid.Row="2" Columns="2">
-                            <ListBox x:Name="Lb" ItemsSource="{Binding Files, RelativeSource={RelativeSource TemplatedParent}}">
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="3" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <ListBox x:Name="Lb"
+                                Background="{DynamicResource BorderBackground}"
+                                BorderBrush="{x:Null}"
+                                ItemsSource="{Binding Files, RelativeSource={RelativeSource TemplatedParent}}">
+                                <ListBox.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Command="{Binding RemoveAllFile, RelativeSource={RelativeSource TemplatedParent}}" Header="TÜMÜNÜ SİL" />
+                                    </ContextMenu>
+                                </ListBox.ContextMenu>
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock VerticalAlignment="Center">
@@ -144,8 +157,12 @@
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
-                            <ContentControl Content="{Binding SelectedItem, IsAsync=True, Mode=OneWay, ElementName=Lb}" ContentTemplateSelector="{StaticResource DvdBurnerDocumentViewerSelector}" />
-                        </UniformGrid>
+                            <GridSplitter Grid.Column="1"
+                                Width="3"
+                                HorizontalAlignment="Stretch"
+                                Background="{DynamicResource GroupBoxBackGround}" />
+                            <ContentControl Grid.Column="2" Content="{Binding SelectedItem, IsAsync=True, Mode=OneWay, ElementName=Lb}" ContentTemplateSelector="{StaticResource DvdBurnerDocumentViewerSelector}" />
+                        </Grid>
                         <Grid Grid.Row="3">
                             <ProgressBar IsIndeterminate="{Binding ProgressIndeterminate, RelativeSource={RelativeSource TemplatedParent}}" Maximum="1" Value="{Binding ProgressValue, RelativeSource={RelativeSource TemplatedParent}}" />
                             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
