@@ -32,6 +32,7 @@ namespace DvdBurner
         private static Task Erasetask;
         private readonly string AppName = Application.Current?.MainWindow?.Title;
         private string actionText;
+        private SolidColorBrush actionTextForeground = Brushes.Black;
         private string cdLabel = DateTime.Now.ToString();
         private long discMaxSize = (int)DiscSizes.CD;
         private Dictionary<string, string> drives;
@@ -76,37 +77,36 @@ namespace DvdBurner
                         {
                             try
                             {
-                                if(g_DiscMaster.Count > 0)
+                                recorder = new MsftDiscRecorder2();
+                                recorder.InitializeDiscRecorder(SelectedDrive);
+
+                                dynamic FSI;
+                                dynamic dataWriter;
+
+                                FSI = new MsftFileSystemImage();
+                                _ = FSI.Root;
+
+                                dataWriter = new MsftDiscFormat2Data();
+                                dataWriter.Recorder = recorder;
+                                dataWriter.ClientName = AppName;
+                                FSI.VolumeName = CdLabel;
+                                FSI.ChooseImageDefaults(recorder);
+                                dataWriter.Update += new DDiscFormat2DataEvents_UpdateEventHandler(DataWriter_Update);
+                                IFsiDirectoryItem rootDirectory = FSI.Root;
+                                foreach(string file in Files.Where(file => File.Exists(file)))
                                 {
-                                    recorder = new MsftDiscRecorder2();
-                                    recorder.InitializeDiscRecorder(SelectedDrive);
-
-                                    dynamic FSI;
-                                    dynamic dataWriter;
-
-                                    FSI = new MsftFileSystemImage();
-                                    _ = FSI.Root;
-
-                                    dataWriter = new MsftDiscFormat2Data();
-                                    dataWriter.Recorder = recorder;
-                                    dataWriter.ClientName = AppName;
-                                    FSI.VolumeName = CdLabel;
-                                    FSI.ChooseImageDefaults(recorder);
-                                    dataWriter.Update += new DDiscFormat2DataEvents_UpdateEventHandler(DataWriter_Update);
-                                    IFsiDirectoryItem rootDirectory = FSI.Root;
-                                    foreach(string file in Files)
-                                    {
-                                        string fileName = Path.GetFileName(file);
-                                        rootDirectory.AddFile(fileName, ManagedIStream.Create(new FileStream(file, FileMode.Open, FileAccess.Read)));
-                                    }
-                                    dynamic result = FSI.CreateResultImage();
-                                    Stream = result?.ImageStream;
-                                    dataWriter.ForceOverwrite = true;
-                                    dataWriter.Write(Stream);
+                                    string fileName = Path.GetFileName(file);
+                                    rootDirectory.AddFile(fileName, ManagedIStream.Create(new FileStream(file, FileMode.Open, FileAccess.Read)));
                                 }
+
+                                dynamic result = FSI.CreateResultImage();
+                                Stream = result?.ImageStream;
+                                dataWriter.ForceOverwrite = true;
+                                dataWriter.Write(Stream);
                             } catch(Exception ex)
                             {
-                                ActionText = ex.Message;
+                                ActionText = ex.Message.Trim();
+                                ActionTextForeground = Brushes.Red;
                             } finally
                             {
                                 if(Eject)
@@ -130,11 +130,20 @@ namespace DvdBurner
                     OpenFileDialog openFileDialog = new() { Multiselect = true, Filter = "Tüm Dosyalar (*.*)|*.*", };
                     if(openFileDialog.ShowDialog() == true)
                     {
+                        ActionTextForeground = Brushes.Black;
+                        ActionText = string.Empty;
                         foreach(string item in openFileDialog.FileNames)
                         {
-                            Files.Add(item);
+                            if(!Files.Select(z => Path.GetFileName(z)).Contains(Path.GetFileName(item)))
+                            {
+                                Files.Add(item);
+                            } else
+                            {
+                                ActionTextForeground = Brushes.Red;
+                                ActionText = "Aynı İsimde Dosya Var.";
+                            }
                         }
-                        TotalFileSize = GetTotalFileSize(Files.ToArray());
+                        TotalFileSize = GetTotalFileSizeMB(Files.ToArray());
                         ProgressForegroundBrush = TotalFileSize > (int)SelectedDiscSize ? Brushes.Red : Brushes.Green;
                     }
                 },
@@ -150,7 +159,7 @@ namespace DvdBurner
                     }
                     if(parameter is string file && Files.Remove(file))
                     {
-                        TotalFileSize = GetTotalFileSize(Files.ToArray());
+                        TotalFileSize = GetTotalFileSizeMB(Files.ToArray());
                         ProgressForegroundBrush = TotalFileSize > (int)SelectedDiscSize ? Brushes.Red : Brushes.Green;
                     }
                 },
@@ -182,7 +191,8 @@ namespace DvdBurner
                                 }
                             } catch(Exception ex)
                             {
-                                ActionText = ex.Message;
+                                ActionText = ex.Message.Trim();
+                                ActionTextForeground = Brushes.Red;
                             } finally
                             {
                                 if(Eject)
@@ -201,14 +211,8 @@ namespace DvdBurner
                     recorder.InitializeDiscRecorder(SelectedDrive);
                     IEnumerable<int> values = Enum.GetValues(typeof(IMAPI_PROFILE_TYPE)).OfType<IMAPI_PROFILE_TYPE>().Select(z => (int)z);
                     List<string> supportedformats = new();
-                    foreach(object supportedMediaType in (object[])recorder.SupportedProfiles)
-                    {
-                        if(values.Contains((int)supportedMediaType))
-                        {
-                            supportedformats.Add(Enum.GetName(typeof(IMAPI_PROFILE_TYPE), supportedMediaType));
-                        }
-                    }
-                    _ = MessageBox.Show(string.Join("\n", supportedformats));
+                    supportedformats.AddRange(from object supportedMediaType in (object[])recorder.SupportedProfiles where values.Contains((int)supportedMediaType) select Enum.GetName(typeof(IMAPI_PROFILE_TYPE), supportedMediaType));
+                    _ = MessageBox.Show(string.Join("\n", supportedformats), AppName);
                     recorder = null;
                 },
                 parameter => SelectedDrive != null);
@@ -226,6 +230,20 @@ namespace DvdBurner
                 {
                     actionText = value;
                     OnPropertyChanged(nameof(ActionText));
+                }
+            }
+        }
+
+        public SolidColorBrush ActionTextForeground
+        {
+            get => actionTextForeground;
+
+            set
+            {
+                if(actionTextForeground != value)
+                {
+                    actionTextForeground = value;
+                    OnPropertyChanged(nameof(ActionTextForeground));
                 }
             }
         }
@@ -477,39 +495,24 @@ namespace DvdBurner
 
         private Dictionary<string, string> GetCdWriters(dynamic discMaster)
         {
-            if(discMaster.Count > 0)
+            Dictionary<string, string> listdrives = new();
+            try
             {
-                Dictionary<string, string> listdrives = new();
                 dynamic discRecorder = new MsftDiscRecorder2();
-                try
+                for(int i = 0; i < discMaster.Count; i++)
                 {
-                    for (int i = 0; i < discMaster.Count; i++)
-                    {
-                        dynamic uniqueId = discMaster.Item[i];
-                        discRecorder.InitializeDiscRecorder(uniqueId);
-                        string volumePathName = discRecorder.VolumePathNames[0];
-                        string productId = discRecorder.ProductId;
-                        listdrives.Add($"{volumePathName} {productId}", uniqueId);
-                    }
+                    dynamic uniqueId = discMaster.Item[i];
+                    discRecorder.InitializeDiscRecorder(uniqueId);
+                    string volumePathName = discRecorder.VolumePathNames[0];
+                    string productId = discRecorder.ProductId;
+                    listdrives.Add($"{volumePathName} {productId}", uniqueId);
                 }
-                catch (Exception)
-                {
-                }
-                return listdrives;
-            }
-
-            return null;
-        }
-
-        private long GetTotalFileSize(string[] files)
-        {
-            long totalLength = 0;
-            foreach(string item in files)
+            } catch(Exception)
             {
-                FileInfo fileInfo = new(item);
-                totalLength += fileInfo.Length;
             }
-            return totalLength / 1024 / 1024;
+            return listdrives;
         }
+
+        private long GetTotalFileSizeMB(string[] files) { return files.Aggregate(0L, (accumulator, item) => accumulator += new FileInfo(item).Length) / 1024 / 1024; }
     }
 }

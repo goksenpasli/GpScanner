@@ -27,7 +27,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-        <LangVersion>preview</LangVersion>
+    <LangVersion>preview</LangVersion>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="IMAPI_PROFILE_TYPE.cs" />
     <Compile Include="ManagedIStream.cs" />
+    <Compile Include="ViewerTemplateSelector.cs" />
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
