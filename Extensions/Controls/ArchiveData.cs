@@ -7,7 +7,7 @@ public class ArchiveData : InpcBase
     private long boyut;
     private string dosyaAdı;
     private DateTime düzenlenmeZamanı;
-    private double oran;
+    private float oran;
     private long sıkıştırılmışBoyut;
     private string tamYol;
     private string crc;
@@ -64,7 +64,7 @@ public class ArchiveData : InpcBase
         }
     }
 
-    public double Oran
+    public float Oran
     {
         get => oran;
 

@@ -26,6 +26,15 @@ namespace Extensions
         public ArchiveViewer()
         {
             PropertyChanged += ArchiveViewer_PropertyChanged;
+            if(DesignerProperties.GetIsInDesignMode(this))
+            {
+                Arşivİçerik = new ObservableCollection<ArchiveData>
+                {
+                    new ArchiveData() { DosyaAdı = "DosyaAdı", Oran = 0.5F, Boyut = 100, SıkıştırılmışBoyut = 80, Crc = "FFFFFFFF", DüzenlenmeZamanı = DateTime.Today },
+                    new ArchiveData() { DosyaAdı = "DosyaAdı", Oran = 0.5F, Boyut = 100, SıkıştırılmışBoyut = 80, Crc = "FFFFFFFF", DüzenlenmeZamanı = DateTime.Today },
+                    new ArchiveData() { DosyaAdı = "DosyaAdı", Oran = 0.5F, Boyut = 100, SıkıştırılmışBoyut = 80, Crc = "FFFFFFFF", DüzenlenmeZamanı = DateTime.Today },
+                };
+            }
             ArşivTekDosyaÇıkar = new RelayCommand<object>(
                 parameter =>
                 {
@@ -141,7 +150,7 @@ namespace Extensions
                         DosyaAdı = item.Name,
                         TamYol = item.FullName,
                         Boyut = item.Length,
-                        Oran = (double)item.CompressedLength / item.Length,
+                        Oran = (float)item.CompressedLength / item.Length,
                         DüzenlenmeZamanı = item.LastWriteTime.Date,
                         Crc = CalculateFileCRC(item.Open())
                     };

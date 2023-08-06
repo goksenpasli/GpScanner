@@ -1379,7 +1379,7 @@
                                         <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="{local:Loc FILE}" />
                                     </StackPanel>
                                 </Button>
-                                <local:SimpleArchiveViewer Tag="{Binding Mode=OneWay}" x:Name="ArchiveVwr" Grid.Row="1" />
+                                <local:SimpleArchiveViewer x:Name="ArchiveVwr" Grid.Row="1" />
                             </Grid>
                         </TabItem>
                     </TabControl>

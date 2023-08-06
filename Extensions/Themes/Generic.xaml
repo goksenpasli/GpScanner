@@ -558,9 +558,13 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <ListView x:Name="Lv"
-                            d:ItemsSource="{d:SampleData ItemCount=5}"
+                            d:ItemsSource="{d:SampleData ItemCount=3}"
                             local:GridViewSort.AutoSort="True" AlternationCount="2"
-                            Foreground="Black" IsSynchronizedWithCurrentItem="False"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Foreground="{TemplateBinding Foreground}"
+                            IsSynchronizedWithCurrentItem="False"
                             ItemsSource="{Binding Arşivİçerik, RelativeSource={RelativeSource AncestorType=local:ArchiveViewer}}"
                             ScrollViewer.IsDeferredScrollingEnabled="False" SelectionMode="Single">
                             <ListView.ItemContainerStyle>
@@ -568,7 +572,7 @@
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="{x:Type ListViewItem}">
-                                                <Border Background="{TemplateBinding Background}">
+                                                <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
                                                     <Border.InputBindings>
                                                         <MouseBinding Command="{Binding ArşivTekDosyaÇıkar, RelativeSource={RelativeSource AncestorType=local:ArchiveViewer}}" CommandParameter="{Binding TamYol}" MouseAction="LeftDoubleClick" />
                                                     </Border.InputBindings>
