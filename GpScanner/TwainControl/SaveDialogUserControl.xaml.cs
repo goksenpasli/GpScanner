@@ -26,7 +26,7 @@ public partial class SaveDialogUserControl : UserControl, INotifyPropertyChanged
 
         set
         {
-            if(previewImage != value)
+            if (previewImage != value)
             {
                 previewImage = value;
                 OnPropertyChanged(nameof(PreviewImage));
@@ -38,7 +38,7 @@ public partial class SaveDialogUserControl : UserControl, INotifyPropertyChanged
 
     private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if(e.PropertyName is "BwThreshold")
+        if (e.PropertyName is "BwThreshold")
         {
             GenerateImage();
         }
@@ -56,7 +56,7 @@ public partial class SaveDialogUserControl : UserControl, INotifyPropertyChanged
 
     private void UserControl_Unloaded(object sender, RoutedEventArgs e)
     {
-        if(PreviewImage is not null)
+        if (PreviewImage is not null)
         {
             PreviewImage = null;
         }

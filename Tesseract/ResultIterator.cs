@@ -57,7 +57,7 @@ namespace Tesseract
         public FontAttributes GetWordFontAttributes()
         {
             VerifyNotDisposed();
-            if(handle.Handle == IntPtr.Zero)
+            if (handle.Handle == IntPtr.Zero)
             {
                 return null;
             }
@@ -65,12 +65,12 @@ namespace Tesseract
             IntPtr nameHandle =
                 TessApi.Native.ResultIteratorWordFontAttributes(handle, out bool isBold, out bool isItalic, out bool isUnderlined, out bool isMonospace, out bool isSerif, out bool isSmallCaps, out int pointSize, out int fontId);
 
-            if(nameHandle == IntPtr.Zero)
+            if (nameHandle == IntPtr.Zero)
             {
                 return null;
             }
 
-            if(!_fontInfoCache.TryGetValue(fontId, out FontInfo fontInfo))
+            if (!_fontInfoCache.TryGetValue(fontId, out FontInfo fontInfo))
             {
                 string fontName = MarshalHelper.PtrToString(nameHandle, Encoding.UTF8);
                 fontInfo = new FontInfo(fontName, fontId, isItalic, isBold, isMonospace, isSerif);

@@ -28,7 +28,7 @@ namespace GpScanner.Converter
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(value is int number)
+            if (value is int number)
             {
                 int normalizedNumber = Math.Max(MinNumber, Math.Min(MaxNumber, number));
                 int rangeCount = Colors.Length;
@@ -46,7 +46,7 @@ namespace GpScanner.Converter
 
         static void ColorReverseCallBack(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if(d is NumberRangeToColorConverter numberRangeToColorConverter && (bool)e.NewValue)
+            if (d is NumberRangeToColorConverter numberRangeToColorConverter && (bool)e.NewValue)
             {
                 numberRangeToColorConverter.Colors = numberRangeToColorConverter.Colors.Reverse().ToArray();
             }

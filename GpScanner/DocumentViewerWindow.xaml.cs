@@ -18,7 +18,7 @@ public partial class DocumentViewerWindow : Window
 
     private void Window_Unloaded(object sender, RoutedEventArgs e)
     {
-        if(cnt.GetFirstVisualChild<PdfViewer.PdfViewer>() is PdfViewer.PdfViewer pdfvwr)
+        if (cnt.GetFirstVisualChild<PdfViewer.PdfViewer>() is PdfViewer.PdfViewer pdfvwr)
         {
             pdfvwr.PdfFilePath = null;
             pdfvwr.Source = null;

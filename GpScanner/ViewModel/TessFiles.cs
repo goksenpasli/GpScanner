@@ -14,7 +14,7 @@ public class TessFiles : InpcBase
 
         set
         {
-            if(@checked != value)
+            if (@checked != value)
             {
                 @checked = value;
                 OnPropertyChanged(nameof(Checked));
@@ -27,7 +27,7 @@ public class TessFiles : InpcBase
         get => fileSize;
         set
         {
-            if(fileSize != value)
+            if (fileSize != value)
             {
                 fileSize = value;
                 OnPropertyChanged(nameof(FileSize));
@@ -41,7 +41,7 @@ public class TessFiles : InpcBase
 
         set
         {
-            if(name != value)
+            if (name != value)
             {
                 name = value;
                 OnPropertyChanged(nameof(Name));

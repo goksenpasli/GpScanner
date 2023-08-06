@@ -284,14 +284,14 @@ namespace MozJpeg
         /// </summary>
         public void Dispose()
         {
-            if(_isDisposed)
+            if (_isDisposed)
             {
                 return;
             }
 
-            lock(_lock)
+            lock (_lock)
             {
-                if(_isDisposed)
+                if (_isDisposed)
                 {
                     return;
                 }
@@ -308,17 +308,17 @@ namespace MozJpeg
 
         private void Dispose(bool callFromUserCode)
         {
-            if(callFromUserCode)
+            if (callFromUserCode)
             {
                 _isDisposed = true;
             }
 
-            if(_decompressHandle != IntPtr.Zero)
+            if (_decompressHandle != IntPtr.Zero)
             {
                 _ = UnsafeNativeMethods.TjDestroy(_decompressHandle);
             }
 
-            if(_compressorHandle != IntPtr.Zero)
+            if (_compressorHandle != IntPtr.Zero)
             {
                 _ = UnsafeNativeMethods.TjDestroy(_compressorHandle);
             }
@@ -339,10 +339,10 @@ namespace MozJpeg
             BitmapData bmpData = null;
             GCHandle pinnedRawJpeg = GCHandle.Alloc(rawJpeg, GCHandleType.Pinned);
 
-            if(_decompressHandle == IntPtr.Zero)
+            if (_decompressHandle == IntPtr.Zero)
             {
                 _decompressHandle = UnsafeNativeMethods.TjInitDecompress();
-                if(_decompressHandle == IntPtr.Zero)
+                if (_decompressHandle == IntPtr.Zero)
                 {
                     throw new Exception("Can`t load dll");
                 }
@@ -352,7 +352,7 @@ namespace MozJpeg
             {
                 IntPtr rawJpegPtr = pinnedRawJpeg.AddrOfPinnedObject();
 
-                if(UnsafeNativeMethods.TjDecompressHeader(_decompressHandle, rawJpegPtr, (ulong)rawJpeg.Length, out int width, out int height, out _, out _) == -1)
+                if (UnsafeNativeMethods.TjDecompressHeader(_decompressHandle, rawJpegPtr, (ulong)rawJpeg.Length, out int width, out int height, out _, out _) == -1)
                 {
                     throw new Exception("Can`t decode JPEG. Bad o unknow format.");
                 }
@@ -360,7 +360,7 @@ namespace MozJpeg
                 bmp = new Bitmap(width, height, PixelFormat.Format24bppRgb);
                 bmpData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
 
-                if(UnsafeNativeMethods.TjDecompress(_decompressHandle, rawJpegPtr, (ulong)rawJpeg.Length, bmpData.Scan0, width, bmpData.Stride, height, (int)TJPixelFormats.TJPF_BGR, (int)flags) == -1)
+                if (UnsafeNativeMethods.TjDecompress(_decompressHandle, rawJpegPtr, (ulong)rawJpeg.Length, bmpData.Scan0, width, bmpData.Stride, height, (int)TJPixelFormats.TJPF_BGR, (int)flags) == -1)
                 {
                     throw new Exception("Can`t decode JPEG. Bad o unknow format.");
                 }
@@ -369,17 +369,19 @@ namespace MozJpeg
                 bmp.SetResolution(horizontalResolution, verticalResolution);
 
                 return bmp;
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception($"{ex.Message}\r\nIn MozJpeg.Decode");
-            } finally
+            }
+            finally
             {
-                if(bmpData != null)
+                if (bmpData != null)
                 {
                     bmp.UnlockBits(bmpData);
                 }
 
-                if(pinnedRawJpeg.IsAllocated)
+                if (pinnedRawJpeg.IsAllocated)
                 {
                     pinnedRawJpeg.Free();
                 }
@@ -398,10 +400,10 @@ namespace MozJpeg
             verticalResolution = 0;
             GCHandle pinnedRawJpeg = GCHandle.Alloc(rawJpeg, GCHandleType.Pinned);
 
-            if(_decompressHandle == IntPtr.Zero)
+            if (_decompressHandle == IntPtr.Zero)
             {
                 _decompressHandle = UnsafeNativeMethods.TjInitDecompress();
-                if(_decompressHandle == IntPtr.Zero)
+                if (_decompressHandle == IntPtr.Zero)
                 {
                     throw new Exception("Can`t load dll");
                 }
@@ -411,18 +413,20 @@ namespace MozJpeg
             {
                 IntPtr rawJpegPtr = pinnedRawJpeg.AddrOfPinnedObject();
 
-                if(UnsafeNativeMethods.TjDecompressHeader(_decompressHandle, rawJpegPtr, (ulong)rawJpeg.Length, out width, out height, out subsampl, out colorspace) == -1)
+                if (UnsafeNativeMethods.TjDecompressHeader(_decompressHandle, rawJpegPtr, (ulong)rawJpeg.Length, out width, out height, out subsampl, out colorspace) == -1)
                 {
                     throw new Exception("Can`t decode JPEG. Bad o unknow format.");
                 }
 
                 GetPixelsPerInch(ref rawJpeg, out horizontalResolution, out verticalResolution);
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception($"{ex.Message}\r\nIn MozJpeg.GetInfo");
-            } finally
+            }
+            finally
             {
-                if(pinnedRawJpeg.IsAllocated)
+                if (pinnedRawJpeg.IsAllocated)
                 {
                     pinnedRawJpeg.Free();
                 }
@@ -442,7 +446,8 @@ namespace MozJpeg
                 rawJpeg = File.ReadAllBytes(pathFileName);
 
                 return Decode(rawJpeg);
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception($"{ex.Message}\r\nIn MozJpeg.Load");
             }
@@ -470,22 +475,22 @@ namespace MozJpeg
 
             try
             {
-                if(_isDisposed)
+                if (_isDisposed)
                 {
                     throw new ObjectDisposedException("this");
                 }
 
-                if(_compressorHandle == IntPtr.Zero)
+                if (_compressorHandle == IntPtr.Zero)
                 {
                     _compressorHandle = UnsafeNativeMethods.TjInitCompress();
-                    if(_compressorHandle == IntPtr.Zero)
+                    if (_compressorHandle == IntPtr.Zero)
                     {
                         throw new Exception("Can`t load dll");
                     }
                 }
 
                 TJPixelFormats tjPixelFormat = ConvertPixelFormat(bmp.PixelFormat);
-                if(tjPixelFormat == TJPixelFormats.TJPF_GRAY && subSamp != TJSubsamplingOptions.TJSAMP_GRAY)
+                if (tjPixelFormat == TJPixelFormats.TJPF_GRAY && subSamp != TJSubsamplingOptions.TJSAMP_GRAY)
                 {
                     throw new NotSupportedException("Subsampling differ from {TJSubsamplingOptions.TJSAMP_GRAY} for pixel format {TJPixelFormats.TJPF_GRAY} is not supported");
                 }
@@ -493,7 +498,7 @@ namespace MozJpeg
                 bmpData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, bmp.PixelFormat);
 
                 ulong bufSize = 0;
-                if(UnsafeNativeMethods.TjCompress2(_compressorHandle, bmpData.Scan0, bmp.Width, bmpData.Stride, bmp.Height, (int)tjPixelFormat, ref buf, ref bufSize, (int)subSamp, quality, (int)flags) == -1)
+                if (UnsafeNativeMethods.TjCompress2(_compressorHandle, bmpData.Scan0, bmp.Width, bmpData.Stride, bmp.Height, (int)tjPixelFormat, ref buf, ref bufSize, (int)subSamp, quality, (int)flags) == -1)
                 {
                     throw new Exception("Can`t encode JPEG.");
                 }
@@ -501,16 +506,17 @@ namespace MozJpeg
                 byte[] rawJpeg = new byte[bufSize];
                 Marshal.Copy(buf, rawJpeg, 0, (int)bufSize);
 
-                if(!jfif && rawJpeg[2] == 0xff && rawJpeg[3] == 0xe0)
+                if (!jfif && rawJpeg[2] == 0xff && rawJpeg[3] == 0xe0)
                 {
                     int jfifLength = (rawJpeg[4] << 8) | rawJpeg[5];
                     byte[] tempData = new byte[rawJpeg.Length - jfifLength - 2];
                     Array.Copy(rawJpeg, jfifLength + 2, tempData, 0, rawJpeg.Length - jfifLength - 2);
                     tempData[0] = 0xff;
                     tempData[1] = 0xd8;
-                } else
+                }
+                else
                 {
-                    if(rawJpeg[2] == 0xff && rawJpeg[3] == 0xe0)
+                    if (rawJpeg[2] == 0xff && rawJpeg[3] == 0xe0)
                     {
                         rawJpeg[0x0d] = 0x01;
                         rawJpeg[0x0e] = (byte)(bmp.HorizontalResolution / 256);
@@ -521,10 +527,12 @@ namespace MozJpeg
                 }
 
                 return rawJpeg;
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception($"{ex.Message}\r\nIn MozJpeg.Encode");
-            } finally
+            }
+            finally
             {
                 bmp.UnlockBits(bmpData);
                 UnsafeNativeMethods.TjFree(buf);
@@ -546,7 +554,8 @@ namespace MozJpeg
                 rawJpeg = Encode(bmp, quality);
 
                 File.WriteAllBytes(pathFileName, rawJpeg);
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception($"{ex.Message}\r\nIn MozJpeg.Save");
             }
@@ -563,7 +572,7 @@ namespace MozJpeg
         /// <exception cref="NotSupportedException">Convertion can not be performed</exception>
         private TJPixelFormats ConvertPixelFormat(PixelFormat pixelFormat)
         {
-            switch(pixelFormat)
+            switch (pixelFormat)
             {
                 case PixelFormat.Format32bppArgb:
                     return TJPixelFormats.TJPF_BGRA;
@@ -587,9 +596,9 @@ namespace MozJpeg
                 verticalResolution = 96;
 
                 int[] jfif = ClsArray.Locate(ref rawJpeg, new byte[] { 0x4a, 0x46, 0x49, 0x46, 0x00 }).ToArray();
-                if(jfif.Length == 1)
+                if (jfif.Length == 1)
                 {
-                    switch(rawJpeg[jfif[0] + 7])
+                    switch (rawJpeg[jfif[0] + 7])
                     {
                         case 0x01:
                             horizontalResolution = (rawJpeg[jfif[0] + 8] * 256) + rawJpeg[jfif[0] + 9];
@@ -602,7 +611,8 @@ namespace MozJpeg
                             break;
                     }
                 }
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception($"{ex.Message}\r\nIn MozJpeg.GetPixelsPerInch");
             }
@@ -618,14 +628,14 @@ namespace MozJpeg
             {
                 List<int> list = new List<int>();
 
-                if(IsEmptyLocate(self, candidate))
+                if (IsEmptyLocate(self, candidate))
                 {
                     return list;
                 }
 
-                for(int i = 0; i < self.Length; i++)
+                for (int i = 0; i < self.Length; i++)
                 {
-                    if(!IsMatch(self, i, candidate))
+                    if (!IsMatch(self, i, candidate))
                     {
                         continue;
                     }
@@ -634,7 +644,8 @@ namespace MozJpeg
                 }
 
                 return list;
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception($"{ex.Message}\r\nIn clsArray.Locate");
             }
@@ -645,7 +656,8 @@ namespace MozJpeg
             try
             {
                 return array == null || candidate == null || array.Length == 0 || candidate.Length == 0 || candidate.Length > array.Length;
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception($"{ex.Message}\r\nIn clsArray.IsEmptyLocate");
             }
@@ -655,21 +667,22 @@ namespace MozJpeg
         {
             try
             {
-                if(candidate.Length > array.Length - position)
+                if (candidate.Length > array.Length - position)
                 {
                     return false;
                 }
 
-                for(int i = 0; i < candidate.Length; i++)
+                for (int i = 0; i < candidate.Length; i++)
                 {
-                    if(array[position + i] != candidate[i])
+                    if (array[position + i] != candidate[i])
                     {
                         return false;
                     }
                 }
 
                 return true;
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception($"{ex.Message}\r\nIn clsArray.IsMatch");
             }
@@ -689,7 +702,7 @@ namespace MozJpeg
         /// <seealso cref="TjFree"/>
         public static IntPtr TjAlloc(int bytes)
         {
-            switch(IntPtr.Size)
+            switch (IntPtr.Size)
             {
                 case 4:
                     return tjAlloc_x86(bytes);
@@ -749,7 +762,7 @@ namespace MozJpeg
         /// <returns>0 if successful, or -1 if an error occurred (see <see cref="tjGetErrorStr"/>)</returns>
         public static int TjCompress2(IntPtr handle, IntPtr srcBuf, int width, int stride, int height, int pixelFormat, ref IntPtr jpegBuf, ref ulong jpegSize, int jpegSubsamp, int jpegQual, int flags)
         {
-            switch(IntPtr.Size)
+            switch (IntPtr.Size)
             {
                 case 4:
                     return tjCompress2_x86(handle, srcBuf, width, stride, height, pixelFormat, ref jpegBuf, ref jpegSize, jpegSubsamp, jpegQual, flags);
@@ -801,7 +814,7 @@ namespace MozJpeg
         /// <returns>0 if successful, or -1 if an error occurred (see <see cref="tjGetErrorStr"/>)</returns>
         public static int TjDecompress(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, IntPtr dstBuf, int width, int stride, int height, int pixelFormat, int flags)
         {
-            switch(IntPtr.Size)
+            switch (IntPtr.Size)
             {
                 case 4:
                     return tjDecompress2_x86(handle, jpegBuf, (uint)jpegSize, dstBuf, width, stride, height, pixelFormat, flags);
@@ -833,7 +846,7 @@ namespace MozJpeg
         /// <returns>0 if successful, or -1 if an error occurred (see <see cref="tjGetErrorStr"/>)</returns>
         public static int TjDecompressHeader(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, out int width, out int height, out TJSubsamplingOptions jpegSubsamp, out TJColorSpaces jpegColorspace)
         {
-            switch(IntPtr.Size)
+            switch (IntPtr.Size)
             {
                 case 4:
                     return tjDecompressHeader3_x86(handle, jpegBuf, (uint)jpegSize, out width, out height, out jpegSubsamp, out jpegColorspace);
@@ -882,7 +895,7 @@ namespace MozJpeg
         /// <returns>0 if successful, or -1 if an error occurred</returns>
         public static int TjDecompressToYUVPlanes(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, IntPtr[] dstPlanes, int width, int[] strides, int height, int flags)
         {
-            switch(IntPtr.Size)
+            switch (IntPtr.Size)
             {
                 case 4:
                     return tjDecompressToYUVPlanes_x86(handle, jpegBuf, (uint)jpegSize, dstPlanes, width, strides, height, flags);
@@ -902,7 +915,7 @@ namespace MozJpeg
         /// <returns>0 if successful, or -1 if an error occurred (see <see cref="tjGetErrorStr"/>)</returns>
         public static int TjDestroy(IntPtr handle)
         {
-            switch(IntPtr.Size)
+            switch (IntPtr.Size)
             {
                 case 4:
                     return tjDestroy_x86(handle);
@@ -924,7 +937,7 @@ namespace MozJpeg
         /// <seealso cref="TjAlloc"/>
         public static void TjFree(IntPtr buffer)
         {
-            switch(IntPtr.Size)
+            switch (IntPtr.Size)
             {
                 case 4:
                     tjFree_x86(buffer);
@@ -948,7 +961,7 @@ namespace MozJpeg
         /// </returns>
         public static IntPtr TjInitCompress()
         {
-            switch(IntPtr.Size)
+            switch (IntPtr.Size)
             {
                 case 4:
                     return tjInitCompress_x86();
@@ -967,7 +980,7 @@ namespace MozJpeg
         /// <returns>A handle to the newly-created instance, or NULL if an error occurred(see <see cref="tjGetErrorStr"/>)</returns>
         public static IntPtr TjInitDecompress()
         {
-            switch(IntPtr.Size)
+            switch (IntPtr.Size)
             {
                 case 4:
                     return tjInitDecompress_x86();
@@ -1003,7 +1016,7 @@ namespace MozJpeg
         /// </returns>
         public static int TjPlaneSizeYUV(int componentID, int width, int stride, int height, TJSubsamplingOptions subsamp)
         {
-            switch(IntPtr.Size)
+            switch (IntPtr.Size)
             {
                 case 4:
                     return tjPlaneSizeYUV_x86(componentID, width, stride, height, subsamp);

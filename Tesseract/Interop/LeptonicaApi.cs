@@ -497,7 +497,7 @@ namespace Tesseract.Interop
         {
             get
             {
-                if(native == null)
+                if (native == null)
                 {
                     Initialize();
                 }
@@ -508,7 +508,7 @@ namespace Tesseract.Interop
 
         public static void Initialize()
         {
-            if(native == null)
+            if (native == null)
             {
                 native = InteropRuntimeImplementer.CreateInstance<ILeptonicaApiSignatures>();
             }

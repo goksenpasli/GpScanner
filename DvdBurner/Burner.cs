@@ -53,7 +53,7 @@ namespace DvdBurner
             PropertyChanged += Burner_PropertyChanged;
 
             MsftDiscMaster2 g_DiscMaster = new();
-            if(!g_DiscMaster.IsSupportedEnvironment)
+            if (!g_DiscMaster.IsSupportedEnvironment)
             {
                 IsCdWriterAvailable = false;
                 return;
@@ -64,7 +64,7 @@ namespace DvdBurner
             BurnDvd = new RelayCommand<object>(
                 parameter =>
                 {
-                    if(Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
+                    if (Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
                     {
                         _ = MessageBox.Show(WarnText);
                         return;
@@ -93,7 +93,7 @@ namespace DvdBurner
                                 FSI.ChooseImageDefaults(recorder);
                                 dataWriter.Update += new DDiscFormat2DataEvents_UpdateEventHandler(DataWriter_Update);
                                 IFsiDirectoryItem rootDirectory = FSI.Root;
-                                foreach(string file in Files.Where(file => File.Exists(file)))
+                                foreach (string file in Files.Where(file => File.Exists(file)))
                                 {
                                     string fileName = Path.GetFileName(file);
                                     rootDirectory.AddFile(fileName, ManagedIStream.Create(new FileStream(file, FileMode.Open, FileAccess.Read)));
@@ -103,13 +103,15 @@ namespace DvdBurner
                                 Stream = result?.ImageStream;
                                 dataWriter.ForceOverwrite = true;
                                 dataWriter.Write(Stream);
-                            } catch(Exception ex)
+                            }
+                            catch (Exception ex)
                             {
                                 ActionText = ex.Message.Trim();
                                 ActionTextForeground = Brushes.Red;
-                            } finally
+                            }
+                            finally
                             {
-                                if(Eject)
+                                if (Eject)
                                 {
                                     recorder?.EjectMedia();
                                 }
@@ -121,23 +123,24 @@ namespace DvdBurner
             SelectBurnDir = new RelayCommand<object>(
                 parameter =>
                 {
-                    if(Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
+                    if (Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
                     {
                         _ = MessageBox.Show(WarnText);
                         return;
                     }
 
                     OpenFileDialog openFileDialog = new() { Multiselect = true, Filter = "Tüm Dosyalar (*.*)|*.*", };
-                    if(openFileDialog.ShowDialog() == true)
+                    if (openFileDialog.ShowDialog() == true)
                     {
                         ActionTextForeground = Brushes.Black;
                         ActionText = string.Empty;
-                        foreach(string item in openFileDialog.FileNames)
+                        foreach (string item in openFileDialog.FileNames)
                         {
-                            if(!Files.Select(z => Path.GetFileName(z)).Contains(Path.GetFileName(item)))
+                            if (!Files.Select(z => Path.GetFileName(z)).Contains(Path.GetFileName(item)))
                             {
                                 Files.Add(item);
-                            } else
+                            }
+                            else
                             {
                                 ActionTextForeground = Brushes.Red;
                                 ActionText = "Aynı İsimde Dosya Var.";
@@ -151,12 +154,12 @@ namespace DvdBurner
             RemoveFile = new RelayCommand<object>(
                 parameter =>
                 {
-                    if(Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
+                    if (Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
                     {
                         _ = MessageBox.Show(WarnText);
                         return;
                     }
-                    if(parameter is string file && Files.Remove(file))
+                    if (parameter is string file && Files.Remove(file))
                     {
                         UpdateProgressFileSize();
                     }
@@ -166,7 +169,7 @@ namespace DvdBurner
             EraseDvd = new RelayCommand<object>(
                 parameter =>
                 {
-                    if(Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
+                    if (Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
                     {
                         _ = MessageBox.Show(WarnText);
                         return;
@@ -179,7 +182,7 @@ namespace DvdBurner
                             try
                             {
                                 MsftDiscFormat2Erase discFormatErase = null;
-                                if(g_DiscMaster.Count > 0)
+                                if (g_DiscMaster.Count > 0)
                                 {
                                     ActionText = "Medya Siliniyor.";
                                     recorder = new MsftDiscRecorder2();
@@ -187,13 +190,15 @@ namespace DvdBurner
                                     discFormatErase = new MsftDiscFormat2Erase { Recorder = recorder, ClientName = AppName, FullErase = false };
                                     discFormatErase.EraseMedia();
                                 }
-                            } catch(Exception ex)
+                            }
+                            catch (Exception ex)
                             {
                                 ActionText = ex.Message.Trim();
                                 ActionTextForeground = Brushes.Red;
-                            } finally
+                            }
+                            finally
                             {
-                                if(Eject)
+                                if (Eject)
                                 {
                                     recorder?.EjectMedia();
                                 }
@@ -232,7 +237,7 @@ namespace DvdBurner
 
             set
             {
-                if(actionText != value)
+                if (actionText != value)
                 {
                     actionText = value;
                     OnPropertyChanged(nameof(ActionText));
@@ -246,7 +251,7 @@ namespace DvdBurner
 
             set
             {
-                if(actionTextForeground != value)
+                if (actionTextForeground != value)
                 {
                     actionTextForeground = value;
                     OnPropertyChanged(nameof(ActionTextForeground));
@@ -262,7 +267,7 @@ namespace DvdBurner
 
             set
             {
-                if(cdLabel != value)
+                if (cdLabel != value)
                 {
                     cdLabel = value;
                     OnPropertyChanged(nameof(CdLabel));
@@ -275,7 +280,7 @@ namespace DvdBurner
             get => discMaxSize;
             set
             {
-                if(discMaxSize != value)
+                if (discMaxSize != value)
                 {
                     discMaxSize = value;
                     OnPropertyChanged(nameof(DiscMaxSize));
@@ -288,7 +293,7 @@ namespace DvdBurner
             get => drives;
             set
             {
-                if(drives != value)
+                if (drives != value)
                 {
                     drives = value;
                     OnPropertyChanged(nameof(Drives));
@@ -302,7 +307,7 @@ namespace DvdBurner
 
             set
             {
-                if(eject != value)
+                if (eject != value)
                 {
                     eject = value;
                     OnPropertyChanged(nameof(Eject));
@@ -317,7 +322,7 @@ namespace DvdBurner
             get => files;
             set
             {
-                if(files != value)
+                if (files != value)
                 {
                     files = value;
                     OnPropertyChanged(nameof(Files));
@@ -332,7 +337,7 @@ namespace DvdBurner
             get => ısCdWriterAvailable;
             set
             {
-                if(ısCdWriterAvailable != value)
+                if (ısCdWriterAvailable != value)
                 {
                     ısCdWriterAvailable = value;
                     OnPropertyChanged(nameof(IsCdWriterAvailable));
@@ -345,7 +350,7 @@ namespace DvdBurner
             get => progressForegroundBrush;
             set
             {
-                if(progressForegroundBrush != value)
+                if (progressForegroundBrush != value)
                 {
                     progressForegroundBrush = value;
                     OnPropertyChanged(nameof(ProgressForegroundBrush));
@@ -359,7 +364,7 @@ namespace DvdBurner
 
             set
             {
-                if(progressIndeterminate != value)
+                if (progressIndeterminate != value)
                 {
                     progressIndeterminate = value;
                     OnPropertyChanged(nameof(ProgressIndeterminate));
@@ -373,7 +378,7 @@ namespace DvdBurner
 
             set
             {
-                if(progressValue != value)
+                if (progressValue != value)
                 {
                     progressValue = value;
                     OnPropertyChanged(nameof(ProgressValue));
@@ -392,7 +397,7 @@ namespace DvdBurner
             get => selectedDiscSize;
             set
             {
-                if(selectedDiscSize != value)
+                if (selectedDiscSize != value)
                 {
                     selectedDiscSize = value;
                     OnPropertyChanged(nameof(SelectedDiscSize));
@@ -405,7 +410,7 @@ namespace DvdBurner
             get => selectedDrive;
             set
             {
-                if(selectedDrive != value)
+                if (selectedDrive != value)
                 {
                     selectedDrive = value;
                     OnPropertyChanged(nameof(SelectedDrive));
@@ -418,7 +423,7 @@ namespace DvdBurner
             get => totalFileSize;
             set
             {
-                if(totalFileSize != value)
+                if (totalFileSize != value)
                 {
                     totalFileSize = value;
                     OnPropertyChanged(nameof(TotalFileSize));
@@ -430,7 +435,7 @@ namespace DvdBurner
 
         private void Burner_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if(e.PropertyName is "SelectedDiscSize")
+            if (e.PropertyName is "SelectedDiscSize")
             {
                 DiscMaxSize = (int)SelectedDiscSize;
                 ProgressForegroundBrush = TotalFileSize > (int)SelectedDiscSize ? Brushes.Red : Brushes.Green;
@@ -441,7 +446,7 @@ namespace DvdBurner
         {
             try
             {
-                switch((int)progress.CurrentAction)
+                switch ((int)progress.CurrentAction)
                 {
                     case (int)IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_CALIBRATING_POWER:
                         ActionText = "Kalibrasyon Gücü (OPC).";
@@ -489,7 +494,8 @@ namespace DvdBurner
                         ActionText = "Bilinmeyen İşlem." + progress?.CurrentAction.ToString();
                         break;
                 }
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 ActionText = $"Hata{ex.Message}";
             }
@@ -505,7 +511,7 @@ namespace DvdBurner
         {
             Dictionary<string, string> listdrives = new();
             dynamic discRecorder;
-            for(int i = 0; i < discMaster.Count; i++)
+            for (int i = 0; i < discMaster.Count; i++)
             {
                 discRecorder = new MsftDiscRecorder2();
                 dynamic uniqueId = discMaster.Item[i];

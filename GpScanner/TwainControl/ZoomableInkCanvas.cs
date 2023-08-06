@@ -18,7 +18,7 @@ public class ZoomableInkCanvas : InkCanvas, INotifyPropertyChanged
 
         set
         {
-            if(currentZoom != value)
+            if (currentZoom != value)
             {
                 currentZoom = value;
                 OnPropertyChanged(nameof(CurrentZoom));
@@ -36,7 +36,7 @@ public class ZoomableInkCanvas : InkCanvas, INotifyPropertyChanged
 
     private void ZoomableInkCanvas_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if(e.PropertyName is "CurrentZoom" && CurrentZoom is >= 0.1 and <= 3.0)
+        if (e.PropertyName is "CurrentZoom" && CurrentZoom is >= 0.1 and <= 3.0)
         {
             ApplyZoom();
         }

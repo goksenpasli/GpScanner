@@ -12,7 +12,7 @@ public class AllPdfViewerControl : DependencyObject
 
     private static void AllPageNumberChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if(d is PdfViewer.PdfViewer pdfviewer)
+        if (d is PdfViewer.PdfViewer pdfviewer)
         {
             pdfviewer.Sayfa = (int)e.NewValue;
         }

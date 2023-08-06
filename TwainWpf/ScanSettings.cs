@@ -37,7 +37,7 @@ namespace TwainWpf
 
             set
             {
-                if(value != _abortWhenNoPaperDetectable)
+                if (value != _abortWhenNoPaperDetectable)
                 {
                     _abortWhenNoPaperDetectable = value;
                     OnPropertyChanged(nameof(AbortWhenNoPaperDetectable));
@@ -51,7 +51,7 @@ namespace TwainWpf
 
             set
             {
-                if(value != _area)
+                if (value != _area)
                 {
                     _area = value;
                     OnPropertyChanged(nameof(Area));
@@ -69,7 +69,7 @@ namespace TwainWpf
 
             set
             {
-                if(value != _page)
+                if (value != _page)
                 {
                     _page = value;
                     OnPropertyChanged(nameof(Page));
@@ -86,7 +86,7 @@ namespace TwainWpf
 
             set
             {
-                if(value != _resolution)
+                if (value != _resolution)
                 {
                     _resolution = value;
                     OnPropertyChanged(nameof(Resolution));
@@ -104,7 +104,7 @@ namespace TwainWpf
 
             set
             {
-                if(value != _rotation)
+                if (value != _rotation)
                 {
                     _rotation = value;
                     OnPropertyChanged(nameof(Rotation));
@@ -131,7 +131,7 @@ namespace TwainWpf
 
             set
             {
-                if(value != _showProgressIndicatorUi)
+                if (value != _showProgressIndicatorUi)
                 {
                     _showProgressIndicatorUi = value;
                     OnPropertyChanged("ShowProgressIndicatorUI");
@@ -148,7 +148,7 @@ namespace TwainWpf
 
             set
             {
-                if(value != _showTwainUi)
+                if (value != _showTwainUi)
                 {
                     _showTwainUi = value;
                     OnPropertyChanged("ShowTwainUI");
@@ -165,7 +165,7 @@ namespace TwainWpf
 
             set
             {
-                if(value != _transferCount)
+                if (value != _transferCount)
                 {
                     _transferCount = value;
                     OnPropertyChanged(nameof(TransferCount));
@@ -184,7 +184,7 @@ namespace TwainWpf
 
             set
             {
-                if(value != _useAutoFeeder)
+                if (value != _useAutoFeeder)
                 {
                     _useAutoFeeder = value;
                     OnPropertyChanged(nameof(UseAutoFeeder));
@@ -202,7 +202,7 @@ namespace TwainWpf
 
             set
             {
-                if(value != _useAutoScanCache)
+                if (value != _useAutoScanCache)
                 {
                     _useAutoScanCache = value;
                     OnPropertyChanged(nameof(UseAutoScanCache));
@@ -219,7 +219,7 @@ namespace TwainWpf
 
             set
             {
-                if(value != _useDocumentFeeder)
+                if (value != _useDocumentFeeder)
                 {
                     _useDocumentFeeder = value;
                     OnPropertyChanged(nameof(UseDocumentFeeder));
@@ -236,7 +236,7 @@ namespace TwainWpf
 
             set
             {
-                if(value != _useDuplex)
+                if (value != _useDuplex)
                 {
                     _useDuplex = value;
                     OnPropertyChanged(nameof(UseDuplex));
@@ -253,7 +253,7 @@ namespace TwainWpf
 
             set
             {
-                if(value != _useFilmScanner)
+                if (value != _useFilmScanner)
                 {
                     _useFilmScanner = value;
                     OnPropertyChanged(nameof(UseFilmScanner));

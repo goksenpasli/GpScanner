@@ -18,11 +18,11 @@ public class Policy : DependencyObject
         try
         {
             using RegistryKey key = registryKey;
-            if(key is not null)
+            if (key is not null)
             {
-                foreach(string value in key.GetValueNames())
+                foreach (string value in key.GetValueNames())
                 {
-                    if(value == searchvalue)
+                    if (value == searchvalue)
                     {
                         return (int)key.GetValue(value) != 0;
                     }
@@ -30,7 +30,8 @@ public class Policy : DependencyObject
             }
 
             return true;
-        } catch(Exception)
+        }
+        catch (Exception)
         {
         }
 
@@ -47,17 +48,17 @@ public class Policy : DependencyObject
 
     private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if(DesignerProperties.GetIsInDesignMode(d))
+        if (DesignerProperties.GetIsInDesignMode(d))
         {
             return;
         }
 
-        if(d is UIElement uIElement && (bool)e.NewValue)
+        if (d is UIElement uIElement && (bool)e.NewValue)
         {
             uIElement.IsEnabled = CheckPolicy(uIElement);
         }
 
-        if(d is Hyperlink hyperlink && (bool)e.NewValue)
+        if (d is Hyperlink hyperlink && (bool)e.NewValue)
         {
             hyperlink.IsEnabled = CheckPolicy(hyperlink);
         }

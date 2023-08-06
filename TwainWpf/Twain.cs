@@ -35,7 +35,7 @@ namespace TwainWpf
         {
             get
             {
-                using(DataSource source = DataSource.GetDefault(_dataSourceManager.ApplicationId, _dataSourceManager.MessageHook))
+                using (DataSource source = DataSource.GetDefault(_dataSourceManager.ApplicationId, _dataSourceManager.MessageHook))
                 {
                     return source.SourceId.ProductName;
                 }
@@ -52,7 +52,7 @@ namespace TwainWpf
                 List<string> result = new List<string>();
                 List<DataSource> sources = DataSource.GetAllSources(_dataSourceManager.ApplicationId, _dataSourceManager.MessageHook);
 
-                foreach(DataSource source in sources)
+                foreach (DataSource source in sources)
                 {
                     result.Add(source.SourceId.ProductName);
                     source.Dispose();

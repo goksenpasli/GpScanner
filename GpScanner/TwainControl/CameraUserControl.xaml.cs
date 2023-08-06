@@ -41,7 +41,7 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
         VideodanResimYükle = new RelayCommand<object>(
             parameter =>
             {
-                if(parameter is MediaViewer mediaViewer && mediaViewer.FindName("grid") is Grid grid)
+                if (parameter is MediaViewer mediaViewer && mediaViewer.FindName("grid") is Grid grid)
                 {
                     ResimData = grid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
                 }
@@ -56,7 +56,7 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
             parameter =>
             {
                 SaveFileDialog saveFileDialog = new() { Filter = "Jpg Dosyası (*.jpg)|*.jpg", AddExtension = true, Title = "Kaydet" };
-                if(saveFileDialog.ShowDialog() == true)
+                if (saveFileDialog.ShowDialog() == true)
                 {
                     using FileStream ms = new(saveFileDialog.FileName, FileMode.Create, FileAccess.Write);
                     EncodeBitmapImage(ms);
@@ -75,7 +75,7 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
 
         set
         {
-            if(detectQRCode != value)
+            if (detectQRCode != value)
             {
                 detectQRCode = value;
                 OnPropertyChanged(nameof(DetectQRCode));
@@ -89,7 +89,7 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
 
         set
         {
-            if(device != value)
+            if (device != value)
             {
                 device = value;
                 OnPropertyChanged(nameof(Device));
@@ -109,7 +109,7 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
 
         set
         {
-            if(liste != value)
+            if (liste != value)
             {
                 liste = value;
                 OnPropertyChanged(nameof(Liste));
@@ -125,7 +125,7 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
 
         set
         {
-            if(resimData != value)
+            if (resimData != value)
             {
                 resimData = value;
                 OnPropertyChanged(nameof(ResimData));
@@ -139,7 +139,7 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
 
         set
         {
-            if(rotation != value)
+            if (rotation != value)
             {
                 rotation = value;
                 OnPropertyChanged(nameof(Rotation));
@@ -153,7 +153,7 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
 
         set
         {
-            if(seçiliKamera != value)
+            if (seçiliKamera != value)
             {
                 seçiliKamera = value;
                 OnPropertyChanged(nameof(SeçiliKamera));
@@ -175,7 +175,7 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
 
     private void CameraUserControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if(e.PropertyName is "SeçiliKamera")
+        if (e.PropertyName is "SeçiliKamera")
         {
             Device = new CapDevice(SeçiliKamera.MonikerString) { MaxHeightInPixels = 1080 };
         }

@@ -26,7 +26,7 @@ namespace Extensions
         public ArchiveViewer()
         {
             PropertyChanged += ArchiveViewer_PropertyChanged;
-            if(DesignerProperties.GetIsInDesignMode(this))
+            if (DesignerProperties.GetIsInDesignMode(this))
             {
                 Arşivİçerik = new ObservableCollection<ArchiveData>
                 {
@@ -42,7 +42,8 @@ namespace Extensions
                     {
                         string extractedfile = ExtractToFile(parameter as string);
                         _ = Process.Start(extractedfile);
-                    } catch(Exception ex)
+                    }
+                    catch (Exception ex)
                     {
                         throw new ArgumentException(ArchivePath, ex);
                     }
@@ -55,7 +56,8 @@ namespace Extensions
                     try
                     {
                         AddFilesToZip(ArchivePath, SelectedFiles);
-                    } catch(Exception ex)
+                    }
+                    catch (Exception ex)
                     {
                         throw new ArgumentException(ArchivePath, ex);
                     }
@@ -75,7 +77,7 @@ namespace Extensions
 
             set
             {
-                if(arşivİçerik != value)
+                if (arşivİçerik != value)
                 {
                     arşivİçerik = value;
                     OnPropertyChanged(nameof(Arşivİçerik));
@@ -90,7 +92,7 @@ namespace Extensions
             get => search;
             set
             {
-                if(search != value)
+                if (search != value)
                 {
                     search = value;
                     OnPropertyChanged(nameof(Search));
@@ -103,7 +105,7 @@ namespace Extensions
             get => selectedFiles;
             set
             {
-                if(selectedFiles != value)
+                if (selectedFiles != value)
                 {
                     selectedFiles = value;
                     OnPropertyChanged(nameof(SelectedFiles));
@@ -140,9 +142,9 @@ namespace Extensions
         public void ReadArchiveContent(string ArchiveFilePath, ArchiveViewer archiveViewer)
         {
             archiveViewer.Arşivİçerik = new ObservableCollection<ArchiveData>();
-            using(ZipArchive archive = ZipFile.Open(ArchiveFilePath, ZipArchiveMode.Read))
+            using (ZipArchive archive = ZipFile.Open(ArchiveFilePath, ZipArchiveMode.Read))
             {
-                foreach(ZipArchiveEntry item in archive.Entries.Where(z => z.Length > 0))
+                foreach (ZipArchiveEntry item in archive.Entries.Where(z => z.Length > 0))
                 {
                     ArchiveData archiveData = new()
                     {
@@ -163,9 +165,9 @@ namespace Extensions
 
         protected virtual void Dispose(bool disposing)
         {
-            if(!disposedValue)
+            if (!disposedValue)
             {
-                if(disposing)
+                if (disposing)
                 {
                 }
                 disposedValue = true;
@@ -176,7 +178,7 @@ namespace Extensions
 
         private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if(d is ArchiveViewer archiveViewer && e.NewValue is not null)
+            if (d is ArchiveViewer archiveViewer && e.NewValue is not null)
             {
                 string ArchiveFilePath = (string)e.NewValue;
                 archiveViewer.ReadArchiveContent(ArchiveFilePath, archiveViewer);
@@ -185,13 +187,13 @@ namespace Extensions
 
         private void AddFilesToZip(string zipPath, string[] files)
         {
-            if(files?.Length == 0)
+            if (files?.Length == 0)
             {
                 return;
             }
 
             using ZipArchive zipArchive = ZipFile.Open(zipPath, ZipArchiveMode.Update);
-            foreach(string file in files)
+            foreach (string file in files)
             {
                 FileInfo fileInfo = new(file);
                 _ = zipArchive.CreateEntryFromFile(fileInfo.FullName, fileInfo.Name);
@@ -200,7 +202,7 @@ namespace Extensions
 
         private void ArchiveViewer_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if(e.PropertyName is "Search" && cvs is not null)
+            if (e.PropertyName is "Search" && cvs is not null)
             {
                 cvs.Filter = !string.IsNullOrWhiteSpace(Search)
                     ? (x =>

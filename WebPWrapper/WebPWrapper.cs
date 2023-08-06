@@ -69,23 +69,25 @@ namespace WebPWrapper
 
                 int outputSize = bmpData.Stride * imgHeight;
                 IntPtr ptrData = pinnedWebP.AddrOfPinnedObject();
-                if(bmp.PixelFormat == PixelFormat.Format24bppRgb)
+                if (bmp.PixelFormat == PixelFormat.Format24bppRgb)
                 {
                     UnsafeNativeMethods.WebPDecodeBGRInto(ptrData, rawWebP.Length, bmpData.Scan0, outputSize, bmpData.Stride);
-                } else
+                }
+                else
                 {
                     UnsafeNativeMethods.WebPDecodeBGRAInto(ptrData, rawWebP.Length, bmpData.Scan0, outputSize, bmpData.Stride);
                 }
 
                 return bmp;
-            } finally
+            }
+            finally
             {
-                if(bmpData != null)
+                if (bmpData != null)
                 {
                     bmp.UnlockBits(bmpData);
                 }
 
-                if(pinnedWebP.IsAllocated)
+                if (pinnedWebP.IsAllocated)
                 {
                     pinnedWebP.Free();
                 }
@@ -107,23 +109,23 @@ namespace WebPWrapper
             try
             {
                 WebPDecoderConfig config = new WebPDecoderConfig();
-                if(UnsafeNativeMethods.WebPInitDecoderConfig(ref config) == 0)
+                if (UnsafeNativeMethods.WebPInitDecoderConfig(ref config) == 0)
                 {
                     throw new Exception("WebPInitDecoderConfig failed. Wrong version?");
                 }
 
                 IntPtr ptrRawWebP = pinnedWebP.AddrOfPinnedObject();
-                if(options.use_scaling == 0)
+                if (options.use_scaling == 0)
                 {
                     result = UnsafeNativeMethods.WebPGetFeatures(ptrRawWebP, rawWebP.Length, ref config.input);
-                    if(result != VP8StatusCode.VP8_STATUS_OK)
+                    if (result != VP8StatusCode.VP8_STATUS_OK)
                     {
                         throw new Exception($"Failed WebPGetFeatures with error {result}");
                     }
 
-                    if(options.use_cropping == 1)
+                    if (options.use_cropping == 1)
                     {
-                        if(options.crop_left + options.crop_width > config.input.Width || options.crop_top + options.crop_height > config.input.Height)
+                        if (options.crop_left + options.crop_width > config.input.Width || options.crop_top + options.crop_height > config.input.Height)
                         {
                             throw new Exception("Crop options exceeded WebP image dimensions");
                         }
@@ -131,7 +133,8 @@ namespace WebPWrapper
                         _ = options.crop_width;
                         _ = options.crop_height;
                     }
-                } else
+                }
+                else
                 {
                     _ = options.scaled_width;
                     _ = options.scaled_height;
@@ -152,11 +155,12 @@ namespace WebPWrapper
                 config.options.flip = options.flip;
                 config.options.alpha_dithering_strength = options.alpha_dithering_strength;
 
-                if(config.input.Has_alpha == 1)
+                if (config.input.Has_alpha == 1)
                 {
                     config.output.colorspace = WEBP_CSP_MODE.MODE_bgrA;
                     bmp = new Bitmap(config.input.Width, config.input.Height, PixelFormat.Format32bppArgb);
-                } else
+                }
+                else
                 {
                     config.output.colorspace = WEBP_CSP_MODE.MODE_BGR;
                     bmp = new Bitmap(config.input.Width, config.input.Height, PixelFormat.Format24bppRgb);
@@ -172,7 +176,7 @@ namespace WebPWrapper
                 config.output.is_external_memory = 1;
 
                 result = UnsafeNativeMethods.WebPDecode(ptrRawWebP, rawWebP.Length, ref config);
-                if(result != VP8StatusCode.VP8_STATUS_OK)
+                if (result != VP8StatusCode.VP8_STATUS_OK)
                 {
                     throw new Exception($"Failed WebPDecode with error {result}");
                 }
@@ -180,17 +184,19 @@ namespace WebPWrapper
                 UnsafeNativeMethods.WebPFreeDecBuffer(ref config.output);
 
                 return bmp;
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception($"{ex.Message}\r\nIn WebP.Decode");
-            } finally
+            }
+            finally
             {
-                if(bmpData != null)
+                if (bmpData != null)
                 {
                     bmp.UnlockBits(bmpData);
                 }
 
-                if(pinnedWebP.IsAllocated)
+                if (pinnedWebP.IsAllocated)
                 {
                     pinnedWebP.Free();
                 }
@@ -213,7 +219,7 @@ namespace WebPWrapper
             try
             {
                 WebPDecoderConfig config = new WebPDecoderConfig();
-                if(UnsafeNativeMethods.WebPInitDecoderConfig(ref config) == 0)
+                if (UnsafeNativeMethods.WebPInitDecoderConfig(ref config) == 0)
                 {
                     throw new Exception("WebPInitDecoderConfig failed. Wrong version?");
                 }
@@ -238,7 +244,7 @@ namespace WebPWrapper
 
                 IntPtr ptrRawWebP = pinnedWebP.AddrOfPinnedObject();
                 VP8StatusCode result = UnsafeNativeMethods.WebPDecode(ptrRawWebP, rawWebP.Length, ref config);
-                if(result != VP8StatusCode.VP8_STATUS_OK)
+                if (result != VP8StatusCode.VP8_STATUS_OK)
                 {
                     throw new Exception($"Failed WebPDecode with error {result}");
                 }
@@ -246,17 +252,19 @@ namespace WebPWrapper
                 UnsafeNativeMethods.WebPFreeDecBuffer(ref config.output);
 
                 return bmp;
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception($"{ex.Message}\r\nIn WebP.Thumbnail");
-            } finally
+            }
+            finally
             {
-                if(bmpData != null)
+                if (bmpData != null)
                 {
                     bmp.UnlockBits(bmpData);
                 }
 
-                if(pinnedWebP.IsAllocated)
+                if (pinnedWebP.IsAllocated)
                 {
                     pinnedWebP.Free();
                 }
@@ -279,14 +287,14 @@ namespace WebPWrapper
             try
             {
                 WebPDecoderConfig config = new WebPDecoderConfig();
-                if(UnsafeNativeMethods.WebPInitDecoderConfig(ref config) == 0)
+                if (UnsafeNativeMethods.WebPInitDecoderConfig(ref config) == 0)
                 {
                     throw new Exception("WebPInitDecoderConfig failed. Wrong version?");
                 }
 
                 IntPtr ptrRawWebP = pinnedWebP.AddrOfPinnedObject();
                 VP8StatusCode result = UnsafeNativeMethods.WebPGetFeatures(ptrRawWebP, rawWebP.Length, ref config.input);
-                if(result != VP8StatusCode.VP8_STATUS_OK)
+                if (result != VP8StatusCode.VP8_STATUS_OK)
                 {
                     throw new Exception($"Failed WebPGetFeatures with error {result}");
                 }
@@ -298,11 +306,12 @@ namespace WebPWrapper
                 config.options.scaled_width = width;
                 config.options.scaled_height = height;
 
-                if(config.input.Has_alpha == 1)
+                if (config.input.Has_alpha == 1)
                 {
                     config.output.colorspace = WEBP_CSP_MODE.MODE_bgrA;
                     bmp = new Bitmap(width, height, PixelFormat.Format32bppArgb);
-                } else
+                }
+                else
                 {
                     config.output.colorspace = WEBP_CSP_MODE.MODE_BGR;
                     bmp = new Bitmap(width, height, PixelFormat.Format24bppRgb);
@@ -318,7 +327,7 @@ namespace WebPWrapper
                 config.output.is_external_memory = 1;
 
                 result = UnsafeNativeMethods.WebPDecode(ptrRawWebP, rawWebP.Length, ref config);
-                if(result != VP8StatusCode.VP8_STATUS_OK)
+                if (result != VP8StatusCode.VP8_STATUS_OK)
                 {
                     throw new Exception($"Failed WebPDecode with error {result}");
                 }
@@ -326,17 +335,19 @@ namespace WebPWrapper
                 UnsafeNativeMethods.WebPFreeDecBuffer(ref config.output);
 
                 return bmp;
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception($"{ex.Message}\r\nIn WebP.Thumbnail");
-            } finally
+            }
+            finally
             {
-                if(bmpData != null)
+                if (bmpData != null)
                 {
                     bmp.UnlockBits(bmpData);
                 }
 
-                if(pinnedWebP.IsAllocated)
+                if (pinnedWebP.IsAllocated)
                 {
                     pinnedWebP.Free();
                 }
@@ -355,7 +366,8 @@ namespace WebPWrapper
                 byte[] rawWebP = File.ReadAllBytes(pathFileName);
 
                 return Decode(rawWebP);
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception($"{ex.Message}\r\nIn WebP.Load");
             }
@@ -367,7 +379,8 @@ namespace WebPWrapper
             {
                 byte[] rawWebP = File.ReadAllBytes(pathFileName);
                 return Decode(rawWebP, webPDecoderOptions);
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception($"{ex.Message}\r\nIn WebP.Load");
             }
@@ -383,17 +396,17 @@ namespace WebPWrapper
         /// <returns>Compressed data</returns>
         public byte[] EncodeLossless(Bitmap bmp)
         {
-            if(bmp.Width == 0 || bmp.Height == 0)
+            if (bmp.Width == 0 || bmp.Height == 0)
             {
                 throw new ArgumentException("Bitmap contains no data.", nameof(bmp));
             }
 
-            if(bmp.Width > WEBP_MAX_DIMENSION || bmp.Height > WEBP_MAX_DIMENSION)
+            if (bmp.Width > WEBP_MAX_DIMENSION || bmp.Height > WEBP_MAX_DIMENSION)
             {
                 throw new NotSupportedException("Bitmap's dimension is too large. Max is " + WEBP_MAX_DIMENSION + "x" + WEBP_MAX_DIMENSION + " pixels.");
             }
 
-            if(bmp.PixelFormat != PixelFormat.Format24bppRgb && bmp.PixelFormat != PixelFormat.Format32bppArgb)
+            if (bmp.PixelFormat != PixelFormat.Format24bppRgb && bmp.PixelFormat != PixelFormat.Format32bppArgb)
             {
                 throw new NotSupportedException("Only support Format24bppRgb and Format32bppArgb pixelFormat.");
             }
@@ -412,17 +425,19 @@ namespace WebPWrapper
                 Marshal.Copy(unmanagedData, rawWebP, 0, size);
 
                 return rawWebP;
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception($"{ex.Message}\r\nIn WebP.EncodeLossless (Simple)");
-            } finally
+            }
+            finally
             {
-                if(bmpData != null)
+                if (bmpData != null)
                 {
                     bmp.UnlockBits(bmpData);
                 }
 
-                if(unmanagedData != IntPtr.Zero)
+                if (unmanagedData != IntPtr.Zero)
                 {
                     UnsafeNativeMethods.WebPFree(unmanagedData);
                 }
@@ -439,22 +454,23 @@ namespace WebPWrapper
         {
             WebPConfig config = new WebPConfig();
 
-            if(UnsafeNativeMethods.WebPConfigInit(ref config, WebPPreset.WEBP_PRESET_DEFAULT, (speed + 1) * 10) == 0)
+            if (UnsafeNativeMethods.WebPConfigInit(ref config, WebPPreset.WEBP_PRESET_DEFAULT, (speed + 1) * 10) == 0)
             {
                 throw new Exception("Can´t config preset");
             }
 
-            if(UnsafeNativeMethods.WebPGetDecoderVersion() > 1082)
+            if (UnsafeNativeMethods.WebPGetDecoderVersion() > 1082)
             {
-                if(UnsafeNativeMethods.WebPConfigLosslessPreset(ref config, speed) == 0)
+                if (UnsafeNativeMethods.WebPConfigLosslessPreset(ref config, speed) == 0)
                 {
                     throw new Exception("Can´t configure lossless preset");
                 }
-            } else
+            }
+            else
             {
                 config.lossless = 1;
                 config.method = speed;
-                if(config.method > 6)
+                if (config.method > 6)
                 {
                     config.method = 6;
                 }
@@ -479,17 +495,17 @@ namespace WebPWrapper
         /// <returns>Compressed data</returns>
         public byte[] EncodeLossy(Bitmap bmp, int quality = 75)
         {
-            if(bmp.Width == 0 || bmp.Height == 0)
+            if (bmp.Width == 0 || bmp.Height == 0)
             {
                 throw new ArgumentException("Bitmap contains no data.", nameof(bmp));
             }
 
-            if(bmp.Width > WEBP_MAX_DIMENSION || bmp.Height > WEBP_MAX_DIMENSION)
+            if (bmp.Width > WEBP_MAX_DIMENSION || bmp.Height > WEBP_MAX_DIMENSION)
             {
                 throw new NotSupportedException("Bitmap's dimension is too large. Max is " + WEBP_MAX_DIMENSION + "x" + WEBP_MAX_DIMENSION + " pixels.");
             }
 
-            if(bmp.PixelFormat != PixelFormat.Format24bppRgb && bmp.PixelFormat != PixelFormat.Format32bppArgb)
+            if (bmp.PixelFormat != PixelFormat.Format24bppRgb && bmp.PixelFormat != PixelFormat.Format32bppArgb)
             {
                 throw new NotSupportedException("Only support Format24bppRgb and Format32bppArgb pixelFormat.");
             }
@@ -506,7 +522,7 @@ namespace WebPWrapper
                 size = bmp.PixelFormat == PixelFormat.Format24bppRgb
                     ? UnsafeNativeMethods.WebPEncodeBGR(bmpData.Scan0, bmp.Width, bmp.Height, bmpData.Stride, quality, out unmanagedData)
                     : UnsafeNativeMethods.WebPEncodeBGRA(bmpData.Scan0, bmp.Width, bmp.Height, bmpData.Stride, quality, out unmanagedData);
-                if(size == 0)
+                if (size == 0)
                 {
                     throw new Exception("Can´t encode WebP");
                 }
@@ -515,17 +531,19 @@ namespace WebPWrapper
                 Marshal.Copy(unmanagedData, rawWebP, 0, size);
 
                 return rawWebP;
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception($"{ex.Message}\r\nIn WebP.EncodeLossly");
-            } finally
+            }
+            finally
             {
-                if(bmpData != null)
+                if (bmpData != null)
                 {
                     bmp.UnlockBits(bmpData);
                 }
 
-                if(unmanagedData != IntPtr.Zero)
+                if (unmanagedData != IntPtr.Zero)
                 {
                     UnsafeNativeMethods.WebPFree(unmanagedData);
                 }
@@ -543,13 +561,13 @@ namespace WebPWrapper
         {
             WebPConfig config = new WebPConfig();
 
-            if(UnsafeNativeMethods.WebPConfigInit(ref config, WebPPreset.WEBP_PRESET_DEFAULT, 75) == 0)
+            if (UnsafeNativeMethods.WebPConfigInit(ref config, WebPPreset.WEBP_PRESET_DEFAULT, 75) == 0)
             {
                 throw new Exception("Can´t configure preset");
             }
 
             config.method = speed;
-            if(config.method > 6)
+            if (config.method > 6)
             {
                 config.method = 6;
             }
@@ -564,11 +582,12 @@ namespace WebPWrapper
             config.alpha_filtering = 2;
             config.use_sharp_yuv = 1;
 
-            if(UnsafeNativeMethods.WebPGetDecoderVersion() > 1082)
+            if (UnsafeNativeMethods.WebPGetDecoderVersion() > 1082)
             {
                 config.preprocessing = 4;
                 config.use_sharp_yuv = 1;
-            } else
+            }
+            else
             {
                 config.preprocessing = 3;
             }
@@ -585,19 +604,19 @@ namespace WebPWrapper
         /// <returns>Compress data</returns>
         public byte[] EncodeNearLossless(Bitmap bmp, int quality, int speed = 9)
         {
-            if(UnsafeNativeMethods.WebPGetDecoderVersion() <= 1082)
+            if (UnsafeNativeMethods.WebPGetDecoderVersion() <= 1082)
             {
                 throw new Exception("This DLL version not support EncodeNearLossless");
             }
 
             WebPConfig config = new WebPConfig();
 
-            if(UnsafeNativeMethods.WebPConfigInit(ref config, WebPPreset.WEBP_PRESET_DEFAULT, (speed + 1) * 10) == 0)
+            if (UnsafeNativeMethods.WebPConfigInit(ref config, WebPPreset.WEBP_PRESET_DEFAULT, (speed + 1) * 10) == 0)
             {
                 throw new Exception("Can´t configure preset");
             }
 
-            if(UnsafeNativeMethods.WebPConfigLosslessPreset(ref config, speed) == 0)
+            if (UnsafeNativeMethods.WebPConfigLosslessPreset(ref config, speed) == 0)
             {
                 throw new Exception("Can´t configure lossless preset");
             }
@@ -627,7 +646,8 @@ namespace WebPWrapper
                 rawWebP = EncodeLossy(bmp, quality);
 
                 File.WriteAllBytes(pathFileName, rawWebP);
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception($"{ex.Message}\r\nIn WebP.Save");
             }
@@ -657,7 +677,7 @@ namespace WebPWrapper
                 WebPBitstreamFeatures features = new WebPBitstreamFeatures();
                 result = UnsafeNativeMethods.WebPGetFeatures(ptrRawWebP, rawWebP.Length, ref features);
 
-                if(result != 0)
+                if (result != 0)
                 {
                     throw new Exception(result.ToString());
                 }
@@ -666,7 +686,7 @@ namespace WebPWrapper
                 height = features.Height;
                 has_alpha = features.Has_alpha == 1;
                 has_animation = features.Has_animation == 1;
-                switch(features.Format)
+                switch (features.Format)
                 {
                     case 1:
                         format = "lossy";
@@ -680,12 +700,14 @@ namespace WebPWrapper
                         format = "undefined";
                         break;
                 }
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception($"{ex.Message}\r\nIn WebP.GetInfo");
-            } finally
+            }
+            finally
             {
-                if(pinnedWebP.IsAllocated)
+                if (pinnedWebP.IsAllocated)
                 {
                     pinnedWebP.Free();
                 }
@@ -711,29 +733,29 @@ namespace WebPWrapper
 
             try
             {
-                if(source == null)
+                if (source == null)
                 {
                     throw new Exception("Source picture is void");
                 }
 
-                if(reference == null)
+                if (reference == null)
                 {
                     throw new Exception("Reference picture is void");
                 }
 
-                if(metric_type > 2)
+                if (metric_type > 2)
                 {
                     throw new Exception("Bad metric_type. Use 0 = PSNR, 1 = SSIM, 2 = LSIM");
                 }
 
-                if(source.Width != reference.Width || source.Height != reference.Height)
+                if (source.Width != reference.Width || source.Height != reference.Height)
                 {
                     throw new Exception("Source and Reference pictures have different dimensions");
                 }
 
                 sourceBmpData = source.LockBits(new Rectangle(0, 0, source.Width, source.Height), ImageLockMode.ReadOnly, source.PixelFormat);
                 wpicSource = new WebPPicture();
-                if(UnsafeNativeMethods.WebPPictureInitInternal(ref wpicSource) != 1)
+                if (UnsafeNativeMethods.WebPPictureInitInternal(ref wpicSource) != 1)
                 {
                     throw new Exception("Can´t initialize WebPPictureInit");
                 }
@@ -741,17 +763,18 @@ namespace WebPWrapper
                 wpicSource.width = source.Width;
                 wpicSource.height = source.Height;
 
-                if(sourceBmpData.PixelFormat == PixelFormat.Format32bppArgb)
+                if (sourceBmpData.PixelFormat == PixelFormat.Format32bppArgb)
                 {
                     wpicSource.use_argb = 1;
-                    if(UnsafeNativeMethods.WebPPictureImportBGRA(ref wpicSource, sourceBmpData.Scan0, sourceBmpData.Stride) != 1)
+                    if (UnsafeNativeMethods.WebPPictureImportBGRA(ref wpicSource, sourceBmpData.Scan0, sourceBmpData.Stride) != 1)
                     {
                         throw new Exception("Can´t allocate memory in WebPPictureImportBGR");
                     }
-                } else
+                }
+                else
                 {
                     wpicSource.use_argb = 0;
-                    if(UnsafeNativeMethods.WebPPictureImportBGR(ref wpicSource, sourceBmpData.Scan0, sourceBmpData.Stride) != 1)
+                    if (UnsafeNativeMethods.WebPPictureImportBGR(ref wpicSource, sourceBmpData.Scan0, sourceBmpData.Stride) != 1)
                     {
                         throw new Exception("Can´t allocate memory in WebPPictureImportBGR");
                     }
@@ -759,7 +782,7 @@ namespace WebPWrapper
 
                 referenceBmpData = reference.LockBits(new Rectangle(0, 0, reference.Width, reference.Height), ImageLockMode.ReadOnly, reference.PixelFormat);
                 wpicReference = new WebPPicture();
-                if(UnsafeNativeMethods.WebPPictureInitInternal(ref wpicReference) != 1)
+                if (UnsafeNativeMethods.WebPPictureInitInternal(ref wpicReference) != 1)
                 {
                     throw new Exception("Can´t initialize WebPPictureInit");
                 }
@@ -768,17 +791,18 @@ namespace WebPWrapper
                 wpicReference.height = reference.Height;
                 wpicReference.use_argb = 1;
 
-                if(sourceBmpData.PixelFormat == PixelFormat.Format32bppArgb)
+                if (sourceBmpData.PixelFormat == PixelFormat.Format32bppArgb)
                 {
                     wpicSource.use_argb = 1;
-                    if(UnsafeNativeMethods.WebPPictureImportBGRA(ref wpicReference, referenceBmpData.Scan0, referenceBmpData.Stride) != 1)
+                    if (UnsafeNativeMethods.WebPPictureImportBGRA(ref wpicReference, referenceBmpData.Scan0, referenceBmpData.Stride) != 1)
                     {
                         throw new Exception("Can´t allocate memory in WebPPictureImportBGR");
                     }
-                } else
+                }
+                else
                 {
                     wpicSource.use_argb = 0;
-                    if(UnsafeNativeMethods.WebPPictureImportBGR(ref wpicReference, referenceBmpData.Scan0, referenceBmpData.Stride) != 1)
+                    if (UnsafeNativeMethods.WebPPictureImportBGR(ref wpicReference, referenceBmpData.Scan0, referenceBmpData.Stride) != 1)
                     {
                         throw new Exception("Can´t allocate memory in WebPPictureImportBGR");
                     }
@@ -786,32 +810,34 @@ namespace WebPWrapper
 
                 IntPtr ptrResult = pinnedResult.AddrOfPinnedObject();
                 return UnsafeNativeMethods.WebPPictureDistortion(ref wpicSource, ref wpicReference, metric_type, ptrResult) != 1 ? throw new Exception("Can´t measure.") : result;
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception($"{ex.Message}\r\nIn WebP.GetPictureDistortion");
-            } finally
+            }
+            finally
             {
-                if(sourceBmpData != null)
+                if (sourceBmpData != null)
                 {
                     source.UnlockBits(sourceBmpData);
                 }
 
-                if(referenceBmpData != null)
+                if (referenceBmpData != null)
                 {
                     reference.UnlockBits(referenceBmpData);
                 }
 
-                if(wpicSource.argb != IntPtr.Zero)
+                if (wpicSource.argb != IntPtr.Zero)
                 {
                     UnsafeNativeMethods.WebPPictureFree(ref wpicSource);
                 }
 
-                if(wpicReference.argb != IntPtr.Zero)
+                if (wpicReference.argb != IntPtr.Zero)
                 {
                     UnsafeNativeMethods.WebPPictureFree(ref wpicReference);
                 }
 
-                if(pinnedResult.IsAllocated)
+                if (pinnedResult.IsAllocated)
                 {
                     pinnedResult.Free();
                 }
@@ -831,7 +857,8 @@ namespace WebPWrapper
                 uint minor = (v >> 8) % 256;
                 uint major = (v >> 16) % 256;
                 return $"{major}.{minor}.{revision}";
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception($"{ex.Message}\r\nIn WebP.GetVersion");
             }
@@ -859,28 +886,28 @@ namespace WebPWrapper
             int dataWebpSize;
             try
             {
-                if(UnsafeNativeMethods.WebPValidateConfig(ref config) != 1)
+                if (UnsafeNativeMethods.WebPValidateConfig(ref config) != 1)
                 {
                     throw new Exception("Bad configuration parameters");
                 }
 
-                if(bmp.Width == 0 || bmp.Height == 0)
+                if (bmp.Width == 0 || bmp.Height == 0)
                 {
                     throw new ArgumentException("Bitmap contains no data.", nameof(bmp));
                 }
 
-                if(bmp.Width > WEBP_MAX_DIMENSION || bmp.Height > WEBP_MAX_DIMENSION)
+                if (bmp.Width > WEBP_MAX_DIMENSION || bmp.Height > WEBP_MAX_DIMENSION)
                 {
                     throw new NotSupportedException("Bitmap's dimension is too large. Max is " + WEBP_MAX_DIMENSION + "x" + WEBP_MAX_DIMENSION + " pixels.");
                 }
 
-                if(bmp.PixelFormat != PixelFormat.Format24bppRgb && bmp.PixelFormat != PixelFormat.Format32bppArgb)
+                if (bmp.PixelFormat != PixelFormat.Format24bppRgb && bmp.PixelFormat != PixelFormat.Format32bppArgb)
                 {
                     throw new NotSupportedException("Only support Format24bppRgb and Format32bppArgb pixelFormat.");
                 }
 
                 bmpData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, bmp.PixelFormat);
-                if(UnsafeNativeMethods.WebPPictureInitInternal(ref wpic) != 1)
+                if (UnsafeNativeMethods.WebPPictureInitInternal(ref wpic) != 1)
                 {
                     throw new Exception("Can´t initialize WebPPictureInit");
                 }
@@ -889,10 +916,10 @@ namespace WebPWrapper
                 wpic.height = bmp.Height;
                 wpic.use_argb = 1;
 
-                if(bmp.PixelFormat == PixelFormat.Format32bppArgb)
+                if (bmp.PixelFormat == PixelFormat.Format32bppArgb)
                 {
                     int result = UnsafeNativeMethods.WebPPictureImportBGRA(ref wpic, bmpData.Scan0, bmpData.Stride);
-                    if(result != 1)
+                    if (result != 1)
                     {
                         throw new Exception("Can´t allocate memory in WebPPictureImportBGRA");
                     }
@@ -900,10 +927,11 @@ namespace WebPWrapper
                     wpic.colorspace = (uint)WEBP_CSP_MODE.MODE_bgrA;
                     dataWebpSize = bmp.Width * bmp.Height * 32;
                     dataWebp = new byte[bmp.Width * bmp.Height * 32];
-                } else
+                }
+                else
                 {
                     int result = UnsafeNativeMethods.WebPPictureImportBGR(ref wpic, bmpData.Scan0, bmpData.Stride);
-                    if(result != 1)
+                    if (result != 1)
                     {
                         throw new Exception("Can´t allocate memory in WebPPictureImportBGR");
                     }
@@ -911,7 +939,7 @@ namespace WebPWrapper
                     dataWebpSize = bmp.Width * bmp.Height * 24;
                 }
 
-                if(info)
+                if (info)
                 {
                     stats = new WebPAuxStats();
                     ptrStats = Marshal.AllocHGlobal(Marshal.SizeOf(stats));
@@ -919,7 +947,7 @@ namespace WebPWrapper
                     wpic.stats = ptrStats;
                 }
 
-                if(dataWebpSize > 2147483591)
+                if (dataWebpSize > 2147483591)
                 {
                     dataWebpSize = 2147483591;
                 }
@@ -932,7 +960,7 @@ namespace WebPWrapper
                 UnsafeNativeMethods.OnCallback = MyWriter;
                 wpic.writer = Marshal.GetFunctionPointerForDelegate(UnsafeNativeMethods.OnCallback);
 
-                if(UnsafeNativeMethods.WebPEncode(ref config, ref wpic) != 1)
+                if (UnsafeNativeMethods.WebPEncode(ref config, ref wpic) != 1)
                 {
                     throw new Exception($"Encoding error: {(WebPEncodingError)wpic.error_code}");
                 }
@@ -949,7 +977,7 @@ namespace WebPWrapper
                 pinnedArrayHandle.Free();
                 dataWebp = null;
 
-                if(info)
+                if (info)
                 {
                     stats = (WebPAuxStats)Marshal.PtrToStructure(ptrStats, typeof(WebPAuxStats));
                     _ = MessageBox.Show(
@@ -958,27 +986,29 @@ namespace WebPWrapper
                 }
 
                 return rawWebP;
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception($"{ex.Message}\r\nIn WebP.AdvancedEncode");
-            } finally
+            }
+            finally
             {
-                if(pinnedArrayHandle.IsAllocated)
+                if (pinnedArrayHandle.IsAllocated)
                 {
                     pinnedArrayHandle.Free();
                 }
 
-                if(ptrStats != IntPtr.Zero)
+                if (ptrStats != IntPtr.Zero)
                 {
                     Marshal.FreeHGlobal(ptrStats);
                 }
 
-                if(bmpData != null)
+                if (bmpData != null)
                 {
                     bmp.UnlockBits(bmpData);
                 }
 
-                if(wpic.argb != IntPtr.Zero)
+                if (wpic.argb != IntPtr.Zero)
                 {
                     UnsafeNativeMethods.WebPPictureFree(ref wpic);
                 }
@@ -1021,7 +1051,7 @@ namespace WebPWrapper
         /// <returns>0 if error</returns>
         internal static int WebPConfigInit(ref WebPConfig config, WebPPreset preset, float quality)
         {
-            switch(IntPtr.Size)
+            switch (IntPtr.Size)
             {
                 case 4:
                     return WebPConfigInitInternal_x86(ref config, preset, quality, WEBP_DECODER_ABI_VERSION);
@@ -1042,7 +1072,7 @@ namespace WebPWrapper
         /// <returns>0 in case of parameter error</returns>
         internal static int WebPConfigLosslessPreset(ref WebPConfig config, int level)
         {
-            switch(IntPtr.Size)
+            switch (IntPtr.Size)
             {
                 case 4:
                     return WebPConfigLosslessPreset_x86(ref config, level);
@@ -1064,7 +1094,7 @@ namespace WebPWrapper
         /// <returns>VP8_STATUS_OK if the decoding was successful</returns>
         internal static VP8StatusCode WebPDecode(IntPtr data, int data_size, ref WebPDecoderConfig webPDecoderConfig)
         {
-            switch(IntPtr.Size)
+            switch (IntPtr.Size)
             {
                 case 4:
                     return WebPDecode_x86(data, (UIntPtr)data_size, ref webPDecoderConfig);
@@ -1087,10 +1117,10 @@ namespace WebPWrapper
         /// <param name="output_stride">Specifies the distance between scan lines</param>
         internal static void WebPDecodeARGBInto(IntPtr data, int data_size, IntPtr output_buffer, int output_buffer_size, int output_stride)
         {
-            switch(IntPtr.Size)
+            switch (IntPtr.Size)
             {
                 case 4:
-                    if(WebPDecodeARGBInto_x86(data, (UIntPtr)data_size, output_buffer, output_buffer_size, output_stride) == default)
+                    if (WebPDecodeARGBInto_x86(data, (UIntPtr)data_size, output_buffer, output_buffer_size, output_stride) == default)
                     {
                         throw new InvalidOperationException("Can not decode WebP");
                     }
@@ -1098,7 +1128,7 @@ namespace WebPWrapper
                     break;
 
                 case 8:
-                    if(WebPDecodeARGBInto_x64(data, (UIntPtr)data_size, output_buffer, output_buffer_size, output_stride) == default)
+                    if (WebPDecodeARGBInto_x64(data, (UIntPtr)data_size, output_buffer, output_buffer_size, output_stride) == default)
                     {
                         throw new InvalidOperationException("Can not decode WebP");
                     }
@@ -1120,10 +1150,10 @@ namespace WebPWrapper
         /// <param name="output_stride">Specifies the distance between scan lines</param>
         internal static void WebPDecodeBGRAInto(IntPtr data, int data_size, IntPtr output_buffer, int output_buffer_size, int output_stride)
         {
-            switch(IntPtr.Size)
+            switch (IntPtr.Size)
             {
                 case 4:
-                    if(WebPDecodeBGRAInto_x86(data, (UIntPtr)data_size, output_buffer, output_buffer_size, output_stride) == default)
+                    if (WebPDecodeBGRAInto_x86(data, (UIntPtr)data_size, output_buffer, output_buffer_size, output_stride) == default)
                     {
                         throw new InvalidOperationException("Can not decode WebP");
                     }
@@ -1131,7 +1161,7 @@ namespace WebPWrapper
                     break;
 
                 case 8:
-                    if(WebPDecodeBGRAInto_x64(data, (UIntPtr)data_size, output_buffer, output_buffer_size, output_stride) == default)
+                    if (WebPDecodeBGRAInto_x64(data, (UIntPtr)data_size, output_buffer, output_buffer_size, output_stride) == default)
                     {
                         throw new InvalidOperationException("Can not decode WebP");
                     }
@@ -1153,10 +1183,10 @@ namespace WebPWrapper
         /// <param name="output_stride">Specifies the distance between scan lines</param>
         internal static void WebPDecodeBGRInto(IntPtr data, int data_size, IntPtr output_buffer, int output_buffer_size, int output_stride)
         {
-            switch(IntPtr.Size)
+            switch (IntPtr.Size)
             {
                 case 4:
-                    if(WebPDecodeBGRInto_x86(data, (UIntPtr)data_size, output_buffer, output_buffer_size, output_stride) == default)
+                    if (WebPDecodeBGRInto_x86(data, (UIntPtr)data_size, output_buffer, output_buffer_size, output_stride) == default)
                     {
                         throw new InvalidOperationException("Can not decode WebP");
                     }
@@ -1164,7 +1194,7 @@ namespace WebPWrapper
                     break;
 
                 case 8:
-                    if(WebPDecodeBGRInto_x64(data, (UIntPtr)data_size, output_buffer, output_buffer_size, output_stride) == default)
+                    if (WebPDecodeBGRInto_x64(data, (UIntPtr)data_size, output_buffer, output_buffer_size, output_stride) == default)
                     {
                         throw new InvalidOperationException("Can not decode WebP");
                     }
@@ -1184,7 +1214,7 @@ namespace WebPWrapper
         /// <returns>Returns 0 in case of error, 1 otherwise. In case of error, picture->error_code is updated accordingly.</returns>
         internal static int WebPEncode(ref WebPConfig config, ref WebPPicture picture)
         {
-            switch(IntPtr.Size)
+            switch (IntPtr.Size)
             {
                 case 4:
                     return WebPEncode_x86(ref config, ref picture);
@@ -1211,7 +1241,7 @@ namespace WebPWrapper
         /// <returns>Size of WebP Image or 0 if an error occurred</returns>
         internal static int WebPEncodeBGR(IntPtr bgr, int width, int height, int stride, float quality_factor, out IntPtr output)
         {
-            switch(IntPtr.Size)
+            switch (IntPtr.Size)
             {
                 case 4:
                     return WebPEncodeBGR_x86(bgr, width, height, stride, quality_factor, out output);
@@ -1238,7 +1268,7 @@ namespace WebPWrapper
         /// <returns>Size of WebP Image or 0 if an error occurred</returns>
         internal static int WebPEncodeBGRA(IntPtr bgra, int width, int height, int stride, float quality_factor, out IntPtr output)
         {
-            switch(IntPtr.Size)
+            switch (IntPtr.Size)
             {
                 case 4:
                     return WebPEncodeBGRA_x86(bgra, width, height, stride, quality_factor, out output);
@@ -1262,7 +1292,7 @@ namespace WebPWrapper
         /// <returns>Size of WebP Image or 0 if an error occurred</returns>
         internal static int WebPEncodeLosslessBGR(IntPtr bgr, int width, int height, int stride, out IntPtr output)
         {
-            switch(IntPtr.Size)
+            switch (IntPtr.Size)
             {
                 case 4:
                     return WebPEncodeLosslessBGR_x86(bgr, width, height, stride, out output);
@@ -1286,7 +1316,7 @@ namespace WebPWrapper
         /// <returns>Size of WebP Image or 0 if an error occurred</returns>
         internal static int WebPEncodeLosslessBGRA(IntPtr bgra, int width, int height, int stride, out IntPtr output)
         {
-            switch(IntPtr.Size)
+            switch (IntPtr.Size)
             {
                 case 4:
                     return WebPEncodeLosslessBGRA_x86(bgra, width, height, stride, out output);
@@ -1305,7 +1335,7 @@ namespace WebPWrapper
         /// <param name="p">Pointer to memory</param>
         internal static void WebPFree(IntPtr p)
         {
-            switch(IntPtr.Size)
+            switch (IntPtr.Size)
             {
                 case 4:
                     WebPFree_x86(p);
@@ -1327,7 +1357,7 @@ namespace WebPWrapper
         /// <param name="buffer">WebPDecBuffer</param>
         internal static void WebPFreeDecBuffer(ref WebPDecBuffer buffer)
         {
-            switch(IntPtr.Size)
+            switch (IntPtr.Size)
             {
                 case 4:
                     WebPFreeDecBuffer_x86(ref buffer);
@@ -1348,7 +1378,7 @@ namespace WebPWrapper
         /// <returns>8bits for each of major/minor/revision packet in integer. E.g: v2.5.7 is 0x020507</returns>
         internal static int WebPGetDecoderVersion()
         {
-            switch(IntPtr.Size)
+            switch (IntPtr.Size)
             {
                 case 4:
                     return WebPGetDecoderVersion_x86();
@@ -1370,7 +1400,7 @@ namespace WebPWrapper
         /// <returns>VP8StatusCode</returns>
         internal static VP8StatusCode WebPGetFeatures(IntPtr rawWebP, int data_size, ref WebPBitstreamFeatures features)
         {
-            switch(IntPtr.Size)
+            switch (IntPtr.Size)
             {
                 case 4:
                     return WebPGetFeaturesInternal_x86(rawWebP, (UIntPtr)data_size, ref features, WEBP_DECODER_ABI_VERSION);
@@ -1394,7 +1424,7 @@ namespace WebPWrapper
         /// <returns>1 if success, otherwise error code returned in the case of (a) formatting error(s).</returns>
         internal static int WebPGetInfo(IntPtr data, int data_size, out int width, out int height)
         {
-            switch(IntPtr.Size)
+            switch (IntPtr.Size)
             {
                 case 4:
                     return WebPGetInfo_x86(data, (UIntPtr)data_size, out width, out height);
@@ -1415,7 +1445,7 @@ namespace WebPWrapper
         /// <returns>False in case of mismatched version.</returns>
         internal static int WebPInitDecoderConfig(ref WebPDecoderConfig webPDecoderConfig)
         {
-            switch(IntPtr.Size)
+            switch (IntPtr.Size)
             {
                 case 4:
                     return WebPInitDecoderConfigInternal_x86(ref webPDecoderConfig, WEBP_DECODER_ABI_VERSION);
@@ -1438,7 +1468,7 @@ namespace WebPWrapper
         /// <returns>False in case of error (the two pictures don't have same dimension, ...)</returns>
         internal static int WebPPictureDistortion(ref WebPPicture srcPicture, ref WebPPicture refPicture, int metric_type, IntPtr pResult)
         {
-            switch(IntPtr.Size)
+            switch (IntPtr.Size)
             {
                 case 4:
                     return WebPPictureDistortion_x86(ref srcPicture, ref refPicture, metric_type, pResult);
@@ -1459,7 +1489,7 @@ namespace WebPWrapper
         /// <param name="picture">Picture structure</param>
         internal static void WebPPictureFree(ref WebPPicture picture)
         {
-            switch(IntPtr.Size)
+            switch (IntPtr.Size)
             {
                 case 4:
                     WebPPictureFree_x86(ref picture);
@@ -1483,7 +1513,7 @@ namespace WebPWrapper
         /// <returns>Returns 0 in case of memory error.</returns>
         internal static int WebPPictureImportBGR(ref WebPPicture wpic, IntPtr bgr, int stride)
         {
-            switch(IntPtr.Size)
+            switch (IntPtr.Size)
             {
                 case 4:
                     return WebPPictureImportBGR_x86(ref wpic, bgr, stride);
@@ -1505,7 +1535,7 @@ namespace WebPWrapper
         /// <returns>Returns 0 in case of memory error.</returns>
         internal static int WebPPictureImportBGRA(ref WebPPicture wpic, IntPtr bgra, int stride)
         {
-            switch(IntPtr.Size)
+            switch (IntPtr.Size)
             {
                 case 4:
                     return WebPPictureImportBGRA_x86(ref wpic, bgra, stride);
@@ -1527,7 +1557,7 @@ namespace WebPWrapper
         /// <returns>Returns 0 in case of memory error.</returns>
         internal static int WebPPictureImportBGRX(ref WebPPicture wpic, IntPtr bgr, int stride)
         {
-            switch(IntPtr.Size)
+            switch (IntPtr.Size)
             {
                 case 4:
                     return WebPPictureImportBGRX_x86(ref wpic, bgr, stride);
@@ -1547,7 +1577,7 @@ namespace WebPWrapper
         /// <returns>1 if not error</returns>
         internal static int WebPPictureInitInternal(ref WebPPicture wpic)
         {
-            switch(IntPtr.Size)
+            switch (IntPtr.Size)
             {
                 case 4:
                     return WebPPictureInitInternal_x86(ref wpic, WEBP_DECODER_ABI_VERSION);
@@ -1567,7 +1597,7 @@ namespace WebPWrapper
         /// <returns>1 if configuration is OK</returns>
         internal static int WebPValidateConfig(ref WebPConfig config)
         {
-            switch(IntPtr.Size)
+            switch (IntPtr.Size)
             {
                 case 4:
                     return WebPValidateConfig_x86(ref config);

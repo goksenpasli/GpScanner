@@ -24,7 +24,7 @@ public class ScannedImage : InpcBase
 
         set
         {
-            if(animate != value)
+            if (animate != value)
             {
                 animate = value;
                 OnPropertyChanged(nameof(Animate));
@@ -38,7 +38,7 @@ public class ScannedImage : InpcBase
 
         set
         {
-            if(filePath != value)
+            if (filePath != value)
             {
                 filePath = value;
                 OnPropertyChanged(nameof(FilePath));
@@ -52,7 +52,7 @@ public class ScannedImage : InpcBase
 
         set
         {
-            if(ındex == value)
+            if (ındex == value)
             {
                 return;
             }
@@ -68,7 +68,7 @@ public class ScannedImage : InpcBase
 
         set
         {
-            if(resim != value)
+            if (resim != value)
             {
                 resim = value;
                 OnPropertyChanged(nameof(Resim));
@@ -83,7 +83,7 @@ public class ScannedImage : InpcBase
 
         set
         {
-            if(resimThumb != value)
+            if (resimThumb != value)
             {
                 resimThumb = value;
                 OnPropertyChanged(nameof(ResimThumb));
@@ -97,7 +97,7 @@ public class ScannedImage : InpcBase
 
         set
         {
-            if(rotationAngle != value)
+            if (rotationAngle != value)
             {
                 rotationAngle = value;
                 OnPropertyChanged(nameof(RotationAngle));
@@ -111,7 +111,7 @@ public class ScannedImage : InpcBase
 
         set
         {
-            if(seçili != value)
+            if (seçili != value)
             {
                 seçili = value;
                 OnPropertyChanged(nameof(Seçili));
@@ -121,9 +121,9 @@ public class ScannedImage : InpcBase
 
     private async void ScannedImage_PropertyChangedAsync(object sender, PropertyChangedEventArgs e)
     {
-        if(e.PropertyName is "RotationAngle" && RotationAngle != 0)
+        if (e.PropertyName is "RotationAngle" && RotationAngle != 0)
         {
-            if(Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+            if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
             {
                 Resim = await Resim.FlipImageAsync(RotationAngle);
                 RotationAngle = 0;

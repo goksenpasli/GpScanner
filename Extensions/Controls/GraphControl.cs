@@ -105,7 +105,7 @@ public class GraphControl : FrameworkElement
 
     protected override void OnRender(DrawingContext drawingContext)
     {
-        if(!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+        if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
         {
             DrawGraph(drawingContext, Series);
             return;
@@ -122,7 +122,7 @@ public class GraphControl : FrameworkElement
 
     private void DrawGraph(DrawingContext drawingContext, ObservableCollection<Chart> Series)
     {
-        if(Series?.Any() == true)
+        if (Series?.Any() == true)
         {
             double max = Series.Max(z => z.ChartValue);
             double thickness = ActualWidth / Series.Count;
@@ -136,7 +136,7 @@ public class GraphControl : FrameworkElement
             StreamGeometry geometry = new();
             using StreamGeometryContext gc = geometry.Open();
             gc.BeginFigure(new Point(thickness / 2, ActualHeight - (Series[0].ChartValue / max * ActualHeight * 9 / 10)), false, false);
-            for(int i = 1; i <= Series.Count; i++)
+            for (int i = 1; i <= Series.Count; i++)
             {
                 graphdrawinggroup = new DrawingGroup();
                 graphgeometrygroup = new DrawingGroup();
@@ -163,7 +163,7 @@ public class GraphControl : FrameworkElement
 
     private void DrawLineDot(Pen linepen, Point point1, DrawingContext graph)
     {
-        if(LineDotVisibility == Visibility.Visible)
+        if (LineDotVisibility == Visibility.Visible)
         {
             graph.DrawEllipse(DotColor, linepen, point1, linepen.Thickness, linepen.Thickness);
         }
@@ -171,7 +171,7 @@ public class GraphControl : FrameworkElement
 
     private void DrawLineGraph(Pen linepen, Point point1, StreamGeometry geometry, StreamGeometryContext gc, DrawingContext geometrygraph)
     {
-        if(LineGraphVisibility == Visibility.Visible)
+        if (LineGraphVisibility == Visibility.Visible)
         {
             gc.LineTo(point1, true, true);
             geometry.Freeze();
@@ -181,7 +181,7 @@ public class GraphControl : FrameworkElement
 
     private void DrawMainContent(Pen pen, Point point0, Point point1, DrawingContext graph)
     {
-        if(GraphContentVisibility == Visibility.Visible)
+        if (GraphContentVisibility == Visibility.Visible)
         {
             graph.DrawLine(pen, point0, point1);
         }
@@ -189,7 +189,7 @@ public class GraphControl : FrameworkElement
 
     private void DrawSeriesText(Pen pen, Chart item, Point point1, DrawingContext graph)
     {
-        if(SeriesTextVisibility == Visibility.Visible)
+        if (SeriesTextVisibility == Visibility.Visible)
         {
             FormattedText formattedText = GenerateFormattedText(item, pen);
             Point textpoint = new(point1.X - (formattedText.WidthIncludingTrailingWhitespace / 2), point1.Y - (formattedText.Height / 3));
@@ -199,7 +199,7 @@ public class GraphControl : FrameworkElement
 
     private void DrawValueText(Pen pen, Chart item, Point point1, DrawingContext graph)
     {
-        if(ValueTextVisibility == Visibility.Visible)
+        if (ValueTextVisibility == Visibility.Visible)
         {
             FormattedText formattedValueText = GenerateFormattedValueText(item, pen);
             graph.DrawText(formattedValueText, new Point(point1.X - (formattedValueText.WidthIncludingTrailingWhitespace / 2), 0));
@@ -221,7 +221,7 @@ public class GraphControl : FrameworkElement
     private void SaveFile(byte[] imgdata)
     {
         SaveFileDialog saveFileDialog = new() { FileName = "Resim.png", Filter = "Png Dosyası (*.png)|*.png" };
-        if(saveFileDialog.ShowDialog() == true)
+        if (saveFileDialog.ShowDialog() == true)
         {
             File.WriteAllBytes(saveFileDialog.FileName, imgdata);
             GC.Collect();

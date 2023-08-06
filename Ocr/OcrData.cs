@@ -13,7 +13,7 @@ public class OcrData : InpcBase
 
         set
         {
-            if(rect != value)
+            if (rect != value)
             {
                 rect = value;
                 OnPropertyChanged(nameof(Rect));
@@ -27,7 +27,7 @@ public class OcrData : InpcBase
 
         set
         {
-            if(text != value)
+            if (text != value)
             {
                 text = value;
                 OnPropertyChanged(nameof(Text));

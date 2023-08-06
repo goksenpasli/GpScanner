@@ -32,14 +32,14 @@ public class ShadowedImage : Image
 
     protected override void OnRender(DrawingContext dc)
     {
-        if(ShowShadow)
+        if (ShowShadow)
         {
             dc.DrawRectangle(ShadowColor, null, new Rect(Location, new Size(ActualWidth, ActualHeight)));
         }
 
         base.OnRender(dc);
 
-        if(ShowOverlayColor)
+        if (ShowOverlayColor)
         {
             dc.DrawLine(pen, new Point(ActualWidth, 0), new Point(0, ActualHeight));
             dc.DrawLine(pen, new Point(0, 0), new Point(ActualWidth, ActualHeight));

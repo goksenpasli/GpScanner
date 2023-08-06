@@ -25,13 +25,14 @@ public class TranslateViewModel : InpcBase
             string çeviri = string.Empty;
             object[] data = parsedObj as object[];
             object firstnode = data.FirstOrDefault();
-            for(int i = 0; i < (firstnode as object[])?.Length; i++)
+            for (int i = 0; i < (firstnode as object[])?.Length; i++)
             {
                 çeviri += ((data.FirstOrDefault() as object[])?[i] as object[])?.ElementAtOrDefault(0).ToString();
             }
 
             return çeviri;
-        } catch(Exception)
+        }
+        catch (Exception)
         {
             return string.Empty;
         }

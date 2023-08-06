@@ -5,12 +5,12 @@ namespace Extensions;
 public class ArchiveData : InpcBase
 {
     private long boyut;
+    private string crc;
     private string dosyaAdı;
     private DateTime düzenlenmeZamanı;
     private float oran;
     private long sıkıştırılmışBoyut;
     private string tamYol;
-    private string crc;
 
     public long Boyut
     {
@@ -18,7 +18,7 @@ public class ArchiveData : InpcBase
 
         set
         {
-            if(boyut != value)
+            if (boyut != value)
             {
                 boyut = value;
                 OnPropertyChanged(nameof(Boyut));
@@ -26,8 +26,11 @@ public class ArchiveData : InpcBase
         }
     }
 
-    public string Crc { get => crc;
-        set {
+    public string Crc
+    {
+        get => crc;
+        set
+        {
             if (crc != value)
             {
                 crc = value;
@@ -42,7 +45,7 @@ public class ArchiveData : InpcBase
 
         set
         {
-            if(dosyaAdı != value)
+            if (dosyaAdı != value)
             {
                 dosyaAdı = value;
                 OnPropertyChanged(nameof(DosyaAdı));
@@ -56,7 +59,7 @@ public class ArchiveData : InpcBase
 
         set
         {
-            if(düzenlenmeZamanı != value)
+            if (düzenlenmeZamanı != value)
             {
                 düzenlenmeZamanı = value;
                 OnPropertyChanged(nameof(DüzenlenmeZamanı));
@@ -70,7 +73,7 @@ public class ArchiveData : InpcBase
 
         set
         {
-            if(oran != value)
+            if (oran != value)
             {
                 oran = value;
                 OnPropertyChanged(nameof(Oran));
@@ -84,7 +87,7 @@ public class ArchiveData : InpcBase
 
         set
         {
-            if(sıkıştırılmışBoyut != value)
+            if (sıkıştırılmışBoyut != value)
             {
                 sıkıştırılmışBoyut = value;
                 OnPropertyChanged(nameof(SıkıştırılmışBoyut));
@@ -98,7 +101,7 @@ public class ArchiveData : InpcBase
 
         set
         {
-            if(tamYol != value)
+            if (tamYol != value)
             {
                 tamYol = value;
                 OnPropertyChanged(nameof(TamYol));

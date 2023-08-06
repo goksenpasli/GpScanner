@@ -20,7 +20,7 @@ namespace Extensions
 
         protected override void HashCore(byte[] array, int ibStart, int cbSize)
         {
-            for(int i = ibStart; i < cbSize; i++)
+            for (int i = ibStart; i < cbSize; i++)
             {
                 hashValue = (hashValue >> 8) ^ table[array[i] ^ (hashValue & 0xFF)];
             }
@@ -41,15 +41,16 @@ namespace Extensions
         {
             uint[] table = new uint[256];
 
-            for(uint i = 0; i < 256; i++)
+            for (uint i = 0; i < 256; i++)
             {
                 uint crc = i;
-                for(uint j = 8; j > 0; j--)
+                for (uint j = 8; j > 0; j--)
                 {
-                    if((crc & 1) == 1)
+                    if ((crc & 1) == 1)
                     {
                         crc = (crc >> 1) ^ polynomial;
-                    } else
+                    }
+                    else
                     {
                         crc >>= 1;
                     }

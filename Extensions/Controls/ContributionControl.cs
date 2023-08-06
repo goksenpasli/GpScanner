@@ -26,7 +26,7 @@ namespace Extensions
 
         public ContributionControl()
         {
-            if(DesignerProperties.GetIsInDesignMode(this))
+            if (DesignerProperties.GetIsInDesignMode(this))
             {
                 Contributions = new ObservableCollection<ContributionData>
                 {
@@ -58,7 +58,7 @@ namespace Extensions
             get => days;
             set
             {
-                if(days != value)
+                if (days != value)
                 {
                     days = value;
                     OnPropertyChanged(nameof(Days));
@@ -72,7 +72,7 @@ namespace Extensions
             get => maxContribution;
             set
             {
-                if(maxContribution != value)
+                if (maxContribution != value)
                 {
                     maxContribution = value;
                     OnPropertyChanged(nameof(MaxContribution));
@@ -86,7 +86,7 @@ namespace Extensions
             get => months;
             set
             {
-                if(months != value)
+                if (months != value)
                 {
                     months = value;
                     OnPropertyChanged(nameof(Months));
@@ -100,7 +100,7 @@ namespace Extensions
             get => monthTotalContribution;
             set
             {
-                if(monthTotalContribution != value)
+                if (monthTotalContribution != value)
                 {
                     monthTotalContribution = value;
                     OnPropertyChanged(nameof(MonthTotalContribution));
@@ -116,7 +116,7 @@ namespace Extensions
             get => selectedMonth;
             set
             {
-                if(selectedMonth != value)
+                if (selectedMonth != value)
                 {
                     selectedMonth = value;
                     OnPropertyChanged(nameof(SelectedMonth));
@@ -128,7 +128,7 @@ namespace Extensions
 
         private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if(d is ContributionControl contributionControl && e.NewValue is not null)
+            if (d is ContributionControl contributionControl && e.NewValue is not null)
             {
                 contributionControl.MaxContribution = (e.NewValue as ObservableCollection<ContributionData>).Max(z => z.Count);
                 contributionControl.Days = (e.NewValue as ObservableCollection<ContributionData>).Take(7).Select(z => z.ContrubutionDate.Value.ToString("ddd"));
@@ -138,9 +138,9 @@ namespace Extensions
 
         private void ContributionControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if(e.PropertyName is "SelectedMonth" && Contributions is not null)
+            if (e.PropertyName is "SelectedMonth" && Contributions is not null)
             {
-                foreach(ContributionData item in Contributions)
+                foreach (ContributionData item in Contributions)
                 {
                     item.Stroke = item.ContrubutionDate.Value.ToString("MMM") == SelectedMonth ? Brushes.Red : null;
                 }

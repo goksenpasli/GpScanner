@@ -13,7 +13,7 @@ public class BatchTxtOcr : InpcBase
 
         set
         {
-            if(filePath != value)
+            if (filePath != value)
             {
                 filePath = value;
                 OnPropertyChanged(nameof(FilePath));
@@ -27,7 +27,7 @@ public class BatchTxtOcr : InpcBase
 
         set
         {
-            if(progressValue != value)
+            if (progressValue != value)
             {
                 progressValue = value;
                 OnPropertyChanged(nameof(ProgressValue));

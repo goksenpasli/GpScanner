@@ -44,7 +44,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
         SaveEditedImage = new RelayCommand<object>(
             parameter =>
             {
-                if(parameter is BitmapFrame &&
+                if (parameter is BitmapFrame &&
                     MessageBox.Show($"{Translation.GetResStringValue("GRAPH")} {Translation.GetResStringValue("APPLY")}", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     EditingImage = SaveInkCanvasToImage();
@@ -63,7 +63,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
         set
         {
-            if(drawControlContextMenu != value)
+            if (drawControlContextMenu != value)
             {
                 drawControlContextMenu = value;
                 OnPropertyChanged(nameof(DrawControlContextMenu));
@@ -77,7 +77,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
         set
         {
-            if(drawCursor != value)
+            if (drawCursor != value)
             {
                 drawCursor = value;
                 OnPropertyChanged(nameof(DrawCursor));
@@ -93,7 +93,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
         set
         {
-            if(ellipse != value)
+            if (ellipse != value)
             {
                 ellipse = value;
                 OnPropertyChanged(nameof(Ellipse));
@@ -107,7 +107,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
         set
         {
-            if(highlighter != value)
+            if (highlighter != value)
             {
                 highlighter = value;
                 OnPropertyChanged(nameof(Highlighter));
@@ -121,7 +121,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
         set
         {
-            if(ıgnorePressure != value)
+            if (ıgnorePressure != value)
             {
                 ıgnorePressure = value;
                 OnPropertyChanged(nameof(IgnorePressure));
@@ -137,7 +137,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
         set
         {
-            if(@lock != value)
+            if (@lock != value)
             {
                 @lock = value;
                 OnPropertyChanged(nameof(Lock));
@@ -151,7 +151,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
         set
         {
-            if(rectangle != value)
+            if (rectangle != value)
             {
                 rectangle = value;
                 OnPropertyChanged(nameof(Rectangle));
@@ -167,7 +167,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
         set
         {
-            if(selectedBrush != value)
+            if (selectedBrush != value)
             {
                 selectedBrush = value;
                 OnPropertyChanged(nameof(SelectedBrush));
@@ -181,7 +181,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
         set
         {
-            if(selectedColor != value)
+            if (selectedColor != value)
             {
                 selectedColor = value;
                 OnPropertyChanged(nameof(SelectedColor));
@@ -197,7 +197,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
         set
         {
-            if(selectedStylus != value)
+            if (selectedStylus != value)
             {
                 selectedStylus = value;
                 OnPropertyChanged(nameof(SelectedStylus));
@@ -213,7 +213,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
         set
         {
-            if(smooth != value)
+            if (smooth != value)
             {
                 smooth = value;
                 OnPropertyChanged(nameof(Smooth));
@@ -227,7 +227,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
         set
         {
-            if(stylusHeight != value)
+            if (stylusHeight != value)
             {
                 stylusHeight = value;
                 OnPropertyChanged(nameof(StylusHeight));
@@ -241,7 +241,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
         set
         {
-            if(stylusWidth != value)
+            if (stylusWidth != value)
             {
                 stylusWidth = value;
                 OnPropertyChanged(nameof(StylusWidth));
@@ -253,7 +253,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
     public Cursor ConvertToCursor(FrameworkElement fe)
     {
-        if(fe.Width < 1 || fe.Height < 1)
+        if (fe.Width < 1 || fe.Height < 1)
         {
             return Cursors.None;
         }
@@ -272,7 +272,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
             new((int)Ink.ActualWidth, (int)Ink.ActualHeight, 96, 96, PixelFormats.Pbgra32);
         Rect bounds = VisualTreeHelper.GetDescendantBounds(Ink);
         DrawingVisual dv = new();
-        using(DrawingContext ctx = dv.RenderOpen())
+        using (DrawingContext ctx = dv.RenderOpen())
         {
             ctx.DrawRectangle(new VisualBrush(Ink), null, bounds);
         }
@@ -288,39 +288,39 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
     private void DrawControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if(e.PropertyName is "SelectedStylus")
+        if (e.PropertyName is "SelectedStylus")
         {
             DrawingAttribute.StylusTip = SelectedStylus;
         }
 
-        if(e.PropertyName is "StylusWidth")
+        if (e.PropertyName is "StylusWidth")
         {
             DrawingAttribute.Width = Lock ? StylusHeight = StylusWidth : StylusWidth;
             GenerateCustomCursor();
         }
 
-        if(e.PropertyName is "StylusHeight")
+        if (e.PropertyName is "StylusHeight")
         {
             DrawingAttribute.Height = Lock ? StylusWidth = StylusHeight : StylusHeight;
             GenerateCustomCursor();
         }
 
-        if(e.PropertyName is "Smooth")
+        if (e.PropertyName is "Smooth")
         {
             DrawingAttribute.FitToCurve = Smooth;
         }
 
-        if(e.PropertyName is "IgnorePressure")
+        if (e.PropertyName is "IgnorePressure")
         {
             DrawingAttribute.IgnorePressure = IgnorePressure;
         }
 
-        if(e.PropertyName is "Highlighter")
+        if (e.PropertyName is "Highlighter")
         {
             DrawingAttribute.IsHighlighter = Highlighter;
         }
 
-        if(e.PropertyName is "SelectedColor")
+        if (e.PropertyName is "SelectedColor")
         {
             DrawingAttribute.Color = (Color)ColorConverter.ConvertFromString(SelectedColor);
         }
@@ -345,10 +345,10 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
     private void Ink_PreviewMouseDown(object sender, MouseButtonEventArgs e)
     {
-        if(e.RightButton == MouseButtonState.Pressed)
+        if (e.RightButton == MouseButtonState.Pressed)
         {
             DrawControlContextMenu = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
-            if(DrawControlContextMenu)
+            if (DrawControlContextMenu)
             {
                 System.Windows.Point mousemovecoord = e.GetPosition(Scr);
                 mousemovecoord.X += Scr.HorizontalOffset;

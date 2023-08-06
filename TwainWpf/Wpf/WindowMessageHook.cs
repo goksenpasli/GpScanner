@@ -24,12 +24,12 @@ namespace TwainWpf.Wpf
 
             set
             {
-                if(!_usingFilter && value)
+                if (!_usingFilter && value)
                 {
                     _source.AddHook(FilterMessage);
                     _usingFilter = true;
                 }
-                if(_usingFilter && !value)
+                if (_usingFilter && !value)
                 {
                     _source.RemoveHook(FilterMessage);
                     _usingFilter = false;

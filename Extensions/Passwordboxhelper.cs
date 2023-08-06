@@ -22,17 +22,17 @@ public class PasswordBoxHelper
 
     private static void HandleBoundPasswordChanged(DependencyObject dp, DependencyPropertyChangedEventArgs e)
     {
-        if(dp is not PasswordBox passwordBox)
+        if (dp is not PasswordBox passwordBox)
         {
             return;
         }
 
-        if((bool)passwordBox.GetValue(SettingPasswordProperty))
+        if ((bool)passwordBox.GetValue(SettingPasswordProperty))
         {
             return;
         }
 
-        if(!(bool)passwordBox.GetValue(PasswordInitializedProperty))
+        if (!(bool)passwordBox.GetValue(PasswordInitializedProperty))
         {
             passwordBox.SetValue(PasswordInitializedProperty, true);
             passwordBox.PasswordChanged += HandlePasswordChanged;

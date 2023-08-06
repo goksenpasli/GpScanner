@@ -32,7 +32,8 @@ public class RelayAsyncCommand<T> : RelayCommand<T>
 
             Task task = Task.Run(() => _execute((T)parameter));
             _ = task.ContinueWith(_ => OnRunWorkerCompleted(EventArgs.Empty), TaskScheduler.FromCurrentSynchronizationContext());
-        } catch(Exception ex)
+        }
+        catch (Exception ex)
         {
             OnRunWorkerCompleted(new RunWorkerCompletedEventArgs(null, ex, true));
         }
@@ -95,7 +96,7 @@ public class RelayCommand : ICommand
     {
         add
         {
-            if(canExecute != null)
+            if (canExecute != null)
             {
                 CommandManager.RequerySuggested += value;
             }
@@ -103,7 +104,7 @@ public class RelayCommand : ICommand
 
         remove
         {
-            if(canExecute != null)
+            if (canExecute != null)
             {
                 CommandManager.RequerySuggested -= value;
             }

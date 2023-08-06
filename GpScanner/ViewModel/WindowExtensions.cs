@@ -74,9 +74,9 @@ public static class WindowExtensions
     [DebuggerStepThrough]
     private static IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
     {
-        if(msg == WM_SYSCOMMAND)
+        if (msg == WM_SYSCOMMAND)
         {
-            switch(wParam.ToInt32())
+            switch (wParam.ToInt32())
             {
                 case _AboutSysMenuID:
                     _ = Process.Start("https://github.com/goksenpasli");

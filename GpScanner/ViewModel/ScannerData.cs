@@ -16,7 +16,7 @@ public class ScannerData : InpcBase
 
         set
         {
-            if(data != value)
+            if (data != value)
             {
                 data = value;
                 OnPropertyChanged(nameof(Data));

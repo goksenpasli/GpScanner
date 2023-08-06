@@ -22,18 +22,19 @@ public class CustomArchiveViewer : ArchiveViewer
             {
                 try
                 {
-                    if(parameter is string filename && !supportedFilesExtension.Contains(Path.GetExtension(filename)))
+                    if (parameter is string filename && !supportedFilesExtension.Contains(Path.GetExtension(filename)))
                     {
                         string extractedfile = ExtractToFile(parameter as string);
                         _ = Process.Start(extractedfile);
                         return;
                     }
-                    if(Tag is TwainCtrl twainCtrl)
+                    if (Tag is TwainCtrl twainCtrl)
                     {
                         string extractedfile = ExtractToFile(parameter as string);
                         twainCtrl.AddFiles(new string[] { extractedfile }, twainCtrl.DecodeHeight);
                     }
-                } catch(Exception ex)
+                }
+                catch (Exception ex)
                 {
                     throw new ArgumentException(ArchivePath, ex);
                 }
@@ -45,14 +46,14 @@ public class CustomArchiveViewer : ArchiveViewer
 
     private void CustomArchiveViewer_Drop(object sender, DragEventArgs e)
     {
-        if(e.Data.GetData(DataFormats.FileDrop) is string[] droppedfiles && droppedfiles?.Length > 0)
+        if (e.Data.GetData(DataFormats.FileDrop) is string[] droppedfiles && droppedfiles?.Length > 0)
         {
             SelectedFiles = droppedfiles;
             ArşivDosyaEkle.Execute(null);
             ReadArchiveContent(ArchivePath, this);
             return;
         }
-        if(e.Data.GetData(typeof(ScannedImage)) is ScannedImage scannedimage && scannedimage.FilePath is not null)
+        if (e.Data.GetData(typeof(ScannedImage)) is ScannedImage scannedimage && scannedimage.FilePath is not null)
         {
             SelectedFiles = new string[] { scannedimage.FilePath };
             ArşivDosyaEkle.Execute(null);

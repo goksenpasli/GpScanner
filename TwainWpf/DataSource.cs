@@ -25,7 +25,8 @@ namespace TwainWpf
                 try
                 {
                     return Capability.GetBoolCapability(Capabilities.FeederLoaded, _applicationId, SourceId);
-                } catch
+                }
+                catch
                 {
                     return false;
                 }
@@ -42,7 +43,8 @@ namespace TwainWpf
                 {
                     Capability cap = new Capability(Capabilities.Duplex, TwainType.Int16, _applicationId, SourceId);
                     return ((Duplex)cap.GetBasicValue().Int16Value) != Duplex.None;
-                } catch
+                }
+                catch
                 {
                     return false;
                 }
@@ -58,7 +60,8 @@ namespace TwainWpf
                     _ = new Capability(Capabilities.Lightpath, TwainType.Int16, _applicationId, SourceId);
 
                     return true;
-                } catch
+                }
+                catch
                 {
                     return false;
                 }
@@ -72,25 +75,28 @@ namespace TwainWpf
 
             TwainResult result = Twain32Native.DsmIdentity(applicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Identity, Message.GetFirst, id);
 
-            if(result == TwainResult.EndOfList)
+            if (result == TwainResult.EndOfList)
             {
                 return sources;
-            } else if(result != TwainResult.Success)
+            }
+            else if (result != TwainResult.Success)
             {
                 throw new TwainException("Error getting first source.", result);
-            } else
+            }
+            else
             {
                 sources.Add(new DataSource(applicationId, id, messageHook));
             }
 
-            while(true)
+            while (true)
             {
                 result = Twain32Native.DsmIdentity(applicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Identity, Message.GetNext, id);
 
-                if(result == TwainResult.EndOfList)
+                if (result == TwainResult.EndOfList)
                 {
                     break;
-                } else if(result != TwainResult.Success)
+                }
+                else if (result != TwainResult.Success)
                 {
                     throw new TwainException("Error enumerating sources.", result);
                 }
@@ -107,7 +113,7 @@ namespace TwainWpf
 
             TwainResult result = Twain32Native.DsmIdentity(applicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Identity, Message.GetDefault, defaultSourceId);
 
-            if(result != TwainResult.Success)
+            if (result != TwainResult.Success)
             {
                 ConditionCode status = DataSourceManager.GetConditionCode(applicationId, null);
                 throw new TwainException($"Error getting information about the default source: {result}", result, status);
@@ -118,9 +124,9 @@ namespace TwainWpf
 
         public static DataSource GetSource(string sourceProductName, Identity applicationId, IWindowsMessageHook messageHook)
         {
-            foreach(DataSource source in GetAllSources(applicationId, messageHook))
+            foreach (DataSource source in GetAllSources(applicationId, messageHook))
             {
-                if(sourceProductName.Equals(source.SourceId.ProductName, StringComparison.InvariantCultureIgnoreCase))
+                if (sourceProductName.Equals(source.SourceId.ProductName, StringComparison.InvariantCultureIgnoreCase))
                 {
                     return source;
                 }
@@ -140,7 +146,7 @@ namespace TwainWpf
 
         public void Close()
         {
-            if(SourceId.Id != 0)
+            if (SourceId.Id != 0)
             {
                 try
                 {
@@ -148,11 +154,12 @@ namespace TwainWpf
 
                     TwainResult result = Twain32Native.DsUserInterface(_applicationId, SourceId, DataGroup.Control, DataArgumentType.UserInterface, Message.DisableDS, userInterface);
 
-                    if(result != TwainResult.Failure)
+                    if (result != TwainResult.Failure)
                     {
                         result = Twain32Native.DsmIdentity(_applicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Identity, Message.CloseDS, SourceId);
                     }
-                } catch
+                }
+                catch
                 {
                 }
             }
@@ -170,7 +177,7 @@ namespace TwainWpf
 
             TwainResult result = Twain32Native.DsUserInterface(_applicationId, SourceId, DataGroup.Control, DataArgumentType.UserInterface, Message.EnableDS, ui);
 
-            if(result != TwainResult.Success)
+            if (result != TwainResult.Success)
             {
                 Dispose();
                 return false;
@@ -180,7 +187,7 @@ namespace TwainWpf
 
         public short GetBitDepth(ScanSettings scanSettings)
         {
-            switch(scanSettings.Resolution.ColourSetting)
+            switch (scanSettings.Resolution.ColourSetting)
             {
                 case ColourSetting.BlackAndWhite:
                     return 1;
@@ -197,7 +204,7 @@ namespace TwainWpf
 
         public PixelType GetPixelType(ScanSettings scanSettings)
         {
-            switch(scanSettings.Resolution.ColourSetting)
+            switch (scanSettings.Resolution.ColourSetting)
             {
                 case ColourSetting.BlackAndWhite:
                     return PixelType.BlackAndWhite;
@@ -220,11 +227,12 @@ namespace TwainWpf
         {
             try
             {
-                if(scanSettings.Rotation.AutomaticBorderDetection)
+                if (scanSettings.Rotation.AutomaticBorderDetection)
                 {
                     Capability.SetCapability(Capabilities.Automaticborderdetection, true, _applicationId, SourceId);
                 }
-            } catch
+            }
+            catch
             {
             }
         }
@@ -237,11 +245,12 @@ namespace TwainWpf
         {
             try
             {
-                if(scanSettings.Rotation.AutomaticRotate)
+                if (scanSettings.Rotation.AutomaticRotate)
                 {
                     Capability.SetCapability(Capabilities.Automaticrotate, true, _applicationId, SourceId);
                 }
-            } catch
+            }
+            catch
             {
             }
         }
@@ -251,18 +260,20 @@ namespace TwainWpf
             try
             {
                 _ = Capability.SetBasicCapability(Capabilities.IPixelType, (ushort)GetPixelType(scanSettings), TwainType.UInt16, _applicationId, SourceId);
-            } catch
+            }
+            catch
             {
             }
 
             // TODO: Also set this for colour scanning
             try
             {
-                if(scanSettings.Resolution.ColourSetting != ColourSetting.Colour)
+                if (scanSettings.Resolution.ColourSetting != ColourSetting.Colour)
                 {
                     _ = Capability.SetCapability(Capabilities.BitDepth, GetBitDepth(scanSettings), _applicationId, SourceId);
                 }
-            } catch
+            }
+            catch
             {
             }
         }
@@ -271,11 +282,12 @@ namespace TwainWpf
         {
             try
             {
-                if(scanSettings.UseDuplex.HasValue && SupportsDuplex)
+                if (scanSettings.UseDuplex.HasValue && SupportsDuplex)
                 {
                     Capability.SetCapability(Capabilities.DuplexEnabled, scanSettings.UseDuplex.Value, _applicationId, SourceId);
                 }
-            } catch
+            }
+            catch
             {
             }
         }
@@ -284,31 +296,34 @@ namespace TwainWpf
         {
             try
             {
-                if(scanSettings.UseDocumentFeeder.HasValue)
+                if (scanSettings.UseDocumentFeeder.HasValue)
                 {
                     Capability.SetCapability(Capabilities.FeederEnabled, scanSettings.UseDocumentFeeder.Value, _applicationId, SourceId);
                 }
-            } catch
+            }
+            catch
             {
             }
 
             try
             {
-                if(scanSettings.UseAutoFeeder.HasValue)
+                if (scanSettings.UseAutoFeeder.HasValue)
                 {
                     Capability.SetCapability(Capabilities.AutoFeed, scanSettings.UseAutoFeeder == true && scanSettings.UseDocumentFeeder == true, _applicationId, SourceId);
                 }
-            } catch
+            }
+            catch
             {
             }
 
             try
             {
-                if(scanSettings.UseAutoScanCache.HasValue)
+                if (scanSettings.UseAutoScanCache.HasValue)
                 {
                     Capability.SetCapability(Capabilities.AutoScan, scanSettings.UseAutoScanCache.Value, _applicationId, SourceId);
                 }
-            } catch
+            }
+            catch
             {
             }
         }
@@ -317,13 +332,14 @@ namespace TwainWpf
         {
             try
             {
-                if(scanSettings.UseFilmScanner.HasValue && SupportsFilmScanner)
+                if (scanSettings.UseFilmScanner.HasValue && SupportsFilmScanner)
                 {
                     _ = scanSettings.UseFilmScanner.Value
                         ? Capability.SetBasicCapability(Capabilities.Lightpath, (ushort)Lightpath.Transmissive, TwainType.UInt16, _applicationId, SourceId)
                         : Capability.SetBasicCapability(Capabilities.Lightpath, (ushort)Lightpath.Reflective, TwainType.UInt16, _applicationId, SourceId);
                 }
-            } catch
+            }
+            catch
             {
             }
         }
@@ -333,11 +349,12 @@ namespace TwainWpf
             try
             {
                 Capability cap = new Capability(Capabilities.Orientation, TwainType.Int16, _applicationId, SourceId);
-                if((Orientation)cap.GetBasicValue().Int16Value != Orientation.Default)
+                if ((Orientation)cap.GetBasicValue().Int16Value != Orientation.Default)
                 {
                     _ = Capability.SetBasicCapability(Capabilities.Orientation, (ushort)scanSettings.Page.Orientation, TwainType.UInt16, _applicationId, SourceId);
                 }
-            } catch
+            }
+            catch
             {
             }
         }
@@ -351,11 +368,12 @@ namespace TwainWpf
             try
             {
                 Capability cap = new Capability(Capabilities.Supportedsizes, TwainType.Int16, _applicationId, SourceId);
-                if((PageType)cap.GetBasicValue().Int16Value != PageType.UsLetter)
+                if ((PageType)cap.GetBasicValue().Int16Value != PageType.UsLetter)
                 {
                     _ = Capability.SetBasicCapability(Capabilities.Supportedsizes, (ushort)scanSettings.Page.Size, TwainType.UInt16, _applicationId, SourceId);
                 }
-            } catch
+            }
+            catch
             {
             }
         }
@@ -368,11 +386,12 @@ namespace TwainWpf
         {
             try
             {
-                if(scanSettings.ShowProgressIndicatorUi.HasValue)
+                if (scanSettings.ShowProgressIndicatorUi.HasValue)
                 {
                     Capability.SetCapability(Capabilities.Indicators, scanSettings.ShowProgressIndicatorUi.Value, _applicationId, SourceId);
                 }
-            } catch
+            }
+            catch
             {
             }
         }
@@ -381,13 +400,14 @@ namespace TwainWpf
         {
             try
             {
-                if(scanSettings.Resolution.Dpi.HasValue)
+                if (scanSettings.Resolution.Dpi.HasValue)
                 {
                     int dpi = scanSettings.Resolution.Dpi.Value;
                     _ = Capability.SetBasicCapability(Capabilities.XResolution, dpi, TwainType.Fix32, _applicationId, SourceId);
                     _ = Capability.SetBasicCapability(Capabilities.YResolution, dpi, TwainType.Fix32, _applicationId, SourceId);
                 }
-            } catch
+            }
+            catch
             {
             }
         }
@@ -397,7 +417,8 @@ namespace TwainWpf
             try
             {
                 scanSettings.TransferCount = Capability.SetCapability(Capabilities.XferCount, scanSettings.TransferCount, _applicationId, SourceId);
-            } catch
+            }
+            catch
             {
             }
         }
@@ -406,7 +427,7 @@ namespace TwainWpf
         {
             OpenSource();
 
-            if(settings.AbortWhenNoPaperDetectable && !PaperDetectable)
+            if (settings.AbortWhenNoPaperDetectable && !PaperDetectable)
             {
                 throw new FeederEmptyException();
             }
@@ -417,24 +438,24 @@ namespace TwainWpf
             NegotiateDuplex(settings);
             NegotiateLightPath(settings);
 
-            if(settings.UseDocumentFeeder == true && settings.Page != null)
+            if (settings.UseDocumentFeeder == true && settings.Page != null)
             {
                 NegotiatePageSize(settings);
                 NegotiateOrientation(settings);
             }
 
-            if(settings.Area != null)
+            if (settings.Area != null)
             {
                 _ = NegotiateArea(settings);
             }
 
-            if(settings.Resolution != null)
+            if (settings.Resolution != null)
             {
                 NegotiateColour(settings);
                 NegotiateResolution(settings);
             }
 
-            if(settings.Rotation != null)
+            if (settings.Rotation != null)
             {
                 NegotiateAutomaticRotate(settings);
                 NegotiateAutomaticBorderDetection(settings);
@@ -447,7 +468,7 @@ namespace TwainWpf
         {
             TwainResult result = Twain32Native.DsmIdentity(_applicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Identity, Message.OpenDS, SourceId);
 
-            if(result != TwainResult.Success)
+            if (result != TwainResult.Success)
             {
                 throw new TwainException("Error opening data source", result);
             }
@@ -455,7 +476,7 @@ namespace TwainWpf
 
         protected void Dispose(bool disposing)
         {
-            if(disposing)
+            if (disposing)
             {
                 Close();
             }
@@ -465,7 +486,7 @@ namespace TwainWpf
         {
             AreaSettings area = scanSettings.Area;
 
-            if(area == null)
+            if (area == null)
             {
                 return false;
             }
@@ -473,11 +494,12 @@ namespace TwainWpf
             try
             {
                 Capability cap = new Capability(Capabilities.IUnits, TwainType.Int16, _applicationId, SourceId);
-                if((Units)cap.GetBasicValue().Int16Value != area.Units)
+                if ((Units)cap.GetBasicValue().Int16Value != area.Units)
                 {
                     _ = Capability.SetCapability(Capabilities.IUnits, (short)area.Units, _applicationId, SourceId);
                 }
-            } catch
+            }
+            catch
             {
             }
 

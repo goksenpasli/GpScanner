@@ -78,7 +78,6 @@ public class GpScannerViewModel : InpcBase
     private string patchTag;
     private bool pdfBatchRunning;
     private double pdfMergeProgressValue;
-    private bool pdfOnlyText;
     private Brush progressBarForegroundBrush = Brushes.Green;
     private ObservableCollection<OcrData> scannedText = new();
     private string seçiliDil;
@@ -94,18 +93,13 @@ public class GpScannerViewModel : InpcBase
 
     public GpScannerViewModel()
     {
-        if(string.IsNullOrWhiteSpace(Settings.Default.DatabaseFile))
+        if (string.IsNullOrWhiteSpace(Settings.Default.DatabaseFile))
         {
-            XmlDataPath = Settings.Default.DatabaseFile =
-                Path.GetDirectoryName(
-                        ConfigurationManager
-                        .OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal)
-                            .FilePath) +
-                    @"\Data.xml";
+            XmlDataPath = Settings.Default.DatabaseFile = $@"{Path.GetDirectoryName(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath)}\Data.xml";
             Settings.Default.Save();
         }
 
-        if(Settings.Default.WatchFolderPdfFileChange && AnyDataExists)
+        if (Settings.Default.WatchFolderPdfFileChange && AnyDataExists)
         {
             RegisterSimplePdfFileWatcher();
         }
@@ -131,7 +125,7 @@ public class GpScannerViewModel : InpcBase
         PdfBirleştir = new RelayCommand<object>(
             async parameter =>
             {
-                if(Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                 {
                     await Task.Run(
                         async () =>
@@ -144,7 +138,7 @@ public class GpScannerViewModel : InpcBase
                 }
 
                 SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası(*.pdf)|*.pdf", FileName = Translation.GetResStringValue("MERGE") };
-                if(saveFileDialog.ShowDialog() == true)
+                if (saveFileDialog.ShowDialog() == true)
                 {
                     try
                     {
@@ -154,7 +148,8 @@ public class GpScannerViewModel : InpcBase
                                 List<string> pdffilelist = Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName).ToList();
                                 pdffilelist.ToArray().MergePdf().Save(saveFileDialog.FileName);
                             });
-                    } catch(Exception ex)
+                    }
+                    catch (Exception ex)
                     {
                         _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
                     }
@@ -170,7 +165,7 @@ public class GpScannerViewModel : InpcBase
             async parameter =>
             {
                 SaveFileDialog saveFileDialog = new() { Filter = "Zip Dosyası(*.zip)|*.zip", FileName = Translation.GetResStringValue("MERGE") };
-                if(saveFileDialog.ShowDialog() == true)
+                if (saveFileDialog.ShowDialog() == true)
                 {
                     try
                     {
@@ -179,12 +174,13 @@ public class GpScannerViewModel : InpcBase
                             {
                                 List<string> pdffilelist = Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName).ToList();
                                 using ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Create);
-                                foreach(string fPath in pdffilelist)
+                                foreach (string fPath in pdffilelist)
                                 {
                                     _ = archive.CreateEntryFromFile(fPath, Path.GetFileName(fPath));
                                 }
                             });
-                    } catch(Exception ex)
+                    }
+                    catch (Exception ex)
                     {
                         _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
                     }
@@ -199,22 +195,22 @@ public class GpScannerViewModel : InpcBase
         OcrPage = new RelayCommand<object>(
             async parameter =>
             {
-                if(parameter is BitmapFrame bitmapframe)
+                if (parameter is BitmapFrame bitmapframe)
                 {
                     byte[] imgdata = bitmapframe.ToTiffJpegByteArray(Format.Jpg);
                     OcrIsBusy = true;
                     ScannedText = await imgdata.OcrAsync(Settings.Default.DefaultTtsLang);
                     OcrIsBusy = false;
-                    if(ScannedText != null)
+                    if (ScannedText != null)
                     {
                         TranslateViewModel.Metin = string.Join(" ", ScannedText.Select(z => z.Text));
                         TranslateViewModel.TaramaGeçmiş.Add(TranslateViewModel.Metin);
                     }
 
-                    if(DetectBarCode)
+                    if (DetectBarCode)
                     {
                         string result = await Task.Run(() => QrCode.QrCode.GetImageBarcodeResult(bitmapframe));
-                        if(result != null)
+                        if (result != null)
                         {
                             BarcodeList.Add(result);
                         }
@@ -230,22 +226,23 @@ public class GpScannerViewModel : InpcBase
         OcrPdfThumbnailPage = new RelayCommand<object>(
             async parameter =>
             {
-                if(parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
+                if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
                 {
                     byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfviewer.PdfFilePath);
-                    if(filedata != null)
+                    if (filedata != null)
                     {
                         OcrIsBusy = true;
                         ObservableCollection<OcrData> ocrdata;
-                        if(Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                        if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                         {
-                            for(int i = 1; i <= pdfviewer.ToplamSayfa; i++)
+                            for (int i = 1; i <= pdfviewer.ToplamSayfa; i++)
                             {
                                 using MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, Twainsettings.Settings.Default.ImgLoadResolution);
                                 ocrdata = await ms.ToArray().OcrAsync(Settings.Default.DefaultTtsLang);
                                 ScannerData.Data.Add(new Data { Id = DataSerialize.RandomNumber(), FileName = pdfviewer.PdfFilePath, FileContent = string.Join(" ", ocrdata?.Select(z => z.Text)) });
                             }
-                        } else
+                        }
+                        else
                         {
                             using MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfviewer.Sayfa, Twainsettings.Settings.Default.ImgLoadResolution);
                             ocrdata = await ms.ToArray().OcrAsync(Settings.Default.DefaultTtsLang);
@@ -265,10 +262,10 @@ public class GpScannerViewModel : InpcBase
         WordOcrPdfThumbnailPage = new RelayCommand<object>(
             async parameter =>
             {
-                if(parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
+                if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
                 {
                     byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfviewer.PdfFilePath);
-                    if(filedata != null)
+                    if (filedata != null)
                     {
                         OcrIsBusy = true;
                         ObservableCollection<OcrData> ocrdata;
@@ -277,7 +274,7 @@ public class GpScannerViewModel : InpcBase
                         OcrIsBusy = false;
                         filedata = null;
                         SaveFileDialog saveFileDialog = new() { Filter = "Docx Dosyası(*.docx)|*.docx", FileName = Translation.GetResStringValue("FILE") };
-                        if(saveFileDialog.ShowDialog() == true)
+                        if (saveFileDialog.ShowDialog() == true)
                         {
                             using DocX document = WriteDocxFile(ocrdata, saveFileDialog.FileName);
                             document.Save(saveFileDialog.FileName);
@@ -292,10 +289,10 @@ public class GpScannerViewModel : InpcBase
         OpenOriginalFile = new RelayCommand<object>(
             parameter =>
             {
-                if(parameter is string filepath)
+                if (parameter is string filepath)
                 {
                     DocumentViewerWindow documentViewerWindow = new();
-                    if(documentViewerWindow.DataContext is DocumentViewerModel documentViewerModel)
+                    if (documentViewerWindow.DataContext is DocumentViewerModel documentViewerModel)
                     {
                         documentViewerWindow.Owner = Application.Current?.MainWindow;
                         documentViewerModel.Scanner = ToolBox.Scanner;
@@ -316,7 +313,7 @@ public class GpScannerViewModel : InpcBase
             parameter =>
             {
                 OpenFileDialog openFileDialog = new() { Filter = "Xml Dosyası(*.xml)|*.xml", FileName = "Data.xml" };
-                if(openFileDialog.ShowDialog() == true)
+                if (openFileDialog.ShowDialog() == true)
                 {
                     XmlDataPath = Settings.Default.DatabaseFile = openFileDialog.FileName;
                     Settings.Default.Save();
@@ -327,9 +324,9 @@ public class GpScannerViewModel : InpcBase
         Tümünüİşaretle = new RelayCommand<object>(
             parameter =>
             {
-                if(Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                 {
-                    foreach(Scanner item in Dosyalar)
+                    foreach (Scanner item in Dosyalar)
                     {
                         item.Seçili = true;
                     }
@@ -337,7 +334,7 @@ public class GpScannerViewModel : InpcBase
                     return;
                 }
 
-                foreach(Scanner item in MainWindow.cvs.View.OfType<Scanner>().Where(z => Path.GetExtension(z.FileName.ToLower()) == ".pdf"))
+                foreach (Scanner item in MainWindow.cvs.View.OfType<Scanner>().Where(z => Path.GetExtension(z.FileName.ToLower()) == ".pdf"))
                 {
                     item.Seçili = true;
                 }
@@ -347,9 +344,9 @@ public class GpScannerViewModel : InpcBase
         TümününİşaretiniKaldır = new RelayCommand<object>(
             parameter =>
             {
-                if(Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                 {
-                    foreach(Scanner item in Dosyalar)
+                    foreach (Scanner item in Dosyalar)
                     {
                         item.Seçili = false;
                     }
@@ -357,7 +354,7 @@ public class GpScannerViewModel : InpcBase
                     return;
                 }
 
-                foreach(Scanner item in MainWindow.cvs.View)
+                foreach (Scanner item in MainWindow.cvs.View)
                 {
                     item.Seçili = false;
                 }
@@ -367,9 +364,9 @@ public class GpScannerViewModel : InpcBase
         Tersiniİşaretle = new RelayCommand<object>(
             parameter =>
             {
-                if(Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                 {
-                    foreach(Scanner item in Dosyalar)
+                    foreach (Scanner item in Dosyalar)
                     {
                         item.Seçili = !item.Seçili;
                     }
@@ -377,7 +374,7 @@ public class GpScannerViewModel : InpcBase
                     return;
                 }
 
-                foreach(Scanner item in MainWindow.cvs.View.OfType<Scanner>().Where(z => Path.GetExtension(z.FileName.ToLower()) == ".pdf"))
+                foreach (Scanner item in MainWindow.cvs.View.OfType<Scanner>().Where(z => Path.GetExtension(z.FileName.ToLower()) == ".pdf"))
                 {
                     item.Seçili = !item.Seçili;
                 }
@@ -431,7 +428,7 @@ public class GpScannerViewModel : InpcBase
         UploadFtp = new RelayCommand<object>(
             async parameter =>
             {
-                if(parameter is Scanner scanner && File.Exists(scanner.FileName))
+                if (parameter is Scanner scanner && File.Exists(scanner.FileName))
                 {
                     string[] ftpdata = Settings.Default.SelectedFtp.Split('|');
                     await FtpUploadAsync(ftpdata[0], ftpdata[1], ftpdata[2], scanner);
@@ -442,7 +439,7 @@ public class GpScannerViewModel : InpcBase
         UploadSharePoint = new RelayCommand<object>(
             parameter =>
             {
-                if(parameter is Scanner scanner && File.Exists(scanner.FileName))
+                if (parameter is Scanner scanner && File.Exists(scanner.FileName))
                 {
                     using ClientContext clientContext = new(Settings.Default.SharePointUrl);
                     clientContext.Credentials = new NetworkCredential(Settings.Default.SharePointUserName, Settings.Default.SharePointUserPassword);
@@ -459,7 +456,7 @@ public class GpScannerViewModel : InpcBase
             parameter =>
             {
                 SaveFileDialog saveFileDialog = new() { Filter = "Jpg Resmi (*.jpg)|*.jpg", FileName = "QR" };
-                if(saveFileDialog.ShowDialog() == true)
+                if (saveFileDialog.ShowDialog() == true)
                 {
                     File.WriteAllBytes(saveFileDialog.FileName, BitmapFrame.Create(parameter as WriteableBitmap).ToTiffJpegByteArray(Format.Jpg));
                 }
@@ -479,7 +476,7 @@ public class GpScannerViewModel : InpcBase
         ModifyGridWidth = new RelayCommand<object>(
             parameter =>
             {
-                switch(parameter)
+                switch (parameter)
                 {
                     case "0":
                         MainWindowDocumentGuiControlLength = new GridLength(1, GridUnitType.Star);
@@ -498,7 +495,7 @@ public class GpScannerViewModel : InpcBase
             parameter =>
             {
                 FolderBrowserDialog dialog = new() { Description = $"{Translation.GetResStringValue("GRAPH")} {Translation.GetResStringValue("FILE")}" };
-                if(dialog.ShowDialog() == DialogResult.OK)
+                if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     BatchFolder = dialog.SelectedPath;
                 }
@@ -509,7 +506,7 @@ public class GpScannerViewModel : InpcBase
             parameter =>
             {
                 FolderBrowserDialog dialog = new() { Description = Translation.GetResStringValue("BATCHDESC") };
-                if(dialog.ShowDialog() == DialogResult.OK)
+                if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     Settings.Default.BatchFolder = dialog.SelectedPath;
                     Settings.Default.Save();
@@ -520,7 +517,7 @@ public class GpScannerViewModel : InpcBase
         StartPdfBatch = new RelayCommand<object>(
             async parameter =>
             {
-                if(Filesavetask?.IsCompleted == false)
+                if (Filesavetask?.IsCompleted == false)
                 {
                     _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
                     return;
@@ -533,18 +530,18 @@ public class GpScannerViewModel : InpcBase
                 BatchTxtOcrs = new ObservableCollection<BatchTxtOcr>();
                 List<Task> Tasks = new();
                 ocrcancellationToken = new CancellationTokenSource();
-                foreach(List<string> item in TwainCtrl.ChunkBy(files, slicecount))
+                foreach (List<string> item in TwainCtrl.ChunkBy(files, slicecount))
                 {
-                    if(item.Count > 0)
+                    if (item.Count > 0)
                     {
                         BatchTxtOcr batchTxtOcr = new();
                         Paper paper = ToolBox.Paper;
                         Task task = Task.Run(
                             () =>
                             {
-                                for(int i = 0; i < item.Count; i++)
+                                for (int i = 0; i < item.Count; i++)
                                 {
-                                    if(ocrcancellationToken?.IsCancellationRequested == false)
+                                    if (ocrcancellationToken?.IsCancellationRequested == false)
                                     {
                                         string pdffile = Path.ChangeExtension(item.ElementAtOrDefault(i), ".pdf");
                                         ObservableCollection<OcrData> scannedText = scanner?.ApplyPdfSaveOcr == true ? item.ElementAtOrDefault(i).GetOcrData(Settings.Default.DefaultTtsLang) : null;
@@ -567,7 +564,7 @@ public class GpScannerViewModel : InpcBase
                 Filesavetask = Task.WhenAll(Tasks);
                 await Filesavetask;
                 scanner.PdfSaveProgressValue = 0;
-                if(Filesavetask?.IsCompleted == true && Shutdown)
+                if (Filesavetask?.IsCompleted == true && Shutdown)
                 {
                     ViewModel.Shutdown.DoExitWin(ViewModel.Shutdown.EWX_SHUTDOWN);
                 }
@@ -577,7 +574,7 @@ public class GpScannerViewModel : InpcBase
         CancelBatchOcr = new RelayCommand<object>(
             parameter =>
             {
-                if(MessageBox.Show($"{Translation.GetResStringValue("TRANSLATEPENDING")}\n{Translation.GetResStringValue("RESET")}", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) ==
+                if (MessageBox.Show($"{Translation.GetResStringValue("TRANSLATEPENDING")}\n{Translation.GetResStringValue("RESET")}", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) ==
                     MessageBoxResult.Yes)
                 {
                     ocrcancellationToken?.Cancel();
@@ -589,7 +586,7 @@ public class GpScannerViewModel : InpcBase
         StartTxtBatch = new RelayCommand<object>(
             async parameter =>
             {
-                if(Filesavetask?.IsCompleted == false)
+                if (Filesavetask?.IsCompleted == false)
                 {
                     _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
                     return;
@@ -602,17 +599,17 @@ public class GpScannerViewModel : InpcBase
                 BatchTxtOcrs = new ObservableCollection<BatchTxtOcr>();
                 List<Task> Tasks = new();
                 ocrcancellationToken = new CancellationTokenSource();
-                foreach(List<string> item in TwainCtrl.ChunkBy(files, slicecount))
+                foreach (List<string> item in TwainCtrl.ChunkBy(files, slicecount))
                 {
-                    if(item.Count > 0)
+                    if (item.Count > 0)
                     {
                         BatchTxtOcr batchTxtOcr = new();
                         Task task = Task.Run(
                             () =>
                             {
-                                for(int i = 0; i < item.Count; i++)
+                                for (int i = 0; i < item.Count; i++)
                                 {
-                                    if(ocrcancellationToken?.IsCancellationRequested == false)
+                                    if (ocrcancellationToken?.IsCancellationRequested == false)
                                     {
                                         string image = item[i];
                                         string txtfile = Path.ChangeExtension(image, ".txt");
@@ -635,7 +632,7 @@ public class GpScannerViewModel : InpcBase
                 Filesavetask = Task.WhenAll(Tasks);
                 await Filesavetask;
                 scanner.PdfSaveProgressValue = 0;
-                if(Filesavetask?.IsCompleted == true && Shutdown)
+                if (Filesavetask?.IsCompleted == true && Shutdown)
                 {
                     ViewModel.Shutdown.DoExitWin(ViewModel.Shutdown.EWX_SHUTDOWN);
                 }
@@ -647,7 +644,8 @@ public class GpScannerViewModel : InpcBase
         ResetSettings = new RelayCommand<object>(
             parameter =>
             {
-                if(MessageBox.Show($"{Translation.GetResStringValue("SETTİNGS")} {Translation.GetResStringValue("RESET")}", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                if (MessageBox.Show($"{Translation.GetResStringValue("SETTİNGS")} {Translation.GetResStringValue("RESET")}", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) ==
+                    MessageBoxResult.Yes)
                 {
                     (parameter as Twainsettings.Settings)?.Reset();
                     Settings.Default.Reset();
@@ -663,11 +661,11 @@ public class GpScannerViewModel : InpcBase
         CycleSelectedDocuments = new RelayCommand<object>(
             async parameter =>
             {
-                if(parameter is ListBox listBox)
+                if (parameter is ListBox listBox)
                 {
                     List<Scanner> listboxFiles = MainWindow.cvs.View.OfType<Scanner>().ToList();
                     Scanner currentFile = listboxFiles.Where(z => z.Seçili).ElementAtOrDefault(cycleIndex);
-                    if(currentFile is not null)
+                    if (currentFile is not null)
                     {
                         listBox.ScrollIntoView(currentFile);
                         currentFile.BorderAnimation = true;
@@ -682,7 +680,7 @@ public class GpScannerViewModel : InpcBase
         ReadOcrDataFile = new RelayCommand<object>(
             parameter =>
             {
-                if(parameter is Scanner scanner)
+                if (parameter is Scanner scanner)
                 {
                     List<Data> data = DataYükle()?.Where(z => z.FileName == scanner.FileName).ToList();
                     scanner.FileOcrContent = string.Join(" ", data?.Select(z => z.FileContent));
@@ -715,7 +713,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(allPdfPage != value)
+            if (allPdfPage != value)
             {
                 allPdfPage = value;
                 OnPropertyChanged(nameof(AllPdfPage));
@@ -729,7 +727,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(anyDataExists != value)
+            if (anyDataExists != value)
             {
                 anyDataExists = value;
                 OnPropertyChanged(nameof(AnyDataExists));
@@ -743,7 +741,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(aramaMetni != value)
+            if (aramaMetni != value)
             {
                 aramaMetni = value;
                 OnPropertyChanged(nameof(AramaMetni));
@@ -766,7 +764,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(barcodeContent != value)
+            if (barcodeContent != value)
             {
                 barcodeContent = value;
                 OnPropertyChanged(nameof(BarcodeContent));
@@ -780,7 +778,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(barcodeList != value)
+            if (barcodeList != value)
             {
                 barcodeList = value;
                 OnPropertyChanged(nameof(BarcodeList));
@@ -794,7 +792,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(batchDialogOpen != value)
+            if (batchDialogOpen != value)
             {
                 batchDialogOpen = value;
                 OnPropertyChanged(nameof(BatchDialogOpen));
@@ -808,7 +806,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(batchFolder != value)
+            if (batchFolder != value)
             {
                 batchFolder = value;
                 OnPropertyChanged(nameof(BatchFolder));
@@ -822,7 +820,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(batchTxtOcrs != value)
+            if (batchTxtOcrs != value)
             {
                 batchTxtOcrs = value;
                 OnPropertyChanged(nameof(BatchTxtOcrs));
@@ -836,7 +834,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(calendarLang != value)
+            if (calendarLang != value)
             {
                 calendarLang = value;
                 OnPropertyChanged(nameof(CalendarLang));
@@ -856,7 +854,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(checkedPdfCount != value)
+            if (checkedPdfCount != value)
             {
                 checkedPdfCount = value;
                 OnPropertyChanged(nameof(CheckedPdfCount));
@@ -871,7 +869,7 @@ public class GpScannerViewModel : InpcBase
         get => contributionData;
         set
         {
-            if(contributionData != value)
+            if (contributionData != value)
             {
                 contributionData = value;
                 OnPropertyChanged(nameof(ContributionData));
@@ -893,7 +891,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(detectBarCode != value)
+            if (detectBarCode != value)
             {
                 detectBarCode = value;
                 OnPropertyChanged(nameof(DetectBarCode));
@@ -907,7 +905,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(detectPageSeperator != value)
+            if (detectPageSeperator != value)
             {
                 detectPageSeperator = value;
                 OnPropertyChanged(nameof(DetectPageSeperator));
@@ -921,7 +919,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(documentPanelIsExpanded != value)
+            if (documentPanelIsExpanded != value)
             {
                 documentPanelIsExpanded = value;
                 OnPropertyChanged(nameof(DocumentPanelIsExpanded));
@@ -935,7 +933,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(dosyalar != value)
+            if (dosyalar != value)
             {
                 dosyalar = value;
                 OnPropertyChanged(nameof(Dosyalar));
@@ -951,7 +949,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(fold != value)
+            if (fold != value)
             {
                 fold = value;
                 OnPropertyChanged(nameof(Fold));
@@ -965,7 +963,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(ftpPassword != value)
+            if (ftpPassword != value)
             {
                 ftpPassword = value;
                 OnPropertyChanged(nameof(FtpPassword));
@@ -979,7 +977,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(ftpSite != value)
+            if (ftpSite != value)
             {
                 ftpSite = value;
                 OnPropertyChanged(nameof(FtpSite));
@@ -993,7 +991,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(ftpUserName != value)
+            if (ftpUserName != value)
             {
                 ftpUserName = value;
                 OnPropertyChanged(nameof(FtpUserName));
@@ -1009,7 +1007,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(listBoxBorderAnimation != value)
+            if (listBoxBorderAnimation != value)
             {
                 listBoxBorderAnimation = value;
                 OnPropertyChanged(nameof(ListBoxBorderAnimation));
@@ -1023,7 +1021,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(mainWindowDocumentGuiControlLength != value)
+            if (mainWindowDocumentGuiControlLength != value)
             {
                 mainWindowDocumentGuiControlLength = value;
                 OnPropertyChanged(nameof(MainWindowDocumentGuiControlLength));
@@ -1037,7 +1035,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(mainWindowGuiControlLength != value)
+            if (mainWindowGuiControlLength != value)
             {
                 mainWindowGuiControlLength = value;
                 OnPropertyChanged(nameof(MainWindowGuiControlLength));
@@ -1053,7 +1051,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(ocrısBusy != value)
+            if (ocrısBusy != value)
             {
                 ocrısBusy = value;
                 OnPropertyChanged(nameof(OcrIsBusy));
@@ -1073,7 +1071,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(patchFileName != value)
+            if (patchFileName != value)
             {
                 patchFileName = value;
                 OnPropertyChanged(nameof(PatchFileName));
@@ -1087,7 +1085,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(patchProfileName != value)
+            if (patchProfileName != value)
             {
                 patchProfileName = value;
                 OnPropertyChanged(nameof(PatchProfileName));
@@ -1101,7 +1099,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(patchTag != value)
+            if (patchTag != value)
             {
                 patchTag = value;
                 OnPropertyChanged(nameof(PatchTag));
@@ -1115,7 +1113,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(pdfBatchRunning != value)
+            if (pdfBatchRunning != value)
             {
                 pdfBatchRunning = value;
                 OnPropertyChanged(nameof(PdfBatchRunning));
@@ -1131,24 +1129,10 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(pdfMergeProgressValue != value)
+            if (pdfMergeProgressValue != value)
             {
                 pdfMergeProgressValue = value;
                 OnPropertyChanged(nameof(PdfMergeProgressValue));
-            }
-        }
-    }
-
-    public bool PdfOnlyText
-    {
-        get => pdfOnlyText;
-
-        set
-        {
-            if(pdfOnlyText != value)
-            {
-                pdfOnlyText = value;
-                OnPropertyChanged(nameof(PdfOnlyText));
             }
         }
     }
@@ -1165,7 +1149,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(progressBarForegroundBrush != value)
+            if (progressBarForegroundBrush != value)
             {
                 progressBarForegroundBrush = value;
                 OnPropertyChanged(nameof(ProgressBarForegroundBrush));
@@ -1193,7 +1177,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(scannedText != value)
+            if (scannedText != value)
             {
                 scannedText = value;
                 OnPropertyChanged(nameof(ScannedText));
@@ -1209,7 +1193,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(seçiliDil != value)
+            if (seçiliDil != value)
             {
                 seçiliDil = value;
                 OnPropertyChanged(nameof(SeçiliDil));
@@ -1223,7 +1207,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(seçiliGün != value)
+            if (seçiliGün != value)
             {
                 seçiliGün = value;
                 OnPropertyChanged(nameof(SeçiliGün));
@@ -1236,7 +1220,7 @@ public class GpScannerViewModel : InpcBase
         get => selectedContribution;
         set
         {
-            if(selectedContribution != value)
+            if (selectedContribution != value)
             {
                 selectedContribution = value;
                 OnPropertyChanged(nameof(SelectedContribution));
@@ -1250,7 +1234,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(selectedDocument != value)
+            if (selectedDocument != value)
             {
                 selectedDocument = value;
                 OnPropertyChanged(nameof(SelectedDocument));
@@ -1264,7 +1248,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(selectedFtp != value)
+            if (selectedFtp != value)
             {
                 selectedFtp = value;
                 OnPropertyChanged(nameof(SelectedFtp));
@@ -1278,7 +1262,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(selectedSize != value)
+            if (selectedSize != value)
             {
                 selectedSize = value;
                 OnPropertyChanged(nameof(SelectedSize));
@@ -1300,7 +1284,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(shutdown != value)
+            if (shutdown != value)
             {
                 shutdown = value;
                 OnPropertyChanged(nameof(Shutdown));
@@ -1314,7 +1298,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(sıralama != value)
+            if (sıralama != value)
             {
                 sıralama = value;
                 OnPropertyChanged(nameof(Sıralama));
@@ -1334,7 +1318,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(tesseractViewModel != value)
+            if (tesseractViewModel != value)
             {
                 tesseractViewModel = value;
                 OnPropertyChanged(nameof(TesseractViewModel));
@@ -1348,7 +1332,7 @@ public class GpScannerViewModel : InpcBase
 
         set
         {
-            if(translateViewModel != value)
+            if (translateViewModel != value)
             {
                 translateViewModel = value;
                 OnPropertyChanged(nameof(TranslateViewModel));
@@ -1370,10 +1354,10 @@ public class GpScannerViewModel : InpcBase
 
     public static void BackupDataXmlFile()
     {
-        if(File.Exists(Settings.Default.DatabaseFile))
+        if (File.Exists(Settings.Default.DatabaseFile))
         {
             FileInfo fi = new(Settings.Default.DatabaseFile);
-            if(fi.Length > 0)
+            if (fi.Length > 0)
             {
                 File.Copy(fi.FullName, $"{fi.FullName}{DateTime.Today.DayOfWeek}.bak", true);
             }
@@ -1384,19 +1368,20 @@ public class GpScannerViewModel : InpcBase
     {
         try
         {
-            if(DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+            if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
             {
                 return null;
             }
 
-            if(File.Exists(XmlDataPath))
+            if (File.Exists(XmlDataPath))
             {
                 return XmlDataPath.DeSerialize<ScannerData>().Data;
             }
 
             _ = Directory.CreateDirectory(Path.GetDirectoryName(XmlDataPath));
             return new ObservableCollection<Data>();
-        } catch(Exception ex)
+        }
+        catch (Exception ex)
         {
             _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
             return null;
@@ -1412,7 +1397,8 @@ public class GpScannerViewModel : InpcBase
             webClient.UploadProgressChanged += (sender, args) => scanner.FtpLoadProgressValue = args.ProgressPercentage;
             string address = $"{uri}/{Directory.GetParent(scanner.FileName).Name}{Path.GetFileName(scanner.FileName)}";
             _ = await webClient.UploadFileTaskAsync(address, WebRequestMethods.Ftp.UploadFile, scanner.FileName);
-        } catch(Exception ex)
+        }
+        catch (Exception ex)
         {
             _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
         }
@@ -1420,7 +1406,7 @@ public class GpScannerViewModel : InpcBase
 
     public void AddBarcodeToList(string barcodecontent)
     {
-        if(!string.IsNullOrWhiteSpace(barcodecontent))
+        if (!string.IsNullOrWhiteSpace(barcodecontent))
         {
             BarcodeList.Add(barcodecontent);
         }
@@ -1431,31 +1417,31 @@ public class GpScannerViewModel : InpcBase
         try
         {
             ObservableCollection<ContributionData> contributiondata = new();
-            IEnumerable<IGrouping<DateTime, Scanner>> files = Dosyalar?.Select(
+            var files = Dosyalar?.Select(
                 scanner =>
                 {
                     string parentDirectoryName = Directory.GetParent(scanner.FileName)?.Name;
                     _ = DateTime.TryParse(parentDirectoryName, out DateTime parsedDateTime);
                     return new { Scanner = scanner, ParentDate = parsedDateTime };
-                })
-                .GroupBy(item => item.ParentDate, item => item.Scanner);
-            DateTime first = files.Where(z => z.Key > DateTime.MinValue).Min(z => z.Key);
-            DateTime last = files.Max(z => z.Key);
-            for(DateTime? date = first; date <= last; date = date.Value.AddDays(1))
+                });
+
+            DateTime first = files.Where(z => z.ParentDate > DateTime.MinValue).Min(z => z.ParentDate);
+            DateTime last = files.Max(z => z.ParentDate);
+            for (DateTime? date = first; date <= last; date = date.Value.AddDays(1))
             {
-                if(!files.Select(z => z.Key).Contains(date.Value))
+                if (!files.Select(z => z.ParentDate).Contains(date.Value))
                 {
                     contributiondata.Add(new ExtendedContributionData { ContrubutionDate = date, Count = 0 });
                 }
             }
 
-            foreach(IGrouping<DateTime, Scanner> file in files)
+            foreach (IGrouping<DateTime, Scanner> file in files.GroupBy(item => item.ParentDate, item => item.Scanner))
             {
-                contributiondata.Add(new ExtendedContributionData { Name = file.Select(z => z.FileName), ContrubutionDate = file?.Key, Count = file.Count() });
+                contributiondata.Add(new ExtendedContributionData { Name = file.Select(z => z.FileName), ContrubutionDate = file.Key, Count = file.Count() });
             }
-            IOrderedEnumerable<ContributionData> orderedcontributiondata = contributiondata.Where(z => z.ContrubutionDate >= DateTime.Today.AddYears(-1)).Take(53 * 7).OrderBy(z => z.ContrubutionDate);
-            return new ObservableCollection<ContributionData>(orderedcontributiondata);
-        } catch(Exception)
+            return new ObservableCollection<ContributionData>(contributiondata.Where(z => z.ContrubutionDate >= DateTime.Today.AddYears(-1)).Take(53 * 7).OrderBy(z => z.ContrubutionDate));
+        }
+        catch (Exception)
         {
         }
         return null;
@@ -1463,7 +1449,7 @@ public class GpScannerViewModel : InpcBase
 
     public string GetPatchCodeResult(string barcode)
     {
-        if(!string.IsNullOrWhiteSpace(barcode))
+        if (!string.IsNullOrWhiteSpace(barcode))
         {
             List<string> patchcodes = Settings.Default.PatchCodes.Cast<string>().ToList();
             string matchingPatchCode = patchcodes.Find(z => z.Split('|')[0] == barcode);
@@ -1475,7 +1461,7 @@ public class GpScannerViewModel : InpcBase
 
     public ObservableCollection<Scanner> GetScannerFileData()
     {
-        if(Directory.Exists(Twainsettings.Settings.Default.AutoFolder))
+        if (Directory.Exists(Twainsettings.Settings.Default.AutoFolder))
         {
             ObservableCollection<Scanner> list = new();
             try
@@ -1485,13 +1471,14 @@ public class GpScannerViewModel : InpcBase
                     .Where(s => supportedfilesextension.Contains(Path.GetExtension(s).ToLower()))
                     .ToList();
                 files.Sort(new StrCmpLogicalComparer());
-                foreach(string dosya in files)
+                foreach (string dosya in files)
                 {
                     list.Add(new Scanner { FileName = dosya });
                 }
                 files = null;
                 return list;
-            } catch(UnauthorizedAccessException)
+            }
+            catch (UnauthorizedAccessException)
             {
                 return list;
             }
@@ -1507,7 +1494,7 @@ public class GpScannerViewModel : InpcBase
         FileSystemWatcher watcher = new(batchsavefolder) { NotifyFilter = NotifyFilters.FileName, Filter = "*.*", IncludeSubdirectories = true, EnableRaisingEvents = true };
         watcher.Created += async (s, e) =>
         {
-            if(imagefileextensions.Contains(Path.GetExtension(e.Name.ToLower())))
+            if (imagefileextensions.Contains(Path.GetExtension(e.Name.ToLower())))
             {
                 await Task.Delay(1000);
                 ObservableCollection<OcrData> scannedText = await e.FullPath.OcrAsync(Settings.Default.DefaultTtsLang);
@@ -1535,7 +1522,7 @@ public class GpScannerViewModel : InpcBase
     {
         DocX document = DocX.Create(filename);
         document.SetDefaultFont(new Xceed.Document.NET.Font("Times New Roman"), 12d);
-        foreach(OcrData item in ocrdata)
+        foreach (OcrData item in ocrdata)
         {
             Xceed.Document.NET.Paragraph paragraph = document.InsertParagraph();
             paragraph.Append(item.Text).FontSize(12).Alignment = Xceed.Document.NET.Alignment.both;
@@ -1546,24 +1533,25 @@ public class GpScannerViewModel : InpcBase
 
     private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if(e.PropertyName is "RegisterBatchWatcher" && Settings.Default.RegisterBatchWatcher)
+        if (e.PropertyName is "RegisterBatchWatcher" && Settings.Default.RegisterBatchWatcher)
         {
-            if(!Directory.Exists(Settings.Default.BatchFolder))
+            if (!Directory.Exists(Settings.Default.BatchFolder))
             {
                 Settings.Default.RegisterBatchWatcher = false;
                 Settings.Default.BatchFolder = null;
-            } else
+            }
+            else
             {
                 _ = MessageBox.Show(Translation.GetResStringValue("RESTARTAPP"));
             }
         }
 
-        if(e.PropertyName is "WatchFolderPdfFileChange" && Settings.Default.WatchFolderPdfFileChange)
+        if (e.PropertyName is "WatchFolderPdfFileChange" && Settings.Default.WatchFolderPdfFileChange)
         {
             _ = MessageBox.Show(Translation.GetResStringValue("RESTARTAPP"));
         }
 
-        if(e.PropertyName is "BatchFolder" && Settings.Default.BatchFolder?.Length == 0)
+        if (e.PropertyName is "BatchFolder" && Settings.Default.BatchFolder?.Length == 0)
         {
             Settings.Default.RegisterBatchWatcher = false;
         }
@@ -1580,7 +1568,7 @@ public class GpScannerViewModel : InpcBase
 
     private void GenerateJumpList()
     {
-        if(IsWin7OrAbove())
+        if (IsWin7OrAbove())
         {
             string fileName = Process.GetCurrentProcess().MainModule.FileName;
             FileVersionInfo version = FileVersionInfo.GetVersionInfo(fileName);
@@ -1606,31 +1594,32 @@ public class GpScannerViewModel : InpcBase
 
     private void GpScannerViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if(e.PropertyName is "SeçiliGün")
+        if (e.PropertyName is "SeçiliGün")
         {
             MainWindow.cvs.Filter += (s, x) =>
             {
                 Scanner scanner = x.Item as Scanner;
-                if(DateTime.TryParse(Directory.GetParent(scanner?.FileName).Name, out DateTime result))
+                if (DateTime.TryParse(Directory.GetParent(scanner?.FileName).Name, out DateTime result))
                 {
                     string seçiligün = SeçiliGün.Value.ToString(Twainsettings.Settings.Default.FolderDateFormat);
                     x.Accepted = result.ToString(Twainsettings.Settings.Default.FolderDateFormat).StartsWith(seçiligün);
-                } else
+                }
+                else
                 {
                     x.Accepted = false;
                 }
             };
         }
 
-        if(e.PropertyName is "SelectedContribution" && SelectedContribution is not null)
+        if (e.PropertyName is "SelectedContribution" && SelectedContribution is not null)
         {
             SeçiliGün = SelectedContribution.ContrubutionDate;
         }
 
-        if(e.PropertyName is "Sıralama")
+        if (e.PropertyName is "Sıralama")
         {
             MainWindow.cvs?.SortDescriptions.Clear();
-            if(Sıralama)
+            if (Sıralama)
             {
                 MainWindow.cvs?.SortDescriptions.Add(new SortDescription("FileName", ListSortDirection.Descending));
                 return;
@@ -1639,9 +1628,9 @@ public class GpScannerViewModel : InpcBase
             MainWindow.cvs?.SortDescriptions.Add(new SortDescription("FileName", ListSortDirection.Ascending));
         }
 
-        if(e.PropertyName is "AramaMetni")
+        if (e.PropertyName is "AramaMetni")
         {
-            if(string.IsNullOrEmpty(AramaMetni))
+            if (string.IsNullOrEmpty(AramaMetni))
             {
                 OnPropertyChanged(nameof(SeçiliGün));
                 return;
@@ -1655,11 +1644,11 @@ public class GpScannerViewModel : InpcBase
             };
         }
 
-        if(e.PropertyName is "SeçiliDil")
+        if (e.PropertyName is "SeçiliDil")
         {
             Application.Current?.Windows?.Cast<Window>()?.ToList()
                 ?.ForEach(z => z.FlowDirection = FlowDirection.LeftToRight);
-            switch(SeçiliDil)
+            switch (SeçiliDil)
             {
                 case "TÜRKÇE":
                     TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("tr-TR");
@@ -1752,14 +1741,14 @@ public class GpScannerViewModel : InpcBase
 
     private void OnTick(object sender, EventArgs e)
     {
-        if(StillImageHelper.FirstLanuchScan)
+        if (StillImageHelper.FirstLanuchScan)
         {
             TimerFold();
             return;
         }
 
         Fold -= 0.01;
-        if(Fold <= 0)
+        if (Fold <= 0)
         {
             TimerFold();
         }
@@ -1777,7 +1766,7 @@ public class GpScannerViewModel : InpcBase
         FileSystemWatcher watcher = new(Twainsettings.Settings.Default.AutoFolder) { NotifyFilter = NotifyFilters.FileName, Filter = "*.pdf", IncludeSubdirectories = true, EnableRaisingEvents = true };
         watcher.Renamed += (s, e) =>
         {
-            foreach(Data item in ScannerData?.Data?.Where(z => z.FileName == e.OldFullPath))
+            foreach (Data item in ScannerData?.Data?.Where(z => z.FileName == e.OldFullPath))
             {
                 item.FileName = e.FullPath;
             }

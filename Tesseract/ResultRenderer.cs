@@ -85,7 +85,7 @@ namespace Tesseract
         {
             base.Dispose(disposing);
 
-            if(_fontDirectoryHandle != IntPtr.Zero)
+            if (_fontDirectoryHandle != IntPtr.Zero)
             {
                 Marshal.FreeHGlobal(_fontDirectoryHandle);
                 _fontDirectoryHandle = IntPtr.Zero;
@@ -146,7 +146,7 @@ namespace Tesseract
             Guard.Verify(_currentDocumentHandle == null, "Cannot begin document \"{0}\" as another document is currently being processed which must be dispose off first.", title);
 
             IntPtr titlePtr = Marshal.StringToHGlobalAnsi(title);
-            if(TessApi.Native.ResultRendererBeginDocument(Handle, titlePtr) == 0)
+            if (TessApi.Native.ResultRendererBeginDocument(Handle, titlePtr) == 0)
             {
                 Marshal.FreeHGlobal(titlePtr);
 
@@ -161,17 +161,18 @@ namespace Tesseract
         {
             try
             {
-                if(disposing)
+                if (disposing)
                 {
-                    if(_currentDocumentHandle != null)
+                    if (_currentDocumentHandle != null)
                     {
                         _currentDocumentHandle.Dispose();
                         _currentDocumentHandle = null;
                     }
                 }
-            } finally
+            }
+            finally
             {
-                if(Handle.Handle != IntPtr.Zero)
+                if (Handle.Handle != IntPtr.Zero)
                 {
                     TessApi.Native.DeleteResultRenderer(Handle);
                     Handle = new HandleRef(this, IntPtr.Zero);
@@ -209,16 +210,17 @@ namespace Tesseract
             {
                 try
                 {
-                    if(disposing)
+                    if (disposing)
                     {
                         Guard.Verify(_renderer._currentDocumentHandle == this, "Expected the Result Render's active document to be this document.");
 
                         _ = TessApi.Native.ResultRendererEndDocument(_renderer.Handle);
                         _renderer._currentDocumentHandle = null;
                     }
-                } finally
+                }
+                finally
                 {
-                    if(_titlePtr != IntPtr.Zero)
+                    if (_titlePtr != IntPtr.Zero)
                     {
                         Marshal.FreeHGlobal(_titlePtr);
                         _titlePtr = IntPtr.Zero;
@@ -283,11 +285,11 @@ namespace Tesseract
         {
             List<IResultRenderer> renderers = new List<IResultRenderer>();
 
-            foreach(RenderedFormat format in outputFormats)
+            foreach (RenderedFormat format in outputFormats)
             {
                 IResultRenderer renderer = null;
 
-                switch(format)
+                switch (format)
                 {
                     case RenderedFormat.TEXT:
                         renderer = CreateTextRenderer(outputbase);

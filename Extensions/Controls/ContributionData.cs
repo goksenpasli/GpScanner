@@ -14,7 +14,7 @@ namespace Extensions
             get => contrubutionDate;
             set
             {
-                if(contrubutionDate != value)
+                if (contrubutionDate != value)
                 {
                     contrubutionDate = value;
                     OnPropertyChanged(nameof(ContrubutionDate));
@@ -27,7 +27,7 @@ namespace Extensions
             get => count;
             set
             {
-                if(count != value)
+                if (count != value)
                 {
                     count = value;
                     OnPropertyChanged(nameof(Count));
@@ -40,7 +40,7 @@ namespace Extensions
             get => stroke;
             set
             {
-                if(stroke != value)
+                if (stroke != value)
                 {
                     stroke = value;
                     OnPropertyChanged(nameof(Stroke));

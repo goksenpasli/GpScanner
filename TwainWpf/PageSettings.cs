@@ -31,7 +31,7 @@ namespace TwainWpf
 
             set
             {
-                if(value != _orientation)
+                if (value != _orientation)
                 {
                     _orientation = value;
                     OnPropertyChanged(nameof(Orientation));
@@ -49,7 +49,7 @@ namespace TwainWpf
 
             set
             {
-                if(value != _size)
+                if (value != _size)
                 {
                     _size = value;
                     OnPropertyChanged("PaperSize");

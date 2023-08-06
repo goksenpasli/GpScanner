@@ -18,7 +18,7 @@ public class Data : InpcBase
 
         set
         {
-            if(fileContent != value)
+            if (fileContent != value)
             {
                 fileContent = value;
                 OnPropertyChanged(nameof(FileContent));
@@ -33,7 +33,7 @@ public class Data : InpcBase
 
         set
         {
-            if(fileName != value)
+            if (fileName != value)
             {
                 fileName = value;
                 OnPropertyChanged(nameof(FileName));
@@ -48,7 +48,7 @@ public class Data : InpcBase
 
         set
         {
-            if(ıd != value)
+            if (ıd != value)
             {
                 ıd = value;
                 OnPropertyChanged(nameof(Id));
@@ -63,7 +63,7 @@ public class Data : InpcBase
 
         set
         {
-            if(qrData != value)
+            if (qrData != value)
             {
                 qrData = value;
                 OnPropertyChanged(nameof(QrData));

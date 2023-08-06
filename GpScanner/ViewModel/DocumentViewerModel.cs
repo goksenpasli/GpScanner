@@ -46,7 +46,7 @@ public class DocumentViewerModel : InpcBase
         AddFileToControlPanel = new RelayCommand<object>(
             async parameter =>
             {
-                if(parameter is ImageSource imageSource)
+                if (parameter is ImageSource imageSource)
                 {
                     MemoryStream ms = new(imageSource.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg));
                     BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms);
@@ -72,7 +72,7 @@ public class DocumentViewerModel : InpcBase
 
         set
         {
-            if(directoryAllPdfFiles != value)
+            if (directoryAllPdfFiles != value)
             {
                 directoryAllPdfFiles = value;
                 OnPropertyChanged(nameof(DirectoryAllPdfFiles));
@@ -88,7 +88,7 @@ public class DocumentViewerModel : InpcBase
 
         set
         {
-            if(ımgData != value)
+            if (ımgData != value)
             {
                 ımgData = value;
                 OnPropertyChanged(nameof(ImgData));
@@ -102,7 +102,7 @@ public class DocumentViewerModel : InpcBase
 
         set
         {
-            if(ındex != value)
+            if (ındex != value)
             {
                 ındex = value;
                 OnPropertyChanged(nameof(Index));
@@ -116,7 +116,7 @@ public class DocumentViewerModel : InpcBase
 
         set
         {
-            if(ocrText != value)
+            if (ocrText != value)
             {
                 ocrText = value;
                 OnPropertyChanged(nameof(OcrText));
@@ -130,7 +130,7 @@ public class DocumentViewerModel : InpcBase
 
         set
         {
-            if(pdfFileContent != value)
+            if (pdfFileContent != value)
             {
                 pdfFileContent = value;
                 OnPropertyChanged(nameof(PdfFileContent));
@@ -144,7 +144,7 @@ public class DocumentViewerModel : InpcBase
 
         set
         {
-            if(pdfFilePath != value)
+            if (pdfFilePath != value)
             {
                 pdfFilePath = value;
                 OnPropertyChanged(nameof(PdfFilePath));
@@ -160,7 +160,7 @@ public class DocumentViewerModel : InpcBase
 
         set
         {
-            if(scanner != value)
+            if (scanner != value)
             {
                 scanner = value;
                 OnPropertyChanged(nameof(Scanner));
@@ -174,7 +174,7 @@ public class DocumentViewerModel : InpcBase
 
         set
         {
-            if(title != value)
+            if (title != value)
             {
                 title = value;
                 OnPropertyChanged(nameof(Title));
@@ -185,7 +185,7 @@ public class DocumentViewerModel : InpcBase
     private async void DocumentViewerModel_PropertyChangedAsync(object sender, PropertyChangedEventArgs e)
     {
         string defaultTtsLang = Settings.Default.DefaultTtsLang;
-        if(e.PropertyName is "ImgData" && ImgData is not null && !string.IsNullOrWhiteSpace(defaultTtsLang))
+        if (e.PropertyName is "ImgData" && ImgData is not null && !string.IsNullOrWhiteSpace(defaultTtsLang))
         {
             ObservableCollection<Ocr.OcrData> ocrtext = await Ocr.Ocr.OcrAsync(ImgData, defaultTtsLang);
             OcrText = string.Join(" ", ocrtext?.Select(z => z.Text));

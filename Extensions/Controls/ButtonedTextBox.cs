@@ -35,7 +35,7 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
         set
         {
-            if(copyButtonVisibility != value)
+            if (copyButtonVisibility != value)
             {
                 copyButtonVisibility = value;
                 OnPropertyChanged(nameof(CopyButtonVisibility));
@@ -53,7 +53,7 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
         set
         {
-            if(openButtonVisibility != value)
+            if (openButtonVisibility != value)
             {
                 openButtonVisibility = value;
                 OnPropertyChanged(nameof(OpenButtonVisibility));
@@ -69,7 +69,7 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
         set
         {
-            if(pasteButtonVisibility != value)
+            if (pasteButtonVisibility != value)
             {
                 pasteButtonVisibility = value;
                 OnPropertyChanged(nameof(PasteButtonVisibility));
@@ -85,7 +85,7 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
         set
         {
-            if(resetButtonVisibility != value)
+            if (resetButtonVisibility != value)
             {
                 resetButtonVisibility = value;
                 OnPropertyChanged(nameof(ResetButtonVisibility));
@@ -97,7 +97,7 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     private void CanExecute(object sender, CanExecuteRoutedEventArgs e)
     {
-        if(!string.IsNullOrWhiteSpace(Text))
+        if (!string.IsNullOrWhiteSpace(Text))
         {
             e.CanExecute = true;
         }
@@ -110,7 +110,8 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         try
         {
             _ = Process.Start(Text);
-        } catch(Exception ex)
+        }
+        catch (Exception ex)
         {
             _ = MessageBox.Show(ex.Message);
         }
@@ -118,7 +119,7 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     private void PasteCanExecute(object sender, CanExecuteRoutedEventArgs e)
     {
-        if(Clipboard.ContainsText() && !IsReadOnly)
+        if (Clipboard.ContainsText() && !IsReadOnly)
         {
             e.CanExecute = true;
         }

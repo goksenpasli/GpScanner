@@ -38,12 +38,13 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
             parameter =>
             {
                 string path = parameter as string;
-                if(!string.IsNullOrWhiteSpace(path))
+                if (!string.IsNullOrWhiteSpace(path))
                 {
                     try
                     {
                         _ = Process.Start(path);
-                    } catch(Exception ex)
+                    }
+                    catch (Exception ex)
                     {
                         _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
                     }
@@ -54,16 +55,17 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
         TesseractRemove = new RelayCommand<object>(
             parameter =>
             {
-                if(parameter is TessFiles tessFile)
+                if (parameter is TessFiles tessFile)
                 {
                     string filepath = $"{Tessdatafolder}\\{tessFile.Name}.traineddata";
-                    if(File.Exists(filepath) && MessageBox.Show(Translation.GetResStringValue("DELETE"), Application.Current?.MainWindow?.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                    if (File.Exists(filepath) && MessageBox.Show(Translation.GetResStringValue("DELETE"), Application.Current?.MainWindow?.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                     {
                         try
                         {
                             File.Delete(filepath);
                             TesseractFiles = GetTesseractFiles(Tessdatafolder);
-                        } catch(Exception ex)
+                        }
+                        catch (Exception ex)
                         {
                             _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
                         }
@@ -75,7 +77,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
         TesseractDownload = new RelayCommand<object>(
             async parameter =>
             {
-                if(parameter is TesseractOcrData ocrData)
+                if (parameter is TesseractOcrData ocrData)
                 {
                     string datafile = Path.Combine(tessdatafolder, ocrData.OcrName);
 
@@ -94,7 +96,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                         byte[] buffer = new byte[bufferSize];
                         int bytesRead;
                         ocrData.IsEnabled = false;
-                        while((bytesRead = await contentStream.ReadAsync(buffer, 0, bufferSize)) > 0)
+                        while ((bytesRead = await contentStream.ReadAsync(buffer, 0, bufferSize)) > 0)
                         {
                             await fileStream.WriteAsync(buffer, 0, bytesRead);
                             ocrData.ProgressValue =
@@ -103,14 +105,16 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
 
                         ocrData.IsEnabled = true;
                         TesseractFiles = GetTesseractFiles(Tessdatafolder);
-                    } catch(Exception ex)
+                    }
+                    catch (Exception ex)
                     {
                         _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
-                        if(File.Exists(datafile))
+                        if (File.Exists(datafile))
                         {
                             File.Delete(datafile);
                         }
-                    } finally
+                    }
+                    finally
                     {
                         ocrData.IsEnabled = true;
                     }
@@ -119,7 +123,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
             parameter => true);
         PropertyChanged += TesseractViewModel_PropertyChanged;
 
-        if(PdfGeneration.Scanner is not null)
+        if (PdfGeneration.Scanner is not null)
         {
             PdfGeneration.Scanner.SelectedTtsLanguage = Settings.Default.DefaultTtsLang;
         }
@@ -130,7 +134,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
         get => checkedFiles;
         set
         {
-            if(checkedFiles != value)
+            if (checkedFiles != value)
             {
                 checkedFiles = value;
                 OnPropertyChanged(nameof(CheckedFiles));
@@ -145,7 +149,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
         get => ısFolderWritable;
         set
         {
-            if(ısFolderWritable != value)
+            if (ısFolderWritable != value)
             {
                 ısFolderWritable = value;
                 OnPropertyChanged(nameof(IsFolderWritable));
@@ -161,7 +165,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
 
         set
         {
-            if(showAllLanguages != value)
+            if (showAllLanguages != value)
             {
                 showAllLanguages = value;
                 OnPropertyChanged(nameof(ShowAllLanguages));
@@ -175,7 +179,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
 
         set
         {
-            if(tessdatafolder != value)
+            if (tessdatafolder != value)
             {
                 tessdatafolder = value;
                 OnPropertyChanged(nameof(Tessdatafolder));
@@ -193,7 +197,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
 
         set
         {
-            if(tesseractFiles != value)
+            if (tesseractFiles != value)
             {
                 tesseractFiles = value;
                 OnPropertyChanged(nameof(TesseractFiles));
@@ -212,7 +216,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
 
     public ObservableCollection<TessFiles> GetTesseractFiles(string tesseractfolder)
     {
-        if(Directory.Exists(tesseractfolder))
+        if (Directory.Exists(tesseractfolder))
         {
             string[] defaultTtsLang = Settings.Default.DefaultTtsLang.Split('+');
             ObservableCollection<TessFiles> tesseractfiles = new(
@@ -240,15 +244,18 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
             FileStream fs = File.Create(tempFilePath);
             fs.Dispose();
             return true;
-        } catch(UnauthorizedAccessException)
+        }
+        catch (UnauthorizedAccessException)
         {
             return false;
-        } catch(Exception)
+        }
+        catch (Exception)
         {
             return false;
-        } finally
+        }
+        finally
         {
-            if(File.Exists(tempFilePath))
+            if (File.Exists(tempFilePath))
             {
                 File.Delete(tempFilePath);
             }
@@ -257,10 +264,10 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
 
     private void Tess_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if(e.PropertyName is "Checked")
+        if (e.PropertyName is "Checked")
         {
             CheckedFiles = TesseractFiles?.Where(item => item.Checked).ToList();
-            if(!CheckedFiles.Any())
+            if (!CheckedFiles.Any())
             {
                 Settings.Default.BatchFolder = string.Empty;
                 PdfGeneration.Scanner.ApplyPdfSaveOcr = false;
@@ -408,9 +415,9 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
 
     private void TesseractViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if(e.PropertyName is "ShowAllLanguages" && ShowAllLanguages)
+        if (e.PropertyName is "ShowAllLanguages" && ShowAllLanguages)
         {
-            foreach(TesseractOcrData item in OcrDatas)
+            foreach (TesseractOcrData item in OcrDatas)
             {
                 item.IsVisible = Visibility.Visible;
             }

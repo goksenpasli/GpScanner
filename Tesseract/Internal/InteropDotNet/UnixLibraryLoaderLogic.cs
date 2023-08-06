@@ -11,14 +11,14 @@ namespace Tesseract.Internal.InteropDotNet
 
         public string FixUpLibraryName(string fileName)
         {
-            if(!string.IsNullOrEmpty(fileName))
+            if (!string.IsNullOrEmpty(fileName))
             {
-                if(!fileName.EndsWith(FileExtension, StringComparison.OrdinalIgnoreCase))
+                if (!fileName.EndsWith(FileExtension, StringComparison.OrdinalIgnoreCase))
                 {
                     fileName += FileExtension;
                 }
 
-                if(!fileName.StartsWith("lib", StringComparison.OrdinalIgnoreCase))
+                if (!fileName.StartsWith("lib", StringComparison.OrdinalIgnoreCase))
                 {
                     fileName = $"lib{fileName}";
                 }
@@ -35,15 +35,16 @@ namespace Tesseract.Internal.InteropDotNet
             Logger.TraceInformation("Trying to load native function \"{0}\" from the library with handle {1}...", functionName, libraryHandle);
             IntPtr functionHandle = UnixGetProcAddress(libraryHandle, functionName);
             IntPtr errorPointer = UnixGetLastError();
-            if(errorPointer != IntPtr.Zero)
+            if (errorPointer != IntPtr.Zero)
             {
                 throw new Exception($"dlsym: {Marshal.PtrToStringAnsi(errorPointer)}");
             }
 
-            if(functionHandle != IntPtr.Zero && errorPointer == IntPtr.Zero)
+            if (functionHandle != IntPtr.Zero && errorPointer == IntPtr.Zero)
             {
                 Logger.TraceInformation("Successfully loaded native function \"{0}\", function handle = {1}.", functionName, functionHandle);
-            } else
+            }
+            else
             {
                 Logger.TraceError("Failed to load native function \"{0}\", function handle = {1}, error pointer = {2}", functionName, functionHandle, errorPointer);
             }
@@ -59,14 +60,16 @@ namespace Tesseract.Internal.InteropDotNet
             {
                 Logger.TraceInformation("Trying to load native library \"{0}\"...", fileName);
                 libraryHandle = UnixLoadLibrary(fileName, RTLD_NOW);
-                if(libraryHandle != IntPtr.Zero)
+                if (libraryHandle != IntPtr.Zero)
                 {
                     Logger.TraceInformation("Successfully loaded native library \"{0}\", handle = {1}.", fileName, libraryHandle);
-                } else
+                }
+                else
                 {
                     Logger.TraceError("Failed to load native library \"{0}\".\r\nCheck windows event log.", fileName);
                 }
-            } catch(Exception e)
+            }
+            catch (Exception e)
             {
                 IntPtr lastError = UnixGetLastError();
                 Logger.TraceError("Failed to load native library \"{0}\".\r\nLast Error:{1}\r\nCheck inner exception and\\or windows event log.\r\nInner Exception: {2}", fileName, lastError, e.ToString());

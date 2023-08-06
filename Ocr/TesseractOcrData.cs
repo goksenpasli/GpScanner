@@ -15,7 +15,7 @@ public class TesseractOcrData : InpcBase
 
         set
         {
-            if(ısEnabled != value)
+            if (ısEnabled != value)
             {
                 ısEnabled = value;
                 OnPropertyChanged(nameof(IsEnabled));
@@ -29,7 +29,7 @@ public class TesseractOcrData : InpcBase
 
         set
         {
-            if(ısVisible != value)
+            if (ısVisible != value)
             {
                 ısVisible = value;
                 OnPropertyChanged(nameof(IsVisible));
@@ -43,7 +43,7 @@ public class TesseractOcrData : InpcBase
 
         set
         {
-            if(ocrName != value)
+            if (ocrName != value)
             {
                 ocrName = value;
                 OnPropertyChanged(nameof(OcrName));
@@ -57,7 +57,7 @@ public class TesseractOcrData : InpcBase
 
         set
         {
-            if(progressValue != value)
+            if (progressValue != value)
             {
                 progressValue = value;
                 OnPropertyChanged(nameof(ProgressValue));

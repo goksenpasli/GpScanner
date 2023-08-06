@@ -11,7 +11,7 @@ public class SimplePdfViewer : PdfViewer.PdfViewer
 
     protected override void OnMouseDoubleClick(MouseButtonEventArgs e)
     {
-        if(pdfImportViewerControl == null)
+        if (pdfImportViewerControl == null)
         {
             pdfImportViewerControl = new PdfImportViewerControl { DataContext = Tag };
             string pdffilepath = (string)DataContext;
@@ -19,7 +19,7 @@ public class SimplePdfViewer : PdfViewer.PdfViewer
             pdfImportViewerControl.PdfViewer.AddToHistoryList(pdffilepath);
         }
 
-        if(maximizePdfWindow == null)
+        if (maximizePdfWindow == null)
         {
             maximizePdfWindow = new Window { WindowState = WindowState.Maximized, ShowInTaskbar = true, Title = Application.Current?.MainWindow?.Title, WindowStartupLocation = WindowStartupLocation.CenterOwner };
             maximizePdfWindow.Closed += MaximizePdfWindow_Closed;

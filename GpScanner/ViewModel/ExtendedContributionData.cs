@@ -12,7 +12,7 @@ public class ExtendedContributionData : ContributionData
         get => name;
         set
         {
-            if(name != value)
+            if (name != value)
             {
                 name = value;
                 OnPropertyChanged(nameof(Name));

@@ -51,22 +51,22 @@ public class TranslateViewModel : InpcBase
         Oku = new RelayCommand<object>(
             parameter =>
             {
-                if(parameter is string metin)
+                if (parameter is string metin)
                 {
                     speechSynthesizer?.SelectVoice(OkumaDili);
-                    if(speechSynthesizer.State == SynthesizerState.Speaking)
+                    if (speechSynthesizer.State == SynthesizerState.Speaking)
                     {
                         speechSynthesizer.Pause();
                         return;
                     }
 
-                    if(speechSynthesizer.State == SynthesizerState.Paused)
+                    if (speechSynthesizer.State == SynthesizerState.Paused)
                     {
                         speechSynthesizer.Resume();
                         return;
                     }
 
-                    if(speechSynthesizer.State == SynthesizerState.Ready)
+                    if (speechSynthesizer.State == SynthesizerState.Ready)
                     {
                         _ = speechSynthesizer.SpeakAsync(metin);
                     }
@@ -83,7 +83,7 @@ public class TranslateViewModel : InpcBase
 
         set
         {
-            if(çeviri != value)
+            if (çeviri != value)
             {
                 çeviri = value;
                 OnPropertyChanged(nameof(Çeviri));
@@ -97,7 +97,7 @@ public class TranslateViewModel : InpcBase
 
         set
         {
-            if(çevrilenDil != value)
+            if (çevrilenDil != value)
             {
                 çevrilenDil = value;
                 OnPropertyChanged(nameof(ÇevrilenDil));
@@ -112,7 +112,7 @@ public class TranslateViewModel : InpcBase
     {
         get
         {
-            if(!string.IsNullOrEmpty(metin))
+            if (!string.IsNullOrEmpty(metin))
             {
                 _ = Task.Run(async () => Çeviri = await Extensions.TranslateViewModel.DileÇevirAsync(metin, MevcutDil, ÇevrilenDil));
             }
@@ -122,7 +122,7 @@ public class TranslateViewModel : InpcBase
 
         set
         {
-            if(metin != value)
+            if (metin != value)
             {
                 metin = value;
                 OnPropertyChanged(nameof(Metin));
@@ -137,7 +137,7 @@ public class TranslateViewModel : InpcBase
 
         set
         {
-            if(metinBoxIsreadOnly != value)
+            if (metinBoxIsreadOnly != value)
             {
                 metinBoxIsreadOnly = value;
                 OnPropertyChanged(nameof(MetinBoxIsreadOnly));
@@ -151,7 +151,7 @@ public class TranslateViewModel : InpcBase
 
         set
         {
-            if(mevcutDil != value)
+            if (mevcutDil != value)
             {
                 mevcutDil = value;
                 OnPropertyChanged(nameof(MevcutDil));
@@ -168,7 +168,7 @@ public class TranslateViewModel : InpcBase
 
         set
         {
-            if(okumaDili != value)
+            if (okumaDili != value)
             {
                 okumaDili = value;
                 OnPropertyChanged(nameof(OkumaDili));
@@ -184,7 +184,7 @@ public class TranslateViewModel : InpcBase
 
         set
         {
-            if(taramaGeçmiş != value)
+            if (taramaGeçmiş != value)
             {
                 taramaGeçmiş = value;
                 OnPropertyChanged(nameof(TaramaGeçmiş));
@@ -194,7 +194,7 @@ public class TranslateViewModel : InpcBase
 
     private void TranslateViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if(e.PropertyName is "OkumaDili" && !string.IsNullOrEmpty(OkumaDili))
+        if (e.PropertyName is "OkumaDili" && !string.IsNullOrEmpty(OkumaDili))
         {
             speechSynthesizer ??= new SpeechSynthesizer();
         }

@@ -13,7 +13,7 @@ public class Paper : InpcBase
 
         set
         {
-            if(category != value)
+            if (category != value)
             {
                 category = value;
                 OnPropertyChanged(nameof(Category));
@@ -27,7 +27,7 @@ public class Paper : InpcBase
 
         set
         {
-            if(height != value)
+            if (height != value)
             {
                 height = value;
                 OnPropertyChanged(nameof(Height));
@@ -41,7 +41,7 @@ public class Paper : InpcBase
 
         set
         {
-            if(paperType != value)
+            if (paperType != value)
             {
                 paperType = value;
                 OnPropertyChanged(nameof(PaperType));
@@ -55,7 +55,7 @@ public class Paper : InpcBase
 
         set
         {
-            if(width != value)
+            if (width != value)
             {
                 width = value;
                 OnPropertyChanged(nameof(Width));

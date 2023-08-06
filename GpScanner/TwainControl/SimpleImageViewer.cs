@@ -18,7 +18,7 @@ public class SimpleImageViewer : ImageViewer
         imageViewer.ImageFilePath = (e.OriginalSource as Image)?.DataContext as string;
         imageViewer.DataContext = Tag;
 
-        if(maximizePdfWindow == null)
+        if (maximizePdfWindow == null)
         {
             maximizePdfWindow = new Window { WindowState = WindowState.Maximized, ShowInTaskbar = true, Title = Application.Current?.MainWindow?.Title, WindowStartupLocation = WindowStartupLocation.CenterOwner };
             maximizePdfWindow.Closed += MaximizePdfWindow_Closed;

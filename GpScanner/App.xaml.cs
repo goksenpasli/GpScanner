@@ -22,24 +22,24 @@ public partial class App : Application
         Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
 #endif
         FrameworkElement.LanguageProperty.OverrideMetadata(typeof(Run), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
-        foreach(string arg in e.Args)
+        foreach (string arg in e.Args)
         {
-            if(arg.StartsWith(StillImageHelper.DEVICE_PREFIX, StringComparison.InvariantCultureIgnoreCase))
+            if (arg.StartsWith(StillImageHelper.DEVICE_PREFIX, StringComparison.InvariantCultureIgnoreCase))
             {
                 List<Process> processes = StillImageHelper.GetAllGPScannerProcess().ToList();
-                if(!processes.Any())
+                if (!processes.Any())
                 {
                     StillImageHelper.FirstLanuchScan = true;
                     return;
                 }
 
-                if(processes.Any())
+                if (processes.Any())
                 {
                     StillImageHelper.FirstLanuchScan = false;
-                    foreach(Process process in processes)
+                    foreach (Process process in processes)
                     {
                         StillImageHelper.ActivateProcess(process);
-                        if(StillImageHelper.SendMessage(process, StillImageHelper.DEVICE_PREFIX))
+                        if (StillImageHelper.SendMessage(process, StillImageHelper.DEVICE_PREFIX))
                         {
                             Environment.Exit(0);
                         }

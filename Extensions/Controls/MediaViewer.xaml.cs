@@ -129,7 +129,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         GoToFrame = new RelayCommand<object>(
             parameter =>
             {
-                if(parameter is TimeSpan timeSpan)
+                if (parameter is TimeSpan timeSpan)
                 {
                     MediaPosition = timeSpan;
                 }
@@ -140,7 +140,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
             parameter =>
             {
                 OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = "Srt Dosyası (*.srt)|*.srt" };
-                if(openFileDialog.ShowDialog() == true)
+                if (openFileDialog.ShowDialog() == true)
                 {
                     SubtitleFilePath = openFileDialog.FileName;
                     ParsedSubtitle = ParseSrtFile(SubtitleFilePath);
@@ -152,7 +152,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
             parameter =>
             {
                 OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = VideoFileExtensions };
-                if(openFileDialog.ShowDialog() == true)
+                if (openFileDialog.ShowDialog() == true)
                 {
                     MediaDataFilePath = openFileDialog.FileName;
                 }
@@ -182,10 +182,10 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
                 Player.Play();
 
-                if(Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                 {
                     string singlefile = null;
-                    for(int i = 1; i <= ThumbHeightCount * ThumbWidthCount; i++)
+                    for (int i = 1; i <= ThumbHeightCount * ThumbWidthCount; i++)
                     {
                         Player.Position = new TimeSpan(i * timemultiplier);
                         await Task.Delay(MillisecondsDelay);
@@ -201,7 +201,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
                 UniformGrid uniformgrid = new() { Rows = ThumbHeightCount, Columns = ThumbWidthCount };
                 double oran = 1d / ThumbWidthCount;
-                for(int i = 1; i <= ThumbHeightCount * ThumbWidthCount; i++)
+                for (int i = 1; i <= ThumbHeightCount * ThumbWidthCount; i++)
                 {
                     Player.Position = new TimeSpan(i * timemultiplier);
                     await Task.Delay(MillisecondsDelay);
@@ -213,7 +213,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                     image.SetValue(Grid.RowProperty, 0);
                     _ = imagegrid.Children.Add(image);
 
-                    if(ThumbShowTime)
+                    if (ThumbShowTime)
                     {
                         TextBlock textBlock = GenerateWhiteTextBlock(Player.Position.ToString());
                         textBlock.SetValue(Grid.RowProperty, 1);
@@ -235,11 +235,11 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
             parameter =>
             {
                 OpenFileDialog openFileDialog = new() { Multiselect = true, Filter = VideoFileExtensions };
-                if(openFileDialog.ShowDialog() == true)
+                if (openFileDialog.ShowDialog() == true)
                 {
-                    foreach(string item in openFileDialog.FileNames)
+                    foreach (string item in openFileDialog.FileNames)
                     {
-                        if(!PlayList.Contains(item))
+                        if (!PlayList.Contains(item))
                         {
                             PlayList.Add(item);
                         }
@@ -252,9 +252,9 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
             parameter =>
             {
                 Thickness defaultsubtitlethickness = new(SubTitleMargin.Left, SubTitleMargin.Top, SubTitleMargin.Right, SubTitleMargin.Bottom);
-                if(parameter is object content)
+                if (parameter is object content)
                 {
-                    switch(content)
+                    switch (content)
                     {
                         case "6":
                             defaultsubtitlethickness.Bottom -= 10;
@@ -429,7 +429,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
         set
         {
-            if(parsedSubtitle != value)
+            if (parsedSubtitle != value)
             {
                 parsedSubtitle = value;
                 OnPropertyChanged(nameof(ParsedSubtitle));
@@ -461,7 +461,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
         set
         {
-            if(searchSubtitle != value)
+            if (searchSubtitle != value)
             {
                 searchSubtitle = value;
                 OnPropertyChanged(nameof(SearchSubtitle));
@@ -559,10 +559,10 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         const double dt = maxTheta / tDiv;
         const double dy = (maxY - minY) / yDiv;
         MeshGeometry3D mesh = new();
-        for(int yi = 0; yi <= yDiv; yi++)
+        for (int yi = 0; yi <= yDiv; yi++)
         {
             double y = minY + (yi * dy);
-            for(int ti = 0; ti <= tDiv; ti++)
+            for (int ti = 0; ti <= tDiv; ti++)
             {
                 double t = ti * dt;
                 mesh.Positions.Add(GetPosition(t, y));
@@ -571,9 +571,9 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
             }
         }
 
-        for(int yi = 0; yi < yDiv; yi++)
+        for (int yi = 0; yi < yDiv; yi++)
         {
-            for(int ti = 0; ti < tDiv; ti++)
+            for (int ti = 0; ti < tDiv; ti++)
             {
                 int x0 = ti;
                 int x1 = ti + 1;
@@ -598,7 +598,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         {
             ObservableCollection<SrtContent> content = new();
             const string pattern = "<[/]?[ib]>";
-            foreach(string element in File.ReadAllText(filepath, Encoding.GetEncoding("UTF-8")).Split(new[] { "\r\n\r\n" }, StringSplitOptions.RemoveEmptyEntries))
+            foreach (string element in File.ReadAllText(filepath, Encoding.GetEncoding("UTF-8")).Split(new[] { "\r\n\r\n" }, StringSplitOptions.RemoveEmptyEntries))
             {
                 string[] lines = element.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
                 content.Add(
@@ -612,7 +612,8 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
             }
 
             return content;
-        } catch(Exception ex)
+        }
+        catch (Exception ex)
         {
             throw new ArgumentException(nameof(filepath), ex);
         }
@@ -630,7 +631,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private static void AutoplayChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if(!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is MediaViewer viewer && (bool)e.NewValue && viewer.MediaDataFilePath != null)
+        if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is MediaViewer viewer && (bool)e.NewValue && viewer.MediaDataFilePath != null)
         {
             viewer.Player.Play();
         }
@@ -638,14 +639,14 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private static void FovChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if(d is MediaViewer viewer && e.NewValue != null)
+        if (d is MediaViewer viewer && e.NewValue != null)
         {
-            if((double)e.NewValue < 1)
+            if ((double)e.NewValue < 1)
             {
                 viewer.Fov = 1;
             }
 
-            if((double)e.NewValue > 140)
+            if ((double)e.NewValue > 140)
             {
                 viewer.Fov = 140;
             }
@@ -679,23 +680,23 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private static void MediaDataFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if(!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is MediaViewer viewer && e.NewValue != null)
+        if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is MediaViewer viewer && e.NewValue != null)
         {
             try
             {
                 string uriString = (string)e.NewValue;
-                if(!File.Exists(uriString))
+                if (!File.Exists(uriString))
                 {
                     return;
                 }
 
                 viewer.Player.Source = new Uri(uriString);
-                if(viewer.AutoLoadSameNameSubtitleFile)
+                if (viewer.AutoLoadSameNameSubtitleFile)
                 {
                     viewer.SubtitleFilePath = GetAutoSubtitlePath(uriString);
                 }
 
-                if(viewer.AutoPlay)
+                if (viewer.AutoPlay)
                 {
                     viewer.Player.Play();
                     viewer.OsdText = "Çalıyor";
@@ -706,14 +707,15 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
                 void MediaOpened(object f, RoutedEventArgs g)
                 {
-                    if(f is MediaElement mediaelement && mediaelement.NaturalDuration.HasTimeSpan)
+                    if (f is MediaElement mediaelement && mediaelement.NaturalDuration.HasTimeSpan)
                     {
                         viewer.EndTimeSpan = mediaelement.NaturalDuration.TimeSpan;
                         timer = new DispatcherTimer(TimeSpan.FromSeconds(1), DispatcherPriority.Normal, (s, _) => viewer.MediaPosition = mediaelement.Position, Dispatcher.CurrentDispatcher);
                         timer.Start();
                     }
                 }
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new ArgumentException(nameof(viewer.Player.Source), ex);
             }
@@ -722,11 +724,11 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private static void MediaPositionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if(d is MediaViewer viewer && e.NewValue != null && !sliderdragging)
+        if (d is MediaViewer viewer && e.NewValue != null && !sliderdragging)
         {
             TimeSpan position = (TimeSpan)e.NewValue;
             viewer.Player.Position = position;
-            if(viewer.SubTitleVisibility == Visibility.Visible && viewer.ParsedSubtitle is not null)
+            if (viewer.SubTitleVisibility == Visibility.Visible && viewer.ParsedSubtitle is not null)
             {
                 RenderSubtitle(viewer, position);
             }
@@ -735,7 +737,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private static void MediaVolumeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if(d is MediaViewer viewer && e.NewValue != null)
+        if (d is MediaViewer viewer && e.NewValue != null)
         {
             viewer.Player.Volume = (double)e.NewValue;
             viewer.OsdText = $"Ses: {(int)(viewer.Player.Volume * 100)}";
@@ -744,7 +746,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private static void OsdTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if(d is MediaViewer mediaViewer && e.NewValue is not null)
+        if (d is MediaViewer mediaViewer && e.NewValue is not null)
         {
             osdtimer.Interval = new TimeSpan(0, 0, mediaViewer.OsdDisplayTime);
             osdtimer.Start();
@@ -761,9 +763,9 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private static void PanoramaModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if(!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is MediaViewer viewer)
+        if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is MediaViewer viewer)
         {
-            if((bool)e.NewValue)
+            if ((bool)e.NewValue)
             {
                 viewer.PanoramaViewPort.Visibility = Visibility.Visible;
                 viewer.panoramaBrush.Brush = null;
@@ -778,13 +780,13 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private static void RenderSubtitle(MediaViewer viewer, TimeSpan position)
     {
-        foreach(SrtContent srtcontent in viewer.ParsedSubtitle)
+        foreach (SrtContent srtcontent in viewer.ParsedSubtitle)
         {
-            if(position > srtcontent.StartTime && position < srtcontent.EndTime)
+            if (position > srtcontent.StartTime && position < srtcontent.EndTime)
             {
                 srtcontent.BackgroundColor = Brushes.Yellow;
                 viewer.MediaViewerSubtitleControl.LbSubtitle.ScrollIntoView(srtcontent);
-                if(viewer.AutoTranslate)
+                if (viewer.AutoTranslate)
                 {
                     viewer.TooltipOriginalSubtitle = srtcontent.Text;
                     viewer.SubTitle = TranslateViewModel
@@ -792,13 +794,14 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                         .ConfigureAwait(false)
                         .GetAwaiter()
                         .GetResult();
-                } else
+                }
+                else
                 {
                     viewer.SubTitle = srtcontent.Text;
                 }
             }
 
-            if(position > srtcontent.EndTime)
+            if (position > srtcontent.EndTime)
             {
                 srtcontent.BackgroundColor = null;
                 viewer.TooltipOriginalSubtitle = string.Empty;
@@ -809,7 +812,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private static void SubtitleFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if(!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is MediaViewer viewer && e.NewValue != null)
+        if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is MediaViewer viewer && e.NewValue != null)
         {
             viewer.ParsedSubtitle = viewer.ParseSrtFile((string)e.NewValue);
         }
@@ -817,7 +820,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private void Back_Click(object sender, RoutedEventArgs e)
     {
-        if(MediaDataFilePath != null)
+        if (MediaDataFilePath != null)
         {
             Player.Position = Player.Position.Subtract(new TimeSpan(0, 0, ForwardBackwardSkipSecond));
             OsdText = "Geri";
@@ -829,7 +832,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private void Forward_Click(object sender, RoutedEventArgs e)
     {
-        if(MediaDataFilePath != null)
+        if (MediaDataFilePath != null)
         {
             Player.Position = Player.Position.Add(new TimeSpan(0, 0, ForwardBackwardSkipSecond));
             OsdText = "İleri";
@@ -869,7 +872,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private void MediaElement_MediaEnded(object sender, RoutedEventArgs e)
     {
-        if(PlayList.Any() && AutoSkipNextVideo)
+        if (PlayList.Any() && AutoSkipNextVideo)
         {
             MediaDataFilePath = GetNextPlayListFile();
         }
@@ -877,7 +880,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private void MediaViewer_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if(e.PropertyName is "SearchSubtitle")
+        if (e.PropertyName is "SearchSubtitle")
         {
             MediaViewerSubtitleControl.cvs.Filter += (s, x) =>
             {
@@ -901,7 +904,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private void Pause_Click(object sender, RoutedEventArgs e)
     {
-        if(Player.CanPause)
+        if (Player.CanPause)
         {
             Player.Pause();
             OsdText = "Durduruldu";
@@ -910,9 +913,9 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private void Play_Click(object sender, RoutedEventArgs e)
     {
-        if(MediaDataFilePath != null)
+        if (MediaDataFilePath != null)
         {
-            if(Player.Position == Player.NaturalDuration)
+            if (Player.Position == Player.NaturalDuration)
             {
                 Player.Stop();
             }
@@ -924,7 +927,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private void Player_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-        if(GetMediaState(Player) == MediaState.Play)
+        if (GetMediaState(Player) == MediaState.Play)
         {
             Player.Pause();
             OsdText = "Durduruldu";
@@ -939,7 +942,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     {
         Angle += 90;
         OsdText = "Döndürüldü";
-        if(Angle == 360)
+        if (Angle == 360)
         {
             Angle = 0;
         }
@@ -963,7 +966,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private void SlowBackward_Click(object sender, RoutedEventArgs e)
     {
-        if(Player.CanPause)
+        if (Player.CanPause)
         {
             Player.Play();
             Player.Position = Player.Position.Subtract(new TimeSpan(0, 0, 0, 0, 1000 / 30));
@@ -973,7 +976,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private void SlowForward_Click(object sender, RoutedEventArgs e)
     {
-        if(Player.CanPause)
+        if (Player.CanPause)
         {
             Player.Play();
             Player.Position = Player.Position.Add(new TimeSpan(0, 0, 0, 0, 1000 / 30));
@@ -983,7 +986,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private void Stop_Click(object sender, RoutedEventArgs e)
     {
-        if(Player.Source != null)
+        if (Player.Source != null)
         {
             Player.Stop();
             OsdText = "Durdu";
@@ -1002,7 +1005,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private void Viewport3D_MouseMove(object sender, MouseEventArgs e)
     {
-        if(_isOnDrag && e.RightButton == MouseButtonState.Pressed)
+        if (_isOnDrag && e.RightButton == MouseButtonState.Pressed)
         {
             Vector delta = _startPoint - e.GetPosition(this);
             RotateX = _startRotateX + (delta.X / ActualWidth * 360);
@@ -1026,7 +1029,7 @@ public class SrtContent : InpcBase
 
         set
         {
-            if(backgroundColor != value)
+            if (backgroundColor != value)
             {
                 backgroundColor = value;
                 OnPropertyChanged(nameof(BackgroundColor));
@@ -1040,7 +1043,7 @@ public class SrtContent : InpcBase
 
         set
         {
-            if(endTime != value)
+            if (endTime != value)
             {
                 endTime = value;
                 OnPropertyChanged(nameof(EndTime));
@@ -1056,7 +1059,7 @@ public class SrtContent : InpcBase
 
         set
         {
-            if(startTime != value)
+            if (startTime != value)
             {
                 startTime = value;
                 OnPropertyChanged(nameof(StartTime));
@@ -1070,7 +1073,7 @@ public class SrtContent : InpcBase
 
         set
         {
-            if(text != value)
+            if (text != value)
             {
                 text = value;
                 OnPropertyChanged(nameof(Text));

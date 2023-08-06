@@ -13,7 +13,7 @@ public class PdfData : InpcBase
 
         set
         {
-            if(pageNumber != value)
+            if (pageNumber != value)
             {
                 pageNumber = value;
                 OnPropertyChanged(nameof(PageNumber));
@@ -27,7 +27,7 @@ public class PdfData : InpcBase
 
         set
         {
-            if(selected != value)
+            if (selected != value)
             {
                 selected = value;
                 OnPropertyChanged(nameof(Selected));

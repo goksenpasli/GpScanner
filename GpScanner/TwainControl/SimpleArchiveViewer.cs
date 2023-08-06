@@ -17,18 +17,19 @@ public class SimpleArchiveViewer : ArchiveViewer
             {
                 try
                 {
-                    if(parameter is string filename && !supportedFilesExtension.Contains(Path.GetExtension(filename)))
+                    if (parameter is string filename && !supportedFilesExtension.Contains(Path.GetExtension(filename)))
                     {
                         string extractedfile = ExtractToFile(parameter as string);
                         _ = Process.Start(extractedfile);
                         return;
                     }
-                    if(DataContext is TwainCtrl twainCtrl)
+                    if (DataContext is TwainCtrl twainCtrl)
                     {
                         string extractedfile = ExtractToFile(parameter as string);
                         twainCtrl.AddFiles(new string[] { extractedfile }, twainCtrl.DecodeHeight);
                     }
-                } catch(Exception ex)
+                }
+                catch (Exception ex)
                 {
                     throw new ArgumentException(ArchivePath, ex);
                 }

@@ -14,7 +14,7 @@ public class Chart : InpcBase
 
         set
         {
-            if(chartBrush != value)
+            if (chartBrush != value)
             {
                 chartBrush = value;
                 OnPropertyChanged(nameof(ChartBrush));
@@ -28,7 +28,7 @@ public class Chart : InpcBase
 
         set
         {
-            if(chartValue != value)
+            if (chartValue != value)
             {
                 chartValue = value;
                 OnPropertyChanged(nameof(ChartValue));
@@ -42,7 +42,7 @@ public class Chart : InpcBase
 
         set
         {
-            if(description != value)
+            if (description != value)
             {
                 description = value;
                 OnPropertyChanged(nameof(Description));

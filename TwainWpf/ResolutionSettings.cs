@@ -37,7 +37,7 @@ namespace TwainWpf
 
             set
             {
-                if(value != _colourSettings)
+                if (value != _colourSettings)
                 {
                     _colourSettings = value;
                     OnPropertyChanged(nameof(ColourSetting));
@@ -54,7 +54,7 @@ namespace TwainWpf
 
             set
             {
-                if(value != _dpi)
+                if (value != _dpi)
                 {
                     _dpi = value;
                     OnPropertyChanged(nameof(Dpi));

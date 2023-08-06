@@ -18,7 +18,7 @@ public sealed class PdfPageToThumbImageConverter : InpcBase, IMultiValueConverte
 
         set
         {
-            if(dpi != value)
+            if (dpi != value)
             {
                 dpi = value;
                 OnPropertyChanged(nameof(Dpi));
@@ -28,7 +28,7 @@ public sealed class PdfPageToThumbImageConverter : InpcBase, IMultiValueConverte
 
     public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {
-        if(values[0] is string PdfFilePath && values[1] is int index && File.Exists(PdfFilePath))
+        if (values[0] is string PdfFilePath && values[1] is int index && File.Exists(PdfFilePath))
         {
             try
             {
@@ -36,7 +36,7 @@ public sealed class PdfPageToThumbImageConverter : InpcBase, IMultiValueConverte
                     async () =>
                     {
                         BitmapSource bitmapImage = await PdfViewer.ConvertToImgAsync(PdfFilePath, index, Dpi).ConfigureAwait(false);
-                        if(bitmapImage == null)
+                        if (bitmapImage == null)
                         {
                             return null;
                         }
@@ -47,7 +47,8 @@ public sealed class PdfPageToThumbImageConverter : InpcBase, IMultiValueConverte
                     .ConfigureAwait(false)
                     .GetAwaiter()
                     .GetResult();
-            } catch(Exception)
+            }
+            catch (Exception)
             {
                 return null;
             }

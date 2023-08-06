@@ -22,9 +22,9 @@ public abstract class Deskew()
         byte[] pixels = new byte[width * height];
         image.CopyPixels(pixels, width, 0);
 
-        for(int y = 0; y < height; y++)
+        for (int y = 0; y < height; y++)
         {
-            for(int x = 0; x < width; x++)
+            for (int x = 0; x < width; x++)
             {
                 byte grayValue = pixels[(y * width) + x];
 
@@ -38,9 +38,9 @@ public abstract class Deskew()
         double yCenter = m01 / m00;
 
         double mu20 = 0, mu02 = 0, mu11 = 0;
-        for(int y = 0; y < height; y++)
+        for (int y = 0; y < height; y++)
         {
-            for(int x = 0; x < width; x++)
+            for (int x = 0; x < width; x++)
             {
                 byte grayValue = pixels[(y * width) + x];
 

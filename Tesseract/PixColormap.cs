@@ -29,7 +29,7 @@ namespace Tesseract
 
             set
             {
-                if(LeptonicaApi.Native.pixcmapResetColor(Handle, index, value.Red, value.Green, value.Blue) != 0)
+                if (LeptonicaApi.Native.pixcmapResetColor(Handle, index, value.Red, value.Green, value.Blue) != 0)
                 {
                     throw new InvalidOperationException("Failed to reset color.");
                 }
@@ -38,7 +38,7 @@ namespace Tesseract
 
         public static PixColormap Create(int depth)
         {
-            if(!(depth == 1 || depth == 2 || depth == 4 || depth == 8))
+            if (!(depth == 1 || depth == 2 || depth == 4 || depth == 8))
             {
                 throw new ArgumentOutOfRangeException(nameof(depth), "Depth must be 1, 2, 4, or 8 bpp.");
             }
@@ -49,12 +49,12 @@ namespace Tesseract
 
         public static PixColormap CreateLinear(int depth, int levels)
         {
-            if(!(depth == 1 || depth == 2 || depth == 4 || depth == 8))
+            if (!(depth == 1 || depth == 2 || depth == 4 || depth == 8))
             {
                 throw new ArgumentOutOfRangeException(nameof(depth), "Depth must be 1, 2, 4, or 8 bpp.");
             }
 
-            if(levels < 2 || levels > 2 << depth)
+            if (levels < 2 || levels > 2 << depth)
             {
                 throw new ArgumentOutOfRangeException(nameof(levels), "Depth must be 2 and 2^depth (inclusive).");
             }
@@ -65,7 +65,7 @@ namespace Tesseract
 
         public static PixColormap CreateLinear(int depth, bool firstIsBlack, bool lastIsWhite)
         {
-            if(!(depth == 1 || depth == 2 || depth == 4 || depth == 8))
+            if (!(depth == 1 || depth == 2 || depth == 4 || depth == 8))
             {
                 throw new ArgumentOutOfRangeException(nameof(depth), "Depth must be 1, 2, 4, or 8 bpp.");
             }
@@ -81,7 +81,7 @@ namespace Tesseract
 
         public void Clear()
         {
-            if(LeptonicaApi.Native.pixcmapClear(Handle) != 0)
+            if (LeptonicaApi.Native.pixcmapClear(Handle) != 0)
             {
                 throw new InvalidOperationException("Failed to clear color map.");
             }
