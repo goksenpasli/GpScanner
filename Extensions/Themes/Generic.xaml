@@ -620,6 +620,10 @@
                                         local:GridViewSort.PropertyName="SıkıştırılmışBoyut"
                                         DisplayMemberBinding="{Binding SıkıştırılmışBoyut, Mode=OneWay}"
                                         Header="SIKIŞTIRILMIŞ&#x0a;BOYUT" />
+                                    <GridViewColumn Width="65"
+                                        local:GridViewSort.PropertyName="Crc"
+                                        DisplayMemberBinding="{Binding Crc, Mode=OneWay}"
+                                        Header="CRC32" />
                                     <GridViewColumn Width="70" DisplayMemberBinding="{Binding DosyaAdı, Converter={StaticResource FilePathToFileDescriptionConverter}, Mode=OneWay}" Header="TİP" />
                                     <GridViewColumn Width="45" local:GridViewSort.PropertyName="Oran" Header="ORAN">
                                         <GridViewColumn.CellTemplate>

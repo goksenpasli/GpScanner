@@ -142,7 +142,8 @@ namespace Extensions
                         TamYol = item.FullName,
                         Boyut = item.Length,
                         Oran = (double)item.CompressedLength / item.Length,
-                        DüzenlenmeZamanı = item.LastWriteTime.Date
+                        DüzenlenmeZamanı = item.LastWriteTime.Date,
+                        Crc = CalculateFileCRC(item.Open())
                     };
                     archiveViewer.Arşivİçerik.Add(archiveData);
                 }
@@ -200,6 +201,14 @@ namespace Extensions
                     })
                     : null;
             }
+        }
+
+        private string CalculateFileCRC(Stream stream)
+        {
+            using CRC32 crc32 = new();
+            byte[] crcValue = crc32.ComputeHash(stream);
+            stream?.Dispose();
+            return BitConverter.ToString(crcValue).Replace("-", string.Empty).ToUpper();
         }
     }
 }

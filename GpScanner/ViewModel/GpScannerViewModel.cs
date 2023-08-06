@@ -11,6 +11,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Security.Principal;
@@ -163,6 +164,36 @@ public class GpScannerViewModel : InpcBase
             {
                 CheckedPdfCount = Dosyalar?.Count(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase));
                 return CheckedPdfCount > 1;
+            });
+
+        PdfZipBirleştir = new RelayCommand<object>(
+            async parameter =>
+            {
+                SaveFileDialog saveFileDialog = new() { Filter = "Zip Dosyası(*.zip)|*.zip", FileName = Translation.GetResStringValue("MERGE") };
+                if(saveFileDialog.ShowDialog() == true)
+                {
+                    try
+                    {
+                        await Task.Run(
+                            () =>
+                            {
+                                List<string> pdffilelist = Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName).ToList();
+                                using ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Create);
+                                foreach(string fPath in pdffilelist)
+                                {
+                                    _ = archive.CreateEntryFromFile(fPath, Path.GetFileName(fPath));
+                                }
+                            });
+                    } catch(Exception ex)
+                    {
+                        _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            },
+            parameter =>
+            {
+                CheckedPdfCount = Dosyalar?.Count(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase));
+                return CheckedPdfCount > 0;
             });
 
         OcrPage = new RelayCommand<object>(
@@ -1121,6 +1152,8 @@ public class GpScannerViewModel : InpcBase
             }
         }
     }
+
+    public RelayCommand<object> PdfZipBirleştir { get; }
 
     public RelayCommand<object> PlayAudio { get; }
 

@@ -180,6 +180,7 @@
       <DependentUpon>SaveDialogUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ScannedImage.cs" />
+    <Compile Include="SimpleArchiveViewer.cs" />
     <Compile Include="SimpleImageViewer.cs" />
     <Compile Include="SimplePdfViewer.cs" />
     <Compile Include="SimpleXmlViewer.cs" />

@@ -273,17 +273,19 @@
                             <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
                                 twainctrl:Policy.PolicyName="PdfBirleştir" BorderBrush="Cyan"
                                 Command="{Binding PdfBirleştir}">
-                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                    <Image Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="68" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc MERGEPDF}" />
-                                </StackPanel>
+                                <Image Width="16" Height="16" Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
+                            </Button>
+                            <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                                twainctrl:Policy.PolicyName="PdfZipBirleştir"
+                                Command="{Binding PdfZipBirleştir}">
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="zipfldr.dll" />
+                                            <Binding Source="0" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
                             </Button>
                         </StackPanel>
                         <Separator Grid.Row="1" />

@@ -10,6 +10,7 @@ public class ArchiveData : InpcBase
     private double oran;
     private long sıkıştırılmışBoyut;
     private string tamYol;
+    private string crc;
 
     public long Boyut
     {
@@ -21,6 +22,16 @@ public class ArchiveData : InpcBase
             {
                 boyut = value;
                 OnPropertyChanged(nameof(Boyut));
+            }
+        }
+    }
+
+    public string Crc { get => crc;
+        set {
+            if (crc != value)
+            {
+                crc = value;
+                OnPropertyChanged(nameof(Crc));
             }
         }
     }

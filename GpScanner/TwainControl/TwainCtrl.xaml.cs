@@ -1137,6 +1137,17 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
 
+        LoadArchiveFile = new RelayCommand<object>(
+            parameter =>
+            {
+                OpenFileDialog openFileDialog = new() { Filter = "Zip Dosyaları (*.zip)|*.zip", Multiselect = false };
+                if(openFileDialog.ShowDialog() == true && parameter is ArchiveViewer archiveViewer)
+                {
+                    archiveViewer.ArchivePath = openFileDialog.FileName;
+                }
+            },
+            parameter => true);
+
         ClosePdfFile = new RelayCommand<object>(
             parameter =>
             {
@@ -1194,9 +1205,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         MessageBoxResult.Yes)
                     {
                         await RemovePdfPageAsync(path, SayfaBaşlangıç, SayfaBitiş);
+                        pdfviewer.Sayfa = 1;
                         pdfviewer.PdfFilePath = null;
                         pdfviewer.PdfFilePath = path;
-                        pdfviewer.Sayfa = 1;
                         SayfaBaşlangıç = SayfaBitiş = 1;
                     }
                 }
@@ -1593,6 +1604,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public ICommand KayıtYoluBelirle { get; }
 
     public ICommand ListeTemizle { get; }
+
+    public RelayCommand<object> LoadArchiveFile { get; }
 
     public ICommand LoadCroppedImage { get; }
 
