@@ -445,6 +445,22 @@
                                         </CheckBox.Content>
                                     </CheckBox>
                                     <StackPanel Orientation="Horizontal">
+                                        <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding NotifyCalendar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                            <Canvas Width="32" Height="32">
+                                                <Image Width="32" Height="32">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="TimeDate.cpl" />
+                                                            <Binding Source="0" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                                <Extensions:NumericUpDownControl Canvas.Bottom="1"
+                                                    FontWeight="Bold" Maximum="30"
+                                                    Minimum="1" SmallChange="1"
+                                                    Value="{Binding NotifyCalendarDateValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                                            </Canvas>
+                                        </CheckBox>
                                         <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding ContributionIsImageMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                                             <CheckBox.Content>
                                                 <Canvas Width="32" Height="32">

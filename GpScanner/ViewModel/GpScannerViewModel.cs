@@ -57,7 +57,9 @@ public class GpScannerViewModel : InpcBase
     private bool batchDialogOpen;
     private string batchFolder;
     private ObservableCollection<BatchTxtOcr> batchTxtOcrs;
+    private string calendarDesc;
     private XmlLanguage calendarLang;
+    private bool calendarPanelIsExpanded;
     private int? checkedPdfCount = 0;
     private ObservableCollection<ContributionData> contributionData;
     private int cycleIndex;
@@ -72,6 +74,7 @@ public class GpScannerViewModel : InpcBase
     private bool listBoxBorderAnimation;
     private GridLength mainWindowDocumentGuiControlLength = new(1, GridUnitType.Star);
     private GridLength mainWindowGuiControlLength = new(3, GridUnitType.Star);
+    private DateTime notifyDate = DateTime.Today;
     private bool ocrısBusy;
     private string patchFileName;
     private string patchProfileName = string.Empty;
@@ -114,9 +117,14 @@ public class GpScannerViewModel : InpcBase
         GenerateJumpList();
         SeçiliGün = DateTime.Today;
         SelectedSize = GetPreviewSize[Settings.Default.PreviewIndex];
-        ScannerData = new ScannerData { Data = DataYükle() };
+        ScannerData = new ScannerData { Data = DataYükle(), Reminder = ReminderYükle() };
         TesseractViewModel = new TesseractViewModel();
         TranslateViewModel = new TranslateViewModel();
+
+        if (Settings.Default.NotifyCalendar && ScannerData?.Reminder?.Any(z => z.Tarih < DateTime.Today.AddDays(Settings.Default.NotifyCalendarDateValue)) == true)
+        {
+            CalendarPanelIsExpanded = true;
+        }
 
         RegisterSti = new RelayCommand<object>(parameter => StillImageHelper.Register(), parameter => true);
 
@@ -691,6 +699,16 @@ public class GpScannerViewModel : InpcBase
         PrintImage = new RelayCommand<object>(parameter => PdfViewer.PdfViewer.PrintImageSource(parameter as ImageSource, 300, false), parameter => parameter is ImageSource);
 
         PlayAudio = new RelayCommand<object>(parameter => TwainCtrl.PlayNotificationSound(parameter as string), parameter => true);
+
+        AddToCalendar = new RelayCommand<object>(
+            parameter =>
+            {
+                ReminderData reminderData = new() { Açıklama = CalendarDesc, Tarih = NotifyDate, FileName = (parameter as Scanner).FileName, Id = DataSerialize.RandomNumber() };
+                ScannerData.Reminder.Add(reminderData);
+                DatabaseSave.Execute(null);
+                CalendarDesc = null;
+            },
+            parameter => !string.IsNullOrWhiteSpace(CalendarDesc));
     }
 
     public static bool IsAdministrator
@@ -706,6 +724,8 @@ public class GpScannerViewModel : InpcBase
     public static string XmlDataPath { get; set; } = Settings.Default.DatabaseFile;
 
     public ICommand AddFtpSites { get; }
+
+    public ICommand AddToCalendar { get; }
 
     public int AllPdfPage
     {
@@ -828,6 +848,19 @@ public class GpScannerViewModel : InpcBase
         }
     }
 
+    public string CalendarDesc
+    {
+        get => calendarDesc;
+        set
+        {
+            if (calendarDesc != value)
+            {
+                calendarDesc = value;
+                OnPropertyChanged(nameof(CalendarDesc));
+            }
+        }
+    }
+
     public XmlLanguage CalendarLang
     {
         get => calendarLang;
@@ -838,6 +871,19 @@ public class GpScannerViewModel : InpcBase
             {
                 calendarLang = value;
                 OnPropertyChanged(nameof(CalendarLang));
+            }
+        }
+    }
+
+    public bool CalendarPanelIsExpanded
+    {
+        get => calendarPanelIsExpanded;
+        set
+        {
+            if (calendarPanelIsExpanded != value)
+            {
+                calendarPanelIsExpanded = value;
+                OnPropertyChanged(nameof(CalendarPanelIsExpanded));
             }
         }
     }
@@ -1044,6 +1090,19 @@ public class GpScannerViewModel : InpcBase
     }
 
     public ICommand ModifyGridWidth { get; }
+
+    public DateTime NotifyDate
+    {
+        get => notifyDate;
+        set
+        {
+            if (notifyDate != value)
+            {
+                notifyDate = value;
+                OnPropertyChanged(nameof(NotifyDate));
+            }
+        }
+    }
 
     public bool OcrIsBusy
     {
@@ -1774,5 +1833,29 @@ public class GpScannerViewModel : InpcBase
             DatabaseSave.Execute(null);
             Dosyalar = GetScannerFileData();
         };
+    }
+
+    private ObservableCollection<ReminderData> ReminderYükle()
+    {
+        try
+        {
+            if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+            {
+                return null;
+            }
+
+            if (File.Exists(XmlDataPath))
+            {
+                return new ObservableCollection<ReminderData>(XmlDataPath.DeSerialize<ScannerData>().Reminder.Where(z => z.Tarih > DateTime.Today).OrderBy(z => z.Tarih));
+            }
+
+            _ = Directory.CreateDirectory(Path.GetDirectoryName(XmlDataPath));
+            return new ObservableCollection<ReminderData>();
+        }
+        catch (Exception ex)
+        {
+            _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+            return null;
+        }
     }
 }

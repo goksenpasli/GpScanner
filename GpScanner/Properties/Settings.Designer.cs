@@ -337,5 +337,29 @@ namespace GpScanner.Properties {
                 this["ContributionIsImageMode"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool NotifyCalendar {
+            get {
+                return ((bool)(this["NotifyCalendar"]));
+            }
+            set {
+                this["NotifyCalendar"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("7")]
+        public int NotifyCalendarDateValue {
+            get {
+                return ((int)(this["NotifyCalendarDateValue"]));
+            }
+            set {
+                this["NotifyCalendarDateValue"] = value;
+            }
+        }
     }
 }

@@ -8,6 +8,7 @@ namespace GpScanner.ViewModel;
 public class ScannerData : InpcBase
 {
     private ObservableCollection<Data> data = new();
+    private ObservableCollection<ReminderData> reminder = new();
 
     [XmlElement(ElementName = "Data")]
     public ObservableCollection<Data> Data
@@ -20,6 +21,20 @@ public class ScannerData : InpcBase
             {
                 data = value;
                 OnPropertyChanged(nameof(Data));
+            }
+        }
+    }
+
+    [XmlElement(ElementName = "Reminder")]
+    public ObservableCollection<ReminderData> Reminder
+    {
+        get => reminder;
+        set
+        {
+            if (reminder != value)
+            {
+                reminder = value;
+                OnPropertyChanged(nameof(Reminder));
             }
         }
     }
