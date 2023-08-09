@@ -516,7 +516,7 @@
                                                                                     </StackPanel>
                                                                                 </StackPanel>
                                                                             </GroupBox.Header>
-                                                                            <ViewModel:PdfCompressorControl LoadedPdfPath="{Binding FileName, Mode=OneWay}" />
+                                                                            <ViewModel:PdfCompressorControl BatchProcessIsEnabled="False" LoadedPdfPath="{Binding FileName, Mode=OneWay}" />
                                                                         </GroupBox>
                                                                     </Extensions:ContentToggleButton.OverContent>
                                                                     <Image Width="16" Height="16">

@@ -22,13 +22,47 @@ using Point = System.Drawing.Point;
 
 namespace PdfCompressor;
 
+public class BatchPdfData : InpcBase
+{
+    private bool completed;
+    private string filename;
+
+    public bool Completed
+    {
+        get => completed;
+        set
+        {
+            if (completed != value)
+            {
+                completed = value;
+                OnPropertyChanged(nameof(Completed));
+            }
+        }
+    }
+
+    public string Filename
+    {
+        get => filename;
+        set
+        {
+            if (filename != value)
+            {
+                filename = value;
+                OnPropertyChanged(nameof(Filename));
+            }
+        }
+    }
+}
+
 public class Compressor : Control, INotifyPropertyChanged
 {
+    public static readonly DependencyProperty BatchProcessIsEnabledProperty = DependencyProperty.Register("BatchProcessIsEnabled", typeof(bool), typeof(Compressor), new PropertyMetadata(true));
     public static readonly DependencyProperty BlackAndWhiteProperty = DependencyProperty.Register("BlackAndWhite", typeof(bool), typeof(Compressor), new PropertyMetadata(Settings.Default.Bw, BwChanged));
     public static readonly DependencyProperty DpiProperty = DependencyProperty.Register("Dpi", typeof(int), typeof(Compressor), new PropertyMetadata(Settings.Default.Dpi, DpiChanged));
     public static readonly DependencyProperty LoadedPdfPathProperty = DependencyProperty.Register("LoadedPdfPath", typeof(string), typeof(Compressor), new PropertyMetadata(string.Empty));
     public static readonly DependencyProperty QualityProperty = DependencyProperty.Register("Quality", typeof(int), typeof(Compressor), new PropertyMetadata(Settings.Default.Quality, QualityChanged));
     public static readonly DependencyProperty UseMozJpegProperty = DependencyProperty.Register("UseMozJpeg", typeof(bool), typeof(Compressor), new PropertyMetadata(false, MozpegChanged));
+    private List<BatchPdfData> batchPdfList;
     private double compressionProgress;
 
     static Compressor() { DefaultStyleKeyProperty.OverrideMetadata(typeof(Compressor), new FrameworkPropertyMetadata(typeof(Compressor))); }
@@ -40,21 +74,33 @@ public class Compressor : Control, INotifyPropertyChanged
             {
                 if (IsValidPdfFile(LoadedPdfPath))
                 {
-                    PdfiumViewer.PdfDocument loadedpdfdoc = PdfiumViewer.PdfDocument.Load(LoadedPdfPath);
-                    List<BitmapImage> images = await AddToListAsync(loadedpdfdoc, Dpi);
-                    using PdfDocument pdfDocument = await GeneratePdfAsync(images, UseMozJpeg, BlackAndWhite, Quality, Dpi);
-                    images = null;
+                    PdfDocument pdfDocument = await CompressFilePdfDocumentAsync(LoadedPdfPath);
                     SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası (*.pdf)|*.pdf", FileName = $"{Path.GetFileNameWithoutExtension(LoadedPdfPath)}_Compressed.pdf" };
                     if (saveFileDialog.ShowDialog() == true)
                     {
                         pdfDocument.Save(saveFileDialog.FileName);
                         LoadedPdfPath = null;
                     }
-                    loadedpdfdoc?.Dispose();
                     GC.Collect();
                 }
             },
             parameter => !string.IsNullOrWhiteSpace(LoadedPdfPath));
+
+        BatchCompressFile = new RelayCommand<object>(
+            async parameter =>
+            {
+                foreach (BatchPdfData file in BatchPdfList)
+                {
+                    if (IsValidPdfFile(file.Filename))
+                    {
+                        PdfDocument pdfDocument = await CompressFilePdfDocumentAsync(file.Filename);
+                        pdfDocument.Save($"{Path.GetDirectoryName(file.Filename)}\\{Path.GetFileNameWithoutExtension(file.Filename)}_Compressed.pdf");
+                        GC.Collect();
+                        file.Completed = true;
+                    }
+                }
+            },
+            parameter => BatchPdfList?.Count > 0);
 
         OpenFile = new RelayCommand<object>(
             parameter =>
@@ -66,9 +112,41 @@ public class Compressor : Control, INotifyPropertyChanged
                 }
             },
             parameter => true);
+
+        OpenBatchPdfFolder = new RelayCommand<object>(
+            parameter =>
+            {
+                System.Windows.Forms.FolderBrowserDialog dialog = new() { Description = "PDF Klasörü Seç." };
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    BatchPdfList = new List<BatchPdfData>();
+                    foreach (string item in Directory.EnumerateFiles(dialog.SelectedPath, "*.pdf", SearchOption.TopDirectoryOnly))
+                    {
+                        BatchPdfList.Add(new BatchPdfData() { Filename = item });
+                    }
+                }
+            },
+            parameter => true);
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
+
+    public RelayCommand<object> BatchCompressFile { get; }
+
+    public List<BatchPdfData> BatchPdfList
+    {
+        get => batchPdfList;
+        set
+        {
+            if (batchPdfList != value)
+            {
+                batchPdfList = value;
+                OnPropertyChanged(nameof(BatchPdfList));
+            }
+        }
+    }
+
+    public bool BatchProcessIsEnabled { get => (bool)GetValue(BatchProcessIsEnabledProperty); set => SetValue(BatchProcessIsEnabledProperty, value); }
 
     public bool BlackAndWhite { get => (bool)GetValue(BlackAndWhiteProperty); set => SetValue(BlackAndWhiteProperty, value); }
 
@@ -91,6 +169,8 @@ public class Compressor : Control, INotifyPropertyChanged
     public int Dpi { get => (int)GetValue(DpiProperty); set => SetValue(DpiProperty, value); }
 
     public string LoadedPdfPath { get => (string)GetValue(LoadedPdfPathProperty); set => SetValue(LoadedPdfPathProperty, value); }
+
+    public RelayCommand<object> OpenBatchPdfFolder { get; }
 
     public RelayCommand<object> OpenFile { get; }
 
@@ -280,5 +360,13 @@ public class Compressor : Control, INotifyPropertyChanged
     {
         Settings.Default.Quality = (int)e.NewValue;
         Settings.Default.Save();
+    }
+
+    private async Task<PdfDocument> CompressFilePdfDocumentAsync(string path)
+    {
+        PdfiumViewer.PdfDocument loadedpdfdoc = PdfiumViewer.PdfDocument.Load(path);
+        List<BitmapImage> images = await AddToListAsync(loadedpdfdoc, Dpi);
+        loadedpdfdoc?.Dispose();
+        return await GeneratePdfAsync(images, UseMozJpeg, BlackAndWhite, Quality, Dpi);
     }
 }

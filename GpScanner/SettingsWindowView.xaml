@@ -642,9 +642,13 @@
                         </StackPanel>
                     </TabItem.Header>
                     <GroupBox>
-                        <StackPanel>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
                             <PdfCompressor:Compressor />
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Grid.Row="1" Orientation="Horizontal">
                                 <Image Width="24" Height="24">
                                     <Image.Source>
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -659,7 +663,7 @@
                                     <TextBlock Text="{twainctrl:Loc OVERWRITECOMPRESSED}" TextWrapping="Wrap" />
                                 </CheckBox>
                             </StackPanel>
-                        </StackPanel>
+                        </Grid>
                     </GroupBox>
                 </TabItem>
                 <TabItem>

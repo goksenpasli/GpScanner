@@ -16,6 +16,7 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <TextBlock VerticalAlignment="Center" Text="{Binding LoadedPdfPath, RelativeSource={RelativeSource TemplatedParent}}" />
@@ -52,7 +53,50 @@
                                     </Image.Source>
                                 </Image>
                             </Button>
-                            <UniformGrid Grid.Row="2" Grid.ColumnSpan="2" Columns="3">
+                            <ListBox Grid.Row="2" Grid.Column="0"
+                                IsEnabled="{Binding BatchProcessIsEnabled, RelativeSource={RelativeSource TemplatedParent}}"
+                                ItemsSource="{Binding BatchPdfList, RelativeSource={RelativeSource TemplatedParent}}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Filename}" />
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Completed}" Value="true">
+                                                <Setter Property="Foreground" Value="Green" />
+                                                <Setter Property="FontWeight" Value="Bold" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                            </ListBox>
+                            <StackPanel Grid.Row="2" Grid.Column="1"
+                                IsEnabled="{Binding BatchProcessIsEnabled, RelativeSource={RelativeSource TemplatedParent}}"
+                                Orientation="Horizontal">
+                                <Button Command="{Binding OpenBatchPdfFolder, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <Image Width="24" Height="24">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="3" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                </Button>
+                                <Button Command="{Binding BatchCompressFile, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <Image Width="24" Height="24">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Zipfldr.dll" />
+                                                <Binding Source="0" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                </Button>
+                            </StackPanel>
+                            <UniformGrid Grid.Row="3" Grid.ColumnSpan="2" Columns="3">
                                 <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
                                     Content="MOZJPEG"
                                     IsChecked="{Binding UseMozJpeg, RelativeSource={RelativeSource TemplatedParent}}"
