@@ -1131,7 +1131,7 @@
                                         <Setter Property="Template">
                                             <Setter.Value>
                                                 <ControlTemplate>
-                                                    <StackPanel Background="{TemplateBinding Background}">
+                                                    <StackPanel Background="{TemplateBinding Background}" Drop="StackPanel_Drop" GiveFeedback="StackPanel_GiveFeedback">
                                                         <TextBlock HorizontalAlignment="Center">
                                                             <InlineUIContainer>
                                                                 <Extensions:NumericUpDownControl Height="20"
@@ -1141,9 +1141,9 @@
                                                                     SmallChange="1"
                                                                     Value="{Binding RotationAngle}" />
                                                             </InlineUIContainer><Run AllowDrop="True" Cursor="SizeAll"
-                                                                Drop="Run_Drop" FontFamily="Wingdings"
-                                                                FontSize="24" FontWeight="Bold"
-                                                                PreviewMouseMove="Run_PreviewMouseMove" Text="B">
+                                                                FontFamily="Wingdings" FontSize="24"
+                                                                FontWeight="Bold" PreviewMouseMove="Run_PreviewMouseMove"
+                                                                Text="B">
                                                                 <Run.Style>
                                                                     <Style TargetType="{x:Type Run}">
                                                                         <Setter Property="Foreground" Value="Red" />
@@ -1318,13 +1318,13 @@
                                             <Setter Property="Template">
                                                 <Setter.Value>
                                                     <ControlTemplate>
-                                                        <StackPanel Orientation="Horizontal">
+                                                        <StackPanel Drop="StackPanel_EypDrop" Orientation="Horizontal">
                                                             <TextBlock VerticalAlignment="Center">
                                                                 <Run AllowDrop="True" BaselineAlignment="Center"
-                                                                    Cursor="SizeAll" Drop="Run_EypDrop"
-                                                                    FontFamily="Wingdings" FontSize="24"
-                                                                    FontWeight="Bold" Foreground="Red"
-                                                                    PreviewMouseMove="Run_EypPreviewMouseMove" Text="B" />
+                                                                    Cursor="SizeAll" FontFamily="Wingdings"
+                                                                    FontSize="24" FontWeight="Bold"
+                                                                    Foreground="Red" PreviewMouseMove="Run_EypPreviewMouseMove"
+                                                                    Text="B" />
                                                             </TextBlock>
                                                             <ContentPresenter d:ContentTemplate="{StaticResource XmlViewerTemplate}"
                                                                 d:ContentTemplateSelector="{StaticResource PdfEypViewerSelector}"

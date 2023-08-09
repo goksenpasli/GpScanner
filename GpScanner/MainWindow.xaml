@@ -805,17 +805,17 @@
                                         VirtualizingPanel.VirtualizationMode="Standard">
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>
-                                                <StackPanel>
+                                                <StackPanel Drop="StackPanel_Drop">
                                                     <TextBlock HorizontalAlignment="Center"><InlineUIContainer>
                                                             <Extensions:NumericUpDownControl Height="20"
                                                                 LargeChange="1" Maximum="1"
                                                                 Minimum="-1" NumericUpdownTextBoxVisibility="Collapsed"
                                                                 Orientation="Horizontal" SmallChange="1"
                                                                 Value="{Binding RotationAngle}" />
-                                                        </InlineUIContainer><Run Text=" " /><Run AllowDrop="True" Cursor="SizeAll"
-                                                            Drop="Run_Drop" FontFamily="Wingdings"
-                                                            FontSize="24" FontWeight="Bold"
-                                                            PreviewMouseMove="Run_PreviewMouseMove" Text="B" /><Run Text=" " /><Hyperlink twainctrl:Policy.PolicyName="ResimSil"
+                                                        </InlineUIContainer><Run AllowDrop="True" Cursor="SizeAll"
+                                                            FontFamily="Wingdings" FontSize="24"
+                                                            FontWeight="Bold" PreviewMouseMove="Run_PreviewMouseMove"
+                                                            Text="B" /><Hyperlink twainctrl:Policy.PolicyName="ResimSil"
                                                             Command="{Binding DataContext.ResimSil, Source={x:Reference TwainCtrl}}"
                                                             CommandParameter="{Binding Mode=OneWay}"
                                                             TextDecorations="None">

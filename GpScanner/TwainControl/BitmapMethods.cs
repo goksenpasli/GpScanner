@@ -1,16 +1,21 @@
-﻿using System;
+﻿using Extensions;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using WebPWrapper;
 using static Extensions.ExtensionMethods;
+using static TwainControl.DrawControl;
 using Brush = System.Windows.Media.Brush;
 using Color = System.Windows.Media.Color;
 using Image = System.Drawing.Image;
@@ -193,6 +198,19 @@ public static class BitmapMethods
         renderTargetBitmap.Render(drawingVisual);
         renderTargetBitmap.Freeze();
         return renderTargetBitmap;
+    }
+
+    public static Cursor CreateCursor(FrameworkElement element)
+    {
+        RenderTargetBitmap renderTargetBitmap = new((int)element.ActualWidth, (int)element.ActualHeight, 96, 96, PixelFormats.Default);
+        renderTargetBitmap.Render(element);
+        _ = renderTargetBitmap.BitmapSourceToBitmap().GetHbitmap();
+        PngBitmapEncoder encoder = new();
+        encoder.Frames.Add(BitmapFrame.Create(renderTargetBitmap));
+        using MemoryStream ms = new();
+        encoder.Save(ms);
+        using Bitmap bmp = new(ms);
+        return InternalCreateCursor(bmp);
     }
 
     public static async Task<BitmapFrame> FlipImageAsync(this BitmapFrame bitmapFrame, double angle)
@@ -536,6 +554,19 @@ public static class BitmapMethods
         b = (byte)((bf + m) * 255);
     }
 
+    private static Cursor InternalCreateCursor(Bitmap bmp)
+    {
+        NativeMethods.IconInfo iconInfo = new();
+        _ = NativeMethods.GetIconInfo(bmp.GetHicon(), ref iconInfo);
+
+        iconInfo.xHotspot = 0;
+        iconInfo.yHotspot = 0;
+        iconInfo.fIcon = false;
+
+        SafeIconHandle cursorHandle = NativeMethods.CreateIconIndirect(ref iconInfo);
+        return CursorInteropHelper.Create(cursorHandle);
+    }
+
     private static void RgbToHsv(byte r, byte g, byte b, out double h, out double s, out double v)
     {
         double rf = r / 255.0;
@@ -553,5 +584,27 @@ public static class BitmapMethods
         s = max == 0 ? 0 : delta / max;
 
         v = max;
+    }
+
+    private static class NativeMethods
+    {
+        [DllImport("user32.dll")]
+        public static extern SafeIconHandle CreateIconIndirect(ref IconInfo icon);
+
+        [DllImport("user32.dll")]
+        public static extern bool DestroyIcon(IntPtr hIcon);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool GetIconInfo(IntPtr hIcon, ref IconInfo pIconInfo);
+
+        public struct IconInfo
+        {
+            public bool fIcon;
+            public int xHotspot;
+            public int yHotspot;
+            public IntPtr hbmMask;
+            public IntPtr hbmColor;
+        }
     }
 }

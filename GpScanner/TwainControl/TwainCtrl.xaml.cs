@@ -2314,7 +2314,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public void DropFile(object sender, DragEventArgs e)
     {
-        if (sender is Run run && e.Data.GetData(typeof(ScannedImage)) is ScannedImage droppedData && run.DataContext is ScannedImage target)
+        if (sender is StackPanel stackpanel && e.Data.GetData(typeof(ScannedImage)) is ScannedImage droppedData && stackpanel.DataContext is ScannedImage target)
         {
             int removedIdx = Scanner.Resimler.IndexOf(droppedData);
             int targetIdx = Scanner.Resimler.IndexOf(target);
@@ -3019,31 +3019,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    private void Run_Drop(object sender, DragEventArgs e) { DropFile(sender, e); }
-
-    private void Run_EypDrop(object sender, DragEventArgs e)
-    {
-        if (sender is Run run && e.Data.GetData(typeof(string)) is string droppedData && run.DataContext is string target)
-        {
-            int removedIdx = Scanner.UnsupportedFiles.IndexOf(droppedData);
-            int targetIdx = Scanner.UnsupportedFiles.IndexOf(target);
-
-            if (removedIdx < targetIdx)
-            {
-                Scanner.UnsupportedFiles.Insert(targetIdx + 1, droppedData);
-                Scanner.UnsupportedFiles.RemoveAt(removedIdx);
-                return;
-            }
-
-            int remIdx = removedIdx + 1;
-            if (Scanner.UnsupportedFiles.Count + 1 > remIdx)
-            {
-                Scanner.UnsupportedFiles.Insert(targetIdx, droppedData);
-                Scanner.UnsupportedFiles.RemoveAt(remIdx);
-            }
-        }
-    }
-
     private void Run_EypPreviewMouseMove(object sender, MouseEventArgs e)
     {
         if (sender is Run run && e.LeftButton == MouseButtonState.Pressed)
@@ -3129,6 +3104,49 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         {
             Scanner.PaperBackScan = false;
         }
+    }
+
+    private void StackPanel_Drop(object sender, DragEventArgs e) { DropFile(sender, e); }
+
+    private void StackPanel_EypDrop(object sender, DragEventArgs e)
+    {
+        if (sender is StackPanel stackpanel && e.Data.GetData(typeof(string)) is string droppedData && stackpanel.DataContext is string target)
+        {
+            int removedIdx = Scanner.UnsupportedFiles.IndexOf(droppedData);
+            int targetIdx = Scanner.UnsupportedFiles.IndexOf(target);
+
+            if (removedIdx < targetIdx)
+            {
+                Scanner.UnsupportedFiles.Insert(targetIdx + 1, droppedData);
+                Scanner.UnsupportedFiles.RemoveAt(removedIdx);
+                return;
+            }
+
+            int remIdx = removedIdx + 1;
+            if (Scanner.UnsupportedFiles.Count + 1 > remIdx)
+            {
+                Scanner.UnsupportedFiles.Insert(targetIdx, droppedData);
+                Scanner.UnsupportedFiles.RemoveAt(remIdx);
+            }
+        }
+    }
+
+    private void StackPanel_GiveFeedback(object sender, System.Windows.GiveFeedbackEventArgs e)
+    {
+        if (e.Effects == DragDropEffects.Move)
+        {
+            using System.Windows.Input.Cursor customCursor = BitmapMethods.CreateCursor(sender as StackPanel);
+            if (customCursor != null)
+            {
+                e.UseDefaultCursors = false;
+                _ = Mouse.SetCursor(customCursor);
+            }
+        }
+        else
+        {
+            e.UseDefaultCursors = true;
+        }
+        e.Handled = true;
     }
 
     private void Twain_ScanningComplete(object sender, ScanningCompleteEventArgs e) { Scanner.ArayüzEtkin = true; }

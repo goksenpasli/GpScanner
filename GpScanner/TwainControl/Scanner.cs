@@ -1334,19 +1334,10 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public void Resimler_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
-        if (e.Action == NotifyCollectionChangedAction.Add)
+        for (int i = 0; i < resimler.Count; i++)
         {
-            for (int i = e.NewStartingIndex; i < Resimler.Count; i++)
-            {
-                Resimler[i].Index = i + 1;
-            }
-        }
-        else if (e.Action == NotifyCollectionChangedAction.Remove)
-        {
-            for (int i = e.OldStartingIndex; i < Resimler.Count; i++)
-            {
-                Resimler[i].Index = i + 1;
-            }
+            ScannedImage item = resimler[i];
+            item.Index = i + 1;
         }
     }
 
