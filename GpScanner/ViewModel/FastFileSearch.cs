@@ -4,8 +4,8 @@ using System.IO;
 using System.Runtime.InteropServices;
 
 namespace GpScanner.ViewModel;
-
 // TODO: Check for valid method parameter input (e.g. If provided path is a directory and exists, etc..)
+
 public static class FastFileSearch
 {
     private static readonly IntPtr invalidHandle = new(-1);

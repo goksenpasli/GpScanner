@@ -123,7 +123,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     if (File.Exists(PdfViewer.PdfFilePath) && DataContext is TwainCtrl twainCtrl)
                     {
                         using PdfDocument reader = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.ReadOnly);
-                        PdfPage page = reader.Pages[PdfViewer.Sayfa - 1];
+                        PdfPage page = reader?.Pages[PdfViewer.Sayfa - 1];
                         twainCtrl.Annotations = page?.Annotations;
                     }
                 }
@@ -142,7 +142,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     if (parameter is PdfAnnotation selectedannotation && File.Exists(PdfViewer.PdfFilePath) && DataContext is TwainCtrl twainCtrl)
                     {
                         using PdfDocument reader = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.Modify);
-                        PdfPage page = reader.Pages[PdfViewer.Sayfa - 1];
+                        PdfPage page = reader?.Pages[PdfViewer.Sayfa - 1];
                         PdfAnnotation annotation = page.Annotations.ToList().OfType<PdfAnnotation>().FirstOrDefault(z => z.Contents == selectedannotation.Contents);
                         page?.Annotations?.Remove(annotation);
                         twainCtrl?.Annotations?.Remove(selectedannotation);

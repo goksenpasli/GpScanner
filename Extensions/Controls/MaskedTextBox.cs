@@ -200,29 +200,32 @@ public class MaskedTextBox : TextBox
         object convertedValue = null;
         Type dataType = ValueType;
         string valueToConvert = MaskProvider.ToString().Trim();
-        try
+        if (valueToConvert != null)
         {
-            if (valueToConvert.GetType() == dataType || dataType.IsInstanceOfType(valueToConvert))
+            try
             {
-                convertedValue = valueToConvert;
+                if (valueToConvert.GetType() == dataType || dataType.IsInstanceOfType(valueToConvert))
+                {
+                    convertedValue = valueToConvert;
+                }
+                else if (string.IsNullOrWhiteSpace(valueToConvert))
+                {
+                    convertedValue = Activator.CreateInstance(dataType);
+                }
+                else if (string.IsNullOrEmpty(valueToConvert))
+                {
+                    convertedValue = Activator.CreateInstance(dataType);
+                }
+                else if (convertedValue == null && valueToConvert is IConvertible)
+                {
+                    convertedValue = Convert.ChangeType(valueToConvert, dataType);
+                }
             }
-            else if (string.IsNullOrWhiteSpace(valueToConvert))
+            catch
             {
-                convertedValue = Activator.CreateInstance(dataType);
+                _convertExceptionOccurred = true;
+                return Value;
             }
-            else if (string.IsNullOrEmpty(valueToConvert))
-            {
-                convertedValue = Activator.CreateInstance(dataType);
-            }
-            else if (convertedValue == null && valueToConvert is IConvertible)
-            {
-                convertedValue = Convert.ChangeType(valueToConvert, dataType);
-            }
-        }
-        catch
-        {
-            _convertExceptionOccurred = true;
-            return Value;
         }
 
         return convertedValue;

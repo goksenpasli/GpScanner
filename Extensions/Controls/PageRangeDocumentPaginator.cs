@@ -36,12 +36,12 @@ public class PageRangeDocumentPaginator : DocumentPaginator
     {
         DocumentPage page = _paginator.GetPage(pageNumber + _startIndex);
         ContainerVisual cv = new();
-        if (page.Visual is FixedPage page1)
+        if (page?.Visual is FixedPage page1)
         {
             foreach (object child in page1.Children)
             {
-                UIElement childClone = (UIElement)child.GetType().GetMethod("MemberwiseClone", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(child, null);
-                FieldInfo parentField = childClone.GetType().GetField("_parent", BindingFlags.Instance | BindingFlags.NonPublic);
+                UIElement childClone = (UIElement)child?.GetType().GetMethod("MemberwiseClone", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(child, null);
+                FieldInfo parentField = childClone?.GetType().GetField("_parent", BindingFlags.Instance | BindingFlags.NonPublic);
                 if (parentField != null)
                 {
                     parentField.SetValue(childClone, null);

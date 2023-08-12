@@ -1,4 +1,5 @@
-﻿namespace GpScanner.ViewModel;
+﻿
+namespace GpScanner.ViewModel;
 
 public sealed class DirectoryStats
 {

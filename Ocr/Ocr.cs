@@ -144,7 +144,7 @@ public static class Ocr
         ObservableCollection<OcrData> ocrdata = new();
         do
         {
-            if (iterator.TryGetBoundingBox(pageIteratorLevel, out Tesseract.Rect rect))
+            if (iterator?.TryGetBoundingBox(pageIteratorLevel, out Tesseract.Rect rect) == true)
             {
                 Rect imgrect = new(rect.X1, rect.Y1, rect.Width, rect.Height);
                 OcrData item = new() { Text = iterator.GetText(pageIteratorLevel).Trim(), Rect = imgrect };

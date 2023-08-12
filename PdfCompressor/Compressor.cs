@@ -161,8 +161,12 @@ public class Compressor : Control, INotifyPropertyChanged
         src.Freeze();
         Bitmap bitmap = new(src.PixelWidth, src.PixelHeight, PixelFormat.Format32bppArgb);
         BitmapData data = bitmap.LockBits(new Rectangle(Point.Empty, bitmap.Size), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-        src.CopyPixels(Int32Rect.Empty, data.Scan0, data.Height * data.Stride, data.Stride);
-        bitmap.UnlockBits(data);
+        if (data != null)
+        {
+            src.CopyPixels(Int32Rect.Empty, data.Scan0, data.Height * data.Stride, data.Stride);
+            bitmap.UnlockBits(data);
+        }
+
         return bitmap;
     }
 

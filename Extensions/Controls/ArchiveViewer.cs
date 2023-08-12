@@ -133,10 +133,15 @@ namespace Extensions
         public string ExtractToFile(string entryname)
         {
             using ZipArchive archive = ZipFile.Open(ArchivePath, ZipArchiveMode.Read);
-            ZipArchiveEntry dosya = archive.GetEntry(entryname);
-            string extractpath = $"{Path.GetTempPath()}{Guid.NewGuid()}{Path.GetExtension(dosya.Name)}";
-            dosya?.ExtractToFile(extractpath, true);
-            return extractpath;
+            if (archive != null)
+            {
+                ZipArchiveEntry dosya = archive.GetEntry(entryname);
+                string extractpath = $"{Path.GetTempPath()}{Guid.NewGuid()}{Path.GetExtension(dosya.Name)}";
+                dosya?.ExtractToFile(extractpath, true);
+                return extractpath;
+            }
+
+            return null;
         }
 
         public void ReadArchiveContent(string ArchiveFilePath, ArchiveViewer archiveViewer)
@@ -144,9 +149,8 @@ namespace Extensions
             archiveViewer.Arşivİçerik = new ObservableCollection<ArchiveData>();
             using (ZipArchive archive = ZipFile.Open(ArchiveFilePath, ZipArchiveMode.Read))
             {
-                foreach (ZipArchiveEntry item in archive.Entries.Where(z => z.Length > 0))
-                {
-                    ArchiveData archiveData = new()
+                foreach (ArchiveData archiveData in from ZipArchiveEntry item in archive?.Entries.Where(z => z.Length > 0)
+                    let archiveData = new ArchiveData()
                     {
                         SıkıştırılmışBoyut = item.CompressedLength,
                         DosyaAdı = item.Name,
@@ -155,7 +159,9 @@ namespace Extensions
                         Oran = (float)item.CompressedLength / item.Length,
                         DüzenlenmeZamanı = item.LastWriteTime.Date,
                         Crc = CalculateFileCRC(item.Open())
-                    };
+                    }
+                    select archiveData)
+                {
                     archiveViewer.Arşivİçerik.Add(archiveData);
                 }
             }

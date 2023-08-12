@@ -62,7 +62,7 @@ public static class PdfGeneration
     public static PdfDocument ArrangePdfPages(this string filename, int oldindex, int newindex)
     {
         using PdfDocument inputDocument = PdfReader.Open(filename, PdfDocumentOpenMode.Modify);
-        inputDocument.Pages.MovePage(oldindex, newindex);
+        inputDocument?.Pages.MovePage(oldindex, newindex);
         return inputDocument;
     }
 
@@ -83,13 +83,13 @@ public static class PdfGeneration
         gfx.TranslateTransform(page.Width / 2, page.Height / 2);
         gfx.RotateTransform(angle);
         gfx.TranslateTransform(-page.Width / 2, -page.Height / 2);
-        gfx.DrawString(text, font, xBrush, new XPoint((page.Width - fontsize.Width) / 2, (page.Height - fontsize.Height) / 2), textformat);
+        gfx?.DrawString(text, font, xBrush, new XPoint((page.Width - fontsize.Width) / 2, (page.Height - fontsize.Height) / 2), textformat);
     }
 
     public static void DrawText(this XGraphics gfx, XBrush xBrush, string item, double x, double y, double fontsize = 16)
     {
         XFont font = new("Times New Roman", fontsize, XFontStyle.Regular, new XPdfFontOptions(PdfFontEncoding.Unicode));
-        gfx.DrawString(item, font, xBrush, x, y);
+        gfx?.DrawString(item, font, xBrush, x, y);
     }
 
     public static PdfDocument ExtractPdfPages(this string filename, int startpage, int endpage)
@@ -103,7 +103,7 @@ public static class PdfGeneration
         using PdfDocument outputDocument = new();
         for (int i = startpage - 1; i <= endpage - 1; i++)
         {
-            _ = outputDocument.AddPage(inputDocument.Pages[i]);
+            _ = outputDocument.AddPage(inputDocument?.Pages[i]);
         }
 
         return outputDocument;
@@ -136,7 +136,7 @@ public static class PdfGeneration
                         WritePdfTextContent(xImage, ScannedText[i], page, gfx, XBrushes.Transparent);
                     }
 
-                    gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
+                    gfx?.DrawImage(xImage, 0, 0, size.Width, size.Height);
                 }
                 else
                 {
@@ -146,7 +146,7 @@ public static class PdfGeneration
                         WritePdfTextContent(xImage, ScannedText[i], page, gfx, XBrushes.Transparent);
                     }
 
-                    gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
+                    gfx?.DrawImage(xImage, 0, 0, size.Height, size.Width);
                 }
 
                 if (Scanner.PdfPageNumberDraw)
@@ -200,7 +200,7 @@ public static class PdfGeneration
                     WritePdfTextContent(xImage, ScannedText, page, gfx, XBrushes.Transparent);
                 }
 
-                gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
+                gfx?.DrawImage(xImage, 0, 0, size.Width, size.Height);
             }
             else
             {
@@ -210,7 +210,7 @@ public static class PdfGeneration
                     WritePdfTextContent(xImage, ScannedText, page, gfx, XBrushes.Transparent);
                 }
 
-                gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
+                gfx?.DrawImage(xImage, 0, 0, size.Height, size.Width);
             }
 
             if (Scanner.PdfPageNumberDraw)
@@ -303,7 +303,7 @@ public static class PdfGeneration
                     resizedimage = resizepaper ? bitmapframe.Resize(page.Width, page.Height, 0, dpi, dpi) : bitmapframe;
                 }
 
-                ms = new MemoryStream(resizedimage.ToTiffJpegByteArray(format, jpegquality));
+                ms = new MemoryStream(resizedimage?.ToTiffJpegByteArray(format, jpegquality));
                 resizedimage = null;
             }
 
@@ -316,11 +316,11 @@ public static class PdfGeneration
 
             if (page.Orientation == PageOrientation.Portrait)
             {
-                gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
+                gfx?.DrawImage(xImage, 0, 0, size.Width, size.Height);
             }
             else
             {
-                gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
+                gfx?.DrawImage(xImage, 0, 0, size.Height, size.Width);
             }
 
             if (Scanner.PdfPageNumberDraw)
@@ -415,11 +415,11 @@ public static class PdfGeneration
 
                     if (page.Orientation == PageOrientation.Portrait)
                     {
-                        gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
+                        gfx?.DrawImage(xImage, 0, 0, size.Width, size.Height);
                     }
                     else
                     {
-                        gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
+                        gfx?.DrawImage(xImage, 0, 0, size.Height, size.Width);
                     }
 
                     if (Scanner.PdfPageNumberDraw)
@@ -447,7 +447,7 @@ public static class PdfGeneration
                         resizedimage = resizepaper ? scannedimage.Resim.Resize(page.Width, page.Height, 0, dpi, dpi) : scannedimage.Resim;
                     }
 
-                    using MemoryStream ms = new(resizedimage.ToTiffJpegByteArray(format, jpegquality));
+                    using MemoryStream ms = new(resizedimage?.ToTiffJpegByteArray(format, jpegquality));
                     using XImage xImage = XImage.FromStream(ms);
                     resizedimage = null;
 
@@ -458,11 +458,11 @@ public static class PdfGeneration
 
                     if (page.Orientation == PageOrientation.Portrait)
                     {
-                        gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
+                        gfx?.DrawImage(xImage, 0, 0, size.Width, size.Height);
                     }
                     else
                     {
-                        gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
+                        gfx?.DrawImage(xImage, 0, 0, size.Height, size.Width);
                     }
 
                     if (Scanner.PdfPageNumberDraw)

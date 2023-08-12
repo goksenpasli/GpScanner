@@ -2017,12 +2017,15 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             () =>
             {
                 using PdfDocument inputDocument = PdfReader.Open(loadfilename, PdfDocumentOpenMode.Modify);
-                foreach (string item in files)
+                if (inputDocument != null)
                 {
-                    inputDocument.AddEmbeddedFile(Path.GetFileNameWithoutExtension(item), item);
-                }
+                    foreach (string item in files)
+                    {
+                        inputDocument.AddEmbeddedFile(Path.GetFileNameWithoutExtension(item), item);
+                    }
 
-                inputDocument.Save(savefilename);
+                    inputDocument.Save(savefilename);
+                }
             });
     }
 
@@ -2032,8 +2035,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             () =>
             {
                 using PdfDocument outputDocument = loadfilename.ArrangePdfPages(start, end);
-                outputDocument.ApplyDefaultPdfCompression();
-                outputDocument.Save(savefilename);
+                if (outputDocument != null)
+                {
+                    outputDocument.ApplyDefaultPdfCompression();
+                    outputDocument.Save(savefilename);
+                }
             });
     }
 
@@ -2156,12 +2162,15 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             () =>
             {
                 PdfDocument inputDocument = PdfReader.Open(pdffilepath, PdfDocumentOpenMode.Import);
-                for (int i = end; i >= start; i--)
+                if (inputDocument != null)
                 {
-                    inputDocument.Pages.RemoveAt(i - 1);
-                }
+                    for (int i = end; i >= start; i--)
+                    {
+                        inputDocument.Pages.RemoveAt(i - 1);
+                    }
 
-                inputDocument.Save(pdffilepath);
+                    inputDocument.Save(pdffilepath);
+                }
             });
     }
 
@@ -2172,12 +2181,15 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 using PdfDocument inputDocument = PdfReader.Open(loadfilename, PdfDocumentOpenMode.Import);
                 using PdfDocument outputdocument = new();
-                for (int i = inputDocument.PageCount - 1; i >= 0; i--)
+                if (outputdocument != null)
                 {
-                    _ = outputdocument.AddPage(inputDocument.Pages[i]);
-                }
+                    for (int i = inputDocument.PageCount - 1; i >= 0; i--)
+                    {
+                        _ = outputdocument.AddPage(inputDocument.Pages[i]);
+                    }
 
-                outputdocument.Save(savefilename);
+                    outputdocument.Save(savefilename);
+                }
             });
     }
 
@@ -2196,8 +2208,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                 if (PdfViewer.PdfViewer.IsValidPdfFile(filename))
                                 {
                                     byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(filename);
-                                    await AddPdfFileAsync(filedata, filename);
-                                    filedata = null;
+                                    if (filedata != null)
+                                    {
+                                        await AddPdfFileAsync(filedata, filename);
+                                        filedata = null;
+                                    }
                                 }
 
                                 break;
@@ -2619,8 +2634,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             () =>
             {
                 using PdfDocument outputDocument = loadfilename.ExtractPdfPages(start, end);
-                outputDocument.ApplyDefaultPdfCompression();
-                outputDocument.Save(savefilename);
+                if (outputDocument != null)
+                {
+                    outputDocument.ApplyDefaultPdfCompression();
+                    outputDocument.Save(savefilename);
+                }
             });
     }
 

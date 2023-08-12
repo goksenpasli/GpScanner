@@ -11,7 +11,7 @@ public sealed class FilePathToIconConverter : IValueConverter
     {
         try
         {
-            return value is string path ? path.IconCreate(IconSize.Large) : null;
+            return value is string path ? path.IconCreate(IconSize.Large, new SHFILEINFO()) : null;
         }
         catch (Exception)
         {

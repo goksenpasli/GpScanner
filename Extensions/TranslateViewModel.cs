@@ -15,8 +15,7 @@ public class TranslateViewModel : InpcBase
             using HttpClient client = new();
             client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0");
             client.DefaultRequestHeaders.Add("Accept-Charset", "UTF-8");
-            string url =
-                $"https://translate.googleapis.com/translate_a/single?client=gtx&sl={from}&tl={to}&dt=t&q={Uri.EscapeUriString(text)}";
+            string url = $"https://translate.googleapis.com/translate_a/single?client=gtx&sl={from}&tl={to}&dt=t&q={Uri.EscapeUriString(text)}";
             HttpResponseMessage response = await client.GetAsync(url).ConfigureAwait(false);
             _ = response.EnsureSuccessStatusCode();
             string page = await response.Content.ReadAsStringAsync().ConfigureAwait(false);

@@ -859,9 +859,9 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     private MediaState GetMediaState(MediaElement myMedia)
     {
         FieldInfo hlp = typeof(MediaElement).GetField("_helper", BindingFlags.NonPublic | BindingFlags.Instance);
-        object helperObject = hlp.GetValue(myMedia);
-        FieldInfo stateField = helperObject.GetType().GetField("_currentState", BindingFlags.NonPublic | BindingFlags.Instance);
-        return (MediaState)stateField.GetValue(helperObject);
+        object helperObject = hlp?.GetValue(myMedia);
+        FieldInfo stateField = helperObject?.GetType().GetField("_currentState", BindingFlags.NonPublic | BindingFlags.Instance);
+        return (MediaState)stateField?.GetValue(helperObject);
     }
 
     private string GetNextPlayListFile()

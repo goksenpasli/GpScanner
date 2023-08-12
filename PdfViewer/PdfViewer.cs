@@ -252,7 +252,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public int CurrentDpi { get; set; }
 
-    public string DefaultPrinter { get; set; } = LocalPrintServer.GetDefaultPrintQueue().FullName;
+    public string DefaultPrinter { get; set; } = LocalPrintServer.GetDefaultPrintQueue()?.FullName;
 
     public RelayCommand<object> DosyaAç { get; }
 
@@ -566,12 +566,20 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                             return null;
                         }
                         using PdfDocument pdfDoc = PdfDocument.Load(pdffilepath);
-                        int width = (int)(pdfDoc.PageSizes[page - 1].Width / 96 * dpi);
-                        int height = (int)(pdfDoc.PageSizes[page - 1].Height / 96 * dpi);
-                        using Bitmap bitmap = pdfDoc.Render(page - 1, width, height, dpi, dpi, false) as Bitmap;
-                        BitmapSource bitmapImage = bitmap.ToBitmapSource();
-                        bitmapImage.Freeze();
-                        return bitmapImage;
+                        if (pdfDoc != null)
+                        {
+                            int width = (int)(pdfDoc.PageSizes[page - 1].Width / 96 * dpi);
+                            int height = (int)(pdfDoc.PageSizes[page - 1].Height / 96 * dpi);
+                            using Bitmap bitmap = pdfDoc.Render(page - 1, width, height, dpi, dpi, false) as Bitmap;
+                            BitmapSource bitmapImage = bitmap.ToBitmapSource();
+                            if (bitmapImage != null)
+                            {
+                                bitmapImage.Freeze();
+                                return bitmapImage;
+                            }
+                        }
+
+                        return null;
                     });
         }
         catch (Exception)
@@ -591,13 +599,21 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                     {
                         using MemoryStream ms = new(pdffilestream);
                         using PdfDocument pdfDoc = PdfDocument.Load(ms);
-                        int width = (int)(pdfDoc.PageSizes[page - 1].Width / 96 * dpi);
-                        int height = (int)(pdfDoc.PageSizes[page - 1].Height / 96 * dpi);
-                        System.Drawing.Image image = pdfDoc.Render(page - 1, width, height, dpi, dpi, false);
-                        MemoryStream stream = new();
-                        image.Save(stream, ImageFormat.Jpeg);
-                        pdffilestream = null;
-                        return stream;
+                        if (pdfDoc != null)
+                        {
+                            int width = (int)(pdfDoc.PageSizes[page - 1].Width / 96 * dpi);
+                            int height = (int)(pdfDoc.PageSizes[page - 1].Height / 96 * dpi);
+                            System.Drawing.Image image = pdfDoc.Render(page - 1, width, height, dpi, dpi, false);
+                            if (image != null)
+                            {
+                                MemoryStream stream = new();
+                                image.Save(stream, ImageFormat.Jpeg);
+                                pdffilestream = null;
+                                return stream;
+                            }
+                        }
+
+                        return null;
                     });
         }
         catch (Exception)
@@ -631,7 +647,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                     {
                         using MemoryStream ms = new(stream);
                         using PdfDocument pdfDoc = PdfDocument.Load(ms);
-                        return pdfDoc.PageCount;
+                        return (pdfDoc?.PageCount) ?? 0;
                     });
         }
         catch (Exception)
@@ -674,14 +690,19 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         try
         {
             using FileStream file = new(filename, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, true);
-            byte[] buffer = new byte[file.Length];
-            _ = await file.ReadAsync(buffer, 0, (int)file.Length);
-            return buffer;
+            if (file != null)
+            {
+                byte[] buffer = new byte[file.Length];
+                _ = await file.ReadAsync(buffer, 0, (int)file.Length);
+                return buffer;
+            }
         }
         catch (Exception)
         {
             return null;
         }
+
+        return null;
     }
 
     public void Dispose()
@@ -827,8 +848,12 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     {
         using System.Windows.Forms.PrintDialog form = new();
         using PrintDocument document = pdfDocument.CreatePrintDocument(PdfPrintMode.ShrinkToMargin);
-        form.AllowSomePages = true;
-        form.Document = document;
+        if (document != null)
+        {
+            form.AllowSomePages = true;
+            form.Document = document;
+        }
+
         form.UseEXDialog = true;
         form.Document.PrinterSettings.FromPage = 1;
         form.Document.PrinterSettings.ToPage = pdfDocument.PageCount;

@@ -22,16 +22,19 @@ public class CustomArchiveViewer : ArchiveViewer
             {
                 try
                 {
-                    if (parameter is string filename && !supportedFilesExtension.Contains(Path.GetExtension(filename)))
+                    if (parameter is string filename)
                     {
-                        string extractedfile = ExtractToFile(parameter as string);
-                        _ = Process.Start(extractedfile);
-                        return;
-                    }
-                    if (Tag is TwainCtrl twainCtrl)
-                    {
-                        string extractedfile = ExtractToFile(parameter as string);
-                        twainCtrl.AddFiles(new string[] { extractedfile }, twainCtrl.DecodeHeight);
+                        if (!supportedFilesExtension.Contains(Path.GetExtension(filename)))
+                        {
+                            string extractedfile = ExtractToFile(filename);
+                            _ = Process.Start(extractedfile);
+                            return;
+                        }
+                        if (Tag is TwainCtrl twainCtrl)
+                        {
+                            string extractedfile = ExtractToFile(filename);
+                            twainCtrl.AddFiles(new string[] { extractedfile }, twainCtrl.DecodeHeight);
+                        }
                     }
                 }
                 catch (Exception ex)

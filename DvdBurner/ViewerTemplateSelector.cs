@@ -23,11 +23,14 @@ namespace DvdBurner
                 string[] imgext = { ".jpg", ".bmp", ".png", ".tif", ".tiff", ".tıf", ".tıff" };
                 string[] videoext = { ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg" };
                 string ext = Path.GetExtension(dosya).ToLower();
-                return ext switch
+                if (ext != null)
                 {
-                    ".zip" => Zip,
-                    _ => imgext.Contains(ext) ? Img : videoext.Contains(ext) ? Vid : Empty
-                };
+                    return ext switch
+                    {
+                        ".zip" => Zip,
+                        _ => imgext.Contains(ext) ? Img : videoext.Contains(ext) ? Vid : Empty
+                    };
+                }
             }
 
             return null;

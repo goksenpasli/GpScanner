@@ -62,26 +62,35 @@ public static class StillImageHelper
             string exe = Assembly.GetEntryAssembly().Location;
 
             using RegistryKey key1 = Registry.LocalMachine.CreateSubKey(REGKEY_AUTOPLAY_HANDLER_GPSCANNER);
-            key1.SetValue("Action", "Scan with GpScanner");
-            key1.SetValue("CLSID", "{A55803CC-4D53-404c-8557-FD63DBA95D24}");
-            key1.SetValue("DefaultIcon", "sti.dll,0");
-            key1.SetValue("InitCmdLine", $"/WiaCmd;{exe} /StiDevice:%1 /StiEvent:%2;");
-            key1.SetValue("Provider", "GpScanner");
+            if (key1 != null)
+            {
+                key1.SetValue("Action", "Scan with GpScanner");
+                key1.SetValue("CLSID", "{A55803CC-4D53-404c-8557-FD63DBA95D24}");
+                key1.SetValue("DefaultIcon", "sti.dll,0");
+                key1.SetValue("InitCmdLine", $"/WiaCmd;{exe} /StiDevice:%1 /StiEvent:%2;");
+                key1.SetValue("Provider", "GpScanner");
+            }
 
             using RegistryKey key2 = Registry.LocalMachine.CreateSubKey(REGKEY_STI_APP);
-            key2.SetValue("GpScanner", $"{exe} /StiDevice:%1 /StiEvent:%2");
+            key2?.SetValue("GpScanner", $"{exe} /StiDevice:%1 /StiEvent:%2");
 
             using RegistryKey key3 = Registry.LocalMachine.CreateSubKey(REGKEY_STI_EVENT_GPSCANNER);
-            key3.SetValue("Cmdline", $"{exe} /StiDevice:%1 /StiEvent:%2");
-            key3.SetValue("Desc", "Scan with GpScanner");
-            key3.SetValue("Icon", "sti.dll,0");
-            key3.SetValue("Name", "GpScanner");
+            if (key3 != null)
+            {
+                key3.SetValue("Cmdline", $"{exe} /StiDevice:%1 /StiEvent:%2");
+                key3.SetValue("Desc", "Scan with GpScanner");
+                key3.SetValue("Icon", "sti.dll,0");
+                key3.SetValue("Name", "GpScanner");
+            }
 
             using RegistryKey key4 = Registry.LocalMachine.CreateSubKey(REGKEY_STI_EVENT_SCANBUTTON);
-            key4.SetValue("Cmdline", $"{exe} /StiDevice:%1 /StiEvent:%2");
-            key4.SetValue("Desc", "Scan with GpScanner");
-            key4.SetValue("Icon", "sti.dll,0");
-            key4.SetValue("Name", "GpScanner");
+            if (key4 != null)
+            {
+                key4.SetValue("Cmdline", $"{exe} /StiDevice:%1 /StiEvent:%2");
+                key4.SetValue("Desc", "Scan with GpScanner");
+                key4.SetValue("Icon", "sti.dll,0");
+                key4.SetValue("Name", "GpScanner");
+            }
         }
         catch (Exception ex)
         {

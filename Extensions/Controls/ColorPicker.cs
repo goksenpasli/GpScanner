@@ -179,7 +179,7 @@ public class ColorPicker : Control
             _ = pos.Y;
             RGB c = x < _rgbgrid.ActualWidth / 2 ? HSV.RGBFromHSV(currH, 1f, x / (_rgbgrid.ActualWidth / 2)) : HSV.RGBFromHSV(currH, ((_rgbgrid.ActualWidth / 2) - (x - (_rgbgrid.ActualWidth / 2))) / _rgbgrid.ActualWidth, 1f);
 
-            HexCode = $"#{c.Hex(Alpha)}";
+            HexCode = $"#{c?.Hex(Alpha)}";
             Selected = c;
         }
     }

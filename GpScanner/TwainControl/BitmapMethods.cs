@@ -132,8 +132,12 @@ public static class BitmapMethods
         src.Freeze();
         Bitmap bitmap = new(src.PixelWidth, src.PixelHeight, PixelFormat.Format32bppArgb);
         BitmapData data = bitmap.LockBits(new Rectangle(System.Drawing.Point.Empty, bitmap.Size), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-        src.CopyPixels(Int32Rect.Empty, data.Scan0, data.Height * data.Stride, data.Stride);
-        bitmap.UnlockBits(data);
+        if (data != null)
+        {
+            src.CopyPixels(Int32Rect.Empty, data.Scan0, data.Height * data.Stride, data.Stride);
+            bitmap.UnlockBits(data);
+        }
+
         return bitmap;
     }
 
@@ -474,7 +478,7 @@ public static class BitmapMethods
     {
         using WebP webp = new();
         WebPDecoderOptions options = new() { use_threads = 1, bypass_filtering = 0, no_fancy_upsampling = 1 };
-        using Bitmap bmp = webp.Load(webpresimyolu, options);
+        using Bitmap bmp = webp?.Load(webpresimyolu, options);
         BitmapImage bitmapimage = bmp.PixelFormat == PixelFormat.Format32bppArgb
             ? fullresolution ? bmp.ToBitmapImage(ImageFormat.Png) : bmp.ToBitmapImage(ImageFormat.Png, decodeheight)
             : fullresolution ? bmp.ToBitmapImage(ImageFormat.Jpeg) : bmp.ToBitmapImage(ImageFormat.Jpeg, decodeheight);

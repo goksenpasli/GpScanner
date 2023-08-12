@@ -31,15 +31,18 @@ public class ViewerTemplateSelector : DataTemplateSelector
             string[] imgext = { ".jpg", ".bmp", ".png", ".tif", ".tiff", ".tıf", ".tıff" };
             string[] videoext = { ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg" };
             string ext = Path.GetExtension(dosya).ToLower();
-            return ext switch
+            if (ext != null)
             {
-                ".pdf" => Pdf,
-                ".eyp" => Eyp,
-                ".zip" => Zip,
-                ".xps" => Xps,
-                ".xml" or ".xsl" or ".xslt" or ".xaml" => Xml,
-                _ => imgext.Contains(ext) ? Img : videoext.Contains(ext) ? Vid : Empty
-            };
+                return ext switch
+                {
+                    ".pdf" => Pdf,
+                    ".eyp" => Eyp,
+                    ".zip" => Zip,
+                    ".xps" => Xps,
+                    ".xml" or ".xsl" or ".xslt" or ".xaml" => Xml,
+                    _ => imgext.Contains(ext) ? Img : videoext.Contains(ext) ? Vid : Empty
+                };
+            }
         }
 
         return null;

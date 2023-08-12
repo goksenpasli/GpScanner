@@ -17,7 +17,6 @@ using MessageBox = System.Windows.MessageBox;
 
 namespace DvdBurner
 {
-
     public class Burner : Control, INotifyPropertyChanged
     {
         private const string WarnText = "İşlem Sürüyor. Bitmesini Bekleyin.";
