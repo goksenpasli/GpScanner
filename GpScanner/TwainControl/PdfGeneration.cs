@@ -538,7 +538,7 @@ public static class PdfGeneration
             using PdfDocument outputDocument = new();
             foreach (PdfDocument inputDocument in from string file in pdffiles let inputDocument = PdfReader.Open(file, PdfDocumentOpenMode.Import) select inputDocument)
             {
-                for (int i = 0; i < inputDocument.PageCount; i++)
+                for (int i = 0; i < inputDocument?.PageCount; i++)
                 {
                     PdfPage page = inputDocument.Pages[i];
                     _ = outputDocument.AddPage(page);

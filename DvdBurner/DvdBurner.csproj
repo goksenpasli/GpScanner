@@ -45,6 +45,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DiscSizes.cs" />
     <Compile Include="IMAPI_PROFILE_TYPE.cs" />
     <Compile Include="ManagedIStream.cs" />
     <Compile Include="ViewerTemplateSelector.cs" />

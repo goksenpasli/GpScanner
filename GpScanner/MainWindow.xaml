@@ -795,7 +795,7 @@
                                             </ToggleButton>
                                         </Grid>
                                     </GroupBox.Header>
-                                    <ListBox Extensions:DragDropExtension.ScrollOnDragDrop="True" twainctrl:Policy.PolicyName="LoadImage"
+                                    <ListBox Extensions:ScrollDragDrop.ScrollOnDragDrop="True" twainctrl:Policy.PolicyName="LoadImage"
                                         AllowDrop="True"
                                         Background="{StaticResource BorderBackground}"
                                         Drop="ListBox_DropAsync"

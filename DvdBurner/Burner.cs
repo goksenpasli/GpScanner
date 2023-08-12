@@ -17,13 +17,6 @@ using MessageBox = System.Windows.MessageBox;
 
 namespace DvdBurner
 {
-    public enum DiscSizes
-    {
-        CD = 700,
-        MINIDVD = (int)(1.3 * 1024),
-        DVD5 = (int)(4.37 * 1024),
-        DVD9 = (int)(7.91 * 1024),
-    }
 
     public class Burner : Control, INotifyPropertyChanged
     {
@@ -96,7 +89,7 @@ namespace DvdBurner
                                 foreach (string file in Files.Where(file => File.Exists(file)))
                                 {
                                     string fileName = Path.GetFileName(file);
-                                    rootDirectory.AddFile(fileName, ManagedIStream.Create(new FileStream(file, FileMode.Open, FileAccess.Read)));
+                                    rootDirectory?.AddFile(fileName, ManagedIStream.Create(new FileStream(file, FileMode.Open, FileAccess.Read)));
                                 }
 
                                 dynamic result = FSI.CreateResultImage();
@@ -514,9 +507,9 @@ namespace DvdBurner
             for (int i = 0; i < discMaster.Count; i++)
             {
                 discRecorder = new MsftDiscRecorder2();
-                dynamic uniqueId = discMaster.Item[i];
+                dynamic uniqueId = discMaster?.Item[i];
                 discRecorder.InitializeDiscRecorder(uniqueId);
-                string volumePathName = discRecorder.VolumePathNames[0];
+                string volumePathName = discRecorder?.VolumePathNames[0];
                 string productId = discRecorder.ProductId;
                 listdrives.Add($"{volumePathName} {productId}", uniqueId);
             }

@@ -8,10 +8,10 @@ using System.Windows.Media;
 
 namespace Extensions;
 
-public static class DragDropExtension
+public static class ScrollDragDrop
 {
     public static readonly DependencyProperty ScrollOnDragDropProperty =
-                        DependencyProperty.RegisterAttached("ScrollOnDragDrop", typeof(bool), typeof(DragDropExtension), new PropertyMetadata(false, HandleScrollOnDragDropChanged));
+                        DependencyProperty.RegisterAttached("ScrollOnDragDrop", typeof(bool), typeof(ScrollDragDrop), new PropertyMetadata(false, HandleScrollOnDragDropChanged));
 
     public static IEnumerable<T> FindVisualChildren<T>(this DependencyObject parent) where T : DependencyObject
     {

@@ -1108,7 +1108,7 @@
                                 </StackPanel>
                             </TabItem.Header>
                             <ListBox x:Name="Lb"
-                                Extensions:DragDropExtension.ScrollOnDragDrop="True" local:Policy.PolicyName="LoadImage"
+                                Extensions:ScrollDragDrop.ScrollOnDragDrop="True" local:Policy.PolicyName="LoadImage"
                                 AllowDrop="True"
                                 Background="{StaticResource BorderBackground}"
                                 Drop="ListBox_DropAsync"
@@ -1304,7 +1304,7 @@
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <ListBox x:Name="LbEypContent"
-                                    Extensions:DragDropExtension.ScrollOnDragDrop="True"
+                                    Extensions:ScrollDragDrop.ScrollOnDragDrop="True"
                                     d:ItemsSource="{d:SampleData ItemCount=5}"
                                     local:Policy.PolicyName="EypPdfDosyaEkle" AllowDrop="True"
                                     Background="{StaticResource BorderBackground}"

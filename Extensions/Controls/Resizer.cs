@@ -5,30 +5,6 @@ using System.Windows.Controls.Primitives;
 
 namespace Extensions;
 
-public enum ResizeDirections
-{
-    TopLeft = 0,
-
-    Left = 1,
-
-    BottomLeft = 2,
-
-    Bottom = 3,
-
-    BottomRight = 4,
-
-    Right = 5,
-
-    TopRight = 6,
-
-    Top = 7
-}
-
-public class ResizablePanel : ContentControl
-{
-    static ResizablePanel() { DefaultStyleKeyProperty.OverrideMetadata(typeof(ResizablePanel), new FrameworkPropertyMetadata(typeof(ResizablePanel))); }
-}
-
 public class Resizer : Thumb
 {
     public static DependencyProperty ThumbDirectionProperty =

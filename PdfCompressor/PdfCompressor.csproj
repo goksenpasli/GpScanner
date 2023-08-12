@@ -61,6 +61,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="BatchPdfData.cs" />
     <Compile Include="Compressor.cs">
       <SubType>Code</SubType>
     </Compile>

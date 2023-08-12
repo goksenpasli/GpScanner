@@ -5,15 +5,8 @@ using System.Runtime.InteropServices;
 
 namespace GpScanner.ViewModel;
 
-public enum FileType
-{
-    File = 0,
-
-    Folder = 1
-}
-
 // TODO: Check for valid method parameter input (e.g. If provided path is a directory and exists, etc..)
-public static class Win32FileScanner
+public static class FastFileSearch
 {
     private static readonly IntPtr invalidHandle = new(-1);
 
@@ -193,71 +186,4 @@ public static class Win32FileScanner
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 14)]
         public readonly string cAlternateFileName;
     }
-}
-
-public sealed class DirectoryStats
-{
-    public long Files { get; private set; }
-
-    public long Items => Files + Subdirectories;
-
-    public long Size { get; private set; }
-
-    public long Subdirectories { get; private set; }
-
-    public long TotalFiles { get; private set; }
-
-    public long TotalItems => TotalFiles + TotalSubdirectories;
-
-    public long TotalSize { get; private set; }
-
-    public long TotalSubdirectories { get; private set; }
-
-    public void AddDirectory(ref DirectoryStats stats)
-    {
-        Subdirectories++;
-
-        TotalSubdirectories += stats.TotalSubdirectories + 1;
-
-        TotalFiles += stats.TotalFiles;
-        TotalSize += stats.TotalSize;
-    }
-
-    public void AddFile(long size)
-    {
-        Files++;
-        TotalFiles++;
-
-        Size += size;
-        TotalSize += size;
-    }
-}
-
-public sealed class FileResult(string path, long filesize, FileAttributes attributes, DateTime creationTime, DateTime lastWriteTime, DateTime lastAccessTime, FileType type, int depth, DirectoryStats stats = null)
-{
-    public FileAttributes Attributes { get; } = attributes;
-
-    public DateTime CreationTime { get; } = creationTime;
-
-    public int Depth { get; } = depth;
-
-    public bool IsFolder => Type == FileType.Folder;
-
-    public DateTime LastAccessTime { get; } = lastAccessTime;
-
-    public DateTime LastWriteTime { get; } = lastWriteTime;
-
-    /// <summary>
-    /// Gets the absolute path to this file.
-    /// </summary>
-    public string Path { get; } = path;
-
-    /// <summary>
-    /// Gets the size of this file in bytes.
-    /// </summary>
-    public long Size { get; } = filesize;
-
-    public DirectoryStats Stats { get; } = stats;
-
-    public FileType Type { get; } = type;
 }

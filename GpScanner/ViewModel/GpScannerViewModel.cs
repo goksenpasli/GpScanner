@@ -531,7 +531,7 @@ public class GpScannerViewModel : InpcBase
                     return;
                 }
 
-                List<string> files = Win32FileScanner.EnumerateFilepaths(BatchFolder).Where(s => imagefileextensions.Any(ext => ext == Path.GetExtension(s).ToLower())).ToList();
+                List<string> files = FastFileSearch.EnumerateFilepaths(BatchFolder).Where(s => imagefileextensions.Any(ext => ext == Path.GetExtension(s).ToLower())).ToList();
                 int slicecount = files.Count > Settings.Default.ProcessorCount ? files.Count / Settings.Default.ProcessorCount : 1;
                 Scanner scanner = ToolBox.Scanner;
                 scanner.ProgressState = TaskbarItemProgressState.Normal;
@@ -600,7 +600,7 @@ public class GpScannerViewModel : InpcBase
                     return;
                 }
 
-                List<string> files = Win32FileScanner.EnumerateFilepaths(BatchFolder).Where(s => imagefileextensions.Any(ext => ext == Path.GetExtension(s).ToLower())).ToList();
+                List<string> files = FastFileSearch.EnumerateFilepaths(BatchFolder).Where(s => imagefileextensions.Any(ext => ext == Path.GetExtension(s).ToLower())).ToList();
                 int slicecount = files.Count > Settings.Default.ProcessorCount ? files.Count / Settings.Default.ProcessorCount : 1;
                 Scanner scanner = ToolBox.Scanner;
                 scanner.ProgressState = TaskbarItemProgressState.Normal;
