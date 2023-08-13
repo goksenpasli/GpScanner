@@ -138,8 +138,6 @@
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock VerticalAlignment="Center">
-                                            <Image Width="16" Height="16" Source="{Binding Converter={StaticResource FilePathToIconConverter}, Mode=OneWay}" />
-                                            <Run BaselineAlignment="Center" Text="{Binding Mode=OneWay, Converter={StaticResource FilePathToFileNameConverter}}" />
                                             <Hyperlink BaselineAlignment="Center"
                                                 Command="{Binding RemoveFile, RelativeSource={RelativeSource AncestorType=local:Burner}}"
                                                 CommandParameter="{Binding Mode=OneWay}"
@@ -153,6 +151,8 @@
                                                     </Image.Source>
                                                 </Image>
                                             </Hyperlink>
+                                            <Image Width="16" Height="16" Source="{Binding Converter={StaticResource FilePathToIconConverter}, Mode=OneWay}" />
+                                            <Run BaselineAlignment="Center" Text="{Binding Mode=OneWay, Converter={StaticResource FilePathToFileNameConverter}}" />
                                         </TextBlock>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>

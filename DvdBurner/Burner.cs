@@ -42,6 +42,10 @@ namespace DvdBurner
 
         public Burner()
         {
+            if (DesignerProperties.GetIsInDesignMode(this))
+            {
+                Files = new ObservableCollection<string> { "File", "File", "File" };
+            }
             PropertyChanged += Burner_PropertyChanged;
 
             MsftDiscMaster2 g_DiscMaster = new();

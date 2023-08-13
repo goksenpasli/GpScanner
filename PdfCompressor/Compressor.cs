@@ -7,6 +7,7 @@ using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -30,13 +31,25 @@ public class Compressor : Control, INotifyPropertyChanged
     public static readonly DependencyProperty LoadedPdfPathProperty = DependencyProperty.Register("LoadedPdfPath", typeof(string), typeof(Compressor), new PropertyMetadata(string.Empty));
     public static readonly DependencyProperty QualityProperty = DependencyProperty.Register("Quality", typeof(int), typeof(Compressor), new PropertyMetadata(Settings.Default.Quality, QualityChanged));
     public static readonly DependencyProperty UseMozJpegProperty = DependencyProperty.Register("UseMozJpeg", typeof(bool), typeof(Compressor), new PropertyMetadata(false, MozpegChanged));
-    private List<BatchPdfData> batchPdfList;
+    private ObservableCollection<BatchPdfData> batchPdfList;
     private double compressionProgress;
 
     static Compressor() { DefaultStyleKeyProperty.OverrideMetadata(typeof(Compressor), new FrameworkPropertyMetadata(typeof(Compressor))); }
 
     public Compressor()
     {
+        if (DesignerProperties.GetIsInDesignMode(this))
+        {
+            BatchPdfList = new ObservableCollection<BatchPdfData>
+            {
+                new BatchPdfData() { Filename = "FileName", Completed = true },
+                new BatchPdfData() { Filename = "FileName", Completed = true },
+                new BatchPdfData() { Filename = "FileName" },
+                new BatchPdfData() { Filename = "FileName" },
+                new BatchPdfData() { Filename = "FileName" },
+            };
+        }
+
         CompressFile = new RelayCommand<object>(
             async parameter =>
             {
@@ -87,11 +100,21 @@ public class Compressor : Control, INotifyPropertyChanged
                 System.Windows.Forms.FolderBrowserDialog dialog = new() { Description = "PDF Klasörü Seç." };
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    BatchPdfList = new List<BatchPdfData>();
+                    BatchPdfList = new ObservableCollection<BatchPdfData>();
                     foreach (string item in Directory.EnumerateFiles(dialog.SelectedPath, "*.pdf", SearchOption.TopDirectoryOnly))
                     {
                         BatchPdfList.Add(new BatchPdfData() { Filename = item });
                     }
+                }
+            },
+            parameter => true);
+
+        RemovePdfFile = new RelayCommand<object>(
+            parameter =>
+            {
+                if (parameter is BatchPdfData batchPdfData)
+                {
+                    _ = BatchPdfList?.Remove(batchPdfData);
                 }
             },
             parameter => true);
@@ -101,7 +124,7 @@ public class Compressor : Control, INotifyPropertyChanged
 
     public RelayCommand<object> BatchCompressFile { get; }
 
-    public List<BatchPdfData> BatchPdfList
+    public ObservableCollection<BatchPdfData> BatchPdfList
     {
         get => batchPdfList;
         set
@@ -143,6 +166,8 @@ public class Compressor : Control, INotifyPropertyChanged
     public RelayCommand<object> OpenFile { get; }
 
     public int Quality { get => (int)GetValue(QualityProperty); set => SetValue(QualityProperty, value); }
+
+    public RelayCommand<object> RemovePdfFile { get; }
 
     public bool UseMozJpeg { get => (bool)GetValue(UseMozJpegProperty); set => SetValue(UseMozJpegProperty, value); }
 

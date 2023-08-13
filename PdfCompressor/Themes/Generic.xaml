@@ -58,7 +58,22 @@
                                 ItemsSource="{Binding BatchPdfList, RelativeSource={RelativeSource TemplatedParent}}">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding Filename}" />
+                                        <TextBlock VerticalAlignment="Center">
+                                            <Hyperlink BaselineAlignment="Center"
+                                                Command="{Binding RemovePdfFile, RelativeSource={RelativeSource AncestorType=local:Compressor}}"
+                                                CommandParameter="{Binding Mode=OneWay}"
+                                                TextDecorations="None">
+                                                <Image Width="16" Height="16">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="131" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                            </Hyperlink>
+                                            <Run BaselineAlignment="Center" Text="{Binding Filename}" />
+                                        </TextBlock>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                                 <ListBox.ItemContainerStyle>
