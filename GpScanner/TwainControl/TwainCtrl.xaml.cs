@@ -2193,6 +2193,24 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             });
     }
 
+    public static void StackPanelDragFeedBack(object sender, System.Windows.GiveFeedbackEventArgs e)
+    {
+        if (e.Effects == DragDropEffects.Move)
+        {
+            using System.Windows.Input.Cursor customCursor = BitmapMethods.CreateCursor(sender as StackPanel);
+            if (customCursor != null)
+            {
+                e.UseDefaultCursors = false;
+                _ = Mouse.SetCursor(customCursor);
+            }
+        }
+        else
+        {
+            e.UseDefaultCursors = true;
+        }
+        e.Handled = true;
+    }
+
     public void AddFiles(string[] filenames, int decodeheight)
     {
         fileloadtask = Task.Run(
@@ -2697,12 +2715,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (cameraUserControl.DetectQRCode)
                 {
                     CameraQrCodeTimer = new DispatcherTimer(DispatcherPriority.Normal) { Interval = TimeSpan.FromSeconds(1) };
+                    QrCode.QrCode qrcode = new();
                     CameraQrCodeTimer.Tick += (s, f2) =>
                     {
                         using MemoryStream ms = new();
                         cameraUserControl.EncodeBitmapImage(ms);
                         CameraQRCodeData = ms.ToArray();
-                        Scanner.BarcodeContent = QrCode.QrCode.GetImageBarcodeResult(CameraQRCodeData);
+                        Scanner.BarcodeContent = qrcode.GetImageBarcodeResult(CameraQRCodeData);
                         OnPropertyChanged(nameof(CameraQRCodeData));
                     };
                     CameraQrCodeTimer?.Start();
@@ -2823,7 +2842,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private async void FastScanComplete(object sender, ScanningCompleteEventArgs e)
     {
         Scanner.ArayüzEtkin = false;
-        Scanner.BarcodeContent = QrCode.QrCode.GetImageBarcodeResult(Scanner?.Resimler?.LastOrDefault()?.Resim);
+        QrCode.QrCode qrcode = new();
+        Scanner.BarcodeContent = qrcode.GetImageBarcodeResult(Scanner?.Resimler?.LastOrDefault()?.Resim);
         OnPropertyChanged(nameof(Scanner.DetectPageSeperator));
         Scanner.PdfFilePath = PdfGeneration.GetPdfScanPath();
         List<ObservableCollection<OcrData>> PdfFileOcrData = null;
@@ -2834,7 +2854,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             for (int i = 0; i < Scanner.Resimler.Count; i++)
             {
                 ScannedImage scannedimage = Scanner.Resimler[i];
-                Scanner.BarcodeContent = QrCode.QrCode.GetImageBarcodeResult(scannedimage.Resim);
+                Scanner.BarcodeContent = qrcode.GetImageBarcodeResult(scannedimage.Resim);
                 DataBaseTextData = await scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Scanner.SelectedTtsLanguage);
                 PdfFileOcrData.Add(DataBaseTextData);
                 Scanner.PdfSaveProgressValue = i / (double)Scanner.Resimler.Count;
@@ -3149,24 +3169,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    private void StackPanel_GiveFeedback(object sender, System.Windows.GiveFeedbackEventArgs e)
-    {
-        if (e.Effects == DragDropEffects.Move)
-        {
-            using System.Windows.Input.Cursor customCursor = BitmapMethods.CreateCursor(sender as StackPanel);
-            if (customCursor != null)
-            {
-                e.UseDefaultCursors = false;
-                _ = Mouse.SetCursor(customCursor);
-            }
-        }
-        else
-        {
-            e.UseDefaultCursors = true;
-        }
-        e.Handled = true;
-    }
-
+    private void StackPanel_GiveFeedback(object sender, System.Windows.GiveFeedbackEventArgs e) { StackPanelDragFeedBack(sender, e); }
     private void Twain_ScanningComplete(object sender, ScanningCompleteEventArgs e) { Scanner.ArayüzEtkin = true; }
 
     private void Twain_TransferImage(object sender, TransferImageEventArgs e)

@@ -1,8 +1,4 @@
-﻿using GpScanner.Properties;
-using GpScanner.ViewModel;
-using Ocr;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -10,8 +6,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using GpScanner.Properties;
+using GpScanner.ViewModel;
+using Ocr;
 using TwainControl;
 using static Extensions.ExtensionMethods;
+using System.Collections.Generic;
 
 namespace GpScanner;
 
@@ -199,11 +199,16 @@ public partial class MainWindow : Window
 
     private void QrListBox_Drop(object sender, DragEventArgs e)
     {
-        if (e.Data.GetData(typeof(ScannedImage)) is ScannedImage scannedImage && DataContext is GpScannerViewModel ViewModel && QrCode.QrCode.GetMultipleImageBarcodeResult(scannedImage.Resim) is List<string> barcodes)
+        if (e.Data.GetData(typeof(ScannedImage)) is ScannedImage scannedImage && DataContext is GpScannerViewModel ViewModel)
         {
-            foreach (string barcode in barcodes)
+            QrCode.QrCode qrcode = new();
+            List<string> barcodes = qrcode.GetMultipleImageBarcodeResult(scannedImage.Resim);
+            if (barcodes != null)
             {
-                ViewModel.BarcodeList.Add(barcode);
+                foreach (string barcode in barcodes)
+                {
+                    ViewModel.BarcodeList.Add(barcode);
+                }
             }
         }
     }
@@ -224,6 +229,7 @@ public partial class MainWindow : Window
     }
 
     private void StackPanel_Drop(object sender, DragEventArgs e) { TwainCtrl.DropFile(sender, e); }
+    private void StackPanel_GiveFeedback(object sender, GiveFeedbackEventArgs e) { TwainCtrl.StackPanelDragFeedBack(sender, e); }
 
     private async void TwainCtrl_PropertyChangedAsync(object sender, PropertyChangedEventArgs e)
     {
@@ -257,7 +263,8 @@ public partial class MainWindow : Window
             {
                 if (ViewModel.DetectBarCode)
                 {
-                    ViewModel.AddBarcodeToList(QrCode.QrCode.GetImageBarcodeResult(TwainCtrl.ImgData));
+                    QrCode.QrCode qrcode = new();
+                    ViewModel.AddBarcodeToList(qrcode.GetImageBarcodeResult(TwainCtrl.ImgData));
                 }
 
                 ViewModel.OcrIsBusy = true;

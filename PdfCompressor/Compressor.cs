@@ -146,58 +146,6 @@ public class Compressor : Control, INotifyPropertyChanged
 
     public bool UseMozJpeg { get => (bool)GetValue(UseMozJpegProperty); set => SetValue(UseMozJpegProperty, value); }
 
-    public static Bitmap BitmapSourceToBitmap(BitmapSource bitmapsource)
-    {
-        if (bitmapsource is null)
-        {
-            throw new ArgumentNullException(nameof(bitmapsource));
-        }
-
-        FormatConvertedBitmap src = new();
-        src.BeginInit();
-        src.Source = bitmapsource;
-        src.DestinationFormat = PixelFormats.Bgra32;
-        src.EndInit();
-        src.Freeze();
-        Bitmap bitmap = new(src.PixelWidth, src.PixelHeight, PixelFormat.Format32bppArgb);
-        BitmapData data = bitmap.LockBits(new Rectangle(Point.Empty, bitmap.Size), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-        if (data != null)
-        {
-            src.CopyPixels(Int32Rect.Empty, data.Scan0, data.Height * data.Stride, data.Stride);
-            bitmap.UnlockBits(data);
-        }
-
-        return bitmap;
-    }
-
-    public static void DefaultPdfCompression(PdfDocument doc)
-    {
-        if (doc is null)
-        {
-            throw new ArgumentNullException(nameof(doc));
-        }
-
-        doc.Options.FlateEncodeMode = PdfFlateEncodeMode.BestCompression;
-        doc.Options.CompressContentStreams = true;
-        doc.Options.UseFlateDecoderForJpegImages = PdfUseFlateDecoderForJpegImages.Automatic;
-        doc.Options.NoCompression = false;
-        doc.Options.EnableCcittCompressionForBilevelImages = true;
-    }
-
-    public static bool IsValidPdfFile(string filename)
-    {
-        if (File.Exists(filename))
-        {
-            byte[] buffer = new byte[4];
-            using FileStream fs = new(filename, FileMode.Open, FileAccess.Read);
-            _ = fs.Read(buffer, 0, buffer.Length);
-            byte[] pdfheader = { 0x25, 0x50, 0x44, 0x46 };
-            return buffer?.SequenceEqual(pdfheader) == true;
-        }
-
-        return false;
-    }
-
     public async Task<List<BitmapImage>> AddToListAsync(PdfiumViewer.PdfDocument pdfDoc, int dpi)
     {
         List<BitmapImage> images = new();
@@ -296,6 +244,20 @@ public class Compressor : Control, INotifyPropertyChanged
         return document;
     }
 
+    public bool IsValidPdfFile(string filename)
+    {
+        if (File.Exists(filename))
+        {
+            byte[] buffer = new byte[4];
+            using FileStream fs = new(filename, FileMode.Open, FileAccess.Read);
+            _ = fs.Read(buffer, 0, buffer.Length);
+            byte[] pdfheader = { 0x25, 0x50, 0x44, 0x46 };
+            return buffer?.SequenceEqual(pdfheader) == true;
+        }
+
+        return false;
+    }
+
     protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
 
     private static void BwChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -312,6 +274,20 @@ public class Compressor : Control, INotifyPropertyChanged
             compressor.BlackAndWhite = Settings.Default.Bw = false;
             Settings.Default.Save();
         }
+    }
+
+    private static void DefaultPdfCompression(PdfDocument doc)
+    {
+        if (doc is null)
+        {
+            throw new ArgumentNullException(nameof(doc));
+        }
+
+        doc.Options.FlateEncodeMode = PdfFlateEncodeMode.BestCompression;
+        doc.Options.CompressContentStreams = true;
+        doc.Options.UseFlateDecoderForJpegImages = PdfUseFlateDecoderForJpegImages.Automatic;
+        doc.Options.NoCompression = false;
+        doc.Options.EnableCcittCompressionForBilevelImages = true;
     }
 
     private static void DpiChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -332,6 +308,30 @@ public class Compressor : Control, INotifyPropertyChanged
     {
         Settings.Default.Quality = (int)e.NewValue;
         Settings.Default.Save();
+    }
+
+    private Bitmap BitmapSourceToBitmap(BitmapSource bitmapsource)
+    {
+        if (bitmapsource is null)
+        {
+            throw new ArgumentNullException(nameof(bitmapsource));
+        }
+
+        FormatConvertedBitmap src = new();
+        src.BeginInit();
+        src.Source = bitmapsource;
+        src.DestinationFormat = PixelFormats.Bgra32;
+        src.EndInit();
+        src.Freeze();
+        Bitmap bitmap = new(src.PixelWidth, src.PixelHeight, PixelFormat.Format32bppArgb);
+        BitmapData data = bitmap.LockBits(new Rectangle(Point.Empty, bitmap.Size), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+        if (data != null)
+        {
+            src.CopyPixels(Int32Rect.Empty, data.Scan0, data.Height * data.Stride, data.Stride);
+            bitmap.UnlockBits(data);
+        }
+
+        return bitmap;
     }
 
     private async Task<PdfDocument> CompressFilePdfDocumentAsync(string path)

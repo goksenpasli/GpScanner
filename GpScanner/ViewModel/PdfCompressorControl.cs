@@ -18,13 +18,14 @@ public class PdfCompressorControl : Compressor
         CompressFile = new RelayCommand<object>(
             async parameter =>
             {
-                if (IsValidPdfFile(LoadedPdfPath))
+                Compressor compressor = new();
+                if (compressor.IsValidPdfFile(LoadedPdfPath))
                 {
                     PdfDocument pdfDocument;
                     using (PdfiumViewer.PdfDocument loadedpdfdoc = PdfiumViewer.PdfDocument.Load(LoadedPdfPath))
                     {
-                        List<BitmapImage> images = await AddToListAsync(loadedpdfdoc, Dpi);
-                        pdfDocument = await GeneratePdfAsync(images, UseMozJpeg, BlackAndWhite, Quality, Dpi);
+                        List<BitmapImage> images = await compressor.AddToListAsync(loadedpdfdoc, Dpi);
+                        pdfDocument = await compressor.GeneratePdfAsync(images, UseMozJpeg, BlackAndWhite, Quality, Dpi);
                         images = null;
                     }
 

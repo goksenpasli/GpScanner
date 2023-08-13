@@ -217,7 +217,8 @@ public class GpScannerViewModel : InpcBase
 
                     if (DetectBarCode)
                     {
-                        string result = await Task.Run(() => QrCode.QrCode.GetImageBarcodeResult(bitmapframe));
+                        QrCode.QrCode qrcode = new();
+                        string result = await Task.Run(() => qrcode.GetImageBarcodeResult(bitmapframe));
                         if (result != null)
                         {
                             BarcodeList.Add(result);
@@ -703,12 +704,12 @@ public class GpScannerViewModel : InpcBase
         AddToCalendar = new RelayCommand<object>(
             parameter =>
             {
-                ReminderData reminderData = new() { Açıklama = CalendarDesc, Tarih = NotifyDate, FileName = (parameter as Scanner).FileName, Id = DataSerialize.RandomNumber() };
+                ReminderData reminderData = new() { Açıklama = CalendarDesc, Tarih = NotifyDate, FileName = (parameter as Scanner)?.FileName, Id = DataSerialize.RandomNumber() };
                 ScannerData.Reminder.Add(reminderData);
                 DatabaseSave.Execute(null);
                 CalendarDesc = null;
             },
-            parameter => !string.IsNullOrWhiteSpace(CalendarDesc));
+            parameter => parameter is Scanner scanner && File.Exists(scanner?.FileName) && !string.IsNullOrWhiteSpace(CalendarDesc));
     }
 
     public static bool IsAdministrator

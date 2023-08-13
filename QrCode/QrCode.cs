@@ -29,7 +29,7 @@ public class QrCode : InpcBase
         }
     }
 
-    public static WriteableBitmap GenerateQr(string text, int width = 120, int height = 120)
+    public WriteableBitmap GenerateQr(string text, int width = 120, int height = 120)
     {
         if (!string.IsNullOrWhiteSpace(text))
         {
@@ -43,7 +43,7 @@ public class QrCode : InpcBase
         return null;
     }
 
-    public static string GetImageBarcodeResult(BitmapFrame bitmapFrame)
+    public string GetImageBarcodeResult(BitmapFrame bitmapFrame)
     {
         if (bitmapFrame is not null)
         {
@@ -55,7 +55,7 @@ public class QrCode : InpcBase
         return null;
     }
 
-    public static string GetImageBarcodeResult(byte[] imgbyte)
+    public string GetImageBarcodeResult(byte[] imgbyte)
     {
         if (imgbyte is not null)
         {
@@ -77,7 +77,7 @@ public class QrCode : InpcBase
         return null;
     }
 
-    public static List<string> GetMultipleImageBarcodeResult(BitmapFrame bitmapFrame)
+    public List<string> GetMultipleImageBarcodeResult(BitmapFrame bitmapFrame)
     {
         if (bitmapFrame is not null)
         {

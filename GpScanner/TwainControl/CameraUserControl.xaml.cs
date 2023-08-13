@@ -62,7 +62,7 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
                     EncodeBitmapImage(ms);
                 }
             },
-            parameter => SeçiliKamera is not null);
+            parameter => SeçiliKamera is not null && Device?.BitmapSource is not null);
 
         PropertyChanged += CameraUserControl_PropertyChanged;
     }
