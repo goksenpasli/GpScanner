@@ -233,7 +233,8 @@ public class Compressor : Control, INotifyPropertyChanged
                     {
                         BitmapImage pdfimage = bitmapFrames[i];
                         PdfPage page = document.AddPage();
-
+                        double ratio = pdfimage.PixelWidth / (double)pdfimage.PixelHeight;
+                        bool portrait = pdfimage.PixelWidth < pdfimage.PixelHeight;
                         if (UseMozJpegEncoding)
                         {
                             using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
@@ -242,18 +243,17 @@ public class Compressor : Control, INotifyPropertyChanged
                             byte[] data = mozJpeg.Encode(BitmapSourceToBitmap(resizedimage), jpegquality, false, TJFlags.ACCURATEDCT | TJFlags.DC_SCAN_OPT2 | TJFlags.TUNE_MS_SSIM);
                             using MemoryStream ms = new(data);
                             using XImage xImage = XImage.FromStream(ms);
-                            XSize size = PageSizeConverter.ToSize(page.Size);
                             resizedimage = null;
                             data = null;
 
-                            if (pdfimage.PixelWidth < pdfimage.PixelHeight)
+                            if (portrait)
                             {
-                                gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
+                                gfx.DrawImage(xImage, 0, 0, page.Height * ratio, page.Height);
                             }
                             else
                             {
                                 page.Orientation = PageOrientation.Landscape;
-                                gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
+                                gfx.DrawImage(xImage, 0, 0, page.Width, page.Width / ratio);
                             }
 
                             CompressionProgress = (i + 1) / (double)bitmapFrames.Count;
@@ -261,21 +261,21 @@ public class Compressor : Control, INotifyPropertyChanged
                         else
                         {
                             using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
-                            BitmapSource resizedimage = bw ? pdfimage.Resize(page.Width, page.Height, 0, dpi, dpi).ConvertBlackAndWhite() : pdfimage.Resize(page.Width, page.Height, 0, dpi, dpi);
-                            using MemoryStream ms =
-                                new(resizedimage.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg, jpegquality));
+                            BitmapSource resizedimage = bw
+                                ? BitmapSourceToBitmap(pdfimage).ConvertBlackAndWhite().ToBitmapImage(ImageFormat.Tiff).Resize(page.Height * ratio, page.Height, 0, dpi, dpi)
+                                : pdfimage.Resize(page.Height * ratio, page.Height, 0, dpi, dpi);
+                            using MemoryStream ms = new(resizedimage.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg, jpegquality));
                             using XImage xImage = XImage.FromStream(ms);
-                            XSize size = PageSizeConverter.ToSize(page.Size);
                             resizedimage = null;
 
-                            if (pdfimage.PixelWidth < pdfimage.PixelHeight)
+                            if (portrait)
                             {
-                                gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
+                                gfx.DrawImage(xImage, 0, 0, page.Height * ratio, page.Height);
                             }
                             else
                             {
                                 page.Orientation = PageOrientation.Landscape;
-                                gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
+                                gfx.DrawImage(xImage, 0, 0, page.Width, page.Width / ratio);
                             }
 
                             CompressionProgress = (i + 1) / (double)bitmapFrames.Count;

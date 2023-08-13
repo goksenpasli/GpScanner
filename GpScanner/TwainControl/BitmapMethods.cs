@@ -124,6 +124,11 @@ public static class BitmapMethods
 
     public static Bitmap BitmapSourceToBitmap(this BitmapSource bitmapsource)
     {
+        if (bitmapsource is null)
+        {
+            throw new ArgumentNullException(nameof(bitmapsource));
+        }
+
         FormatConvertedBitmap src = new();
         src.BeginInit();
         src.Source = bitmapsource;
