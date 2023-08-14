@@ -849,13 +849,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         {
                             for (int i = 0; i < reader.PageCount; i++)
                             {
-                                using PdfDocument listDocument = GenerateWatermarkedPdf(reader, i, PdfWatermarkFontAngle);
+                                using PdfDocument listDocument = reader.GenerateWatermarkedPdf(i, PdfWatermarkFontAngle, PdfWatermarkColor, PdfWatermarkFontSize, PdfWaterMarkText, PdfWatermarkFont);
                                 listDocument.Save(oldpdfpath);
                             }
                         }
                         else
                         {
-                            using PdfDocument document = GenerateWatermarkedPdf(reader, pdfViewer.Sayfa - 1, PdfWatermarkFontAngle);
+                            using PdfDocument document = reader.GenerateWatermarkedPdf(pdfViewer.Sayfa - 1, PdfWatermarkFontAngle, PdfWatermarkColor, PdfWatermarkFontSize, PdfWaterMarkText, PdfWatermarkFont);
                             document.Save(oldpdfpath);
                         }
                     }
@@ -2889,15 +2889,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         Scanner.ArayüzEtkin = true;
     }
 
-    private PdfDocument GenerateWatermarkedPdf(PdfDocument pdfdocument, int sayfa, double rotation)
-    {
-        PdfPage page = pdfdocument.Pages[sayfa];
-        XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
-        XBrush brush = new XSolidBrush(XColor.FromArgb(PdfWatermarkColor.Color.A, PdfWatermarkColor.Color.R, PdfWatermarkColor.Color.G, PdfWatermarkColor.Color.B));
-        PdfGeneration.DrawPdfOverlayText(page, gfx, PdfWatermarkFontSize, PdfWaterMarkText, brush, PdfWatermarkFont, rotation);
-        return pdfdocument;
-    }
-
     private void GridSplitter_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
         TwainGuiControlLength = new GridLength(3, GridUnitType.Star);
@@ -3050,9 +3041,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 Settings.Default.PreviewWidth = 85;
             }
 
-            if (Settings.Default.PreviewWidth >= 300)
+            if (Settings.Default.PreviewWidth >= 400)
             {
-                Settings.Default.PreviewWidth = 300;
+                Settings.Default.PreviewWidth = 400;
             }
         }
     }

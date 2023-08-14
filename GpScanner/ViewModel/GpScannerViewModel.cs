@@ -71,6 +71,7 @@ public class GpScannerViewModel : InpcBase
     private string ftpPassword = string.Empty;
     private string ftpSite = string.Empty;
     private string ftpUserName = string.Empty;
+    private FlowDirection langFlowDirection = FlowDirection.LeftToRight;
     private bool listBoxBorderAnimation;
     private GridLength mainWindowDocumentGuiControlLength = new(1, GridUnitType.Star);
     private GridLength mainWindowGuiControlLength = new(3, GridUnitType.Star);
@@ -126,9 +127,9 @@ public class GpScannerViewModel : InpcBase
             CalendarPanelIsExpanded = true;
         }
 
-        RegisterSti = new RelayCommand<object>(parameter => StillImageHelper.Register(), parameter => true);
+        RegisterSti = new RelayCommand<object>(parameter => StillImageHelper.Register(), parameter => IsAdministrator);
 
-        UnRegisterSti = new RelayCommand<object>(parameter => StillImageHelper.Unregister(), parameter => true);
+        UnRegisterSti = new RelayCommand<object>(parameter => StillImageHelper.Unregister(), parameter => IsAdministrator);
 
         PdfBirleştir = new RelayCommand<object>(
             async parameter =>
@@ -1048,6 +1049,19 @@ public class GpScannerViewModel : InpcBase
 
     public ObservableCollection<Size> GetPreviewSize => new() { new Size(175, 280), new Size(230, 370), new Size(280, 450), new Size(350, 563), new Size(425, 645) };
 
+    public FlowDirection LangFlowDirection
+    {
+        get => langFlowDirection;
+        set
+        {
+            if (langFlowDirection != value)
+            {
+                langFlowDirection = value;
+                OnPropertyChanged(nameof(LangFlowDirection));
+            }
+        }
+    }
+
     public bool ListBoxBorderAnimation
     {
         get => listBoxBorderAnimation;
@@ -1468,7 +1482,7 @@ public class GpScannerViewModel : InpcBase
     {
         if (!string.IsNullOrWhiteSpace(barcodecontent))
         {
-            BarcodeList.Add(barcodecontent);
+            BarcodeList?.Add(barcodecontent);
         }
     }
 
@@ -1512,7 +1526,7 @@ public class GpScannerViewModel : InpcBase
         if (!string.IsNullOrWhiteSpace(barcode))
         {
             List<string> patchcodes = Settings.Default.PatchCodes.Cast<string>().ToList();
-            string matchingPatchCode = patchcodes.Find(z => z.Split('|')[0] == barcode);
+            string matchingPatchCode = patchcodes?.Find(z => z.Split('|')[0] == barcode);
             return matchingPatchCode != null ? matchingPatchCode.Split('|')[1] : "Tarama";
         }
 
@@ -1679,18 +1693,13 @@ public class GpScannerViewModel : InpcBase
         if (e.PropertyName is "Sıralama")
         {
             MainWindow.cvs?.SortDescriptions.Clear();
-            if (Sıralama)
-            {
-                MainWindow.cvs?.SortDescriptions.Add(new SortDescription("FileName", ListSortDirection.Descending));
-                return;
-            }
-
-            MainWindow.cvs?.SortDescriptions.Add(new SortDescription("FileName", ListSortDirection.Ascending));
+            SortDescription sortDescription = Sıralama ? new SortDescription("FileName", ListSortDirection.Descending) : new SortDescription("FileName", ListSortDirection.Ascending);
+            MainWindow.cvs?.SortDescriptions.Add(sortDescription);
         }
 
         if (e.PropertyName is "AramaMetni")
         {
-            if (string.IsNullOrEmpty(AramaMetni))
+            if (string.IsNullOrWhiteSpace(AramaMetni))
             {
                 OnPropertyChanged(nameof(SeçiliGün));
                 return;
@@ -1706,8 +1715,7 @@ public class GpScannerViewModel : InpcBase
 
         if (e.PropertyName is "SeçiliDil")
         {
-            Application.Current?.Windows?.Cast<Window>()?.ToList()
-                ?.ForEach(z => z.FlowDirection = FlowDirection.LeftToRight);
+            LangFlowDirection = FlowDirection.LeftToRight;
             switch (SeçiliDil)
             {
                 case "TÜRKÇE":
@@ -1733,8 +1741,7 @@ public class GpScannerViewModel : InpcBase
                 case "عربي":
                     TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("ar-AR");
                     CalendarLang = XmlLanguage.GetLanguage("ar-AR");
-                    Application.Current?.Windows?.Cast<Window>()?.ToList()
-                        ?.ForEach(z => z.FlowDirection = FlowDirection.RightToLeft);
+                    LangFlowDirection = FlowDirection.RightToLeft;
                     break;
 
                 case "РУССКИЙ":
@@ -1784,6 +1791,11 @@ public class GpScannerViewModel : InpcBase
             }
 
             Settings.Default.DefaultLang = SeçiliDil;
+        }
+
+        if (e.PropertyName is "LangFlowDirection")
+        {
+            Application.Current?.Windows?.Cast<Window>()?.ToList()?.ForEach(z => z.FlowDirection = LangFlowDirection);
         }
     }
 

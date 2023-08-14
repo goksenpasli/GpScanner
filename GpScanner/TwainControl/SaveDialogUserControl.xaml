@@ -22,6 +22,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
@@ -57,18 +58,12 @@
                     <StackPanel Orientation="Horizontal">
                         <Image Width="32" Height="32" Source="{Binding Source='.jpg', Converter={StaticResource FilePathToIconConverter}}" />
                         <TextBlock VerticalAlignment="Center" Text="{Binding Source='.jpg', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
-                        <Extensions:NumericUpDownControl Maximum="95" Minimum="10"
-                            SmallChange="1"
-                            Value="{Binding Path=JpegQuality, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                     </StackPanel>
                 </ListBoxItem>
                 <ListBoxItem>
                     <StackPanel Orientation="Horizontal">
                         <Image Width="32" Height="32" Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
                         <TextBlock VerticalAlignment="Center" Text="{Binding Source='.pdf', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
-                        <Extensions:NumericUpDownControl Maximum="95" Minimum="10"
-                            SmallChange="1"
-                            Value="{Binding Path=JpegQuality, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                     </StackPanel>
                 </ListBoxItem>
                 <ListBoxItem>
@@ -87,9 +82,6 @@
                             <Run Text="{local:Loc BW}" />
                             <Run Text="{Binding Mode=OneWay, Source='.pdf', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
                         </TextBlock>
-                        <Extensions:NumericUpDownControl Maximum="95" Minimum="10"
-                            SmallChange="1"
-                            Value="{Binding Path=JpegQuality, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                     </StackPanel>
                 </ListBoxItem>
                 <ListBoxItem>
@@ -127,7 +119,7 @@
                     </ToolTip>
                 </Image.ToolTip>
             </Image>
-            <Button Grid.Row="1"
+            <Button Grid.Row="1" Grid.RowSpan="2"
                 local:Policy.PolicyName="Kaydet"
                 Command="{Binding Kaydet}"
                 CommandParameter="{Binding SeçiliResim.Resim, Mode=OneWay}"
@@ -137,10 +129,27 @@
                     <TextBlock VerticalAlignment="Center" Text="{local:Loc SAVESELECTED}" />
                 </StackPanel>
             </Button>
-            <HeaderedContentControl Grid.Row="1" Grid.Column="1" IsEnabled="{Binding ElementName=Img, Path=Source, Converter={StaticResource NullableToBooleanConverter}}">
+            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                <Image Width="16" Height="16" Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
+                <Image Width="16" Height="16" Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}">
+                    <Image.Effect>
+                        <Extensions:BlackWhiteEffect Threshold="0.8" />
+                    </Image.Effect>
+                </Image>
+                <Image Width="16" Height="16" Source="{Binding Source='.jpg', Converter={StaticResource FilePathToIconConverter}}" />
+                <Extensions:NumericUpDownControl Maximum="95" Minimum="10"
+                    SmallChange="1"
+                    Value="{Binding Path=JpegQuality, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                <TextBlock VerticalAlignment="Center" Text="{local:Loc JPEGQUALITY}" TextWrapping="Wrap" />
+            </StackPanel>
+            <HeaderedContentControl Grid.Row="2" Grid.Column="1" IsEnabled="{Binding ElementName=Img, Path=Source, Converter={StaticResource NullableToBooleanConverter}}">
                 <HeaderedContentControl.Header>
                     <StackPanel Orientation="Horizontal">
-                        <Image Width="16" Height="16" Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
+                        <Image Width="16" Height="16" Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}">
+                            <Image.Effect>
+                                <Extensions:BlackWhiteEffect Threshold="0.8" />
+                            </Image.Effect>
+                        </Image>
                         <TextBlock>
                             <Run Text="{local:Loc BW}" />
                             <Run Text="{local:Loc SETTİNGS}" />

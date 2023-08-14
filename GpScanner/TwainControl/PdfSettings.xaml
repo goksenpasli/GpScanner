@@ -221,10 +221,12 @@
                     <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXTSIZE}" />
                     <Extensions:NumericUpDownControl IsReadOnly="True" Maximum="144"
                         Minimum="1" Orientation="Horizontal"
+                        SmallChange="1"
                         Value="{Binding Scanner.PdfPageTextSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXTANGLE}" />
                     <Extensions:NumericUpDownControl IsReadOnly="True" Maximum="360"
                         Minimum="0" Orientation="Horizontal"
+                        SmallChange="1"
                         Value="{Binding Scanner.PdfPageTextAngle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
             </CheckBox>

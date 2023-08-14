@@ -503,6 +503,15 @@ public static class PdfGeneration
         return Task.FromResult(document);
     }
 
+    public static PdfDocument GenerateWatermarkedPdf(this PdfDocument pdfdocument, int sayfa, double rotation, SolidColorBrush textcolor, double textsize, string text, string font)
+    {
+        PdfPage page = pdfdocument.Pages[sayfa];
+        XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
+        XBrush brush = new XSolidBrush(XColor.FromArgb(textcolor.Color.A, textcolor.Color.R, textcolor.Color.G, textcolor.Color.B));
+        DrawPdfOverlayText(page, gfx, textsize, text, brush, font, rotation);
+        return pdfdocument;
+    }
+
     public static PageSize GetPaperSize(this Paper paper) { return paper == null || !paperSizes.TryGetValue(paper.PaperType, out PageSize pageSize) ? PageSize.A4 : pageSize; }
     public static string GetPdfScanPath() { return GetSaveFolder().SetUniqueFile(Scanner.SaveFileName, "pdf"); }
     public static double[] GetPdfTextLayout(PdfPage page)
