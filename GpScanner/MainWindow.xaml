@@ -304,22 +304,26 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <Button twainctrl:Policy.PolicyName="DateBack"
+                                <Button twainctrl:Policy.PolicyName="DateBack" BorderBrush="GreenYellow"
+                                    BorderThickness="2"
                                     Command="{Binding DateBack}"
                                     Content="ç" FontFamily="Wingdings"
                                     FontSize="16" />
                                 <DatePicker Grid.Column="1"
+                                    BorderBrush="GreenYellow" BorderThickness="2"
                                     DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}"
                                     Language="{Binding CalendarLang}"
                                     SelectedDate="{Binding SeçiliGün}" />
                                 <Button Grid.Column="2"
-                                    twainctrl:Policy.PolicyName="DateForward"
+                                    twainctrl:Policy.PolicyName="DateForward" BorderBrush="GreenYellow"
+                                    BorderThickness="2"
                                     Command="{Binding DateForward}"
                                     Content="è" FontFamily="Wingdings"
                                     FontSize="16" />
                             </Grid>
                             <Extensions:ButtonedTextBox Grid.Column="1"
                                 VerticalContentAlignment="Center"
+                                BorderBrush="GreenYellow" BorderThickness="2"
                                 CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed"
                                 PasteButtonVisibility="Collapsed"
                                 Text="{Binding AramaMetni, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -609,7 +613,8 @@
                                 <ColumnDefinition Width="35.2" />
                             </Grid.ColumnDefinitions>
                             <Button HorizontalContentAlignment="Stretch"
-                                twainctrl:Policy.PolicyName="OcrPage"
+                                twainctrl:Policy.PolicyName="OcrPage" BorderBrush="GreenYellow"
+                                BorderThickness="2"
                                 Command="{Binding OcrPage, Mode=OneWay}"
                                 CommandParameter="{Binding SeçiliResim.Resim, ElementName=TwainCtrl}">
                                 <Button.Style>

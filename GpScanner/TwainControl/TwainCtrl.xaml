@@ -286,80 +286,64 @@
                     Background="{StaticResource GroupBoxBackGround}"
                     BorderBrush="Black" IsExpanded="True">
                     <Expander.Header>
-                        <Grid HorizontalAlignment="{Binding HorizontalAlignment, Mode=OneWayToSource, RelativeSource={RelativeSource AncestorType={x:Type ContentPresenter}}}">
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <ComboBox local:Policy.PolicyName="SeçiliTarayıcı"
-                                IsEnabled="{Binding Scanner.ArayüzEtkin}"
-                                ItemsSource="{Binding Scanner.Tarayıcılar}"
-                                SelectedItem="{Binding SeçiliTarayıcı, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
+                        <Border BorderBrush="GreenYellow" BorderThickness="2">
+                            <Grid HorizontalAlignment="{Binding HorizontalAlignment, Mode=OneWayToSource, RelativeSource={RelativeSource AncestorType={x:Type ContentPresenter}}}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <ComboBox local:Policy.PolicyName="SeçiliTarayıcı"
+                                    IsEnabled="{Binding Scanner.ArayüzEtkin}"
+                                    ItemsSource="{Binding Scanner.Tarayıcılar}"
+                                    SelectedItem="{Binding SeçiliTarayıcı, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="24" Height="24">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="201" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                                <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="{Binding Mode=OneWay}" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                                <StackPanel x:Name="SpDelay" Grid.Column="1" Orientation="Horizontal">
+                                    <Extensions:NumericUpDownControl IsReadOnly="True" Maximum="120"
+                                        Minimum="0" SmallChange="1"
+                                        Value="{Binding ScanDelay, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc SECOND}" />
+                                </StackPanel>
+                                <UniformGrid Grid.Row="1" Grid.ColumnSpan="2" Columns="4">
+                                    <Extensions:ContentToggleButton StaysOpen="True" TopMost="False">
+                                        <Extensions:ContentToggleButton.OverContent>
+                                            <Extensions:ResizablePanel Width="680" Height="480"
+                                                MinWidth="480" MinHeight="360">
+                                                <local:CameraUserControl x:Name="Camera" />
+                                            </Extensions:ResizablePanel>
+                                        </Extensions:ContentToggleButton.OverContent>
                                         <StackPanel Orientation="Horizontal">
-                                            <Image Width="24" Height="24">
+                                            <Image Width="32" Height="32">
                                                 <Image.Source>
                                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                         <Binding Source="Shell32.dll" />
-                                                        <Binding Source="201" />
+                                                        <Binding Source="203" />
                                                     </MultiBinding>
                                                 </Image.Source>
                                             </Image>
-                                            <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="{Binding Mode=OneWay}" />
+                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc CAMERA}" />
                                         </StackPanel>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
-                            <StackPanel x:Name="SpDelay" Grid.Column="1" Orientation="Horizontal">
-                                <Extensions:NumericUpDownControl IsReadOnly="True" Maximum="120"
-                                    Minimum="0" SmallChange="1"
-                                    Value="{Binding ScanDelay, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                                <TextBlock VerticalAlignment="Center" Text="{local:Loc SECOND}" />
-                            </StackPanel>
-                            <UniformGrid Grid.Row="1" Grid.ColumnSpan="2" Columns="4">
-                                <Extensions:ContentToggleButton StaysOpen="True" TopMost="False">
-                                    <Extensions:ContentToggleButton.OverContent>
-                                        <Extensions:ResizablePanel Width="680" Height="480"
-                                            MinWidth="480" MinHeight="360">
-                                            <local:CameraUserControl x:Name="Camera" />
-                                        </Extensions:ResizablePanel>
-                                    </Extensions:ContentToggleButton.OverContent>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Width="32" Height="32">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="203" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc CAMERA}" />
-                                    </StackPanel>
-                                </Extensions:ContentToggleButton>
-                                <Button local:Policy.PolicyName="ScanImage" Command="{Binding ScanImage}" IsEnabled="{Binding Scanner.ArayüzEtkin}">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Width="32" Height="32">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="201" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc SCAN}" />
-                                    </StackPanel>
-                                </Button>
-                                <Button local:Policy.PolicyName="FastScanImage"
-                                    Command="{Binding FastScanImage}"
-                                    IsDefault="True"
-                                    IsEnabled="{Binding Scanner.ArayüzEtkin}">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Canvas Width="32" Height="32">
+                                    </Extensions:ContentToggleButton>
+                                    <Button local:Policy.PolicyName="ScanImage" Command="{Binding ScanImage}" IsEnabled="{Binding Scanner.ArayüzEtkin}">
+                                        <StackPanel Orientation="Horizontal">
                                             <Image Width="32" Height="32">
                                                 <Image.Source>
                                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -368,33 +352,51 @@
                                                     </MultiBinding>
                                                 </Image.Source>
                                             </Image>
-                                            <Image Canvas.Left="0" Canvas.Bottom="0"
-                                                Width="20" Height="20"
-                                                Source="/TwainControl;component/Icons/save.png" />
-                                        </Canvas>
-                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc FASTSCAN}" />
-                                    </StackPanel>
-                                </Button>
-                                <Button x:Name="AutoScanPathBtn" local:Policy.PolicyName="KayıtYoluBelirle" Command="{Binding KayıtYoluBelirle}">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Canvas Width="32" Height="32">
-                                            <Image Width="32" Height="32">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="4" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                            <Image Canvas.Left="0" Canvas.Bottom="0"
-                                                Width="20" Height="20"
-                                                Source="/TwainControl;component/Icons/save.png" />
-                                        </Canvas>
-                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc AUTOPATH}" />
-                                    </StackPanel>
-                                </Button>
-                            </UniformGrid>
-                        </Grid>
+                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc SCAN}" />
+                                        </StackPanel>
+                                    </Button>
+                                    <Button local:Policy.PolicyName="FastScanImage"
+                                        Command="{Binding FastScanImage}"
+                                        IsDefault="True"
+                                        IsEnabled="{Binding Scanner.ArayüzEtkin}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Canvas Width="32" Height="32">
+                                                <Image Width="32" Height="32">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="201" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                                <Image Canvas.Left="0" Canvas.Bottom="0"
+                                                    Width="20" Height="20"
+                                                    Source="/TwainControl;component/Icons/save.png" />
+                                            </Canvas>
+                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc FASTSCAN}" />
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="AutoScanPathBtn" local:Policy.PolicyName="KayıtYoluBelirle" Command="{Binding KayıtYoluBelirle}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Canvas Width="32" Height="32">
+                                                <Image Width="32" Height="32">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="4" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                                <Image Canvas.Left="0" Canvas.Bottom="0"
+                                                    Width="20" Height="20"
+                                                    Source="/TwainControl;component/Icons/save.png" />
+                                            </Canvas>
+                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc AUTOPATH}" />
+                                        </StackPanel>
+                                    </Button>
+                                </UniformGrid>
+                            </Grid>
+                        </Border>
                     </Expander.Header>
                     <GroupBox IsEnabled="{Binding Scanner.ArayüzEtkin}">
                         <GroupBox.Header>
@@ -450,7 +452,8 @@
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Margin="0,0,2,0" VerticalAlignment="Center" Text="DPI" />
                                     <Slider Grid.Column="1"
-                                        AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True"
+                                        AutoToolTipPlacement="TopLeft" BorderBrush="GreenYellow"
+                                        BorderThickness="2" IsSnapToTickEnabled="True"
                                         Maximum="4800" Minimum="72"
                                         SmallChange="1"
                                         Style="{StaticResource Slider}"
@@ -481,7 +484,7 @@
                                 </StackPanel.Resources>
                                 <StackPanel>
                                     <StackPanel Orientation="Horizontal">
-                                        <ToggleButton IsChecked="{Binding Adf, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                        <ToggleButton BorderBrush="GreenYellow" BorderThickness="2" IsChecked="{Binding Adf, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                                             <ToggleButton.Style>
                                                 <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="{x:Type ToggleButton}">
                                                     <Style.Triggers>
@@ -515,7 +518,7 @@
                                         </ToggleButton>
                                         <ListBox local:Policy.PolicyName="Mode"
                                             Background="{x:Null}"
-                                            BorderBrush="{x:Null}"
+                                            BorderBrush="GreenYellow" BorderThickness="2"
                                             SelectedIndex="{Binding Mode, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                                             <ListBox.ItemContainerStyle>
                                                 <Style BasedOn="{StaticResource ScanTypeLbItem}" TargetType="{x:Type ListBoxItem}" />
@@ -607,77 +610,10 @@
                                         </ListBox>
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="75" />
                                                 <ColumnDefinition Width="80" />
+                                                <ColumnDefinition Width="70" />
                                             </Grid.ColumnDefinitions>
-                                            <ComboBox VerticalContentAlignment="Center"
-                                                local:Policy.PolicyName="SelectedPaper"
-                                                ItemsSource="{Binding Mode=OneWay, Source={StaticResource PaperProfiles}}"
-                                                SelectedItem="{Binding SelectedPaper}"
-                                                SelectedValue="{Binding SelectedPaper.PaperType}"
-                                                SelectedValuePath="PaperType">
-                                                <ComboBox.GroupStyle>
-                                                    <GroupStyle ContainerStyle="{StaticResource BorderGroupStyleContainerStyle}">
-                                                        <GroupStyle.Panel>
-                                                            <ItemsPanelTemplate>
-                                                                <UniformGrid Columns="4" />
-                                                            </ItemsPanelTemplate>
-                                                        </GroupStyle.Panel>
-                                                        <GroupStyle.HeaderTemplate>
-                                                            <DataTemplate>
-                                                                <TextBlock HorizontalAlignment="Center"
-                                                                    FontStyle="Italic" FontWeight="Bold"
-                                                                    Foreground="Black"
-                                                                    Text="{Binding Name}" />
-                                                            </DataTemplate>
-                                                        </GroupStyle.HeaderTemplate>
-                                                    </GroupStyle>
-                                                </ComboBox.GroupStyle>
-                                                <ComboBox.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <Grid>
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="Auto" />
-                                                                <ColumnDefinition Width="Auto" />
-                                                                <ColumnDefinition />
-                                                            </Grid.ColumnDefinitions>
-                                                            <TextBlock VerticalAlignment="Center"
-                                                                FontStyle="Italic" FontWeight="Bold"
-                                                                Text="{Binding PaperType}" />
-                                                            <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                                            </StackPanel>
-                                                            <Viewbox Grid.Column="2">
-                                                                <DockPanel LastChildFill="True">
-                                                                    <TextBlock HorizontalAlignment="Right"
-                                                                        DockPanel.Dock="Top" FontSize="9"
-                                                                        Foreground="Red"
-                                                                        Text="{Binding Width, StringFormat=\{0\}cm}"
-                                                                        TextWrapping="Wrap" />
-                                                                    <TextBlock VerticalAlignment="Center"
-                                                                        DockPanel.Dock="Left" FontSize="9"
-                                                                        Foreground="Red" RenderTransformOrigin="0.5,0.5"
-                                                                        SnapsToDevicePixels="True"
-                                                                        Text="{Binding Height, StringFormat=\{0\}cm}"
-                                                                        TextWrapping="Wrap" UseLayoutRounding="True">
-                                                                        <TextBlock.LayoutTransform>
-                                                                            <RotateTransform Angle="-90" />
-                                                                        </TextBlock.LayoutTransform>
-                                                                    </TextBlock>
-                                                                    <Rectangle Width="{Binding Width}"
-                                                                        Height="{Binding Height}"
-                                                                        Stroke="#7F000000" StrokeThickness="2">
-                                                                        <Rectangle.Effect>
-                                                                            <DropShadowEffect BlurRadius="3" Opacity="0.33" ShadowDepth="3" />
-                                                                        </Rectangle.Effect>
-                                                                    </Rectangle>
-                                                                </DockPanel>
-                                                            </Viewbox>
-                                                        </Grid>
-                                                    </DataTemplate>
-                                                </ComboBox.ItemTemplate>
-                                            </ComboBox>
-                                            <Extensions:ContentToggleButton Grid.Column="1">
+                                            <Extensions:ContentToggleButton BorderBrush="GreenYellow" BorderThickness="2">
                                                 <Extensions:ContentToggleButton.OverContent>
                                                     <StackPanel>
                                                         <ListBox HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"
@@ -799,6 +735,74 @@
                                                     </TextBlock>
                                                 </StackPanel>
                                             </Extensions:ContentToggleButton>
+                                            <ComboBox Grid.Column="1"
+                                                VerticalContentAlignment="Center"
+                                                local:Policy.PolicyName="SelectedPaper"
+                                                ItemsSource="{Binding Mode=OneWay, Source={StaticResource PaperProfiles}}"
+                                                SelectedItem="{Binding SelectedPaper}"
+                                                SelectedValue="{Binding SelectedPaper.PaperType}"
+                                                SelectedValuePath="PaperType">
+                                                <ComboBox.GroupStyle>
+                                                    <GroupStyle ContainerStyle="{StaticResource BorderGroupStyleContainerStyle}">
+                                                        <GroupStyle.Panel>
+                                                            <ItemsPanelTemplate>
+                                                                <UniformGrid Columns="4" />
+                                                            </ItemsPanelTemplate>
+                                                        </GroupStyle.Panel>
+                                                        <GroupStyle.HeaderTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock HorizontalAlignment="Center"
+                                                                    FontStyle="Italic" FontWeight="Bold"
+                                                                    Foreground="Black"
+                                                                    Text="{Binding Name}" />
+                                                            </DataTemplate>
+                                                        </GroupStyle.HeaderTemplate>
+                                                    </GroupStyle>
+                                                </ComboBox.GroupStyle>
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="Auto" />
+                                                                <ColumnDefinition Width="Auto" />
+                                                                <ColumnDefinition />
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock VerticalAlignment="Center"
+                                                                FontStyle="Italic" FontWeight="Bold"
+                                                                Text="{Binding PaperType}" />
+                                                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                                            </StackPanel>
+                                                            <Viewbox Grid.Column="2">
+                                                                <DockPanel LastChildFill="True">
+                                                                    <TextBlock HorizontalAlignment="Right"
+                                                                        DockPanel.Dock="Top" FontSize="9"
+                                                                        Foreground="Red"
+                                                                        Text="{Binding Width, StringFormat=\{0\}cm}"
+                                                                        TextWrapping="Wrap" />
+                                                                    <TextBlock VerticalAlignment="Center"
+                                                                        DockPanel.Dock="Left" FontSize="9"
+                                                                        Foreground="Red" RenderTransformOrigin="0.5,0.5"
+                                                                        SnapsToDevicePixels="True"
+                                                                        Text="{Binding Height, StringFormat=\{0\}cm}"
+                                                                        TextWrapping="Wrap" UseLayoutRounding="True">
+                                                                        <TextBlock.LayoutTransform>
+                                                                            <RotateTransform Angle="-90" />
+                                                                        </TextBlock.LayoutTransform>
+                                                                    </TextBlock>
+                                                                    <Rectangle Width="{Binding Width}"
+                                                                        Height="{Binding Height}"
+                                                                        Stroke="#7F000000" StrokeThickness="2">
+                                                                        <Rectangle.Effect>
+                                                                            <DropShadowEffect BlurRadius="3" Opacity="0.33" ShadowDepth="3" />
+                                                                        </Rectangle.Effect>
+                                                                    </Rectangle>
+                                                                </DockPanel>
+                                                            </Viewbox>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                            </ComboBox>
                                         </Grid>
                                     </StackPanel>
                                 </StackPanel>
@@ -814,7 +818,10 @@
                                         <RowDefinition Height="22.4" />
                                         <RowDefinition Height="16.8" />
                                     </Grid.RowDefinitions>
-                                    <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding Scanner.Duplex}" IsEnabled="{Binding Adf, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                    <CheckBox VerticalContentAlignment="Center"
+                                        BorderBrush="GreenYellow" BorderThickness="2"
+                                        IsChecked="{Binding Scanner.Duplex}"
+                                        IsEnabled="{Binding Adf, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock VerticalAlignment="Center" Text="{local:Loc TWOSIDE}" />
                                             <CheckBox IsChecked="{Binding Scanner.PaperBackScan}" IsEnabled="{Binding Scanner.Duplex}">
@@ -856,7 +863,9 @@
                                         </StackPanel>
                                     </CheckBox>
                                     <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                        <CheckBox Content="{local:Loc GUI}" IsChecked="{Binding Scanner.ShowUi}" />
+                                        <CheckBox BorderBrush="GreenYellow" BorderThickness="2"
+                                            Content="{local:Loc GUI}"
+                                            IsChecked="{Binding Scanner.ShowUi}" />
                                         <CheckBox Content="{local:Loc REVERSE}" IsChecked="{Binding Scanner.InvertImage}" />
                                     </StackPanel>
                                     <CheckBox Grid.Row="1" Grid.Column="0"
@@ -923,6 +932,7 @@
                                 </Grid>
                                 <Separator />
                                 <Extensions:ButtonedTextBox d:Description="SaveFileName" d:Text="FileName"
+                                    BorderBrush="GreenYellow" BorderThickness="2"
                                     Description="{Binding Scanner.SaveFileName}"
                                     GotKeyboardFocus="ButtonedTextBox_GotKeyboardFocus" MaxLength="255"
                                     OpenButtonVisibility="Collapsed"
@@ -1386,7 +1396,8 @@
                 </GroupBox>
                 <UniformGrid Grid.Row="2" Columns="2" Rows="2">
                     <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
-                        local:Policy.PolicyName="LoadImage"
+                        local:Policy.PolicyName="LoadImage" BorderBrush="GreenYellow"
+                        BorderThickness="2"
                         Command="{Binding LoadImage}">
                         <Grid>
                             <ProgressBar Background="{x:Null}"
@@ -1430,7 +1441,8 @@
                         </Grid>
                     </Button>
                     <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
-                        local:Policy.PolicyName="SeçiliDirektPdfKaydet"
+                        local:Policy.PolicyName="SeçiliDirektPdfKaydet" BorderBrush="GreenYellow"
+                        BorderThickness="2"
                         Command="{Binding SeçiliDirektPdfKaydet}">
                         <Grid>
                             <ProgressBar d:Foreground="#FF06B025"

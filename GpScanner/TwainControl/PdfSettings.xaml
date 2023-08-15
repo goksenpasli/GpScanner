@@ -92,35 +92,41 @@
             <Separator />
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="36.8" />
-                    <RowDefinition Height="36.8" />
+                    <RowDefinition Height="41.6" />
+                    <RowDefinition Height="41.6" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition Width="10" />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <HeaderedContentControl Header="{local:Loc JPEGQUALITY}">
-                    <Slider AutoToolTipPlacement="TopLeft" Maximum="95"
-                        Minimum="10" SmallChange="1"
-                        Style="{DynamicResource Slider}"
-                        Value="{Binding Path=JpegQuality, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                </HeaderedContentControl>
+                <Border Padding="1" BorderBrush="GreenYellow" BorderThickness="2">
+                    <HeaderedContentControl Header="{local:Loc JPEGQUALITY}">
+                        <Slider AutoToolTipPlacement="TopLeft" Maximum="95"
+                            Minimum="10" SmallChange="1"
+                            Style="{DynamicResource Slider}"
+                            Value="{Binding Path=JpegQuality, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                    </HeaderedContentControl>
+                </Border>
                 <HeaderedContentControl Grid.Column="2" Header="WEBP">
                     <Slider AutoToolTipPlacement="TopLeft" Maximum="95"
                         Minimum="10" SmallChange="1"
                         Style="{DynamicResource Slider}"
                         Value="{Binding Path=WebpQuality, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                 </HeaderedContentControl>
-                <HeaderedContentControl Grid.Row="1" Header="{local:Loc RES}">
-                    <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True"
-                        Maximum="1200" Minimum="72"
-                        SmallChange="1"
-                        Style="{StaticResource Slider}"
-                        Ticks="72,96,120,150,200,300,450,600,1200"
-                        ToolTip="{local:Loc RES}"
-                        Value="{Binding Path=ImgLoadResolution, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                </HeaderedContentControl>
+                <Border Grid.Row="1"
+                    Padding="1"
+                    BorderBrush="GreenYellow" BorderThickness="2">
+                    <HeaderedContentControl Header="{local:Loc RES}">
+                        <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True"
+                            Maximum="1200" Minimum="72"
+                            SmallChange="1"
+                            Style="{StaticResource Slider}"
+                            Ticks="72,96,120,150,200,300,450,600,1200"
+                            ToolTip="{local:Loc RES}"
+                            Value="{Binding Path=ImgLoadResolution, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                    </HeaderedContentControl>
+                </Border>
                 <HeaderedContentControl Grid.Row="1" Grid.Column="2">
                     <HeaderedContentControl.Header>
                         <TextBlock>
