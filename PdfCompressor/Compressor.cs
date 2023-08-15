@@ -31,7 +31,7 @@ public class Compressor : Control, INotifyPropertyChanged
     public static readonly DependencyProperty LoadedPdfPathProperty = DependencyProperty.Register("LoadedPdfPath", typeof(string), typeof(Compressor), new PropertyMetadata(string.Empty));
     public static readonly DependencyProperty QualityProperty = DependencyProperty.Register("Quality", typeof(int), typeof(Compressor), new PropertyMetadata(Settings.Default.Quality, QualityChanged));
     public static readonly DependencyProperty UseMozJpegProperty = DependencyProperty.Register("UseMozJpeg", typeof(bool), typeof(Compressor), new PropertyMetadata(false, MozpegChanged));
-    private ObservableCollection<BatchPdfData> batchPdfList;
+    private ObservableCollection<BatchPdfData> batchPdfList = new();
     private double compressionProgress;
 
     static Compressor() { DefaultStyleKeyProperty.OverrideMetadata(typeof(Compressor), new FrameworkPropertyMetadata(typeof(Compressor))); }
@@ -83,27 +83,22 @@ public class Compressor : Control, INotifyPropertyChanged
             },
             parameter => BatchPdfList?.Count > 0);
 
-        OpenFile = new RelayCommand<object>(
-            parameter =>
-            {
-                OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = "Pdf Dosyaları (*.pdf)|*.pdf" };
-                if (openFileDialog.ShowDialog() == true && IsValidPdfFile(openFileDialog.FileName))
-                {
-                    LoadedPdfPath = openFileDialog.FileName;
-                }
-            },
-            parameter => true);
-
         OpenBatchPdfFolder = new RelayCommand<object>(
             parameter =>
             {
-                System.Windows.Forms.FolderBrowserDialog dialog = new() { Description = "PDF Klasörü Seç." };
-                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                OpenFileDialog openFileDialog = new() { Multiselect = true, Filter = "Pdf Dosyaları (*.pdf)|*.pdf" };
+                if (openFileDialog.ShowDialog() == true)
                 {
-                    BatchPdfList = new ObservableCollection<BatchPdfData>();
-                    foreach (string item in Directory.EnumerateFiles(dialog.SelectedPath, "*.pdf", SearchOption.TopDirectoryOnly))
+                    foreach (string item in openFileDialog.FileNames)
                     {
-                        BatchPdfList.Add(new BatchPdfData() { Filename = item });
+                        if (IsValidPdfFile(item))
+                        {
+                            BatchPdfList.Add(new BatchPdfData() { Filename = item });
+                        }
+                        else
+                        {
+                            _ = MessageBox.Show($"Error {Path.GetFileName(item)}", Application.Current?.MainWindow?.Title);
+                        }
                     }
                 }
             },
@@ -162,8 +157,6 @@ public class Compressor : Control, INotifyPropertyChanged
     public string LoadedPdfPath { get => (string)GetValue(LoadedPdfPathProperty); set => SetValue(LoadedPdfPathProperty, value); }
 
     public RelayCommand<object> OpenBatchPdfFolder { get; }
-
-    public RelayCommand<object> OpenFile { get; }
 
     public int Quality { get => (int)GetValue(QualityProperty); set => SetValue(QualityProperty, value); }
 
