@@ -117,6 +117,13 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                     finally
                     {
                         ocrData.IsEnabled = true;
+                        string file = Path.Combine(tessdatafolder, ocrData.OcrName);
+                        if (File.Exists(file) && new FileInfo(file).Length == 0)
+                        {
+                            _ = MessageBox.Show($"{Translation.GetResStringValue("FILE")} {Translation.GetResStringValue("EMPTY")}", Application.Current?.MainWindow.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+                            File.Delete(file);
+                            TesseractFiles = GetTesseractFiles(Tessdatafolder);
+                        }
                     }
                 }
             },
